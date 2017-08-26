@@ -1,0 +1,93 @@
+qtsingleapplication
+
+                    GNU LESSER GENERAL PUBLIC LICENSE
+                       Version 2.1, February 1999
+
+ Copyright (C) 1991, 1999 Free Software Foundation, Inc.
+ 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+[This is the first released version of the Lesser GPL.  It also counts
+ as the successor of the GNU Library Public License, version 2, hence
+ the version number 2.1.]
+
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+Nokia Qt LGPL Exception version 1.1
+
+As an additional permission to the GNU Lesser General Public License
+version 2.1, the object code form of a "work that uses the Library"
+may incorporate material from a header file that is part of the
+Library.  You may distribute such object code under terms of your
+choice, provided that:
+(i) the header files of the Library have not been modified; and
+(ii) the incorporated material is limited to numerical parameters,
+data structure layouts, accessors, macros, inline functions and
+templates; and
+(iii) you comply with the terms of Section 6 of the GNU
+Lesser General Public License version 2.1.
+
+Moreover, you may apply this exception to a modified version of the
+Library, provided that such modification does not involve copying
+material from the Library into the modified Library?s header files
+unless such material is limited to (i) numerical parameters; (ii) data
+structure layouts; (iii) accessors; and (iv) small macros, templates
+and inline functions of five lines or less in length.
+
+Furthermore, you are not required to apply this additional permission
+to a modified version of the Library.
+
+_______________________________________________________________________________
+breakpad/google-breakpad
+
+Copyright (c) 2006, Google Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+    * Neither the name of Google Inc. nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+_______________________________________________________________________________
+client/pkcs11.h
+
+   pkcs11.h
+   Copyright 2006, 2007 g10 Code GmbH
+   Copyright 2006 Andreas Jellinghaus
+
+   This file is free software; as a special exception the author gives
+   unlimited permission to copy and/or distribute it, with or without
+   modifications, as long as this notice is preserved.
+
+   This file is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY, to the extent permitted by law; without even
+   the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+   PURPOSE.
+
