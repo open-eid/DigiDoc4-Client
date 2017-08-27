@@ -198,7 +198,7 @@ background-color: #023664;</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="signature" native="true">
+       <widget class="PageIcon" name="signature" native="true">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -222,72 +222,11 @@ background-color: #023664;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: #ffffff;
-border: none;</string>
+        <property name="autoFillBackground">
+         <bool>true</bool>
         </property>
-        <widget class="QLabel" name="signatureLabel">
-         <property name="geometry">
-          <rect>
-           <x>1</x>
-           <y>60</y>
-           <width>96</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>44</width>
-           <height>19</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #998B66;
-border: none;</string>
-         </property>
-         <property name="text">
-          <string>ALLKIRI</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::RichText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QWidget" name="signatureIcon" native="true">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>16</y>
-           <width>38</width>
-           <height>38</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>38</width>
-           <height>38</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-repeat: none;
-background-image: url(:/images/sign_38x38.png);
-border: none;</string>
-         </property>
-        </widget>
        </widget>
-       <widget class="QWidget" name="crypto" native="true">
+       <widget class="PageIcon" name="crypto" native="true">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -311,72 +250,14 @@ border: none;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: #023664;
-border: none;</string>
+        <property name="autoFillBackground">
+         <bool>true</bool>
         </property>
-        <widget class="QLabel" name="cryptoLabel">
-         <property name="geometry">
-          <rect>
-           <x>1</x>
-           <y>60</y>
-           <width>96</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>44</width>
-           <height>19</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #FFFFFF;
-border: none;</string>
-         </property>
-         <property name="text">
-          <string>KRÜPTO</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::RichText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QWidget" name="cryptoIcon" native="true">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>16</y>
-           <width>38</width>
-           <height>38</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>38</width>
-           <height>38</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-repeat: none;
-background-image: url(:/images/crypto_38x38.png);
-border: none;</string>
-         </property>
-        </widget>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
        </widget>
-       <widget class="QWidget" name="myEid" native="true">
+       <widget class="PageIcon" name="myEid" native="true">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -400,70 +281,9 @@ border: none;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: #023664;
-border: none;</string>
+        <property name="autoFillBackground">
+         <bool>true</bool>
         </property>
-        <widget class="QLabel" name="myEidLabel">
-         <property name="geometry">
-          <rect>
-           <x>1</x>
-           <y>60</y>
-           <width>96</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>44</width>
-           <height>19</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #FFFFFF;
-border: none;</string>
-         </property>
-         <property name="text">
-          <string>MINU eID</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::RichText</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QWidget" name="myEidIcon" native="true">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>16</y>
-           <width>38</width>
-           <height>38</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>38</width>
-           <height>38</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-repeat: none;
-background-image: url(:/images/my_eid_38x38.png);
-border: none;</string>
-         </property>
-        </widget>
        </widget>
       </widget>
      </item>
@@ -502,6 +322,12 @@ background-color: #ffffff;</string>
    <class>CardInfo</class>
    <extends>QWidget</extends>
    <header>CardInfo.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PageIcon</class>
+   <extends>QWidget</extends>
+   <header>widgets/PageIcon.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

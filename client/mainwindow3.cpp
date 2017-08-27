@@ -20,9 +20,12 @@ MainWindow3::MainWindow3(QWidget *parent) :
     semiBold.setWeight(75);
 #endif
     qDebug() << "Set fonts";
-    ui->cryptoLabel->setFont(regular);
-    ui->signatureLabel->setFont(semiBold);
-    ui->myEidLabel->setFont(regular);
+    ui->signature->init( "ALLKIRI", PageIcon::Style { semiBold, "/images/sign_dark_38x38.png", "#ffffff", "#998B66" },
+        PageIcon::Style { regular, "/images/sign_light_38x38.png", "#023664", "#ffffff" }, true );
+    ui->crypto->init( "KRÜPTO", PageIcon::Style { semiBold, "/images/crypto_dark_38x38.png", "#ffffff", "#998B66" },
+        PageIcon::Style { regular, "/images/crypto_light_38x38.png", "#023664", "#ffffff" }, false );
+    ui->myEid->init("MINU eID", PageIcon::Style { semiBold, "/images/my_eid_dark_38x38.png", "#ffffff", "#998B66" },
+        PageIcon::Style { regular, "/images/my_eid_light_38x38.png", "#023664", "#ffffff" }, false );
 
     ui->cardInfo->fonts(regular, semiBold);
     ui->cardInfo->update("MARI MAASIKAS", "4845050123", "Lugejas on ID kaart");
