@@ -128,6 +128,33 @@ border: none;</string>
        </property>
       </widget>
      </widget>
+     <widget class="QWidget" name="idSelector" native="true">
+      <property name="geometry">
+       <rect>
+        <x>103</x>
+        <y>2</y>
+        <width>360</width>
+        <height>45</height>
+       </rect>
+      </property>
+      <widget class="QWidget" name="widget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>9</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-image: url(:/images/dropdown_32x32.png);
+QWidget::widget:hover { background-color: #F0F0F0 }</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </item>
    <item>
