@@ -137,10 +137,10 @@ border: none;</string>
         <height>45</height>
        </rect>
       </property>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="selector" native="true">
        <property name="geometry">
         <rect>
-         <x>330</x>
+         <x>329</x>
          <y>9</y>
          <width>32</width>
          <height>32</height>
@@ -152,6 +152,16 @@ border: none;</string>
        <property name="styleSheet">
         <string notr="true">background-image: url(:/images/dropdown_32x32.png);
 QWidget::widget:hover { background-color: #F0F0F0 }</string>
+       </property>
+      </widget>
+      <widget class="CardInfo" name="cardInfo" native="true">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>2</y>
+         <width>321</width>
+         <height>45</height>
+        </rect>
        </property>
       </widget>
      </widget>
@@ -487,6 +497,14 @@ background-color: #ffffff;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CardInfo</class>
+   <extends>QWidget</extends>
+   <header>CardInfo.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

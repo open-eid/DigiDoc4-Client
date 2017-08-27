@@ -15,7 +15,7 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui MainWindow2.ui MainWindow3.ui MobileDialog.ui SettingsDialog.ui SignatureDialog.ui )
+qt5_wrap_ui( SOURCES CardInfo.ui MainWindow.ui MainWindow3.ui MobileDialog.ui SettingsDialog.ui SignatureDialog.ui )
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm TreeWidgetMac.mm )
@@ -35,11 +35,11 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	AccessCert.cpp
 	Application.cpp
+	CardInfo.cpp
 	CheckConnection.cpp
 	DigiDoc.cpp
 	FileDialog.cpp
 	MainWindow.cpp
-	MainWindow2.cpp
 	MainWindow3.cpp
 	MobileDialog.cpp
 	PrintSheet.cpp

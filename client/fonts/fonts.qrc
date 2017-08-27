@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/fonts" >
+        <file>OpenSans-Bold.ttf</file>
         <file>OpenSans-Regular.ttf</file>
         <file>OpenSans-SemiBold.ttf</file>
     </qresource>
