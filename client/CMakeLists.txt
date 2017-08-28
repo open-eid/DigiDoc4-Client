@@ -55,8 +55,7 @@ if( APPLE )
 		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 	)
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
-		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
-        )
+		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}> )
 	get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
 	get_filename_component( LIBPATH ${OPENSSL_CRYPTO_LIBRARY} PATH )
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
@@ -81,102 +80,4 @@ if( APPLE )
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
 	)
-	add_custom_target( codesign DEPENDS ${PROGNAME}
-		COMMAND codesign -f -s \"$$SIGNCERT\"
-			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Libraries/*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/*.framework
-			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
-		COMMAND codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../..
-			--entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements
-	)
-	add_custom_target( productbuild DEPENDS ${PROGNAME}
-		COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app /Applications
-			--sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/qdigidoc-store_${VERSION}$ENV{VER_SUFFIX}.pkg
-	)
-	add_custom_target( zip DEPENDS ${PROGNAME}
-		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.app
-	)
-	add_custom_target( zipdebug DEPENDS ${PROGNAME}
-		COMMAND dsymutil -o ${PROGNAME}.dSYM $<TARGET_FILE:${PROGNAME}>
-		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
-	)
-elseif(WIN32)
-	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
-	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		set(PLATFORM x64)
-		set(SSL_PATH "C:/OpenSSL-Win64/bin")
-	else()
-		set(PLATFORM x86)
-		set(SSL_PATH "C:/OpenSSL-Win32/bin")
-	endif()
-	set(MSI_FILE "Digidoc3_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
-	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
-		-dssl_path="${SSL_PATH}" -dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf
-		-dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
-	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
-		qdigidoc.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
-		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
-		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
-	if(EXISTS ${LIBS_PATH}/../certs)
-		list(APPEND CANDLE_CMD -dcertsLocation=CertsFragment CertsFragment.wxs)
-		list(APPEND LIGHT_CMD CertsFragment.wixobj)
-		add_custom_target(CertsFragment.wxs
-			COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/../certs CertsFragment
-			COMMAND del "CertsFragment\\TEST*.crt"
-			COMMAND "$ENV{WIX}bin\\heat.exe" dir CertsFragment -nologo -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-	else()
-		add_custom_target(CertsFragment.wxs)
-	endif()
-	if(EXISTS ${LIBS_PATH}/Xalan-C_1_11.dll)
-		list(APPEND CANDLE_CMD -dxalan=true)
-	endif()
-	add_custom_target(msi DEPENDS ${PROGNAME} CertsFragment.wxs
-		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
-		COMMAND ${CANDLE_CMD}
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.msi"
-		#Build MSI with QT
-		COMMAND ${CANDLE_CMD} -dqt_path=${_qt5Core_install_prefix}
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.qt.msi"
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
-		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-	)
-	if(SIGNCERT)
-		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
-			/du http://installer.id.ee /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256)
-		add_custom_command(TARGET ${PROGNAME} POST_BUILD
-			COMMAND ${SIGNCMD} $<TARGET_FILE:${PROGNAME}>
-		)
-		add_custom_command(TARGET msi POST_BUILD
-			COMMAND ${SIGNCMD} "${MSI_FILE}.en-US.msi" "${MSI_FILE}.et-EE.msi" "${MSI_FILE}.en-US.qt.msi" "${MSI_FILE}.et-EE.qt.msi"
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-	endif()
-else()
-	install( TARGETS ${PROGNAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
-	set_target_properties( ${PROGNAME} PROPERTIES COMPILE_DEFINITIONS "DATADIR=\"${CMAKE_INSTALL_FULL_DATADIR}\"" )
-	configure_file( qdigidocclient.1.cmake qdigidocclient.1 )
-	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidocclient.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
-	install( FILES qdigidoc-client.appdata.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/appdata )
-	install( FILES qdigidoc-client.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
-	install( FILES qdigidoc-client.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )
-	foreach(RES 16 22 32 48 128)
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-x-p12d.png)
-			install(
-				FILES images/qdigidoc_client_document_${RES}x${RES}.png
-				DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
-				RENAME ${TGT}
-			)
-		endforeach()
-		install(
-			FILES images/digidoc_icon_${RES}x${RES}.png
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/apps/
-			RENAME qdigidoc-client.png
-		)
-	endforeach()
 endif()

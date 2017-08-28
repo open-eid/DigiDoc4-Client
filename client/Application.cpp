@@ -1,5 +1,5 @@
 /*
- * QDigiDocClient
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -80,11 +80,11 @@ public:
 		t->setSingleShot(true);
 		QTimer::connect(t, &QTimer::timeout, [=] {
 			t->deleteLater();
-			Configuration::instance().checkVersion("QDIGIDOC");
+			Configuration::instance().checkVersion("QDIGIDOC4");
 		});
 		t->start(0);
 #else
-		Configuration::instance().checkVersion("QDIGIDOC");
+		Configuration::instance().checkVersion("QDIGIDOC4");
 #endif
 		Configuration::connect(&Configuration::instance(), &Configuration::finished, [&](bool changed, const QString &){
 			if(changed)

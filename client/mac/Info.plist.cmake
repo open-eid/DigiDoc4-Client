@@ -34,14 +34,14 @@
 	<string>${CMAKE_OSX_DEPLOYMENT_TARGET}</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.ee.ria.qdigidocclient</key>
+		<key>iCloud.ee.ria.qdigidoc4</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
 			<key>NSUbiquitousContainerSupportedFolderLevels</key>
 			<string>Any</string>
 			<key>NSUbiquitousContainerName</key>
-			<string>DigiDoc3</string>
+			<string>DigiDoc4</string>
 		</dict>
 	</dict>
 	<key>CFBundleDocumentTypes</key>
@@ -177,7 +177,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Sign with DigiDoc3 Client</string>
+				<string>Sign with DigiDoc4 Client</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openClient</string>
@@ -197,7 +197,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Encrypt with DigiDoc3 Crypto</string>
+				<string>Encrypt with DigiDoc4 Crypto</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openCrypto</string>
