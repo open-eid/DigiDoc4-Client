@@ -55,11 +55,18 @@ void MainWindow::pageSelected( PageIcon *const page )
 {
     if( page != ui->signature ) {
         ui->signature->select(false);
+    } else {
+        ui->startScreen->setCurrentIndex(0);
+        ui->signaturePageLabel->setFont(Styles::instance().fontRegular());
     }
     if( page != ui->crypto ) {
         ui->crypto->select(false);
+    } else {
+        ui->startScreen->setCurrentIndex(1);
     }
     if( page != ui->myEid ) {
         ui->myEid->select(false);
+    } else {
+        ui->startScreen->setCurrentIndex(2);
     }
 }
