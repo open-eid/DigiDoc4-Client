@@ -1,0 +1,55 @@
+#include <winver.h>
+
+#define VER_STR_HELPER(x)	#x
+#define VER_STR(x)		VER_STR_HELPER(x)
+
+VS_VERSION_INFO VERSIONINFO
+  FILEVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
+  PRODUCTVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
+  FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+  FILEFLAGS VS_FF_DEBUG
+#else
+  FILEFLAGS 0x0L
+#endif
+  FILEOS VOS_NT_WINDOWS32
+  FILETYPE VFT_APP
+  FILESUBTYPE VFT_UNKNOWN
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "040904B0"
+		BEGIN
+			VALUE "CompanyName", ORG
+			VALUE "FileDescription", "DigiDoc4 Client"
+			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+			VALUE "InternalName", APP
+			VALUE "LegalCopyright", "Copyright (C) 2017 Estonian Information System Authority"
+			VALUE "OriginalFilename", APP ".exe"
+			VALUE "ProductName", "DigiDoc4 Client"
+			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+		END
+		BLOCK "042504B0"
+		BEGIN
+			VALUE "CompanyName", ORG
+			VALUE "FileDescription", "DigiDoc4 Klient"
+			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+			VALUE "InternalName", APP
+			VALUE "LegalCopyright", "Copyright (C) 2017 Riigi Infosüsteemi Amet"
+			VALUE "OriginalFilename", APP ".exe"
+			VALUE "ProductName", "DigiDoc4 Klient"
+			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x409, 1200
+		VALUE "Translation", 0x425, 1200
+	END
+END
+/* End of Version info */
+
+IDI_ICON1   ICON  DISCARDABLE  "images/digidoc_icon_48x48.ico"
+IDI_ICON2   ICON  DISCARDABLE  "images/qdigidoc_client_document_48x48.ico"
+IDI_ICON3   ICON  DISCARDABLE  "../crypto/images/crypto_48x48.ico"
+IDI_ICON4   ICON  DISCARDABLE  "../crypto/images/qdigidoc_crypto_document_48x48.ico"

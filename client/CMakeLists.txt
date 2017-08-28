@@ -1,4 +1,4 @@
-set_app_name( PROGNAME qdigidocclient )
+set_app_name( PROGNAME qdigidoc4 )
 
 add_executable( TSLDownload TSLDownload.cpp )
 target_link_libraries( TSLDownload Qt5::Network )
@@ -15,11 +15,10 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES CardInfo.ui MainWindow.ui MainWindow3.ui MobileDialog.ui widgets/PageIcon.ui SettingsDialog.ui SignatureDialog.ui )
+qt5_wrap_ui( SOURCES MainWindow.ui widgets/CardInfo.ui widgets/PageIcon.ui )
 
 if( APPLE )
-	list( APPEND SOURCES Application_mac.mm TreeWidgetMac.mm )
-	set_source_files_properties( TreeWidgetMac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
+	list( APPEND SOURCES Application_mac.mm )
 	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	list( APPEND ADDITIONAL_LIBRARIES "-framework Security" "-framework Quartz" )
 elseif( WIN32 )
@@ -33,27 +32,19 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${SOURCES}
 	${RESOURCE_FILES}
 	main.cpp
-	AccessCert.cpp
 	Application.cpp
-	CardInfo.cpp
-	CheckConnection.cpp
 	DigiDoc.cpp
 	FileDialog.cpp
 	MainWindow.cpp
-	MainWindow3.cpp
-	MobileDialog.cpp
-	PrintSheet.cpp
 	QPKCS11.cpp
 	QSigner.cpp
-	SettingsDialog.cpp
-	SignatureDialog.cpp
-	TreeWidget.cpp
+	Styles.cpp
+	widgets/CardInfo.cpp
 	widgets/PageIcon.cpp
 )
 add_manifest( ${PROGNAME} )
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
-	qdigidoccrypto
 	Qt5::PrintSupport
 	${LIBDIGIDOCPP_LIBRARY}
 	${ADDITIONAL_LIBRARIES}

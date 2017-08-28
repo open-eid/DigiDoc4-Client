@@ -20,8 +20,13 @@ void PageIcon::init(const QString &label, const Style& active, const Style& inac
 {
     this->active = active;
     this->inactive = inactive;
-    this->selected = selected;
     ui->label->setText( label );
+    select(selected);
+}
+
+void PageIcon::select(bool selected)
+{
+    this->selected = selected;
     updateSelection();
 }
 
@@ -34,14 +39,15 @@ void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 void PageIcon::updateSelection()
 {
     const Style &style = selected ? active : inactive;
+    if (selected) {
+        emit activated(this);
+    }
     
     qDebug() << "set background " << style.backColor;
     ui->label->setFont(style.font);
     ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
     ui->icon->setStyleSheet(QString("background-repeat: none; background-image: url(:%1); background-color: %2; border: none;")
         .arg(style.image).arg(style.backColor));
-    // setAutoFillBackground(true);
-    // setPalette(QPalette(QColor(style.backColor)));
     setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(style.backColor));
 }
 

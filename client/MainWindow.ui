@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow3</class>
- <widget class="QWidget" name="MainWindow3">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -321,7 +321,7 @@ background-color: #ffffff;</string>
   <customwidget>
    <class>CardInfo</class>
    <extends>QWidget</extends>
-   <header>CardInfo.h</header>
+   <header>widgets/CardInfo.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

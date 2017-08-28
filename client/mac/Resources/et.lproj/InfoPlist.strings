@@ -1,0 +1,4 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName = "DigiDoc3 klient";
+CFBundleDisplayName = "DigiDoc3 klient";

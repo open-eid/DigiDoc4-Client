@@ -24,6 +24,10 @@ public:
     ~PageIcon();
 
     void init(const QString &label, const Style &active, const Style &inactive, bool selected);
+    void select(bool selected);
+
+signals:
+	void activated( PageIcon *const );
 
 protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);

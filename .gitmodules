@@ -1,0 +1,6 @@
+[submodule "cmake"]
+	path = cmake
+	url = git@github.com:open-eid/cmake
+[submodule "common"]
+	path = common
+	url = git@github.com:open-eid/qt-common

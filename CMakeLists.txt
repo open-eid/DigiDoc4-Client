@@ -5,7 +5,7 @@ endif()
 if(POLICY CMP0063)
 	cmake_policy(SET CMP0063 NEW)
 endif()
-project(qdigidoc VERSION 3.13.2)
+project(qdigidoc4 VERSION 0.1.0)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -21,5 +21,4 @@ find_package( Qt5 COMPONENTS Core Widgets Network PrintSupport LinguistTools REQ
 include_directories( ${LIBDIGIDOCPP_INCLUDE_DIR} )
 
 add_subdirectory( common )
-add_subdirectory( crypto )
 add_subdirectory( client )
