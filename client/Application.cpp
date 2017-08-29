@@ -54,6 +54,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
+#include <QtWidgets/QAction>
 
 #if defined(Q_OS_MAC)
 #include <common/MacMenuBar.h>
@@ -477,7 +478,7 @@ void Application::closeWindow()
 {
 #ifndef Q_OS_MAC
 	if( MainWindow *w = qobject_cast<MainWindow*>(activeWindow()) )
-		w->closeDoc();
+		w->close(); // w->closeDoc();
 	else
 #endif
 	if( QDialog *d = qobject_cast<QDialog*>(activeWindow()) )
