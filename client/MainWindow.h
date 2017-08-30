@@ -23,6 +23,8 @@
 #include "widgets/PageIcon.h"
 
 #include <QWidget>
+#include <QButtonGroup>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -38,9 +40,17 @@ public:
 
 private Q_SLOTS:
 	void pageSelected( PageIcon *const );
+    void buttonClicked( int button );
 
 private:
     Ui::MainWindow *ui;
+
+   	QButtonGroup *buttonGroup = nullptr;
+    
+	enum Buttons {
+		HeadSettings,
+		HeadHelp
+	};
 };
 
 #endif // MAINWINDOW_H

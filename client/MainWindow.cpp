@@ -44,6 +44,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->signature, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
     connect( ui->crypto, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
     connect( ui->myEid, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
+    
+    buttonGroup = new QButtonGroup( this );
+   	buttonGroup->addButton( ui->help, HeadHelp );
+   	buttonGroup->addButton( ui->settings, HeadSettings );
+
+	connect( buttonGroup, SIGNAL(buttonClicked(int)), SLOT(buttonClicked(int)) );
 }
 
 MainWindow::~MainWindow()
@@ -70,3 +76,20 @@ void MainWindow::pageSelected( PageIcon *const page )
         ui->startScreen->setCurrentIndex(2);
     }
 }
+
+void MainWindow::buttonClicked( int button )
+{
+	switch( button )
+	{
+	case HeadHelp:
+		//QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
+		QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet");
+		break;
+	case HeadSettings:
+		// qApp->showSettings();
+		QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet");
+		break;
+	default: break;
+	}
+}
+

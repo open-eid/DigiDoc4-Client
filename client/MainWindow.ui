@@ -25,9 +25,12 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -62,10 +65,48 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #fafafa;
+      <string notr="true">QWidget
+{
+background-color: #fafafa;
+}
 /* Custom CSS */
-box-shadow: rgba(0, 0, 0, 0.68) 0px 7px 6px -6px;
-border-left-width: 0px;</string>
+/*box-shadow: rgba(0, 0, 0, 0.68) 0px 7px 6px -6px;*/
+/*border-left-width: 0px;*/
+
+/* widgets */
+/*
+QPushButton
+{
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #406A9E, stop: 0.75 #00355F);
+border: 0px;
+border-radius: 2px;
+color: white;
+margin-left: 1px;
+margin-right: 1px;
+min-width: 75px;
+padding: 1px 7px;
+}
+*/
+QPushButton:hover, QPushButton:focus
+{
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F1C157, stop:0.28 #FADF91, stop:1 #EBA927);
+color: #00355F;
+}
+
+QPushButton:disabled
+{ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A3AFC0, stop: 0.75 #80909D); }
+
+#settings, #help
+{
+background-color: transparent;
+color: #000000;
+​font-family: Open Sans;
+font-size: 13px;
+font-weight: 400;
+width: 49px;
+height: 14px;
+min-width: 0px;
+}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -164,6 +205,47 @@ QWidget::widget:hover { background-color: #F0F0F0 }</string>
         </rect>
        </property>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="help">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>890</x>
+        <y>10</y>
+        <width>51</width>
+        <height>39</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Help</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="settings">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>10</y>
+        <width>61</width>
+        <height>39</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Settings</string>
+      </property>
      </widget>
     </widget>
    </item>
@@ -314,7 +396,7 @@ background-color: #ffffff;</string>
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="signPage" native="true">
+       <widget class="QWidget" name="signPage">
         <widget class="QPushButton" name="selectSignedButton">
          <property name="geometry">
           <rect>
@@ -386,7 +468,9 @@ text-align: center;</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="eidPage"/>
+       <widget class="QWidget" name="eidPage">
+        <zorder>horizontalLayoutWidget</zorder>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -407,6 +491,10 @@ text-align: center;</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>encryptButton</tabstop>
+  <tabstop>selectSignedButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
