@@ -47,9 +47,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->cardInfo->update("MARI MAASIKAS", "4845050123", "Lugejas on ID kaart");
 
-    connect( ui->signature, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
-    connect( ui->crypto, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
-    connect( ui->myEid, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
+    connect( ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected );
+    connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
+    connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
     
     buttonGroup = new QButtonGroup( this );
    	buttonGroup->addButton( ui->help, HeadHelp );
