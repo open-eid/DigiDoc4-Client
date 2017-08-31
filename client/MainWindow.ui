@@ -265,7 +265,7 @@ QWidget::widget:hover { background-color: #F0F0F0 }</string>
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>5</y>
+             <y>4</y>
              <width>51</width>
              <height>41</height>
             </rect>
@@ -290,7 +290,7 @@ background-position: top center;
 padding-top: 28px;</string>
            </property>
            <property name="text">
-            <string>Help</string>
+            <string>Abi</string>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -300,7 +300,7 @@ padding-top: 28px;</string>
            <property name="geometry">
             <rect>
              <x>53</x>
-             <y>5</y>
+             <y>4</y>
              <width>51</width>
              <height>41</height>
             </rect>
@@ -502,76 +502,320 @@ background-color: #ffffff;</string>
         <number>0</number>
        </property>
        <widget class="QWidget" name="signPage">
-        <widget class="QPushButton" name="selectSignedButton">
-         <property name="geometry">
-          <rect>
-           <x>350</x>
-           <y>242</y>
-           <width>228</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">padding: 6px 10px;
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="1">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>158</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>182</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="1">
+          <widget class="QWidget" name="signIntroCentral" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>513</width>
+             <height>77</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>118</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="signIntroButton">
+              <property name="minimumSize">
+               <size>
+                <width>228</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>228</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 6px 10px;
 border-radius: 3px;
 background-color: #006eb5;
 color: #ffffff;
 text-decoration: none solid rgb(255, 255, 255);
 text-align: center;</string>
-         </property>
-         <property name="text">
-          <string>Või vali fail kettalt</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="signaturePageLabel">
-         <property name="geometry">
-          <rect>
-           <x>207</x>
-           <y>200</y>
-           <width>513</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>20</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border: none;</string>
-         </property>
-         <property name="lineWidth">
-          <number>0</number>
-         </property>
-         <property name="text">
-          <string>Allkirjastamiseks või kontrollimiseks lohista fail siia</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+              </property>
+              <property name="text">
+               <string>Või vali fail kettalt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>109</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="0" colspan="3">
+             <widget class="QLabel" name="signIntroLabel">
+              <property name="font">
+               <font>
+                <pointsize>20</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: none;</string>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
+              <property name="text">
+               <string>Allkirjastamiseks või kontrollimiseks lohista fail siia</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>181</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="1">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>221</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="cryptoPage">
-        <widget class="QPushButton" name="encryptButton">
-         <property name="geometry">
-          <rect>
-           <x>380</x>
-           <y>230</y>
-           <width>113</width>
-           <height>32</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Krüpteeri</string>
-         </property>
-        </widget>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>156</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0">
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>155</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="1">
+          <widget class="QWidget" name="cryptoIntroCentral" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>566</width>
+             <height>77</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>118</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="cryptoIntroButton">
+              <property name="minimumSize">
+               <size>
+                <width>228</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>228</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 6px 10px;
+border-radius: 3px;
+background-color: #006eb5;
+color: #ffffff;
+text-decoration: none solid rgb(255, 255, 255);
+text-align: center;</string>
+              </property>
+              <property name="text">
+               <string>Või vali fail kettalt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>109</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="0" colspan="3">
+             <widget class="QLabel" name="cryptoIntroLabel">
+              <property name="font">
+               <font>
+                <pointsize>20</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: none;</string>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
+              <property name="text">
+               <string>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>155</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="1">
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>221</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="eidPage"/>
       </widget>

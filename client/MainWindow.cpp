@@ -19,26 +19,32 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "Styles.h"
 
 #include <QDebug>
+#include <QFontDatabase>
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow)
 {
+    QFontDatabase::addApplicationFont(":/fonts/OpenSans-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiBold.ttf");
+
     ui->setupUi(this);
     qDebug() << "Set fonts";
-    const QFont& regular = Styles::instance().fontRegular();
-    const QFont& semiBold = Styles::instance().fontSemiBold();
-    ui->signature->init( "ALLKIRI", PageIcon::Style { semiBold, "/images/sign_dark_38x38.png", "#ffffff", "#998B66" },
-        PageIcon::Style { regular, "/images/sign_light_38x38.png", "#023664", "#ffffff" }, true );
-    ui->crypto->init( "KRÜPTO", PageIcon::Style { semiBold, "/images/crypto_dark_38x38.png", "#ffffff", "#998B66" },
-        PageIcon::Style { regular, "/images/crypto_light_38x38.png", "#023664", "#ffffff" }, false );
-    ui->myEid->init("MINU eID", PageIcon::Style { semiBold, "/images/my_eid_dark_38x38.png", "#ffffff", "#998B66" },
-        PageIcon::Style { regular, "/images/my_eid_light_38x38.png", "#023664", "#ffffff" }, false );
+    QFont openSansReg13("OpenSans-Regular", 13);
+    QFont openSansReg14("OpenSans-Regular", 14);
+    QFont openSansSBold14("OpenSans-SemiBold", 14);
+    QFont openSansReg16("OpenSans-Regular", 16);
+    QFont openSansReg20("OpenSans-Regular", 20);
 
-    ui->cardInfo->fonts(regular, semiBold);
+    ui->signature->init( "ALLKIRI", PageIcon::Style { openSansSBold14, "/images/sign_dark_38x38.png", "#ffffff", "#998B66" },
+        PageIcon::Style { openSansReg14, "/images/sign_light_38x38.png", "#023664", "#ffffff" }, true );
+    ui->crypto->init( "KRÜPTO", PageIcon::Style { openSansSBold14, "/images/crypto_dark_38x38.png", "#ffffff", "#998B66" },
+        PageIcon::Style { openSansReg14, "/images/crypto_light_38x38.png", "#023664", "#ffffff" }, false );
+    ui->myEid->init("MINU eID", PageIcon::Style { openSansSBold14, "/images/my_eid_dark_38x38.png", "#ffffff", "#998B66" },
+        PageIcon::Style { openSansReg14, "/images/my_eid_light_38x38.png", "#023664", "#ffffff" }, false );
+
     ui->cardInfo->update("MARI MAASIKAS", "4845050123", "Lugejas on ID kaart");
 
     connect( ui->signature, SIGNAL(activated( PageIcon *const )), SLOT(pageSelected( PageIcon *const )) );
@@ -49,7 +55,15 @@ MainWindow::MainWindow(QWidget *parent) :
    	buttonGroup->addButton( ui->help, HeadHelp );
    	buttonGroup->addButton( ui->settings, HeadSettings );
 
-	connect( buttonGroup, SIGNAL(buttonClicked(int)), SLOT(buttonClicked(int)) );
+    ui->signIntroLabel->setFont(openSansReg20);
+    ui->signIntroButton->setFont(openSansReg16);
+    ui->cryptoIntroLabel->setFont(openSansReg20);
+    ui->cryptoIntroButton->setFont(openSansReg16);
+    
+    ui->help->setFont(openSansReg13);
+    ui->settings->setFont(openSansReg13);
+
+	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 }
 
 MainWindow::~MainWindow()
@@ -63,7 +77,6 @@ void MainWindow::pageSelected( PageIcon *const page )
         ui->signature->select(false);
     } else {
         ui->startScreen->setCurrentIndex(0);
-        ui->signaturePageLabel->setFont(Styles::instance().fontRegular());
     }
     if( page != ui->crypto ) {
         ui->crypto->select(false);
