@@ -25,18 +25,17 @@ CardInfo::CardInfo(QWidget *parent) :
     ui(new Ui::CardInfo)
 {
     ui->setupUi(this);
+    QFont openSansReg14("OpenSans-Regular", 14);
+    QFont openSansSBold14("OpenSans-SemiBold", 14);
+    
+    ui->cardName->setFont(openSansSBold14);
+    ui->cardCode->setFont(openSansReg14);
+    ui->cardStatus->setFont(openSansReg14);
 }
 
 CardInfo::~CardInfo()
 {
     delete ui;
-}
-
-void CardInfo::fonts(const QFont &regular, const QFont &semiBold)
-{
-    ui->cardName->setFont(semiBold);
-    ui->cardCode->setFont(regular);
-    ui->cardStatus->setFont(regular);
 }
 
 void CardInfo::update(const QString &name, const QString &code, const QString &status)

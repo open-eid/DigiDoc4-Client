@@ -76,7 +76,7 @@
     <string notr="true">font-weight: bold;</string>
    </property>
    <property name="text">
-    <string/>
+    <string>MARI MAASIKAS</string>
    </property>
   </widget>
   <widget class="QLabel" name="cardCode">
@@ -94,7 +94,7 @@
     </font>
    </property>
    <property name="text">
-    <string/>
+    <string>48405050123</string>
    </property>
   </widget>
   <widget class="Line" name="separator">
@@ -128,7 +128,7 @@
     </font>
    </property>
    <property name="text">
-    <string/>
+    <string>Lugejas on ID kaart</string>
    </property>
   </widget>
   <widget class="QWidget" name="cardIcon" native="true">
