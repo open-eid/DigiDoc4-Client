@@ -293,7 +293,7 @@ Application::Application( int &argc, char **argv )
 	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
 	connect( d->newClientAction, SIGNAL(triggered()), SLOT(showClient()) );
 
-	setQuitOnLastWindowClosed( false );
+	setQuitOnLastWindowClosed( true );  // Oleg: this is needed to release application from memory (Windows)
 	d->lastWindowTimer.setSingleShot(true);
 	connect(&d->lastWindowTimer, &QTimer::timeout, [](){ if(topLevelWindows().isEmpty()) quit(); });
 	connect(this, &Application::lastWindowClosed, [&](){ d->lastWindowTimer.start(10*1000); });
@@ -874,4 +874,15 @@ void DdCliApplication::diagnostics(QTextStream &s) const
 	s << "<br /><br /><b>" << "TSL signing certs:</b>";
 	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
+}
+
+void Application::showSettings( int page, const QString &path )
+{
+/*
+	SettingsDialog *s = new SettingsDialog( page, activeWindow() );
+	s->addAction( d->closeAction );
+	s->open();
+	if( !path.isEmpty() )
+		s->activateAccessCert( path );
+ */
 }
