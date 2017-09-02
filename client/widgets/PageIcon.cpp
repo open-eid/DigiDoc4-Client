@@ -51,8 +51,10 @@ void PageIcon::select(bool selected)
 
 void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 {
-    selected = !selected;
-    updateSelection();
+    if(!selected) {
+        selected = true;
+        updateSelection();
+    }
 }
 
 void PageIcon::updateSelection()

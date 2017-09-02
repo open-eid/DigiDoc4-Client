@@ -63,7 +63,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->help->setFont(openSansReg13);
     ui->settings->setFont(openSansReg13);
 
-	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
+    connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
+    connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
+    connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 }
 
 MainWindow::~MainWindow()
@@ -76,33 +78,37 @@ void MainWindow::pageSelected( PageIcon *const page )
     if( page != ui->signature ) {
         ui->signature->select(false);
     } else {
-        ui->startScreen->setCurrentIndex(0);
+        navigateToPage(SignIntro);
     }
     if( page != ui->crypto ) {
         ui->crypto->select(false);
     } else {
-        ui->startScreen->setCurrentIndex(1);
+        navigateToPage(CryptoIntro);
     }
     if( page != ui->myEid ) {
         ui->myEid->select(false);
     } else {
-        ui->startScreen->setCurrentIndex(2);
+        navigateToPage(MyEid);
     }
 }
 
 void MainWindow::buttonClicked( int button )
 {
-	switch( button )
-	{
-	case HeadHelp:
-		//QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
-		QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet");
-		break;
-	case HeadSettings:
-		// qApp->showSettings();
-		QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet");
-		break;
-	default: break;
-	}
+    switch( button )
+    {
+    case HeadHelp:
+        //QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
+        QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet");
+        break;
+    case HeadSettings:
+        // qApp->showSettings();
+        QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet");
+        break;
+    default: break;
+    }
 }
 
+void MainWindow::navigateToPage( Pages page )
+{
+    ui->startScreen->setCurrentIndex(page);
+}

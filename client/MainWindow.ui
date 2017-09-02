@@ -659,6 +659,14 @@ text-align: center;</string>
          </item>
         </layout>
        </widget>
+       <widget class="ContainerPage" name="signContainerPage">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
        <widget class="QWidget" name="cryptoPage">
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="1">
@@ -835,6 +843,12 @@ text-align: center;</string>
    <class>PageIcon</class>
    <extends>QWidget</extends>
    <header>widgets/PageIcon.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ContainerPage</class>
+   <extends>QWidget</extends>
+   <header>widgets/ContainerPage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -43,14 +43,24 @@ private Q_SLOTS:
     void buttonClicked( int button );
 
 private:
+    enum MainActions {
+        HeadSettings,
+        HeadHelp
+	};
+
+    enum Pages {
+        SignIntro,
+        SignDetails,
+        CryptoIntro,
+        CryptoDetails,
+        MyEid
+    };
+
+    void navigateToPage( Pages page );
+
     Ui::MainWindow *ui;
 
    	QButtonGroup *buttonGroup = nullptr;
-    
-	enum Buttons {
-		HeadSettings,
-		HeadHelp
-	};
 };
 
 #endif // MAINWINDOW_H
