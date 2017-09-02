@@ -154,7 +154,7 @@ text-decoration: none solid rgb(113, 73, 21);</string>
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="warningAction">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -249,6 +249,43 @@ background-color: #ffffff;</string>
       <string notr="true">border: 1px solid #c8c8c8;
 background-color: #ffffff;</string>
      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="ItemList" name="leftPane" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="ItemList" name="rightPane" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -278,6 +315,31 @@ background-color: #ffffff;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ItemList</class>
+   <extends>QWidget</extends>
+   <header>widgets/ItemList.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>warningAction</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>warning</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>730</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>462</x>
+     <y>17</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
