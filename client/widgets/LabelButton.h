@@ -19,12 +19,12 @@
 
  #include <QLabel>
 
-class ButtonLabel : public QLabel
+class LabelButton : public QLabel
 {
     Q_OBJECT
 
 public:
-    ButtonLabel(QWidget *parent = nullptr);
+    explicit LabelButton(QWidget *parent = nullptr);
 
 protected:
     void enterEvent(QEvent *ev) override;

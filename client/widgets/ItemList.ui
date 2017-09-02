@@ -147,7 +147,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         </widget>
        </item>
        <item>
-        <widget class="ButtonLabel" name="add">
+        <widget class="LabelButton" name="add">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -201,9 +201,9 @@ text-decoration: none solid rgb(0, 0, 0);</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ButtonLabel</class>
+   <class>LabelButton</class>
    <extends>QLabel</extends>
-   <header>widgets/ButtonLabel.h</header>
+   <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

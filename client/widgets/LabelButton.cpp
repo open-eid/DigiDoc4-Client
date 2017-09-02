@@ -17,14 +17,14 @@
  *
  */
 
- #include "ButtonLabel.h"
+ #include "LabelButton.h"
  
-ButtonLabel::ButtonLabel(QWidget *parent)
+ LabelButton::LabelButton(QWidget *parent)
 : QLabel(parent)
 {
 }
 
-void ButtonLabel::enterEvent(QEvent *ev)
+void LabelButton::enterEvent(QEvent *ev)
 {
     label = text();
     style = styleSheet();
@@ -32,7 +32,7 @@ void ButtonLabel::enterEvent(QEvent *ev)
     setText("<a href=\"#add-files\" style=\"background-color: #006eb5; color: #ffffff; text-decoration: none solid rgb(255, 255, 255);\">+ Lisa veel faile</a>");
 }
 
-void ButtonLabel::leaveEvent(QEvent *ev)
+void LabelButton::leaveEvent(QEvent *ev)
 {
     setStyleSheet(style);
     setText(label);

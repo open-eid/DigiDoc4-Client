@@ -38,10 +38,10 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	MainWindow.cpp
 	QPKCS11.cpp
 	QSigner.cpp
-	widgets/ButtonLabel.cpp
 	widgets/CardInfo.cpp
 	widgets/ContainerPage.cpp
 	widgets/ItemList.cpp
+	widgets/LabelButton.cpp
 	widgets/PageIcon.cpp
 )
 add_manifest( ${PROGNAME} )
