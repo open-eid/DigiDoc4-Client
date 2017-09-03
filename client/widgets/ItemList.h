@@ -16,7 +16,10 @@ public:
     ~ItemList();
 
 private:
+    void add(const QString &anchor);
+
     Ui::ItemList *ui;
+    std::vector<QWidget*> items;
 };
 
 #endif // ITEMLIST_H
