@@ -17,7 +17,7 @@
  *
  */
 
- #include <QLabel>
+#include <QLabel>
 
 // A label that acts as a button.
 // LabelButton switches foreground color with background when mouse hovers over it.
@@ -28,6 +28,7 @@ class LabelButton : public QLabel
 public:
     explicit LabelButton(QWidget *parent = nullptr);
     void init(const QString &label, const QString &url, const QString &fgColor, const QString &bgColor);
+    void setStyles( const QString &nStyle, const QString &nLink, const QString &style, const QString &link );
     
 protected:
     void enterEvent(QEvent *ev) override;

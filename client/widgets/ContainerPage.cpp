@@ -37,6 +37,9 @@ ContainerPage::~ContainerPage()
 
 void ContainerPage::init()
 {
+    static const QString style = "QLabel { padding: 6px 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; background-color: %1; color: #ffffff; border: none; text-decoration: none solid; }";
+    static const QString link = "<a href=\"#mainAction\" style=\"background-color: %1; color: #ffffff; text-decoration: none solid;\">Allkirjasta ID-Kaardiga</a>";
+    
     QFont semiBold("OpenSans-Semibold", 13);
 #ifdef Q_OS_MAC
     semiBold.setWeight(QFont::DemiBold);
@@ -47,7 +50,7 @@ void ContainerPage::init()
     ui->changeLocation->init("Muuda", "#container-location", "#006eb5", "#ffffff");
     ui->changeLocation->setFont(regular);
     ui->cancel->init("Katkesta", "#cancel", "#c53e3e", "#f7f7f7");
-    ui->mainAction->init("Allkirjasta ID-Kaardiga", "#mainAction", "#f7f7f7", "#6edc6c");
+    ui->mainAction->setStyles(style.arg("#6edc6c"), link.arg("#6edc6c"), style.arg("#53c964"), link.arg("#53c964"));
 }
 
 void ContainerPage::hideRightPane()

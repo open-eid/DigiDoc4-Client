@@ -17,7 +17,7 @@
  *
  */
 
- #include "ItemList.h"
+#include "ItemList.h"
 #include "ui_ItemList.h"
 
 #include <vector>

@@ -35,6 +35,13 @@ void LabelButton::init( const QString &label, const QString &url, const QString 
     hoverLink = linkTemplate.arg(fgColor, bgColor, label, url);
 }
 
+void LabelButton::setStyles( const QString &nStyle, const QString &nLink, const QString &hStyle, const QString &hLink )
+{
+    normalStyle = nStyle;
+    normalLink = nLink;
+    hoverStyle = hStyle;
+    hoverLink = hLink;
+}
 
 void LabelButton::enterEvent(QEvent *ev)
 {
