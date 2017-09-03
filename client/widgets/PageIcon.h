@@ -49,8 +49,8 @@ signals:
 	void activated( PageIcon *const );
 
 protected:
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-    virtual void paintEvent(QPaintEvent *ev);
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *ev) override;
 
 private:
     Ui::PageIcon *ui;

@@ -57,7 +57,8 @@ private:
     };
 
     void navigateToPage( Pages page );
-
+    void onAction( const QString &action );
+    
     Ui::MainWindow *ui;
 
    	QButtonGroup *buttonGroup = nullptr;

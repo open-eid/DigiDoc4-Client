@@ -40,6 +40,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	QSigner.cpp
 	widgets/CardInfo.cpp
 	widgets/ContainerPage.cpp
+	widgets/FadeInNotification.cpp
 	widgets/ItemList.cpp
 	widgets/LabelButton.cpp
 	widgets/PageIcon.cpp

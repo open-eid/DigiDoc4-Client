@@ -17,33 +17,22 @@
  *
  */
 
- #ifndef CONTAINERPAGE_H
-#define CONTAINERPAGE_H
+#include <QLabel>
 
-#include <QWidget>
-
-namespace Ui {
-class ContainerPage;
-}
-
-class ContainerPage : public QWidget
+// A label that fades in on the parent, shows a notification and then fades out.
+class FadeInNotification : public QLabel
 {
     Q_OBJECT
 
 public:
-    explicit ContainerPage(QWidget *parent = 0);
-    ~ContainerPage();
+    explicit FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor);
 
-    void hideRightPane();
-    void showRightPane();
-
-signals:
-	void action( const QString &action );
+    void start(int fadeInTime, int displayTime, int fadeOutTime);
 
 private:
-    void init();
+    void fadeOut();
 
-    Ui::ContainerPage *ui;
+    QString bgColor;
+    QString fgColor;
+    int fadeOutTime;
 };
-
-#endif // CONTAINERPAGE_H

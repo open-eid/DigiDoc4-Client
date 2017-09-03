@@ -19,6 +19,7 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "widgets/FadeInNotification.h"
 
 #include <QDebug>
 #include <QFontDatabase>
@@ -34,10 +35,13 @@ MainWindow::MainWindow(QWidget *parent) :
     qDebug() << "Set fonts";
     QFont openSansReg13("OpenSans-Regular", 13);
     QFont openSansReg14("OpenSans-Regular", 14);
-    QFont openSansSBold14("OpenSans-SemiBold", 14);
     QFont openSansReg16("OpenSans-Regular", 16);
     QFont openSansReg20("OpenSans-Regular", 20);
-
+    QFont openSansSBold14("OpenSans-SemiBold", 14);
+#ifdef Q_OS_MAC
+    openSansSBold14.setWeight(QFont::DemiBold);
+#endif
+    
     ui->signature->init( "ALLKIRI", PageIcon::Style { openSansSBold14, "/images/sign_dark_38x38.png", "#ffffff", "#998B66" },
         PageIcon::Style { openSansReg14, "/images/sign_light_38x38.png", "#023664", "#ffffff" }, true );
     ui->crypto->init( "KRÜPTO", PageIcon::Style { openSansSBold14, "/images/crypto_dark_38x38.png", "#ffffff", "#998B66" },
@@ -63,9 +67,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->help->setFont(openSansReg13);
     ui->settings->setFont(openSansReg13);
 
+    ui->signContainerPage->hideRightPane();
+
     connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
     connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
+    connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onAction );
 }
 
 MainWindow::~MainWindow()
@@ -111,4 +118,14 @@ void MainWindow::buttonClicked( int button )
 void MainWindow::navigateToPage( Pages page )
 {
     ui->startScreen->setCurrentIndex(page);
+}
+
+void MainWindow::onAction( const QString &action )
+{
+    if( "#mainAction" == action ) {
+        ui->signContainerPage->showRightPane();
+
+        FadeInNotification* notification = new FadeInNotification(this, "#ffffff", "#53c964");
+        notification->start(750, 1500, 600);
+    }
 }

@@ -27,7 +27,7 @@ class LabelButton : public QLabel
 
 public:
     explicit LabelButton(QWidget *parent = nullptr);
-    void init(const QString &label, const QString &anchor, const QString &fgColor, const QString &bgColor);
+    void init(const QString &label, const QString &url, const QString &fgColor, const QString &bgColor);
     
 protected:
     void enterEvent(QEvent *ev) override;

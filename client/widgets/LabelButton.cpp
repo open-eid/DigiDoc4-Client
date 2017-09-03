@@ -19,20 +19,20 @@
 
 #include "LabelButton.h"
 
-const QString LabelButton::styleTemplate("QLabel { background-color: %1; color: %2; text-decoration: none solid; }");
-const QString LabelButton::linkTemplate("<a href=\"#%4\" style=\"background-color: %1; color: %2; text-decoration: none solid;\">%3</a>");
+const QString LabelButton::styleTemplate("QLabel { background-color: %1; color: %2; border-radius: 3px; border: none; text-decoration: none solid; }");
+const QString LabelButton::linkTemplate("<a href=\"%4\" style=\"background-color: %1; color: %2; text-decoration: none solid;\">%3</a>");
 
 LabelButton::LabelButton(QWidget *parent)
 : QLabel(parent)
 {
 }
 
-void LabelButton::init( const QString &label, const QString &anchor, const QString &fgColor, const QString &bgColor )
+void LabelButton::init( const QString &label, const QString &url, const QString &fgColor, const QString &bgColor )
 {
     normalStyle = styleTemplate.arg(bgColor, fgColor);
-    normalLink = linkTemplate.arg(bgColor, fgColor, label, anchor);
+    normalLink = linkTemplate.arg(bgColor, fgColor, label, url);
     hoverStyle = styleTemplate.arg(fgColor, bgColor);
-    hoverLink = linkTemplate.arg(fgColor, bgColor, label, anchor);
+    hoverLink = linkTemplate.arg(fgColor, bgColor, label, url);
 }
 
 
