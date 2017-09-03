@@ -17,24 +17,34 @@
  *
  */
 
- #include "LabelButton.h"
- 
- LabelButton::LabelButton(QWidget *parent)
+#include "LabelButton.h"
+
+const QString LabelButton::styleTemplate("QLabel { background-color: %1; color: %2; text-decoration: none solid; }");
+const QString LabelButton::linkTemplate("<a href=\"#%4\" style=\"background-color: %1; color: %2; text-decoration: none solid;\">%3</a>");
+
+LabelButton::LabelButton(QWidget *parent)
 : QLabel(parent)
 {
 }
 
+void LabelButton::init( const QString &label, const QString &anchor, const QString &fgColor, const QString &bgColor )
+{
+    normalStyle = styleTemplate.arg(bgColor, fgColor);
+    normalLink = linkTemplate.arg(bgColor, fgColor, label, anchor);
+    hoverStyle = styleTemplate.arg(fgColor, bgColor);
+    hoverLink = linkTemplate.arg(fgColor, bgColor, label, anchor);
+}
+
+
 void LabelButton::enterEvent(QEvent *ev)
 {
-    label = text();
-    style = styleSheet();
-    setStyleSheet("QLabel { background-color: #006eb5; color: #ffffff; text-decoration: none solid rgb(255, 255, 255); }");
-    setText("<a href=\"#add-files\" style=\"background-color: #006eb5; color: #ffffff; text-decoration: none solid rgb(255, 255, 255);\">+ Lisa veel faile</a>");
+    setStyleSheet(hoverStyle);
+    setText(hoverLink);
 }
 
 void LabelButton::leaveEvent(QEvent *ev)
 {
-    setStyleSheet(style);
-    setText(label);
+    setStyleSheet(normalStyle);
+    setText(normalLink);
 }
  
