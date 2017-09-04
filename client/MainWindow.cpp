@@ -19,28 +19,22 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "Styles.h"
 #include "widgets/FadeInNotification.h"
 
 #include <QDebug>
-#include <QFontDatabase>
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow)
 {
-    QFontDatabase::addApplicationFont(":/fonts/OpenSans-Regular.ttf");
-    QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiBold.ttf");
+    QFont openSansReg13 = Styles::instance().font(Styles::OpenSansRegular, 13);
+    QFont openSansReg14 = Styles::instance().font(Styles::OpenSansRegular, 14);
+    QFont openSansReg16 = Styles::instance().font(Styles::OpenSansRegular, 16);
+    QFont openSansReg20 = Styles::instance().font(Styles::OpenSansRegular, 20);
+    QFont openSansSBold14 = Styles::instance().font(Styles::OpenSansSemiBold, 14);
 
     ui->setupUi(this);
-    qDebug() << "Set fonts";
-    QFont openSansReg13("OpenSans-Regular", 13);
-    QFont openSansReg14("OpenSans-Regular", 14);
-    QFont openSansReg16("OpenSans-Regular", 16);
-    QFont openSansReg20("OpenSans-Regular", 20);
-    QFont openSansSBold14("OpenSans-SemiBold", 14);
-#ifdef Q_OS_MAC
-    openSansSBold14.setWeight(QFont::DemiBold);
-#endif
     
     ui->signature->init( "ALLKIRI", PageIcon::Style { openSansSBold14, "/images/sign_dark_38x38.png", "#ffffff", "#998B66" },
         PageIcon::Style { openSansReg14, "/images/sign_light_38x38.png", "#023664", "#ffffff" }, true );

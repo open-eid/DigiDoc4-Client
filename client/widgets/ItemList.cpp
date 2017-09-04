@@ -19,6 +19,7 @@
 
 #include "ItemList.h"
 #include "ui_ItemList.h"
+#include "Styles.h"
 
 #include <vector>
 
@@ -28,12 +29,8 @@ ItemList::ItemList(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->add->init("+ Lisa veel faile", "#add-file", "#006eb5", "#ffffff");
-    QFont semiBold("OpenSans-Semibold", 14);
-    #ifdef Q_OS_MAC
-        semiBold.setWeight(QFont::DemiBold);
-    #endif
-    ui->listHeader->setFont(semiBold);
-    ui->add->setFont(QFont("OpenSans-Regular", 13));
+    ui->listHeader->setFont( Styles::instance().font(Styles::OpenSansSemiBold, 14));
+    ui->add->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
 
     connect(ui->add, &QLabel::linkActivated, this, &ItemList::add);
 }

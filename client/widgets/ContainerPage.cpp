@@ -17,8 +17,9 @@
  *
  */
 
- #include "ContainerPage.h"
+#include "ContainerPage.h"
 #include "ui_ContainerPage.h"
+#include "Styles.h"
 
 ContainerPage::ContainerPage(QWidget *parent) :
     QWidget(parent),
@@ -44,7 +45,7 @@ void ContainerPage::init()
 #ifdef Q_OS_MAC
     semiBold.setWeight(QFont::DemiBold);
 #endif
-    QFont regular(QFont("OpenSans-Regular", 13));
+    QFont regular = Styles::instance().font(Styles::OpenSansRegular, 13);
     ui->container->setFont(semiBold);
     ui->containerFile->setFont(regular);
     ui->changeLocation->init("Muuda", "#container-location", "#006eb5", "#ffffff");
