@@ -45,7 +45,7 @@ void ItemList::add(const QString &anchor)
     QWidget* item = new QWidget;
     item->setMinimumSize(460, 40);
     item->setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
-    item->show();
     ui->itemLayout->insertWidget(items.size(), item);
+    item->show();
     items.push_back(item);
 }

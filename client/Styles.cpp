@@ -21,6 +21,12 @@
 
 #include <QFontDatabase>
 
+#ifdef Q_OS_MAC
+   #define FONT_SIZE_DECREASE 0
+#else
+   #define FONT_SIZE_DECREASE 4 // https://forum.qt.io/topic/26663/different-os-s-different-font-sizes/3
+#endif
+
 class StylesPrivate
 {
 public:
@@ -33,7 +39,7 @@ public:
         semiBold = QFontDatabase::applicationFontFamilies(idSemiBold).at(0);
     };
     QFont font(Styles::Font font, int size) {
-        QFont f((font == Styles::OpenSansRegular ? regular : semiBold), size);
+        QFont f((font == Styles::OpenSansRegular ? regular : semiBold), size - FONT_SIZE_DECREASE);
 #ifdef Q_OS_MAC
         f.setWeight(QFont::DemiBold);
 #endif
