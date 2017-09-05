@@ -14,5 +14,6 @@
         <file>settings_24x24.png</file>
         <file>sign_dark_38x38.png</file>
         <file>sign_light_38x38.png</file>
+        <file>accordion.svg</file>
     </qresource>
 </RCC>

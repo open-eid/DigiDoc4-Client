@@ -21,6 +21,7 @@
 #define MAINWINDOW_H
 
 #include "widgets/PageIcon.h"
+#include "widgets/AccordionTitle.h"
 
 #include <QWidget>
 #include <QButtonGroup>
@@ -53,7 +54,7 @@ private:
         SignDetails,
         CryptoIntro,
         CryptoDetails,
-        MyEid
+        MyEid = 3
     };
 
     void navigateToPage( Pages page );

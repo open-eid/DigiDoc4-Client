@@ -917,6 +917,9 @@ text-align: center;</string>
    <class>InfoStack</class>
    <extends>QWidget</extends>
    <header>widgets/InfoStack.h</header>
+   <class>Accordion</class>
+   <extends>QWidget</extends>
+   <header>widgets/Accordion.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

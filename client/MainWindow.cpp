@@ -67,7 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
     connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onAction );
 
-
     ui->infoStack->update(
                 "MARI",
                 "MAASIKAS",
@@ -78,6 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 "Kontrolli sertifikaate"
                         );
 
+    ui->accordion->init();
 }
 
 MainWindow::~MainWindow()
