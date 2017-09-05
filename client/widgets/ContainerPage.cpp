@@ -41,10 +41,7 @@ void ContainerPage::init()
     static const QString style = "QLabel { padding: 6px 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; background-color: %1; color: #ffffff; border: none; text-decoration: none solid; }";
     static const QString link = "<a href=\"#mainAction\" style=\"background-color: %1; color: #ffffff; text-decoration: none solid;\">Allkirjasta ID-Kaardiga</a>";
     
-    QFont semiBold("OpenSans-Semibold", 13);
-#ifdef Q_OS_MAC
-    semiBold.setWeight(QFont::DemiBold);
-#endif
+    QFont semiBold = Styles::instance().font(Styles::OpenSansSemiBold, 13);
     QFont regular = Styles::instance().font(Styles::OpenSansRegular, 13);
     ui->container->setFont(semiBold);
     ui->containerFile->setFont(regular);
