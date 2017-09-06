@@ -18,6 +18,7 @@
  */
 
 #include "FadeInNotification.h"
+#include "Styles.h"
 
 #include <QEasingCurve>
 #include <QGraphicsOpacityEffect>
@@ -38,7 +39,7 @@ void FadeInNotification::start(int fadeInTime, int displayTime, int fadeOutTime)
     setAttribute(Qt::WA_DeleteOnClose);
     setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    setFont(QFont("OpenSans-Regular", 16));
+    setFont(Styles::instance().font(Styles::OpenSansRegular, 16));
     setMinimumSize(parentWidget()->width(), 50);
 
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);

@@ -17,30 +17,30 @@
  *
  */
 
-#include "CardInfo.h"
-#include "ui_CardInfo.h"
-#include "Styles.h"
+#pragma once
 
-CardInfo::CardInfo(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CardInfo)
-{
-    ui->setupUi(this);
-    QFont openSansReg14 = Styles::instance().font(Styles::OpenSansRegular, 14);
-    
-    ui->cardName->setFont(Styles::instance().font(Styles::OpenSansSemiBold, 14));
-    ui->cardCode->setFont(openSansReg14);
-    ui->cardStatus->setFont(openSansReg14);
-}
+#include <memory>
 
-CardInfo::~CardInfo()
-{
-    delete ui;
-}
+#include <QtCore/QtGlobal>
+#include <QFont>
 
-void CardInfo::update(const QString &name, const QString &code, const QString &status)
+class StylesPrivate;
+class Styles
 {
-    ui->cardName->setText(name);
-    ui->cardCode->setText(code);
-    ui->cardStatus->setText(status);
-}
+public:
+    enum Font {
+        OpenSansRegular,
+        OpenSansSemiBold
+    };
+
+    static Styles& instance();
+
+    QFont font(Font font, int size);
+
+private:
+    explicit Styles();
+
+    Q_DISABLE_COPY(Styles);
+
+    std::unique_ptr<StylesPrivate> d;
+};
