@@ -17,19 +17,17 @@
    </sizepolicy>
   </property>
   <property name="styleSheet">
-   <string notr="true">width: 928px;
-height: 38px;
-border-bottom: 1px solid #c8c8c8;
+   <string notr="true">border-bottom: 1px solid #c8c8c8;
 background-color: #f7f7f7;
 </string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>2</x>
-     <y>7</y>
-     <width>24</width>
-     <height>24</height>
+     <x>11</x>
+     <y>11</y>
+     <width>15</width>
+     <height>15</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -40,39 +38,38 @@ background-color: #f7f7f7;
    </property>
    <property name="minimumSize">
     <size>
-     <width>24</width>
-     <height>24</height>
+     <width>15</width>
+     <height>15</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>24</width>
-     <height>24</height>
+     <width>15</width>
+     <height>15</height>
     </size>
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-background-image: url(:/images/accordion.svg);</string>
+image: url(:/images/accordion.svg);</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>30</x>
      <y>7</y>
-     <width>251</width>
+     <width>271</width>
      <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-width: 363px;
 height: 22px;
 font-family: Open Sans;
 font-size: 14px;
