@@ -26,8 +26,15 @@ class LabelButton : public QLabel
     Q_OBJECT
 
 public:
+    enum ButtonStyle {
+        Mojo = (1 << 0),
+        DeepCerulean = (1 << 1),
+        WhiteBackground = (1 << 2)
+    };
+
     explicit LabelButton(QWidget *parent = nullptr);
-    void init(const QString &label, const QString &url, const QString &fgColor, const QString &bgColor);
+
+    void init(int style, const QString &label, const QString &url);
     void setStyles( const QString &nStyle, const QString &nLink, const QString &style, const QString &link );
     
 protected:
@@ -35,6 +42,9 @@ protected:
     void leaveEvent(QEvent *ev) override;
 
 private:
+    QString background(int style) const;
+    QString foreground(int style) const;
+    
     QString normalStyle;
     QString normalLink;
     QString hoverStyle;

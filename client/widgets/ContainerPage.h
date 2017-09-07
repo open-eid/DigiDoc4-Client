@@ -31,17 +31,28 @@ class ContainerPage : public QWidget
     Q_OBJECT
 
 public:
+    enum ContainerState {
+        UnsignedContainer,
+        UnsignedSavedContainer,
+        SignedContainer,
+
+        UnencryptedContainer,
+        EncryptedContainer,
+        DecryptedContainer
+    };
+
     explicit ContainerPage(QWidget *parent = 0);
     ~ContainerPage();
 
-    void hideRightPane();
-    void showRightPane();
+    void transition(ContainerState state);
 
 signals:
 	void action( const QString &action );
 
 private:
     void init();
+    void hideRightPane();
+    void showRightPane();
 
     Ui::ContainerPage *ui;
 };

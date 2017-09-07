@@ -19,16 +19,22 @@
 
 #include "LabelButton.h"
 
+#include "Styles.h"
+
 const QString LabelButton::styleTemplate("QLabel { background-color: %1; color: %2; border-radius: 3px; border: none; text-decoration: none solid; }");
 const QString LabelButton::linkTemplate("<a href=\"%4\" style=\"background-color: %1; color: %2; text-decoration: none solid;\">%3</a>");
 
 LabelButton::LabelButton(QWidget *parent)
 : QLabel(parent)
 {
+    setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
 }
 
-void LabelButton::init( const QString &label, const QString &url, const QString &fgColor, const QString &bgColor )
+void LabelButton::init( int style, const QString &label, const QString &url )
 {
+    QString bgColor = background(style);
+    QString fgColor = foreground(style);
+
     normalStyle = styleTemplate.arg(bgColor, fgColor);
     normalLink = linkTemplate.arg(bgColor, fgColor, label, url);
     hoverStyle = styleTemplate.arg(fgColor, bgColor);
@@ -41,6 +47,24 @@ void LabelButton::setStyles( const QString &nStyle, const QString &nLink, const 
     normalLink = nLink;
     hoverStyle = hStyle;
     hoverLink = hLink;
+}
+
+QString LabelButton::background(int style) const
+{
+    if (style & WhiteBackground) {
+        return "#ffffff";
+    } else {
+        return "#f7f7f7";
+    }
+}
+
+QString LabelButton::foreground(int style) const
+{
+    if (style & Mojo) {
+        return "#c53e3e";
+    } else {
+        return "#006eb5";        
+    }
 }
 
 void LabelButton::enterEvent(QEvent *ev)

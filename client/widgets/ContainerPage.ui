@@ -547,6 +547,122 @@ text-decoration: none solid rgb(197, 62, 62);</string>
        </spacer>
       </item>
       <item>
+       <widget class="LabelButton" name="encrypt">
+        <property name="minimumSize">
+         <size>
+          <width>98</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>98</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+font-size: 13px;
+color: #006eb5;
+text-decoration: none solid rgb(0, 110, 181);
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>Krüpteeri</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="LabelButton" name="navigateToContainer">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>160</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+font-size: 13px;
+color: #006eb5;
+text-decoration: none solid rgb(0, 110, 181);
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>Ava konteineri asukoht</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="LabelButton" name="email">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+font-size: 13px;
+color: #006eb5;
+text-decoration: none solid rgb(0, 110, 181);
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>Edasta e-mailiga</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="LabelButton" name="save">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>160</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+color: #006eb5;
+text-decoration: none solid rgb(0, 110, 181);
+text-align: center;
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>Salvesta allkirjastamata</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="LabelButton" name="mainAction">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

@@ -45,10 +45,51 @@ void ContainerPage::init()
     QFont regular = Styles::instance().font(Styles::OpenSansRegular, 13);
     ui->container->setFont(semiBold);
     ui->containerFile->setFont(regular);
-    ui->changeLocation->init("Muuda", "#container-location", "#006eb5", "#ffffff");
-    ui->changeLocation->setFont(regular);
-    ui->cancel->init("Katkesta", "#cancel", "#c53e3e", "#f7f7f7");
+    ui->changeLocation->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, "Muuda", "#container-location");
+    ui->cancel->init(LabelButton::Mojo, "Katkesta", "#cancel");
+    ui->encrypt->init(LabelButton::DeepCerulean, "Krüpteeri", "#encrypt");
+    ui->navigateToContainer->init(LabelButton::DeepCerulean, "Ava konteineri asukoht", "#navigate-cont");
+    ui->email->init(LabelButton::DeepCerulean, "Edasta e-mailiga", "#email");
+    ui->save->init(LabelButton::DeepCerulean, "Salvesta allkirjastamata", "#save");
     ui->mainAction->setStyles(style.arg("#6edc6c"), link.arg("#6edc6c"), style.arg("#53c964"), link.arg("#53c964"));
+}
+
+void ContainerPage::transition(ContainerState state)
+{
+    switch( state )
+    {
+    case UnsignedContainer:
+        hideRightPane();
+        for(LabelButton *button: {ui->cancel, ui->save })
+        {
+            button->show();
+        }
+        for(LabelButton *button: {ui->encrypt, ui->navigateToContainer, ui->email })
+        {
+            button->hide();
+        }
+        break;
+    case UnsignedSavedContainer:
+        break;
+    case SignedContainer:
+        showRightPane();
+        for(LabelButton *button: {ui->cancel, ui->save })
+        {
+            button->hide();
+        }
+        for(LabelButton *button: {ui->encrypt, ui->navigateToContainer, ui->email })
+        {
+            button->show();
+        }
+        break;
+
+    case UnencryptedContainer:
+        break;
+    case EncryptedContainer:
+        break;
+    case DecryptedContainer:
+        break;
+    }
 }
 
 void ContainerPage::hideRightPane()
