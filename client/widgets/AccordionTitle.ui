@@ -69,13 +69,11 @@ image: url(:/images/accordion.svg);</string>
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">border:none;
-height: 22px;
+    <string notr="true">border: none;
 font-family: Open Sans;
 font-size: 14px;
 color: #000000;
-font-weight: 400;
-line-height: 19px;</string>
+font-weight: 400;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>

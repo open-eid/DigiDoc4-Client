@@ -13,18 +13,20 @@ VerifyCert::~VerifyCert()
     delete ui;
 }
 
-void VerifyCert::update(bool isValid, bool isPUK, const QString &name, const QString &validUntil, const QString &change, const QString &error )
+void VerifyCert::update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML, const QString &details_HTML, const QString &error)
 {
     if(isValid)
     {
-        setStyleSheet("background-color: #ffffff;");
+        this->setStyleSheet(
+                    "border: 1px solid #afafaf;"
+                    "background-color: #ffffff;"
+                    );
         ui->OK_icon->setStyleSheet(
                     "border: none;"
                     "image: url(:/images/ok.png);"
                     );
         ui->changePIN->setStyleSheet(
-                    "width: 157px;"
-                    "height: 30px;"
+                    "border: 1px solid #4a82f3;"
                     "padding: 6px 10px;"
                     "border-radius: 3px;"
                     "background-color: #4a82f3;"
@@ -32,22 +34,20 @@ void VerifyCert::update(bool isValid, bool isPUK, const QString &name, const QSt
                     "font-size: 14px;"
                     "color: #ffffff;"
                     "font-weight: 400;"
-                    "line-height: 19px;"
                     "text-align: center;"
                     );
     }
     else
     {
-        setStyleSheet("border: 2px solid #e89c30;"
-                      "background-color: #fcf5ea;" );
+        this->setStyleSheet(
+                    "border: 2px solid #e89c30;"
+                    "background-color: #fcf5ea;" );
         ui->OK_icon->setStyleSheet(
                     "border: none;"
                     "image: url(:/images/alert.png);"
                     );
         ui->changePIN->setStyleSheet(
-                    "border: none;"
-                    "width: 157px;"
-                    "height: 30px;"
+                    "border: 1px solid #53c964;"
                     "padding: 6px 10px;"
                     "border-radius: 3px;"
                     "background-color: #53c964;"
@@ -55,7 +55,6 @@ void VerifyCert::update(bool isValid, bool isPUK, const QString &name, const QSt
                     "font-size: 14px;"
                     "color: #ffffff;"
                     "font-weight: 400;"
-                    "line-height: 19px;"
                     "text-align: center;"
                     );
     }
@@ -66,8 +65,23 @@ void VerifyCert::update(bool isValid, bool isPUK, const QString &name, const QSt
     ui->error->setText(error);
     ui->changePIN->setText(change);
 
-    ui->forgot_PIN->setVisible(!isPUK);
-    ui->details->setVisible(!isPUK);
+    if(forgot_PIN_HTML.isEmpty())
+        ui->forgot_PIN->setVisible(false);
+    else
+    {
+        ui->forgot_PIN->setVisible(true);
+        ui->forgot_PIN->setText(forgot_PIN_HTML);
+        ui->forgot_PIN->setOpenExternalLinks(true);
+    }
+
+    if(details_HTML.isEmpty())
+        ui->details->setVisible(false);
+    else
+    {
+        ui->details->setText(details_HTML);
+        ui->details->setVisible(true);
+        ui->details->setOpenExternalLinks(true);
+    }
 }
 
 // Needed to setStyleSheet() take effect.
