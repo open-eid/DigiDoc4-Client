@@ -28,7 +28,7 @@ ItemList::ItemList(QWidget *parent) :
     ui(new Ui::ItemList)
 {
     ui->setupUi(this);
-    ui->add->init("+ Lisa veel faile", "#add-file", "#006eb5", "#ffffff");
+    ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, "+ Lisa veel faile", "#add-file");
     ui->listHeader->setFont( Styles::instance().font(Styles::OpenSansSemiBold, 14));
     ui->add->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
 

@@ -61,8 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->help->setFont(openSansReg13);
     ui->settings->setFont(openSansReg13);
 
-    ui->signContainerPage->hideRightPane();
-
     connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
     connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
@@ -112,12 +110,16 @@ void MainWindow::buttonClicked( int button )
 void MainWindow::navigateToPage( Pages page )
 {
     ui->startScreen->setCurrentIndex(page);
+
+    if ( page == SignDetails) {
+        ui->signContainerPage->transition(ContainerPage::UnsignedContainer);
+    }
 }
 
 void MainWindow::onAction( const QString &action )
 {
     if( "#mainAction" == action ) {
-        ui->signContainerPage->showRightPane();
+        ui->signContainerPage->transition(ContainerPage::SignedContainer);
 
         FadeInNotification* notification = new FadeInNotification(this, "#ffffff", "#53c964");
         notification->start(750, 1500, 600);
