@@ -18,14 +18,15 @@
  */
 
 #include "LabelButton.h"
+#include <QEvent>
 
 #include "Styles.h"
 
-const QString LabelButton::styleTemplate("QLabel { background-color: %1; color: %2; border-radius: 3px; border: none; text-decoration: none solid; }");
-const QString LabelButton::linkTemplate("<a href=\"%4\" style=\"background-color: %1; color: %2; text-decoration: none solid;\">%3</a>");
+const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color: %2; border-radius: 3px; border: none; text-decoration: none solid; }" );
+const QString LabelButton::linkTemplate( "<a href=\"%4\" style=\"background-color: %1; color: %2; text-decoration: none solid;\">%3</a>" );
 
-LabelButton::LabelButton(QWidget *parent)
-: QLabel(parent)
+LabelButton::LabelButton( QWidget *parent )
+: QLabel( parent )
 {
     setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
 }
@@ -35,10 +36,10 @@ void LabelButton::init( int style, const QString &label, const QString &url )
     QString bgColor = background(style);
     QString fgColor = foreground(style);
 
-    normalStyle = styleTemplate.arg(bgColor, fgColor);
-    normalLink = linkTemplate.arg(bgColor, fgColor, label, url);
-    hoverStyle = styleTemplate.arg(fgColor, bgColor);
-    hoverLink = linkTemplate.arg(fgColor, bgColor, label, url);
+    normalStyle = styleTemplate.arg( bgColor, fgColor );
+    normalLink = linkTemplate.arg( bgColor, fgColor, label, url );
+    hoverStyle = styleTemplate.arg( fgColor, bgColor );
+    hoverLink = linkTemplate.arg( fgColor, bgColor, label, url );
     normal();
 }
 
@@ -70,19 +71,32 @@ QString LabelButton::foreground(int style) const
     }
 }
 
-void LabelButton::enterEvent(QEvent *ev)
+void LabelButton::enterEvent( QEvent *ev )
 {
-    setStyleSheet(hoverStyle);
-    setText(hoverLink);
+    setStyleSheet( hoverStyle );
+    setText( hoverLink );
 }
 
-void LabelButton::leaveEvent(QEvent *ev)
+void LabelButton::leaveEvent( QEvent *ev )
 {
     normal();
 }
 
 void LabelButton::normal()
 {
-    setStyleSheet(normalStyle);
-    setText(normalLink);
+    setStyleSheet( normalStyle );
+    setText( normalLink );
+}
+
+bool LabelButton::event( QEvent *ev )  
+{
+    switch( ev->type() )
+    {        
+        case( QEvent::MouseButtonRelease ):   // Identify Mouse press Event
+        {
+            emit theLabelClicked();
+            break;
+        }
+    }
+    return QLabel::event( ev );
 }

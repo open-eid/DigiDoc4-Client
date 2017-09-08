@@ -26,7 +26,7 @@
    <string notr="true">background-color: #fafafa;
 </string>
   </property>
-  <widget class="QFrame" name="cardPhoto">
+  <widget class="QFrame" name="cardPhotoFrame">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -150,7 +150,51 @@
     <string notr="true">background-image: url(:/images/eid_22x22.png);</string>
    </property>
   </widget>
+  <widget class="LabelButton" name="cardPhoto">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>1</y>
+     <width>32</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>32</width>
+     <height>42</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

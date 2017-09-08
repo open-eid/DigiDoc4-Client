@@ -21,16 +21,18 @@
 #include "ui_CardInfo.h"
 #include "Styles.h"
 
-CardInfo::CardInfo(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CardInfo)
+CardInfo::CardInfo( QWidget *parent ) :
+    QWidget( parent ),
+    ui( new Ui::CardInfo )
 {
-    ui->setupUi(this);
-    QFont openSansReg14 = Styles::instance().font(Styles::OpenSansRegular, 14);
+    ui->setupUi( this );
+    QFont openSansReg14 = Styles::instance().font( Styles::OpenSansRegular, 14 );
     
-    ui->cardName->setFont(Styles::instance().font(Styles::OpenSansSemiBold, 14));
-    ui->cardCode->setFont(openSansReg14);
-    ui->cardStatus->setFont(openSansReg14);
+    ui->cardName->setFont( Styles::instance().font( Styles::OpenSansSemiBold, 14) );
+    ui->cardCode->setFont( openSansReg14 );
+    ui->cardStatus->setFont( openSansReg14 );
+
+    connect( ui->cardPhoto, SIGNAL(theLabelClicked()), SLOT(thePhotoLabelHasBeenClicked()) );
 }
 
 CardInfo::~CardInfo()
@@ -38,9 +40,29 @@ CardInfo::~CardInfo()
     delete ui;
 }
 
-void CardInfo::update(const QString &name, const QString &code, const QString &status)
+void CardInfo::update( const QString &name, const QString &code, const QString &status )
 {
-    ui->cardName->setText(name);
-    ui->cardCode->setText(code);
-    ui->cardStatus->setText(status);
+    ui->cardName->setText( name );
+    ui->cardCode->setText( code );
+    ui->cardStatus->setText( status );
+}
+
+short CardInfo::loadPicture( const QByteArray& buffer )
+{
+	if( buffer.isEmpty() )
+		return 1;
+
+	QPixmap pix;
+	if( !pix.loadFromData( buffer ) )
+		return 1;
+
+    ui->cardPhoto->setProperty( "PICTURE", pix );
+	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
+	return 0;
+}
+
+void CardInfo::thePhotoLabelHasBeenClicked()
+{
+     if ( this->sender()->objectName() == "cardPhoto" )
+        emit thePhotoLabelClicked();
 }

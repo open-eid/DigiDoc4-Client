@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QEstEidUtil
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,36 +17,30 @@
  *
  */
 
-#ifndef CARDINFO_H
-#define CARDINFO_H
+#pragma once
 
-#include <QFont>
-#include <QWidget>
+#include <QtCore/QXmlStreamReader>
 
-namespace Ui {
-class CardInfo;
-}
+template<class Key, class T> class QHash;
+template<class Key, class T> class QMultiHash;
+template<class A, class B> struct QPair;
+typedef QPair<QString,bool> Forward;
+typedef QMultiHash<QString,Forward> Emails;
+typedef QHash<QString,QString> MobileStatus;
 
-class CardInfo : public QWidget
+class XmlReader: public QXmlStreamReader
 {
-    Q_OBJECT
-
 public:
-    explicit CardInfo( QWidget *parent = 0 );
-    ~CardInfo();
+	XmlReader( const QByteArray &data );
 
-    void fonts( const QFont &regular, const QFont &semiBold );
-    void update( const QString &name, const QString &code, const QString &status );
-    short loadPicture( const QByteArray& buffer );
+	Emails readEmailStatus( QString &fault );
+	MobileStatus readMobileStatus( int &faultcode );
 
-signals:
-    void thePhotoLabelClicked();
-
-private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked();
+	static QString emailErr( quint8 code );
+	static QString mobileErr( quint8 code );
+	static QString mobileStatus( const QString &status );
 
 private:
-    Ui::CardInfo *ui;
+	Emails readEmailAddresses();
+	Forward readForwards();
 };
-
-#endif // CARDINFO_H
