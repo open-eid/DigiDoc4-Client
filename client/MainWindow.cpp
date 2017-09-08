@@ -66,6 +66,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
     connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onAction );
+
+
+    ui->infoStack->update(
+                "MARI",
+                "MAASIKAS",
+                "48405051234",
+                "EESTI",
+                "IK1234567",
+                "<span style='color: #37a447'>Kehtiv</span> kuni 10.10.2019",
+                "Kontrolli sertifikaate"
+                        );
+
 }
 
 MainWindow::~MainWindow()

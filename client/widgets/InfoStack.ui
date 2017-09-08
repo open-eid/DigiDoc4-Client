@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>InfoStack</class>
+ <widget class="QWidget" name="InfoStack">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>876</width>
+    <height>150</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>150</height>
+   </size>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">border: none;
+background-color: white;</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="leftMargin">
+    <number>7</number>
+   </property>
+   <property name="topMargin">
+    <number>7</number>
+   </property>
+   <property name="rightMargin">
+    <number>12</number>
+   </property>
+   <property name="bottomMargin">
+    <number>7</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="photo" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>108</width>
+       <height>133</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid #757575;
+background-color: #bababa;
+font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 400;
+line-height: 19px;
+text-align: center;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>350</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
+     </property>
+     <widget class="QLabel" name="valueExpiryDate">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>120</y>
+        <width>200</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 600;
+</string>
+      </property>
+      <property name="text">
+       <string>valueExpiryDate</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelGivenNames">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 400;
+</string>
+      </property>
+      <property name="text">
+       <string>Eesnimed</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSerialNumber">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>100</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 400;
+</string>
+      </property>
+      <property name="text">
+       <string>Dokument</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSerialNumber">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>100</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 600;
+</string>
+      </property>
+      <property name="text">
+       <string>valueSerialNumber</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSurname">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>0</y>
+        <width>120</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 400;
+</string>
+      </property>
+      <property name="text">
+       <string>Perekonnanimi</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelCitizenship">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>50</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-size: 14px;
+color: #000000;
+font-weight: 400;
+</string>
+      </property>
+      <property name="text">
+       <string>Kodakondsus</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelPersonalCode">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 400;
+</string>
+      </property>
+      <property name="text">
+       <string>Isikukood</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valuePersonalCode">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 600;
+</string>
+      </property>
+      <property name="text">
+       <string>valuePersonalCode</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueGivenNames">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 600;
+</string>
+      </property>
+      <property name="text">
+       <string>valueGivenNames</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSurname">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>20</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 600;
+</string>
+      </property>
+      <property name="text">
+       <string>valueSurname</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueCitizenship">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>70</y>
+        <width>120</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: Open Sans;
+font-size: 14px;
+color: #000000;
+font-weight: 600;
+</string>
+      </property>
+      <property name="text">
+       <string>valueCitizenship</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="verifyCert">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>163</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+background-color: #006eb5;
+font-family: Open Sans;
+font-size: 13px;
+color: #ffffff;
+font-weight: 400;</string>
+        </property>
+        <property name="text">
+         <string>verifyCert</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>111</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
