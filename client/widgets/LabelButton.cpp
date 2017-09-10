@@ -39,6 +39,7 @@ void LabelButton::init( int style, const QString &label, const QString &url )
     normalLink = linkTemplate.arg(bgColor, fgColor, label, url);
     hoverStyle = styleTemplate.arg(fgColor, bgColor);
     hoverLink = linkTemplate.arg(fgColor, bgColor, label, url);
+    normal();
 }
 
 void LabelButton::setStyles( const QString &nStyle, const QString &nLink, const QString &hStyle, const QString &hLink )
@@ -53,6 +54,8 @@ QString LabelButton::background(int style) const
 {
     if (style & WhiteBackground) {
         return "#ffffff";
+    } else if (style & AlabasterBackground) {
+        return "#fafafa";
     } else {
         return "#f7f7f7";
     }
@@ -63,7 +66,7 @@ QString LabelButton::foreground(int style) const
     if (style & Mojo) {
         return "#c53e3e";
     } else {
-        return "#006eb5";        
+        return "#006eb5";
     }
 }
 
@@ -75,7 +78,11 @@ void LabelButton::enterEvent(QEvent *ev)
 
 void LabelButton::leaveEvent(QEvent *ev)
 {
+    normal();
+}
+
+void LabelButton::normal()
+{
     setStyleSheet(normalStyle);
     setText(normalLink);
 }
- 

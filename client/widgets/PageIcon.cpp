@@ -72,7 +72,7 @@ void PageIcon::updateSelection()
     setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(style.backColor));
 }
 
-// Custom widget must override painEvent in order to use stylesheets
+// Custom widget must override paintEvent in order to use stylesheets
 // See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
 void PageIcon::paintEvent(QPaintEvent *ev)
 {

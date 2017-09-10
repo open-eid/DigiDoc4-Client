@@ -19,6 +19,7 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "ContainerState.h"
 #include "Styles.h"
 #include "widgets/FadeInNotification.h"
 
@@ -74,19 +75,28 @@ MainWindow::~MainWindow()
 
 void MainWindow::pageSelected( PageIcon *const page )
 {
-    if( page != ui->signature ) {
+    if( page != ui->signature )
+    {
         ui->signature->select(false);
-    } else {
+    } 
+    else
+    {
         navigateToPage(SignIntro);
     }
-    if( page != ui->crypto ) {
+    if( page != ui->crypto )
+    {
         ui->crypto->select(false);
-    } else {
+    }
+    else
+    {
         navigateToPage(CryptoIntro);
     }
-    if( page != ui->myEid ) {
+    if( page != ui->myEid )
+    {
         ui->myEid->select(false);
-    } else {
+    }
+    else
+    {
         navigateToPage(MyEid);
     }
 }
@@ -111,17 +121,23 @@ void MainWindow::navigateToPage( Pages page )
 {
     ui->startScreen->setCurrentIndex(page);
 
-    if ( page == SignDetails) {
-        ui->signContainerPage->transition(ContainerPage::UnsignedContainer);
+    if ( page == SignDetails)
+    {
+        ui->signContainerPage->transition(ContainerState::UnsignedContainer);
     }
 }
 
 void MainWindow::onAction( const QString &action )
 {
-    if( "#mainAction" == action ) {
-        ui->signContainerPage->transition(ContainerPage::SignedContainer);
+    if( "#mainAction" == action )
+    {
+        ui->signContainerPage->transition(ContainerState::SignedContainer);
 
         FadeInNotification* notification = new FadeInNotification(this, "#ffffff", "#53c964");
         notification->start(750, 1500, 600);
+    }
+    else if( action == "#remove" )
+    {
+
     }
 }

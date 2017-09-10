@@ -17,44 +17,22 @@
  *
  */
 
-#ifndef ITEMLIST_H
-#define ITEMLIST_H
+#pragma once 
 
 #include "ContainerState.h"
-#include "widgets/ContainerItem.h"
 
 #include <QWidget>
 
-namespace Ui {
-class ItemList;
-}
-
-class ItemList : public QWidget
+class ContainerItem : public QWidget
 {
     Q_OBJECT
 
 public:
-    enum ItemType {
-        File,
-        Signature,
-        Address
-    };
+    explicit ContainerItem(QWidget *parent = 0);
+    ~ContainerItem();
 
-    explicit ItemList(QWidget *parent = 0);
-    virtual ~ItemList();
+    virtual void stateChange(ContainerState state) = 0;
 
-    void init(ItemType itemType, const QString &header);
-    void add(const QString &anchor);
-    void stateChange(ContainerState state);
-
-private:
-    QString addLabel() const;
-    QString anchor() const;
-
-    Ui::ItemList* ui;
-    ContainerState state;
-    ItemType itemType;
-    std::vector<ContainerItem*> items;
+protected:
+    void paintEvent(QPaintEvent *ev) override;
 };
-
-#endif // ITEMLIST_H

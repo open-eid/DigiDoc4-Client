@@ -17,44 +17,24 @@
  *
  */
 
-#ifndef ITEMLIST_H
-#define ITEMLIST_H
+#include "ContainerItem.h"
 
-#include "ContainerState.h"
-#include "widgets/ContainerItem.h"
+#include <QPainter>
+#include <QStyleOption>
 
-#include <QWidget>
-
-namespace Ui {
-class ItemList;
+ContainerItem::ContainerItem(QWidget *parent) :
+    QWidget(parent)
+{
 }
 
-class ItemList : public QWidget
+ContainerItem::~ContainerItem() {}
+
+// Custom widget must override paintEvent in order to use stylesheets
+// See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
+void ContainerItem::paintEvent(QPaintEvent *ev)
 {
-    Q_OBJECT
-
-public:
-    enum ItemType {
-        File,
-        Signature,
-        Address
-    };
-
-    explicit ItemList(QWidget *parent = 0);
-    virtual ~ItemList();
-
-    void init(ItemType itemType, const QString &header);
-    void add(const QString &anchor);
-    void stateChange(ContainerState state);
-
-private:
-    QString addLabel() const;
-    QString anchor() const;
-
-    Ui::ItemList* ui;
-    ContainerState state;
-    ItemType itemType;
-    std::vector<ContainerItem*> items;
-};
-
-#endif // ITEMLIST_H
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

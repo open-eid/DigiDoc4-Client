@@ -20,6 +20,8 @@
 #include "ItemList.h"
 #include "ui_ItemList.h"
 #include "Styles.h"
+#include "widgets/FileItem.h"
+#include "widgets/SignatureItem.h"
 
 #include <vector>
 
@@ -28,9 +30,6 @@ ItemList::ItemList(QWidget *parent) :
     ui(new Ui::ItemList)
 {
     ui->setupUi(this);
-    ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, "+ Lisa veel faile", "#add-file");
-    ui->listHeader->setFont( Styles::instance().font(Styles::OpenSansSemiBold, 14));
-    ui->add->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
 
     connect(ui->add, &QLabel::linkActivated, this, &ItemList::add);
 }
@@ -42,10 +41,70 @@ ItemList::~ItemList()
 
 void ItemList::add(const QString &anchor)
 {
-    QWidget* item = new QWidget;
-    item->setMinimumSize(460, 40);
-    item->setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
+    ContainerItem* item;
+    if (itemType == File)
+    {
+        item = new FileItem(state);
+    } 
+    else
+    {
+        item = new SignatureItem(state);
+    }
     ui->itemLayout->insertWidget(items.size(), item);
     item->show();
     items.push_back(item);
+}
+
+QString ItemList::addLabel() const
+{
+    switch(itemType)
+    {
+    case File: return "+ Lisa veel faile";
+    case Address: return "+ Lisa adressaat";
+    default: return "";
+    }
+}
+
+QString ItemList::anchor() const
+{
+    switch(itemType)
+    {
+    case File: return "#add-file";
+    case Address: return "#add-address";
+    default: return "";
+    }
+}
+
+void ItemList::init( ItemType item, const QString &header)
+{
+    itemType = item;
+    ui->listHeader->setText(header);
+    ui->listHeader->setFont( Styles::instance().font(Styles::OpenSansSemiBold, 14));
+    if (item == Signature)
+    {
+        ui->add->hide();
+    } 
+    else
+    {
+        ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), anchor());
+        ui->add->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
+    }
+}
+
+void ItemList::stateChange(ContainerState state)
+{
+    this->state = state;
+    if (state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer) )
+    {
+        ui->add->show();
+    }
+    else
+    {
+        ui->add->hide();
+    }
+
+    for(auto item: items)
+    {
+        item->stateChange(state);
+    }
 }
