@@ -31,10 +31,10 @@ class FileItem : public ContainerItem
     Q_OBJECT
 
 public:
-    explicit FileItem(ContainerState state, QWidget *parent = 0);
+    explicit FileItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
     ~FileItem();
 
-    void stateChange(ContainerState state) override;
+    void stateChange(ria::qdigidoc4::ContainerState state) override;
 
 private:
     Ui::FileItem *ui;

@@ -35,11 +35,12 @@ public:
 
     explicit LabelButton(QWidget *parent = nullptr);
 
-    void init( int style, const QString &label, const QString &url );
+    void init( int code );
+    void init( int style, const QString &label, int code );
     void setStyles( const QString &nStyle, const QString &nLink, const QString &style, const QString &link );
 
 signals:
-    void theLabelClicked();       // Signal to emit 
+    void clicked(int code);
 
 protected:
     void enterEvent( QEvent *ev ) override;
@@ -50,7 +51,8 @@ private:
     void normal();
     QString background(int style) const;
     QString foreground(int style) const;
-    
+
+    int code;
     QString normalStyle;
     QString normalLink;
     QString hoverStyle;

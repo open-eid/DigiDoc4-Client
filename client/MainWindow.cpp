@@ -17,22 +17,23 @@
  *
  */
 
-#include "Application.h"
 #include "MainWindow.h"
+#include "ui_MainWindow.h"
+#include "Application.h"
+#include "common_enums.h"
 #include "QSigner.h"
 #include "sslConnect.h"
+#include "Styles.h"
 #include "XmlReader.h"
+#include "widgets/FadeInNotification.h"
 
 #include <common4/TokenData4.h>
 #include <common/SslCertificate.h>
 
-#include "ui_MainWindow.h"
-#include "ContainerState.h"
-#include "Styles.h"
-#include "widgets/FadeInNotification.h"
-
 #include <QDebug>
 #include <QtNetwork/QSslConfiguration>
+
+using namespace ria::qdigidoc4;
 
 MainWindow::MainWindow( QWidget *parent ) :
     QWidget( parent ),
@@ -75,7 +76,7 @@ MainWindow::MainWindow( QWidget *parent ) :
     connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
     connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onAction );
-    connect( ui->cardInfo, SIGNAL( thePhotoLabelClicked() ), this, SLOT( LoadCardPhoto() ) );   // To load photo
+    connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
     connect( qApp->signer(), SIGNAL( signDataChanged( TokenData ) ), SLOT( showCardStatus() ) );  // To refresh ID card info
 
     smartcard = new QSmartCard( this );
@@ -155,22 +156,22 @@ void MainWindow::navigateToPage( Pages page )
     }
 }
 
-void MainWindow::onAction( const QString &action )
+void MainWindow::onAction( int action )
 {
-    if( "#mainAction" == action )
+    if( action == SignatureAdd )
     {
         ui->signContainerPage->transition(ContainerState::SignedContainer);
 
         FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
         notification->start( 750, 1500, 600 );
     }
-    else if( action == "#remove" )
+    else if( action == FileRemove )
     {
 
     }
 }
 
-void MainWindow::LoadCardPhoto ()
+void MainWindow::loadCardPhoto ()
 {
     loadPicture();
 }

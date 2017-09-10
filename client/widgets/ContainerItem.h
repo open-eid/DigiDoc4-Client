@@ -19,7 +19,7 @@
 
 #pragma once 
 
-#include "ContainerState.h"
+#include "common_enums.h"
 
 #include <QWidget>
 
@@ -31,7 +31,7 @@ public:
     explicit ContainerItem(QWidget *parent = 0);
     ~ContainerItem();
 
-    virtual void stateChange(ContainerState state) = 0;
+    virtual void stateChange(ria::qdigidoc4::ContainerState state) = 0;
 
 protected:
     void paintEvent(QPaintEvent *ev) override;

@@ -25,13 +25,15 @@
 
 #include <vector>
 
+using namespace ria::qdigidoc4;
+
 ItemList::ItemList(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ItemList)
 {
     ui->setupUi(this);
 
-    connect(ui->add, &QLabel::linkActivated, this, &ItemList::add);
+    connect(ui->add, &LabelButton::clicked, this, &ItemList::add);
 }
 
 ItemList::~ItemList()
@@ -39,14 +41,14 @@ ItemList::~ItemList()
     delete ui;
 }
 
-void ItemList::add(const QString &anchor)
+void ItemList::add(int code)
 {
     ContainerItem* item;
-    if (itemType == File)
+    if (code == FileAdd)
     {
         item = new FileItem(state);
     } 
-    else
+    else if (code == SignatureAdd)
     {
         item = new SignatureItem(state);
     }
@@ -86,7 +88,7 @@ void ItemList::init( ItemType item, const QString &header)
     } 
     else
     {
-        ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), anchor());
+        ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), itemType == File ? FileAdd : AddressAdd);
         ui->add->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
     }
 }

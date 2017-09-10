@@ -43,7 +43,7 @@ signals:
     void thePhotoLabelClicked();
 
 private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked();
+    void thePhotoLabelHasBeenClicked( int code );
 
 private:
     Ui::CardInfo *ui;
