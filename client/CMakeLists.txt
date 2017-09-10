@@ -15,7 +15,7 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui widgets/CardInfo.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/ItemList.ui widgets/PageIcon.ui widgets/SignatureItem.ui )
+qt5_wrap_ui( SOURCES MainWindow.ui widgets/CardInfo.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/PageIcon.ui widgets/SignatureItem.ui )
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
@@ -45,6 +45,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/FadeInNotification.cpp
 	widgets/FileItem.cpp
 	widgets/ItemList.cpp
+	widgets/InfoStack.cpp
 	widgets/LabelButton.cpp
 	widgets/PageIcon.cpp
 	widgets/SignatureItem.cpp
