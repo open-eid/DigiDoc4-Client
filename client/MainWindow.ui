@@ -825,6 +825,7 @@ text-align: center;</string>
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="cryptoContainerPage"/>
        <widget class="QWidget" name="eidPage">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">

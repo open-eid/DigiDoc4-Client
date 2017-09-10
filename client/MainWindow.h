@@ -53,7 +53,7 @@ private:
         SignDetails,
         CryptoIntro,
         CryptoDetails,
-        MyEid = 3
+        MyEid
     };
 
     void navigateToPage( Pages page );
