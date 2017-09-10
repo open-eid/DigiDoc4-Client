@@ -19,7 +19,10 @@
 
 #include "CardInfo.h"
 #include "ui_CardInfo.h"
+#include "common_enums.h"
 #include "Styles.h"
+
+using namespace ria::qdigidoc4;
 
 CardInfo::CardInfo( QWidget *parent ) :
     QWidget( parent ),
@@ -32,7 +35,8 @@ CardInfo::CardInfo( QWidget *parent ) :
     ui->cardCode->setFont( openSansReg14 );
     ui->cardStatus->setFont( openSansReg14 );
 
-    connect( ui->cardPhoto, SIGNAL(theLabelClicked()), SLOT(thePhotoLabelHasBeenClicked()) );
+    ui->cardPhoto->init( CardPhoto );
+    connect( ui->cardPhoto, &LabelButton::clicked, this, &CardInfo::thePhotoLabelHasBeenClicked );
 }
 
 CardInfo::~CardInfo()
@@ -49,20 +53,17 @@ void CardInfo::update( const QString &name, const QString &code, const QString &
 
 short CardInfo::loadPicture( const QByteArray& buffer )
 {
-	if( buffer.isEmpty() )
-		return 1;
+	if( buffer.isEmpty() ) return 1;
 
 	QPixmap pix;
-	if( !pix.loadFromData( buffer ) )
-		return 1;
+	if( !pix.loadFromData( buffer ) ) return 1;
 
     ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 	return 0;
 }
 
-void CardInfo::thePhotoLabelHasBeenClicked()
+void CardInfo::thePhotoLabelHasBeenClicked( int code )
 {
-     if ( this->sender()->objectName() == "cardPhoto" )
-        emit thePhotoLabelClicked();
+     if ( code == CardPhoto ) emit thePhotoLabelClicked();
 }

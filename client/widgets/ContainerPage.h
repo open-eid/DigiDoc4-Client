@@ -20,7 +20,7 @@
 #ifndef CONTAINERPAGE_H
 #define CONTAINERPAGE_H
 
-#include "ContainerState.h"
+#include "common_enums.h"
 #include "widgets/ItemList.h"
 
 #include <QWidget>
@@ -37,10 +37,10 @@ public:
     explicit ContainerPage(QWidget *parent = 0);
     ~ContainerPage();
 
-    void transition(ContainerState state);
+    void transition(ria::qdigidoc4::ContainerState state);
 
 signals:
-	void action( const QString &action );
+	void action( int code );
 
 private:
     void init();

@@ -44,14 +44,9 @@ private Q_SLOTS:
 	void pageSelected( PageIcon *const );
     void buttonClicked( int button );
     void showCardStatus();
-    void LoadCardPhoto ();
+    void loadCardPhoto();
 
 private:
-    enum MainActions {
-        HeadSettings,
-        HeadHelp
-	};
-
     enum Pages {
         SignIntro,
         SignDetails,
@@ -100,7 +95,7 @@ private:
 	};
 
     void navigateToPage( Pages page );
-    void onAction( const QString &action );
+    void onAction( int code );
     void loadPicture();
     bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
     void showWarning( const QString &msg );

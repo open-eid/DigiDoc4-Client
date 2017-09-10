@@ -22,14 +22,14 @@
 #include "Styles.h"
 #include "widgets/ContainerItem.h"
 
+using namespace ria::qdigidoc4;
+
 ContainerPage::ContainerPage(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ContainerPage)
 {
     ui->setupUi(this);
     init();
-
-    connect( ui->mainAction, &LabelButton::linkActivated, this, &ContainerPage::action );
 }
 
 ContainerPage::~ContainerPage()
@@ -48,13 +48,15 @@ void ContainerPage::init()
     QFont regular = Styles::instance().font(Styles::OpenSansRegular, 13);
     ui->container->setFont(semiBold);
     ui->containerFile->setFont(regular);
-    ui->changeLocation->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, "Muuda", "#container-location");
-    ui->cancel->init(LabelButton::Mojo, "Katkesta", "#cancel");
-    ui->encrypt->init(LabelButton::DeepCerulean, "Krüpteeri", "#encrypt");
-    ui->navigateToContainer->init(LabelButton::DeepCerulean, "Ava konteineri asukoht", "#navigate-cont");
-    ui->email->init(LabelButton::DeepCerulean, "Edasta e-mailiga", "#email");
-    ui->save->init(LabelButton::DeepCerulean, "Salvesta allkirjastamata", "#save");
+    ui->changeLocation->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, "Muuda", Actions::ContainerLocation);
+    ui->cancel->init(LabelButton::Mojo, "Katkesta", Actions::ContainerCancel);
+    ui->encrypt->init(LabelButton::DeepCerulean, "Krüpteeri", Actions::ContainerEncrypt);
+    ui->navigateToContainer->init(LabelButton::DeepCerulean, "Ava konteineri asukoht", Actions::ContainerNavigate);
+    ui->email->init(LabelButton::DeepCerulean, "Edasta e-mailiga", Actions::ContainerEmail);
+    ui->save->init(LabelButton::DeepCerulean, "Salvesta allkirjastamata", Actions::ContainerSave);
     ui->mainAction->setStyles(style.arg("#6edc6c"), link.arg("#6edc6c"), style.arg("#53c964"), link.arg("#53c964"));
+
+    connect( ui->mainAction, &LabelButton::clicked, this, &ContainerPage::action );
 }
 
 void ContainerPage::transition(ContainerState state)
@@ -67,7 +69,8 @@ void ContainerPage::transition(ContainerState state)
     case UnsignedContainer:
         hideRightPane();
         ui->leftPane->init(ItemList::File, "Allkirjastamiseks valitud failid");
-        for(LabelButton *button: {ui->cancel, ui->save })
+        ui->mainAction->init( SignatureAdd );
+        for(LabelButton *button: {ui->cancel, ui->save, ui->mainAction })
         {
             button->show();
         }
@@ -81,8 +84,8 @@ void ContainerPage::transition(ContainerState state)
     case SignedContainer:
         ui->leftPane->init(ItemList::File, "Kontaineri failid");
         showRightPane(ItemList::Signature, "Kontaineri allkirjad");
-        ui->rightPane->add("");
-        for(LabelButton *button: {ui->cancel, ui->save })
+        ui->rightPane->add(SignatureAdd);
+        for(LabelButton *button: {ui->cancel, ui->save, ui->mainAction })
         {
             button->hide();
         }

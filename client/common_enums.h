@@ -19,6 +19,9 @@
 
 #pragma once
 
+namespace ria {
+namespace qdigidoc4 {
+
 enum ContainerState {
     UnsignedContainer       = (1 << 0),
     UnsignedSavedContainer  = (1 << 1),
@@ -28,3 +31,28 @@ enum ContainerState {
     EncryptedContainer      = (1 << 4),
     DecryptedContainer      = (1 << 5)
 };
+
+enum Actions {
+    AddressAdd,
+
+    CardPhoto,
+
+    ContainerCancel,
+    ContainerEncrypt,
+    ContainerEmail,
+    ContainerLocation,
+    ContainerNavigate,
+    ContainerSave,
+
+    FileAdd,
+    FileRemove,
+
+    HeadSettings,
+    HeadHelp,
+
+    SignatureAdd,
+    SignatureRemove
+};
+
+}
+}

@@ -21,13 +21,15 @@
 #include "ui_FileItem.h"
 #include "Styles.h"
 
+using namespace ria::qdigidoc4;
+
 FileItem::FileItem(ContainerState state, QWidget *parent)
 : ContainerItem(parent)
 , ui(new Ui::FileItem)
 {
     ui->setupUi(this);
     ui->fileName->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
-    ui->remove->init(LabelButton::Mojo | LabelButton::AlabasterBackground, "Eemalda", "#remove-file");
+    ui->remove->init(LabelButton::Mojo | LabelButton::AlabasterBackground, "Eemalda", FileRemove);
     setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
     stateChange(state);
 }

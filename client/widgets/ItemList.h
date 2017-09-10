@@ -20,7 +20,7 @@
 #ifndef ITEMLIST_H
 #define ITEMLIST_H
 
-#include "ContainerState.h"
+#include "common_enums.h"
 #include "widgets/ContainerItem.h"
 
 #include <QWidget>
@@ -44,15 +44,15 @@ public:
     virtual ~ItemList();
 
     void init(ItemType itemType, const QString &header);
-    void add(const QString &anchor);
-    void stateChange(ContainerState state);
+    void add(int code);
+    void stateChange(ria::qdigidoc4::ContainerState state);
 
 private:
     QString addLabel() const;
     QString anchor() const;
 
     Ui::ItemList* ui;
-    ContainerState state;
+    ria::qdigidoc4::ContainerState state;
     ItemType itemType;
     std::vector<ContainerItem*> items;
 };
