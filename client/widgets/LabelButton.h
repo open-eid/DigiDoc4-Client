@@ -26,7 +26,6 @@ class LabelButton : public QLabel
     Q_OBJECT
 
 public:
-<<<<<<< HEAD
     enum ButtonStyle {
         Mojo = (1 << 0),
         DeepCerulean = (1 << 1),
@@ -36,11 +35,7 @@ public:
 
     explicit LabelButton(QWidget *parent = nullptr);
 
-    void init(int style, const QString &label, const QString &url);
-=======
-    explicit LabelButton( QWidget *parent = nullptr );
-    void init( const QString &label, const QString &url, const QString &fgColor, const QString &bgColor );
->>>>>>> Application reads/shows ID card data. Picture loading
+    void init( int style, const QString &label, const QString &url );
     void setStyles( const QString &nStyle, const QString &nLink, const QString &style, const QString &link );
 
 signals:
@@ -49,8 +44,8 @@ signals:
 protected:
     void enterEvent( QEvent *ev ) override;
     void leaveEvent( QEvent *ev ) override;
-    bool event( QEvent *ev );
-    
+    bool event( QEvent *ev ) override;
+
 private:
     void normal();
     QString background(int style) const;

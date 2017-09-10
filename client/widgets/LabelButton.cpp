@@ -90,13 +90,10 @@ void LabelButton::normal()
 
 bool LabelButton::event( QEvent *ev )  
 {
-    switch( ev->type() )
-    {        
-        case( QEvent::MouseButtonRelease ):   // Identify Mouse press Event
-        {
-            emit theLabelClicked();
-            break;
-        }
+    // Identify Mouse press Event
+    if( ev->type() == QEvent::MouseButtonRelease )
+    {
+        emit theLabelClicked();
     }
     return QLabel::event( ev );
 }

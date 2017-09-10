@@ -47,6 +47,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/AccordionTitle.cpp
 	widgets/CardInfo.cpp
 	widgets/ContainerItem.cpp
+	widgets/ContainerPage.cpp
 	widgets/FadeInNotification.cpp
 	widgets/FileItem.cpp
 	widgets/ItemList.cpp
