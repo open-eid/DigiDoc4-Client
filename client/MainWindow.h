@@ -21,6 +21,7 @@
 #define MAINWINDOW_H
 
 #include "widgets/PageIcon.h"
+#include "widgets/AccordionTitle.h"
 
 #include <QWidget>
 #include <QButtonGroup>

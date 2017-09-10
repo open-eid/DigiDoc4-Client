@@ -863,10 +863,10 @@ text-align: center;</string>
              <height>150</height>
             </size>
            </property>
-          </widget>
+           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="accordion" native="true">
+          <widget class="Accordion" name="accordion" native="true">
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <property name="spacing">
              <number>0</number>
@@ -917,6 +917,11 @@ text-align: center;</string>
    <class>InfoStack</class>
    <extends>QWidget</extends>
    <header>widgets/InfoStack.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Accordion</class>
+   <extends>QWidget</extends>
+   <header>widgets/Accordion.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
