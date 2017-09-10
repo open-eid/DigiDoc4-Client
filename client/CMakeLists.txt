@@ -15,7 +15,7 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui widgets/Accordion.ui widgets/AccordionTitle.ui widgets/CardInfo.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/NoCardInfo.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
+qt5_wrap_ui( SOURCES MainWindow.ui widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardInfo.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/NoCardInfo.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
@@ -45,12 +45,13 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	common4/TokenData4.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
+	widgets/AddressItem.cpp
 	widgets/CardInfo.cpp
-	widgets/ContainerItem.cpp
 	widgets/ContainerPage.cpp
 	widgets/FadeInNotification.cpp
 	widgets/FileItem.cpp
 	widgets/ItemList.cpp
+	widgets/ItemWidget.cpp
 	widgets/InfoStack.cpp
 	widgets/LabelButton.cpp
 	widgets/NoCardInfo.cpp

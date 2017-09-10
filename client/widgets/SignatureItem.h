@@ -1,13 +1,12 @@
-#ifndef SIGNATUREITEM_H
-#define SIGNATUREITEM_H
+#pragma once
 
-#include "widgets/ContainerItem.h"
+#include "widgets/ItemWidget.h"
 
 namespace Ui {
 class SignatureItem;
 }
 
-class SignatureItem : public ContainerItem
+class SignatureItem : public ItemWidget
 {
     Q_OBJECT
 
@@ -21,4 +20,3 @@ private:
     Ui::SignatureItem *ui;
 };
 
-#endif // SIGNATUREITEM_H

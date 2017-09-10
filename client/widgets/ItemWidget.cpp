@@ -17,21 +17,21 @@
  *
  */
 
-#include "ContainerItem.h"
+#include "ItemWidget.h"
 
 #include <QPainter>
 #include <QStyleOption>
 
-ContainerItem::ContainerItem(QWidget *parent) :
+ItemWidget::ItemWidget(QWidget *parent) :
     QWidget(parent)
 {
 }
 
-ContainerItem::~ContainerItem() {}
+ItemWidget::~ItemWidget() {}
 
 // Custom widget must override paintEvent in order to use stylesheets
 // See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
-void ContainerItem::paintEvent(QPaintEvent *ev)
+void ItemWidget::paintEvent(QPaintEvent *ev)
 {
     QStyleOption opt;
     opt.init(this);

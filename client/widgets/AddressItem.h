@@ -17,24 +17,24 @@
  *
  */
 
- #pragma once
+#pragma once
 
 #include "widgets/ItemWidget.h"
 
 namespace Ui {
-class FileItem;
+class AddressItem;
 }
 
-class FileItem : public ItemWidget
+class AddressItem : public ItemWidget
 {
     Q_OBJECT
 
 public:
-    explicit FileItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
-    ~FileItem();
+    explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
+    ~AddressItem();
 
     void stateChange(ria::qdigidoc4::ContainerState state) override;
-
+    
 private:
-    Ui::FileItem *ui;
+    Ui::AddressItem *ui;
 };

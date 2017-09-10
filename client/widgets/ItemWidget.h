@@ -23,13 +23,13 @@
 
 #include <QWidget>
 
-class ContainerItem : public QWidget
+class ItemWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ContainerItem(QWidget *parent = 0);
-    ~ContainerItem();
+    explicit ItemWidget(QWidget *parent = 0);
+    ~ItemWidget();
 
     virtual void stateChange(ria::qdigidoc4::ContainerState state) = 0;
 

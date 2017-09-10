@@ -20,6 +20,7 @@
 #include "ItemList.h"
 #include "ui_ItemList.h"
 #include "Styles.h"
+#include "widgets/AddressItem.h"
 #include "widgets/FileItem.h"
 #include "widgets/SignatureItem.h"
 
@@ -43,7 +44,7 @@ ItemList::~ItemList()
 
 void ItemList::add(int code)
 {
-    ContainerItem* item;
+    ItemWidget* item;
     if (code == FileAdd)
     {
         item = new FileItem(state);
@@ -51,6 +52,10 @@ void ItemList::add(int code)
     else if (code == SignatureAdd)
     {
         item = new SignatureItem(state);
+    }
+    else
+    {
+        item = new AddressItem(state);
     }
     ui->itemLayout->insertWidget(items.size(), item);
     item->show();

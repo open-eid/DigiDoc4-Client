@@ -75,7 +75,8 @@ MainWindow::MainWindow( QWidget *parent ) :
     connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
     connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
-    connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onAction );
+    connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
+    connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
     connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
     connect( qApp->signer(), SIGNAL( signDataChanged( TokenData ) ), SLOT( showCardStatus() ) );  // To refresh ID card info
 
@@ -150,20 +151,39 @@ void MainWindow::navigateToPage( Pages page )
 {
     ui->startScreen->setCurrentIndex(page);
 
-    if ( page == SignDetails)
+    if( page == SignDetails )
     {
         ui->signContainerPage->transition(ContainerState::UnsignedContainer);
     }
+    else if( page == CryptoDetails )
+    {
+        ui->cryptoContainerPage->transition(ContainerState::UnencryptedContainer);
+    }
 }
 
-void MainWindow::onAction( int action )
+void MainWindow::onSignAction( int action )
 {
     if( action == SignatureAdd )
     {
         ui->signContainerPage->transition(ContainerState::SignedContainer);
 
         FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
-        notification->start( 750, 1500, 600 );
+        notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+    }
+    else if( action == FileRemove )
+    {
+
+    }
+}
+
+void MainWindow::onCryptoAction( int action )
+{
+    if( action == ContainerCancel )
+    {
+        ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
+
+        FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
+        notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
     }
     else if( action == FileRemove )
     {

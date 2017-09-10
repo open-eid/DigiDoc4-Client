@@ -24,6 +24,7 @@
 #include "widgets/ItemList.h"
 
 #include <QWidget>
+#include <vector>
 
 namespace Ui {
 class ContainerPage;
@@ -44,7 +45,9 @@ signals:
 
 private:
     void init();
+    void hideButtons( std::vector<QWidget*> buttons );
     void hideRightPane();
+    void showButtons( std::vector<QWidget*> buttons );
     void showRightPane(ItemList::ItemType itemType, const QString &header);
 
     Ui::ContainerPage *ui;

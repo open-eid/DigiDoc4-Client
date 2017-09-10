@@ -21,7 +21,7 @@
 #define ITEMLIST_H
 
 #include "common_enums.h"
-#include "widgets/ContainerItem.h"
+#include "widgets/ItemWidget.h"
 
 #include <QWidget>
 
@@ -54,7 +54,7 @@ private:
     Ui::ItemList* ui;
     ria::qdigidoc4::ContainerState state;
     ItemType itemType;
-    std::vector<ContainerItem*> items;
+    std::vector<ItemWidget*> items;
 };
 
 #endif // ITEMLIST_H

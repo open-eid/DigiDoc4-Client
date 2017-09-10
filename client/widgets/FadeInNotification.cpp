@@ -32,10 +32,10 @@ FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, 
 {
 }
 
-void FadeInNotification::start(int fadeInTime, int displayTime, int fadeOutTime)
+void FadeInNotification::start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime )
 {
     this->fadeOutTime = fadeOutTime;
-    setText("Konteiner on edukalt allkirjastatud!");
+    setText(label);
     setAttribute(Qt::WA_DeleteOnClose);
     setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);

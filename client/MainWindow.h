@@ -95,7 +95,8 @@ private:
 	};
 
     void navigateToPage( Pages page );
-    void onAction( int code );
+    void onSignAction( int code );
+    void onCryptoAction( int code );
     void loadPicture();
     bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
     void showWarning( const QString &msg );

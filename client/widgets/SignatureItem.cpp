@@ -5,7 +5,7 @@
 using namespace ria::qdigidoc4;
 
 SignatureItem::SignatureItem(ContainerState state, QWidget *parent)
-: ContainerItem(parent)
+: ItemWidget(parent)
 , ui(new Ui::SignatureItem)
 {
     ui->setupUi(this);

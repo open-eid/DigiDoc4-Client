@@ -835,7 +835,7 @@ text-align: center;</string>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="cryptoContainerPage"/>
+       <widget class="ContainerPage" name="cryptoContainerPage"/>
        <widget class="QWidget" name="eidPage">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -873,7 +873,7 @@ text-align: center;</string>
              <height>150</height>
             </size>
            </property>
-           </widget>
+          </widget>
          </item>
          <item>
           <widget class="Accordion" name="accordion" native="true">
