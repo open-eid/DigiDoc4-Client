@@ -13,7 +13,7 @@ VerifyCert::~VerifyCert()
     delete ui;
 }
 
-void VerifyCert::update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML, const QString &details_HTML, const QString &error)
+void VerifyCert::update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgotPinText, const QString &detailsText, const QString &error)
 {
     if(isValid)
     {
@@ -21,7 +21,7 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
                     "border: 1px solid #afafaf;"
                     "background-color: #ffffff;"
                     );
-        ui->OK_icon->setStyleSheet(
+        ui->statusIcon->setStyleSheet(
                     "border: none;"
                     "image: url(:/images/ok.png);"
                     );
@@ -42,7 +42,7 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
         this->setStyleSheet(
                     "border: 2px solid #e89c30;"
                     "background-color: #fcf5ea;" );
-        ui->OK_icon->setStyleSheet(
+        ui->statusIcon->setStyleSheet(
                     "border: none;"
                     "image: url(:/images/alert.png);"
                     );
@@ -65,20 +65,24 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
     ui->error->setText(error);
     ui->changePIN->setText(change);
 
-    if(forgot_PIN_HTML.isEmpty())
-        ui->forgot_PIN->setVisible(false);
+    if(forgotPinText.isEmpty())
+    {
+        ui->forgotPinLink->setVisible(false);
+    }
     else
     {
-        ui->forgot_PIN->setVisible(true);
-        ui->forgot_PIN->setText(forgot_PIN_HTML);
-        ui->forgot_PIN->setOpenExternalLinks(true);
+        ui->forgotPinLink->setVisible(true);
+        ui->forgotPinLink->setText(forgotPinText);
+        ui->forgotPinLink->setOpenExternalLinks(true);
     }
 
-    if(details_HTML.isEmpty())
+    if(detailsText.isEmpty())
+    {
         ui->details->setVisible(false);
+    }
     else
     {
-        ui->details->setText(details_HTML);
+        ui->details->setText(detailsText);
         ui->details->setVisible(true);
         ui->details->setOpenExternalLinks(true);
     }

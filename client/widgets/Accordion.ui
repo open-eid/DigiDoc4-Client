@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="AccordionTitle" name="titleOther_EID" native="true">
+    <widget class="AccordionTitle" name="titleOtherEID" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -43,7 +43,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="contentOther_EID" native="true">
+    <widget class="QWidget" name="contentOtherEID" native="true">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -56,7 +56,7 @@
     </widget>
    </item>
    <item>
-    <widget class="AccordionTitle" name="titleVerirfyCert" native="true">
+    <widget class="AccordionTitle" name="titleVerifyCert" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -120,13 +120,13 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="VerifyCert" name="IdentCert" native="true"/>
+          <widget class="VerifyCert" name="identBox" native="true"/>
          </item>
          <item>
-          <widget class="VerifyCert" name="SignCert" native="true"/>
+          <widget class="VerifyCert" name="signBox" native="true"/>
          </item>
          <item>
-          <widget class="VerifyCert" name="PUK_Code" native="true"/>
+          <widget class="VerifyCert" name="pukBox" native="true"/>
          </item>
         </layout>
        </widget>
