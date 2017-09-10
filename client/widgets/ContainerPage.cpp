@@ -55,6 +55,7 @@ void ContainerPage::init()
     ui->email->init(LabelButton::DeepCerulean, "Edasta e-mailiga", Actions::ContainerEmail);
     ui->save->init(LabelButton::DeepCerulean, "Salvesta allkirjastamata", Actions::ContainerSave);
     ui->mainAction->setStyles(style.arg("#6edc6c"), link.arg("#6edc6c"), style.arg("#53c964"), link.arg("#53c964"));
+    ui->mainAction->setFont( Styles::instance().font(Styles::OpenSansRegular, 14) );
 
     connect( ui->mainAction, &LabelButton::clicked, this, &ContainerPage::action );
 }

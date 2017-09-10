@@ -20,7 +20,6 @@
 #include "PageIcon.h"
 #include "ui_PageIcon.h"
 
-#include <QDebug>
 #include <QPainter>
 
 PageIcon::PageIcon(QWidget *parent) :
@@ -64,7 +63,6 @@ void PageIcon::updateSelection()
         emit activated(this);
     }
     
-    qDebug() << "set background " << style.backColor;
     ui->label->setFont(style.font);
     ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
     ui->icon->setStyleSheet(QString("background-repeat: none; background-image: url(:%1); background-color: %2; border: none;")
