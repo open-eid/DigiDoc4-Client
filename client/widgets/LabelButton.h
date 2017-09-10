@@ -29,7 +29,8 @@ public:
     enum ButtonStyle {
         Mojo = (1 << 0),
         DeepCerulean = (1 << 1),
-        WhiteBackground = (1 << 2)
+        WhiteBackground = (1 << 2),
+        AlabasterBackground = (1 << 3)
     };
 
     explicit LabelButton(QWidget *parent = nullptr);
@@ -42,6 +43,7 @@ protected:
     void leaveEvent(QEvent *ev) override;
 
 private:
+    void normal();
     QString background(int style) const;
     QString foreground(int style) const;
     

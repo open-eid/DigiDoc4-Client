@@ -20,6 +20,7 @@
 #include "ContainerPage.h"
 #include "ui_ContainerPage.h"
 #include "Styles.h"
+#include "widgets/ContainerItem.h"
 
 ContainerPage::ContainerPage(QWidget *parent) :
     QWidget(parent),
@@ -41,6 +42,8 @@ void ContainerPage::init()
     static const QString style = "QLabel { padding: 6px 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; background-color: %1; color: #ffffff; border: none; text-decoration: none solid; }";
     static const QString link = "<a href=\"#mainAction\" style=\"background-color: %1; color: #ffffff; text-decoration: none solid;\">Allkirjasta ID-Kaardiga</a>";
     
+    ui->leftPane->init(ItemList::File, "Kontaineri failid");
+
     QFont semiBold = Styles::instance().font(Styles::OpenSansSemiBold, 13);
     QFont regular = Styles::instance().font(Styles::OpenSansRegular, 13);
     ui->container->setFont(semiBold);
@@ -56,10 +59,14 @@ void ContainerPage::init()
 
 void ContainerPage::transition(ContainerState state)
 {
+    ui->leftPane->stateChange(state);
+    ui->rightPane->stateChange(state);
+
     switch( state )
     {
     case UnsignedContainer:
         hideRightPane();
+        ui->leftPane->init(ItemList::File, "Allkirjastamiseks valitud failid");
         for(LabelButton *button: {ui->cancel, ui->save })
         {
             button->show();
@@ -72,7 +79,9 @@ void ContainerPage::transition(ContainerState state)
     case UnsignedSavedContainer:
         break;
     case SignedContainer:
-        showRightPane();
+        ui->leftPane->init(ItemList::File, "Kontaineri failid");
+        showRightPane(ItemList::Signature, "Kontaineri allkirjad");
+        ui->rightPane->add("");
         for(LabelButton *button: {ui->cancel, ui->save })
         {
             button->hide();
@@ -97,7 +106,8 @@ void ContainerPage::hideRightPane()
     ui->rightPane->hide();
 }
 
-void ContainerPage::showRightPane()
+void ContainerPage::showRightPane(ItemList::ItemType itemType, const QString &header)
 {
+    ui->rightPane->init(itemType, header);
     ui->rightPane->show();
 }

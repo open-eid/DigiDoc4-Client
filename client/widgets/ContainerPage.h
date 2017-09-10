@@ -17,8 +17,11 @@
  *
  */
 
- #ifndef CONTAINERPAGE_H
+#ifndef CONTAINERPAGE_H
 #define CONTAINERPAGE_H
+
+#include "ContainerState.h"
+#include "widgets/ItemList.h"
 
 #include <QWidget>
 
@@ -31,16 +34,6 @@ class ContainerPage : public QWidget
     Q_OBJECT
 
 public:
-    enum ContainerState {
-        UnsignedContainer,
-        UnsignedSavedContainer,
-        SignedContainer,
-
-        UnencryptedContainer,
-        EncryptedContainer,
-        DecryptedContainer
-    };
-
     explicit ContainerPage(QWidget *parent = 0);
     ~ContainerPage();
 
@@ -52,7 +45,7 @@ signals:
 private:
     void init();
     void hideRightPane();
-    void showRightPane();
+    void showRightPane(ItemList::ItemType itemType, const QString &header);
 
     Ui::ContainerPage *ui;
 };
