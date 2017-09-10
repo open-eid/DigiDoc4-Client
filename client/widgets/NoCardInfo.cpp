@@ -17,36 +17,25 @@
  *
  */
 
-#ifndef CARDINFO_H
-#define CARDINFO_H
+#include "NoCardInfo.h"
+#include "ui_NoCardInfo.h"
+#include "Styles.h"
 
-#include <QFont>
-#include <QWidget>
-
-namespace Ui {
-class CardInfo;
+NoCardInfo::NoCardInfo( QWidget *parent ) :
+    QWidget( parent ),
+    ui( new Ui::NoCardInfo )
+{
+    ui->setupUi( this );
+    
+    ui->cardStatus->setFont( Styles::instance().font( Styles::OpenSansRegular, 14 ) );
 }
 
-class CardInfo : public QWidget
+NoCardInfo::~NoCardInfo()
 {
-    Q_OBJECT
+    delete ui;
+}
 
-public:
-    explicit CardInfo( QWidget *parent = 0 );
-    ~CardInfo();
-
-    void fonts( const QFont &regular, const QFont &semiBold );
-    void update( const QString &name, const QString &code, const QString &status );
-    short loadPicture( const QByteArray& buffer );
-
-signals:
-    void thePhotoLabelClicked();
-
-private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked();
-
-private:
-    Ui::CardInfo *ui;
-};
-
-#endif // CARDINFO_H
+void NoCardInfo::update( const QString &status )
+{
+    ui->cardStatus->setText( status );
+}

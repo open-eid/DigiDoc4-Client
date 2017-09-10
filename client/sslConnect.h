@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QEstEidUtil
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,36 +17,32 @@
  *
  */
 
-#ifndef CARDINFO_H
-#define CARDINFO_H
+#pragma once
 
-#include <QFont>
-#include <QWidget>
+#include <QtCore/QObject>
 
-namespace Ui {
-class CardInfo;
-}
+class QSslCertificate;
 
-class CardInfo : public QWidget
+class SSLConnectPrivate;
+class SSLConnect: public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit CardInfo( QWidget *parent = 0 );
-    ~CardInfo();
+	enum RequestType {
+		EmailInfo,
+		ActivateEmails,
+		MobileInfo,
+		PictureInfo
+	};
 
-    void fonts( const QFont &regular, const QFont &semiBold );
-    void update( const QString &name, const QString &code, const QString &status );
-    short loadPicture( const QByteArray& buffer );
+	explicit SSLConnect( QObject *parent = 0 );
+	~SSLConnect();
 
-signals:
-    void thePhotoLabelClicked();
-
-private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked();
+	QString errorString() const;
+	QByteArray getUrl( RequestType type, const QString &value = QString() );
+	void setToken( const QSslCertificate &cert, Qt::HANDLE key );
 
 private:
-    Ui::CardInfo *ui;
+	SSLConnectPrivate	*d;
 };
-
-#endif // CARDINFO_H

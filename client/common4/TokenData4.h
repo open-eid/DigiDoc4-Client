@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDoc4Common
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,36 +17,17 @@
  *
  */
 
-#ifndef CARDINFO_H
-#define CARDINFO_H
+#pragma once
 
-#include <QFont>
-#include <QWidget>
+#include <common/TokenData.h>
 
-namespace Ui {
-class CardInfo;
-}
-
-class CardInfo : public QWidget
+class TokenData4: public TokenData
 {
-    Q_OBJECT
-
 public:
-    explicit CardInfo( QWidget *parent = 0 );
-    ~CardInfo();
+	TokenData4() : TokenData() {};
+	TokenData4( const TokenData &other ) :TokenData( other ) {};
+	~TokenData4() {};
 
-    void fonts( const QFont &regular, const QFont &semiBold );
-    void update( const QString &name, const QString &code, const QString &status );
-    short loadPicture( const QByteArray& buffer );
-
-signals:
-    void thePhotoLabelClicked();
-
-private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked();
-
-private:
-    Ui::CardInfo *ui;
+	QString GetName() const;
+	QString GetCode() const;
 };
-
-#endif // CARDINFO_H
