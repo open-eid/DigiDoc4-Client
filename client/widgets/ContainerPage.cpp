@@ -55,9 +55,10 @@ void ContainerPage::init()
     ui->email->init(LabelButton::DeepCerulean, "Edasta e-mailiga", Actions::ContainerEmail);
     ui->save->init(LabelButton::DeepCerulean, "Salvesta allkirjastamata", Actions::ContainerSave);
     ui->mainAction->setStyles(style.arg("#6edc6c"), link.arg("#6edc6c"), style.arg("#53c964"), link.arg("#53c964"));
-    ui->mainAction->setFont( Styles::instance().font(Styles::OpenSansRegular, 14) );
+    ui->mainAction->setFont( Styles::instance().font(Styles::OpenSansRegular, 14) );    
 
     connect( ui->mainAction, &LabelButton::clicked, this, &ContainerPage::action );
+    connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
 }
 
 void ContainerPage::transition(ContainerState state)
@@ -68,6 +69,8 @@ void ContainerPage::transition(ContainerState state)
     switch( state )
     {
     case UnsignedContainer:
+        ui->leftPane->clear();
+        ui->rightPane->clear();
         hideRightPane();
         ui->leftPane->init(ItemList::File, "Allkirjastamiseks valitud failid");
         ui->mainAction->init( SignatureAdd );
@@ -85,9 +88,11 @@ void ContainerPage::transition(ContainerState state)
         showButtons( {ui->encrypt, ui->navigateToContainer, ui->email} );
         break;
     case UnencryptedContainer:
+        ui->leftPane->clear();
+        ui->rightPane->clear();
         ui->leftPane->init(ItemList::File, "Krüpteerimiseks valitud failid");
         showRightPane(ItemList::Address, "Adressaadid");
-        ui->mainAction->init( ContainerCancel );
+        ui->mainAction->init( EncryptedContainer );
         ui->mainAction->setText( "Krüpteeri" );
         showButtons( {ui->cancel, ui->mainAction} );
         hideButtons( {ui->encrypt, ui->save, ui->navigateToContainer, ui->email} );

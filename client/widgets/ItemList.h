@@ -45,6 +45,7 @@ public:
 
     void init(ItemType itemType, const QString &header);
     void add(int code);
+    void clear();
     void stateChange(ria::qdigidoc4::ContainerState state);
 
 private:

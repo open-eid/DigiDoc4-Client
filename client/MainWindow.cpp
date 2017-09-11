@@ -151,11 +151,11 @@ void MainWindow::navigateToPage( Pages page )
 {
     ui->startScreen->setCurrentIndex(page);
 
-    if( page == SignDetails )
+    if( page == SignDetails || page == SignIntro )
     {
         ui->signContainerPage->transition(ContainerState::UnsignedContainer);
     }
-    else if( page == CryptoDetails )
+    else if( page == CryptoDetails || page == CryptoIntro )
     {
         ui->cryptoContainerPage->transition(ContainerState::UnencryptedContainer);
     }
@@ -170,6 +170,10 @@ void MainWindow::onSignAction( int action )
         FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
         notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
     }
+    else if( action == ContainerCancel )
+    {
+        navigateToPage(Pages::SignIntro);
+    }
     else if( action == FileRemove )
     {
 
@@ -178,12 +182,16 @@ void MainWindow::onSignAction( int action )
 
 void MainWindow::onCryptoAction( int action )
 {
-    if( action == ContainerCancel )
+    if( action == EncryptedContainer )
     {
         ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
 
         FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
         notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+    }
+    else if( action == ContainerCancel )
+    {
+        navigateToPage(Pages::CryptoIntro);
     }
     else if( action == FileRemove )
     {

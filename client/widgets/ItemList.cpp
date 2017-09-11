@@ -25,6 +25,7 @@
 #include "widgets/SignatureItem.h"
 
 #include <vector>
+#include <QLayoutItem>
 
 using namespace ria::qdigidoc4;
 
@@ -79,6 +80,18 @@ QString ItemList::anchor() const
     case File: return "#add-file";
     case Address: return "#add-address";
     default: return "";
+    }
+}
+
+void ItemList::clear()
+{
+    ItemWidget* widget;
+    auto it = items.begin();
+    while (it != items.end()) {
+        widget = *it;
+        it = items.erase(it);
+        widget->close();
+        delete widget;
     }
 }
 
