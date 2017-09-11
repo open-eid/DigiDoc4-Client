@@ -27,8 +27,8 @@
 #include "XmlReader.h"
 #include "widgets/FadeInNotification.h"
 
-#include <common4/TokenData4.h>
 #include <common/SslCertificate.h>
+#include <common/DateTime.h>
 
 #include <QDebug>
 #include <QtNetwork/QSslConfiguration>
@@ -54,8 +54,6 @@ MainWindow::MainWindow( QWidget *parent ) :
     ui->myEid->init("MINU eID", PageIcon::Style { openSansSBold14, "/images/my_eid_dark_38x38.png", "#ffffff", "#998B66" },
         PageIcon::Style { openSansReg14, "/images/my_eid_light_38x38.png", "#023664", "#ffffff" }, false );
 
-	showCardStatus();
-
     connect( ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected );
     connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
     connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
@@ -72,26 +70,20 @@ MainWindow::MainWindow( QWidget *parent ) :
     ui->help->setFont( openSansReg13 );
     ui->settings->setFont( openSansReg13 );
 
+    smartcard = new QSmartCard( this );
+    smartcard->start();
+
+	showCardStatus();
+    
     connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
     connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
     connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
     connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
     connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
     connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
-    connect( qApp->signer(), SIGNAL( signDataChanged( TokenData ) ), SLOT( showCardStatus() ) );  // To refresh ID card info
+	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );      // To refresh ID card info
 
-    smartcard = new QSmartCard( this );
-    smartcard->start();
-
-    ui->infoStack->update(
-                "MARI",
-                "MAASIKAS",
-                "48405051234",
-                "EESTI",
-                "IK1234567",
-                "<span style='color: #37a447'>Kehtiv</span> kuni 10.10.2019",
-                "Kontrolli sertifikaate"
-                        );
+	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );    // To select between several cards in readers.
 
     ui->accordion->init();
 }
@@ -137,13 +129,14 @@ void MainWindow::buttonClicked( int button )
     {
     case HeadHelp:
         //QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
-        QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet" );
+		showWarning( "Not implemented yet" );
         break;
     case HeadSettings:
         // qApp->showSettings();
-        QMessageBox::warning( this, "DigiDoc4 client", "Not implemented yet" );
+		showWarning( "Not implemented yet" );
         break;
-    default: break;
+    default: 
+        break;
     }
 }
 
@@ -207,20 +200,62 @@ void MainWindow::loadCardPhoto ()
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
-	TokenData4 t = qApp->signer()->tokensign();
-	if( !t.card().isEmpty() && !t.cert().isNull() )
+	QSmartCardData t = smartcard->data();
+
+	if( !t.isNull() )
 	{
         ui->idSelector->show();
         ui->noCardInfo->hide();
-        ui->cardInfo->update( t.GetName(), t.GetCode(), "Lugejas on ID kaart" );
-		ui->cardInfo->setAccessibleDescription( t.toAccessible() );
+		QStringList firstName = QStringList()
+			<< t.data( QSmartCardData::FirstName1 ).toString()
+			<< t.data( QSmartCardData::FirstName2 ).toString();
+		firstName.removeAll( "" );
+		QStringList fullName = QStringList()
+			<< firstName
+			<< t.data( QSmartCardData::SurName ).toString();
+		fullName.removeAll( "" );
+        ui->cardInfo->update( fullName.join(" "), t.data( QSmartCardData::Id ).toString(), "Lugejas on ID kaart" );
+		ui->cardInfo->setAccessibleDescription( fullName.join(" ") );
+
+		QString text;
+		QTextStream st( &text );
+
+		if( t.authCert().type() & SslCertificate::EstEidType )
+		{
+			if( t.isValid() )
+				st << "<span style='color: #37a447'>Kehtiv</span> kuni "
+                   << DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
+			else
+				st << "<span style='color: #e80303;'>Expired</span>";
+		}
+		else
+			st << "You're using Digital identity card"; // ToDo
+
+        ui->infoStack->update(
+                firstName.join(" "),
+                t.data( QSmartCardData::SurName ).toString(),
+                t.data( QSmartCardData::Id ).toString(),
+                t.data( QSmartCardData::Citizen ).toString(),
+                t.data( QSmartCardData::DocumentId ).toString(),
+                text,
+                "Kontrolli sertifikaate"
+                        );
 	}
 	else if( !t.card().isEmpty() )
 	{
-        ui->idSelector->show();
+        ui->idSelector->hide();
         ui->noCardInfo->hide();
         ui->cardInfo->update( "", "", "Loading data" );
 		ui->cardInfo->setAccessibleDescription( "Loading data" );
+        ui->infoStack->update(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+                        );
 		Application::setOverrideCursor( Qt::BusyCursor );
 	}
 	else if( t.card().isEmpty() && !t.readers().isEmpty() )
@@ -229,6 +264,15 @@ void MainWindow::showCardStatus()
         ui->noCardInfo->show();
         ui->noCardInfo->update( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
 		ui->noCardInfo->setAccessibleDescription( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+        ui->infoStack->update(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+                        );
 	}
 	else
 	{
@@ -236,28 +280,28 @@ void MainWindow::showCardStatus()
         ui->noCardInfo->show();
         ui->noCardInfo->update( "No readers found" );
 		ui->noCardInfo->setAccessibleDescription( "No readers found" );
+        ui->infoStack->update(
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+                        );
 	}
-/*
-    // Combo box to select the cards from
-	cards->clear();
-	cards->addItems( t.cards() );
-	cards->setVisible( t.cards().size() > 1 );
-	cards->setCurrentIndex( cards->findText( t.card() ) );
-	qDeleteAll( cardsGroup->actions() );
-	for( int i = 0; i < t.cards().size(); ++i )
-	{
-		QAction *a = cardsGroup->addAction( new QAction( cardsGroup ) );
-		a->setData( t.cards().at( i ) );
-		a->setShortcut( Qt::CTRL + (Qt::Key_1 + i) );
-	}
-	addActions( cardsGroup->actions() );
 
-	enableSign();
+    // Combo box to select the cards from
+/*	ui->selector_old->hide();
+	ui->selector->clear();
+	ui->selector->addItems( t.cards() );
+	ui->selector->setVisible( t.cards().size() > 1 );
+	ui->selector->setCurrentIndex( ui->selector->findText( t.card() ) );
 */
 }
 
-// Loads picture so far. 
-// Somehow in test environment it seems does not load correct data, so picture is not shown. Oleg.
+// Loads picture 
+// Somehow in Win environment it seems does not load correct data, so picture is not shown. Oleg.
 void MainWindow::loadPicture()
 {
     SSLConnect::RequestType type = SSLConnect::PictureInfo;
@@ -357,13 +401,38 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 }
 
 void MainWindow::showWarning( const QString &msg )
-{ QMessageBox::warning( this, windowTitle(), msg ); }
+{
+	switch( ui->startScreen->currentIndex() )
+	{
+	case ::MainWindow::SignDetails:
+        ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
+        break;
+    case ::MainWindow::CryptoDetails:
+        ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
+        break;
+	default: 
+        QMessageBox::warning( this, windowTitle(), msg );
+        break;
+	}
+}
 
 void MainWindow::showWarning( const QString &msg, const QString &details )
 {
-	QMessageBox d( QMessageBox::Warning, windowTitle(), msg, QMessageBox::Close, qApp->activeWindow() );
-	d.setWindowModality( Qt::WindowModal );
-	d.setDetailedText( details );
-	d.exec();
+	switch( ui->startScreen->currentIndex() )
+	{
+	case ::MainWindow::SignDetails:
+        ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
+        break;
+    case ::MainWindow::CryptoDetails:
+        ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
+        break;
+	default: 
+		{
+            QMessageBox d( QMessageBox::Warning, windowTitle(), msg, QMessageBox::Close, qApp->activeWindow() );
+            d.setWindowModality( Qt::WindowModal );
+            d.setDetailedText( details );
+            d.exec();
+        }
+        break;
+	}
 }
-

@@ -17,8 +17,7 @@
  *
  */
 
-#ifndef CONTAINERPAGE_H
-#define CONTAINERPAGE_H
+#pragma once
 
 #include "common_enums.h"
 #include "widgets/ItemList.h"
@@ -35,22 +34,25 @@ class ContainerPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit ContainerPage(QWidget *parent = 0);
+    explicit ContainerPage( QWidget *parent = 0 );
     ~ContainerPage();
 
-    void transition(ria::qdigidoc4::ContainerState state);
+    void transition( ria::qdigidoc4::ContainerState state );
+    void showWarningText( const QString &text, const QString &link );
+    void hideWarningArea();
 
 signals:
 	void action( int code );
+
+protected:
+    void mousePressEvent( QMouseEvent *event ) override;
 
 private:
     void init();
     void hideButtons( std::vector<QWidget*> buttons );
     void hideRightPane();
     void showButtons( std::vector<QWidget*> buttons );
-    void showRightPane(ItemList::ItemType itemType, const QString &header);
+    void showRightPane( ItemList::ItemType itemType, const QString &header );
 
     Ui::ContainerPage *ui;
 };
-
-#endif // CONTAINERPAGE_H
