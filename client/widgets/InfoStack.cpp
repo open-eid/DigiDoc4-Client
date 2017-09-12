@@ -6,11 +6,17 @@ InfoStack::InfoStack(QWidget *parent) :
     ui(new Ui::InfoStack)
 {
     ui->setupUi(this);
+    ui->verifyCert->hide();
 }
 
 InfoStack::~InfoStack()
 {
     delete ui;
+}
+
+void InfoStack::clearPicture()
+{
+    ui->photo->clear();
 }
 
 void InfoStack::update(const QString &givenNames, const QString &surname, const QString &personalCode, const QString &citizenship, const QString &serialNumber, const QString &expiryDate, const QString &verifyCert )

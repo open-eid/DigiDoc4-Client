@@ -296,6 +296,7 @@ void MainWindow::showCardStatus()
 				"",
 				""
 						);
+		ui->infoStack->clearPicture();
 		Application::setOverrideCursor( Qt::BusyCursor );
 	}
 	else if( t.card().isEmpty() && !t.readers().isEmpty() )
@@ -313,6 +314,7 @@ void MainWindow::showCardStatus()
 				"",
 				""
 						);
+		ui->infoStack->clearPicture();
 	}
 	else
 	{
@@ -329,6 +331,7 @@ void MainWindow::showCardStatus()
 				"",
 				""
 						);
+		ui->infoStack->clearPicture();
 	}
 
 	// Combo box to select the cards from
@@ -353,7 +356,6 @@ void MainWindow::loadPicture()
 	SSLConnect ssl;
 	ssl.setToken( smartcard->data().authCert(), smartcard->key() );
 	QByteArray buffer = ssl.getUrl( type, param );
-	int size = buffer.size();
 	smartcard->logout();
 
  //	updateData();

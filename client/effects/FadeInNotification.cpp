@@ -27,8 +27,8 @@
 
 FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor)
 : QLabel(parent)
-, fgColor(fgColor)
 , bgColor(bgColor)
+, fgColor(fgColor)
 {
 }
 
