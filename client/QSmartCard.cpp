@@ -18,6 +18,7 @@
  */
 
 #include "QSmartCard_p.h"
+#include "dialogs/PinPopup.h"
 
 #include <common/IKValidator.h>
 #include <common/PinDialog.h>
@@ -297,17 +298,17 @@ QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)
 	default: return UnknownError;
 	}
 
-	QScopedPointer<PinDialog> p;
+	QScopedPointer<PinPopup> p;
 	QByteArray pin;
 	if(!d->t.isPinpad())
 	{
-		p.reset(new PinDialog(flags, cert, 0, qApp->activeWindow()));
+		p.reset(new PinPopup(flags, cert, 0, qApp->activeWindow()));
 		if(!p->exec())
 			return CancelError;
 		pin = p->text().toUtf8();
 	}
 	else
-		p.reset(new PinDialog(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), cert, 0, qApp->activeWindow()));
+		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), cert, 0, qApp->activeWindow()));
 
 	d->m.lock();
 	d->reader = d->connect(d->t.reader());
@@ -322,7 +323,7 @@ QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)
 		std::thread([&]{
 			Q_EMIT p->startTimer();
 			result = d->reader->transferCTL(cmd, true, d->language());
-			Q_EMIT p->finish(0);
+			Q_EMIT p->finished(0);
 		}).detach();
 		p->exec();
 	}

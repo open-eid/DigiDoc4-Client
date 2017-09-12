@@ -24,12 +24,8 @@ void InfoStack::update(const QString &givenNames, const QString &surname, const 
     ui->verifyCert->setText(verifyCert);
 }
 
-
-// Needed to setStyleSheet() take effect.
-void InfoStack::paintEvent(QPaintEvent *)
+void InfoStack::showPicture( const QPixmap &pixmap )
 {
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    ui->photo->setProperty( "PICTURE", pixmap );
+	ui->photo->setPixmap( pixmap.scaled( 108, 133, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 }

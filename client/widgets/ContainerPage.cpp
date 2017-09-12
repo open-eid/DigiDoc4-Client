@@ -92,7 +92,7 @@ void ContainerPage::transition( ContainerState state )
         ui->rightPane->clear();
         ui->leftPane->init( ItemList::File, "Krüpteerimiseks valitud failid" );
         showRightPane( ItemList::Address, "Adressaadid" );
-        ui->mainAction->init( ContainerCancel );
+        ui->mainAction->init( EncryptContainer );
         ui->mainAction->setText( "Krüpteeri" );
         showButtons( { ui->cancel, ui->mainAction } );
         hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );

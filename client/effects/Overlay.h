@@ -17,44 +17,29 @@
  *
  */
 
-#pragma once
+#include <QPainter>
+#include <QPaintEvent>
+#include <QWidget>
 
-namespace ria {
-namespace qdigidoc4 {
+class Overlay : public QWidget
+{
+public:
+    Overlay(QWidget *parent)
+    : QWidget (parent)
+    {
+        setPalette(Qt::transparent);
+        setAttribute(Qt::WA_TransparentForMouseEvents);
+        setMinimumSize(parent->width(), parent->height());
+    }
 
-enum ContainerState {
-    UnsignedContainer       = (1 << 0),
-    UnsignedSavedContainer  = (1 << 1),
-    SignedContainer         = (1 << 2),
-
-    UnencryptedContainer    = (1 << 3),
-    EncryptedContainer      = (1 << 4),
-    DecryptedContainer      = (1 << 5)
+protected:
+    void paintEvent(QPaintEvent *event) override
+    {
+        QPainter painter( this );
+        painter.setRenderHint( QPainter::Antialiasing );
+        // #858585 80%
+        painter.setBrush( QBrush( QColor(QRgba64::fromRgba(0x85, 0x85, 0x85, 0xff * 0.8)) ) );
+        painter.setPen( Qt::NoPen );
+        painter.drawRect( rect() );
+    }
 };
-
-enum Actions {
-    AddressAdd,
-
-    CardPhoto,
-
-    ContainerCancel,
-    ContainerEncrypt,
-    ContainerEmail,
-    ContainerLocation,
-    ContainerNavigate,
-    ContainerSave,
-
-    EncryptContainer,
-
-    FileAdd,
-    FileRemove,
-
-    HeadSettings,
-    HeadHelp,
-
-    SignatureAdd,
-    SignatureRemove
-};
-
-}
-}

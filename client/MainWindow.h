@@ -24,9 +24,10 @@
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
 
-#include <QWidget>
 #include <QButtonGroup>
+#include <QImage>
 #include <QMessageBox>
+#include <QWidget>
 
 namespace Ui {
 class MainWindow;
@@ -94,13 +95,15 @@ private:
 		PagePukChange = 0x17
 	};
 
-    void navigateToPage( Pages page );
-    void onSignAction( int code );
-    void onCryptoAction( int code );
+	void cachePicture( const QString &id, const QImage &image );
+	void loadCachedPicture( const QString &id );
     void loadPicture();
-    bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
+    void navigateToPage( Pages page );
+    void onCryptoAction( int code );
+    void onSignAction( int code );
     void showWarning( const QString &msg );
     void showWarning( const QString &msg, const QString &details );
+    bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
     
     Ui::MainWindow *ui;
 

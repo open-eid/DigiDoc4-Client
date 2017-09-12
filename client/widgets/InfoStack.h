@@ -18,7 +18,7 @@ public:
     ~InfoStack();
 
     void update(const QString &givenNames, const QString &surname, const QString &personalCode, const QString &citizenship, const QString &serialNumber, const QString &expiryDate, const QString &verifyCert );
-    void paintEvent(QPaintEvent *);
+    void showPicture( const QPixmap &pixmap );
 
 private:
     Ui::InfoStack *ui;

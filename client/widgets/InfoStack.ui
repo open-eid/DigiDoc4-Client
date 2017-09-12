@@ -40,13 +40,7 @@ background-color: white;</string>
     <number>7</number>
    </property>
    <item>
-    <widget class="QWidget" name="photo" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QLabel" name="photo">
      <property name="minimumSize">
       <size>
        <width>108</width>
@@ -56,12 +50,12 @@ background-color: white;</string>
      <property name="styleSheet">
       <string notr="true">border: 1px solid #757575;
 background-color: #bababa;
-font-family: Open Sans;
-font-size: 14px;
 color: #000000;
-font-weight: 400;
 line-height: 19px;
 text-align: center;</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>

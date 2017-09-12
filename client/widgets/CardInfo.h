@@ -35,9 +35,8 @@ public:
     explicit CardInfo( QWidget *parent = 0 );
     ~CardInfo();
 
-    void fonts( const QFont &regular, const QFont &semiBold );
+    void showPicture( const QPixmap &pix );
     void update( const QString &name, const QString &code, const QString &status );
-    short loadPicture( const QByteArray& buffer );
 
 signals:
     void thePhotoLabelClicked();

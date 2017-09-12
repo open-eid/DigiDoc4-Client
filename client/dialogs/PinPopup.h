@@ -19,42 +19,38 @@
 
 #pragma once
 
-namespace ria {
-namespace qdigidoc4 {
+#include <common/PinDialog.h>
+#include <common/TokenData.h>
 
-enum ContainerState {
-    UnsignedContainer       = (1 << 0),
-    UnsignedSavedContainer  = (1 << 1),
-    SignedContainer         = (1 << 2),
+#include <QDialog>
+#include <QtCore/QRegExp>
 
-    UnencryptedContainer    = (1 << 3),
-    EncryptedContainer      = (1 << 4),
-    DecryptedContainer      = (1 << 5)
+namespace Ui {
+class PinPopup;
+}
+
+class PinPopup : public QDialog
+{
+	Q_OBJECT
+
+public:
+	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = 0 );
+	PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
+	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
+
+	~PinPopup();
+
+    int exec() override;
+    QString text() const;
+
+signals:
+	void startTimer();
+
+private:
+    void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token );
+    void textEdited( const QString &text );
+
+	Ui::PinPopup *ui;
+	QRegExp		regexp;
 };
 
-enum Actions {
-    AddressAdd,
-
-    CardPhoto,
-
-    ContainerCancel,
-    ContainerEncrypt,
-    ContainerEmail,
-    ContainerLocation,
-    ContainerNavigate,
-    ContainerSave,
-
-    EncryptContainer,
-
-    FileAdd,
-    FileRemove,
-
-    HeadSettings,
-    HeadHelp,
-
-    SignatureAdd,
-    SignatureRemove
-};
-
-}
-}

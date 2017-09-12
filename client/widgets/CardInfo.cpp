@@ -51,16 +51,10 @@ void CardInfo::update( const QString &name, const QString &code, const QString &
     ui->cardStatus->setText( status );
 }
 
-short CardInfo::loadPicture( const QByteArray& buffer )
+void CardInfo::showPicture( const QPixmap &pix )
 {
-	if( buffer.isEmpty() ) return 1;
-
-	QPixmap pix;
-	if( !pix.loadFromData( buffer ) ) return 1;
-
     ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-	return 0;
 }
 
 void CardInfo::thePhotoLabelHasBeenClicked( int code )
