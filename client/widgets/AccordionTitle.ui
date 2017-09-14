@@ -16,11 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="styleSheet">
-   <string notr="true">border-bottom: 1px solid #c8c8c8;
-background-color: #f7f7f7;
-</string>
-  </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
@@ -48,10 +43,6 @@ background-color: #f7f7f7;
      <height>15</height>
     </size>
    </property>
-   <property name="styleSheet">
-    <string notr="true">border:none;
-image: url(:/images/accordion.svg);</string>
-   </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -69,8 +60,7 @@ image: url(:/images/accordion.svg);</string>
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: none;
-font-family: Open Sans;
+    <string notr="true">font-family: Open Sans;
 font-size: 14px;
 color: #000000;
 font-weight: 400;</string>

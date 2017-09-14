@@ -75,21 +75,6 @@
       <string notr="true">border: none;</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>8</number>
-      </property>
-      <property name="leftMargin">
-       <number>3</number>
-      </property>
-      <property name="topMargin">
-       <number>10</number>
-      </property>
-      <property name="rightMargin">
-       <number>3</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -108,8 +93,7 @@
         <item>
          <widget class="QLabel" name="name">
           <property name="styleSheet">
-           <string notr="true">border: none;
-font-family: Open Sans;
+           <string notr="true">font-family: Open Sans;
 color: #000000;
 font-weight: 600;</string>
           </property>
@@ -163,9 +147,6 @@ font-weight: 600;</string>
           <height>25</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
         <property name="text">
          <string>validUntil</string>
         </property>
@@ -178,36 +159,35 @@ font-weight: 600;</string>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="error">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">padding: 6px 16px 6px 16px;
+          <widget class="QLabel" name="error">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">padding: 6px 6px 6px 6px;
 border: 1px solid #e89c30;
 background-color: #f4d49e;
 font-family: Arial;
 font-size: 14px;
 color: #714915;
 font-weight: 400;
-line-height: 16px;
 text-align: center;</string>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="spacing">
          <number>15</number>

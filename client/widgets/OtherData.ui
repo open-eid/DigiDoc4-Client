@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OtherData</class>
+ <widget class="QWidget" name="OtherData">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>751</width>
+    <height>304</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: white;</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="styleSheet">
+      <string notr="true">font-family: Open Sans;
+font-size: 13px;
+color: #000000;
+font-weight: 900;</string>
+     </property>
+     <property name="text">
+      <string>@eesti.ee post</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="btnCheckEMail">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>262</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;
+padding: 6px 10px;
+border-radius: 3px;
+background-color: #006eb5;
+font-family: Open Sans;
+font-size: 13px;
+color: #ffffff;
+font-weight: 400;
+text-align: center;</string>
+     </property>
+     <property name="text">
+      <string>Kontrolli @eesti.ee e-posti staatust</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblEMail">
+     <property name="styleSheet">
+      <string notr="true">border: none;
+font-family: Open Sans;
+font-size: 13px;
+color: #000000;
+font-weight: 400;
+</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="activateEMail" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>9</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="styleSheet">
+         <string notr="true">border: none;
+font-family: Open Sans;
+font-size: 13px;
+color: #000000;
+</string>
+        </property>
+        <property name="text">
+         <string>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="inputEMail">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid #c8c8c8;
+font-family: Arial;
+font-size: 14px;
+color: #000000;
+font-weight: 400;
+text-decoration: underline;
+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="activate">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;
+padding: 6px 10px;
+border-radius: 3px;
+background-color: #006eb5;
+font-family: Open Sans;
+font-size: 13px;
+color: #ffffff;
+font-weight: 400;
+line-height: 18px;
+text-align: center;</string>
+        </property>
+        <property name="text">
+         <string>Aktiveeri suunamine</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>106</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="styleSheet">
+      <string notr="true">border: none;
+font-family: Open Sans;
+font-size: 13px;
+color: #000000;
+font-weight: 400;
+</string>
+     </property>
+     <property name="text">
+      <string>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&quot;www.eesti.ee&quot;&gt;&lt;span style='color: black; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

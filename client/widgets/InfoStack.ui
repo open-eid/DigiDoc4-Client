@@ -23,8 +23,7 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: none;
-background-color: white;</string>
+   <string notr="true">background-color: white;</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -40,7 +39,13 @@ background-color: white;</string>
     <number>7</number>
    </property>
    <item>
-    <widget class="QLabel" name="photo">
+    <widget class="QLabel" name="photo" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>108</width>
@@ -50,12 +55,12 @@ background-color: white;</string>
      <property name="styleSheet">
       <string notr="true">border: 1px solid #757575;
 background-color: #bababa;
+font-family: Open Sans;
+font-size: 14px;
 color: #000000;
+font-weight: 400;
 line-height: 19px;
 text-align: center;</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>
@@ -312,6 +317,9 @@ font-weight: 600;
    </item>
    <item>
     <widget class="QWidget" name="widget_2" native="true">
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>0</number>

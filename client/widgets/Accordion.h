@@ -13,21 +13,21 @@ class AccordionTitle;
 
 class Accordion : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit Accordion(QWidget *parent = 0);
-    ~Accordion();
+	explicit Accordion(QWidget *parent = 0);
+	~Accordion();
 
-    void init();
-    void closeOtherSection(AccordionTitle* opened);
+	void init();
+	void closeOtherSection(AccordionTitle* opened);
 
 protected:
-    void paintEvent(QPaintEvent *) override;
+	void paintEvent(QPaintEvent *) override;
 
 private:
-    Ui::Accordion *ui;
-    AccordionTitle* openSection;
+	Ui::Accordion *ui;
+	AccordionTitle* openSection;
 };
 
 #endif // ACCORDION_H
