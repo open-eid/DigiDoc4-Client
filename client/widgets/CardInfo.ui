@@ -134,9 +134,9 @@
   <widget class="QWidget" name="cardIcon" native="true">
    <property name="geometry">
     <rect>
-     <x>153</x>
+     <x>152</x>
      <y>23</y>
-     <width>22</width>
+     <width>23</width>
      <height>22</height>
     </rect>
    </property>
@@ -147,7 +147,7 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/images/eid_22x22.png);</string>
+    <string notr="true">background-image: url(:/images/eid.svg);</string>
    </property>
   </widget>
   <widget class="LabelButton" name="cardPhoto">

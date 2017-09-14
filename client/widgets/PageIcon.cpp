@@ -27,19 +27,26 @@ PageIcon::PageIcon(QWidget *parent) :
     ui(new Ui::PageIcon)
 {
     ui->setupUi(this);
+
+    icon = new QSvgWidget( this );
+    icon->resize( 38, 38 );
+    icon->move( 30, 16 );
 }
 
 PageIcon::~PageIcon()
 {
     delete ui;
+    delete icon;
 }
 
 void PageIcon::init(const QString &label, const Style& active, const Style& inactive, bool selected)
 {
     this->active = active;
     this->inactive = inactive;
+    
     ui->label->setText( label );
-    select(selected);
+    this->selected = selected;
+    updateSelection();
 }
 
 void PageIcon::select(bool selected)
@@ -50,7 +57,8 @@ void PageIcon::select(bool selected)
 
 void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(!selected) {
+    if(!selected)
+    {
         selected = true;
         updateSelection();
     }
@@ -59,14 +67,15 @@ void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 void PageIcon::updateSelection()
 {
     const Style &style = selected ? active : inactive;
-    if (selected) {
+    if (selected)
+    {
         emit activated(this);
     }
     
     ui->label->setFont(style.font);
     ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
-    ui->icon->setStyleSheet(QString("background-repeat: none; background-image: url(:%1); background-color: %2; border: none;")
-        .arg(style.image).arg(style.backColor));
+    icon->load( QString( ":%1" ).arg( style.image ) );
+    icon->setStyleSheet(QString("background-color: %1; border: none;").arg(style.backColor));    
     setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(style.backColor));
 }
 

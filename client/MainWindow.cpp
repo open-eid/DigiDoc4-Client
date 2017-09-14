@@ -48,12 +48,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	ui->setupUi(this);
 	
-	ui->signature->init( "ALLKIRI", PageIcon::Style { openSansSBold14, "/images/sign_dark_38x38.png", "#ffffff", "#998B66" },
-		PageIcon::Style { openSansReg14, "/images/sign_light_38x38.png", "#023664", "#ffffff" }, true );
-	ui->crypto->init( "KRÜPTO", PageIcon::Style { openSansSBold14, "/images/crypto_dark_38x38.png", "#ffffff", "#998B66" },
-		PageIcon::Style { openSansReg14, "/images/crypto_light_38x38.png", "#023664", "#ffffff" }, false );
-	ui->myEid->init("MINU eID", PageIcon::Style { openSansSBold14, "/images/my_eid_dark_38x38.png", "#ffffff", "#998B66" },
-		PageIcon::Style { openSansReg14, "/images/my_eid_light_38x38.png", "#023664", "#ffffff" }, false );
+	ui->signature->init( "ALLKIRI", PageIcon::Style { openSansSBold14, "/images/sign_dark.svg", "#ffffff", "#998B66" },
+		PageIcon::Style { openSansReg14, "/images/sign_light.svg", "#023664", "#ffffff" }, true );
+	ui->crypto->init( "KRÜPTO", PageIcon::Style { openSansSBold14, "/images/crypto_dark.svg", "#ffffff", "#998B66" },
+		PageIcon::Style { openSansReg14, "/images/crypto_light.svg", "#023664", "#ffffff" }, false );
+	ui->myEid->init("MINU eID", PageIcon::Style { openSansSBold14, "/images/my_eid_dark.svg", "#ffffff", "#998B66" },
+		PageIcon::Style { openSansReg14, "/images/my_eid_light.svg", "#023664", "#ffffff" }, false );
 
 	connect( ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );

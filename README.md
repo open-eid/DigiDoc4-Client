@@ -5,3 +5,6 @@
  * [Architecture of ID-software](http://open-eid.github.io)
 
 Client is actively developed and currently in alpha-stage.
+
+QT installation on Linux: see qdigidoc documentation. Additionally Qt Svg package must be installed:
+> sudo apt-get install libqt5svg5-dev

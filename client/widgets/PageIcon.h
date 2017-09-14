@@ -23,6 +23,7 @@
 #include <QFont>
 #include <QPaintEvent>
 #include <QString>
+#include <QSvgWidget>
 #include <QWidget>
 
 namespace Ui {
@@ -39,21 +40,22 @@ public:
         QFont font;
         QString image, backColor, foreColor;
     };
-    explicit PageIcon(QWidget *parent = 0);
+    explicit PageIcon( QWidget *parent = 0 );
     ~PageIcon();
 
-    void init(const QString &label, const Style &active, const Style &inactive, bool selected);
-    void select(bool selected);
+    void init( const QString &label, const Style &active, const Style &inactive, bool selected );
+    void select( bool selected );
 
 signals:
 	void activated( PageIcon *const );
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void paintEvent(QPaintEvent *ev) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void paintEvent( QPaintEvent *ev ) override;
 
 private:
     Ui::PageIcon *ui;
+    QSvgWidget *icon;
     Style active;
     Style inactive;
     bool selected;

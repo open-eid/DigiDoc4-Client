@@ -1,19 +1,18 @@
 <RCC>
     <qresource prefix="/images" >
-        <file>background.png</file>
-        <file>crypto_dark_38x38.png</file>
-        <file>crypto_light_38x38.png</file>
+        <file>coatOfArms.svg</file>
+        <file>crypto_dark.svg</file>
+        <file>crypto_light.svg</file>
         <file>digidoc_icon_128x128.png</file>
-        <file>dropdown_32x32.png</file>
-        <file>download_23x23.png</file>
-        <file>eid_22x22.png</file>
-        <file>help_24x23.png</file>
-        <file>logo-small.png</file>
-        <file>my_eid_dark_38x38.png</file>
-        <file>my_eid_light_38x38.png</file>
-        <file>settings_24x24.png</file>
-        <file>sign_dark_38x38.png</file>
-        <file>sign_light_38x38.png</file>
+        <file>dropdown.svg</file>
+        <file>download_23x23.svg</file>
+        <file>eid.svg</file>
+        <file>help.svg</file>
+        <file>my_eid_dark.svg</file>
+        <file>my_eid_light.svg</file>
+        <file>settings.svg</file>
+        <file>sign_dark.svg</file>
+        <file>sign_light.svg</file>
         <file>accordion_open.png</file>
         <file>accordion_closed.png</file>
         <file>ok.png</file>

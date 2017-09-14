@@ -17,7 +17,7 @@ include( VersionInfo )
 find_package( PKCS11 )
 find_package( LibDigiDocpp REQUIRED )
 find_package( OpenSSL REQUIRED )
-find_package( Qt5 COMPONENTS Core Widgets Network PrintSupport LinguistTools REQUIRED )
+find_package( Qt5 COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools REQUIRED )
 include_directories( ${LIBDIGIDOCPP_INCLUDE_DIR} )
 
 add_subdirectory( common )

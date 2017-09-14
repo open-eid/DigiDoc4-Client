@@ -62,30 +62,6 @@ border: none;</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="icon" native="true">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>16</y>
-     <width>38</width>
-     <height>38</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>38</width>
-     <height>38</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>

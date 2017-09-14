@@ -105,7 +105,7 @@
      <property name="styleSheet">
       <string notr="true">border: none;
  background-color: #fafafa; 
-background-image: url(:/images/download_23x23.png);</string>
+background-image: url(:/images/download_23x23.svg);</string>
      </property>
      <property name="text">
       <string/>

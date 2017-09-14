@@ -21,6 +21,7 @@
 #define NOCARDINFO_H
 
 #include <QFont>
+#include <QSvgWidget>
 #include <QWidget>
 
 namespace Ui {
@@ -39,6 +40,7 @@ public:
 
 private:
     Ui::NoCardInfo *ui;
+    std::unique_ptr<QSvgWidget> cardIcon;
 };
 
 #endif // NOCARDINFO_H

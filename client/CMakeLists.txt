@@ -10,7 +10,7 @@ add_custom_command(
 )
 
 add_definitions( -DPKCS11_MODULE="${PKCS11_MODULE}" )
-include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_INCLUDE_DIR} )
+include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_INCLUDE_DIR} ${Qt5Svg_INCLUDE_DIRS} )
 
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
@@ -66,6 +66,7 @@ add_manifest( ${PROGNAME} )
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
 	Qt5::PrintSupport
+	Qt5::Svg
 	${LIBDIGIDOCPP_LIBRARY}
 	${ADDITIONAL_LIBRARIES}
 )

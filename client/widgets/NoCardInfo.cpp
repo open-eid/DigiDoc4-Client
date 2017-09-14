@@ -21,13 +21,17 @@
 #include "ui_NoCardInfo.h"
 #include "Styles.h"
 
-NoCardInfo::NoCardInfo( QWidget *parent ) :
-    QWidget( parent ),
-    ui( new Ui::NoCardInfo )
+NoCardInfo::NoCardInfo( QWidget *parent )
+: QWidget( parent )
+, ui( new Ui::NoCardInfo )
+, cardIcon( new QSvgWidget( this ) )
 {
     ui->setupUi( this );
     
     ui->cardStatus->setFont( Styles::instance().font( Styles::OpenSansRegular, 14 ) );
+    cardIcon->resize( 39, 39 );
+    cardIcon->move( 0, 1 );
+    cardIcon->load( QString(":/images/eid.svg") );
 }
 
 NoCardInfo::~NoCardInfo()
