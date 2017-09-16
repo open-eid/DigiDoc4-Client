@@ -18,16 +18,16 @@
  */
 
 #include "LabelButton.h"
-#include <QEvent>
-
 #include "Styles.h"
+
+#include <QEvent>
 
 const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color: %2; border-radius: 3px; border: none; text-decoration: none solid; }" );
 
 LabelButton::LabelButton( QWidget *parent )
 : QLabel( parent )
 {
-    setFont(Styles::font(Styles::OpenSansRegular, 13));
+    setFont(Styles::font(Styles::Condensed, 11));
 }
 
 void LabelButton::init( int code )
@@ -37,10 +37,11 @@ void LabelButton::init( int code )
 
 void LabelButton::init( int style, const QString &label, int code )
 {
-    QString bgColor = background(style);
-    QString fgColor = foreground(style);
+    QString bgColor = background( style );
+    QString fgColor = foreground( style );
 
     this->code = code;
+    this->style = style;
     normalStyle = styleTemplate.arg( bgColor, fgColor );
     hoverStyle = styleTemplate.arg( fgColor, bgColor );
     normal();
@@ -55,10 +56,12 @@ void LabelButton::setStyles( const QString &nStyle, const QString &nLink, const 
 
 QString LabelButton::background(int style) const
 {
-    if (style & WhiteBackground) {
+    if ( style & WhiteBackground ) {
         return "#ffffff";
-    } else if (style & AlabasterBackground) {
+    } else if( style & AlabasterBackground ) {
         return "#fafafa";
+    } else if( style & PorcelainBackground ) {
+        return "#f4f5f6";
     } else {
         return "#f7f7f7";
     }
@@ -76,6 +79,12 @@ QString LabelButton::foreground(int style) const
 void LabelButton::enterEvent( QEvent *ev )
 {
     setStyleSheet( hoverStyle );
+
+    if( icon.get() )
+    {
+        icon->load( QString( ":%1" ).arg( hoverIcon ) );
+        icon->setStyleSheet(QString("background-color: %1; border: none;").arg( foreground( style ) ));
+    }
 }
 
 void LabelButton::leaveEvent( QEvent *ev )
@@ -86,6 +95,21 @@ void LabelButton::leaveEvent( QEvent *ev )
 void LabelButton::normal()
 {
     setStyleSheet( normalStyle );
+
+    if( icon.get() )
+    {
+        icon->load( QString( ":%1" ).arg( normalIcon ) );
+        icon->setStyleSheet(QString("background-color: %1; border: none;").arg( background( style ) ));
+    }
+}
+
+void LabelButton::setIcons( const QString &normalIcon, const QString &hoverIcon, int x, int y, int w, int h )
+{
+    icon.reset( new QSvgWidget( QString( ":%1" ).arg( normalIcon ), this ) );
+    icon->resize( w, h );
+    icon->move( x, y );
+    this->normalIcon = normalIcon;
+    this->hoverIcon = hoverIcon;
 }
 
 bool LabelButton::event( QEvent *ev )  

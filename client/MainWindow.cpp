@@ -39,7 +39,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QWidget( parent ),
 	ui( new Ui::MainWindow )
 {
-	QFont openSansReg13 = Styles::font( Styles::OpenSansRegular, 13 );
+	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
 	QFont regular18 = Styles::font( Styles::Regular, 18 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
@@ -63,8 +63,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->cryptoIntroLabel->setFont( regular20 );
 	ui->cryptoIntroButton->setFont( regular18 );
 	
-	ui->help->setFont( openSansReg13 );
-	ui->settings->setFont( openSansReg13 );
+	ui->help->setFont( condensed11 );
+	ui->settings->setFont( condensed11 );
 
 	smartcard = new QSmartCard( this );
 	smartcard->start();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>45</height>
+    <height>65</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,15 +22,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: #fafafa;
-</string>
-  </property>
   <widget class="QLabel" name="cardStatus">
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>10</y>
+     <y>20</y>
      <width>471</width>
      <height>21</height>
     </rect>

@@ -1,21 +1,24 @@
 <RCC>
-    <qresource prefix="/images" >
-        <file>coatOfArms.svg</file>
-        <file>crypto_dark.svg</file>
-        <file>crypto_light.svg</file>
-        <file>digidoc_icon_128x128.png</file>
-        <file>dropdown.svg</file>
-        <file>download_23x23.svg</file>
-        <file>eid.svg</file>
-        <file>help.svg</file>
-        <file>my_eid_dark.svg</file>
-        <file>my_eid_light.svg</file>
-        <file>settings.svg</file>
-        <file>sign_dark.svg</file>
-        <file>sign_light.svg</file>
-        <file>accordion_open.png</file>
-        <file>accordion_closed.png</file>
-        <file>ok.png</file>
-        <file>alert.png</file>
-    </qresource>
+	<qresource prefix="/images" >
+		<file>coatOfArms.svg</file>
+		<file>crypto_dark.svg</file>
+		<file>crypto_light.svg</file>
+		<file>digidoc_icon_128x128.png</file>
+		<file>dropdown.svg</file>
+		<file>download_23x23.svg</file>
+		<file>edit_dark.svg</file>
+		<file>edit_light.svg</file>
+		<file>eid.svg</file>
+		<file>eid_red.svg</file>
+		<file>help.svg</file>
+		<file>my_eid_dark.svg</file>
+		<file>my_eid_light.svg</file>
+		<file>settings.svg</file>
+		<file>sign_dark.svg</file>
+		<file>sign_light.svg</file>
+		<file>accordion_open.png</file>
+		<file>accordion_closed.png</file>
+		<file>ok.png</file>
+		<file>alert.png</file>
+	</qresource>
 </RCC>

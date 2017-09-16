@@ -17,7 +17,10 @@
  *
  */
 
+#pragma once
+
 #include <QLabel>
+#include <QSvgWidget>
 
 // A label that acts as a button.
 // LabelButton switches foreground color with background when mouse hovers over it.
@@ -30,13 +33,15 @@ public:
         Mojo = (1 << 0),
         DeepCerulean = (1 << 1),
         WhiteBackground = (1 << 2),
-        AlabasterBackground = (1 << 3)
+        AlabasterBackground = (1 << 3),
+        PorcelainBackground = (1 << 4)
     };
 
     explicit LabelButton(QWidget *parent = nullptr);
 
     void init( int code );
     void init( int style, const QString &label, int code );
+    void setIcons( const QString &normalIcon, const QString &hoverIcon, int x, int y, int w, int h );
     void setStyles( const QString &nStyle, const QString &nLink, const QString &style, const QString &link );
 
 signals:
@@ -53,10 +58,14 @@ private:
     QString foreground(int style) const;
 
     int code;
+    int style;
     QString normalStyle;
     QString normalLink;
+    QString normalIcon;
     QString hoverStyle;
     QString hoverLink;
+    QString hoverIcon;
+    std::unique_ptr<QSvgWidget> icon;
 
     static const QString styleTemplate;
     static const QString linkTemplate;

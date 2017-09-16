@@ -21,6 +21,8 @@
 #include "ui_ContainerPage.h"
 #include "Styles.h"
 
+#include <QGraphicsDropShadowEffect>
+
 using namespace ria::qdigidoc4;
 
 ContainerPage::ContainerPage( QWidget *parent ) :
@@ -43,16 +45,27 @@ void ContainerPage::init()
 	
 	ui->leftPane->init( ItemList::File, "Kontaineri failid" );
 
-	QFont semiBold = Styles::font( Styles::OpenSansSemiBold, 13 );
-	QFont regular = Styles::font( Styles::OpenSansRegular, 13 );
-	ui->container->setFont( semiBold );
+	QFont regular = Styles::font( Styles::Regular, 14 );
+	ui->warningText->setFont( regular );
+	QFont warnFont = Styles::font( Styles::Regular, 14 );
+	warnFont.setWeight( QFont::Bold );
+	ui->warningAction->setFont( warnFont );
+	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect();
+	shadow->setColor( QColor( 233, 200, 143 ) );
+	shadow->setXOffset( 4 );
+	shadow->setYOffset( 4 );
+	ui->warning->setGraphicsEffect( shadow );
+	ui->containerHeader->setGraphicsEffect( shadow );
+
+	ui->container->setFont( regular );
 	ui->containerFile->setFont( regular );
-	ui->changeLocation->init( LabelButton::DeepCerulean | LabelButton::WhiteBackground, "Muuda", Actions::ContainerLocation );
-	ui->cancel->init( LabelButton::Mojo, "Katkesta", Actions::ContainerCancel );
-	ui->encrypt->init( LabelButton::DeepCerulean, "Krüpteeri", Actions::ContainerEncrypt );
-	ui->navigateToContainer->init( LabelButton::DeepCerulean, "Ava konteineri asukoht", Actions::ContainerNavigate );
-	ui->email->init( LabelButton::DeepCerulean, "Edasta e-mailiga", Actions::ContainerEmail );
-	ui->save->init( LabelButton::DeepCerulean, "Salvesta allkirjastamata", Actions::ContainerSave );
+	ui->changeLocation->setIcons( "/images/edit_dark.svg", "/images/edit_light.svg", 3, 3, 19, 19 );
+	ui->changeLocation->init( LabelButton::DeepCerulean | LabelButton::PorcelainBackground, "MUUDA", Actions::ContainerLocation );
+	ui->cancel->init( LabelButton::Mojo, "KATKESTA", Actions::ContainerCancel );
+	ui->encrypt->init( LabelButton::DeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
+	ui->navigateToContainer->init( LabelButton::DeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
+	ui->email->init( LabelButton::DeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
+	ui->save->init( LabelButton::DeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 	ui->mainAction->setStyles( style.arg( "#6edc6c" ), link.arg( "#6edc6c" ), style.arg( "#53c964" ), link.arg( "#53c964" ) );
 	ui->mainAction->setFont( Styles::font(Styles::OpenSansRegular, 14) );
 

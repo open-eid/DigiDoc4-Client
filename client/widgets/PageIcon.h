@@ -59,7 +59,7 @@ private:
 
 	Ui::PageIcon *ui;
 	QWidget *shadow;
-	QSvgWidget *icon;
+	std::unique_ptr<QSvgWidget> icon;
 	Style active;
 	Style inactive;
 	bool selected;

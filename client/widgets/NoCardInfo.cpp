@@ -28,10 +28,10 @@ NoCardInfo::NoCardInfo( QWidget *parent )
 {
     ui->setupUi( this );
     
-    ui->cardStatus->setFont( Styles::font( Styles::OpenSansRegular, 14 ) );
-    cardIcon->resize( 39, 39 );
-    cardIcon->move( 0, 1 );
-    cardIcon->load( QString(":/images/eid.svg") );
+    ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
+    cardIcon->resize( 34, 24 );
+    cardIcon->move( 4, 18 );
+    cardIcon->load( QString(":/images/eid_red.svg") );
 }
 
 NoCardInfo::~NoCardInfo()

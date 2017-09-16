@@ -31,7 +31,7 @@ PageIcon::PageIcon(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	icon = new QSvgWidget( this );
+	icon.reset( new QSvgWidget( this ) );
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
 }
@@ -39,7 +39,6 @@ PageIcon::PageIcon(QWidget *parent) :
 PageIcon::~PageIcon()
 {
 	delete ui;
-	delete icon;
 }
 
 void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
