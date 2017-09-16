@@ -24,40 +24,46 @@
 
 using namespace ria::qdigidoc4;
 
-CardInfo::CardInfo( QWidget *parent ) :
-    QWidget( parent ),
-    ui( new Ui::CardInfo )
+CardInfo::CardInfo( QWidget *parent )
+: QWidget( parent )
+, ui( new Ui::CardInfo )
 {
-    ui->setupUi( this );
-    QFont openSansReg14 = Styles::instance().font( Styles::OpenSansRegular, 14 );
-    
-    ui->cardName->setFont( Styles::instance().font( Styles::OpenSansSemiBold, 14) );
-    ui->cardCode->setFont( openSansReg14 );
-    ui->cardStatus->setFont( openSansReg14 );
+	ui->setupUi( this );
+	QFont font = Styles::font( Styles::Condensed, 16 );
+	QFont nameFont = Styles::font( Styles::CondensedBold, 20 );
+	nameFont.setWeight( QFont::Bold );
 
-    ui->cardPhoto->init( CardPhoto );
-    connect( ui->cardPhoto, &LabelButton::clicked, this, &CardInfo::thePhotoLabelHasBeenClicked );
+	ui->cardName->setFont( nameFont );
+	ui->cardCode->setFont( font );
+	ui->cardStatus->setFont( font );
+	ui->cardPhoto->init( CardPhoto );
+
+	cardIcon.reset( new QSvgWidget( ":/images/eid.svg", this ) );
+	cardIcon->resize( 17, 12 );
+	cardIcon->move( 159, 42 );
+
+	connect( ui->cardPhoto, &LabelButton::clicked, this, &CardInfo::thePhotoLabelHasBeenClicked );
 }
 
 CardInfo::~CardInfo()
 {
-    delete ui;
+	delete ui;
 }
 
 void CardInfo::update( const QString &name, const QString &code, const QString &status )
 {
-    ui->cardName->setText( name );
-    ui->cardCode->setText( code );
-    ui->cardStatus->setText( status );
+	ui->cardName->setText( name);
+	ui->cardCode->setText( code + "   |");
+	ui->cardStatus->setText( status);
 }
 
 void CardInfo::showPicture( const QPixmap &pix )
 {
-    ui->cardPhoto->setProperty( "PICTURE", pix );
+	ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 }
 
 void CardInfo::thePhotoLabelHasBeenClicked( int code )
 {
-     if ( code == CardPhoto ) emit thePhotoLabelClicked();
+	 if ( code == CardPhoto ) emit thePhotoLabelClicked();
 }

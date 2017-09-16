@@ -54,13 +54,13 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/ContainerPage.cpp
 	widgets/FileItem.cpp
 	widgets/ItemList.cpp
-	widgets/ItemWidget.cpp
 	widgets/InfoStack.cpp
 	widgets/LabelButton.cpp
 	widgets/NoCardInfo.cpp
 	widgets/OtherData.cpp
 	widgets/PageIcon.cpp
 	widgets/SignatureItem.cpp
+	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp
 	)
 add_manifest( ${PROGNAME} )

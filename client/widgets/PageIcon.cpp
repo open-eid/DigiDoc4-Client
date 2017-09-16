@@ -19,72 +19,102 @@
 
 #include "PageIcon.h"
 #include "ui_PageIcon.h"
+#include "Styles.h"
 
 #include <QPainter>
 
-PageIcon::PageIcon(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::PageIcon)
-{
-    ui->setupUi(this);
+using namespace ria::qdigidoc4;
 
-    icon = new QSvgWidget( this );
-    icon->resize( 38, 38 );
-    icon->move( 30, 16 );
+PageIcon::PageIcon(QWidget *parent) :
+	QWidget(parent),
+	ui(new Ui::PageIcon)
+{
+	ui->setupUi(this);
+
+	icon = new QSvgWidget( this );
+	icon->resize( 48, 38 );
+	icon->move( 31, 23 );
 }
 
 PageIcon::~PageIcon()
 {
-    delete ui;
-    delete icon;
+	delete ui;
+	delete icon;
 }
 
-void PageIcon::init(const QString &label, const Style& active, const Style& inactive, bool selected)
+void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 {
-    this->active = active;
-    this->inactive = inactive;
-    
-    ui->label->setText( label );
-    this->selected = selected;
-    updateSelection();
+	QFont font = Styles::font( Styles::Condensed, 16 );
+	switch( type )
+	{
+	case CryptoIntro:
+		active = PageIcon::Style { font, "/images/crypto_dark.svg", "#ffffff", "#998B66" };
+		inactive = PageIcon::Style { font, "/images/crypto_light.svg", "#023664", "#ffffff" };
+		ui->label->setText( "KRÜPTO" );
+		icon->resize( 42, 38 );
+		icon->move( 34, 24 );	
+		break;
+	case MyEid:
+		active = PageIcon::Style { font, "/images/my_eid_dark.svg", "#ffffff", "#998B66" };
+		inactive = PageIcon::Style { font, "/images/my_eid_light.svg", "#023664", "#ffffff" };
+		ui->label->setText( "MINU eID" );
+		break;
+	default:
+		active = PageIcon::Style { font, "/images/sign_dark.svg", "#ffffff", "#998B66" };
+		inactive = PageIcon::Style { font, "/images/sign_light.svg", "#023664", "#ffffff" };
+		ui->label->setText( "ALLKIRI" );
+		break;
+	}
+
+	this->selected = selected;
+    this->shadow = shadow;
+	this->type = type;
+	updateSelection();
 }
 
-void PageIcon::select(bool selected)
+void PageIcon::activate( bool selected )
 {
-    this->selected = selected;
-    updateSelection();
+	this->selected = selected;
+	updateSelection();
+}
+
+Pages PageIcon::getType()
+{
+	return type;
 }
 
 void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(!selected)
-    {
-        selected = true;
-        updateSelection();
-    }
+	emit activated(this);
 }
 
 void PageIcon::updateSelection()
 {
-    const Style &style = selected ? active : inactive;
-    if (selected)
-    {
-        emit activated(this);
-    }
-    
-    ui->label->setFont(style.font);
-    ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
-    icon->load( QString( ":%1" ).arg( style.image ) );
-    icon->setStyleSheet(QString("background-color: %1; border: none;").arg(style.backColor));    
-    setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(style.backColor));
+	const Style &style = selected ? active : inactive;
+	if (selected)
+	{
+		shadow->show();
+		shadow->raise();
+		raise();
+	}
+	else
+	{
+		shadow->hide();
+	}
+
+	ui->label->setFont(style.font);
+	ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
+	icon->load( QString( ":%1" ).arg( style.image ) );
+	icon->setStyleSheet(QString("background-color: %1; border: none;").arg(style.backColor));	
+	setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(style.backColor));
 }
 
 // Custom widget must override paintEvent in order to use stylesheets
 // See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
 void PageIcon::paintEvent(QPaintEvent *ev)
 {
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+	QStyleOption opt;
+	opt.init(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

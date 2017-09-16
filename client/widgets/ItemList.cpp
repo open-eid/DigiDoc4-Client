@@ -30,101 +30,101 @@
 using namespace ria::qdigidoc4;
 
 ItemList::ItemList(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ItemList)
+	QWidget(parent),
+	ui(new Ui::ItemList)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
-    connect(ui->add, &LabelButton::clicked, this, &ItemList::add);
+	connect(ui->add, &LabelButton::clicked, this, &ItemList::add);
 }
 
 ItemList::~ItemList()
 {
-    delete ui;
+	delete ui;
 }
 
 void ItemList::add(int code)
 {
-    ItemWidget* item;
-    if (code == FileAdd)
-    {
-        item = new FileItem(state);
-    } 
-    else if (code == SignatureAdd)
-    {
-        item = new SignatureItem(state);
-    }
-    else
-    {
-        item = new AddressItem(state);
-    }
-    ui->itemLayout->insertWidget(items.size(), item);
-    item->show();
-    items.push_back(item);
+	StyledWidget* item;
+	if (code == FileAdd)
+	{
+		item = new FileItem(state);
+	} 
+	else if (code == SignatureAdd)
+	{
+		item = new SignatureItem(state);
+	}
+	else
+	{
+		item = new AddressItem(state);
+	}
+	ui->itemLayout->insertWidget(items.size(), item);
+	item->show();
+	items.push_back(item);
 }
 
 QString ItemList::addLabel() const
 {
-    switch(itemType)
-    {
-    case File: return "+ Lisa veel faile";
-    case Address: return "+ Lisa adressaat";
-    default: return "";
-    }
+	switch(itemType)
+	{
+	case File: return "+ Lisa veel faile";
+	case Address: return "+ Lisa adressaat";
+	default: return "";
+	}
 }
 
 QString ItemList::anchor() const
 {
-    switch(itemType)
-    {
-    case File: return "#add-file";
-    case Address: return "#add-address";
-    default: return "";
-    }
+	switch(itemType)
+	{
+	case File: return "#add-file";
+	case Address: return "#add-address";
+	default: return "";
+	}
 }
 
 void ItemList::clear()
 {
-    ItemWidget* widget;
-    auto it = items.begin();
-    while (it != items.end()) {
-        widget = *it;
-        it = items.erase(it);
-        widget->close();
-        delete widget;
-    }
+	StyledWidget* widget;
+	auto it = items.begin();
+	while (it != items.end()) {
+		widget = *it;
+		it = items.erase(it);
+		widget->close();
+		delete widget;
+	}
 }
 
 void ItemList::init( ItemType item, const QString &header)
 {
-    itemType = item;
-    ui->listHeader->setText(header);
-    ui->listHeader->setFont( Styles::instance().font(Styles::OpenSansSemiBold, 14));
-    if (item == Signature)
-    {
-        ui->add->hide();
-    } 
-    else
-    {
-        ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), itemType == File ? FileAdd : AddressAdd);
-        ui->add->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
-    }
+	itemType = item;
+	ui->listHeader->setText(header);
+	ui->listHeader->setFont( Styles::font(Styles::OpenSansSemiBold, 14));
+	if (item == Signature)
+	{
+		ui->add->hide();
+	} 
+	else
+	{
+		ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), itemType == File ? FileAdd : AddressAdd);
+		ui->add->setFont(Styles::font(Styles::OpenSansRegular, 13));
+	}
 }
 
 void ItemList::stateChange(ContainerState state)
 {
-    this->state = state;
-    if (state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer) )
-    {
-        ui->add->show();
-    }
-    else
-    {
-        ui->add->hide();
-    }
+	this->state = state;
+	if (state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer) )
+	{
+		ui->add->show();
+	}
+	else
+	{
+		ui->add->hide();
+	}
 
-    for(auto item: items)
-    {
-        item->stateChange(state);
-    }
+	for(auto item: items)
+	{
+		item->stateChange(state);
+	}
 }

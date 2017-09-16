@@ -21,6 +21,7 @@
 #define CARDINFO_H
 
 #include <QFont>
+#include <QSvgWidget>
 #include <QWidget>
 
 namespace Ui {
@@ -46,6 +47,7 @@ private Q_SLOTS:
 
 private:
     Ui::CardInfo *ui;
+    std::unique_ptr<QSvgWidget> cardIcon;
 };
 
 #endif // CARDINFO_H

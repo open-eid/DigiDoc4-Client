@@ -19,22 +19,22 @@
 
 #pragma once
 
-#include "widgets/ItemWidget.h"
+#include "widgets/StyledWidget.h"
 
 namespace Ui {
 class AddressItem;
 }
 
-class AddressItem : public ItemWidget
+class AddressItem : public StyledWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
-    ~AddressItem();
+	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
+	~AddressItem();
 
-    void stateChange(ria::qdigidoc4::ContainerState state) override;
-    
+	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	
 private:
-    Ui::AddressItem *ui;
+	Ui::AddressItem *ui;
 };

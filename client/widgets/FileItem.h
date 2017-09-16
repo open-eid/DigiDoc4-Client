@@ -19,13 +19,13 @@
 
  #pragma once
 
-#include "widgets/ItemWidget.h"
+#include "widgets/StyledWidget.h"
 
 namespace Ui {
 class FileItem;
 }
 
-class FileItem : public ItemWidget
+class FileItem : public StyledWidget
 {
     Q_OBJECT
 

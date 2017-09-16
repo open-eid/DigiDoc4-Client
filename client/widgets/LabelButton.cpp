@@ -27,7 +27,7 @@ const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color:
 LabelButton::LabelButton( QWidget *parent )
 : QLabel( parent )
 {
-    setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
+    setFont(Styles::font(Styles::OpenSansRegular, 13));
 }
 
 void LabelButton::init( int code )

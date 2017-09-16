@@ -25,10 +25,11 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor)
+FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset )
 : QLabel(parent)
 , bgColor(bgColor)
 , fgColor(fgColor)
+, leftOffset(leftOffset)
 {
 }
 
@@ -39,8 +40,12 @@ void FadeInNotification::start( const QString &label, int fadeInTime, int displa
     setAttribute(Qt::WA_DeleteOnClose);
     setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    setFont(Styles::instance().font(Styles::OpenSansRegular, 16));
-    setMinimumSize(parentWidget()->width(), 50);
+    setFont(Styles::font(Styles::Condensed, 22));
+    setMinimumSize(parentWidget()->width() - leftOffset, 65);
+    if ( leftOffset > 0 )
+    {
+        move( leftOffset, 0 );
+    }
 
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
     setGraphicsEffect(effect);

@@ -24,46 +24,46 @@
 using namespace ria::qdigidoc4;
 
 FileItem::FileItem(ContainerState state, QWidget *parent)
-: ItemWidget(parent)
+: StyledWidget(parent)
 , ui(new Ui::FileItem)
 {
-    ui->setupUi(this);
-    ui->fileName->setFont(Styles::instance().font(Styles::OpenSansRegular, 13));
-    ui->remove->init(LabelButton::Mojo | LabelButton::AlabasterBackground, "Eemalda", FileRemove);
-    setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
-    stateChange(state);
+	ui->setupUi(this);
+	ui->fileName->setFont(Styles::font(Styles::OpenSansRegular, 13));
+	ui->remove->init(LabelButton::Mojo | LabelButton::AlabasterBackground, "Eemalda", FileRemove);
+	setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
+	stateChange(state);
 }
 
 FileItem::~FileItem()
 {
-    delete ui;
+	delete ui;
 }
 
 void FileItem::stateChange(ContainerState state)
 {
-    switch(state)
-    {
-    case UnsignedContainer:
-    case UnsignedSavedContainer:
-        ui->download->hide();
-        ui->remove->show();
-        break;
-    case SignedContainer:
-        ui->download->show();
-        ui->remove->hide();
-        break;
-    
-    case UnencryptedContainer:
-        ui->download->hide();
-        ui->remove->show();
-        break;
-    case EncryptedContainer:
-        ui->download->hide();
-        ui->remove->hide();
-        break;
-    case DecryptedContainer:
-        ui->download->show();
-        ui->remove->hide();
-        break;
-    }
+	switch(state)
+	{
+	case UnsignedContainer:
+	case UnsignedSavedContainer:
+		ui->download->hide();
+		ui->remove->show();
+		break;
+	case SignedContainer:
+		ui->download->show();
+		ui->remove->hide();
+		break;
+	
+	case UnencryptedContainer:
+		ui->download->hide();
+		ui->remove->show();
+		break;
+	case EncryptedContainer:
+		ui->download->hide();
+		ui->remove->hide();
+		break;
+	case DecryptedContainer:
+		ui->download->show();
+		ui->remove->hide();
+		break;
+	}
 }

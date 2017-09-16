@@ -17,22 +17,24 @@
  *
  */
 
-#pragma once 
+#include "StyledWidget.h"
 
-#include "common_enums.h"
+#include <QPainter>
+#include <QStyleOption>
 
-#include <QWidget>
-
-class ItemWidget : public QWidget
+StyledWidget::StyledWidget(QWidget *parent) :
+	QWidget(parent)
 {
-    Q_OBJECT
+}
 
-public:
-    explicit ItemWidget(QWidget *parent = 0);
-    ~ItemWidget();
+StyledWidget::~StyledWidget() {}
 
-    virtual void stateChange(ria::qdigidoc4::ContainerState state) = 0;
-
-protected:
-    void paintEvent(QPaintEvent *ev) override;
-};
+// Custom widget must override paintEvent in order to use stylesheets
+// See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
+void StyledWidget::paintEvent(QPaintEvent *ev)
+{
+	QStyleOption opt;
+	opt.init(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

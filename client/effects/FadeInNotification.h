@@ -17,22 +17,25 @@
  *
  */
 
+#pragma once
+
 #include <QLabel>
 
 // A label that fades in on the parent, shows a notification and then fades out.
 class FadeInNotification : public QLabel
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor);
+	explicit FadeInNotification( QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset = 0 );
 
-    void start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime );
+	void start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime );
 
 private:
-    void fadeOut();
+	void fadeOut();
 
-    QString bgColor;
-    QString fgColor;
-    int fadeOutTime;
+	QString bgColor;
+	QString fgColor;
+	int fadeOutTime;
+	int leftOffset;
 };

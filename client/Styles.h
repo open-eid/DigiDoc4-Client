@@ -28,19 +28,18 @@ class StylesPrivate;
 class Styles
 {
 public:
-    enum Font {
-        OpenSansRegular,
-        OpenSansSemiBold
-    };
+	enum Font {
+		Condensed,
+		CondensedBold,
+		OpenSansRegular,
+		OpenSansSemiBold,
+		Regular
+	};
 
-    static Styles& instance();
-
-    QFont font(Font font, int size);
+	static QFont font(Font font, int size);
 
 private:
-    explicit Styles();
+	explicit Styles();
 
-    Q_DISABLE_COPY(Styles);
-
-    std::unique_ptr<StylesPrivate> d;
+	Q_DISABLE_COPY(Styles);
 };

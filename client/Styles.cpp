@@ -27,40 +27,53 @@
    #define FONT_SIZE_DECREASE 4 // https://forum.qt.io/topic/26663/different-os-s-different-font-sizes/3
 #endif
 
-class StylesPrivate
+class FontDatabase
 {
 public:
-    StylesPrivate()
-    {
-        int idRegular = QFontDatabase::addApplicationFont(":/fonts/OpenSans-Regular.ttf");
-        int idSemiBold = QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiBold.ttf");
-    
-        regular = QFontDatabase::applicationFontFamilies(idRegular).at(0);
-        semiBold = QFontDatabase::applicationFontFamilies(idSemiBold).at(0);
-    };
-    QFont font(Styles::Font font, int size) {
-        QFont f((font == Styles::OpenSansRegular ? regular : semiBold), size - FONT_SIZE_DECREASE);
-#ifdef Q_OS_MAC
-        f.setWeight(QFont::DemiBold);
-#endif
-        return f;
-    };
+	FontDatabase()
+	{
+		condensed = QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(":/fonts/RobotoCondensed-Regular.ttf")
+		).at(0);
+		condensedBold = QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(":/fonts/RobotoCondensed-Bold.ttf")
+		).at(0);
+		openSans = QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(":/fonts/OpenSans-Regular.ttf")
+		).at(0);
+		regular = QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf")
+		).at(0);
+		semiBold = QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiBold.ttf")
+		).at(0);
+	};
+	QString fontName( Styles::Font font )
+	{
+		switch( font )
+		{
+			case Styles::OpenSansRegular: return openSans;
+			case Styles::OpenSansSemiBold: return semiBold;
+			case Styles::Condensed: return condensed;
+			case Styles::CondensedBold: return condensedBold;
+			default: return regular;
+		}
+	}
+	QFont font(Styles::Font font, int size)
+	{
+		return QFont( fontName( font ), size - FONT_SIZE_DECREASE );
+	};
 
 private:
-    QString regular;
-    QString semiBold;
+	QString condensed;
+	QString condensedBold;
+	QString openSans;
+	QString regular;
+	QString semiBold;
 };
-
-Styles::Styles()
-: d(new StylesPrivate) {}
-
-Styles& Styles::instance()
-{
-    static Styles styles;
-    return styles;
-}
 
 QFont Styles::font(Styles::Font font, int size)
 {
-    return d->font(font, size);
+	static FontDatabase fontDatabase;
+	return fontDatabase.font(font, size);
 }

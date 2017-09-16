@@ -20,6 +20,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "common_enums.h"
 #include "QSmartCard.h"
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
@@ -48,14 +49,6 @@ private Q_SLOTS:
     void loadCardPhoto();
 
 private:
-    enum Pages {
-        SignIntro,
-        SignDetails,
-        CryptoIntro,
-        CryptoDetails,
-        MyEid
-    };
-
 	enum ButtonTypes
 	{
 		PageEmpty = 0x00,
@@ -98,7 +91,7 @@ private:
 	void cachePicture( const QString &id, const QImage &image );
 	void loadCachedPicture( const QString &id );
     void loadPicture();
-    void navigateToPage( Pages page );
+    void navigateToPage( ria::qdigidoc4::Pages page );
     void onCryptoAction( int code );
     void onSignAction( int code );
     void showWarning( const QString &msg );

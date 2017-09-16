@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>45</height>
+    <height>65</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,36 +22,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: #fafafa;
-</string>
-  </property>
-  <widget class="QFrame" name="cardPhotoFrame">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>34</width>
-     <height>44</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border: 1px dotted gray;</string>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Panel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
-  </widget>
   <widget class="QLabel" name="cardName">
    <property name="geometry">
     <rect>
      <x>45</x>
-     <y>5</y>
+     <y>7</y>
      <width>273</width>
-     <height>19</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -63,100 +40,71 @@
    <property name="minimumSize">
     <size>
      <width>273</width>
-     <height>19</height>
+     <height>24</height>
     </size>
    </property>
    <property name="font">
     <font>
-     <weight>75</weight>
-     <bold>true</bold>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-weight: bold;</string>
+    <string notr="true">color: #041E42;</string>
    </property>
    <property name="text">
-    <string>MARI MAASIKAS</string>
+    <string>MARI MAASIKAS MUSTIKAS</string>
    </property>
   </widget>
   <widget class="QLabel" name="cardCode">
    <property name="geometry">
     <rect>
      <x>45</x>
-     <y>24</y>
+     <y>38</y>
      <width>116</width>
      <height>19</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
-   <property name="text">
-    <string>48405050123</string>
-   </property>
-  </widget>
-  <widget class="Line" name="separator">
-   <property name="geometry">
-    <rect>
-     <x>137</x>
-     <y>29</y>
-     <width>10</width>
-     <height>11</height>
-    </rect>
-   </property>
    <property name="styleSheet">
-    <string notr="true">fill: #8a8a8a;</string>
+    <string notr="true">color: #75787B;</string>
    </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
+   <property name="text">
+    <string>48405050123 |</string>
    </property>
   </widget>
   <widget class="QLabel" name="cardStatus">
    <property name="geometry">
     <rect>
-     <x>182</x>
-     <y>24</y>
+     <x>181</x>
+     <y>38</y>
      <width>135</width>
      <height>19</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <pointsize>16</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #75787B;</string>
    </property>
    <property name="text">
     <string>Lugejas on ID kaart</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="cardIcon" native="true">
-   <property name="geometry">
-    <rect>
-     <x>152</x>
-     <y>23</y>
-     <width>23</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-image: url(:/images/eid.svg);</string>
    </property>
   </widget>
   <widget class="LabelButton" name="cardPhoto">
    <property name="geometry">
     <rect>
      <x>1</x>
-     <y>1</y>
-     <width>32</width>
-     <height>42</height>
+     <y>10</y>
+     <width>34</width>
+     <height>45</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -167,8 +115,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>32</width>
-     <height>42</height>
+     <width>34</width>
+     <height>45</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -178,7 +126,10 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">border: 1px solid #B1B3B3;
+opacity: 0.5;
+border-radius: 3px;
+</string>
    </property>
    <property name="text">
     <string/>

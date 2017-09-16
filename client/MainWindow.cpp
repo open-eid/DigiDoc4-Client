@@ -20,7 +20,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
-#include "common_enums.h"
 #include "QSigner.h"
 #include "sslConnect.h"
 #include "Styles.h"
@@ -40,33 +39,29 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QWidget( parent ),
 	ui( new Ui::MainWindow )
 {
-	QFont openSansReg13 = Styles::instance().font( Styles::OpenSansRegular, 13 );
-	QFont openSansReg14 = Styles::instance().font( Styles::OpenSansRegular, 14 );
-	QFont openSansReg16 = Styles::instance().font( Styles::OpenSansRegular, 16 );
-	QFont openSansReg20 = Styles::instance().font( Styles::OpenSansRegular, 20 );
-	QFont openSansSBold14 = Styles::instance().font( Styles::OpenSansSemiBold, 14 ) ;
+	QFont openSansReg13 = Styles::font( Styles::OpenSansRegular, 13 );
+	QFont regular18 = Styles::font( Styles::Regular, 18 );
+	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	ui->setupUi(this);
 	
-	ui->signature->init( "ALLKIRI", PageIcon::Style { openSansSBold14, "/images/sign_dark.svg", "#ffffff", "#998B66" },
-		PageIcon::Style { openSansReg14, "/images/sign_light.svg", "#023664", "#ffffff" }, true );
-	ui->crypto->init( "KRÜPTO", PageIcon::Style { openSansSBold14, "/images/crypto_dark.svg", "#ffffff", "#998B66" },
-		PageIcon::Style { openSansReg14, "/images/crypto_light.svg", "#023664", "#ffffff" }, false );
-	ui->myEid->init("MINU eID", PageIcon::Style { openSansSBold14, "/images/my_eid_dark.svg", "#ffffff", "#998B66" },
-		PageIcon::Style { openSansReg14, "/images/my_eid_light.svg", "#023664", "#ffffff" }, false );
+	ui->signature->init( Pages::SignIntro, ui->signatureShadow, true );
+	ui->crypto->init( Pages::CryptoIntro, ui->cryptoShadow, false );
+	ui->myEid->init( Pages::MyEid, ui->myEidShadow, false );
 
 	connect( ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
 	
+	ui->selector->hide();
 	buttonGroup = new QButtonGroup( this );
    	buttonGroup->addButton( ui->help, HeadHelp );
    	buttonGroup->addButton( ui->settings, HeadSettings );
 
-	ui->signIntroLabel->setFont( openSansReg20 );
-	ui->signIntroButton->setFont( openSansReg16 );
-	ui->cryptoIntroLabel->setFont( openSansReg20 );
-	ui->cryptoIntroButton->setFont( openSansReg16 );
+	ui->signIntroLabel->setFont( regular20 );
+	ui->signIntroButton->setFont( regular18 );
+	ui->cryptoIntroLabel->setFont( regular20 );
+	ui->cryptoIntroButton->setFont( regular18 );
 	
 	ui->help->setFont( openSansReg13 );
 	ui->settings->setFont( openSansReg13 );
@@ -98,30 +93,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::pageSelected( PageIcon *const page )
 {
-	if( page != ui->signature )
+	ui->rightShadow->raise();
+	for( auto pageIcon: { ui->signature, ui->crypto, ui->myEid } )
 	{
-		ui->signature->select(false);
-	} 
-	else
-	{
-		navigateToPage(SignIntro);
+		pageIcon->activate( pageIcon == page );
 	}
-	if( page != ui->crypto )
-	{
-		ui->crypto->select(false);
-	}
-	else
-	{
-		navigateToPage(CryptoIntro);
-	}
-	if( page != ui->myEid )
-	{
-		ui->myEid->select(false);
-	}
-	else
-	{
-		navigateToPage(MyEid);
-	}
+
+	navigateToPage( page->getType() );
 }
 
 void MainWindow::buttonClicked( int button )
@@ -193,7 +171,7 @@ void MainWindow::onSignAction( int action )
 	{
 		ui->signContainerPage->transition(ContainerState::SignedContainer);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
+		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
 		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
 	}
 	else if( action == ContainerCancel )
@@ -212,7 +190,7 @@ void MainWindow::onCryptoAction( int action )
 	{
 		ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964" );
+		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
 		notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
 	}
 	else if( action == ContainerCancel )
@@ -452,10 +430,10 @@ void MainWindow::showWarning( const QString &msg )
 {
 	switch( ui->startScreen->currentIndex() )
 	{
-	case ::MainWindow::SignDetails:
+	case SignDetails:
 		ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
 		break;
-	case ::MainWindow::CryptoDetails:
+	case CryptoDetails:
 		ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
 		break;
 	default: 
@@ -468,10 +446,10 @@ void MainWindow::showWarning( const QString &msg, const QString &details )
 {
 	switch( ui->startScreen->currentIndex() )
 	{
-	case ::MainWindow::SignDetails:
+	case SignDetails:
 		ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
 		break;
-	case ::MainWindow::CryptoDetails:
+	case CryptoDetails:
 		ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
 		break;
 	default: 

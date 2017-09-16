@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>926</width>
-    <height>518</height>
+    <height>535</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>926</width>
-    <height>518</height>
+    <width>914</width>
+    <height>535</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>926</width>
+       <width>914</width>
        <height>35</height>
       </size>
      </property>
@@ -215,7 +215,7 @@ border: none;
      </property>
      <property name="minimumSize">
       <size>
-       <width>926</width>
+       <width>914</width>
        <height>40</height>
       </size>
      </property>
@@ -457,7 +457,7 @@ background-color: #ffffff;</string>
      </property>
      <property name="minimumSize">
       <size>
-       <width>920</width>
+       <width>914</width>
        <height>44</height>
       </size>
      </property>

@@ -17,8 +17,9 @@
  *
  */
 
-#ifndef PAGEICON_H
-#define PAGEICON_H
+#pragma once
+
+#include "common_enums.h"
 
 #include <QFont>
 #include <QPaintEvent>
@@ -32,35 +33,37 @@ class PageIcon;
 
 class PageIcon : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    struct Style
-    {
-        QFont font;
-        QString image, backColor, foreColor;
-    };
-    explicit PageIcon( QWidget *parent = 0 );
-    ~PageIcon();
+	explicit PageIcon( QWidget *parent = 0 );
+	~PageIcon();
 
-    void init( const QString &label, const Style &active, const Style &inactive, bool selected );
-    void select( bool selected );
-
+	void init( ria::qdigidoc4::Pages page, QWidget *shadow, bool selected );
+	void activate( bool selected );
+	ria::qdigidoc4::Pages getType();
+	
 signals:
 	void activated( PageIcon *const );
 
 protected:
-    void mouseReleaseEvent( QMouseEvent *event ) override;
-    void paintEvent( QPaintEvent *ev ) override;
+	void mouseReleaseEvent( QMouseEvent *event ) override;
+	void paintEvent( QPaintEvent *ev ) override;
 
 private:
-    Ui::PageIcon *ui;
-    QSvgWidget *icon;
-    Style active;
-    Style inactive;
-    bool selected;
+	struct Style
+	{
+		QFont font;
+		QString image, backColor, foreColor;
+	};
 
-    void updateSelection();
+	Ui::PageIcon *ui;
+	QWidget *shadow;
+	QSvgWidget *icon;
+	Style active;
+	Style inactive;
+	bool selected;
+	ria::qdigidoc4::Pages type;
+
+	void updateSelection();
 };
-
-#endif // PAGEICON_H

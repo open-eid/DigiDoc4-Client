@@ -28,7 +28,7 @@ NoCardInfo::NoCardInfo( QWidget *parent )
 {
     ui->setupUi( this );
     
-    ui->cardStatus->setFont( Styles::instance().font( Styles::OpenSansRegular, 14 ) );
+    ui->cardStatus->setFont( Styles::font( Styles::OpenSansRegular, 14 ) );
     cardIcon->resize( 39, 39 );
     cardIcon->move( 0, 1 );
     cardIcon->load( QString(":/images/eid.svg") );

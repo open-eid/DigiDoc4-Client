@@ -21,7 +21,7 @@
 #define ITEMLIST_H
 
 #include "common_enums.h"
-#include "widgets/ItemWidget.h"
+#include "widgets/StyledWidget.h"
 
 #include <QWidget>
 
@@ -31,31 +31,31 @@ class ItemList;
 
 class ItemList : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum ItemType {
-        File,
-        Signature,
-        Address
-    };
+	enum ItemType {
+		File,
+		Signature,
+		Address
+	};
 
-    explicit ItemList(QWidget *parent = 0);
-    virtual ~ItemList();
+	explicit ItemList(QWidget *parent = 0);
+	virtual ~ItemList();
 
-    void init(ItemType itemType, const QString &header);
-    void add(int code);
-    void clear();
-    void stateChange(ria::qdigidoc4::ContainerState state);
+	void init(ItemType itemType, const QString &header);
+	void add(int code);
+	void clear();
+	void stateChange(ria::qdigidoc4::ContainerState state);
 
 private:
-    QString addLabel() const;
-    QString anchor() const;
+	QString addLabel() const;
+	QString anchor() const;
 
-    Ui::ItemList* ui;
-    ria::qdigidoc4::ContainerState state;
-    ItemType itemType;
-    std::vector<ItemWidget*> items;
+	Ui::ItemList* ui;
+	ria::qdigidoc4::ContainerState state;
+	ItemType itemType;
+	std::vector<StyledWidget*> items;
 };
 
 #endif // ITEMLIST_H

@@ -56,5 +56,13 @@ enum Actions {
     SignatureRemove
 };
 
+enum Pages {
+    SignIntro,
+    SignDetails,
+    CryptoIntro,
+    CryptoDetails,
+    MyEid
+};
+
 }
 }
