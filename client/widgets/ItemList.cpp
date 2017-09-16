@@ -99,7 +99,7 @@ void ItemList::init( ItemType item, const QString &header)
 {
 	itemType = item;
 	ui->listHeader->setText(header);
-	ui->listHeader->setFont( Styles::font(Styles::OpenSansSemiBold, 14));
+	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 	if (item == Signature)
 	{
 		ui->add->hide();

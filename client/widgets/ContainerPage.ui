@@ -457,7 +457,8 @@ background-color: #ffffff;</string>
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: 1px solid #c8c8c8;</string>
+         <string notr="true">border: solid #D9D9D8;
+border-width: 2px 2px 2px 2px; </string>
         </property>
        </widget>
       </item>
@@ -471,6 +472,9 @@ background-color: #ffffff;</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
         </property>
        </widget>
       </item>

@@ -28,9 +28,7 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 , ui(new Ui::FileItem)
 {
 	ui->setupUi(this);
-	ui->fileName->setFont(Styles::font(Styles::OpenSansRegular, 13));
-	ui->remove->init(LabelButton::Mojo | LabelButton::AlabasterBackground, "Eemalda", FileRemove);
-	setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
+	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
 	stateChange(state);
 }
 

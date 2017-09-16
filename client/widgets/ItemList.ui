@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>463</width>
-    <height>399</height>
+    <width>457</width>
+    <height>427</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,16 +18,17 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>463</width>
-    <height>399</height>
+    <width>457</width>
+    <height>421</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: 1px solid #c8c8c8;
-background-color: #ffffff;</string>
+   <string notr="true">background-color: #ffffff;
+border: 1px solid #D9D9D8;
+border-width: 2px 2px 2px 2px; </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -49,29 +50,52 @@ background-color: #ffffff;</string>
     <widget class="QWidget" name="header" native="true">
      <property name="minimumSize">
       <size>
-       <width>463</width>
-       <height>42</height>
+       <width>457</width>
+       <height>70</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>42</height>
+       <height>70</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="styleSheet">
+      <string notr="true">border: solid #D9D9D8;
+border-width: 0px 2px 0px 0px; </string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>31</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QLabel" name="listHeader">
         <property name="sizePolicy">
@@ -82,23 +106,24 @@ background-color: #ffffff;</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>461</width>
-          <height>19</height>
+          <width>450</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>19</height>
+          <height>24</height>
          </size>
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <family>Roboto</family>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: none;</string>
+         <string notr="true">border: none; color: #041E42;</string>
         </property>
         <property name="lineWidth">
          <number>0</number>
@@ -111,6 +136,112 @@ background-color: #ffffff;</string>
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QWidget" name="barArea" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>2</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>2</height>
+         </size>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>2</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QWidget" name="bar" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>417</width>
+             <height>2</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>2</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">box-sizing: border-box; border: 1px solid #D9D9D8;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>2</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -118,9 +249,13 @@ background-color: #ffffff;</string>
     <widget class="QScrollArea" name="scrollArea">
      <property name="minimumSize">
       <size>
-       <width>463</width>
+       <width>457</width>
        <height>357</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid #D9D9D8;
+border-width: 0px 2px 0px 0px; </string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -145,8 +280,8 @@ background-color: #ffffff;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>461</width>
-        <height>355</height>
+        <width>453</width>
+        <height>353</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -173,6 +308,12 @@ background-color: #ffffff;</string>
          <property name="spacing">
           <number>0</number>
          </property>
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
          <item>
           <widget class="LabelButton" name="add">
            <property name="sizePolicy">
@@ -198,6 +339,9 @@ background-color: #ffffff;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">text-align: center;</string>
+           </property>
+           <property name="lineWidth">
+            <number>0</number>
            </property>
            <property name="text">
             <string>&lt;a href=&quot;#add-files&quot; style=&quot;color: #006eb5; text-decoration: none solid rgb(0, 110, 181);&quot;&gt;+ Lisa veel faile&lt;/a&gt;</string>

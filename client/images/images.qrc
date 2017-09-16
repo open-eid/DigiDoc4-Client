@@ -5,7 +5,8 @@
 		<file>crypto_light.svg</file>
 		<file>digidoc_icon_128x128.png</file>
 		<file>dropdown.svg</file>
-		<file>download_23x23.svg</file>
+		<file>download_dark.svg</file>
+		<file>download_light.svg</file>
 		<file>edit_dark.svg</file>
 		<file>edit_light.svg</file>
 		<file>eid.svg</file>
@@ -13,6 +14,8 @@
 		<file>help.svg</file>
 		<file>my_eid_dark.svg</file>
 		<file>my_eid_light.svg</file>
+		<file>remove_dark.svg</file>
+		<file>remove_light.svg</file>
 		<file>settings.svg</file>
 		<file>sign_dark.svg</file>
 		<file>sign_light.svg</file>

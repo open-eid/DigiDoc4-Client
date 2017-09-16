@@ -6,27 +6,31 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>40</height>
+    <width>457</width>
+    <height>44</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>460</width>
-    <height>40</height>
+    <width>417</width>
+    <height>44</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>40</height>
+    <height>44</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);</string>
+   <string notr="true">border: solid #D9D9D8;
+border-width: 0px 0px 2px 0px; 
+background-color: #ffffff; 
+color: #000000; 
+text-decoration: none solid rgb(0, 0, 0);</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -45,22 +49,6 @@
     <number>0</number>
    </property>
    <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>6</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="QLabel" name="fileName">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -71,14 +59,24 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>30</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>40</height>
+       <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #363739;
+border: none;</string>
      </property>
      <property name="text">
       <string>Dokument 1.pdf</string>
@@ -86,89 +84,61 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="download">
+    <widget class="QToolButton" name="remove">
      <property name="minimumSize">
       <size>
-       <width>23</width>
-       <height>23</height>
+       <width>19</width>
+       <height>19</height>
       </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>23</width>
-       <height>23</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
- background-color: #fafafa; 
-background-image: url(:/images/download_23x23.svg);</string>
+      <string notr="true">border: none;</string>
      </property>
      <property name="text">
       <string/>
      </property>
+     <property name="icon">
+      <iconset>
+       <normalon>:/images/remove_dark.svg</normalon>
+      </iconset>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="LabelButton" name="remove">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QToolButton" name="download">
      <property name="minimumSize">
       <size>
-       <width>75</width>
-       <height>22</height>
+       <width>19</width>
+       <height>19</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>75</width>
-       <height>22</height>
+       <width>19</width>
+       <height>19</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
- background-color: #fafafa; </string>
+      <string notr="true">border: none;</string>
      </property>
      <property name="text">
-      <string>Eemalda</string>
+      <string/>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="icon">
+      <iconset>
+       <normalon>:/images/download_dark.svg</normalon>
+      </iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>15</width>
+       <height>15</height>
+      </size>
      </property>
     </widget>
    </item>
-   <item>
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>9</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>LabelButton</class>
-   <extends>QLabel</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
