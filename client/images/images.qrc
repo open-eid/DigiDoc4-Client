@@ -5,7 +5,9 @@
 		<file>crypto_light.svg</file>
 		<file>digidoc_icon_128x128.png</file>
 		<file>dropdown.svg</file>
+		<file>dropdown_deep_cerulean.svg</file>
 		<file>dropdown_down.svg</file>
+		<file>dropdown_right.svg</file>
 		<file>dropdown_up.svg</file>
 		<file>download_dark.svg</file>
 		<file>download_light.svg</file>
@@ -21,8 +23,6 @@
 		<file>settings.svg</file>
 		<file>sign_dark.svg</file>
 		<file>sign_light.svg</file>
-		<file>accordion_open.png</file>
-		<file>accordion_closed.png</file>
 		<file>ok.png</file>
 		<file>alert.png</file>
 	</qresource>

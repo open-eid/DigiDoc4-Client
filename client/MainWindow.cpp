@@ -255,9 +255,7 @@ void MainWindow::showCardStatus()
 				t.data( QSmartCardData::Id ).toString(),
 				t.data( QSmartCardData::Citizen ).toString(),
 				t.data( QSmartCardData::DocumentId ).toString(),
-				text,
-				"Kontrolli sertifikaate"
-						);
+				text);
 	}
 	else if( !t.card().isEmpty() )
 	{
@@ -271,9 +269,7 @@ void MainWindow::showCardStatus()
 				"",
 				"",
 				"",
-				"",
-				""
-						);
+				"");
 		ui->infoStack->clearPicture();
 		Application::setOverrideCursor( Qt::BusyCursor );
 	}
@@ -289,9 +285,7 @@ void MainWindow::showCardStatus()
 				"",
 				"",
 				"",
-				"",
-				""
-						);
+				"");
 		ui->infoStack->clearPicture();
 	}
 	else
@@ -306,9 +300,7 @@ void MainWindow::showCardStatus()
 				"",
 				"",
 				"",
-				"",
-				""
-						);
+				"");
 		ui->infoStack->clearPicture();
 	}
 

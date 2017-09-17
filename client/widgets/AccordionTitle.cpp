@@ -1,14 +1,20 @@
 #include "AccordionTitle.h"
 #include "ui_AccordionTitle.h"
 
-#include "Accordion.h"
+#include "Styles.h"
+#include "widgets/Accordion.h"
 
 
 AccordionTitle::AccordionTitle(QWidget *parent) :
-	QWidget(parent),
+	StyledWidget(parent),
 	ui(new Ui::AccordionTitle)
 {
 	ui->setupUi(this);
+	icon.reset( new QSvgWidget( this ) );
+	icon->setStyleSheet( "border: none;" );
+	icon->resize( 14, 14 );
+	icon->move( 14, 13 );
+	ui->label->setFont( Styles::font( Styles::Condensed, 16 ) );
 }
 
 AccordionTitle::~AccordionTitle()
@@ -30,16 +36,16 @@ void AccordionTitle::init(Accordion* accordion, bool open, const QString& captio
 void AccordionTitle::openSection()
 {
 	content->setVisible(true);
-	this->setStyleSheet("background-color: #f7f7f7;");
-	ui->widget->setStyleSheet("image: url(:/images/accordion_open.png);");
+	ui->label->setStyleSheet("border: none; color: #006EB5;");
+	icon->load( QString( ":/images/dropdown_deep_cerulean.svg" ) );
 }
 
 
 void AccordionTitle::closeSection()
 {
 	content->setVisible(false);
-	this->setStyleSheet("background-color: #ffffff;");
-	ui->widget->setStyleSheet("image: url(:/images/accordion_closed.png);");
+	ui->label->setStyleSheet("border: none; color: #353739;");
+	icon->load( QString( ":/images/dropdown_right.svg" ) );	
 }
 
 
@@ -53,13 +59,4 @@ void AccordionTitle::mouseReleaseEvent(QMouseEvent *event)
 		accordion->closeOtherSection(this);
 		openSection();
 	}
-}
-
-// Needed to setStyleSheet() take effect.
-void AccordionTitle::paintEvent(QPaintEvent *)
-{
-	QStyleOption opt;
-	opt.init(this);
-	QPainter p(this);
-	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

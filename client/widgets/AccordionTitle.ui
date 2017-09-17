@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>302</width>
-    <height>38</height>
+    <width>400</width>
+    <height>40</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,41 +16,30 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>11</x>
-     <y>11</y>
-     <width>15</width>
-     <height>15</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>15</width>
-     <height>15</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>15</width>
-     <height>15</height>
-    </size>
-   </property>
-  </widget>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>40</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>40</height>
+   </size>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #FFFFFF;
+border: solid #DFE5E9;
+border-width: 1px 0px 0px 0px; </string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>7</y>
-     <width>271</width>
-     <height>24</height>
+     <x>36</x>
+     <y>11</y>
+     <width>390</width>
+     <height>19</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -59,11 +48,27 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>19</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>19</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto Condensed</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 400;</string>
+    <string notr="true">border: none;
+color: #353739;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>

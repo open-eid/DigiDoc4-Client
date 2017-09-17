@@ -1,8 +1,11 @@
 #ifndef ACCORDIONTITLE_H
 #define ACCORDIONTITLE_H
 
+#include "widgets/StyledWidget.h"
+
 #include <QWidget>
 #include <QPainter>
+#include <QSvgWidget>
 
 
 namespace Ui {
@@ -11,7 +14,7 @@ class AccordionTitle;
 
 class Accordion;
 
-class AccordionTitle : public QWidget
+class AccordionTitle : public StyledWidget
 {
 	Q_OBJECT
 
@@ -25,10 +28,10 @@ public:
 
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
-	void paintEvent(QPaintEvent *) override;
 
 private:
 	Ui::AccordionTitle *ui;
+	std::unique_ptr<QSvgWidget> icon;
 	QWidget* content;
 	Accordion* accordion;
 };

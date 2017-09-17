@@ -30,7 +30,8 @@ CardInfo::CardInfo( QWidget *parent )
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
-	QFont nameFont = Styles::font( Styles::CondensedBold, 20 );
+	QFont nameFont = Styles::font( Styles::Condensed, 20 );
+	nameFont.setWeight( QFont::DemiBold );
 
 	ui->cardName->setFont( nameFont );
 	ui->cardCode->setFont( font );

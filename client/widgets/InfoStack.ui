@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>876</width>
-    <height>150</height>
+    <height>190</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,27 +19,36 @@
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>150</height>
+    <height>190</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>190</height>
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: white;</string>
+   <string notr="true">background-color: #F4F5F6;
+border: solid #DEE4E9;
+border-width: 1px 0px 0px 0px; 
+</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
-    <number>7</number>
+    <number>20</number>
    </property>
    <property name="topMargin">
-    <number>7</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
     <number>12</number>
    </property>
    <property name="bottomMargin">
-    <number>7</number>
+    <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="photo" native="true">
+    <widget class="QLabel" name="photo">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -48,19 +57,20 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>108</width>
-       <height>133</height>
+       <width>120</width>
+       <height>150</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>120</width>
+       <height>150</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 1px solid #757575;
-background-color: #bababa;
-font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
-line-height: 19px;
-text-align: center;</string>
+      <string notr="true">border: 1px solid #858585;
+background-color: #cacaca;
+</string>
      </property>
     </widget>
    </item>
@@ -74,8 +84,14 @@ text-align: center;</string>
      </property>
      <property name="minimumSize">
       <size>
-       <width>350</width>
-       <height>0</height>
+       <width>450</width>
+       <height>150</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>150</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -84,18 +100,20 @@ text-align: center;</string>
      <widget class="QLabel" name="valueExpiryDate">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>120</x>
         <y>120</y>
         <width>200</width>
         <height>17</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 600;
-</string>
+       <string notr="true">color: #041E42;</string>
       </property>
       <property name="text">
        <string>valueExpiryDate</string>
@@ -107,14 +125,17 @@ font-weight: 600;
         <x>10</x>
         <y>0</y>
         <width>120</width>
-        <height>17</height>
+        <height>14</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
+       <string notr="true">color: #75787B;
 </string>
       </property>
       <property name="text">
@@ -130,11 +151,14 @@ font-weight: 400;
         <height>17</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
+       <string notr="true">color: #75787B;
 </string>
       </property>
       <property name="text">
@@ -150,12 +174,14 @@ font-weight: 400;
         <height>17</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 600;
-</string>
+       <string notr="true">color: #041E42;</string>
       </property>
       <property name="text">
        <string>valueSerialNumber</string>
@@ -164,17 +190,20 @@ font-weight: 600;
      <widget class="QLabel" name="labelSurname">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>172</x>
         <y>0</y>
         <width>120</width>
         <height>16</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
+       <string notr="true">color: #75787B;
 </string>
       </property>
       <property name="text">
@@ -184,16 +213,20 @@ font-weight: 400;
      <widget class="QLabel" name="labelCitizenship">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>50</y>
+        <x>172</x>
+        <y>58</y>
         <width>120</width>
         <height>17</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-size: 14px;
-color: #000000;
-font-weight: 400;
+       <string notr="true">color: #75787B;
 </string>
       </property>
       <property name="text">
@@ -204,16 +237,19 @@ font-weight: 400;
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>50</y>
+        <y>58</y>
         <width>120</width>
         <height>17</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
+       <string notr="true">color: #75787B;
 </string>
       </property>
       <property name="text">
@@ -224,17 +260,19 @@ font-weight: 400;
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>75</y>
         <width>120</width>
-        <height>17</height>
+        <height>19</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 600;
-</string>
+       <string notr="true">color: #041E42;</string>
       </property>
       <property name="text">
        <string>valuePersonalCode</string>
@@ -244,57 +282,72 @@ font-weight: 600;
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
-        <width>120</width>
-        <height>17</height>
+        <y>16</y>
+        <width>152</width>
+        <height>38</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 600;
-</string>
+       <string notr="true">color: #041E42;</string>
       </property>
       <property name="text">
        <string>valueGivenNames</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="valueSurname">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>20</y>
-        <width>120</width>
-        <height>17</height>
+        <x>172</x>
+        <y>16</y>
+        <width>250</width>
+        <height>19</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 600;
-</string>
+       <string notr="true">color: #041E42;</string>
       </property>
       <property name="text">
        <string>valueSurname</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
      <widget class="QLabel" name="valueCitizenship">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>70</y>
+        <x>172</x>
+        <y>75</y>
         <width>120</width>
-        <height>17</height>
+        <height>19</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-family: Open Sans;
-font-size: 14px;
-color: #000000;
-font-weight: 600;
-</string>
+       <string notr="true">color: #041E42;</string>
       </property>
       <property name="text">
        <string>valueCitizenship</string>
@@ -317,6 +370,18 @@ font-weight: 600;
    </item>
    <item>
     <widget class="QWidget" name="widget_2" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>150</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>150</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>
      </property>
@@ -337,32 +402,33 @@ font-weight: 600;
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="verifyCert">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="QPushButton" name="verifyCert">
         <property name="minimumSize">
          <size>
           <width>163</width>
-          <height>22</height>
+          <height>29</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>163</width>
+          <height>29</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
-         <string notr="true">border-radius: 3px;
+         <string notr="true">border-radius: 2px;
 background-color: #006eb5;
-font-family: Open Sans;
-font-size: 13px;
 color: #ffffff;
-font-weight: 400;</string>
+</string>
         </property>
         <property name="text">
-         <string>verifyCert</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <string>KONTROLLI SERTIFIKAATE</string>
         </property>
        </widget>
       </item>
@@ -370,6 +436,9 @@ font-weight: 400;</string>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Expanding</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>

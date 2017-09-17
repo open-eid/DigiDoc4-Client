@@ -19,9 +19,9 @@ void Accordion::init()
 	// Initialize accordion.
 	openSection = ui->titleVerifyCert;
 
-	ui->titleOtherEID->init(this,   false, "teised eIDd", ui->contentOtherEID );
-	ui->titleVerifyCert->init(this, true,  "PIN/PUK koodid ja sertifikaatide kontroll", ui->contentVerifyCert );
-	ui->titleOtherData->init(this,  false, "Muud andmed", ui->contentOtherData );
+	ui->titleOtherEID->init(this,   false, "TEISED eID’D", ui->contentOtherEID );
+	ui->titleVerifyCert->init(this, true,  "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert );
+	ui->titleOtherData->init(this,  false, "MUUD ANDMED", ui->contentOtherData );
 
 	// Initialize PIN/PUK content widgets.
 	ui->authBox->update(true,  "Isikutuvastamise sertifikaat", "Sertifikaat kehtib kuni 10. veebruar 2019",  "Muuda PIN1",  "<a href='#pin1-forgotten'><span style='color:black;'>Unustasid PIN1</span></a>",  "<a href='#pin1-cert'><span style='color:black;'>Vaata sertifikaadi detaile</span></a>", "Kala");
