@@ -5,6 +5,8 @@
 		<file>crypto_light.svg</file>
 		<file>digidoc_icon_128x128.png</file>
 		<file>dropdown.svg</file>
+		<file>dropdown_down.svg</file>
+		<file>dropdown_up.svg</file>
 		<file>download_dark.svg</file>
 		<file>download_light.svg</file>
 		<file>edit_dark.svg</file>

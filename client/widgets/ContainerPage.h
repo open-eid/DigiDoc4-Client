@@ -21,7 +21,10 @@
 
 #include "common_enums.h"
 #include "widgets/ItemList.h"
+#include "widgets/MainAction.h"
 
+#include <QPushButton>
+#include <QResizeEvent>
 #include <QWidget>
 #include <vector>
 
@@ -31,28 +34,32 @@ class ContainerPage;
 
 class ContainerPage : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit ContainerPage( QWidget *parent = 0 );
-    ~ContainerPage();
+	explicit ContainerPage( QWidget *parent = 0 );
+	~ContainerPage();
 
-    void transition( ria::qdigidoc4::ContainerState state );
-    void showWarningText( const QString &text, const QString &link );
-    void hideWarningArea();
+	void transition( ria::qdigidoc4::ContainerState state );
+	void showWarningText( const QString &text, const QString &link );
+	void hideWarningArea();
 
 signals:
 	void action( int code );
 
 protected:
-    void mousePressEvent( QMouseEvent *event ) override;
+	void mousePressEvent( QMouseEvent *event ) override;
+	void resizeEvent( QResizeEvent *event ) override;
 
 private:
-    void init();
-    void hideButtons( std::vector<QWidget*> buttons );
-    void hideRightPane();
-    void showButtons( std::vector<QWidget*> buttons );
-    void showRightPane( ItemList::ItemType itemType, const QString &header );
+	void init();
+	void hideButtons( std::vector<QWidget*> buttons );
+	void hideMainAction();
+	void hideRightPane();
+	void showButtons( std::vector<QWidget*> buttons );
+	void showRightPane( ItemList::ItemType itemType, const QString &header );
+	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
 
-    Ui::ContainerPage *ui;
+	Ui::ContainerPage *ui;
+	std::unique_ptr<MainAction> mainAction;
 };

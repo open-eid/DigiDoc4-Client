@@ -80,7 +80,7 @@ void LabelButton::enterEvent( QEvent *ev )
 {
     setStyleSheet( hoverStyle );
 
-    if( icon.get() )
+    if( icon )
     {
         icon->load( QString( ":%1" ).arg( hoverIcon ) );
         icon->setStyleSheet(QString("background-color: %1; border: none;").arg( foreground( style ) ));
@@ -96,7 +96,7 @@ void LabelButton::normal()
 {
     setStyleSheet( normalStyle );
 
-    if( icon.get() )
+    if( icon )
     {
         icon->load( QString( ":%1" ).arg( normalIcon ) );
         icon->setStyleSheet(QString("background-color: %1; border: none;").arg( background( style ) ));

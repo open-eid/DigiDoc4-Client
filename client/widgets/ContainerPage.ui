@@ -729,45 +729,20 @@ border: none;</string>
        </widget>
       </item>
       <item>
-       <widget class="LabelButton" name="mainAction">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="mainActionSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-        <property name="minimumSize">
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>163</width>
-          <height>65</height>
+          <width>198</width>
+          <height>20</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>65</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">padding: 6px 10px;
-border-top-left-radius: 3px;
-border-bottom-left-radius: 3px;
-background-color: #6edc6c;
-color: #ffffff;
-text-decoration: none solid rgb(255, 255, 255);</string>
-        </property>
-        <property name="text">
-         <string>Allkirjasta ID-Kaardiga</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <spacer name="horizontalSpacer_7">

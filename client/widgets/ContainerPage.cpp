@@ -25,6 +25,9 @@
 
 using namespace ria::qdigidoc4;
 
+#define ACTION_WIDTH 200
+#define ACTION_HEIGHT 65
+
 ContainerPage::ContainerPage( QWidget *parent ) :
 	QWidget( parent ),
 	ui( new Ui::ContainerPage )
@@ -66,10 +69,7 @@ void ContainerPage::init()
 	ui->navigateToContainer->init( LabelButton::DeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
 	ui->email->init( LabelButton::DeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::DeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
-	ui->mainAction->setStyles( style.arg( "#6edc6c" ), link.arg( "#6edc6c" ), style.arg( "#53c964" ), link.arg( "#53c964" ) );
-	ui->mainAction->setFont( Styles::font(Styles::OpenSansRegular, 14) );
 
-	connect( ui->mainAction, &LabelButton::clicked, this, &ContainerPage::action );
 	connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
 }
 
@@ -85,9 +85,8 @@ void ContainerPage::transition( ContainerState state )
 		ui->rightPane->clear();
 		hideRightPane();
 		ui->leftPane->init( ItemList::File, "Allkirjastamiseks valitud failid" );
-		ui->mainAction->init( SignatureAdd );
-		ui->mainAction->setText( "Allkirjasta ID-Kaardiga" );
-		showButtons( { ui->cancel, ui->save, ui->mainAction } );
+		showMainAction( SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA" );
+		showButtons( { ui->cancel, ui->save } );
 		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
@@ -96,7 +95,8 @@ void ContainerPage::transition( ContainerState state )
 		ui->leftPane->init( ItemList::File, "Kontaineri failid" );
 		showRightPane( ItemList::Signature, "Kontaineri allkirjad" );
 		ui->rightPane->add( SignatureAdd );
-		hideButtons( { ui->cancel, ui->save, ui->mainAction } );
+		hideMainAction();
+		hideButtons( { ui->cancel, ui->save } );
 		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
@@ -104,15 +104,15 @@ void ContainerPage::transition( ContainerState state )
 		ui->rightPane->clear();
 		ui->leftPane->init( ItemList::File, "Krüpteerimiseks valitud failid" );
 		showRightPane( ItemList::Address, "Adressaadid" );
-		ui->mainAction->init( EncryptContainer );
-		ui->mainAction->setText( "Krüpteeri" );
-		showButtons( { ui->cancel, ui->mainAction } );
+		showMainAction( EncryptContainer, "KRÜPTEERI" );
+		showButtons( { ui->cancel } );
 		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	case EncryptedContainer:
 		ui->leftPane->init( ItemList::File, "Krüpteeritud failid" );
 		showRightPane( ItemList::Address, "Adressaadid" );
-		hideButtons( { ui->encrypt, ui->cancel, ui->save, ui->mainAction } );
+		hideMainAction();
+		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
@@ -125,9 +125,23 @@ void ContainerPage::hideButtons( std::vector<QWidget*> buttons )
 	for( auto *button: buttons ) button->hide();
 }
 
+void ContainerPage::hideMainAction()
+{
+	if( mainAction )
+	{
+		mainAction->hide();
+	}
+	ui->mainActionSpacer->changeSize( 1, 20, QSizePolicy::Fixed );
+}
+
 void ContainerPage::hideRightPane()
 {
 	ui->rightPane->hide();
+}
+
+void ContainerPage::hideWarningArea()
+{
+	ui->warning->hide();
 }
 
 void ContainerPage::showButtons( std::vector<QWidget*> buttons )
@@ -151,9 +165,21 @@ void ContainerPage::showWarningText( const QString &text, const QString &link )
 	ui->warningAction->setOpenExternalLinks( true );	
 }
 
-void ContainerPage::hideWarningArea()
+void ContainerPage::showMainAction( Actions action, const QString &label )
 {
-	ui->warning->hide();
+	if( mainAction )
+	{
+		mainAction->update( action, label, action == SignatureAdd );
+		mainAction->show();
+	}
+	else
+	{
+		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
+		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
+		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::action );
+		mainAction->show();
+	}
+	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );	
 }
 
 // Mouse click on warning region will hide it.
@@ -163,3 +189,10 @@ void ContainerPage::mousePressEvent ( QMouseEvent * event )
 		hideWarningArea();
 }
 
+void ContainerPage::resizeEvent( QResizeEvent *event )
+{
+	if( mainAction )
+	{
+		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
+	}
+}
