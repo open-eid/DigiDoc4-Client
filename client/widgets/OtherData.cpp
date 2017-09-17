@@ -1,5 +1,6 @@
 #include "OtherData.h"
 #include "ui_OtherData.h"
+#include "Styles.h"
 
 OtherData::OtherData(QWidget *parent) :
 	QWidget(parent),
@@ -8,6 +9,16 @@ OtherData::OtherData(QWidget *parent) :
 	ui->setupUi(this);
 
 	connect(ui->inputEMail, &QLineEdit::textChanged, this, [this](){ update(true); });
+
+	QFont font = Styles::font( Styles::Regular, 13 );
+	QFont condensed = Styles::font( Styles::Condensed, 14 );
+	
+	ui->label->setFont( Styles::font( Styles::Regular, 13, QFont::DemiBold ) );
+	ui->lblEMail->setFont( font );
+	ui->lblNoForwarding->setFont( font );
+	ui->labelEestiEe->setFont( Styles::font( Styles::Regular, 12 ) );
+	ui->activate->setFont( condensed );
+	ui->btnCheckEMail->setFont( condensed );
 }
 
 OtherData::~OtherData()
@@ -34,24 +45,30 @@ void OtherData::update(bool activate, const QString &eMail)
 		if(ui->inputEMail->text().isEmpty())
 		{
 			ui->activate->setStyleSheet(
-						"border-radius: 3px;"
-						"background-color: #80aed5;"
-						"font-family: Open Sans;"
-						"font-size: 13px;"
-						"color: #ffffff;"
-						"font-weight: 400;"
+						"padding: 6px 9px;"
+						"border: 1px;"
+						"border-style: solid;"
+						"border-radius: 2px;"
+						"border-color: #50a7d2;"
+						"background-color: #ffffff;"
+						"color: #50a7d2;"
+						"text-align: center;"
 						);
+			ui->activate->setCursor( Qt::ArrowCursor );
 		}
 		else
 		{
 			ui->activate->setStyleSheet(
-						"border-radius: 3px;"
-						"background-color: #006eb5;"
-						"font-family: Open Sans;"
-						"font-size: 13px;"
-						"color: #ffffff;"
-						"font-weight: 400;"
+						"padding: 6px 9px;"
+						"border: 1px;"
+						"border-style: solid;"
+						"border-radius: 2px;"
+						"border-color: #006eb5;"
+						"background-color: #ffffff;"
+						"color: #006eb5;"
+						"text-align: center;"
 						);
+			ui->activate->setCursor( Qt::PointingHandCursor );
 		}
 	}
 	else

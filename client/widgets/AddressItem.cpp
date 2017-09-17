@@ -28,11 +28,9 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent)
 , ui(new Ui::AddressItem)
 {
 	ui->setupUi(this);
-	QFont font = Styles::font(Styles::Regular, 14);
-	font.setWeight( QFont::DemiBold );
-	ui->name->setFont( font );
-	ui->code->setFont( Styles::font(Styles::Regular, 14) );
-	ui->idType->setFont( Styles::font(Styles::Regular, 11) );
+	ui->name->setFont( Styles::font( Styles::Regular, 14, QFont::DemiBold ) );
+	ui->code->setFont( Styles::font( Styles::Regular, 14 ) );
+	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
 }
 
 AddressItem::~AddressItem()

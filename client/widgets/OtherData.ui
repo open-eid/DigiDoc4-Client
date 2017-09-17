@@ -14,7 +14,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: white;</string>
+   <string notr="true">background-color: white;
+border: solid #DFE5E9;
+border-width: 1px 0px 0px 0px; </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -22,11 +24,15 @@
    </property>
    <item>
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">font-family: Open Sans;
-font-size: 13px;
-color: #000000;
-font-weight: 900;</string>
+      <string notr="true">border: none;
+color: #353739;</string>
      </property>
      <property name="text">
       <string>@eesti.ee post</string>
@@ -34,44 +40,50 @@ font-weight: 900;</string>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="btnCheckEMail">
+    <widget class="QPushButton" name="btnCheckEMail">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>262</width>
+       <width>267</width>
        <height>0</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>Roboto Condensed</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-padding: 6px 10px;
-border-radius: 3px;
-background-color: #006eb5;
-font-family: Open Sans;
-font-size: 13px;
-color: #ffffff;
-font-weight: 400;
+      <string notr="true">padding: 6px 9px;
+border: 1px;
+border-style: solid;
+border-radius: 2px;
+border-color: #006eb5;
+background-color: #ffffff;
+color: #006eb5;
 text-align: center;</string>
      </property>
      <property name="text">
-      <string>Kontrolli @eesti.ee e-posti staatust</string>
+      <string>KONTROLLI @EESTI.EE E-POSTI STAATUST</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="lblEMail">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: none;
-font-family: Open Sans;
-font-size: 13px;
-color: #000000;
-font-weight: 400;
-</string>
+color: #353739;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -103,13 +115,15 @@ font-weight: 400;
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="lblNoForwarding">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">border: none;
-font-family: Open Sans;
-font-size: 13px;
-color: #000000;
-</string>
+color: #353739;</string>
         </property>
         <property name="text">
          <string>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</string>
@@ -142,36 +156,37 @@ text-decoration: underline;
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="activate">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="QPushButton" name="activate">
         <property name="minimumSize">
          <size>
-          <width>210</width>
-          <height>30</height>
+          <width>150</width>
+          <height>0</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
-         <string notr="true">border: none;
-padding: 6px 10px;
-border-radius: 3px;
-background-color: #006eb5;
-font-family: Open Sans;
-font-size: 13px;
-color: #ffffff;
-font-weight: 400;
-line-height: 18px;
+         <string notr="true">padding: 6px 9px;
+border: 1px;
+border-style: solid;
+border-radius: 2px;
+border-color: #006eb5;
+background-color: #ffffff;
+color: #006eb5;
 text-align: center;</string>
         </property>
         <property name="text">
-         <string>Aktiveeri suunamine</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <string>AKTIVEERI SUUNAMINE</string>
         </property>
        </widget>
       </item>
@@ -192,14 +207,16 @@ text-align: center;</string>
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="labelEestiEe">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: none;
-font-family: Open Sans;
-font-size: 13px;
-color: #000000;
-font-weight: 400;
-</string>
+color: #75787B;</string>
      </property>
      <property name="text">
       <string>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&quot;www.eesti.ee&quot;&gt;&lt;span style='color: black; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</string>

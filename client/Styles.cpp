@@ -77,8 +77,16 @@ private:
 	QString semiBold;
 };
 
-QFont Styles::font(Styles::Font font, int size)
+QFont Styles::font( Styles::Font font, int size )
 {
 	static FontDatabase fontDatabase;
 	return fontDatabase.font(font, size);
+}
+
+QFont Styles::font( Styles::Font font, int size, QFont::Weight weight )
+{
+	QFont f = Styles::font(font, size);
+	f.setWeight( weight );
+
+	return f;
 }

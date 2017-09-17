@@ -37,7 +37,8 @@ public:
 		Regular
 	};
 
-	static QFont font(Font font, int size);
+	static QFont font( Font font, int size );
+	static QFont font( Font font, int size, QFont::Weight weight );
 
 private:
 	explicit Styles();

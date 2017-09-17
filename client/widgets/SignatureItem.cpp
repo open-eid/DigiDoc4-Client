@@ -9,9 +9,7 @@ SignatureItem::SignatureItem(ContainerState state, QWidget *parent)
 , ui(new Ui::SignatureItem)
 {
 	ui->setupUi(this);
-	QFont font = Styles::font(Styles::Regular, 14);
-	font.setWeight( QFont::DemiBold );
-	ui->name->setFont( font );
+	ui->name->setFont( Styles::font( Styles::Regular, 14, QFont::DemiBold ) );
 	ui->status->setFont( Styles::font(Styles::Regular, 14) );
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
 	// ui->signatureInfo->setTextFormat( Qt::RichText );

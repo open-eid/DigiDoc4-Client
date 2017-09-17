@@ -50,9 +50,7 @@ void ContainerPage::init()
 
 	QFont regular = Styles::font( Styles::Regular, 14 );
 	ui->warningText->setFont( regular );
-	QFont warnFont = Styles::font( Styles::Regular, 14 );
-	warnFont.setWeight( QFont::Bold );
-	ui->warningAction->setFont( warnFont );
+	ui->warningAction->setFont( Styles::font( Styles::Regular, 14, QFont::Bold ) );
 	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect();
 	shadow->setColor( QColor( 233, 200, 143 ) );
 	shadow->setXOffset( 4 );
