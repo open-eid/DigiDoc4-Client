@@ -298,7 +298,7 @@ border: none;</string>
          <number>0</number>
         </property>
         <property name="text">
-         <string>Konteiner</string>
+         <string>Konteiner:</string>
         </property>
        </widget>
       </item>
@@ -323,7 +323,7 @@ border: none;</string>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;
+         <string notr="true">color: #353739;
 text-decoration: underline solid;
 border: none;</string>
         </property>
@@ -358,13 +358,13 @@ border: none;</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>72</width>
           <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>85</width>
           <height>26</height>
          </size>
         </property>
@@ -388,10 +388,13 @@ border: none;</string>
          <string>MUUDA</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="margin">
+         <number>0</number>
         </property>
         <property name="indent">
-         <number>4</number>
+         <number>26</number>
         </property>
        </widget>
       </item>
@@ -492,13 +495,13 @@ border-width: 2px 2px 2px 2px; </string>
      <property name="minimumSize">
       <size>
        <width>914</width>
-       <height>44</height>
+       <height>40</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>44</height>
+       <height>40</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -736,7 +739,13 @@ border: none;</string>
         <property name="minimumSize">
          <size>
           <width>163</width>
-          <height>30</height>
+          <height>65</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>65</height>
          </size>
         </property>
         <property name="font">

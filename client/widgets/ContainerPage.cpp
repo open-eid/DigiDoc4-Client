@@ -61,7 +61,7 @@ void ContainerPage::init()
 	ui->containerFile->setFont( regular );
 	ui->changeLocation->setIcons( "/images/edit_dark.svg", "/images/edit_light.svg", 3, 3, 19, 19 );
 	ui->changeLocation->init( LabelButton::DeepCerulean | LabelButton::PorcelainBackground, "MUUDA", Actions::ContainerLocation );
-	ui->cancel->init( LabelButton::Mojo, "KATKESTA", Actions::ContainerCancel );
+	ui->cancel->init( LabelButton::Mojo, "← KATKESTA", Actions::ContainerCancel );
 	ui->encrypt->init( LabelButton::DeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
 	ui->navigateToContainer->init( LabelButton::DeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
 	ui->email->init( LabelButton::DeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );

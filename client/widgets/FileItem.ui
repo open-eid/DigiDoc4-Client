@@ -26,7 +26,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: solid #D9D9D8;
+   <string notr="true">border: solid rgba(217, 217, 216, 0.45);
 border-width: 0px 0px 2px 0px; 
 background-color: #ffffff; 
 color: #000000; 

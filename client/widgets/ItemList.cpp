@@ -67,8 +67,8 @@ QString ItemList::addLabel() const
 {
 	switch(itemType)
 	{
-	case File: return "+ Lisa veel faile";
-	case Address: return "+ Lisa adressaat";
+	case File: return "+ LISA VEEL FAILE";
+	case Address: return "+ LISA ADRESSAAT";
 	default: return "";
 	}
 }
@@ -107,7 +107,7 @@ void ItemList::init( ItemType item, const QString &header)
 	else
 	{
 		ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), itemType == File ? FileAdd : AddressAdd);
-		ui->add->setFont(Styles::font(Styles::OpenSansRegular, 13));
+		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
 }
 

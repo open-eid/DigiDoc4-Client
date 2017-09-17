@@ -29,6 +29,7 @@ class Styles
 {
 public:
 	enum Font {
+		Bold,
 		Condensed,
 		CondensedBold,
 		OpenSansRegular,

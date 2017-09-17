@@ -6,31 +6,43 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>40</height>
+    <width>465</width>
+    <height>44</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>460</width>
-    <height>40</height>
+    <width>417</width>
+    <height>44</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>40</height>
+    <height>44</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: 1px solid #c8c8c8;
-background-color: #fafafa;
-</string>
+   <string notr="true">border: solid rgba(217, 217, 216, 0.45);
+border-width: 0px 0px 2px 0px; 
+background-color: #ffffff; 
+color: #000000; 
+text-decoration: none solid rgb(0, 0, 0);</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -41,97 +53,261 @@ background-color: #fafafa;
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>6</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QLabel" name="signatureInfo">
      <property name="minimumSize">
       <size>
-       <width>400</width>
-       <height>38</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
+       <width>446</width>
        <height>38</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>
      </property>
-     <property name="text">
-      <string>&lt;b&gt;MARI MAASIKAS&lt;/b&gt;, 4840505123 (Sina ise)&lt;br/&gt;
-ID-Kaart</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>1</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QWidget" name="line1" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>446</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="name">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>MARI MAASIKAS MUSTIKAS  </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="code">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>100</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>48405050123 (Sina ise)</string>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="line2" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>446</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="idType">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>ID-kaart</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>1</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="LabelButton" name="remove">
+    <widget class="QToolButton" name="remove">
      <property name="minimumSize">
       <size>
-       <width>75</width>
-       <height>22</height>
+       <width>19</width>
+       <height>19</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>75</width>
-       <height>22</height>
-      </size>
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;</string>
+      <string notr="true">border: none; color: #363739;</string>
      </property>
      <property name="text">
-      <string>Eemalda</string>
+      <string/>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="icon">
+      <iconset>
+       <normalon>:/images/remove_dark.svg</normalon>
+      </iconset>
      </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+     <property name="iconSize">
       <size>
-       <width>9</width>
-       <height>20</height>
+       <width>15</width>
+       <height>15</height>
       </size>
      </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>LabelButton</class>
-   <extends>QLabel</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -28,9 +28,11 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent)
 , ui(new Ui::AddressItem)
 {
 	ui->setupUi(this);
-	ui->signatureInfo->setFont(Styles::font(Styles::OpenSansRegular, 13));
-	ui->remove->init(LabelButton::Mojo | LabelButton::AlabasterBackground, "Eemalda", SignatureRemove);
-	setStyleSheet("border: solid #c8c8c8; border-width: 1px 0px 1px 0px; background-color: #fafafa; color: #000000; text-decoration: none solid rgb(0, 0, 0);");
+	QFont font = Styles::font(Styles::Regular, 14);
+	font.setWeight( QFont::DemiBold );
+	ui->name->setFont( font );
+	ui->code->setFont( Styles::font(Styles::Regular, 14) );
+	ui->idType->setFont( Styles::font(Styles::Regular, 11) );
 }
 
 AddressItem::~AddressItem()

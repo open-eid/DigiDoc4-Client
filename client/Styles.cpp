@@ -32,6 +32,9 @@ class FontDatabase
 public:
 	FontDatabase()
 	{
+		bold = QFontDatabase::applicationFontFamilies(
+			QFontDatabase::addApplicationFont(":/fonts/Roboto-Bold.ttf")
+		).at(0);
 		condensed = QFontDatabase::applicationFontFamilies(
 			QFontDatabase::addApplicationFont(":/fonts/RobotoCondensed-Regular.ttf")
 		).at(0);
@@ -52,10 +55,11 @@ public:
 	{
 		switch( font )
 		{
-			case Styles::OpenSansRegular: return openSans;
-			case Styles::OpenSansSemiBold: return semiBold;
+			case Styles::Bold: return bold;
 			case Styles::Condensed: return condensed;
 			case Styles::CondensedBold: return condensedBold;
+			case Styles::OpenSansRegular: return openSans;
+			case Styles::OpenSansSemiBold: return semiBold;
 			default: return regular;
 		}
 	}
@@ -65,6 +69,7 @@ public:
 	};
 
 private:
+	QString bold;
 	QString condensed;
 	QString condensedBold;
 	QString openSans;

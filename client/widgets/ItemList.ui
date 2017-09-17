@@ -62,146 +62,41 @@ border-width: 2px 2px 2px 2px; </string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: solid #D9D9D8;
-border-width: 0px 2px 0px 0px; </string>
+border-width: 0px 1px 0px 0px; </string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>3</number>
+       <number>20</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>3</number>
+       <number>20</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>31</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="listHeader">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="QWidget" name="widget" native="true">
         <property name="minimumSize">
          <size>
-          <width>450</width>
-          <height>24</height>
+          <width>417</width>
+          <height>70</height>
          </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>20</pointsize>
-         </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: none; color: #041E42;</string>
+         <string notr="true">border: solid rgba(217, 217, 216, 0.45);
+border-width: 0px 0px 2px 0px;</string>
         </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="text">
-         <string>Kontaineri failid</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QWidget" name="barArea" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>2</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>2</height>
-         </size>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>2</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QWidget" name="bar" native="true">
+          <widget class="QLabel" name="listHeader">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -209,35 +104,34 @@ border-width: 0px 2px 0px 0px; </string>
            <property name="minimumSize">
             <size>
              <width>417</width>
-             <height>2</height>
+             <height>24</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>2</height>
+             <height>24</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>20</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">box-sizing: border-box; border: 1px solid #D9D9D8;</string>
+            <string notr="true">border: none; color: #041E42;</string>
+           </property>
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="text">
+            <string>Kontaineri failid</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>2</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </widget>
@@ -255,7 +149,7 @@ border-width: 0px 2px 0px 0px; </string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: 1px solid #D9D9D8;
-border-width: 0px 2px 0px 0px; </string>
+border-width: 0px 1px 0px 0px; </string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -280,8 +174,8 @@ border-width: 0px 2px 0px 0px; </string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>453</width>
-        <height>353</height>
+        <width>455</width>
+        <height>355</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -334,6 +228,12 @@ border-width: 0px 2px 0px 0px; </string>
              <height>22</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Roboto Condensed</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
@@ -344,7 +244,7 @@ border-width: 0px 2px 0px 0px; </string>
             <number>0</number>
            </property>
            <property name="text">
-            <string>&lt;a href=&quot;#add-files&quot; style=&quot;color: #006eb5; text-decoration: none solid rgb(0, 110, 181);&quot;&gt;+ Lisa veel faile&lt;/a&gt;</string>
+            <string>&lt;a href=&quot;#add-files&quot; style=&quot;color: #006eb5; text-decoration: none solid rgb(0, 110, 181);&quot;&gt;+ LISA VEEL FAILE&lt;/a&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
