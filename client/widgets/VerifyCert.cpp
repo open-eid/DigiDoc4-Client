@@ -1,5 +1,25 @@
+/*
+ * QDigiDoc4
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
 #include "VerifyCert.h"
 #include "ui_VerifyCert.h"
+#include "Styles.h"
 
 VerifyCert::VerifyCert(QWidget *parent) :
 	QWidget(parent),
@@ -7,11 +27,25 @@ VerifyCert::VerifyCert(QWidget *parent) :
 	isValid(false)
 {
 	ui->setupUi(this);
+
+	ui->name->setFont( Styles::font( Styles::Regular, 18 ) );
+	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
+	ui->error->setFont( Styles::font( Styles::Regular, 12, QFont::DemiBold ) );
+	QFont regular12 = Styles::font( Styles::Regular, 12 );
+	ui->forgotPinLink->setFont( regular12 );
+	ui->details->setFont( regular12 );
+	borders = " border: solid #DFE5E9; border-width: 1px 0px 0px 0px; ";
 }
 
 VerifyCert::~VerifyCert()
 {
 	delete ui;
+}
+
+void VerifyCert::addBorders()
+{
+	// Add top, right and left border shadows
+	borders = " border: solid #DFE5E9; border-width: 1px 1px 0px 1px; ";
 }
 
 void VerifyCert::update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgotPinText, const QString &detailsText, const QString &error)
@@ -20,8 +54,9 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 
 	if(isValid)
 	{
-		this->setStyleSheet("background-color: #ffffff;");
-		ui->statusIcon->setStyleSheet("image: url(:/images/ok.png);");
+		this->setStyleSheet("background-color: #ffffff;" + borders);
+		ui->verticalSpacerAboveBtn->changeSize( 20, 32 );
+		ui->verticalSpacerBelowBtn->changeSize( 20, 38 );
 		ui->changePIN->setStyleSheet(
 					"border: 1px solid #4a82f3;"
 					"padding: 6px 10px;"
@@ -37,12 +72,10 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 	else
 	{
 		this->setStyleSheet(
-					"border: 2px solid #e89c30;"
-					"background-color: #fcf5ea;" );
-		ui->statusIcon->setStyleSheet(
-					"border: none;"
-					"image: url(:/images/alert.png);"
-					);
+					"opacity: 0.25;"
+					"background-color: #FDF6E9;"  + borders );
+		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
+		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
 		ui->changePIN->setStyleSheet(
 					"border: 1px solid #53c964;"
 					"padding: 6px 10px;"
@@ -56,7 +89,15 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 					);
 	}
 
-	ui->name->setText(name);
+	if(isValid)
+	{
+		ui->name->setText(name);
+	}
+	else
+	{
+		ui->name->setTextFormat(Qt::RichText);
+		ui->name->setText(name + " <img src=\":/images/alert.png\" height=\"12\" width=\"13\">");
+	}
 	ui->validUntil->setText(validUntil);
 	ui->error->setVisible(!isValid);
 	ui->error->setText(error);
@@ -88,13 +129,13 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 void VerifyCert::enterEvent(QEvent * event)
 {
 	if(isValid)
-		this->setStyleSheet("background-color: #f7f7f7;");
+		this->setStyleSheet("background-color: #f7f7f7;" + borders);
 }
 
 void VerifyCert::leaveEvent(QEvent * event)
 {
 	if(isValid)
-		this->setStyleSheet("background-color: white;");
+		this->setStyleSheet("background-color: white;" + borders);
 }
 
 
