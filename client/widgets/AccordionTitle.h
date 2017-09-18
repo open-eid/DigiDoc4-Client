@@ -7,6 +7,8 @@
 #include <QPainter>
 #include <QSvgWidget>
 
+#include <memory>
+
 
 namespace Ui {
 class AccordionTitle;

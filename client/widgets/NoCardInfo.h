@@ -24,6 +24,9 @@
 #include <QSvgWidget>
 #include <QWidget>
 
+#include <memory>
+
+
 namespace Ui {
 class NoCardInfo;
 }

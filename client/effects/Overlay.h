@@ -38,8 +38,9 @@ protected:
         QPainter painter( this );
         painter.setRenderHint( QPainter::Antialiasing );
         // #858585 80%
-        painter.setBrush( QBrush( QColor(QRgba64::fromRgba(0x85, 0x85, 0x85, 0xff * 0.8)) ) );
-        painter.setPen( Qt::NoPen );
+		//painter.setBrush( QBrush( QColor( QColor::from(0x85, 0x85, 0x85, 0xff * 0.8)) ) );
+		painter.setBrush( QBrush( QColor( 0x85, 0x85, 0x85, (int)((double)0xff * 0.8) ) ) );
+		painter.setPen( Qt::NoPen );
         painter.drawRect( rect() );
     }
 };

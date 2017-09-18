@@ -27,6 +27,8 @@
 #include <QResizeEvent>
 #include <QWidget>
 #include <vector>
+#include <memory>
+
 
 namespace Ui {
 class ContainerPage;

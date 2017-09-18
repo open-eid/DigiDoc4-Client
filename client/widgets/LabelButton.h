@@ -22,6 +22,9 @@
 #include <QLabel>
 #include <QSvgWidget>
 
+#include <memory>
+
+
 // A label that acts as a button.
 // LabelButton switches foreground color with background when mouse hovers over it.
 class LabelButton : public QLabel
