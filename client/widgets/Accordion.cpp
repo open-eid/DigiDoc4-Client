@@ -30,6 +30,10 @@ void Accordion::init()
 	ui->pukBox->update(true,    "PUK kood",                     "PUK kood asub Teie kooodiümbrikus",          "Muuda PUK");
 
 	ui->contentOtherData->update(true);
+
+    connect(ui->authBox, &VerifyCert::changePinClicked, this, [this](){ emit authBoxChangePinClicked(); } );
+    connect(ui->signBox, &VerifyCert::changePinClicked, this, [this](){ emit signBoxChangePinClicked(); } );
+    connect(ui->pukBox, &VerifyCert::changePinClicked, this, [this](){ emit pukBoxChangePinClicked(); } );
 }
 
 void Accordion::closeOtherSection(AccordionTitle* opened)

@@ -37,6 +37,9 @@ public:
 	void update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML = "", const QString &details_HTML = "", const QString &error = "");
 	void addBorders();
 
+signals:
+    void changePinClicked();
+
 protected:
 	void paintEvent(QPaintEvent *) override;
 

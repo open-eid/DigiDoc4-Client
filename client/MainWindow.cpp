@@ -82,7 +82,16 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
 
 	ui->accordion->init();
+    connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
 }
+
+void MainWindow::signBoxChangePinClicked()
+{
+//    showWarning( "Will implemented soon" );
+
+    smartcard->pinUnblock(true);
+}
+
 
 MainWindow::~MainWindow()
 {
@@ -277,8 +286,8 @@ void MainWindow::showCardStatus()
 	{
 		ui->idSelector->hide();
 		ui->noCardInfo->show();
-		ui->noCardInfo->update( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
-		ui->noCardInfo->setAccessibleDescription( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+		ui->noCardInfo->update( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+		ui->noCardInfo->setAccessibleDescription( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
 		ui->infoStack->update(
 				"",
 				"",

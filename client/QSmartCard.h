@@ -133,6 +133,8 @@ public:
 	void reload();
 	ErrorType unblock( QSmartCardData::PinType type, const QString &pin, const QString &puk );
 
+    void pinUnblock(bool isPin2);
+
 signals:
 	void dataChanged();
 

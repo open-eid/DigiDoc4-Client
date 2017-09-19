@@ -22,6 +22,11 @@ public:
 	void init();
 	void closeOtherSection(AccordionTitle* opened);
 
+signals:
+    void authBoxChangePinClicked();
+    void signBoxChangePinClicked();
+    void pukBoxChangePinClicked();
+
 protected:
 	void paintEvent(QPaintEvent *) override;
 

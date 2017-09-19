@@ -35,6 +35,8 @@ VerifyCert::VerifyCert(QWidget *parent) :
 	ui->forgotPinLink->setFont( regular12 );
 	ui->details->setFont( regular12 );
 	borders = " border: solid #DFE5E9; border-width: 1px 0px 0px 0px; ";
+
+    connect(ui->changePIN, &QPushButton::clicked, this, [this](){ emit changePinClicked(); } );
 }
 
 VerifyCert::~VerifyCert()

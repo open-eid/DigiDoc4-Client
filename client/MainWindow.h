@@ -47,6 +47,8 @@ private Q_SLOTS:
     void buttonClicked( int button );
     void showCardStatus();
     void loadCardPhoto();
+    void signBoxChangePinClicked();
+
 
 private:
 	enum ButtonTypes
