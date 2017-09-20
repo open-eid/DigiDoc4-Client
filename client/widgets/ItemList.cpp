@@ -63,6 +63,15 @@ void ItemList::add(int code)
 	items.push_back(item);
 }
 
+
+void ItemList::addFile( const QString& file )
+{
+	StyledWidget *item = new FileItem( file, state );
+	ui->itemLayout->insertWidget(items.size(), item);
+	item->show();
+	items.push_back(item);
+}
+
 QString ItemList::addLabel() const
 {
 	switch(itemType)
@@ -95,7 +104,7 @@ void ItemList::clear()
 	}
 }
 
-void ItemList::init( ItemType item, const QString &header)
+void ItemList::init( ItemType item, const QString &header )
 {
 	itemType = item;
 	ui->listHeader->setText(header);
@@ -111,7 +120,7 @@ void ItemList::init( ItemType item, const QString &header)
 	}
 }
 
-void ItemList::stateChange(ContainerState state)
+void ItemList::stateChange( ContainerState state )
 {
 	this->state = state;
 	if (state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer) )

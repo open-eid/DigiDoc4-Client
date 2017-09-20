@@ -21,6 +21,9 @@
 #include "ui_FileItem.h"
 #include "Styles.h"
 
+#include <QDir>
+#include <QFileInfo>
+
 using namespace ria::qdigidoc4;
 
 FileItem::FileItem(ContainerState state, QWidget *parent)
@@ -30,6 +33,17 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
 	stateChange(state);
+}
+
+FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
+: FileItem( state, parent )
+{
+	const QFileInfo f( file );
+	// TODO check if file
+	// if( !f.isFile() ) return Other;
+
+	ui->fileName->setText( f.fileName() );
+	filePath = f.dir().path();
 }
 
 FileItem::~FileItem()

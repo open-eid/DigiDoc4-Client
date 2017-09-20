@@ -24,6 +24,7 @@
 #include "Styles.h"
 #include "XmlReader.h"
 #include "effects/FadeInNotification.h"
+#include "util/FileUtil.h"
 
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
@@ -65,6 +66,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
 
+	setAcceptDrops(true);
 	smartcard = new QSmartCard( this );
 	smartcard->start();
 
@@ -102,12 +104,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::pageSelected( PageIcon *const page )
 {
-	ui->rightShadow->raise();
-	for( auto pageIcon: { ui->signature, ui->crypto, ui->myEid } )
-	{
-		pageIcon->activate( pageIcon == page );
-	}
-
+	selectPageIcon( page );
 	navigateToPage( page->getType() );
 }
 
@@ -146,6 +143,60 @@ void MainWindow::cachePicture( const QString &id, const QImage &image )
 	settings.setValue( "imageCache", images );
 }
 
+void MainWindow::clearOverlay()
+{
+	overlay->close();
+	overlay.reset( nullptr );
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+	qDebug() << event->mimeData();
+	event->acceptProposedAction();
+
+	showOverlay(this);
+}
+
+void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
+{
+	qDebug() << "Drag left";
+	event->accept();
+
+	clearOverlay();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+	const QMimeData *mimeData = event->mimeData();
+	QStringList files;
+	qDebug() << "Dropped!";
+
+	if (mimeData->hasUrls()) 
+	{
+		qDebug() << "Dropped urls";
+		for( auto url: mimeData->urls())
+		{
+			if (url.scheme() == "file" )
+			{
+				qDebug() << url.toLocalFile();
+				files << url.toLocalFile();
+			}
+			
+		}
+	} 
+	else
+	{
+		showWarning( "Unrecognized data" );
+	}
+	event->acceptProposedAction();
+	clearOverlay();
+
+	if( !files.isEmpty() )
+	{
+		openFiles( files );
+	}
+}
+
 void MainWindow::loadCachedPicture( const QString &id )
 {
 	Settings settings;
@@ -160,18 +211,34 @@ void MainWindow::loadCachedPicture( const QString &id )
 	}
 }
 
-void MainWindow::navigateToPage( Pages page )
+void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
 {
 	ui->startScreen->setCurrentIndex(page);
-
-	if( page == SignDetails || page == SignIntro )
-	{
-		ui->signContainerPage->transition(ContainerState::UnsignedContainer);
-	}
-	else if( page == CryptoDetails || page == CryptoIntro )
-	{
-		ui->cryptoContainerPage->transition(ContainerState::UnencryptedContainer);
-	}
+    
+    if( page == SignDetails)
+    {
+        if( create )
+        {
+            ui->signContainerPage->transition( ContainerState::UnsignedContainer, files );
+        }
+        else
+        {
+            ui->signContainerPage->transition( ContainerState::SignedContainer );
+            if( !files.isEmpty() ) ui->signContainerPage->setContainer( files[0] );
+        }
+    }
+    else if( page == CryptoDetails)
+    {
+        if( create )
+        {
+            ui->cryptoContainerPage->transition( ContainerState::UnencryptedContainer, files );
+        }
+        else
+        {
+            ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
+            if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( files[0] );
+        }
+    }
 }
 
 void MainWindow::onSignAction( int action )
@@ -209,6 +276,71 @@ void MainWindow::onCryptoAction( int action )
 	else if( action == FileRemove )
 	{
 
+	}
+}
+
+void MainWindow::openFiles( const QStringList files )
+{
+/*
+	1. If containers are not open:
+	1.1 If one file and known filetype
+			- Open either
+				-- signed (sign. container)
+				-- or encrypted (crypto container)
+	1.2 else (Unknown type/multiple files):
+			- If on encrypt page, open encryption view
+			- else open signing view
+
+	2. If container open:
+	2.1 if UnsignedContainer | UnsignedSavedContainer
+		- Add file to files to be signed
+	2.2 else If UnencryptedContainer
+		- Add file to files to be encrypted
+	2.3 else if SignedContainer
+		- ask if should be added or handle open
+	2.4 else if EncryptedContainer || DecryptedContainer
+			- ask if should be closed and handle open 
+*/
+	auto current = ui->startScreen->currentIndex();
+	Pages page = SignDetails;
+	bool create = true;
+	if( current != SignDetails && current != CryptoDetails )
+	{
+		if( files.size() == 1 )
+		{
+			auto fileType = FileUtil::detect( files[0] );
+			if( fileType == CryptoContainer )
+			{
+				page = CryptoDetails;
+				create = false;
+			}
+			else if( fileType == SignatureContainer )
+			{
+				page = SignDetails;
+				create = false;
+			}
+			else if( current == CryptoIntro )
+			{
+				page = CryptoDetails;
+			}
+		}
+	}
+    else
+    {
+        // TODO (2.)
+        page = current == CryptoIntro ? CryptoIntro : SignIntro;
+    }
+
+	selectPageIcon( page == CryptoDetails ? ui->crypto : ui->signature );
+	navigateToPage( page, files, create );
+}
+
+void MainWindow::selectPageIcon( PageIcon* page )
+{
+	ui->rightShadow->raise();
+	for( auto pageIcon: { ui->signature, ui->crypto, ui->myEid } )
+	{
+		pageIcon->activate( pageIcon == page );
 	}
 }
 
@@ -423,6 +555,12 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 		return QByteArray();
 	}
 	return buffer;
+}
+
+void MainWindow::showOverlay( QWidget *parent )
+{
+	overlay.reset( new Overlay(parent) );
+	overlay->show();
 }
 
 bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )

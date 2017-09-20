@@ -21,12 +21,16 @@
 #include "ui_ContainerPage.h"
 #include "Styles.h"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QGraphicsDropShadowEffect>
 
 using namespace ria::qdigidoc4;
 
+
 #define ACTION_WIDTH 200
 #define ACTION_HEIGHT 65
+
 
 ContainerPage::ContainerPage( QWidget *parent ) :
 	QWidget( parent ),
@@ -43,9 +47,6 @@ ContainerPage::~ContainerPage()
 
 void ContainerPage::init()
 {
-	static const QString style = "QLabel { padding: 6px 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; background-color: %1; color: #ffffff; border: none; text-decoration: none solid; }";
-	static const QString link = "<a href=\"#mainAction\" style=\"background-color: %1; color: #ffffff; text-decoration: none solid;\">Allkirjasta ID-Kaardiga</a>";
-	
 	ui->leftPane->init( ItemList::File, "Kontaineri failid" );
 
 	QFont regular = Styles::font( Styles::Regular, 14 );
@@ -71,7 +72,15 @@ void ContainerPage::init()
 	connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
 }
 
-void ContainerPage::transition( ContainerState state )
+void ContainerPage::initContainer( const QString &file, const QString &suffix )
+{
+	const QFileInfo f( file );
+	if( !f.isFile() ) return;
+
+	ui->containerFile->setText( f.dir().path() + QDir::separator() + f.completeBaseName() + suffix );
+}
+
+void ContainerPage::transition( ContainerState state, const QStringList &files )
 {
 	ui->leftPane->stateChange( state );
 	ui->rightPane->stateChange( state );
@@ -81,6 +90,7 @@ void ContainerPage::transition( ContainerState state )
 	case UnsignedContainer:
 		ui->leftPane->clear();
 		ui->rightPane->clear();
+		if( !files.isEmpty() ) initContainer( files[0], ".bdoc" );
 		hideRightPane();
 		ui->leftPane->init( ItemList::File, "Allkirjastamiseks valitud failid" );
 		showMainAction( SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA" );
@@ -92,6 +102,7 @@ void ContainerPage::transition( ContainerState state )
 	case SignedContainer:
 		ui->leftPane->init( ItemList::File, "Kontaineri failid" );
 		showRightPane( ItemList::Signature, "Kontaineri allkirjad" );
+		ui->rightPane->clear();
 		ui->rightPane->add( SignatureAdd );
 		hideMainAction();
 		hideButtons( { ui->cancel, ui->save } );
@@ -100,6 +111,7 @@ void ContainerPage::transition( ContainerState state )
 	case UnencryptedContainer:
 		ui->leftPane->clear();
 		ui->rightPane->clear();
+		if( !files.isEmpty() ) initContainer( files[0], ".cdoc" );
 		ui->leftPane->init( ItemList::File, "Krüpteerimiseks valitud failid" );
 		showRightPane( ItemList::Address, "Adressaadid" );
 		showMainAction( EncryptContainer, "KRÜPTEERI" );
@@ -108,6 +120,7 @@ void ContainerPage::transition( ContainerState state )
 		break;
 	case EncryptedContainer:
 		ui->leftPane->init( ItemList::File, "Krüpteeritud failid" );
+		ui->rightPane->clear();
 		showRightPane( ItemList::Address, "Adressaadid" );
 		hideMainAction();
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
@@ -115,6 +128,11 @@ void ContainerPage::transition( ContainerState state )
 		break;
 	case DecryptedContainer:
 		break;
+	}
+
+	for( auto file: files )
+	{
+		ui->leftPane->addFile( file );
 	}
 }
 
@@ -140,6 +158,15 @@ void ContainerPage::hideRightPane()
 void ContainerPage::hideWarningArea()
 {
 	ui->warning->hide();
+}
+
+void ContainerPage::setContainer( const QString &file )
+{
+	const QFileInfo f( file );
+	// TODO check if file
+	// if( !f.isFile() ) return Other;
+
+	ui->containerFile->setText( file );
 }
 
 void ContainerPage::showButtons( std::vector<QWidget*> buttons )

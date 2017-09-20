@@ -22,12 +22,14 @@
 #include "common_enums.h"
 #include "QSmartCard.h"
 #include "sslConnect.h"
+#include "effects/Overlay.h"
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
 
 #include <QButtonGroup>
 #include <QImage>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QWidget>
 
 namespace Ui {
@@ -50,6 +52,11 @@ private Q_SLOTS:
 	void getEmailStatus();
 	void activateEmail ();
 	void signBoxChangePinClicked();
+
+protected:
+	void dragEnterEvent( QDragEnterEvent *event ) override;
+	void dragLeaveEvent( QDragLeaveEvent *event ) override;
+	void dropEvent( QDropEvent *event ) override;
 
 private:
 	enum ButtonTypes
@@ -93,18 +100,23 @@ private:
 
 	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
 	void cachePicture( const QString &id, const QImage &image );
+	void clearOverlay();
 	void loadCachedPicture( const QString &id );
 	void loadPicture();
-	void navigateToPage( ria::qdigidoc4::Pages page );
+    void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction( int code );
 	void onSignAction( int code );
+	void openFiles( const QStringList files );
+	void selectPageIcon( PageIcon* page );
+	void showOverlay( QWidget *parent );
 	void showWarning( const QString &msg );
 	void showWarning( const QString &msg, const QString &details );
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
-    
+
 	Ui::MainWindow *ui;
 
+	std::unique_ptr<Overlay> overlay;
 	QSmartCard *smartcard = nullptr;
 	QButtonGroup *buttonGroup = nullptr;
 };

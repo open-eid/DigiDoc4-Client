@@ -27,14 +27,16 @@ class FileItem;
 
 class FileItem : public StyledWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit FileItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
-    ~FileItem();
+	explicit FileItem( ria::qdigidoc4::ContainerState state, QWidget *parent = 0 );
+	explicit FileItem( const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = 0 );
+	~FileItem();
 
-    void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void stateChange(ria::qdigidoc4::ContainerState state) override;
 
 private:
-    Ui::FileItem *ui;
+	Ui::FileItem *ui;
+	QString filePath;
 };

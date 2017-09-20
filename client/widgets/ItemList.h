@@ -44,6 +44,7 @@ public:
 
 	void init(ItemType itemType, const QString &header);
 	void add(int code);
+	void addFile( const QString& file );
 	void clear();
 	void stateChange(ria::qdigidoc4::ContainerState state);
 

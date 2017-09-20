@@ -42,9 +42,10 @@ public:
 	explicit ContainerPage( QWidget *parent = 0 );
 	~ContainerPage();
 
-	void transition( ria::qdigidoc4::ContainerState state );
+	void transition( ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList() );
 	void showWarningText( const QString &text, const QString &link );
 	void hideWarningArea();
+	void setContainer( const QString &file );
 
 signals:
 	void action( int code );
@@ -55,6 +56,7 @@ protected:
 
 private:
 	void init();
+	void initContainer( const QString &file, const QString &suffix );
 	void hideButtons( std::vector<QWidget*> buttons );
 	void hideMainAction();
 	void hideRightPane();

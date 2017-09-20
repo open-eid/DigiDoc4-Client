@@ -48,6 +48,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/PinPopup.cpp
 	dialogs/PinUnblock.cpp
 	effects/FadeInNotification.cpp
+	util/FileUtil.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
 	widgets/AddressItem.cpp

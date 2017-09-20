@@ -56,6 +56,12 @@ enum Actions {
     SignatureRemove
 };
 
+enum FileType {
+    SignatureContainer,
+    CryptoContainer,
+    Other
+};
+
 enum Pages {
     SignIntro,
     SignDetails,
