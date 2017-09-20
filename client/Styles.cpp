@@ -21,10 +21,11 @@
 
 #include <QFontDatabase>
 
-#ifdef Q_OS_MAC
-   #define FONT_SIZE_DECREASE 0
-#else
-   #define FONT_SIZE_DECREASE 4 // https://forum.qt.io/topic/26663/different-os-s-different-font-sizes/3
+#ifndef Q_OS_MAC
+	// https://forum.qt.io/topic/26663/different-os-s-different-font-sizes/3
+	#define FONT_SIZE_DECREASE_SMALL 3 
+	#define FONT_SIZE_DECREASE_LARGE 4
+	#define FONT_DECREASE_CUTOFF 12
 #endif
 
 class FontDatabase
@@ -63,9 +64,14 @@ public:
 			default: return regular;
 		}
 	}
-	QFont font(Styles::Font font, int size)
+	QFont font( Styles::Font font, int size )
 	{
-		return QFont( fontName( font ), size - FONT_SIZE_DECREASE );
+#ifdef Q_OS_MAC
+		return QFont(fontName(font), size);
+#else
+		int decrease = size > FONT_DECREASE_CUTOFF ? FONT_SIZE_DECREASE_LARGE : FONT_SIZE_DECREASE_SMALL;
+		return QFont( fontName( font ), size - decrease );
+#endif
 	};
 
 private:
@@ -80,13 +86,16 @@ private:
 QFont Styles::font( Styles::Font font, int size )
 {
 	static FontDatabase fontDatabase;
-	return fontDatabase.font(font, size);
+	return fontDatabase.font( font, size );
 }
 
 QFont Styles::font( Styles::Font font, int size, QFont::Weight weight )
 {
-	QFont f = Styles::font(font, size);
+	QFont f = Styles::font( font, size );
 	f.setWeight( weight );
-
+#ifdef Q_OS_WIN
+	// to make the bold fonts look more nice on Windows: "avoid subpixel antialiasing on the fonts if possible"
+	f.setStyleStrategy(QFont::NoSubpixelAntialias);
+#endif
 	return f;
 }

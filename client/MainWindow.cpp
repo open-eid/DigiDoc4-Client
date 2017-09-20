@@ -21,7 +21,6 @@
 #include "ui_MainWindow.h"
 #include "Application.h"
 #include "QSigner.h"
-#include "sslConnect.h"
 #include "Styles.h"
 #include "XmlReader.h"
 #include "effects/FadeInNotification.h"
@@ -70,18 +69,19 @@ MainWindow::MainWindow( QWidget *parent ) :
 	smartcard->start();
 
 	showCardStatus();
-	
+	ui->accordion->init();
+
 	connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
+	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
+	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
 	connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
 	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
 
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
-
-	ui->accordion->init();
 }
 
 MainWindow::~MainWindow()
@@ -203,11 +203,6 @@ void MainWindow::onCryptoAction( int action )
 	}
 }
 
-void MainWindow::loadCardPhoto ()
-{
-	loadPicture();
-}
-
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
@@ -216,6 +211,7 @@ void MainWindow::showCardStatus()
 	if( !t.isNull() )
 	{
 		ui->idSelector->show();
+        ui->accordion->show();
 		ui->noCardInfo->hide();
 		QStringList firstName = QStringList()
 			<< t.data( QSmartCardData::FirstName1 ).toString()
@@ -259,49 +255,15 @@ void MainWindow::showCardStatus()
 	}
 	else if( !t.card().isEmpty() )
 	{
-		ui->idSelector->hide();
-		ui->noCardInfo->hide();
-		ui->cardInfo->update( "", "", "Loading data" );
-		ui->cardInfo->setAccessibleDescription( "Loading data" );
-		ui->infoStack->update(
-				"",
-				"",
-				"",
-				"",
-				"",
-				"");
-		ui->infoStack->clearPicture();
-		Application::setOverrideCursor( Qt::BusyCursor );
+		noReader_NoCard_Loading_Event( "Loading data", true );
 	}
 	else if( t.card().isEmpty() && !t.readers().isEmpty() )
 	{
-		ui->idSelector->hide();
-		ui->noCardInfo->show();
-		ui->noCardInfo->update( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
-		ui->noCardInfo->setAccessibleDescription( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
-		ui->infoStack->update(
-				"",
-				"",
-				"",
-				"",
-				"",
-				"");
-		ui->infoStack->clearPicture();
+		noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
 	}
 	else
 	{
-		ui->idSelector->hide();
-		ui->noCardInfo->show();
-		ui->noCardInfo->update( "No readers found" );
-		ui->noCardInfo->setAccessibleDescription( "No readers found" );
-		ui->infoStack->update(
-				"",
-				"",
-				"",
-				"",
-				"",
-				"");
-		ui->infoStack->clearPicture();
+		noReader_NoCard_Loading_Event( "No readers found" );
 	}
 
 	// Combo box to select the cards from
@@ -313,34 +275,40 @@ void MainWindow::showCardStatus()
 */
 }
 
-// Loads picture 
-// Somehow in Win environment it seems does not load correct data, so picture is not shown. Oleg.
-void MainWindow::loadPicture()
+void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoading )
 {
-	SSLConnect::RequestType type = SSLConnect::PictureInfo;
-	
-	if( !validateCardError( QSmartCardData::Pin1Type, type, smartcard->login( QSmartCardData::Pin1Type ) ) )
-		return;
-
-	const QString &param = QString();
-	SSLConnect ssl;
-	ssl.setToken( smartcard->data().authCert(), smartcard->key() );
-	QByteArray buffer = ssl.getUrl( type, param );
-	smartcard->logout();
-
- //	updateData();
-	if( !ssl.errorString().isEmpty() )
+	ui->idSelector->hide();
+	if( !isLoading )
 	{
-		switch( type )
-		{
-		case SSLConnect::ActivateEmails: showWarning( "Failed activating email forwards.", ssl.errorString() ); break;
-		case SSLConnect::EmailInfo: showWarning( "Failed loading email settings.", ssl.errorString() ); break;
-		case SSLConnect::MobileInfo: showWarning( "Failed loading Mobiil-ID settings.", ssl.errorString() ); break;
-		case SSLConnect::PictureInfo: showWarning( "Loading picture failed.", ssl.errorString() ); break;
-		default: showWarning( "Failed to load data", ssl.errorString() ); break;
-		}
-		return ;
+		ui->noCardInfo->show();
+		ui->noCardInfo->update( text );
+		ui->noCardInfo->setAccessibleDescription( text );
 	}
+    else
+	{
+		ui->noCardInfo->hide();
+		ui->cardInfo->update( "", "", text );
+		ui->cardInfo->setAccessibleDescription( text );
+		Application::setOverrideCursor( Qt::BusyCursor );
+	}
+	ui->infoStack->update(
+				"",
+				"",
+				"",
+				"",
+				"",
+				"");
+	ui->cardInfo->clearPicture();
+	ui->infoStack->clearPicture();
+	ui->accordion->hide();
+	ui->accordion->updateOtherData( false );
+}
+
+// Loads picture 
+void MainWindow::loadCardPhoto ()
+{
+	QByteArray buffer = sendRequest( SSLConnect::PictureInfo );
+
 	if( buffer.isEmpty() )
 		return;
 
@@ -359,6 +327,93 @@ void MainWindow::loadPicture()
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
+}
+
+void MainWindow::getEmailStatus ()
+{
+	QByteArray buffer = sendRequest( SSLConnect::EmailInfo );
+
+	if( buffer.isEmpty() )
+		return;
+
+	XmlReader xml( buffer );
+	QString error;
+	QMultiHash<QString,QPair<QString,bool> > emails = xml.readEmailStatus( error );
+	quint8 code = error.toUInt();
+	if( emails.isEmpty() || code > 0 )
+	{
+		code = code ? code : 20;
+		if( code == 20 )
+			ui->accordion->updateOtherData( true, XmlReader::emailErr( code ), code );
+        else
+			ui->accordion->updateOtherData( false, XmlReader::emailErr( code ), code );
+	}
+	else
+	{
+		QStringList text;
+		for( Emails::const_iterator i = emails.constBegin(); i != emails.constEnd(); ++i )
+		{
+			text << QString( "%1 - %2 (%3)" )
+				.arg( i.key() )
+				.arg( i.value().first )
+				.arg( i.value().second ? tr("active") : tr("not active") );
+		}
+		ui->accordion->updateOtherData( false, text.join("<br />") );
+	}
+}
+
+void MainWindow::activateEmail ()
+{
+	QString eMail = ui->accordion->getEmail();
+	if( eMail.isEmpty() )
+	{
+		showWarning( tr("E-mail address missing or invalid!") );
+        ui->accordion->setFocusToEmail();
+		return;
+	}
+	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
+	if( buffer.isEmpty() )
+		return;
+	XmlReader xml( buffer );
+	QString error;
+	xml.readEmailStatus( error );
+	ui->accordion->updateOtherData( false, XmlReader::emailErr( error.toUInt() ) );
+	return;
+}
+
+QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
+{
+/*
+	switch( type )
+	{
+	case SSLConnect::ActivateEmails: showLoading(  tr("Activating email settings") ); break;
+	case SSLConnect::EmailInfo: showLoading( tr("Loading email settings") ); break;
+	case SSLConnect::MobileInfo: showLoading( tr("Requesting Mobiil-ID status") ); break;
+	case SSLConnect::PictureInfo: showLoading( tr("Loading picture") ); break;
+	default: showLoading( tr( "Loading data" ) ); break;
+	}
+*/
+	if( !validateCardError( QSmartCardData::Pin1Type, type, smartcard->login( QSmartCardData::Pin1Type ) ) )
+		return QByteArray();
+
+	SSLConnect ssl;
+	ssl.setToken( smartcard->data().authCert(), smartcard->key() );
+	QByteArray buffer = ssl.getUrl( type, param );
+	smartcard->logout();
+//	updateData();
+	if( !ssl.errorString().isEmpty() )
+	{
+		switch( type )
+		{
+		case SSLConnect::ActivateEmails: showWarning( tr("Failed activating email forwards."), ssl.errorString() ); break;
+		case SSLConnect::EmailInfo: showWarning( tr("Failed loading email settings."), ssl.errorString() ); break;
+		case SSLConnect::MobileInfo: showWarning( tr("Failed loading Mobiil-ID settings."), ssl.errorString() ); break;
+		case SSLConnect::PictureInfo: showWarning( tr("Loading picture failed."), ssl.errorString() ); break;
+		default: showWarning( tr("Failed to load data"), ssl.errorString() ); break;
+		}
+		return QByteArray();
+	}
+	return buffer;
 }
 
 bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )

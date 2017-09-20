@@ -48,11 +48,16 @@ CardInfo::~CardInfo()
 	delete ui;
 }
 
+void CardInfo::clearPicture()
+{
+	ui->cardPhoto->clear();
+}
+
 void CardInfo::update( const QString &name, const QString &code, const QString &status )
 {
-	ui->cardName->setText( name);
-	ui->cardCode->setText( code + "   |");
-	ui->cardStatus->setText( status);
+	ui->cardName->setText( name );
+	ui->cardCode->setText( code + "   |" );
+	ui->cardStatus->setText( status );
 }
 
 void CardInfo::showPicture( const QPixmap &pix )

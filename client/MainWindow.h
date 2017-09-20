@@ -17,11 +17,11 @@
  *
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include "common_enums.h"
 #include "QSmartCard.h"
+#include "sslConnect.h"
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
 
@@ -36,17 +36,19 @@ class MainWindow;
 
 class MainWindow : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit MainWindow( QWidget *parent = 0 );
-    ~MainWindow();
+	explicit MainWindow( QWidget *parent = 0 );
+	~MainWindow();
 
 private Q_SLOTS:
 	void pageSelected( PageIcon *const );
-    void buttonClicked( int button );
-    void showCardStatus();
-    void loadCardPhoto();
+	void buttonClicked( int button );
+	void showCardStatus();
+	void loadCardPhoto();
+	void getEmailStatus();
+	void activateEmail ();
 
 private:
 	enum ButtonTypes
@@ -88,21 +90,20 @@ private:
 		PagePukChange = 0x17
 	};
 
+	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
 	void cachePicture( const QString &id, const QImage &image );
 	void loadCachedPicture( const QString &id );
-    void loadPicture();
-    void navigateToPage( ria::qdigidoc4::Pages page );
-    void onCryptoAction( int code );
-    void onSignAction( int code );
-    void showWarning( const QString &msg );
-    void showWarning( const QString &msg, const QString &details );
-    bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
+	void loadPicture();
+	void navigateToPage( ria::qdigidoc4::Pages page );
+	void onCryptoAction( int code );
+	void onSignAction( int code );
+	void showWarning( const QString &msg );
+	void showWarning( const QString &msg, const QString &details );
+	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
+	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
     
-    Ui::MainWindow *ui;
+	Ui::MainWindow *ui;
 
 	QSmartCard *smartcard = nullptr;
-   	QButtonGroup *buttonGroup = nullptr;
+	QButtonGroup *buttonGroup = nullptr;
 };
-
-#endif // MAINWINDOW_H
-

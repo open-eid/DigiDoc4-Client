@@ -17,8 +17,7 @@
  *
  */
 
-#ifndef CARDINFO_H
-#define CARDINFO_H
+#pragma once
 
 #include <QFont>
 #include <QSvgWidget>
@@ -38,6 +37,7 @@ public:
     explicit CardInfo( QWidget *parent = 0 );
     ~CardInfo();
 
+	void clearPicture();
     void showPicture( const QPixmap &pix );
     void update( const QString &name, const QString &code, const QString &status );
 
@@ -51,5 +51,3 @@ private:
     Ui::CardInfo *ui;
     std::unique_ptr<QSvgWidget> cardIcon;
 };
-
-#endif // CARDINFO_H

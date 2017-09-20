@@ -27,7 +27,6 @@ const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color:
 LabelButton::LabelButton( QWidget *parent )
 : QLabel( parent )
 {
-    setFont(Styles::font(Styles::Condensed, 11));
 }
 
 void LabelButton::init( int code )
@@ -46,6 +45,7 @@ void LabelButton::init( int style, const QString &label, int code )
     hoverStyle = styleTemplate.arg( fgColor, bgColor );
     normal();
     setText( label );
+	setFont( Styles::font( Styles::Condensed, 12 ) );
 }
 
 void LabelButton::setStyles( const QString &nStyle, const QString &nLink, const QString &hStyle, const QString &hLink )
