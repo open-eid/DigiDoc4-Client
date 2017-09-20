@@ -17,8 +17,7 @@
  *
  */
 
-#ifndef ITEMLIST_H
-#define ITEMLIST_H
+#pragma once
 
 #include "common_enums.h"
 #include "widgets/StyledWidget.h"
@@ -57,5 +56,3 @@ private:
 	ItemType itemType;
 	std::vector<StyledWidget*> items;
 };
-
-#endif // ITEMLIST_H

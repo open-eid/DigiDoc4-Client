@@ -17,8 +17,7 @@
  *
  */
 
-#ifndef INFOSTACK_H
-#define INFOSTACK_H
+#pragma once
 
 #include "widgets/StyledWidget.h"
 
@@ -48,5 +47,3 @@ protected:
 private:
 	Ui::InfoStack *ui;
 };
-
-#endif // INFOSTACK_H

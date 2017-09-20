@@ -17,8 +17,7 @@
  *
  */
 
-#ifndef CARDINFO_H
-#define CARDINFO_H
+#pragma once
 
 #include <QFont>
 #include <QSvgWidget>
@@ -51,5 +50,3 @@ private:
     Ui::CardInfo *ui;
     std::unique_ptr<QSvgWidget> cardIcon;
 };
-
-#endif // CARDINFO_H
