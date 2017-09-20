@@ -35,6 +35,8 @@ public:
     PinUnblock(QWidget *parent, PinDialog::PinFlags flags);
     ~PinUnblock();
 
+    int exec() override;
+
 private:
     void init(PinDialog::PinFlags flags);
     void setUnblockEnabled();

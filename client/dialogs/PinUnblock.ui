@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>381</height>
+    <width>460</width>
+    <height>440</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,21 +18,21 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>557</width>
-    <height>381</height>
+    <width>460</width>
+    <height>440</height>
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: 1px solid #5e5e5e;
-background-color: #e8e8e8;</string>
+   <string notr="true">border-radius: 2px;
+background-color: #FFFFFF;</string>
   </property>
   <widget class="QPushButton" name="cancel">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>336</y>
-     <width>130</width>
-     <height>30</height>
+     <x>90</x>
+     <y>376</y>
+     <width>120</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -42,39 +42,43 @@ background-color: #e8e8e8;</string>
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">padding: 6px 10px;
-border-radius: 3px;
-background-color: #c53e3e;
-font-family: Open Sans;
+    <string notr="true">border-radius: 2px;
+background-color: #981E32;
+font-family: Roboto Condensed;
 font-size: 14px;
-color: #ffffff;
-font-weight: 400;
-text-align: center;</string>
+color: #ffffff;</string>
    </property>
    <property name="text">
-    <string>Katkesta</string>
+    <string>KATKESTA</string>
    </property>
   </widget>
   <widget class="QPushButton" name="unblock">
    <property name="geometry">
     <rect>
-     <x>299</x>
-     <y>336</y>
-     <width>130</width>
-     <height>30</height>
+     <x>250</x>
+     <y>376</y>
+     <width>120</width>
+     <height>34</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 2px;
+background-color: #006EB5;
+font-family: Roboto Condensed;
+font-size: 12px;
+color: #ffffff;</string>
+   </property>
    <property name="text">
-    <string>Blokeeri lahti</string>
+    <string>BLOKEERI LAHTI</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelNameId">
    <property name="geometry">
     <rect>
-     <x>175</x>
-     <y>16</y>
-     <width>208</width>
-     <height>17</height>
+     <x>123</x>
+     <y>20</y>
+     <width>215</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -89,24 +93,24 @@ text-align: center;</string>
    <property name="text">
     <string>TextLabel</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>15</x>
-     <y>46</y>
-     <width>528</width>
-     <height>80</height>
+     <x>20</x>
+     <y>64</y>
+     <width>420</width>
+     <height>96</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">border: none;
-font-family: Arial;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
-line-height: 16px;
-</string>
+color: #353739;
+font-family: Roboto;	
+font-size: 14px;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -115,9 +119,9 @@ line-height: 16px;
   <widget class="QWidget" name="widgetLabelPuk" native="true">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>138</y>
-     <width>300</width>
+     <x>91</x>
+     <y>186</y>
+     <width>279</width>
      <height>16</height>
     </rect>
    </property>
@@ -143,14 +147,12 @@ line-height: 16px;
     <item>
      <widget class="QLabel" name="labelPuk">
       <property name="styleSheet">
-       <string notr="true">font-family: Arial;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
-line-height: 16px;</string>
+       <string notr="true">color: #353739;
+font-family: Roboto Condensed;
+font-size: 12px;</string>
       </property>
       <property name="text">
-       <string>Kehtiv PUK kood</string>
+       <string>KEHTIV PUK KOOD</string>
       </property>
      </widget>
     </item>
@@ -188,10 +190,10 @@ line-height: 16px;</string>
   <widget class="QLineEdit" name="puk">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>156</y>
-     <width>300</width>
-     <height>30</height>
+     <x>91</x>
+     <y>202</y>
+     <width>279</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -207,13 +209,16 @@ line-height: 14px;</string>
    <property name="text">
     <string/>
    </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
   </widget>
   <widget class="QWidget" name="widgetLabelPin" native="true">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>200</y>
-     <width>300</width>
+     <x>91</x>
+     <y>246</y>
+     <width>279</width>
      <height>16</height>
     </rect>
    </property>
@@ -239,11 +244,9 @@ line-height: 14px;</string>
     <item>
      <widget class="QLabel" name="labelPin">
       <property name="styleSheet">
-       <string notr="true">font-family: Arial;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
-line-height: 16px;</string>
+       <string notr="true">color: #353739;
+font-family: Roboto Condensed;
+font-size: 12px;</string>
       </property>
       <property name="text">
        <string>pin</string>
@@ -284,10 +287,10 @@ line-height: 16px;</string>
   <widget class="QLineEdit" name="pin">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>218</y>
-     <width>300</width>
-     <height>30</height>
+     <x>91</x>
+     <y>262</y>
+     <width>279</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -307,9 +310,9 @@ line-height: 14px;</string>
   <widget class="QWidget" name="widgetLabelRepeat" native="true">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>261</y>
-     <width>300</width>
+     <x>91</x>
+     <y>306</y>
+     <width>279</width>
      <height>16</height>
     </rect>
    </property>
@@ -335,11 +338,9 @@ line-height: 14px;</string>
     <item>
      <widget class="QLabel" name="labelRepeat">
       <property name="styleSheet">
-       <string notr="true">font-family: Arial;
-font-size: 14px;
-color: #000000;
-font-weight: 400;
-line-height: 16px;</string>
+       <string notr="true">color: #353739;
+font-family: Roboto Condensed;
+font-size: 12px;</string>
       </property>
       <property name="text">
        <string>repeat</string>
@@ -380,10 +381,10 @@ line-height: 16px;</string>
   <widget class="QLineEdit" name="repeat">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>279</y>
-     <width>300</width>
-     <height>30</height>
+     <x>91</x>
+     <y>322</y>
+     <width>279</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="styleSheet">

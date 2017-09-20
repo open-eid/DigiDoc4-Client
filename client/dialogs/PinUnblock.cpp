@@ -19,6 +19,8 @@
 
 #include "PinUnblock.h"
 #include "ui_PinUnblock.h"
+#include "effects/Overlay.h"
+
 
 PinUnblock::PinUnblock(QWidget *parent, PinDialog::PinFlags flags) :
     QDialog(parent),
@@ -52,16 +54,15 @@ void PinUnblock::init(PinDialog::PinFlags flags)
     {
         ui->labelNameId->setText("PIN1 lahti blokeerimine");
         ui->label->setText(
-                    "<span>"
-                    "• PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.<br>"
-                    "• PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda vahepeal muutnud.<br>"
-                    "• Uus PIN1 peab olema erinev eelmisest.<br>"
-                    "• Kui sa ei tea oma ID-kaardi PUK koodi, külasta <u>klienditeeninduspunkti</u>,<br>"
-                    "  kust saad uue koodiümbriku."
-                    "</span>"
+                    "<ul>"
+                        "<li>PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
+                        "<li>PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>vahepeal muutnud</li>"
+                        "<li>Uus PIN1 peab olema erinev eelmisest.</li>"
+                        "<li>Kui sa ei tea oma ID-kaardi PUK koodim külasta<br>klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                    "</ul>"
                     );
-        ui->labelPin->setText("Uus PIN1 kood");
-        ui->labelRepeat->setText("Uus PIN1 kood uuesti");
+        ui->labelPin->setText("UUS PIN1 KOOD");
+        ui->labelRepeat->setText("UUS PIN1 KOOD UUESTI");
 
         regexpPIN.setPattern( "\\d{4,12}" );
     }
@@ -69,16 +70,15 @@ void PinUnblock::init(PinDialog::PinFlags flags)
     {
         ui->labelNameId->setText("PIN2 lahti blokeerimine");
         ui->label->setText(
-                    "<span>"
-                    "• PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.<br>"
-                    "• PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda vahepeal muutnud.<br>"
-                    "• Uus PIN2 peab olema erinev eelmisest.<br>"
-                    "• Kui sa ei tea oma ID-kaardi PUK koodi, külasta <u>klienditeeninduspunkti</u>,<br>"
-                    "  kust saad uue koodiümbriku."
-                    "</span>"
+                    "<ul>"
+                        "<li>PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
+                        "<li>PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>vahepeal muutnud</li>"
+                        "<li>Uus PIN2 peab olema erinev eelmisest.</li>"
+                        "<li>Kui sa ei tea oma ID-kaardi PUK koodim külasta<br>klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                    "</ul>"
                     );
-        ui->labelPin->setText("Uus PIN2 kood");
-        ui->labelRepeat->setText("Uus PIN2 kood uuesti");
+        ui->labelPin->setText("UUS PIN2 KOOD");
+        ui->labelRepeat->setText("UUS PIN2 KOOD UUESTI");
 
         regexpPIN.setPattern("\\d{5,12}");
     }
@@ -88,16 +88,11 @@ void PinUnblock::init(PinDialog::PinFlags flags)
     ui->repeat->setValidator(new QRegExpValidator(regexpPUK, ui->repeat));
 
     ui->unblock->setStyleSheet(
-            "border: none;"
-            "padding: 6px 10px;"
-            "border-radius: 3px;"
-            "background-color: #97d7a8;"
-            "font-family: Open Sans;"
-            "font-size: 14px;"
-            "color: #ffffff;"
-            "font-weight: 400;"
-            "line-height: 19px;"
-            "text-align: center;"
+                "border-radius: 2px;"
+                "background-color: #006EB5;"
+                "font-family: Roboto Condensed;"
+                "font-size: 12px;"
+                "color: #ffffff;"
                     );
 
 
@@ -159,32 +154,32 @@ void PinUnblock::setUnblockEnabled()
     {
         ui->unblock->setEnabled(true);
         ui->unblock->setStyleSheet(
-                "border: none;"
-                "padding: 6px 10px;"
-                "border-radius: 3px;"
-                "background-color: #53c964;"
-                "font-family: Open Sans;"
-                "font-size: 14px;"
-                "color: #ffffff;"
-                "font-weight: 400;"
-                "line-height: 19px;"
-                "text-align: center;"
+                    "border-radius: 2px;"
+                    "background-color: #006EB5;"
+                    "font-family: Roboto Condensed;"
+                    "font-size: 12px;"
+                    "color: #ffffff;"
                 );
     }
     else
     {
         ui->unblock->setEnabled(false);
         ui->unblock->setStyleSheet(
-                "border: none;"
-                "padding: 6px 10px;"
-                "border-radius: 3px;"
-                "background-color: #97d7a8;"
-                "font-family: Open Sans;"
-                "font-size: 14px;"
-                "color: #ffffff;"
-                "font-weight: 400;"
-                "line-height: 19px;"
-                "text-align: center;"
-                );
+                    "border-radius: 2px;"
+                    "background-color: #006EB5;"
+                    "font-family: Roboto Condensed;"
+                    "font-size: 12px;"
+                    "color: #ffffff;"
+                    );
     }
+}
+
+int PinUnblock::exec()
+{
+    Overlay overlay(parentWidget());
+    overlay.show();
+    auto rc = QDialog::exec();
+    overlay.close();
+
+    return rc;
 }
