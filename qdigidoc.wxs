@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Depends package: Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi
+msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR=C:\target
+
+"%WIX%\bin\heat.exe dir "C:\target\Estonian ID Card Development\libdigidocpp\certs"
+ -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
+
+"%WIX%\bin\candle.exe" qdigidoc.wxs CertsFragment.wxs -dMSI_VERSION=3.9.5
+ -dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
+ -dcertsLocation="C:\target\Estonian ID Card Development\libdigidocpp\certs"
+ -dqt_path=C:\Qt\5.3\msvc2013
+ -dclient_path=client\qdigidocclient.exe
+
+"%WIX%\bin\light.exe" -out qdigidoc.msi qdigidoc.wixobj CertsFragment.wixobj -v -ext WixUIExtension
+-->
+
+<?ifndef Platform ?>
+<?define Platform="x86" ?>
+<?endif ?>
+
+<?if $(var.Platform) = x64 ?>
+  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+<?else ?>
+  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+<?endif ?>
+
+<?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
+<?define VCVER = "140" ?>
+<?define VCRT = "vcruntime" ?>
+<?else?>
+<?define VCVER = "120" ?>
+<?define VCRT = "msvcr" ?>
+<?endif?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Name="DigiDoc4 Client" UpgradeCode="D3D551AE-C7B6-436A-967E-E68CFE2EA3FF"
+      Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
+    <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
+    <Icon Id="qdigidoc4.exe" SourceFile="$(var.client_path)"/>
+    <Property Id="ARPPRODUCTICON" Value="qdigidoc4.exe"/>
+    <Property Id="DESKTOP_SHORTCUT" Value="0"/>
+    <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
+      "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
+    <Condition Message="[ProductName] requires Windows 7 or higher.">
+      <![CDATA[Installed OR (VersionNT >= 601)]]>
+    </Condition>
+<?ifndef var.qt_path ?>
+    <Upgrade Id="{d3aa8bd7-e1e6-46d0-97a6-c9b87d2b830b}">
+      <UpgradeVersion Minimum="1.0.0.0" Maximum="99.0.0.0" IncludeMinimum="yes" IncludeMaximum="no" OnlyDetect="yes" Property="IDUPDATER_INSTALLED"/>
+    </Upgrade>
+    <Condition Message="ID Updater package is required">
+      <![CDATA[Installed OR IDUPDATER_INSTALLED]]>
+    </Condition>
+<?endif ?>
+    <UIRef Id="WixUI_Minimal2" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- Program Menu shortcut -->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuDir" Name="!(loc.idcardLabel)">
+          <Component Id="ProgramMenuDir" Guid="16A9EACF-B5D3-4FDC-8E9F-C03C8FA46DFF">
+            <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+            <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <!-- Desktop shortcut -->
+      <Directory Id="DesktopFolder">
+        <Component Id="DesktopShortcut" Guid="7B821ED0-4838-4290-997C-AA4119F99DAD" Transitive="yes">
+          <Condition>DESKTOP_SHORTCUT = 1</Condition>
+          <Shortcut Id="ClientDesktopShortcut" Name="!(loc.qdigidocclientLabel)"
+                    Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
+          <Shortcut Id="CryptoDesktopShortcut" Name="!(loc.qdigidoccryptoLabel)" Icon="qdigidoc4.exe" IconIndex="2"
+                    Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER" Arguments="-crypto"/>
+          <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
+        </Component>
+      </Directory>
+
+      <Directory Id='$(var.PlatformProgramFilesFolder)'>
+        <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client">
+          <Component Id="Application" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB">
+            <File Source="$(var.client_path)" KeyPath='yes'>
+              <Shortcut Id="ClientStartMenu" Advertise="yes" Name="!(loc.qdigidocclientLabel)" Icon="qdigidoc4.exe"
+                Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
+            </File>
+            <File Source="$(var.libs_path)\zlib1.dll"/>
+            <File Source="$(var.libs_path)\xerces-c_3_2.dll"/>
+<?ifdef var.xalan ?>
+            <File Source="$(var.libs_path)\XalanMessages_1_11.dll"/>
+            <File Source="$(var.libs_path)\Xalan-C_1_11.dll"/>
+<?endif?>
+            <File Source="$(var.libs_path)\xsec_1_7.dll"/>
+            <File Source="$(var.libs_path)\digidocpp.dll"/>
+            <File Source="$(var.libs_path)\digidoc-tool.exe"/>
+            <File Source="$(var.libs_path)\digidocpp.conf"/>
+            <File Source="$(var.libs_path)\878252.p12"/>
+<?ifdef var.certsLocation ?>
+            <File Source="$(var.libs_path)\libxml2.dll"/>
+            <File Source="$(var.libs_path)\digidoc.dll"/>
+            <File Source="$(var.libs_path)\cdigidoc.exe"/>
+            <File Source="$(var.libs_path)\digidoc.ini"/>
+            <IniFile Id="setCaCertPathX86" Action="addLine" Directory="APPLICATIONFOLDER" Section="ca"
+              Name="digidoc.ini" Key="CA_CERT_PATH" Value="[APPLICATIONFOLDER]certs"/>
+<?endif?>
+<?ifdef var.qt_path ?>
+            <File Source="$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp$(var.VCVER).dll"/>
+            <File Source="$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\$(var.VCRT)$(var.VCVER).dll"/>
+            <File Source="$(var.ssl_path)\libeay32.dll"/>
+            <File Source="$(var.ssl_path)\ssleay32.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Network.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5PrintSupport.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Widgets.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5WinExtras.dll"/>
+            <File Source="$(var.qt_path)\bin\QtSvg.dll"/>
+            <File Source="$(var.qt_path)\bin\libEGL.dll"/>
+            <File Source="$(var.qt_path)\bin\libGLESv2.dll"/>
+            <File Source="$(var.qt_path)\bin\D3DCompiler_47.dll"/>
+            <File Source="$(var.qt_path)\bin\opengl32sw.dll" />
+            <File Source="$(var.qtconf)" />
+<?endif?>
+          </Component>
+          <Directory Id="SchemaFolder" Name="schema"/>
+          <Directory Id="CertsFolder" Name="certs"/>
+<?ifdef var.qt_path ?>
+          <Directory Id="platforms" Name="platforms" FileSource="$(var.qt_path)\plugins\platforms">
+            <Component Id="qwindows.dll">
+              <File Name="qwindows.dll"/>
+            </Component>
+          </Directory>
+          <Directory Id="printsupport" Name="printsupport" FileSource="$(var.qt_path)\plugins\printsupport">
+            <Component Id="windowsprintersupport.dll">
+              <File Name="windowsprintersupport.dll"/>
+            </Component>
+          </Directory>
+<?endif?>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="InstallDigidoc" Level="1" Title="DigiDoc4 Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
+      <ComponentRef Id='ProgramMenuDir' />
+      <ComponentRef Id="DesktopShortcut" />
+      <ComponentRef Id="Application"/>
+      <ComponentGroupRef Id="Schemas"/>
+<?ifdef var.certsLocation ?>
+      <ComponentGroupRef Id="Certs"/>
+<?endif?>
+<?ifdef var.qt_path ?>
+      <ComponentRef Id="qwindows.dll" />
+      <ComponentRef Id="windowsprintersupport.dll" />
+<?endif?>
+    </Feature>
+  </Product>
+</Wix>

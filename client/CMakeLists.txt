@@ -105,4 +105,56 @@ if( APPLE )
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
 	)
+	add_custom_target( zip DEPENDS ${PROGNAME}
+		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.app
+	)
+	add_custom_target( zipdebug DEPENDS ${PROGNAME}
+		COMMAND dsymutil -o ${PROGNAME}.dSYM $<TARGET_FILE:${PROGNAME}>
+		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
+	)
+elseif(WIN32)
+	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		set(PLATFORM x64)
+		set(SSL_PATH "C:/OpenSSL-Win64/bin")
+	else()
+		set(PLATFORM x86)
+		set(SSL_PATH "C:/OpenSSL-Win32/bin")
+	endif()
+	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
+	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
+		-dssl_path="${SSL_PATH}" -dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf
+		-dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
+		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
+	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
+		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
+		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
+		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
+	if(EXISTS ${LIBS_PATH}/../certs)
+		list(APPEND CANDLE_CMD -dcertsLocation=CertsFragment CertsFragment.wxs)
+		list(APPEND LIGHT_CMD CertsFragment.wixobj)
+		add_custom_target(CertsFragment.wxs
+			COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/../certs CertsFragment
+			COMMAND del "CertsFragment\\TEST*.crt"
+			COMMAND "$ENV{WIX}bin\\heat.exe" dir CertsFragment -nologo -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		)
+	else()
+		add_custom_target(CertsFragment.wxs)
+	endif()
+	if(EXISTS ${LIBS_PATH}/Xalan-C_1_11.dll)
+		list(APPEND CANDLE_CMD -dxalan=true)
+	endif()
+	add_custom_target(msi DEPENDS ${PROGNAME} CertsFragment.wxs
+		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
+		COMMAND ${CANDLE_CMD}
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.msi"
+		#Build MSI with QT
+		COMMAND ${CANDLE_CMD} -dqt_path=${_qt5Core_install_prefix}
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.qt.msi"
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+	)
+
 endif()
