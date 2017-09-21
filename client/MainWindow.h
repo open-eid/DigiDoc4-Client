@@ -49,6 +49,7 @@ private Q_SLOTS:
 	void loadCardPhoto();
 	void getEmailStatus();
 	void activateEmail ();
+	void signBoxChangePinClicked();
 
 private:
 	enum ButtonTypes

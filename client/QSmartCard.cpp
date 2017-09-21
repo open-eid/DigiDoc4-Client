@@ -19,6 +19,7 @@
 
 #include "QSmartCard_p.h"
 #include "dialogs/PinPopup.h"
+#include "dialogs/PinUnblock.h"
 
 #include <common/IKValidator.h>
 #include <common/PinDialog.h>
@@ -285,6 +286,15 @@ Qt::HANDLE QSmartCard::key()
 	EVP_PKEY_set1_RSA(key, rsa);
 	RSA_free(rsa);
 	return Qt::HANDLE(key);
+}
+
+void QSmartCard::pinUnblock(bool isPin2)
+{
+    PinDialog::PinFlags flags = PinDialog::Pin2Type;
+    QScopedPointer<PinUnblock> p;
+
+    p.reset(new PinUnblock(qApp->activeWindow(), flags));
+    p->exec();
 }
 
 QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)

@@ -82,7 +82,16 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
 
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
+    connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
 }
+
+void MainWindow::signBoxChangePinClicked()
+{
+//    showWarning( "Will implemented soon" );
+
+    smartcard->pinUnblock(true);
+}
+
 
 MainWindow::~MainWindow()
 {

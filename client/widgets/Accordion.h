@@ -46,6 +46,11 @@ signals:
 	void checkEMail();
 	void activateEMail();
 
+signals:
+    void authBoxChangePinClicked();
+    void signBoxChangePinClicked();
+    void pukBoxChangePinClicked();
+
 protected:
 	void paintEvent( QPaintEvent * ) override;
 

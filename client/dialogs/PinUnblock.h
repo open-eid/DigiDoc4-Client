@@ -19,35 +19,34 @@
 
 #pragma once
 
-#include <QWidget>
-#include <QPainter>
+#include <common/PinDialog.h>
+
+#include <QDialog>
 
 namespace Ui {
-class VerifyCert;
+class PinUnblock;
 }
 
-class VerifyCert : public QWidget
+class PinUnblock : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit VerifyCert(QWidget *parent = 0);
-	~VerifyCert();
+    PinUnblock(QWidget *parent, PinDialog::PinFlags flags);
+    ~PinUnblock();
 
-	void update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML = "", const QString &details_HTML = "", const QString &error = "");
-	void addBorders();
-
-signals:
-    void changePinClicked();
-
-protected:
-	void paintEvent(QPaintEvent *) override;
-
-	void enterEvent(QEvent * event) override;
-	void leaveEvent(QEvent * event) override;
+    int exec() override;
 
 private:
-	Ui::VerifyCert *ui;
-	bool isValid;
-	QString borders;
+    void disableUnblock();
+    void enableUnblock();
+    void init(PinDialog::PinFlags flags);
+    void setUnblockEnabled();
+
+    Ui::PinUnblock *ui;
+    QRegExp		regexpPUK;
+    QRegExp		regexpPIN;
+    bool isPukOk;
+    bool isPinOk;
+    bool isRepeatOk;
 };

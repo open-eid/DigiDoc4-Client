@@ -15,7 +15,7 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui dialogs/PinPopup.ui widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardInfo.ui
+qt5_wrap_ui( SOURCES MainWindow.ui dialogs/PinPopup.ui dialogs/PinUnblock.ui widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardInfo.ui
 					widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui
 					widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
 
@@ -46,6 +46,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	XmlReader.cpp
 	common4/TokenData4.cpp
 	dialogs/PinPopup.cpp
+	dialogs/PinUnblock.cpp
 	effects/FadeInNotification.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp

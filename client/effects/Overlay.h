@@ -24,23 +24,22 @@
 class Overlay : public QWidget
 {
 public:
-    Overlay(QWidget *parent)
-    : QWidget (parent)
-    {
-        setPalette(Qt::transparent);
-        setAttribute(Qt::WA_TransparentForMouseEvents);
-        setMinimumSize(parent->width(), parent->height());
-    }
+	Overlay(QWidget *parent)
+	: QWidget (parent)
+	{
+		setPalette(Qt::transparent);
+		setAttribute(Qt::WA_TransparentForMouseEvents);
+		setMinimumSize(parent->width(), parent->height());
+	}
 
 protected:
-    void paintEvent(QPaintEvent *event) override
-    {
-        QPainter painter( this );
-        painter.setRenderHint( QPainter::Antialiasing );
-        // #858585 80%
-		//painter.setBrush( QBrush( QColor( QColor::from(0x85, 0x85, 0x85, 0xff * 0.8)) ) );
-		painter.setBrush( QBrush( QColor( 0x85, 0x85, 0x85, (int)((double)0xff * 0.8) ) ) );
+	void paintEvent(QPaintEvent *event) override
+	{
+		QPainter painter( this );
+		painter.setRenderHint( QPainter::Antialiasing );
+		// Opacity 85%
+		painter.setBrush( QBrush( QColor( 0x04, 0x1E, 0x42, (int)((double)0xff * 0.85) ) ) );
 		painter.setPen( Qt::NoPen );
-        painter.drawRect( rect() );
-    }
+		painter.drawRect( rect() );
+	}
 };
