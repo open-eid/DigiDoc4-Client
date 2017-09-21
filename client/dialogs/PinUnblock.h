@@ -38,6 +38,8 @@ public:
     int exec() override;
 
 private:
+    void disableUnblock();
+    void enableUnblock();
     void init(PinDialog::PinFlags flags);
     void setUnblockEnabled();
 

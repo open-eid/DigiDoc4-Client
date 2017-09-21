@@ -20,6 +20,7 @@
 #include "PinUnblock.h"
 #include "ui_PinUnblock.h"
 #include "effects/Overlay.h"
+#include "Styles.h"
 
 
 PinUnblock::PinUnblock(QWidget *parent, PinDialog::PinFlags flags) :
@@ -45,7 +46,7 @@ void PinUnblock::init(PinDialog::PinFlags flags)
     setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
     setWindowModality( Qt::ApplicationModal );
 
-    ui->unblock->setEnabled(false);
+    disableUnblock();
     connect( ui->unblock, &QPushButton::clicked, this, &PinUnblock::accept );
     connect( ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject );
     connect( this, &PinUnblock::finished, this, &PinUnblock::close );
@@ -55,10 +56,10 @@ void PinUnblock::init(PinDialog::PinFlags flags)
         ui->labelNameId->setText("PIN1 lahti blokeerimine");
         ui->label->setText(
                     "<ul>"
-                        "<li>PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                        "<li>PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>vahepeal muutnud</li>"
-                        "<li>Uus PIN1 peab olema erinev eelmisest.</li>"
-                        "<li>Kui sa ei tea oma ID-kaardi PUK koodim külasta<br>klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                        "<li>&nbsp;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
+                        "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
+                        "<li>&nbsp;Uus PIN1 peab olema erinev eelmisest.</li>"
+                        "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
                     "</ul>"
                     );
         ui->labelPin->setText("UUS PIN1 KOOD");
@@ -71,10 +72,10 @@ void PinUnblock::init(PinDialog::PinFlags flags)
         ui->labelNameId->setText("PIN2 lahti blokeerimine");
         ui->label->setText(
                     "<ul>"
-                        "<li>PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                        "<li>PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>vahepeal muutnud</li>"
-                        "<li>Uus PIN2 peab olema erinev eelmisest.</li>"
-                        "<li>Kui sa ei tea oma ID-kaardi PUK koodim külasta<br>klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                        "<li>&nbsp;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
+                        "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
+                        "<li>&nbsp;Uus PIN2 peab olema erinev eelmisest.</li>"
+                        "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
                     "</ul>"
                     );
         ui->labelPin->setText("UUS PIN2 KOOD");
@@ -87,13 +88,14 @@ void PinUnblock::init(PinDialog::PinFlags flags)
     ui->pin->setValidator(new QRegExpValidator(regexpPUK, ui->pin));
     ui->repeat->setValidator(new QRegExpValidator(regexpPUK, ui->repeat));
 
-    ui->unblock->setStyleSheet(
-                "border-radius: 2px;"
-                "background-color: #006EB5;"
-                "font-family: Roboto Condensed;"
-                "font-size: 12px;"
-                "color: #ffffff;"
-                    );
+    QFont condensed14 = Styles::font( Styles::Condensed, 14 );
+    QFont headerFont( Styles::font( Styles::Regular, 20 ) );
+    headerFont.setWeight( QFont::DemiBold );
+    ui->labelNameId->setFont( headerFont );
+    ui->cancel->setFont( condensed14 );
+    ui->unblock->setFont( condensed14 );
+    ui->label->setFont( Styles::font( Styles::Regular, 14 ) );
+    ui->labelPuk->setFont( Styles::font( Styles::Condensed, 12 ) );
 
 
     connect(ui->puk, &QLineEdit::textChanged, this,
@@ -152,26 +154,33 @@ void PinUnblock::setUnblockEnabled()
 
     if(isPukOk && isPinOk && isRepeatOk)
     {
-        ui->unblock->setEnabled(true);
-        ui->unblock->setStyleSheet(
-                    "border-radius: 2px;"
-                    "background-color: #006EB5;"
-                    "font-family: Roboto Condensed;"
-                    "font-size: 12px;"
-                    "color: #ffffff;"
-                );
+        enableUnblock();
     }
     else
     {
-        ui->unblock->setEnabled(false);
-        ui->unblock->setStyleSheet(
-                    "border-radius: 2px;"
-                    "background-color: #006EB5;"
-                    "font-family: Roboto Condensed;"
-                    "font-size: 12px;"
-                    "color: #ffffff;"
-                    );
+        disableUnblock();
     }
+}
+
+void PinUnblock::disableUnblock()
+{
+    ui->unblock->setEnabled(false);
+    // Opacity 25% applied on #006EB5
+    ui->unblock->setStyleSheet(
+                "border-radius: 2px;"
+                "background-color: #BFDBED;"
+                "color: #ffffff;"
+                );
+}
+
+void PinUnblock::enableUnblock()
+{
+    ui->unblock->setEnabled(true);
+    ui->unblock->setStyleSheet(
+                "border-radius: 2px;"
+                "background-color: #006EB5;"
+                "color: #ffffff;"
+            );
 }
 
 int PinUnblock::exec()
