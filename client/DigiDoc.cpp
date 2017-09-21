@@ -164,7 +164,7 @@ void DocumentModel::open( const QModelIndex &index )
 	QStringList exts = QProcessEnvironment::systemEnvironment().value( "PATHEXT" ).split( ';' );
 	exts << ".PIF" << ".SCR";
 	if( exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) &&
-		QMessageBox::warning( qApp->activeWindow(), tr("DigiDoc3 client"),
+		QMessageBox::warning( qApp->activeWindow(), tr("DigiDoc4 client"),
 			tr("This is an executable file! "
 				"Executable files may contain viruses or other malicious code that could harm your computer. "
 				"Are you sure you want to launch this file?"),

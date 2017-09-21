@@ -88,7 +88,7 @@ if( APPLE )
 		COMMAND cp -a /Library/Frameworks/libdigidoc.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
 		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app
 			-executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
-		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/imageformats
+		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/imageformats -type f -a ! -name libqjpeg.dylib -a ! -name libqsvg.dylib -delete
 		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
 		COMMAND rm $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Resources/digidoc-tool
@@ -105,12 +105,21 @@ if( APPLE )
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
 	)
+	add_custom_target( codesign DEPENDS ${PROGNAME}
+		COMMAND codesign -f -s \"$$SIGNCERT\"
+			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
+			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Libraries/*
+			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/*.framework
+			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
+		COMMAND codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../..
+			--entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements
+	)
 	add_custom_target( zip DEPENDS ${PROGNAME}
-		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.app
+		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc4_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.app
 	)
 	add_custom_target( zipdebug DEPENDS ${PROGNAME}
 		COMMAND dsymutil -o ${PROGNAME}.dSYM $<TARGET_FILE:${PROGNAME}>
-		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
+		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
 	)
 elseif(WIN32)
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
@@ -156,5 +165,15 @@ elseif(WIN32)
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
-
+	if(SIGNCERT)
+		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
+			/du http://installer.id.ee /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256)
+		add_custom_command(TARGET ${PROGNAME} POST_BUILD
+			COMMAND ${SIGNCMD} $<TARGET_FILE:${PROGNAME}>
+		)
+		add_custom_command(TARGET msi POST_BUILD
+			COMMAND ${SIGNCMD} "${MSI_FILE}.en-US.msi" "${MSI_FILE}.et-EE.msi" "${MSI_FILE}.en-US.qt.msi" "${MSI_FILE}.et-EE.qt.msi"
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		)
+	endif()
 endif()

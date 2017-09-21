@@ -1,4 +1,4 @@
 /* Localized versions of Info.plist keys */
 
-CFBundleName = "DigiDoc3 Client";
-CFBundleDisplayName = "DigiDoc3 Client";
+CFBundleName = "DigiDoc4 Client";
+CFBundleDisplayName = "DigiDoc4 Client";

@@ -37,8 +37,8 @@
 <context>
     <name>Application</name>
     <message>
-        <source>DigiDoc3 client</source>
-        <translation>DigiDoc3 client</translation>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
     </message>
     <message>
         <source>Failed to initalize.</source>
@@ -61,8 +61,8 @@
         <translation>New Crypto window</translation>
     </message>
     <message>
-        <source>DigiDoc3 Client</source>
-        <translation>DigiDoc3 client</translation>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 client</translation>
     </message>
     <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -182,8 +182,8 @@ Filesize: %2
 Media type: %3</translation>
     </message>
     <message>
-        <source>DigiDoc3 client</source>
-        <translation>DigiDoc3 client</translation>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
     </message>
     <message>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
@@ -356,8 +356,8 @@ Media type: %3</translation>
         <translation>NB! Invalid signature</translation>
     </message>
     <message>
-        <source>DigiDoc3 client</source>
-        <translation>DigiDoc3 client</translation>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
@@ -525,8 +525,8 @@ New ID-cards have chip on the back side of the card.</translation>
         <translation>Signing not allowed.</translation>
     </message>
     <message>
-        <source>Open DigiDoc3 Crypto</source>
-        <translation>Open DigiDoc3 Crypto</translation>
+        <source>Open DigiDoc4 Crypto</source>
+        <translation>Open DigiDoc4 Crypto</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>

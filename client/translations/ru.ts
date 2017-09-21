@@ -38,8 +38,8 @@
 <context>
     <name>Application</name>
     <message>
-        <source>DigiDoc3 client</source>
-        <translation>DigiDoc3 клиент</translation>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
         <source>Failed to initalize.</source>
@@ -62,8 +62,8 @@
         <translation>Новое окно Crypto</translation>
     </message>
     <message>
-        <source>DigiDoc3 Client</source>
-        <translation>DigiDoc3 клиент</translation>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -183,8 +183,8 @@ Media type: %3</source>
 Тип: %3</translation>
     </message>
     <message>
-        <source>DigiDoc3 client</source>
-        <translation>DigiDoc3 клиент</translation>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
@@ -357,8 +357,8 @@ Media type: %3</source>
         <translation>NB: Ошибочная подпись</translation>
     </message>
     <message>
-        <source>DigiDoc3 client</source>
-        <translation>DigiDoc3 клиент</translation>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
@@ -529,8 +529,8 @@ New ID-cards have chip on the back side of the card.</source>
         <translation>Личный код</translation>
     </message>
     <message>
-        <source>Open DigiDoc3 Crypto</source>
-        <translation>Открыть DigiDoc3 Crypto</translation>
+        <source>Open DigiDoc4 Crypto</source>
+        <translation>Открыть DigiDoc4 Crypto</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>

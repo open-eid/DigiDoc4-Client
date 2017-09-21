@@ -803,7 +803,7 @@ void Application::showClient( const QStringList &params )
 void Application::showTSLWarning(QEventLoop *e)
 {
 	e->exit( QMessageBox::information(
-		qApp->activeWindow(), Application::tr("DigiDoc3 Client"), Application::tr(
+		qApp->activeWindow(), Application::tr("DigiDoc4 Client"), Application::tr(
 		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 		"Please check your internet connection and make sure you have the latest ID-software version "
 		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
@@ -815,7 +815,7 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 	QStringList causes;
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	QMessageBox d(QMessageBox::Warning, tr("DigiDoc3 client"), msg, QMessageBox::Close, activeWindow());
+	QMessageBox d(QMessageBox::Warning, tr("DigiDoc4 client"), msg, QMessageBox::Close, activeWindow());
 	d.setWindowModality(Qt::WindowModal);
 	d.setDetailedText(causes.join("\n"));
 	d.exec();
@@ -823,7 +823,7 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 
 void Application::showWarning( const QString &msg, const QString &details )
 {
-	QMessageBox d( QMessageBox::Warning, tr("DigiDoc3 client"), msg, QMessageBox::Close, activeWindow() );
+	QMessageBox d( QMessageBox::Warning, tr("DigiDoc4 client"), msg, QMessageBox::Close, activeWindow() );
 	d.setWindowModality( Qt::WindowModal );
 	d.setDetailedText(details);
 	d.exec();
