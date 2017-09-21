@@ -74,8 +74,6 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
           <Condition>DESKTOP_SHORTCUT = 1</Condition>
           <Shortcut Id="ClientDesktopShortcut" Name="!(loc.qdigidocclientLabel)"
                     Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
-          <Shortcut Id="CryptoDesktopShortcut" Name="!(loc.qdigidoccryptoLabel)" Icon="qdigidoc4.exe" IconIndex="2"
-                    Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER" Arguments="-crypto"/>
           <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
         </Component>
       </Directory>
@@ -88,7 +86,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
             <File Source="$(var.libs_path)\zlib1.dll"/>
-            <File Source="$(var.libs_path)\xerces-c_3_2.dll"/>
+            <File Source="$(var.libs_path)\xerces-c_3_1.dll"/>
 <?ifdef var.xalan ?>
             <File Source="$(var.libs_path)\XalanMessages_1_11.dll"/>
             <File Source="$(var.libs_path)\Xalan-C_1_11.dll"/>
@@ -117,7 +115,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <File Source="$(var.qt_path)\bin\Qt5PrintSupport.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Widgets.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5WinExtras.dll"/>
-            <File Source="$(var.qt_path)\bin\QtSvg.dll"/>
+            <File Source="$(var.qt_path)\bin\Qt5Svg.dll"/>
             <File Source="$(var.qt_path)\bin\libEGL.dll"/>
             <File Source="$(var.qt_path)\bin\libGLESv2.dll"/>
             <File Source="$(var.qt_path)\bin\D3DCompiler_47.dll"/>
@@ -138,6 +136,14 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
               <File Name="windowsprintersupport.dll"/>
             </Component>
           </Directory>
+          <Directory Id="imageformats" Name="imageformats" FileSource="$(var.qt_path)\plugins\imageformats">
+            <Component Id="qjpeg.dll">
+              <File Name="qjpeg.dll"/>
+            </Component>
+            <Component Id="qsvg.dll">
+              <File Name="qsvg.dll"/>
+            </Component>
+          </Directory>
 <?endif?>
         </Directory>
       </Directory>
@@ -154,6 +160,8 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 <?ifdef var.qt_path ?>
       <ComponentRef Id="qwindows.dll" />
       <ComponentRef Id="windowsprintersupport.dll" />
+      <ComponentRef Id="qjpeg.dll" />
+      <ComponentRef Id="qsvg.dll" />
 <?endif?>
     </Feature>
   </Product>
