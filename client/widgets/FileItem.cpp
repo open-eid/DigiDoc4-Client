@@ -20,6 +20,7 @@
 #include "FileItem.h"
 #include "ui_FileItem.h"
 #include "Styles.h"
+#include "effects/ButtonHoverFilter.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -32,6 +33,8 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
+	ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
+	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
 	stateChange(state);
 }
 

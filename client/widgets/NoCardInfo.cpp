@@ -31,7 +31,7 @@ NoCardInfo::NoCardInfo( QWidget *parent )
     ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
     cardIcon->resize( 34, 24 );
     cardIcon->move( 4, 18 );
-    cardIcon->load( QString(":/images/eid_red.svg") );
+    cardIcon->load( QString(":/images/icon_IDkaart_red.svg") );
 }
 
 NoCardInfo::~NoCardInfo()

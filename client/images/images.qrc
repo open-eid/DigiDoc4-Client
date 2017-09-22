@@ -1,39 +1,37 @@
 <RCC>
 	<qresource prefix="/images" >
+		<file>accordion_arrow_down.svg</file>
+		<file>accordion_arrow_right.svg</file>
+		<file>arrow_down.svg</file>
+		<file>arrow_up_white.svg</file>
 		<file>bg_lovid.svg</file>
 		<file>coatOfArms.svg</file>
 		<file>digidoc_icon_128x128.png</file>
-		<file>dropdown.svg</file>
-		<file>dropdown_deep_cerulean.svg</file>
-		<file>dropdown_down.svg</file>
-		<file>dropdown_right.svg</file>
-		<file>dropdown_up.svg</file>
-		<file>download_dark.svg</file>
-		<file>download_light.svg</file>
-		<file>edit_dark.svg</file>
-		<file>edit_light.svg</file>
-		<file>eid.svg</file>
-		<file>eid_red.svg</file>
 		<file>icon_Abi.svg</file>
 		<file>icon_Abi_hover.svg</file>
-		<file>icon_ajatempel.svg</file>
 		<file>icon_ajatempel.svg</file>
 		<file>icon_alert_orange.svg</file>
 		<file>icon_alert_red.svg</file>
 		<file>icon_Allkiri_hover.svg</file>
 		<file>Icon_Allkiri_small.svg</file>
 		<file>icon_Allkiri.svg</file>
+		<file>icon_check.svg</file>
+		<file>icon_digitempel.svg</file>
+		<file>icon_download_hover.svg</file>
+		<file>icon_download.svg</file>
+		<file>icon_Edit_hover.svg</file>
+		<file>icon_Edit.svg</file>
+		<file>icon_IDkaart_disabled.svg</file>
+		<file>icon_IDkaart_red.svg</file>
+		<file>icon_IDkaart.svg</file>
 		<file>icon_Krypto_hover.svg</file>
 		<file>icon_Krypto_small.svg</file>
 		<file>icon_Krypto.svg</file>
 		<file>icon_Minu_eID_hover.svg</file>
 		<file>icon_Minu_eID.svg</file>
+		<file>icon_remove_hover.svg</file>
+		<file>icon_remove.svg</file>
 		<file>icon_Seaded.svg</file>
 		<file>icon_Seaded_hover.svg</file>
-		<file>my_eid_light.svg</file>
-		<file>remove_dark.svg</file>
-		<file>remove_light.svg</file>
-		<file>settings.svg</file>
-		<file>ok.png</file>
 	</qresource>
 </RCC>

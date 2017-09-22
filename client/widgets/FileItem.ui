@@ -99,7 +99,7 @@ border: none;</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>:/images/remove_dark.svg</normalon>
+       <normalon>:/images/icon_remove.svg</normalon>
       </iconset>
      </property>
     </widget>
@@ -126,7 +126,7 @@ border: none;</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>:/images/download_dark.svg</normalon>
+       <normalon>:/images/icon_download.svg</normalon>
       </iconset>
      </property>
      <property name="iconSize">

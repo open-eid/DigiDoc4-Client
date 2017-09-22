@@ -100,7 +100,7 @@ background-color: #006EB5;</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>:/images/dropdown_up.svg</normalon>
+       <normalon>:/images/arrow_up_white.svg</normalon>
       </iconset>
      </property>
      <property name="iconSize">

@@ -127,7 +127,7 @@ void PinUnblock::setUnblockEnabled()
 {
     if(isPukOk)
     {
-        ui->iconLabelPuk->setStyleSheet("image: url(:/images/ok.png);");
+        ui->iconLabelPuk->setStyleSheet("image: url(:/images/icon_check.svg);");
     }
     else
     {
@@ -136,7 +136,7 @@ void PinUnblock::setUnblockEnabled()
 
     if(isPinOk)
     {
-        ui->iconLabelPin->setStyleSheet("image: url(:/images/ok.png);");
+        ui->iconLabelPin->setStyleSheet("image: url(:/images/icon_check.svg);");
     }
     else
     {
@@ -145,7 +145,7 @@ void PinUnblock::setUnblockEnabled()
 
     if(isRepeatOk)
     {
-        ui->iconLabelRepeat->setStyleSheet("image: url(:/images/ok.png);");
+        ui->iconLabelRepeat->setStyleSheet("image: url(:/images/icon_check.svg);");
     }
     else
     {

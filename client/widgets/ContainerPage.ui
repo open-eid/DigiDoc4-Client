@@ -562,6 +562,9 @@ border-width: 2px 2px 2px 2px; </string>
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="styleSheet">
          <string notr="true">border: none;
 border-radius: 3px;
@@ -611,6 +614,9 @@ text-decoration: none solid rgb(197, 62, 62);</string>
           <strikeout>false</strikeout>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
 color: #006eb5;
@@ -644,6 +650,9 @@ border: none;</string>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
@@ -679,6 +688,9 @@ border: none;</string>
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
 color: #006eb5;
@@ -712,6 +724,9 @@ border: none;</string>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;

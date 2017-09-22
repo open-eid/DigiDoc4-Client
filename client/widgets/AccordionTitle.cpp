@@ -59,7 +59,7 @@ void AccordionTitle::openSection()
 	ui->label->setStyleSheet("border: none; color: #006EB5;");
 	icon->resize( 12, 6 );
 	icon->move( 15, 17 );
-	icon->load( QString( ":/images/dropdown_deep_cerulean.svg" ) );
+	icon->load( QString( ":/images/accordion_arrow_down.svg" ) );
 }
 
 
@@ -69,7 +69,7 @@ void AccordionTitle::closeSection()
 	ui->label->setStyleSheet("border: none; color: #353739;");
 	icon->resize( 6, 12 );
 	icon->move( 18, 14 );
-	icon->load( QString( ":/images/dropdown_right.svg" ) );	
+	icon->load( QString( ":/images/accordion_arrow_right.svg" ) );	
 }
 
 

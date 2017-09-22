@@ -36,7 +36,7 @@ CardInfo::CardInfo( QWidget *parent )
 	ui->cardStatus->setFont( font );
 	ui->cardPhoto->init( CardPhoto );
 
-	cardIcon.reset( new QSvgWidget( ":/images/eid.svg", this ) );
+	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart.svg", this ) );
 	cardIcon->resize( 17, 12 );
 	cardIcon->move( 159, 42 );
 

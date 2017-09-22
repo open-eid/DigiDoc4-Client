@@ -20,6 +20,7 @@
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
 #include "Styles.h"
+#include "effects/ButtonHoverFilter.h"
 
 using namespace ria::qdigidoc4;
 
@@ -31,6 +32,7 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent)
 	ui->name->setFont( Styles::font( Styles::Regular, 14, QFont::DemiBold ) );
 	ui->code->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
+	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
 }
 
 AddressItem::~AddressItem()

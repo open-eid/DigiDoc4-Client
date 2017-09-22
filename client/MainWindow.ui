@@ -209,7 +209,7 @@ border: none;</string>
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-image: url(:/images/dropdown.svg);
+           <string notr="true">background-image: url(:/images/arrow_down.svg);
 QWidget::widget:hover { background-color: #F0F0F0 }</string>
           </property>
          </widget>
