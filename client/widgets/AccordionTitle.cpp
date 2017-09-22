@@ -32,8 +32,8 @@ AccordionTitle::AccordionTitle(QWidget *parent) :
 	ui->setupUi(this);
 	icon.reset( new QSvgWidget( this ) );
 	icon->setStyleSheet( "border: none;" );
-	icon->resize( 14, 14 );
-	icon->move( 14, 13 );
+	icon->resize( 12, 6 );
+	icon->move( 15, 17 );
 	ui->label->setFont( Styles::font( Styles::Condensed, 16 ) );
 }
 
@@ -57,6 +57,8 @@ void AccordionTitle::openSection()
 {
 	content->setVisible(true);
 	ui->label->setStyleSheet("border: none; color: #006EB5;");
+	icon->resize( 12, 6 );
+	icon->move( 15, 17 );
 	icon->load( QString( ":/images/dropdown_deep_cerulean.svg" ) );
 }
 
@@ -65,6 +67,8 @@ void AccordionTitle::closeSection()
 {
 	content->setVisible(false);
 	ui->label->setStyleSheet("border: none; color: #353739;");
+	icon->resize( 6, 12 );
+	icon->move( 18, 14 );
 	icon->load( QString( ":/images/dropdown_right.svg" ) );	
 }
 

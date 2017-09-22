@@ -137,9 +137,9 @@ text-align: center;</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="ok">
+  <widget class="QPushButton" name="cancel">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -160,19 +160,27 @@ text-align: center;</string>
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
-    <string notr="true">padding: 2px 10px;
-border: 1px solid #757575;
-background-color: #e8e8e8;
-color: #000000;
-line-height: 16px;
+    <string notr="true">border: none;
+border-radius: 2px;
+background-color: #981E32;
+color: #ffffff;
 text-align: center;</string>
    </property>
    <property name="text">
-    <string>OK</string>
+    <string>Cancel</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="cancel">
+  <widget class="QPushButton" name="ok">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>261</x>
@@ -193,15 +201,17 @@ text-align: center;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">padding: 2px 10px;
-border: 1px solid #757575;
-background-color: #e8e8e8;
-color: #000000;
-line-height: 16px;
+    <string notr="true">border: none;
+border-radius: 2px;
+background-color: #006EB5;
+color: #ffffff;
 text-align: center;</string>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>Ok</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

@@ -19,39 +19,21 @@
 
 #pragma once
 
-#include <common/PinDialog.h>
-#include <common/TokenData.h>
+#include <QEvent>
+#include <QIcon>
+#include <QObject>
+#include <QAbstractButton>
 
-#include <QDialog>
-#include <QtCore/QRegExp>
-
-namespace Ui {
-class PinPopup;
-}
-
-class PinPopup : public QDialog
+// Qt work-around to enable changing icon when hovering over the button
+class ButtonHoverFilter : public QObject
 {
 	Q_OBJECT
 
 public:
-	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = 0 );
-	PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
-	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
-
-	~PinPopup();
-
-    int exec() override;
-    QString text() const;
-
-signals:
-	void startTimer();
+	explicit ButtonHoverFilter( const QString &icon, const QString &hoverIcon, QObject *parent = nullptr );
+	virtual bool eventFilter( QObject *watched, QEvent *event ) override;
 
 private:
-	void enableOk( bool enable );
-    void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token );
-    void textEdited( const QString &text );
-
-	Ui::PinPopup *ui;
-	QRegExp		regexp;
+	QIcon icon;
+	QIcon hoverIcon;
 };
-

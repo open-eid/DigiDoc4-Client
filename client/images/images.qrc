@@ -1,8 +1,7 @@
 <RCC>
 	<qresource prefix="/images" >
+		<file>bg_lõvid.svg</file>
 		<file>coatOfArms.svg</file>
-		<file>crypto_dark.svg</file>
-		<file>crypto_light.svg</file>
 		<file>digidoc_icon_128x128.png</file>
 		<file>dropdown.svg</file>
 		<file>dropdown_deep_cerulean.svg</file>
@@ -15,15 +14,25 @@
 		<file>edit_light.svg</file>
 		<file>eid.svg</file>
 		<file>eid_red.svg</file>
-		<file>help.svg</file>
-		<file>my_eid_dark.svg</file>
+		<file>icon_Abi.svg</file>
+		<file>icon_Abi_hover.svg</file>
+		<file>icon_ajatempel.svg</file>
+		<file>icon_ajatempel.svg</file>
+		<file>icon_alert_orange.svg</file>
+		<file>icon_alert_red.svg</file>
+		<file>icon_Allkiri_hover.svg</file>
+		<file>Icon_Allkiri_small.svg</file>
+		<file>icon_Allkiri.svg</file>
+		<file>icon_Krüpto_hover.svg</file>
+		<file>icon_Krüpto_small.svg</file>
+		<file>icon_Krüpto.svg</file>
+		<file>icon_Minu_eID_hover.svg</file>
+		<file>icon_Seaded.svg</file>
+		<file>icon_Seaded_hover.svg</file>
 		<file>my_eid_light.svg</file>
 		<file>remove_dark.svg</file>
 		<file>remove_light.svg</file>
 		<file>settings.svg</file>
-		<file>sign_dark.svg</file>
-		<file>sign_light.svg</file>
 		<file>ok.png</file>
-		<file>alert.png</file>
 	</qresource>
 </RCC>

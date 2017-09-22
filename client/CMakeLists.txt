@@ -47,6 +47,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	common4/TokenData4.cpp
 	dialogs/PinPopup.cpp
 	dialogs/PinUnblock.cpp
+	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
 	util/FileUtil.cpp
 	widgets/Accordion.cpp

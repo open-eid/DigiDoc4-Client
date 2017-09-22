@@ -24,6 +24,7 @@
 #include "Styles.h"
 #include "XmlReader.h"
 #include "effects/FadeInNotification.h"
+#include "effects/ButtonHoverFilter.h"
 #include "util/FileUtil.h"
 
 #include <common/Settings.h>
@@ -54,6 +55,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
 	
 	ui->selector->hide();
+	ui->help->installEventFilter( new ButtonHoverFilter( ":/images/icon_Abi.svg", ":/images/icon_Abi_hover.svg", this ) );
+	ui->settings->installEventFilter( new ButtonHoverFilter( ":/images/icon_Seaded.svg", ":/images/icon_Seaded_hover.svg", this ) );
 	buttonGroup = new QButtonGroup( this );
    	buttonGroup->addButton( ui->help, HeadHelp );
    	buttonGroup->addButton( ui->settings, HeadSettings );

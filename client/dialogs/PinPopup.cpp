@@ -72,6 +72,7 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
     ui->label->setFont( openSansRegular13 );
     ui->ok->setFont( openSansRegular14 );
     ui->cancel->setFont( openSansRegular14 );
+    enableOk( false );
 
     connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
     connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
@@ -137,7 +138,7 @@ QString PinPopup::text() const { return ui->pin->text(); }
 
 void PinPopup::textEdited( const QString &text )
 { 
-    ui->ok->setEnabled( regexp.exactMatch( text ) ); 
+    enableOk( regexp.exactMatch( text ) ); 
 }
 
 int PinPopup::exec()
@@ -148,4 +149,16 @@ int PinPopup::exec()
     overlay.close();
 
     return rc;
+}
+
+void PinPopup::enableOk( bool enable )
+{
+    ui->ok->setEnabled(enable);
+    // If disabled, opacity 25% applied on #006EB5
+    ui->ok->setStyleSheet(QString(
+                "border: none;"
+                "border-radius: 2px;"
+                "background-color: %1;"
+                "color: #ffffff;" ).arg( enable ? "#006EB5" : "#BFDBED" )
+            );
 }

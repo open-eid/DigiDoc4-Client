@@ -290,6 +290,9 @@ QWidget::widget:hover { background-color: #F0F0F0 }</string>
              <bold>false</bold>
             </font>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="styleSheet">
             <string notr="true">border: none;
 color: #75787B;
@@ -300,7 +303,8 @@ font-size: 11px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normalon>:/images/help.svg</normalon>
+             <normalon>:/images/icon_Abi.svg</normalon>
+             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
             </iconset>
            </property>
            <property name="iconSize">
@@ -335,18 +339,20 @@ font-size: 11px;</string>
              <bold>false</bold>
             </font>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="styleSheet">
             <string notr="true">border: none;
 color: #75787B;
-font-size: 11px;
-</string>
+font-size: 11px;</string>
            </property>
            <property name="text">
             <string>SEADED</string>
            </property>
            <property name="icon">
             <iconset>
-             <normalon>:/images/settings.svg</normalon>
+             <normalon>:/images/icon_Seaded.svg</normalon>
             </iconset>
            </property>
            <property name="iconSize">
@@ -610,6 +616,11 @@ background-color: #ffffff;</string>
         <number>0</number>
        </property>
        <widget class="QWidget" name="signPage">
+        <property name="styleSheet">
+         <string notr="true">QWidget#signPage { background-image: url(:/images/bg_lõvid.svg);
+background-repeat: repeat-x;
+background-position: bottom; }</string>
+        </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="2" column="2">
           <spacer name="horizontalSpacer_6">
@@ -704,6 +715,12 @@ color: #041E42;</string>
                 <pointsize>16</pointsize>
                </font>
               </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
               <property name="styleSheet">
                <string notr="true">padding: 6px 10px;
 border-radius: 2px;
@@ -784,6 +801,13 @@ text-align: center;
         </property>
        </widget>
        <widget class="QWidget" name="cryptoPage">
+        <property name="styleSheet">
+         <string notr="true">QWidget#cryptoPage { 
+background-image: url(:/images/bg_lõvid.svg);
+background-repeat: repeat-x;
+background-position: bottom;
+}</string>
+        </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="1">
           <spacer name="verticalSpacer_3">

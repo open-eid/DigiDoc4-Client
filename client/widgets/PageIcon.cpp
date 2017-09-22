@@ -47,20 +47,22 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 	switch( type )
 	{
 	case CryptoIntro:
-		active = PageIcon::Style { font, "/images/crypto_dark.svg", "#ffffff", "#998B66" };
-		inactive = PageIcon::Style { font, "/images/crypto_light.svg", "#023664", "#ffffff" };
+		active = PageIcon::Style { font, "/images/icon_Krüpto_hover.svg", "#ffffff", "#998B66" };
+		inactive = PageIcon::Style { font, "/images/icon_Krüpto.svg", "#023664", "#ffffff" };
+		icon->resize( 34, 38 );
+		icon->move( 38, 26 );	
 		ui->label->setText( "KRÜPTO" );
-		icon->resize( 42, 38 );
-		icon->move( 34, 24 );	
 		break;
 	case MyEid:
-		active = PageIcon::Style { font, "/images/my_eid_dark.svg", "#ffffff", "#998B66" };
+		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", "#ffffff", "#998B66" };
 		inactive = PageIcon::Style { font, "/images/my_eid_light.svg", "#023664", "#ffffff" };
+		icon->resize( 44, 31 );
+		icon->move( 33, 28 );	
 		ui->label->setText( "MINU eID" );
 		break;
 	default:
-		active = PageIcon::Style { font, "/images/sign_dark.svg", "#ffffff", "#998B66" };
-		inactive = PageIcon::Style { font, "/images/sign_light.svg", "#023664", "#ffffff" };
+		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", "#ffffff", "#998B66" };
+		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", "#023664", "#ffffff" };
 		ui->label->setText( "ALLKIRI" );
 		break;
 	}

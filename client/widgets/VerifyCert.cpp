@@ -98,7 +98,7 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 	else
 	{
 		ui->name->setTextFormat(Qt::RichText);
-		ui->name->setText(name + " <img src=\":/images/alert.png\" height=\"12\" width=\"13\">");
+		ui->name->setText(name + " <img src=\":/images/icon_alert_orange.svg\" height=\"12\" width=\"13\">");
 	}
 	ui->validUntil->setText(validUntil);
 	ui->error->setVisible(!isValid);
