@@ -55,7 +55,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 		break;
 	case MyEid:
 		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", "#ffffff", "#998B66" };
-		inactive = PageIcon::Style { font, "/images/my_eid_light.svg", "#023664", "#ffffff" };
+		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", "#023664", "#ffffff" };
 		icon->resize( 44, 31 );
 		icon->move( 33, 28 );	
 		ui->label->setText( "MINU eID" );
