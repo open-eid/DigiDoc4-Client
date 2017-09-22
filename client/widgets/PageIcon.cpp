@@ -47,8 +47,8 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 	switch( type )
 	{
 	case CryptoIntro:
-		active = PageIcon::Style { font, "/images/icon_Krüpto_hover.svg", "#ffffff", "#998B66" };
-		inactive = PageIcon::Style { font, "/images/icon_Krüpto.svg", "#023664", "#ffffff" };
+		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", "#ffffff", "#998B66" };
+		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", "#023664", "#ffffff" };
 		icon->resize( 34, 38 );
 		icon->move( 38, 26 );	
 		ui->label->setText( "KRÜPTO" );

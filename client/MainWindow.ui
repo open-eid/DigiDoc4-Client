@@ -617,7 +617,7 @@ background-color: #ffffff;</string>
        </property>
        <widget class="QWidget" name="signPage">
         <property name="styleSheet">
-         <string notr="true">QWidget#signPage { background-image: url(:/images/bg_lõvid.svg);
+         <string notr="true">QWidget#signPage { background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom; }</string>
         </property>
@@ -803,7 +803,7 @@ text-align: center;
        <widget class="QWidget" name="cryptoPage">
         <property name="styleSheet">
          <string notr="true">QWidget#cryptoPage { 
-background-image: url(:/images/bg_lõvid.svg);
+background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom;
 }</string>
