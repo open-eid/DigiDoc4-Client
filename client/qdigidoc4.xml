@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+	<mime-type type="application/vnd.lt.archyvai.adoc-2008">
+		<comment>DigiDoc signed document</comment>
+		<comment xml:lang="et">DigiDoc allkirjastatud dokument</comment>
+		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
+		<glob pattern="*.adoc"/>
+	</mime-type>
+	<mime-type type="application/vnd.etsi.asic-e+zip">
+		<comment>DigiDoc signed document</comment>
+		<comment xml:lang="et">DigiDoc allkirjastatud dokument</comment>
+		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
+		<glob pattern="*.bdoc"/>
+		<glob pattern="*.asice"/>
+		<glon pattern="*.sce"/>
+		<glon pattern="*.edoc"/>
+	</mime-type>
+	<mime-type type="application/x-ddoc">
+		<comment>DigiDoc signed document</comment>
+		<comment xml:lang="et">DigiDoc allkirjastatud dokument</comment>
+		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
+		<glob pattern="*.ddoc"/>
+	</mime-type>
+	<mime-type type="application/x-p12d">
+		<comment>DigiDoc PKCS#12 certificate</comment>
+		<comment xml:lang="et">DigiDoc PKCS#12 ligipääsutõend</comment>
+		<comment xml:lang="ru">Справка допуска DigiDoc PKCS#12</comment>
+		<glob pattern="*.p12d"/>
+	</mime-type>
+	<mime-type type="application/vnd.etsi.asic-s+zip">
+		<comment>DigiDoc timestamped document</comment>
+		<comment xml:lang="et">DigiDoc ajatembeldatud dokument</comment>
+		<comment xml:lang="ru">DigiDoc документ с временным штампом</comment>
+		<glob pattern="*.asics"/>
+		<glon pattern="*.scs"/>
+	</mime-type>
+</mime-info>
