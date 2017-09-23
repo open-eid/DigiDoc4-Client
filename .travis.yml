@@ -1,0 +1,51 @@
+# TODO: Use S3 cache to download osx dependencies
+---
+language: c++
+sudo: true
+dist: trusty
+osx_image: xcode8.3
+services:
+- docker
+matrix:
+  include:
+  - os: osx
+    env: TARGET=osx
+    sudo: true
+  - os: linux
+    env: TARGET=ubuntu:17.04
+    sudo: false
+env:
+  global:
+  - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
+before_install: 
+- git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+    brew install --force qt5 openssl;
+    curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
+    curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.1/libdigidocpp_3.13.1.1353.pkg" -o libdigidocpp.pkg;
+    curl -s --location "https://github.com/open-eid/esteid-pkcs11/releases/download/v3.10.1/esteid-pkcs11_3.10.1.64.pkg" -o esteid-pkcs11.pkg;
+    sudo installer -verboseR -pkg libdigidoc.pkg -target /;
+    sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
+    sudo installer -verboseR -pkg esteid-pkcs11.pkg -target /;
+  fi
+script: case ${TARGET} in
+  *osx*)
+    set -e;
+    mkdir build && cd build && cmake -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
+    make zipdebug macdeployqt zip && cd ..;
+    ;;
+  *)
+    docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e DEBEMAIL="travis-ci@travis" -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
+      set -e;
+      apt-get update -qq; 
+      apt-get install -y apt-transport-https curl dh-make devscripts dpkg-dev cdbs cmake libldap2-dev libpcsclite-dev libssl-dev qtbase5-dev libqt5svg5-dev qttools5-dev qttools5-dev-tools gettext git curl wget ruby;
+      curl https://installer.id.ee/media/install-scripts/ria-public.key | apt-key add -;
+      curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | apt-key add -;
+      echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list;
+      apt-get update -qq;
+      apt-get install -y libdigidocpp-dev;
+      export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}").${BUILD_NUMBER};
+      dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSION};
+      dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
+      dpkg-buildpackage -rfakeroot -us -uc;
+      git clean -dxf';
+  esac

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">qdigidoc4.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>LGPL-2.0+</project_license>
+  <name>QDigiDoc4</name>
+  <summary>Estonian digital signature application</summary>
+  <description>
+    <p>
+      ID-software allows you to use your ID-card electronically – use
+      private and governmental e-services, digitally sign documents
+      and encrypt documents for safe transfer; the software includes
+      utilities to manage (change pin codes, update certificates etc.)
+      the Estonian ID-card.
+    </p>
+    <p>
+      DigiDoc4 Client can be used to sign digitally with ID-card and Mobile-ID, 
+      check the validity of digital signatures and open and save documents 
+      inside the signature container. Digitally signed containers are files 
+      with .bdoc or .asice extensions; read-only support is provided for older
+      .ddoc format which can additionally be wrapped in .asics timestamped container.
+    </p>
+    <p>
+      DigiDoc4 Client enables you also to secure files for safe transfer using
+      your ID-card, and decrypt secured documents addressed to you. Securing or
+      encrypting enables you to protect sensitive information from other
+      people in the short term. The ID-card’s authentication certificate is
+      used for encryption. A secure container file will be created upon
+      encryption with the extension .cdoc.
+    </p>
+  </description>
+  <url type="homepage">http://www.id.ee/</url>
+  <kudos>
+      <kudo>HiDpiIcon</kudo>
+      <kudo>ModernToolkit</kudo>
+   </kudos>
+  <updatecontact>abi@id.ee</updatecontact>
+</application>

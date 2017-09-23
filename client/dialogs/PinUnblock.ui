@@ -89,9 +89,9 @@ color: #ffffff;</string>
   <widget class="QLabel" name="labelNameId">
    <property name="geometry">
     <rect>
-     <x>123</x>
+     <x>108</x>
      <y>20</y>
-     <width>215</width>
+     <width>245</width>
      <height>24</height>
     </rect>
    </property>

@@ -1,0 +1,55 @@
+Source: qdigidoc4
+Section: utils
+Priority: extra
+Maintainer: RIA <info@ria.ee>
+Build-Depends:
+ cdbs,
+ cmake,
+ libdigidocpp-dev (>=3.0),
+ libldap2-dev,
+ libpcsclite-dev,
+ libssl-dev,
+ qtbase5-dev,
+ libqt5svg5-dev,
+ qttools5-dev,
+ qttools5-dev-tools
+Standards-Version: 0.1.0
+Homepage: https://github.com/open-eid/DigiDoc4-Client
+
+Package: qdigidoc4
+Architecture: any
+Depends:
+ opensc,
+ fonts-liberation,
+ ${shlibs:Depends} ${misc:Depends}
+Conflicts:
+ libdigidocpp0 (<<3.0)
+Description: Estonian digital signature application
+ ID-software allows you to use your ID-card electronically – use
+ private and governmental e-services, digitally sign documents
+ and encrypt documents for safe transfer; the software includes
+ utilities to manage (change pin codes, update certificates etc.)
+ the Estonian ID-card.
+ .
+ DigiDoc4 Client can be used to sign digitally with ID-card and Mobile-ID, 
+ check the validity of digital signatures and open and save documents 
+ inside the signature container. Digitally signed containers are files 
+ with .bdoc or .asice extensions; read-only support is provided for older
+ .ddoc format which can additionally be wrapped in .asics timestamped container.
+ .
+ DigiDoc4 Client enables you also to secure files for safe transfer using
+ your ID-card, and decrypt secured documents addressed to you. Securing or
+ encrypting enables you to protect sensitive information from other
+ people in the short term. The ID-card’s authentication certificate is
+ used for encryption. A secure container file will be created upon
+ encryption with the extension .cdoc.
+
+Package: qdigidoc4-dbg
+Architecture: any
+Section: debug
+Depends:
+ libdigidocpp-dbg ${misc:Depends},
+ qdigidoc4 (=${binary:Version})
+Description: Debugging symbols for qdigidoc4
+ This package contains the debugging symbols for Estonian ID card digital
+ signature desktop tools.
