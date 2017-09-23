@@ -15,10 +15,11 @@ Client is actively developed and is currently in alpha-stage.
 1. Install dependencies (libdigidocpp-dev must be installed from RIA repository)
    * Add custom RIA repository to APT repository list
 
-        curl https://installer.id.ee/media/install-scripts/ria-public.key | sudo apt-key add -
-        curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | sudo apt-key add -
-        sudo echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list
-        sudo apt-get update
+         curl https://installer.id.ee/media/install-scripts/ria-public.key | sudo apt-key add -
+         curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | sudo apt-key add -
+         sudo echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list
+         sudo apt-get update
+
    * Install
 
         sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev
