@@ -21,6 +21,7 @@
 #include "ui_CardInfo.h"
 #include "common_enums.h"
 #include "Styles.h"
+#include "widgets/LabelButton.h"
 
 using namespace ria::qdigidoc4;
 
@@ -34,7 +35,7 @@ CardInfo::CardInfo( QWidget *parent )
 	ui->cardName->setFont( Styles::font( Styles::Condensed, 20, QFont::DemiBold ) );
 	ui->cardCode->setFont( font );
 	ui->cardStatus->setFont( font );
-	ui->cardPhoto->init( CardPhoto );
+	ui->cardPhoto->init( LabelButton::None, "", CardPhoto );
 
 	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart.svg", this ) );
 	cardIcon->resize( 17, 12 );

@@ -39,7 +39,7 @@ class ContainerPage : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ContainerPage( QWidget *parent = 0 );
+	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage();
 
 	void transition( ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList() );

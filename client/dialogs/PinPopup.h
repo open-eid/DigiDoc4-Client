@@ -34,9 +34,9 @@ class PinPopup : public QDialog
 	Q_OBJECT
 
 public:
-	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = 0 );
-	PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = 0 );
-	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = 0 );
+	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = nullptr );
+	PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr );
+	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr );
 
 	~PinPopup();
 
@@ -47,7 +47,6 @@ signals:
 	void startTimer();
 
 private:
-	void enableOk( bool enable );
     void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token );
     void textEdited( const QString &text );
 

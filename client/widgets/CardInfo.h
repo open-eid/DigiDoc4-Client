@@ -34,7 +34,7 @@ class CardInfo : public QWidget
     Q_OBJECT
 
 public:
-    explicit CardInfo( QWidget *parent = 0 );
+    explicit CardInfo( QWidget *parent = nullptr );
     ~CardInfo();
 
 	void clearPicture();

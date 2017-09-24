@@ -39,7 +39,7 @@ class AccordionTitle : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit AccordionTitle(QWidget *parent = 0);
+	explicit AccordionTitle(QWidget *parent = nullptr);
 	~AccordionTitle();
 
 	void init(Accordion* accordion, bool open, const QString& caption, QWidget* content);

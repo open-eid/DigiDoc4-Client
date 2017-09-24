@@ -39,7 +39,7 @@ class PageIcon : public QWidget
 	Q_OBJECT
 
 public:
-	explicit PageIcon( QWidget *parent = 0 );
+	explicit PageIcon( QWidget *parent = nullptr );
 	~PageIcon();
 
 	void init( ria::qdigidoc4::Pages page, QWidget *shadow, bool selected );
@@ -50,6 +50,8 @@ signals:
 	void activated( PageIcon *const );
 
 protected:
+	void enterEvent( QEvent *ev ) override;
+	void leaveEvent( QEvent *ev ) override;
 	void mouseReleaseEvent( QMouseEvent *event ) override;
 	void paintEvent( QPaintEvent *ev ) override;
 
@@ -65,6 +67,7 @@ private:
 	std::unique_ptr<QSvgWidget> icon;
 	Style active;
 	Style inactive;
+	Style hover;
 	bool selected;
 	ria::qdigidoc4::Pages type;
 

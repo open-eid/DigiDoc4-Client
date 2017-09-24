@@ -79,7 +79,6 @@ QPushButton:disabled
 {
 background-color: transparent;
 color: #000000;
-​font-family: Open Sans;
 font-size: 13px;
 font-weight: 400;
 width: 49px;
@@ -190,11 +189,16 @@ border: none;</string>
         <widget class="QWidget" name="idSelector" native="true">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>5</x>
            <y>0</y>
-           <width>381</width>
+           <width>385</width>
            <height>65</height>
           </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QWidget#idSelector:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5));
+}</string>
          </property>
          <widget class="QWidget" name="selector" native="true">
           <property name="geometry">
@@ -294,9 +298,14 @@ QWidget::widget:hover { background-color: #F0F0F0 }</string>
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border: none;
-color: #75787B;
-font-size: 11px;</string>
+            <string notr="true">QToolButton {
+  border: none;
+  color: #75787B;
+  font-size: 11px;
+}
+QToolButton:hover {
+  color: #006EB5;
+}</string>
            </property>
            <property name="text">
             <string>ABI</string>
@@ -343,9 +352,14 @@ font-size: 11px;</string>
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border: none;
-color: #75787B;
-font-size: 11px;</string>
+            <string notr="true">QToolButton {
+  border: none;
+  color: #75787B;
+  font-size: 11px;
+}
+QToolButton:hover {
+  color: #006EB5;
+}</string>
            </property>
            <property name="text">
             <string>SEADED</string>

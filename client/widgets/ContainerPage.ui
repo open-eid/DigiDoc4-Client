@@ -572,7 +572,7 @@ color: #c53e3e;
 text-decoration: none solid rgb(197, 62, 62);</string>
         </property>
         <property name="text">
-         <string>KATKESTA</string>
+         <string>← KATKESTA</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

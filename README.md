@@ -22,7 +22,7 @@ Client is actively developed and is currently in alpha-stage.
 
    * Install
 
-        sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev
+         sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev
 
 2. Fetch the source
 
@@ -68,7 +68,7 @@ Client is actively developed and is currently in alpha-stage.
 
         mkdir build
         cd build
-        cmake -DQt5_DIR="~/cmake_builds/Qt-5.9.1-OpenSSL/lib/cmake/Qt5" ..
+        cmake -DQt5_DIR="~/cmake_builds/Qt-5.9.1-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
 
 4. Build
 

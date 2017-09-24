@@ -60,14 +60,11 @@ color: #353739;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">padding: 6px 9px;
-border: 1px;
-border-style: solid;
-border-radius: 2px;
-border-color: #006eb5;
-background-color: #ffffff;
-color: #006eb5;
-text-align: center;</string>
+      <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
+QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}
+QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}
+QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
+</string>
      </property>
      <property name="text">
       <string>KONTROLLI @EESTI.EE E-POSTI STAATUST</string>
@@ -146,7 +143,6 @@ color: #353739;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border: 1px solid #c8c8c8;
-font-family: Arial;
 font-size: 14px;
 color: #000000;
 font-weight: 400;
@@ -176,14 +172,11 @@ text-decoration: underline;
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">padding: 6px 9px;
-border: 1px;
-border-style: solid;
-border-radius: 2px;
-border-color: #006eb5;
-background-color: #ffffff;
-color: #006eb5;
-text-align: center;</string>
+         <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
+QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}
+QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}
+QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
+</string>
         </property>
         <property name="text">
          <string>AKTIVEERI SUUNAMINE</string>

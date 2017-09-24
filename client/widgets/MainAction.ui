@@ -64,7 +64,18 @@ background-color: #1a7dbc;
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none; color: #FFFFFF; background-color: #006EB5;</string>
+      <string notr="true">QPushButton {
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+</string>
      </property>
      <property name="text">
       <string>ALLKIRJASTA
@@ -90,10 +101,18 @@ ID-KAARDIGA</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">/* border: none; */
-border: solid #1a7dbc;
-border-width: 0px 0px 0px 1px;
-background-color: #006EB5;</string>
+      <string notr="true">QToolButton {
+	border: solid #1a7dbc;
+	border-width: 0px 0px 0px 1px;
+	background-color: #006EB5;
+}
+QToolButton:pressed {
+	background-color: #41B6E6;
+}
+QToolButton:hover:!pressed {
+	background-color: #008DCF;
+}
+</string>
      </property>
      <property name="text">
       <string/>

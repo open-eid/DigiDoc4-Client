@@ -30,8 +30,8 @@ class FileItem : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit FileItem( ria::qdigidoc4::ContainerState state, QWidget *parent = 0 );
-	explicit FileItem( const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = 0 );
+	explicit FileItem( ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
+	explicit FileItem( const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
 	~FileItem();
 
 	void stateChange(ria::qdigidoc4::ContainerState state) override;

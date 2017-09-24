@@ -39,7 +39,7 @@ public:
 		Address
 	};
 
-	explicit ItemList(QWidget *parent = 0);
+	explicit ItemList(QWidget *parent = nullptr);
 	virtual ~ItemList();
 
 	void init(ItemType itemType, const QString &header);

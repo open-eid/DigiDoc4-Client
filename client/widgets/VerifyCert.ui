@@ -176,7 +176,6 @@
         <property name="styleSheet">
          <string notr="true">padding: 6px 6px 6px 6px;
 line-height: 14px;
-box-sizing: border-box;
 border: 1px solid #E9CB8F;
 border-radius: 2px;
 background-color: #F8DDA7;

@@ -31,7 +31,7 @@ class VerifyCert : public QWidget
 	Q_OBJECT
 
 public:
-	explicit VerifyCert(QWidget *parent = 0);
+	explicit VerifyCert(QWidget *parent = nullptr);
 	~VerifyCert();
 
 	void update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML = "", const QString &details_HTML = "", const QString &error = "");
@@ -47,6 +47,8 @@ protected:
 	void leaveEvent(QEvent * event) override;
 
 private:
+	void changePinStyle( const QString &background );
+
 	Ui::VerifyCert *ui;
 	bool isValid;
 	QString borders;
