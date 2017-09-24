@@ -244,10 +244,13 @@ border-width: 0px 1px 0px 0px; </string>
             <number>0</number>
            </property>
            <property name="text">
-            <string>&lt;a href=&quot;#add-files&quot; style=&quot;color: #006eb5; text-decoration: none solid rgb(0, 110, 181);&quot;&gt;+ LISA VEEL FAILE&lt;/a&gt;</string>
+            <string>+ LISA VEEL FAILE</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>0</number>
            </property>
           </widget>
          </item>

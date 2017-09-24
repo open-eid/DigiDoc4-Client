@@ -59,17 +59,7 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 		this->setStyleSheet("background-color: #ffffff;" + borders);
 		ui->verticalSpacerAboveBtn->changeSize( 20, 32 );
 		ui->verticalSpacerBelowBtn->changeSize( 20, 38 );
-		ui->changePIN->setStyleSheet(
-					"border: 1px solid #4a82f3;"
-					"padding: 6px 10px;"
-					"border-radius: 3px;"
-					"background-color: #4a82f3;"
-					"font-family: Open Sans;"
-					"font-size: 14px;"
-					"color: #ffffff;"
-					"font-weight: 400;"
-					"text-align: center;"
-					);
+		changePinStyle( "#FFFFFF" );
 	}
 	else
 	{
@@ -79,15 +69,10 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
 		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
 		ui->changePIN->setStyleSheet(
-					"border: 1px solid #53c964;"
-					"padding: 6px 10px;"
-					"border-radius: 3px;"
-					"background-color: #53c964;"
-					"font-family: Open Sans;"
-					"font-size: 14px;"
-					"color: #ffffff;"
-					"font-weight: 400;"
-					"text-align: center;"
+					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
+					"QPushButton:pressed { background-color: #41B6E6;}"
+					"QPushButton:hover:!pressed { background-color: #008DCF;}"
+					"QPushButton:disabled { background-color: #BEDBED;};"
 					);
 	}
 
@@ -131,15 +116,30 @@ void VerifyCert::update(bool isValid, const QString &name, const QString &validU
 void VerifyCert::enterEvent(QEvent * event)
 {
 	if(isValid)
+	{
 		this->setStyleSheet("background-color: #f7f7f7;" + borders);
+		changePinStyle( "#f7f7f7" );
+	}
 }
 
 void VerifyCert::leaveEvent(QEvent * event)
 {
 	if(isValid)
+	{
 		this->setStyleSheet("background-color: white;" + borders);
+		changePinStyle( "white" );
+	}
 }
 
+void VerifyCert::changePinStyle( const QString &background )
+{
+	ui->changePIN->setStyleSheet(
+		QString("QPushButton { border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: %1;}"
+		"QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}"
+		"QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}"
+		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )
+		);
+}
 
 // Needed to setStyleSheet() take effect.
 void VerifyCert::paintEvent(QPaintEvent *)

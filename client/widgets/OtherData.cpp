@@ -40,6 +40,13 @@ OtherData::OtherData(QWidget *parent) :
 	ui->labelEestiEe->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->activate->setFont( condensed );
 	ui->btnCheckEMail->setFont( condensed );
+	ui->activate->setStyleSheet(
+			"padding: 6px 9px;"
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
+			"QPushButton:pressed { background-color: #41B6E6;}"
+			"QPushButton:hover:!pressed { background-color: #008DCF;}"
+			"QPushButton:disabled { background-color: #BEDBED;};"
+			);
 }
 
 OtherData::~OtherData()
@@ -60,30 +67,12 @@ void OtherData::update( bool activate, const QString &eMail, const quint8 &error
 
 		if( ui->inputEMail->text().isEmpty() )
 		{
-			ui->activate->setStyleSheet(
-						"padding: 6px 9px;"
-						"border: 1px;"
-						"border-style: solid;"
-						"border-radius: 2px;"
-						"border-color: #50a7d2;"
-						"background-color: #ffffff;"
-						"color: #50a7d2;"
-						"text-align: center;"
-						);
+			ui->activate->setDisabled( true );
 			ui->activate->setCursor( Qt::ArrowCursor );
 		}
 		else
 		{
-			ui->activate->setStyleSheet(
-						"padding: 6px 9px;"
-						"border: 1px;"
-						"border-style: solid;"
-						"border-radius: 2px;"
-						"border-color: #006eb5;"
-						"background-color: #ffffff;"
-						"color: #006eb5;"
-						"text-align: center;"
-						);
+			ui->activate->setDisabled( false );
 			ui->activate->setCursor( Qt::PointingHandCursor );
 		}
 		ui->inputEMail->setFocus();

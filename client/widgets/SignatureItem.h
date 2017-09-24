@@ -30,7 +30,7 @@ class SignatureItem : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit SignatureItem(ria::qdigidoc4::ContainerState state, QWidget *parent = 0);
+	explicit SignatureItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~SignatureItem();
 
 	void stateChange(ria::qdigidoc4::ContainerState state) override;

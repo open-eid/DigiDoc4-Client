@@ -35,7 +35,7 @@ class NoCardInfo : public QWidget
     Q_OBJECT
 
 public:
-    explicit NoCardInfo( QWidget *parent = 0 );
+    explicit NoCardInfo( QWidget *parent = nullptr );
     ~NoCardInfo();
 
     void update( const QString &status );

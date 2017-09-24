@@ -34,7 +34,7 @@ class InfoStack : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit InfoStack(QWidget *parent = 0);
+	explicit InfoStack(QWidget *parent = nullptr);
 	~InfoStack();
 
 	void clearPicture();

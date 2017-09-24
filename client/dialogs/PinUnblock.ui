@@ -51,9 +51,18 @@ background-color: #FFFFFF;</string>
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-radius: 2px;
-background-color: #981E32;
-color: #ffffff;</string>
+    <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #981E32;
+}
+QPushButton:pressed {
+	background-color: #F24A66;
+}
+QPushButton:hover:!pressed {
+	background-color: #CD2541;
+}</string>
    </property>
    <property name="text">
     <string>KATKESTA</string>
@@ -78,9 +87,21 @@ color: #ffffff;</string>
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-radius: 2px;
-background-color: #006EB5;
-color: #ffffff;</string>
+    <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
    </property>
    <property name="text">
     <string>BLOKEERI LAHTI</string>
@@ -228,7 +249,6 @@ line-height: 16px;</string>
     <string notr="true">padding: 0px 10px;
 border: 1px solid #c8c8c8;
 background-color: #ffffff;
-font-family: Arial;
 font-size: 14px;
 color: #000000;
 font-weight: 400;
@@ -273,7 +293,6 @@ line-height: 14px;</string>
      <widget class="QLabel" name="labelPin">
       <property name="styleSheet">
        <string notr="true">color: #353739;
-font-family: Roboto Condensed;
 font-size: 12px;</string>
       </property>
       <property name="text">
@@ -325,7 +344,6 @@ font-size: 12px;</string>
     <string notr="true">padding: 0px 10px;
 border: 1px solid #c8c8c8;
 background-color: #ffffff;
-font-family: Arial;
 font-size: 14px;
 color: #000000;
 font-weight: 400;
@@ -367,7 +385,6 @@ line-height: 14px;</string>
      <widget class="QLabel" name="labelRepeat">
       <property name="styleSheet">
        <string notr="true">color: #353739;
-font-family: Roboto Condensed;
 font-size: 12px;</string>
       </property>
       <property name="text">
@@ -419,7 +436,6 @@ font-size: 12px;</string>
     <string notr="true">padding: 0px 10px;
 border: 1px solid #c8c8c8;
 background-color: #ffffff;
-font-family: Arial;
 font-size: 14px;
 color: #000000;
 font-weight: 400;

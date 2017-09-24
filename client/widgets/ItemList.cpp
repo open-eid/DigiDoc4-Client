@@ -115,7 +115,7 @@ void ItemList::init( ItemType item, const QString &header )
 	} 
 	else
 	{
-		ui->add->init(LabelButton::DeepCerulean | LabelButton::WhiteBackground, addLabel(), itemType == File ? FileAdd : AddressAdd);
+		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == File ? FileAdd : AddressAdd);
 		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
 }

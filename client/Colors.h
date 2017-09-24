@@ -19,22 +19,27 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
-
-namespace Ui {
-class AddressItem;
-}
-
-class AddressItem : public StyledWidget
+namespace ria
 {
-	Q_OBJECT
-
-public:
-	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
-	~AddressItem();
-
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
-	
-private:
-	Ui::AddressItem *ui;
-};
+namespace qdigidoc4
+{
+namespace colors
+{
+	// Blues
+	static const char* ASTRONAUT_BLUE = "#023664";
+	static const char* BAHAMA_BLUE = "#035894";
+	static const char* CURIOUS_BLUE = "#31A3D9";
+	static const char* DEEP_CERULEAN = "#006EB5";
+	static const char* LOCHMARA = "#008DCF";
+	// Reds
+	static const char* MOJO = "#981E32";
+	// Whites
+	static const char* ALABASTER = "#fafafa";
+	static const char* DARKER_ALABASTER = "#f7f7f7";
+	static const char* PORCELAIN = "#f4f5f6";
+	static const char* WHITE = "#ffffff";
+	// Golds
+	static const char* CLAY_CREEK = "#998B66";
+}
+}
+}

@@ -25,27 +25,25 @@
 #include <memory>
 
 
-// A label that acts as a button.
-// LabelButton switches foreground color with background when mouse hovers over it.
+// A label with pre-defined styles that acts as a button.
+// LabelButton changes style (colors) on hover and when pressed.
 class LabelButton : public QLabel
 {
     Q_OBJECT
 
 public:
-    enum ButtonStyle {
-        Mojo = (1 << 0),
-        DeepCerulean = (1 << 1),
-        WhiteBackground = (1 << 2),
-        AlabasterBackground = (1 << 3),
-        PorcelainBackground = (1 << 4)
+    enum Style {
+        BoxedDeepCerulean,
+        BoxedMojo,
+        BoxedDeepCeruleanWithCuriousBlue, // Edit
+        DeepCeruleanWithLochmara, // Add files
+        None
     };
-
+    
     explicit LabelButton(QWidget *parent = nullptr);
 
-    void init( int code );
-    void init( int style, const QString &label, int code );
-    void setIcons( const QString &normalIcon, const QString &hoverIcon, int x, int y, int w, int h );
-    void setStyles( const QString &nStyle, const QString &nLink, const QString &style, const QString &link );
+    void init( Style style, const QString &label, int code );
+    void setIcons( const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int x, int y, int w, int h );
 
 signals:
     void clicked(int code);
@@ -56,12 +54,23 @@ protected:
     bool event( QEvent *ev ) override;
 
 private:
+    struct Css {
+        QString style;
+        QString background;
+        QString icon;
+    };
+    enum State {
+        Normal,
+        Hover,
+        Pressed
+    };
     void normal();
-    QString background(int style) const;
-    QString foreground(int style) const;
-
+    void hover();
+    void pressed();
+    
     int code;
     int style;
+    Css css[3];
     QString normalStyle;
     QString normalLink;
     QString normalIcon;

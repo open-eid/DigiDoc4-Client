@@ -52,6 +52,9 @@ void ContainerPage::init()
 	QFont regular = Styles::font( Styles::Regular, 14 );
 	ui->warningText->setFont( regular );
 	ui->warningAction->setFont( Styles::font( Styles::Regular, 14, QFont::Bold ) );
+	ui->container->setFont( regular );
+	ui->containerFile->setFont( regular );
+
 	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect();
 	shadow->setColor( QColor( 233, 200, 143 ) );
 	shadow->setXOffset( 4 );
@@ -59,15 +62,13 @@ void ContainerPage::init()
 	ui->warning->setGraphicsEffect( shadow );
 	ui->containerHeader->setGraphicsEffect( shadow );
 
-	ui->container->setFont( regular );
-	ui->containerFile->setFont( regular );
-	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", 4, 4, 18, 18 );
-	ui->changeLocation->init( LabelButton::DeepCerulean | LabelButton::PorcelainBackground, "MUUDA", Actions::ContainerLocation );
-	ui->cancel->init( LabelButton::Mojo, "← KATKESTA", Actions::ContainerCancel );
-	ui->encrypt->init( LabelButton::DeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
-	ui->navigateToContainer->init( LabelButton::DeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
-	ui->email->init( LabelButton::DeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
-	ui->save->init( LabelButton::DeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
+	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
+	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
+	ui->cancel->init( LabelButton::BoxedMojo, "← KATKESTA", Actions::ContainerCancel );
+	ui->encrypt->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
+	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
+	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
+	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
 	connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
 }

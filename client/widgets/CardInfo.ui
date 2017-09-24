@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>321</width>
+    <width>325</width>
     <height>65</height>
    </rect>
   </property>
@@ -25,7 +25,7 @@
   <widget class="QLabel" name="cardName">
    <property name="geometry">
     <rect>
-     <x>45</x>
+     <x>49</x>
      <y>7</y>
      <width>273</width>
      <height>24</height>
@@ -50,7 +50,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #041E42;</string>
+    <string notr="true">color: #041E42; background: none;</string>
    </property>
    <property name="text">
     <string>MARI MAASIKAS MUSTIKAS</string>
@@ -59,7 +59,7 @@
   <widget class="QLabel" name="cardCode">
    <property name="geometry">
     <rect>
-     <x>45</x>
+     <x>49</x>
      <y>38</y>
      <width>116</width>
      <height>19</height>
@@ -71,7 +71,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #75787B;</string>
+    <string notr="true">color: #75787B; background: none;</string>
    </property>
    <property name="text">
     <string>48405050123 |</string>
@@ -80,7 +80,7 @@
   <widget class="QLabel" name="cardStatus">
    <property name="geometry">
     <rect>
-     <x>181</x>
+     <x>185</x>
      <y>38</y>
      <width>135</width>
      <height>19</height>
@@ -92,7 +92,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #75787B;</string>
+    <string notr="true">color: #75787B; background: none;</string>
    </property>
    <property name="text">
     <string>Lugejas on ID kaart</string>
@@ -101,7 +101,7 @@
   <widget class="LabelButton" name="cardPhoto">
    <property name="geometry">
     <rect>
-     <x>1</x>
+     <x>5</x>
      <y>10</y>
      <width>34</width>
      <height>45</height>

@@ -31,7 +31,7 @@ class OtherData : public QWidget
 	Q_OBJECT
 
 public:
-	explicit OtherData( QWidget *parent = 0 );
+	explicit OtherData( QWidget *parent = nullptr );
 	~OtherData();
 
 	void update( bool activate, const QString &eMail = "", const quint8 &errorCode = 0 );

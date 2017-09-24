@@ -164,11 +164,18 @@ text-align: center;</string>
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: none;
-border-radius: 2px;
-background-color: #981E32;
-color: #ffffff;
-text-align: center;</string>
+    <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #981E32;
+}
+QPushButton:pressed {
+	background-color: #F24A66;
+}
+QPushButton:hover:!pressed {
+	background-color: #CD2541;
+}</string>
    </property>
    <property name="text">
     <string>Cancel</string>
@@ -201,11 +208,21 @@ text-align: center;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: none;
-border-radius: 2px;
-background-color: #006EB5;
-color: #ffffff;
-text-align: center;</string>
+    <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
    </property>
    <property name="text">
     <string>Ok</string>
