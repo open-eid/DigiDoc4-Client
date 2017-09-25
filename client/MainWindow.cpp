@@ -71,6 +71,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	setAcceptDrops(true);
 	smartcard = new QSmartCard( this );
+	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
 	smartcard->start();
 
 	showCardStatus();
@@ -84,7 +85,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
 	connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
-	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
 
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
 //    connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
@@ -154,7 +154,6 @@ void MainWindow::clearOverlay()
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-	qDebug() << event->mimeData();
 	event->acceptProposedAction();
 
 	showOverlay(this);
@@ -162,7 +161,6 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
-	qDebug() << "Drag left";
 	event->accept();
 
 	clearOverlay();
