@@ -24,29 +24,23 @@ before_install:
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
     sudo installer -verboseR -pkg esteid-pkcs11.pkg -target /;
-    if ls ~/cmake_builds/Qt-*-OpenSSL 1> /dev/null 2>&1; then
-      echo "QT already installed";
+    HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
+    pip install --user awscli > /dev/null;
+    export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
+    aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
+    if [ $? -eq 0 ]; then
+      unzip -qq -d /tmp ${HASH}.zip;
     else
-      echo "QT not installed";
-      HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
-      pip install --user awscli > /dev/null;
-      export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
-      aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
-      if [ $? -eq 0 ]; then
-        mkdir -p $HOME/cmake_builds;
-        unzip -qq -d $HOME/cmake_builds ${HASH}.zip;
-      else
-        ./prepare_osx_build_environment.sh > /dev/null;
-        if [ ${AWS_ACCESS_KEY_ID:+1} ]; then
-          cd ~/cmake_builds && zip -q -r $OLDPWD/${HASH}.zip Qt-*-OpenSSL && cd $OLDPWD;
-          aws s3 cp ${HASH}.zip s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip --acl public-read;
-        fi
+      ./prepare_osx_build_environment.sh -p /tmp > /dev/null;
+      if [ ${AWS_ACCESS_KEY_ID:+1} ]; then
+        cd /tmp && zip -q -r $OLDPWD/${HASH}.zip Qt-*-OpenSSL && cd $OLDPWD;
+        aws s3 cp ${HASH}.zip s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip --acl public-read;
       fi
     fi
   fi
 script: case ${TARGET} in
   *osx*)
-    QT_DIR=$(ls -d $HOME/cmake_builds/Qt-*-OpenSSL | tail -n 1);
+    QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1);
     echo "Qt - ${QT_DIR}";
     set -e;
     mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
