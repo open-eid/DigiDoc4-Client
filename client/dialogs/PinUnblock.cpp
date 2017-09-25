@@ -51,23 +51,7 @@ void PinUnblock::init(PinDialog::PinFlags flags)
     connect( ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject );
     connect( this, &PinUnblock::finished, this, &PinUnblock::close );
 
-    if(flags & PinDialog::Pin1Type)
-    {
-        ui->labelNameId->setText("PIN1 lahti blokeerimine");
-        ui->label->setText(
-                    "<ul>"
-                        "<li>&nbsp;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                        "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
-                        "<li>&nbsp;Uus PIN1 peab olema erinev eelmisest.</li>"
-                        "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
-                    "</ul>"
-                    );
-        ui->labelPin->setText("UUS PIN1 KOOD");
-        ui->labelRepeat->setText("UUS PIN1 KOOD UUESTI");
-
-        regexpPIN.setPattern( "\\d{4,12}" );
-    }
-    else
+    if(flags & PinDialog::Pin2Type)
     {
         ui->labelNameId->setText("PIN2 lahti blokeerimine");
         ui->label->setText(
@@ -83,14 +67,30 @@ void PinUnblock::init(PinDialog::PinFlags flags)
 
         regexpPIN.setPattern("\\d{5,12}");
     }
+    else
+    {
+        ui->labelNameId->setText("PIN1 lahti blokeerimine");
+        ui->label->setText(
+                    "<ul>"
+                        "<li>&nbsp;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
+                        "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
+                        "<li>&nbsp;Uus PIN1 peab olema erinev eelmisest.</li>"
+                        "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                    "</ul>"
+                    );
+        ui->labelPin->setText("UUS PIN1 KOOD");
+        ui->labelRepeat->setText("UUS PIN1 KOOD UUESTI");
+
+        regexpPIN.setPattern( "\\d{4,12}" );
+    }
 
     ui->puk->setValidator(new QRegExpValidator(regexpPUK, ui->puk));
     ui->pin->setValidator(new QRegExpValidator(regexpPUK, ui->pin));
     ui->repeat->setValidator(new QRegExpValidator(regexpPUK, ui->repeat));
 
     QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-    QFont headerFont( Styles::font( Styles::Regular, 20 ) );
-    headerFont.setWeight( QFont::DemiBold );
+    QFont headerFont( Styles::font( Styles::Regular, 18 ) );
+    headerFont.setWeight( QFont::Bold );
     ui->labelNameId->setFont( headerFont );
     ui->unblock->setFont( condensed14 );
     ui->label->setFont( Styles::font( Styles::Regular, 14 ) );

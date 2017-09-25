@@ -19,11 +19,11 @@
 
 #pragma once
 
+#include "QSmartCard.h"
+
 #include "widgets/StyledWidget.h"
 
-#include <QWidget>
-#include <QPainter>
-
+//#include <QWidget>
 
 namespace Ui {
 class InfoStack;
@@ -34,15 +34,13 @@ class InfoStack : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit InfoStack(QWidget *parent = nullptr);
+	explicit InfoStack( QWidget *parent = nullptr );
 	~InfoStack();
 
 	void clearPicture();
-	void update(const QString &givenNames, const QString &surname, const QString &personalCode, const QString &citizenship, const QString &serialNumber, const QString &expiryDate );
+	void update( const QSmartCardData &t );
+	void clearData();
 	void showPicture( const QPixmap &pixmap );
-
-protected:
-	//void paintEvent(QPaintEvent *) override;
 
 private:
 	Ui::InfoStack *ui;

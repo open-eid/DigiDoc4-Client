@@ -19,37 +19,39 @@
 
 #pragma once
 
-#include <QWidget>
-#include <QPainter>
+#include "widgets/StyledWidget.h"
+#include "QSmartCard.h"
 
 namespace Ui {
 class VerifyCert;
 }
 
-class VerifyCert : public QWidget
+class VerifyCert : public StyledWidget
 {
 	Q_OBJECT
 
 public:
-	explicit VerifyCert(QWidget *parent = nullptr);
+	explicit VerifyCert( QWidget *parent = nullptr );
 	~VerifyCert();
 
-	void update(bool isValid, const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML = "", const QString &details_HTML = "", const QString &error = "");
+	void update( QSmartCardData::PinType type, const QSmartCard *smartCard );
+	void update( const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML = "", const QString &details_HTML = "", const QString &error = "" );
 	void addBorders();
 
-signals:
-    void changePinClicked();
-
 protected:
-	void paintEvent(QPaintEvent *) override;
-
-	void enterEvent(QEvent * event) override;
-	void leaveEvent(QEvent * event) override;
+	void enterEvent( QEvent * event ) override;
+	void leaveEvent( QEvent * event ) override;
+	void processClickedBtn();
 
 private:
-	void changePinStyle( const QString &background );
+	void changePinStyle( const QString &background ); 
 
 	Ui::VerifyCert *ui;
-	bool isValid;
+
+	bool isValidCert;
+	bool isBlockedPin;
 	QString borders;
+
+	QSmartCardData::PinType pinType;
+	const QSmartCard *smartCard;
 };

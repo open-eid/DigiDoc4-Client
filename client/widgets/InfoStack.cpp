@@ -21,11 +21,16 @@
 #include "ui_InfoStack.h"
 #include "Styles.h"
 
-InfoStack::InfoStack(QWidget *parent) :
-	StyledWidget(parent),
-	ui(new Ui::InfoStack)
+#include <common/DateTime.h>
+#include <common/SslCertificate.h>
+
+#include <QtCore/QTextStream>
+
+InfoStack::InfoStack( QWidget *parent ) :
+	StyledWidget( parent ),
+	ui( new Ui::InfoStack )
 {
-	ui->setupUi(this);
+	ui->setupUi( this );
 	ui->verifyCert->setFont( Styles::font( Styles::Condensed, 14 ) );
 
 	QFont font = Styles::font( Styles::Regular, 16 );
@@ -48,23 +53,58 @@ void InfoStack::clearPicture()
 	ui->photo->clear();
 }
 
-void InfoStack::update(const QString &givenNames, const QString &surname, const QString &personalCode, const QString &citizenship, const QString &serialNumber, const QString &expiryDate )
+void InfoStack::update(  const QSmartCardData &t )
 {
-	ui->valueGivenNames->setText(givenNames);
-	ui->valueSurname->setText(surname);
-	ui->valuePersonalCode->setText(personalCode);
-	ui->valueCitizenship->setText(citizenship);
-	if( serialNumber.isEmpty() )
+	QStringList firstName = QStringList()
+		<< t.data( QSmartCardData::FirstName1 ).toString()
+		<< t.data( QSmartCardData::FirstName2 ).toString();
+	firstName.removeAll( "" );
+
+	QString text;
+	QTextStream st( &text );
+
+	if( t.authCert().type() & SslCertificate::EstEidType )
 	{
-		ui->valueSerialNumber->setText(serialNumber);
+		if( t.isValid() )
+		{
+			st << "<span style='color: #37a447'>Kehtiv</span> kuni "
+			   << DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
+		}
+		else
+		{
+			st << "<span style='color: #e80303;'>Expired</span>";
+		}
 	}
 	else
 	{
-		ui->valueSerialNumber->setText(serialNumber + "  |");
+		st << "You're using Digital identity card"; // ToDo
 	}
-	ui->valueExpiryDate->setText(expiryDate);
+	ui->valueGivenNames->setText( firstName.join( " " ) );
+	ui->valueSurname->setText( t.data( QSmartCardData::SurName ).toString() );
+	ui->valuePersonalCode->setText( t.data( QSmartCardData::Id ).toString() );
+	ui->valueCitizenship->setText( t.data( QSmartCardData::Citizen ).toString() );
+
+	QString serialNumber = t.data( QSmartCardData::DocumentId ).toString();
+	if( serialNumber.isEmpty() )
+	{
+		ui->valueSerialNumber->setText( serialNumber );
+	}
+	else
+	{
+		ui->valueSerialNumber->setText( serialNumber + "  |" );
+	}
+	ui->valueExpiryDate->setText( text );
 }
 
+void InfoStack::clearData()
+{
+	ui->valueGivenNames->setText( "" ); 
+	ui->valueSurname->setText( "" ); 
+	ui->valuePersonalCode->setText( "" ); 
+	ui->valueCitizenship->setText( "" ); 
+	ui->valueSerialNumber->setText( "" ); 
+	ui->valueExpiryDate->setText( "" ); 
+}
 
 void InfoStack::showPicture( const QPixmap &pixmap )
 {

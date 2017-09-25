@@ -288,9 +288,8 @@ Qt::HANDLE QSmartCard::key()
 	return Qt::HANDLE(key);
 }
 
-void QSmartCard::pinUnblock(bool isPin2)
+void QSmartCard::pinUnblock(PinDialog::PinFlags flags)
 {
-    PinDialog::PinFlags flags = PinDialog::Pin2Type;
     QScopedPointer<PinUnblock> p;
 
     p.reset(new PinUnblock(qApp->activeWindow(), flags));

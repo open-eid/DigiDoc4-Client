@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <QWidget>
-#include <QPainter>
+#include "widgets/StyledWidget.h"
+#include "QSmartCard.h"
 
 namespace Ui {
 class Accordion;
@@ -28,7 +28,7 @@ class Accordion;
 
 class AccordionTitle;
 
-class Accordion : public QWidget
+class Accordion : public StyledWidget
 {
 	Q_OBJECT
 
@@ -41,18 +41,11 @@ public:
 	void updateOtherData( bool activate, const QString &eMail = "", const quint8 &errorCode = 0 );
 	QString getEmail();
 	void setFocusToEmail();
+	void updateInfo( const QSmartCard *smartCard );
 
 signals:
 	void checkEMail();
 	void activateEMail();
-
-signals:
-    void authBoxChangePinClicked();
-    void signBoxChangePinClicked();
-    void pukBoxChangePinClicked();
-
-protected:
-	void paintEvent( QPaintEvent * ) override;
 
 private:
 	Ui::Accordion *ui;

@@ -87,14 +87,14 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
 
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
-    connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
+//    connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
 }
 
 void MainWindow::signBoxChangePinClicked()
 {
 //    showWarning( "Will implemented soon" );
 
-    smartcard->pinUnblock(true);
+//    smartcard->pinUnblock( PinDialog::Pin2Type );
 }
 
 
@@ -355,8 +355,10 @@ void MainWindow::showCardStatus()
 	if( !t.isNull() )
 	{
 		ui->idSelector->show();
+		ui->infoStack->show();
         ui->accordion->show();
 		ui->noCardInfo->hide();
+
 		QStringList firstName = QStringList()
 			<< t.data( QSmartCardData::FirstName1 ).toString()
 			<< t.data( QSmartCardData::FirstName2 ).toString();
@@ -368,34 +370,12 @@ void MainWindow::showCardStatus()
 		ui->cardInfo->update( fullName.join(" "), t.data( QSmartCardData::Id ).toString(), "Lugejas on ID kaart" );
 		ui->cardInfo->setAccessibleDescription( fullName.join(" ") );
 
-		QString text;
-		QTextStream st( &text );
-
 		if( t.authCert().type() & SslCertificate::EstEidType )
 		{
-			if( t.isValid() )
-			{
-				st << "<span style='color: #37a447'>Kehtiv</span> kuni "
-				   << DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
-			}
-			else
-			{
-				st << "<span style='color: #e80303;'>Expired</span>";
-			}
 			loadCachedPicture( t.data(QSmartCardData::Id ).toString() );
 		}
-		else
-		{
-			st << "You're using Digital identity card"; // ToDo
-		}
-		
-		ui->infoStack->update(
-				firstName.join(" "),
-				t.data( QSmartCardData::SurName ).toString(),
-				t.data( QSmartCardData::Id ).toString(),
-				t.data( QSmartCardData::Citizen ).toString(),
-				t.data( QSmartCardData::DocumentId ).toString(),
-				text);
+		ui->infoStack->update( t );
+		ui->accordion->updateInfo( smartcard );
 	}
 	else if( !t.card().isEmpty() )
 	{
@@ -430,20 +410,15 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	}
     else
 	{
-		ui->noCardInfo->hide();
+		ui->noCardInfo->show();
 		ui->cardInfo->update( "", "", text );
 		ui->cardInfo->setAccessibleDescription( text );
 		Application::setOverrideCursor( Qt::BusyCursor );
 	}
-	ui->infoStack->update(
-				"",
-				"",
-				"",
-				"",
-				"",
-				"");
+	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
 	ui->infoStack->clearPicture();
+    ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->updateOtherData( false );
 }

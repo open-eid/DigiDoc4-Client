@@ -20,8 +20,9 @@
 #pragma once
 
 #include <QThread>
-
 #include <QSharedDataPointer>
+
+#include "dialogs/PinUnblock.h"
 
 template<class Key, class T> class QHash;
 class SslCertificate;
@@ -133,7 +134,7 @@ public:
 	void reload();
 	ErrorType unblock( QSmartCardData::PinType type, const QString &pin, const QString &puk );
 
-    void pinUnblock(bool isPin2);
+    void pinUnblock( PinDialog::PinFlags flags );
 
 signals:
 	void dataChanged();
