@@ -47,9 +47,9 @@ before_install:
 script: case ${TARGET} in
   *osx*)
     QT_DIR=$(ls -d $HOME/cmake_builds/Qt-*-OpenSSL | tail -n 1);
-    echo "Qt - $QT_DIR";
+    echo "Qt - ${QT_DIR}";
     set -e;
-    mkdir build && cd build && cmake -DQt5_DIR=$QT_DIR/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
+    mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
     mkdir -p ${TARGET}/$BUILD_NUMBER;
     make zipdebug macdeployqt zip && cp qdigidoc4*.zip ${TARGET}/$BUILD_NUMBER/ && cd ..;
     ;;
