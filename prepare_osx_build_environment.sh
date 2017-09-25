@@ -86,7 +86,6 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     if [[ "$QT_VER" = "5.9.1" && "$CLANG_MAJOR_VER" = "9." ]] ; then
         patch -Np1 -i $SCRIPT_PATH/patches/qt-5.9.1-xcode-9.patch
     fi
-    read -n1 -r -p "Press any key to continue..." key
     ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license -I /usr/local/opt/openssl/include -L /usr/local/opt/openssl/lib
     make
     make install

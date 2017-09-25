@@ -1,5 +1,3 @@
-# TODO: Use S3 cache to download osx dependencies
----
 language: c++
 sudo: true
 dist: trusty
@@ -19,19 +17,35 @@ env:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-    brew install --force qt5 openssl;
+    brew install --force openssl;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.1/libdigidocpp_3.13.1.1353.pkg" -o libdigidocpp.pkg;
     curl -s --location "https://github.com/open-eid/esteid-pkcs11/releases/download/v3.10.1/esteid-pkcs11_3.10.1.64.pkg" -o esteid-pkcs11.pkg;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
     sudo installer -verboseR -pkg esteid-pkcs11.pkg -target /;
+    HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
+    pip install --user awscli > /dev/null;
+    export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
+    aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
+    if [ $? -eq 0 ]; then
+      unzip -qq -d /tmp ${HASH}.zip;
+    else
+      ./prepare_osx_build_environment.sh -p /tmp > /dev/null;
+      if [ ${AWS_ACCESS_KEY_ID:+1} ]; then
+        cd /tmp && zip -q -r $OLDPWD/${HASH}.zip Qt-*-OpenSSL && cd $OLDPWD;
+        aws s3 cp ${HASH}.zip s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip --acl public-read;
+      fi
+    fi
   fi
 script: case ${TARGET} in
   *osx*)
+    QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1);
+    echo "Qt - ${QT_DIR}";
     set -e;
-    mkdir build && cd build && cmake -DQt5_DIR=/usr/local/opt/qt5/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
-    make zipdebug macdeployqt zip && cd ..;
+    mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
+    mkdir -p ${TARGET}/$BUILD_NUMBER;
+    make zipdebug macdeployqt zip && cp qdigidoc4*.zip ${TARGET}/$BUILD_NUMBER/ && cd ..;
     ;;
   *)
     docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e DEBEMAIL="travis-ci@travis" -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
@@ -47,5 +61,19 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
+      mkdir -p build/${TARGET}/$BUILD_NUMBER;
+      cp ../qdigidoc4_*.deb build/${TARGET}/$BUILD_NUMBER;
       git clean -dxf';
   esac
+deploy:
+  provider: s3
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  region: $AWS_REGION
+  bucket: "arn:aws:s3:::digidoc4-builds"
+  skip_cleanup: true
+  local_dir: build/${TARGET}/$BUILD_NUMBER
+  upload-dir: ${TARGET}
+  acl: public_read
+  on:
+    branch: master
