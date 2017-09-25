@@ -70,10 +70,10 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: $AWS_REGION
-  bucket: "arn:aws:s3:::open-eid-digidoc4"
+  bucket: "arn:aws:s3:::digidoc4-builds"
   skip_cleanup: true
   local_dir: build/${TARGET}/$BUILD_NUMBER
-  upload-dir: travis-builds
+  upload-dir: ${TARGET}
   acl: public_read
   on:
     branch: master
