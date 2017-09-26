@@ -62,7 +62,7 @@ script: case ${TARGET} in
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
       mkdir -p build/$BUILD_NUMBER;
-      cp ../qdigidoc4_*.deb build/$BUILD_NUMBER;
+      cp ../qdigidoc4_*.deb build/$BUILD_NUMBER';
   esac
 deploy:
   provider: s3
