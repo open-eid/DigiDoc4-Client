@@ -44,8 +44,8 @@ script: case ${TARGET} in
     echo "Qt - ${QT_DIR}";
     set -e;
     mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
-    mkdir -p ${TARGET}/$BUILD_NUMBER;
-    make zipdebug macdeployqt zip && cp qdigidoc4*.zip ${TARGET}/$BUILD_NUMBER/ && cd ..;
+    mkdir -p $BUILD_NUMBER;
+    make zipdebug macdeployqt zip && cp qdigidoc4*.zip ./$BUILD_NUMBER/ && cd ..;
     ;;
   *)
     docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e DEBEMAIL="travis-ci@travis" -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
@@ -61,18 +61,17 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      mkdir -p build/${TARGET}/$BUILD_NUMBER;
-      cp ../qdigidoc4_*.deb build/${TARGET}/$BUILD_NUMBER;
-      git clean -dxf';
+      mkdir -p build/$BUILD_NUMBER;
+      cp ../qdigidoc4_*.deb build/$BUILD_NUMBER';
   esac
 deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: $AWS_REGION
-  bucket: "arn:aws:s3:::digidoc4-builds"
+  bucket: digidoc4-builds
   skip_cleanup: true
-  local_dir: build/${TARGET}/$BUILD_NUMBER
+  local_dir: build/$BUILD_NUMBER
   upload-dir: ${TARGET}
   acl: public_read
   on:
