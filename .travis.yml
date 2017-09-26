@@ -75,4 +75,4 @@ deploy:
   upload-dir: ${TARGET}
   acl: public_read
   on:
-    branch: travis-deploy
+    branch: master
