@@ -23,6 +23,7 @@
 #include "QSmartCard.h"
 #include "sslConnect.h"
 #include "effects/Overlay.h"
+#include "dialogs/AddRecipients.h"
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
 
