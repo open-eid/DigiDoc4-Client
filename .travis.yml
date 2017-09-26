@@ -63,14 +63,13 @@ script: case ${TARGET} in
       dpkg-buildpackage -rfakeroot -us -uc;
       mkdir -p build/$BUILD_NUMBER;
       cp ../qdigidoc4_*.deb build/$BUILD_NUMBER;
-      git clean -dxf';
   esac
 deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: $AWS_REGION
-  bucket: "arn:aws:s3:::digidoc4-builds"
+  bucket: digidoc4-builds
   skip_cleanup: true
   local_dir: build/$BUILD_NUMBER
   upload-dir: ${TARGET}
