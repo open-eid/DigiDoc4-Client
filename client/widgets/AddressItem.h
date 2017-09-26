@@ -33,6 +33,7 @@ public:
 	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~AddressItem();
 
+	void update(const QString& name, const QString& code, const QString &type, int act);
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
 	
 private:

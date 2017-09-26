@@ -71,6 +71,8 @@ void ContainerPage::init()
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
 	connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
+	connect( ui->leftPane, &ItemList::addItem, this, &ContainerPage::action );
+	connect( ui->rightPane, &ItemList::addItem, this, &ContainerPage::action );
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )

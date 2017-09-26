@@ -61,8 +61,17 @@ void ItemList::add(int code)
 	ui->itemLayout->insertWidget(items.size(), item);
 	item->show();
 	items.push_back(item);
+
+	if(code != SignatureAdd)  // !!! To prevent infinite cycle
+		emit addItem( code );
 }
 
+void ItemList::addWidget(StyledWidget *widget)
+{
+	ui->itemLayout->insertWidget(items.size(), widget);
+	widget->show();
+	items.push_back(widget);
+}
 
 void ItemList::addFile( const QString& file )
 {
@@ -78,6 +87,7 @@ QString ItemList::addLabel() const
 	{
 	case File: return "+ LISA VEEL FAILE";
 	case Address: return "+ LISA ADRESSAAT";
+	case ToAddAdresses: return "LISA KÕIK";
 	default: return "";
 	}
 }
@@ -104,15 +114,26 @@ void ItemList::clear()
 	}
 }
 
-void ItemList::init( ItemType item, const QString &header )
+void ItemList::init( ItemType item, const QString &header, bool hideFind )
 {
 	itemType = item;
 	ui->listHeader->setText(header);
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
-	if (item == Signature)
+
+	if(hideFind)
+	{
+		ui->findGroup->hide();
+	}
+	else
+	{
+		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
+		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
+	}
+
+	if (item == Signature || item == AddedAdresses)
 	{
 		ui->add->hide();
-	} 
+	}
 	else
 	{
 		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == File ? FileAdd : AddressAdd);

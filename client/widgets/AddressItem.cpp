@@ -33,12 +33,70 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent)
 	ui->code->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+	ui->add->setFont(Styles::font(Styles::Condensed, 12));
+	ui->added->setFont(Styles::font(Styles::Condensed, 12));
+
+	ui->add->hide();
+	ui->added->hide();
 }
 
 AddressItem::~AddressItem()
 {
 	delete ui;
 }
+
+void AddressItem::update(const QString& name, const QString& code, const QString& type, int act)
+{
+	ui->name->setText( name );
+	ui->code->setText( code );
+	ui->idType->setText( type );
+
+	ui->added->setEnabled(false);
+
+	if(act == 3)
+	{
+		setStyleSheet(
+					"border-bottom: 2px solid #D9D9D8;"
+					"background-color: #f0f0f0;"
+					);
+		ui->name->setStyleSheet("color: #75787B;");
+		ui->code->setStyleSheet("color: #75787B;");
+	}
+	else
+	{
+		setStyleSheet(
+					"border-bottom: 2px solid #D9D9D8;"
+					"background-color: #ffffff;"
+					);
+		ui->name->setStyleSheet("color: #363739;");
+		ui->code->setStyleSheet("color: #363739;");
+	}
+
+
+	switch (act) {
+	case 1:
+		ui->remove->show();
+		ui->add->hide();
+		ui->added->hide();
+		break;
+	case 2:
+		ui->remove->hide();
+		ui->add->show();
+		ui->added->hide();
+		break;
+	case 3:
+		ui->remove->hide();
+		ui->add->hide();
+		ui->added->show();
+		break;
+	default:
+		ui->remove->hide();
+		ui->add->hide();
+		ui->added->hide();
+		break;
+	}
+}
+
 
 void AddressItem::stateChange(ContainerState state)
 {

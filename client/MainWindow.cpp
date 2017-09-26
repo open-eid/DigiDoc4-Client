@@ -278,6 +278,12 @@ void MainWindow::onCryptoAction( int action )
 	{
 
 	}
+	else if( action == AddressAdd )
+	{
+		AddRecipients *dlg = new AddRecipients(this);
+		dlg->exec();
+		delete dlg;
+	}
 }
 
 void MainWindow::openFiles( const QStringList files )
@@ -381,7 +387,7 @@ void MainWindow::showCardStatus()
 	}
 	else if( t.card().isEmpty() && !t.readers().isEmpty() )
 	{
-		noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+		noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
 	}
 	else
 	{
