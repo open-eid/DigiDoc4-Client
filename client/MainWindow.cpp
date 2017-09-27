@@ -280,9 +280,8 @@ void MainWindow::onCryptoAction( int action )
 	}
 	else if( action == AddressAdd )
 	{
-		AddRecipients *dlg = new AddRecipients(this);
-		dlg->exec();
-		delete dlg;
+		AddRecipients dlg(this);
+		dlg.exec();
 	}
 }
 

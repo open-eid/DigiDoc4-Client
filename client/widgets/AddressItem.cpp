@@ -56,7 +56,7 @@ void AddressItem::update(const QString& name, const QString& code, const QString
 	if(act == 3)
 	{
 		setStyleSheet(
-					"border-bottom: 2px solid #D9D9D8;"
+					"border-bottom: 2px solid rgba(217, 217, 216, 0.45);"
 					"background-color: #f0f0f0;"
 					);
 		ui->name->setStyleSheet("color: #75787B;");
@@ -65,7 +65,7 @@ void AddressItem::update(const QString& name, const QString& code, const QString
 	else
 	{
 		setStyleSheet(
-					"border-bottom: 2px solid #D9D9D8;"
+					"border-bottom: 2px solid rgba(217, 217, 216, 0.45);"
 					"background-color: #ffffff;"
 					);
 		ui->name->setStyleSheet("color: #363739;");
