@@ -65,13 +65,13 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
     setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
     setWindowModality( Qt::ApplicationModal );
 
-    QFont openSansRegular13 = Styles::font( Styles::OpenSansRegular, 13 );
-    QFont openSansRegular14 = Styles::font( Styles::OpenSansRegular, 14 );
+    QFont regular = Styles::font( Styles::Regular, 13 );
+    QFont condensed14 = Styles::font( Styles::Condensed, 14 );
     
-    ui->labelNameId->setFont( openSansRegular14 );
-    ui->label->setFont( openSansRegular13 );
-    ui->ok->setFont( openSansRegular14 );
-    ui->cancel->setFont( openSansRegular14 );
+    ui->labelNameId->setFont( Styles::font( Styles::Regular, 14 ) );
+    ui->label->setFont( regular );
+    ui->ok->setFont( condensed14 );
+    ui->cancel->setFont( condensed14 );
     ui->ok->setEnabled( false );
 
     connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );

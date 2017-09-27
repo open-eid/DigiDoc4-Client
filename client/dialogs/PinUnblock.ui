@@ -246,8 +246,9 @@ line-height: 16px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">padding: 0px 10px;
-border: 1px solid #c8c8c8;
+    <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+padding: 0px 10px;
 background-color: #ffffff;
 font-size: 14px;
 color: #000000;
@@ -341,8 +342,9 @@ font-size: 12px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">padding: 0px 10px;
-border: 1px solid #c8c8c8;
+    <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+padding: 0px 10px;
 background-color: #ffffff;
 font-size: 14px;
 color: #000000;
@@ -433,8 +435,9 @@ font-size: 12px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">padding: 0px 10px;
-border: 1px solid #c8c8c8;
+    <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+padding: 0px 10px;
 background-color: #ffffff;
 font-size: 14px;
 color: #000000;

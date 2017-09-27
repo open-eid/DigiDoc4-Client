@@ -35,8 +35,8 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: 1px solid #757575;
-background-color: #e8e8e8;</string>
+   <string notr="true">border-radius: 2px;
+background-color: #FFFFFF;</string>
   </property>
   <widget class="QLabel" name="labelNameId">
    <property name="geometry">
@@ -124,7 +124,8 @@ Sertifikaadi kasutamiseks sisesta PIN1</string>
    </property>
    <property name="styleSheet">
     <string notr="true">padding: 0px 10px;
-border: 1px solid #c8c8c8;
+border: 1px solid #DEE4E9;
+border-radius: 2px;
 background-color: #ffffff;
 color: #000000;
 line-height: 9px;
@@ -178,7 +179,7 @@ QPushButton:hover:!pressed {
 }</string>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>KATKESTA</string>
    </property>
    <property name="autoDefault">
     <bool>false</bool>
@@ -225,7 +226,7 @@ QPushButton:disabled {
 }</string>
    </property>
    <property name="text">
-    <string>Ok</string>
+    <string>OK</string>
    </property>
    <property name="default">
     <bool>true</bool>

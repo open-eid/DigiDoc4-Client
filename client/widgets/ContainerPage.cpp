@@ -20,6 +20,7 @@
 #include "ContainerPage.h"
 #include "ui_ContainerPage.h"
 #include "Styles.h"
+#include "dialogs/MobileDialog.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -153,6 +154,13 @@ void ContainerPage::hideMainAction()
 	ui->mainActionSpacer->changeSize( 1, 20, QSizePolicy::Fixed );
 }
 
+void ContainerPage::hideOtherAction()
+{
+	otherAction->close();
+	otherAction.reset();
+	mainAction->setStyleSheet( "QPushButton { border-top-left-radius: 2px; }" );
+}
+
 void ContainerPage::hideRightPane()
 {
 	ui->rightPane->hide();
@@ -161,6 +169,17 @@ void ContainerPage::hideRightPane()
 void ContainerPage::hideWarningArea()
 {
 	ui->warning->hide();
+}
+
+
+void ContainerPage::mobileDialog()
+{
+	hideOtherAction();
+	MobileDialog dlg( qApp->activeWindow() );
+	if( dlg.exec() == QDialog::Accepted )
+	{
+		emit action( SignatureMobile );
+	}
 }
 
 void ContainerPage::setContainer( const QString &file )
@@ -175,6 +194,25 @@ void ContainerPage::setContainer( const QString &file )
 void ContainerPage::showButtons( std::vector<QWidget*> buttons )
 {
 	for( auto *button: buttons ) button->show();
+}
+
+void ContainerPage::showDropdown()
+{
+	if( otherAction )
+	{
+		hideOtherAction();
+	}
+	else
+	{
+		otherAction.reset( new MainAction( SignatureMobile, "ALLKIRJASTA\nMOBIILI-ID’GA", this, false ) );
+		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
+		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
+
+		otherAction->show();
+		mainAction->setStyleSheet( "QPushButton { border-top-left-radius: 0px; }" );
+		otherAction->setStyleSheet( "QPushButton { border-top-left-radius: 2px; border-top-right-radius: 2px; }" );
+	}
+
 }
 
 void ContainerPage::showRightPane( ItemList::ItemType itemType, const QString &header )
@@ -205,6 +243,7 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
 		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::action );
+		connect( mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown );
 		mainAction->show();
 	}
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );	
@@ -222,5 +261,9 @@ void ContainerPage::resizeEvent( QResizeEvent *event )
 	if( mainAction )
 	{
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
+	}
+	if( otherAction )
+	{
+		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 	}
 }

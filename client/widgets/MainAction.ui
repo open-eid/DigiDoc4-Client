@@ -64,10 +64,11 @@ background-color: #1a7dbc;
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
+      <string notr="true">border: none;
+color: #ffffff;
+background-color: #006EB5;
+QPushButton {
+	border-top-left-radius: 2px;
 }
 QPushButton:pressed {
 	background-color: #41B6E6;

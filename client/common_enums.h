@@ -53,6 +53,7 @@ enum Actions {
     HeadHelp,
 
     SignatureAdd,
+    SignatureMobile,
     SignatureRemove
 };
 

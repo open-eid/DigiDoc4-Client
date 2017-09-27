@@ -18,28 +18,23 @@
  */
 
 #pragma once
+#include <QDialog>
 
-#include <memory>
+namespace Ui {
+class MobileDialog;
+}
 
-#include <QtCore/QtGlobal>
-#include <QFont>
-
-class StylesPrivate;
-class Styles
+class MobileDialog : public QDialog
 {
-public:
-	enum Font {
-		Bold,
-		Condensed,
-		CondensedBold,
-		Regular
-	};
+	Q_OBJECT
 
-	static QFont font( Font font, int size );
-	static QFont font( Font font, int size, QFont::Weight weight );
+public:
+	explicit MobileDialog(QWidget *parent = nullptr);
+	~MobileDialog();
+
+	int exec() override;
 
 private:
-	explicit Styles();
-
-	Q_DISABLE_COPY(Styles);
+	Ui::MobileDialog *ui;
 };
+

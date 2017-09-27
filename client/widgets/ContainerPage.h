@@ -59,11 +59,15 @@ private:
 	void initContainer( const QString &file, const QString &suffix );
 	void hideButtons( std::vector<QWidget*> buttons );
 	void hideMainAction();
+	void hideOtherAction();
 	void hideRightPane();
+	void mobileDialog();
 	void showButtons( std::vector<QWidget*> buttons );
-	void showRightPane( ItemList::ItemType itemType, const QString &header );
+	void showDropdown();
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
+	void showRightPane( ItemList::ItemType itemType, const QString &header );
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
+	std::unique_ptr<MainAction> otherAction;
 };
