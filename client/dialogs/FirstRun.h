@@ -19,31 +19,33 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include <QDialog>
+#include <QPainter>
+
 
 namespace Ui {
-class AddressItem;
+class FirstRun;
 }
 
-class AddressItem : public StyledWidget
+class FirstRun : public QDialog
 {
 	Q_OBJECT
 
 public:
-	enum ShowToolButton
+	explicit FirstRun(QWidget *parent = 0);
+	~FirstRun();
+
+private:
+	void hideViewButtons(bool showSkipe = true);
+
+	Ui::FirstRun *ui;
+
+	enum View
 	{
-		None,
-		Remove,
-		Add,
-		Added
+		Signing,
+		Encryption,
+		MyEid
 	};
 
-	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
-	~AddressItem();
-
-	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
-	
-private:
-	Ui::AddressItem *ui;
+	View page;
 };
