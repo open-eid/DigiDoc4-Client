@@ -63,6 +63,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">padding: 0px 0px 0px 6px;
+border-width: 1px 0px 1px 0px; 
 background-color: #F8DDA7;
 color: #353739;</string>
      </property>
@@ -233,8 +234,10 @@ border: none;
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 1px solid #c8c8c8;
-background-color: #F4F5F6;</string>
+      <string notr="true">border: solid #c8c8c8;
+border-width: 1px 0px 1px 0px; 
+background-color: #F4F5F6;
+</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="leftMargin">

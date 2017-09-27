@@ -42,14 +42,8 @@ public:
 		condensedBold = QFontDatabase::applicationFontFamilies(
 			QFontDatabase::addApplicationFont(":/fonts/RobotoCondensed-Bold.ttf")
 		).at(0);
-		openSans = QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(":/fonts/OpenSans-Regular.ttf")
-		).at(0);
 		regular = QFontDatabase::applicationFontFamilies(
 			QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf")
-		).at(0);
-		semiBold = QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(":/fonts/OpenSans-SemiBold.ttf")
 		).at(0);
 	};
 	QString fontName( Styles::Font font )
@@ -59,8 +53,6 @@ public:
 			case Styles::Bold: return bold;
 			case Styles::Condensed: return condensed;
 			case Styles::CondensedBold: return condensedBold;
-			case Styles::OpenSansRegular: return openSans;
-			case Styles::OpenSansSemiBold: return semiBold;
 			default: return regular;
 		}
 	}
@@ -78,9 +70,7 @@ private:
 	QString bold;
 	QString condensed;
 	QString condensedBold;
-	QString openSans;
 	QString regular;
-	QString semiBold;
 };
 
 QFont Styles::font( Styles::Font font, int size )

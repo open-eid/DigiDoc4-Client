@@ -39,6 +39,7 @@ public:
 
 signals:
 	void action( int action );
+	void dropdown();
 
 private:
 	Ui::MainAction *ui;

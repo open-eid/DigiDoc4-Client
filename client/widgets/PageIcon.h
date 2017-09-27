@@ -59,7 +59,7 @@ private:
 	struct Style
 	{
 		QFont font;
-		QString image, backColor, foreColor;
+		QString image, backColor, foreColor, border;
 	};
 
 	Ui::PageIcon *ui;
@@ -72,4 +72,5 @@ private:
 	ria::qdigidoc4::Pages type;
 
 	void updateSelection();
+	void updateSelection(const Style &style);
 };

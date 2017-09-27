@@ -87,14 +87,14 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
 
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
-//    connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
+//	connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
 }
 
 void MainWindow::signBoxChangePinClicked()
 {
-//    showWarning( "Will implemented soon" );
+//	showWarning( "Will implemented soon" );
 
-//    smartcard->pinUnblock( PinDialog::Pin2Type );
+//	smartcard->pinUnblock( PinDialog::Pin2Type );
 }
 
 
@@ -215,36 +215,36 @@ void MainWindow::loadCachedPicture( const QString &id )
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
 {
 	ui->startScreen->setCurrentIndex(page);
-    
-    if( page == SignDetails)
-    {
-        if( create )
-        {
-            ui->signContainerPage->transition( ContainerState::UnsignedContainer, files );
-        }
-        else
-        {
-            ui->signContainerPage->transition( ContainerState::SignedContainer );
-            if( !files.isEmpty() ) ui->signContainerPage->setContainer( files[0] );
-        }
-    }
-    else if( page == CryptoDetails)
-    {
-        if( create )
-        {
-            ui->cryptoContainerPage->transition( ContainerState::UnencryptedContainer, files );
-        }
-        else
-        {
-            ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
-            if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( files[0] );
-        }
-    }
+	
+	if( page == SignDetails)
+	{
+		if( create )
+		{
+			ui->signContainerPage->transition( ContainerState::UnsignedContainer, files );
+		}
+		else
+		{
+			ui->signContainerPage->transition( ContainerState::SignedContainer );
+			if( !files.isEmpty() ) ui->signContainerPage->setContainer( files[0] );
+		}
+	}
+	else if( page == CryptoDetails)
+	{
+		if( create )
+		{
+			ui->cryptoContainerPage->transition( ContainerState::UnencryptedContainer, files );
+		}
+		else
+		{
+			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
+			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( files[0] );
+		}
+	}
 }
 
 void MainWindow::onSignAction( int action )
 {
-	if( action == SignatureAdd )
+	if( action == SignatureAdd || action == SignatureMobile )
 	{
 		ui->signContainerPage->transition(ContainerState::SignedContainer);
 
@@ -332,11 +332,11 @@ void MainWindow::openFiles( const QStringList files )
 			}
 		}
 	}
-    else
-    {
-        // TODO (2.)
-        page = current == CryptoIntro ? CryptoIntro : SignIntro;
-    }
+	else
+	{
+		// TODO (2.)
+		page = current == CryptoIntro ? CryptoIntro : SignIntro;
+	}
 
 	selectPageIcon( page == CryptoDetails ? ui->crypto : ui->signature );
 	navigateToPage( page, files, create );
@@ -360,7 +360,7 @@ void MainWindow::showCardStatus()
 	{
 		ui->idSelector->show();
 		ui->infoStack->show();
-        ui->accordion->show();
+		ui->accordion->show();
 		ui->noCardInfo->hide();
 
 		QStringList firstName = QStringList()
@@ -412,7 +412,7 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 		ui->noCardInfo->update( text );
 		ui->noCardInfo->setAccessibleDescription( text );
 	}
-    else
+	else
 	{
 		ui->noCardInfo->show();
 		ui->cardInfo->update( "", "", text );
@@ -422,7 +422,7 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
 	ui->infoStack->clearPicture();
-    ui->infoStack->hide();
+	ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->updateOtherData( false );
 }
@@ -468,7 +468,7 @@ void MainWindow::getEmailStatus ()
 		code = code ? code : 20;
 		if( code == 20 )
 			ui->accordion->updateOtherData( true, XmlReader::emailErr( code ), code );
-        else
+		else
 			ui->accordion->updateOtherData( false, XmlReader::emailErr( code ), code );
 	}
 	else
@@ -491,7 +491,7 @@ void MainWindow::activateEmail ()
 	if( eMail.isEmpty() )
 	{
 		showWarning( tr("E-mail address missing or invalid!") );
-        ui->accordion->setFocusToEmail();
+		ui->accordion->setFocusToEmail();
 		return;
 	}
 	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );

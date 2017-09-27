@@ -26,6 +26,8 @@
 
 using namespace ria::qdigidoc4;
 
+#define BOTTOM_BORDER "solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px"
+
 PageIcon::PageIcon(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::PageIcon)
@@ -48,25 +50,25 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 	switch( type )
 	{
 	case CryptoIntro:
-		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::WHITE, colors::CLAY_CREEK };
-		hover = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::BAHAMA_BLUE, colors::WHITE };
-		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE };
+		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::WHITE, colors::CLAY_CREEK, "none" };
+		hover = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
+		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 34, 38 );
 		icon->move( 38, 26 );	
 		ui->label->setText( "KRÜPTO" );
 		break;
 	case MyEid:
-		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK };
-		hover = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::BAHAMA_BLUE, colors::WHITE };
-		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE };
+		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, "none" };
+		hover = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
+		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 44, 31 );
 		icon->move( 33, 28 );	
 		ui->label->setText( "MINU eID" );
 		break;
 	default:
-		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK };
-		hover = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::BAHAMA_BLUE, colors::WHITE };
-		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", colors::ASTRONAUT_BLUE, colors::WHITE };
+		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, "none" };
+		hover = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
+		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		ui->label->setText( "ALLKIRI" );
 		break;
 	}
@@ -92,9 +94,7 @@ void PageIcon::enterEvent( QEvent *ev )
 {
 	if( !selected )
 	{
-		icon->setStyleSheet(QString("background-color: %1; border: none;").arg(hover.backColor));	
-		setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(hover.backColor));
-		ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(hover.backColor).arg(hover.foreColor) );
+		updateSelection(hover);
 	}
 }
 
@@ -102,9 +102,7 @@ void PageIcon::leaveEvent( QEvent *ev )
 {
 	if( !selected )
 	{
-		icon->setStyleSheet(QString("background-color: %1; border: none;").arg(inactive.backColor));	
-		setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(inactive.backColor));
-		ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(inactive.backColor).arg(inactive.foreColor) );
+		updateSelection(inactive);
 	}
 }
 
@@ -116,6 +114,7 @@ void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 void PageIcon::updateSelection()
 {
 	const Style &style = selected ? active : inactive;
+
 	if (selected)
 	{
 		shadow->show();
@@ -128,10 +127,16 @@ void PageIcon::updateSelection()
 	}
 
 	ui->label->setFont(style.font);
-	ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
 	icon->load( QString( ":%1" ).arg( style.image ) );
+	updateSelection(style);
+}
+
+
+void PageIcon::updateSelection(const Style &style)
+{
+	ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
 	icon->setStyleSheet(QString("background-color: %1; border: none;").arg(style.backColor));
-	setStyleSheet(QString("background-repeat: none; background-color: %1; border: none;").arg(style.backColor));
+	setStyleSheet(QString("background-repeat: none; background-color: %1; border: %2;").arg(style.backColor).arg(style.border));
 }
 
 // Custom widget must override paintEvent in order to use stylesheets
