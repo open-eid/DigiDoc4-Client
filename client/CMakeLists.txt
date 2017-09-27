@@ -107,6 +107,10 @@ if( APPLE )
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name Headers | xargs rm -rf
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
+		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libssl.1.0.0.dylib @loader_path/../../../libssl.1.0.0.dylib 
+			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
+		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libcrypto.1.0.0.dylib @loader_path/../../../libcrypto.1.0.0.dylib 
+			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
 	)
 	add_custom_target( codesign DEPENDS ${PROGNAME}
 		COMMAND codesign -f -s \"$$SIGNCERT\"
