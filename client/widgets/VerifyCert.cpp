@@ -181,8 +181,8 @@ void VerifyCert::update(
 					"background-color: #F8DDA7;"
 					"font-family: Arial;"
 					);
-		ui->name->setTextFormat(Qt::RichText);
-		ui->name->setText(name + " <img src=\":/images/icon_alert_orange.svg\" height=\"12\" width=\"13\">");
+		ui->name->setTextFormat( Qt::RichText );
+		ui->name->setText( name + " <img src=\":/images/icon_alert_orange.svg\" height=\"12\" width=\"13\">" );
 	}
 	else 
 	{
@@ -191,7 +191,8 @@ void VerifyCert::update(
 		ui->verticalSpacerBelowBtn->changeSize( 20, 38 );
 		changePinStyle( "#FFFFFF" );
 		ui->name->setTextFormat( Qt::RichText );
-		ui->name->setText( name );
+		ui->name->setText( name + 
+			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"13\">" : "" ) );
 	}
 	ui->changePIN->show();
     ui->forgotPinLink->setVisible( true );
