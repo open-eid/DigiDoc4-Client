@@ -8,6 +8,7 @@ Client is actively developed and is currently in alpha-stage.
 
 ## Building
 [![Build Status](https://travis-ci.org/open-eid/DigiDoc4-Client.svg?branch=master)](https://travis-ci.org/open-eid/DigiDoc4-Client)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/open-eid/DigiDoc4-Client?branch=master&svg=true)](https://ci.appveyor.com/project/uudisaru/digidoc4-client/branch/master)
 * [Ubuntu](#ubuntu)
 * [macOS](#macos)
 
