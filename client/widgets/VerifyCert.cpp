@@ -37,6 +37,8 @@ VerifyCert::VerifyCert( QWidget *parent ) :
 	ui->setupUi( this );
 
 	connect( ui->changePIN, &QPushButton::clicked, this, &VerifyCert::processClickedBtn );
+	connect( ui->forgotPinLink, &QLabel::linkActivated, this, &VerifyCert::processForgotPinLink );
+	connect( ui->details, &QLabel::linkActivated, this, &VerifyCert::processCertDetails );
 
 	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
@@ -46,8 +48,6 @@ VerifyCert::VerifyCert( QWidget *parent ) :
 	ui->details->setFont( regular12 );
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
 	borders = " border: solid #DFE5E9; border-width: 1px 0px 0px 0px; ";
-
-//	connect( ui->changePIN, &QPushButton::clicked, this, [this](){ emit changePinClicked(); } );
 }
 
 VerifyCert::~VerifyCert()
@@ -61,11 +61,10 @@ void VerifyCert::addBorders()
 	borders = " border: solid #DFE5E9; border-width: 1px 1px 0px 1px; ";
 }
 
-void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *smartCard )
+void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartCard )
 {
     this->pinType = type;
-    this->smartCard = smartCard;
-	QSmartCardData t = smartCard->data();
+	QSmartCardData t = pSmartCard->data();
     
     SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
 	this->isValidCert = c.isValid();    // put 0 for testing Aegunud Sertifikaate.
@@ -125,11 +124,18 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *smartCa
 			changeBtn,
 			forgotPinText,
 			detailsText,
-			error );
-
+			error,
+			t.retryCount( QSmartCardData::PukType ) == 0 );
 }
 
-void VerifyCert::update( const QString &name, const QString &validUntil, const QString &change, const QString &forgotPinText, const QString &detailsText, const QString &error )
+void VerifyCert::update(
+	const QString &name,
+	const QString &validUntil,
+	const QString &change,
+	const QString &forgotPinText,
+	const QString &detailsText,
+	const QString &error,
+	bool isBlockedPuk)
 {
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 	{
@@ -187,9 +193,24 @@ void VerifyCert::update( const QString &name, const QString &validUntil, const Q
 		ui->name->setTextFormat( Qt::RichText );
 		ui->name->setText( name );
 	}
-	if( smartCard->data().retryCount( QSmartCardData::PukType ) == 0 )  // if PUK is blocked then disable 'change PIN/PUK' buttons.
-		ui->changePIN->hide();
-
+	ui->changePIN->show();
+    ui->forgotPinLink->setVisible( true );
+	ui->details->setVisible( true );
+	if( isBlockedPuk )  // if PUK is blocked then
+	{
+		ui->changePIN->hide();  // hide 'change PIN/PUK' buttons.
+		ui->details->setVisible( false ); // hide 'Sertificate details' label
+		if( pinType != QSmartCardData::PukType )
+			ui->forgotPinLink->setVisible( false ); // hide 'Forgot PIN. code?' label
+	}
+	if( !isValidCert )
+	{
+        // This logic to be clarified !!
+		if( pinType != QSmartCardData::PukType )
+			ui->changePIN->hide();  // hide 'change PIN' buttons.
+		if( pinType != QSmartCardData::PukType )
+			ui->forgotPinLink->setVisible( false ); // hide 'Forgot PIN. code?' label
+	}
 	ui->validUntil->setText( validUntil );
 	if( pinType != QSmartCardData::PukType )
 		ui->error->setVisible( isBlockedPin || !isValidCert );
@@ -206,7 +227,6 @@ void VerifyCert::update( const QString &name, const QString &validUntil, const Q
 	{
 		ui->forgotPinLink->setVisible( true );
 		ui->forgotPinLink->setText( forgotPinText );
-		ui->forgotPinLink->setOpenExternalLinks( true );
 	}
 
 	if( detailsText.isEmpty() )
@@ -217,7 +237,7 @@ void VerifyCert::update( const QString &name, const QString &validUntil, const Q
 	{
 		ui->details->setText( detailsText );
 		ui->details->setVisible( true );
-		ui->details->setOpenExternalLinks( true );
+//	??	ui->details->setOpenExternalLinks( true );
 	}
 }
 
@@ -259,29 +279,15 @@ void VerifyCert::changePinStyle( const QString &background )
 
 void VerifyCert::processClickedBtn()
 {
-	switch( pinType )
-	{
-		case QSmartCardData::Pin1Type:
-        
-			if( !isValidCert )
-				QMessageBox::warning( this, windowTitle(), "... PIN1 Uuenda sertifikaate" );
-			else if( isBlockedPin )
-				( (QSmartCard *)smartCard )->pinUnblock( PinDialog::Pin1Type );
-			else
-				QMessageBox::warning( this, windowTitle(), "... change PIN1 Clicked" );
-			break;
-		case QSmartCardData::Pin2Type:
-			if( !isValidCert )
-				QMessageBox::warning( this, windowTitle(), "... PIN2 Uuenda sertifikaate" );
-			else if( isBlockedPin )
-				( (QSmartCard *)smartCard )->pinUnblock( PinDialog::Pin2Type );
-			else
-				QMessageBox::warning( this, windowTitle(), "... change PIN2 Clicked" );
-			break;
-		case QSmartCardData::PukType:
-			QMessageBox::warning( this, windowTitle(), "change PUK Clicked" );
-			break;
-		default:
-			break;
-	}
+	emit changePinClicked( false, isBlockedPin );
+}
+
+void VerifyCert::processForgotPinLink( QString link )
+{
+	emit changePinClicked( true, false );    // Change PIN with PUK code
+}
+
+void VerifyCert::processCertDetails( QString link )
+{
+	emit certDetailsClicked( link );
 }

@@ -36,7 +36,7 @@ class PinPopup : public QDialog
 public:
 	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = nullptr );
 	PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr );
-	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr );
+	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr, const QString &bodyText = "" );
 
 	~PinPopup();
 
@@ -47,7 +47,7 @@ signals:
 	void startTimer();
 
 private:
-    void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token );
+    void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText=""  );
     void textEdited( const QString &text );
 
 	Ui::PinPopup *ui;

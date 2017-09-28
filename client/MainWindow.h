@@ -52,7 +52,10 @@ private Q_SLOTS:
 	void loadCardPhoto();
 	void getEmailStatus();
 	void activateEmail ();
-	void signBoxChangePinClicked();
+	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
+	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
+	void changePukClicked( bool isForgotPuk );
+	void certDetailsClicked( const QString &link );
 
 protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
@@ -110,10 +113,12 @@ private:
 	void openFiles( const QStringList files );
 	void selectPageIcon( PageIcon* page );
 	void showOverlay( QWidget *parent );
-	void showWarning( const QString &msg );
+	void showWarning( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
+	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
+	void pinPukChange( QSmartCardData::PinType type );
 
 	Ui::MainWindow *ui;
 

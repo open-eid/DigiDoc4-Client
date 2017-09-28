@@ -22,8 +22,6 @@
 #include <QThread>
 #include <QSharedDataPointer>
 
-#include "dialogs/PinUnblock.h"
-
 template<class Key, class T> class QHash;
 class SslCertificate;
 class QSmartCardDataPrivate;
@@ -126,15 +124,16 @@ public:
 	explicit QSmartCard( QObject *parent = 0 );
 	~QSmartCard();
 
-	ErrorType change( QSmartCardData::PinType type, const QString &newpin, const QString &pin );
+	ErrorType change( QSmartCardData::PinType type, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	Qt::HANDLE key();
 	ErrorType login( QSmartCardData::PinType type );
 	void logout();
 	void reload();
-	ErrorType unblock( QSmartCardData::PinType type, const QString &pin, const QString &puk );
+	ErrorType unblock( QSmartCardData::PinType type, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
-    void pinUnblock( PinDialog::PinFlags flags );
+	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
+	ErrorType pinChange( QSmartCardData::PinType type );
 
 signals:
 	void dataChanged();

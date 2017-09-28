@@ -45,6 +45,13 @@ void Accordion::init()
 	ui->titleVerifyCert->init( this, true,  "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert );
 	ui->titleOtherData->init( this,  false, "MUUD ANDMED", ui->contentOtherData );
 
+ 	connect(ui->authBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin1( bool, bool ) ) );
+ 	connect(ui->signBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin2( bool, bool ) ) );
+ 	connect(ui->pukBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePuk( bool, bool ) ) );
+
+ 	connect(ui->authBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
+ 	connect(ui->signBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
+    
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
 
@@ -77,4 +84,24 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 	ui->authBox->update( QSmartCardData::Pin1Type, smartCard );
 	ui->signBox->update( QSmartCardData::Pin2Type, smartCard );
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
+}
+
+void Accordion::changePin1( bool isForgotPin, bool isBlockedPin )
+{
+	emit changePin1Clicked ( isForgotPin, isBlockedPin );
+}
+
+void Accordion::changePin2( bool isForgotPin, bool isBlockedPin )
+{
+	emit changePin2Clicked ( isForgotPin, isBlockedPin );
+}
+
+void Accordion::changePuk( bool isForgotPuk, bool isBlockedPin )
+{
+	emit changePukClicked ( isForgotPuk );
+}
+
+void Accordion::certDetails( const QString &link )
+{
+	emit certDetailsClicked ( link );
 }
