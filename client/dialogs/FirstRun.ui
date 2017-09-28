@@ -273,6 +273,76 @@ QPushButton:disabled {
     <string>VAATA JÄRGMIST TUTVUSTUST</string>
    </property>
   </widget>
+  <widget class="QComboBox" name="lang">
+   <property name="geometry">
+    <rect>
+     <x>411</x>
+     <y>415</y>
+     <width>201</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>201</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>201</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
+	image: none;
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+    background-color: #FFFFFF;
+	color: #353739;
+}	
+
+/* list */
+QComboBox QAbstractItemView {
+	image: none;
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+	padding: 3px 3px 3px 3px;
+    background-color: #FFFFFF;
+}
+
+/* rows */
+QComboBox:item {
+    background-color: #FFFFFF;
+	color: #353739;
+}
+
+/* selected row */
+QComboBox:item:selected {
+    background-color: #006EB5;
+    color: #FFFFFF;
+}
+
+/* drop-down button*/
+QComboBox::drop-down {
+    width: 0px;
+	border: none;
+}
+
+/* drop-down button image*/
+QComboBox::down-arrow {
+	border: none;
+    image: none;
+}</string>
+   </property>
+   <property name="maxVisibleItems">
+    <number>3</number>
+   </property>
+   <property name="maxCount">
+    <number>3</number>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

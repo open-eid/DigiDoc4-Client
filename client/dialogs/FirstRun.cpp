@@ -30,6 +30,11 @@ FirstRun::FirstRun(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	ui->lang->addItem("Eesti keel");
+	ui->lang->addItem("Inglise keel");
+	ui->lang->addItem("Vene keel");
+
+	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->continue_2->setFont(Styles::font(Styles::Condensed, 14));
 	ui->viewSigning->setFont(Styles::font(Styles::Condensed, 14));
 	ui->viewEncrypttion->setFont(Styles::font(Styles::Condensed, 14));
@@ -40,6 +45,7 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->viewSigning->hide();
 	ui->viewEncrypttion->hide();
 	ui->viewEid->hide();
+
 	ui->next->hide();
 	ui->skip->hide();
 
@@ -48,6 +54,7 @@ FirstRun::FirstRun(QWidget *parent) :
 			{
 				setStyleSheet("image: url(:/images/FirstRun2.png);");
 
+				ui->lang->hide();
 				ui->continue_2->hide();
 
 				ui->viewSigning->show();
