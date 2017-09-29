@@ -343,6 +343,93 @@ QComboBox::down-arrow {
     <number>3</number>
    </property>
   </widget>
+  <widget class="QToolButton" name="gotoSigning">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>558</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="gotoEncryption">
+   <property name="geometry">
+    <rect>
+     <x>505</x>
+     <y>558</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="gotoEid">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>558</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

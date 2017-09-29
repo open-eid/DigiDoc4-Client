@@ -20,15 +20,25 @@
 
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
+#include <QLineEdit>
 #include "Styles.h"
 
 
 FirstRun::FirstRun(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::FirstRun),
-	page(Signing)
+	page(None)
 {
 	ui->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
+
+
+	/* Text centering not working */
+//	ui->lang->setEditable(true);
+//	ui->lang->lineEdit()->setDisabled(true);
+//	ui->lang->lineEdit()->setReadOnly(true);
+//	ui->lang->lineEdit()->setAlignment(Qt::AlignCenter);
 
 	ui->lang->addItem("Eesti keel");
 	ui->lang->addItem("Inglise keel");
@@ -49,6 +59,10 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->next->hide();
 	ui->skip->hide();
 
+	ui->gotoSigning->hide();
+	ui->gotoEncryption->hide();
+	ui->gotoEid->hide();
+
 	connect(ui->continue_2, &QPushButton::clicked, this,
 			[this]()
 			{
@@ -67,27 +81,24 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->viewSigning, &QPushButton::clicked, this,
 			[this]()
 			{
-				setStyleSheet("image: url(:/images/FirstRunSigning.png);");
-				hideViewButtons();
 				page = Signing;
+				hideViewButtons();
 			}
 	);
 
 	connect(ui->viewEncrypttion, &QPushButton::clicked, this,
 			[this]()
 			{
-				setStyleSheet("image: url(:/images/FirstRunEnctypt.png);");
-				hideViewButtons();
 				page = Encryption;
+				hideViewButtons();
 			}
 		);
 
 	connect(ui->viewEid, &QPushButton::clicked, this,
 			[this]()
 			{
-				setStyleSheet("image: url(:/images/FirstRunMyEID.png);");
-				hideViewButtons(false);
 				page = MyEid;
+				hideViewButtons();
 			}
 	);
 
@@ -98,14 +109,12 @@ FirstRun::FirstRun(QWidget *parent) :
 				switch(page)
 				{
 				case Signing:
-					setStyleSheet("image: url(:/images/FirstRunEnctypt.png);");
-					hideViewButtons();
 					page = Encryption;
+					hideViewButtons();
 					break;
 				case Encryption:
-					setStyleSheet("image: url(:/images/FirstRunMyEID.png);");
-					hideViewButtons(false);
 					page = MyEid;
+					hideViewButtons();
 					break;
 				default:
 					emit close();
@@ -120,23 +129,67 @@ FirstRun::FirstRun(QWidget *parent) :
 				emit close();
 			}
 		);
+
+	connect(ui->gotoSigning, &QPushButton::clicked, this,
+			[this]()
+			{
+				page = Signing;
+				hideViewButtons();
+			}
+		);
+	connect(ui->gotoEncryption, &QPushButton::clicked, this,
+			[this]()
+			{
+				page = Encryption;
+				hideViewButtons();
+			}
+		);
+	connect(ui->gotoEid, &QPushButton::clicked, this,
+			[this]()
+			{
+				page = MyEid;
+				hideViewButtons();
+			}
+		);
+
 }
 
-void FirstRun::hideViewButtons(bool showSkipe)
+void FirstRun::hideViewButtons()
 {
-	if(!showSkipe)
-		ui->next->setText("SISENE RAKENDUSSE");
-
-	ui->continue_2->hide();
 	ui->viewSigning->hide();
 	ui->viewEncrypttion->hide();
 	ui->viewEid->hide();
-
 	ui->next->show();
-	if(showSkipe)
+
+	ui->gotoSigning->show();
+	ui->gotoEncryption->show();
+	ui->gotoEid->show();
+
+	QString normal = "border: none; image: url(:/images/icon_dot.png);";
+	QString active = "border: none; image: url(:/images/icon_dot_active.png);";
+
+	ui->gotoSigning->setStyleSheet(page == Signing ? active : normal);
+	ui->gotoEncryption->setStyleSheet(page == Encryption ? active : normal);
+	ui->gotoEid->setStyleSheet(page == MyEid ? active : normal);
+
+
+	switch (page) {
+	case Signing:
+		setStyleSheet("image: url(:/images/FirstRunSigning.png);");
+		ui->next->setText("VAATA JÄRGMIST TUTVUSTUST");
 		ui->skip->show();
-	else
+		break;
+	case Encryption:
+		setStyleSheet("image: url(:/images/FirstRunEnctypt.png);");
+		ui->next->setText("VAATA JÄRGMIST TUTVUSTUST");
+		ui->skip->show();
+		break;
+	default:
+		setStyleSheet("image: url(:/images/FirstRunMyEID.png);");
+		ui->next->setText("SISENE RAKENDUSSE");
 		ui->skip->hide();
+		break;
+	}
 }
 
 FirstRun::~FirstRun()

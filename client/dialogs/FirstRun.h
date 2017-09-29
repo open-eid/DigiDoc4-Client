@@ -36,12 +36,13 @@ public:
 	~FirstRun();
 
 private:
-	void hideViewButtons(bool showSkipe = true);
+	void hideViewButtons();
 
 	Ui::FirstRun *ui;
 
 	enum View
 	{
+		None,
 		Signing,
 		Encryption,
 		MyEid
