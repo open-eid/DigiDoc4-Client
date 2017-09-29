@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FirstRun</class>
+ <widget class="QWidget" name="FirstRun">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">image: url(:/images/FirstRun1.png);</string>
+  </property>
+  <widget class="QPushButton" name="continue_2">
+   <property name="geometry">
+    <rect>
+     <x>412</x>
+     <y>458</y>
+     <width>200</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>200</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+   </property>
+   <property name="text">
+    <string>JÄTKA</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="viewSigning">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>418</y>
+     <width>298</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+   </property>
+   <property name="text">
+    <string>VAATA TUTVUSTUST</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="viewEncrypttion">
+   <property name="geometry">
+    <rect>
+     <x>363</x>
+     <y>418</y>
+     <width>298</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+   </property>
+   <property name="text">
+    <string>VAATA TUTVUSTUST</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="viewEid">
+   <property name="geometry">
+    <rect>
+     <x>696</x>
+     <y>418</y>
+     <width>298</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+   </property>
+   <property name="text">
+    <string>VAATA TUTVUSTUST</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="skip">
+   <property name="geometry">
+    <rect>
+     <x>436</x>
+     <y>525</y>
+     <width>151</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>151</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>151</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+   </property>
+   <property name="text">
+    <string>Jäta tutvustused vahele →</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="next">
+   <property name="geometry">
+    <rect>
+     <x>363</x>
+     <y>481</y>
+     <width>298</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>298</width>
+     <height>34</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+   </property>
+   <property name="text">
+    <string>VAATA JÄRGMIST TUTVUSTUST</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="lang">
+   <property name="geometry">
+    <rect>
+     <x>411</x>
+     <y>415</y>
+     <width>201</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>201</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>201</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
+	image: none;
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+    background-color: #FFFFFF;
+	color: #353739;
+}	
+
+/* list */
+QComboBox QAbstractItemView {
+	image: none;
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+	padding: 3px 3px 3px 3px;
+    background-color: #FFFFFF;
+}
+
+/* rows */
+QComboBox:item {
+    background-color: #FFFFFF;
+	color: #353739;
+}
+
+/* selected row */
+QComboBox:item:selected {
+    background-color: #006EB5;
+    color: #FFFFFF;
+}
+
+/* drop-down button*/
+QComboBox::drop-down {
+    width: 0px;
+	border: none;
+}
+
+/* drop-down button image*/
+QComboBox::down-arrow {
+	border: none;
+    image: none;
+}</string>
+   </property>
+   <property name="maxVisibleItems">
+    <number>3</number>
+   </property>
+   <property name="maxCount">
+    <number>3</number>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="gotoSigning">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>558</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="gotoEncryption">
+   <property name="geometry">
+    <rect>
+     <x>505</x>
+     <y>558</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="gotoEid">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>558</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>15</width>
+     <height>15</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -45,7 +45,7 @@ AddressItem::~AddressItem()
 	delete ui;
 }
 
-void AddressItem::update(const QString& name, const QString& code, const QString& type, int act)
+void AddressItem::update(const QString& name, const QString& code, const QString& type, ShowToolButton show)
 {
 	ui->name->setText( name );
 	ui->code->setText( code );
@@ -53,7 +53,7 @@ void AddressItem::update(const QString& name, const QString& code, const QString
 
 	ui->added->setEnabled(false);
 
-	if(act == 3)
+	if(show == Added)
 	{
 		setStyleSheet(
 					"border-bottom: 2px solid rgba(217, 217, 216, 0.45);"
@@ -73,18 +73,18 @@ void AddressItem::update(const QString& name, const QString& code, const QString
 	}
 
 
-	switch (act) {
-	case 1:
+	switch (show) {
+	case Remove:
 		ui->remove->show();
 		ui->add->hide();
 		ui->added->hide();
 		break;
-	case 2:
+	case Add:
 		ui->remove->hide();
 		ui->add->show();
 		ui->added->hide();
 		break;
-	case 3:
+	case Added:
 		ui->remove->hide();
 		ui->add->hide();
 		ui->added->show();

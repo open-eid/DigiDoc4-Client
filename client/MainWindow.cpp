@@ -117,7 +117,11 @@ void MainWindow::buttonClicked( int button )
 	{
 	case HeadHelp:
 		//QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
-		showWarning( "Not implemented yet" );
+		//showWarning( "Not implemented yet" );
+	{
+		FirstRun dlg(this);
+		dlg.exec();
+	}
 		break;
 	case HeadSettings:
 	{

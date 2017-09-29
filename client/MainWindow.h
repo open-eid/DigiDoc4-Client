@@ -24,6 +24,7 @@
 #include "sslConnect.h"
 #include "effects/Overlay.h"
 #include "dialogs/AddRecipients.h"
+#include "dialogs/FirstRun.h"
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
 
