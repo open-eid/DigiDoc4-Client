@@ -26,6 +26,8 @@
 #include "XmlReader.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
+#include "dialogs/AddRecipients.h"
+#include "dialogs/FirstRun.h"
 #include "util/FileUtil.h"
 
 #include <common/Settings.h>
@@ -54,13 +56,17 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
-	
-	ui->selector->hide();
+
+	selector.reset( new DropdownButton( ":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector ) );
+	selector->hide();
+	selector->resize( 12, 6 );
+	selector->move( 339, 32 );
+	selector->setCursor( Qt::PointingHandCursor );
 	ui->help->installEventFilter( new ButtonHoverFilter( ":/images/icon_Abi.svg", ":/images/icon_Abi_hover.svg", this ) );
 	ui->settings->installEventFilter( new ButtonHoverFilter( ":/images/icon_Seaded.svg", ":/images/icon_Seaded_hover.svg", this ) );
 	buttonGroup = new QButtonGroup( this );
-   	buttonGroup->addButton( ui->help, HeadHelp );
-   	buttonGroup->addButton( ui->settings, HeadSettings );
+	buttonGroup->addButton( ui->help, HeadHelp );
+	buttonGroup->addButton( ui->settings, HeadSettings );
 
 	ui->signIntroLabel->setFont( regular20 );
 	ui->signIntroButton->setFont( regular18 );
@@ -73,6 +79,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
 	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
+	connect( selector.get(), &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 	smartcard->start();
 	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
 
@@ -356,11 +363,29 @@ void MainWindow::selectPageIcon( PageIcon* page )
 	}
 }
 
+void MainWindow::showCardMenu( bool show )
+{
+	if( !show )
+	{
+		cardPopup->close();
+		cardPopup.reset( nullptr );
+	}
+	else
+	{
+		QSmartCardData t = smartcard->data();
+		const int numItems = (t.cards().size() - 1);
+		cardPopup.reset( new CardPopup( t.cards(),  t.data( QSmartCardData::Id ).toString(), this ) );
+		cardPopup->show();
+	}
+}
+
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
 	QSmartCardData t = smartcard->data();
 
+    qDebug() << "Card data changed!";
+    
 	if( !t.isNull() )
 	{
 		ui->idSelector->show();
@@ -405,6 +430,15 @@ void MainWindow::showCardStatus()
 	}
 
 	// Combo box to select the cards from
+	if( t.cards().size() > 1 )
+	{
+		selector->show();
+	}
+	else
+	{
+		selector->hide();
+	}
+	
 /*	ui->selector_old->hide();
 	ui->selector->clear();
 	ui->selector->addItems( t.cards() );

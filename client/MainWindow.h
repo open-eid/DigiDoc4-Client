@@ -23,10 +23,11 @@
 #include "QSmartCard.h"
 #include "sslConnect.h"
 #include "effects/Overlay.h"
-#include "dialogs/AddRecipients.h"
-#include "dialogs/FirstRun.h"
 #include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
+#include "widgets/CardPopup.h"
+#include "widgets/DropdownButton.h"
+#include "widgets/PageIcon.h"
 
 #include <QButtonGroup>
 #include <QImage>
@@ -113,6 +114,7 @@ private:
 	void onSignAction( int code );
 	void openFiles( const QStringList files );
 	void selectPageIcon( PageIcon* page );
+	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showWarning( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
@@ -123,7 +125,9 @@ private:
 
 	Ui::MainWindow *ui;
 
+	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
+	std::unique_ptr<DropdownButton> selector;
 	QSmartCard *smartcard = nullptr;
 	QButtonGroup *buttonGroup = nullptr;
 };
