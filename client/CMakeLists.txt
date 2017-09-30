@@ -38,6 +38,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	DigiDoc.cpp
 	FileDialog.cpp
 	MainWindow.cpp
+	MainWindow_MyEID.cpp
 	QPKCS11.cpp
 	QSigner.cpp
 	QSmartCard.cpp

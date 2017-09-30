@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <common/PinDialog.h>
+#include "QSmartCard.h"
 
 #include <QDialog>
 
@@ -32,19 +32,28 @@ class PinUnblock : public QDialog
     Q_OBJECT
 
 public:
-    PinUnblock(QWidget *parent, PinDialog::PinFlags flags);
+	enum WorkMode
+	{
+		UnBlockPinWithPuk = 1,
+		ChangePinWithPuk = 2,
+		PinChange = 4,
+		PukChange = 8
+	};
+    PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type );
     ~PinUnblock();
 
     int exec() override;
+	QString firstCodeText() const;
+	QString newCodeText() const;
 
 private:
-    void init(PinDialog::PinFlags flags);
+    void init(  WorkMode mode, QSmartCardData::PinType type );
     void setUnblockEnabled();
 
     Ui::PinUnblock *ui;
-    QRegExp		regexpPUK;
-    QRegExp		regexpPIN;
-    bool isPukOk;
-    bool isPinOk;
-    bool isRepeatOk;
+    QRegExp		regexpFirstCode;
+    QRegExp		regexpNewCode;
+    bool isFirstCodeOk;
+    bool isNewCodeOk;
+    bool isRepeatCodeOk;
 };

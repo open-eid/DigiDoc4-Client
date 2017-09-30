@@ -69,12 +69,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
 
-	setAcceptDrops(true);
+	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
 	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
 	smartcard->start();
+	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
 
-	showCardStatus();
 	ui->accordion->init();
 
 	connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
@@ -86,17 +86,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
 	connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
 
-	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
-//	connect(ui->accordion, &Accordion::signBoxChangePinClicked, this, &MainWindow::signBoxChangePinClicked ); //[this](){ showWarning( "Will be implemented soon" ); } );
+	showCardStatus();
+    connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
+    connect( ui->accordion, SIGNAL( changePin2Clicked( bool, bool ) ), this, SLOT( changePin2Clicked( bool, bool ) ) );
+    connect( ui->accordion, SIGNAL( changePukClicked( bool ) ), this, SLOT( changePukClicked( bool ) ) );
+    connect( ui->accordion, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetailsClicked( QString ) ) );
 }
-
-void MainWindow::signBoxChangePinClicked()
-{
-//	showWarning( "Will implemented soon" );
-
-//	smartcard->pinUnblock( PinDialog::Pin2Type );
-}
-
 
 MainWindow::~MainWindow()
 {
@@ -154,6 +149,12 @@ void MainWindow::clearOverlay()
 {
 	overlay->close();
 	overlay.reset( nullptr );
+}
+
+void MainWindow::showOverlay( QWidget *parent )
+{
+	overlay.reset( new Overlay(parent) );
+	overlay->show();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -383,18 +384,23 @@ void MainWindow::showCardStatus()
 		}
 		ui->infoStack->update( t );
 		ui->accordion->updateInfo( smartcard );
-	}
-	else if( !t.card().isEmpty() )
-	{
-		noReader_NoCard_Loading_Event( "Loading data", true );
-	}
-	else if( t.card().isEmpty() && !t.readers().isEmpty() )
-	{
-		noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+		ui->myEid->invalidCertIcon( !t.authCert().isValid() || !t.signCert().isValid() );
+		ui->myEid->pinIsBlockedIcon( 
+				t.retryCount( QSmartCardData::Pin1Type ) == 0 || 
+				t.retryCount( QSmartCardData::Pin2Type ) == 0 || 
+				t.retryCount( QSmartCardData::PukType ) == 0 );
 	}
 	else
 	{
-		noReader_NoCard_Loading_Event( "No readers found" );
+//		if ( !QPCSC::instance().serviceRunning() )
+//			noReader_NoCard_Loading_Event( "PCSC service is not running" );
+//		else
+		if ( t.readers().isEmpty() )
+			noReader_NoCard_Loading_Event( "No readers found" );
+		else if ( t.card().isEmpty() )
+			noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+		else
+			noReader_NoCard_Loading_Event( "Loading data", true );
 	}
 
 	// Combo box to select the cards from
@@ -408,26 +414,21 @@ void MainWindow::showCardStatus()
 
 void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoading )
 {
-	ui->idSelector->hide();
-	if( !isLoading )
-	{
-		ui->noCardInfo->show();
-		ui->noCardInfo->update( text );
-		ui->noCardInfo->setAccessibleDescription( text );
-	}
-	else
-	{
-		ui->noCardInfo->show();
-		ui->cardInfo->update( "", "", text );
-		ui->cardInfo->setAccessibleDescription( text );
+	ui->idSelector->hide(); 
+	if( isLoading )
 		Application::setOverrideCursor( Qt::BusyCursor );
-	}
+
+	ui->noCardInfo->show();
+	ui->noCardInfo->update( text );
+	ui->noCardInfo->setAccessibleDescription( text );
 	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
 	ui->infoStack->clearPicture();
-	ui->infoStack->hide();
+    ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->updateOtherData( false );
+	ui->myEid->invalidCertIcon( false );
+	ui->myEid->pinIsBlockedIcon( false );
 }
 
 // Loads picture 
@@ -453,191 +454,4 @@ void MainWindow::loadCardPhoto ()
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
-}
-
-void MainWindow::getEmailStatus ()
-{
-	QByteArray buffer = sendRequest( SSLConnect::EmailInfo );
-
-	if( buffer.isEmpty() )
-		return;
-
-	XmlReader xml( buffer );
-	QString error;
-	QMultiHash<QString,QPair<QString,bool> > emails = xml.readEmailStatus( error );
-	quint8 code = error.toUInt();
-	if( emails.isEmpty() || code > 0 )
-	{
-		code = code ? code : 20;
-		if( code == 20 )
-			ui->accordion->updateOtherData( true, XmlReader::emailErr( code ), code );
-		else
-			ui->accordion->updateOtherData( false, XmlReader::emailErr( code ), code );
-	}
-	else
-	{
-		QStringList text;
-		for( Emails::const_iterator i = emails.constBegin(); i != emails.constEnd(); ++i )
-		{
-			text << QString( "%1 - %2 (%3)" )
-				.arg( i.key() )
-				.arg( i.value().first )
-				.arg( i.value().second ? tr("active") : tr("not active") );
-		}
-		ui->accordion->updateOtherData( false, text.join("<br />") );
-	}
-}
-
-void MainWindow::activateEmail ()
-{
-	QString eMail = ui->accordion->getEmail();
-	if( eMail.isEmpty() )
-	{
-		showWarning( tr("E-mail address missing or invalid!") );
-		ui->accordion->setFocusToEmail();
-		return;
-	}
-	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
-	if( buffer.isEmpty() )
-		return;
-	XmlReader xml( buffer );
-	QString error;
-	xml.readEmailStatus( error );
-	ui->accordion->updateOtherData( false, XmlReader::emailErr( error.toUInt() ) );
-	return;
-}
-
-QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
-{
-/*
-	switch( type )
-	{
-	case SSLConnect::ActivateEmails: showLoading(  tr("Activating email settings") ); break;
-	case SSLConnect::EmailInfo: showLoading( tr("Loading email settings") ); break;
-	case SSLConnect::MobileInfo: showLoading( tr("Requesting Mobiil-ID status") ); break;
-	case SSLConnect::PictureInfo: showLoading( tr("Loading picture") ); break;
-	default: showLoading( tr( "Loading data" ) ); break;
-	}
-*/
-	if( !validateCardError( QSmartCardData::Pin1Type, type, smartcard->login( QSmartCardData::Pin1Type ) ) )
-		return QByteArray();
-
-	SSLConnect ssl;
-	ssl.setToken( smartcard->data().authCert(), smartcard->key() );
-	QByteArray buffer = ssl.getUrl( type, param );
-	smartcard->logout();
-//	updateData();
-	if( !ssl.errorString().isEmpty() )
-	{
-		switch( type )
-		{
-		case SSLConnect::ActivateEmails: showWarning( tr("Failed activating email forwards."), ssl.errorString() ); break;
-		case SSLConnect::EmailInfo: showWarning( tr("Failed loading email settings."), ssl.errorString() ); break;
-		case SSLConnect::MobileInfo: showWarning( tr("Failed loading Mobiil-ID settings."), ssl.errorString() ); break;
-		case SSLConnect::PictureInfo: showWarning( tr("Loading picture failed."), ssl.errorString() ); break;
-		default: showWarning( tr("Failed to load data"), ssl.errorString() ); break;
-		}
-		return QByteArray();
-	}
-	return buffer;
-}
-
-void MainWindow::showOverlay( QWidget *parent )
-{
-	overlay.reset( new Overlay(parent) );
-	overlay->show();
-}
-
-bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )
-{
-	// updateData();
-	QSmartCardData::PinType t = flags == 1025 ? QSmartCardData::PukType : type;
-	QSmartCardData td = smartcard->data();
-	switch( err )
-	{
-	case QSmartCard::NoError: return true;
-	case QSmartCard::CancelError:
-#ifdef Q_OS_WIN
-		if( !td.isNull() && td.isPinpad() )
-		if( td.authCert().subjectInfo( "C" ) == "EE" )	// only for Estonian ID card
-		{
-			switch ( type )
-			{
-			case QSmartCardData::Pin1Type: showWarning( "PIN1 timeout" ); break;
-			case QSmartCardData::Pin2Type: showWarning( "PIN2 timeout" ); break;
-			case QSmartCardData::PukType: showWarning( "PUK timeout" ); break;
-			}
-		}
-#endif
-		break;
-	case QSmartCard::BlockedError:
-		showWarning( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
-		pageSelected( ui->myEid );
-		break;
-	case QSmartCard::DifferentError:
-		showWarning( QString("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
-	case QSmartCard::LenghtError:
-		switch( type )
-		{
-		case QSmartCardData::Pin1Type: showWarning( "PIN1 length has to be between 4 and 12" ); break;
-		case QSmartCardData::Pin2Type: showWarning( "PIN2 length has to be between 5 and 12" ); break;
-		case QSmartCardData::PukType: showWarning( "PUK length has to be between 8 and 12" ); break;
-		}
-		break;
-	case QSmartCard::OldNewPinSameError:
-		showWarning( QString("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
-		break;
-	case QSmartCard::ValidateError:
-		showWarning( QString("Wrong %1 code.").arg( QSmartCardData::typeString( t ) ) + QString("You can try %n more time(s).").arg( smartcard->data().retryCount( t ) ));
-		break;
-	default:
-		switch( flags )
-		{
-		case SSLConnect::ActivateEmails: showWarning( "Failed activating email forwards." ); break;
-		case SSLConnect::EmailInfo: showWarning( "Failed loading email settings." ); break;
-		case SSLConnect::MobileInfo: showWarning( "Failed loading Mobiil-ID settings." ); break;
-		case SSLConnect::PictureInfo: showWarning( "Loading picture failed." ); break;
-		default:
-			showWarning( QString( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
-		}
-		break;
-	}
-	return false;
-}
-
-void MainWindow::showWarning( const QString &msg )
-{
-	switch( ui->startScreen->currentIndex() )
-	{
-	case SignDetails:
-		ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	case CryptoDetails:
-		ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	default: 
-		QMessageBox::warning( this, windowTitle(), msg );
-		break;
-	}
-}
-
-void MainWindow::showWarning( const QString &msg, const QString &details )
-{
-	switch( ui->startScreen->currentIndex() )
-	{
-	case SignDetails:
-		ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	case CryptoDetails:
-		ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	default: 
-		{
-			QMessageBox d( QMessageBox::Warning, windowTitle(), msg, QMessageBox::Close, qApp->activeWindow() );
-			d.setWindowModality( Qt::WindowModal );
-			d.setDetailedText( details );
-			d.exec();
-		}
-		break;
-	}
 }

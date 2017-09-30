@@ -37,6 +37,16 @@ PageIcon::PageIcon(QWidget *parent) :
 	icon.reset( new QSvgWidget( this ) );
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
+
+	notValidCertIcon.reset( new QSvgWidget( ":/images/icon_alert_red.svg", this ) );
+	notValidCertIcon->resize( 15, 12 );
+	notValidCertIcon->move( 85, 5 );
+	notValidCertIcon->hide ();
+
+	pinBlockedIcon.reset( new QSvgWidget( ":/images/icon_alert_orange.svg", this ) );
+	pinBlockedIcon->resize( 15, 12 );
+	pinBlockedIcon->move( 85, 5 );
+	pinBlockedIcon->hide ();
 }
 
 PageIcon::~PageIcon()
@@ -147,4 +157,16 @@ void PageIcon::paintEvent(QPaintEvent *ev)
 	opt.init(this);
 	QPainter p(this);
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void PageIcon::invalidCertIcon( bool show )
+{
+	if( show ) notValidCertIcon->show ();
+	else notValidCertIcon->hide ();
+}
+
+void PageIcon::pinIsBlockedIcon( bool show )
+{
+	if( show ) pinBlockedIcon->show ();
+	else pinBlockedIcon->hide ();
 }

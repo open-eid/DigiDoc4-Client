@@ -43,9 +43,19 @@ public:
 	void setFocusToEmail();
 	void updateInfo( const QSmartCard *smartCard );
 
+private Q_SLOTS:
+  	void changePin1( bool isForgotPin, bool isBlockedPin );
+	void changePin2( bool isForgotPin, bool isBlockedPin );
+	void changePuk( bool isForgotPuk, bool isBlockedPin );
+	void certDetails( const QString &link );
+    
 signals:
 	void checkEMail();
 	void activateEMail();
+  	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
+	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
+	void changePukClicked( bool isForgotPuk );
+	void certDetailsClicked( const QString &link );
 
 private:
 	Ui::Accordion *ui;

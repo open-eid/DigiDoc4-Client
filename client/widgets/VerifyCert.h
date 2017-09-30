@@ -35,13 +35,26 @@ public:
 	~VerifyCert();
 
 	void update( QSmartCardData::PinType type, const QSmartCard *smartCard );
-	void update( const QString &name, const QString &validUntil, const QString &change, const QString &forgot_PIN_HTML = "", const QString &details_HTML = "", const QString &error = "" );
+	void update(
+		const QString &name,
+		const QString &validUntil,
+		const QString &change,
+		const QString &forgotPinText = "",
+		const QString &detailsText = "",
+		const QString &error = "",
+		bool isBlockedPuk = false);
 	void addBorders();
+
+signals:
+	void changePinClicked( bool isForgotPin, bool isBlockedPin );
+	void certDetailsClicked( QString link );
 
 protected:
 	void enterEvent( QEvent * event ) override;
 	void leaveEvent( QEvent * event ) override;
 	void processClickedBtn();
+    void processForgotPinLink( QString link );
+    void processCertDetails( QString link );
 
 private:
 	void changePinStyle( const QString &background ); 
@@ -53,5 +66,4 @@ private:
 	QString borders;
 
 	QSmartCardData::PinType pinType;
-	const QSmartCard *smartCard;
 };
