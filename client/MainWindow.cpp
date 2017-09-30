@@ -20,6 +20,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
+#include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
 #include "XmlReader.h"
@@ -392,9 +393,9 @@ void MainWindow::showCardStatus()
 	}
 	else
 	{
-//		if ( !QPCSC::instance().serviceRunning() )
-//			noReader_NoCard_Loading_Event( "PCSC service is not running" );
-//		else
+		if ( !QPCSC::instance().serviceRunning() )
+			noReader_NoCard_Loading_Event( "PCSC service is not running" );
+		else
 		if ( t.readers().isEmpty() )
 			noReader_NoCard_Loading_Event( "No readers found" );
 		else if ( t.card().isEmpty() )
@@ -424,7 +425,7 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
 	ui->infoStack->clearPicture();
-    ui->infoStack->hide();
+	ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->updateOtherData( false );
 	ui->myEid->invalidCertIcon( false );
