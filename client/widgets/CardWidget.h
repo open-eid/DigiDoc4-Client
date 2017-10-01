@@ -19,27 +19,30 @@
 
 #pragma once
 
-#include <QFont>
-#include <QSvgWidget>
-#include <QWidget>
+#include "QSmartCard.h"
 
-#include <memory>
+#include <QFont>
+#include <QScopedPointer>
+#include <QSharedPointer>
+#include <QSvgWidget>
 
 namespace Ui {
-class CardInfo;
+class CardWidget;
 }
 
-class CardInfo : public QWidget
+class CardWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CardInfo( QWidget *parent = nullptr );
-    ~CardInfo();
+    explicit CardWidget( QWidget *parent = nullptr );
+    ~CardWidget();
 
-	void clearPicture();
+    void clearPicture();
+    QString id() const;
+    bool isLoading() const;
     void showPicture( const QPixmap &pix );
-    void update( const QString &name, const QString &code, const QString &status );
+    void update( QSharedPointer<const QCardInfo> ci );
 
 signals:
     void thePhotoLabelClicked();
@@ -48,6 +51,7 @@ private Q_SLOTS:
     void thePhotoLabelHasBeenClicked( int code );
 
 private:
-    Ui::CardInfo *ui;
-    std::unique_ptr<QSvgWidget> cardIcon;
+    Ui::CardWidget *ui;
+    QScopedPointer<QSvgWidget> cardIcon;
+    QSharedPointer<const QCardInfo> cardInfo;
 };

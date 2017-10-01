@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CardInfo</class>
- <widget class="QWidget" name="CardInfo">
+ <class>CardWidget</class>
+ <widget class="QWidget" name="CardWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,6 +21,9 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">border: none;</string>
   </property>
   <widget class="QLabel" name="cardName">
    <property name="geometry">

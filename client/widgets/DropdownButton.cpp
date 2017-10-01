@@ -24,6 +24,13 @@ DropdownButton::DropdownButton( const QString normalIcon, const QString selected
 , normalIcon( normalIcon )
 , selectedIcon( selectedIcon )
 {
+	init();
+}
+
+void DropdownButton::init()
+{
+	selected = false;
+	load( normalIcon );
 }
 
 void DropdownButton::mouseReleaseEvent( QMouseEvent *event )

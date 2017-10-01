@@ -20,8 +20,12 @@
 #pragma once 
 
 #include "common_enums.h"
+#include "QSmartCard.h"
+#include "widgets/CardWidget.h"
 #include "widgets/StyledWidget.h"
 
+#include <QMap>
+#include <QSharedPointer>
 #include <QStringList>
 
 class CardPopup : public StyledWidget
@@ -29,5 +33,10 @@ class CardPopup : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit CardPopup( const QStringList &cards, const QString &selected, QWidget *parent = nullptr );
+	explicit CardPopup( const QSmartCard *smartCard, QWidget *parent = nullptr );
+
+	void update( const QSmartCard *smartCard );
+
+private:
+	QList<CardWidget*> cardWidgets;
 };

@@ -79,9 +79,10 @@ MainWindow::MainWindow( QWidget *parent ) :
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
 	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
+	connect( smartcard, &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
 	connect( selector.get(), &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 	smartcard->start();
-	connect( ui->selector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
+	connect( ui->idSelector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
 
 	ui->accordion->init();
 
@@ -92,7 +93,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
-	connect( ui->cardInfo, &CardInfo::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
+	connect( ui->cardInfo, &CardWidget::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
 
 	showCardStatus();
     connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
@@ -365,17 +366,15 @@ void MainWindow::selectPageIcon( PageIcon* page )
 
 void MainWindow::showCardMenu( bool show )
 {
-	if( !show )
+	if( show )
+	{
+		cardPopup.reset( new CardPopup( smartcard, this ) );
+		cardPopup->show();
+	}
+	else if( cardPopup )
 	{
 		cardPopup->close();
 		cardPopup.reset( nullptr );
-	}
-	else
-	{
-		QSmartCardData t = smartcard->data();
-		const int numItems = (t.cards().size() - 1);
-		cardPopup.reset( new CardPopup( t.cards(),  t.data( QSmartCardData::Id ).toString(), this ) );
-		cardPopup->show();
 	}
 }
 
@@ -393,16 +392,7 @@ void MainWindow::showCardStatus()
 		ui->accordion->show();
 		ui->noCardInfo->hide();
 
-		QStringList firstName = QStringList()
-			<< t.data( QSmartCardData::FirstName1 ).toString()
-			<< t.data( QSmartCardData::FirstName2 ).toString();
-		firstName.removeAll( "" );
-		QStringList fullName = QStringList()
-			<< firstName
-			<< t.data( QSmartCardData::SurName ).toString();
-		fullName.removeAll( "" );
-		ui->cardInfo->update( fullName.join(" "), t.data( QSmartCardData::Id ).toString(), "Lugejas on ID kaart" );
-		ui->cardInfo->setAccessibleDescription( fullName.join(" ") );
+		ui->cardInfo->update( QSharedPointer<const QCardInfo>(new QCardInfo( t )) );
 
 		if( t.authCert().type() & SslCertificate::EstEidType )
 		{
@@ -437,14 +427,15 @@ void MainWindow::showCardStatus()
 	else
 	{
 		selector->hide();
+		selector->init();
+		showCardMenu( false );
 	}
-	
-/*	ui->selector_old->hide();
-	ui->selector->clear();
-	ui->selector->addItems( t.cards() );
-	ui->selector->setVisible( t.cards().size() > 1 );
-	ui->selector->setCurrentIndex( ui->selector->findText( t.card() ) );
-*/
+}
+
+void MainWindow::updateCardData()
+{
+	if( cardPopup )
+		cardPopup->update( smartcard );
 }
 
 void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoading )

@@ -16,7 +16,7 @@ configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
 qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/FirstRun.ui dialogs/PinPopup.ui dialogs/PinUnblock.ui widgets/Accordion.ui widgets/AccordionTitle.ui
-					widgets/AddressItem.ui widgets/CardInfo.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui
+					widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui
 					dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
 
 if( APPLE )
@@ -57,7 +57,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
 	widgets/AddressItem.cpp
-	widgets/CardInfo.cpp
+	widgets/CardWidget.cpp
 	widgets/CardPopup.cpp
 	widgets/ContainerPage.cpp
 	widgets/DropdownButton.cpp

@@ -17,17 +17,17 @@
  *
  */
 
-#include "CardInfo.h"
-#include "ui_CardInfo.h"
+#include "CardWidget.h"
+#include "ui_CardWidget.h"
 #include "common_enums.h"
 #include "Styles.h"
 #include "widgets/LabelButton.h"
 
 using namespace ria::qdigidoc4;
 
-CardInfo::CardInfo( QWidget *parent )
+CardWidget::CardWidget( QWidget *parent )
 : QWidget( parent )
-, ui( new Ui::CardInfo )
+, ui( new Ui::CardWidget )
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
@@ -41,33 +41,55 @@ CardInfo::CardInfo( QWidget *parent )
 	cardIcon->resize( 17, 12 );
 	cardIcon->move( 159, 42 );
 
-	connect( ui->cardPhoto, &LabelButton::clicked, this, &CardInfo::thePhotoLabelHasBeenClicked );
+	connect( ui->cardPhoto, &LabelButton::clicked, this, &CardWidget::thePhotoLabelHasBeenClicked );
 }
 
-CardInfo::~CardInfo()
+CardWidget::~CardWidget()
 {
 	delete ui;
 }
 
-void CardInfo::clearPicture()
+void CardWidget::clearPicture()
 {
 	ui->cardPhoto->clear();
 }
 
-void CardInfo::update( const QString &name, const QString &code, const QString &status )
+QString CardWidget::id() const
 {
-	ui->cardName->setText( name );
-	ui->cardCode->setText( code + "   |" );
-	ui->cardStatus->setText( status );
+	return cardInfo ? cardInfo->id : "";
 }
 
-void CardInfo::showPicture( const QPixmap &pix )
+bool CardWidget::isLoading() const
+{
+	return !cardInfo || cardInfo->loading;
+}
+
+void CardWidget::update( QSharedPointer<const QCardInfo> ci )
+{
+	cardInfo = ci;
+	ui->cardName->setText( cardInfo->fullName );
+	ui->cardCode->setText( cardInfo->id + "   |" );
+	if( cardInfo->loading )
+	{
+		ui->cardStatus->setText( QString() );
+		cardIcon->load( QString(":/images/icon_IDkaart_disabled.svg") );
+	}
+	else
+	{
+		ui->cardStatus->setText( QString( "Lugejas on %1" ).arg( cardInfo->cardType ) );
+		cardIcon->load( QString(":/images/icon_IDkaart.svg") );
+	}
+
+	setAccessibleDescription( cardInfo->fullName );
+}
+
+void CardWidget::showPicture( const QPixmap &pix )
 {
 	ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 }
 
-void CardInfo::thePhotoLabelHasBeenClicked( int code )
+void CardWidget::thePhotoLabelHasBeenClicked( int code )
 {
 	 if ( code == CardPhoto ) emit thePhotoLabelClicked();
 }

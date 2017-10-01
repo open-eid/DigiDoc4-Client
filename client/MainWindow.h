@@ -118,6 +118,7 @@ private:
 	void showOverlay( QWidget *parent );
 	void showWarning( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
+	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );

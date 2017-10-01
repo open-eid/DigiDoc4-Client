@@ -33,16 +33,9 @@ FirstRun::FirstRun(QWidget *parent) :
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-
-	/* Text centering not working */
-//	ui->lang->setEditable(true);
-//	ui->lang->lineEdit()->setDisabled(true);
-//	ui->lang->lineEdit()->setReadOnly(true);
-//	ui->lang->lineEdit()->setAlignment(Qt::AlignCenter);
-
 	ui->lang->addItem("Eesti keel");
-	ui->lang->addItem("Inglise keel");
-	ui->lang->addItem("Vene keel");
+	ui->lang->addItem("English");
+	ui->lang->addItem("Русский язык");
 
 	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->continue_2->setFont(Styles::font(Styles::Condensed, 14));
