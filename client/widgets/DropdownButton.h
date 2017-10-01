@@ -17,30 +17,27 @@
  *
  */
 
-#pragma once
+#pragma once 
 
-#include "QSmartCard.h"
+#include <QMouseEvent>
+#include <QSvgWidget>
 
-#include "Styles.h"
-#include "widgets/StyledWidget.h"
-
-namespace Ui {
-class InfoStack;
-}
-
-class InfoStack : public StyledWidget, public PictureInterface
+class DropdownButton : public QSvgWidget
 {
 	Q_OBJECT
 
 public:
-	explicit InfoStack( QWidget *parent = nullptr );
-	~InfoStack();
+	explicit DropdownButton( const QString normalIcon, const QString selectedIcon, QWidget *parent = nullptr );
+	void init();
 
-	void clearData();
-	void clearPicture();
-	void update( const QSmartCardData &t );
-	void showPicture( const QPixmap &pixmap ) override;
+signals:
+	void dropdown( bool );
+
+protected:
+	void mouseReleaseEvent( QMouseEvent *event ) override;
 
 private:
-	Ui::InfoStack *ui;
+	bool selected;
+	QString normalIcon;
+	QString selectedIcon;
 };

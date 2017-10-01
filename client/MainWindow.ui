@@ -200,24 +200,7 @@ border: none;</string>
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5));
 }</string>
          </property>
-         <widget class="QWidget" name="selector" native="true">
-          <property name="geometry">
-           <rect>
-            <x>329</x>
-            <y>19</y>
-            <width>32</width>
-            <height>32</height>
-           </rect>
-          </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-image: url(:/images/arrow_down.svg);
-QWidget::widget:hover { background-color: #F0F0F0 }</string>
-          </property>
-         </widget>
-         <widget class="CardInfo" name="cardInfo" native="true">
+         <widget class="CardWidget" name="cardInfo" native="true">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -1061,9 +1044,9 @@ background-color: #F4F5F6;</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CardInfo</class>
+   <class>CardWidget</class>
    <extends>QWidget</extends>
-   <header>widgets/CardInfo.h</header>
+   <header>widgets/CardWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

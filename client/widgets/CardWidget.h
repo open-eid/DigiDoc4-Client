@@ -20,27 +20,45 @@
 #pragma once
 
 #include "QSmartCard.h"
-
 #include "Styles.h"
-#include "widgets/StyledWidget.h"
+
+#include <QFont>
+#include <QScopedPointer>
+#include <QSharedPointer>
+#include <QSvgWidget>
 
 namespace Ui {
-class InfoStack;
+class CardWidget;
 }
 
-class InfoStack : public StyledWidget, public PictureInterface
+class CardWidget : public QWidget, public PictureInterface
 {
 	Q_OBJECT
 
 public:
-	explicit InfoStack( QWidget *parent = nullptr );
-	~InfoStack();
+	explicit CardWidget( QWidget *parent = nullptr );
+	explicit CardWidget( const QString &cardId, QWidget *parent = nullptr );
+	~CardWidget();
 
-	void clearData();
 	void clearPicture();
-	void update( const QSmartCardData &t );
-	void showPicture( const QPixmap &pixmap ) override;
+	QString id() const;
+	bool isLoading() const;
+	void showPicture( const QPixmap &pix ) override;
+	void update( QSharedPointer<const QCardInfo> ci );
+
+signals:
+	void thePhotoLabelClicked();
+	void selected( const QString &card );
+
+protected:
+	bool event( QEvent *ev ) override;
+
+private Q_SLOTS:
+	void thePhotoLabelHasBeenClicked( int code );
 
 private:
-	Ui::InfoStack *ui;
+	Ui::CardWidget *ui;
+	QString cardId;
+	QScopedPointer<QSvgWidget> cardIcon;
+	QSharedPointer<const QCardInfo> cardInfo;
 };

@@ -17,37 +17,29 @@
  *
  */
 
-#pragma once
+#pragma once 
 
-#include <QFont>
-#include <QSvgWidget>
-#include <QWidget>
+#include "common_enums.h"
+#include "QSmartCard.h"
+#include "widgets/CardWidget.h"
+#include "widgets/StyledWidget.h"
 
-#include <memory>
+#include <QMap>
+#include <QSharedPointer>
+#include <QStringList>
 
-namespace Ui {
-class CardInfo;
-}
-
-class CardInfo : public QWidget
+class CardPopup : public StyledWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit CardInfo( QWidget *parent = nullptr );
-    ~CardInfo();
+	explicit CardPopup( const QSmartCard *smartCard, QWidget *parent = nullptr );
 
-	void clearPicture();
-    void showPicture( const QPixmap &pix );
-    void update( const QString &name, const QString &code, const QString &status );
+	void update( const QSmartCard *smartCard );
 
 signals:
-    void thePhotoLabelClicked();
-
-private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked( int code );
+	void activated( const QString &card );
 
 private:
-    Ui::CardInfo *ui;
-    std::unique_ptr<QSvgWidget> cardIcon;
+	QList<CardWidget*> cardWidgets;
 };
