@@ -381,8 +381,6 @@ void MainWindow::showCardStatus()
 	Application::restoreOverrideCursor();
 	QSmartCardData t = smartcard->data();
 
-	qDebug() << "Card data changed!";
-	
 	if( !t.isNull() )
 	{
 		ui->idSelector->show();

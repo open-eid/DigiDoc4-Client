@@ -65,12 +65,11 @@ QString CardWidget::id() const
 
 bool CardWidget::event( QEvent *ev )
 {
-    bool rc = QWidget::event( ev );
 	if( ev->type() == QEvent::MouseButtonRelease )
 	{
 		emit selected( cardId );
 	}
-	return rc;
+	return QWidget::event( ev );
 }
 
 bool CardWidget::isLoading() const
