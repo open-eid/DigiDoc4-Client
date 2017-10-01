@@ -20,6 +20,7 @@
 #pragma once
 
 #include "QSmartCard.h"
+#include "Styles.h"
 
 #include <QFont>
 #include <QScopedPointer>
@@ -30,28 +31,34 @@ namespace Ui {
 class CardWidget;
 }
 
-class CardWidget : public QWidget
+class CardWidget : public QWidget, public PictureInterface
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit CardWidget( QWidget *parent = nullptr );
-    ~CardWidget();
+	explicit CardWidget( QWidget *parent = nullptr );
+	explicit CardWidget( const QString &cardId, QWidget *parent = nullptr );
+	~CardWidget();
 
-    void clearPicture();
-    QString id() const;
-    bool isLoading() const;
-    void showPicture( const QPixmap &pix );
-    void update( QSharedPointer<const QCardInfo> ci );
+	void clearPicture();
+	QString id() const;
+	bool isLoading() const;
+	void showPicture( const QPixmap &pix ) override;
+	void update( QSharedPointer<const QCardInfo> ci );
 
 signals:
-    void thePhotoLabelClicked();
+	void thePhotoLabelClicked();
+	void selected( const QString &card );
+
+protected:
+	bool event( QEvent *ev ) override;
 
 private Q_SLOTS:
-    void thePhotoLabelHasBeenClicked( int code );
+	void thePhotoLabelHasBeenClicked( int code );
 
 private:
-    Ui::CardWidget *ui;
-    QScopedPointer<QSvgWidget> cardIcon;
-    QSharedPointer<const QCardInfo> cardInfo;
+	Ui::CardWidget *ui;
+	QString cardId;
+	QScopedPointer<QSvgWidget> cardIcon;
+	QSharedPointer<const QCardInfo> cardInfo;
 };

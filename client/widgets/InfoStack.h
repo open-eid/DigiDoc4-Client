@@ -21,15 +21,14 @@
 
 #include "QSmartCard.h"
 
+#include "Styles.h"
 #include "widgets/StyledWidget.h"
-
-//#include <QWidget>
 
 namespace Ui {
 class InfoStack;
 }
 
-class InfoStack : public StyledWidget
+class InfoStack : public StyledWidget, public PictureInterface
 {
 	Q_OBJECT
 
@@ -37,10 +36,10 @@ public:
 	explicit InfoStack( QWidget *parent = nullptr );
 	~InfoStack();
 
+	void clearData();
 	void clearPicture();
 	void update( const QSmartCardData &t );
-	void clearData();
-	void showPicture( const QPixmap &pixmap );
+	void showPicture( const QPixmap &pixmap ) override;
 
 private:
 	Ui::InfoStack *ui;

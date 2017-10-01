@@ -23,7 +23,6 @@
 #include "QSmartCard.h"
 #include "sslConnect.h"
 #include "effects/Overlay.h"
-#include "widgets/PageIcon.h"
 #include "widgets/AccordionTitle.h"
 #include "widgets/CardPopup.h"
 #include "widgets/DropdownButton.h"
@@ -107,9 +106,9 @@ private:
 	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
-	void loadCachedPicture( const QString &id );
+	void hideCardPopup();
 	void loadPicture();
-    void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
+	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction( int code );
 	void onSignAction( int code );
 	void openFiles( const QStringList files );

@@ -19,37 +19,46 @@
 
 #include "CardPopup.h"
 
-#include <QVariant>
+
+#define BORDER_WIDTH 2
+#define ROW_HEIGHT 66
+#define WIDTH 365
+#define X_POSITION 115
 
 CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 : StyledWidget(parent)
 {
-	QString selected = smartCard->data().data( QSmartCardData::Id ).toString();
+	QString selected = smartCard->data().card();
 	auto cards = smartCard->data().cards();
 
-	resize( 385, cards.size() * 66 );
-	move( 115, 66 );
+	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + BORDER_WIDTH );
+	move( X_POSITION, ROW_HEIGHT );
 	setStyleSheet( "border: solid rgba(217, 217, 216, 0.45); border-width: 0px 2px 2px 1px; background-color: rgba(255, 255, 255, 0.85);" );
 
 	int i = 0;
 	for( auto card: cards )
 	{
+		if( card == selected )
+			continue;
 		auto item = new QWidget( this );
-		item->resize( this->width(), 65);
-		item->move( 0, 1 + i * 66 );
+		item->resize( WIDTH - 2, ROW_HEIGHT - 1);
+		item->move( 0, 1 + i * ROW_HEIGHT );
 		item->setStyleSheet( "QWidget:!hover { border:none; } QWidget:hover { border:none; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5));}" );
 		
-		auto cardWidget = new CardWidget( item );
+		auto cardWidget = new CardWidget( card, item );
 		auto cardData = smartCard->cache()[card];
 		if( cardData.isNull() )
-		{
 			cardData.reset( new QCardInfo( card ) );
-		}
+		else
+			Styles::cachedPicture( cardData->id, {cardWidget} );
 		cardWidget->move( 0, 0 );
 		cardWidget->update( cardData );
+		void activated( const QString &card );
+		connect( cardWidget, &CardWidget::selected, this, &CardPopup::activated );
+
+		cardWidgets << cardWidget;
 		item->show();
 		cardWidget->show();
-		cardWidgets << cardWidget;
 		i++;
 	}
 }
@@ -62,6 +71,7 @@ void CardPopup::update( const QSmartCard *smartCard )
 		if( cardWidget->isLoading() && !cardData.isNull() )
 		{
 			cardWidget->update( cardData );
+			Styles::cachedPicture( cardData->id, {cardWidget} );
 		}
 	}
 }

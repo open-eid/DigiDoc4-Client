@@ -37,6 +37,9 @@ public:
 
 	void update( const QSmartCard *smartCard );
 
+signals:
+	void activated( const QString &card );
+
 private:
 	QList<CardWidget*> cardWidgets;
 };

@@ -26,8 +26,12 @@
 using namespace ria::qdigidoc4;
 
 CardWidget::CardWidget( QWidget *parent )
+: CardWidget( QString(), parent ) { }
+
+CardWidget::CardWidget( const QString &cardId, QWidget *parent )
 : QWidget( parent )
 , ui( new Ui::CardWidget )
+, cardId( cardId )
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
@@ -56,7 +60,17 @@ void CardWidget::clearPicture()
 
 QString CardWidget::id() const
 {
-	return cardInfo ? cardInfo->id : "";
+	return cardId;
+}
+
+bool CardWidget::event( QEvent *ev )
+{
+    bool rc = QWidget::event( ev );
+	if( ev->type() == QEvent::MouseButtonRelease )
+	{
+		emit selected( cardId );
+	}
+	return rc;
 }
 
 bool CardWidget::isLoading() const

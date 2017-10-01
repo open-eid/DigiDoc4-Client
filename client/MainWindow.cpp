@@ -78,11 +78,13 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
-	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );	  // To refresh ID card info
+	// Refresh ID card info in card widget
+	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );
+	// Refresh card info in card pop-up menu
 	connect( smartcard, &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
+	// Show card pop-up menu
 	connect( selector.get(), &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 	smartcard->start();
-	connect( ui->idSelector, SIGNAL(activated(QString)), smartcard, SLOT(selectCard(QString)), Qt::QueuedConnection );	// To select between several cards in readers.
 
 	ui->accordion->init();
 
@@ -94,12 +96,13 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
 	connect( ui->cardInfo, &CardWidget::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
+	connect( ui->cardInfo, &CardWidget::selected, this, &MainWindow::hideCardPopup );
 
 	showCardStatus();
-    connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
-    connect( ui->accordion, SIGNAL( changePin2Clicked( bool, bool ) ), this, SLOT( changePin2Clicked( bool, bool ) ) );
-    connect( ui->accordion, SIGNAL( changePukClicked( bool ) ), this, SLOT( changePukClicked( bool ) ) );
-    connect( ui->accordion, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetailsClicked( QString ) ) );
+	connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
+	connect( ui->accordion, SIGNAL( changePin2Clicked( bool, bool ) ), this, SLOT( changePin2Clicked( bool, bool ) ) );
+	connect( ui->accordion, SIGNAL( changePukClicked( bool ) ), this, SLOT( changePukClicked( bool ) ) );
+	connect( ui->accordion, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetailsClicked( QString ) ) );
 }
 
 MainWindow::~MainWindow()
@@ -212,18 +215,10 @@ void MainWindow::dropEvent(QDropEvent *event)
 	}
 }
 
-void MainWindow::loadCachedPicture( const QString &id )
+void MainWindow::hideCardPopup()
 {
-	Settings settings;
-	QVariantList index = settings.value("imageIndex").toList();
-
-	if( index.contains(id) )
-	{
-		QImage image = settings.value("imageCache").toMap().value( id ).value<QImage>();
-		QPixmap pixmap = QPixmap::fromImage( image );
-		ui->cardInfo->showPicture( pixmap );
-		ui->infoStack->showPicture( pixmap );
-	}
+	selector->init();
+	showCardMenu( false );
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -369,12 +364,15 @@ void MainWindow::showCardMenu( bool show )
 	if( show )
 	{
 		cardPopup.reset( new CardPopup( smartcard, this ) );
+		// To select active card from several cards in readers ..
+		connect( cardPopup.get(), &CardPopup::activated, smartcard, &QSmartCard::selectCard, Qt::QueuedConnection );
+		// .. and hide card popup menu
+		connect( cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup );
 		cardPopup->show();
 	}
 	else if( cardPopup )
 	{
 		cardPopup->close();
-		cardPopup.reset( nullptr );
 	}
 }
 
@@ -383,8 +381,8 @@ void MainWindow::showCardStatus()
 	Application::restoreOverrideCursor();
 	QSmartCardData t = smartcard->data();
 
-    qDebug() << "Card data changed!";
-    
+	qDebug() << "Card data changed!";
+	
 	if( !t.isNull() )
 	{
 		ui->idSelector->show();
@@ -396,7 +394,7 @@ void MainWindow::showCardStatus()
 
 		if( t.authCert().type() & SslCertificate::EstEidType )
 		{
-			loadCachedPicture( t.data(QSmartCardData::Id ).toString() );
+			Styles::cachedPicture( t.data(QSmartCardData::Id ).toString(), { ui->cardInfo, ui->infoStack } );
 		}
 		ui->infoStack->update( t );
 		ui->accordion->updateInfo( smartcard );
@@ -427,8 +425,7 @@ void MainWindow::showCardStatus()
 	else
 	{
 		selector->hide();
-		selector->init();
-		showCardMenu( false );
+		hideCardPopup();
 	}
 }
 
