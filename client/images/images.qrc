@@ -6,8 +6,12 @@
 		<file>arrow_down_selected.svg</file>
 		<file>arrow_up_white.svg</file>
 		<file>bg_lovid.svg</file>
-		<file>coatOfArms.svg</file>
 		<file>digidoc_icon_128x128.png</file>
+		<file>FirstRun1.png</file>
+		<file>FirstRun2.png</file>
+		<file>FirstRunEncrypt.png</file>
+		<file>FirstRunMyEID.png</file>
+		<file>FirstRunSigning.png</file>
 		<file>icon_Abi.svg</file>
 		<file>icon_Abi_hover.svg</file>
 		<file>icon_ajatempel.svg</file>
@@ -25,11 +29,6 @@
 		<file>icon_Edit_hover.svg</file>
 		<file>icon_Edit_pressed.svg</file>
 		<file>icon_Edit.svg</file>
-		<file>FirstRun1.png</file>
-		<file>FirstRun2.png</file>
-		<file>FirstRunEnctypt.png</file>
-		<file>FirstRunMyEID.png</file>
-		<file>FirstRunSigning.png</file>
 		<file>icon_IDkaart_disabled.svg</file>
 		<file>icon_IDkaart_red.svg</file>
 		<file>icon_IDkaart.svg</file>
@@ -42,5 +41,6 @@
 		<file>icon_remove.svg</file>
 		<file>icon_Seaded.svg</file>
 		<file>icon_Seaded_hover.svg</file>
+		<file>Logo_small.svg</file>
 	</qresource>
 </RCC>

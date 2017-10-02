@@ -35,7 +35,7 @@
 #include <common/DateTime.h>
 
 #include <QDebug>
-#include <QtNetwork/QSslConfiguration>
+#include <QFileDialog>
 
 using namespace ria::qdigidoc4;
 
@@ -49,6 +49,13 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	ui->setupUi(this);
 	
+	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
+	ui->version->setText( "Ver. " + qApp->applicationVersion() );
+
+	coatOfArms.reset( new QSvgWidget( ui->logo ) );
+	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
+	coatOfArms->resize( 80, 32 );
+	coatOfArms->move( 15, 17 );
 	ui->signature->init( Pages::SignIntro, ui->signatureShadow, true );
 	ui->crypto->init( Pages::CryptoIntro, ui->cryptoShadow, false );
 	ui->myEid->init( Pages::MyEid, ui->myEidShadow, false );
@@ -95,8 +102,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
-	connect( ui->cardInfo, &CardWidget::thePhotoLabelClicked, this, &MainWindow::loadCardPhoto );   // To load photo
-	connect( ui->cardInfo, &CardWidget::selected, this, &MainWindow::hideCardPopup );
+	connect( ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked );
+	connect( ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked );   // To load photo
+	connect( ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); } );
 
 	showCardStatus();
 	connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
@@ -350,6 +358,11 @@ void MainWindow::openFiles( const QStringList files )
 	navigateToPage( page, files, create );
 }
 
+void MainWindow::resizeEvent( QResizeEvent *event )
+{
+	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
+}
+
 void MainWindow::selectPageIcon( PageIcon* page )
 {
 	ui->rightShadow->raise();
@@ -453,8 +466,11 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 }
 
 // Loads picture 
-void MainWindow::loadCardPhoto ()
+void MainWindow::photoClicked( const QPixmap *photo )
 {
+	if( photo )
+		return savePhoto( photo );
+
 	QByteArray buffer = sendRequest( SSLConnect::PictureInfo );
 
 	if( buffer.isEmpty() )
@@ -475,4 +491,13 @@ void MainWindow::loadCardPhoto ()
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
+}
+
+void MainWindow::savePhoto( const QPixmap *photo )
+{
+	QString fileName = QFileDialog::getSaveFileName(this,
+		"Salvesta foto", "",
+		"Foto (*.jpg);;All Files (*)");
+
+	photo->save( fileName, "JPEG", 100 );
 }

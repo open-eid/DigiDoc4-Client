@@ -35,6 +35,11 @@ void DropdownButton::init()
 
 void DropdownButton::mouseReleaseEvent( QMouseEvent *event )
 {
+	press();
+}
+
+void DropdownButton::press()
+{
 	selected = !selected;
 	load( selected ? selectedIcon : normalIcon );
 	emit dropdown( selected );

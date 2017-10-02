@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>210</height>
+    <height>282</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@ background-color: #FFFFFF;</string>
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>160</y>
+     <y>218</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -71,7 +71,7 @@ QPushButton:hover:!pressed {
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>160</y>
+     <y>218</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -183,7 +183,7 @@ border-radius: 2px;
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>123</y>
+     <y>181</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -197,6 +197,50 @@ QCheckBox::indicator {
    </property>
    <property name="text">
     <string>Pea mind meeles</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelIdCode">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>118</y>
+     <width>241</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto Condensed</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #353739;</string>
+   </property>
+   <property name="text">
+    <string>ISIKUKOOD</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="idCode">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>134</y>
+     <width>280</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">padding: 0px 10px;
+border: 1px solid #DEE4E9;
+border-radius: 2px;
+</string>
+   </property>
+   <property name="text">
+    <string>372</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Normal</enum>
    </property>
   </widget>
  </widget>

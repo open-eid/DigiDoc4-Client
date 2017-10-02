@@ -47,14 +47,11 @@ public:
 	void update( QSharedPointer<const QCardInfo> ci );
 
 signals:
-	void thePhotoLabelClicked();
+	void photoClicked( const QPixmap *pixmap );
 	void selected( const QString &card );
 
 protected:
 	bool event( QEvent *ev ) override;
-
-private Q_SLOTS:
-	void thePhotoLabelHasBeenClicked( int code );
 
 private:
 	Ui::CardWidget *ui;

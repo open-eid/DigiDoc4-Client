@@ -126,32 +126,6 @@ min-width: 0px;
          <string notr="true">background-color: #023565;
 background-color: #023565;</string>
         </property>
-        <widget class="QWidget" name="logoIcon" native="true">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>17</y>
-           <width>80</width>
-           <height>32</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-image: url(:/images/coatOfArms.svg);
-border: none;</string>
-         </property>
-        </widget>
         <widget class="QWidget" name="logoRightShadow" native="true">
          <property name="geometry">
           <rect>
@@ -581,6 +555,31 @@ background-color: #023664;
         </property>
         <property name="styleSheet">
          <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="version">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>506</y>
+          <width>100</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #006EB5;</string>
+        </property>
+        <property name="text">
+         <string>version</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>

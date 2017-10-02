@@ -20,18 +20,43 @@
 
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
-#include <QLineEdit>
 #include "Styles.h"
+
+#include <QKeyEvent>
+#include <QLineEdit>
+
+
+bool ArrowKeyFilter::eventFilter(QObject* obj, QEvent* event)
+{
+	if (event->type()==QEvent::KeyPress)
+	{
+		QKeyEvent* key = static_cast<QKeyEvent*>(event);
+		if ( key->key()==Qt::Key_Left || key->key() == Qt::Key_Right )
+		{
+			FirstRun *dlg = qobject_cast<FirstRun*>( obj );
+			if( dlg )
+			{
+				dlg->navigate( key->key()==Qt::Key_Right );
+				return true;
+			}
+		}
+	}
+
+	return QObject::eventFilter(obj, event);
+}
+
 
 
 FirstRun::FirstRun(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::FirstRun),
-	page(None)
+	page(Language)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
+
+	installEventFilter( new ArrowKeyFilter );
 
 	ui->lang->addItem("Eesti keel");
 	ui->lang->addItem("English");
@@ -40,13 +65,13 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->continue_2->setFont(Styles::font(Styles::Condensed, 14));
 	ui->viewSigning->setFont(Styles::font(Styles::Condensed, 14));
-	ui->viewEncrypttion->setFont(Styles::font(Styles::Condensed, 14));
+	ui->viewEncryption->setFont(Styles::font(Styles::Condensed, 14));
 	ui->viewEid->setFont(Styles::font(Styles::Condensed, 14));
 	ui->next->setFont(Styles::font(Styles::Condensed, 14));
 	ui->skip->setFont(Styles::font(Styles::Condensed, 12));
 
 	ui->viewSigning->hide();
-	ui->viewEncrypttion->hide();
+	ui->viewEncryption->hide();
 	ui->viewEid->hide();
 
 	ui->next->hide();
@@ -59,39 +84,28 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->continue_2, &QPushButton::clicked, this,
 			[this]()
 			{
-				setStyleSheet("image: url(:/images/FirstRun2.png);");
-
-				ui->lang->hide();
-				ui->continue_2->hide();
-
-				ui->viewSigning->show();
-				ui->viewEncrypttion->show();
-				ui->viewEid->show();
-				ui->skip->show();
+				toPage( Intro );
 			}
 	);
 
 	connect(ui->viewSigning, &QPushButton::clicked, this,
 			[this]()
 			{
-				page = Signing;
-				hideViewButtons();
+				toPage( Signing );
 			}
 	);
 
-	connect(ui->viewEncrypttion, &QPushButton::clicked, this,
+	connect(ui->viewEncryption, &QPushButton::clicked, this,
 			[this]()
 			{
-				page = Encryption;
-				hideViewButtons();
+				toPage( Encryption );
 			}
 		);
 
 	connect(ui->viewEid, &QPushButton::clicked, this,
 			[this]()
 			{
-				page = MyEid;
-				hideViewButtons();
+				toPage( MyEid );
 			}
 	);
 
@@ -99,20 +113,7 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->next, &QPushButton::clicked, this,
 			[this]()
 			{
-				switch(page)
-				{
-				case Signing:
-					page = Encryption;
-					hideViewButtons();
-					break;
-				case Encryption:
-					page = MyEid;
-					hideViewButtons();
-					break;
-				default:
-					emit close();
-					break;
-				}
+				navigate( true );
 			}
 		);
 
@@ -126,38 +127,77 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->gotoSigning, &QPushButton::clicked, this,
 			[this]()
 			{
-				page = Signing;
-				hideViewButtons();
+				toPage( Signing );
 			}
 		);
 	connect(ui->gotoEncryption, &QPushButton::clicked, this,
 			[this]()
 			{
-				page = Encryption;
-				hideViewButtons();
+				toPage( Encryption );
 			}
 		);
 	connect(ui->gotoEid, &QPushButton::clicked, this,
 			[this]()
 			{
-				page = MyEid;
-				hideViewButtons();
+				toPage( MyEid );
 			}
 		);
-
 }
 
-void FirstRun::hideViewButtons()
+void FirstRun::toPage( View toPage )
 {
-	ui->viewSigning->hide();
-	ui->viewEncrypttion->hide();
-	ui->viewEid->hide();
-	ui->next->show();
+	page = toPage;
+	if( toPage == Language )
+	{
+		ui->lang->show();
+		ui->continue_2->show();
 
-	ui->gotoSigning->show();
-	ui->gotoEncryption->show();
-	ui->gotoEid->show();
+		ui->viewSigning->hide();
+		ui->viewEncryption->hide();
+		ui->viewEid->hide();
+		ui->next->hide();
+		ui->skip->hide();
+		ui->gotoSigning->hide();
+		ui->gotoEncryption->hide();
+		ui->gotoEid->hide();
+	
+		setStyleSheet("image: url(:/images/FirstRun1.png);");
+	}
+	else
+	{
+		ui->lang->hide();
+		ui->continue_2->hide();
 
+		if( toPage == Intro)
+		{
+			ui->viewSigning->show();
+			ui->viewEncryption->show();
+			ui->viewEid->show();
+			ui->skip->show();
+
+			ui->next->hide();
+			ui->gotoSigning->hide();
+			ui->gotoEncryption->hide();
+			ui->gotoEid->hide();
+			setStyleSheet("image: url(:/images/FirstRun2.png);");
+		}
+		else
+		{
+			ui->viewSigning->hide();
+			ui->viewEncryption->hide();
+			ui->viewEid->hide();
+			ui->next->show();
+		
+			ui->gotoSigning->show();
+			ui->gotoEncryption->show();
+			ui->gotoEid->show();
+			showDetails();
+		}
+	}
+}
+
+void FirstRun::showDetails()
+{
 	QString normal = "border: none; image: url(:/images/icon_dot.png);";
 	QString active = "border: none; image: url(:/images/icon_dot_active.png);";
 
@@ -173,7 +213,7 @@ void FirstRun::hideViewButtons()
 		ui->skip->show();
 		break;
 	case Encryption:
-		setStyleSheet("image: url(:/images/FirstRunEnctypt.png);");
+		setStyleSheet("image: url(:/images/FirstRunEncrypt.png);");
 		ui->next->setText("VAATA JÄRGMIST TUTVUSTUST");
 		ui->skip->show();
 		break;
@@ -188,4 +228,21 @@ void FirstRun::hideViewButtons()
 FirstRun::~FirstRun()
 {
 	delete ui;
+}
+
+void FirstRun::navigate( bool forward )
+{
+	if( forward )
+	{
+		if( page == MyEid )
+		{
+			emit close();
+			return;
+		}
+		toPage( static_cast<View>(page + 1) );
+	}
+	else if( page != Language )
+	{
+		toPage( static_cast<View>(page - 1) );
+	}
 }

@@ -45,7 +45,7 @@ CardWidget::CardWidget( const QString &cardId, QWidget *parent )
 	cardIcon->resize( 17, 12 );
 	cardIcon->move( 159, 42 );
 
-	connect( ui->cardPhoto, &LabelButton::clicked, this, &CardWidget::thePhotoLabelHasBeenClicked );
+	connect( ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked( ui->cardPhoto->pixmap() ); } );
 }
 
 CardWidget::~CardWidget()
@@ -100,9 +100,4 @@ void CardWidget::showPicture( const QPixmap &pix )
 {
 	ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-}
-
-void CardWidget::thePhotoLabelHasBeenClicked( int code )
-{
-	 if ( code == CardPhoto ) emit thePhotoLabelClicked();
 }

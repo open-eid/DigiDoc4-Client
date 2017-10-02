@@ -34,6 +34,9 @@
      <height>34</height>
     </size>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	image: none;
@@ -77,6 +80,9 @@ QPushButton:disabled {
      <height>34</height>
     </size>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	image: none;
@@ -99,7 +105,7 @@ QPushButton:disabled {
     <string>VAATA TUTVUSTUST</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="viewEncrypttion">
+  <widget class="QPushButton" name="viewEncryption">
    <property name="geometry">
     <rect>
      <x>363</x>
@@ -119,6 +125,9 @@ QPushButton:disabled {
      <width>298</width>
      <height>34</height>
     </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
@@ -163,6 +172,9 @@ QPushButton:disabled {
      <height>34</height>
     </size>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	image: none;
@@ -205,6 +217,9 @@ QPushButton:disabled {
      <width>151</width>
      <height>25</height>
     </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
@@ -250,6 +265,9 @@ QPushButton:disabled {
      <width>298</width>
      <height>34</height>
     </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
@@ -364,6 +382,9 @@ QComboBox::down-arrow {
      <height>15</height>
     </size>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">border: none;
 image: url(:/images/icon_dot.png);</string>
@@ -393,6 +414,9 @@ image: url(:/images/icon_dot.png);</string>
      <height>15</height>
     </size>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">border: none;
 image: url(:/images/icon_dot.png);</string>
@@ -421,6 +445,9 @@ image: url(:/images/icon_dot.png);</string>
      <width>15</width>
      <height>15</height>
     </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">border: none;

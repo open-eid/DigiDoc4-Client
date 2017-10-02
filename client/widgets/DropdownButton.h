@@ -29,6 +29,7 @@ class DropdownButton : public QSvgWidget
 public:
 	explicit DropdownButton( const QString normalIcon, const QString selectedIcon, QWidget *parent = nullptr );
 	void init();
+	void press();
 
 signals:
 	void dropdown( bool );

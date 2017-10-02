@@ -41,6 +41,9 @@ public:
 	void update( const QSmartCardData &t );
 	void showPicture( const QPixmap &pixmap ) override;
 
+signals:
+	void photoClicked( const QPixmap *pixmap );
+
 private:
 	Ui::InfoStack *ui;
 };

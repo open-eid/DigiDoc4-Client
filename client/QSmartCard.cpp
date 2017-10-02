@@ -601,13 +601,13 @@ void QSmartCard::run()
 			if(update)
 			{
 				Q_EMIT dataChanged();
-
-				auto added = order.toSet().subtract( d->cache.keys().toSet() );
-				for( auto newCard: added )
-				{
-					readCardData( cards, newCard, false );
-				}
-			}
+            }
+            
+            auto added = order.toSet().subtract( d->cache.keys().toSet() );
+            for( auto newCard: added )
+            {
+                readCardData( cards, newCard, false );
+            }
 
 			d->m.unlock();
 		}
