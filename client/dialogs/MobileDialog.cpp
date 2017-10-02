@@ -34,11 +34,13 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );
 	connect( this, &MobileDialog::finished, this, &MobileDialog::close );
 
+	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	QFont header = Styles::font( Styles::Regular, 14 );
 	header.setWeight( QFont::DemiBold );
 	ui->labelNameId->setFont( header );
-	ui->labelPhone->setFont( Styles::font( Styles::Condensed, 12 ) );
+	ui->labelPhone->setFont( condensed12 );
+	ui->labelIdCode->setFont( condensed12 );
 	ui->cbRemember->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->ok->setFont( condensed14 );
 	ui->cancel->setFont( condensed14 );

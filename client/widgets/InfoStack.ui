@@ -48,33 +48,6 @@ border-width: 1px 0px 0px 0px;
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="photo">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>150</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>150</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #858585;
-background-color: #cacaca;
-</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -84,7 +57,7 @@ background-color: #cacaca;
      </property>
      <property name="minimumSize">
       <size>
-       <width>450</width>
+       <width>580</width>
        <height>150</height>
       </size>
      </property>
@@ -100,7 +73,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="valueExpiryDate">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>248</x>
         <y>120</y>
         <width>200</width>
         <height>17</height>
@@ -122,7 +95,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="labelGivenNames">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>138</x>
         <y>0</y>
         <width>120</width>
         <height>14</height>
@@ -145,7 +118,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="labelSerialNumber">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>138</x>
         <y>100</y>
         <width>100</width>
         <height>17</height>
@@ -168,7 +141,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="valueSerialNumber">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>138</x>
         <y>120</y>
         <width>100</width>
         <height>17</height>
@@ -190,7 +163,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="labelSurname">
       <property name="geometry">
        <rect>
-        <x>172</x>
+        <x>300</x>
         <y>0</y>
         <width>120</width>
         <height>16</height>
@@ -213,7 +186,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="labelCitizenship">
       <property name="geometry">
        <rect>
-        <x>172</x>
+        <x>300</x>
         <y>58</y>
         <width>120</width>
         <height>17</height>
@@ -236,7 +209,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="labelPersonalCode">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>138</x>
         <y>58</y>
         <width>120</width>
         <height>17</height>
@@ -259,7 +232,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="valuePersonalCode">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>138</x>
         <y>75</y>
         <width>120</width>
         <height>19</height>
@@ -281,7 +254,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="valueGivenNames">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>138</x>
         <y>16</y>
         <width>152</width>
         <height>38</height>
@@ -309,7 +282,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="valueSurname">
       <property name="geometry">
        <rect>
-        <x>172</x>
+        <x>300</x>
         <y>16</y>
         <width>250</width>
         <height>19</height>
@@ -334,7 +307,7 @@ background-color: #cacaca;
      <widget class="QLabel" name="valueCitizenship">
       <property name="geometry">
        <rect>
-        <x>172</x>
+        <x>300</x>
         <y>75</y>
         <width>120</width>
         <height>19</height>
@@ -353,6 +326,82 @@ background-color: #cacaca;
        <string>valueCitizenship</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="btnPicture">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>125</y>
+        <width>86</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border: 1px solid #006EB5;
+	border-radius: 2px;
+     color: #006EB5;
+}
+QPushButton:pressed {
+	border-radius: 2px;
+	background-color: #006EB5;
+	color: #FFFFFF;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #008DCF;
+	border-radius: 2px;
+	color: #008DCF;
+}</string>
+      </property>
+      <property name="text">
+       <string>LAE PILT ALLA</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="photo">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>120</width>
+        <height>150</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid #B1B3B3;
+opacity: 0.5;
+border-radius: 2px;
+background-color: #F9FAFA;</string>
+      </property>
+     </widget>
+     <zorder>valueExpiryDate</zorder>
+     <zorder>labelGivenNames</zorder>
+     <zorder>labelSerialNumber</zorder>
+     <zorder>valueSerialNumber</zorder>
+     <zorder>labelSurname</zorder>
+     <zorder>labelCitizenship</zorder>
+     <zorder>labelPersonalCode</zorder>
+     <zorder>valuePersonalCode</zorder>
+     <zorder>valueGivenNames</zorder>
+     <zorder>valueSurname</zorder>
+     <zorder>valueCitizenship</zorder>
+     <zorder>photo</zorder>
+     <zorder>btnPicture</zorder>
     </widget>
    </item>
    <item>
@@ -367,89 +416,6 @@ background-color: #cacaca;
       </size>
      </property>
     </spacer>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget_2" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>150</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>150</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QPushButton" name="verifyCert">
-        <property name="minimumSize">
-         <size>
-          <width>163</width>
-          <height>29</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>163</width>
-          <height>29</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto Condensed</family>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border-radius: 2px;
-background-color: #006eb5;
-color: #ffffff;
-</string>
-        </property>
-        <property name="text">
-         <string>KONTROLLI SERTIFIKAATE</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>111</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
    </item>
   </layout>
  </widget>

@@ -24,6 +24,7 @@
 #include "DigiDoc.h"
 #include "MainWindow.h"
 #include "QSigner.h"
+#include "dialogs/FirstRun.h"
 
 #include <common/AboutDialog.h>
 #include <common/Configuration.h>
@@ -794,7 +795,17 @@ void Application::showClient( const QStringList &params )
 		}
 	}
 	if( !w )
+	{
+		Settings settings;
+		if( settings.value("showIntro", true).toBool() )
+		{
+			FirstRun dlg;
+			dlg.exec();
+			settings.setValue( "showIntro", false ); 
+		}
+	
 		w = new MainWindow();
+	}
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod( w, "open", Q_ARG(QStringList,params) );
 	activate( w );

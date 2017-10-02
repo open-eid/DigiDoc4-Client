@@ -32,6 +32,7 @@
 #include <QImage>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QSvgWidget>
 #include <QWidget>
 
 namespace Ui {
@@ -50,7 +51,8 @@ private Q_SLOTS:
 	void pageSelected( PageIcon *const );
 	void buttonClicked( int button );
 	void showCardStatus();
-	void loadCardPhoto();
+	void photoClicked( const QPixmap *photo );
+	void savePhoto( const QPixmap *photo );
 	void getEmailStatus();
 	void activateEmail ();
 	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
@@ -62,6 +64,7 @@ protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
 	void dragLeaveEvent( QDragLeaveEvent *event ) override;
 	void dropEvent( QDropEvent *event ) override;
+	void resizeEvent( QResizeEvent *event ) override;
 
 private:
 	enum ButtonTypes
@@ -125,6 +128,7 @@ private:
 
 	Ui::MainWindow *ui;
 
+	std::unique_ptr<QSvgWidget> coatOfArms;
 	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
 	std::unique_ptr<DropdownButton> selector;

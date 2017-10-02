@@ -31,6 +31,8 @@ class ButtonHoverFilter : public QObject
 
 public:
 	explicit ButtonHoverFilter( const QString &icon, const QString &hoverIcon, QObject *parent = nullptr );
+
+protected:
 	virtual bool eventFilter( QObject *watched, QEvent *event ) override;
 
 private:

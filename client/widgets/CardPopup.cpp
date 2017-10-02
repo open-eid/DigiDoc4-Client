@@ -33,7 +33,7 @@ CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 
 	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + BORDER_WIDTH );
 	move( X_POSITION, ROW_HEIGHT );
-	setStyleSheet( "border: solid rgba(217, 217, 216, 0.45); border-width: 0px 2px 2px 1px; background-color: rgba(255, 255, 255, 0.85);" );
+	setStyleSheet( "border: solid rgba(217, 217, 216, 0.45); border-width: 0px 2px 2px 1px; background-color: rgba(255, 255, 255, 0.75);" );
 
 	int i = 0;
 	for( auto card: cards )

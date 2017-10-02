@@ -31,7 +31,9 @@ InfoStack::InfoStack( QWidget *parent ) :
 	ui( new Ui::InfoStack )
 {
 	ui->setupUi( this );
-	ui->verifyCert->setFont( Styles::font( Styles::Condensed, 14 ) );
+
+	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
+	connect( ui->btnPicture, &QPushButton::clicked, this, [this]() { emit photoClicked( ui->photo->pixmap() ); } );
 
 	QFont font = Styles::font( Styles::Regular, 16 );
 	font.setWeight( QFont::DemiBold );
@@ -104,10 +106,12 @@ void InfoStack::clearData()
 	ui->valueCitizenship->setText( "" ); 
 	ui->valueSerialNumber->setText( "" ); 
 	ui->valueExpiryDate->setText( "" ); 
+	ui->btnPicture->setText( "LAE PILT ALLA" );
 }
 
 void InfoStack::showPicture( const QPixmap &pixmap )
 {
     ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
+	ui->btnPicture->setText( "SALVESTA PILT" );
 }

@@ -37,21 +37,21 @@ void Accordion::init()
 {
 	// Initialize accordion.
 	openSection = ui->titleVerifyCert;
-    
+
 	connect( ui->contentOtherData, &OtherData::checkEMailClicked, this, [this](){ emit checkEMail(); } );
 	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
-    
-	ui->titleOtherEID->init( this,   false, "TEISED eID’D", ui->contentOtherEID );
+
 	ui->titleVerifyCert->init( this, true,  "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert );
-	ui->titleOtherData->init( this,  false, "MUUD ANDMED", ui->contentOtherData );
+	ui->titleOtherData->init( this,  false, "EESTI.EE POSTI SUUNAMINE", ui->contentOtherData );
+	ui->titleOtherEID->init( this,   false, "TEISED eID-D", ui->contentOtherEID );
 
- 	connect(ui->authBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin1( bool, bool ) ) );
- 	connect(ui->signBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin2( bool, bool ) ) );
- 	connect(ui->pukBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePuk( bool, bool ) ) );
+	connect(ui->authBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin1( bool, bool ) ) );
+	connect(ui->signBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin2( bool, bool ) ) );
+	connect(ui->pukBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePuk( bool, bool ) ) );
 
- 	connect(ui->authBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
- 	connect(ui->signBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
-    
+	connect(ui->authBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
+	connect(ui->signBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
+
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
 
