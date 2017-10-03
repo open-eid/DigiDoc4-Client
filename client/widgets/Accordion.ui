@@ -40,6 +40,9 @@
        <height>40</height>
       </size>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
     </widget>
    </item>
    <item>
@@ -113,6 +116,9 @@
        <height>40</height>
       </size>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
     </widget>
    </item>
    <item>
@@ -144,6 +150,9 @@
        <width>0</width>
        <height>40</height>
       </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
     </widget>
    </item>

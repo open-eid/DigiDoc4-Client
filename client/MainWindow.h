@@ -64,6 +64,7 @@ protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
 	void dragLeaveEvent( QDragLeaveEvent *event ) override;
 	void dropEvent( QDropEvent *event ) override;
+	void mousePressEvent(QMouseEvent *event) override;
 	void resizeEvent( QResizeEvent *event ) override;
 
 private:
@@ -110,6 +111,7 @@ private:
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
 	void hideCardPopup();
+	void hideWarningArea();	
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction( int code );
@@ -118,7 +120,7 @@ private:
 	void selectPageIcon( PageIcon* page );
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
-	void showWarning( const QString &msg, bool isSuccess = false );
+	void showNotification( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
 	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
