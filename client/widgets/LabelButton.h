@@ -79,6 +79,7 @@ private:
     QString hoverIcon;
     std::unique_ptr<QSvgWidget> icon;
 
+    static const QString borderRadius;
     static const QString styleTemplate;
     static const QString linkTemplate;
 };

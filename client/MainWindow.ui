@@ -599,7 +599,8 @@ background-color: #023664;
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #c8c8c8;
+        <string notr="true">border: solid #c8c8c8;
+border-width: 1px 1px 1px 0px; 
 background-color: #ffffff;</string>
        </property>
        <property name="frameShape">
@@ -708,7 +709,7 @@ color: #041E42;</string>
               </property>
               <property name="font">
                <font>
-                <pointsize>16</pointsize>
+                <pointsize>14</pointsize>
                </font>
               </property>
               <property name="cursor">
@@ -727,7 +728,7 @@ text-align: center;
 </string>
               </property>
               <property name="text">
-               <string>... või vali fail kettalt</string>
+               <string>... VÕI VALI FAIL KETTALT</string>
               </property>
              </widget>
             </item>
@@ -878,7 +879,7 @@ background-position: bottom;
               </property>
               <property name="font">
                <font>
-                <pointsize>16</pointsize>
+                <pointsize>14</pointsize>
                </font>
               </property>
               <property name="styleSheet">
@@ -890,7 +891,7 @@ text-decoration: none solid rgb(255, 255, 255);
 text-align: center;</string>
               </property>
               <property name="text">
-               <string>... või vali fail kettalt</string>
+               <string>... VÕI VALI FAIL KETTALT</string>
               </property>
              </widget>
             </item>

@@ -156,6 +156,9 @@ void ContainerPage::hideMainAction()
 
 void ContainerPage::hideOtherAction()
 {
+	if(!otherAction)
+		return;
+
 	otherAction->close();
 	otherAction.reset();
 	mainAction->setStyleSheet( "QPushButton { border-top-left-radius: 2px; }" );
@@ -243,6 +246,7 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
 		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::action );
+		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction );
 		connect( mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown );
 		mainAction->show();
 	}

@@ -44,7 +44,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui( new Ui::MainWindow )
 {
 	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
-	QFont regular18 = Styles::font( Styles::Regular, 18 );
+	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	ui->setupUi(this);
@@ -76,9 +76,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	buttonGroup->addButton( ui->settings, HeadSettings );
 
 	ui->signIntroLabel->setFont( regular20 );
-	ui->signIntroButton->setFont( regular18 );
+	ui->signIntroButton->setFont( condensed14 );
 	ui->cryptoIntroLabel->setFont( regular20 );
-	ui->cryptoIntroButton->setFont( regular18 );
+	ui->cryptoIntroButton->setFont( condensed14 );
 	
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );

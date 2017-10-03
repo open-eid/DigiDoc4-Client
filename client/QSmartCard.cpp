@@ -139,17 +139,13 @@ void QCardInfo::setFullName( const QString &firstName1, const QString &firstName
 
 void QCardInfo::setCardType( const SslCertificate &cert )
 {
-	switch( cert.type() )
+	if( cert.type() & SslCertificate::DigiIDType )
 	{
-	case SslCertificate::EstEidType:
-		cardType = "ID Kaart";
-		break;
-	case SslCertificate::DigiIDType:
 		cardType = "Digi ID";
-		break;
-	default:
+	}
+	else
+	{
 		cardType = "ID Kaart";
-		break;
 	}
 }
 
