@@ -26,7 +26,8 @@
 
 using namespace ria::qdigidoc4::colors;
 
-const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color: %2; border-radius: 2px; border: %3; text-decoration: none solid; }" );
+const QString LabelButton::borderRadius(" border-radius: 2px;");
+const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color: %2;%4 border: %3; text-decoration: none solid; }" );
 
 LabelButton::LabelButton( QWidget *parent )
 : QLabel( parent )
@@ -42,28 +43,28 @@ void LabelButton::init( Style style, const QString &label, int code )
     switch( style )
     {
         case BoxedDeepCerulean:
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none" );
-            css[ Hover ].style   = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( DEEP_CERULEAN ) );
-            css[ Pressed ].style = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none" );
+            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", borderRadius );
+            css[ Hover ].style   = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( DEEP_CERULEAN ), borderRadius );
+            css[ Pressed ].style = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", borderRadius );
             break;
         case BoxedMojo:
-            css[ Normal ].style  = styleTemplate.arg( bgColor, MOJO, "none" );
-            css[ Hover ].style   = styleTemplate.arg( bgColor, MOJO, QString("1px solid %1").arg( MOJO ) );
-            css[ Pressed ].style = styleTemplate.arg( MOJO, bgColor, "none" );
+            css[ Normal ].style  = styleTemplate.arg( bgColor, MOJO, "none", borderRadius );
+            css[ Hover ].style   = styleTemplate.arg( bgColor, MOJO, QString("1px solid %1").arg( MOJO ), borderRadius );
+            css[ Pressed ].style = styleTemplate.arg( MOJO, bgColor, "none", borderRadius );
             break;
         case BoxedDeepCeruleanWithCuriousBlue:
             // Edit
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none" );
-            css[ Hover ].style   = styleTemplate.arg( bgColor, CURIOUS_BLUE, QString("1px solid %1").arg( CURIOUS_BLUE ) );
-            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none" );
+            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", borderRadius );
+            css[ Hover ].style   = styleTemplate.arg( bgColor, CURIOUS_BLUE, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
+            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none", borderRadius );
             css[ Pressed ].background = CURIOUS_BLUE;
             break;
         case DeepCeruleanWithLochmara:
             // Add files
             bgColor = WHITE;
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none" );
-            css[ Hover ].style   = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none" );
-            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none" );
+            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", "" );
+            css[ Hover ].style   = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", "" );
+            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none", "" );
             break;
         case None:
             // Add files

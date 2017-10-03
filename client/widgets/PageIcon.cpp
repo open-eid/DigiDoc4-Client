@@ -27,6 +27,7 @@
 using namespace ria::qdigidoc4;
 
 #define BOTTOM_BORDER "solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px"
+#define RIGHT_BORDER "solid #E7E7E7; border-width: 0px 1px 0px 0px"
 
 PageIcon::PageIcon(QWidget *parent) :
 	QWidget(parent),
@@ -60,7 +61,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 	switch( type )
 	{
 	case CryptoIntro:
-		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::WHITE, colors::CLAY_CREEK, "none" };
+		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
 		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 34, 38 );
@@ -68,7 +69,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 		ui->label->setText( "KRÜPTO" );
 		break;
 	case MyEid:
-		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, "none" };
+		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
 		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 44, 31 );
@@ -76,7 +77,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 		ui->label->setText( "MINU eID" );
 		break;
 	default:
-		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, "none" };
+		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
 		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		ui->label->setText( "ALLKIRI" );

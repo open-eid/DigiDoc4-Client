@@ -464,7 +464,7 @@ background-color: #ffffff;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border: solid #D9D9D8;
-border-width: 2px 2px 2px 2px; </string>
+border-width: 2px 2px 2px 0px; </string>
         </property>
        </widget>
       </item>
@@ -508,7 +508,9 @@ border-width: 2px 2px 2px 2px; </string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #f7f7f7;</string>
+      <string notr="true">background-color: #F4F5F6;
+border: solid #DEE4E9;
+border-width: 1px 0px 0px 0px; </string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="leftMargin">
@@ -550,13 +552,13 @@ border-width: 2px 2px 2px 2px; </string>
         <property name="minimumSize">
          <size>
           <width>75</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>75</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -600,13 +602,13 @@ text-decoration: none solid rgb(197, 62, 62);</string>
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -639,13 +641,13 @@ border: none;</string>
         <property name="minimumSize">
          <size>
           <width>160</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>160</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -676,13 +678,13 @@ border: none;</string>
         <property name="minimumSize">
          <size>
           <width>150</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>150</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -713,13 +715,13 @@ border: none;</string>
         <property name="minimumSize">
          <size>
           <width>160</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>160</width>
-          <height>22</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">

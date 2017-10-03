@@ -17,6 +17,7 @@
  *
  */
 
+#include <QGraphicsBlurEffect>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QWidget>
@@ -30,6 +31,12 @@ public:
 		setPalette(Qt::transparent);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
 		setMinimumSize(parent->width(), parent->height());
+		parent->setGraphicsEffect(new QGraphicsBlurEffect);
+	}
+
+	~Overlay()
+	{
+		parentWidget()->setGraphicsEffect(nullptr);
 	}
 
 protected:
@@ -37,8 +44,8 @@ protected:
 	{
 		QPainter painter( this );
 		painter.setRenderHint( QPainter::Antialiasing );
-		// Opacity 85%
-		painter.setBrush( QBrush( QColor( 0x04, 0x1E, 0x42, (int)((double)0xff * 0.85) ) ) );
+		// Opacity 90%
+		painter.setBrush( QBrush( QColor( 0x04, 0x1E, 0x42, (int)((double)0xff * 0.9) ) ) );
 		painter.setPen( Qt::NoPen );
 		painter.drawRect( rect() );
 	}
