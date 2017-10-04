@@ -43,7 +43,7 @@ void Accordion::init()
 
 	ui->titleVerifyCert->init( this, true,  "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert );
 	ui->titleOtherData->init( this,  false, "EESTI.EE POSTI SUUNAMINE", ui->contentOtherData );
-	ui->titleOtherEID->init( this,   false, "TEISED eID-D", ui->contentOtherEID );
+	ui->titleOtherEID->init( this,   false, "MINU TEISED eID-D", ui->contentOtherEID );
 
 	connect(ui->authBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin1( bool, bool ) ) );
 	connect(ui->signBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin2( bool, bool ) ) );
