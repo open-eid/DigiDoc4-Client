@@ -20,7 +20,8 @@
 		<file>icon_Allkiri_hover.svg</file>
 		<file>icon_Allkiri_small.svg</file>
 		<file>icon_Allkiri.svg</file>
-		<file>icon_check.svg</file>
+		<file>icon_checkbox.png</file>
+		<file>icon_checkbox_check.png</file>
 		<file>icon_digitempel.svg</file>
 		<file>icon_dot.png</file>
 		<file>icon_dot_active.png</file>
@@ -37,6 +38,8 @@
 		<file>icon_Krypto.svg</file>
 		<file>icon_Minu_eID_hover.svg</file>
 		<file>icon_Minu_eID.svg</file>
+		<file>icon_radio.png</file>
+		<file>icon_radio_checked.png</file>
 		<file>icon_remove_hover.svg</file>
 		<file>icon_remove.svg</file>
 		<file>icon_Seaded.svg</file>

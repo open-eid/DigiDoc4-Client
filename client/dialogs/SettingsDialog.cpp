@@ -34,50 +34,105 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	QFont headerFont = Styles::font( Styles::Regular, 18 );
 	QFont regularFont = Styles::font( Styles::Regular, 14 );
 	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
-	ui->label_2->setFont(headerFont);
-	ui->pushButton->setFont(condensed12);
-	ui->pushButton_2->setFont(condensed12);
-	ui->pushButton_3->setFont(condensed12);
-	ui->pushButton_4->setFont(condensed12);
-	ui->pushButton_5->setFont(condensed12);
-	ui->pushButton_6->setFont(condensed12);
+
+	// Menu
+	ui->lblMenuSettings->setFont(headerFont);
+	ui->btnMenuGeneral->setFont(condensed12);
+	ui->btnMenuSigning->setFont(condensed12);
+	ui->btnMenuEvidence->setFont(condensed12);
+	ui->btnMenuProxy->setFont(condensed12);
+	ui->btnMenuDiagnostics->setFont(condensed12);
+	ui->btnMenuInfo->setFont(condensed12);
+
+	// pageGeneral
+	ui->lblGeneralLang->setFont(headerFont);
+	ui->lblGeneralDirectory->setFont(headerFont);
+	ui->lblGeneralCheckUpdatePeriod->setFont(headerFont);
+
+	ui->rdGeneralEstonian->setFont(regularFont);
+	ui->rdGeneralRussian->setFont(regularFont);
+	ui->rdGeneralEnglish->setFont(regularFont);
+
+	ui->rdGeneralSameDirectory->setFont(regularFont);
+	ui->rdGeneralSpecifyDirectory->setFont(regularFont);
+	ui->btGeneralChooseDirectory->setFont(regularFont);
+	ui->txtGeneralDirectory->setFont(regularFont);
+
+	ui->cmbGeneralCheckUpdatePeriod->setFont(regularFont);
+	ui->chkGeneralTslRefresh->setFont(regularFont);
+
+	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord päevas");
+	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord nädalas");
+	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord kuus");
 
 
-	ui->label_3->setFont(headerFont);
-	ui->label_4->setFont(headerFont);
-	ui->label_5->setFont(headerFont);
+	// pageSigning
+	ui->lblSigningFileType->setFont(headerFont);
+	ui->lblSigningRole->setFont(headerFont);
+	ui->lblSigningAddress->setFont(headerFont);
 
-	ui->estonian->setFont(regularFont);
-	ui->russian->setFont(regularFont);
-	ui->english->setFont(regularFont);
+	ui->rdSigningAsice->setFont(regularFont);
+	ui->rdSigningBdoc->setFont(regularFont);
+	ui->lblSigningExplane->setFont(regularFont);
+	ui->lblSigningCity->setFont(regularFont);
+	ui->lblSigningCounty->setFont(regularFont);
+	ui->lblSigningCountry->setFont(regularFont);
+	ui->lblSigningZipCode->setFont(regularFont);
+	ui->txtSigningCity->setFont(regularFont);
+	ui->txtSigningCounty->setFont(regularFont);
+	ui->txtSigningCountry->setFont(regularFont);
+	ui->txtSigningZipCode->setFont(regularFont);
 
-	ui->sameDirectory->setFont(regularFont);
-	ui->specifyDirectory->setFont(regularFont);
-	ui->choosDirectory->setFont(regularFont);
-	ui->directory->setFont(regularFont);
+	// pageAccessSert
+	ui->txtEvidence->setFont(regularFont);
+	ui->chkEvidenceIgnore->setFont(regularFont);
 
-	ui->checkUpdatePeriod->setFont(regularFont);
-	ui->checkTslRefresh->setFont(regularFont);
+	// pageProxy
+	ui->rdProxyNone->setFont(regularFont);
+	ui->rdProxySystem->setFont(regularFont);
+	ui->rdProxyManual->setFont(regularFont);
 
-	ui->version->setFont(Styles::font( Styles::Regular, 12 ));
-	ui->fromFile->setFont(condensed12);
-	ui->fromHistory->setFont(condensed12);
-	ui->close->setFont(Styles::font( Styles::Condensed, 14 ));
+	ui->lblProxyHost->setFont(regularFont);
+	ui->lblProxyPort->setFont(regularFont);
+	ui->lblProxyUsername->setFont(regularFont);
+	ui->lblProxyPassword->setFont(regularFont);
+	ui->txtProxyHost->setFont(regularFont);
+	ui->txtProxyPort->setFont(regularFont);
+	ui->txtProxyUsername->setFont(regularFont);
+	ui->txtProxyPassword->setFont(regularFont);
+
+	// pageDiagnostics
+	ui->txtDiagnostics->setFont(regularFont);
+
+	// pageInfo
+	ui->txtInfo->setFont(regularFont);
+
+	// navigationArea
+	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
+	ui->btNavFromFile->setFont(condensed12);
+	ui->btnNavFromHistory->setFont(condensed12);
+
+	ui->btnNavUseByDefault->setFont(condensed12);
+	ui->btnNavInstallManually->setFont(condensed12);
+	ui->btnNavShowEvidence->setFont(condensed12);
+
+	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
+
+	ui->btnNavUseByDefault->hide();
+	ui->btnNavInstallManually->hide();
+	ui->btnNavShowEvidence->hide();
 
 
-	connect( ui->close, &QPushButton::clicked, this, &SettingsDialog::accept );
+
+	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
 
-	connect( ui->pushButton,   &QPushButton::clicked, this, [this](){ changePage(ui->pushButton);    ui->stackedWidget->setCurrentIndex(0); } );
-	connect( ui->pushButton_2, &QPushButton::clicked, this, [this](){ changePage(ui->pushButton_2);  ui->stackedWidget->setCurrentIndex(1); } );
-	connect( ui->pushButton_3, &QPushButton::clicked, this, [this](){ changePage(ui->pushButton_3);  ui->stackedWidget->setCurrentIndex(1); } );
-	connect( ui->pushButton_4, &QPushButton::clicked, this, [this](){ changePage(ui->pushButton_4);  ui->stackedWidget->setCurrentIndex(1); } );
-	connect( ui->pushButton_5, &QPushButton::clicked, this, [this](){ changePage(ui->pushButton_5);  ui->stackedWidget->setCurrentIndex(1); } );
-	connect( ui->pushButton_6, &QPushButton::clicked, this, [this](){ changePage(ui->pushButton_6);  ui->stackedWidget->setCurrentIndex(1); } );
-
-	ui->checkUpdatePeriod->addItem("Kord päevas");
-	ui->checkUpdatePeriod->addItem("Kord nädalas");
-	ui->checkUpdatePeriod->addItem("Kord kuus");
+	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
+	connect( ui->btnMenuSigning, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuSigning); ui->stackedWidget->setCurrentIndex(1); } );
+	connect( ui->btnMenuEvidence, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuEvidence); ui->stackedWidget->setCurrentIndex(2); } );
+	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(3); } );
+	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(4); } );
+	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
 }
 
 SettingsDialog::~SettingsDialog()
@@ -90,15 +145,35 @@ void SettingsDialog::changePage(QPushButton* button)
 {
 	if(button->isChecked())
 	{
-		ui->pushButton->setChecked(false);
-		ui->pushButton_2->setChecked(false);
-		ui->pushButton_3->setChecked(false);
-		ui->pushButton_4->setChecked(false);
-		ui->pushButton_5->setChecked(false);
-		ui->pushButton_6->setChecked(false);
+		ui->btnMenuGeneral->setChecked(false);
+		ui->btnMenuSigning->setChecked(false);
+		ui->btnMenuEvidence->setChecked(false);
+		ui->btnMenuProxy->setChecked(false);
+		ui->btnMenuDiagnostics->setChecked(false);
+		ui->btnMenuInfo->setChecked(false);
 	}
 
 	button->setChecked(true);
+
+	if(button == ui->btnMenuEvidence)
+	{
+		ui->btNavFromFile->hide();
+		ui->btnNavFromHistory->hide();
+
+		ui->btnNavUseByDefault->show();
+		ui->btnNavInstallManually->show();
+		ui->btnNavShowEvidence->show();
+	}
+	else
+	{
+		ui->btNavFromFile->show();
+		ui->btnNavFromHistory->show();
+
+		ui->btnNavUseByDefault->hide();
+		ui->btnNavInstallManually->hide();
+		ui->btnNavShowEvidence->hide();
+	}
+
 }
 
 int SettingsDialog::exec()
