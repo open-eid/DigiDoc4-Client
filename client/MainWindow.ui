@@ -596,7 +596,7 @@ background-color: #023664;
         <string notr="true">background-color: #023565;
 border: none;</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_1">
         <property name="spacing">
          <number>0</number>
         </property>
