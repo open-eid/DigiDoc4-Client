@@ -51,17 +51,8 @@ void ContainerPage::init()
 	ui->leftPane->init( ItemList::File, "Kontaineri failid" );
 
 	QFont regular = Styles::font( Styles::Regular, 14 );
-	ui->warningText->setFont( regular );
-	ui->warningAction->setFont( Styles::font( Styles::Regular, 14, QFont::Bold ) );
 	ui->container->setFont( regular );
 	ui->containerFile->setFont( regular );
-
-	QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect();
-	shadow->setColor( QColor( 233, 200, 143 ) );
-	shadow->setXOffset( 4 );
-	shadow->setYOffset( 4 );
-	ui->warning->setGraphicsEffect( shadow );
-	ui->containerHeader->setGraphicsEffect( shadow );
 
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
@@ -169,12 +160,6 @@ void ContainerPage::hideRightPane()
 	ui->rightPane->hide();
 }
 
-void ContainerPage::hideWarningArea()
-{
-	ui->warning->hide();
-}
-
-
 void ContainerPage::mobileDialog()
 {
 	hideOtherAction();
@@ -224,16 +209,6 @@ void ContainerPage::showRightPane( ItemList::ItemType itemType, const QString &h
 	ui->rightPane->show();
 }
 
-void ContainerPage::showWarningText( const QString &text, const QString &link )
-{
-	ui->warning->show();
-	ui->warningText->setText( text );
-	ui->warningAction->setText( link );
-	ui->warningAction->setTextFormat( Qt::RichText );
-	ui->warningAction->setTextInteractionFlags( Qt::TextBrowserInteraction );
-	ui->warningAction->setOpenExternalLinks( true );	
-}
-
 void ContainerPage::showMainAction( Actions action, const QString &label )
 {
 	if( mainAction )
@@ -251,13 +226,6 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 		mainAction->show();
 	}
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );	
-}
-
-// Mouse click on warning region will hide it.
-void ContainerPage::mousePressEvent ( QMouseEvent * event )
-{
-	if( ui->warning->underMouse() )
-		hideWarningArea();
 }
 
 void ContainerPage::resizeEvent( QResizeEvent *event )

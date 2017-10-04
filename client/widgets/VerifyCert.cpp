@@ -187,8 +187,10 @@ void VerifyCert::update(
 	else 
 	{
 		this->setStyleSheet( "background-color: #ffffff;" + borders );
-		ui->verticalSpacerAboveBtn->changeSize( 20, 32 );
-		ui->verticalSpacerBelowBtn->changeSize( 20, 38 );
+		// Check height: if warning shown, decrease height by 30px (15*2)
+		int decrease = height() < 210 ? 15 : 0;
+		ui->verticalSpacerAboveBtn->changeSize(20, 32 - decrease);
+		ui->verticalSpacerBelowBtn->changeSize(20, 38 - decrease);
 		changePinStyle( "#FFFFFF" );
 		ui->name->setTextFormat( Qt::RichText );
 		ui->name->setText( name + 

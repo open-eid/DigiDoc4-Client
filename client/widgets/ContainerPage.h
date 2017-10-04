@@ -43,15 +43,12 @@ public:
 	~ContainerPage();
 
 	void transition( ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList() );
-	void showWarningText( const QString &text, const QString &link );
-	void hideWarningArea();
 	void setContainer( const QString &file );
 
 signals:
 	void action( int code );
 
 protected:
-	void mousePressEvent( QMouseEvent *event ) override;
 	void resizeEvent( QResizeEvent *event ) override;
 
 private:

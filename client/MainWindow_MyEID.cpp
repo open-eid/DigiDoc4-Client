@@ -72,7 +72,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 	{
 		if( isForgotPin )
 			text = tr("%1 kood muudetud!").arg( QSmartCardData::typeString( type ) );
-		showWarning( text, true );
+		showNotification( text, true );
         ui->accordion->updateInfo( smartcard );
 		ui->myEid->pinIsBlockedIcon( 
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
@@ -86,7 +86,7 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 	if( validateCardError( type, 1024,
 		( (QSmartCard *)smartcard )->pinChange( type ) ) )
 	{
-		showWarning( tr("%1 kood muudetud!")
+		showNotification( tr("%1 kood muudetud!")
 			.arg( QSmartCardData::typeString( type ) ), true );
         ui->accordion->updateInfo( smartcard );
 	}
@@ -135,7 +135,7 @@ void MainWindow::activateEmail ()
 	QString eMail = ui->accordion->getEmail();
 	if( eMail.isEmpty() )
 	{
-		showWarning( tr("E-mail address missing or invalid!") );
+		showNotification( tr("E-mail address missing or invalid!") );
         ui->accordion->setFocusToEmail();
 		return;
 	}
@@ -199,15 +199,15 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		{
 			switch ( type )
 			{
-			case QSmartCardData::Pin1Type: showWarning( "PIN1 timeout" ); break;
-			case QSmartCardData::Pin2Type: showWarning( "PIN2 timeout" ); break;
-			case QSmartCardData::PukType: showWarning( "PUK timeout" ); break;
+			case QSmartCardData::Pin1Type: showNotification( "PIN1 timeout" ); break;
+			case QSmartCardData::Pin2Type: showNotification( "PIN2 timeout" ); break;
+			case QSmartCardData::PukType: showNotification( "PUK timeout" ); break;
 			}
 		}
 #endif
 		break;
 	case QSmartCard::BlockedError:
-		showWarning( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
+		showNotification( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
 		pageSelected( ui->myEid );
 		ui->accordion->updateInfo( smartcard );
 		ui->myEid->pinIsBlockedIcon( 
@@ -216,80 +216,42 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
 		break;
 	case QSmartCard::DifferentError:
-		showWarning( QString("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
+		showNotification( QString("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
 	case QSmartCard::LenghtError:
 		switch( type )
 		{
-		case QSmartCardData::Pin1Type: showWarning( "PIN1 length has to be between 4 and 12" ); break;
-		case QSmartCardData::Pin2Type: showWarning( "PIN2 length has to be between 5 and 12" ); break;
-		case QSmartCardData::PukType: showWarning( "PUK length has to be between 8 and 12" ); break;
+		case QSmartCardData::Pin1Type: showNotification( "PIN1 length has to be between 4 and 12" ); break;
+		case QSmartCardData::Pin2Type: showNotification( "PIN2 length has to be between 5 and 12" ); break;
+		case QSmartCardData::PukType: showNotification( "PUK length has to be between 8 and 12" ); break;
 		}
 		break;
 	case QSmartCard::OldNewPinSameError:
-		showWarning( QString("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
+		showNotification( QString("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
 		break;
 	case QSmartCard::ValidateError:
-		showWarning( QString("Wrong %1 code.").arg( QSmartCardData::typeString( t ) ) + QString("You can try %1 more time(s).").arg( smartcard->data().retryCount( t ) ));
+		showNotification( QString("Wrong %1 code.").arg( QSmartCardData::typeString( t ) ) + QString("You can try %1 more time(s).").arg( smartcard->data().retryCount( t ) ));
 		break;
 	default:
 		switch( flags )
 		{
-		case SSLConnect::ActivateEmails: showWarning( "Failed activating email forwards." ); break;
-		case SSLConnect::EmailInfo: showWarning( "Failed loading email settings." ); break;
-		case SSLConnect::MobileInfo: showWarning( "Failed loading Mobiil-ID settings." ); break;
-		case SSLConnect::PictureInfo: showWarning( "Loading picture failed." ); break;
+		case SSLConnect::ActivateEmails: showNotification( "Failed activating email forwards." ); break;
+		case SSLConnect::EmailInfo: showNotification( "Failed loading email settings." ); break;
+		case SSLConnect::MobileInfo: showNotification( "Failed loading Mobiil-ID settings." ); break;
+		case SSLConnect::PictureInfo: showNotification( "Loading picture failed." ); break;
 		default:
-			showWarning( QString( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
+			showNotification( QString( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
 		}
 		break;
 	}
 	return false;
 }
 
-void MainWindow::showWarning( const QString &msg, bool isSuccess )
+void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
-    QString textColor = "#353739";
-    QString bkColor = "#F8DDA7";
-    int displayTime = 3000;
+    QString textColor = isSuccess ? "#ffffff" : "#353739";
+    QString bkColor = isSuccess ? "#8CC368" : "#F8DDA7";
+    int displayTime = isSuccess ? 2000 : 3000;
     
-	switch( ui->startScreen->currentIndex() )
-	{
-	case SignDetails:
-		ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	case CryptoDetails:
-		ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	default:
-		if( isSuccess )
-		{
-			textColor = "#ffffff";
-			bkColor = "#8CC368";
-			displayTime = 2000;
-		}
-		FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
-		notification->start( msg, 750, 2500, 600 );
-		break;
-	}
-}
-
-void MainWindow::showWarning( const QString &msg, const QString &details )
-{
-	switch( ui->startScreen->currentIndex() )
-	{
-	case SignDetails:
-		ui->signContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	case CryptoDetails:
-		ui->cryptoContainerPage->showWarningText( msg, "<a href=\"http://id.ee/\" style='color: rgb(92, 28, 28);'>Vajuta probleemi lahendamiseks</a>" );
-		break;
-	default: 
-		{
-			QMessageBox d( QMessageBox::Warning, windowTitle(), msg, QMessageBox::Close, qApp->activeWindow() );
-			d.setWindowModality( Qt::WindowModal );
-			d.setDetailedText( details );
-			d.exec();
-		}
-		break;
-	}
+	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
+	notification->start( msg, 750, 2500, 600 );
 }

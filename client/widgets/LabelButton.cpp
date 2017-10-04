@@ -54,9 +54,9 @@ void LabelButton::init( Style style, const QString &label, int code )
             break;
         case BoxedDeepCeruleanWithCuriousBlue:
             // Edit
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", borderRadius );
+            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( bgColor ), borderRadius );
             css[ Hover ].style   = styleTemplate.arg( bgColor, CURIOUS_BLUE, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
-            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none", borderRadius );
+            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
             css[ Pressed ].background = CURIOUS_BLUE;
             break;
         case DeepCeruleanWithLochmara:

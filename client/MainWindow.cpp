@@ -45,6 +45,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 {
 	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
+	QFont regular14 = Styles::font( Styles::Regular, 14 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	ui->setupUi(this);
@@ -75,6 +76,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	buttonGroup->addButton( ui->help, HeadHelp );
 	buttonGroup->addButton( ui->settings, HeadSettings );
 
+	ui->warningText->setFont( regular14 );
+	ui->warningAction->setFont( Styles::font( Styles::Regular, 14, QFont::Bold ) );
+
 	ui->signIntroLabel->setFont( regular20 );
 	ui->signIntroButton->setFont( condensed14 );
 	ui->cryptoIntroLabel->setFont( regular20 );
@@ -82,6 +86,22 @@ MainWindow::MainWindow( QWidget *parent ) :
 	
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
+
+#ifdef Q_OS_WIN
+	// Add grey line on Windows in order to separate white title bar from card selection bar
+	QWidget *separator = new QWidget(this);
+	separator->setFixedHeight(1);
+	separator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	separator->setStyleSheet(QString("background-color: #D9D9D9;"));
+	separator->resize(8000, 1);
+	separator->move(110, 0);
+	separator->show();
+#endif
+	QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
+	bodyShadow->setBlurRadius(9.0);
+	bodyShadow->setColor(QColor(0, 0, 0, 160));
+	bodyShadow->setOffset(4.0);
+	ui->topBar->setGraphicsEffect(bodyShadow);
 
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
@@ -94,6 +114,10 @@ MainWindow::MainWindow( QWidget *parent ) :
 	smartcard->start();
 
 	ui->accordion->init();
+
+	// TODO Remove temporary demonstration:
+	hideWarningArea();
+	showWarning("Üks allkiri on kehtetu!", "<a href=\"#resolve-problem\" style=\"color: rgb(53, 55, 57)\">Vajuta probleemi lahendamiseks</a>");
 
 	connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
@@ -131,9 +155,9 @@ void MainWindow::buttonClicked( int button )
 	switch( button )
 	{
 	case HeadHelp:
+	{
 		//QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
 		//showWarning( "Not implemented yet" );
-	{
 		FirstRun dlg(this);
 		dlg.exec();
 	}
@@ -141,7 +165,7 @@ void MainWindow::buttonClicked( int button )
 	case HeadSettings:
 	{
 		// qApp->showSettings();
-		showWarning( "Not implemented yet" );
+		showNotification( "Not implemented yet" );
 		break;
 	}
 	default: 
@@ -212,7 +236,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 	} 
 	else
 	{
-		showWarning( "Unrecognized data" );
+		showNotification( "Unrecognized data" );
 	}
 	event->acceptProposedAction();
 	clearOverlay();
@@ -227,6 +251,19 @@ void MainWindow::hideCardPopup()
 {
 	selector->init();
 	showCardMenu( false );
+}
+
+void MainWindow::hideWarningArea()
+{
+	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
+	ui->warning->hide();
+}
+
+// Mouse click on warning region will hide it.
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+	if(ui->warning->underMouse())
+		hideWarningArea();
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -483,7 +520,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 		QString error;
 		xml.readEmailStatus( error );
 		if( !error.isEmpty() )
-			showWarning( XmlReader::emailErr( error.toUInt() ) );
+			showWarning( XmlReader::emailErr( error.toUInt() ), QString() );
 		return;
 	}
 
@@ -500,4 +537,15 @@ void MainWindow::savePhoto( const QPixmap *photo )
 		"Foto (*.jpg);;All Files (*)");
 
 	photo->save( fileName, "JPEG", 100 );
+}
+
+void MainWindow::showWarning( const QString &msg, const QString &details )
+{
+	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");	
+	ui->warning->show();
+	ui->warningText->setText( msg );
+	ui->warningAction->setText( details );
+	ui->warningAction->setTextFormat( Qt::RichText );
+	ui->warningAction->setTextInteractionFlags( Qt::TextBrowserInteraction );
+	ui->warningAction->setOpenExternalLinks( true );	
 }
