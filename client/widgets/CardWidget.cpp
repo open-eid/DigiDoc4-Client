@@ -41,7 +41,7 @@ CardWidget::CardWidget( const QString &cardId, QWidget *parent )
 	ui->cardStatus->setFont( font );
 	ui->cardPhoto->init( LabelButton::None, "", CardPhoto );
 
-	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart.svg", this ) );
+	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart_green.svg", this ) );
 	cardIcon->resize( 17, 12 );
 	cardIcon->move( 159, 42 );
 
@@ -90,7 +90,7 @@ void CardWidget::update( QSharedPointer<const QCardInfo> ci )
 	else
 	{
 		ui->cardStatus->setText( QString( "Lugejas on %1" ).arg( cardInfo->cardType ) );
-		cardIcon->load( QString(":/images/icon_IDkaart.svg") );
+		cardIcon->load( QString(":/images/icon_IDkaart_green.svg") );
 	}
 
 	setAccessibleDescription( cardInfo->fullName );
