@@ -1712,13 +1712,13 @@ QRadioButton::indicator::checked {
             <x>10</x>
             <y>10</y>
             <width>771</width>
-            <height>551</height>
+            <height>511</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>771</width>
-            <height>551</height>
+            <height>511</height>
            </size>
           </property>
           <property name="maximumSize">

@@ -20,6 +20,7 @@
 
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
+#include "dialogs/EvidenceDialog.h"
 #include "effects/Overlay.h"
 #include "Styles.h"
 
@@ -123,9 +124,17 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	ui->btnNavShowEvidence->hide();
 
 
-
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
+
+	connect( ui->btnNavShowEvidence, &QPushButton::clicked, this,
+			 [this]()
+		{
+			EvidenceDialog dlg(this);
+			dlg.exec();
+		}
+			);
+
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
 	connect( ui->btnMenuSigning, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuSigning); ui->stackedWidget->setCurrentIndex(1); } );

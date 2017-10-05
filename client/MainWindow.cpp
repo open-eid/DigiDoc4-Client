@@ -163,8 +163,6 @@ void MainWindow::buttonClicked( int button )
 	}
 	case HeadSettings:
 	{
-		// qApp->showSettings();
-		// showNotification( "Not implemented yet" );
 		SettingsDialog dlg(this);
 		dlg.exec();
 		break;
