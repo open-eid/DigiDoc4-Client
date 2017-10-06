@@ -115,13 +115,13 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>77</height>
+             <height>55</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>77</height>
+             <height>55</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -216,7 +216,7 @@ QPushButton:!checked{
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnMenuEvidence">
+          <widget class="QPushButton" name="btnMenuCertificate">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -1966,7 +1966,7 @@ QPushButton:disabled {
        <string>&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnNavShowEvidence">
+     <widget class="QPushButton" name="btnNavShowCertificate">
       <property name="geometry">
        <rect>
         <x>750</x>

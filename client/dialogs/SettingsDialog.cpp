@@ -20,7 +20,7 @@
 
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
-#include "dialogs/EvidenceDialog.h"
+#include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
 #include "Styles.h"
 
@@ -40,7 +40,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	ui->lblMenuSettings->setFont(headerFont);
 	ui->btnMenuGeneral->setFont(condensed12);
 	ui->btnMenuSigning->setFont(condensed12);
-	ui->btnMenuEvidence->setFont(condensed12);
+	ui->btnMenuCertificate->setFont(condensed12);
 	ui->btnMenuProxy->setFont(condensed12);
 	ui->btnMenuDiagnostics->setFont(condensed12);
 	ui->btnMenuInfo->setFont(condensed12);
@@ -115,22 +115,20 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
 	ui->btnNavUseByDefault->setFont(condensed12);
 	ui->btnNavInstallManually->setFont(condensed12);
-	ui->btnNavShowEvidence->setFont(condensed12);
+	ui->btnNavShowCertificate->setFont(condensed12);
 
 	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
 
-	ui->btnNavUseByDefault->hide();
-	ui->btnNavInstallManually->hide();
-	ui->btnNavShowEvidence->hide();
+	changePage(ui->btnMenuGeneral);
 
 
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
 
-	connect( ui->btnNavShowEvidence, &QPushButton::clicked, this,
+	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
 			 [this]()
 		{
-			EvidenceDialog dlg(this);
+			CertificateDetails dlg(this);
 			dlg.exec();
 		}
 			);
@@ -138,7 +136,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
 	connect( ui->btnMenuSigning, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuSigning); ui->stackedWidget->setCurrentIndex(1); } );
-	connect( ui->btnMenuEvidence, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuEvidence); ui->stackedWidget->setCurrentIndex(2); } );
+	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(2); } );
 	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(3); } );
 	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(4); } );
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
@@ -156,7 +154,7 @@ void SettingsDialog::changePage(QPushButton* button)
 	{
 		ui->btnMenuGeneral->setChecked(false);
 		ui->btnMenuSigning->setChecked(false);
-		ui->btnMenuEvidence->setChecked(false);
+		ui->btnMenuCertificate->setChecked(false);
 		ui->btnMenuProxy->setChecked(false);
 		ui->btnMenuDiagnostics->setChecked(false);
 		ui->btnMenuInfo->setChecked(false);
@@ -164,23 +162,32 @@ void SettingsDialog::changePage(QPushButton* button)
 
 	button->setChecked(true);
 
-	if(button == ui->btnMenuEvidence)
+	if(button == ui->btnMenuCertificate)
 	{
 		ui->btNavFromFile->hide();
 		ui->btnNavFromHistory->hide();
 
 		ui->btnNavUseByDefault->show();
 		ui->btnNavInstallManually->show();
-		ui->btnNavShowEvidence->show();
+		ui->btnNavShowCertificate->show();
 	}
-	else
+	else if(button == ui->btnMenuGeneral)
 	{
 		ui->btNavFromFile->show();
 		ui->btnNavFromHistory->show();
 
 		ui->btnNavUseByDefault->hide();
 		ui->btnNavInstallManually->hide();
-		ui->btnNavShowEvidence->hide();
+		ui->btnNavShowCertificate->hide();
+	}
+	else
+	{
+		ui->btNavFromFile->hide();
+		ui->btnNavFromHistory->hide();
+
+		ui->btnNavUseByDefault->hide();
+		ui->btnNavInstallManually->hide();
+		ui->btnNavShowCertificate->hide();
 	}
 
 }
