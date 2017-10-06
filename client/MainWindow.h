@@ -20,6 +20,7 @@
 #pragma once
 
 #include "common_enums.h"
+#include "crypto/CryptoDoc.h"
 #include "QSmartCard.h"
 #include "sslConnect.h"
 #include "effects/Overlay.h"
@@ -34,6 +35,8 @@
 #include <QMimeData>
 #include <QSvgWidget>
 #include <QWidget>
+
+class DigiDoc;
 
 namespace Ui {
 class MainWindow;
@@ -136,4 +139,6 @@ private:
 	std::unique_ptr<DropdownButton> selector;
 	QSmartCard *smartcard = nullptr;
 	QButtonGroup *buttonGroup = nullptr;
+
+	std::unique_ptr<CryptoDoc> cryptoDoc;
 };

@@ -20,6 +20,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
+#include "DigiDoc.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
@@ -291,6 +292,20 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		{
 			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
 			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( files[0] );
+			qDebug() << "Files " << files.count();
+
+			cryptoDoc.reset(new CryptoDoc(this));
+			cryptoDoc->open( files[0] );
+
+			qDebug() << "Documents " << cryptoDoc->documents()->rowCount();
+			qDebug() << "Keys " << cryptoDoc->keys().count();
+
+			for( CKey key : cryptoDoc->keys() )
+			{
+				qDebug() << "name " << key.name;
+				qDebug() << "id " << key.id;
+				qDebug() << "recipient " << key.recipient;
+			}
 		}
 	}
 }

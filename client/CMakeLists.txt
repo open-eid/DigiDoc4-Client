@@ -46,6 +46,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	Styles.cpp
 	XmlReader.cpp
 	common4/TokenData4.cpp
+	../crypto/CryptoDoc.cpp
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.cpp
 	dialogs/FirstRun.cpp
