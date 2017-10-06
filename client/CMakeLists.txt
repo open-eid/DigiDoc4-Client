@@ -15,9 +15,9 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/FirstRun.ui dialogs/PinPopup.ui dialogs/PinUnblock.ui widgets/Accordion.ui widgets/AccordionTitle.ui
-					widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui
-					dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
+qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/PinPopup.ui dialogs/PinUnblock.ui dialogs/SettingsDialog.ui
+					widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui
+					widgets/ItemList.ui widgets/MainAction.ui dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
@@ -47,10 +47,12 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	XmlReader.cpp
 	common4/TokenData4.cpp
 	dialogs/AddRecipients.cpp
+	dialogs/CertificateDetails.cpp
 	dialogs/FirstRun.cpp
 	dialogs/MobileDialog.cpp
 	dialogs/PinPopup.cpp
 	dialogs/PinUnblock.cpp
+	dialogs/SettingsDialog.cpp
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
 	effects/HoverFilter.cpp
@@ -112,9 +114,9 @@ if( APPLE )
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name Headers | xargs rm -rf
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
-		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libssl.1.0.0.dylib @loader_path/../../../libssl.1.0.0.dylib 
+		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libssl.1.0.0.dylib @loader_path/../../../libssl.1.0.0.dylib
 			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
-		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libcrypto.1.0.0.dylib @loader_path/../../../libcrypto.1.0.0.dylib 
+		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libcrypto.1.0.0.dylib @loader_path/../../../libcrypto.1.0.0.dylib
 			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
 	)
 	add_custom_target( codesign DEPENDS ${PROGNAME}

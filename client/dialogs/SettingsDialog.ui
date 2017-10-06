@@ -1,0 +1,2107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>994</width>
+    <height>570</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>994</width>
+    <height>570</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>994</width>
+    <height>570</height>
+   </size>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="containerLists" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>880</width>
+       <height>399</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #ffffff;</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="leftPane" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>205</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>205</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-right: 1px solid #DEE4E9;</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="lblMenuSettings">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>55</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>55</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>Seaded</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnMenuGeneral">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>ÜLDINE</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnMenuSigning">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>ALLKIRJASTAMINE</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnMenuCertificate">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>JUURDEPÄÄSUTÕEND</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnMenuProxy">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>PROKSI</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnMenuDiagnostics">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>DIAGNOSTIKA</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnMenuInfo">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>INFO</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <widget class="QWidget" name="pageGeneral">
+         <widget class="QLabel" name="lblGeneralLang">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>20</y>
+            <width>45</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>45</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>45</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Keel</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblGeneralDirectory">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>99</y>
+            <width>270</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>270</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>270</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Ümbriku loomise vaikekataloog</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblGeneralCheckUpdatePeriod">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>220</y>
+            <width>155</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>155</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>155</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Kontrolli uuendusi</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="cmbGeneralCheckUpdatePeriod">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>252</y>
+            <width>145</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>145</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>145</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QComboBox {
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+    background-color: #FFFFFF;
+	color: #353739;
+}	
+
+/* list */
+QComboBox QAbstractItemView {
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+	padding: 3px 3px 3px 3px;
+    background-color: #FFFFFF;
+}
+
+/* rows */
+QComboBox:item {
+    background-color: #FFFFFF;
+	color: #353739;
+}
+
+/* selected row */
+QComboBox:item:selected {
+    background-color: #006EB5;
+    color: #FFFFFF;
+}
+
+/* drop-down button*/
+QComboBox::drop-down {
+    width: 16px;
+	border: none;
+}
+
+/* drop-down button image*/
+QComboBox::down-arrow {
+	image: url(:/images/arrow_down.svg);
+}</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="chkGeneralTslRefresh">
+          <property name="geometry">
+           <rect>
+            <x>24</x>
+            <y>298</y>
+            <width>175</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>175</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>175</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/images/icon_checkbox.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/images/icon_checkbox_check.png);
+}
+</string>
+          </property>
+          <property name="text">
+           <string>Kontrolli TSL värskendust</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>53</y>
+            <width>400</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <widget class="QRadioButton" name="rdGeneralEstonian">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>0</y>
+             <width>60</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Eesti</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdGeneralEnglish">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>0</y>
+             <width>75</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>English</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdGeneralRussian">
+           <property name="geometry">
+            <rect>
+             <x>89</x>
+             <y>0</y>
+             <width>80</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Русский</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>120</y>
+            <width>781</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <widget class="QLineEdit" name="txtGeneralDirectory">
+           <property name="geometry">
+            <rect>
+             <x>200</x>
+             <y>40</y>
+             <width>566</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>566</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>566</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdGeneralSameDirectory">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>12</y>
+             <width>140</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>140</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Samasse kataloogi</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>47</y>
+             <width>135</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>135</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>135</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Valin kataloogi ise</string>
+           </property>
+          </widget>
+          <widget class="QToolButton" name="btGeneralChooseDirectory">
+           <property name="geometry">
+            <rect>
+             <x>162</x>
+             <y>40</y>
+             <width>37</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>37</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>37</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">	border: 1px solid #DEE4E9;
+	border-radius: 2px;
+	background-color: #F4F5F6;</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="pageSigning">
+         <widget class="QLabel" name="lblSigningFileType">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>20</y>
+            <width>260</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>260</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>260</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Vaikimisi faili tüüp</string>
+          </property>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>42</y>
+            <width>771</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <widget class="QRadioButton" name="rdSigningAsice">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>12</y>
+             <width>630</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>630</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>630</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdSigningBdoc">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>47</y>
+             <width>630</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>630</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>630</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>BDOC - digiallkirja vaikimisi vorming Eestis</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QLabel" name="lblSigningExplane">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>120</y>
+            <width>749</width>
+            <height>60</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>749</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>749</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Kui soovid vormingut muuta, siis tee seda enne, kui valid failid allkirjastamiseks. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSigningRole">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>210</y>
+            <width>70</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Roll</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSigningRole">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>238</y>
+            <width>330</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>330</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>330</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSigningAddress">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>290</y>
+            <width>70</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Aadress</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSigningCity">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>320</y>
+            <width>670</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSigningCounty">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>355</y>
+            <width>670</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSigningCountry">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>390</y>
+            <width>670</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtSigningZipCode">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>425</y>
+            <width>670</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>670</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSigningCity">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>327</y>
+            <width>65</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Linn</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSigningCounty">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>362</y>
+            <width>65</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Maakond</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSigningCountry">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>397</y>
+            <width>65</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Riik</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblSigningZipCode">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>432</y>
+            <width>65</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>65</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Parool</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="pageEvidence">
+         <widget class="QLabel" name="txtEvidence">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>10</y>
+            <width>749</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>749</width>
+            <height>101</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>749</width>
+            <height>101</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377
+
+Kelle väljastatud: DigiDoc4 Cleint ver. 4.0.0
+Kehtib kuni: 03.01.2019</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="chkEvidenceIgnore">
+          <property name="geometry">
+           <rect>
+            <x>21</x>
+            <y>140</y>
+            <width>370</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>370</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>370</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/images/icon_checkbox.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/images/icon_checkbox_check.png);
+}</string>
+          </property>
+          <property name="text">
+           <string>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="pageProxy">
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>421</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <widget class="QRadioButton" name="rdProxyNone">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>20</y>
+             <width>280</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>280</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>280</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Ei kasuta proksit</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdProxySystem">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>55</y>
+             <width>280</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>280</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>280</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Kasuta süsteemseid proksi seadeid</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rdProxyManual">
+           <property name="geometry">
+            <rect>
+             <x>21</x>
+             <y>90</y>
+             <width>280</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>280</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>280</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+           </property>
+           <property name="text">
+            <string>Proksi seaded määratakse käsitsi</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QLineEdit" name="txtProxyHost">
+          <property name="geometry">
+           <rect>
+            <x>120</x>
+            <y>130</y>
+            <width>650</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtProxyPort">
+          <property name="geometry">
+           <rect>
+            <x>120</x>
+            <y>165</y>
+            <width>650</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtProxyUsername">
+          <property name="geometry">
+           <rect>
+            <x>120</x>
+            <y>200</y>
+            <width>650</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txtProxyPassword">
+          <property name="geometry">
+           <rect>
+            <x>120</x>
+            <y>235</y>
+            <width>650</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>650</width>
+            <height>31</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblProxyHost">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>137</y>
+            <width>90</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Host</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblProxyPort">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>172</y>
+            <width>90</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Port</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblProxyUsername">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>207</y>
+            <width>90</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Kasutajanimi</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lblProxyPassword">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>242</y>
+            <width>90</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>90</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Parool</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="pageDiagnostics">
+         <widget class="QTextEdit" name="txtDiagnostics">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>771</width>
+            <height>511</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>771</width>
+            <height>511</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>771</width>
+            <height>511</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Keeleseaded:&lt;/span&gt; English / 1252 (ANSI - Latin I)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kasutajaõigused:&lt;/span&gt; Administraator&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Baastarkvara:&lt;/span&gt; 17.8.0.1731&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rakenduse versioon:&lt;/span&gt; 3.13.2.1502 (32 bit)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Operatsioonisüsteem:&lt;/span&gt; Windows 10 (64 bit)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegid:&lt;/span&gt;&lt;br /&gt;QT (5.8.0)&lt;br /&gt;digidoc (3.10.1.1212)&lt;br /&gt;digidocpp (3.13.1.1353)&lt;br /&gt;qdigidocclient.exe (3.13.2.1502)&lt;br /&gt;qesteidutil.exe (3.12.6.1249)&lt;br /&gt;id-updater.exe (3.12.0.1009)&lt;br /&gt;esteidcm (3.11.0.1175)&lt;br /&gt;onepin-opensc-pkcs11 (0.15.0.0)&lt;br /&gt;EsteidShellExtension (3.13.2.1502)&lt;br /&gt;npesteid-firefox-plugin (3.12.0.1143)&lt;br /&gt;chrome-token-signing.exe (1.0.5.468)&lt;br /&gt;zlib1 (1.2.8.0)&lt;br /&gt;libeay32 (1.0.2.11)&lt;br /&gt;ssleay32 (1.0.2.11)&lt;br /&gt;xerces-c_3_1 (3.1.4.0)&lt;br /&gt;xsec_1_7 (1.7.3.0)&lt;br /&gt;advapi32 (10.0.14393.0)&lt;br /&gt;crypt32 (10.0.14393.1198)&lt;br /&gt;winscard (10.0.14393.594)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;ATRfiltr teenuse staatus: Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Certificate Propagation teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Argumendid:&lt;/span&gt; C:\Program Files (x86)\Open-EID\qdigidocclient.exe&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegi otsing:&lt;/span&gt; C:/Program Files (x86)/Open-EID&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;URLs:&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;BREAKPAD:&lt;/span&gt; https://cr.eesti.ee/&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CONFIG_URL:&lt;/span&gt; https://id.eesti.ee/config.json&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL_URL:&lt;/span&gt; https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SIVA_URL:&lt;/span&gt; https://siva.eesti.ee/validate&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL signeerimise sertifikaadid:&lt;/span&gt;&lt;br /&gt;(SIGN) AGNIESZKA BAJNO&lt;br /&gt;Philippe Jean Renaud Schneider&lt;br /&gt;Pierre Damas (Signature)&lt;br /&gt;Maarten Ottoy (Signature)&lt;br /&gt;Jean-Marc Verbergt (Signature)&lt;br /&gt;Maarten Joris Ottoy&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Konfiguratsiooni andmed:&lt;/span&gt;&lt;br /&gt;DATE: 20170904072547Z&lt;br /&gt;SERIAL: 38&lt;br /&gt;URL: https://id.eesti.ee/config.json&lt;br /&gt;VER: 1&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Smart Card teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;Kaardilugejad:&lt;br /&gt;OMNIKEY AG Smart Card Reader USB 0&lt;br /&gt;Reader state: CHANGED, UNAVAILABLE&lt;br /&gt;Lugeja draiverid:&lt;br /&gt;Microsoft Usbccid Smartcard Reader (WUDF) (USB\VID_076B PID_3022 REV_0204)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Veebibrauserid:&lt;/span&gt;&lt;br /&gt;Google Chrome (64-bit) (61.0.3163.79)&lt;br /&gt;Mozilla Firefox 54.0.1 (x86 en-GB) (54.0.1)&lt;br /&gt;Internet Explorer (11.1593.14393.0)&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="pageInfo">
+         <widget class="QTextEdit" name="txtInfo">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>771</width>
+            <height>511</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>771</width>
+            <height>511</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>771</width>
+            <height>511</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Keeleseaded:&lt;/span&gt; English / 1252 (ANSI - Latin I)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kasutajaõigused:&lt;/span&gt; Administraator&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Baastarkvara:&lt;/span&gt; 17.8.0.1731&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rakenduse versioon:&lt;/span&gt; 3.13.2.1502 (32 bit)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Operatsioonisüsteem:&lt;/span&gt; Windows 10 (64 bit)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegid:&lt;/span&gt;&lt;br /&gt;QT (5.8.0)&lt;br /&gt;digidoc (3.10.1.1212)&lt;br /&gt;digidocpp (3.13.1.1353)&lt;br /&gt;qdigidocclient.exe (3.13.2.1502)&lt;br /&gt;qesteidutil.exe (3.12.6.1249)&lt;br /&gt;id-updater.exe (3.12.0.1009)&lt;br /&gt;esteidcm (3.11.0.1175)&lt;br /&gt;onepin-opensc-pkcs11 (0.15.0.0)&lt;br /&gt;EsteidShellExtension (3.13.2.1502)&lt;br /&gt;npesteid-firefox-plugin (3.12.0.1143)&lt;br /&gt;chrome-token-signing.exe (1.0.5.468)&lt;br /&gt;zlib1 (1.2.8.0)&lt;br /&gt;libeay32 (1.0.2.11)&lt;br /&gt;ssleay32 (1.0.2.11)&lt;br /&gt;xerces-c_3_1 (3.1.4.0)&lt;br /&gt;xsec_1_7 (1.7.3.0)&lt;br /&gt;advapi32 (10.0.14393.0)&lt;br /&gt;crypt32 (10.0.14393.1198)&lt;br /&gt;winscard (10.0.14393.594)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;ATRfiltr teenuse staatus: Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Certificate Propagation teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Argumendid:&lt;/span&gt; C:\Program Files (x86)\Open-EID\qdigidocclient.exe&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegi otsing:&lt;/span&gt; C:/Program Files (x86)/Open-EID&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;URLs:&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;BREAKPAD:&lt;/span&gt; https://cr.eesti.ee/&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CONFIG_URL:&lt;/span&gt; https://id.eesti.ee/config.json&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL_URL:&lt;/span&gt; https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SIVA_URL:&lt;/span&gt; https://siva.eesti.ee/validate&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL signeerimise sertifikaadid:&lt;/span&gt;&lt;br /&gt;(SIGN) AGNIESZKA BAJNO&lt;br /&gt;Philippe Jean Renaud Schneider&lt;br /&gt;Pierre Damas (Signature)&lt;br /&gt;Maarten Ottoy (Signature)&lt;br /&gt;Jean-Marc Verbergt (Signature)&lt;br /&gt;Maarten Joris Ottoy&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Konfiguratsiooni andmed:&lt;/span&gt;&lt;br /&gt;DATE: 20170904072547Z&lt;br /&gt;SERIAL: 38&lt;br /&gt;URL: https://id.eesti.ee/config.json&lt;br /&gt;VER: 1&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Smart Card teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;Kaardilugejad:&lt;br /&gt;OMNIKEY AG Smart Card Reader USB 0&lt;br /&gt;Reader state: CHANGED, UNAVAILABLE&lt;br /&gt;Lugeja draiverid:&lt;br /&gt;Microsoft Usbccid Smartcard Reader (WUDF) (USB\VID_076B PID_3022 REV_0204)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Veebibrauserid:&lt;/span&gt;&lt;br /&gt;Google Chrome (64-bit) (61.0.3163.79)&lt;br /&gt;Mozilla Firefox 54.0.1 (x86 en-GB) (54.0.1)&lt;br /&gt;Internet Explorer (11.1593.14393.0)&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="navigationArea" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-top: 1px solid #DEE4E9;
+background-color: #f7f7f7;</string>
+     </property>
+     <widget class="QPushButton" name="btNavFromFile">
+      <property name="geometry">
+       <rect>
+        <x>216</x>
+        <y>8</y>
+        <width>117</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>117</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>117</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+      </property>
+      <property name="text">
+       <string>KONROLLI UUENDUSI</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnNavFromHistory">
+      <property name="geometry">
+       <rect>
+        <x>345</x>
+        <y>8</y>
+        <width>190</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>190</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>190</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+      </property>
+      <property name="text">
+       <string>EEMALDA ÜLELIIGSED SERTIFIKAADID</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btNavClose">
+      <property name="geometry">
+       <rect>
+        <x>854</x>
+        <y>8</y>
+        <width>120</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+      </property>
+      <property name="text">
+       <string>SULGE</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="txtNavVersion">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>13</y>
+        <width>119</width>
+        <height>14</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>119</width>
+        <height>14</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>119</width>
+        <height>14</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;</string>
+      </property>
+      <property name="text">
+       <string>&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnNavShowCertificate">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>8</y>
+        <width>90</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>90</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>90</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+      </property>
+      <property name="text">
+       <string>NÄITA TÕENDIT</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnNavInstallManually">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>8</y>
+        <width>100</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+      </property>
+      <property name="text">
+       <string>PAIGALDA KÄSITSI</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnNavUseByDefault">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>8</y>
+        <width>100</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+      </property>
+      <property name="text">
+       <string>KASUTA VAIKIMISI</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

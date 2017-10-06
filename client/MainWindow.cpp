@@ -27,6 +27,7 @@
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
 #include "dialogs/AddRecipients.h"
+#include "dialogs/SettingsDialog.h"
 #include "dialogs/FirstRun.h"
 #include "util/FileUtil.h"
 
@@ -158,15 +159,15 @@ void MainWindow::buttonClicked( int button )
 		//showWarning( "Not implemented yet" );
 		FirstRun dlg(this);
 		dlg.exec();
-	}
 		break;
+	}
 	case HeadSettings:
 	{
-		// qApp->showSettings();
-		showNotification( "Not implemented yet" );
+		SettingsDialog dlg(this);
+		dlg.exec();
 		break;
 	}
-	default: 
+	default:
 		break;
 	}
 }
