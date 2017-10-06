@@ -387,19 +387,19 @@ QPushButton:!checked{
            <rect>
             <x>21</x>
             <y>20</y>
-            <width>35</width>
+            <width>45</width>
             <height>21</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>35</width>
+            <width>45</width>
             <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>35</width>
+            <width>45</width>
             <height>21</height>
            </size>
           </property>

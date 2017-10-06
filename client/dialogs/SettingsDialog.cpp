@@ -29,12 +29,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	ui(new Ui::SettingsDialog)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setWindowModality( Qt::ApplicationModal );
+	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+	setWindowModality(Qt::ApplicationModal);
 
-	QFont headerFont = Styles::font( Styles::Regular, 18 );
-	QFont regularFont = Styles::font( Styles::Regular, 14 );
-	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
+	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
+	QFont regularFont = Styles::font(Styles::Regular, 14);
+	QFont condensed12 = Styles::font(Styles::Condensed, 12);
 
 	// Menu
 	ui->lblMenuSettings->setFont(headerFont);
