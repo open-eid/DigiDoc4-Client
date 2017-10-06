@@ -45,12 +45,12 @@ void Accordion::init()
 	ui->titleOtherData->init( this,  false, "EESTI.EE POSTI SUUNAMINE", ui->contentOtherData );
 	ui->titleOtherEID->init( this,   false, "TEISED eID-D", ui->contentOtherEID );
 
-	connect(ui->authBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin1( bool, bool ) ) );
-	connect(ui->signBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin2( bool, bool ) ) );
-	connect(ui->pukBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePuk( bool, bool ) ) );
+	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1 );
+	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2 );
+	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePuk );
 
-	connect(ui->authBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
-	connect(ui->signBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
+	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails );
+	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails );
 
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();

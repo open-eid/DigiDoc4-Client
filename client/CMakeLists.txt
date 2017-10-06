@@ -17,7 +17,7 @@ qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
 qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/FirstRun.ui dialogs/PinPopup.ui dialogs/PinUnblock.ui widgets/Accordion.ui widgets/AccordionTitle.ui
 					widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui
-					dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
+					dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui dialogs/Updater.ui)
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
@@ -27,6 +27,7 @@ elseif( WIN32 )
 	find_package( Qt5 COMPONENTS WinExtras )
 	list( APPEND SOURCES QCSP.cpp QCNG.cpp )
 	list( APPEND ADDITIONAL_LIBRARIES Qt5::WinExtras NCrypt Crypt32 )
+	list( APPEND SOURCES CertStore.cpp )
 endif()
 
 add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
@@ -50,6 +51,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/FirstRun.cpp
 	dialogs/MobileDialog.cpp
 	dialogs/PinPopup.cpp
+   	dialogs/Updater.cpp
 	dialogs/PinUnblock.cpp
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
