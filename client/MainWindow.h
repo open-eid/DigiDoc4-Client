@@ -66,6 +66,7 @@ private Q_SLOTS:
 	void certDetailsClicked( const QString &link );
 	void getOtherEID ();
 	void operation(int op, bool started);
+	void updateCertificate ( const QString &link );
 
 protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
@@ -122,29 +123,30 @@ private:
 	bool encrypt();
 	void hideCardPopup();
 	void hideWarningArea();	
+	void getMobileIdStatus ();
+	void getDigiIdStatus ();
+    void isUpdateCertificateNeeded();
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int code, const QString &id, const QString &phone);
 	void onSignAction(int code, const QString &idCode, const QString &phoneNumber);
 	void openContainer();
 	void openFiles( const QStringList files );
+	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
+	void pinPukChange( QSmartCardData::PinType type );
 	bool save();
 	QString selectFile( const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );
+	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
-	void showWarning( const QString &msg, const QString &details );
-	bool sign();
+	void showWarning( const QString &msg, const QString &details, bool extLink = false );
+bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
-	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
-	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
-	void pinPukChange( QSmartCardData::PinType type );
-	void getMobileIdStatus ();
-	void getDigiIdStatus ();
-
+	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
 
