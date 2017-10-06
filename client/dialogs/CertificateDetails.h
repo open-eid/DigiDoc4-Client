@@ -22,19 +22,19 @@
 #include <QDialog>
 
 namespace Ui {
-class EvidenceDialog;
+class CertificateDetails;
 }
 
-class EvidenceDialog : public QDialog
+class CertificateDetails : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit EvidenceDialog(QWidget *parent = 0);
-	~EvidenceDialog();
+	explicit CertificateDetails(QWidget *parent = 0);
+	~CertificateDetails();
 
 	int exec() override;
 
 private:
-	Ui::EvidenceDialog *ui;
+	Ui::CertificateDetails *ui;
 };

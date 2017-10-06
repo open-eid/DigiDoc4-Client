@@ -18,14 +18,14 @@
  */
 
 
-#include "EvidenceDialog.h"
-#include "ui_EvidenceDialog.h"
+#include "CertificateDetails.h"
+#include "ui_CertificateDetails.h"
 #include "effects/Overlay.h"
 #include "Styles.h"
 
-EvidenceDialog::EvidenceDialog(QWidget *parent) :
+CertificateDetails::CertificateDetails(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::EvidenceDialog)
+	ui(new Ui::CertificateDetails)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
@@ -50,8 +50,8 @@ EvidenceDialog::EvidenceDialog(QWidget *parent) :
 	ui->tblDetails->setFont(regularFont);
 
 
-	connect( ui->close, &QPushButton::clicked, this, &EvidenceDialog::accept );
-	connect( this, &EvidenceDialog::finished, this, &EvidenceDialog::close );
+	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
+	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
 
 	QStringList horzHeaders;
 	horzHeaders << "Väli" << "Väärtus";
@@ -73,12 +73,12 @@ EvidenceDialog::EvidenceDialog(QWidget *parent) :
 	ui->tblDetails->setItem(6, 1, new QTableWidgetItem("RSA (1024)"));
 }
 
-EvidenceDialog::~EvidenceDialog()
+CertificateDetails::~CertificateDetails()
 {
 	delete ui;
 }
 
-int EvidenceDialog::exec()
+int CertificateDetails::exec()
 {
 	Overlay overlay( parentWidget() );
 	overlay.show();
