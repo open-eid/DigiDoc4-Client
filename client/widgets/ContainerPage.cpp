@@ -21,7 +21,10 @@
 #include "ui_ContainerPage.h"
 #include "Styles.h"
 #include "dialogs/MobileDialog.h"
+#include "widgets/AddressItem.h"
+#include "widgets/FileItem.h"
 
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QGraphicsDropShadowEffect>
@@ -170,13 +173,37 @@ void ContainerPage::mobileDialog()
 	}
 }
 
-void ContainerPage::setContainer( const QString &file )
+void ContainerPage::setContainer( ria::qdigidoc4::Pages page, const QString &file )
 {
 	const QFileInfo f( file );
 	// TODO check if file
 	// if( !f.isFile() ) return Other;
 
+
 	ui->containerFile->setText( file );
+
+	cryptoDoc.reset(new CryptoDoc(this));
+	cryptoDoc->open( file );
+
+	for( auto crypedFile: cryptoDoc->files())
+	{
+		FileItem *curr = new FileItem(crypedFile, ria::qdigidoc4::ContainerState::EncryptedContainer, this );
+		ui->leftPane->addWidget( curr );
+	}
+
+	for( CKey key : cryptoDoc->keys() )
+	{
+		AddressItem *curr = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
+		QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
+					key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
+					key.cert.subjectInfo("CN").value(0);
+
+		curr->update( name,
+					key.cert.subjectInfo("serialNumber").value(0),
+					key.cert.subjectInfo("GN").value(0),
+					AddressItem::Remove );
+		ui->rightPane->addWidget( curr );
+	}
 }
 
 void ContainerPage::showButtons( std::vector<QWidget*> buttons )

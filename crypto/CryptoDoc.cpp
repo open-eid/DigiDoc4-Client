@@ -860,6 +860,18 @@ QList<CKey> CryptoDoc::keys()
 	return d->keys;
 }
 
+QList<QString> CryptoDoc::files()
+{
+	QList<QString> fileList;
+
+	for(CryptoDocPrivate::File f: d->files)
+	{
+		fileList << f.name;
+	}
+
+	return fileList;
+}
+
 bool CryptoDoc::open( const QString &file )
 {
 	clear(file);

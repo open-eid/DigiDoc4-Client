@@ -93,6 +93,7 @@ public:
 	bool isNull() const;
 	bool isSigned() const;
 	QList<CKey> keys();
+	QList<QString> files();
 	bool open( const QString &file );
 	void removeKey( int id );
 	bool saveDDoc( const QString &filename );

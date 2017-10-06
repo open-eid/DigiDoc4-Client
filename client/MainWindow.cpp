@@ -279,7 +279,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		else
 		{
 			ui->signContainerPage->transition( ContainerState::SignedContainer );
-			if( !files.isEmpty() ) ui->signContainerPage->setContainer( files[0] );
+			if( !files.isEmpty() ) ui->signContainerPage->setContainer( page, files[0] );
 		}
 	}
 	else if( page == CryptoDetails)
@@ -291,21 +291,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		else
 		{
 			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
-			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( files[0] );
-			qDebug() << "Files " << files.count();
-
-			cryptoDoc.reset(new CryptoDoc(this));
-			cryptoDoc->open( files[0] );
-
-			qDebug() << "Documents " << cryptoDoc->documents()->rowCount();
-			qDebug() << "Keys " << cryptoDoc->keys().count();
-
-			for( CKey key : cryptoDoc->keys() )
-			{
-				qDebug() << "name " << key.name;
-				qDebug() << "id " << key.id;
-				qDebug() << "recipient " << key.recipient;
-			}
+			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( page, files[0] );
 		}
 	}
 }
