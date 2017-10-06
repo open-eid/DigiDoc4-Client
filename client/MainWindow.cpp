@@ -115,9 +115,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	ui->accordion->init();
 
-	// TODO Remove temporary demonstration:
 	hideWarningArea();
-	showWarning("Üks allkiri on kehtetu!", "<a href=\"#resolve-problem\" style=\"color: rgb(53, 55, 57)\">Vajuta probleemi lahendamiseks</a>");
 
 	connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );

@@ -19,33 +19,24 @@
 
 #pragma once
 
-#include "QSmartCard.h"
+#include <functional>
 
-#include "Styles.h"
-#include "widgets/StyledWidget.h"
+#include <QEvent>
+#include <QIcon>
+#include <QObject>
 
-namespace Ui {
-class InfoStack;
-}
-
-class InfoStack : public StyledWidget, public PictureInterface
+// Qt work-around to enable changing icon when hovering over the button
+class HoverFilter : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit InfoStack( QWidget *parent = nullptr );
-	~InfoStack();
+	explicit HoverFilter( const QObject *observed, std::function<void(int)> callback, QObject *parent = nullptr );
 
-	void clearData();
-	void clearPicture();
-	void update( const QSmartCardData &t );
-	void showPicture( const QPixmap &pixmap ) override;
-
-signals:
-	void photoClicked( const QPixmap *pixmap );
+protected:
+	virtual bool eventFilter( QObject *watched, QEvent *event ) override;
 
 private:
-	void focusEvent(int eventType);
-
-	Ui::InfoStack *ui;
+	const QObject *observed;
+	std::function<void(int)> callback;
 };

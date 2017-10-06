@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="17px" height="12px" viewBox="0 0 17 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
-    <title>icon_IDkaart red</title>
+    <title>icon_IDkaart_red</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Buttons&amp;Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="eID" transform="translate(-731.000000, -410.000000)">
-            <g id="icon_IDkaart_red" transform="translate(731.000000, 410.000000)">
-                <rect id="Rectangle-4" stroke="#981E32" stroke-width="1" x="0.5" y="0.5" width="16" height="11" rx="2"></rect>
-                <rect id="Rectangle-6" fill="#981E32" fill-rule="evenodd" x="9" y="3" width="5" height="1"></rect>
-                <rect id="Rectangle-6-Copy" fill="#981E32" fill-rule="evenodd" x="9" y="5" width="5" height="1"></rect>
-                <circle id="Oval" stroke="#981E32" stroke-width="1" cx="5" cy="4" r="1.5"></circle>
-                <path d="M2.5,7.63962039 L7.5,9.30628706 L7.5,7.5 C7.5,6.94771525 7.05228475,6.5 6.5,6.5 L3.5,6.5 C2.94771525,6.5 2.5,6.94771525 2.5,7.5 L2.5,7.63962039 Z" id="Rectangle-5" stroke="#981E32" stroke-width="1"></path>
-            </g>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_IDkaart_red">
+            <rect id="Rectangle-4" stroke="#981E32" x="0.5" y="0.5" width="16" height="11" rx="2"></rect>
+            <rect id="Rectangle-6" fill="#981E32" x="9" y="3" width="5" height="1"></rect>
+            <rect id="Rectangle-6-Copy" fill="#981E32" x="9" y="5" width="5" height="1"></rect>
+            <circle id="Oval" stroke="#981E32" cx="5" cy="4" r="1.5"></circle>
+            <path d="M8,10 L8,7.5 C8,6.67157288 7.32842712,6 6.5,6 L3.5,6 C2.67157288,6 2,6.67157288 2,7.5 L2,8 L3,8 L3,7.5 C3,7.22385763 3.22385763,7 3.5,7 L6.5,7 C6.77614237,7 7,7.22385763 7,7.5 L7,10 L8,10 Z" id="Rectangle-5" fill="#981E32" fill-rule="nonzero"></path>
         </g>
     </g>
 </svg>

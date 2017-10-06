@@ -17,35 +17,21 @@
  *
  */
 
-#pragma once
+#include "HoverFilter.h"
 
-#include "QSmartCard.h"
+HoverFilter::HoverFilter( const QObject *observed, std::function<void(int)> callback, QObject *parent )
+: QObject(parent)
+, observed(observed)
+, callback(callback)
+{}
 
-#include "Styles.h"
-#include "widgets/StyledWidget.h"
-
-namespace Ui {
-class InfoStack;
-}
-
-class InfoStack : public StyledWidget, public PictureInterface
+bool HoverFilter::eventFilter(QObject *watched, QEvent *event)
 {
-	Q_OBJECT
+	if (watched == observed && (event->type() == QEvent::Enter || event->type() == QEvent::Leave))
+	{
+		callback(event->type());
+		return true;
+	}
 
-public:
-	explicit InfoStack( QWidget *parent = nullptr );
-	~InfoStack();
-
-	void clearData();
-	void clearPicture();
-	void update( const QSmartCardData &t );
-	void showPicture( const QPixmap &pixmap ) override;
-
-signals:
-	void photoClicked( const QPixmap *pixmap );
-
-private:
-	void focusEvent(int eventType);
-
-	Ui::InfoStack *ui;
-};
+	return false;
+}

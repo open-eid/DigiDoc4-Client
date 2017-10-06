@@ -340,11 +340,13 @@ border-width: 1px 0px 0px 0px;
         <pointsize>12</pointsize>
        </font>
       </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 	border: 1px solid #006EB5;
 	border-radius: 2px;
-	background-color: rgba(255, 255, 255, 0.3);
      color: #006EB5;
 }
 QPushButton:pressed {
