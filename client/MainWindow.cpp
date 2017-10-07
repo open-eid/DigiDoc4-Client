@@ -21,6 +21,7 @@
 #include "ui_MainWindow.h"
 #include "Application.h"
 #include "DigiDoc.h"
+#include "FileDialog.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
@@ -32,9 +33,9 @@
 #include "dialogs/FirstRun.h"
 #include "util/FileUtil.h"
 
+#include <common/DateTime.h>
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
-#include <common/DateTime.h>
 
 #include <QDebug>
 #include <QFileDialog>
@@ -55,7 +56,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->version->setText( "Ver. " + qApp->applicationVersion() );
 
-	coatOfArms.reset( new QSvgWidget( ui->logo ) );
+	coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
 	coatOfArms->resize( 80, 32 );
 	coatOfArms->move( 15, 17 );
@@ -67,7 +68,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
 
-	selector.reset( new DropdownButton( ":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector ) );
+	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector);
 	selector->hide();
 	selector->resize( 12, 6 );
 	selector->move( 339, 32 );
@@ -112,14 +113,14 @@ MainWindow::MainWindow( QWidget *parent ) :
 	// Refresh card info in card pop-up menu
 	connect( smartcard, &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
 	// Show card pop-up menu
-	connect( selector.get(), &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
+	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 	smartcard->start();
 
 	ui->accordion->init();
 
 	hideWarningArea();
 
-	connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
+	connect( ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openSignatureContainer );
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
@@ -146,7 +147,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::pageSelected( PageIcon *const page )
 {
-	selectPageIcon( page );
 	navigateToPage( page->getType() );
 }
 
@@ -193,6 +193,17 @@ void MainWindow::clearOverlay()
 {
 	overlay->close();
 	overlay.reset( nullptr );
+}
+
+ContainerState MainWindow::currentState()
+{
+	if(container)
+	{
+		return container->state();
+	}
+
+	auto current = ui->startScreen->currentIndex();
+	return (current == CryptoIntro || current == CryptoDetails) ? ContainerState::UnencryptedContainer : ContainerState::UnsignedContainer;
 }
 
 void MainWindow::showOverlay( QWidget *parent )
@@ -268,8 +279,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
 {
-	ui->startScreen->setCurrentIndex(page);
-	
+	bool navigate = true;	
 	if( page == SignDetails)
 	{
 		if( create )
@@ -278,8 +288,20 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		}
 		else
 		{
-			ui->signContainerPage->transition( ContainerState::SignedContainer );
-			if( !files.isEmpty() ) ui->signContainerPage->setContainer( page, files[0] );
+			if(!files.isEmpty())
+			{
+				auto signedContainer = new DigiDoc(this);
+				if(signedContainer->open(files[0]))
+				{
+					delete container;
+					container = signedContainer;
+					ui->signContainerPage->transition(ContainerState::SignedContainer, signedContainer);
+				}
+				else
+				{
+					navigate = false;
+				}
+			}
 		}
 	}
 	else if( page == CryptoDetails)
@@ -291,8 +313,14 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		else
 		{
 			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
-			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( page, files[0] );
+			if( !files.isEmpty() ) ui->cryptoContainerPage->setHeader(files[0]);
 		}
+	}
+
+	if(navigate)
+	{
+		selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
+		ui->startScreen->setCurrentIndex(page);
 	}
 }
 
@@ -346,7 +374,7 @@ void MainWindow::onCryptoAction( int action )
 	}
 }
 
-void MainWindow::openFiles( const QStringList files )
+void MainWindow::openFiles(const QStringList files)
 {
 /*
 	1. If containers are not open:
@@ -376,12 +404,12 @@ void MainWindow::openFiles( const QStringList files )
 		if( files.size() == 1 )
 		{
 			auto fileType = FileUtil::detect( files[0] );
-			if( fileType == CryptoContainer )
+			if( fileType == CryptoDocument )
 			{
 				page = CryptoDetails;
 				create = false;
 			}
-			else if( fileType == SignatureContainer )
+			else if( fileType == SignatureDocument )
 			{
 				page = SignDetails;
 				create = false;
@@ -396,10 +424,32 @@ void MainWindow::openFiles( const QStringList files )
 	{
 		// TODO (2.)
 		page = current == CryptoIntro ? CryptoIntro : SignIntro;
+		ContainerState state = currentState();
+		switch(state)
+		{
+		case ContainerState::UnsignedContainer:
+		case ContainerState::UnsignedSavedContainer:
+			break;
+		case ContainerState::UnencryptedContainer:
+			break;
+		case ContainerState::SignedContainer:
+			page = SignDetails;
+			create = false;
+			break;
+		case ContainerState::EncryptedContainer:
+		case ContainerState::DecryptedContainer:
+			break;
+		}
 	}
 
-	selectPageIcon( page == CryptoDetails ? ui->crypto : ui->signature );
 	navigateToPage( page, files, create );
+}
+
+void MainWindow::openSignatureContainer()
+{
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"));
+	if(!files.isEmpty())
+	openFiles(files);
 }
 
 void MainWindow::resizeEvent( QResizeEvent *event )

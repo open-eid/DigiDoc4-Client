@@ -35,6 +35,10 @@ namespace Ui {
 class ContainerPage;
 }
 
+class DigiDoc;
+class QFont;
+class QFontMetrics;
+
 class ContainerPage : public QWidget
 {
 	Q_OBJECT
@@ -43,8 +47,9 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage();
 
-	void transition( ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList() );
-	void setContainer( ria::qdigidoc4::Pages page, const QString &file );
+	void setHeader(const QString &file);
+	void transition(ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList());
+	void transition(ria::qdigidoc4::ContainerState state, DigiDoc* container);
 
 signals:
 	void action( int code );
@@ -53,12 +58,14 @@ protected:
 	void resizeEvent( QResizeEvent *event ) override;
 
 private:
-	void init();
-	void initContainer( const QString &file, const QString &suffix );
+	void clear();
+	void elideFileName(bool force = false);
 	void hideButtons( std::vector<QWidget*> buttons );
 	void hideMainAction();
 	void hideOtherAction();
 	void hideRightPane();
+	void init();
+	void initContainer( const QString &file, const QString &suffix );
 	void mobileDialog();
 	void showButtons( std::vector<QWidget*> buttons );
 	void showDropdown();
@@ -69,6 +76,9 @@ private:
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
 	std::unique_ptr<MainAction> otherAction;
-
-	std::unique_ptr<CryptoDoc> cryptoDoc;
+	int containerFileWidth;
+	QFont containerFont;
+	bool elided;
+	QString fileName;
+	QFontMetrics fm;
 };

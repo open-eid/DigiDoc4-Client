@@ -31,15 +31,15 @@ FileType FileUtil::detect( const QString &filename )
 	QStringList exts = QStringList() << "bdoc" << "ddoc" << "asice" << "sce" << "asics" << "scs" << "edoc" << "adoc";
 	if( exts.contains( f.suffix(), Qt::CaseInsensitive ) )
 	{
-		return SignatureContainer;
+		return SignatureDocument;
 	}
 	if( !QString::compare(f.suffix(), "cdoc", Qt::CaseInsensitive) )
 	{
-		return CryptoContainer;
+		return CryptoDocument;
 	}
 	if( !QString::compare(f.suffix(), "pdf", Qt::CaseInsensitive) )
 	{
-		return SignatureContainer;
+		return SignatureDocument;
 	}
 
 	return Other;

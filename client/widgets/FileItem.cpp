@@ -35,23 +35,32 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
 	ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+
 	stateChange(state);
+
+	connect(ui->download, &QToolButton::clicked, [this](){ emit download(this);});
 }
 
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
 : FileItem( state, parent )
 {
 	const QFileInfo f( file );
-	// TODO check if file
-	// if( !f.isFile() ) return Other;
-
 	ui->fileName->setText( f.fileName() );
-	filePath = f.dir().path();
 }
 
 FileItem::~FileItem()
 {
 	delete ui;
+}
+
+QString FileItem::getFile()
+{
+	return ui->fileName->text();
+}
+
+void FileItem::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	emit open(this);
 }
 
 void FileItem::stateChange(ContainerState state)

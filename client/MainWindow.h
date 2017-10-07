@@ -41,6 +41,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class DigiDoc;
+
 class MainWindow : public QWidget
 {
 	Q_OBJECT
@@ -112,6 +114,7 @@ private:
 	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
+	ria::qdigidoc4::ContainerState currentState();
 	void hideCardPopup();
 	void hideWarningArea();	
 	void loadPicture();
@@ -119,6 +122,7 @@ private:
 	void onCryptoAction( int code );
 	void onSignAction( int code );
 	void openFiles( const QStringList files );
+	void openSignatureContainer();
 	void selectPageIcon( PageIcon* page );
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
@@ -130,12 +134,14 @@ private:
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 
+	DigiDoc* container = nullptr;
+
 	Ui::MainWindow *ui;
 
-	std::unique_ptr<QSvgWidget> coatOfArms;
+	QSvgWidget *coatOfArms = nullptr;
 	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
-	std::unique_ptr<DropdownButton> selector;
+	DropdownButton *selector = nullptr;
 	QSmartCard *smartcard = nullptr;
 	QButtonGroup *buttonGroup = nullptr;
 };

@@ -36,6 +36,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	Application.cpp
 	DigiDoc.cpp
+	DocumentModel.cpp
 	FileDialog.cpp
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
@@ -66,6 +67,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/ContainerPage.cpp
 	widgets/DropdownButton.cpp
 	widgets/FileItem.cpp
+	widgets/FileList.cpp
 	widgets/ItemList.cpp
 	widgets/InfoStack.cpp
 	widgets/LabelButton.cpp

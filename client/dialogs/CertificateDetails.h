@@ -25,12 +25,14 @@ namespace Ui {
 class CertificateDetails;
 }
 
+class QSslCertificate;
+
 class CertificateDetails : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(QWidget *parent = 0);
+	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0);
 	~CertificateDetails();
 
 	int exec() override;

@@ -34,10 +34,11 @@
   </property>
   <property name="styleSheet">
    <string notr="true">border: solid rgba(217, 217, 216, 0.45);
-border-width: 0px 0px 2px 0px;
+border-width: 0px 0px 1px 0px;
 background-color: #ffffff;
 color: #000000;
-text-decoration: none solid rgb(0, 0, 0);</string>
+text-decoration: none solid rgb(0, 0, 0);
+</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0">
    <property name="spacing">
@@ -303,6 +304,9 @@ text-decoration: none solid rgb(0, 0, 0);</string>
        <pointsize>14</pointsize>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: none; color: #363739;</string>
      </property>
@@ -372,6 +376,9 @@ QToolButton:disabled {
        <width>32</width>
        <height>25</height>
       </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolButton {

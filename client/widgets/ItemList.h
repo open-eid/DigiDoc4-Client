@@ -28,6 +28,8 @@ namespace Ui {
 class ItemList;
 }
 
+class QLabel;
+
 class ItemList : public QWidget
 {
 	Q_OBJECT
@@ -46,6 +48,8 @@ public:
 
 	void init(ItemType itemType, const QString &header, bool hideFind = true);
 	void add(int code);
+	void addHeader(const QString &label);
+	void addHeaderWidget(StyledWidget *widget);
 	void addWidget(StyledWidget *widget);
 	void addFile( const QString& file );
 	void clear();
@@ -54,12 +58,18 @@ public:
 signals:
 	void addItem(int code);
 
+protected:
+	void showDownload();
+
+	std::vector<StyledWidget*> items;
+	ria::qdigidoc4::ContainerState state;
+
 private:
 	QString addLabel() const;
 	QString anchor() const;
 
 	Ui::ItemList* ui;
-	ria::qdigidoc4::ContainerState state;
+	QLabel *header = nullptr;
+	int headerItems;
 	ItemType itemType;
-	std::vector<StyledWidget*> items;
 };

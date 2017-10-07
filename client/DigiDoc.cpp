@@ -32,181 +32,18 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDateTime>
-#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
-#include <QtCore/QMimeData>
-#include <QtCore/QProcessEnvironment>
 #include <QtCore/QStringList>
-#include <QtCore/QUrl>
-#include <QtGui/QDesktopServices>
-#include <QtGui/QPixmap>
+#include <QDesktopServices>
 #include <QtWidgets/QMessageBox>
 
-#include <stdexcept>
-
 using namespace digidoc;
+using namespace ria::qdigidoc4;
 
 static std::string to( const QString &str ) { return std::string( str.toUtf8().constData() ); }
 static QString from( const std::string &str ) { return QString::fromUtf8( str.c_str() ).normalized( QString::NormalizationForm_C ); }
 static QByteArray fromVector( const std::vector<unsigned char> &d )
-{ return d.empty() ? QByteArray() : QByteArray( (const char *)&d[0], int(d.size()) ); }
-
-
-
-DocumentModel::DocumentModel( DigiDoc *doc )
-:	QAbstractTableModel( doc )
-,	d( doc )
-{
-}
-
-int DocumentModel::columnCount( const QModelIndex &parent ) const
-{ return parent.isValid() ? 0 : NColumns; }
-
-QString DocumentModel::save( const QModelIndex &index, const QString &path ) const
-{
-	if( !hasIndex( index.row(), index.column() ) )
-		return QString();
-	QFile::remove( path );
-	d->b->dataFiles().at( index.row() )->saveAs( path.toUtf8().constData() );
-	return path;
-}
-
-QVariant DocumentModel::data( const QModelIndex &index, int role ) const
-{
-	if( !hasIndex( index.row(), index.column() ) )
-		return QVariant();
-
-	const DataFile *file = d->b->dataFiles().at( index.row() );
-	switch( role )
-	{
-	case Qt::ForegroundRole:
-		switch( index.column() )
-		{
-		case Size: return QColor(Qt::gray);
-		default: return QVariant();
-		}
-	case Qt::DisplayRole:
-		switch( index.column() )
-		{
-		case Id: return QString::fromUtf8( file->id().c_str() );
-		case Name: return from( file->fileName() );
-		case Mime: return from( file->mediaType() );
-		case Size: return FileDialog::fileSize( file->fileSize() );
-		default: return QVariant();
-		}
-	case Qt::TextAlignmentRole:
-		switch( index.column() )
-		{
-		case Name:
-		case Mime: return int(Qt::AlignLeft|Qt::AlignVCenter);
-		case Size: return int(Qt::AlignRight|Qt::AlignVCenter);
-		default: return Qt::AlignCenter;
-		}
-	case Qt::ToolTipRole:
-		switch( index.column() )
-		{
-		case Save: return tr("Save");
-		case Remove: return tr("Remove");
-		default: return tr("Filename: %1\nFilesize: %2\nMedia type: %3")
-			.arg( from( file->fileName() ) )
-			.arg( FileDialog::fileSize( file->fileSize() ) )
-			.arg( from( file->mediaType() ) );
-		}
-	case Qt::DecorationRole:
-		switch( index.column() )
-		{
-		case Save: return QPixmap(":/images/ico_save.png");
-		case Remove: return QPixmap(":/images/ico_delete.png");
-		default: return QVariant();
-		}
-	case Qt::SizeHintRole:
-		switch( index.column() )
-		{
-		case Save:
-		case Remove: return QSize( 20, 20 );
-		default: return QVariant();
-		}
-	case Qt::UserRole:
-		return FileDialog::safeName(from(file->fileName()));
-	default: return QVariant();
-	}
-}
-
-Qt::ItemFlags DocumentModel::flags( const QModelIndex & ) const
-{ return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled; }
-
-QMimeData* DocumentModel::mimeData( const QModelIndexList &indexes ) const
-{
-	QList<QUrl> list;
-	for(const QModelIndex &index: indexes)
-	{
-		if( index.column() != 0 )
-			continue;
-		QString path = save( index, FileDialog::tempPath(index.data(Qt::UserRole).toString()) );
-		if( !path.isEmpty() )
-			list << QUrl::fromLocalFile( QFileInfo( path ).absoluteFilePath() );
-	}
-	QMimeData *data = new QMimeData();
-	data->setUrls( list );
-	return data;
-}
-
-QStringList DocumentModel::mimeTypes() const
-{ return QStringList() << "text/uri-list"; }
-
-void DocumentModel::open( const QModelIndex &index )
-{
-	QFileInfo f( save( index, FileDialog::tempPath(index.data(Qt::UserRole).toString()) ) );
-	if( !f.exists() )
-		return;
-	d->m_tempFiles << f.absoluteFilePath();
-#if defined(Q_OS_WIN)
-	QStringList exts = QProcessEnvironment::systemEnvironment().value( "PATHEXT" ).split( ';' );
-	exts << ".PIF" << ".SCR";
-	if( exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) &&
-		QMessageBox::warning( qApp->activeWindow(), tr("DigiDoc4 client"),
-			tr("This is an executable file! "
-				"Executable files may contain viruses or other malicious code that could harm your computer. "
-				"Are you sure you want to launch this file?"),
-			QMessageBox::Yes|QMessageBox::No, QMessageBox::No ) == QMessageBox::No )
-		return;
-#else
-	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );
-#endif
-	QDesktopServices::openUrl( QUrl::fromLocalFile( f.absoluteFilePath() ) );
-}
-
-bool DocumentModel::removeRows( int row, int count, const QModelIndex &parent )
-{
-	if( !d->b || parent.isValid() )
-		return false;
-
-	try
-	{
-		beginRemoveRows( parent, row, row + count );
-		for( int i = row + count - 1; i >= row; --i )
-			d->b->removeDataFile( i );
-		endRemoveRows();
-		return true;
-	}
-	catch( const Exception &e ) { d->setLastError( tr("Failed remove document from container"), e ); }
-	return false;
-}
-
-void DocumentModel::reset()
-{
-	beginResetModel();
-	endResetModel();
-}
-
-int DocumentModel::rowCount( const QModelIndex &parent ) const
-{ return !d->b || parent.isValid() ? 0 : int(d->b->dataFiles().size()); }
-
-Qt::DropActions DocumentModel::supportedDragActions() const
-{
-	return  Qt::CopyAction;
-}
-
+{ return d.empty() ? QByteArray() : QByteArray( (const char *)d.data(), int(d.size()) ); }
 
 
 DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent)
@@ -433,10 +270,86 @@ int DigiDocSignature::warning() const
 
 
 
-DigiDoc::DigiDoc( QObject *parent )
-:	QObject( parent )
-,	m_documentModel( new DocumentModel( this ) )
-{}
+SDocumentModel::SDocumentModel(DigiDoc *container)
+: DocumentModel(container)
+, doc(container)
+{
+	
+}
+
+QString SDocumentModel::data(int row) const
+{
+	if(row >= rowCount())
+		return QString();
+
+	return from(doc->b->dataFiles().at(row)->fileName());
+}
+
+void SDocumentModel::open(int row)
+{
+	if(row >= rowCount())
+		return;
+
+	QFileInfo f(save(row, FileDialog::tempPath(
+		from(doc->b->dataFiles().at(row)->fileName())
+	)));
+	if( !f.exists() )
+		return;
+	doc->m_tempFiles << f.absoluteFilePath();
+#if defined(Q_OS_WIN)
+	QStringList exts = QProcessEnvironment::systemEnvironment().value( "PATHEXT" ).split( ';' );
+	exts << ".PIF" << ".SCR";
+	if( exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) &&
+		QMessageBox::warning( qApp->activeWindow(), tr("DigiDoc4 client"),
+			tr("This is an executable file! "
+				"Executable files may contain viruses or other malicious code that could harm your computer. "
+				"Are you sure you want to launch this file?"),
+			QMessageBox::Yes|QMessageBox::No, QMessageBox::No ) == QMessageBox::No )
+		return;
+#else
+	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );
+#endif
+	QDesktopServices::openUrl( QUrl::fromLocalFile( f.absoluteFilePath() ) );
+}
+
+bool SDocumentModel::removeRows(int row, int count)
+{
+	if(!doc->b)
+		return false;
+
+	try
+	{
+		for(int i = row + count - 1; i >= row; --i)
+			doc->b->removeDataFile(i);
+		return true;
+	}
+	catch( const Exception &e ) { doc->setLastError( tr("Failed remove document from container"), e ); }
+	return false;
+}
+
+int SDocumentModel::rowCount() const
+{
+	return doc->b->dataFiles().size();
+}
+
+QString SDocumentModel::save(int row, const QString &path) const
+{
+	if(row >= rowCount())
+		return QString();
+
+	QFile::remove( path );
+	doc->b->dataFiles().at( row )->saveAs( path.toUtf8().constData() );
+	return path;
+}
+
+
+
+DigiDoc::DigiDoc(QObject *parent)
+: QObject(parent)
+, containerState(ContainerState::UnencryptedContainer)
+{
+	m_documentModel.reset(new SDocumentModel(this));
+}
 
 DigiDoc::~DigiDoc() { clear(); }
 
@@ -444,7 +357,11 @@ void DigiDoc::addFile( const QString &file )
 {
 	if( !checkDoc( b->signatures().size() > 0, tr("Cannot add files to signed container") ) )
 		return;
-	try { b->addDataFile( to(file), "application/octet-stream" ); m_documentModel->reset(); }
+	try {
+		b->addDataFile( to(file), "application/octet-stream" );
+		m_documentModel->added(file);
+		modified = true;
+	}
 	catch( const Exception &e ) { setLastError( tr("Failed add file to container"), e ); }
 }
 
@@ -453,14 +370,14 @@ bool DigiDoc::addSignature( const QByteArray &signature )
 	if( !checkDoc( b->dataFiles().size() == 0, tr("Cannot add signature to empty container") ) )
 		return false;
 
-	bool result = false;
 	try
 	{
 		b->addAdESSignature( std::vector<unsigned char>( signature.constData(), signature.constData() + signature.size() ) );
-		result = true;
+		modified = true;
+		return true;
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed to sign container"), e ); }
-	return result;
+	return false;
 }
 
 bool DigiDoc::checkDoc( bool status, const QString &msg ) const
@@ -474,36 +391,38 @@ bool DigiDoc::checkDoc( bool status, const QString &msg ) const
 
 void DigiDoc::clear()
 {
-	delete b;
-	b = nullptr;
-	delete parentContainer;
-	parentContainer = nullptr;
+	b.reset();
+	parentContainer.reset();
 	m_fileName.clear();
-	m_documentModel->reset();
 	for(const QString &file: m_tempFiles)
 		QFile::remove(file);
 	m_tempFiles.clear();
+	modified = false;
 }
 
 void DigiDoc::create( const QString &file )
 {
 	clear();
-	b = Container::create( to( file ) );
+	b.reset(Container::create(to(file)));
 	m_fileName = file;
-	m_documentModel->reset();
+	modified = false;
 }
 
-DocumentModel* DigiDoc::documentModel() const { return m_documentModel; }
+DocumentModel* DigiDoc::documentModel() const
+{
+	return m_documentModel.get();
+}
 
 QString DigiDoc::fileName() const { return m_fileName; }
 bool DigiDoc::isService() const
 {
 	return b->mediaType() == "application/pdf";
 }
+bool DigiDoc::isModified() const { return modified; }
 bool DigiDoc::isNull() const { return b == nullptr; }
 bool DigiDoc::isReadOnlyTS() const
 {
-    return b->mediaType() == "application/vnd.etsi.asic-s+zip";
+	return b->mediaType() == "application/vnd.etsi.asic-s+zip";
 }
 bool DigiDoc::isSupported() const
 {
@@ -529,7 +448,7 @@ bool DigiDoc::open( const QString &file )
 	clear();
 	try
 	{
-		b = Container::open( to(file) );
+		b.reset(Container::open(to(file)));
 		QWidget *w = qobject_cast<QWidget*>(parent());
 		if(isService())
 		{
@@ -550,15 +469,15 @@ bool DigiDoc::open( const QString &file )
 				if(f.exists(tmppath))
 				{
 					m_tempFiles << tmppath;
-					parentContainer = b;
-					b = nullptr;
-					b = Container::open(to(tmppath));
+					parentContainer.reset(b.release());
+					b.reset(Container::open(to(tmppath)));
 				}
 			}
 		}
 		m_fileName = file;
-		m_documentModel->reset();
 		qApp->addRecent( file );
+		modified = false;
+		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 		return true;
 	}
 	catch( const Exception &e )
@@ -592,20 +511,23 @@ void DigiDoc::removeSignature( unsigned int num )
 {
 	if( !checkDoc( num >= b->signatures().size(), tr("Missing signature") ) )
 		return;
-	try { b->removeSignature( num ); }
+	try { 
+		b->removeSignature( num );
+		modified = true;
+	}
 	catch( const Exception &e ) { setLastError( tr("Failed remove signature from container"), e ); }
 }
 
 void DigiDoc::save( const QString &filename )
 {
-	/*if( !checkDoc() );
-		return; */
 	try
 	{
 		if( !filename.isEmpty() )
 			m_fileName = filename;
 		b->save( to(m_fileName) );
 		qApp->addRecent( filename );
+		modified = false;
+		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed to save container"), e ); }
 }
@@ -656,6 +578,7 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 		qApp->signer()->setProfile( signatureFormat() == "LT" ? "time-stamp" : "time-mark" );
 		qApp->waitForTSL( fileName() );
 		b->sign( qApp->signer() );
+		modified = true;
 		return true;
 	}
 	catch( const Exception &e )
@@ -710,6 +633,11 @@ QList<DigiDocSignature> DigiDoc::signatures() const
 	for(const Signature *signature: b->signatures())
 		list << DigiDocSignature(signature, this);
 	return list;
+}
+
+ContainerState DigiDoc::state()
+{
+	return containerState;
 }
 
 QList<DigiDocSignature> DigiDoc::timestamps() const

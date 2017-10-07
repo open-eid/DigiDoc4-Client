@@ -59,8 +59,8 @@ enum Actions {
 };
 
 enum FileType {
-    SignatureContainer,
-    CryptoContainer,
+    SignatureDocument,
+    CryptoDocument,
     Other
 };
 

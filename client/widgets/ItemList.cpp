@@ -19,21 +19,28 @@
 
 #include "ItemList.h"
 #include "ui_ItemList.h"
+
 #include "Styles.h"
+#include "effects/ButtonHoverFilter.h"
 #include "widgets/AddressItem.h"
 #include "widgets/FileItem.h"
 #include "widgets/SignatureItem.h"
 
 #include <vector>
+#include <QLabel>
 #include <QLayoutItem>
 
 using namespace ria::qdigidoc4;
 
-ItemList::ItemList(QWidget *parent) :
-	QWidget(parent),
-	ui(new Ui::ItemList)
+ItemList::ItemList(QWidget *parent)
+: QWidget(parent)
+, ui(new Ui::ItemList)
+, headerItems(1)
+, state(UnsignedContainer)
 {
 	ui->setupUi(this);
+	ui->findGroup->hide();
+	ui->download->hide();	
 
 	connect(ui->add, &LabelButton::clicked, this, &ItemList::add);
 }
@@ -50,35 +57,37 @@ void ItemList::add(int code)
 	{
 		item = new FileItem(state);
 	} 
-	else if (code == SignatureAdd)
-	{
-		item = new SignatureItem(state);
-	}
 	else
 	{
 		item = new AddressItem(state);
 	}
-	ui->itemLayout->insertWidget(items.size(), item);
-	item->show();
-	items.push_back(item);
+	addWidget(item);
 
 	if(code != SignatureAdd)  // !!! To prevent infinite cycle
 		emit addItem( code );
 }
 
-void ItemList::addWidget(StyledWidget *widget)
+void ItemList::addHeader(const QString &label)
 {
-	ui->itemLayout->insertWidget(items.size(), widget);
-	widget->show();
-	items.push_back(widget);
+	header = new QLabel(label, this);
+	header->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	header->resize(415, 64);
+	header->setFixedHeight(64);
+	header->setFont( Styles::font(Styles::Regular, 20));
+	header->setStyleSheet("border: solid rgba(217, 217, 216, 0.45);"
+			"border-width: 0px 0px 1px 0px;");
+	ui->itemLayout->insertWidget(0, header);
+	headerItems++;
 }
 
-void ItemList::addFile( const QString& file )
+void ItemList::addHeaderWidget(StyledWidget *widget)
 {
-	StyledWidget *item = new FileItem( file, state );
-	ui->itemLayout->insertWidget(items.size(), item);
-	item->show();
-	items.push_back(item);
+	ui->itemLayout->insertWidget(headerItems - 1, widget);
+	widget->show();
+	widget->stateChange(state);
+	items.push_back(widget);
+	headerItems++;
 }
 
 QString ItemList::addLabel() const
@@ -90,6 +99,14 @@ QString ItemList::addLabel() const
 	case ToAddAdresses: return "LISA KÕIK";
 	default: return "";
 	}
+}
+
+void ItemList::addWidget(StyledWidget *widget)
+{
+	ui->itemLayout->insertWidget(items.size() + headerItems, widget);
+	widget->show();
+	widget->stateChange(state);
+	items.push_back(widget);
 }
 
 QString ItemList::anchor() const
@@ -104,6 +121,16 @@ QString ItemList::anchor() const
 
 void ItemList::clear()
 {
+	ui->download->hide();	
+
+	if(header)
+	{
+		header->close();
+		delete header;
+		header = nullptr;
+		headerItems = ui->findGroup->isHidden() ? 1 : 2;
+	}
+
 	StyledWidget* widget;
 	auto it = items.begin();
 	while (it != items.end()) {
@@ -114,7 +141,7 @@ void ItemList::clear()
 	}
 }
 
-void ItemList::init( ItemType item, const QString &header, bool hideFind )
+void ItemList::init(ItemType item, const QString &header, bool hideFind)
 {
 	itemType = item;
 	ui->listHeader->setText(header);
@@ -123,11 +150,16 @@ void ItemList::init( ItemType item, const QString &header, bool hideFind )
 	if(hideFind)
 	{
 		ui->findGroup->hide();
+		ui->listHeader->setStyleSheet("border: solid rgba(217, 217, 216, 0.45);"
+			"border-width: 0px 0px 1px 0px;");
+		headerItems = 1;
 	}
 	else
 	{
 		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
+		ui->listHeader->setStyleSheet("border: none;");
+		headerItems = 2;
 	}
 
 	if (item == Signature || item == AddedAdresses)
@@ -141,17 +173,19 @@ void ItemList::init( ItemType item, const QString &header, bool hideFind )
 	}
 }
 
+void ItemList::showDownload()
+{
+	if(ui->download->isHidden())
+	{
+		ui->download->show();
+		ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
+	}
+}
+
 void ItemList::stateChange( ContainerState state )
 {
 	this->state = state;
-	if (state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer) )
-	{
-		ui->add->show();
-	}
-	else
-	{
-		ui->add->hide();
-	}
+	ui->add->setVisible(state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer));
 
 	for(auto item: items)
 	{
