@@ -20,6 +20,7 @@
 #include "ContainerPage.h"
 #include "ui_ContainerPage.h"
 #include "Styles.h"
+#include "common/SslCertificate.h"
 #include "dialogs/MobileDialog.h"
 #include "widgets/AddressItem.h"
 #include "widgets/FileItem.h"
@@ -198,9 +199,27 @@ void ContainerPage::setContainer( ria::qdigidoc4::Pages page, const QString &fil
 					key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
 					key.cert.subjectInfo("CN").value(0);
 
-		curr->update( name,
+		QString type;
+		switch (SslCertificate(key.cert).type())
+		{
+		case SslCertificate::DigiIDType:
+			type = "Digi-ID";
+			break;
+		case SslCertificate::EstEidType:
+			type = "ID-kaart";
+			break;
+		case SslCertificate::MobileIDType:
+			type = "Mobiil-ID";
+			break;
+		default:
+			type = "UnknownType";
+			break;
+		}
+
+		curr->update(
+					name,
 					key.cert.subjectInfo("serialNumber").value(0),
-					key.cert.subjectInfo("GN").value(0),
+					type,
 					AddressItem::Remove );
 		ui->rightPane->addWidget( curr );
 	}
