@@ -33,8 +33,10 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QFileInfo>
+#include <QtCore/QProcessEnvironment>
 #include <QtCore/QStringList>
-#include <QDesktopServices>
+#include <QtCore/QUrl>
+#include <QtGui/QDesktopServices>
 #include <QtWidgets/QMessageBox>
 
 using namespace digidoc;
