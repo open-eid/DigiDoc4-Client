@@ -84,13 +84,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>320</width>
+          <width>300</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>320</width>
+          <width>300</width>
           <height>16777215</height>
          </size>
         </property>
@@ -170,21 +170,21 @@ span {
          <widget class="QLabel" name="lblCertDetails">
           <property name="geometry">
            <rect>
-            <x>21</x>
+            <x>11</x>
             <y>20</y>
-            <width>632</width>
+            <width>652</width>
             <height>21</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>632</width>
+            <width>652</width>
             <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>632</width>
+            <width>652</width>
             <height>21</height>
            </size>
           </property>
@@ -198,11 +198,16 @@ span {
          <widget class="QTableWidget" name="tblDetails">
           <property name="geometry">
            <rect>
-            <x>21</x>
+            <x>11</x>
             <y>53</y>
-            <width>641</width>
-            <height>281</height>
+            <width>661</width>
+            <height>320</height>
            </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>13</pointsize>
+           </font>
           </property>
           <property name="styleSheet">
            <string notr="true">border: none;</string>
@@ -223,7 +228,7 @@ span {
            <bool>false</bool>
           </property>
           <property name="rowCount">
-           <number>8</number>
+           <number>0</number>
           </property>
           <property name="columnCount">
            <number>2</number>
@@ -232,7 +237,10 @@ span {
            <bool>true</bool>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>120</number>
+           <number>140</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>19</number>
           </attribute>
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>true</bool>
@@ -240,31 +248,29 @@ span {
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>23</number>
+          </attribute>
           <attribute name="verticalHeaderMinimumSectionSize">
            <number>14</number>
           </attribute>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
           <column/>
           <column/>
          </widget>
-         <widget class="QTextEdit" name="textEdit">
+         <widget class="QTextEdit" name="detailedValue">
           <property name="geometry">
            <rect>
-            <x>21</x>
-            <y>350</y>
-            <width>641</width>
-            <height>171</height>
+            <x>11</x>
+            <y>373</y>
+            <width>661</width>
+            <height>153</height>
            </rect>
           </property>
           <property name="styleSheet">
            <string notr="true">border: none;</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </widget>

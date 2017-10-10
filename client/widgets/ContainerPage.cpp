@@ -67,6 +67,15 @@ void ContainerPage::clear()
 	ui->rightPane->clear();
 }
 
+void ContainerPage::cardSigning(bool enable)
+{
+	if(cardInReader != enable)
+	{
+		cardInReader = enable;
+		showSigningButton();
+	}
+}
+
 void ContainerPage::elideFileName(bool force)
 {
 	if(ui->containerFile->width() < containerFileWidth)
@@ -96,9 +105,10 @@ void ContainerPage::init()
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
-	connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
-	connect( ui->leftPane, &ItemList::addItem, this, &ContainerPage::action );
-	connect( ui->rightPane, &ItemList::addItem, this, &ContainerPage::action );
+	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::action);
+	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::action);
+	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::action);
+	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::action);
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
@@ -122,18 +132,22 @@ void ContainerPage::transition( ContainerState state, const QStringList &files )
 	{
 	case UnsignedContainer:
 		ui->changeLocation->show();
-		ui->leftPane->clear();
 		ui->rightPane->clear();
-		if( !files.isEmpty() ) initContainer( files[0], ".bdoc" );
 		hideRightPane();
 		ui->leftPane->init(fileName);
-		showMainAction( SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA" );
+		showSigningButton();
+		ui->cancel->setText("← KATKESTA");
 		showButtons( { ui->cancel, ui->save } );
 		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
 		resize = !ui->changeLocation->isHidden();
-		ui->changeLocation->hide();
+		ui->leftPane->init(fileName);
+		showSigningButton();
+		ui->cancel->setText("← ALGUSESSE");
+		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
+		hideButtons( { ui->save } );
+		showRightPane( ItemList::Signature, "Kontaineri allkirjad puuduvad" );
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -189,9 +203,10 @@ void ContainerPage::transition( ContainerState state, const QStringList &files )
 	}
 }
 
-void ContainerPage::transition(ContainerState state, DigiDoc* container)
+void ContainerPage::transition(DigiDoc* container)
 {
 	clear();
+	ContainerState state = container->state();
 
 	setHeader(container->fileName());
 	DigiDocSignature::SignatureStatus status = DigiDocSignature::Valid;
@@ -401,14 +416,37 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 	{
 		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
-
-		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::Decrypt );
-		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::action );
-		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction );
-		connect( mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown );
 		mainAction->show();
 	}
-	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
+
+	for(auto conn: actionConnections)
+		QObject::disconnect(conn);
+	actionConnections.clear();
+	if(action == SignatureMobile)
+	{
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog));
+	}
+	else
+	{
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::action));
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction));
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown));	
+	}
+
+	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );	
+}
+
+void ContainerPage::showSigningButton()
+{
+	hideOtherAction();
+	if(cardInReader)
+	{
+		showMainAction(SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA");
+	}
+	else
+	{
+		showMainAction(SignatureMobile, "ALLKIRJASTA\nMOBIILI-ID’GA");
+	}
 }
 
 void ContainerPage::resizeEvent( QResizeEvent *event )

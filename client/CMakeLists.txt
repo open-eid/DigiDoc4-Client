@@ -34,6 +34,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${SOURCES}
 	${RESOURCE_FILES}
 	main.cpp
+	AccessCert.cpp
 	Application.cpp
 	DigiDoc.cpp
 	DocumentModel.cpp

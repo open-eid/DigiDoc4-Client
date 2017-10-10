@@ -135,7 +135,7 @@ public:
 	QString newSignatureID() const;
 	bool open( const QString &file );
 	void removeSignature( unsigned int num );
-	void save( const QString &filename = QString() );
+	bool save( const QString &filename = QString() );
 	bool sign(
 		const QString &city,
 		const QString &state,

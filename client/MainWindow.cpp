@@ -19,6 +19,8 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+
+#include "AccessCert.h"
 #include "Application.h"
 #include "DigiDoc.h"
 #include "FileDialog.h"
@@ -100,11 +102,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	separator->move(110, 0);
 	separator->show();
 #endif
-	QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
-	bodyShadow->setBlurRadius(9.0);
-	bodyShadow->setColor(QColor(0, 0, 0, 160));
-	bodyShadow->setOffset(4.0);
-	ui->topBar->setGraphicsEffect(bodyShadow);
+	// Shadow below card selection toolbar
+	// QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
+	// bodyShadow->setBlurRadius(9.0);
+	// bodyShadow->setColor(QColor(0, 0, 0, 160));
+	// bodyShadow->setOffset(4.0);
+	// ui->topBar->setGraphicsEffect(bodyShadow);
 
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
@@ -282,27 +285,29 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	bool navigate = true;	
 	if( page == SignDetails)
 	{
-		if( create )
+		navigate = false;
+		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
+		if(create)
 		{
-			ui->signContainerPage->transition( ContainerState::UnsignedContainer, files );
-		}
-		else
-		{
-			if(!files.isEmpty())
+			QString filename = FileUtil::createFile(files[0], ".bdoc", tr("signature container"));
+			if(!filename.isNull())
 			{
-				auto signedContainer = new DigiDoc(this);
-				if(signedContainer->open(files[0]))
-				{
-					delete container;
-					container = signedContainer;
-					ui->signContainerPage->transition(ContainerState::SignedContainer, signedContainer);
-				}
-				else
-				{
-					navigate = false;
-				}
+				signatureContainer->create(filename);
+				for(auto file: files)
+					signatureContainer->addFile(file);
+				delete container;
+				container = signatureContainer.release();
+				navigate = true;
 			}
 		}
+		else if(signatureContainer->open(files[0]))
+		{
+			delete container;
+			container = signatureContainer.release();
+			navigate = true;
+		}
+		if(navigate)
+			ui->signContainerPage->transition(container);
 	}
 	else if( page == CryptoDetails)
 	{
@@ -326,20 +331,42 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 void MainWindow::onSignAction( int action )
 {
-	if( action == SignatureAdd || action == SignatureMobile )
+	if(action == SignatureAdd)
 	{
-		ui->signContainerPage->transition(ContainerState::SignedContainer);
+		AccessCert access(this);
+		if( !access.validate() )
+			return;
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
-		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+		// TODO read place&roles from settings
+		if(container->sign("", "", "", "", "", ""))
+		{
+			access.increment();
+			save();
+			ui->signContainerPage->transition(container);
+
+			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
+			notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+		}
 	}
-	else if( action == ContainerCancel )
+	else if(action == SignatureMobile)
+	{
+		AccessCert access( this );
+	}
+	else if(action == ContainerCancel)
 	{
 		navigateToPage(Pages::SignIntro);
 	}
-	else if( action == FileRemove )
+	else if(action == FileRemove)
 	{
 
+	}
+	else if(action == ContainerSave)
+	{
+		if(container)
+		{
+			save();
+			ui->signContainerPage->transition(ContainerState::UnsignedSavedContainer);
+		}
 	}
 }
 
@@ -449,12 +476,57 @@ void MainWindow::openSignatureContainer()
 {
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"));
 	if(!files.isEmpty())
-	openFiles(files);
+		openFiles(files);
 }
 
 void MainWindow::resizeEvent( QResizeEvent *event )
 {
 	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
+}
+
+bool MainWindow::save()
+{
+	if( !FileDialog::fileIsWritable(container->fileName()) &&
+		QMessageBox::Yes == QMessageBox::warning( this, tr("DigiDoc4 client"),
+			tr("Cannot alter container %1. Save different location?")
+				.arg(container->fileName().normalized(QString::NormalizationForm_C)),
+			QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+	{
+		QString file = selectFile(container->fileName(), true);
+		if( !file.isEmpty() )
+		{
+			return container->save(file);
+		}
+	}
+	return container->save();
+}
+
+QString MainWindow::selectFile( const QString &filename, bool fixedExt )
+{
+	static const QString adoc = tr("Documents (%1)").arg( "*.adoc" );
+	static const QString bdoc = tr("Documents (%1)").arg( "*.bdoc" );
+	static const QString edoc = tr("Documents (%1)").arg( "*.edoc" );
+	static const QString asic = tr("Documents (%1)").arg( "*.asice *.sce" );
+	const QString ext = QFileInfo( filename ).suffix().toLower();
+	QStringList exts;
+	QString active;
+	if( fixedExt )
+	{
+		if( ext == "bdoc" ) exts << bdoc;
+		if( ext == "asic" || ext == "sce" ) exts << asic;
+		if( ext == "edoc" ) exts << edoc;
+		if( ext == "adoc" ) exts << adoc;
+	}
+	else
+	{
+		exts << bdoc << asic << edoc << adoc;
+		if( ext == "bdoc" ) active = bdoc;
+		if( ext == "asice" || ext == "sce" ) active = asic;
+		if( ext == "edoc" ) active = edoc;
+		if( ext == "adoc" ) active = adoc;
+	}
+
+	return FileDialog::getSaveFileName( this, tr("Save file"), filename, exts.join(";;"), &active );
 }
 
 void MainWindow::selectPageIcon( PageIcon* page )
@@ -494,7 +566,8 @@ void MainWindow::showCardStatus()
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
-
+		ui->signContainerPage->cardSigning(true);
+		
 		ui->cardInfo->update( QSharedPointer<const QCardInfo>(new QCardInfo( t )) );
 
 		if( t.authCert().type() & SslCertificate::EstEidType )
@@ -511,10 +584,11 @@ void MainWindow::showCardStatus()
 	}
 	else
 	{
+		ui->signContainerPage->cardSigning(false);
+
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event( "PCSC service is not running" );
-		else
-		if ( t.readers().isEmpty() )
+		else if ( t.readers().isEmpty() )
 			noReader_NoCard_Loading_Event( "No readers found" );
 		else if ( t.card().isEmpty() )
 			noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );

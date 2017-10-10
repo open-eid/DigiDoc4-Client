@@ -19,7 +19,8 @@
 
 #include "QPKCS11_p.h"
 
-#include <common/PinDialog.h>
+#include "dialogs/PinPopup.h"
+
 #include <common/QPCSC.h>
 
 #include <QtCore/QDebug>
@@ -280,8 +281,8 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	bool pin2 = SslCertificate( t.cert() ).keyUsage().keys().contains( SslCertificate::NonRepudiation );
 	if( token.flags & CKF_PROTECTED_AUTHENTICATION_PATH )
 	{
-		PinDialog p( pin2 ? PinDialog::Pin2PinpadType : PinDialog::Pin1PinpadType, t, qApp->activeWindow() );
-		connect( d, &QPKCS11Private::started, &p, &PinDialog::startTimer );
+		PinPopup p( pin2 ? PinDialog::Pin2PinpadType : PinDialog::Pin1PinpadType, t, qApp->activeWindow() );
+		connect( d, &QPKCS11Private::started, &p, &PinPopup::startTimer );
 		p.open();
 
 		QEventLoop e;
@@ -292,7 +293,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	}
 	else
 	{
-		PinDialog p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, qApp->activeWindow() );
+		PinPopup p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, qApp->activeWindow() );
 		if( !p.exec() )
 			return PinCanceled;
 		QByteArray pin = p.text().toUtf8();

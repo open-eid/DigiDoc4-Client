@@ -346,7 +346,7 @@ QString SDocumentModel::save(int row, const QString &path) const
 
 DigiDoc::DigiDoc(QObject *parent)
 : QObject(parent)
-, containerState(ContainerState::UnencryptedContainer)
+, containerState(ContainerState::UnsignedContainer)
 {
 	m_documentModel.reset(new SDocumentModel(this));
 }
@@ -518,7 +518,7 @@ void DigiDoc::removeSignature( unsigned int num )
 	catch( const Exception &e ) { setLastError( tr("Failed remove signature from container"), e ); }
 }
 
-void DigiDoc::save( const QString &filename )
+bool DigiDoc::save( const QString &filename )
 {
 	try
 	{
@@ -528,8 +528,12 @@ void DigiDoc::save( const QString &filename )
 		qApp->addRecent( filename );
 		modified = false;
 		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
+
+		return true;
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed to save container"), e ); }
+
+	return false;
 }
 
 void DigiDoc::setLastError( const QString &msg, const Exception &e )

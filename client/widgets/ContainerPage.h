@@ -47,9 +47,10 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage();
 
+	void cardSigning(bool enable);
 	void setHeader(const QString &file);
 	void transition(ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList());
-	void transition(ria::qdigidoc4::ContainerState state, DigiDoc* container);
+	void transition(DigiDoc* container);
 
 signals:
 	void action( int code );
@@ -72,10 +73,13 @@ private:
 	void Decrypt(int action);
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
 	void showRightPane( ItemList::ItemType itemType, const QString &header );
+	void showSigningButton();
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
 	std::unique_ptr<MainAction> otherAction;
+	std::vector<QMetaObject::Connection> actionConnections;
+	bool cardInReader;
 	int containerFileWidth;
 	QFont containerFont;
 	bool elided;

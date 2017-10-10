@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocClient
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,28 +19,31 @@
 
 #pragma once
 
-#include <QDialog>
-
-namespace Ui {
-class CertificateDetails;
-}
+#include <QtWidgets/QMessageBox>
 
 class QSslCertificate;
-class CertificateDetailsPrivate;
-
-class CertificateDetails : public QDialog
+class QSslKey;
+class AccessCertPrivate;
+class AccessCert: public QMessageBox
 {
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0);
-	~CertificateDetails();
+	explicit AccessCert( QWidget *parent = 0 );
+	~AccessCert();
 
-	int exec() override;
+	bool validate();
 
-public slots:
-	void on_tblDetails_itemSelectionChanged();
+	static QSslCertificate cert();
+	static QSslKey key();
+	void increment();
+	bool installCert( const QByteArray &data, const QString &password );
+	void remove();
 
 private:
-	CertificateDetailsPrivate *ui;
+	unsigned int count( const QString &date ) const;
+	bool isDefaultCert( const QSslCertificate &cert ) const;
+	void showWarning( const QString &msg );
+
+	AccessCertPrivate *d;
 };

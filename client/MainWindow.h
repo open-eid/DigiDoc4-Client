@@ -123,6 +123,8 @@ private:
 	void onSignAction( int code );
 	void openFiles( const QStringList files );
 	void openSignatureContainer();
+	bool save();
+	QString selectFile( const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
