@@ -337,6 +337,13 @@ void MainWindow::onCryptoAction( int action )
 		AddRecipients dlg(this);
 		dlg.exec();
 	}
+	else if(action == DecryptContainer)
+	{
+		ui->cryptoContainerPage->transition( ContainerState::DecryptedContainer );
+
+		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+		notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
+	}
 }
 
 void MainWindow::openFiles( const QStringList files )

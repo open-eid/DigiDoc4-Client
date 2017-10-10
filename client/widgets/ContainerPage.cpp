@@ -26,9 +26,11 @@
 #include "widgets/FileItem.h"
 
 #include <QDebug>
+#include <QFileDialog>
 #include <QDir>
 #include <QFileInfo>
 #include <QGraphicsDropShadowEffect>
+#include <QMessageBox>
 
 using namespace ria::qdigidoc4;
 
@@ -121,11 +123,16 @@ void ContainerPage::transition( ContainerState state, const QStringList &files )
 		ui->leftPane->init( ItemList::File, "Krüpteeritud failid" );
 		ui->rightPane->clear();
 		showRightPane( ItemList::Address, "Adressaadid" );
-		hideMainAction();
+		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
+		ui->leftPane->init( ItemList::File, "Krüpteeritud failid" );
+		showRightPane( ItemList::Address, "Adressaadid" );
+		hideMainAction();
+		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
+		showButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	}
 
@@ -183,45 +190,48 @@ void ContainerPage::setContainer( ria::qdigidoc4::Pages page, const QString &fil
 
 	ui->containerFile->setText( file );
 
-	cryptoDoc.reset(new CryptoDoc(this));
-	cryptoDoc->open( file );
-
-	for( auto crypedFile: cryptoDoc->files())
+	if(page == CryptoDetails)
 	{
-		FileItem *curr = new FileItem(crypedFile, ria::qdigidoc4::ContainerState::EncryptedContainer, this );
-		ui->leftPane->addWidget( curr );
-	}
+		cryptoDoc.reset(new CryptoDoc(this));
+		cryptoDoc->open( file );
 
-	for( CKey key : cryptoDoc->keys() )
-	{
-		AddressItem *curr = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-		QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
-					key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
-					key.cert.subjectInfo("CN").value(0);
-
-		QString type;
-		switch (SslCertificate(key.cert).type())
+		for( auto crypedFile: cryptoDoc->files())
 		{
-		case SslCertificate::DigiIDType:
-			type = "Digi-ID";
-			break;
-		case SslCertificate::EstEidType:
-			type = "ID-kaart";
-			break;
-		case SslCertificate::MobileIDType:
-			type = "Mobiil-ID";
-			break;
-		default:
-			type = "UnknownType";
-			break;
+			FileItem *curr = new FileItem(crypedFile, ria::qdigidoc4::ContainerState::EncryptedContainer, this );
+			ui->leftPane->addWidget( curr );
 		}
 
-		curr->update(
-					name,
-					key.cert.subjectInfo("serialNumber").value(0),
-					type,
-					AddressItem::Remove );
-		ui->rightPane->addWidget( curr );
+		for( CKey key : cryptoDoc->keys() )
+		{
+			AddressItem *curr = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
+			QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
+						key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
+						key.cert.subjectInfo("CN").value(0);
+
+			QString type;
+			switch (SslCertificate(key.cert).type())
+			{
+			case SslCertificate::DigiIDType:
+				type = "Digi-ID";
+				break;
+			case SslCertificate::EstEidType:
+				type = "ID-kaart";
+				break;
+			case SslCertificate::MobileIDType:
+				type = "Mobiil-ID";
+				break;
+			default:
+				type = "UnknownType";
+				break;
+			}
+
+			curr->update(
+						name,
+						key.cert.subjectInfo("serialNumber").value(0),
+						type,
+						AddressItem::Remove );
+			ui->rightPane->addWidget( curr );
+		}
 	}
 }
 
@@ -255,6 +265,42 @@ void ContainerPage::showRightPane( ItemList::ItemType itemType, const QString &h
 	ui->rightPane->show();
 }
 
+void ContainerPage::Decrypt(int action)
+{
+	if(action == DecryptContainer)
+	{
+		cryptoDoc->decrypt();
+
+		QString dir = QFileDialog::getExistingDirectory(this, "Vali kataloog, kuhu failid salvestatakse");
+		if( dir.isEmpty() )
+			return;
+
+		CDocumentModel *m = cryptoDoc->documents();
+		for( int i = 0; i < m->rowCount(); ++i )
+		{
+			QModelIndex index = m->index( i, CDocumentModel::Name );
+			QString dest = dir + "/" + index.data(Qt::UserRole).toString();
+
+			if( QFile::exists( dest ) )
+			{
+				QMessageBox::StandardButton b = QMessageBox::warning( this, windowTitle(),
+					"Selle nimega fail on juba olemas. Kas kirjutan üle?",
+					QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
+				if( b == QMessageBox::No )
+				{
+					dest = QFileDialog::getSaveFileName( this, "Salvesta", dest );
+					if( dest.isEmpty() )
+						continue;
+				}
+				else
+					QFile::remove( dest );
+			}
+			m->copy( index, dest );
+		}
+
+	}
+}
+
 void ContainerPage::showMainAction( Actions action, const QString &label )
 {
 	if( mainAction )
@@ -266,6 +312,8 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 	{
 		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
+
+		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::Decrypt );
 		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::action );
 		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction );
 		connect( mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown );

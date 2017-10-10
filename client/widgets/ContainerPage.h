@@ -62,6 +62,7 @@ private:
 	void mobileDialog();
 	void showButtons( std::vector<QWidget*> buttons );
 	void showDropdown();
+	void Decrypt(int action);
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
 	void showRightPane( ItemList::ItemType itemType, const QString &header );
 

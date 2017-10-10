@@ -44,7 +44,8 @@ enum Actions {
     ContainerNavigate,
     ContainerSave,
 
-    EncryptContainer,
+	EncryptContainer,
+	DecryptContainer,
 
     FileAdd,
     FileRemove,
