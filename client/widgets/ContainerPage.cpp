@@ -22,6 +22,7 @@
 #include "Styles.h"
 #include "common/SslCertificate.h"
 #include "dialogs/MobileDialog.h"
+#include "dialogs/WaitDialog.h"
 #include "widgets/AddressItem.h"
 #include "widgets/FileItem.h"
 
@@ -31,6 +32,8 @@
 #include <QFileInfo>
 #include <QGraphicsDropShadowEffect>
 #include <QMessageBox>
+#include <QProgressBar>
+#include <QProgressDialog>
 
 using namespace ria::qdigidoc4;
 
@@ -269,6 +272,9 @@ void ContainerPage::Decrypt(int action)
 {
 	if(action == DecryptContainer)
 	{
+		WaitDialog waitDialog(this);
+		waitDialog.open();
+
 		cryptoDoc->decrypt();
 
 		QString dir = QFileDialog::getExistingDirectory(this, "Vali kataloog, kuhu failid salvestatakse");

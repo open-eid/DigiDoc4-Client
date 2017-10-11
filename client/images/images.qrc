@@ -45,5 +45,6 @@
 		<file>icon_Seaded.svg</file>
 		<file>icon_Seaded_hover.svg</file>
 		<file>Logo_small.svg</file>
+		<file>wait.gif</file>
 	</qresource>
 </RCC>
