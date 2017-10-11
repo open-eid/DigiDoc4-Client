@@ -50,6 +50,7 @@ public:
 	void cardSigning(bool enable);
 	void setHeader(const QString &file);
 	void transition(ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList());
+	void transition(CryptoDoc *container);
 	void transition(DigiDoc* container);
 
 signals:
@@ -70,7 +71,6 @@ private:
 	void mobileDialog();
 	void showButtons( std::vector<QWidget*> buttons );
 	void showDropdown();
-	void Decrypt(int action);
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
 	void showRightPane( ItemList::ItemType itemType, const QString &header );
 	void showSigningButton();

@@ -49,6 +49,8 @@
 
 #include <memory>
 
+using namespace ria::qdigidoc4;
+
 #define MIME_XML  "text/xml"
 #define MIME_ZLIB "http://www.isi.edu/in-noes/iana/assignments/media-types/application/zip"
 #define MIME_DDOC "http://www.sk.ee/DigiDoc/v1.3.0/digidoc.xsd"
@@ -559,19 +561,17 @@ void CryptoDocPrivate::writeDDoc(QIODevice *ddoc)
 
 
 CDocumentModel::CDocumentModel( CryptoDocPrivate *doc )
-:	QAbstractTableModel( doc )
-,	d( doc )
+: d( doc )
 {
 	const_cast<QLoggingCategory&>(CRYPTO()).setEnabled( QtDebugMsg,
 		QFile::exists( QString("%1/%2.log").arg( QDir::tempPath(), qApp->applicationName() ) ) );
 }
 
-void CDocumentModel::addFile( const QString &file, const QString &mime )
+void CDocumentModel::addFile(const QString &file, const QString &mime)
 {
 	if( d->isEncryptedWarning() )
 		return;
 
-	emit beginInsertRows(QModelIndex(), d->files.size(), 1);
 	QFile data(file);
 	data.open(QFile::ReadOnly);
 	CryptoDocPrivate::File f;
@@ -581,20 +581,17 @@ void CDocumentModel::addFile( const QString &file, const QString &mime )
 	f.data = data.readAll();
 	f.size = FileDialog::fileSize(f.data.size());
 	d->files << f;
-	emit endInsertRows();
+	emit added(file);
 }
 
-int CDocumentModel::columnCount( const QModelIndex &parent ) const
-{ return parent.isValid() ? 0 : NColumns; }
-
-QString CDocumentModel::copy( const QModelIndex &index, const QString &dst ) const
+QString CDocumentModel::copy(int row, const QString &dst) const
 {
-	const CryptoDocPrivate::File &row = d->files.value( index.row() );
+	const CryptoDocPrivate::File &file = d->files.at(row);
 	if( QFile::exists( dst ) )
 		QFile::remove( dst );
 
 	QFile f(dst);
-	if(!f.open(QFile::WriteOnly) || f.write(row.data) < 0)
+	if(!f.open(QFile::WriteOnly) || f.write(file.data) < 0)
 	{
 		d->setLastError( tr("Failed to save file '%1'").arg( dst ) );
 		return QString();
@@ -602,91 +599,19 @@ QString CDocumentModel::copy( const QModelIndex &index, const QString &dst ) con
 	return dst;
 }
 
-QVariant CDocumentModel::data( const QModelIndex &index, int role ) const
+QString CDocumentModel::data(int row) const
 {
-	const CryptoDocPrivate::File &f = d->files.value( index.row() );
+	const CryptoDocPrivate::File &f = d->files.at(row);
 	if( f.name.isEmpty() )
-		return QVariant();
-	switch( role )
-	{
-	case Qt::ForegroundRole:
-		switch( index.column() )
-		{
-		case Size: return QColor(Qt::gray);
-		default: return QVariant();
-		}
-	case Qt::DisplayRole:
-		switch( index.column() )
-		{
-		case Name: return f.name;
-		case Mime: return f.mime;
-		case Size: return f.size;
-		default: return QVariant();
-		}
-	case Qt::TextAlignmentRole:
-		switch( index.column() )
-		{
-		case Name:
-		case Mime: return int(Qt::AlignLeft|Qt::AlignVCenter);
-		case Size: return int(Qt::AlignRight|Qt::AlignVCenter);
-		default: return Qt::AlignCenter;
-		}
-	case Qt::ToolTipRole:
-		switch( index.column() )
-		{
-		case Save: return tr("Save");
-		case Remove: return tr("Remove");
-		default: return tr("Filename: %1\nFilesize: %2\nMedia type: %3")
-			.arg( f.name, f.size, f.mime );
-		}
-	case Qt::DecorationRole:
-		switch( index.column() )
-		{
-		case Save: return QPixmap(":/images/ico_save.png");
-		case Remove: return QPixmap(":/images/ico_delete.png");
-		default: return QVariant();
-		}
-	case Qt::SizeHintRole:
-		switch( index.column() )
-		{
-		case Save:
-		case Remove: return QSize( 20, 20 );
-		default: return QVariant();
-		}
-	case Qt::UserRole: return FileDialog::safeName(f.name);
-	default: return QVariant();
-	}
+		return QString();
+	return f.name;
 }
 
-Qt::ItemFlags CDocumentModel::flags( const QModelIndex & ) const
-{
-	return !d->encrypted ? Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsDragEnabled : Qt::NoItemFlags;
-}
-
-QMimeData* CDocumentModel::mimeData( const QModelIndexList &indexes ) const
-{
-	QList<QUrl> list;
-	Q_FOREACH( const QModelIndex &index, indexes )
-	{
-		if( index.column() != Name )
-			continue;
-		QString path = copy( index, FileDialog::tempPath(index.data(Qt::UserRole).toString()) );
-		if( !path.isEmpty() )
-			list << QUrl::fromLocalFile( QFileInfo( path ).absoluteFilePath() );
-	}
-	QMimeData *data = new QMimeData();
-	data->setUrls( list );
-	return data;
-}
-
-QStringList CDocumentModel::mimeTypes() const
-{ return QStringList() << "text/uri-list"; }
-
-void CDocumentModel::open( const QModelIndex &index )
+void CDocumentModel::open(int row)
 {
 	if(d->encrypted)
 		return;
-	QFileInfo f( copy( index, FileDialog::tempPath(index.data(Qt::UserRole).toString()) ) );
+	QFileInfo f(copy(row, FileDialog::tempPath(data(row))));
 	if( !f.exists() )
 		return;
 	d->tempFiles << f.absoluteFilePath();
@@ -706,9 +631,9 @@ void CDocumentModel::open( const QModelIndex &index )
 	QDesktopServices::openUrl( QUrl::fromLocalFile( f.absoluteFilePath() ) );
 }
 
-bool CDocumentModel::removeRows( int row, int count, const QModelIndex &parent )
+bool CDocumentModel::removeRows(int row, int count)
 {
-	if( parent.isValid() || d->isEncryptedWarning() )
+	if(d->isEncryptedWarning())
 		return false;
 
 	if( d->files.isEmpty() || row >= d->files.size() )
@@ -717,19 +642,27 @@ bool CDocumentModel::removeRows( int row, int count, const QModelIndex &parent )
 		return false;
 	}
 
-	beginRemoveRows( parent, row, row + count );
 	for( int i = row + count - 1; i >= row; --i )
 		d->files.removeAt( i );
-	endRemoveRows();
 	return true;
 }
 
-int CDocumentModel::rowCount( const QModelIndex &parent ) const
-{ return parent.isValid() ? 0 : d->files.size(); }
+int CDocumentModel::rowCount() const
+{ 
+	return d->files.size();
+}
 
-Qt::DropActions CDocumentModel::supportedDragActions() const
+QString CDocumentModel::save(int row, const QString &path) const
 {
-	return Qt::CopyAction;
+	if(d->encrypted)
+		return QString();
+
+	QString fileName = copy(row, path);
+	QFileInfo f(fileName);
+	if(f.exists())
+		return fileName;
+
+	return QString();
 }
 
 
@@ -745,6 +678,7 @@ void CKey::setCert( const QSslCertificate &c )
 CryptoDoc::CryptoDoc( QObject *parent )
 :	QObject( parent )
 ,	d( new CryptoDocPrivate )
+,	containerState(UnencryptedContainer)
 {
 	d->documents = new CDocumentModel( d );
 }
@@ -779,6 +713,11 @@ void CryptoDoc::clear( const QString &file )
 	d->properties.clear();
 	d->method.clear();
 	d->mime.clear();
+}
+
+ContainerState CryptoDoc::state()
+{
+	return containerState;
 }
 
 bool CryptoDoc::decrypt()
@@ -820,11 +759,13 @@ bool CryptoDoc::decrypt()
 	d->waitForFinished();
 	if( !d->lastError.isEmpty() )
 		d->setLastError( d->lastError );
-	d->documents->revert();
+	
+	containerState = d->encrypted ? EncryptedContainer : DecryptedContainer;
+
 	return !d->encrypted;
 }
 
-CDocumentModel* CryptoDoc::documents() const { return d->documents; }
+DocumentModel* CryptoDoc::documentModel() const { return d->documents; }
 
 bool CryptoDoc::encrypt( const QString &filename )
 {
@@ -847,6 +788,9 @@ bool CryptoDoc::encrypt( const QString &filename )
 	if( !d->lastError.isEmpty() )
 		d->setLastError( d->lastError );
 	open(d->fileName);
+
+	containerState = d->encrypted ? EncryptedContainer : DecryptedContainer;
+
 	return d->encrypted;
 }
 
@@ -890,7 +834,7 @@ bool CryptoDoc::open( const QString &file )
 	}
 
 	d->encrypted = true;
-	d->documents->revert();
+	containerState = EncryptedContainer;
 	qApp->addRecent( file );
 	return !d->keys.isEmpty();
 }

@@ -35,7 +35,7 @@ public:
 	explicit FileList(QWidget *parent = nullptr);
 	~FileList();
 
-	void init(const QString &container);
+	void init(const QString &container, const QString &label = "Kontaineri failid");
 	void addFile(const QString& file);
 	void setModel(DocumentModel *documentModel);
 

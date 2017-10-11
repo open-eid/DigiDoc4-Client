@@ -28,16 +28,19 @@
 #include "QSigner.h"
 #include "Styles.h"
 #include "XmlReader.h"
+#include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
 #include "dialogs/AddRecipients.h"
-#include "dialogs/SettingsDialog.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/SettingsDialog.h"
+#include "dialogs/WaitDialog.h"
 #include "util/FileUtil.h"
 
 #include <common/DateTime.h>
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
+#include <common/TokenData.h>
 
 #include <QDebug>
 #include <QFileDialog>
@@ -123,8 +126,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	hideWarningArea();
 
-	connect( ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openSignatureContainer );
-	connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
+	connect( ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
+	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
@@ -200,19 +203,31 @@ void MainWindow::clearOverlay()
 
 ContainerState MainWindow::currentState()
 {
-	if(container)
+	auto current = ui->startScreen->currentIndex();	
+	bool cryptoPage = (current == CryptoIntro || current == CryptoDetails);
+
+	if(cryptoPage && cryptoDoc)
 	{
-		return container->state();
+		return cryptoDoc->state();
 	}
 
-	auto current = ui->startScreen->currentIndex();
-	return (current == CryptoIntro || current == CryptoDetails) ? ContainerState::UnencryptedContainer : ContainerState::UnsignedContainer;
+	if(digiDoc)
+	{
+		return digiDoc->state();
+	}
+
+	return cryptoPage ? ContainerState::UnencryptedContainer : ContainerState::UnsignedContainer;
 }
 
-void MainWindow::showOverlay( QWidget *parent )
+bool MainWindow::decrypt()
 {
-	overlay.reset( new Overlay(parent) );
-	overlay->show();
+	if(!cryptoDoc)
+		return false;
+
+	WaitDialog waitDialog(qApp->activeWindow());
+	waitDialog.open();
+
+	return cryptoDoc->decrypt();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -261,6 +276,17 @@ void MainWindow::dropEvent(QDropEvent *event)
 	}
 }
 
+bool MainWindow::encrypt()
+{
+	if(!cryptoDoc)
+		return false;
+
+	WaitDialog waitDialog(qApp->activeWindow());
+	waitDialog.open();
+
+	return cryptoDoc->encrypt();
+}
+
 void MainWindow::hideCardPopup()
 {
 	selector->init();
@@ -290,12 +316,13 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		connect(signatureContainer.get(), &DigiDoc::operation, this, &MainWindow::operation);
 		if(create)
 		{
+			// TODO asice from settings
 			QString filename = FileUtil::createFile(files[0], ".bdoc", tr("signature container"));
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
 				for(auto file: files)
-					signatureContainer->addFile(file);
+					signatureContainer->documentModel()->addFile(file);
 				navigate = true;
 			}
 		}
@@ -305,21 +332,41 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		}
 		if(navigate)
 		{
-			delete container;
-			container = signatureContainer.release();
-			ui->signContainerPage->transition(container);
+			delete digiDoc;
+			digiDoc = signatureContainer.release();
+			ui->signContainerPage->transition(digiDoc);
 		}
 	}
 	else if( page == CryptoDetails)
 	{
-		if( create )
+		navigate = false;
+		std::unique_ptr<CryptoDoc> cryptoContainer(new CryptoDoc(this));
+
+		if(create)
 		{
-			ui->cryptoContainerPage->transition( ContainerState::UnencryptedContainer, files );
+			QString filename = FileUtil::createFile(files[0], ".cdoc", tr("crypto container"));
+			if(!filename.isNull())
+			{
+				cryptoContainer->clear(filename);
+				for(auto file: files)
+					cryptoContainer->documentModel()->addFile(file);
+				auto cardData = smartcard->data();
+				if(!cardData.isNull())
+				{
+					cryptoContainer->addKey(CKey(cardData.authCert()));
+				}
+				navigate = true;
+			}
 		}
-		else
+		else if(cryptoContainer->open(files[0]))
 		{
-			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
-			if( !files.isEmpty() ) ui->cryptoContainerPage->setHeader(files[0]);
+			navigate = true;
+		}
+		if(navigate)
+		{
+			delete cryptoDoc;
+			cryptoDoc = cryptoContainer.release();
+			ui->cryptoContainerPage->transition(cryptoDoc);
 		}
 	}
 
@@ -350,7 +397,7 @@ void MainWindow::onSignAction( int action )
 	}
 	else if(action == ContainerSave)
 	{
-		if(container)
+		if(digiDoc)
 		{
 			save();
 			ui->signContainerPage->transition(ContainerState::UnsignedSavedContainer);
@@ -362,10 +409,13 @@ void MainWindow::onCryptoAction( int action )
 {
 	if( action == EncryptContainer )
 	{
-		ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
+		if(encrypt())
+		{
+			ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
-		notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+		}
 	}
 	else if( action == ContainerCancel )
 	{
@@ -382,10 +432,13 @@ void MainWindow::onCryptoAction( int action )
 	}
 	else if(action == DecryptContainer)
 	{
-		ui->cryptoContainerPage->transition( ContainerState::DecryptedContainer );
+		if(decrypt())
+		{
+			ui->cryptoContainerPage->transition(cryptoDoc);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
-		notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
+			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
+		}
 	}
 }
 
@@ -460,7 +513,7 @@ void MainWindow::openFiles(const QStringList files)
 	navigateToPage( page, files, create );
 }
 
-void MainWindow::openSignatureContainer()
+void MainWindow::openContainer()
 {
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"));
 	if(!files.isEmpty())
@@ -479,19 +532,24 @@ void MainWindow::resizeEvent( QResizeEvent *event )
 
 bool MainWindow::save()
 {
-	if( !FileDialog::fileIsWritable(container->fileName()) &&
-		QMessageBox::Yes == QMessageBox::warning( this, tr("DigiDoc4 client"),
-			tr("Cannot alter container %1. Save different location?")
-				.arg(container->fileName().normalized(QString::NormalizationForm_C)),
-			QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+	if(digiDoc)
 	{
-		QString file = selectFile(container->fileName(), true);
-		if( !file.isEmpty() )
+		if( !FileDialog::fileIsWritable(digiDoc->fileName()) &&
+			QMessageBox::Yes == QMessageBox::warning( this, tr("DigiDoc4 client"),
+				tr("Cannot alter container %1. Save different location?")
+					.arg(digiDoc->fileName().normalized(QString::NormalizationForm_C)),
+				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
 		{
-			return container->save(file);
+			QString file = selectFile(digiDoc->fileName(), true);
+			if( !file.isEmpty() )
+			{
+				return digiDoc->save(file);
+			}
 		}
+		return digiDoc->save();
 	}
-	return container->save();
+
+	return false;
 }
 
 QString MainWindow::selectFile( const QString &filename, bool fixedExt )
@@ -601,6 +659,12 @@ void MainWindow::showCardStatus()
 	}
 }
 
+void MainWindow::showOverlay( QWidget *parent )
+{
+	overlay.reset( new Overlay(parent) );
+	overlay->show();
+}
+
 bool MainWindow::sign()
 {
 	AccessCert access(this);
@@ -608,11 +672,11 @@ bool MainWindow::sign()
 		return false;
 
 	// TODO read place&roles from settings
-	if(container->sign("", "", "", "", "", ""))
+	if(digiDoc->sign("", "", "", "", "", ""))
 	{
 		access.increment();
 		save();
-		ui->signContainerPage->transition(container);
+		ui->signContainerPage->transition(digiDoc);
 
 		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
 		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );

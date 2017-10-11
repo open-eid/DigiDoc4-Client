@@ -91,7 +91,8 @@ class SDocumentModel: public DocumentModel
 	Q_OBJECT
 
 public:
-	QString data(int row) const override;	
+	void addFile(const QString &file, const QString &mime = "application/octet-stream") override;
+	QString data(int row) const override;
 	bool removeRows(int row, int count) override;
 	int rowCount() const override;
 	QString save(int row, const QString &path) const override;
@@ -126,7 +127,7 @@ public:
 	explicit DigiDoc(QObject *parent = nullptr);
 	~DigiDoc();
 
-	void addFile( const QString &file );
+	void addFile( const QString &file, const QString &mime );
 	bool addSignature( const QByteArray &signature );
 	void create( const QString &file );
 	void clear();

@@ -59,9 +59,9 @@ int FileList::index(StyledWidget *item) const
 	return -1;
 }
 
-void FileList::init(const QString &container)
+void FileList::init(const QString &container, const QString &label)
 {
-	ItemList::init(ItemList::File, "Kontaineri failid", true);
+	ItemList::init(ItemList::File, label, true);
 	this->container = container;
 }
 

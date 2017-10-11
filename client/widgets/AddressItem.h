@@ -25,6 +25,8 @@ namespace Ui {
 class AddressItem;
 }
 
+class CKey;
+
 class AddressItem : public StyledWidget
 {
 	Q_OBJECT
@@ -39,6 +41,7 @@ public:
 	};
 
 	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
+	explicit AddressItem(const CKey &key, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~AddressItem();
 
 	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);

@@ -28,7 +28,8 @@ public:
 	DocumentModel(QObject *parent = nullptr);
 	virtual ~DocumentModel();
 
-	virtual QString data(int row) const = 0;	
+	virtual void addFile(const QString &file, const QString &mime = "application/octet-stream") = 0;
+	virtual QString data(int row) const = 0;
 	virtual bool removeRows(int row, int count) = 0;
 	virtual int rowCount() const = 0;
 	virtual QString save(int row, const QString &path) const = 0;

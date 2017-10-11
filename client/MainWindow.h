@@ -41,6 +41,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class CryptoDoc;
 class DigiDoc;
 
 class MainWindow : public QWidget
@@ -116,14 +117,16 @@ private:
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
 	ria::qdigidoc4::ContainerState currentState();
+	bool decrypt();
+	bool encrypt();
 	void hideCardPopup();
 	void hideWarningArea();	
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction( int code );
 	void onSignAction( int code );
+	void openContainer();
 	void openFiles( const QStringList files );
-	void openSignatureContainer();
 	bool save();
 	QString selectFile( const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );
@@ -138,7 +141,8 @@ private:
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 
-	DigiDoc* container = nullptr;
+	CryptoDoc* cryptoDoc = nullptr;
+	DigiDoc* digiDoc = nullptr;
 
 	Ui::MainWindow *ui;
 
