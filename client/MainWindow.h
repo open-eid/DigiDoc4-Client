@@ -63,6 +63,7 @@ private Q_SLOTS:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked( bool isForgotPuk );
 	void certDetailsClicked( const QString &link );
+	void operation(int op, bool started);
 
 protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
@@ -130,6 +131,7 @@ private:
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
+	bool sign();
 	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );

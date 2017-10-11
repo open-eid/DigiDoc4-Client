@@ -48,6 +48,26 @@ static QByteArray fromVector( const std::vector<unsigned char> &d )
 { return d.empty() ? QByteArray() : QByteArray( (const char *)d.data(), int(d.size()) ); }
 
 
+
+class OpEmitter
+{
+public:
+	OpEmitter(DigiDoc *digiDoc, DigiDoc::Operation operation) : doc(digiDoc), op(operation) 
+	{
+		emit doc->operation(op, true);
+	};
+	~OpEmitter()
+	{
+		emit doc->operation(op, false);
+	};
+
+private:
+	DigiDoc *doc;
+	DigiDoc::Operation op;
+};
+
+
+
 DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent)
 :	s(signature)
 ,	m_parent(parent)
@@ -522,6 +542,8 @@ void DigiDoc::removeSignature( unsigned int num )
 
 bool DigiDoc::save( const QString &filename )
 {
+	OpEmitter op(this, Saving);
+
 	try
 	{
 		if( !filename.isEmpty() )
@@ -573,6 +595,7 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 	if( !checkDoc( b->dataFiles().size() == 0, tr("Cannot add signature to empty container") ) )
 		return false;
 
+	OpEmitter op(this, Signing);
 	try
 	{
 		qApp->signer()->setSignatureProductionPlace(

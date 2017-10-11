@@ -287,6 +287,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	{
 		navigate = false;
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
+		connect(signatureContainer.get(), &DigiDoc::operation, this, &MainWindow::operation);
 		if(create)
 		{
 			QString filename = FileUtil::createFile(files[0], ".bdoc", tr("signature container"));
@@ -295,19 +296,19 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 				signatureContainer->create(filename);
 				for(auto file: files)
 					signatureContainer->addFile(file);
-				delete container;
-				container = signatureContainer.release();
 				navigate = true;
 			}
 		}
 		else if(signatureContainer->open(files[0]))
 		{
-			delete container;
-			container = signatureContainer.release();
 			navigate = true;
 		}
 		if(navigate)
+		{
+			delete container;
+			container = signatureContainer.release();
 			ui->signContainerPage->transition(container);
+		}
 	}
 	else if( page == CryptoDetails)
 	{
@@ -333,20 +334,7 @@ void MainWindow::onSignAction( int action )
 {
 	if(action == SignatureAdd)
 	{
-		AccessCert access(this);
-		if( !access.validate() )
-			return;
-
-		// TODO read place&roles from settings
-		if(container->sign("", "", "", "", "", ""))
-		{
-			access.increment();
-			save();
-			ui->signContainerPage->transition(container);
-
-			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
-			notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
-		}
+		sign();
 	}
 	else if(action == SignatureMobile)
 	{
@@ -479,6 +467,11 @@ void MainWindow::openSignatureContainer()
 		openFiles(files);
 }
 
+void MainWindow::operation(int op, bool started)
+{
+	qDebug() << "Op " << op << (started ? " started" : " ended");
+}
+
 void MainWindow::resizeEvent( QResizeEvent *event )
 {
 	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
@@ -606,6 +599,27 @@ void MainWindow::showCardStatus()
 		selector->hide();
 		hideCardPopup();
 	}
+}
+
+bool MainWindow::sign()
+{
+	AccessCert access(this);
+	if( !access.validate() )
+		return false;
+
+	// TODO read place&roles from settings
+	if(container->sign("", "", "", "", "", ""))
+	{
+		access.increment();
+		save();
+		ui->signContainerPage->transition(container);
+
+		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
+		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+		return true;
+	}
+
+	return false;
 }
 
 void MainWindow::updateCardData()
