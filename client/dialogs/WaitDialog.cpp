@@ -20,8 +20,10 @@
 
 #include "WaitDialog.h"
 #include "ui_WaitDialog.h"
-#include "effects/Overlay.h"
+
 #include "Styles.h"
+#include "effects/Overlay.h"
+
 #include <QMovie>
 
 WaitDialog::WaitDialog(QWidget *parent) :
@@ -30,26 +32,52 @@ WaitDialog::WaitDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
-	setWindowModality(Qt::ApplicationModal);
+	setWindowModality(Qt::WindowModal);
 
 	QMovie *movie = new QMovie(":/images/wait.gif");
 	ui->movie->setMovie(movie);
 	movie->start();
 
-	ui->label->setFont(Styles::font(Styles::Condensed, 12));
+	ui->label->setFont(Styles::font(Styles::Condensed, 24));
 }
 
 WaitDialog::~WaitDialog()
 {
+	closeOverlay();
 	delete ui;
+}
+
+void WaitDialog::closeOverlay()
+{
+	if(overlay)
+		overlay->close();
+	delete overlay;
+	overlay = nullptr;
 }
 
 int WaitDialog::exec()
 {
-	Overlay overlay( parentWidget() );
-	overlay.show();
+	showOverlay();
 	auto rc = QDialog::exec();
-	overlay.close();
+	closeOverlay();
 
 	return rc;
+}
+
+void WaitDialog::open()
+{
+	showOverlay();
+	QDialog::open();
+}
+
+void WaitDialog::showOverlay()
+{
+	if(!overlay)
+		overlay = new Overlay(parentWidget());
+	overlay->show();
+}
+
+void WaitDialog::setText(const QString &text)
+{
+	ui->label->setText(text);
 }

@@ -25,6 +25,8 @@ namespace Ui {
 class WaitDialog;
 }
 
+class Overlay;
+
 class WaitDialog : public QDialog
 {
 	Q_OBJECT
@@ -34,7 +36,15 @@ public:
 	~WaitDialog();
 
 	int exec() override;
+	void open() override;
+
+public slots:
+	void setText(const QString &text);
 
 private:
+	void closeOverlay();
+	void showOverlay();
+
 	Ui::WaitDialog *ui;
+	Overlay *overlay = nullptr;
 };

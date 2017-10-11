@@ -272,7 +272,7 @@ void ContainerPage::Decrypt(int action)
 {
 	if(action == DecryptContainer)
 	{
-		WaitDialog waitDialog(this);
+		WaitDialog waitDialog(qApp->activeWindow());
 		waitDialog.open();
 
 		cryptoDoc->decrypt();
@@ -325,7 +325,7 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 		connect( mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown );
 		mainAction->show();
 	}
-	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );	
+	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
 }
 
 void ContainerPage::resizeEvent( QResizeEvent *event )
