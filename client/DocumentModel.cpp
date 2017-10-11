@@ -17,33 +17,9 @@
  *
  */
 
- #pragma once
+#include "DocumentModel.h"
 
-#include "widgets/StyledWidget.h"
-
-namespace Ui {
-class FileItem;
-}
-
-class FileItem : public StyledWidget
-{
-	Q_OBJECT
-
-public:
-	explicit FileItem( ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
-	explicit FileItem( const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
-	~FileItem();
-
-	QString getFile();
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
-
-signals:
-	void open(FileItem* item);
-	void download(FileItem* item);
-	
-protected:
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
-
-private:
-	Ui::FileItem *ui;
-};
+DocumentModel::DocumentModel(QObject *parent)
+: QObject(parent)
+{}
+DocumentModel::~DocumentModel() {}

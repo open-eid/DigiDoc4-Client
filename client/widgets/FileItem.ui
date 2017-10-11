@@ -22,12 +22,18 @@
     <height>44</height>
    </size>
   </property>
+  <property name="cursor">
+   <cursorShape>PointingHandCursor</cursorShape>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">border: solid rgba(217, 217, 216, 0.45);
-border-width: 0px 0px 2px 0px; 
+border-width: 0px 0px 1px 0px; 
 background-color: #ffffff; 
 color: #000000; 
 text-decoration: none solid rgb(0, 0, 0);</string>
@@ -91,6 +97,9 @@ border: none;</string>
        <height>19</height>
       </size>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>
      </property>
@@ -117,6 +126,9 @@ border: none;</string>
        <width>19</width>
        <height>19</height>
       </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>

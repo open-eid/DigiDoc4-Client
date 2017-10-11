@@ -19,48 +19,36 @@
 
 #pragma once
 
-#include <QtCore/QAbstractTableModel>
+#include "common_enums.h"
+#include "DocumentModel.h"
 
 #include <QtCore/QStringList>
 #include <QtNetwork/QSslCertificate>
 
 class CryptoDocPrivate;
-class CDocumentModel: public QAbstractTableModel
+
+class CDocumentModel: public DocumentModel
 {
 	Q_OBJECT
 public:
-	enum Columns
-	{
-		Name = 0,
-		Mime,
-		Size,
-		Save,
-		Remove,
-
-		NColumns
-	};
-
-	CDocumentModel( CryptoDocPrivate *doc );
-
-	int columnCount( const QModelIndex &parent = QModelIndex() ) const;
-	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
-	Qt::ItemFlags flags( const QModelIndex &index ) const;
-	QMimeData *mimeData( const QModelIndexList &indexes ) const;
-	QStringList mimeTypes() const;
-	bool removeRows( int row, int count, const QModelIndex &parent = QModelIndex() );
-	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
-	Qt::DropActions supportedDragActions() const;
-
-	void addFile( const QString &file, const QString &mime = "application/octet-stream" );
-	QString copy( const QModelIndex &index, const QString &path ) const;
+	void addFile(const QString &file, const QString &mime = "application/octet-stream") override;
+	QString data(int row) const override;
+	bool removeRows(int row, int count) override;
+	int rowCount() const override;
+	QString save(int row, const QString &path) const override;
 
 public slots:
-	void open( const QModelIndex &index );
+	void open(int row) override;
 
 private:
+	CDocumentModel( CryptoDocPrivate *doc );
 	Q_DISABLE_COPY(CDocumentModel)
 
+	QString copy(int row, const QString &dst) const;
+
 	CryptoDocPrivate *d;
+
+	friend class CryptoDoc;
 };
 
 class CKey
@@ -86,7 +74,7 @@ public:
 	bool addKey( const CKey &key );
 	void clear( const QString &file = QString() );
 	bool decrypt();
-	CDocumentModel* documents() const;
+	DocumentModel* documentModel() const;
 	bool encrypt( const QString &filename = QString() );
 	QString fileName() const;
 	bool isEncrypted() const;
@@ -97,7 +85,11 @@ public:
 	bool open( const QString &file );
 	void removeKey( int id );
 	bool saveDDoc( const QString &filename );
+	ria::qdigidoc4::ContainerState state();	
 
 private:
 	CryptoDocPrivate *d;
+	ria::qdigidoc4::ContainerState containerState;
+
+	friend class CDocumentModel;
 };

@@ -20,9 +20,12 @@
 
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
+
 #include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
 #include "Styles.h"
+
+#include <QtNetwork/QSslCertificate>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
 	QDialog(parent),
@@ -128,7 +131,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
 			 [this]()
 		{
-			CertificateDetails dlg(this);
+			CertificateDetails dlg(QSslCertificate(), this);
 			dlg.exec();
 		}
 			);

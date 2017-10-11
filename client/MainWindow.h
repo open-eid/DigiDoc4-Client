@@ -41,6 +41,9 @@ namespace Ui {
 class MainWindow;
 }
 
+class CryptoDoc;
+class DigiDoc;
+
 class MainWindow : public QWidget
 {
 	Q_OBJECT
@@ -61,6 +64,7 @@ private Q_SLOTS:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked( bool isForgotPuk );
 	void certDetailsClicked( const QString &link );
+	void operation(int op, bool started);
 
 protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
@@ -112,30 +116,40 @@ private:
 	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
+	ria::qdigidoc4::ContainerState currentState();
+	bool decrypt();
+	bool encrypt();
 	void hideCardPopup();
 	void hideWarningArea();	
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction( int code );
 	void onSignAction( int code );
+	void openContainer();
 	void openFiles( const QStringList files );
+	bool save();
+	QString selectFile( const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
+	bool sign();
 	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 
+	CryptoDoc* cryptoDoc = nullptr;
+	DigiDoc* digiDoc = nullptr;
+
 	Ui::MainWindow *ui;
 
-	std::unique_ptr<QSvgWidget> coatOfArms;
+	QSvgWidget *coatOfArms = nullptr;
 	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
-	std::unique_ptr<DropdownButton> selector;
+	DropdownButton *selector = nullptr;
 	QSmartCard *smartcard = nullptr;
 	QButtonGroup *buttonGroup = nullptr;
 };

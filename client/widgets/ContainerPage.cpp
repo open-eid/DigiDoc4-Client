@@ -19,17 +19,19 @@
 
 #include "ContainerPage.h"
 #include "ui_ContainerPage.h"
+
+#include "DigiDoc.h"
 #include "Styles.h"
-#include "common/SslCertificate.h"
 #include "dialogs/MobileDialog.h"
-#include "dialogs/WaitDialog.h"
 #include "widgets/AddressItem.h"
 #include "widgets/FileItem.h"
+#include "widgets/SignatureItem.h"
 
 #include <QDebug>
 #include <QFileDialog>
 #include <QDir>
 #include <QFileInfo>
+#include <QFontMetrics>
 #include <QGraphicsDropShadowEffect>
 #include <QMessageBox>
 #include <QProgressBar>
@@ -42,9 +44,11 @@ using namespace ria::qdigidoc4;
 #define ACTION_HEIGHT 65
 
 
-ContainerPage::ContainerPage( QWidget *parent ) :
-	QWidget( parent ),
-	ui( new Ui::ContainerPage )
+ContainerPage::ContainerPage(QWidget *parent)
+: QWidget(parent)
+, ui(new Ui::ContainerPage)
+, containerFont(Styles::font(Styles::Regular, 14))
+, fm(QFontMetrics(containerFont))
 {
 	ui->setupUi( this );
 	init();
@@ -55,13 +59,41 @@ ContainerPage::~ContainerPage()
 	delete ui;
 }
 
+void ContainerPage::clear()
+{
+	ui->leftPane->clear();
+	ui->rightPane->clear();
+}
+
+void ContainerPage::cardSigning(bool enable)
+{
+	if(cardInReader != enable)
+	{
+		cardInReader = enable;
+		showSigningButton();
+	}
+}
+
+void ContainerPage::elideFileName(bool force)
+{
+	if(ui->containerFile->width() < containerFileWidth)
+	{
+		elided = true;
+		ui->containerFile->setText(fm.elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()));
+	}
+	else if(elided || force)
+	{
+		elided = false;
+		ui->containerFile->setText(fileName);
+	}
+}
+
 void ContainerPage::init()
 {
-	ui->leftPane->init( ItemList::File, "Kontaineri failid" );
+	ui->leftPane->init(fileName);
 
-	QFont regular = Styles::font( Styles::Regular, 14 );
-	ui->container->setFont( regular );
-	ui->containerFile->setFont( regular );
+	ui->container->setFont(containerFont);
+	ui->containerFile->setFont(containerFont);
 
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
@@ -71,9 +103,10 @@ void ContainerPage::init()
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
-	connect( ui->cancel, &LabelButton::clicked, this, &ContainerPage::action );
-	connect( ui->leftPane, &ItemList::addItem, this, &ContainerPage::action );
-	connect( ui->rightPane, &ItemList::addItem, this, &ContainerPage::action );
+	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::action);
+	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::action);
+	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::action);
+	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::action);
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
@@ -81,57 +114,69 @@ void ContainerPage::initContainer( const QString &file, const QString &suffix )
 	const QFileInfo f( file );
 	if( !f.isFile() ) return;
 
-	ui->containerFile->setText( f.dir().path() + QDir::separator() + f.completeBaseName() + suffix );
+	fileName = f.dir().path() + QDir::separator() + f.completeBaseName() + suffix;
+	ui->containerFile->setText(fileName);
 }
 
 void ContainerPage::transition( ContainerState state, const QStringList &files )
 {
+	auto buttonWidth = ui->changeLocation->width();
+	bool resize = false;
+
 	ui->leftPane->stateChange( state );
 	ui->rightPane->stateChange( state );
 
 	switch( state )
 	{
 	case UnsignedContainer:
-		ui->leftPane->clear();
+		ui->changeLocation->show();
 		ui->rightPane->clear();
-		if( !files.isEmpty() ) initContainer( files[0], ".bdoc" );
 		hideRightPane();
-		ui->leftPane->init( ItemList::File, "Allkirjastamiseks valitud failid" );
-		showMainAction( SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA" );
+		ui->leftPane->init(fileName);
+		showSigningButton();
+		ui->cancel->setText("← KATKESTA");
 		showButtons( { ui->cancel, ui->save } );
 		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
+		resize = !ui->changeLocation->isHidden();
+		ui->leftPane->init(fileName);
+		showSigningButton();
+		ui->cancel->setText("← ALGUSESSE");
+		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
+		hideButtons( { ui->save } );
+		showRightPane( ItemList::Signature, "Kontaineri allkirjad puuduvad" );
 		break;
 	case SignedContainer:
-		ui->leftPane->init( ItemList::File, "Kontaineri failid" );
+		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->hide();
+		ui->leftPane->init(fileName);
 		showRightPane( ItemList::Signature, "Kontaineri allkirjad" );
-		ui->rightPane->clear();
-		ui->rightPane->add( SignatureAdd );
 		hideMainAction();
 		hideButtons( { ui->cancel, ui->save } );
 		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
-		ui->leftPane->clear();
-		ui->rightPane->clear();
-		if( !files.isEmpty() ) initContainer( files[0], ".cdoc" );
-		ui->leftPane->init( ItemList::File, "Krüpteerimiseks valitud failid" );
+		ui->changeLocation->show();
+		ui->leftPane->init(fileName);
 		showRightPane( ItemList::Address, "Adressaadid" );
 		showMainAction( EncryptContainer, "KRÜPTEERI" );
 		showButtons( { ui->cancel } );
 		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	case EncryptedContainer:
-		ui->leftPane->init( ItemList::File, "Krüpteeritud failid" );
-		ui->rightPane->clear();
+		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->hide();
+		ui->leftPane->init(fileName, "Krüpteeritud failid");
 		showRightPane( ItemList::Address, "Adressaadid" );
 		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
-		ui->leftPane->init( ItemList::File, "Krüpteeritud failid" );
+		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->hide();
+		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
 		showRightPane( ItemList::Address, "Adressaadid" );
 		hideMainAction();
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
@@ -143,6 +188,48 @@ void ContainerPage::transition( ContainerState state, const QStringList &files )
 	{
 		ui->leftPane->addFile( file );
 	}
+
+	if(resize)
+	{
+		// Forcibly resize the filename widget after hiding button
+		ui->containerFile->resize(ui->containerFile->width() + buttonWidth,
+		ui->containerFile->height());
+	}
+}
+
+void ContainerPage::transition(DigiDoc* container)
+{
+	clear();
+	ContainerState state = container->state();
+
+	setHeader(container->fileName());
+	DigiDocSignature::SignatureStatus status = DigiDocSignature::Valid;
+
+	if(!container->timestamps().isEmpty())
+	{
+		ui->rightPane->addHeader("Konteineri ajatemplid");
+
+		for(const DigiDocSignature &c: container->timestamps())
+			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
+	}
+
+	for(const DigiDocSignature &c: container->signatures())
+		ui->rightPane->addWidget(new SignatureItem(c, state, ui->rightPane));
+
+	ui->leftPane->setModel(container->documentModel());
+	QStringList files;
+	transition(state, files);
+
+	// switch( status )
+	// {
+	// case DigiDocSignature::Invalid: viewSignaturesError->setText( tr("NB! Invalid signature") ); break;
+	// case DigiDocSignature::Unknown: viewSignaturesError->setText( "<i>" + tr("NB! Status unknown") + "</i>" ); break;
+	// case DigiDocSignature::Test: viewSignaturesError->setText( tr("NB! Test signature") ); break;
+	// case DigiDocSignature::Warning: viewSignaturesError->setText( "<font color=\"#FFB366\">" + tr("NB! Signature contains warnings") + "</font>" ); break;
+	// case DigiDocSignature::NonQSCD: viewSignaturesError->clear(); break;
+	// case DigiDocSignature::Valid: viewSignaturesError->clear(); break;
+	// }
+	// break;
 }
 
 void ContainerPage::hideButtons( std::vector<QWidget*> buttons )
@@ -184,58 +271,26 @@ void ContainerPage::mobileDialog()
 	}
 }
 
-void ContainerPage::setContainer( ria::qdigidoc4::Pages page, const QString &file )
+void ContainerPage::transition(CryptoDoc* container)
 {
-	const QFileInfo f( file );
-	// TODO check if file
-	// if( !f.isFile() ) return Other;
+	clear();
+	ContainerState state = container->state();
 
+	setHeader(container->fileName());
 
-	ui->containerFile->setText( file );
+	for(const CKey &key: container->keys())
+		ui->rightPane->addWidget(new AddressItem(key, state, ui->rightPane));
 
-	if(page == CryptoDetails)
-	{
-		cryptoDoc.reset(new CryptoDoc(this));
-		cryptoDoc->open( file );
+	ui->leftPane->setModel(container->documentModel());
+	QStringList files;
+	transition(state, files);
+}
 
-		for( auto crypedFile: cryptoDoc->files())
-		{
-			FileItem *curr = new FileItem(crypedFile, ria::qdigidoc4::ContainerState::EncryptedContainer, this );
-			ui->leftPane->addWidget( curr );
-		}
-
-		for( CKey key : cryptoDoc->keys() )
-		{
-			AddressItem *curr = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-			QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
-						key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
-						key.cert.subjectInfo("CN").value(0);
-
-			QString type;
-			switch (SslCertificate(key.cert).type())
-			{
-			case SslCertificate::DigiIDType:
-				type = "Digi-ID";
-				break;
-			case SslCertificate::EstEidType:
-				type = "ID-kaart";
-				break;
-			case SslCertificate::MobileIDType:
-				type = "Mobiil-ID";
-				break;
-			default:
-				type = "UnknownType";
-				break;
-			}
-
-			curr->update(
-						name,
-						key.cert.subjectInfo("serialNumber").value(0),
-						type,
-						AddressItem::Remove );
-			ui->rightPane->addWidget( curr );
-		}
-	}
+void ContainerPage::setHeader(const QString &file)
+{
+	fileName = file;
+	containerFileWidth = fm.width(fileName);
+	elideFileName(true);
 }
 
 void ContainerPage::showButtons( std::vector<QWidget*> buttons )
@@ -268,45 +323,6 @@ void ContainerPage::showRightPane( ItemList::ItemType itemType, const QString &h
 	ui->rightPane->show();
 }
 
-void ContainerPage::Decrypt(int action)
-{
-	if(action == DecryptContainer)
-	{
-		WaitDialog waitDialog(qApp->activeWindow());
-		waitDialog.open();
-
-		cryptoDoc->decrypt();
-
-		QString dir = QFileDialog::getExistingDirectory(this, "Vali kataloog, kuhu failid salvestatakse");
-		if( dir.isEmpty() )
-			return;
-
-		CDocumentModel *m = cryptoDoc->documents();
-		for( int i = 0; i < m->rowCount(); ++i )
-		{
-			QModelIndex index = m->index( i, CDocumentModel::Name );
-			QString dest = dir + "/" + index.data(Qt::UserRole).toString();
-
-			if( QFile::exists( dest ) )
-			{
-				QMessageBox::StandardButton b = QMessageBox::warning( this, windowTitle(),
-					"Selle nimega fail on juba olemas. Kas kirjutan üle?",
-					QMessageBox::Yes | QMessageBox::No, QMessageBox::No );
-				if( b == QMessageBox::No )
-				{
-					dest = QFileDialog::getSaveFileName( this, "Salvesta", dest );
-					if( dest.isEmpty() )
-						continue;
-				}
-				else
-					QFile::remove( dest );
-			}
-			m->copy( index, dest );
-		}
-
-	}
-}
-
 void ContainerPage::showMainAction( Actions action, const QString &label )
 {
 	if( mainAction )
@@ -318,14 +334,37 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 	{
 		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
-
-		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::Decrypt );
-		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::action );
-		connect( mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction );
-		connect( mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown );
 		mainAction->show();
 	}
+
+	for(auto conn: actionConnections)
+		QObject::disconnect(conn);
+	actionConnections.clear();
+	if(action == SignatureMobile)
+	{
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog));
+	}
+	else
+	{
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::action));
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction));
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown));	
+	}
+
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
+}
+
+void ContainerPage::showSigningButton()
+{
+	hideOtherAction();
+	if(cardInReader)
+	{
+		showMainAction(SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA");
+	}
+	else
+	{
+		showMainAction(SignatureMobile, "ALLKIRJASTA\nMOBIILI-ID’GA");
+	}
 }
 
 void ContainerPage::resizeEvent( QResizeEvent *event )
@@ -338,4 +377,7 @@ void ContainerPage::resizeEvent( QResizeEvent *event )
 	{
 		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 	}
+
+	if(event->oldSize().width() != event->size().width())
+		elideFileName();
 }

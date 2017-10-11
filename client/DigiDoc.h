@@ -16,58 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 #pragma once
 
-#include <QtCore/QAbstractTableModel>
+#include "common_enums.h"
+#include "DocumentModel.h"
 
 #include <digidocpp/Container.h>
 #include <digidocpp/Exception.h>
+
+#include <memory>
 
 class DigiDoc;
 class QDateTime;
 class QSslCertificate;
 class QStringList;
-
-class DocumentModel: public QAbstractTableModel
-{
-	Q_OBJECT
-public:
-	enum Columns
-	{
-		Name = 0,
-		Mime = 1,
-		Size = 2,
-		Save = 3,
-		Remove = 4,
-		Id = 5,
-
-		NColumns
-	};
-
-	int columnCount( const QModelIndex &parent = QModelIndex() ) const;
-	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
-	Qt::ItemFlags flags( const QModelIndex &index ) const;
-	QMimeData *mimeData( const QModelIndexList &indexes ) const;
-	QStringList mimeTypes() const;
-	bool removeRows( int row, int count, const QModelIndex &parent = QModelIndex() );
-	int rowCount( const QModelIndex &parent = QModelIndex() ) const;
-	Qt::DropActions supportedDragActions() const;
-
-	void reset();
-	QString save( const QModelIndex &index, const QString &path ) const;
-
-public slots:
-	void open( const QModelIndex &index );
-
-private:
-	DocumentModel( DigiDoc *doc );
-	Q_DISABLE_COPY(DocumentModel)
-
-	DigiDoc *d;
-
-	friend class DigiDoc;
-};
 
 class DigiDocSignature
 {
@@ -123,6 +85,30 @@ private:
 	mutable unsigned int m_warning = 0;
 };
 
+
+class SDocumentModel: public DocumentModel
+{
+	Q_OBJECT
+
+public:
+	void addFile(const QString &file, const QString &mime = "application/octet-stream") override;
+	QString data(int row) const override;
+	bool removeRows(int row, int count) override;
+	int rowCount() const override;
+	QString save(int row, const QString &path) const override;
+
+public slots:
+	void open(int row) override;
+
+private:
+	SDocumentModel(DigiDoc *container);
+	Q_DISABLE_COPY(SDocumentModel)
+
+	DigiDoc *doc;
+	friend class DigiDoc;
+};
+
+
 class DigiDoc: public QObject
 {
 	Q_OBJECT
@@ -132,10 +118,16 @@ public:
 		BDoc2Type
 	};
 
-	explicit DigiDoc( QObject *parent = 0 );
+	enum Operation {
+		Saving,
+		Signing,
+		Validation
+	};
+
+	explicit DigiDoc(QObject *parent = nullptr);
 	~DigiDoc();
 
-	void addFile( const QString &file );
+	void addFile( const QString &file, const QString &mime );
 	bool addSignature( const QByteArray &signature );
 	void create( const QString &file );
 	void clear();
@@ -144,12 +136,13 @@ public:
 	bool isNull() const;
 	bool isReadOnlyTS() const;
 	bool isService() const;
+	bool isModified() const;
 	bool isSupported() const;
 	QString mediaType() const;
 	QString newSignatureID() const;
 	bool open( const QString &file );
 	void removeSignature( unsigned int num );
-	void save( const QString &filename = QString() );
+	bool save( const QString &filename = QString() );
 	bool sign(
 		const QString &city,
 		const QString &state,
@@ -159,6 +152,7 @@ public:
 		const QString &role2 );
 	QString signatureFormat() const;
 	QList<DigiDocSignature> signatures() const;
+	ria::qdigidoc4::ContainerState state();
 	QList<DigiDocSignature> timestamps() const;
 	DocumentType documentType() const;
 	QByteArray getFileDigest( unsigned int i ) const;
@@ -166,14 +160,21 @@ public:
 	static bool parseException( const digidoc::Exception &e, QStringList &causes,
 		digidoc::Exception::ExceptionCode &code);
 
+signals:
+	void operation(Operation op, bool started);
+
 private:
 	bool checkDoc( bool status = false, const QString &msg = QString() ) const;
 	void setLastError( const QString &msg, const digidoc::Exception &e );
 
-	digidoc::Container *b = nullptr, *parentContainer = nullptr;
+	std::unique_ptr<digidoc::Container> b;
+	std::unique_ptr<digidoc::Container> parentContainer;
+	std::unique_ptr<DocumentModel> 		m_documentModel;
+
+	ria::qdigidoc4::ContainerState containerState;
+	bool			modified = false;
 	QString			m_fileName;
-	DocumentModel	*m_documentModel = nullptr;
 	QStringList		m_tempFiles;
 
-	friend class DocumentModel;
+	friend class SDocumentModel;
 };

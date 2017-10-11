@@ -16,34 +16,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+#pragma once
 
- #pragma once
+#include <QObject>
+#include <QString>
 
-#include "widgets/StyledWidget.h"
-
-namespace Ui {
-class FileItem;
-}
-
-class FileItem : public StyledWidget
+class DocumentModel: public QObject
 {
 	Q_OBJECT
-
 public:
-	explicit FileItem( ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
-	explicit FileItem( const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
-	~FileItem();
+	DocumentModel(QObject *parent = nullptr);
+	virtual ~DocumentModel();
 
-	QString getFile();
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	virtual void addFile(const QString &file, const QString &mime = "application/octet-stream") = 0;
+	virtual QString data(int row) const = 0;
+	virtual bool removeRows(int row, int count) = 0;
+	virtual int rowCount() const = 0;
+	virtual QString save(int row, const QString &path) const = 0;
 
 signals:
-	void open(FileItem* item);
-	void download(FileItem* item);
-	
-protected:
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void removed(int row);
+	void added(const QString &file);
 
-private:
-	Ui::FileItem *ui;
+public slots:
+	virtual void open(int row) = 0;
 };

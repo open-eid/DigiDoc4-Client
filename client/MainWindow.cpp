@@ -19,22 +19,28 @@
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+
+#include "AccessCert.h"
 #include "Application.h"
 #include "DigiDoc.h"
+#include "FileDialog.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
 #include "XmlReader.h"
+#include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
 #include "dialogs/AddRecipients.h"
-#include "dialogs/SettingsDialog.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/SettingsDialog.h"
+#include "dialogs/WaitDialog.h"
 #include "util/FileUtil.h"
 
+#include <common/DateTime.h>
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
-#include <common/DateTime.h>
+#include <common/TokenData.h>
 
 #include <QDebug>
 #include <QFileDialog>
@@ -55,7 +61,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->version->setText( "Ver. " + qApp->applicationVersion() );
 
-	coatOfArms.reset( new QSvgWidget( ui->logo ) );
+	coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
 	coatOfArms->resize( 80, 32 );
 	coatOfArms->move( 15, 17 );
@@ -67,7 +73,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
 
-	selector.reset( new DropdownButton( ":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector ) );
+	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector);
 	selector->hide();
 	selector->resize( 12, 6 );
 	selector->move( 339, 32 );
@@ -99,11 +105,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	separator->move(110, 0);
 	separator->show();
 #endif
-	QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
-	bodyShadow->setBlurRadius(9.0);
-	bodyShadow->setColor(QColor(0, 0, 0, 160));
-	bodyShadow->setOffset(4.0);
-	ui->topBar->setGraphicsEffect(bodyShadow);
+	// Shadow below card selection toolbar
+	// QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
+	// bodyShadow->setBlurRadius(9.0);
+	// bodyShadow->setColor(QColor(0, 0, 0, 160));
+	// bodyShadow->setOffset(4.0);
+	// ui->topBar->setGraphicsEffect(bodyShadow);
 
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
@@ -112,15 +119,15 @@ MainWindow::MainWindow( QWidget *parent ) :
 	// Refresh card info in card pop-up menu
 	connect( smartcard, &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
 	// Show card pop-up menu
-	connect( selector.get(), &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
+	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 	smartcard->start();
 
 	ui->accordion->init();
 
 	hideWarningArea();
 
-	connect( ui->signIntroButton, &QPushButton::clicked, [this]() { navigateToPage(SignDetails); } );
-	connect( ui->cryptoIntroButton, &QPushButton::clicked, [this]() { navigateToPage(CryptoDetails); } );
+	connect( ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
+	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
@@ -146,7 +153,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::pageSelected( PageIcon *const page )
 {
-	selectPageIcon( page );
 	navigateToPage( page->getType() );
 }
 
@@ -195,10 +201,33 @@ void MainWindow::clearOverlay()
 	overlay.reset( nullptr );
 }
 
-void MainWindow::showOverlay( QWidget *parent )
+ContainerState MainWindow::currentState()
 {
-	overlay.reset( new Overlay(parent) );
-	overlay->show();
+	auto current = ui->startScreen->currentIndex();	
+	bool cryptoPage = (current == CryptoIntro || current == CryptoDetails);
+
+	if(cryptoPage && cryptoDoc)
+	{
+		return cryptoDoc->state();
+	}
+
+	if(digiDoc)
+	{
+		return digiDoc->state();
+	}
+
+	return cryptoPage ? ContainerState::UnencryptedContainer : ContainerState::UnsignedContainer;
+}
+
+bool MainWindow::decrypt()
+{
+	if(!cryptoDoc)
+		return false;
+
+	WaitDialog waitDialog(qApp->activeWindow());
+	waitDialog.open();
+
+	return cryptoDoc->decrypt();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -247,6 +276,17 @@ void MainWindow::dropEvent(QDropEvent *event)
 	}
 }
 
+bool MainWindow::encrypt()
+{
+	if(!cryptoDoc)
+		return false;
+
+	WaitDialog waitDialog(qApp->activeWindow());
+	waitDialog.open();
+
+	return cryptoDoc->encrypt();
+}
+
 void MainWindow::hideCardPopup()
 {
 	selector->init();
@@ -268,50 +308,100 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
 {
-	ui->startScreen->setCurrentIndex(page);
-	
+	bool navigate = true;	
 	if( page == SignDetails)
 	{
-		if( create )
+		navigate = false;
+		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
+		connect(signatureContainer.get(), &DigiDoc::operation, this, &MainWindow::operation);
+		if(create)
 		{
-			ui->signContainerPage->transition( ContainerState::UnsignedContainer, files );
+			// TODO asice from settings
+			QString filename = FileUtil::createFile(files[0], ".bdoc", tr("signature container"));
+			if(!filename.isNull())
+			{
+				signatureContainer->create(filename);
+				for(auto file: files)
+					signatureContainer->documentModel()->addFile(file);
+				navigate = true;
+			}
 		}
-		else
+		else if(signatureContainer->open(files[0]))
 		{
-			ui->signContainerPage->transition( ContainerState::SignedContainer );
-			if( !files.isEmpty() ) ui->signContainerPage->setContainer( page, files[0] );
+			navigate = true;
+		}
+		if(navigate)
+		{
+			delete digiDoc;
+			digiDoc = signatureContainer.release();
+			ui->signContainerPage->transition(digiDoc);
 		}
 	}
 	else if( page == CryptoDetails)
 	{
-		if( create )
+		navigate = false;
+		std::unique_ptr<CryptoDoc> cryptoContainer(new CryptoDoc(this));
+
+		if(create)
 		{
-			ui->cryptoContainerPage->transition( ContainerState::UnencryptedContainer, files );
+			QString filename = FileUtil::createFile(files[0], ".cdoc", tr("crypto container"));
+			if(!filename.isNull())
+			{
+				cryptoContainer->clear(filename);
+				for(auto file: files)
+					cryptoContainer->documentModel()->addFile(file);
+				auto cardData = smartcard->data();
+				if(!cardData.isNull())
+				{
+					cryptoContainer->addKey(CKey(cardData.authCert()));
+				}
+				navigate = true;
+			}
 		}
-		else
+		else if(cryptoContainer->open(files[0]))
 		{
-			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
-			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( page, files[0] );
+			navigate = true;
 		}
+		if(navigate)
+		{
+			delete cryptoDoc;
+			cryptoDoc = cryptoContainer.release();
+			ui->cryptoContainerPage->transition(cryptoDoc);
+		}
+	}
+
+	if(navigate)
+	{
+		selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
+		ui->startScreen->setCurrentIndex(page);
 	}
 }
 
 void MainWindow::onSignAction( int action )
 {
-	if( action == SignatureAdd || action == SignatureMobile )
+	if(action == SignatureAdd)
 	{
-		ui->signContainerPage->transition(ContainerState::SignedContainer);
-
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
-		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+		sign();
 	}
-	else if( action == ContainerCancel )
+	else if(action == SignatureMobile)
+	{
+		AccessCert access( this );
+	}
+	else if(action == ContainerCancel)
 	{
 		navigateToPage(Pages::SignIntro);
 	}
-	else if( action == FileRemove )
+	else if(action == FileRemove)
 	{
 
+	}
+	else if(action == ContainerSave)
+	{
+		if(digiDoc)
+		{
+			save();
+			ui->signContainerPage->transition(ContainerState::UnsignedSavedContainer);
+		}
 	}
 }
 
@@ -319,10 +409,13 @@ void MainWindow::onCryptoAction( int action )
 {
 	if( action == EncryptContainer )
 	{
-		ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
+		if(encrypt())
+		{
+			ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
-		notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+		}
 	}
 	else if( action == ContainerCancel )
 	{
@@ -339,14 +432,17 @@ void MainWindow::onCryptoAction( int action )
 	}
 	else if(action == DecryptContainer)
 	{
-		ui->cryptoContainerPage->transition( ContainerState::DecryptedContainer );
+		if(decrypt())
+		{
+			ui->cryptoContainerPage->transition(cryptoDoc);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
-		notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
+			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
+		}
 	}
 }
 
-void MainWindow::openFiles( const QStringList files )
+void MainWindow::openFiles(const QStringList files)
 {
 /*
 	1. If containers are not open:
@@ -376,12 +472,12 @@ void MainWindow::openFiles( const QStringList files )
 		if( files.size() == 1 )
 		{
 			auto fileType = FileUtil::detect( files[0] );
-			if( fileType == CryptoContainer )
+			if( fileType == CryptoDocument )
 			{
 				page = CryptoDetails;
 				create = false;
 			}
-			else if( fileType == SignatureContainer )
+			else if( fileType == SignatureDocument )
 			{
 				page = SignDetails;
 				create = false;
@@ -396,15 +492,92 @@ void MainWindow::openFiles( const QStringList files )
 	{
 		// TODO (2.)
 		page = current == CryptoIntro ? CryptoIntro : SignIntro;
+		ContainerState state = currentState();
+		switch(state)
+		{
+		case ContainerState::UnsignedContainer:
+		case ContainerState::UnsignedSavedContainer:
+			break;
+		case ContainerState::UnencryptedContainer:
+			break;
+		case ContainerState::SignedContainer:
+			page = SignDetails;
+			create = false;
+			break;
+		case ContainerState::EncryptedContainer:
+		case ContainerState::DecryptedContainer:
+			break;
+		}
 	}
 
-	selectPageIcon( page == CryptoDetails ? ui->crypto : ui->signature );
 	navigateToPage( page, files, create );
+}
+
+void MainWindow::openContainer()
+{
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"));
+	if(!files.isEmpty())
+		openFiles(files);
+}
+
+void MainWindow::operation(int op, bool started)
+{
+	qDebug() << "Op " << op << (started ? " started" : " ended");
 }
 
 void MainWindow::resizeEvent( QResizeEvent *event )
 {
 	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
+}
+
+bool MainWindow::save()
+{
+	if(digiDoc)
+	{
+		if( !FileDialog::fileIsWritable(digiDoc->fileName()) &&
+			QMessageBox::Yes == QMessageBox::warning( this, tr("DigiDoc4 client"),
+				tr("Cannot alter container %1. Save different location?")
+					.arg(digiDoc->fileName().normalized(QString::NormalizationForm_C)),
+				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+		{
+			QString file = selectFile(digiDoc->fileName(), true);
+			if( !file.isEmpty() )
+			{
+				return digiDoc->save(file);
+			}
+		}
+		return digiDoc->save();
+	}
+
+	return false;
+}
+
+QString MainWindow::selectFile( const QString &filename, bool fixedExt )
+{
+	static const QString adoc = tr("Documents (%1)").arg( "*.adoc" );
+	static const QString bdoc = tr("Documents (%1)").arg( "*.bdoc" );
+	static const QString edoc = tr("Documents (%1)").arg( "*.edoc" );
+	static const QString asic = tr("Documents (%1)").arg( "*.asice *.sce" );
+	const QString ext = QFileInfo( filename ).suffix().toLower();
+	QStringList exts;
+	QString active;
+	if( fixedExt )
+	{
+		if( ext == "bdoc" ) exts << bdoc;
+		if( ext == "asic" || ext == "sce" ) exts << asic;
+		if( ext == "edoc" ) exts << edoc;
+		if( ext == "adoc" ) exts << adoc;
+	}
+	else
+	{
+		exts << bdoc << asic << edoc << adoc;
+		if( ext == "bdoc" ) active = bdoc;
+		if( ext == "asice" || ext == "sce" ) active = asic;
+		if( ext == "edoc" ) active = edoc;
+		if( ext == "adoc" ) active = adoc;
+	}
+
+	return FileDialog::getSaveFileName( this, tr("Save file"), filename, exts.join(";;"), &active );
 }
 
 void MainWindow::selectPageIcon( PageIcon* page )
@@ -444,7 +617,8 @@ void MainWindow::showCardStatus()
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
-
+		ui->signContainerPage->cardSigning(true);
+		
 		ui->cardInfo->update( QSharedPointer<const QCardInfo>(new QCardInfo( t )) );
 
 		if( t.authCert().type() & SslCertificate::EstEidType )
@@ -461,10 +635,11 @@ void MainWindow::showCardStatus()
 	}
 	else
 	{
+		ui->signContainerPage->cardSigning(false);
+
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event( "PCSC service is not running" );
-		else
-		if ( t.readers().isEmpty() )
+		else if ( t.readers().isEmpty() )
 			noReader_NoCard_Loading_Event( "No readers found" );
 		else if ( t.card().isEmpty() )
 			noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
@@ -482,6 +657,33 @@ void MainWindow::showCardStatus()
 		selector->hide();
 		hideCardPopup();
 	}
+}
+
+void MainWindow::showOverlay( QWidget *parent )
+{
+	overlay.reset( new Overlay(parent) );
+	overlay->show();
+}
+
+bool MainWindow::sign()
+{
+	AccessCert access(this);
+	if( !access.validate() )
+		return false;
+
+	// TODO read place&roles from settings
+	if(digiDoc->sign("", "", "", "", "", ""))
+	{
+		access.increment();
+		save();
+		ui->signContainerPage->transition(digiDoc);
+
+		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
+		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+		return true;
+	}
+
+	return false;
 }
 
 void MainWindow::updateCardData()

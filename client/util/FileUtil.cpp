@@ -19,6 +19,10 @@
 
 #include "FileUtil.h"
 
+#include "Application.h"
+#include "FileDialog.h"
+
+#include <QDir>
 #include <QFileInfo>
 
 using namespace ria::qdigidoc4;
@@ -31,16 +35,35 @@ FileType FileUtil::detect( const QString &filename )
 	QStringList exts = QStringList() << "bdoc" << "ddoc" << "asice" << "sce" << "asics" << "scs" << "edoc" << "adoc";
 	if( exts.contains( f.suffix(), Qt::CaseInsensitive ) )
 	{
-		return SignatureContainer;
+		return SignatureDocument;
 	}
 	if( !QString::compare(f.suffix(), "cdoc", Qt::CaseInsensitive) )
 	{
-		return CryptoContainer;
+		return CryptoDocument;
 	}
 	if( !QString::compare(f.suffix(), "pdf", Qt::CaseInsensitive) )
 	{
-		return SignatureContainer;
+		return SignatureDocument;
 	}
 
 	return Other;
 }
+
+QString FileUtil::createFile(const QString &file, const QString &extension, const QString &type)
+{
+	const QFileInfo f( file );
+	if( !f.isFile() ) return QString();
+
+	QString fileName = f.dir().path() + QDir::separator() + f.completeBaseName() + extension;
+	if(QFile::exists(fileName))
+	{
+		QString capitalized = type[0].toUpper() + type.mid(1);
+		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), qApp->tr("Create %1").arg(type), fileName,
+						QString("%1 (*%2)").arg(capitalized).arg(extension));
+		if(!fileName.isEmpty())
+			QFile::remove( fileName );
+	}
+
+	return fileName;
+}
+

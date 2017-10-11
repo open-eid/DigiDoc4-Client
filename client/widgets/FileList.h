@@ -19,44 +19,33 @@
 
 #pragma once
 
-#include "DigiDoc.h"
-#include "widgets/StyledWidget.h"
+#include "DocumentModel.h"
+#include "widgets/FileItem.h"
+#include "widgets/ItemList.h"
 
-#include <memory>
+#include <QWidget>
 
-namespace Ui {
-class SignatureItem;
-}
+class QLabel;
 
-class QFontMetrics;
-
-class SignatureItem : public StyledWidget
+class FileList : public ItemList
 {
 	Q_OBJECT
 
 public:
-	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
-	~SignatureItem();
+	explicit FileList(QWidget *parent = nullptr);
+	~FileList();
 
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void init(const QString &container, const QString &label = "Kontaineri failid");
+	void addFile(const QString& file);
+	void setModel(DocumentModel *documentModel);
 
-protected:
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
+private slots:
+	void open(FileItem *item) const;
+	void save(FileItem *item);
 
 private:
-	void elideName();
-	QString red(const QString &text);
-	void setIcon(const QString &icon, int width = 17, int height = 20);
+	int index(StyledWidget *item) const;
 
-	Ui::SignatureItem *ui;
-	DigiDocSignature signature;
-
-	bool elided;
-	bool invalid;
-	int fixedWidth;
-	int nameWidth;
-	QString name;
-	std::unique_ptr<QFontMetrics> nameMetrics;
+	QString container;
+	DocumentModel *documentModel;
 };
-

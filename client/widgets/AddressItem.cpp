@@ -19,8 +19,12 @@
 
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
+
 #include "Styles.h"
+#include "crypto/CryptoDoc.h"
 #include "effects/ButtonHoverFilter.h"
+
+#include <common/SslCertificate.h>
 
 using namespace ria::qdigidoc4;
 
@@ -38,6 +42,33 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent)
 
 	ui->add->hide();
 	ui->added->hide();
+}
+
+AddressItem::AddressItem(const CKey &key, ContainerState state, QWidget *parent)
+: AddressItem(state, parent)
+{
+	QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
+			key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
+			key.cert.subjectInfo("CN").value(0);
+
+	QString type;
+	switch (SslCertificate(key.cert).type())
+	{
+	case SslCertificate::DigiIDType:
+		type = "Digi-ID";
+		break;
+	case SslCertificate::EstEidType:
+		type = "ID-kaart";
+		break;
+	case SslCertificate::MobileIDType:
+		type = "Mobiil-ID";
+		break;
+	default:
+		type = "UnknownType";
+		break;
+	}
+
+	update(name, key.cert.subjectInfo("serialNumber").value(0), type, AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()

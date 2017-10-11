@@ -21,9 +21,9 @@
 
 #include "Application.h"
 
-#include "DigiDoc.h"
 #include "MainWindow.h"
 #include "QSigner.h"
+#include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
 
 #include <common/AboutDialog.h>

@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocClient
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,44 +19,31 @@
 
 #pragma once
 
-#include "DigiDoc.h"
-#include "widgets/StyledWidget.h"
+#include <QtWidgets/QMessageBox>
 
-#include <memory>
-
-namespace Ui {
-class SignatureItem;
-}
-
-class QFontMetrics;
-
-class SignatureItem : public StyledWidget
+class QSslCertificate;
+class QSslKey;
+class AccessCertPrivate;
+class AccessCert: public QMessageBox
 {
 	Q_OBJECT
 
 public:
-	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
-	~SignatureItem();
+	explicit AccessCert( QWidget *parent = 0 );
+	~AccessCert();
 
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	bool validate();
 
-protected:
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
+	static QSslCertificate cert();
+	static QSslKey key();
+	void increment();
+	bool installCert( const QByteArray &data, const QString &password );
+	void remove();
 
 private:
-	void elideName();
-	QString red(const QString &text);
-	void setIcon(const QString &icon, int width = 17, int height = 20);
+	unsigned int count( const QString &date ) const;
+	bool isDefaultCert( const QSslCertificate &cert ) const;
+	void showWarning( const QString &msg );
 
-	Ui::SignatureItem *ui;
-	DigiDocSignature signature;
-
-	bool elided;
-	bool invalid;
-	int fixedWidth;
-	int nameWidth;
-	QString name;
-	std::unique_ptr<QFontMetrics> nameMetrics;
+	AccessCertPrivate *d;
 };
-
