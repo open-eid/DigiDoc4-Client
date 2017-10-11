@@ -20,6 +20,7 @@
 #pragma once
 
 #include "common_enums.h"
+#include "crypto/CryptoDoc.h"
 #include "widgets/ItemList.h"
 #include "widgets/MainAction.h"
 
@@ -43,7 +44,7 @@ public:
 	~ContainerPage();
 
 	void transition( ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList() );
-	void setContainer( const QString &file );
+	void setContainer( ria::qdigidoc4::Pages page, const QString &file );
 
 signals:
 	void action( int code );
@@ -61,10 +62,13 @@ private:
 	void mobileDialog();
 	void showButtons( std::vector<QWidget*> buttons );
 	void showDropdown();
+	void Decrypt(int action);
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
 	void showRightPane( ItemList::ItemType itemType, const QString &header );
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
 	std::unique_ptr<MainAction> otherAction;
+
+	std::unique_ptr<CryptoDoc> cryptoDoc;
 };

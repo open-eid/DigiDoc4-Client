@@ -20,6 +20,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
+#include "DigiDoc.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
@@ -278,7 +279,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		else
 		{
 			ui->signContainerPage->transition( ContainerState::SignedContainer );
-			if( !files.isEmpty() ) ui->signContainerPage->setContainer( files[0] );
+			if( !files.isEmpty() ) ui->signContainerPage->setContainer( page, files[0] );
 		}
 	}
 	else if( page == CryptoDetails)
@@ -290,7 +291,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		else
 		{
 			ui->cryptoContainerPage->transition( ContainerState::EncryptedContainer );
-			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( files[0] );
+			if( !files.isEmpty() ) ui->cryptoContainerPage->setContainer( page, files[0] );
 		}
 	}
 }
@@ -335,6 +336,13 @@ void MainWindow::onCryptoAction( int action )
 	{
 		AddRecipients dlg(this);
 		dlg.exec();
+	}
+	else if(action == DecryptContainer)
+	{
+		ui->cryptoContainerPage->transition( ContainerState::DecryptedContainer );
+
+		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+		notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
 	}
 }
 

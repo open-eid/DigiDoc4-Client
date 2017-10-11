@@ -35,6 +35,8 @@
 #include <QSvgWidget>
 #include <QWidget>
 
+class DigiDoc;
+
 namespace Ui {
 class MainWindow;
 }

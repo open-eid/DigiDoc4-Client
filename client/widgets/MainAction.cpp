@@ -28,7 +28,7 @@ MainAction::MainAction( ria::qdigidoc4::Actions action, const QString& label, QW
 	ui->setupUi(this);
 	ui->mainAction->setFont( Styles::font( Styles::Condensed, 16 ) );
 	
-	connect( ui->mainAction, &QPushButton::clicked, [this](){ emit this->action(this->actionType); });
+	connect( ui->mainAction, &QPushButton::clicked, [this](bool checked){ emit this->action(this->actionType); });
 	connect( ui->otherCards, &QToolButton::clicked, this, &MainAction::dropdown );
 	
 	update( action, label, showSelector );

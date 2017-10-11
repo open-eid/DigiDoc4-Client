@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4Common
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,15 +19,32 @@
 
 #pragma once
 
-#include <common/TokenData.h>
+#include <QDialog>
 
-class TokenData4: public TokenData
+namespace Ui {
+class WaitDialog;
+}
+
+class Overlay;
+
+class WaitDialog : public QDialog
 {
-public:
-	TokenData4() : TokenData() {};
-	TokenData4( const TokenData &other ) :TokenData( other ) {};
-	~TokenData4() {};
+	Q_OBJECT
 
-	QString GetName() const;
-	QString GetCode() const;
+public:
+	explicit WaitDialog(QWidget *parent = 0);
+	~WaitDialog();
+
+	int exec() override;
+	void open() override;
+
+public slots:
+	void setText(const QString &text);
+
+private:
+	void closeOverlay();
+	void showOverlay();
+
+	Ui::WaitDialog *ui;
+	Overlay *overlay = nullptr;
 };
