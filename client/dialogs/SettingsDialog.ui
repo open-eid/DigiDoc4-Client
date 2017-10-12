@@ -382,7 +382,7 @@ QPushButton:!checked{
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="pageGeneral">
          <widget class="QLabel" name="lblGeneralLang">
@@ -749,6 +749,9 @@ QRadioButton::indicator::checked {
             <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 2px;
 background-color: #FFFFFF;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
           <widget class="QRadioButton" name="rdGeneralSameDirectory">
