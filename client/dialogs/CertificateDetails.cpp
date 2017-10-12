@@ -173,10 +173,10 @@ void CertificateDetails::on_tblDetails_itemSelectionChanged()
 	const QList<QTableWidgetItem*> &list = ui->tblDetails->selectedItems();
 	if( !list.isEmpty() )
 	{
-		auto contentItem = list.constLast();
-		auto userData = contentItem->data(Qt::UserRole);
-		ui->detailedValue->setPlainText(userData.isNull() ? 
-			contentItem->data(Qt::DisplayRole).toString() : userData.toString());
+//		auto contentItem = list.constLast();
+//		auto userData = contentItem->data(Qt::UserRole);
+//		ui->detailedValue->setPlainText(userData.isNull() ? 
+//			contentItem->data(Qt::DisplayRole).toString() : userData.toString());
 	}
 }
 
