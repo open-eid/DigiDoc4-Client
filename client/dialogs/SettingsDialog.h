@@ -36,7 +36,11 @@ public:
 	int exec() override;
 
 private:
-	void changePage(QPushButton* button);
+    void initUI();
+    void initFunctionality();
+    void updateCert();
+	void updateProxy();
+    void changePage(QPushButton* button);
 
 	Ui::SettingsDialog *ui;
 };
