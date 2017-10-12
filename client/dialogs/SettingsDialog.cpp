@@ -21,15 +21,32 @@
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 
-#include "dialogs/CertificateDetails.h"
-#include "effects/Overlay.h"
+#include "Application.h"
+#include "AccessCert.h"
 #include "Styles.h"
 
+#include "common/SslCertificate.h"
+#include "dialogs/CertificateDetails.h"
+#include "effects/Overlay.h"
+#include "common/Settings.h"
+
+#include <QDebug>
 #include <QtNetwork/QSslCertificate>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::SettingsDialog)
+{
+    initUI();
+    initFunctionality();
+}
+
+SettingsDialog::~SettingsDialog()
+{
+    delete ui;
+}
+
+void SettingsDialog::initUI()
 {
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
@@ -88,8 +105,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	ui->txtSigningZipCode->setFont(regularFont);
 
 	// pageAccessSert
-	ui->txtEvidence->setFont(regularFont);
-	ui->chkEvidenceIgnore->setFont(regularFont);
+    ui->txtEvidence->setFont(regularFont);
+    ui->txtEvidenceCert->setFont(regularFont);
+    ui->chkEvidenceIgnore->setFont(regularFont);
 
 	// pageProxy
 	ui->rdProxyNone->setFont(regularFont);
@@ -145,10 +163,128 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
 }
 
-SettingsDialog::~SettingsDialog()
+void SettingsDialog::initFunctionality()
 {
-	delete ui;
+	Settings s2(qApp->applicationName());
+	Settings s;
+
+
+/* Ei esine uues dialoogis */
+//    d->showIntro->setChecked( s2.value( "ClientIntro", true ).toBool() );
+//	d->showIntro2->setChecked( s.value( "Crypto/Intro", true ).toBool() );
+//	d->cdocwithddoc->setChecked( s2.value( "cdocwithddoc", false ).toBool() );
+//	connect(d->cdocwithddoc, &QCheckBox::toggled, [](bool checked){
+//	Settings(qApp->applicationName()).setValueEx( "cdocwithddoc", checked, false );
+//	});
+	s.beginGroup( "Client" );
+	// Cleanup old keys
+	s.remove( "lastPath" );
+	s.remove( "type" );
+	s.remove( "Intro" );
+	s2.remove( "Intro" );
+	updateCert();
+#ifdef Q_OS_MAC
+//	d->p12Label->setText( tr(
+//		"Regarding to terms and conditions of validity confirmation service you're "
+//		"allowed to use the service in extent of 10 signatures per month. Additional "
+//		"information is available from <a href=\"http://www.id.ee/kehtivuskinnitus\">"
+//		"http://www.id.ee/kehtivuskinnitus</a> or phone 1777 (only from Estonia), (+372) 6773377") );
+//	d->label->hide();
+	ui->rdGeneralSameDirectory->hide();
+	ui->txtGeneralDirectory->hide();
+//	d->selectDefaultDir->hide();
+	ui->rdGeneralSpecifyDirectory->hide();
+#else
+	ui->rdGeneralSameDirectory->setChecked( s.value( "DefaultDir" ).isNull() );
+	ui->txtGeneralDirectory->setText( s.value( "DefaultDir" ).toString() );
+	ui->rdGeneralSpecifyDirectory->setChecked( s.value( "AskSaveAs", true ).toBool() );
+#endif
+
+	qDebug() << "Tüüp: " << s2.value( "type", "bdoc" ).toString();
+	if(s2.value( "type", "bdoc" ).toString() == "bdoc")
+		ui->rdSigningBdoc->setChecked(true);
+	else
+		ui->rdSigningAsice->setChecked(true);
+	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "type", "bdoc", "bdoc" ); } } );
+	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "type", "asice", "bdoc" ); } } );
+
+	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
+	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
+
+/* Ei esine uues dialoogis */
+//	d->tokenRestart->hide();
+//#ifdef Q_OS_WIN
+//	connect( d->tokenRestart, &QPushButton::clicked, []{
+//		qApp->setProperty("restart", true);
+//		qApp->quit();
+//	});
+//	d->tokenBackend->setChecked(Settings(qApp->applicationName()).value("tokenBackend").toUInt());
+//	connect( d->tokenBackend, &QCheckBox::toggled, [=](bool checked){
+//		Settings(qApp->applicationName()).setValueEx("tokenBackend", int(checked), 0);
+//		d->tokenRestart->show();
+//	});
+//#else
+//	d->tokenBackend->hide();
+//#endif
+
+
+	ui->txtSigningRole->setText( s.value( "Role" ).toString() );
+//	ui->signResolutionInput->setText( s.value( "Resolution" ).toString() );
+	ui->txtSigningCity->setText( s.value( "City" ).toString() );
+	ui->txtSigningCounty->setText( s.value( "State" ).toString() );
+	ui->txtSigningCountry->setText( s.value( "Country" ).toString() );
+	ui->txtSigningZipCode->setText( s.value( "Zip" ).toString() );
+
+
+//	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
+	switch (s2.value("proxyConfig", 0 ).toInt())
+	{
+	case 1:
+		ui->rdProxySystem->setChecked( true );
+		break;
+	case 2:
+		ui->rdProxyManual->setChecked( true );
+		break;
+	default:
+		ui->rdProxyNone->setChecked( true );
+		break;
+	}
+
+	updateProxy();
+//	d->p12Ignore->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
+
+	s.endGroup();
 }
+
+
+void SettingsDialog::updateCert()
+{
+    QSslCertificate c = AccessCert::cert();
+    if( !c.isNull() )
+        ui->txtEvidenceCert->setText(
+            tr("Issued to: %1<br />Valid to: %2 %3")
+            .arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
+            .arg( c.expiryDate().toString("dd.MM.yyyy") )
+            .arg( !SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
+    else
+        ui->txtEvidenceCert->setText( "<b>" + tr("Server access certificate is not installed.") + "</b>" );
+    ui->btnNavShowCertificate->setEnabled( !c.isNull() );
+    ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
+}
+
+void SettingsDialog::updateProxy()
+{
+	ui->txtProxyHost->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyHost->setText(Application::confValue( Application::ProxyHost ).toString());
+	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
+	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
+	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
+//	d->proxySSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
+}
+
 
 
 void SettingsDialog::changePage(QPushButton* button)
