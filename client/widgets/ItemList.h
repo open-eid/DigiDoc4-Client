@@ -47,11 +47,9 @@ public:
 	virtual ~ItemList();
 
 	void init(ItemType itemType, const QString &header, bool hideFind = true);
-	void add(int code);
 	void addHeader(const QString &label);
 	void addHeaderWidget(StyledWidget *widget);
 	void addWidget(StyledWidget *widget);
-	void addFile( const QString& file );
 	void clear();
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
@@ -59,16 +57,14 @@ signals:
 	void addItem(int code);
 
 protected:
-	void showDownload();
-
+	Ui::ItemList* ui;
 	std::vector<StyledWidget*> items;
 	ria::qdigidoc4::ContainerState state;
 
 private:
 	QString addLabel() const;
-	QString anchor() const;
+	void addressSearch();
 
-	Ui::ItemList* ui;
 	QLabel *header = nullptr;
 	int headerItems;
 	ItemType itemType;

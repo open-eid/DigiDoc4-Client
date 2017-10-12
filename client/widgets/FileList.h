@@ -45,7 +45,9 @@ private slots:
 
 private:
 	int index(StyledWidget *item) const;
-
+	void selectFile();
+	void showDownload();
+	
 	QString container;
 	DocumentModel *documentModel;
 };

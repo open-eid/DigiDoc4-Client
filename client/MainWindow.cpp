@@ -31,7 +31,6 @@
 #include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
-#include "dialogs/AddRecipients.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
@@ -400,38 +399,19 @@ void MainWindow::onSignAction( int action )
 		if(digiDoc)
 		{
 			save();
-			ui->signContainerPage->transition(ContainerState::UnsignedSavedContainer);
+			ui->signContainerPage->transition(digiDoc);
 		}
 	}
 }
 
 void MainWindow::onCryptoAction( int action )
 {
-	if( action == EncryptContainer )
+	switch(action)
 	{
-		if(encrypt())
-		{
-			ui->cryptoContainerPage->transition(ContainerState::EncryptedContainer);
-
-			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
-			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
-		}
-	}
-	else if( action == ContainerCancel )
-	{
+	case ContainerCancel:
 		navigateToPage(Pages::CryptoIntro);
-	}
-	else if( action == FileRemove )
-	{
-
-	}
-	else if( action == AddressAdd )
-	{
-		AddRecipients dlg(this);
-		dlg.exec();
-	}
-	else if(action == DecryptContainer)
-	{
+		break;
+	case DecryptContainer:
 		if(decrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc);
@@ -439,6 +419,16 @@ void MainWindow::onCryptoAction( int action )
 			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
 			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
 		}
+		break;
+	case EncryptContainer:
+		if(encrypt())
+		{
+			ui->cryptoContainerPage->transition(cryptoDoc);
+
+			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+		}
+		break;
 	}
 }
 

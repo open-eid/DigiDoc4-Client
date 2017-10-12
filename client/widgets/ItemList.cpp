@@ -21,9 +21,8 @@
 #include "ui_ItemList.h"
 
 #include "Styles.h"
-#include "effects/ButtonHoverFilter.h"
+#include "dialogs/AddRecipients.h"
 #include "widgets/AddressItem.h"
-#include "widgets/FileItem.h"
 #include "widgets/SignatureItem.h"
 
 #include <vector>
@@ -41,30 +40,11 @@ ItemList::ItemList(QWidget *parent)
 	ui->setupUi(this);
 	ui->findGroup->hide();
 	ui->download->hide();	
-
-	connect(ui->add, &LabelButton::clicked, this, &ItemList::add);
 }
 
 ItemList::~ItemList()
 {
 	delete ui;
-}
-
-void ItemList::add(int code)
-{
-	StyledWidget* item;
-	if (code == FileAdd)
-	{
-		item = new FileItem(state);
-	} 
-	else
-	{
-		item = new AddressItem(state);
-	}
-	addWidget(item);
-
-	if(code != SignatureAdd)  // !!! To prevent infinite cycle
-		emit addItem( code );
 }
 
 void ItemList::addHeader(const QString &label)
@@ -101,22 +81,18 @@ QString ItemList::addLabel() const
 	}
 }
 
+void ItemList::addressSearch()
+{
+	AddRecipients dlg(qApp->activeWindow());
+	dlg.exec();
+}
+
 void ItemList::addWidget(StyledWidget *widget)
 {
 	ui->itemLayout->insertWidget(items.size() + headerItems, widget);
 	widget->show();
 	widget->stateChange(state);
 	items.push_back(widget);
-}
-
-QString ItemList::anchor() const
-{
-	switch(itemType)
-	{
-	case File: return "#add-file";
-	case Address: return "#add-address";
-	default: return "";
-	}
 }
 
 void ItemList::clear()
@@ -171,15 +147,9 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == File ? FileAdd : AddressAdd);
 		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
-}
 
-void ItemList::showDownload()
-{
-	if(ui->download->isHidden())
-	{
-		ui->download->show();
-		ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
-	}
+	if(item == Address)
+		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
 }
 
 void ItemList::stateChange( ContainerState state )
