@@ -25,13 +25,16 @@
 #include "AccessCert.h"
 #include "Styles.h"
 
+#include "common/Settings.h"
 #include "common/SslCertificate.h"
+#include "FileDialog.h"
 #include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
-#include "common/Settings.h"
 
+#include <digidocpp/Conf.h>
 #include <QDebug>
 #include <QtNetwork/QSslCertificate>
+#include <QtNetwork/QNetworkProxy>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
 	QDialog(parent),
@@ -161,12 +164,37 @@ void SettingsDialog::initUI()
 	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(3); } );
 	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(4); } );
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
+
+	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
+
+	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 }
 
 void SettingsDialog::initFunctionality()
 {
 	Settings s2(qApp->applicationName());
 	Settings s;
+
+	//languages->setCurrentIndex( lang.indexOf( Settings::language() ) );
+
+	qDebug() << "Language " << Settings::language();
+
+	if(Settings::language() == "en")
+	{
+		ui->rdGeneralEnglish->setChecked(true);
+	}
+	else if(Settings::language() == "ru")
+	{
+		ui->rdGeneralRussian->setChecked(true);
+	}
+	else
+	{
+		ui->rdGeneralEstonian->setChecked(true);
+	}
+
+	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValueEx( "Main/Language", "et", "et" ); } } );
+	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValueEx( "Main/Language", "en", "et" ); } } );
+	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValueEx( "Main/Language", "ru", "et" ); } } );
 
 
 /* Ei esine uues dialoogis */
@@ -195,12 +223,32 @@ void SettingsDialog::initFunctionality()
 //	d->selectDefaultDir->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
-	ui->rdGeneralSameDirectory->setChecked( s.value( "DefaultDir" ).isNull() );
+	if(s.value( "DefaultDir" ).isNull())
+	{
+		ui->rdGeneralSameDirectory->setChecked( true );
+		ui->btGeneralChooseDirectory->setEnabled(false);
+	}
+	else
+	{
+		ui->rdGeneralSpecifyDirectory->setChecked( true );
+		ui->btGeneralChooseDirectory->setEnabled(true);
+	}
+	connect( ui->rdGeneralSameDirectory, &QRadioButton::toggled, this, [this](bool checked)
+		{
+			if(checked)
+			{
+				ui->btGeneralChooseDirectory->setEnabled(false);
+				ui->txtGeneralDirectory->setText( QString() );
+		} } );
+	connect( ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool checked)
+		{
+			if(checked)
+			{
+				ui->btGeneralChooseDirectory->setEnabled(true);
+		} } );
 	ui->txtGeneralDirectory->setText( s.value( "DefaultDir" ).toString() );
-	ui->rdGeneralSpecifyDirectory->setChecked( s.value( "AskSaveAs", true ).toBool() );
 #endif
 
-	qDebug() << "Tüüp: " << s2.value( "type", "bdoc" ).toString();
 	if(s2.value( "type", "bdoc" ).toString() == "bdoc")
 		ui->rdSigningBdoc->setChecked(true);
 	else
@@ -237,7 +285,11 @@ void SettingsDialog::initFunctionality()
 
 
 //	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
-	switch (s2.value("proxyConfig", 0 ).toInt())
+
+	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
+	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
+	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
+	switch(s2.value("proxyConfig", 0 ).toInt())
 	{
 	case 1:
 		ui->rdProxySystem->setChecked( true );
@@ -251,7 +303,7 @@ void SettingsDialog::initFunctionality()
 	}
 
 	updateProxy();
-//	d->p12Ignore->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
+	ui->chkEvidenceIgnore->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
 
 	s.endGroup();
 }
@@ -272,12 +324,18 @@ void SettingsDialog::updateCert()
     ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
 }
 
-void SettingsDialog::updateProxy()
+
+
+void SettingsDialog::setProxyEnabled()
 {
 	ui->txtProxyHost->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
+}
+
+void SettingsDialog::updateProxy()
+{
 	ui->txtProxyHost->setText(Application::confValue( Application::ProxyHost ).toString());
 	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
 	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
@@ -285,6 +343,110 @@ void SettingsDialog::updateProxy()
 //	d->proxySSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
 }
 
+void SettingsDialog::save()
+{
+	Settings s;
+
+//	s.setValueEx( "Crypto/Intro", d->showIntro2->isChecked(), true );
+//	Settings(qApp->applicationName()).setValue( "ClientIntro", d->showIntro->isChecked() );
+	s.beginGroup( "Client" );
+//	s.setValueEx( "Overwrite", d->signOverwrite->isChecked(), false );
+#ifndef Q_OS_MAC
+//	s.setValueEx( "AskSaveAs", d->askSaveAs->isChecked(), true );
+	Settings(qApp->applicationName()).setValueEx("DefaultDir", ui->txtGeneralDirectory->text(), QString());
+#endif
+
+	if(ui->rdProxyNone->isChecked())
+	{
+		Settings(qApp->applicationName()).setValueEx("proxyConfig", 0, 0);
+	}
+	else if(ui->rdProxySystem->isChecked())
+	{
+		Settings(qApp->applicationName()).setValueEx("proxyConfig", 1, 0);
+	}
+	else if(ui->rdProxyManual->isChecked())
+	{
+		Settings(qApp->applicationName()).setValueEx("proxyConfig", 2, 0);
+	}
+
+	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
+	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
+	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
+	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
+//	Application::setConfValue( Application::ProxySSL, d->proxySSL->isChecked() );
+	Application::setConfValue( Application::PKCS12Disable, ui->chkEvidenceIgnore->isChecked() );
+	loadProxy(digidoc::Conf::instance());
+	updateProxy();
+
+	saveSignatureInfo(
+		ui->txtSigningRole->text(),
+		QString(), //d->signResolutionInput->text(),
+		ui->txtSigningCity->text(),
+		ui->txtSigningCounty->text(),
+		ui->txtSigningCountry->text(),
+		ui->txtSigningZipCode->text(),
+		true );
+}
+
+void SettingsDialog::loadProxy( const digidoc::Conf *conf )
+{
+	switch(Settings(qApp->applicationName()).value("proxyConfig", 0).toUInt())
+	{
+	case 0:
+		QNetworkProxyFactory::setUseSystemConfiguration(false);
+		QNetworkProxy::setApplicationProxy(QNetworkProxy());
+		break;
+	case 1:
+		QNetworkProxyFactory::setUseSystemConfiguration(true);
+		break;
+	default:
+		QNetworkProxyFactory::setUseSystemConfiguration(false);
+		QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy,
+			QString::fromStdString(conf->proxyHost()),
+			QString::fromStdString(conf->proxyPort()).toUInt(),
+			QString::fromStdString(conf->proxyUser()),
+			QString::fromStdString(conf->proxyPass())));
+		break;
+	}
+}
+
+
+void SettingsDialog::openDirectory()
+{
+	QString dir = Settings().value( "Client/DefaultDir" ).toString();
+	dir = FileDialog::getExistingDirectory( this, tr("Select folder"), dir );
+
+	if(!dir.isEmpty())
+	{
+		ui->rdGeneralSpecifyDirectory->setChecked( true );
+		Settings().setValueEx( "Client/DefaultDir", dir, QString() );
+		ui->txtGeneralDirectory->setText( dir );
+	}
+}
+
+
+void SettingsDialog::saveSignatureInfo(
+		const QString &role,
+		const QString &resolution,
+		const QString &city,
+		const QString &state,
+		const QString &country,
+		const QString &zip,
+		bool force )
+{
+	Settings s;
+	s.beginGroup( "Client" );
+	if( force || s.value( "Overwrite", "false" ).toBool() )
+	{
+		s.setValueEx( "Role", role, QString() );
+		s.setValueEx( "Resolution", resolution, QString() );
+		s.setValueEx( "City", city, QString() );
+		s.setValueEx( "State", state, QString() ),
+		s.setValueEx( "Country", country, QString() );
+		s.setValueEx( "Zip", zip, QString() );
+	}
+	s.endGroup();
+}
 
 
 void SettingsDialog::changePage(QPushButton* button)
