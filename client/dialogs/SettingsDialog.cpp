@@ -172,12 +172,7 @@ void SettingsDialog::initUI()
 
 void SettingsDialog::initFunctionality()
 {
-	Settings s2(qApp->applicationName());
-	Settings s;
-
 	//languages->setCurrentIndex( lang.indexOf( Settings::language() ) );
-
-	qDebug() << "Language " << Settings::language();
 
 	if(Settings::language() == "en")
 	{
@@ -198,18 +193,18 @@ void SettingsDialog::initFunctionality()
 
 
 /* Ei esine uues dialoogis */
-//    d->showIntro->setChecked( s2.value( "ClientIntro", true ).toBool() );
-//	d->showIntro2->setChecked( s.value( "Crypto/Intro", true ).toBool() );
-//	d->cdocwithddoc->setChecked( s2.value( "cdocwithddoc", false ).toBool() );
+//    d->showIntro->setChecked( Settings(qApp->applicationName()).value( "ClientIntro", true ).toBool() );
+//	d->showIntro2->setChecked( Settings(qApp->applicationName()).value( "Crypto/Intro", true ).toBool() );
+//	d->cdocwithddoc->setChecked( Settings(qApp->applicationName()).value( "cdocwithddoc", false ).toBool() );
 //	connect(d->cdocwithddoc, &QCheckBox::toggled, [](bool checked){
 //	Settings(qApp->applicationName()).setValueEx( "cdocwithddoc", checked, false );
 //	});
-	s.beginGroup( "Client" );
+	Settings(qApp->applicationName()).beginGroup( "Client" );
 	// Cleanup old keys
-	s.remove( "lastPath" );
-	s.remove( "type" );
-	s.remove( "Intro" );
-	s2.remove( "Intro" );
+	Settings(qApp->applicationName()).remove( "lastPath" );
+	Settings(qApp->applicationName()).remove( "type" );
+	Settings(qApp->applicationName()).remove( "Intro" );
+	Settings(qApp->applicationName()).remove( "Intro" );
 	updateCert();
 #ifdef Q_OS_MAC
 //	d->p12Label->setText( tr(
@@ -223,7 +218,7 @@ void SettingsDialog::initFunctionality()
 //	d->selectDefaultDir->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
-	if(s.value( "DefaultDir" ).isNull())
+	if(Settings(qApp->applicationName()).value( "DefaultDir" ).isNull())
 	{
 		ui->rdGeneralSameDirectory->setChecked( true );
 		ui->btGeneralChooseDirectory->setEnabled(false);
@@ -246,10 +241,10 @@ void SettingsDialog::initFunctionality()
 			{
 				ui->btGeneralChooseDirectory->setEnabled(true);
 		} } );
-	ui->txtGeneralDirectory->setText( s.value( "DefaultDir" ).toString() );
+	ui->txtGeneralDirectory->setText( Settings(qApp->applicationName()).value( "DefaultDir" ).toString() );
 #endif
 
-	if(s2.value( "type", "bdoc" ).toString() == "bdoc")
+	if(Settings(qApp->applicationName()).value( "type", "bdoc" ).toString() == "bdoc")
 		ui->rdSigningBdoc->setChecked(true);
 	else
 		ui->rdSigningAsice->setChecked(true);
@@ -276,12 +271,12 @@ void SettingsDialog::initFunctionality()
 //#endif
 
 
-	ui->txtSigningRole->setText( s.value( "Role" ).toString() );
-//	ui->signResolutionInput->setText( s.value( "Resolution" ).toString() );
-	ui->txtSigningCity->setText( s.value( "City" ).toString() );
-	ui->txtSigningCounty->setText( s.value( "State" ).toString() );
-	ui->txtSigningCountry->setText( s.value( "Country" ).toString() );
-	ui->txtSigningZipCode->setText( s.value( "Zip" ).toString() );
+	ui->txtSigningRole->setText( Settings(qApp->applicationName()).value( "Role" ).toString() );
+//	ui->signResolutionInput->setText( Settings(qApp->applicationName()).value( "Resolution" ).toString() );
+	ui->txtSigningCity->setText( Settings(qApp->applicationName()).value( "City" ).toString() );
+	ui->txtSigningCounty->setText( Settings(qApp->applicationName()).value( "State" ).toString() );
+	ui->txtSigningCountry->setText( Settings(qApp->applicationName()).value( "Country" ).toString() );
+	ui->txtSigningZipCode->setText( Settings(qApp->applicationName()).value( "Zip" ).toString() );
 
 
 //	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
@@ -289,7 +284,7 @@ void SettingsDialog::initFunctionality()
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	switch(s2.value("proxyConfig", 0 ).toInt())
+	switch(Settings(qApp->applicationName()).value("proxyConfig", 0 ).toInt())
 	{
 	case 1:
 		ui->rdProxySystem->setChecked( true );
@@ -305,7 +300,7 @@ void SettingsDialog::initFunctionality()
 	updateProxy();
 	ui->chkEvidenceIgnore->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
 
-	s.endGroup();
+	Settings(qApp->applicationName()).endGroup();
 }
 
 
@@ -345,12 +340,10 @@ void SettingsDialog::updateProxy()
 
 void SettingsDialog::save()
 {
-	Settings s;
-
 //	s.setValueEx( "Crypto/Intro", d->showIntro2->isChecked(), true );
 //	Settings(qApp->applicationName()).setValue( "ClientIntro", d->showIntro->isChecked() );
-	s.beginGroup( "Client" );
-//	s.setValueEx( "Overwrite", d->signOverwrite->isChecked(), false );
+	Settings(qApp->applicationName()).beginGroup( "Client" );
+//	Settings(qApp->applicationName()).setValueEx( "Overwrite", d->signOverwrite->isChecked(), false );
 #ifndef Q_OS_MAC
 //	s.setValueEx( "AskSaveAs", d->askSaveAs->isChecked(), true );
 	Settings(qApp->applicationName()).setValueEx("DefaultDir", ui->txtGeneralDirectory->text(), QString());
@@ -434,18 +427,17 @@ void SettingsDialog::saveSignatureInfo(
 		const QString &zip,
 		bool force )
 {
-	Settings s;
-	s.beginGroup( "Client" );
-	if( force || s.value( "Overwrite", "false" ).toBool() )
+	Settings(qApp->applicationName()).beginGroup( "Client" );
+	if( force || Settings(qApp->applicationName()).value( "Overwrite", "false" ).toBool() )
 	{
-		s.setValueEx( "Role", role, QString() );
-		s.setValueEx( "Resolution", resolution, QString() );
-		s.setValueEx( "City", city, QString() );
-		s.setValueEx( "State", state, QString() ),
-		s.setValueEx( "Country", country, QString() );
-		s.setValueEx( "Zip", zip, QString() );
+		Settings(qApp->applicationName()).setValueEx( "Role", role, QString() );
+		Settings(qApp->applicationName()).setValueEx( "Resolution", resolution, QString() );
+		Settings(qApp->applicationName()).setValueEx( "City", city, QString() );
+		Settings(qApp->applicationName()).setValueEx( "State", state, QString() ),
+		Settings(qApp->applicationName()).setValueEx( "Country", country, QString() );
+		Settings(qApp->applicationName()).setValueEx( "Zip", zip, QString() );
 	}
-	s.endGroup();
+	Settings(qApp->applicationName()).endGroup();
 }
 
 
