@@ -16,8 +16,9 @@ configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
 qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/PinPopup.ui dialogs/PinUnblock.ui dialogs/SettingsDialog.ui
-					widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui
-					widgets/ItemList.ui widgets/MainAction.ui dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui )
+		widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui widgets/InfoStack.ui
+		widgets/ItemList.ui widgets/MainAction.ui dialogs/MobileDialog.ui widgets/NoCardInfo.ui widgets/OtherData.ui widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui
+		widgets/OtherId.ui widgets/NoOtherId.ui )
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
@@ -75,6 +76,8 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/SignatureItem.cpp
 	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp
+	widgets/OtherId.cpp
+	widgets/NoOtherId.cpp
 	)
 add_manifest( ${PROGNAME} )
 target_link_libraries( ${PROGNAME}

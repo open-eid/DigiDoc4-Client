@@ -128,6 +128,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked );
 	connect( ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked );   // To load photo
 	connect( ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); } );
+	connect( ui->accordion, &Accordion::checkOtherEID, this, &MainWindow::getOtherEID );
 
 	showCardStatus();
 	connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
@@ -258,10 +259,10 @@ void MainWindow::hideWarningArea()
 	ui->warning->hide();
 }
 
-// Mouse click on warning region will hide it.
+// Any mouse click inside application will hide it.
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-	if(ui->warning->underMouse())
+//	if(ui->warning->underMouse() ) // Mouse click on warning region will hide it.
 		hideWarningArea();
 }
 
@@ -496,9 +497,11 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	ui->infoStack->clearPicture();
 	ui->infoStack->hide();
 	ui->accordion->hide();
-	ui->accordion->updateOtherData( false );
+	ui->accordion->updateOtherData( false );    // E-mail
 	ui->myEid->invalidCertIcon( false );
 	ui->myEid->pinIsBlockedIcon( false );
+	ui->accordion->clearOtherEID();
+	hideWarningArea();
 }
 
 // Loads picture 

@@ -38,6 +38,9 @@ OtherData::OtherData(QWidget *parent) :
 	ui->lblEMail->setFont( font );
 	ui->lblNoForwarding->setFont( font );
 	ui->labelEestiEe->setFont( Styles::font( Styles::Regular, 12 ) );
+    QString decoration = "style='color: #006EB5;  text-decoration: none; font-weight: 900;'";
+	ui->labelEestiEe->setText( "Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist <a href='www.eesti.ee'><span " + decoration + ">eesti.ee</span></a>" );
+    ui->labelEestiEe->setOpenExternalLinks( true );	
 	ui->activate->setFont( condensed );
 	ui->btnCheckEMail->setFont( condensed );
 	ui->activate->setStyleSheet(
