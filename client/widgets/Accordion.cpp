@@ -20,6 +20,10 @@
 #include "Accordion.h"
 #include "ui_Accordion.h"
 
+#include "XmlReader.h"
+
+Q_DECLARE_METATYPE(MobileStatus)
+
 Accordion::Accordion( QWidget *parent ) :
 	StyledWidget( parent ),
 	ui( new Ui::Accordion ),
@@ -55,17 +59,20 @@ void Accordion::init()
 
 	connect(ui->authBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
 	connect(ui->signBox, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetails( QString ) ) );
-
+    
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
 
 	ui->contentOtherData->update( false );
+    clearOtherEID();
 }
 
 void Accordion::closeOtherSection(AccordionTitle* opened)
 {
 	openSection->closeSection();
 	openSection = opened;
+
+	idCheckOtherEIdNeeded( opened );
 }
 
 void Accordion::updateOtherData( bool activate, const QString &eMail, const quint8 &errorCode )
@@ -88,6 +95,8 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 	ui->authBox->update( QSmartCardData::Pin1Type, smartCard );
 	ui->signBox->update( QSmartCardData::Pin2Type, smartCard );
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
+
+	ui->otherID->update( "Teised eID-d");
 }
 
 void Accordion::changePin1( bool isForgotPin, bool isBlockedPin )
@@ -108,4 +117,48 @@ void Accordion::changePuk( bool isForgotPuk, bool isBlockedPin )
 void Accordion::certDetails( const QString &link )
 {
 	emit certDetailsClicked ( link );
+}
+
+void Accordion::clearOtherEID()
+{
+	// Set to default Certificate Info page
+	closeOtherSection( ui->titleVerifyCert );
+    ui->titleVerifyCert->openSection();
+
+	ui->mobID->hide();
+	ui->digiID->hide();
+
+	setProperty( "MOBILE_ID_STATUS", QVariant() );
+}
+
+void Accordion::updateMobileIdInfo()
+{
+	MobileStatus mobile = property("MOBILE_ID_STATUS").value<MobileStatus>();
+	ui->mobID->updateMobileId(
+		mobile.value( "MSISDN" ),
+		mobile.value( "Operator" ),
+		mobile.value( "Status" ),
+		mobile.value( "MIDCertsValidTo" ) );
+
+	ui->mobID->show();
+}
+
+void Accordion::updateDigiIdInfo()
+{
+	QVariant digiIdData = property("DIGI_ID_STATUS").value<QVariant>();
+
+	ui->digiID->updateDigiId(
+		"PA789456123",
+		"01.01.2022",
+		"Activ",
+		"07.08.2022, 20:59:59" );
+
+	ui->digiID->show();
+}
+
+void Accordion::idCheckOtherEIdNeeded( AccordionTitle* opened )
+{
+	// If user has not validated (entering valid PIN1) the EID status yet.
+	if ( property("MOBILE_ID_STATUS").isNull() && opened == ui->titleOtherEID )
+		emit checkOtherEID ();
 }

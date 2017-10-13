@@ -1,5 +1,5 @@
 /*
- * QEstEidUtil
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,32 +19,24 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "widgets/StyledWidget.h"
 
-class QSslCertificate;
-class QFrame;
+namespace Ui {
+class OtherId;
+}
 
-class SSLConnectPrivate;
-class SSLConnect: public QObject
+class OtherId : public StyledWidget
 {
 	Q_OBJECT
 
 public:
-	enum RequestType {
-		EmailInfo,
-		ActivateEmails,
-		MobileInfo,
-		PictureInfo
-	};
+	explicit OtherId( QWidget *parent = nullptr );
+	~OtherId();
 
-	explicit SSLConnect( QObject *parent = 0 );
-	~SSLConnect();
-
-	QString errorString() const;
-	QByteArray getUrl( RequestType type, const QString &value = QString() );
-	void setToken( const QSslCertificate &cert, Qt::HANDLE key );
-	void showPopup( QFrame &popup, const QString &labelText );
+	void update( const QString &lblIdName = "" );
+	void updateMobileId( const QString &telNumber, const QString &telOperator, const QString &status, const QString &validTill );
+	void updateDigiId( const QString &docNumber, const QString &docValid, const QString &status, const QString &validTill );
 
 private:
-	SSLConnectPrivate	*d;
+	Ui::OtherId *ui;
 };

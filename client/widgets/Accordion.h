@@ -42,6 +42,10 @@ public:
 	QString getEmail();
 	void setFocusToEmail();
 	void updateInfo( const QSmartCard *smartCard );
+	void clearOtherEID();
+	void updateMobileIdInfo();
+	void updateDigiIdInfo();
+	void idCheckOtherEIdNeeded( AccordionTitle* opened );
 
 private Q_SLOTS:
   	void changePin1( bool isForgotPin, bool isBlockedPin );
@@ -56,6 +60,7 @@ signals:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked( bool isForgotPuk );
 	void certDetailsClicked( const QString &link );
+	void checkOtherEID();
 
 private:
 	Ui::Accordion *ui;

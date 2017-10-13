@@ -27,6 +27,8 @@
 #include <QtCore/QJsonObject>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
 
 QByteArray HTTPRequest::request() const
 {
@@ -168,12 +170,17 @@ QByteArray SSLConnect::getUrl( RequestType type, const QString &value )
 		return QByteArray();
 	}
 
+//	Does not align it to center on Unix
+    QFrame popup (qApp->activeWindow(), Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
+
+    showPopup( popup, label );
+/*
 	QProgressDialog p( label, QString(), 0, 0, qApp->activeWindow() );
 	p.setWindowFlags( (p.windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint );
 	if( QProgressBar *bar = p.findChild<QProgressBar*>() )
 		bar->setTextVisible( false );
 	p.open();
-
+*/
 	QEventLoop e;
 	connect( d, SIGNAL(finished()), &e, SLOT(quit()) );
 	d->start();
@@ -219,4 +226,22 @@ void SSLConnect::setToken( const QSslCertificate &cert, Qt::HANDLE key )
 		!SSL_use_PrivateKey( d->ssl, (EVP_PKEY*)key ) ||
 		!SSL_check_private_key( d->ssl ) )
 		d->setError();
+}
+
+void SSLConnect::showPopup( QFrame &popup, const QString &labelText )
+{
+	popup.resize( 328, 179 );
+	popup.setStyleSheet( "background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px;" );
+
+	QLabel *lbl = new QLabel( &popup );
+	lbl->setStyleSheet( QString( "font-size: 24px; color: #53c964; border: none;" ) );
+	lbl->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
+	lbl->setText( labelText );
+	lbl->show();
+
+	QHBoxLayout* layout=new QHBoxLayout ( &popup );
+	layout->addWidget( lbl );
+	popup.setLayout( layout );
+
+	popup.show();
 }

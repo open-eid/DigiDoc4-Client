@@ -83,4 +83,8 @@ void AccordionTitle::mouseReleaseEvent(QMouseEvent *event)
 		emit opened(this);
 		openSection();
 	}
+	else
+	{
+		accordion->idCheckOtherEIdNeeded( this );
+	}
 }

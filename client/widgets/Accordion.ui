@@ -167,6 +167,62 @@
      <property name="styleSheet">
       <string notr="true">background-color: white;</string>
      </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="widgetOther" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="OtherId" name="mobID" native="true"/>
+         </item>
+         <item>
+          <widget class="OtherId" name="digiID" native="true">
+           <zorder>mobID</zorder>
+          </widget>
+         </item>
+         <item>
+          <widget class="NoOtherId" name="otherID" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
@@ -188,6 +244,18 @@
    <class>OtherData</class>
    <extends>QWidget</extends>
    <header>widgets/OtherData.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OtherId</class>
+   <extends>QWidget</extends>
+   <header>widgets/OtherId.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NoOtherId</class>
+   <extends>QWidget</extends>
+   <header>widgets/NoOtherId.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
