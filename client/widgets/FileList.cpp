@@ -18,8 +18,10 @@
  */
 
 #include "FileList.h"
+#include "ui_ItemList.h"
 
 #include "FileDialog.h"
+#include "effects/ButtonHoverFilter.h"
 #include "widgets/FileItem.h"
 
 #include <QDir>
@@ -32,6 +34,7 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
+	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);	
 }
 
 FileList::~FileList()
@@ -91,9 +94,33 @@ void FileList::save(FileItem *item)
 		
 }
 
+void FileList::selectFile()
+{
+	if(!documentModel)
+		return;
+
+	const QFileInfo f(container);
+	QString dir;
+	if(f.isFile()) dir = f.dir().path();
+
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Add files"), dir);
+	for(auto file: files)
+		documentModel->addFile(file);
+}
+
+void FileList::showDownload()
+{
+	if(ui->download->isHidden())
+	{
+		ui->download->show();
+		ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
+	}
+}
+
 void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
+	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));

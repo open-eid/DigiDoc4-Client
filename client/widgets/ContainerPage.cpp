@@ -118,120 +118,6 @@ void ContainerPage::initContainer( const QString &file, const QString &suffix )
 	ui->containerFile->setText(fileName);
 }
 
-void ContainerPage::transition( ContainerState state, const QStringList &files )
-{
-	auto buttonWidth = ui->changeLocation->width();
-	bool resize = false;
-
-	ui->leftPane->stateChange( state );
-	ui->rightPane->stateChange( state );
-
-	switch( state )
-	{
-	case UnsignedContainer:
-		ui->changeLocation->show();
-		ui->rightPane->clear();
-		hideRightPane();
-		ui->leftPane->init(fileName);
-		showSigningButton();
-		ui->cancel->setText("← KATKESTA");
-		showButtons( { ui->cancel, ui->save } );
-		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
-		break;
-	case UnsignedSavedContainer:
-		resize = !ui->changeLocation->isHidden();
-		ui->leftPane->init(fileName);
-		showSigningButton();
-		ui->cancel->setText("← ALGUSESSE");
-		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
-		hideButtons( { ui->save } );
-		showRightPane( ItemList::Signature, "Kontaineri allkirjad puuduvad" );
-		break;
-	case SignedContainer:
-		resize = !ui->changeLocation->isHidden();
-		ui->changeLocation->hide();
-		ui->leftPane->init(fileName);
-		showRightPane( ItemList::Signature, "Kontaineri allkirjad" );
-		hideMainAction();
-		hideButtons( { ui->cancel, ui->save } );
-		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
-		break;
-	case UnencryptedContainer:
-		ui->changeLocation->show();
-		ui->leftPane->init(fileName);
-		showRightPane( ItemList::Address, "Adressaadid" );
-		showMainAction( EncryptContainer, "KRÜPTEERI" );
-		showButtons( { ui->cancel } );
-		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
-		break;
-	case EncryptedContainer:
-		resize = !ui->changeLocation->isHidden();
-		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Krüpteeritud failid");
-		showRightPane( ItemList::Address, "Adressaadid" );
-		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
-		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
-		showButtons( { ui->navigateToContainer, ui->email } );
-		break;
-	case DecryptedContainer:
-		resize = !ui->changeLocation->isHidden();
-		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
-		showRightPane( ItemList::Address, "Adressaadid" );
-		hideMainAction();
-		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
-		showButtons( { ui->navigateToContainer, ui->email } );
-		break;
-	}
-
-	for( auto file: files )
-	{
-		ui->leftPane->addFile( file );
-	}
-
-	if(resize)
-	{
-		// Forcibly resize the filename widget after hiding button
-		ui->containerFile->resize(ui->containerFile->width() + buttonWidth,
-		ui->containerFile->height());
-	}
-}
-
-void ContainerPage::transition(DigiDoc* container)
-{
-	clear();
-	ContainerState state = container->state();
-
-	setHeader(container->fileName());
-	DigiDocSignature::SignatureStatus status = DigiDocSignature::Valid;
-
-	if(!container->timestamps().isEmpty())
-	{
-		ui->rightPane->addHeader("Konteineri ajatemplid");
-
-		for(const DigiDocSignature &c: container->timestamps())
-			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
-	}
-
-	for(const DigiDocSignature &c: container->signatures())
-		ui->rightPane->addWidget(new SignatureItem(c, state, ui->rightPane));
-
-	ui->leftPane->setModel(container->documentModel());
-	QStringList files;
-	transition(state, files);
-
-	// switch( status )
-	// {
-	// case DigiDocSignature::Invalid: viewSignaturesError->setText( tr("NB! Invalid signature") ); break;
-	// case DigiDocSignature::Unknown: viewSignaturesError->setText( "<i>" + tr("NB! Status unknown") + "</i>" ); break;
-	// case DigiDocSignature::Test: viewSignaturesError->setText( tr("NB! Test signature") ); break;
-	// case DigiDocSignature::Warning: viewSignaturesError->setText( "<font color=\"#FFB366\">" + tr("NB! Signature contains warnings") + "</font>" ); break;
-	// case DigiDocSignature::NonQSCD: viewSignaturesError->clear(); break;
-	// case DigiDocSignature::Valid: viewSignaturesError->clear(); break;
-	// }
-	// break;
-}
-
 void ContainerPage::hideButtons( std::vector<QWidget*> buttons )
 {
 	for( auto *button: buttons ) button->hide();
@@ -271,19 +157,19 @@ void ContainerPage::mobileDialog()
 	}
 }
 
-void ContainerPage::transition(CryptoDoc* container)
+void ContainerPage::resizeEvent( QResizeEvent *event )
 {
-	clear();
-	ContainerState state = container->state();
+	if( mainAction )
+	{
+		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
+	}
+	if( otherAction )
+	{
+		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
+	}
 
-	setHeader(container->fileName());
-
-	for(const CKey &key: container->keys())
-		ui->rightPane->addWidget(new AddressItem(key, state, ui->rightPane));
-
-	ui->leftPane->setModel(container->documentModel());
-	QStringList files;
-	transition(state, files);
+	if(event->oldSize().width() != event->size().width())
+		elideFileName();
 }
 
 void ContainerPage::setHeader(const QString &file)
@@ -367,17 +253,126 @@ void ContainerPage::showSigningButton()
 	}
 }
 
-void ContainerPage::resizeEvent( QResizeEvent *event )
+void ContainerPage::transition(CryptoDoc* container)
 {
-	if( mainAction )
+	clear();
+	ContainerState state = container->state();
+	ui->leftPane->stateChange(state);
+	ui->rightPane->stateChange(state);
+
+	setHeader(container->fileName());
+
+	for(const CKey &key: container->keys())
+		ui->rightPane->addWidget(new AddressItem(key, state, ui->rightPane));
+
+	ui->leftPane->setModel(container->documentModel());
+	updatePanes(state);
+}
+
+void ContainerPage::transition(DigiDoc* container)
+{
+	clear();
+	ContainerState state = container->state();
+	ui->leftPane->stateChange(state);
+	ui->rightPane->stateChange(state);
+
+	setHeader(container->fileName());
+	DigiDocSignature::SignatureStatus status = DigiDocSignature::Valid;
+
+	if(!container->timestamps().isEmpty())
 	{
-		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
-	}
-	if( otherAction )
-	{
-		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
+		ui->rightPane->addHeader("Konteineri ajatemplid");
+
+		for(const DigiDocSignature &c: container->timestamps())
+			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
 	}
 
-	if(event->oldSize().width() != event->size().width())
-		elideFileName();
+	for(const DigiDocSignature &c: container->signatures())
+		ui->rightPane->addWidget(new SignatureItem(c, state, ui->rightPane));
+
+	ui->leftPane->setModel(container->documentModel());
+	updatePanes(state);
+
+	// TODO Show invalid signature status
+	// switch( status )
+	// {
+	// case DigiDocSignature::Invalid: viewSignaturesError->setText( tr("NB! Invalid signature") ); break;
+	// case DigiDocSignature::Unknown: viewSignaturesError->setText( "<i>" + tr("NB! Status unknown") + "</i>" ); break;
+	// case DigiDocSignature::Test: viewSignaturesError->setText( tr("NB! Test signature") ); break;
+	// case DigiDocSignature::Warning: viewSignaturesError->setText( "<font color=\"#FFB366\">" + tr("NB! Signature contains warnings") + "</font>" ); break;
+	// case DigiDocSignature::NonQSCD: viewSignaturesError->clear(); break;
+	// case DigiDocSignature::Valid: viewSignaturesError->clear(); break;
+	// }
+	// break;
+}
+
+void ContainerPage::updatePanes(ContainerState state)
+{
+	auto buttonWidth = ui->changeLocation->width();
+	bool resize = false;
+
+	switch( state )
+	{
+	case UnsignedContainer:
+		ui->changeLocation->show();
+		ui->rightPane->clear();
+		hideRightPane();
+		ui->leftPane->init(fileName);
+		showSigningButton();
+		ui->cancel->setText("← KATKESTA");
+		showButtons( { ui->cancel, ui->save } );
+		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
+		break;
+	case UnsignedSavedContainer:
+		resize = !ui->changeLocation->isHidden();
+		ui->leftPane->init(fileName);
+		showSigningButton();
+		ui->cancel->setText("← ALGUSESSE");
+		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
+		hideButtons( { ui->save } );
+		showRightPane( ItemList::Signature, "Kontaineri allkirjad puuduvad" );
+		break;
+	case SignedContainer:
+		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->hide();
+		ui->leftPane->init(fileName);
+		showRightPane( ItemList::Signature, "Kontaineri allkirjad" );
+		hideMainAction();
+		hideButtons( { ui->cancel, ui->save } );
+		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
+		break;
+	case UnencryptedContainer:
+		ui->changeLocation->show();
+		ui->leftPane->init(fileName);
+		showRightPane( ItemList::Address, "Adressaadid" );
+		showMainAction( EncryptContainer, "KRÜPTEERI" );
+		showButtons( { ui->cancel } );
+		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
+		break;
+	case EncryptedContainer:
+		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->hide();
+		ui->leftPane->init(fileName, "Krüpteeritud failid");
+		showRightPane( ItemList::Address, "Adressaadid" );
+		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
+		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
+		showButtons( { ui->navigateToContainer, ui->email } );
+		break;
+	case DecryptedContainer:
+		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->hide();
+		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
+		showRightPane( ItemList::Address, "Adressaadid" );
+		hideMainAction();
+		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
+		showButtons( { ui->navigateToContainer, ui->email } );
+		break;
+	}
+
+	if(resize)
+	{
+		// Forcibly resize the filename widget after hiding button
+		ui->containerFile->resize(ui->containerFile->width() + buttonWidth,
+		ui->containerFile->height());
+	}
 }

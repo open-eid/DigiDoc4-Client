@@ -49,7 +49,6 @@ public:
 
 	void cardSigning(bool enable);
 	void setHeader(const QString &file);
-	void transition(ria::qdigidoc4::ContainerState state, const QStringList &files = QStringList());
 	void transition(CryptoDoc *container);
 	void transition(DigiDoc* container);
 
@@ -74,6 +73,7 @@ private:
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
 	void showRightPane( ItemList::ItemType itemType, const QString &header );
 	void showSigningButton();
+	void updatePanes(ria::qdigidoc4::ContainerState state);
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
