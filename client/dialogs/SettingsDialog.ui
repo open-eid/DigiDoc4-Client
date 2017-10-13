@@ -381,9 +381,6 @@ QPushButton:!checked{
       </item>
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
         <widget class="QWidget" name="pageGeneral">
          <widget class="QLabel" name="lblGeneralLang">
           <property name="geometry">
@@ -749,9 +746,6 @@ QRadioButton::indicator::checked {
             <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 2px;
 background-color: #FFFFFF;</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
            </property>
           </widget>
           <widget class="QRadioButton" name="rdGeneralSameDirectory">
@@ -1317,23 +1311,26 @@ background-color: #FFFFFF;</string>
             <x>21</x>
             <y>10</y>
             <width>749</width>
-            <height>70</height>
+            <height>101</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>749</width>
-            <height>70</height>
+            <height>101</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>749</width>
-            <height>70</height>
+            <height>101</height>
            </size>
           </property>
           <property name="text">
-           <string>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377</string>
+           <string>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377
+
+Kelle väljastatud: DigiDoc4 Cleint ver. 4.0.0
+Kehtib kuni: 03.01.2019</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1379,34 +1376,6 @@ QCheckBox::indicator:checked {
           </property>
           <property name="text">
            <string>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="txtEvidenceCert">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>85</y>
-            <width>749</width>
-            <height>35</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>749</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>749</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
           </property>
          </widget>
         </widget>

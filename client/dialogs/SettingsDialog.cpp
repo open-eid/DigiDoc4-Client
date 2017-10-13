@@ -25,6 +25,7 @@
 #include "AccessCert.h"
 #include "Styles.h"
 
+#include "common/Diagnostics.h"
 #include "common/Settings.h"
 #include "common/SslCertificate.h"
 #include "FileDialog.h"
@@ -33,6 +34,7 @@
 
 #include <digidocpp/Conf.h>
 #include <QDebug>
+#include <QThreadPool>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QNetworkProxy>
 
@@ -187,24 +189,22 @@ void SettingsDialog::initFunctionality()
 		ui->rdGeneralEstonian->setChecked(true);
 	}
 
-	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValueEx( "Main/Language", "et", "et" ); } } );
-	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValueEx( "Main/Language", "en", "et" ); } } );
-	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValueEx( "Main/Language", "ru", "et" ); } } );
+	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "et" ); qApp->loadTranslation( "et" ); } } );
+	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "en" ); qApp->loadTranslation( "en" ); } } );
+	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "ru" ); qApp->loadTranslation( "ru" ); } } );
 
 
 /* Ei esine uues dialoogis */
-//    d->showIntro->setChecked( Settings(qApp->applicationName()).value( "ClientIntro", true ).toBool() );
+//    d->showIntro->setChecked( Settings(qApp->applicationName()).value( "Client/ClientIntro", true ).toBool() );
 //	d->showIntro2->setChecked( Settings(qApp->applicationName()).value( "Crypto/Intro", true ).toBool() );
-//	d->cdocwithddoc->setChecked( Settings(qApp->applicationName()).value( "cdocwithddoc", false ).toBool() );
+//	d->cdocwithddoc->setChecked( Settings(qApp->applicationName()).value( "Client/cdocwithddoc", false ).toBool() );
 //	connect(d->cdocwithddoc, &QCheckBox::toggled, [](bool checked){
-//	Settings(qApp->applicationName()).setValueEx( "cdocwithddoc", checked, false );
+//	Settings(qApp->applicationName()).setValueEx( "Client/cdocwithddoc", checked, false );
 //	});
-	Settings(qApp->applicationName()).beginGroup( "Client" );
 	// Cleanup old keys
-	Settings(qApp->applicationName()).remove( "lastPath" );
-	Settings(qApp->applicationName()).remove( "type" );
-	Settings(qApp->applicationName()).remove( "Intro" );
-	Settings(qApp->applicationName()).remove( "Intro" );
+	Settings(qApp->applicationName()).remove( "Client/lastPath" );
+	Settings(qApp->applicationName()).remove( "Client/type" );
+	Settings(qApp->applicationName()).remove( "Client/Intro" );
 	updateCert();
 #ifdef Q_OS_MAC
 //	d->p12Label->setText( tr(
@@ -218,7 +218,8 @@ void SettingsDialog::initFunctionality()
 //	d->selectDefaultDir->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
-	if(Settings(qApp->applicationName()).value( "DefaultDir" ).isNull())
+	ui->txtGeneralDirectory->setText( Settings(qApp->applicationName()).value( "Client/DefaultDir" ).toString() );
+	if(ui->txtGeneralDirectory->text().isEmpty())
 	{
 		ui->rdGeneralSameDirectory->setChecked( true );
 		ui->btGeneralChooseDirectory->setEnabled(false);
@@ -241,15 +242,18 @@ void SettingsDialog::initFunctionality()
 			{
 				ui->btGeneralChooseDirectory->setEnabled(true);
 		} } );
-	ui->txtGeneralDirectory->setText( Settings(qApp->applicationName()).value( "DefaultDir" ).toString() );
 #endif
 
-	if(Settings(qApp->applicationName()).value( "type", "bdoc" ).toString() == "bdoc")
-		ui->rdSigningBdoc->setChecked(true);
-	else
+	if(Settings(qApp->applicationName()).value( "Client/Type" ).toString() == "asice")
+	{
 		ui->rdSigningAsice->setChecked(true);
-	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "type", "bdoc", "bdoc" ); } } );
-	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "type", "asice", "bdoc" ); } } );
+	}
+	else
+	{
+		ui->rdSigningBdoc->setChecked(true);
+	}
+	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValue( "Client/Type", "bdoc" ); } } );
+	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValue( "Client/Type", "asice" ); } } );
 
 	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
 	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
@@ -261,9 +265,9 @@ void SettingsDialog::initFunctionality()
 //		qApp->setProperty("restart", true);
 //		qApp->quit();
 //	});
-//	d->tokenBackend->setChecked(Settings(qApp->applicationName()).value("tokenBackend").toUInt());
+//	d->tokenBackend->setChecked(Settings(qApp->applicationName()).value("Client/tokenBackend").toUInt());
 //	connect( d->tokenBackend, &QCheckBox::toggled, [=](bool checked){
-//		Settings(qApp->applicationName()).setValueEx("tokenBackend", int(checked), 0);
+//		Settings(qApp->applicationName()).setValueEx("Client/tokenBackend", int(checked), 0);
 //		d->tokenRestart->show();
 //	});
 //#else
@@ -271,12 +275,12 @@ void SettingsDialog::initFunctionality()
 //#endif
 
 
-	ui->txtSigningRole->setText( Settings(qApp->applicationName()).value( "Role" ).toString() );
-//	ui->signResolutionInput->setText( Settings(qApp->applicationName()).value( "Resolution" ).toString() );
-	ui->txtSigningCity->setText( Settings(qApp->applicationName()).value( "City" ).toString() );
-	ui->txtSigningCounty->setText( Settings(qApp->applicationName()).value( "State" ).toString() );
-	ui->txtSigningCountry->setText( Settings(qApp->applicationName()).value( "Country" ).toString() );
-	ui->txtSigningZipCode->setText( Settings(qApp->applicationName()).value( "Zip" ).toString() );
+	ui->txtSigningRole->setText( Settings(qApp->applicationName()).value( "Client/Role" ).toString() );
+//	ui->signResolutionInput->setText( Settings(qApp->applicationName()).value( "Client/Resolution" ).toString() );
+	ui->txtSigningCity->setText( Settings(qApp->applicationName()).value( "Client/City" ).toString() );
+	ui->txtSigningCounty->setText( Settings(qApp->applicationName()).value( "Client/State" ).toString() );
+	ui->txtSigningCountry->setText( Settings(qApp->applicationName()).value( "Client/Country" ).toString() );
+	ui->txtSigningZipCode->setText( Settings(qApp->applicationName()).value( "Client/Zip" ).toString() );
 
 
 //	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
@@ -284,7 +288,7 @@ void SettingsDialog::initFunctionality()
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	switch(Settings(qApp->applicationName()).value("proxyConfig", 0 ).toInt())
+	switch(Settings(qApp->applicationName()).value("Client/proxyConfig", 0 ).toInt())
 	{
 	case 1:
 		ui->rdProxySystem->setChecked( true );
@@ -300,7 +304,7 @@ void SettingsDialog::initFunctionality()
 	updateProxy();
 	ui->chkEvidenceIgnore->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
 
-	Settings(qApp->applicationName()).endGroup();
+	updateDiagnostics();
 }
 
 
@@ -341,25 +345,24 @@ void SettingsDialog::updateProxy()
 void SettingsDialog::save()
 {
 //	s.setValueEx( "Crypto/Intro", d->showIntro2->isChecked(), true );
-//	Settings(qApp->applicationName()).setValue( "ClientIntro", d->showIntro->isChecked() );
-	Settings(qApp->applicationName()).beginGroup( "Client" );
-//	Settings(qApp->applicationName()).setValueEx( "Overwrite", d->signOverwrite->isChecked(), false );
+//	Settings(qApp->applicationName()).setValue( "Client/ClientIntro", d->showIntro->isChecked() );
+//	Settings(qApp->applicationName()).setValueEx( "Client/Overwrite", d->signOverwrite->isChecked(), false );
 #ifndef Q_OS_MAC
 //	s.setValueEx( "AskSaveAs", d->askSaveAs->isChecked(), true );
-	Settings(qApp->applicationName()).setValueEx("DefaultDir", ui->txtGeneralDirectory->text(), QString());
+	Settings(qApp->applicationName()).setValue("Client/DefaultDir", ui->txtGeneralDirectory->text());
 #endif
 
 	if(ui->rdProxyNone->isChecked())
 	{
-		Settings(qApp->applicationName()).setValueEx("proxyConfig", 0, 0);
+		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 0);
 	}
 	else if(ui->rdProxySystem->isChecked())
 	{
-		Settings(qApp->applicationName()).setValueEx("proxyConfig", 1, 0);
+		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 1);
 	}
 	else if(ui->rdProxyManual->isChecked())
 	{
-		Settings(qApp->applicationName()).setValueEx("proxyConfig", 2, 0);
+		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 2);
 	}
 
 	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
@@ -383,7 +386,7 @@ void SettingsDialog::save()
 
 void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 {
-	switch(Settings(qApp->applicationName()).value("proxyConfig", 0).toUInt())
+	switch(Settings(qApp->applicationName()).value("Client/proxyConfig", 0).toUInt())
 	{
 	case 0:
 		QNetworkProxyFactory::setUseSystemConfiguration(false);
@@ -406,13 +409,13 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 
 void SettingsDialog::openDirectory()
 {
-	QString dir = Settings().value( "Client/DefaultDir" ).toString();
+	QString dir = Settings(qApp->applicationName()).value( "Client/DefaultDir" ).toString();
 	dir = FileDialog::getExistingDirectory( this, tr("Select folder"), dir );
 
 	if(!dir.isEmpty())
 	{
 		ui->rdGeneralSpecifyDirectory->setChecked( true );
-		Settings().setValueEx( "Client/DefaultDir", dir, QString() );
+		Settings(qApp->applicationName()).setValue( "Client/DefaultDir", dir );
 		ui->txtGeneralDirectory->setText( dir );
 	}
 }
@@ -427,19 +430,36 @@ void SettingsDialog::saveSignatureInfo(
 		const QString &zip,
 		bool force )
 {
-	Settings(qApp->applicationName()).beginGroup( "Client" );
-	if( force || Settings(qApp->applicationName()).value( "Overwrite", "false" ).toBool() )
+	if( force || Settings(qApp->applicationName()).value( "Client/Overwrite", "false" ).toBool() )
 	{
-		Settings(qApp->applicationName()).setValueEx( "Role", role, QString() );
-		Settings(qApp->applicationName()).setValueEx( "Resolution", resolution, QString() );
-		Settings(qApp->applicationName()).setValueEx( "City", city, QString() );
-		Settings(qApp->applicationName()).setValueEx( "State", state, QString() ),
-		Settings(qApp->applicationName()).setValueEx( "Country", country, QString() );
-		Settings(qApp->applicationName()).setValueEx( "Zip", zip, QString() );
+		Settings(qApp->applicationName()).setValue( "Client/Role", role );
+		Settings(qApp->applicationName()).setValue( "Client/Resolution", resolution );
+		Settings(qApp->applicationName()).setValue( "Client/City", city );
+		Settings(qApp->applicationName()).setValue( "Client/State", state ),
+		Settings(qApp->applicationName()).setValue( "Client/Country", country );
+		Settings(qApp->applicationName()).setValue( "Client/Zip", zip );
 	}
-	Settings(qApp->applicationName()).endGroup();
 }
 
+void SettingsDialog::updateDiagnostics()
+{
+	ui->txtDiagnostics->setEnabled(false);
+
+	QApplication::setOverrideCursor( Qt::WaitCursor );
+	Diagnostics *worker = new Diagnostics();
+	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
+	connect(worker, &Diagnostics::destroyed, this, [=]{
+		ui->txtDiagnostics->setEnabled(true);
+		QApplication::restoreOverrideCursor();
+	});
+	QThreadPool::globalInstance()->start( worker );
+//	QPushButton *save = ui->buttonBox1->button(QDialogButtonBox::Save);
+//	if(save && Settings(QSettings::SystemScope).value("disableSave", false).toBool())
+//	{
+//		ui->buttonBox1->removeButton(save);
+//		save->deleteLater();
+//	}
+}
 
 void SettingsDialog::changePage(QPushButton* button)
 {
