@@ -53,6 +53,7 @@ private:
 	void updateProxy();
 	void loadProxy( const digidoc::Conf *conf );
 	void openDirectory();
+	void updateDiagnostics();
 	void saveSignatureInfo(
 			const QString &role,
 			const QString &resolution,
