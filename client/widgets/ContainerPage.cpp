@@ -367,6 +367,9 @@ void ContainerPage::updatePanes(ContainerState state)
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );
 		break;
+	default:
+		// Uninitialized cannot be shown on container page
+		break;
 	}
 
 	if(resize)

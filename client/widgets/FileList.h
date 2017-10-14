@@ -41,6 +41,7 @@ public:
 
 private slots:
 	void open(FileItem *item) const;
+	void remove(FileItem *item);
 	void save(FileItem *item);
 
 private:

@@ -348,7 +348,10 @@ bool SDocumentModel::removeRows(int row, int count)
 	try
 	{
 		for(int i = row + count - 1; i >= row; --i)
+		{
 			doc->b->removeDataFile(i);
+			emit removed(i);
+		}
 		return true;
 	}
 	catch( const Exception &e ) { doc->setLastError( tr("Failed remove document from container"), e ); }

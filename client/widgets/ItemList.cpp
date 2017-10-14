@@ -135,6 +135,7 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->listHeader->setStyleSheet("border: none;");
+		ui->findGroup->show();
 		headerItems = 2;
 	}
 
@@ -150,6 +151,16 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 
 	if(item == Address)
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
+}
+
+void ItemList::removeItem(int row)
+{
+	if(items.size() < row)
+		return;
+
+	auto item = items[row];
+	item->close();
+	items.erase(items.begin()+row);
 }
 
 void ItemList::stateChange( ContainerState state )

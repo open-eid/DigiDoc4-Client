@@ -39,6 +39,7 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 	stateChange(state);
 
 	connect(ui->download, &QToolButton::clicked, [this](){ emit download(this);});
+	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
 }
 
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )

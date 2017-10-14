@@ -654,7 +654,10 @@ bool CDocumentModel::removeRows(int row, int count)
 	}
 
 	for( int i = row + count - 1; i >= row; --i )
+	{
 		d->files.removeAt( i );
+		emit removed(i);
+	}
 	return true;
 }
 

@@ -43,9 +43,9 @@ void AddRecipients::init()
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	ui->leftPane->init( ItemList::ToAddAdresses, "Adressaatide lisamine", false );
+	ui->leftPane->init(ItemList::ToAddAdresses, "Adressaatide lisamine", false);
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init( ItemList::AddedAdresses, "Lisatud adressaadid" );
+	ui->rightPane->init(ItemList::AddedAdresses, "Lisatud adressaadid");
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
@@ -55,22 +55,22 @@ void AddRecipients::init()
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	ui->confirm->setFont(Styles::font(Styles::Condensed, 14));
 
-	connect( ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept );
-	connect( ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject );
-	connect( this, &AddRecipients::finished, this, &AddRecipients::close );
+	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
+	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
+	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
 
 
-	AddressItem *add1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, 0);
-	AddressItem *add2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, 0);
-	add1->update( "Aadu Aamer", "34511114231", "ID-kaat", AddressItem::Added );
-	add2->update( "Alma Tamm", "44510104561", "Digi-ID", AddressItem::Add );
-	ui->leftPane->addWidget( add1 );
-	ui->leftPane->addWidget( add2 );
+	AddressItem *add1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
+	AddressItem *add2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
+	add1->update("Aadu Aamer", "34511114231", "ID-kaat", AddressItem::Added);
+	add2->update("Alma Tamm", "44510104561", "Digi-ID", AddressItem::Add);
+	ui->leftPane->addWidget(add1);
+	ui->leftPane->addWidget(add2);
 
-	AddressItem *curr1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, 0);
-	AddressItem *curr2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, 0);
-	AddressItem *curr3 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, 0);
+	AddressItem *curr1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
+	AddressItem *curr2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
+	AddressItem *curr3 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
 	curr1->update( "Heino Liin", "34664778636", "ID-kaat", AddressItem::Remove );
 	curr2->update( "Vello Karm", "44510104561", "ID-kaat", AddressItem::Remove );
 	curr3->update( "Ivar Tuisk", "45643644331", "Digi-ID", AddressItem::Remove );
