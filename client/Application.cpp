@@ -25,6 +25,7 @@
 #include "QSigner.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/WarningDialog.h"
 
 #include <common/AboutDialog.h>
 #include <common/Configuration.h>
@@ -826,17 +827,13 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 	QStringList causes;
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	QMessageBox d(QMessageBox::Warning, tr("DigiDoc4 client"), msg, QMessageBox::Close, activeWindow());
-	d.setWindowModality(Qt::WindowModal);
-	d.setDetailedText(causes.join("\n"));
+	WarningDialog d(msg, causes.join("\n"), activeWindow());
 	d.exec();
 }
 
 void Application::showWarning( const QString &msg, const QString &details )
 {
-	QMessageBox d( QMessageBox::Warning, tr("DigiDoc4 client"), msg, QMessageBox::Close, activeWindow() );
-	d.setWindowModality( Qt::WindowModal );
-	d.setDetailedText(details);
+	WarningDialog d(msg, details, activeWindow());
 	d.exec();
 }
 

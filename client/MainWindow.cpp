@@ -34,6 +34,7 @@
 #include "dialogs/FirstRun.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
+#include "dialogs/WarningDialog.h"
 #include "util/FileUtil.h"
 
 #include <common/DateTime.h>
@@ -169,6 +170,11 @@ void MainWindow::buttonClicked( int button )
 	}
 	case HeadSettings:
 	{
+		WarningDialog w1("Show warning with only text\nline1\nline2\nline3\nline4", this);
+		w1.exec();
+		WarningDialog w2("Show warning with only text\nline1\nline2\nline3\nline4", 
+			"Show also details\nline1\nline2\nline3\nline4", this);
+		w2.exec();
 		SettingsDialog dlg(this);
 		dlg.exec();
 		break;
@@ -215,7 +221,7 @@ ContainerState MainWindow::currentState()
 		return digiDoc->state();
 	}
 
-	return cryptoPage ? ContainerState::UnencryptedContainer : ContainerState::UnsignedContainer;
+	return ContainerState::Uninitialized;
 }
 
 bool MainWindow::decrypt()
@@ -445,62 +451,70 @@ void MainWindow::openFiles(const QStringList files)
 			- else open signing view
 
 	2. If container open:
-	2.1 if UnsignedContainer | UnsignedSavedContainer
-		- Add file to files to be signed
-	2.2 else If UnencryptedContainer
-		- Add file to files to be encrypted
+	2.1 if UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer
+		- Add file to files to be signed/encrypted
 	2.3 else if SignedContainer
 		- ask if should be added or handle open
 	2.4 else if EncryptedContainer || DecryptedContainer
 			- ask if should be closed and handle open 
 */
 	auto current = ui->startScreen->currentIndex();
+	ContainerState state = currentState();
 	Pages page = SignDetails;
 	bool create = true;
-	if( current != SignDetails && current != CryptoDetails )
+	switch(state)
 	{
-		if( files.size() == 1 )
+	case Uninitialized:
+	// Case 1.
+		if(files.size() == 1)
 		{
-			auto fileType = FileUtil::detect( files[0] );
-			if( fileType == CryptoDocument )
+			auto fileType = FileUtil::detect(files[0]);
+			if(fileType == CryptoDocument)
 			{
 				page = CryptoDetails;
 				create = false;
 			}
-			else if( fileType == SignatureDocument )
+			else if(fileType == SignatureDocument)
 			{
 				page = SignDetails;
 				create = false;
 			}
-			else if( current == CryptoIntro )
+			else if(current == CryptoIntro)
 			{
 				page = CryptoDetails;
 			}
 		}
-	}
-	else
-	{
-		// TODO (2.)
-		page = current == CryptoIntro ? CryptoIntro : SignIntro;
-		ContainerState state = currentState();
-		switch(state)
+		else if(current == CryptoIntro)
 		{
-		case ContainerState::UnsignedContainer:
-		case ContainerState::UnsignedSavedContainer:
-			break;
-		case ContainerState::UnencryptedContainer:
-			break;
-		case ContainerState::SignedContainer:
-			page = SignDetails;
-			create = false;
-			break;
-		case ContainerState::EncryptedContainer:
-		case ContainerState::DecryptedContainer:
-			break;
+			page = CryptoDetails;
 		}
+		break;
+	case ContainerState::UnsignedContainer:
+	case ContainerState::UnsignedSavedContainer:
+	case ContainerState::UnencryptedContainer:
+	{
+		page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
+		DocumentModel* model = (current == CryptoDetails) ?
+			cryptoDoc->documentModel() : digiDoc->documentModel();
+		for(auto file: files)
+			model->addFile(file);
+		create = false;
+		break;
+	}
+	case ContainerState::EncryptedContainer:
+	case ContainerState::DecryptedContainer:
+		// TODO: new container???
+		create = false;
+		break;
+	default:
+		// TODO: new container???
+		page = SignDetails;
+		create = false;
+		break;
 	}
 
-	navigateToPage( page, files, create );
+	if(create || current != page)
+		navigateToPage( page, files, create );
 }
 
 void MainWindow::openContainer()

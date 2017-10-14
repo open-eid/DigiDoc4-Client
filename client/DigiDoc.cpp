@@ -301,8 +301,8 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 
 void SDocumentModel::addFile(const QString &file, const QString &mime)
 {
-	doc->addFile(file, mime);
-	emit added(file);
+	if(doc->addFile(file, mime))
+		emit added(file);
 }
 
 QString SDocumentModel::data(int row) const
@@ -381,15 +381,17 @@ DigiDoc::DigiDoc(QObject *parent)
 
 DigiDoc::~DigiDoc() { clear(); }
 
-void DigiDoc::addFile(const QString &file, const QString &mime)
+bool DigiDoc::addFile(const QString &file, const QString &mime)
 {
 	if( !checkDoc( b->signatures().size() > 0, tr("Cannot add files to signed container") ) )
-		return;
+		return false;
 	try {
 		b->addDataFile( to(file), to(mime));
 		modified = true;
+		return true;
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed add file to container"), e ); }
+	return false;
 }
 
 bool DigiDoc::addSignature( const QByteArray &signature )

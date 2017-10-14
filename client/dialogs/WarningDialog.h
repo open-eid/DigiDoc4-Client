@@ -19,42 +19,23 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
-
-#include <QWidget>
-#include <QPainter>
-#include <QSvgWidget>
-
-#include <memory>
-
+#include <QDialog>
+#include <QString>
 
 namespace Ui {
-class AccordionTitle;
+class WarningDialog;
 }
 
-class Accordion;
-
-class AccordionTitle : public StyledWidget
+class WarningDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit AccordionTitle(QWidget *parent = nullptr);
-	~AccordionTitle();
-
-	void borderless();
-	void init(bool open, const QString& caption, QWidget* content);
-	void openSection();
-	void closeSection();
-
-signals:
-	void opened(AccordionTitle* opened);
-
-protected:
-	void mouseReleaseEvent(QMouseEvent *event) override;
+	WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
+	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
+	~WarningDialog();
 
 private:
-	Ui::AccordionTitle *ui;
-	std::unique_ptr<QSvgWidget> icon;
-	QWidget* content;
+	Ui::WarningDialog *ui;
 };
+

@@ -127,7 +127,7 @@ public:
 	explicit DigiDoc(QObject *parent = nullptr);
 	~DigiDoc();
 
-	void addFile( const QString &file, const QString &mime );
+	bool addFile( const QString &file, const QString &mime );
 	bool addSignature( const QByteArray &signature );
 	void create( const QString &file );
 	void clear();
