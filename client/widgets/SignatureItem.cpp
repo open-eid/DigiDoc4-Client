@@ -21,7 +21,7 @@
 #include "ui_SignatureItem.h"
 
 #include "Styles.h"
-#include "dialogs/CertificateDetails.h"
+#include "dialogs/SignatureDialog.h"
 #include "effects/ButtonHoverFilter.h"
 
 #include <common/DateTime.h>
@@ -167,7 +167,7 @@ void SignatureItem::elideName()
 
 void SignatureItem::mouseReleaseEvent(QMouseEvent *event)
 {
-	CertificateDetails dlg(signature.cert(), this);
+	SignatureDialog dlg(signature, this);
 	dlg.exec();
 }
 

@@ -84,6 +84,7 @@ CertificateDetails::CertificateDetails(const QSslCertificate &cert, QWidget *par
 	s << "<b>" << tr("To") << "</b> " << c.expiryDate().toLocalTime().toString( "dd.MM.yyyy" );
 	ui->lblCertInfo->setHtml( i );
 
+	ui->close->setFont(Styles::font(Styles::Condensed, 14));
 	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
 

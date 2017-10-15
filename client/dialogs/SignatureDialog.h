@@ -19,28 +19,30 @@
 
 #pragma once
 
+#include "DigiDoc.h"
+
 #include <QDialog>
 
 namespace Ui {
-class CertificateDetails;
+	class SignatureDialog;
 }
 
-class QSslCertificate;
-class CertificateDetailsPrivate;
+class QAbstractButton;
+class QTreeWidget;
 
-class CertificateDetails : public QDialog
+class SignatureDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = nullptr);
-	~CertificateDetails();
-
-	int exec() override;
-
-public slots:
-	void on_tblDetails_itemSelectionChanged();
+	explicit SignatureDialog(const DigiDocSignature &signature, QWidget *parent = nullptr);
+	~SignatureDialog();
 
 private:
-	CertificateDetailsPrivate *ui;
+	void addItem( QTreeWidget *view, const QString &variable, const QString &value );
+	void addItem( QTreeWidget *view, const QString &variable, const QSslCertificate &cert );
+	void addItem( QTreeWidget *view, const QString &variable, const QUrl &url );
+
+	DigiDocSignature s;
+	Ui::SignatureDialog *d;
 };

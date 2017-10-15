@@ -1734,8 +1734,8 @@ QRadioButton::indicator::checked {
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Keeleseaded:&lt;/span&gt; English / 1252 (ANSI - Latin I)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kasutajaõigused:&lt;/span&gt; Administraator&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Baastarkvara:&lt;/span&gt; 17.8.0.1731&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rakenduse versioon:&lt;/span&gt; 3.13.2.1502 (32 bit)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Operatsioonisüsteem:&lt;/span&gt; Windows 10 (64 bit)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegid:&lt;/span&gt;&lt;br /&gt;QT (5.8.0)&lt;br /&gt;digidoc (3.10.1.1212)&lt;br /&gt;digidocpp (3.13.1.1353)&lt;br /&gt;qdigidocclient.exe (3.13.2.1502)&lt;br /&gt;qesteidutil.exe (3.12.6.1249)&lt;br /&gt;id-updater.exe (3.12.0.1009)&lt;br /&gt;esteidcm (3.11.0.1175)&lt;br /&gt;onepin-opensc-pkcs11 (0.15.0.0)&lt;br /&gt;EsteidShellExtension (3.13.2.1502)&lt;br /&gt;npesteid-firefox-plugin (3.12.0.1143)&lt;br /&gt;chrome-token-signing.exe (1.0.5.468)&lt;br /&gt;zlib1 (1.2.8.0)&lt;br /&gt;libeay32 (1.0.2.11)&lt;br /&gt;ssleay32 (1.0.2.11)&lt;br /&gt;xerces-c_3_1 (3.1.4.0)&lt;br /&gt;xsec_1_7 (1.7.3.0)&lt;br /&gt;advapi32 (10.0.14393.0)&lt;br /&gt;crypt32 (10.0.14393.1198)&lt;br /&gt;winscard (10.0.14393.594)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;ATRfiltr teenuse staatus: Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Certificate Propagation teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Argumendid:&lt;/span&gt; C:\Program Files (x86)\Open-EID\qdigidocclient.exe&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegi otsing:&lt;/span&gt; C:/Program Files (x86)/Open-EID&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;URLs:&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;BREAKPAD:&lt;/span&gt; https://cr.eesti.ee/&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CONFIG_URL:&lt;/span&gt; https://id.eesti.ee/config.json&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL_URL:&lt;/span&gt; https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SIVA_URL:&lt;/span&gt; https://siva.eesti.ee/validate&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL signeerimise sertifikaadid:&lt;/span&gt;&lt;br /&gt;(SIGN) AGNIESZKA BAJNO&lt;br /&gt;Philippe Jean Renaud Schneider&lt;br /&gt;Pierre Damas (Signature)&lt;br /&gt;Maarten Ottoy (Signature)&lt;br /&gt;Jean-Marc Verbergt (Signature)&lt;br /&gt;Maarten Joris Ottoy&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Konfiguratsiooni andmed:&lt;/span&gt;&lt;br /&gt;DATE: 20170904072547Z&lt;br /&gt;SERIAL: 38&lt;br /&gt;URL: https://id.eesti.ee/config.json&lt;br /&gt;VER: 1&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Smart Card teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;Kaardilugejad:&lt;br /&gt;OMNIKEY AG Smart Card Reader USB 0&lt;br /&gt;Reader state: CHANGED, UNAVAILABLE&lt;br /&gt;Lugeja draiverid:&lt;br /&gt;Microsoft Usbccid Smartcard Reader (WUDF) (USB\VID_076B PID_3022 REV_0204)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Veebibrauserid:&lt;/span&gt;&lt;br /&gt;Google Chrome (64-bit) (61.0.3163.79)&lt;br /&gt;Mozilla Firefox 54.0.1 (x86 en-GB) (54.0.1)&lt;br /&gt;Internet Explorer (11.1593.14393.0)&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Keeleseaded:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; English / 1252 (ANSI - Latin I)&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Kasutajaõigused:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Administraator&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Baastarkvara:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; 17.8.0.1731&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Rakenduse versioon:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; 3.13.2.1502 (32 bit)&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Operatsioonisüsteem:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Windows 10 (64 bit)&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Teegid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;QT (5.8.0)&lt;br /&gt;digidoc (3.10.1.1212)&lt;br /&gt;digidocpp (3.13.1.1353)&lt;br /&gt;qdigidocclient.exe (3.13.2.1502)&lt;br /&gt;qesteidutil.exe (3.12.6.1249)&lt;br /&gt;id-updater.exe (3.12.0.1009)&lt;br /&gt;esteidcm (3.11.0.1175)&lt;br /&gt;onepin-opensc-pkcs11 (0.15.0.0)&lt;br /&gt;EsteidShellExtension (3.13.2.1502)&lt;br /&gt;npesteid-firefox-plugin (3.12.0.1143)&lt;br /&gt;chrome-token-signing.exe (1.0.5.468)&lt;br /&gt;zlib1 (1.2.8.0)&lt;br /&gt;libeay32 (1.0.2.11)&lt;br /&gt;ssleay32 (1.0.2.11)&lt;br /&gt;xerces-c_3_1 (3.1.4.0)&lt;br /&gt;xsec_1_7 (1.7.3.0)&lt;br /&gt;advapi32 (10.0.14393.0)&lt;br /&gt;crypt32 (10.0.14393.1198)&lt;br /&gt;winscard (10.0.14393.594)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;ATRfiltr teenuse staatus: Töötab&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Certificate Propagation teenuse staatus:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Töötab&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Argumendid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; C:\Program Files (x86)\Open-EID\qdigidocclient.exe&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Teegi otsing:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; C:/Program Files (x86)/Open-EID&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;URLs:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;BREAKPAD:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://cr.eesti.ee/&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;CONFIG_URL:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://id.eesti.ee/config.json&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;TSL_URL:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;SIVA_URL:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://siva.eesti.ee/validate&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;TSL signeerimise sertifikaadid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;(SIGN) AGNIESZKA BAJNO&lt;br /&gt;Philippe Jean Renaud Schneider&lt;br /&gt;Pierre Damas (Signature)&lt;br /&gt;Maarten Ottoy (Signature)&lt;br /&gt;Jean-Marc Verbergt (Signature)&lt;br /&gt;Maarten Joris Ottoy&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Konfiguratsiooni andmed:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;DATE: 20170904072547Z&lt;br /&gt;SERIAL: 38&lt;br /&gt;URL: https://id.eesti.ee/config.json&lt;br /&gt;VER: 1&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Smart Card teenuse staatus:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Töötab&lt;br /&gt;Kaardilugejad:&lt;br /&gt;OMNIKEY AG Smart Card Reader USB 0&lt;br /&gt;Reader state: CHANGED, UNAVAILABLE&lt;br /&gt;Lugeja draiverid:&lt;br /&gt;Microsoft Usbccid Smartcard Reader (WUDF) (USB\VID_076B PID_3022 REV_0204)&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Veebibrauserid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;Google Chrome (64-bit) (61.0.3163.79)&lt;br /&gt;Mozilla Firefox 54.0.1 (x86 en-GB) (54.0.1)&lt;br /&gt;Internet Explorer (11.1593.14393.0)&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </widget>
@@ -1768,8 +1768,8 @@ p, li { white-space: pre-wrap; }
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Keeleseaded:&lt;/span&gt; English / 1252 (ANSI - Latin I)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Kasutajaõigused:&lt;/span&gt; Administraator&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Baastarkvara:&lt;/span&gt; 17.8.0.1731&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rakenduse versioon:&lt;/span&gt; 3.13.2.1502 (32 bit)&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Operatsioonisüsteem:&lt;/span&gt; Windows 10 (64 bit)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegid:&lt;/span&gt;&lt;br /&gt;QT (5.8.0)&lt;br /&gt;digidoc (3.10.1.1212)&lt;br /&gt;digidocpp (3.13.1.1353)&lt;br /&gt;qdigidocclient.exe (3.13.2.1502)&lt;br /&gt;qesteidutil.exe (3.12.6.1249)&lt;br /&gt;id-updater.exe (3.12.0.1009)&lt;br /&gt;esteidcm (3.11.0.1175)&lt;br /&gt;onepin-opensc-pkcs11 (0.15.0.0)&lt;br /&gt;EsteidShellExtension (3.13.2.1502)&lt;br /&gt;npesteid-firefox-plugin (3.12.0.1143)&lt;br /&gt;chrome-token-signing.exe (1.0.5.468)&lt;br /&gt;zlib1 (1.2.8.0)&lt;br /&gt;libeay32 (1.0.2.11)&lt;br /&gt;ssleay32 (1.0.2.11)&lt;br /&gt;xerces-c_3_1 (3.1.4.0)&lt;br /&gt;xsec_1_7 (1.7.3.0)&lt;br /&gt;advapi32 (10.0.14393.0)&lt;br /&gt;crypt32 (10.0.14393.1198)&lt;br /&gt;winscard (10.0.14393.594)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;ATRfiltr teenuse staatus: Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Certificate Propagation teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Argumendid:&lt;/span&gt; C:\Program Files (x86)\Open-EID\qdigidocclient.exe&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Teegi otsing:&lt;/span&gt; C:/Program Files (x86)/Open-EID&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;URLs:&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;BREAKPAD:&lt;/span&gt; https://cr.eesti.ee/&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;CONFIG_URL:&lt;/span&gt; https://id.eesti.ee/config.json&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL_URL:&lt;/span&gt; https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SIVA_URL:&lt;/span&gt; https://siva.eesti.ee/validate&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TSL signeerimise sertifikaadid:&lt;/span&gt;&lt;br /&gt;(SIGN) AGNIESZKA BAJNO&lt;br /&gt;Philippe Jean Renaud Schneider&lt;br /&gt;Pierre Damas (Signature)&lt;br /&gt;Maarten Ottoy (Signature)&lt;br /&gt;Jean-Marc Verbergt (Signature)&lt;br /&gt;Maarten Joris Ottoy&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Konfiguratsiooni andmed:&lt;/span&gt;&lt;br /&gt;DATE: 20170904072547Z&lt;br /&gt;SERIAL: 38&lt;br /&gt;URL: https://id.eesti.ee/config.json&lt;br /&gt;VER: 1&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Smart Card teenuse staatus:&lt;/span&gt; Töötab&lt;br /&gt;Kaardilugejad:&lt;br /&gt;OMNIKEY AG Smart Card Reader USB 0&lt;br /&gt;Reader state: CHANGED, UNAVAILABLE&lt;br /&gt;Lugeja draiverid:&lt;br /&gt;Microsoft Usbccid Smartcard Reader (WUDF) (USB\VID_076B PID_3022 REV_0204)&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Veebibrauserid:&lt;/span&gt;&lt;br /&gt;Google Chrome (64-bit) (61.0.3163.79)&lt;br /&gt;Mozilla Firefox 54.0.1 (x86 en-GB) (54.0.1)&lt;br /&gt;Internet Explorer (11.1593.14393.0)&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Keeleseaded:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; English / 1252 (ANSI - Latin I)&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Kasutajaõigused:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Administraator&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Baastarkvara:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; 17.8.0.1731&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Rakenduse versioon:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; 3.13.2.1502 (32 bit)&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Operatsioonisüsteem:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Windows 10 (64 bit)&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Teegid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;QT (5.8.0)&lt;br /&gt;digidoc (3.10.1.1212)&lt;br /&gt;digidocpp (3.13.1.1353)&lt;br /&gt;qdigidocclient.exe (3.13.2.1502)&lt;br /&gt;qesteidutil.exe (3.12.6.1249)&lt;br /&gt;id-updater.exe (3.12.0.1009)&lt;br /&gt;esteidcm (3.11.0.1175)&lt;br /&gt;onepin-opensc-pkcs11 (0.15.0.0)&lt;br /&gt;EsteidShellExtension (3.13.2.1502)&lt;br /&gt;npesteid-firefox-plugin (3.12.0.1143)&lt;br /&gt;chrome-token-signing.exe (1.0.5.468)&lt;br /&gt;zlib1 (1.2.8.0)&lt;br /&gt;libeay32 (1.0.2.11)&lt;br /&gt;ssleay32 (1.0.2.11)&lt;br /&gt;xerces-c_3_1 (3.1.4.0)&lt;br /&gt;xsec_1_7 (1.7.3.0)&lt;br /&gt;advapi32 (10.0.14393.0)&lt;br /&gt;crypt32 (10.0.14393.1198)&lt;br /&gt;winscard (10.0.14393.594)&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;ATRfiltr teenuse staatus: Töötab&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Certificate Propagation teenuse staatus:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Töötab&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Argumendid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; C:\Program Files (x86)\Open-EID\qdigidocclient.exe&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Teegi otsing:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; C:/Program Files (x86)/Open-EID&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;URLs:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;BREAKPAD:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://cr.eesti.ee/&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;CONFIG_URL:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://id.eesti.ee/config.json&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;TSL_URL:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;SIVA_URL:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; https://siva.eesti.ee/validate&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;TSL signeerimise sertifikaadid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;(SIGN) AGNIESZKA BAJNO&lt;br /&gt;Philippe Jean Renaud Schneider&lt;br /&gt;Pierre Damas (Signature)&lt;br /&gt;Maarten Ottoy (Signature)&lt;br /&gt;Jean-Marc Verbergt (Signature)&lt;br /&gt;Maarten Joris Ottoy&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Konfiguratsiooni andmed:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;DATE: 20170904072547Z&lt;br /&gt;SERIAL: 38&lt;br /&gt;URL: https://id.eesti.ee/config.json&lt;br /&gt;VER: 1&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Smart Card teenuse staatus:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt; Töötab&lt;br /&gt;Kaardilugejad:&lt;br /&gt;OMNIKEY AG Smart Card Reader USB 0&lt;br /&gt;Reader state: CHANGED, UNAVAILABLE&lt;br /&gt;Lugeja draiverid:&lt;br /&gt;Microsoft Usbccid Smartcard Reader (WUDF) (USB\VID_076B PID_3022 REV_0204)&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:600;&quot;&gt;Veebibrauserid:&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;&lt;br /&gt;Google Chrome (64-bit) (61.0.3163.79)&lt;br /&gt;Mozilla Firefox 54.0.1 (x86 en-GB) (54.0.1)&lt;br /&gt;Internet Explorer (11.1593.14393.0)&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </widget>
@@ -1789,42 +1789,99 @@ p, li { white-space: pre-wrap; }
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>46</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>40</height>
+       <height>46</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">border-top: 1px solid #DEE4E9;
 background-color: #f7f7f7;</string>
      </property>
-     <widget class="QPushButton" name="btNavFromFile">
-      <property name="geometry">
-       <rect>
-        <x>216</x>
-        <y>8</y>
-        <width>117</width>
-        <height>25</height>
-       </rect>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>117</width>
-        <height>25</height>
-       </size>
+      <property name="topMargin">
+       <number>0</number>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>117</width>
-        <height>25</height>
-       </size>
+      <property name="rightMargin">
+       <number>0</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>13</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="txtNavVersion">
+        <property name="minimumSize">
+         <size>
+          <width>119</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>119</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <property name="text">
+         <string>&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btNavFromFile">
+        <property name="minimumSize">
+         <size>
+          <width>117</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>117</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
@@ -1841,34 +1898,28 @@ QPushButton:disabled {
 	color: #75787B;
 	background-color: #BEDBED;
 }</string>
-      </property>
-      <property name="text">
-       <string>KONROLLI UUENDUSI</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnNavFromHistory">
-      <property name="geometry">
-       <rect>
-        <x>345</x>
-        <y>8</y>
-        <width>190</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>190</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>190</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
+        </property>
+        <property name="text">
+         <string>KONROLLI UUENDUSI</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnNavFromHistory">
+        <property name="minimumSize">
+         <size>
+          <width>190</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>190</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
@@ -1885,40 +1936,153 @@ QPushButton:disabled {
 	color: #75787B;
 	background-color: #BEDBED;
 }</string>
-      </property>
-      <property name="text">
-       <string>EEMALDA ÜLELIIGSED SERTIFIKAADID</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btNavClose">
-      <property name="geometry">
-       <rect>
-        <x>854</x>
-        <y>8</y>
-        <width>120</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>120</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>120</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
+        </property>
+        <property name="text">
+         <string>EEMALDA ÜLELIIGSED SERTIFIKAADID</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnNavUseByDefault">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+        </property>
+        <property name="text">
+         <string>KASUTA VAIKIMISI</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnNavInstallManually">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+        </property>
+        <property name="text">
+         <string>PAIGALDA KÄSITSI</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnNavShowCertificate">
+        <property name="minimumSize">
+         <size>
+          <width>90</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>90</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
+        </property>
+        <property name="text">
+         <string>NÄITA TÕENDIT</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btNavClose">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
 	border-radius: 2px; 
 	border: none;
 	color: #ffffff;
@@ -1933,171 +2097,29 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-      </property>
-      <property name="text">
-       <string>SULGE</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="txtNavVersion">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>13</y>
-        <width>119</width>
-        <height>14</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>119</width>
-        <height>14</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>119</width>
-        <height>14</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: none;</string>
-      </property>
-      <property name="text">
-       <string>&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnNavShowCertificate">
-      <property name="geometry">
-       <rect>
-        <x>750</x>
-        <y>8</y>
-        <width>90</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>90</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>90</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-	background-color: #BEDBED;
-}</string>
-      </property>
-      <property name="text">
-       <string>NÄITA TÕENDIT</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnNavInstallManually">
-      <property name="geometry">
-       <rect>
-        <x>640</x>
-        <y>8</y>
-        <width>100</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-	background-color: #BEDBED;
-}</string>
-      </property>
-      <property name="text">
-       <string>PAIGALDA KÄSITSI</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnNavUseByDefault">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>8</y>
-        <width>100</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-	background-color: #BEDBED;
-}</string>
-      </property>
-      <property name="text">
-       <string>KASUTA VAIKIMISI</string>
-      </property>
-     </widget>
+        </property>
+        <property name="text">
+         <string>SULGE</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Minimum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>13</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
