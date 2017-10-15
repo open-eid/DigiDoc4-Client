@@ -42,11 +42,15 @@ AccordionTitle::~AccordionTitle()
 	delete ui;
 }
 
-void AccordionTitle::init(Accordion* accordion, bool open, const QString& caption, QWidget* content)
+void AccordionTitle::borderless()
+{
+	setStyleSheet("background-color: #FFFFFF; border: none;");
+}
+
+void AccordionTitle::init(bool open, const QString& caption, QWidget* content)
 {
 	ui->label->setText(caption);
 	this->content = content;
-	this->accordion = accordion;
 	if(open)
 		openSection();
 	else
@@ -62,7 +66,6 @@ void AccordionTitle::openSection()
 	icon->load( QString( ":/images/accordion_arrow_down.svg" ) );
 }
 
-
 void AccordionTitle::closeSection()
 {
 	content->setVisible(false);
@@ -72,15 +75,12 @@ void AccordionTitle::closeSection()
 	icon->load( QString( ":/images/accordion_arrow_right.svg" ) );	
 }
 
-
 void AccordionTitle::mouseReleaseEvent(QMouseEvent *event)
 {
-	bool willVisible = !content->isVisible();
-
-	if(willVisible)
+	if(!content->isVisible())
 	{
 		content->setVisible(true);
-		accordion->closeOtherSection(this);
+		emit opened(this);
 		openSection();
 	}
 }

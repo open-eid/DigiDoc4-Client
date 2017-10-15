@@ -42,9 +42,13 @@ public:
 	explicit AccordionTitle(QWidget *parent = nullptr);
 	~AccordionTitle();
 
-	void init(Accordion* accordion, bool open, const QString& caption, QWidget* content);
+	void borderless();
+	void init(bool open, const QString& caption, QWidget* content);
 	void openSection();
 	void closeSection();
+
+signals:
+	void opened(AccordionTitle* opened);
 
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
@@ -53,5 +57,4 @@ private:
 	Ui::AccordionTitle *ui;
 	std::unique_ptr<QSvgWidget> icon;
 	QWidget* content;
-	Accordion* accordion;
 };

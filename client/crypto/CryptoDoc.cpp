@@ -27,6 +27,7 @@
 #include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
+#include <QDebug>
 #include <QtCore/QBuffer>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -323,8 +324,7 @@ void CryptoDocPrivate::run()
 
 void CryptoDocPrivate::setLastError( const QString &err )
 {
-	QMessageBox d( QMessageBox::Warning, CryptoDoc::tr("DigiDoc3 crypto"),
-		err, QMessageBox::Close, qApp->activeWindow() );
+	qApp->showWarning(err);
 }
 
 QByteArray CryptoDocPrivate::readCDoc(QIODevice *cdoc, bool data)
@@ -572,6 +572,17 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 	if( d->isEncryptedWarning() )
 		return;
 
+	QString fileName(QFileInfo(file).fileName());
+	for(auto containerFile: d->files)
+	{
+		qDebug() << containerFile.name << " vs " << file;
+		if(containerFile.name == fileName)
+		{
+			d->setLastError(QString("File '%1' already in container").arg(file));
+			return;
+		}
+	}
+
 	QFile data(file);
 	data.open(QFile::ReadOnly);
 	CryptoDocPrivate::File f;
@@ -643,7 +654,10 @@ bool CDocumentModel::removeRows(int row, int count)
 	}
 
 	for( int i = row + count - 1; i >= row; --i )
+	{
 		d->files.removeAt( i );
+		emit removed(i);
+	}
 	return true;
 }
 

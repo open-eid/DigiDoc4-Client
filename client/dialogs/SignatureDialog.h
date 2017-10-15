@@ -19,36 +19,30 @@
 
 #pragma once
 
-#include "DocumentModel.h"
-#include "widgets/FileItem.h"
-#include "widgets/ItemList.h"
+#include "DigiDoc.h"
 
-#include <QWidget>
+#include <QDialog>
 
-class QLabel;
+namespace Ui {
+	class SignatureDialog;
+}
 
-class FileList : public ItemList
+class QAbstractButton;
+class QTreeWidget;
+
+class SignatureDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit FileList(QWidget *parent = nullptr);
-	~FileList();
-
-	void init(const QString &container, const QString &label = "Kontaineri failid");
-	void addFile(const QString& file);
-	void setModel(DocumentModel *documentModel);
-
-private slots:
-	void open(FileItem *item) const;
-	void remove(FileItem *item);
-	void save(FileItem *item);
+	explicit SignatureDialog(const DigiDocSignature &signature, QWidget *parent = nullptr);
+	~SignatureDialog();
 
 private:
-	int index(StyledWidget *item) const;
-	void selectFile();
-	void showDownload();
-	
-	QString container;
-	DocumentModel *documentModel;
+	void addItem( QTreeWidget *view, const QString &variable, const QString &value );
+	void addItem( QTreeWidget *view, const QString &variable, const QSslCertificate &cert );
+	void addItem( QTreeWidget *view, const QString &variable, const QUrl &url );
+
+	DigiDocSignature s;
+	Ui::SignatureDialog *d;
 };

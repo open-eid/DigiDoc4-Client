@@ -51,6 +51,7 @@ public:
 	void addHeaderWidget(StyledWidget *widget);
 	void addWidget(StyledWidget *widget);
 	void clear();
+	void removeItem(int row);
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:

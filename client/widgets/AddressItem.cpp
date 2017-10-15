@@ -26,13 +26,23 @@
 
 #include <common/SslCertificate.h>
 
+#include <QSvgWidget>
+
 using namespace ria::qdigidoc4;
 
-AddressItem::AddressItem(ContainerState state, QWidget *parent)
+AddressItem::AddressItem(ContainerState state, QWidget *parent, bool showIcon)
 : StyledWidget(parent)
 , ui(new Ui::AddressItem)
 {
 	ui->setupUi(this);
+	if(showIcon)
+	{
+		auto icon = new QSvgWidget(":/images/icon_Krypto_small.svg", ui->icon);
+		icon->resize(17, 19);
+		icon->move(0, (this->height() - 19) / 2);
+		icon->show();
+	}
+	ui->icon->setVisible(showIcon);
 	ui->name->setFont( Styles::font( Styles::Regular, 14, QFont::DemiBold ) );
 	ui->code->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
@@ -45,7 +55,7 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent)
 }
 
 AddressItem::AddressItem(const CKey &key, ContainerState state, QWidget *parent)
-: AddressItem(state, parent)
+: AddressItem(state, parent, true)
 {
 	QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
 			key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :

@@ -39,6 +39,7 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 	stateChange(state);
 
 	connect(ui->download, &QToolButton::clicked, [this](){ emit download(this);});
+	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
 }
 
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
@@ -67,19 +68,9 @@ void FileItem::stateChange(ContainerState state)
 {
 	switch(state)
 	{
-	case UnsignedContainer:
-	case UnsignedSavedContainer:
-		ui->download->hide();
-		ui->remove->show();
-		break;
 	case SignedContainer:
 		ui->download->show();
 		ui->remove->hide();
-		break;
-	
-	case UnencryptedContainer:
-		ui->download->hide();
-		ui->remove->show();
 		break;
 	case EncryptedContainer:
 		ui->download->hide();
@@ -88,6 +79,10 @@ void FileItem::stateChange(ContainerState state)
 	case DecryptedContainer:
 		ui->download->show();
 		ui->remove->hide();
+		break;
+	default:
+		ui->download->hide();
+		ui->remove->show();
 		break;
 	}
 }

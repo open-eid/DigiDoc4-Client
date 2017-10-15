@@ -41,9 +41,13 @@ void Accordion::init()
 	connect( ui->contentOtherData, &OtherData::checkEMailClicked, this, [this](){ emit checkEMail(); } );
 	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
 
-	ui->titleVerifyCert->init( this, true,  "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert );
-	ui->titleOtherData->init( this,  false, "EESTI.EE POSTI SUUNAMINE", ui->contentOtherData );
-	ui->titleOtherEID->init( this,   false, "MINU TEISED eID-D", ui->contentOtherEID );
+	ui->titleVerifyCert->init(true, "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert);
+	ui->titleOtherData->init(false, "EESTI.EE POSTI SUUNAMINE", ui->contentOtherData);
+	ui->titleOtherEID->init(false, "MINU TEISED eID-D", ui->contentOtherEID);
+
+	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
+	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
+	connect(ui->titleOtherEID, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 
 	connect(ui->authBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin1( bool, bool ) ) );
 	connect(ui->signBox, SIGNAL( changePinClicked( bool, bool ) ), this, SLOT( changePin2( bool, bool ) ) );
@@ -58,7 +62,7 @@ void Accordion::init()
 	ui->contentOtherData->update( false );
 }
 
-void Accordion::closeOtherSection( AccordionTitle* opened )
+void Accordion::closeOtherSection(AccordionTitle* opened)
 {
 	openSection->closeSection();
 	openSection = opened;

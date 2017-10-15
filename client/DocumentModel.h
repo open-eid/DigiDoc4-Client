@@ -35,9 +35,9 @@ public:
 	virtual QString save(int row, const QString &path) const = 0;
 
 signals:
-	void removed(int row);
 	void added(const QString &file);
-
+	void removed(int row);
+	
 public slots:
 	virtual void open(int row) = 0;
 };

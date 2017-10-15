@@ -39,6 +39,7 @@ public:
 
 signals:
 	void open(FileItem* item);
+	void remove(FileItem* item);
 	void download(FileItem* item);
 	
 protected:

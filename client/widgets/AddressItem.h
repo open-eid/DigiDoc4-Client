@@ -40,7 +40,7 @@ public:
 		Added
 	};
 
-	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
+	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr, bool showIcon = false);
 	explicit AddressItem(const CKey &key, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~AddressItem();
 

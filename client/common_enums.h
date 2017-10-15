@@ -23,13 +23,15 @@ namespace ria {
 namespace qdigidoc4 {
 
 enum ContainerState {
-    UnsignedContainer       = (1 << 0),
-    UnsignedSavedContainer  = (1 << 1),
-    SignedContainer         = (1 << 2),
+    Uninitialized           = (1 << 0),
 
-    UnencryptedContainer    = (1 << 3),
-    EncryptedContainer      = (1 << 4),
-    DecryptedContainer      = (1 << 5)
+    UnsignedContainer       = (1 << 1),
+    UnsignedSavedContainer  = (1 << 2),
+    SignedContainer         = (1 << 3),
+
+    UnencryptedContainer    = (1 << 4),
+    EncryptedContainer      = (1 << 5),
+    DecryptedContainer      = (1 << 6),
 };
 
 enum Actions {

@@ -33,7 +33,7 @@ class CertificateDetails : public QDialog
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0);
+	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = nullptr);
 	~CertificateDetails();
 
 	int exec() override;

@@ -19,36 +19,23 @@
 
 #pragma once
 
-#include "DocumentModel.h"
-#include "widgets/FileItem.h"
-#include "widgets/ItemList.h"
+#include <QDialog>
+#include <QString>
 
-#include <QWidget>
+namespace Ui {
+class WarningDialog;
+}
 
-class QLabel;
-
-class FileList : public ItemList
+class WarningDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit FileList(QWidget *parent = nullptr);
-	~FileList();
-
-	void init(const QString &container, const QString &label = "Kontaineri failid");
-	void addFile(const QString& file);
-	void setModel(DocumentModel *documentModel);
-
-private slots:
-	void open(FileItem *item) const;
-	void remove(FileItem *item);
-	void save(FileItem *item);
+	WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
+	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
+	~WarningDialog();
 
 private:
-	int index(StyledWidget *item) const;
-	void selectFile();
-	void showDownload();
-	
-	QString container;
-	DocumentModel *documentModel;
+	Ui::WarningDialog *ui;
 };
+

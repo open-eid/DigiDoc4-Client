@@ -34,7 +34,7 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
-	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);	
+	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
 }
 
 FileList::~FileList()
@@ -47,6 +47,7 @@ void FileList::addFile( const QString& file )
 	addWidget(item);
 
 	connect(item, &FileItem::open, this, &FileList::open);
+	connect(item, &FileItem::remove, this, &FileList::remove);
 	connect(item, &FileItem::download, this, &FileList::save);
 
 	if(state & (SignedContainer | DecryptedContainer) && items.size() > 1)
@@ -75,6 +76,13 @@ void FileList::open(FileItem *item) const
 		documentModel->open(i);
 }
 
+void FileList::remove(FileItem *item)
+{
+	int i;
+	if(documentModel && (i = index(item)) != -1)
+		documentModel->removeRows(i, 1);
+}
+
 void FileList::save(FileItem *item)
 {
 	int i;
@@ -91,7 +99,6 @@ void FileList::save(FileItem *item)
 		if(!dest.isEmpty())
 			documentModel->save(i, dest);
 	}
-		
 }
 
 void FileList::selectFile()
@@ -121,6 +128,7 @@ void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
+	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));
