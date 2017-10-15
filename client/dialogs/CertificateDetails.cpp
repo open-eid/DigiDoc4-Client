@@ -21,12 +21,17 @@
 #include "CertificateDetails.h"
 #include "ui_CertificateDetails.h"
 
+#include "Application.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
 
+#include <QFileDialog>
+#include <QSettings>
+#include <QStandardPaths>
 #include <QTextStream>
 
 class CertificateDetailsPrivate: public Ui::CertificateDetails
@@ -41,6 +46,8 @@ public:
 		tblDetails->setItem(row, 0, new QTableWidgetItem(variable));
 		tblDetails->setItem(row, 1, item);
 	}
+
+	SslCertificate cert;
 };
 
 
@@ -66,6 +73,7 @@ CertificateDetails::CertificateDetails(const QSslCertificate &cert, QWidget *par
 
 	ui->lblCertHeader->setText(tr("Certificate Information"));
 
+	ui->cert = cert;
 	SslCertificate c = cert;
 	QString i;
 	QTextStream s( &i );
@@ -85,8 +93,12 @@ CertificateDetails::CertificateDetails(const QSslCertificate &cert, QWidget *par
 	ui->lblCertInfo->setHtml( i );
 
 	ui->close->setFont(Styles::font(Styles::Condensed, 14));
-	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
-	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
+	ui->save->setFont(Styles::font(Styles::Condensed, 14));
+	if(Settings(QSettings::SystemScope).value("disableSave", false).toBool())
+		ui->save->hide();
+	connect(ui->close, &QPushButton::clicked, this, &CertificateDetails::accept);
+	connect(ui->save, &QPushButton::clicked, this, &CertificateDetails::save);
+	connect(this, &CertificateDetails::finished, this, &CertificateDetails::close);
 
 	QStringList horzHeaders;
 	horzHeaders << "Väli" << "Väärtus";
@@ -166,4 +178,21 @@ void CertificateDetails::on_tblDetails_itemSelectionChanged()
 		ui->detailedValue->setPlainText(userData.isNull() ? 
 			contentItem->data(Qt::DisplayRole).toString() : userData.toString());
 	}
+}
+
+void CertificateDetails::save()
+{
+	QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QString("%1%2%3.cer")
+			.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
+			.arg(QDir::separator())
+			.arg(ui->cert.subjectInfo("serialNumber")),
+		tr("Certificates (*.cer *.crt *.pem)"));
+	if( file.isEmpty() )
+		return;
+
+	QFile f( file );
+	if( f.open( QIODevice::WriteOnly ) )
+		f.write( ui->cert.toPem() );
+	else
+		qApp->showWarning(tr("Save certificate"), tr("Failed to save file"));
 }
