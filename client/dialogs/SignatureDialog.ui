@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>SignatureDialog</class>
  <widget class="QDialog" name="SignatureDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -622,6 +625,9 @@ background-color: #FFFFFF;</string>
              <family>Roboto</family>
              <pointsize>14</pointsize>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
            </property>
            <property name="text">
             <string>Allkiri</string>

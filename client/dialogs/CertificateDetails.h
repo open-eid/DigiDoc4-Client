@@ -42,5 +42,7 @@ public slots:
 	void on_tblDetails_itemSelectionChanged();
 
 private:
+	void save();
+
 	CertificateDetailsPrivate *ui;
 };

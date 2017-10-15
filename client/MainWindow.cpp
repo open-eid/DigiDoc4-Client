@@ -22,6 +22,7 @@
 
 #include "AccessCert.h"
 #include "Application.h"
+#include "Colors.h"
 #include "DigiDoc.h"
 #include "FileDialog.h"
 #include "QPCSC.h"
@@ -32,6 +33,7 @@
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/MobileProgress.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
@@ -46,6 +48,7 @@
 #include <QFileDialog>
 
 using namespace ria::qdigidoc4;
+using namespace ria::qdigidoc4::colors;
 
 MainWindow::MainWindow( QWidget *parent ) :
 	QWidget( parent ),
@@ -377,7 +380,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	}
 }
 
-void MainWindow::onSignAction( int action )
+void MainWindow::onSignAction(int action, const QString &idCode, const QString &phoneNumber)
 {
 	if(action == SignatureAdd)
 	{
@@ -385,15 +388,11 @@ void MainWindow::onSignAction( int action )
 	}
 	else if(action == SignatureMobile)
 	{
-		AccessCert access( this );
+		signMobile(idCode, phoneNumber);
 	}
 	else if(action == ContainerCancel)
 	{
 		navigateToPage(Pages::SignIntro);
-	}
-	else if(action == FileRemove)
-	{
-
 	}
 	else if(action == ContainerSave)
 	{
@@ -405,7 +404,7 @@ void MainWindow::onSignAction( int action )
 	}
 }
 
-void MainWindow::onCryptoAction( int action )
+void MainWindow::onCryptoAction(int action, const QString &id, const QString &phone)
 {
 	switch(action)
 	{
@@ -417,7 +416,7 @@ void MainWindow::onCryptoAction( int action )
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
-			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
 			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
 		}
 		break;
@@ -426,7 +425,7 @@ void MainWindow::onCryptoAction( int action )
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
-			FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#53c964", 110 );
+			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
 			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
 		}
 		break;
@@ -677,12 +676,35 @@ bool MainWindow::sign()
 		save();
 		ui->signContainerPage->transition(digiDoc);
 
-		FadeInNotification* notification = new FadeInNotification( this, "#ffffff", "#8CC368", 110 );
+		FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
 		return true;
 	}
 
 	return false;
+}
+
+bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
+{
+	AccessCert access(this);
+	if( !access.validate() )
+		return false;
+
+	// TODO read place&roles from settings
+	MobileProgress m(this);
+	m.setSignatureInfo( "",	"", "", "", "");
+	m.sign(digiDoc, idCode, phoneNumber);
+	if( !m.exec() || !digiDoc->addSignature( m.signature() ) )
+		return false;
+
+	access.increment();
+	save();
+
+	ui->signContainerPage->transition(digiDoc);
+
+	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+	return true;
 }
 
 void MainWindow::updateCardData()

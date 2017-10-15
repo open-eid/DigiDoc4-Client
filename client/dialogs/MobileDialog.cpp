@@ -19,8 +19,12 @@
 
 #include "MobileDialog.h"
 #include "ui_MobileDialog.h"
+
+#include "Settings.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
+
+#include <common/IKValidator.h>
 
 MobileDialog::MobileDialog(QWidget *parent) :
 	QDialog(parent),
@@ -30,7 +34,7 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	connect( ui->ok, &QPushButton::clicked, this, &MobileDialog::accept );
+	connect( ui->sign, &QPushButton::clicked, this, &MobileDialog::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );
 	connect( this, &MobileDialog::finished, this, &MobileDialog::close );
 
@@ -42,13 +46,48 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->labelPhone->setFont( condensed12 );
 	ui->labelIdCode->setFont( condensed12 );
 	ui->cbRemember->setFont( Styles::font( Styles::Regular, 14 ) );
-	ui->ok->setFont( condensed14 );
+	ui->sign->setFont( condensed14 );
 	ui->cancel->setFont( condensed14 );
+
+	Settings s;
+	Settings s2(qApp->applicationName());
+	// Mobile
+	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
+	ui->idCode->setText( s.value( "Client/MobileCode" ).toString() );
+	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
+	ui->phoneNo->setText( s.value( "Client/MobileNumber" ).toString() );
+	ui->cbRemember->setChecked( s2.value( "MobileSettings", true ).toBool() );
+	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
+	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
+	connect(ui->cbRemember, &QCheckBox::clicked, [=](bool checked) {
+		Settings s;
+		s.setValueEx("Client/MobileCode", checked ? ui->idCode->text() : QString(), QString());
+		s.setValueEx("Client/MobileNumber", checked ? ui->phoneNo->text() : QString(), QString());
+		Settings(qApp->applicationName()).setValueEx("MobileSettings", checked, true);
+	});
+
+	enableSign();
 }
 
 MobileDialog::~MobileDialog()
 {
 	delete ui;
+}
+
+void MobileDialog::enableSign()
+{
+	if( ui->cbRemember->isChecked() )
+	{
+		Settings s;
+		s.setValueEx( "Client/MobileCode", ui->idCode->text(), QString() );
+		s.setValueEx( "Client/MobileNumber", ui->phoneNo->text(), QString() );
+	}
+	ui->sign->setToolTip(QString());
+	if( !IKValidator::isValid( ui->idCode->text() ) )
+		ui->sign->setToolTip( tr("Personal code is not valid") );
+	if( ui->phoneNo->text().isEmpty())
+		ui->sign->setToolTip( tr("Phone number is not entered") );
+	ui->sign->setEnabled( ui->sign->toolTip().isEmpty() );
 }
 
 int MobileDialog::exec()
@@ -59,4 +98,15 @@ int MobileDialog::exec()
 	overlay.close();
 
 	return rc;
+}
+
+
+QString MobileDialog::idCode()
+{
+	return ui->idCode->text();
+}
+
+QString MobileDialog::phoneNo()
+{
+	return ui->phoneNo->text();
 }

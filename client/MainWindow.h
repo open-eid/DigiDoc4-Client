@@ -123,8 +123,8 @@ private:
 	void hideWarningArea();	
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
-	void onCryptoAction( int code );
-	void onSignAction( int code );
+	void onCryptoAction(int code, const QString &id, const QString &phone);
+	void onSignAction(int code, const QString &idCode, const QString &phoneNumber);
 	void openContainer();
 	void openFiles( const QStringList files );
 	bool save();
@@ -135,6 +135,7 @@ private:
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details );
 	bool sign();
+	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );

@@ -313,6 +313,14 @@ QString SDocumentModel::data(int row) const
 	return from(doc->b->dataFiles().at(row)->fileName());
 }
 
+QString SDocumentModel::mime(int row) const
+{
+	if(row >= rowCount())
+		return QString();
+
+	return from(doc->b->dataFiles().at(row)->mediaType());
+}
+
 void SDocumentModel::open(int row)
 {
 	if(row >= rowCount())

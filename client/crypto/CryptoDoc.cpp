@@ -618,6 +618,14 @@ QString CDocumentModel::data(int row) const
 	return f.name;
 }
 
+QString CDocumentModel::mime(int row) const
+{
+	const CryptoDocPrivate::File &f = d->files.at(row);
+	if( f.mime.isEmpty() )
+		return QString();
+	return f.mime;
+}
+
 void CDocumentModel::open(int row)
 {
 	if(d->encrypted)

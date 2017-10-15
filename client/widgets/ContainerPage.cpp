@@ -103,10 +103,15 @@ void ContainerPage::init()
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
-	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::action);
-	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::action);
-	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::action);
-	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::action);
+	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
+	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
+}
+
+void ContainerPage::forward(int code)
+{
+	emit action(code);
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
@@ -153,7 +158,7 @@ void ContainerPage::mobileDialog()
 	MobileDialog dlg( qApp->activeWindow() );
 	if( dlg.exec() == QDialog::Accepted )
 	{
-		emit action( SignatureMobile );
+		emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
 	}
 }
 
@@ -232,7 +237,7 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 	}
 	else
 	{
-		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::action));
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward));
 		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction));
 		actionConnections.push_back(connect(mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown));	
 	}
