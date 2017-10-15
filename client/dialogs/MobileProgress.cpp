@@ -28,6 +28,7 @@
 #include <common/SOAPDocument.h>
 #include <common/SslCertificate.h>
 
+#include <QPushButton>
 #include <QtCore/QDir>
 #include <QtCore/QTimeLine>
 #include <QtCore/QTimer>
@@ -81,7 +82,7 @@ MobileProgress::MobileProgress( QWidget *parent )
 	taskbar->setWindow(parent->windowHandle());
 	taskbar->progress()->setRange(signProgressBar->minimum(), signProgressBar->maximum());
 	connect(statusTimer, &QTimeLine::frameChanged, taskbar->progress(), &QWinTaskbarProgress::setValue);
-    connect(cancel, &QButton::clicked, this, &MobileProgress::stop);
+    connect(cancel, &QPushButton::clicked, this, &MobileProgress::stop);
 #endif
 
     cancel->setFont(Styles::font(Styles::Condensed, 14));
