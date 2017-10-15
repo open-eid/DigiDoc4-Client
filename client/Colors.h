@@ -31,6 +31,7 @@ namespace colors
 	static const char* CURIOUS_BLUE = "#31A3D9";
 	static const char* DEEP_CERULEAN = "#006EB5";
 	static const char* LOCHMARA = "#008DCF";
+	static const char* CORNFLOWER_BLUE = "#53c964";
 	// Reds
 	static const char* MOJO = "#981E32";
 	// Whites
@@ -40,6 +41,8 @@ namespace colors
 	static const char* WHITE = "#ffffff";
 	// Golds
 	static const char* CLAY_CREEK = "#998B66";
+	// Green
+	static const char* MANTIS = "#8CC368";
 }
 }
 }

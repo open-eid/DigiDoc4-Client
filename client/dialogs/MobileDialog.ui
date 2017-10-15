@@ -64,9 +64,9 @@ QPushButton:hover:!pressed {
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="ok">
+  <widget class="QPushButton" name="sign">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -127,7 +127,7 @@ border-radius: 2px;
 </string>
    </property>
    <property name="text">
-    <string>372</string>
+    <string/>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
@@ -237,7 +237,7 @@ border-radius: 2px;
 </string>
    </property>
    <property name="text">
-    <string>372</string>
+    <string/>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>

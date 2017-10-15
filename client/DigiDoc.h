@@ -93,6 +93,7 @@ class SDocumentModel: public DocumentModel
 public:
 	void addFile(const QString &file, const QString &mime = "application/octet-stream") override;
 	QString data(int row) const override;
+	QString mime(int row) const override;
 	bool removeRows(int row, int count) override;
 	int rowCount() const override;
 	QString save(int row, const QString &path) const override;

@@ -33,8 +33,12 @@ public:
 	~MobileDialog();
 
 	int exec() override;
+	QString idCode();
+	QString phoneNo();
 
 private:
+	void enableSign();
+
 	Ui::MobileDialog *ui;
 };
 

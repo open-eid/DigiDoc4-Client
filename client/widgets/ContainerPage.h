@@ -53,7 +53,7 @@ public:
 	void transition(DigiDoc* container);
 
 signals:
-	void action( int code );
+	void action(int code, const QString &idCode = QString(), const QString &phoneNumber = QString());
 
 protected:
 	void resizeEvent( QResizeEvent *event ) override;
@@ -61,6 +61,7 @@ protected:
 private:
 	void clear();
 	void elideFileName(bool force = false);
+	void forward(int code);
 	void hideButtons( std::vector<QWidget*> buttons );
 	void hideMainAction();
 	void hideOtherAction();
