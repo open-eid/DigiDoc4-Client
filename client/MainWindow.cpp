@@ -170,11 +170,6 @@ void MainWindow::buttonClicked( int button )
 	}
 	case HeadSettings:
 	{
-		WarningDialog w1("Show warning with only text\nline1\nline2\nline3\nline4", this);
-		w1.exec();
-		WarningDialog w2("Show warning with only text\nline1\nline2\nline3\nline4", 
-			"Show also details\nline1\nline2\nline3\nline4", this);
-		w2.exec();
 		SettingsDialog dlg(this);
 		dlg.exec();
 		break;
