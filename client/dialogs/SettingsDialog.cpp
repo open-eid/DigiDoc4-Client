@@ -35,6 +35,7 @@
 #include <digidocpp/Conf.h>
 #include <QDebug>
 #include <QInputDialog>
+#include <QTextBrowser>
 #include <QThread>
 #include <QThreadPool>
 #include <QtNetwork/QSslCertificate>
@@ -115,7 +116,7 @@ void SettingsDialog::initUI()
 
 	// pageAccessSert
     ui->txtEvidence->setFont(regularFont);
-    ui->txtEvidenceCert->setFont(regularFont);
+    //ui->txtEvidenceCert->setFont(regularFont);
     ui->chkEvidenceIgnore->setFont(regularFont);
 
 	// pageProxy
@@ -320,13 +321,19 @@ void SettingsDialog::updateCert()
 {
     QSslCertificate c = AccessCert::cert();
     if( !c.isNull() )
-        ui->txtEvidenceCert->setText(
-            tr("Issued to: %1<br />Valid to: %2 %3")
+        ui->txtEvidence->setText(
+            tr("Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
+               "Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
+               "Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
+               "Issued to: %1<br />Valid to: %2 %3")
             .arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
             .arg( c.expiryDate().toString("dd.MM.yyyy") )
             .arg( !SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
     else
-        ui->txtEvidenceCert->setText( "<b>" + tr("Server access certificate is not installed.") + "</b>" );
+        ui->txtEvidence->setText( "Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
+                                      "Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
+                                      "Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
+                                      "<b>" + tr("Server access certificate is not installed.") + "</b>" );
     ui->btnNavShowCertificate->setEnabled( !c.isNull() );
     ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
 }
