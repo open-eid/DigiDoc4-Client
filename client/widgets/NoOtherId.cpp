@@ -31,13 +31,10 @@ NoOtherId::NoOtherId( QWidget *parent ) :
 	QFont font18 = Styles::font( Styles::Regular, 18 );
 	
 	ui->lblName->setFont( font18 );
-	ui->lblInfo->setFont( font14 );
+	ui->topContainer->setFont( font14 );
 	ui->lblMobileID->setFont( font14 );
 	ui->lblDigiID->setFont( font14 );
 	ui->lblSmartID->setFont( font14 );
-
-	// top | right | bottom | left
-	this->setStyleSheet( "background-color: #ffffff; border: solid #DFE5E9; border-width: 1px 0px 0px 1px;" );
 }
 
 NoOtherId::~NoOtherId()

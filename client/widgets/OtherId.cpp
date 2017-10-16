@@ -19,8 +19,8 @@
 
 #include "OtherId.h"
 #include "ui_OtherId.h"
-#include "Styles.h"
 
+#include "Styles.h"
 #include "XmlReader.h"
 
 #include <QtCore/QTextStream>
@@ -45,9 +45,6 @@ OtherId::OtherId( QWidget *parent ) :
     ui->lblCertHdr->setFont( font11 );
     ui->lblCertText->setFont( font14 );
     ui->lblDigiIdInfo->setFont( font11 );
-
-	// top | right | bottom | left
-	this->setStyleSheet( "background-color: #ffffff; border: solid #DFE5E9; border-width: 1px 0px 0px 1px;" );
 }
 
 OtherId::~OtherId()

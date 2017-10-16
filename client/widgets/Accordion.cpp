@@ -64,7 +64,13 @@ void Accordion::init()
 	ui->signBox->addBorders();
 
 	ui->contentOtherData->update( false );
-    clearOtherEID();
+	clearOtherEID();
+	
+	// top | right | bottom | left
+	QString otherIdStyle = "background-color: #ffffff; border: solid #DFE5E9; border-width: 1px %1px 0px %1px;";
+	ui->mobID->setStyleSheet( otherIdStyle.arg("0") );
+	ui->digiID->setStyleSheet( otherIdStyle.arg("1") );
+	ui->otherID->setStyleSheet( otherIdStyle.arg("0") );
 }
 
 void Accordion::closeOtherSection(AccordionTitle* opened)
