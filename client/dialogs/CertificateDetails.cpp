@@ -21,23 +21,17 @@
 #include "CertificateDetails.h"
 #include "ui_CertificateDetails.h"
 
-#include "Application.h"
-#include "Settings.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 
 #include <common/DateTime.h>
 
-<<<<<<< 1491f2ad0c70c72e173c13b57456a84d1808cc40
-#include <QFileDialog>
-#include <QSettings>
-=======
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
->>>>>>> Certificate save, installCert and removeCert handlers.
 #include <QStandardPaths>
 #include <QTextStream>
+
 
 class CertificateDetailsPrivate: public Ui::CertificateDetails
 {
@@ -51,8 +45,6 @@ public:
 		tblDetails->setItem(row, 0, new QTableWidgetItem(variable));
 		tblDetails->setItem(row, 1, item);
 	}
-
-	SslCertificate cert;
 };
 
 
@@ -79,11 +71,6 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 
 	ui->lblCertHeader->setText(tr("Certificate Information"));
 
-<<<<<<< 1491f2ad0c70c72e173c13b57456a84d1808cc40
-	ui->cert = cert;
-	SslCertificate c = cert;
-=======
->>>>>>> Certificate save, installCert and removeCert handlers.
 	QString i;
 	QTextStream s( &i );
 	s << "<b>" << tr("This certificate is intended for following purpose(s):") << "</b>";
@@ -101,20 +88,10 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	s << "<b>" << tr("To") << "</b> " << cert.expiryDate().toLocalTime().toString( "dd.MM.yyyy" );
 	ui->lblCertInfo->setHtml( i );
 
-<<<<<<< 1491f2ad0c70c72e173c13b57456a84d1808cc40
-	ui->close->setFont(Styles::font(Styles::Condensed, 14));
-	ui->save->setFont(Styles::font(Styles::Condensed, 14));
-	if(Settings(QSettings::SystemScope).value("disableSave", false).toBool())
-		ui->save->hide();
-	connect(ui->close, &QPushButton::clicked, this, &CertificateDetails::accept);
-	connect(ui->save, &QPushButton::clicked, this, &CertificateDetails::save);
-	connect(this, &CertificateDetails::finished, this, &CertificateDetails::close);
-=======
 
 	connect( ui->save, &QPushButton::clicked, this, &CertificateDetails::saveCert );
 	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
->>>>>>> Certificate save, installCert and removeCert handlers.
 
 	QStringList horzHeaders;
 	horzHeaders << "Väli" << "Väärtus";
@@ -211,21 +188,4 @@ void CertificateDetails::on_tblDetails_itemSelectionChanged()
 		ui->detailedValue->setPlainText(userData.isNull() ?
 			contentItem->data(Qt::DisplayRole).toString() : userData.toString());
 	}
-}
-
-void CertificateDetails::save()
-{
-	QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QString("%1%2%3.cer")
-			.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
-			.arg(QDir::separator())
-			.arg(ui->cert.subjectInfo("serialNumber")),
-		tr("Certificates (*.cer *.crt *.pem)"));
-	if( file.isEmpty() )
-		return;
-
-	QFile f( file );
-	if( f.open( QIODevice::WriteOnly ) )
-		f.write( ui->cert.toPem() );
-	else
-		qApp->showWarning(tr("Save certificate"), tr("Failed to save file"));
 }

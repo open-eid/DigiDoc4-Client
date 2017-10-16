@@ -188,9 +188,6 @@ span {
             <height>21</height>
            </size>
           </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
           <property name="text">
            <string>Sertifikaadi detailid</string>
           </property>
