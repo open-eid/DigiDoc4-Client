@@ -21,6 +21,9 @@
 
 #include <QDialog>
 
+#include <common/SslCertificate.h>
+
+
 namespace Ui {
 class CertificateDetails;
 }
@@ -36,6 +39,7 @@ public:
 	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = nullptr);
 	~CertificateDetails();
 
+	void saveCert();
 	int exec() override;
 
 public slots:
@@ -45,4 +49,5 @@ private:
 	void save();
 
 	CertificateDetailsPrivate *ui;
+	SslCertificate cert;
 };

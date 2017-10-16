@@ -34,6 +34,8 @@
 
 #include <digidocpp/Conf.h>
 #include <QDebug>
+#include <QInputDialog>
+#include <QThread>
 #include <QThreadPool>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QNetworkProxy>
@@ -45,6 +47,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     initUI();
     initFunctionality();
 }
+
+
 
 SettingsDialog::~SettingsDialog()
 {
@@ -154,10 +158,14 @@ void SettingsDialog::initUI()
 	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
 			 [this]()
 		{
-			CertificateDetails dlg(QSslCertificate(), this);
+			QSslCertificate cert = AccessCert::cert();
+
+			CertificateDetails dlg(cert, this);
 			dlg.exec();
 		}
 			);
+	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
+	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
 
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
@@ -252,8 +260,8 @@ void SettingsDialog::initFunctionality()
 	{
 		ui->rdSigningBdoc->setChecked(true);
 	}
-	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValue( "Client/Type", "bdoc" ); } } );
-	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValue( "Client/Type", "asice" ); } } );
+	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "bdoc", "bdoc" ); } } );
+	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "asice", "bdoc" ); } } );
 
 	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
 	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
@@ -459,6 +467,52 @@ void SettingsDialog::updateDiagnostics()
 //		ui->buttonBox1->removeButton(save);
 //		save->deleteLater();
 //	}
+}
+
+void SettingsDialog::installCert()
+{
+	QString certpath = "";
+
+	//d->tabWidget->setCurrentIndex( AccessCertSettings );
+	QFile file( !certpath.isEmpty() ? certpath :
+		FileDialog::getOpenFileName( this, tr("Select server access certificate"),
+		QString(), tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
+	if(!file.exists())
+		return;
+	QString pass = QInputDialog::getText( this, tr("Password"),
+		tr("Enter server access certificate password."), QLineEdit::Password );
+	if(pass.isEmpty())
+		return;
+
+	if(!file.open(QFile::ReadOnly))
+		return;
+
+	PKCS12Certificate p12(&file, pass);
+	switch(p12.error())
+	{
+	case PKCS12Certificate::NullError: break;
+	case PKCS12Certificate::InvalidPasswordError:
+		QMessageBox::warning(this, tr("Select server access certificate"), tr("Invalid password"));
+		return;
+	default:
+		QMessageBox::warning(this, tr("Select server access certificate"),
+			tr("Server access certificate error: %1").arg(p12.errorString()));
+		return;
+	}
+
+#ifndef Q_OS_MAC
+	if( file.fileName() == QDir::fromNativeSeparators( Application::confValue( Application::PKCS12Cert ).toString() ) )
+		return;
+#endif
+	file.reset();
+	AccessCert().installCert( file.readAll(), pass );
+	updateCert();
+}
+
+void SettingsDialog::removeCert()
+{
+	AccessCert().remove();
+	updateCert();
 }
 
 void SettingsDialog::changePage(QPushButton* button)

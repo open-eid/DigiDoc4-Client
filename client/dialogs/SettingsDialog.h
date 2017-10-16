@@ -21,6 +21,9 @@
 
 #include <QDialog>
 
+#include "QSmartCard.h"
+
+
 namespace digidoc { class Conf; }
 
 namespace Ui {
@@ -64,6 +67,8 @@ private:
 			bool force );
 
 
+	void installCert();
+	void removeCert();
     void changePage(QPushButton* button);
 
 	Ui::SettingsDialog *ui;
