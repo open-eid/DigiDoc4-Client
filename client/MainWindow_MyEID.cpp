@@ -255,3 +255,34 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
 	notification->start( msg, 750, 2500, 600 );
 }
+
+void MainWindow::getOtherEID ()
+{
+	getMobileIdStatus ();
+	getDigiIdStatus ();
+}
+
+void MainWindow::getMobileIdStatus ()
+{
+	QByteArray buffer = sendRequest( SSLConnect::MobileInfo );
+	if( buffer.isEmpty() )
+		return;
+
+	XmlReader xml( buffer );
+	int error = 0;
+	QVariant mobileData = QVariant::fromValue( xml.readMobileStatus( error ) );
+	if( error )
+	{
+		showWarning( XmlReader::mobileErr( error ), QString() );
+		return;
+	}
+	ui->accordion->setProperty( "MOBILE_ID_STATUS", mobileData );
+	ui->accordion->updateMobileIdInfo();
+}
+
+void MainWindow::getDigiIdStatus ()
+{
+	// TODO
+	ui->accordion->setProperty( "DIGI_ID_STATUS", QVariant() );
+	ui->accordion->updateDigiIdInfo();
+}

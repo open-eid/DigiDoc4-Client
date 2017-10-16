@@ -64,6 +64,7 @@ private Q_SLOTS:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked( bool isForgotPuk );
 	void certDetailsClicked( const QString &link );
+	void getOtherEID ();
 	void operation(int op, bool started);
 
 protected:
@@ -141,6 +142,8 @@ private:
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
+	void getMobileIdStatus ();
+	void getDigiIdStatus ();
 
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
