@@ -108,12 +108,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 	separator->move(110, 0);
 	separator->show();
 #endif
-	// Shadow below card selection toolbar
-	// QGraphicsDropShadowEffect *bodyShadow = new QGraphicsDropShadowEffect;
-	// bodyShadow->setBlurRadius(9.0);
-	// bodyShadow->setColor(QColor(0, 0, 0, 160));
-	// bodyShadow->setOffset(4.0);
-	// ui->topBar->setGraphicsEffect(bodyShadow);
 
 	setAcceptDrops( true );
 	smartcard = new QSmartCard( this );
@@ -312,7 +306,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
 {
 	bool navigate = true;	
-	if( page == SignDetails)
+	if(page == SignDetails)
 	{
 		navigate = false;
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
@@ -340,7 +334,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			ui->signContainerPage->transition(digiDoc);
 		}
 	}
-	else if( page == CryptoDetails)
+	else if(page == CryptoDetails)
 	{
 		navigate = false;
 		std::unique_ptr<CryptoDoc> cryptoContainer(new CryptoDoc(this));
@@ -370,6 +364,19 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			delete cryptoDoc;
 			cryptoDoc = cryptoContainer.release();
 			ui->cryptoContainerPage->transition(cryptoDoc);
+		}
+	}
+	else
+	{
+		if(cryptoDoc)
+		{
+			delete cryptoDoc;
+			cryptoDoc = nullptr;
+		}
+		if(digiDoc)
+		{
+			delete digiDoc;
+			digiDoc = nullptr;
 		}
 	}
 
