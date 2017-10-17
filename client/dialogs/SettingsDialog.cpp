@@ -25,6 +25,7 @@
 #include "AccessCert.h"
 #include "Styles.h"
 
+#include "common/Configuration.h"
 #include "common/Diagnostics.h"
 #include "common/Settings.h"
 #include "common/SslCertificate.h"
@@ -94,7 +95,8 @@ void SettingsDialog::initUI()
 
 	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord päevas");
 	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord nädalas");
-	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord kuus");
+    ui->cmbGeneralCheckUpdatePeriod->addItem("Kord kuus");
+    ui->cmbGeneralCheckUpdatePeriod->addItem("Mitte kunagi");
 
 
 	// pageSigning
@@ -151,6 +153,33 @@ void SettingsDialog::initUI()
 	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
 
 	changePage(ui->btnMenuGeneral);
+
+	QString package;
+#ifndef Q_OS_MAC
+	QStringList packages = Common::packages({
+		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "eID software"});
+	if( !packages.isEmpty() )
+		package = "<br />" + tr("Base version:") + " " + packages.first();
+#endif
+	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
+		.arg( qApp->applicationName(), qApp->applicationVersion(), BUILD_DATE, package ) );
+
+//#ifdef CONFIG_URL
+	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+		if(error.isEmpty())
+			return;
+		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
+			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
+			QMessageBox::Ok, this);
+		b.setTextFormat(Qt::RichText);
+		b.setDetailedText(error);
+		b.exec();
+	});
+	connect(ui->btNavFromFile, &QPushButton::clicked, []{
+		Configuration::instance().update(true);
+	});
+//#endif
+
 
 
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
@@ -253,6 +282,46 @@ void SettingsDialog::initFunctionality()
 		} } );
 #endif
 
+	QString checkUpdatesFreq = Settings(qApp->applicationName()).value( "Client/CheckUpdatesFreq" ).toString();
+
+	if(checkUpdatesFreq == "Day")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(0);
+	}
+	else if(checkUpdatesFreq == "Week")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(1);
+	}
+	else if(checkUpdatesFreq == "Month")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(2);
+	}
+	else if(checkUpdatesFreq == "Never")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(3);
+	}
+	connect( ui->cmbGeneralCheckUpdatePeriod, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+			[this](int index)
+			{
+				switch(index /*ui->cmbGeneralCheckUpdatePeriod->currentIndex()*/)
+				{
+				case 1:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Week", "Day" );
+					break;
+				case 2:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Month", "Day" );
+					break;
+				case 3:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Never", "Day" );
+					break;
+				default:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Day", "Day" );
+					break;
+				}
+			}
+				);
+
+
 	if(Settings(qApp->applicationName()).value( "Client/Type" ).toString() == "asice")
 	{
 		ui->rdSigningAsice->setChecked(true);
@@ -319,23 +388,23 @@ void SettingsDialog::initFunctionality()
 
 void SettingsDialog::updateCert()
 {
-    QSslCertificate c = AccessCert::cert();
-    if( !c.isNull() )
-        ui->txtEvidence->setText(
-            tr("Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
-               "Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
-               "Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
-               "Issued to: %1<br />Valid to: %2 %3")
-            .arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
-            .arg( c.expiryDate().toString("dd.MM.yyyy") )
-            .arg( !SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
-    else
-        ui->txtEvidence->setText( "Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
-                                      "Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
-                                      "Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
-                                      "<b>" + tr("Server access certificate is not installed.") + "</b>" );
-    ui->btnNavShowCertificate->setEnabled( !c.isNull() );
-    ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
+	QSslCertificate c = AccessCert::cert();
+	if( !c.isNull() )
+		ui->txtEvidence->setText(
+			tr("Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
+			"Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
+			"Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
+			"Issued to: %1<br />Valid to: %2 %3")
+			.arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
+			.arg( c.expiryDate().toString("dd.MM.yyyy") )
+			.arg( !SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
+	else
+		ui->txtEvidence->setText( "Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
+									"Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
+									"Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
+									"<b>" + tr("Server access certificate is not installed.") + "</b>" );
+	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
+	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
 }
 
 

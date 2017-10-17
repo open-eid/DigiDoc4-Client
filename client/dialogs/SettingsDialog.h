@@ -49,9 +49,9 @@ private Q_SLOTS:
 
 
 private:
-    void initUI();
-    void initFunctionality();
-    void updateCert();
+	void initUI();
+	void initFunctionality();
+	void updateCert();
 	void setProxyEnabled();
 	void updateProxy();
 	void loadProxy( const digidoc::Conf *conf );
@@ -69,7 +69,7 @@ private:
 
 	void installCert();
 	void removeCert();
-    void changePage(QPushButton* button);
+	void changePage(QPushButton* button);
 
 	Ui::SettingsDialog *ui;
 };
