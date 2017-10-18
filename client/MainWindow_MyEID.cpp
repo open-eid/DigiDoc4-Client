@@ -30,12 +30,9 @@
 
 #include "effects/FadeInNotification.h"
 #include <common/SslCertificate.h>
-<<<<<<< HEAD
 #include "dialogs/CertificateDetails.h"
-=======
 #include <common/Configuration.h>
 #include <common/Settings.h>
->>>>>>> Update Certificate
 
 #include <QtCore/QJsonObject>
 #include <QtNetwork/QSslConfiguration>
@@ -270,7 +267,6 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 	notification->start( msg, 750, 2500, 600 );
 }
 
-<<<<<<< HEAD
 void MainWindow::getOtherEID ()
 {
 	getMobileIdStatus ();
@@ -300,7 +296,8 @@ void MainWindow::getDigiIdStatus ()
 	// TODO
 	ui->accordion->setProperty( "DIGI_ID_STATUS", QVariant() );
 	ui->accordion->updateDigiIdInfo();
-=======
+}
+
 void MainWindow::updateCertificate( const QString &link )
 {
 	if( link != "#update-Certificate" )
@@ -327,25 +324,17 @@ void MainWindow::isUpdateCertificateNeeded()
 
     ui->warning->setProperty("updateCertificateEnabled",
 		Settings(qApp->applicationName()).value("updateButton", false).toBool() ||
-        // Just for testing. Apply new logic later from https://github.com/open-eid/qesteidutil/commit/c9106a33e222832b6b644cf6f97b6b639d3563bd !!!!!!
-			(
-				t.version() >= QSmartCardData::VER_3_4 &&
-				t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
-				t.isValid() && (
-					Configuration::instance().object().contains("EIDUPDATER-URL") ||
-					(t.version() == QSmartCardData::VER_3_4 && Configuration::instance().object().contains("EIDUPDATER-URL-34")) ||
-					(t.version() >= QSmartCardData::VER_3_5 && Configuration::instance().object().contains("EIDUPDATER-URL-35"))
-				) && (
-					!t.authCert().validateEncoding() ||
-					!t.signCert().validateEncoding() ||
-					t.version() & QSmartCardData::VER_HASUPDATER ||
-					t.version() == QSmartCardData::VER_USABLEUPDATER ||
-					(Configuration::instance().object().contains("EIDUPDATER-SHA1") && (
-						t.authCert().signatureAlgorithm() == "sha1WithRSAEncryption" ||
-						t.signCert().signatureAlgorithm() == "sha1WithRSAEncryption")
-					)
-				)
+        true ||                                                         // for testing. Remove it later !!!!!!
+		(
+			t.version() >= QSmartCardData::VER_3_5 &&
+			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
+			t.isValid() &&
+			Configuration::instance().object().contains("EIDUPDATER-URL-TOECC") && (
+				t.authCert().publicKey().algorithm() == QSsl::Rsa ||
+				t.signCert().publicKey().algorithm() == QSsl::Rsa ||
+				t.version() & QSmartCardData::VER_HASUPDATER ||
+				t.version() == QSmartCardData::VER_USABLEUPDATER
 			)
+		)
 	);
->>>>>>> Update Certificate
 }
