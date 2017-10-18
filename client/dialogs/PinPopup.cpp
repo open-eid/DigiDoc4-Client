@@ -51,7 +51,7 @@ PinPopup::PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::
 : QDialog(parent)
 , ui(new Ui::PinPopup)
 {
-    init( flags, title, token );
+	init(flags, title, token, bodyText);
 }
 
 PinPopup::~PinPopup()

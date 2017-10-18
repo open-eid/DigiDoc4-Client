@@ -387,7 +387,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock(PinUnblock::PinChange, qApp->activeWindow(), type));
+		p.reset(new PinUnblock(PinUnblock::PinChange, qApp->activeWindow(), type, d->t.retryCount(type)));
 		if (!p->exec())
 			return CancelError;
 		oldPin = p->firstCodeText().toUtf8();
@@ -407,7 +407,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock((isForgotPin) ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, qApp->activeWindow(), type));
+		p.reset(new PinUnblock((isForgotPin) ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, qApp->activeWindow(), type, d->t.retryCount(QSmartCardData::PukType)));
 		if (!p->exec())
 			return CancelError;
 		puk = p->firstCodeText().toUtf8();

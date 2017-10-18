@@ -25,6 +25,7 @@
 
 #include "effects/FadeInNotification.h"
 #include <common/SslCertificate.h>
+#include "dialogs/CertificateDetails.h"
 
 #include <QtNetwork/QSslConfiguration>
 
@@ -94,7 +95,8 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 
 void MainWindow::certDetailsClicked( const QString &link )
 {
-	QMessageBox::warning( this, windowTitle(), "... Certificate details" );
+	CertificateDetails dlg( (link == "PIN1") ? smartcard->data().authCert() : smartcard->data().signCert(), this );
+	dlg.exec();
 }
 
 void MainWindow::getEmailStatus ()
