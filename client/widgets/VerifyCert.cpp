@@ -63,13 +63,6 @@ void VerifyCert::addBorders()
 
 void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartCard )
 {
-    this->pinType = type;
-	QSmartCardData t = pSmartCard->data();
-    
-    SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
-	this->isValidCert = c.isValid();    // put 0 for testing Aegunud Sertifikaate.
-	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false; // put 1 for testing Tühista Blokeering.
-
 	QString name;
 	QString validUntil;
 	QString changeBtn;
@@ -78,6 +71,13 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	QString error;
 	QString txt;
 	QTextStream cert( &txt );
+
+    this->pinType = type;
+	QSmartCardData t = pSmartCard->data();
+    
+    SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
+	this->isValidCert = c.isValid();    // put 0 for testing Aegunud Sertifikaate.
+	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false; // put 1 for testing Tühista Blokeering.
 
 	if( !isValidCert )
 	{
@@ -109,10 +109,13 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 			break;
 		case QSmartCardData::PukType:
 			name = "PUK kood";
-			txt = ""; // "PUK kood asub Teie kooodiümbrikus";
+			txt = "PUK kood asub Sinu koodiümbrikus";
 			changeBtn = "MUUDA PUK"; 
-			forgotPinText = "<a href='#pin1-forgotten'><span style='color:black;'>Unustasid PUK koodi?</span></a>";
-			error = ( isBlockedPin ) ? "PUK on blokeeritud, Uue PUK koodi saamiseks, külasta klienditeeninduspunkti, kust saad koodiümbriku uute koodidega." : "";
+			error = ( isBlockedPin ) ? 
+                "<span>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida."
+                "<br><br>Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid."
+                "<br><br>Uue PUK koodi saad vaid uue koodiümbrikuga, mida <u>taotle PPA-st</u></span>."
+                : "";
 			break;
 		default:
 			break;
@@ -158,12 +161,11 @@ void VerifyCert::update(
 					"font-family: Arial;"
 					"color: #5c1c1c;"
 					);
-		ui->name->setTextFormat( Qt::RichText );
 		ui->name->setText(name + " <img src=\":/images/icon_alert_red.svg\" height=\"12\" width=\"13\">");
 	}
 	else if( isBlockedPin )
 	{
-		this->setStyleSheet( "opacity: 0.25; background-color: #fbecd0;"  + borders );
+		this->setStyleSheet( "opacity: 0.25; background-color: #fcf5ea;"  + borders );
 		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
 		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
 		ui->changePIN->setStyleSheet( 
@@ -181,7 +183,6 @@ void VerifyCert::update(
 					"background-color: #F8DDA7;"
 					"font-family: Arial;"
 					);
-		ui->name->setTextFormat( Qt::RichText );
 		ui->name->setText( name + " <img src=\":/images/icon_alert_orange.svg\" height=\"12\" width=\"13\">" );
 	}
 	else 
@@ -192,23 +193,37 @@ void VerifyCert::update(
 		ui->verticalSpacerAboveBtn->changeSize(20, 32 - decrease);
 		ui->verticalSpacerBelowBtn->changeSize(20, 38 - decrease);
 		changePinStyle( "#FFFFFF" );
-		ui->name->setTextFormat( Qt::RichText );
 		ui->name->setText( name + 
 			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"13\">" : "" ) );
 	}
+	ui->name->setTextFormat( Qt::RichText );
 	ui->changePIN->show();
-    ui->forgotPinLink->setVisible( true );
-	ui->details->setVisible( true );
-	if( isBlockedPuk )  // if PUK is blocked then
+
+	ui->forgotPinLink->setText( forgotPinText );
+	ui->forgotPinLink->setVisible( !forgotPinText.isEmpty() );
+
+	ui->details->setText( detailsText );
+	ui->details->setVisible( !detailsText.isEmpty() );
+	
+	if( isBlockedPuk )
 	{
-		ui->changePIN->hide();  // hide 'change PIN/PUK' buttons.
-		ui->details->setVisible( false ); // hide 'Sertificate details' label
 		if( pinType != QSmartCardData::PukType )
+		{
 			ui->forgotPinLink->setVisible( false ); // hide 'Forgot PIN. code?' label
+			if( isBlockedPin )
+				ui->changePIN->setVisible( false );  // hide 'Tühista BLOKEERING' button
+		}
+		else
+		{
+			ui->widget->setMinimumHeight ( 0 );
+			ui->verticalSpacerBelowBtn->changeSize( 20, 0 );
+			ui->validUntil->setVisible( false );
+			ui->changePIN->hide();  // hide 'change PUK' button
+		}
 	}
 	if( !isValidCert )
 	{
-        // This logic to be clarified !!
+        // This logic to be clarified!                                                     TODO!!
 		if( pinType != QSmartCardData::PukType )
 			ui->changePIN->hide();  // hide 'change PIN' buttons.
 		if( pinType != QSmartCardData::PukType )
@@ -221,27 +236,6 @@ void VerifyCert::update(
 		ui->error->setVisible( isBlockedPin );
 	ui->error->setText( error );
 	ui->changePIN->setText( change ); 
-
-	if( forgotPinText.isEmpty() )
-	{
-		ui->forgotPinLink->setVisible( false );
-	}
-	else
-	{
-		ui->forgotPinLink->setVisible( true );
-		ui->forgotPinLink->setText( forgotPinText );
-	}
-
-	if( detailsText.isEmpty() )
-	{
-		ui->details->setVisible( false );
-	}
-	else
-	{
-		ui->details->setText( detailsText );
-		ui->details->setVisible( true );
-//	??	ui->details->setOpenExternalLinks( true );
-	}
 }
 
 void VerifyCert::enterEvent( QEvent * event )
@@ -249,7 +243,7 @@ void VerifyCert::enterEvent( QEvent * event )
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 		this->setStyleSheet( "background-color: #f3d8d8;" + borders );
 	else if( isBlockedPin )
-		this->setStyleSheet( "background-color: #f9e2b9;" + borders );
+		this->setStyleSheet( "background-color: #fbecd0;" + borders );
 	else
     {
 		this->setStyleSheet( "background-color: #f7f7f7;" + borders );
@@ -262,7 +256,7 @@ void VerifyCert::leaveEvent( QEvent * event )
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 		this->setStyleSheet( "background-color: #F9EBEB;" + borders );
 	else if( isBlockedPin )
-		this->setStyleSheet( "background-color: #fbecd0;" + borders );
+		this->setStyleSheet( "background-color: #fcf5ea;" + borders );
 	else
     {
 		this->setStyleSheet( "background-color: white;" + borders );
@@ -292,5 +286,5 @@ void VerifyCert::processForgotPinLink( QString link )
 
 void VerifyCert::processCertDetails( QString link )
 {
-	emit certDetailsClicked( link );
+	emit certDetailsClicked( (pinType == QSmartCardData::Pin1Type) ? "PIN1" : "PIN2" );
 }

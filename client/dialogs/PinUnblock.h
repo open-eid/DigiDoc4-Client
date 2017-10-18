@@ -39,7 +39,7 @@ public:
 		PinChange = 4,
 		PukChange = 8
 	};
-    PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type );
+    PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts );
     ~PinUnblock();
 
     int exec() override;
@@ -47,7 +47,7 @@ public:
 	QString newCodeText() const;
 
 private:
-    void init(  WorkMode mode, QSmartCardData::PinType type );
+    void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
     void setUnblockEnabled();
 
     Ui::PinUnblock *ui;

@@ -111,7 +111,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>108</x>
-     <y>20</y>
+     <y>10</y>
      <width>245</width>
      <height>24</height>
     </rect>
@@ -446,6 +446,30 @@ line-height: 14px;</string>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelAttemptsLeft">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>40</y>
+     <width>381</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+height: 14px;
+font-size: 13px;
+color: #c53e3e;
+font-weight: 400;
+text-align: cente</string>
+   </property>
+   <property name="text">
+    <string>Katseid jäänud:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

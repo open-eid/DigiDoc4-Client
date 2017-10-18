@@ -19,11 +19,12 @@
 
 #include "PinUnblock.h"
 #include "ui_PinUnblock.h"
-#include "effects/Overlay.h"
+
 #include "Styles.h"
+#include "effects/Overlay.h"
 
 
-PinUnblock::PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type ) :
+PinUnblock::PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts ) :
     QDialog( parent ),
     ui( new Ui::PinUnblock ),
     regexpFirstCode(),
@@ -32,7 +33,7 @@ PinUnblock::PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType 
     isNewCodeOk( false ),
     isRepeatCodeOk( false )
 {
-    init( mode, type );
+    init( mode, type, leftAttempts );
 }
 
 PinUnblock::~PinUnblock()
@@ -40,7 +41,7 @@ PinUnblock::~PinUnblock()
     delete ui;
 }
 
-void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type )
+void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAttempts )
 {
     ui->setupUi( this );
     setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
@@ -55,126 +56,114 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type )
     {
         if( type == QSmartCardData::Pin2Type )
         {
-            ui->labelNameId->setText("Vahetan PIN2 koodi");
             ui->label->setText(
                         "<ul>"
-                            "<li>&nbsp;Kui olete unustanud PIN2 koodi, kuid teate PUK koodi,<br>&nbsp;siis siin saate määrata uue PIN2 koodi.</li>"
-                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
-                            "<li>&nbsp;Uus PIN2 peab olema erinev eelmisest.</li>"
-                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                            "<li>&nbsp;Uus PIN2 peab olema eelmisest erinev.</li>"
+                            "<li>&nbsp;PIN2 koodi kasutatakse digitaalallkirja andmiseks.</li>"
+                            "<li>&nbsp;Kui oled unustanud PIN2 koodi, kuid tead PUK koodi,<br>&nbsp;"
+                            "siis siin saad määrata uue PIN2 koodi.</li>"
+                            "<li>&nbsp;Sinu PUK kood asub koodiümbrikus.</li>"
                         "</ul>"
                         );
-            ui->labelPin->setText("UUS PIN2 KOOD");
-            ui->labelRepeat->setText("UUS PIN2 KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{8,12}" );
-            regexpNewCode.setPattern("\\d{5,12}");
         }
-        else if( type == QSmartCardData::Pin1Type )
+        else if( type == QSmartCardData::Pin1Type ) 
         {
-            ui->labelNameId->setText("Vahetan PIN1 koodi");
             ui->label->setText(
                         "<ul>"
-                            "<li>&nbsp;Kui olete unustanud PIN1 koodi, kuid teate PUK koodi,<br>&nbsp;siis siin saate määrata uue PIN1 koodi.</li>"
-                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
-                            "<li>&nbsp;Uus PIN1 peab olema erinev eelmisest.</li>"
-                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                            "<li>&nbsp;Uus PIN1 peab olema eelmisest erinev.</li>"
+                            "<li>&nbsp;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile<br>&nbsp;"
+                            "juurdepääsemiseks.</li>"
+                            "<li>&nbsp;Kui oled unustanud PIN1 koodi, kuid tead PUK koodi,<br>&nbsp;"
+                            "siis siin saad määrata uue PIN1 koodi.</li>"
+                            "<li>&nbsp;Sinu PUK kood asub koodiümbrikus.</li>"
                         "</ul>"
                         );
-            ui->labelPin->setText("UUS PIN1 KOOD");
-            ui->labelRepeat->setText("UUS PIN1 KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{8,12}" );
-            regexpNewCode.setPattern( "\\d{4,12}" );
         }
+        ui->labelNameId->setText( tr("%1 koodi vahetamine").arg( QSmartCardData::typeString( type ) ) );
+        regexpFirstCode.setPattern( "\\d{8,12}" );
+        regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" : "\\d{5,12}" );
+        ui->unblock->setText( tr("MUUDA") );
     }
     if( mode == PinUnblock::UnBlockPinWithPuk )
     {
         if( type == QSmartCardData::Pin2Type )
         {
-            ui->labelNameId->setText("PIN2 lahti blokeerimine");
             ui->label->setText(
                         "<ul>"
                             "<li>&nbsp;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
-//                            "<li>&nbsp;Uus PIN2 peab olema erinev eelmisest.</li>"
-                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;"
+                            "vahepeal muutnud</li>"
+                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;"
+                            "klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
                         "</ul>"
                         );
-            ui->labelPin->setText("UUS PIN2 KOOD");
-            ui->labelRepeat->setText("UUS PIN2 KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{8,12}" );
-            regexpNewCode.setPattern("\\d{5,12}");
         }
         else if( type == QSmartCardData::Pin1Type )
         {
-            ui->labelNameId->setText("PIN1 lahti blokeerimine");
             ui->label->setText(
                         "<ul>"
                             "<li>&nbsp;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;vahepeal muutnud</li>"
- //                           "<li>&nbsp;Uus PIN1 peab olema erinev eelmisest.</li>"
-                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
+                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;"
+                            "vahepeal muutnud</li>"
+                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;"
+                            "klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
                         "</ul>"
                         );
-            ui->labelPin->setText("UUS PIN1 KOOD");
-            ui->labelRepeat->setText("UUS PIN1 KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{8,12}" );
-            regexpNewCode.setPattern( "\\d{4,12}" );
         }
+        ui->labelNameId->setText( tr("%1 lahti blokeerimine").arg( QSmartCardData::typeString( type ) ) );
+        regexpFirstCode.setPattern( "\\d{8,12}" );
+        regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" : "\\d{5,12}" );
     }
     else if( mode == PinUnblock::PinChange )
     {
         if( type == QSmartCardData::Pin2Type )
         {
-            ui->labelNameId->setText("Vahetan PIN2 koodi");
             ui->label->setText(
                         "<ul>"
-                            "<li>&nbsp;Uus PIN2 peab olema erinev eelmisest.</li>"
+                            "<li>&nbsp;Uus PIN2 peab olema eelmisest erinev.</li>"
                             "<li>&nbsp;PIN2 koodi kasutatakse digitaalallkirja andmiseks.</li>"
+                            "<li>&nbsp;Kui sisestad PIN2 koodi kolm korda valesti, siis allkirjastamise<br>&nbsp;"
+                            "sertifikaat blokeeritakse ning ID-kaarti pole võimalik<br>&nbsp;"
+                            "allkirjastamiseks kasutada enne blokeeringu tühistamist<br>&nbsp;"
+                            "PUK koodiga.</li>"
                         "</ul>"
                         );
-            ui->labelPuk->setText("KEHTIV PIN2 KOOD");
-            ui->labelPin->setText("UUS PIN2 KOOD");
-            ui->labelRepeat->setText("UUS PIN2 KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{5,12}" ),
-            regexpNewCode.setPattern("\\d{5,12}");
         }
         else if( type == QSmartCardData::Pin1Type )
         {
-            ui->labelNameId->setText("Vahetan PIN1 koodi");
             ui->label->setText(
                         "<ul>"
-                            "<li>&nbsp;Uus PIN1 peab olema erinev eelmisest.</li>"
-                            "<li>&nbsp;PIN1 koodi kasutatakse isikutuvastamise<br>&nbsp;sertifikaadile juurdepääsemiseks.</li>"
+                            "<li>&nbsp;Uus PIN1 peab olema eelmisest erinev.</li>"
+                            "<li>&nbsp;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile<br>&nbsp;"
+                            "juurdepääsemiseks.</li>"
+                            "<li>&nbsp;Kui sisestad PIN1 koodi kolm korda valesti, siis isikutuvastuse<br>&nbsp;"
+                            "sertifikaat blokeeritakse ning ID-kaarti saad kasutada vaid pärast<br>&nbsp;"
+                            "blokeeringu tühistamist PUK koodiga.</li>"
                         "</ul>"
                         );
-            ui->labelPuk->setText("KEHTIV PIN1 KOOD");
-            ui->labelPin->setText("UUS PIN1 KOOD");
-            ui->labelRepeat->setText("UUS PIN1 KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{4,12}" ),
-            regexpNewCode.setPattern( "\\d{4,12}" );
         }
         else if( type == QSmartCardData::PukType )
         {
-            ui->labelNameId->setText("Vahetan PUK koodi");
             ui->label->setText(
-                        "Kui peale vahetamist PUK kood läheb meelest ära ja sertifikaat<br>&nbsp;"
-                        "jääb blokeerituks kolme vale PIN1 või PIN2 sisetamise järel,<br>&nbsp;"
-                        "siis ainus võimalus ID-kaart jälle tööle saada on pöörduda<br>&nbsp;klienditeeninduspunkti poole."
+                        "<ul>"
+                            "<li>&nbsp;Kui PUK kood läheb peale koodi vahetamist meelest ära ja<br>&nbsp;"
+                            "sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise<br>&nbsp;"
+                            "järel, siis ainus võimalus ID-kaart tööle saada on pöörduda<br>&nbsp;"
+                            "<u>klienditeeninduspunkti</u> poole.</li>"
+                            "<li>&nbsp;Sinu PUK kood asub koodiümbrikus.</li>"
+                        "</ul>"
                         );
-            ui->labelPuk->setText("KEHTIV PUK KOOD");
-            ui->labelPin->setText("UUS PUK KOOD");
-            ui->labelRepeat->setText("UUS PUK KOOD UUESTI");
-
-            regexpFirstCode.setPattern( "\\d{8,12}" ),
-            regexpNewCode.setPattern( "\\d{8,12}" );
         }
+        ui->labelNameId->setText( tr("%1 koodi vahetamine").arg( QSmartCardData::typeString( type ) ) );
+        ui->labelPuk->setText( tr( "KEHTIV %1 KOOD").arg( QSmartCardData::typeString( type ) ) );
+        regexpFirstCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" :
+            (type == QSmartCardData::Pin2Type) ? "\\d{5,12}" : "\\d{8,12}" );
+        regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" :
+            (type == QSmartCardData::Pin2Type) ? "\\d{5,12}" : "\\d{8,12}" );
+        ui->unblock->setText( tr("MUUDA") );
     }
+    ui->labelPin->setText( tr( "UUS %1 KOOD").arg( QSmartCardData::typeString( type ) ) );
+    ui->labelRepeat->setText( tr( "UUS %1 KOOD UUESTI").arg( QSmartCardData::typeString( type ) ) );
 
     ui->puk->setValidator( new QRegExpValidator( regexpFirstCode, ui->puk ) );
     ui->pin->setValidator( new QRegExpValidator( regexpFirstCode, ui->pin ) );
@@ -188,6 +177,12 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type )
     ui->unblock->setFont( condensed14 );
     ui->label->setFont( Styles::font( Styles::Regular, 14 ) );
     ui->labelPuk->setFont( Styles::font( Styles::Condensed, 12 ) );
+    ui->labelAttemptsLeft->setFont( Styles::font( Styles::Regular, 13 ) );
+    if( mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk )
+    	ui->labelAttemptsLeft->setText( tr("PUK katseid jäänud: %1").arg( leftAttempts ) );
+    else
+    	ui->labelAttemptsLeft->setText( tr("Katseid jäänud: %1").arg( leftAttempts ) );
+	ui->labelAttemptsLeft->setVisible( leftAttempts < 3 );
 
     connect(ui->puk, &QLineEdit::textChanged, this,
                 [this](const QString &text)
