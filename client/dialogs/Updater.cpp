@@ -78,7 +78,7 @@ public:
 	QSslCertificate cert;
 	QString session;
 	QNetworkRequest request;
-	void setButtonPattern(QPushButton *button, const QColor &color) const;
+	void setButtonPattern(QPushButton *button, const QString &color) const;
 	QPCSCReader::Result verifyPIN(const QString &title, int p1) const;
 	QtMessageHandler oldMsgHandler = nullptr;
 	QTimeLine *statusTimer = nullptr;
@@ -145,17 +145,25 @@ public:
 	}
 };
 
-void UpdaterPrivate::setButtonPattern(QPushButton *button, const QColor &color) const
+void UpdaterPrivate::setButtonPattern(QPushButton *button, const QString &color) const
 {
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	if( color != nullptr )
-	{
-		QPalette pal = button->palette();
-		pal.setColor( QPalette::Button, color );
-		button->setPalette( pal );
-		button->setAutoFillBackground( true );
-//		button->setStyleSheet(QString("background:%1;color:#FFFFFF").arg(color.name()));
-//		button->setStyleSheet(QString("background:%1").arg(color.name()));
+	{	// Red color styled button
+		button->setStyleSheet( 
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #981E32;}" 
+			"QPushButton:pressed { background-color: #F24A66;}" 
+			"QPushButton:hover:!pressed { background-color: #CD2541;}" 
+			); 
+	}
+	else
+	{	// Blue color styled button
+		button->setStyleSheet( 
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
+			"QPushButton:pressed { background-color: #41B6E6;}" 
+			"QPushButton:hover:!pressed { background-color: #008DCF;}" 
+			"QPushButton:disabled { background-color: #BEDBED;};" 
+			); 
 	}
     button->setMinimumHeight( 30 );
     button->setMinimumWidth( 120 );
@@ -195,7 +203,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 		okButton = buttonBox->addButton(::Updater::tr("CONTINUE"), QDialogButtonBox::AcceptRole);
 		cancelButton = buttonBox->addButton("CANCEL", QDialogButtonBox::RejectRole);
 		setButtonPattern( okButton,  nullptr );
-		setButtonPattern( cancelButton,  nullptr );
+		setButtonPattern( cancelButton,  "Red" );
 		okButton->setDisabled(true);
 		pinInput->setValidator(new QRegExpValidator(regexp, pinInput));
 		::Updater::connect(pinInput, &QLineEdit::textEdited, okButton, [&](const QString &text){
@@ -317,10 +325,10 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->pinLabel->setFont( condensed14 );
 	d->pinType->setFont( condensed14 );
 	d->details = d->buttonBox->addButton(tr("DETAILS"), QDialogButtonBox::ActionRole);
-    d->details->hide();
 	d->setButtonPattern( d->details,  nullptr );
+    d->details->hide();
 	d->close = d->buttonBox->button(QDialogButtonBox::Close);
-	d->setButtonPattern( d->close,  nullptr );
+	d->setButtonPattern( d->close,  "Red" );
 	d->close->hide();
 	d->log->hide();
 	connect(d->details, &QPushButton::clicked, [=]{
@@ -422,8 +430,8 @@ void Updater::process(const QByteArray &data)
 		QPushButton *noButton = d->buttonBox->addButton(tr("KATKESTA"), QDialogButtonBox::RejectRole);
 		QPushButton *yesButton = d->buttonBox->addButton("ALUSTA", QDialogButtonBox::AcceptRole);
 		yesButton->setDisabled(true);
-		d->setButtonPattern( yesButton, "#53c964" ); // QColor( Qt::green )
-		d->setButtonPattern( noButton, "#c53e3e" ); // QColor( Qt::red )
+		d->setButtonPattern( yesButton, nullptr );
+		d->setButtonPattern( noButton, "Red" );
 		QEventLoop l;
 		connect(d->messageAgree, &QCheckBox::toggled, yesButton, &QPushButton::setEnabled);
 		connect(yesButton, &QPushButton::clicked, [&]{ l.exit(1); });
@@ -464,8 +472,8 @@ void Updater::process(const QByteArray &data)
 			d->stackedWidget->setCurrentIndex(2);
 			QPushButton *yesButton = d->buttonBox->addButton(tr("CONTINUE"), QDialogButtonBox::AcceptRole);
 			QPushButton *cancelButton = d->buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
-			d->setButtonPattern( yesButton,  nullptr );
-			d->setButtonPattern( cancelButton,  nullptr );
+			d->setButtonPattern( yesButton, nullptr );
+			d->setButtonPattern( cancelButton, "Red" );
 			yesButton->setDisabled(true);
 			QEventLoop l;
 			connect(d->envelopeAgree, &QCheckBox::toggled, yesButton, &QPushButton::setEnabled);
@@ -701,14 +709,14 @@ void Updater::run()
 {
 	if(!d->reader)
 		return;
-/* Do we really need to check PIN in the beginning of 'Update Certificate' process?
+
 	SslCertificate c(d->cert);
 	bool result = d->reader->connect() &&
 		d->verifyPIN(c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), 1).resultOk();
 	d->reader->disconnect();
 	if(!result)
 		return accept();
-*/
+
 	Q_EMIT send({
 		{"cmd", "START"},
 		{"lang", Settings().language()},
