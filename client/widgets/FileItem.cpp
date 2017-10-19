@@ -46,6 +46,7 @@ FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
 : FileItem( state, parent )
 {
 	const QFileInfo f( file );
+	setMouseTracking(true);
 	ui->fileName->setText( f.fileName() );
 }
 
@@ -54,15 +55,28 @@ FileItem::~FileItem()
 	delete ui;
 }
 
+void FileItem::enterEvent(QEvent *event)
+{
+	Q_UNUSED (event);
+	ui->fileName->setStyleSheet("color: #363739; border: none; text-decoration: underline;");
+}
+
 QString FileItem::getFile()
 {
 	return ui->fileName->text();
 }
 
-void FileItem::mouseDoubleClickEvent(QMouseEvent *event)
+void FileItem::leaveEvent(QEvent *event)
+{
+	Q_UNUSED (event);
+	ui->fileName->setStyleSheet("color: #363739; border: none;");
+}
+
+void FileItem::mouseReleaseEvent(QMouseEvent *event)
 {
 	emit open(this);
 }
+
 
 void FileItem::stateChange(ContainerState state)
 {

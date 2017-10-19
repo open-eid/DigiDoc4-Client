@@ -70,7 +70,10 @@ void ContainerPage::cardSigning(bool enable)
 	if(cardInReader != enable)
 	{
 		cardInReader = enable;
-		showSigningButton();
+		if(mainAction)
+		{
+			showSigningButton();
+		}
 	}
 }
 

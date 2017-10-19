@@ -46,6 +46,9 @@
 
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QMimeData>
+#include <QSvgWidget>
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
@@ -64,7 +67,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->version->setText( "Ver. " + qApp->applicationVersion() );
 
-	coatOfArms = new QSvgWidget(ui->logo);
+	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
 	coatOfArms->resize( 80, 32 );
 	coatOfArms->move( 15, 17 );
@@ -297,10 +300,6 @@ void MainWindow::hideWarningArea()
 {
 	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
 	ui->warning->hide();
-	ui->warning->setMaximumHeight( 26 );
-	ui->warningText->setMaximumHeight( 16 );
-	ui->warningText->setWordWrap( false );
-	ui->infoStack->setMinimumSize( 186, 186 );
 }
 
 // Any mouse click inside application will hide it.
@@ -795,17 +794,6 @@ void MainWindow::savePhoto( const QPixmap *photo )
 
 void MainWindow::showWarning( const QString &msg, const QString &details, bool extLink )
 {
-	if( details.length() > 40 )
-	{
-		ui->warning->setMaximumHeight( 42 );
-		ui->warningText->setMaximumHeight( 30 );
-		ui->warningText->setWordWrap( true );
-		ui->infoStack->setMinimumSize( 178, 178 );
-	}
-	else
-	{
-        hideWarningArea();  // To restore the original warning area size
-	}
 	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");	
 	ui->warning->show();
 	ui->warningText->setText( msg );

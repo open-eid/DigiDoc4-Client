@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
-    <height>300</height>
+    <width>435</width>
+    <height>318</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,6 +18,10 @@
   </property>
   <property name="windowTitle">
    <string>Certificate update</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">border-radius: 2px;
+background-color: #FFFFFF;</string>
   </property>
   <layout class="QVBoxLayout" name="UpdaterLayout">
    <item>
@@ -304,6 +308,24 @@ color: #000000;
          </item>
          <item>
           <widget class="QLineEdit" name="pinInput">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>34</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>34</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">padding: 0px 10px;
+border: 1px solid #DEE4E9;
+border-radius: 2px;
+</string>
+           </property>
            <property name="maxLength">
             <number>12</number>
            </property>
@@ -378,13 +400,13 @@ color: #000000;
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>30</height>
+       <height>45</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>40</height>
+       <height>45</height>
       </size>
      </property>
      <property name="font">

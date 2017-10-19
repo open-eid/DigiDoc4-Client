@@ -35,6 +35,7 @@
 #include <common/Settings.h>
 
 #include <QtCore/QJsonObject>
+#include <QMessageBox>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslKey>
 
@@ -322,9 +323,9 @@ void MainWindow::isUpdateCertificateNeeded()
 {
 	QSmartCardData t = smartcard->data();
 
-    ui->warning->setProperty("updateCertificateEnabled",
+	ui->warning->setProperty("updateCertificateEnabled",
 		Settings(qApp->applicationName()).value("updateButton", false).toBool() ||
-        true ||                                                         // for testing. Remove it later !!!!!!
+		Settings().value("testUpdater", false).toBool() ||							// TODO for testing. Remove it later !!!!!!
 		(
 			t.version() >= QSmartCardData::VER_3_5 &&
 			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
