@@ -62,10 +62,6 @@
         <translation>Новое окно Crypto</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Не удалось обновить список доверенных сертификатов, используемый для проверки действительности цифровых подписей. Пожалуйста, проверьте ваше интернет-соединение и убедитесь в том, что на компьютере установлена последняя версия программного обеспечения ID-карты. Для верификации подписей будет использован устаревший список доверенных сертификатов. &lt;a href=&quot;http://www.id.ee/?id=37013&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
@@ -608,10 +604,6 @@ New ID-cards have chip on the back side of the card.</source>
     <message>
         <source>Personal code</source>
         <translation>Личный код</translation>
-    </message>
-    <message>
-        <source>Open DigiDoc4 Crypto</source>
-        <translation>Открыть DigiDoc4 Crypto</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>

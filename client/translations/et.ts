@@ -607,10 +607,6 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
         <translation>Isikukood</translation>
     </message>
     <message>
-        <source>Open DigiDoc4 Crypto</source>
-        <translation>Avada DigiDoc4 Krüpto programmi</translation>
-    </message>
-    <message>
         <source>NB! Signature contains warnings</source>
         <translation>NB! Allkiri on hoiatusega</translation>
     </message>

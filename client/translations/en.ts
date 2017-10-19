@@ -61,10 +61,6 @@
         <translation>New Crypto window</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 client</translation>
-    </message>
-    <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
@@ -460,10 +456,6 @@ Media type: %3</translation>
         <source>NB! Invalid signature</source>
         <translation>NB! Invalid signature</translation>
     </message>
-    <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
-    </message>
     <message numerus="yes">
         <source>Signature(s)</source>
         <translation>
@@ -616,10 +608,6 @@ New ID-cards have chip on the back side of the card.</translation>
     <message>
         <source>Signing not allowed.</source>
         <translation>Signing not allowed.</translation>
-    </message>
-    <message>
-        <source>Open DigiDoc4 Crypto</source>
-        <translation>Open DigiDoc4 Crypto</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
