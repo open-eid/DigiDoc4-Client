@@ -136,10 +136,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->accordion, &Accordion::checkOtherEID, this, &MainWindow::getOtherEID );
 
 	showCardStatus();
-	connect( ui->accordion, SIGNAL( changePin1Clicked( bool, bool ) ), this, SLOT( changePin1Clicked( bool, bool ) ) );
-	connect( ui->accordion, SIGNAL( changePin2Clicked( bool, bool ) ), this, SLOT( changePin2Clicked( bool, bool ) ) );
-	connect( ui->accordion, SIGNAL( changePukClicked( bool ) ), this, SLOT( changePukClicked( bool ) ) );
-	connect( ui->accordion, SIGNAL( certDetailsClicked( QString ) ), this, SLOT( certDetailsClicked( QString ) ) );
+	connect( ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked );
+	connect( ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked );
+	connect( ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked );
+	connect( ui->accordion, &Accordion::certDetailsClicked, this, &MainWindow::certDetailsClicked );
+
+	connect( ui->warningAction, &QLabel::linkActivated, this, &MainWindow::updateCertificate );
 }
 
 MainWindow::~MainWindow()
@@ -295,12 +297,17 @@ void MainWindow::hideWarningArea()
 {
 	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
 	ui->warning->hide();
+	ui->warning->setMaximumHeight( 26 );
+	ui->warningText->setMaximumHeight( 16 );
+	ui->warningText->setWordWrap( false );
+	ui->infoStack->setMinimumSize( 186, 186 );
 }
 
 // Any mouse click inside application will hide it.
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-//	if(ui->warning->underMouse() ) // Mouse click on warning region will hide it.
+	if( !ui->warning->property("updateCertificateEnabled").toBool() &&
+		ui->warning->underMouse() )
 		hideWarningArea();
 }
 
@@ -638,6 +645,12 @@ void MainWindow::showCardStatus()
 				t.retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				t.retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				t.retryCount( QSmartCardData::PukType ) == 0 );
+
+        isUpdateCertificateNeeded();
+		ui->myEid->updateCertNeededIcon( ui->warning->property("updateCertificateEnabled").toBool() );
+        if( ui->warning->property("updateCertificateEnabled").toBool() )
+            showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
+                "<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
 	}
 	else
 	{
@@ -736,9 +749,10 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->updateOtherData( false );    // E-mail
+	ui->accordion->clearOtherEID();
 	ui->myEid->invalidCertIcon( false );
 	ui->myEid->pinIsBlockedIcon( false );
-	ui->accordion->clearOtherEID();
+	ui->myEid->updateCertNeededIcon( false );
 	hideWarningArea();
 }
 
@@ -779,13 +793,24 @@ void MainWindow::savePhoto( const QPixmap *photo )
 	photo->save( fileName, "JPEG", 100 );
 }
 
-void MainWindow::showWarning( const QString &msg, const QString &details )
+void MainWindow::showWarning( const QString &msg, const QString &details, bool extLink )
 {
+	if( details.length() > 40 )
+	{
+		ui->warning->setMaximumHeight( 42 );
+		ui->warningText->setMaximumHeight( 30 );
+		ui->warningText->setWordWrap( true );
+		ui->infoStack->setMinimumSize( 178, 178 );
+	}
+	else
+	{
+        hideWarningArea();  // To restore the original warning area size
+	}
 	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");	
 	ui->warning->show();
 	ui->warningText->setText( msg );
 	ui->warningAction->setText( details );
 	ui->warningAction->setTextFormat( Qt::RichText );
 	ui->warningAction->setTextInteractionFlags( Qt::TextBrowserInteraction );
-	ui->warningAction->setOpenExternalLinks( true );	
+	ui->warningAction->setOpenExternalLinks( extLink );
 }

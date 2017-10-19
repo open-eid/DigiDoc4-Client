@@ -22,12 +22,21 @@
 #include "Application.h"
 #include "QSigner.h"
 #include "XmlReader.h"
+#include "QSmartCard_p.h"
+#ifdef Q_OS_WIN
+	#include "CertStore.h"
+#endif
+#include "dialogs/Updater.h"
 
 #include "effects/FadeInNotification.h"
 #include <common/SslCertificate.h>
 #include "dialogs/CertificateDetails.h"
+#include <common/Configuration.h>
+#include <common/Settings.h>
 
+#include <QtCore/QJsonObject>
 #include <QtNetwork/QSslConfiguration>
+#include <QtNetwork/QSslKey>
 
 using namespace ria::qdigidoc4;
 
@@ -287,4 +296,45 @@ void MainWindow::getDigiIdStatus ()
 	// TODO
 	ui->accordion->setProperty( "DIGI_ID_STATUS", QVariant() );
 	ui->accordion->updateDigiIdInfo();
+}
+
+void MainWindow::updateCertificate( const QString &link )
+{
+	if( link != "#update-Certificate" )
+		return;
+  
+#ifdef Q_OS_WIN
+	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
+	CertStore s;
+	for (const SslCertificate &c : s.list())
+	{
+		if (c.subjectInfo("O").contains("ESTEID"))
+			s.remove(c);
+	}
+#endif
+	smartcard->d->m.lock();
+	Updater(smartcard->data().reader(), this).execute();
+	smartcard->d->m.unlock();
+	smartcard->reload();
+}
+
+void MainWindow::isUpdateCertificateNeeded()
+{
+	QSmartCardData t = smartcard->data();
+
+    ui->warning->setProperty("updateCertificateEnabled",
+		Settings(qApp->applicationName()).value("updateButton", false).toBool() ||
+        true ||                                                         // for testing. Remove it later !!!!!!
+		(
+			t.version() >= QSmartCardData::VER_3_5 &&
+			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
+			t.isValid() &&
+			Configuration::instance().object().contains("EIDUPDATER-URL-TOECC") && (
+				t.authCert().publicKey().algorithm() == QSsl::Rsa ||
+				t.signCert().publicKey().algorithm() == QSsl::Rsa ||
+				t.version() & QSmartCardData::VER_HASUPDATER ||
+				t.version() == QSmartCardData::VER_USABLEUPDATER
+			)
+		)
+	);
 }

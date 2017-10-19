@@ -84,9 +84,14 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 		cert << tr("Sertifikaat on aegunud!");
 	}
 	else
+	{
 		cert << "Sertifikaat <span style='color: #37a447'>kehtib</span> kuni "
 			<< DateTime(c.expiryDate().toLocalTime()).formatDate("dd. MMMM yyyy");
 
+		int leftDays = std::max<int>( 0, QDateTime::currentDateTime().daysTo( c.expiryDate().toLocalTime() ) );
+		if( leftDays <= 105 && t.retryCount( type ) != 0 )
+			cert << "<br /><span style='color: red'>" << tr("Sertifikaat aegub %1 päeva pärast").arg( leftDays ) << "</span>";
+	}
 	switch( type )
 	{
 		case QSmartCardData::Pin1Type:
