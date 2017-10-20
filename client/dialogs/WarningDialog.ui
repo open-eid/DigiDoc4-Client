@@ -3,14 +3,14 @@
  <class>WarningDialog</class>
  <widget class="QDialog" name="WarningDialog">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>145</height>
+    <height>206</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -59,6 +59,9 @@ background-color: #FFFFFF;</string>
        <pointsize>14</pointsize>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">margin: 10px 15px 0px 15px;</string>
      </property>
@@ -67,9 +70,6 @@ background-color: #FFFFFF;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="cursor">
-       <cursorShape>IBeamCursor</cursorShape>
      </property>
     </widget>
    </item>
@@ -106,14 +106,14 @@ background-color: #FFFFFF;</string>
        <height>30</height>
       </size>
      </property>
+     <property name="cursor">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">margin: 0px 15px 0px 15px;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="cursor">
-      <cursorShape>IBeamCursor</cursorShape>
      </property>
     </widget>
    </item>

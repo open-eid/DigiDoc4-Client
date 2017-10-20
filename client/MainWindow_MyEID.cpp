@@ -67,10 +67,7 @@ void MainWindow::changePin2Clicked( bool isForgotPin, bool isBlockedPin )
 
 void MainWindow::changePukClicked( bool isForgotPuk )
 {
-	if( isForgotPuk )
-		QMessageBox::warning( this, windowTitle(), "... PUK forgotten" );
-	else
-		pinPukChange( QSmartCardData::PukType );
+	pinPukChange( QSmartCardData::PukType );
 }
 
 void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )

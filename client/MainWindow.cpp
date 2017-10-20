@@ -49,6 +49,8 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QSvgWidget>
+#include <QtCore/QUrlQuery>
+#include <QtGui/QDesktopServices>
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
@@ -416,6 +418,18 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 			ui->signContainerPage->transition(digiDoc);
 		}
 	}
+	else if( action == ContainerEmail && digiDoc )
+	{
+		containerToEmail( digiDoc->fileName() );
+	}
+	else if( action == ContainerNavigate && digiDoc )
+	{
+		browseOnDisk( digiDoc->fileName() );
+	}
+	else if(action == ContainerEncrypt && digiDoc)
+	{
+		navigateToPage( Pages::CryptoDetails, QStringList() << digiDoc->fileName(), true );
+	}
 }
 
 void MainWindow::onCryptoAction(int action, const QString &id, const QString &phone)
@@ -442,6 +456,14 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
 			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
 		}
+		break;
+	case ContainerEmail:
+		if( cryptoDoc )
+			containerToEmail( cryptoDoc->fileName() );
+		break;
+	case ContainerNavigate:
+		if( cryptoDoc )
+			browseOnDisk( cryptoDoc->fileName() );
 		break;
 	}
 }
@@ -801,4 +823,27 @@ void MainWindow::showWarning( const QString &msg, const QString &details, bool e
 	ui->warningAction->setTextFormat( Qt::RichText );
 	ui->warningAction->setTextInteractionFlags( Qt::TextBrowserInteraction );
 	ui->warningAction->setOpenExternalLinks( extLink );
+}
+
+void MainWindow::containerToEmail( const QString &fileName )
+{
+	QUrlQuery q;
+	QUrl url;
+
+	if ( !QFileInfo( fileName ).exists() )
+		return;
+	q.addQueryItem( "subject", QFileInfo( fileName ).fileName() );
+	q.addQueryItem( "attachment", QFileInfo( fileName ).absoluteFilePath() );
+	url.setScheme( "mailto" );
+	url.setQuery(q);
+	QDesktopServices::openUrl( url );
+}
+
+void MainWindow::browseOnDisk( const QString &fileName )
+{
+	if ( !QFileInfo( fileName ).exists() )
+		return;
+	QUrl url = QUrl::fromLocalFile( fileName );
+	url.setScheme( "browse" );
+	QDesktopServices::openUrl( url );
 }
