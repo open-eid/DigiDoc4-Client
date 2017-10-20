@@ -97,8 +97,8 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 		case QSmartCardData::Pin1Type:
 			name = "Isikutuvastamise sertifikaat";
 			changeBtn = ( !isValidCert ) ? "UUENDA SERTIFIKAAT" : ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN1";
-			forgotPinText = "<a href='#pin1-forgotten'><span style='color:black;'>Unustasid PIN1 koodi?</span></a>";
-			detailsText = ( isValidCert ) ? "<a href='#pin1-cert'><span style='color:black;'>Vaata sertifikaadi detaile</span></a>" : "";
+			forgotPinText = "<a href='#pin1-forgotten'><span style='color:#75787B;'>Unustasid PIN1 koodi?</span></a>";
+			detailsText = ( isValidCert ) ? "<a href='#pin1-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>" : "";
 			error = ( !isValidCert ) ? "PIN1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN1 taas kasutada." :
 					( isBlockedPin ) ? "PIN1 on blokeeritud, kuna PIN1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN1 taas kasutada." :
 					"";
@@ -106,8 +106,8 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 		case QSmartCardData::Pin2Type:
 			name = "Allkirjastamise sertifikaat";
 			changeBtn = ( !isValidCert ) ? "UUENDA SERTIFIKAAT" : ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN2";
-			forgotPinText = "<a href='#pin2-forgotten'><span style='color:black;'>Unustasid PIN2 koodi?</span></a>";
-			detailsText = ( isValidCert ) ? "<a href='#pin2-cert'><span style='color:black;'>Vaata sertifikaadi detaile</span></a>" : "";
+			forgotPinText = "<a href='#pin2-forgotten'><span style='color:#75787B;'>Unustasid PIN2 koodi?</span></a>";
+			detailsText = ( isValidCert ) ? "<a href='#pin2-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>" : "";
 			error = ( !isValidCert ) ? "PIN2 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN2 taas kasutada." :
 					( isBlockedPin ) ? "PIN2 on blokeeritud, kuna PIN2 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN2 taas kasutada." : 
 					"";

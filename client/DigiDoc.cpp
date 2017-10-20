@@ -492,11 +492,9 @@ bool DigiDoc::open( const QString &file )
 		QWidget *w = qobject_cast<QWidget*>(parent());
 		if(isService())
 		{
-			QMessageBox::warning(w, w ? w->windowTitle() : 0,
-				QCoreApplication::translate("SignatureDialog",
-					"The verification of digital signatures in PDF format is performed through an external service. "
+            qApp->showWarning( tr("The verification of digital signatures in PDF format is performed through an external service. "
 					"The file requiring verification will be forwarded to the service.\n"
-					"The Information System Authority does not retain information regarding the files and users of the service."), QMessageBox::Ok);
+					"The Information System Authority does not retain information regarding the files and users of the service.") );
 		}
 		else if(isReadOnlyTS())
 		{

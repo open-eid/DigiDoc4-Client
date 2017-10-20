@@ -62,6 +62,7 @@ private:
 	void clear();
 	void elideFileName(bool force = false);
 	void forward(int code);
+	void browseContainer(QString link);
 	void hideButtons( std::vector<QWidget*> buttons );
 	void hideMainAction();
 	void hideOtherAction();

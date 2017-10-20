@@ -82,12 +82,13 @@ void ContainerPage::elideFileName(bool force)
 	if(ui->containerFile->width() < containerFileWidth)
 	{
 		elided = true;
-		ui->containerFile->setText(fm.elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()));
+		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
+			fm.elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
 	}
 	else if(elided || force)
 	{
 		elided = false;
-		ui->containerFile->setText(fileName);
+		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName + "</span></a>");
 	}
 }
 
@@ -110,11 +111,20 @@ void ContainerPage::init()
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
+	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->encrypt, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
 }
 
 void ContainerPage::forward(int code)
 {
 	emit action(code);
+}
+
+void ContainerPage::browseContainer(QString link)
+{
+	emit action(Actions::ContainerNavigate, link);
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )

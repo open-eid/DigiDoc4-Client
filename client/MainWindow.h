@@ -139,10 +139,12 @@ private:
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void showWarning( const QString &msg, const QString &details, bool extLink = false );
-bool sign();
+	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
+	void containerToEmail( const QString &fileName );
+	void browseOnDisk( const QString &fileName );
 	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
