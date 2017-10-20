@@ -21,15 +21,43 @@
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 
-#include "dialogs/CertificateDetails.h"
-#include "effects/Overlay.h"
+#include "Application.h"
+#include "AccessCert.h"
 #include "Styles.h"
 
+#include "common/Configuration.h"
+#include "common/Diagnostics.h"
+#include "common/Settings.h"
+#include "common/SslCertificate.h"
+#include "FileDialog.h"
+#include "dialogs/CertificateDetails.h"
+#include "effects/Overlay.h"
+
+#include <digidocpp/Conf.h>
+#include <QDebug>
+#include <QInputDialog>
+#include <QTextBrowser>
+#include <QThread>
+#include <QThreadPool>
 #include <QtNetwork/QSslCertificate>
+#include <QtNetwork/QNetworkProxy>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::SettingsDialog)
+{
+    initUI();
+    initFunctionality();
+}
+
+
+
+SettingsDialog::~SettingsDialog()
+{
+    delete ui;
+}
+
+void SettingsDialog::initUI()
 {
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
@@ -67,7 +95,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
 	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord päevas");
 	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord nädalas");
-	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord kuus");
+    ui->cmbGeneralCheckUpdatePeriod->addItem("Kord kuus");
+    ui->cmbGeneralCheckUpdatePeriod->addItem("Mitte kunagi");
 
 
 	// pageSigning
@@ -88,8 +117,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	ui->txtSigningZipCode->setFont(regularFont);
 
 	// pageAccessSert
-	ui->txtEvidence->setFont(regularFont);
-	ui->chkEvidenceIgnore->setFont(regularFont);
+    ui->txtEvidence->setFont(regularFont);
+    //ui->txtEvidenceCert->setFont(regularFont);
+    ui->chkEvidenceIgnore->setFont(regularFont);
 
 	// pageProxy
 	ui->rdProxyNone->setFont(regularFont);
@@ -124,6 +154,33 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
 	changePage(ui->btnMenuGeneral);
 
+	QString package;
+#ifndef Q_OS_MAC
+	QStringList packages = Common::packages({
+		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "eID software"});
+	if( !packages.isEmpty() )
+		package = "<br />" + tr("Base version:") + " " + packages.first();
+#endif
+	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
+		.arg( qApp->applicationName(), qApp->applicationVersion(), BUILD_DATE, package ) );
+
+//#ifdef CONFIG_URL
+	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+		if(error.isEmpty())
+			return;
+		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
+			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
+			QMessageBox::Ok, this);
+		b.setTextFormat(Qt::RichText);
+		b.setDetailedText(error);
+		b.exec();
+	});
+	connect(ui->btNavFromFile, &QPushButton::clicked, []{
+		Configuration::instance().update(true);
+	});
+//#endif
+
+
 
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
@@ -131,10 +188,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
 			 [this]()
 		{
-			CertificateDetails dlg(QSslCertificate(), this);
+			QSslCertificate cert = AccessCert::cert();
+
+			CertificateDetails dlg(cert, this);
 			dlg.exec();
 		}
 			);
+	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
+	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
 
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
@@ -143,13 +204,392 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(3); } );
 	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(4); } );
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
+
+	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
+
+	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 }
 
-SettingsDialog::~SettingsDialog()
+void SettingsDialog::initFunctionality()
 {
-	delete ui;
+	//languages->setCurrentIndex( lang.indexOf( Settings::language() ) );
+
+	if(Settings::language() == "en")
+	{
+		ui->rdGeneralEnglish->setChecked(true);
+	}
+	else if(Settings::language() == "ru")
+	{
+		ui->rdGeneralRussian->setChecked(true);
+	}
+	else
+	{
+		ui->rdGeneralEstonian->setChecked(true);
+	}
+
+	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "et" ); qApp->loadTranslation( "et" ); } } );
+	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "en" ); qApp->loadTranslation( "en" ); } } );
+	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "ru" ); qApp->loadTranslation( "ru" ); } } );
+
+
+/* Ei esine uues dialoogis */
+//    d->showIntro->setChecked( Settings(qApp->applicationName()).value( "Client/ClientIntro", true ).toBool() );
+//	d->showIntro2->setChecked( Settings(qApp->applicationName()).value( "Crypto/Intro", true ).toBool() );
+//	d->cdocwithddoc->setChecked( Settings(qApp->applicationName()).value( "Client/cdocwithddoc", false ).toBool() );
+//	connect(d->cdocwithddoc, &QCheckBox::toggled, [](bool checked){
+//	Settings(qApp->applicationName()).setValueEx( "Client/cdocwithddoc", checked, false );
+//	});
+	// Cleanup old keys
+	Settings(qApp->applicationName()).remove( "Client/lastPath" );
+	Settings(qApp->applicationName()).remove( "Client/type" );
+	Settings(qApp->applicationName()).remove( "Client/Intro" );
+	updateCert();
+#ifdef Q_OS_MAC
+//	d->p12Label->setText( tr(
+//		"Regarding to terms and conditions of validity confirmation service you're "
+//		"allowed to use the service in extent of 10 signatures per month. Additional "
+//		"information is available from <a href=\"http://www.id.ee/kehtivuskinnitus\">"
+//		"http://www.id.ee/kehtivuskinnitus</a> or phone 1777 (only from Estonia), (+372) 6773377") );
+//	d->label->hide();
+	ui->rdGeneralSameDirectory->hide();
+	ui->txtGeneralDirectory->hide();
+//	d->selectDefaultDir->hide();
+	ui->rdGeneralSpecifyDirectory->hide();
+#else
+	ui->txtGeneralDirectory->setText( Settings(qApp->applicationName()).value( "Client/DefaultDir" ).toString() );
+	if(ui->txtGeneralDirectory->text().isEmpty())
+	{
+		ui->rdGeneralSameDirectory->setChecked( true );
+		ui->btGeneralChooseDirectory->setEnabled(false);
+	}
+	else
+	{
+		ui->rdGeneralSpecifyDirectory->setChecked( true );
+		ui->btGeneralChooseDirectory->setEnabled(true);
+	}
+	connect( ui->rdGeneralSameDirectory, &QRadioButton::toggled, this, [this](bool checked)
+		{
+			if(checked)
+			{
+				ui->btGeneralChooseDirectory->setEnabled(false);
+				ui->txtGeneralDirectory->setText( QString() );
+		} } );
+	connect( ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool checked)
+		{
+			if(checked)
+			{
+				ui->btGeneralChooseDirectory->setEnabled(true);
+		} } );
+#endif
+
+	QString checkUpdatesFreq = Settings(qApp->applicationName()).value( "Client/CheckUpdatesFreq" ).toString();
+
+	if(checkUpdatesFreq == "Day")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(0);
+	}
+	else if(checkUpdatesFreq == "Week")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(1);
+	}
+	else if(checkUpdatesFreq == "Month")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(2);
+	}
+	else if(checkUpdatesFreq == "Never")
+	{
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(3);
+	}
+	connect( ui->cmbGeneralCheckUpdatePeriod, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+			[this](int index)
+			{
+				switch(index /*ui->cmbGeneralCheckUpdatePeriod->currentIndex()*/)
+				{
+				case 1:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Week", "Day" );
+					break;
+				case 2:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Month", "Day" );
+					break;
+				case 3:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Never", "Day" );
+					break;
+				default:
+					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Day", "Day" );
+					break;
+				}
+			}
+				);
+
+
+	if(Settings(qApp->applicationName()).value( "Client/Type" ).toString() == "asice")
+	{
+		ui->rdSigningAsice->setChecked(true);
+	}
+	else
+	{
+		ui->rdSigningBdoc->setChecked(true);
+	}
+	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "bdoc", "bdoc" ); } } );
+	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "asice", "bdoc" ); } } );
+
+	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
+	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
+
+/* Ei esine uues dialoogis */
+//	d->tokenRestart->hide();
+//#ifdef Q_OS_WIN
+//	connect( d->tokenRestart, &QPushButton::clicked, []{
+//		qApp->setProperty("restart", true);
+//		qApp->quit();
+//	});
+//	d->tokenBackend->setChecked(Settings(qApp->applicationName()).value("Client/tokenBackend").toUInt());
+//	connect( d->tokenBackend, &QCheckBox::toggled, [=](bool checked){
+//		Settings(qApp->applicationName()).setValueEx("Client/tokenBackend", int(checked), 0);
+//		d->tokenRestart->show();
+//	});
+//#else
+//	d->tokenBackend->hide();
+//#endif
+
+
+	ui->txtSigningRole->setText( Settings(qApp->applicationName()).value( "Client/Role" ).toString() );
+//	ui->signResolutionInput->setText( Settings(qApp->applicationName()).value( "Client/Resolution" ).toString() );
+	ui->txtSigningCity->setText( Settings(qApp->applicationName()).value( "Client/City" ).toString() );
+	ui->txtSigningCounty->setText( Settings(qApp->applicationName()).value( "Client/State" ).toString() );
+	ui->txtSigningCountry->setText( Settings(qApp->applicationName()).value( "Client/Country" ).toString() );
+	ui->txtSigningZipCode->setText( Settings(qApp->applicationName()).value( "Client/Zip" ).toString() );
+
+
+//	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
+
+	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
+	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
+	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
+	switch(Settings(qApp->applicationName()).value("Client/proxyConfig", 0 ).toInt())
+	{
+	case 1:
+		ui->rdProxySystem->setChecked( true );
+		break;
+	case 2:
+		ui->rdProxyManual->setChecked( true );
+		break;
+	default:
+		ui->rdProxyNone->setChecked( true );
+		break;
+	}
+
+	updateProxy();
+	ui->chkEvidenceIgnore->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
+
+	updateDiagnostics();
 }
 
+
+void SettingsDialog::updateCert()
+{
+	QSslCertificate c = AccessCert::cert();
+	if( !c.isNull() )
+		ui->txtEvidence->setText(
+			tr("Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
+			"Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
+			"Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
+			"Issued to: %1<br />Valid to: %2 %3")
+			.arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
+			.arg( c.expiryDate().toString("dd.MM.yyyy") )
+			.arg( !SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
+	else
+		ui->txtEvidence->setText( "Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
+									"Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
+									"Täiendav informatsioon http://www.id.ee/kehtivuskinnitus või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
+									"<b>" + tr("Server access certificate is not installed.") + "</b>" );
+	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
+	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
+}
+
+
+
+void SettingsDialog::setProxyEnabled()
+{
+	ui->txtProxyHost->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
+	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
+}
+
+void SettingsDialog::updateProxy()
+{
+	ui->txtProxyHost->setText(Application::confValue( Application::ProxyHost ).toString());
+	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
+	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
+	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
+//	d->proxySSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
+}
+
+void SettingsDialog::save()
+{
+//	s.setValueEx( "Crypto/Intro", d->showIntro2->isChecked(), true );
+//	Settings(qApp->applicationName()).setValue( "Client/ClientIntro", d->showIntro->isChecked() );
+//	Settings(qApp->applicationName()).setValueEx( "Client/Overwrite", d->signOverwrite->isChecked(), false );
+#ifndef Q_OS_MAC
+//	s.setValueEx( "AskSaveAs", d->askSaveAs->isChecked(), true );
+	Settings(qApp->applicationName()).setValue("Client/DefaultDir", ui->txtGeneralDirectory->text());
+#endif
+
+	if(ui->rdProxyNone->isChecked())
+	{
+		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 0);
+	}
+	else if(ui->rdProxySystem->isChecked())
+	{
+		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 1);
+	}
+	else if(ui->rdProxyManual->isChecked())
+	{
+		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 2);
+	}
+
+	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
+	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
+	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
+	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
+//	Application::setConfValue( Application::ProxySSL, d->proxySSL->isChecked() );
+	Application::setConfValue( Application::PKCS12Disable, ui->chkEvidenceIgnore->isChecked() );
+	loadProxy(digidoc::Conf::instance());
+	updateProxy();
+
+	saveSignatureInfo(
+		ui->txtSigningRole->text(),
+		QString(), //d->signResolutionInput->text(),
+		ui->txtSigningCity->text(),
+		ui->txtSigningCounty->text(),
+		ui->txtSigningCountry->text(),
+		ui->txtSigningZipCode->text(),
+		true );
+}
+
+void SettingsDialog::loadProxy( const digidoc::Conf *conf )
+{
+	switch(Settings(qApp->applicationName()).value("Client/proxyConfig", 0).toUInt())
+	{
+	case 0:
+		QNetworkProxyFactory::setUseSystemConfiguration(false);
+		QNetworkProxy::setApplicationProxy(QNetworkProxy());
+		break;
+	case 1:
+		QNetworkProxyFactory::setUseSystemConfiguration(true);
+		break;
+	default:
+		QNetworkProxyFactory::setUseSystemConfiguration(false);
+		QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy,
+			QString::fromStdString(conf->proxyHost()),
+			QString::fromStdString(conf->proxyPort()).toUInt(),
+			QString::fromStdString(conf->proxyUser()),
+			QString::fromStdString(conf->proxyPass())));
+		break;
+	}
+}
+
+
+void SettingsDialog::openDirectory()
+{
+	QString dir = Settings(qApp->applicationName()).value( "Client/DefaultDir" ).toString();
+	dir = FileDialog::getExistingDirectory( this, tr("Select folder"), dir );
+
+	if(!dir.isEmpty())
+	{
+		ui->rdGeneralSpecifyDirectory->setChecked( true );
+		Settings(qApp->applicationName()).setValue( "Client/DefaultDir", dir );
+		ui->txtGeneralDirectory->setText( dir );
+	}
+}
+
+
+void SettingsDialog::saveSignatureInfo(
+		const QString &role,
+		const QString &resolution,
+		const QString &city,
+		const QString &state,
+		const QString &country,
+		const QString &zip,
+		bool force )
+{
+	if( force || Settings(qApp->applicationName()).value( "Client/Overwrite", "false" ).toBool() )
+	{
+		Settings(qApp->applicationName()).setValue( "Client/Role", role );
+		Settings(qApp->applicationName()).setValue( "Client/Resolution", resolution );
+		Settings(qApp->applicationName()).setValue( "Client/City", city );
+		Settings(qApp->applicationName()).setValue( "Client/State", state ),
+		Settings(qApp->applicationName()).setValue( "Client/Country", country );
+		Settings(qApp->applicationName()).setValue( "Client/Zip", zip );
+	}
+}
+
+void SettingsDialog::updateDiagnostics()
+{
+	ui->txtDiagnostics->setEnabled(false);
+
+	QApplication::setOverrideCursor( Qt::WaitCursor );
+	Diagnostics *worker = new Diagnostics();
+	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
+	connect(worker, &Diagnostics::destroyed, this, [=]{
+		ui->txtDiagnostics->setEnabled(true);
+		QApplication::restoreOverrideCursor();
+	});
+	QThreadPool::globalInstance()->start( worker );
+//	QPushButton *save = ui->buttonBox1->button(QDialogButtonBox::Save);
+//	if(save && Settings(QSettings::SystemScope).value("disableSave", false).toBool())
+//	{
+//		ui->buttonBox1->removeButton(save);
+//		save->deleteLater();
+//	}
+}
+
+void SettingsDialog::installCert()
+{
+	QString certpath = "";
+
+	//d->tabWidget->setCurrentIndex( AccessCertSettings );
+	QFile file( !certpath.isEmpty() ? certpath :
+		FileDialog::getOpenFileName( this, tr("Select server access certificate"),
+		QString(), tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
+	if(!file.exists())
+		return;
+	QString pass = QInputDialog::getText( this, tr("Password"),
+		tr("Enter server access certificate password."), QLineEdit::Password );
+	if(pass.isEmpty())
+		return;
+
+	if(!file.open(QFile::ReadOnly))
+		return;
+
+	PKCS12Certificate p12(&file, pass);
+	switch(p12.error())
+	{
+	case PKCS12Certificate::NullError: break;
+	case PKCS12Certificate::InvalidPasswordError:
+		QMessageBox::warning(this, tr("Select server access certificate"), tr("Invalid password"));
+		return;
+	default:
+		QMessageBox::warning(this, tr("Select server access certificate"),
+			tr("Server access certificate error: %1").arg(p12.errorString()));
+		return;
+	}
+
+#ifndef Q_OS_MAC
+	if( file.fileName() == QDir::fromNativeSeparators( Application::confValue( Application::PKCS12Cert ).toString() ) )
+		return;
+#endif
+	file.reset();
+	AccessCert().installCert( file.readAll(), pass );
+	updateCert();
+}
+
+void SettingsDialog::removeCert()
+{
+	AccessCert().remove();
+	updateCert();
+}
 
 void SettingsDialog::changePage(QPushButton* button)
 {

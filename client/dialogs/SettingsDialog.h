@@ -21,6 +21,11 @@
 
 #include <QDialog>
 
+#include "QSmartCard.h"
+
+
+namespace digidoc { class Conf; }
+
 namespace Ui {
 class SettingsDialog;
 }
@@ -35,7 +40,35 @@ public:
 
 	int exec() override;
 
+private Q_SLOTS:
+//	void on_p12Install_clicked();
+//	void on_p12Remove_clicked();
+//	void on_selectDefaultDir_clicked();
+//	void on_showP12Cert_clicked();
+	void save();
+
+
 private:
+	void initUI();
+	void initFunctionality();
+	void updateCert();
+	void setProxyEnabled();
+	void updateProxy();
+	void loadProxy( const digidoc::Conf *conf );
+	void openDirectory();
+	void updateDiagnostics();
+	void saveSignatureInfo(
+			const QString &role,
+			const QString &resolution,
+			const QString &city,
+			const QString &state,
+			const QString &country,
+			const QString &zip,
+			bool force );
+
+
+	void installCert();
+	void removeCert();
 	void changePage(QPushButton* button);
 
 	Ui::SettingsDialog *ui;

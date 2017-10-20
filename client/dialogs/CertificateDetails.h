@@ -17,9 +17,13 @@
  *
  */
 
+
 #pragma once
 
 #include <QDialog>
+
+#include <common/SslCertificate.h>
+
 
 namespace Ui {
 class CertificateDetails;
@@ -33,16 +37,16 @@ class CertificateDetails : public QDialog
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = nullptr);
+	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0);
 	~CertificateDetails();
 
+	void saveCert();
 	int exec() override;
 
 public slots:
 	void on_tblDetails_itemSelectionChanged();
 
 private:
-	void save();
-
 	CertificateDetailsPrivate *ui;
+	SslCertificate cert;
 };
