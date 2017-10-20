@@ -213,6 +213,63 @@ Media type: %3</source>
 </context>
 
 <context>
+    <name>AddRecipients</name>
+    <message>
+        <source>Cancel</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>ПОДТВЕРДИТЬ</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>ПРИЛОЖЕНИЕ СЕРТИФИКАТ КАРТЫ</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>ПРИЛОЖЕНИЕ СЕРТИФИКАТ с файлa</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>ПОСЛЕДНИЕ ДОБАВЛЕН</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Добавить получателей</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Добавлен получатель</translation>
+    </message>
+</context>
+
+<context>
+    <name>ItemList</name>
+    <message>
+        <source>Add more files</source>
+        <translation>+ ДОБАВИТЬ ФАЙЛОВ</translation>
+    </message>
+    <message>
+        <source>Add addressee</source>
+        <translation>+ ДОБАВИТЬ АДРЕСА</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>ДОБАВИТЬ ВСЕ</translation>
+    </message>
+
+    <message>
+        <source>Add all</source>
+        <translation>ДОБАВИТЬ ВСЕ</translation>
+    </message>
+
+</context>
+
+
+
+<context>
     <name>MainWindow</name>
     <message>
         <source>One signature is invalid</source>

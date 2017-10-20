@@ -212,6 +212,56 @@ Tüüp: %3</translation>
 </context>
 
 <context>
+    <name>AddRecipients</name>
+    <message>
+        <source>Cancel</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>KINNITA</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>LISA SERTIFIKAAT KAARDILT</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>LISA SERTIFIKAAT FAILIST</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>VIIMATI LISATUD</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Adressaatide lisamine</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Lisatud adressaadid</translation>
+    </message>
+</context>
+
+<context>
+    <name>ItemList</name>
+    <message>
+        <source>Add more files</source>
+        <translation>+ LISA VEEL FAILE</translation>
+    </message>
+    <message>
+        <source>Add addressee</source>
+        <translation>+ LISA ADRESSAAT</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>LISA KÕIK</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MainWindow</name>
     <message>
         <source>One signature is invalid</source>

@@ -205,6 +205,56 @@ Media type: %3</translation>
 </context>
 
 <context>
+    <name>AddRecipients</name>
+    <message>
+        <source>Cancel</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>CONFIRM</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>ADD CERTIFICATE FROM CARD</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>ADD CERTIFICATE FROM FILE</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>ADD LATEST USED</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Add recipients</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Added recipients</translation>
+    </message>
+</context>
+
+<context>
+    <name>ItemList</name>
+    <message>
+        <source>Add more files</source>
+        <translation>+ ADD MORE FILES</translation>
+    </message>
+    <message>
+        <source>Add addressee</source>
+        <translation>+ ADD ADDRESSEE</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>ADD ALL</translation>
+    </message>
+</context>
+
+
+<context>
     <name>FileDialog</name>
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>

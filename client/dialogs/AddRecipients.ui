@@ -169,7 +169,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>LISA SERTIFIKAAT KAARDILT</string>
+       <string>From card</string>
       </property>
      </widget>
      <widget class="QPushButton" name="fromFile">
@@ -213,7 +213,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>LISA SERTIFIKAAT FAILIST</string>
+       <string>From file</string>
       </property>
      </widget>
      <widget class="QPushButton" name="fromHistory">
@@ -257,7 +257,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>VIIMATI LISATUD</string>
+       <string>From history</string>
       </property>
      </widget>
      <widget class="QPushButton" name="confirm">
@@ -305,7 +305,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>KINNITA</string>
+       <string>Confirm</string>
       </property>
      </widget>
      <widget class="QPushButton" name="cancel">
@@ -344,7 +344,7 @@ QPushButton:hover:!pressed {
 }</string>
       </property>
       <property name="text">
-       <string>KATKESTA</string>
+       <string>Cancel</string>
       </property>
      </widget>
     </widget>

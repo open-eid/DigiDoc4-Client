@@ -45,9 +45,9 @@ void AddRecipients::init()
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, "Adressaatide lisamine", false);
+	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"), false);
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, "Lisatud adressaadid");
+	ui->rightPane->init(ria::qdigidoc4::ToAddAdresses, tr("Added recipients"));
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
