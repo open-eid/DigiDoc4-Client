@@ -43,7 +43,9 @@ signals:
 	void download(FileItem* item);
 	
 protected:
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void enterEvent(QEvent *event) override;
+	void leaveEvent (QEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
 	Ui::FileItem *ui;

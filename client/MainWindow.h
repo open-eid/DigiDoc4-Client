@@ -30,9 +30,6 @@
 
 #include <QButtonGroup>
 #include <QImage>
-#include <QMessageBox>
-#include <QMimeData>
-#include <QSvgWidget>
 #include <QWidget>
 
 class DigiDoc;
@@ -152,7 +149,6 @@ bool sign();
 
 	Ui::MainWindow *ui;
 
-	QSvgWidget *coatOfArms = nullptr;
 	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
 	DropdownButton *selector = nullptr;
