@@ -57,6 +57,7 @@ protected:
 	void leaveEvent( QEvent *ev ) override;
 	void mouseReleaseEvent( QMouseEvent *event ) override;
 	void paintEvent( QPaintEvent *ev ) override;
+	void changeEvent(QEvent* event) override;
 
 private:
 	struct Style

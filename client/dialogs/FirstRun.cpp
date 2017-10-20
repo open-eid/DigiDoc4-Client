@@ -22,6 +22,7 @@
 #include "ui_FirstRun.h"
 #include "Styles.h"
 
+#include <QDebug>
 #include <QKeyEvent>
 #include <QLineEdit>
 
@@ -61,6 +62,25 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->lang->addItem("Eesti keel");
 	ui->lang->addItem("English");
 	ui->lang->addItem("Русский язык");
+
+	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+		[this](int index)
+		{
+			switch(index)
+			{
+			case 1:
+				emit langChanged("en");
+				break;
+			case 2:
+				emit langChanged("ru");
+				break;
+			default:
+				emit langChanged("et");
+				break;
+			}
+		}
+			);
+
 
 	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->continue_2->setFont(Styles::font(Styles::Condensed, 14));

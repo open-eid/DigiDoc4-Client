@@ -190,6 +190,24 @@ Media type: %3</translation>
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
 </context>
+
+
+<context>
+    <name>PageIcon</name>
+    <message>
+        <source>SIGNATURE</source>
+        <translation>SIGNATURE</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>CRYPTO</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>My eID</translation>
+    </message>
+</context>
+
 <context>
     <name>FileDialog</name>
     <message>
@@ -200,12 +218,115 @@ Media type: %3</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Settings</source>
-        <translation>Settings</translation>
+        <source>One signature is invalid</source>
+        <translation>One signature is invalid!</translation>
+    </message>
+    <message>
+        <source>Click to resolve problem</source>
+        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Click to solve the problem&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Help</source>
         <translation>Help</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Settings</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Drag file here for signing or verification ...</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>... OR OPEN FILE FROM DISK</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Drag file here for encryption or decryption ...</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>... OR OPEN FILE FROM DISK</translation>
+    </message>
+
+    <message>
+        <source>Unrecognized data</source>
+        <translation>Unrecognized data</translation>
+    </message>
+    <message>
+        <source>signature container</source>
+        <translation>signature container</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>crypto container</translation>
+    </message>
+    <message>
+        <source>Decryption succeeded</source>
+        <translation>Decryption succeeded!</translation>
+    </message>
+    <message>
+        <source>Encryption succeeded</source>
+        <translation>Encryption succeeded!</translation>
+    </message>
+    <message>
+        <source>Select documents</source>
+        <translation>Select documents</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Cannot alter container %1. Save to different location?</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documents (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC service is not running</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>No readers found</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>No card in reader. Check if the ID card is correctly in the reader.</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loading data</translation>
+    </message>
+    <message>
+        <source>The container has been successfully signed!</source>
+        <translation>The container has been successfully signed!</translation>
+    </message>
+    <message>
+        <source>Save photo</source>
+        <translation>Save photo</translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg);;All Files (*)</source>
+        <translation>Photo (*.jpg);;All Files (*)</translation>
+    </message>
+
+
+
+
+    <message>
+        <source>Choose file to sign</source>
+        <translation>Choose file to signing or verification</translation>
     </message>
     <message>
         <source>Signature</source>
@@ -276,20 +397,8 @@ Media type: %3</translation>
         <translation>Container is unsigned</translation>
     </message>
     <message>
-        <source>Select documents</source>
-        <translation>Select documents</translation>
-    </message>
-    <message>
         <source>Skip this intro</source>
         <translation>Skip this intro</translation>
-    </message>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>No card in reader</translation>
     </message>
     <message>
         <source>I want to:</source>
@@ -326,10 +435,6 @@ Media type: %3</translation>
     <message>
         <source>File already in container</source>
         <translation>File already in container</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Loading data</translation>
     </message>
     <message>
         <source>Mobile number:</source>
@@ -397,16 +502,8 @@ Should I keep the unsigned container or remove it?</numerusform>
         <translation>About</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Documents (%1)</translation>
-    </message>
-    <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
-    </message>
-    <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Cannot alter container %1. Save different location?</translation>
     </message>
     <message>
         <source>File does not exists
@@ -495,10 +592,6 @@ New ID-cards have chip on the back side of the card.</source>
 
 Check if the ID-card is inserted correctly to the reader.
 New ID-cards have chip on the back side of the card.</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>No readers found</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>

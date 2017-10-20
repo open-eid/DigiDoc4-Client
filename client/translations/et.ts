@@ -61,10 +61,6 @@
         <translation>Ava uus Krüpto aken</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Digiallkirjade kehtivuse kontrollimiseks kasutatava sertifikaatide usaldusnimekirja uuendamine ebaõnnestus. Palun kontrolli oma arvuti internetiühendust ja seda, kas arvutis on kõige uuem ID-tarkvara versioon. Allkirjade verifitseerimiseks kasutatakse aegunud nimekirja. &lt;a href=&quot;http://www.id.ee/?id=37011&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
@@ -197,16 +193,134 @@ Tüüp: %3</translation>
         <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
     </message>
 </context>
+
+
+<context>
+    <name>PageIcon</name>
+    <message>
+        <source>SIGNATURE</source>
+        <translation>ALLKIRI</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>KRÜPTO</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>Minu eID</translation>
+    </message>
+</context>
+
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Settings</source>
-        <translation>Seaded</translation>
+        <source>One signature is invalid</source>
+        <translation>Üks allkiri on kehtetu!</translation>
+    </message>
+    <message>
+        <source>Click to resolve problem</source>
+        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Vajuta probleemi lahendamiseks&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation>Seaded</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia ...</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>... VÕI VALI FAIL KETTALT</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>... VÕI VALI FAIL KETTALT</translation>
+    </message>
+
+    <message>
+        <source>Unrecognized data</source>
+        <translation>Tundmatuid andmeid</translation>
+    </message>
+    <message>
+        <source>signature container</source>
+        <translation>allkirja konteiner</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>krüpto konteiner</translation>
+    </message>
+    <message>
+        <source>Decryption succeeded</source>
+        <translation>Dekrüpteerimine õnnestus!</translation>
+    </message>
+    <message>
+        <source>Encryption succeeded</source>
+        <translation>Krüpteerimine õnnestus!</translation>
+    </message>
+    <message>
+        <source>Select documents</source>
+        <translation>Lisa failid</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 klient</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Konteineri %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documendid (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC teenus ei tööta</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas.</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loen andmeid</translation>
+    </message>
+    <message>
+        <source>The container has been successfully signed!</source>
+        <translation>Konteiner on edukalt allkirjastatud!</translation>
+    </message>
+    <message>
+        <source>Save photo</source>
+        <translation>Salvesta foto</translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg);;All Files (*)</source>
+        <translation>Foto (*.jpg);;Kõik failid (*)</translation>
+    </message>
+
+
+
+
+
     <message>
         <source>Signature</source>
         <translation>Allkiri</translation>
@@ -276,20 +390,8 @@ Tüüp: %3</translation>
         <translation>Ümbrik ei ole allkirjastatud</translation>
     </message>
     <message>
-        <source>Select documents</source>
-        <translation>Lisa failid</translation>
-    </message>
-    <message>
         <source>Skip this intro</source>
         <translation>Ära rohkem mulle seda sissejuhatust näita</translation>
-    </message>
-    <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>Kaarti pole lugejas</translation>
     </message>
     <message>
         <source>I want to:</source>
@@ -328,10 +430,6 @@ Tüüp: %3</translation>
         <translation>Fail on juba ümbrikus</translation>
     </message>
     <message>
-        <source>Loading data</source>
-        <translation>Loen andmeid</translation>
-    </message>
-    <message>
         <source>Mobile number:</source>
         <translation>Telefoninumber:</translation>
     </message>
@@ -354,10 +452,6 @@ Tüüp: %3</translation>
     <message>
         <source>NB! Invalid signature</source>
         <translation>NB: Vigane allkiri</translation>
-    </message>
-    <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 klient</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
@@ -397,16 +491,8 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
         <translation>Info</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Dokumendid (%1)</translation>
-    </message>
-    <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
-    </message>
-    <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Konteineri %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
     <message>
         <source>File does not exists
@@ -495,10 +581,6 @@ New ID-cards have chip on the back side of the card.</source>
 
 Kontrolli, kas ID-kaart on õiget pidi lugejas.
 Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -633,7 +715,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
 and enter Mobile-ID PIN2-code.
 Control code: %1</source>
         <translation>Veendu kontrollkoodi õigsuses
-ja sisesta telefonil Mobiil-ID PIN2-kood. 
+ja sisesta telefonil Mobiil-ID PIN2-kood.
 Kontrollkood: %1</translation>
     </message>
     <message>

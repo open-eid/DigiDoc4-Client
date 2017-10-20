@@ -198,8 +198,133 @@ Media type: %3</source>
         <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
     </message>
 </context>
+
+
+<context>
+    <name>PageIcon</name>
+    <message>
+        <source>SIGNATURE</source>
+        <translation>ПОДПИСЬ</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>Крипто</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>Мой eID</translation>
+    </message>
+</context>
+
 <context>
     <name>MainWindow</name>
+    <message>
+        <source>One signature is invalid</source>
+        <translation>One signature is invalid!</translation>
+    </message>
+    <message>
+        <source>Click to resolve problem</source>
+        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Нажмите, чтобы решить проблему&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation>Помощь</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Перетащите файл здесь для подписания или проверки ...</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>... ИЛИ ОТКРЫТЫЙ ФАЙЛ ОТ ДИСКА</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Перетащите файл здесь для шифрования или дешифрования ...</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>... ИЛИ ОТКРЫТЫЙ ФАЙЛ ОТ ДИСКА</translation>
+    </message>
+
+    <message>
+        <source>Unrecognized data</source>
+        <translation>Нераспознанные данные</translation>
+    </message>
+    <message>
+        <source>signature container</source>
+        <translation>контейнер подписи</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>криптоконтейнер</translation>
+    </message>
+    <message>
+        <source>Decryption succeeded</source>
+        <translation>Расшифровка прошла успешно!</translation>
+    </message>
+    <message>
+        <source>Encryption succeeded</source>
+        <translation>Шифрование выполнено успешно!</translation>
+    </message>
+    <message>
+        <source>Select documents</source>
+        <translation>Добавить файлы</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Документы (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>Служба PCSC не работает</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Считывающее устройство не обнаружено</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>У читателя нет карты. Проверьте, находится ли идентификационная карточка правильно в считывателе.</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Читаю данные</translation>
+    </message>
+    <message>
+        <source>The container has been successfully signed!</source>
+        <translation>Контейнер успешно подписан!</translation>
+    </message>
+    <message>
+        <source>Save photo</source>
+        <translation>Сохранить фото</translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg);;All Files (*)</source>
+        <translation>Фото (*.jpg);;Все файлы (*)</translation>
+    </message>
+
+
+
+
     <message>
         <source>Sign</source>
         <translation>Подписать</translation>
@@ -209,16 +334,8 @@ Media type: %3</source>
         <translation>Добавить подпись</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
         <source>File already in container</source>
         <translation>Файл уже в контейнере</translation>
-    </message>
-    <message>
-        <source>Select documents</source>
-        <translation>Добавить файлы</translation>
     </message>
     <message>
         <source>Save container</source>
@@ -255,26 +372,6 @@ Media type: %3</source>
     <message>
         <source>Container is unsigned</source>
         <translation>Контейнер не подписан</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Подпись</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Читаю данные</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>В считывателе нет карты</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Помощь</translation>
     </message>
     <message>
         <source>Use ID-card</source>
@@ -356,10 +453,6 @@ Media type: %3</source>
         <source>NB! Invalid signature</source>
         <translation>NB: Ошибочная подпись</translation>
     </message>
-    <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
     <message numerus="yes">
         <source>Signature(s)</source>
         <translation>
@@ -401,16 +494,8 @@ Should I keep the unsigned container or remove it?</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Документы (%1)</translation>
-    </message>
-    <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
-    </message>
-    <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
     </message>
     <message>
         <source>File does not exists
@@ -499,10 +584,6 @@ New ID-cards have chip on the back side of the card.</source>
 
 Проверьте, правильно ли вставлена ID-карта в считыватель.
 У новых ID-карт чип находится на обратной стороне карты.</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Считывающее устройство не обнаружено</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -840,12 +921,45 @@ Kонтрольны код: %1</translation>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <source>Select folder</source>
-        <translation>Выбрать папку</translation>
+        <source>One signature is invalid</source>
+        <translation>One signature is invalid!</translation>
+    </message>
+    <message>
+        <source>Click to resolve problem</source>
+        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Нажмите, чтобы решить проблему&lt;/a&gt;</translation>
+    </message>
+
+    <message>
+        <source>Help</source>
+        <translation>Помощь</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Настройки</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>Выбрать файл</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Перетащите файл здесь, чтобы зашифровать или расшифровать его</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>Выбрать файл</translation>
+    </message>
+
+
+    <message>
+        <source>Select folder</source>
+        <translation>Выбрать папку</translation>
     </message>
     <message>
         <source>Container default location</source>

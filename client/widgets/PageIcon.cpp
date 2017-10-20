@@ -71,7 +71,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 34, 38 );
 		icon->move( 38, 26 );	
-		ui->label->setText( "KRÜPTO" );
+		ui->label->setText( "CRYPTO" );
 		break;
 	case MyEid:
 		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
@@ -79,13 +79,13 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 44, 31 );
 		icon->move( 33, 28 );	
-		ui->label->setText( "MINU eID" );
+		ui->label->setText( "My eID" );
 		break;
 	default:
 		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
 		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
-		ui->label->setText( "ALLKIRI" );
+		ui->label->setText( tr("SIGNATURE") );
 		break;
 	}
 
@@ -93,6 +93,28 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
     this->shadow = shadow;
 	this->type = type;
 	updateSelection();
+}
+
+void PageIcon::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+		switch( type )
+		{
+		case CryptoIntro:
+			ui->label->setText( tr("CRYPTO") );
+			break;
+		case MyEid:
+			ui->label->setText( tr("My eID") );
+			break;
+		default:
+			ui->label->setText( tr("SIGNATURE") );
+			break;
+		}
+	}
+
+	QWidget::changeEvent(event);
 }
 
 void PageIcon::activate( bool selected )
