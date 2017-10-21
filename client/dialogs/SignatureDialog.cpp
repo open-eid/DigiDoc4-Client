@@ -38,6 +38,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 {
 	d->setupUi( this );
 	d->showErrors->init(false, "TECHNICAL INFORMATION", d->error);
+	d->showErrors->borderless();
 	d->showErrors->hide();
 	d->error->hide();
 	
@@ -101,6 +102,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	else if(!noError)
 	{
 		d->showErrors->show();
+		d->showErrors->borderless();		
 	}
 
 	QString name = !c.isNull() ? c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) : s.signedBy();
