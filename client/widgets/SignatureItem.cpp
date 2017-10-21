@@ -34,6 +34,11 @@
 
 using namespace ria::qdigidoc4;
 
+#define ICON_WIDTH 19
+#define ITEM_HEIGHT 44
+#define LINE_HEIGHT 16
+
+
 SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::SignatureItem)
@@ -43,15 +48,13 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	stateChange(state);
 
 	QFont nameFont(Styles::font( Styles::Regular, 14, QFont::DemiBold));
-	QFont statusFont(Styles::font(Styles::Regular, 14));
 
 	ui->name->setFont(nameFont);
-	ui->status->setFont(statusFont);
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
 
 	const SslCertificate cert = s.cert();
-	QString accessibility, validity, signingInfo, statusText;
+	QString accessibility, signingInfo, statusText;
 	QTextStream sa(&accessibility);
 	QTextStream sn(&name);
 	QTextStream sc(&validity);
@@ -65,7 +68,6 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	else
 		sn << signature.signedBy().toHtmlEscaped();
 	sn << " - ";
-	ui->name->setText(invalid ? red(name) : name);
 
 	QString label = tr("Signature");
 	if(signature.profile() == "TimeStampToken")
@@ -79,9 +81,10 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	}
 	else
 	{
-		setIcon(":/images/icon_Allkiri_small.svg", 19, 20);
+		setIcon(":/images/icon_Allkiri_small.svg", ICON_WIDTH, 20);
 	}
 	sa << label << " ";
+	sc << "<span style=\"font-weight:normal;\">";
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
@@ -109,7 +112,8 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 		sc << "<font color=\"red\">" << label << " " << tr("is unknown");
 		break;
 	}
-	ui->status->setText(validity);
+	sc << "</span>";
+	ui->name->setText((invalid ? red(name) : name) + validity);
 	statusText = accessibility;
 
 	if(!cert.isNull())
@@ -136,11 +140,10 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	setAccessibleDescription( accessibility );
 
 	nameMetrics.reset(new QFontMetrics(nameFont));
-	QFontMetrics fmStatus(statusFont);
-	// Fixed width: status text + signature icon (25px) + remove icon (19px) + 5px margin before remove
-	fixedWidth = fmStatus.width(statusText) + 25 + (ui->remove->isHidden() ? 0 : 19 + 5);
-	nameWidth = nameMetrics->width(name);
-	elideName();
+	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
+	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
+	nameWidth = nameMetrics->width(name + statusText);
+	calcNameHeight();
 }
 
 SignatureItem::~SignatureItem()
@@ -148,19 +151,24 @@ SignatureItem::~SignatureItem()
 	delete ui;
 }
 
-void SignatureItem::elideName()
+void SignatureItem::calcNameHeight()
 {
-	int remaining = width() - fixedWidth;
-	if(remaining < nameWidth)
+	if((width() - reservedWidth) < nameWidth)
 	{
-		auto elidedText = nameMetrics->elidedText(name, Qt::ElideMiddle, remaining);
-		ui->name->setText(invalid ? red(elidedText) : elidedText);
+		ui->name->setMinimumHeight(LINE_HEIGHT * 2);
+		ui->name->setMaximumHeight(LINE_HEIGHT * 2);
+		setMinimumHeight(ITEM_HEIGHT + LINE_HEIGHT);
+		setMaximumHeight(ITEM_HEIGHT + LINE_HEIGHT);
+		ui->name->setText((invalid ? red(name) : name) + "<br/>" + validity);
 		elided = true;
 	}
 	else if(elided)
 	{
-		ui->name->setText(name);
-		ui->name->setText(invalid ? red(name) : name);
+		ui->name->setMinimumHeight(LINE_HEIGHT);
+		ui->name->setMaximumHeight(LINE_HEIGHT);
+		setMinimumHeight(ITEM_HEIGHT);
+		setMaximumHeight(ITEM_HEIGHT);
+		ui->name->setText((invalid ? red(name) : name) + validity);
 		elided = false;
 	}
 }
@@ -179,7 +187,7 @@ QString SignatureItem::red(const QString &text)
 void SignatureItem::resizeEvent(QResizeEvent *event)
 {
 	if(event->oldSize().width() != event->size().width())
-		elideName();
+		calcNameHeight();
 }
 
 void SignatureItem::setIcon(const QString &icon, int width, int height)

@@ -235,7 +235,6 @@ background-color: #FFFFFF;</string>
            <property name="styleSheet">
             <string notr="true">border: none;</string>
            </property>
-           <zorder>error</zorder>
           </widget>
          </item>
          <item row="18" column="0" colspan="2">

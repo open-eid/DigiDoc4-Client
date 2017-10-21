@@ -45,7 +45,7 @@ protected:
 	void resizeEvent(QResizeEvent *event) override;
 
 private:
-	void elideName();
+	void calcNameHeight();
 	QString red(const QString &text);
 	void setIcon(const QString &icon, int width = 17, int height = 20);
 
@@ -54,9 +54,10 @@ private:
 
 	bool elided;
 	bool invalid;
-	int fixedWidth;
 	int nameWidth;
+	int reservedWidth;
 	QString name;
+	QString validity;
 	std::unique_ptr<QFontMetrics> nameMetrics;
 };
 
