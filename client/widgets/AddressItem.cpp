@@ -31,7 +31,7 @@
 using namespace ria::qdigidoc4;
 
 AddressItem::AddressItem(ContainerState state, QWidget *parent, bool showIcon)
-: StyledWidget(parent)
+: Item(parent)
 , ui(new Ui::AddressItem)
 {
 	ui->setupUi(this);
@@ -47,6 +47,8 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent, bool showIcon)
 	ui->code->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
+
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	ui->added->setFont(Styles::font(Styles::Condensed, 12));
 
@@ -62,21 +64,15 @@ AddressItem::AddressItem(const CKey &key, ContainerState state, QWidget *parent)
 			key.cert.subjectInfo("CN").value(0);
 
 	QString type;
-	switch (SslCertificate(key.cert).type())
-	{
-	case SslCertificate::DigiIDType:
+	auto certType = SslCertificate(key.cert).type();
+	if(certType & SslCertificate::DigiIDType)
 		type = "Digi-ID";
-		break;
-	case SslCertificate::EstEidType:
+	else if(certType & SslCertificate::EstEidType)
 		type = "ID-kaart";
-		break;
-	case SslCertificate::MobileIDType:
+	else if(SslCertificate::MobileIDType)
 		type = "Mobiil-ID";
-		break;
-	default:
+	else
 		type = "UnknownType";
-		break;
-	}
 
 	update(name, key.cert.subjectInfo("serialNumber").value(0), type, AddressItem::Remove);
 }

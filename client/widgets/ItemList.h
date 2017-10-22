@@ -20,7 +20,7 @@
 #pragma once
 
 #include "common_enums.h"
-#include "widgets/StyledWidget.h"
+#include "widgets/Item.h"
 
 #include <QWidget>
 
@@ -35,38 +35,37 @@ class ItemList : public QWidget
 	Q_OBJECT
 
 public:
-	enum ItemType {
-		File,
-		Signature,
-		Address,
-		ToAddAdresses,
-		AddedAdresses,
-	};
-
 	explicit ItemList(QWidget *parent = nullptr);
 	virtual ~ItemList();
 
-	void init(ItemType itemType, const QString &header, bool hideFind = true);
+	void init(ria::qdigidoc4::ItemType itemType, const QString &header, bool hideFind = true);
 	void addHeader(const QString &label);
-	void addHeaderWidget(StyledWidget *widget);
-	void addWidget(StyledWidget *widget);
+	void addHeaderWidget(Item *widget);
+	void addWidget(Item *widget);
 	void clear();
 	void removeItem(int row);
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:
 	void addItem(int code);
+	void removed(int row);
 
+protected slots:
+	virtual void remove(Item *item);
+	
 protected:
+	int index(Item *item) const;
+
 	Ui::ItemList* ui;
-	std::vector<StyledWidget*> items;
+	std::vector<Item*> items;
 	ria::qdigidoc4::ContainerState state;
 
 private:
 	QString addLabel() const;
 	void addressSearch();
+	void addWidget(Item *widget, int index);
 
 	QLabel *header = nullptr;
 	int headerItems;
-	ItemType itemType;
+	ria::qdigidoc4::ItemType itemType;
 };

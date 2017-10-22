@@ -40,7 +40,7 @@ using namespace ria::qdigidoc4;
 
 
 SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QWidget *parent)
-: StyledWidget(parent)
+: Item(parent)
 , ui(new Ui::SignatureItem)
 , signature(s)
 {
@@ -52,7 +52,8 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	ui->name->setFont(nameFont);
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
-
+	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
+	
 	const SslCertificate cert = s.cert();
 	QString accessibility, signingInfo, statusText;
 	QTextStream sa(&accessibility);

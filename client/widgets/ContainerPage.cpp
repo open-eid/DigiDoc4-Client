@@ -110,7 +110,9 @@ void ContainerPage::init()
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
+	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
+	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->encrypt, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -221,9 +223,9 @@ void ContainerPage::showDropdown()
 
 }
 
-void ContainerPage::showRightPane( ItemList::ItemType itemType, const QString &header )
+void ContainerPage::showRightPane(ItemType itemType, const QString &header)
 {
-	ui->rightPane->init( itemType, header );
+	ui->rightPane->init(itemType, header);
 	ui->rightPane->show();
 }
 
@@ -348,13 +350,13 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->cancel->setText("← ALGUSESSE");
 		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemList::Signature, "Kontaineri allkirjad puuduvad" );
+		showRightPane( ItemSignature, "Kontaineri allkirjad puuduvad" );
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemList::Signature, "Kontaineri allkirjad" );
+		showRightPane( ItemSignature, "Kontaineri allkirjad" );
 		hideMainAction();
 		hideButtons( { ui->cancel, ui->save } );
 		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
@@ -362,7 +364,7 @@ void ContainerPage::updatePanes(ContainerState state)
 	case UnencryptedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemList::Address, "Adressaadid" );
+		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( EncryptContainer, "KRÜPTEERI" );
 		showButtons( { ui->cancel } );
 		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
@@ -371,7 +373,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Krüpteeritud failid");
-		showRightPane( ItemList::Address, "Adressaadid" );
+		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );
@@ -380,7 +382,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
-		showRightPane( ItemList::Address, "Adressaadid" );
+		showRightPane( ItemAddress, "Adressaadid" );
 		hideMainAction();
 		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );

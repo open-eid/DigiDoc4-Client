@@ -66,6 +66,14 @@ enum FileType {
     Other
 };
 
+enum ItemType {
+    ItemFile,
+    ItemSignature,
+    ItemAddress,
+    ToAddAdresses,
+    AddedAdresses,
+};
+
 enum Pages {
     SignIntro,
     SignDetails,

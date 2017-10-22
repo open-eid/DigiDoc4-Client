@@ -19,37 +19,16 @@
 
 #pragma once
 
-#include "DocumentModel.h"
-#include "widgets/FileItem.h"
-#include "widgets/ItemList.h"
+#include "widgets/StyledWidget.h"
 
-#include <QWidget>
-
-class QLabel;
-
-class FileList : public ItemList
+class Item : public StyledWidget
 {
 	Q_OBJECT
 
 public:
-	explicit FileList(QWidget *parent = nullptr);
-	~FileList();
+	explicit Item(QWidget *parent = nullptr);
+	virtual ~Item();
 
-	void init(const QString &container, const QString &label = "Kontaineri failid");
-	void addFile(const QString& file);
-	void setModel(DocumentModel *documentModel);
-
-protected:
-	void remove(Item *item) override;
-
-private slots:
-	void open(FileItem *item) const;
-	void save(FileItem *item);
-
-private:
-	void selectFile();
-	void showDownload();
-	
-	QString container;
-	DocumentModel *documentModel;
+signals:
+	void remove(Item* item);
 };

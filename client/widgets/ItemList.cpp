@@ -22,14 +22,11 @@
 
 #include "Styles.h"
 #include "dialogs/AddRecipients.h"
-#include "widgets/AddressItem.h"
-#include "widgets/SignatureItem.h"
 
-#include <vector>
 #include <QLabel>
-#include <QLayoutItem>
 
 using namespace ria::qdigidoc4;
+
 
 ItemList::ItemList(QWidget *parent)
 : QWidget(parent)
@@ -39,7 +36,7 @@ ItemList::ItemList(QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();
-	ui->download->hide();	
+	ui->download->hide();
 }
 
 ItemList::~ItemList()
@@ -61,12 +58,9 @@ void ItemList::addHeader(const QString &label)
 	headerItems++;
 }
 
-void ItemList::addHeaderWidget(StyledWidget *widget)
+void ItemList::addHeaderWidget(Item *widget)
 {
-	ui->itemLayout->insertWidget(headerItems - 1, widget);
-	widget->show();
-	widget->stateChange(state);
-	items.push_back(widget);
+	addWidget(widget, headerItems - 1);	
 	headerItems++;
 }
 
@@ -74,8 +68,8 @@ QString ItemList::addLabel() const
 {
 	switch(itemType)
 	{
-	case File: return "+ LISA VEEL FAILE";
-	case Address: return "+ LISA ADRESSAAT";
+	case ItemFile: return "+ LISA VEEL FAILE";
+	case ItemAddress: return "+ LISA ADRESSAAT";
 	case ToAddAdresses: return "LISA KÕIK";
 	default: return "";
 	}
@@ -87,12 +81,18 @@ void ItemList::addressSearch()
 	dlg.exec();
 }
 
-void ItemList::addWidget(StyledWidget *widget)
+void ItemList::addWidget(Item *widget, int index)
 {
-	ui->itemLayout->insertWidget(items.size() + headerItems, widget);
+	ui->itemLayout->insertWidget(index, widget);
+	connect(widget, &Item::remove, this, &ItemList::remove);
 	widget->show();
 	widget->stateChange(state);
 	items.push_back(widget);
+}
+
+void ItemList::addWidget(Item *widget)
+{
+	addWidget(widget, items.size() + headerItems);
 }
 
 void ItemList::clear()
@@ -107,7 +107,7 @@ void ItemList::clear()
 		headerItems = ui->findGroup->isHidden() ? 1 : 2;
 	}
 
-	StyledWidget* widget;
+	Item* widget;
 	auto it = items.begin();
 	while (it != items.end()) {
 		widget = *it;
@@ -115,6 +115,15 @@ void ItemList::clear()
 		widget->close();
 		delete widget;
 	}
+}
+
+int ItemList::index(Item *item) const
+{
+	auto it = std::find(items.begin(), items.end(), item);
+	if(it != items.end())
+		return std::distance(items.begin(), it);
+
+	return -1;
 }
 
 void ItemList::init(ItemType item, const QString &header, bool hideFind)
@@ -139,18 +148,25 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 		headerItems = 2;
 	}
 
-	if (item == Signature || item == AddedAdresses)
+	if (itemType == ItemSignature || item == AddedAdresses)
 	{
 		ui->add->hide();
 	}
 	else
 	{
-		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == File ? FileAdd : AddressAdd);
+		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == ItemFile ? FileAdd : AddressAdd);
 		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
 
-	if(item == Address)
+	if(itemType == ItemAddress)
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
+}
+
+void ItemList::remove(Item *item)
+{
+	int i = index(item);
+	if(i != -1)
+		emit removed(i);
 }
 
 void ItemList::removeItem(int row)

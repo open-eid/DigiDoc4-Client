@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include "widgets/Item.h"
 
 namespace Ui {
 class AddressItem;
@@ -27,7 +27,7 @@ class AddressItem;
 
 class CKey;
 
-class AddressItem : public StyledWidget
+class AddressItem : public Item
 {
 	Q_OBJECT
 
@@ -46,7 +46,7 @@ public:
 
 	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
-	
+
 private:
 	Ui::AddressItem *ui;
 };

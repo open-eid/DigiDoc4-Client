@@ -53,6 +53,10 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}
 	adjustSize();
+
+#ifdef Q_OS_WIN32
+	setStyleSheet("QWidget#WarningDialog{ border-radius: 2px; background-color: #FFFFFF; border: solid #D9D9D8; border-width: 1px 1px 1px 1px;}");
+#endif
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)

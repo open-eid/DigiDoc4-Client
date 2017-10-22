@@ -20,7 +20,7 @@
 #pragma once
 
 #include "DigiDoc.h"
-#include "widgets/StyledWidget.h"
+#include "widgets/Item.h"
 
 #include <memory>
 
@@ -30,7 +30,7 @@ class SignatureItem;
 
 class QFontMetrics;
 
-class SignatureItem : public StyledWidget
+class SignatureItem : public Item
 {
 	Q_OBJECT
 

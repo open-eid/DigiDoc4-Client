@@ -132,7 +132,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
+	connect( ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
+	connect( ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress );
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
 	connect( ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked );
@@ -803,6 +805,24 @@ void MainWindow::photoClicked( const QPixmap *photo )
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
+}
+
+void MainWindow::removeAddress(int index)
+{
+	if(cryptoDoc)
+	{
+		cryptoDoc->removeKey(index);
+		ui->cryptoContainerPage->transition(cryptoDoc);
+	}
+}
+
+void MainWindow::removeSignature(int index)
+{
+	if(digiDoc)
+	{
+		digiDoc->removeSignature(index);
+		ui->signContainerPage->transition(digiDoc);
+	}
 }
 
 void MainWindow::savePhoto( const QPixmap *photo )

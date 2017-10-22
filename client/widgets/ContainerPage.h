@@ -54,6 +54,7 @@ public:
 
 signals:
 	void action(int code, const QString &idCode = QString(), const QString &phoneNumber = QString());
+	void removed(int row);
 
 protected:
 	void resizeEvent( QResizeEvent *event ) override;
@@ -73,7 +74,7 @@ private:
 	void showButtons( std::vector<QWidget*> buttons );
 	void showDropdown();
 	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
-	void showRightPane( ItemList::ItemType itemType, const QString &header );
+	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void showSigningButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);
 

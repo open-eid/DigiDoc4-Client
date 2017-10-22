@@ -28,7 +28,7 @@
 using namespace ria::qdigidoc4;
 
 FileItem::FileItem(ContainerState state, QWidget *parent)
-: StyledWidget(parent)
+: Item(parent)
 , ui(new Ui::FileItem)
 {
 	ui->setupUi(this);

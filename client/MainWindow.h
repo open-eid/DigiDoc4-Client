@@ -131,6 +131,8 @@ private:
 	void openFiles( const QStringList files );
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
+	void removeAddress(int index);
+	void removeSignature(int index);
 	bool save();
 	QString selectFile( const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );
