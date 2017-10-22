@@ -653,10 +653,12 @@ void MainWindow::showCardStatus()
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
-		ui->signContainerPage->cardSigning(true);
 		
-		ui->cardInfo->update( QSharedPointer<const QCardInfo>(new QCardInfo( t )) );
-
+		QSharedPointer<const QCardInfo> cardInfo(new QCardInfo(t));
+		ui->cardInfo->update(cardInfo);
+		emit ui->signContainerPage->cardChanged(cardInfo->id);
+		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
+		
 		if( t.authCert().type() & SslCertificate::EstEidType )
 		{
 			Styles::cachedPicture( t.data(QSmartCardData::Id ).toString(), { ui->cardInfo, ui->infoStack } );
@@ -669,16 +671,17 @@ void MainWindow::showCardStatus()
 				t.retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				t.retryCount( QSmartCardData::PukType ) == 0 );
 
-        isUpdateCertificateNeeded();
+		isUpdateCertificateNeeded();
 		ui->myEid->updateCertNeededIcon( ui->warning->property("updateCertificateEnabled").toBool() );
-        if( ui->warning->property("updateCertificateEnabled").toBool() )
-            showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
-                "<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
+		if( ui->warning->property("updateCertificateEnabled").toBool() )
+			showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
+				"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
 	}
 	else
 	{
-		ui->signContainerPage->cardSigning(false);
-
+		emit ui->signContainerPage->cardChanged();
+		emit ui->cryptoContainerPage->cardChanged();
+		
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event( "PCSC service is not running" );
 		else if ( t.readers().isEmpty() )
@@ -821,6 +824,7 @@ void MainWindow::removeSignature(int index)
 	if(digiDoc)
 	{
 		digiDoc->removeSignature(index);
+		save();
 		ui->signContainerPage->transition(digiDoc);
 	}
 }

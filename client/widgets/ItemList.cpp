@@ -37,6 +37,7 @@ ItemList::ItemList(QWidget *parent)
 	ui->setupUi(this);
 	ui->findGroup->hide();
 	ui->download->hide();
+	connect(this, &ItemList::idChanged, [this](const QString &code, const QString &mobile){idCode = code; mobileCode = mobile;});
 }
 
 ItemList::~ItemList()
@@ -85,8 +86,10 @@ void ItemList::addWidget(Item *widget, int index)
 {
 	ui->itemLayout->insertWidget(index, widget);
 	connect(widget, &Item::remove, this, &ItemList::remove);
-	widget->show();
+	connect(this, &ItemList::idChanged, widget, &Item::idChanged);
 	widget->stateChange(state);
+	widget->idChanged(idCode, mobileCode);
+	widget->show();
 	items.push_back(widget);
 }
 

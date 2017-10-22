@@ -29,6 +29,9 @@ public:
 	explicit Item(QWidget *parent = nullptr);
 	virtual ~Item();
 
+public slots:
+	virtual void idChanged(const QString& cardCode, const QString& mobileCode);
+
 signals:
 	void remove(Item* item);
 };

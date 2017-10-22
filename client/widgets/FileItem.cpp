@@ -58,7 +58,8 @@ FileItem::~FileItem()
 void FileItem::enterEvent(QEvent *event)
 {
 	Q_UNUSED (event);
-	ui->fileName->setStyleSheet("color: #363739; border: none; text-decoration: underline;");
+	if(isEnabled())
+		ui->fileName->setStyleSheet("color: #363739; border: none; text-decoration: underline;");
 }
 
 QString FileItem::getFile()
@@ -74,12 +75,15 @@ void FileItem::leaveEvent(QEvent *event)
 
 void FileItem::mouseReleaseEvent(QMouseEvent *event)
 {
-	emit open(this);
+	if(isEnabled())
+		emit open(this);
 }
 
 
 void FileItem::stateChange(ContainerState state)
 {
+	setEnabled(state != EncryptedContainer);
+
 	switch(state)
 	{
 	case SignedContainer:

@@ -21,6 +21,7 @@
 #include "ui_ContainerPage.h"
 
 #include "DigiDoc.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "dialogs/MobileDialog.h"
 #include "widgets/AddressItem.h"
@@ -65,15 +66,13 @@ void ContainerPage::clear()
 	ui->rightPane->clear();
 }
 
-void ContainerPage::cardSigning(bool enable)
+void ContainerPage::changeCard(const QString& idCode)
 {
-	if(cardInReader != enable)
+	if(cardInReader != idCode)
 	{
-		cardInReader = enable;
+		cardInReader = idCode;
 		if(mainAction)
-		{
 			showSigningButton();
-		}
 	}
 }
 
@@ -107,6 +106,10 @@ void ContainerPage::init()
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
+	mobileCode = Settings().value("Client/MobileCode").toString();
+
+	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
+	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode){ emit ui->rightPane->idChanged(idCode, mobileCode); });
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
@@ -170,10 +173,17 @@ void ContainerPage::hideRightPane()
 void ContainerPage::mobileDialog()
 {
 	hideOtherAction();
-	MobileDialog dlg( qApp->activeWindow() );
+	MobileDialog dlg(qApp->activeWindow());
+	QString newCode = Settings().value("Client/MobileCode").toString();
 	if( dlg.exec() == QDialog::Accepted )
 	{
 		emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
+	}
+
+	if (newCode != mobileCode)
+	{
+		mobileCode = newCode;
+		emit cardChanged(cardInReader);
 	}
 }
 
@@ -263,14 +273,10 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 void ContainerPage::showSigningButton()
 {
 	hideOtherAction();
-	if(cardInReader)
-	{
-		showMainAction(SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA");
-	}
-	else
-	{
+	if(cardInReader.isNull())
 		showMainAction(SignatureMobile, "ALLKIRJASTA\nMOBIILI-ID’GA");
-	}
+	else
+		showMainAction(SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA");
 }
 
 void ContainerPage::transition(CryptoDoc* container)
@@ -307,8 +313,19 @@ void ContainerPage::transition(DigiDoc* container)
 			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
 	}
 
+	bool enableSigning = container->isSupported();
 	for(const DigiDocSignature &c: container->signatures())
-		ui->rightPane->addWidget(new SignatureItem(c, state, ui->rightPane));
+	{
+		SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
+		ui->rightPane->addWidget(item);
+		if(enableSigning && item->isSelfSigned(cardInReader, mobileCode))
+			enableSigning = false;
+	}
+
+	if(enableSigning)
+		showSigningButton();
+	else
+		hideMainAction();
 
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(state);
@@ -346,7 +363,6 @@ void ContainerPage::updatePanes(ContainerState state)
 	case UnsignedSavedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->leftPane->init(fileName);
-		showSigningButton();
 		ui->cancel->setText("← ALGUSESSE");
 		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
@@ -357,7 +373,6 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemSignature, "Kontaineri allkirjad" );
-		hideMainAction();
 		hideButtons( { ui->cancel, ui->save } );
 		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;

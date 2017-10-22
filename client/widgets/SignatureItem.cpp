@@ -45,7 +45,6 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 , signature(s)
 {
 	ui->setupUi(this);
-	stateChange(state);
 
 	QFont nameFont(Styles::font( Styles::Regular, 14, QFont::DemiBold));
 
@@ -55,10 +54,10 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
 	
 	const SslCertificate cert = s.cert();
-	QString accessibility, signingInfo, statusText;
+	QString accessibility, signingInfo;
 	QTextStream sa(&accessibility);
 	QTextStream sn(&name);
-	QTextStream sc(&validity);
+	QTextStream sc(&statusHtml);
 	QTextStream si(&signingInfo);
 	
 	auto signatureValidity = signature.validate();
@@ -114,12 +113,12 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 		break;
 	}
 	sc << "</span>";
-	ui->name->setText((invalid ? red(name) : name) + validity);
-	statusText = accessibility;
+	ui->name->setText((invalid ? red(name) : name) + statusHtml);
+	status = accessibility;
 
 	if(!cert.isNull())
 	{
-		auto serial = cert.toString("serialNumber").toHtmlEscaped();
+		serial = cert.toString("serialNumber").toHtmlEscaped();
 		sa << " " <<  serial << " - ";
 		si << serial << " - ";
 	}
@@ -141,10 +140,8 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	setAccessibleDescription( accessibility );
 
 	nameMetrics.reset(new QFontMetrics(nameFont));
-	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
-	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
-	nameWidth = nameMetrics->width(name + statusText);
-	calcNameHeight();
+	recalculate();
+	changeNameHeight();
 }
 
 SignatureItem::~SignatureItem()
@@ -152,7 +149,7 @@ SignatureItem::~SignatureItem()
 	delete ui;
 }
 
-void SignatureItem::calcNameHeight()
+void SignatureItem::changeNameHeight()
 {
 	if((width() - reservedWidth) < nameWidth)
 	{
@@ -160,24 +157,47 @@ void SignatureItem::calcNameHeight()
 		ui->name->setMaximumHeight(LINE_HEIGHT * 2);
 		setMinimumHeight(ITEM_HEIGHT + LINE_HEIGHT);
 		setMaximumHeight(ITEM_HEIGHT + LINE_HEIGHT);
-		ui->name->setText((invalid ? red(name) : name) + "<br/>" + validity);
-		elided = true;
+		ui->name->setText((invalid ? red(name) : name) + "<br/>" + statusHtml);
+		enlarged = true;
 	}
-	else if(elided)
+	else if(enlarged)
 	{
 		ui->name->setMinimumHeight(LINE_HEIGHT);
 		ui->name->setMaximumHeight(LINE_HEIGHT);
 		setMinimumHeight(ITEM_HEIGHT);
 		setMaximumHeight(ITEM_HEIGHT);
-		ui->name->setText((invalid ? red(name) : name) + validity);
-		elided = false;
+		ui->name->setText((invalid ? red(name) : name) + statusHtml);
+		enlarged = false;
 	}
+}
+
+void SignatureItem::idChanged(const QString& cardCode, const QString& mobileCode)
+{
+	bool hidden = ui->remove->isHidden();
+	if(isSelfSigned(cardCode, mobileCode) == hidden)
+	{
+		ui->remove->setVisible(hidden);
+		recalculate();
+		changeNameHeight();
+	}
+}
+
+bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
+{
+	return serial == cardCode || serial == mobileCode;
 }
 
 void SignatureItem::mouseReleaseEvent(QMouseEvent *event)
 {
 	SignatureDialog dlg(signature, this);
 	dlg.exec();
+}
+
+void SignatureItem::recalculate()
+{
+	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
+	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
+	nameWidth = nameMetrics->width(name + status);
 }
 
 QString SignatureItem::red(const QString &text)
@@ -188,7 +208,7 @@ QString SignatureItem::red(const QString &text)
 void SignatureItem::resizeEvent(QResizeEvent *event)
 {
 	if(event->oldSize().width() != event->size().width())
-		calcNameHeight();
+		changeNameHeight();
 }
 
 void SignatureItem::setIcon(const QString &icon, int width, int height)
@@ -197,16 +217,4 @@ void SignatureItem::setIcon(const QString &icon, int width, int height)
 	widget->resize(width, height);
 	widget->move(0, (this->height() - height) / 2);
 	widget->show();
-}
-
-void SignatureItem::stateChange(ContainerState state)
-{
-	if(state == ContainerState::SignedContainer)
-	{
-		ui->remove->hide();
-	}
-	else
-	{
-		ui->remove->show();
-	}
 }

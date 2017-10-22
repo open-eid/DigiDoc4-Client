@@ -82,18 +82,27 @@ AddressItem::~AddressItem()
 	delete ui;
 }
 
-void AddressItem::update(const QString& name, const QString& code, const QString& type, ShowToolButton show)
+void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode)
+{
+	if(code == cardCode)
+		ui->code->setText(code + tr(" (Sina ise)"));
+	else
+		ui->code->setText(code);
+}
+
+void AddressItem::update(const QString& name, const QString& cardCode, const QString& type, ShowToolButton show)
 {
 	ui->name->setText( name );
-	ui->code->setText( code );
+	ui->code->setText( cardCode );
 	ui->idType->setText( type );
+	code = cardCode;
 
 	ui->added->setEnabled(false);
 
 	if(show == Added)
 	{
 		setStyleSheet(
-					"border-bottom: 2px solid rgba(217, 217, 216, 0.45);"
+					"border-bottom: 1px solid rgba(217, 217, 216, 0.45);"
 					"background-color: #f0f0f0;"
 					);
 		ui->name->setStyleSheet("color: #75787B;");
@@ -102,7 +111,7 @@ void AddressItem::update(const QString& name, const QString& code, const QString
 	else
 	{
 		setStyleSheet(
-					"border-bottom: 2px solid rgba(217, 217, 216, 0.45);"
+					"border-bottom: 1px solid rgba(217, 217, 216, 0.45);"
 					"background-color: #ffffff;"
 					);
 		ui->name->setStyleSheet("color: #363739;");
@@ -133,7 +142,6 @@ void AddressItem::update(const QString& name, const QString& code, const QString
 		break;
 	}
 }
-
 
 void AddressItem::stateChange(ContainerState state)
 {

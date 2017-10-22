@@ -48,6 +48,7 @@ public:
 
 signals:
 	void addItem(int code);
+	void idChanged(const QString& cardCode, const QString& mobileCode);
 	void removed(int row);
 
 protected slots:
@@ -67,5 +68,7 @@ private:
 
 	QLabel *header = nullptr;
 	int headerItems;
+	QString idCode;
 	ria::qdigidoc4::ItemType itemType;
+	QString mobileCode;
 };

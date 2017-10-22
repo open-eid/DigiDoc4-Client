@@ -47,19 +47,20 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage();
 
-	void cardSigning(bool enable);
 	void setHeader(const QString &file);
 	void transition(CryptoDoc *container);
 	void transition(DigiDoc* container);
 
 signals:
 	void action(int code, const QString &idCode = QString(), const QString &phoneNumber = QString());
+	void cardChanged(const QString& idCode = QString());
 	void removed(int row);
 
 protected:
 	void resizeEvent( QResizeEvent *event ) override;
 
 private:
+	void changeCard(const QString& idCode);
 	void clear();
 	void elideFileName(bool force = false);
 	void forward(int code);
@@ -82,10 +83,11 @@ private:
 	std::unique_ptr<MainAction> mainAction;
 	std::unique_ptr<MainAction> otherAction;
 	std::vector<QMetaObject::Connection> actionConnections;
-	bool cardInReader;
+	QString cardInReader;
 	int containerFileWidth;
 	QFont containerFont;
 	bool elided;
 	QString fileName;
 	QFontMetrics fm;
+	QString mobileCode;
 };

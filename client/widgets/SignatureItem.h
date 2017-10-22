@@ -38,26 +38,29 @@ public:
 	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~SignatureItem();
 
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void idChanged(const QString& cardCode, const QString& mobileCode) override;
+	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
 
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void resizeEvent(QResizeEvent *event) override;
 
 private:
-	void calcNameHeight();
+	void changeNameHeight();
+	void recalculate();
 	QString red(const QString &text);
 	void setIcon(const QString &icon, int width = 17, int height = 20);
 
 	Ui::SignatureItem *ui;
 	DigiDocSignature signature;
 
-	bool elided;
+	bool enlarged;
 	bool invalid;
 	int nameWidth;
 	int reservedWidth;
 	QString name;
-	QString validity;
+	QString serial;
+	QString status;
+	QString statusHtml;
 	std::unique_ptr<QFontMetrics> nameMetrics;
 };
-
