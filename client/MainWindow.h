@@ -149,6 +149,7 @@ private:
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	void containerToEmail( const QString &fileName );
 	void browseOnDisk( const QString &fileName );
+	void showUpdateCertWarning();
 	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;

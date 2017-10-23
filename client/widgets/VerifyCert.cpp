@@ -76,8 +76,8 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	QSmartCardData t = pSmartCard->data();
 	
 	SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
-	this->isValidCert = c.isValid();	// put 0 for testing Aegunud Sertifikaate.
-	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false; // put 1 for testing Tühista Blokeering.
+	this->isValidCert = c.isValid();
+	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false;
 
 	if( !isValidCert )
 	{
@@ -96,18 +96,18 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	{
 		case QSmartCardData::Pin1Type:
 			name = "Isikutuvastamise sertifikaat";
-			changeBtn = ( !isValidCert ) ? "UUENDA SERTIFIKAAT" : ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN1";
+			changeBtn = ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN1";
 			forgotPinText = "<a href='#pin1-forgotten'><span style='color:#75787B;'>Unustasid PIN1 koodi?</span></a>";
-			detailsText = ( isValidCert ) ? "<a href='#pin1-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>" : "";
+			detailsText = "<a href='#pin1-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>";
 			error = ( !isValidCert ) ? "PIN1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN1 taas kasutada." :
 					( isBlockedPin ) ? "PIN1 on blokeeritud, kuna PIN1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN1 taas kasutada." :
 					"";
 			break;
 		case QSmartCardData::Pin2Type:
 			name = "Allkirjastamise sertifikaat";
-			changeBtn = ( !isValidCert ) ? "UUENDA SERTIFIKAAT" : ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN2";
+			changeBtn = ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN2";
 			forgotPinText = "<a href='#pin2-forgotten'><span style='color:#75787B;'>Unustasid PIN2 koodi?</span></a>";
-			detailsText = ( isValidCert ) ? "<a href='#pin2-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>" : "";
+			detailsText = "<a href='#pin2-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>";
 			error = ( !isValidCert ) ? "PIN2 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN2 taas kasutada." :
 					( isBlockedPin ) ? "PIN2 on blokeeritud, kuna PIN2 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN2 taas kasutada." : 
 					"";
@@ -225,14 +225,6 @@ void VerifyCert::update(
 			ui->validUntil->setVisible( false );
 			ui->changePIN->hide();  // hide 'change PUK' button
 		}
-	}
-	if( !isValidCert )
-	{
-		// This logic to be clarified!													 TODO!!
-		if( pinType != QSmartCardData::PukType )
-			ui->changePIN->hide();  // hide 'change PIN' buttons.
-		if( pinType != QSmartCardData::PukType )
-			ui->forgotPinLink->setVisible( false ); // hide 'Forgot PIN. code?' label
 	}
 	ui->validUntil->setText( validUntil );
 	if( pinType != QSmartCardData::PukType )

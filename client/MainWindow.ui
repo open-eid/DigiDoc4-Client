@@ -786,7 +786,7 @@ border: none;
           <property name="minimumSize">
            <size>
             <width>914</width>
-            <height>505</height>
+            <height>491</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -1173,6 +1173,12 @@ color: #041E42;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>491</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">border: none;
 background-color: #F4F5F6;</string>
@@ -1196,7 +1202,7 @@ background-color: #F4F5F6;</string>
             <item>
              <widget class="InfoStack" name="infoStack" native="true">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -1204,6 +1210,12 @@ background-color: #F4F5F6;</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
+                <height>172</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
                 <height>186</height>
                </size>
               </property>
