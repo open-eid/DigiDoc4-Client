@@ -323,7 +323,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 		if(create)
 		{
-			QString ext = Settings(qApp->applicationName()).value("Client/Type", ".bdoc").toString();
+			QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
 			QString filename = FileUtil::createFile(files[0], QString(".%1").arg(ext), tr("signature container"));
 			if(!filename.isNull())
 			{
@@ -434,7 +434,7 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 
 void MainWindow::convertToBDoc()
 {
-	QString ext = Settings(qApp->applicationName()).value("Client/Type", ".bdoc").toString();
+	QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
 	QString filename = FileUtil::createFile(cryptoDoc->fileName(), QString(".%1").arg(ext), tr("signature container"));
 	if(filename.isNull())
 		return;
@@ -504,7 +504,13 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 		}
 		break;
 	case EncryptContainer:
-		convertToBDoc();
+		if(encrypt())
+		{
+			ui->cryptoContainerPage->transition(cryptoDoc);
+
+			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+		}
 		break;
 	case ContainerEmail:
 		if( cryptoDoc )
