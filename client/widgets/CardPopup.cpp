@@ -31,7 +31,7 @@ CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 	QString selected = smartCard->data().card();
 	auto cards = smartCard->data().cards();
 
-	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + BORDER_WIDTH );
+	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + ( (cards.size() > 1) ? BORDER_WIDTH : 0 ) );
 	move( X_POSITION, ROW_HEIGHT );
 	setStyleSheet( "border: solid rgba(217, 217, 216, 0.45); border-width: 0px 2px 2px 1px; background-color: rgba(255, 255, 255, 0.95);" );
 

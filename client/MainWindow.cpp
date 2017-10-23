@@ -306,12 +306,15 @@ void MainWindow::hideWarningArea()
 	ui->warning->hide();
 }
 
-// Any mouse click inside application will hide it.
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-	if( !ui->warning->property("updateCertificateEnabled").toBool() &&
-		ui->warning->underMouse() )
-		hideWarningArea();
+	if( ui->warning->underMouse() )
+	{
+		if( ui->warning->property("updateCertificateEnabled").toBool() )
+			showUpdateCertWarning();
+		else
+			hideWarningArea();
+	}
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -727,8 +730,7 @@ void MainWindow::showCardStatus()
 		isUpdateCertificateNeeded();
 		ui->myEid->updateCertNeededIcon( ui->warning->property("updateCertificateEnabled").toBool() );
 		if( ui->warning->property("updateCertificateEnabled").toBool() )
-			showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
-				"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
+			showUpdateCertWarning();
 	}
 	else
 	{
@@ -840,6 +842,7 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	ui->myEid->invalidCertIcon( false );
 	ui->myEid->pinIsBlockedIcon( false );
 	ui->myEid->updateCertNeededIcon( false );
+	ui->warning->setProperty( "updateCertificateEnabled", false );
 	hideWarningArea();
 }
 
@@ -931,4 +934,10 @@ void MainWindow::browseOnDisk( const QString &fileName )
 	QUrl url = QUrl::fromLocalFile( fileName );
 	url.setScheme( "browse" );
 	QDesktopServices::openUrl( url );
+}
+
+void MainWindow::showUpdateCertWarning()
+{
+	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
+		"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
 }

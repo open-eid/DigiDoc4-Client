@@ -273,6 +273,9 @@ void MainWindow::getOtherEID ()
 
 void MainWindow::getMobileIdStatus ()
 {
+	if (smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0)
+		return;
+    
 	QByteArray buffer = sendRequest( SSLConnect::MobileInfo );
 	if( buffer.isEmpty() )
 		return;
