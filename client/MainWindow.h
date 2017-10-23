@@ -115,6 +115,8 @@ private:
 	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
+	void convertToBDoc();
+	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt();
 	bool encrypt();
@@ -122,7 +124,7 @@ private:
 	void hideWarningArea();	
 	void getMobileIdStatus ();
 	void getDigiIdStatus ();
-    void isUpdateCertificateNeeded();
+	void isUpdateCertificateNeeded();
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int code, const QString &id, const QString &phone);

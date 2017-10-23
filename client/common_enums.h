@@ -32,6 +32,9 @@ enum ContainerState {
     UnencryptedContainer    = (1 << 4),
     EncryptedContainer      = (1 << 5),
     DecryptedContainer      = (1 << 6),
+
+    SignatureContainers     = UnsignedContainer | UnsignedSavedContainer | SignedContainer,
+    CryptoContainers        = UnencryptedContainer | EncryptedContainer | DecryptedContainer
 };
 
 enum Actions {

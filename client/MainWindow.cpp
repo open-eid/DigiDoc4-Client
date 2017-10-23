@@ -321,11 +321,10 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	{
 		navigate = false;
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
-		connect(signatureContainer.get(), &DigiDoc::operation, this, &MainWindow::operation);
 		if(create)
 		{
-			// TODO asice from settings
-			QString filename = FileUtil::createFile(files[0], ".bdoc", tr("signature container"));
+			QString ext = Settings(qApp->applicationName()).value("Client/Type", ".bdoc").toString();
+			QString filename = FileUtil::createFile(files[0], QString(".%1").arg(ext), tr("signature container"));
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -342,6 +341,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		{
 			delete digiDoc;
 			digiDoc = signatureContainer.release();
+			connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 			ui->signContainerPage->transition(digiDoc);
 		}
 	}
@@ -400,38 +400,91 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 void MainWindow::onSignAction(int action, const QString &idCode, const QString &phoneNumber)
 {
-	if(action == SignatureAdd)
+	switch(action)
 	{
+	case SignatureAdd:
 		sign();
-	}
-	else if(action == SignatureMobile)
-	{
+		break;
+	case SignatureMobile:
 		signMobile(idCode, phoneNumber);
-	}
-	else if(action == ContainerCancel)
-	{
+		break;
+	case ContainerCancel:
 		navigateToPage(Pages::SignIntro);
-	}
-	else if(action == ContainerSave)
-	{
+		break;
+	case ContainerSave:
+		save();
+		ui->signContainerPage->transition(digiDoc);
+		break;
+	case ContainerEmail:
 		if(digiDoc)
-		{
-			save();
-			ui->signContainerPage->transition(digiDoc);
-		}
+			containerToEmail(digiDoc->fileName());
+		break;
+	case ContainerNavigate:
+		if(digiDoc)
+			browseOnDisk(digiDoc->fileName());
+		break;
+	case ContainerEncrypt:
+		if(digiDoc)
+			convertToCDoc();
+		break;
+	default:
+		break;
 	}
-	else if( action == ContainerEmail && digiDoc )
-	{
-		containerToEmail( digiDoc->fileName() );
-	}
-	else if( action == ContainerNavigate && digiDoc )
-	{
-		browseOnDisk( digiDoc->fileName() );
-	}
-	else if(action == ContainerEncrypt && digiDoc)
-	{
-		navigateToPage( Pages::CryptoDetails, QStringList() << digiDoc->fileName(), true );
-	}
+}
+
+void MainWindow::convertToBDoc()
+{
+	QString ext = Settings(qApp->applicationName()).value("Client/Type", ".bdoc").toString();
+	QString filename = FileUtil::createFile(cryptoDoc->fileName(), QString(".%1").arg(ext), tr("signature container"));
+	if(filename.isNull())
+		return;
+
+	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
+	signatureContainer->create(filename);
+	signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
+	
+	delete digiDoc;
+	digiDoc = signatureContainer.release();
+	connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
+	delete cryptoDoc;
+	cryptoDoc = nullptr;
+
+	selectPageIcon(ui->signature);
+	ui->startScreen->setCurrentIndex(CryptoDetails);
+
+	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	notification->start( tr("Konverteeritud allkirjadokumendiks!"), 750, 1500, 600 );
+}
+
+void MainWindow::convertToCDoc()
+{
+	QString filename = FileUtil::createFile(digiDoc->fileName(), ".cdoc", tr("crypto container"));
+	if(filename.isNull())
+		return;
+
+	std::unique_ptr<CryptoDoc> cryptoContainer(new CryptoDoc(this));
+	cryptoContainer->clear(filename);
+
+	// If signed, add whole signed document to cryptocontainer; otherwise content only
+	if(digiDoc->state() == SignedContainer)
+		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
+	else
+		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
+
+	auto cardData = smartcard->data();
+	if(!cardData.isNull())
+		cryptoContainer->addKey(CKey(cardData.authCert()));
+
+	delete cryptoDoc;
+	cryptoDoc = cryptoContainer.release();
+	delete digiDoc;
+	digiDoc = nullptr;
+	ui->cryptoContainerPage->transition(cryptoDoc);
+	selectPageIcon(ui->crypto);
+	ui->startScreen->setCurrentIndex(CryptoDetails);
+
+	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	notification->start( tr("Konverteeritud krüptokontaineriks!"), 750, 1500, 600 );
 }
 
 void MainWindow::onCryptoAction(int action, const QString &id, const QString &phone)
@@ -446,18 +499,12 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
-			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
+			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
 		}
 		break;
 	case EncryptContainer:
-		if(encrypt())
-		{
-			ui->cryptoContainerPage->transition(cryptoDoc);
-
-			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
-			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
-		}
+		convertToBDoc();
 		break;
 	case ContainerEmail:
 		if( cryptoDoc )
@@ -716,8 +763,12 @@ bool MainWindow::sign()
 	if( !access.validate() )
 		return false;
 
-	// TODO read place&roles from settings
-	if(digiDoc->sign("", "", "", "", "", ""))
+	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
+	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
+	QString state = Settings(qApp->applicationName()).value( "Client/State" ).toString();
+	QString country = Settings(qApp->applicationName()).value( "Client/Country" ).toString();
+	QString zip = Settings(qApp->applicationName()).value( "Client/Zip" ).toString();
+	if(digiDoc->sign(city, state, zip, country, role, ""))
 	{
 		access.increment();
 		save();
@@ -737,9 +788,13 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	if( !access.validate() )
 		return false;
 
-	// TODO read place&roles from settings
+	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
+	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
+	QString state = Settings(qApp->applicationName()).value( "Client/State" ).toString();
+	QString country = Settings(qApp->applicationName()).value( "Client/Country" ).toString();
+	QString zip = Settings(qApp->applicationName()).value( "Client/Zip" ).toString();
 	MobileProgress m(this);
-	m.setSignatureInfo( "",	"", "", "", "");
+	m.setSignatureInfo(city, state, zip, country, role);
 	m.sign(digiDoc, idCode, phoneNumber);
 	if( !m.exec() || !digiDoc->addSignature( m.signature() ) )
 		return false;

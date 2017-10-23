@@ -71,7 +71,7 @@ void ContainerPage::changeCard(const QString& idCode)
 	if(cardInReader != idCode)
 	{
 		cardInReader = idCode;
-		if(mainAction)
+		if(mainAction && (ui->leftPane->getState() & SignatureContainers))
 			showSigningButton();
 	}
 }

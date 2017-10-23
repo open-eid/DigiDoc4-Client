@@ -19,7 +19,7 @@
 #pragma once
 
 #include <QObject>
-#include <QString>
+#include <QStringList>
 
 class DocumentModel: public QObject
 {
@@ -29,11 +29,13 @@ public:
 	virtual ~DocumentModel();
 
 	virtual void addFile(const QString &file, const QString &mime = "application/octet-stream") = 0;
+	virtual void addTempFiles(const QStringList &files) = 0;
 	virtual QString data(int row) const = 0;
 	virtual QString mime(int row) const = 0;
 	virtual bool removeRows(int row, int count) = 0;
 	virtual int rowCount() const = 0;
 	virtual QString save(int row, const QString &path) const = 0;
+	virtual QStringList tempFiles() const;
 
 signals:
 	void added(const QString &file);

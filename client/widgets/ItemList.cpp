@@ -120,6 +120,8 @@ void ItemList::clear()
 	}
 }
 
+ContainerState ItemList::getState() { return state; }
+
 int ItemList::index(Item *item) const
 {
 	auto it = std::find(items.begin(), items.end(), item);

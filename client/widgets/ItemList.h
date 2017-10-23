@@ -43,6 +43,7 @@ public:
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
 	void clear();
+	ria::qdigidoc4::ContainerState getState();
 	void removeItem(int row);
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
