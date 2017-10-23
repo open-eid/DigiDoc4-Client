@@ -19,7 +19,25 @@
 
 #include "DocumentModel.h"
 
+#include "FileDialog.h"
+
+#include <QFileInfo>
+
 DocumentModel::DocumentModel(QObject *parent)
 : QObject(parent)
 {}
 DocumentModel::~DocumentModel() {}
+
+QStringList DocumentModel::tempFiles() const
+{
+	QStringList copied;
+	int rows = rowCount();
+	for(int i = 0; i < rows; ++i)
+	{
+		QFileInfo f(save(i, FileDialog::tempPath(data(i))));
+		if(f.exists())
+			copied << f.absoluteFilePath();
+	}
+
+	return copied;
+}

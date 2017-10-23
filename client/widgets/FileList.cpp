@@ -31,6 +31,7 @@
 
 using namespace ria::qdigidoc4;
 
+
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
@@ -47,25 +48,15 @@ void FileList::addFile( const QString& file )
 	addWidget(item);
 
 	connect(item, &FileItem::open, this, &FileList::open);
-	connect(item, &FileItem::remove, this, &FileList::remove);
 	connect(item, &FileItem::download, this, &FileList::save);
 
 	if(state & (SignedContainer | DecryptedContainer) && items.size() > 1)
 		showDownload();
 }
 
-int FileList::index(StyledWidget *item) const
-{
-	auto it = std::find(items.begin(), items.end(), item);
-	if(it != items.end())
-		return std::distance(items.begin(), it);
-
-	return -1;
-}
-
 void FileList::init(const QString &container, const QString &label)
 {
-	ItemList::init(ItemList::File, label, true);
+	ItemList::init(ItemFile, label, true);
 	this->container = container;
 }
 
@@ -76,7 +67,7 @@ void FileList::open(FileItem *item) const
 		documentModel->open(i);
 }
 
-void FileList::remove(FileItem *item)
+void FileList::remove(Item *item)
 {
 	int i;
 	if(documentModel && (i = index(item)) != -1)

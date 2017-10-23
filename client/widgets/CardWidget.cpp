@@ -77,7 +77,7 @@ bool CardWidget::isLoading() const
 	return !cardInfo || cardInfo->loading;
 }
 
-void CardWidget::update( QSharedPointer<const QCardInfo> ci )
+void CardWidget::update( const QSharedPointer<const QCardInfo> &ci )
 {
 	cardInfo = ci;
 	ui->cardName->setText( cardInfo->fullName );

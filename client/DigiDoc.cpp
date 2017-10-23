@@ -305,6 +305,15 @@ void SDocumentModel::addFile(const QString &file, const QString &mime)
 		emit added(file);
 }
 
+void SDocumentModel::addTempFiles(const QStringList &files)
+{
+	for(auto file: files)
+	{
+		addFile(file);
+		doc->m_tempFiles << file;
+	}
+}
+
 QString SDocumentModel::data(int row) const
 {
 	if(row >= rowCount())

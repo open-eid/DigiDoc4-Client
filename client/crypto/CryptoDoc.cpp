@@ -595,6 +595,15 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 	emit added(file);
 }
 
+void CDocumentModel::addTempFiles(const QStringList &files)
+{
+	for(auto file: files)
+	{
+		addFile(file);
+		d->tempFiles << file;
+	}
+}
+
 QString CDocumentModel::copy(int row, const QString &dst) const
 {
 	const CryptoDocPrivate::File &file = d->files.at(row);

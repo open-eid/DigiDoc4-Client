@@ -1309,7 +1309,7 @@ background-color: #FFFFFF;</string>
            </size>
           </property>
           <property name="text">
-           <string>Parool</string>
+           <string>Postikood</string>
           </property>
          </widget>
         </widget>

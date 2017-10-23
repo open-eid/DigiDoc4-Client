@@ -19,13 +19,13 @@
 
  #pragma once
 
-#include "widgets/StyledWidget.h"
+#include "widgets/Item.h"
 
 namespace Ui {
 class FileItem;
 }
 
-class FileItem : public StyledWidget
+class FileItem : public Item
 {
 	Q_OBJECT
 
@@ -39,7 +39,6 @@ public:
 
 signals:
 	void open(FileItem* item);
-	void remove(FileItem* item);
 	void download(FileItem* item);
 	
 protected:

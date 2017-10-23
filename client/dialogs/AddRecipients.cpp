@@ -20,6 +20,8 @@
 
 #include "AddRecipients.h"
 #include "ui_AddRecipients.h"
+
+#include "common_enums.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 #include "widgets/AddressItem.h"
@@ -43,9 +45,9 @@ void AddRecipients::init()
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	ui->leftPane->init(ItemList::ToAddAdresses, "Adressaatide lisamine", false);
+	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, "Adressaatide lisamine", false);
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init(ItemList::AddedAdresses, "Lisatud adressaadid");
+	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, "Lisatud adressaadid");
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));

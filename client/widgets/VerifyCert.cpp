@@ -72,11 +72,11 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	QString txt;
 	QTextStream cert( &txt );
 
-    this->pinType = type;
+	this->pinType = type;
 	QSmartCardData t = pSmartCard->data();
-    
-    SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
-	this->isValidCert = c.isValid();    // put 0 for testing Aegunud Sertifikaate.
+	
+	SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
+	this->isValidCert = c.isValid();	// put 0 for testing Aegunud Sertifikaate.
 	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false; // put 1 for testing Tühista Blokeering.
 
 	if( !isValidCert )
@@ -117,15 +117,15 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 			txt = "PUK kood asub Sinu koodiümbrikus";
 			changeBtn = "MUUDA PUK"; 
 			error = ( isBlockedPin ) ? 
-                "<span>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida."
-                "<br><br>Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid."
-                "<br><br>Uue PUK koodi saad vaid uue koodiümbrikuga, mida <u>taotle PPA-st</u></span>."
-                : "";
+				"<span>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida."
+				"<br><br>Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid."
+				"<br><br>Uue PUK koodi saad vaid uue koodiümbrikuga, mida <u>taotle PPA-st</u></span>."
+				: "";
 			break;
 		default:
 			break;
 	}
-    
+	
 	update(
 			name,
 			txt,
@@ -228,7 +228,7 @@ void VerifyCert::update(
 	}
 	if( !isValidCert )
 	{
-        // This logic to be clarified!                                                     TODO!!
+		// This logic to be clarified!													 TODO!!
 		if( pinType != QSmartCardData::PukType )
 			ui->changePIN->hide();  // hide 'change PIN' buttons.
 		if( pinType != QSmartCardData::PukType )
@@ -250,7 +250,7 @@ void VerifyCert::enterEvent( QEvent * event )
 	else if( isBlockedPin )
 		this->setStyleSheet( "background-color: #fbecd0;" + borders );
 	else
-    {
+	{
 		this->setStyleSheet( "background-color: #f7f7f7;" + borders );
 		changePinStyle( "#f7f7f7" );  
 	}  
@@ -263,7 +263,7 @@ void VerifyCert::leaveEvent( QEvent * event )
 	else if( isBlockedPin )
 		this->setStyleSheet( "background-color: #fcf5ea;" + borders );
 	else
-    {
+	{
 		this->setStyleSheet( "background-color: white;" + borders );
 		changePinStyle( "white" );  
 	}  
@@ -286,7 +286,7 @@ void VerifyCert::processClickedBtn()
 
 void VerifyCert::processForgotPinLink( QString link )
 {
-	emit changePinClicked( true, false );    // Change PIN with PUK code
+	emit changePinClicked( true, false );	// Change PIN with PUK code
 }
 
 void VerifyCert::processCertDetails( QString link )

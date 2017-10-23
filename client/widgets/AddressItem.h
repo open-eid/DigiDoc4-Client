@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include "widgets/Item.h"
 
 namespace Ui {
 class AddressItem;
@@ -27,7 +27,7 @@ class AddressItem;
 
 class CKey;
 
-class AddressItem : public StyledWidget
+class AddressItem : public Item
 {
 	Q_OBJECT
 
@@ -44,9 +44,12 @@ public:
 	explicit AddressItem(const CKey &key, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~AddressItem();
 
-	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
+	void idChanged(const QString& cardCode, const QString& mobileCode) override;
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
 	
 private:
 	Ui::AddressItem *ui;
+
+	QString code;
 };

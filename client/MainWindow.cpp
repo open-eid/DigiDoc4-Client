@@ -132,7 +132,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
+	connect( ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
+	connect( ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress );
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
 	connect( ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked );
@@ -319,11 +321,10 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	{
 		navigate = false;
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
-		connect(signatureContainer.get(), &DigiDoc::operation, this, &MainWindow::operation);
 		if(create)
 		{
-			// TODO asice from settings
-			QString filename = FileUtil::createFile(files[0], ".bdoc", tr("signature container"));
+			QString ext = Settings(qApp->applicationName()).value("Client/Type", ".bdoc").toString();
+			QString filename = FileUtil::createFile(files[0], QString(".%1").arg(ext), tr("signature container"));
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -340,6 +341,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		{
 			delete digiDoc;
 			digiDoc = signatureContainer.release();
+			connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 			ui->signContainerPage->transition(digiDoc);
 		}
 	}
@@ -398,38 +400,91 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 void MainWindow::onSignAction(int action, const QString &idCode, const QString &phoneNumber)
 {
-	if(action == SignatureAdd)
+	switch(action)
 	{
+	case SignatureAdd:
 		sign();
-	}
-	else if(action == SignatureMobile)
-	{
+		break;
+	case SignatureMobile:
 		signMobile(idCode, phoneNumber);
-	}
-	else if(action == ContainerCancel)
-	{
+		break;
+	case ContainerCancel:
 		navigateToPage(Pages::SignIntro);
-	}
-	else if(action == ContainerSave)
-	{
+		break;
+	case ContainerSave:
+		save();
+		ui->signContainerPage->transition(digiDoc);
+		break;
+	case ContainerEmail:
 		if(digiDoc)
-		{
-			save();
-			ui->signContainerPage->transition(digiDoc);
-		}
+			containerToEmail(digiDoc->fileName());
+		break;
+	case ContainerNavigate:
+		if(digiDoc)
+			browseOnDisk(digiDoc->fileName());
+		break;
+	case ContainerEncrypt:
+		if(digiDoc)
+			convertToCDoc();
+		break;
+	default:
+		break;
 	}
-	else if( action == ContainerEmail && digiDoc )
-	{
-		containerToEmail( digiDoc->fileName() );
-	}
-	else if( action == ContainerNavigate && digiDoc )
-	{
-		browseOnDisk( digiDoc->fileName() );
-	}
-	else if(action == ContainerEncrypt && digiDoc)
-	{
-		navigateToPage( Pages::CryptoDetails, QStringList() << digiDoc->fileName(), true );
-	}
+}
+
+void MainWindow::convertToBDoc()
+{
+	QString ext = Settings(qApp->applicationName()).value("Client/Type", ".bdoc").toString();
+	QString filename = FileUtil::createFile(cryptoDoc->fileName(), QString(".%1").arg(ext), tr("signature container"));
+	if(filename.isNull())
+		return;
+
+	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
+	signatureContainer->create(filename);
+	signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
+	
+	delete digiDoc;
+	digiDoc = signatureContainer.release();
+	connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
+	delete cryptoDoc;
+	cryptoDoc = nullptr;
+
+	selectPageIcon(ui->signature);
+	ui->startScreen->setCurrentIndex(CryptoDetails);
+
+	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	notification->start( tr("Konverteeritud allkirjadokumendiks!"), 750, 1500, 600 );
+}
+
+void MainWindow::convertToCDoc()
+{
+	QString filename = FileUtil::createFile(digiDoc->fileName(), ".cdoc", tr("crypto container"));
+	if(filename.isNull())
+		return;
+
+	std::unique_ptr<CryptoDoc> cryptoContainer(new CryptoDoc(this));
+	cryptoContainer->clear(filename);
+
+	// If signed, add whole signed document to cryptocontainer; otherwise content only
+	if(digiDoc->state() == SignedContainer)
+		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
+	else
+		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
+
+	auto cardData = smartcard->data();
+	if(!cardData.isNull())
+		cryptoContainer->addKey(CKey(cardData.authCert()));
+
+	delete cryptoDoc;
+	cryptoDoc = cryptoContainer.release();
+	delete digiDoc;
+	digiDoc = nullptr;
+	ui->cryptoContainerPage->transition(cryptoDoc);
+	selectPageIcon(ui->crypto);
+	ui->startScreen->setCurrentIndex(CryptoDetails);
+
+	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	notification->start( tr("Konverteeritud krüptokontaineriks!"), 750, 1500, 600 );
 }
 
 void MainWindow::onCryptoAction(int action, const QString &id, const QString &phone)
@@ -444,18 +499,12 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
-			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
+			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
 		}
 		break;
 	case EncryptContainer:
-		if(encrypt())
-		{
-			ui->cryptoContainerPage->transition(cryptoDoc);
-
-			FadeInNotification* notification = new FadeInNotification( this, WHITE, CORNFLOWER_BLUE, 110 );
-			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
-		}
+		convertToBDoc();
 		break;
 	case ContainerEmail:
 		if( cryptoDoc )
@@ -651,10 +700,12 @@ void MainWindow::showCardStatus()
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
-		ui->signContainerPage->cardSigning(true);
 		
-		ui->cardInfo->update( QSharedPointer<const QCardInfo>(new QCardInfo( t )) );
-
+		QSharedPointer<const QCardInfo> cardInfo(new QCardInfo(t));
+		ui->cardInfo->update(cardInfo);
+		emit ui->signContainerPage->cardChanged(cardInfo->id);
+		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
+		
 		if( t.authCert().type() & SslCertificate::EstEidType )
 		{
 			Styles::cachedPicture( t.data(QSmartCardData::Id ).toString(), { ui->cardInfo, ui->infoStack } );
@@ -667,16 +718,17 @@ void MainWindow::showCardStatus()
 				t.retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				t.retryCount( QSmartCardData::PukType ) == 0 );
 
-        isUpdateCertificateNeeded();
+		isUpdateCertificateNeeded();
 		ui->myEid->updateCertNeededIcon( ui->warning->property("updateCertificateEnabled").toBool() );
-        if( ui->warning->property("updateCertificateEnabled").toBool() )
-            showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
-                "<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
+		if( ui->warning->property("updateCertificateEnabled").toBool() )
+			showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
+				"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
 	}
 	else
 	{
-		ui->signContainerPage->cardSigning(false);
-
+		emit ui->signContainerPage->cardChanged();
+		emit ui->cryptoContainerPage->cardChanged();
+		
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event( "PCSC service is not running" );
 		else if ( t.readers().isEmpty() )
@@ -711,8 +763,12 @@ bool MainWindow::sign()
 	if( !access.validate() )
 		return false;
 
-	// TODO read place&roles from settings
-	if(digiDoc->sign("", "", "", "", "", ""))
+	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
+	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
+	QString state = Settings(qApp->applicationName()).value( "Client/State" ).toString();
+	QString country = Settings(qApp->applicationName()).value( "Client/Country" ).toString();
+	QString zip = Settings(qApp->applicationName()).value( "Client/Zip" ).toString();
+	if(digiDoc->sign(city, state, zip, country, role, ""))
 	{
 		access.increment();
 		save();
@@ -732,9 +788,13 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	if( !access.validate() )
 		return false;
 
-	// TODO read place&roles from settings
+	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
+	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
+	QString state = Settings(qApp->applicationName()).value( "Client/State" ).toString();
+	QString country = Settings(qApp->applicationName()).value( "Client/Country" ).toString();
+	QString zip = Settings(qApp->applicationName()).value( "Client/Zip" ).toString();
 	MobileProgress m(this);
-	m.setSignatureInfo( "",	"", "", "", "");
+	m.setSignatureInfo(city, state, zip, country, role);
 	m.sign(digiDoc, idCode, phoneNumber);
 	if( !m.exec() || !digiDoc->addSignature( m.signature() ) )
 		return false;
@@ -803,6 +863,25 @@ void MainWindow::photoClicked( const QPixmap *photo )
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
+}
+
+void MainWindow::removeAddress(int index)
+{
+	if(cryptoDoc)
+	{
+		cryptoDoc->removeKey(index);
+		ui->cryptoContainerPage->transition(cryptoDoc);
+	}
+}
+
+void MainWindow::removeSignature(int index)
+{
+	if(digiDoc)
+	{
+		digiDoc->removeSignature(index);
+		save();
+		ui->signContainerPage->transition(digiDoc);
+	}
 }
 
 void MainWindow::savePhoto( const QPixmap *photo )
