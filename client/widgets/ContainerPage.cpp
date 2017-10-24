@@ -110,6 +110,8 @@ void ContainerPage::init()
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
 	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode){ emit ui->rightPane->idChanged(idCode, mobileCode); });
+	connect(this, &ContainerPage::moved, ui->containerFile, &QLabel::setText);
+	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
@@ -361,7 +363,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
-		resize = !ui->changeLocation->isHidden();
+		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		ui->cancel->setText("← ALGUSESSE");
 		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
