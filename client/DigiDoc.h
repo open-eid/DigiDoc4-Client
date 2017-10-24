@@ -141,6 +141,7 @@ public:
 	bool isModified() const;
 	bool isSupported() const;
 	QString mediaType() const;
+	bool move(const QString &to);
 	QString newSignatureID() const;
 	bool open( const QString &file );
 	void removeSignature( unsigned int num );

@@ -54,6 +54,7 @@ public:
 signals:
 	void action(int code, const QString &idCode = QString(), const QString &phoneNumber = QString());
 	void cardChanged(const QString& idCode = QString());
+	void moved(const QString &to);	
 	void removed(int row);
 
 protected:

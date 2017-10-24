@@ -422,6 +422,10 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 		if(digiDoc)
 			containerToEmail(digiDoc->fileName());
 		break;
+	case ContainerLocation:
+		if(digiDoc)
+			moveSignatureContainer();
+		break;
 	case ContainerNavigate:
 		if(digiDoc)
 			browseOnDisk(digiDoc->fileName());
@@ -490,6 +494,22 @@ void MainWindow::convertToCDoc()
 	notification->start( tr("Konverteeritud krüptokontaineriks!"), 750, 1500, 600 );
 }
 
+void MainWindow::moveCryptoContainer()
+{
+	const QFileInfo f(cryptoDoc->fileName());
+	QString to = FileDialog::getSaveFileName(this, tr("Move file"), cryptoDoc->fileName(), f.suffix());
+	if(!to.isNull() && cryptoDoc->move(to))
+		ui->cryptoContainerPage->moved(to);
+}
+
+void MainWindow::moveSignatureContainer()
+{
+	const QFileInfo f(digiDoc->fileName());
+	QString to = FileDialog::getSaveFileName(this, tr("Move file"), digiDoc->fileName(), f.suffix());
+	if(!to.isNull() && digiDoc->move(to))
+		ui->signContainerPage->moved(to);
+}
+
 void MainWindow::onCryptoAction(int action, const QString &id, const QString &phone)
 {
 	switch(action)
@@ -518,6 +538,10 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	case ContainerEmail:
 		if( cryptoDoc )
 			containerToEmail( cryptoDoc->fileName() );
+		break;
+	case ContainerLocation:
+		if(cryptoDoc)
+			moveCryptoContainer();
 		break;
 	case ContainerNavigate:
 		if( cryptoDoc )

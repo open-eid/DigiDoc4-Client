@@ -847,6 +847,17 @@ QList<QString> CryptoDoc::files()
 	return fileList;
 }
 
+bool CryptoDoc::move(const QString &to)
+{
+	if(containerState == ContainerState::UnencryptedContainer)
+	{
+		d->fileName = to;
+		return true;
+	}
+
+	return false;
+}
+
 bool CryptoDoc::open( const QString &file )
 {
 	clear(file);

@@ -126,6 +126,8 @@ private:
 	void getDigiIdStatus ();
 	void isUpdateCertificateNeeded();
 	void loadPicture();
+	void moveCryptoContainer();
+	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int code, const QString &id, const QString &phone);
 	void onSignAction(int code, const QString &idCode, const QString &phoneNumber);

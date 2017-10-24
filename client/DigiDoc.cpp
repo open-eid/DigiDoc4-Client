@@ -481,6 +481,28 @@ bool DigiDoc::isSupported() const
 QString DigiDoc::mediaType() const
 { return b ? from( b->mediaType() ) : QString(); }
 
+bool DigiDoc::move(const QString &to)
+{
+	bool success = false;
+	if(containerState == ContainerState::UnsignedContainer)
+	{
+		success = true;
+	}
+	else
+	{
+		QFile f(m_fileName);
+		if(!modified)
+			success = f.rename(to);
+		else if(save(to))
+			success = f.remove();
+	}
+
+	if(success)
+		m_fileName = to;
+
+	return success;
+}
+
 QString DigiDoc::newSignatureID() const
 {
 	QStringList list;

@@ -79,11 +79,12 @@ public:
 	DocumentModel* documentModel() const;
 	bool encrypt( const QString &filename = QString() );
 	QString fileName() const;
+	QList<QString> files();
 	bool isEncrypted() const;
 	bool isNull() const;
 	bool isSigned() const;
 	QList<CKey> keys();
-	QList<QString> files();
+	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeKey( int id );
 	bool saveDDoc( const QString &filename );
