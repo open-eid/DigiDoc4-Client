@@ -59,6 +59,17 @@ void InfoStack::clearPicture()
 	ui->photo->clear();
 }
 
+void InfoStack::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+
+
 void InfoStack::focusEvent(int eventType)
 {
     if(!ui->photo->pixmap())

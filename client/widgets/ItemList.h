@@ -62,6 +62,9 @@ protected:
 	std::vector<Item*> items;
 	ria::qdigidoc4::ContainerState state;
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
 	QString addLabel() const;
 	void addressSearch();

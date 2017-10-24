@@ -113,3 +113,13 @@ void OtherId::updateDigiId( const QString &docNumber, const QString &docValid, c
 		ui->lblCertText->setText( "" );
 	}
 }
+
+void OtherId::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}

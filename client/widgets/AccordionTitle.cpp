@@ -57,6 +57,12 @@ void AccordionTitle::init(bool open, const QString& caption, QWidget* content)
 		closeSection();
 }
 
+void AccordionTitle::setText(const QString& caption)
+{
+	ui->label->setText(caption);
+}
+
+
 void AccordionTitle::openSection()
 {
 	content->setVisible(true);

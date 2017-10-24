@@ -45,9 +45,9 @@ void Accordion::init()
 	connect( ui->contentOtherData, &OtherData::checkEMailClicked, this, [this](){ emit checkEMail(); } );
 	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
 
-	ui->titleVerifyCert->init(true, "PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL", ui->contentVerifyCert);
-	ui->titleOtherData->init(false, "EESTI.EE POSTI SUUNAMINE", ui->contentOtherData);
-	ui->titleOtherEID->init(false, "MINU TEISED eID-D", ui->contentOtherEID);
+    ui->titleVerifyCert->init(true, tr("CHECK PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
+    ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE POST"), ui->contentOtherData);
+    ui->titleOtherEID->init(false, tr("MY OTHER eID'-D's"), ui->contentOtherEID);
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
@@ -104,6 +104,21 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 
 	ui->otherID->update( "Teised eID-d");
 }
+
+void Accordion::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+
+		ui->titleVerifyCert->setText(tr("CHECK PIN/PUK CODES AND CERTIFICATES"));
+		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE POST"));
+		ui->titleOtherEID->setText(tr("MY OTHER eID'-D's"));
+	}
+
+	QWidget::changeEvent(event);
+}
+
 
 void Accordion::changePin1( bool isForgotPin, bool isBlockedPin )
 {

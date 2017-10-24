@@ -96,69 +96,45 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	}
 	switch( type )
 	{
-		case QSmartCardData::Pin1Type:
-<<<<<<< 9fb9213871c71e8b0a8ec0d7caaf13656fa468a2
-			name = "Isikutuvastamise sertifikaat";
-			changeBtn = ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN1";
-			forgotPinText = "<a href='#pin1-forgotten'><span style='color:#75787B;'>Unustasid PIN1 koodi?</span></a>";
-			detailsText = "<a href='#pin1-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>";
-			error = ( !isValidCert ) ? "PIN1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN1 taas kasutada." :
-					( isBlockedPin ) ? "PIN1 on blokeeritud, kuna PIN1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN1 taas kasutada." :
-					"";
-			break;
-		case QSmartCardData::Pin2Type:
-			name = "Allkirjastamise sertifikaat";
-			changeBtn = ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN2";
-			forgotPinText = "<a href='#pin2-forgotten'><span style='color:#75787B;'>Unustasid PIN2 koodi?</span></a>";
-			detailsText = "<a href='#pin2-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>";
-			error = ( !isValidCert ) ? "PIN2 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN2 taas kasutada." :
-					( isBlockedPin ) ? "PIN2 on blokeeritud, kuna PIN2 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN2 taas kasutada." : 
-=======
-			name = tr("Person identification certificate");
-			changeBtn = ( !isValidCert ) ? tr("RENEW CERTIFICATE") : ( isBlockedPin ) ? tr("UNBLOCK") : tr("CHANGE PIN1");
-			forgotPinText = tr("%1Forgot PIN%2?%3")
-							.arg("<a href='#pin1-forgotten'><span style='color:black;'>")
-							.arg("1")
-							.arg("</span></a>");
-			detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:black;'>").arg("</span></a>") : "";
-			error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
-					( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
-					"";
-			break;
-		case QSmartCardData::Pin2Type:
-			name = tr("Signing certificate");
-			changeBtn = ( !isValidCert ) ? tr("RENEW CERTIFICATE") : ( isBlockedPin ) ? tr("UNBLOCK") : tr("CHANGE PIN2");
-			forgotPinText = tr("%1Forgot PIN%2?%3")
-							.arg("<a href='#pin1-forgotten'><span style='color:black;'>")
-							.arg("1")
-							.arg("</span></a>");
-			detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:black;'>").arg("</span></a>") : "";
-			error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
-					( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
->>>>>>> Translate all wigdets to en, et and ru
-					"";
-			break;
-		case QSmartCardData::PukType:
-			name = tr("PUK code");
-			txt = tr("The PUK code is located in your envelope");
-			changeBtn = tr("CHANGE PUK");
-			error = ( isBlockedPin ) ? 
-<<<<<<< 9fb9213871c71e8b0a8ec0d7caaf13656fa468a2
-				"<span>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida."
-				"<br><br>Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid."
-				"<br><br>Uue PUK koodi saad vaid uue koodiümbrikuga, mida <u>taotle PPA-st</u></span>."
-=======
-				tr("%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.")
-						.arg("<span>")
-						.arg("<br><br>")
-						.arg("<u>")
-						.arg("</u></span>")
->>>>>>> Translate all wigdets to en, et and ru
-				: "";
-			break;
-		default:
-			break;
-	}
+    case QSmartCardData::Pin1Type:
+        name = tr("Person identification certificate");
+        changeBtn = ( isBlockedPin ) ? tr("UNBLOCK") : tr("CHANGE PIN1");
+        forgotPinText = tr("%1Forgot PIN%2?%3")
+                        .arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
+                        .arg("1")
+                        .arg("</span></a>");
+        detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
+        error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
+                ( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
+                "";
+        break;
+    case QSmartCardData::Pin2Type:
+        name = tr("Signing certificate");
+        changeBtn = ( !isValidCert ) ? tr("RENEW CERTIFICATE") : ( isBlockedPin ) ? tr("UNBLOCK") : tr("CHANGE PIN2");
+        forgotPinText = tr("%1Forgot PIN%2?%3")
+                        .arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
+                        .arg("2")
+                        .arg("</span></a>");
+        detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
+        error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
+                ( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
+                "";
+        break;
+    case QSmartCardData::PukType:
+        name = tr("PUK code");
+        txt = tr("The PUK code is located in your envelope");
+        changeBtn = tr("CHANGE PUK");
+        error = ( isBlockedPin ) ?
+            tr("%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.")
+                    .arg("<span>")
+                    .arg("<br><br>")
+                    .arg("<u>")
+                    .arg("</u></span>")
+            : "";
+        break;
+    default:
+        break;
+    }
 	
 	update(
 			name,
@@ -294,6 +270,17 @@ void VerifyCert::leaveEvent( QEvent * event )
 		changePinStyle( "white" );  
 	}  
 }
+
+void VerifyCert::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+
 
 void VerifyCert::changePinStyle( const QString &background )  
 {  

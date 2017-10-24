@@ -498,6 +498,36 @@ Learn more info here:</source>
 
 
 <context>
+    <name>Accordion</name>
+    <message>
+        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>ПРОВЕРИТЬ PIN/PUK И СЕРТИФИКАТЫ</translation>
+    </message>
+    <message>
+        <source>REDIRECTION OF EESTI.EE POST</source>
+        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE почта</translation>
+    </message>
+    <message>
+        <source>MY OTHER eID's</source>
+        <translation>МОЙ ДРУГОЙ eID</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>There is an ID card in reader</source>
+        <translation>В читателе есть ID КАРТ</translation>
+    </message>
+    <message>
+        <source>There is an %1 in reader</source>
+        <translation>В читателе есть %1</translation>
+    </message>
+</context>
+
+
+<context>
     <name>AddressItem</name>
     <message>
         <source>Add</source>
@@ -594,7 +624,7 @@ Learn more info here:</source>
         <translation>шифровать С\ID-КАРТОЙ</translation>
     </message>
     <message>
-        <source>Dencrypted files</source>
+        <source>Decrypted files</source>
         <translation>Зашифрованные файлы</translation>
     </message>
 </context>

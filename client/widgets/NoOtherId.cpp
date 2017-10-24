@@ -51,3 +51,13 @@ void NoOtherId::update( const QString &lblName )
     ui->lblDigiID->setText( "<a href='https://www.id.ee/?lang=et&id=34178/'><span " + decoration + ">" + tr("DIGI-ID") + "</span></a>" );
     ui->lblSmartID->setText( "<a href='https://www.smart-id.com/et/'><span " + decoration + ">" + tr("SMART-ID") + "</span></a>" );
 }
+
+void NoOtherId::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}

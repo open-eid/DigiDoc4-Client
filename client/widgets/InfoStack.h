@@ -44,6 +44,9 @@ public:
 signals:
 	void photoClicked( const QPixmap *pixmap );
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
 	void focusEvent(int eventType);
 

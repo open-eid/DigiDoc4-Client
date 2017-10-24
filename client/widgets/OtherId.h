@@ -37,6 +37,9 @@ public:
 	void updateMobileId( const QString &telNumber, const QString &telOperator, const QString &status, const QString &validTill );
 	void updateDigiId( const QString &docNumber, const QString &docValid, const QString &status, const QString &validTill );
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
 	Ui::OtherId *ui;
 };

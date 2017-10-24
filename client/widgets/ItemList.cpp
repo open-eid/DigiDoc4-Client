@@ -65,6 +65,16 @@ void ItemList::addHeaderWidget(Item *widget)
 	headerItems++;
 }
 
+void ItemList::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+
 QString ItemList::addLabel() const
 {
 	switch(itemType)

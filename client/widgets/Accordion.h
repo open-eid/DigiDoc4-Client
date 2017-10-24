@@ -47,6 +47,9 @@ public:
 	void updateDigiIdInfo();
 	void idCheckOtherEIdNeeded( AccordionTitle* opened );
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private Q_SLOTS:
   	void changePin1( bool isForgotPin, bool isBlockedPin );
 	void changePin2( bool isForgotPin, bool isBlockedPin );

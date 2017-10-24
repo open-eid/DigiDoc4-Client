@@ -507,6 +507,36 @@ Learn more info here:</translation>
 </context>
 
 
+<context>
+    <name>Accordion</name>
+    <message>
+        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>CHECK PIN/PUK CODES AND CERTIFICATES</translation>
+    </message>
+    <message>
+        <source>REDIRECTION OF EESTI.EE POST</source>
+        <translation>REDIRECTION OF EESTI.EE POST</translation>
+    </message>
+    <message>
+        <source>MY OTHER eID's</source>
+        <translation>MY OTHER eID's</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>There is an ID card in reader</source>
+        <translation>There is an ID card in reader</translation>
+    </message>
+    <message>
+        <source>There is an %1 in reader</source>
+        <translation>There is an %1 in reader</translation>
+    </message>
+
+</context>
+
 
 <context>
     <name>AddressItem</name>
@@ -605,8 +635,8 @@ Learn more info here:</translation>
         <translation>DECRYPT WITH\nID-CARD</translation>
     </message>
     <message>
-        <source>Dencrypted files</source>
-        <translation>Dencrypted files</translation>
+        <source>Decrypted files</source>
+        <translation>Decrypted files</translation>
     </message>
 
 </context>

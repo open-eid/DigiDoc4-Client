@@ -493,6 +493,34 @@ Rohkem infot leiate siit:</translation>
 </context>
 
 
+<context>
+    <name>Accordion</name>
+    <message>
+        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL</translation>
+    </message>
+    <message>
+        <source>REDIRECTION OF EESTI.EE POST</source>
+        <translation>EESTI.EE POSTI SUUNAMINE</translation>
+    </message>
+    <message>
+        <source>MY OTHER eID's</source>
+        <translation>MINU TEISED eID-D</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>There is an ID card in reader</source>
+        <translation>Lugejas on ID kaart</translation>
+    </message>
+    <message>
+        <source>There is an %1 in reader</source>
+        <translation>Lugejas on %1</translation>
+    </message>
+</context>
 
 
 <context>
@@ -592,7 +620,7 @@ Rohkem infot leiate siit:</translation>
         <translation>DEKRÜPTEERI\nID-KAARDIGA</translation>
     </message>
     <message>
-        <source>Dencrypted files</source>
+        <source>Decrypted files</source>
         <translation>Dekrüpteeritud failid</translation>
     </message>
 </context>

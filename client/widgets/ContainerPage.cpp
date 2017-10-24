@@ -205,6 +205,16 @@ void ContainerPage::resizeEvent( QResizeEvent *event )
 		elideFileName();
 }
 
+void ContainerPage::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+
 void ContainerPage::setHeader(const QString &file)
 {
 	fileName = file;
@@ -277,7 +287,7 @@ void ContainerPage::showSigningButton()
 {
 	hideOtherAction();
 	if(cardInReader.isNull())
-        showMainAction(SignatureAdd, tr("ALLKIRJASTA\nID-KAARDIGA"));
+        showMainAction(SignatureAdd, tr("SIGN WITH\nID ID CARD"));
 	else
         showMainAction(SignatureMobile, tr("SIGN WITH\nMOBILE ID"));
 }
@@ -404,7 +414,7 @@ void ContainerPage::updatePanes(ContainerState state)
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, tr("Dencrypted files"));
+        ui->leftPane->init(fileName, tr("Decrypted files"));
 		showRightPane( ItemAddress, tr("Recipients"));
 		hideMainAction();
 		ui->cancel->setText(tr("STARTING"));

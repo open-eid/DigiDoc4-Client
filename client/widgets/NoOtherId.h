@@ -34,7 +34,10 @@ public:
     ~NoOtherId();
 
 	void update( const QString &lblName = "" );
-    
+
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
     Ui::NoOtherId *ui;
 };

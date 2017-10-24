@@ -44,6 +44,7 @@ public:
 
 	void borderless();
 	void init(bool open, const QString& caption, QWidget* content);
+	void setText(const QString& caption);
 	void openSection();
 	void closeSection();
 

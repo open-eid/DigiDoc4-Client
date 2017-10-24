@@ -40,6 +40,9 @@ public:
 
     void update( const QString &status );
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
     Ui::NoCardInfo *ui;
     std::unique_ptr<QSvgWidget> cardIcon;

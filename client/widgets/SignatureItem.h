@@ -44,6 +44,7 @@ public:
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void resizeEvent(QResizeEvent *event) override;
+	void changeEvent(QEvent* event) override;
 
 private:
 	void changeNameHeight();

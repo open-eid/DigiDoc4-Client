@@ -49,6 +49,7 @@ public:
 
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
+	void changeEvent(QEvent* event) override;
 
 private:
 	Ui::AddressItem *ui;
