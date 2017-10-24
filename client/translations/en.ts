@@ -186,6 +186,14 @@ Media type: %3</translation>
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
 </context>
+<context>
+    <name>FileDialog</name>
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+    </message>
+</context>
+
 
 
 <context>
@@ -238,7 +246,62 @@ Media type: %3</translation>
 </context>
 
 <context>
+    <name>InfoStack</name>
+    <message>
+        <source>DOWNLOAD THE PICTURE</source>
+        <translation>DOWNLOAD THE PICTURE</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Citizenship</translation>
+    </message>
+    <message>
+        <source>Given names</source>
+        <translation>Given names</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Personal code</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Document</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Surname</translation>
+    </message>
+
+    <message>
+        <source>SAVE THE PICTURE</source>
+        <translation>SAVE THE PICTURE</translation>
+    </message>
+    <message>
+        <source>You're using Digital identity card</source>
+        <translation>You're using Digital identity card</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>Valid</translation>
+    </message>
+    <message>
+        <source>until</source>
+        <translation> until</translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation>Expired</translation>
+    </message>
+</context>
+
+
+<context>
     <name>ItemList</name>
+    <message>
+        <source>Search</source>
+        <translation>SEARCH</translation>
+    </message>
+
     <message>
         <source>Add more files</source>
         <translation>+ ADD MORE FILES</translation>
@@ -255,12 +318,300 @@ Media type: %3</translation>
 
 
 <context>
-    <name>FileDialog</name>
+    <name>NoCardInfo</name>
     <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+        <source>No card in reader</source>
+        <translation>No card in reader
+
+Check if the ID-card is inserted correctly to the reader.
+New ID-cards have chip on the back side of the card.</translation>
     </message>
 </context>
+
+<context>
+    <name>NoOtherId</name>
+    <message>
+        <source>Other ID</source>
+        <translation>Other ID's'</translation>
+    </message>
+    <message>
+        <source>You do not have other eIDs.
+Learn more info here:</source>
+        <translation>You do not have other eIDs.
+Learn more info here:</translation>
+    </message>
+    <message>
+        <source>MOBIIL-ID</source>
+        <translation>MOBIIL-ID</translation>
+    </message>
+    <message>
+        <source>DIGI-ID</source>
+        <translation>DIGI-ID</translation>
+    </message>
+    <message>
+        <source>SMART-ID</source>
+        <translation>SMART-ID</translation>
+    </message>
+</context>
+
+<context>
+    <name>OtherData</name>
+    <message>
+        <source>*</source>
+        <translation>*</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>OtherData</name>
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee post</translation>
+    </message>
+    <message>
+        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <translation>CHECK @ EESTI.EE E-MAIL STATUS</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
+        <translation>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>ACTIVATE REDIRECTION</translation>
+    </message>
+    <message>
+        <source>For more complete official email tuning, see the portal</source>
+        <translation>For more complete official email tuning, see the portal</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
+        <translation>Your @eesti.ee mail addresses are addressed to e-mail</translation>
+    </message>
+</context>
+
+
+
+<context>
+    <name>SignatureItem</name>
+    <message>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Timestamp</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Warnings</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Restrictions</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Test signature</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>is unknown</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Signed on</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>VerifyCert</name>
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Certificate has expired!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Certificate%1is valid%2 until %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Certificate expires in %1 days</translation>
+    </message>
+    <message>
+        <source>Person identification certificate</source>
+        <translation>Person identification certificate</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>RENEW CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>UNBLOCK</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>CHANGE PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>CHANGE PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1Forgot PIN%2?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Signing certificate</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Check the details of the certificate%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK code</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>The PUK code is located in your envelope</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>CHANGE PUK</translation>
+    </message>
+    <message>
+        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
+        <translation>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</translation>
+    </message>
+</context>
+
+
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>ADD</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>ADDED</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>ContainerPage</name>
+    <message>
+        <source>Container</source>
+        <translation>Container:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>CHANGE</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← CANCEL</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>SEND WITH E-MAIL</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>ENCRYPT</translation>
+    </message>
+    <message>
+        <source>OPEN CONTAINER LOCATION</source>
+        <translation>OPEN CONTAINER LOCATION</translation>
+    </message>
+    <message>
+        <source>SAVE UNSIGNED</source>
+        <translation>SAVE UNSIGNED</translation>
+    </message>
+
+    <message>
+        <source>SIGN WITH\nMOBILE ID</source>
+        <translation>SIGN WITH\nMOBILE ID</translation>
+    </message>
+    <message>
+        <source>SIGN WITH\nID ID CARD</source>
+        <translation>SIGN WITH\nID ID CARD</translation>
+    </message>
+    <message>
+        <source>Container's time stamps</source>
+        <translation>Container's time stamps</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB! Invalid signature</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Status unknown</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Test signature</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Allkiri on hoiatusega</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>STARTING</translation>
+    </message>
+    <message>
+        <source>Container's signatures are missing</source>
+        <translation>Container's signatures are missing</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Container's signatures</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Recipients</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Encrypted files</translation>
+    </message>
+    <message>
+        <source>DECRYPT WITH\nID-CARD</source>
+        <translation>DECRYPT WITH\nID-CARD</translation>
+    </message>
+    <message>
+        <source>Dencrypted files</source>
+        <translation>Dencrypted files</translation>
+    </message>
+
+</context>
+
+
 <context>
     <name>MainWindow</name>
     <message>

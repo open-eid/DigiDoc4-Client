@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>751</width>
+    <width>863</width>
     <height>304</height>
    </rect>
   </property>
@@ -67,7 +67,7 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 </string>
      </property>
      <property name="text">
-      <string>KONTROLLI @EESTI.EE E-POSTI STAATUST</string>
+      <string>CHECK @ EESTI.EE E-MAIL STATUS</string>
      </property>
     </widget>
    </item>
@@ -123,7 +123,7 @@ color: #353739;</string>
 color: #353739;</string>
         </property>
         <property name="text">
-         <string>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</string>
+         <string>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</string>
         </property>
        </widget>
       </item>
@@ -179,7 +179,7 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 </string>
         </property>
         <property name="text">
-         <string>AKTIVEERI SUUNAMINE</string>
+         <string>ACTIVATE REDIRECTION</string>
         </property>
        </widget>
       </item>

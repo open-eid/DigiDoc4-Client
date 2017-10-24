@@ -61,7 +61,7 @@ void ItemList::addHeader(const QString &label)
 
 void ItemList::addHeaderWidget(Item *widget)
 {
-	addWidget(widget, headerItems - 1);	
+	addWidget(widget, headerItems - 1);
 	headerItems++;
 }
 
@@ -69,15 +69,9 @@ QString ItemList::addLabel() const
 {
 	switch(itemType)
 	{
-<<<<<<< 31d846d6b1f10bb9f8027e6ff077650736a7d5a8
-	case ItemFile: return "+ LISA VEEL FAILE";
-	case ItemAddress: return "+ LISA ADRESSAAT";
-	case ToAddAdresses: return "LISA KÕIK";
-=======
-	case File: return tr("Add more files");
-	case Address: return tr("Add addressee");
+	case ItemFile: return tr("Add more files");
+	case ItemAddress: return tr("Add addressee");
 	case ToAddAdresses: return tr("Add all");
->>>>>>> Translate AddRecipients and ItemList to en, et and ru
 	default: return "";
 	}
 }
@@ -106,7 +100,7 @@ void ItemList::addWidget(Item *widget)
 
 void ItemList::clear()
 {
-	ui->download->hide();	
+	ui->download->hide();
 
 	if(header)
 	{

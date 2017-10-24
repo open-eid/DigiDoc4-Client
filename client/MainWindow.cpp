@@ -502,16 +502,12 @@ void MainWindow::convertToBDoc()
 
 	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 	signatureContainer->create(filename);
-<<<<<<< a7033c7d759014d0d4e4564b187c824a0699b594
 
 	// If encrypted, add whole cryptocontainer to signature container; otherwise content only
 	if(cryptoDoc->state() == EncryptedContainer)
 		signatureContainer->documentModel()->addFile(cryptoDoc->fileName());
 	else
 		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
-=======
-	signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
->>>>>>> Merge
 
 	delete digiDoc;
 	digiDoc = signatureContainer.release();
@@ -634,7 +630,7 @@ void MainWindow::openFiles(const QStringList files)
 	2.1 if UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer
 		- Add file to files to be signed/encrypted
 	2.3 else if SignedContainer
-		- ask if new container should be created with signature container and 
+		- ask if new container should be created with signature container and
 		  files to be opened;
 	2.4 else if EncryptedContainer || DecryptedContainer
 			- ask if should be closed and handle open
@@ -693,7 +689,7 @@ void MainWindow::openFiles(const QStringList files)
 			content.insert(content.begin(), digiDoc->fileName());
 		else
 			create = false;
-		
+
 		page = SignDetails;
 		break;
 	}

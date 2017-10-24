@@ -92,17 +92,17 @@ void InfoStack::update(  const QSmartCardData &t )
 	{
 		if( t.isValid() )
 		{
-			st << "<span style='color: #37a447'>Kehtiv</span> kuni "
+            st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
 			   << DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
 		}
 		else
 		{
-			st << "<span style='color: #e80303;'>Expired</span>";
+            st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
 		}
 	}
 	else
 	{
-		st << "You're using Digital identity card"; // ToDo
+        st << tr("You're using Digital identity card"); // ToDo
 	}
 	ui->valueGivenNames->setText( firstName.join( " " ) );
 	ui->valueSurname->setText( t.data( QSmartCardData::SurName ).toString() );
@@ -129,7 +129,7 @@ void InfoStack::clearData()
 	ui->valueCitizenship->setText( "" ); 
 	ui->valueSerialNumber->setText( "" ); 
 	ui->valueExpiryDate->setText( "" ); 
-	ui->btnPicture->setText( "LAE PILT ALLA" );
+    ui->btnPicture->setText( tr("DOWNLOAD THE PICTURE") );
 	ui->btnPicture->show();	
 }
 
@@ -137,6 +137,6 @@ void InfoStack::showPicture( const QPixmap &pixmap )
 {
 	ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-	ui->btnPicture->setText( "SALVESTA PILT" );
+    ui->btnPicture->setText( tr("SAVE THE PICTURE") );
 	ui->btnPicture->hide();
 }

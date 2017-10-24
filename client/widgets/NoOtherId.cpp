@@ -47,7 +47,7 @@ void NoOtherId::update( const QString &lblName )
 	ui->lblName->setText( lblName );
     QString decoration = "style='color: #006EB5; text-decoration: none;'";
 
-	ui->lblMobileID->setText( "<a href='http://mobiil.id.ee'><span " + decoration + ">Mobiili-ID</span></a>" );
-	ui->lblDigiID->setText( "<a href='https://www.id.ee/?lang=et&id=34178/'><span " + decoration + ">Digi-ID</span></a>" );
-	ui->lblSmartID->setText( "<a href='https://www.smart-id.com/et/'><span " + decoration + ">SmartID</span></a>" );
+    ui->lblMobileID->setText( "<a href='http://mobiil.id.ee'><span " + decoration + ">" + tr("MOBIIL-ID") + "</span></a>" );
+    ui->lblDigiID->setText( "<a href='https://www.id.ee/?lang=et&id=34178/'><span " + decoration + ">" + tr("DIGI-ID") + "</span></a>" );
+    ui->lblSmartID->setText( "<a href='https://www.smart-id.com/et/'><span " + decoration + ">" + tr("SMART-ID") + "</span></a>" );
 }

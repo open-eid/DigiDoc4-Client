@@ -245,7 +245,61 @@ Tüüp: %3</translation>
 </context>
 
 <context>
+    <name>InfoStack</name>
+    <message>
+        <source>DOWNLOAD THE PICTURE</source>
+        <translation>LAE PILT ALLA</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Kodakondsus</translation>
+    </message>
+    <message>
+        <source>Given names</source>
+        <translation>Eesnimed</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Isikukood</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Dokument</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Perekonnanimi</translation>
+    </message>
+
+    <message>
+        <source>SAVE THE PICTURE</source>
+        <translation>SALVESTA PILT</translation>
+    </message>
+    <message>
+        <source>You're using Digital identity card</source>
+        <translation>Kasutate ID-KAARTI</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>Kehtiv</translation>
+    </message>
+    <message>
+        <source>until</source>
+        <translation> kuni</translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation>Aegunud</translation>
+    </message>
+</context>
+
+<context>
     <name>ItemList</name>
+    <message>
+        <source>Search</source>
+        <translation>OTSI</translation>
+    </message>
+
     <message>
         <source>Add more files</source>
         <translation>+ LISA VEEL FAILE</translation>
@@ -257,6 +311,289 @@ Tüüp: %3</translation>
     <message>
         <source>Add all</source>
         <translation>LISA KÕIK</translation>
+    </message>
+</context>
+
+<context>
+    <name>NoCardInfo</name>
+    <message>
+        <source>No card in reader</source>
+        <translation>Ei leitud ühtegi ID-kaarti
+
+Kontrolli, kas ID-kaart on õiget pidi lugejas.
+Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>NoOtherId</name>
+    <message>
+        <source>Other ID</source>
+        <translation>Teised ID-d</translation>
+    </message>
+    <message>
+        <source>You do not have other eIDs.
+Learn more info here:</source>
+        <translation>Teil ei ole teisi eID-sid.
+Rohkem infot leiate siit:</translation>
+    </message>
+    <message>
+        <source>MOBIIL-ID</source>
+        <translation>MOBIIL-ID</translation>
+    </message>
+    <message>
+        <source>DIGI-ID</source>
+        <translation>DIGI-ID</translation>
+    </message>
+    <message>
+        <source>SMART-ID</source>
+        <translation>SMART-ID</translation>
+    </message>
+</context>
+
+<context>
+    <name>OtherData</name>
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee post</translation>
+    </message>
+    <message>
+        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
+        <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>AKTIVEERI SUUNAMINE</translation>
+    </message>
+    <message>
+        <source>For more complete official email tuning, see the portal</source>
+        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
+        <translation>Teie @eesti.ee posti aadressid on suunatud e-postile</translation>
+    </message>
+</context>
+
+<context>
+    <name>SignatureItem</name>
+    <message>
+        <source>Signature</source>
+        <translation>Allkiri</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Ajatempel</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Piirangud</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Testallkiri</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>on tundmatu</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Allkirjastatud</translation>
+    </message>
+</context>
+
+<context>
+    <name>VerifyCert</name>
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Sertifikaat on aegunud!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Sertifikaat%1kehtib%2 kuni %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Sertifikaat aegub %1 päeva pärast</translation>
+    </message>
+    <message>
+        <source>Person identification certificate</source>
+        <translation>Isikutuvastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>UUENDA SERTIFIKAAT</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>TÜHISTA BLOKEERING</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>MUUDA PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>MUUDA PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1Unustasid PIN%2 koodi?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Allkirjastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Vaata sertifikaadi detaile%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN%1 taas kasutada.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 on blokeeritud, kuna PIN%1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN%1 taas kasutada.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK kood</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>PUK kood asub Sinu koodiümbrikus</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>MUUDA PUK</translation>
+    </message>
+    <message>
+        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
+        <translation>%1PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. %2Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. %2Uue PUK koodi saad vaid uue koodiümbrikuga, mida %3taotle PPA-st%4.</translation>
+    </message>
+</context>
+
+
+
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>LISA</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>LISATUD</translation>
+    </message>
+</context>
+
+<context>
+    <name>ContainerPage</name>
+    <message>
+        <source>Container</source>
+        <translation>Konteiner:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>MUUDA</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← KATKESTA</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>EDASTA E-MAILIGA</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>KRÜPTEERI</translation>
+    </message>
+    <message>
+        <source>OPEN CONTAINER LOCATION</source>
+        <translation>AVA KONTAINERI ASUKOHT</translation>
+    </message>
+    <message>
+        <source>SAVE UNSIGNED</source>
+        <translation>SALVESTA ALLKIRJASTAMATA</translation>
+    </message>
+
+
+    <message>
+        <source>SIGN WITH\nMOBILE ID</source>
+        <translation>ALLKIRJASTA\nMOBIILI-ID’GA</translation>
+    </message>
+    <message>
+        <source>SIGN WITH\nID ID CARD</source>
+        <translation>ALLKIRJASTA\nID-KAARTIGA</translation>
+    </message>
+    <message>
+        <source>Container's time stamps</source>
+        <translation>Konteineri ajatemplid</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB: Vigane allkiri</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Staatus teadmata</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Test allkiri</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Allkiri on hoiatusega</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>← ALGUSESSE</translation>
+    </message>
+    <message>
+        <source>Container's signatures are missing</source>
+        <translation>Kontaineri allkirjad puuduvad</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Kontaineri allkirjad</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Adressaadid</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Krüpteeritud failid</translation>
+    </message>
+    <message>
+        <source>DECRYPT WITH\nID-CARD</source>
+        <translation>DEKRÜPTEERI\nID-KAARDIGA</translation>
+    </message>
+    <message>
+        <source>Dencrypted files</source>
+        <translation>Dekrüpteeritud failid</translation>
     </message>
 </context>
 
@@ -499,10 +836,6 @@ Tüüp: %3</translation>
         <source>NB! Test signature</source>
         <translation>NB! Test allkiri</translation>
     </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB: Vigane allkiri</translation>
-    </message>
     <message numerus="yes">
         <source>Signature(s)</source>
         <translation>
@@ -655,14 +988,6 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
     <message>
         <source>Personal code</source>
         <translation>Isikukood</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Allkiri on hoiatusega</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Staatus teadmata</translation>
     </message>
     <message>
         <source>Remember me</source>

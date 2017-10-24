@@ -246,7 +246,62 @@ Media type: %3</source>
 </context>
 
 <context>
+    <name>InfoStack</name>
+    <message>
+        <source>DOWNLOAD THE PICTURE</source>
+        <translation>ЗАГРУЗИТЬ ФОТО</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>гражданство</translation>
+    </message>
+    <message>
+        <source>Given names</source>
+        <translation>имена</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Личный код</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Документ</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Фамилия</translation>
+    </message>
+
+    <message>
+        <source>SAVE THE PICTURE</source>
+        <translation>СОХРАНИТЬ ФОТО</translation>
+    </message>
+    <message>
+        <source>You're using Digital identity card</source>
+        <translation>Вы используете ID карту</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>действительный</translation>
+    </message>
+    <message>
+        <source>until</source>
+        <translation> до</translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation>Истекший</translation>
+    </message>
+</context>
+
+
+<context>
     <name>ItemList</name>
+    <message>
+        <source>Search</source>
+        <translation>НАЙТИ</translation>
+    </message>
+
     <message>
         <source>Add more files</source>
         <translation>+ ДОБАВИТЬ ФАЙЛОВ</translation>
@@ -259,12 +314,289 @@ Media type: %3</source>
         <source>Add all</source>
         <translation>ДОБАВИТЬ ВСЕ</translation>
     </message>
+</context>
 
+
+<context>
+    <name>NoCardInfo</name>
     <message>
-        <source>Add all</source>
-        <translation>ДОБАВИТЬ ВСЕ</translation>
+        <source>No card in reader</source>
+        <translation>Не найдена ID-карта
+
+Проверьте, правильно ли вставлена ID-карта в считыватель.
+У новых ID-карт чип находится на обратной стороне карты.</translation>
+    </message>
+</context>
+
+<context>
+    <name>NoOtherId</name>
+    <message>
+        <source>Other ID</source>
+        <translation>другое ID</translation>
+    </message>
+    <message>
+        <source>You do not have other eIDs.
+Learn more info here:</source>
+        <translation>У вас нет других eID.
+Подробнее читайте здесь:</translation>
+    </message>
+    <message>
+        <source>MOBIIL-ID</source>
+        <translation>MOBIIL-ID</translation>
+    </message>
+    <message>
+        <source>DIGI-ID</source>
+        <translation>DIGI-ID</translation>
+    </message>
+    <message>
+        <source>SMART-ID</source>
+        <translation>SMART-ID</translation>
+    </message>
+</context>
+
+<context>
+    <name>OtherData</name>
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee почта</translation>
+    </message>
+    <message>
+        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <translation>ПРОВЕРИТЬ состояние @EESTI.EE E-почта</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
+        <translation>Не найдено официальных перенаправлений электронной почты. Чтобы отправить электронное письмо на адрес @ eesti.ee, введите ваш адрес электронной почты:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>АКТИВИРОВАТЬ ПЕРЕДВИЖЕНИЕ</translation>
+    </message>
+    <message>
+        <source>For more complete official email tuning, see the portal</source>
+        <translation>Для более полной официальной настройки электронной почты см. Портал</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
+        <translation>Ваши почтовые адреса @ eesti.ee адресованы электронной почте</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SignatureItem</name>
+    <message>
+        <source>Signature</source>
+        <translation>Подпись</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Отметка</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Предупреждения</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>ограничения</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Тестовая подпись</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>действует</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>не действует</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>неизвестно</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Подписано</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>VerifyCert</name>
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Срок действия сертификата истек!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Сертификат%1действителен%2 до %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Срок действия сертификата истекает через %1 день</translation>
+    </message>
+    <message>
+        <source>Person identification certificate</source>
+        <translation>Сертификат свидетельство личности</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>ОБНОВЛЕНИЕ СЕРТИФИКАТА</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>ОТМЕНА БЛОКИРОВАНИА</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>ИЗМЕНЕНИЕ PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>ИЗМЕНЕНИЕ PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1забыл PIN%2?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Сертификат подписи</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Проверьте сведения о сертификате%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Обновить сертификат для повторного использования PIN%1.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 заблокирован, потому что код PIN%1 был введен неверно 3 раза. Разблокируйте его для повторного использования PIN%1.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK код</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>Код PUK находится в конверте</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>ИЗМЕНЕНИЕ PUK</translation>
+    </message>
+    <message>
+        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
+        <translation>%1PUK заблокирован, потому что PUK введен неверно 3 раза. Невозможно отключить сам PUK. %2 До тех пор, пока код PUK заблокирован, можно использовать все параметры eID, кроме PUK. %2 Вы можете использовать новый PUK с новым конвертом кода, который вы можете использовать%3 из PPA%4.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>ДОБАВИТЬ</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>добавленной</translation>
+    </message>
+</context>
+
+<context>
+    <name>ContainerPage</name>
+    <message>
+        <source>Container</source>
+        <translation>Kонтейнер:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>ИЗМЕНЕНИЕ</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>ОТПРАВИТЬ С E-MAIL</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>зашифрованная</translation>
+    </message>
+    <message>
+        <source>OPEN CONTAINER LOCATION</source>
+        <translation>РАСПОЛОЖЕНИЕ ОТКРЫТОГО КОНТЕЙНЕРА</translation>
+    </message>
+    <message>
+        <source>SAVE UNSIGNED</source>
+        <translation>СОХРАНИТЬ НЕзашифрованном</translation>
     </message>
 
+
+    <message>
+        <source>SIGN WITH\nMOBILE ID</source>
+        <translation>ПОДПИСЬ С\nМОБИЛЬНЫМ ИДЕНТОМ</translation>
+    </message>
+    <message>
+        <source>SIGN WITH\nID ID CARD</source>
+        <translation>ПОДПИСЬ С\ID КАРТОЙ</translation>
+    </message>
+    <message>
+        <source>Container's time stamps</source>
+        <translation>Временные марки контейнерa</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB: Недопустимая подпись</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Статус неизвестен</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Тестовая подпись</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Подпись содержит предупреждения</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>← ТОП</translation>
+    </message>
+    <message>
+        <source>Container's signatures are missing</source>
+        <translation>Подписи подписчиков контейнера отсутствуют</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Подписи контейнера</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Получатели</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Зашифрованные файлы</translation>
+    </message>
+    <message>
+        <source>DECRYPT WITH\nID-CARD</source>
+        <translation>шифровать С\ID-КАРТОЙ</translation>
+    </message>
+    <message>
+        <source>Dencrypted files</source>
+        <translation>Зашифрованные файлы</translation>
+    </message>
 </context>
 
 

@@ -384,7 +384,7 @@ QToolButton:disabled {
 }</string>
      </property>
      <property name="text">
-      <string>LISATUD</string>
+      <string>Added</string>
      </property>
     </widget>
    </item>
@@ -425,7 +425,7 @@ QToolButton:disabled {
 }</string>
      </property>
      <property name="text">
-      <string>LISA</string>
+      <string>Add</string>
      </property>
     </widget>
    </item>

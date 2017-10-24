@@ -131,8 +131,8 @@
       <string notr="true">color: #353739; line-height: 16px; border: none;</string>
      </property>
      <property name="text">
-      <string>Teil ei ole teisi eID-sid.
-Rohkem infot leiate siit:</string>
+      <string>You do not have other eIDs.
+Learn more info here:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
