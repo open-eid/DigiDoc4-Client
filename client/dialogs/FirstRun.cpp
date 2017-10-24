@@ -21,6 +21,7 @@
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
 #include "Styles.h"
+#include "common/Settings.h"
 
 #include <QDebug>
 #include <QKeyEvent>
@@ -62,6 +63,19 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->lang->addItem("Eesti keel");
 	ui->lang->addItem("English");
 	ui->lang->addItem("Русский язык");
+
+	if(Settings::language() == "en")
+	{
+		ui->lang->setCurrentIndex(1);
+	}
+	else if(Settings::language() == "ru")
+	{
+		ui->lang->setCurrentIndex(2);
+	}
+	else
+	{
+		ui->lang->setCurrentIndex(0);
+	}
 
 	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
 		[this](int index)

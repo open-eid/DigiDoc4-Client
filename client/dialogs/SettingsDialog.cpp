@@ -228,9 +228,9 @@ void SettingsDialog::initFunctionality()
 		ui->rdGeneralEstonian->setChecked(true);
 	}
 
-	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "et" ); qApp->loadTranslation( "et" ); } } );
-	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "en" ); qApp->loadTranslation( "en" ); } } );
-	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings().setValue( "Main/Language", "ru" ); qApp->loadTranslation( "ru" ); } } );
+	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { emit langChanged("et"); ui->retranslateUi(this); } } );
+	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { emit langChanged("en"); ui->retranslateUi(this); } } );
+	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { emit langChanged("ru"); ui->retranslateUi(this); } } );
 
 	updateCert();
 #ifdef Q_OS_MAC

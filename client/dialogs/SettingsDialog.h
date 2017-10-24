@@ -41,6 +41,9 @@ public:
 private Q_SLOTS:
 	void save();
 
+signals:
+	void langChanged(const QString& lang);
+
 private:
 	void initUI();
 	void initFunctionality();

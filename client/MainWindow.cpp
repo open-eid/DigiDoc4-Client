@@ -207,6 +207,14 @@ void MainWindow::buttonClicked( int button )
 	case HeadSettings:
 	{
 		SettingsDialog dlg(this);
+
+		connect(&dlg, &SettingsDialog::langChanged, this,
+				[this](const QString& lang )
+				{
+					qApp->loadTranslation( lang );
+					ui->retranslateUi(this);
+				}
+		);
 		dlg.exec();
 		break;
 	}
@@ -1031,7 +1039,7 @@ void MainWindow::browseOnDisk( const QString &fileName )
 
 void MainWindow::showUpdateCertWarning()
 {
-	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
+	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
 		"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
 }
 
