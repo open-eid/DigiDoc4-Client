@@ -814,12 +814,12 @@ void Application::showClient( const QStringList &params )
 
 void Application::showTSLWarning(QEventLoop *e)
 {
-	e->exit( QMessageBox::information(
-		qApp->activeWindow(), Application::tr("DigiDoc4 Client"), Application::tr(
+	showWarning( tr(
 		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 		"Please check your internet connection and make sure you have the latest ID-software version "
 		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
-		"<a href=\"http://www.id.ee/?id=37012\">Additional information</a>") ) );
+		"<a href=\"http://www.id.ee/?id=37012\">Additional information</a>") );
+	e->exit();
 }
 
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )

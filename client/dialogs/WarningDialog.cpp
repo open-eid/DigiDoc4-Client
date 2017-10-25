@@ -37,7 +37,8 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	ui->text->setFont(regular);
 	ui->text->setText(text);
-	ui->text->setTextInteractionFlags(Qt::TextSelectableByMouse);
+	ui->text->setTextInteractionFlags(ui->text->textInteractionFlags() | Qt::TextSelectableByMouse);
+
 	if(details.isNull())
 	{
 		ui->details->hide();
