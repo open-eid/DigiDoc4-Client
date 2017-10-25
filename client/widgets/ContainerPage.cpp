@@ -376,14 +376,16 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemSignature, "Konteineri allkirjad" );
-		hideButtons( { ui->cancel, ui->save } );
-		showButtons( { ui->convert, ui->navigateToContainer, ui->email } );
+		ui->cancel->setText("← ALGUSESSE");
+		hideButtons( { ui->save } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( EncryptContainer, "KRÜPTEERI" );
+		ui->cancel->setText("← KATKESTA");
 		ui->convert->setText("ALLKIRJASTA");
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
@@ -394,9 +396,10 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Krüpteeritud failid");
 		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
+		ui->cancel->setText("← ALGUSESSE");
 		ui->convert->setText("ALLKIRJASTA");
-		hideButtons( { ui->cancel, ui->save } );
-		showButtons( { ui->convert, ui->navigateToContainer, ui->email } );
+		hideButtons( { ui->save } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -404,8 +407,9 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
 		showRightPane( ItemAddress, "Adressaadid" );
 		hideMainAction();
-		hideButtons( { ui->convert, ui->cancel, ui->save } );
-		showButtons( { ui->navigateToContainer, ui->email } );
+		ui->cancel->setText("← ALGUSESSE");
+		hideButtons( { ui->convert, ui->save } );
+		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
