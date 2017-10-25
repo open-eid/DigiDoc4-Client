@@ -132,6 +132,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
+	connect( ui->signContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles );
 	connect( ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
 	connect( ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress );
@@ -160,7 +161,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::pageSelected( PageIcon *const page )
 {
-	navigateToPage( page->getType() );
+	// Stay in current view if same page icon clicked
+	auto current = ui->startScreen->currentIndex();
+	bool navigate = false;
+	switch(current)
+	{
+	case SignIntro:
+	case SignDetails:
+		navigate = (page->getType() != SignIntro);
+		break;
+	case CryptoIntro:
+	case CryptoDetails:
+		navigate = (page->getType() != CryptoIntro);
+		break;
+	default:
+		navigate = (page->getType() != current);
+		break;
+	}
+
+	if(navigate)
+		navigateToPage(page->getType());
 }
 
 void MainWindow::buttonClicked( int button )
@@ -210,7 +230,7 @@ void MainWindow::clearOverlay()
 
 ContainerState MainWindow::currentState()
 {
-	auto current = ui->startScreen->currentIndex();	
+	auto current = ui->startScreen->currentIndex();
 	bool cryptoPage = (current == CryptoIntro || current == CryptoDetails);
 
 	if(cryptoPage && cryptoDoc)
@@ -412,6 +432,31 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 		signMobile(idCode, phoneNumber);
 		break;
 	case ContainerCancel:
+		if(digiDoc && digiDoc->isModified())
+		{
+			QString warning, cancelTxt, saveTxt;
+			if(digiDoc->state() == UnsignedContainer)
+			{
+				warning = "Oled lisanud konteinerisse faile, kuid pole neid allkirjastanud. "
+						  "Kas jätan allkirjastamata konteineri alles või eemaldan selle?";
+				cancelTxt = "EEMALDA";
+				saveTxt = "JÄTA ALLES";
+			}
+			else
+			{
+				warning = "Oled avatud konteinerit muutnud, kuid ei ole muudatusi salvestanud. "
+						  "Kas salvestan muudatused või sulgen salvestamata?";
+				cancelTxt = "ÄRA SALVESTA";
+				saveTxt = "SALVESTA";
+			}
+
+			WarningDialog dlg(warning, this);
+			dlg.setCancelText(cancelTxt);
+			dlg.addButton(saveTxt, ContainerSave);
+			dlg.exec();
+			if(dlg.result() == ContainerSave)
+				save();
+		}
 		navigateToPage(Pages::SignIntro);
 		break;
 	case ContainerSave:
@@ -566,11 +611,13 @@ void MainWindow::openFiles(const QStringList files)
 	2.1 if UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer
 		- Add file to files to be signed/encrypted
 	2.3 else if SignedContainer
-		- ask if should be added or handle open
+		- ask if new container should be created with signature container and 
+		  files to be opened;
 	2.4 else if EncryptedContainer || DecryptedContainer
 			- ask if should be closed and handle open 
 */
 	auto current = ui->startScreen->currentIndex();
+	QStringList content(files);
 	ContainerState state = currentState();
 	Pages page = SignDetails;
 	bool create = true;
@@ -578,9 +625,9 @@ void MainWindow::openFiles(const QStringList files)
 	{
 	case Uninitialized:
 	// Case 1.
-		if(files.size() == 1)
+		if(content.size() == 1)
 		{
-			auto fileType = FileUtil::detect(files[0]);
+			auto fileType = FileUtil::detect(content[0]);
 			if(fileType == CryptoDocument)
 			{
 				page = CryptoDetails;
@@ -608,7 +655,7 @@ void MainWindow::openFiles(const QStringList files)
 		page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
 		DocumentModel* model = (current == CryptoDetails) ?
 			cryptoDoc->documentModel() : digiDoc->documentModel();
-		for(auto file: files)
+		for(auto file: content)
 			model->addFile(file);
 		create = false;
 		break;
@@ -619,14 +666,17 @@ void MainWindow::openFiles(const QStringList files)
 		create = false;
 		break;
 	default:
-		// TODO: new container???
+		if(wrapContainer())
+			content.insert(content.begin(), digiDoc->fileName());
+		else
+			create = false;
+		
 		page = SignDetails;
-		create = false;
 		break;
 	}
 
 	if(create || current != page)
-		navigateToPage( page, files, create );
+		navigateToPage(page, content, create);
 }
 
 void MainWindow::openContainer()
@@ -964,4 +1014,17 @@ void MainWindow::showUpdateCertWarning()
 {
 	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
 		"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
+}
+
+bool MainWindow::wrapContainer()
+{
+	WarningDialog dlg("Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, "
+		"kuhu lisatakse kontrollitav konteiner ja Sinu valitud failid.", this);
+	dlg.setCancelText("KATKESTA");
+	dlg.addButton("EDASI", ContainerSave);
+	dlg.exec();
+	if(dlg.result() == ContainerSave)
+		return true;
+
+	return false;
 }

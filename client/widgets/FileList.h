@@ -39,6 +39,9 @@ public:
 	void addFile(const QString& file);
 	void setModel(DocumentModel *documentModel);
 
+signals:
+	void addFiles(const QStringList &files);
+
 protected:
 	void remove(Item *item) override;
 

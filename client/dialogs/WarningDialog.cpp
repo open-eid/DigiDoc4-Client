@@ -25,6 +25,7 @@
 WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
 : QDialog(parent)
 , ui(new Ui::WarningDialog)
+, buttonOffset(2)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
@@ -67,4 +68,24 @@ WarningDialog::WarningDialog(const QString &text, QWidget *parent)
 WarningDialog::~WarningDialog()
 {
 	delete ui;
+}
+
+void WarningDialog::setCancelText(const QString& label)
+{
+	ui->cancel->setText(label);
+}
+
+void WarningDialog::addButton(const QString& label, int ret)
+{
+	auto layout = qobject_cast<QBoxLayout*>(ui->buttonBar->layout());
+	layout->insertSpacing(buttonOffset++, 35);
+
+	QPushButton *button = new QPushButton(label, this);
+	button->setMinimumSize(120, 34);
+	button->setStyleSheet("QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\nQPushButton:pressed {background-color: #41B6E6;} "
+		"QPushButton:hover:!pressed {background-color: #008DCF;}\nQPushButton:disabled {background-color: #BEDBED;}");
+	button->setCursor(Qt::PointingHandCursor);
+	button->setFont(Styles::font(Styles::Condensed, 14));
+	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
+	layout->insertWidget(buttonOffset++, button);
 }

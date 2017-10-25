@@ -478,7 +478,7 @@ text-decoration: none solid rgb(0, 110, 181);
 border: none;</string>
         </property>
         <property name="text">
-         <string>AVA KONTAINERI ASUKOHT</string>
+         <string>AVA KONTEINERI ASUKOHT</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

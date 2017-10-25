@@ -102,8 +102,7 @@ void FileList::selectFile()
 	if(f.isFile()) dir = f.dir().path();
 
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Add files"), dir);
-	for(auto file: files)
-		documentModel->addFile(file);
+	emit addFiles(files);
 }
 
 void FileList::showDownload()

@@ -187,7 +187,7 @@ void ItemList::removeItem(int row)
 void ItemList::stateChange( ContainerState state )
 {
 	this->state = state;
-	ui->add->setVisible(state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer));
+	ui->add->setVisible(state & (SignatureContainers | UnencryptedContainer));
 
 	for(auto item: items)
 	{

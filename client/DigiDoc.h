@@ -172,7 +172,7 @@ private:
 
 	std::unique_ptr<digidoc::Container> b;
 	std::unique_ptr<digidoc::Container> parentContainer;
-	std::unique_ptr<DocumentModel> 		m_documentModel;
+	std::unique_ptr<DocumentModel>		m_documentModel;
 
 	ria::qdigidoc4::ContainerState containerState;
 	bool			modified = false;

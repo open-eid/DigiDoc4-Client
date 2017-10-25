@@ -102,7 +102,7 @@ void ContainerPage::init()
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
 	ui->cancel->init( LabelButton::BoxedMojo, "← KATKESTA", Actions::ContainerCancel );
 	ui->encrypt->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
-	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
+	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTEINERI ASUKOHT", Actions::ContainerNavigate );
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
@@ -114,6 +114,7 @@ void ContainerPage::init()
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
@@ -368,13 +369,13 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->cancel->setText("← ALGUSESSE");
 		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemSignature, "Kontaineri allkirjad puuduvad" );
+		showRightPane( ItemSignature, "Konteineri allkirjad puuduvad" );
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemSignature, "Kontaineri allkirjad" );
+		showRightPane( ItemSignature, "Konteineri allkirjad" );
 		hideButtons( { ui->cancel, ui->save } );
 		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
 		break;
