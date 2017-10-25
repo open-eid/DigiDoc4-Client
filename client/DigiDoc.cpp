@@ -367,6 +367,7 @@ bool SDocumentModel::removeRows(int row, int count)
 		for(int i = row + count - 1; i >= row; --i)
 		{
 			doc->b->removeDataFile(i);
+			doc->modified = true;
 			emit removed(i);
 		}
 		return true;

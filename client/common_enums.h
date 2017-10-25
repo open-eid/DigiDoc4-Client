@@ -43,6 +43,7 @@ enum Actions {
     CardPhoto,
 
     ContainerCancel,
+    ContainerConvert,
     ContainerEncrypt,
     ContainerEmail,
     ContainerLocation,

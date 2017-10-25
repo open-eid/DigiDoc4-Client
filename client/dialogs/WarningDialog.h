@@ -35,7 +35,11 @@ public:
 	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
 	~WarningDialog();
 
+	void addButton(const QString& label, int ret);
+	void setCancelText(const QString& label);
+
 private:
 	Ui::WarningDialog *ui;
+	int buttonOffset;
 };
 

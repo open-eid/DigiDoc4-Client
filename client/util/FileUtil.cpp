@@ -49,12 +49,9 @@ FileType FileUtil::detect( const QString &filename )
 	return Other;
 }
 
-QString FileUtil::createFile(const QString &file, const QString &extension, const QString &type)
+QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, const QString &type)
 {
-	const QFileInfo f( file );
-	if( !f.isFile() ) return QString();
-
-	QString fileName = f.dir().path() + QDir::separator() + f.completeBaseName() + extension;
+	QString fileName = fileInfo.dir().path() + QDir::separator() + fileInfo.completeBaseName() + extension;
 	if(QFile::exists(fileName))
 	{
 		QString capitalized = type[0].toUpper() + type.mid(1);
@@ -67,3 +64,10 @@ QString FileUtil::createFile(const QString &file, const QString &extension, cons
 	return fileName;
 }
 
+QString FileUtil::createFile(const QString &file, const QString &extension, const QString &type)
+{
+	const QFileInfo f( file );
+	if( !f.isFile() ) return QString();
+
+	return create(f, extension, type);
+}

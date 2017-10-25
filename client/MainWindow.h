@@ -152,6 +152,7 @@ private:
 	void containerToEmail( const QString &fileName );
 	void browseOnDisk( const QString &fileName );
 	void showUpdateCertWarning();
+	bool wrapContainer();
 	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;

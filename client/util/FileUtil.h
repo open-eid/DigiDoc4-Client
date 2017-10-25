@@ -22,9 +22,12 @@
 #include "common_enums.h"
 #include <QString>
 
+class QFileInfo;
+
 class FileUtil
 {
 public:
-	static ria::qdigidoc4::FileType detect( const QString &filename );
+	static QString create(const QFileInfo &fileInfo, const QString &extension, const QString &type);
 	static QString createFile(const QString &file, const QString &extension, const QString &type);
+	static ria::qdigidoc4::FileType detect(const QString &filename);
 };

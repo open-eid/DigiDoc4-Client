@@ -101,8 +101,8 @@ void ContainerPage::init()
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
 	ui->cancel->init( LabelButton::BoxedMojo, "← KATKESTA", Actions::ContainerCancel );
-	ui->encrypt->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
-	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTAINERI ASUKOHT", Actions::ContainerNavigate );
+	ui->convert->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerConvert );
+	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTEINERI ASUKOHT", Actions::ContainerNavigate );
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
 
@@ -114,13 +114,14 @@ void ContainerPage::init()
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->encrypt, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
 }
 
@@ -359,32 +360,35 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName);
 		showSigningButton();
 		ui->cancel->setText("← KATKESTA");
-		showButtons( { ui->cancel, ui->save } );
-		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->save } );
+		hideButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		ui->cancel->setText("← ALGUSESSE");
-		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemSignature, "Kontaineri allkirjad puuduvad" );
+		showRightPane( ItemSignature, "Konteineri allkirjad puuduvad" );
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemSignature, "Kontaineri allkirjad" );
-		hideButtons( { ui->cancel, ui->save } );
-		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
+		showRightPane( ItemSignature, "Konteineri allkirjad" );
+		ui->cancel->setText("← ALGUSESSE");
+		hideButtons( { ui->save } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( EncryptContainer, "KRÜPTEERI" );
-		showButtons( { ui->cancel } );
-		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
+		ui->cancel->setText("← KATKESTA");
+		ui->convert->setText("ALLKIRJASTA");
+		showButtons( { ui->cancel, ui->convert } );
+		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	case EncryptedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -392,8 +396,10 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Krüpteeritud failid");
 		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
-		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
-		showButtons( { ui->navigateToContainer, ui->email } );
+		ui->cancel->setText("← ALGUSESSE");
+		ui->convert->setText("ALLKIRJASTA");
+		hideButtons( { ui->save } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -401,8 +407,9 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
 		showRightPane( ItemAddress, "Adressaadid" );
 		hideMainAction();
-		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
-		showButtons( { ui->navigateToContainer, ui->email } );
+		ui->cancel->setText("← ALGUSESSE");
+		hideButtons( { ui->convert, ui->save } );
+		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
