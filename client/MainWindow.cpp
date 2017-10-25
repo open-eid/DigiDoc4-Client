@@ -38,6 +38,9 @@
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "util/FileUtil.h"
+#ifdef Q_OS_WIN
+#include "CertStore.h"
+#endif
 
 #include <common/DateTime.h>
 #include <common/Settings.h>
@@ -169,8 +172,6 @@ void MainWindow::buttonClicked( int button )
 	{
 	case HeadHelp:
 	{
-		//QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
-		//showWarning( "Not implemented yet" );
 		FirstRun dlg(this);
 		dlg.exec();
 		break;
@@ -755,6 +756,8 @@ void MainWindow::showCardStatus()
 		ui->myEid->updateCertNeededIcon( ui->warning->property("updateCertificateEnabled").toBool() );
 		if( ui->warning->property("updateCertificateEnabled").toBool() )
 			showUpdateCertWarning();
+
+		showIdCardAlerts( t );
 	}
 	else
 	{
@@ -861,7 +864,6 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	ui->infoStack->clearPicture();
 	ui->infoStack->hide();
 	ui->accordion->hide();
-	ui->accordion->updateOtherData( false );    // E-mail
 	ui->accordion->clearOtherEID();
 	ui->myEid->invalidCertIcon( false );
 	ui->myEid->pinIsBlockedIcon( false );
@@ -964,4 +966,39 @@ void MainWindow::showUpdateCertWarning()
 {
 	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
 		"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
+}
+
+void MainWindow::showIdCardAlerts(const QSmartCardData& t)
+{
+	if(smartcard->property( "lastcard" ).toString() != t.card() &&
+		t.version() == QSmartCardData::VER_3_4 &&
+		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
+	{
+		qApp->showWarning( tr(
+			"Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until "
+			"its expiring date and it can be used to login to e-services and give digital signatures. If there are "
+			"problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or "
+			"visit Police and Border Guard Board service point.<br /><br />"
+			"<a href=\"http://id.ee/?id=30519&read=38011\">More info</a>") );
+	}
+	smartcard->setProperty("lastcard", t.card());
+
+#ifdef Q_OS_WIN
+	CertStore store;
+	if( !Settings().value( "Utility/showRegCert", false ).toBool() ||
+		(!store.find( t.authCert() ) || !store.find( t.signCert() )) &&
+		QMessageBox::question( this, tr( "Certificate store" ),
+			tr( "Certificate is not registered in the certificate store. Register now?" ),
+			QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
+	{
+		QString personalCode = t.authCert().subjectInfo( "serialNumber" );
+		for( const SslCertificate &c: store.list())
+		{
+			if( c.subjectInfo( "serialNumber" ) == personalCode )
+				store.remove( c );
+		}
+		store.add( t.authCert(), t.card() );
+		store.add( t.signCert(), t.card() );
+	}
+#endif
 }

@@ -21,6 +21,7 @@
 #include "ui_Accordion.h"
 
 #include "XmlReader.h"
+#include <common/SslCertificate.h>
 
 Q_DECLARE_METATYPE(MobileStatus)
 
@@ -63,7 +64,6 @@ void Accordion::init()
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
 
-	ui->contentOtherData->update( false );
 	clearOtherEID();
 	
 	// top | right | bottom | left
@@ -98,11 +98,22 @@ void Accordion::setFocusToEmail()
 
 void Accordion::updateInfo( const QSmartCard *smartCard )
 {
-	ui->authBox->update( QSmartCardData::Pin1Type, smartCard );
-	ui->signBox->update( QSmartCardData::Pin2Type, smartCard );
+	QSmartCardData t = smartCard->data();
+
+	ui->authBox->setVisible( !t.authCert().isNull() );
+	if ( !t.authCert().isNull() )
+		ui->authBox->update( QSmartCardData::Pin1Type, smartCard );
+
+	ui->signBox->setVisible( !t.signCert().isNull() );
+	if ( !t.signCert().isNull() )
+		ui->signBox->update( QSmartCardData::Pin2Type, smartCard );
+
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
 
 	ui->otherID->update( "Teised eID-d");
+
+	ui->titleOtherData->setVisible( !( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) ) );
+//	ui->titleOtherData->setDisabled( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) );
 }
 
 void Accordion::changePin1( bool isForgotPin, bool isBlockedPin )
@@ -128,6 +139,7 @@ void Accordion::certDetails( const QString &link )
 void Accordion::clearOtherEID()
 {
 	// Set to default Certificate Info page
+	updateOtherData( false );    // E-mail
 	closeOtherSection( ui->titleVerifyCert );
     ui->titleVerifyCert->openSection();
 

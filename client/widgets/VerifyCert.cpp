@@ -78,6 +78,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
 	this->isValidCert = c.isValid();
 	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false;
+	ui->changePIN->show();
 
 	if( !isValidCert )
 	{
@@ -97,7 +98,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 		case QSmartCardData::Pin1Type:
 			name = "Isikutuvastamise sertifikaat";
 			changeBtn = ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN1";
-			forgotPinText = "<a href='#pin1-forgotten'><span style='color:#75787B;'>Unustasid PIN1 koodi?</span></a>";
+			forgotPinText = ( !t.isSecurePinpad() ) ? "<a href='#pin1-forgotten'><span style='color:#75787B;'>Unustasid PIN1 koodi?</span></a>" : "";
 			detailsText = "<a href='#pin1-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>";
 			error = ( !isValidCert ) ? "PIN1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN1 taas kasutada." :
 					( isBlockedPin ) ? "PIN1 on blokeeritud, kuna PIN1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN1 taas kasutada." :
@@ -106,7 +107,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 		case QSmartCardData::Pin2Type:
 			name = "Allkirjastamise sertifikaat";
 			changeBtn = ( isBlockedPin ) ? "TÜHISTA BLOKEERING" : "MUUDA PIN2";
-			forgotPinText = "<a href='#pin2-forgotten'><span style='color:#75787B;'>Unustasid PIN2 koodi?</span></a>";
+			forgotPinText = ( !t.isSecurePinpad() ) ? "<a href='#pin2-forgotten'><span style='color:#75787B;'>Unustasid PIN2 koodi?</span></a>" : "";
 			detailsText = "<a href='#pin2-cert'><span style='color:#75787B;'>Vaata sertifikaadi detaile</span></a>";
 			error = ( !isValidCert ) ? "PIN2 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN2 taas kasutada." :
 					( isBlockedPin ) ? "PIN2 on blokeeritud, kuna PIN2 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN2 taas kasutada." : 
@@ -121,6 +122,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 				"<br><br>Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid."
 				"<br><br>Uue PUK koodi saad vaid uue koodiümbrikuga, mida <u>taotle PPA-st</u></span>."
 				: "";
+			ui->changePIN->setDisabled( t.version() == QSmartCardData::VER_USABLEUPDATER );
 			break;
 		default:
 			break;
@@ -202,7 +204,6 @@ void VerifyCert::update(
 			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"13\">" : "" ) );
 	}
 	ui->name->setTextFormat( Qt::RichText );
-	ui->changePIN->show();
 
 	ui->forgotPinLink->setText( forgotPinText );
 	ui->forgotPinLink->setVisible( !forgotPinText.isEmpty() );
