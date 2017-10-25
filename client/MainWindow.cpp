@@ -459,6 +459,10 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 		}
 		navigateToPage(Pages::SignIntro);
 		break;
+	case ContainerConvert:
+		if(digiDoc)
+			convertToCDoc();
+		break;
 	case ContainerSave:
 		save();
 		ui->signContainerPage->transition(digiDoc);
@@ -475,10 +479,6 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 		if(digiDoc)
 			browseOnDisk(digiDoc->fileName());
 		break;
-	case ContainerEncrypt:
-		if(digiDoc)
-			convertToCDoc();
-		break;
 	default:
 		break;
 	}
@@ -487,22 +487,28 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 void MainWindow::convertToBDoc()
 {
 	QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
-	QString filename = FileUtil::createFile(cryptoDoc->fileName(), QString(".%1").arg(ext), tr("signature container"));
+	QString filename = FileUtil::create(QFileInfo(cryptoDoc->fileName()), QString(".%1").arg(ext), tr("signature container"));
 	if(filename.isNull())
 		return;
 
 	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 	signatureContainer->create(filename);
-	signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
-	
+
+	// If encrypted, add whole cryptocontainer to signature container; otherwise content only
+	if(cryptoDoc->state() == EncryptedContainer)
+		signatureContainer->documentModel()->addFile(cryptoDoc->fileName());
+	else
+		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
+
 	delete digiDoc;
 	digiDoc = signatureContainer.release();
 	connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 	delete cryptoDoc;
 	cryptoDoc = nullptr;
 
+	ui->signContainerPage->transition(digiDoc);
 	selectPageIcon(ui->signature);
-	ui->startScreen->setCurrentIndex(CryptoDetails);
+	ui->startScreen->setCurrentIndex(SignDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 	notification->start( tr("Konverteeritud allkirjadokumendiks!"), 750, 1500, 600 );
@@ -510,7 +516,7 @@ void MainWindow::convertToBDoc()
 
 void MainWindow::convertToCDoc()
 {
-	QString filename = FileUtil::createFile(digiDoc->fileName(), ".cdoc", tr("crypto container"));
+	QString filename = FileUtil::create(QFileInfo(digiDoc->fileName()), ".cdoc", tr("crypto container"));
 	if(filename.isNull())
 		return;
 
@@ -561,6 +567,10 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	{
 	case ContainerCancel:
 		navigateToPage(Pages::CryptoIntro);
+		break;
+	case ContainerConvert:
+		if(cryptoDoc)
+			convertToBDoc();
 		break;
 	case DecryptContainer:
 		if(decrypt())

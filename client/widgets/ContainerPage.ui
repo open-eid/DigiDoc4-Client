@@ -410,7 +410,7 @@ text-decoration: none solid rgb(197, 62, 62);</string>
        </spacer>
       </item>
       <item>
-       <widget class="LabelButton" name="encrypt">
+       <widget class="LabelButton" name="convert">
         <property name="minimumSize">
          <size>
           <width>90</width>

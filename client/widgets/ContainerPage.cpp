@@ -101,7 +101,7 @@ void ContainerPage::init()
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
 	ui->cancel->init( LabelButton::BoxedMojo, "← KATKESTA", Actions::ContainerCancel );
-	ui->encrypt->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerEncrypt );
+	ui->convert->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerConvert );
 	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTEINERI ASUKOHT", Actions::ContainerNavigate );
 	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
 	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
@@ -121,7 +121,7 @@ void ContainerPage::init()
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->encrypt, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
 }
 
@@ -360,14 +360,14 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName);
 		showSigningButton();
 		ui->cancel->setText("← KATKESTA");
-		showButtons( { ui->cancel, ui->save } );
-		hideButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->save } );
+		hideButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		ui->cancel->setText("← ALGUSESSE");
-		showButtons( { ui->cancel, ui->encrypt, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
 		showRightPane( ItemSignature, "Konteineri allkirjad puuduvad" );
 		break;
@@ -377,15 +377,16 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName);
 		showRightPane( ItemSignature, "Konteineri allkirjad" );
 		hideButtons( { ui->cancel, ui->save } );
-		showButtons( { ui->encrypt, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( EncryptContainer, "KRÜPTEERI" );
-		showButtons( { ui->cancel } );
-		hideButtons( { ui->encrypt, ui->save, ui->navigateToContainer, ui->email } );
+		ui->convert->setText("ALLKIRJASTA");
+		showButtons( { ui->cancel, ui->convert } );
+		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	case EncryptedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -393,8 +394,9 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Krüpteeritud failid");
 		showRightPane( ItemAddress, "Adressaadid" );
 		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
-		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
-		showButtons( { ui->navigateToContainer, ui->email } );
+		ui->convert->setText("ALLKIRJASTA");
+		hideButtons( { ui->cancel, ui->save } );
+		showButtons( { ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -402,7 +404,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
 		showRightPane( ItemAddress, "Adressaadid" );
 		hideMainAction();
-		hideButtons( { ui->encrypt, ui->cancel, ui->save } );
+		hideButtons( { ui->convert, ui->cancel, ui->save } );
 		showButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	default:
