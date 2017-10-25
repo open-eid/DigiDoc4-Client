@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocCrypto
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,39 +20,25 @@
 #pragma once
 
 #include "crypto/CryptoDoc.h"
-#include "widgets/Item.h"
 
-namespace Ui {
-class AddressItem;
-}
+#include <QDialog>
 
-class AddressItem : public Item
+namespace Ui { class KeyDialog; }
+
+class KeyDialog: public QDialog
 {
 	Q_OBJECT
 
 public:
-	enum ShowToolButton
-	{
-		None,
-		Remove,
-		Add,
-		Added
-	};
+	KeyDialog( const CKey &key, QWidget *parent = 0 );
+	~KeyDialog();
 
-	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr, bool showIcon = false);
-	explicit AddressItem(const CKey &k, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
-	~AddressItem();
-
-	void idChanged(const QString& cardCode, const QString& mobileCode) override;
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
-	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
-
-protected:
-	void mouseReleaseEvent(QMouseEvent *event) override;
+private Q_SLOTS:
+	void showCertificate();
 
 private:
-	Ui::AddressItem *ui;
+	void addItem( const QString &parameter, const QString &value );
 
-	QString code;
-	CKey key;
+	CKey k;
+	Ui::KeyDialog *d;
 };

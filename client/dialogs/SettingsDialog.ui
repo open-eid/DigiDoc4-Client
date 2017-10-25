@@ -420,7 +420,7 @@ QPushButton:!checked{
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>99</y>
+            <y>220</y>
             <width>270</width>
             <height>21</height>
            </rect>
@@ -445,7 +445,7 @@ QPushButton:!checked{
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>220</y>
+            <y>100</y>
             <width>155</width>
             <height>21</height>
            </rect>
@@ -470,7 +470,7 @@ QPushButton:!checked{
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>252</y>
+            <y>132</y>
             <width>145</width>
             <height>31</height>
            </rect>
@@ -531,7 +531,7 @@ QComboBox::down-arrow {
           <property name="geometry">
            <rect>
             <x>24</x>
-            <y>298</y>
+            <y>178</y>
             <width>175</width>
             <height>16</height>
            </rect>
@@ -722,7 +722,7 @@ QRadioButton::indicator::checked {
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>120</y>
+            <y>241</y>
             <width>781</width>
             <height>71</height>
            </rect>
@@ -1801,6 +1801,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;OpenLDAP community developed LDAP software&lt;/span&gt;&lt;br /&gt;The OpenLDAP Public License&lt;br /&gt;&lt;a href=&quot;http://www.openldap.org/software/release/license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.openldap.org/software/release/license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;libdigidoc&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;libdigidocpp&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;qdigidoc&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;libxml The XML C parser and toolkit of Gnome&lt;/span&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;http://www.opensource.org/licenses/mit-license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.opensource.org/licenses/mit-license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;zlib A Massively Spiffy Yet Delicately Unobtrusive Compression Library&lt;/span&gt;&lt;br /&gt;&lt;a href=&quot;http://zlib.net/zlib_license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://zlib.net/zlib_license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Xerces-C++ is a validating XML parser written in a portable subset of C++&lt;/span&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
