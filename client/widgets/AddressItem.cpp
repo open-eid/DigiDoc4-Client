@@ -21,7 +21,7 @@
 #include "ui_AddressItem.h"
 
 #include "Styles.h"
-#include "crypto/CryptoDoc.h"
+#include "dialogs/KeyDialog.h"
 #include "effects/ButtonHoverFilter.h"
 
 #include <common/SslCertificate.h>
@@ -56,9 +56,10 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent, bool showIcon)
 	ui->added->hide();
 }
 
-AddressItem::AddressItem(const CKey &key, ContainerState state, QWidget *parent)
+AddressItem::AddressItem(const CKey &k, ContainerState state, QWidget *parent)
 : AddressItem(state, parent, true)
 {
+	key = k;
 	QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
 			key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
 			key.cert.subjectInfo("CN").value(0);
@@ -88,6 +89,12 @@ void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode)
 		ui->code->setText(code + tr(" (Sina ise)"));
 	else
 		ui->code->setText(code);
+}
+
+void AddressItem::mouseReleaseEvent(QMouseEvent *event)
+{
+	KeyDialog dlg(key, this);
+	dlg.exec();
 }
 
 void AddressItem::update(const QString& name, const QString& cardCode, const QString& type, ShowToolButton show)

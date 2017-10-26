@@ -15,7 +15,7 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/MobileDialog.ui dialogs/MobileProgress.ui 
+qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/KeyDialog.ui dialogs/MobileDialog.ui dialogs/MobileProgress.ui 
 	dialogs/PinPopup.ui dialogs/PinUnblock.ui dialogs/SettingsDialog.ui dialogs/SignatureDialog.ui dialogs/Updater.ui dialogs/WaitDialog.ui dialogs/WarningDialog.ui 
 	widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui 
 	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/NoOtherId.ui widgets/OtherData.ui widgets/OtherId.ui 
@@ -54,6 +54,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.cpp
 	dialogs/FirstRun.cpp
+	dialogs/KeyDialog.cpp
 	dialogs/MobileDialog.cpp
 	dialogs/MobileProgress.cpp
 	dialogs/PinPopup.cpp

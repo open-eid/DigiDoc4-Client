@@ -56,7 +56,6 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	const SslCertificate cert = s.cert();
 	QString accessibility, signingInfo;
 	QTextStream sa(&accessibility);
-	QTextStream sn(&name);
 	QTextStream sc(&statusHtml);
 	QTextStream si(&signingInfo);
 	
@@ -64,10 +63,9 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 
 	invalid = signatureValidity >= DigiDocSignature::Invalid;
 	if(!cert.isNull())
-		sn << cert.toString(cert.showCN() ? "CN" : "GN SN").toHtmlEscaped();
+		name = cert.toString(cert.showCN() ? "CN" : "GN SN").toHtmlEscaped();
 	else
-		sn << signature.signedBy().toHtmlEscaped();
-	sn << " - ";
+		name = signature.signedBy().toHtmlEscaped();
 
 	QString label = tr("Signature");
 	if(signature.profile() == "TimeStampToken")
@@ -113,7 +111,7 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 		break;
 	}
 	sc << "</span>";
-	ui->name->setText((invalid ? red(name) : name) + statusHtml);
+	ui->name->setText((invalid ? red(name + " - ") : name + " - ") + statusHtml);
 	status = accessibility;
 
 	if(!cert.isNull())
@@ -166,7 +164,7 @@ void SignatureItem::changeNameHeight()
 		ui->name->setMaximumHeight(LINE_HEIGHT);
 		setMinimumHeight(ITEM_HEIGHT);
 		setMaximumHeight(ITEM_HEIGHT);
-		ui->name->setText((invalid ? red(name) : name) + statusHtml);
+		ui->name->setText((invalid ? red(name + " - ") : name + " - ") + statusHtml);
 		enlarged = false;
 	}
 }
@@ -197,7 +195,7 @@ void SignatureItem::recalculate()
 {
 	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
 	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
-	nameWidth = nameMetrics->width(name + status);
+	nameWidth = nameMetrics->width(name  + " - " + status);
 }
 
 QString SignatureItem::red(const QString &text)
