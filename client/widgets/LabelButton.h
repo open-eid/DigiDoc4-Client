@@ -29,57 +29,57 @@
 // LabelButton changes style (colors) on hover and when pressed.
 class LabelButton : public QLabel
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum Style {
-        BoxedDeepCerulean,
-        BoxedMojo,
-        BoxedDeepCeruleanWithCuriousBlue, // Edit
-        DeepCeruleanWithLochmara, // Add files
-        None
-    };
-    
-    explicit LabelButton(QWidget *parent = nullptr);
+	enum Style {
+		BoxedDeepCerulean,
+		BoxedMojo,
+		BoxedDeepCeruleanWithCuriousBlue, // Edit
+		DeepCeruleanWithLochmara, // Add files
+		None
+	};
 
-    void init( Style style, const QString &label, int code );
-    void setIcons( const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int x, int y, int w, int h );
+	explicit LabelButton(QWidget *parent = nullptr);
+
+	void init( Style style, const QString &label, int code );
+	void setIcons( const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int x, int y, int w, int h );
 
 signals:
-    void clicked(int code);
+	void clicked(int code);
 
 protected:
-    void enterEvent( QEvent *ev ) override;
-    void leaveEvent( QEvent *ev ) override;
-    bool event( QEvent *ev ) override;
+	void enterEvent( QEvent *ev ) override;
+	void leaveEvent( QEvent *ev ) override;
+	bool event( QEvent *ev ) override;
 
 private:
-    struct Css {
-        QString style;
-        QString background;
-        QString icon;
-    };
-    enum State {
-        Normal,
-        Hover,
-        Pressed
-    };
-    void normal();
-    void hover();
-    void pressed();
-    
-    int code;
-    int style;
-    Css css[3];
-    QString normalStyle;
-    QString normalLink;
-    QString normalIcon;
-    QString hoverStyle;
-    QString hoverLink;
-    QString hoverIcon;
-    std::unique_ptr<QSvgWidget> icon;
+	struct Css {
+		QString style;
+		QString background;
+		QString icon;
+	};
+	enum State {
+		Normal,
+		Hover,
+		Pressed
+	};
+	void normal();
+	void hover();
+	void pressed();
 
-    static const QString borderRadius;
-    static const QString styleTemplate;
-    static const QString linkTemplate;
+	int code;
+	int style;
+	Css css[3];
+	QString normalStyle;
+	QString normalLink;
+	QString normalIcon;
+	QString hoverStyle;
+	QString hoverLink;
+	QString hoverIcon;
+	std::unique_ptr<QSvgWidget> icon;
+
+	static const QString borderRadius;
+	static const QString styleTemplate;
+	static const QString linkTemplate;
 };

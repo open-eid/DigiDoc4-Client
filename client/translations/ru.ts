@@ -498,6 +498,123 @@ Learn more info here:</source>
 
 
 <context>
+    <name>CertificateDetails</name>
+    <message>
+        <source>Certificate Information</source>
+        <translation>Справочная информация</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Сведения о сертификате</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>СОХРАНИТЬ</translation>
+    </message>
+
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>Этот сертификат предназначен для следующих целей:</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Выпущено:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Выдано:</translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>действительный:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>от</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>До</translation>
+    </message>
+
+
+    <message>
+        <source>Field</source>
+        <translation>поле</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>значение</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Версия</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Серийный номер</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Алгоритм подписи</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>эмитент</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>действительно с</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Действительно до</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>субъект</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Открытый ключ</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>дополнительный Использование ключа</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation>Полисы сертификатов</translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Идентификатор ключа полномочие</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Идентификатор ключа субъект</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Использование ключа</translation>
+    </message>
+
+    <message>
+        <source>Save certificate</source>
+        <translation>Сохранить сертификат</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Не удалось сохранить файл</translation>
+    </message>
+</context>
+
+
+<context>
     <name>Accordion</name>
     <message>
         <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
@@ -525,6 +642,328 @@ Learn more info here:</source>
         <translation>В читателе есть %1</translation>
     </message>
 </context>
+
+<context>
+    <name>FirstRun</name>
+    <message>
+        <source>CONTINUE</source>
+        <translation>ПРОДОЛЖАТЬ</translation>
+    </message>
+    <message>
+        <source>VIEW NEXT INTRODUCTION</source>
+        <translation>СМОТРЕТЬ СЛЕДУЮЩЕЕ ВВЕДЕНИЕ</translation>
+    </message>
+    <message>
+        <source>Skip introductions</source>
+        <translation>Пропустить введения →</translation>
+    </message>
+    <message>
+        <source>VIEW INTRODUCTION</source>
+        <translation>ПРОСМОТРЕТЬ ВВЕДЕНИЕ</translation>
+    </message>
+    <message>
+        <source>ENTER INTO APPLICATION</source>
+        <translation>ВСТУПИТЬ В ПРИМЕНЕНИЕ</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileDialog</name>
+    <message>
+        <source>Enter your phone number with Mobiil-ID to sign up</source>
+        <translation>&lt;b&gt;Введите свой номер телефона с помощью Mobiil-ID&lt;br/&gt;для регистрации&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
+        <translation>КОД СТРАНЫ И ТЕЛЕФОННЫЙ НОМЕР</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>ПЕРСОНАЛЬНЫЙ КОД</translation>
+    </message>
+    <message>
+        <source>Remember</source>
+        <translation>запомнить</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ПОДПИСЬ</translation>
+    </message>
+
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Личный код недействителен</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Номер телефона не указан</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileProgress</name>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+
+    <message>
+        <source>Signing in process</source>
+        <translation>Подписывание</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Запрос принят</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Время запроса истекло</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Пользователю отказано</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Подпись получена</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Запрос в ожидании</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobiil-ID не готов, попробуйте позже</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Нет телефона</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Ошибка запроса</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>Ошибка SIM карты</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Внутренняя ошибка услуги</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
+        <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed! Please check your internet connection.</source>
+        <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Ошибка! Номер телефона должен содержать код страны.</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>Пользователь не является клиентом Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>Личный код и номер телефона не совпадают</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Не активирована услуга Mobiil-ID.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Сертификаты Mobiil-ID признаны не действительными или их действие приостановлено.</translation>
+    </message>
+</context>
+
+<context>
+    <name>PinPopup</name>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.&lt;br/&gt;Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+
+
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>PIN будет заблокирован следующей неудачной попыткой</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN был введен некорректно один раз</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Для использования сертификата знака введите PIN2 у читателя</translation>
+    </message>
+
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Для использования сертификата знака введите PIN2</translation>
+    </message>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Выбранным действиям требуется сертификат знака.</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Для использования сертификата аутентификации введите PIN1 в считыватель</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Для использования сертификата аутентификации введите PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Для выбранного действия требуется сертификат проверки подлинности.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>PinUnblock</name>
+    <message>
+        <source>VALID PUK CODE</source>
+        <translation>действительный PUK КОД</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>открыть</translation>
+    </message>
+
+    <message>
+        <source>ConditionsChangePIN2WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Новый PIN2 должен отличаться от предыдущего.&lt;/li&gt;
+&lt;li&gt;Код PIN2 используется для предоставления цифровой подписи.&lt;/li&gt;
+&lt;li&gt;Если вы забыли код PIN2, но знаете PUK-код,&lt;br&gt;
+здесь вы можете установить новый код PIN2.&lt;/li&gt;
+&lt;li>Ваш PUK-код находится в контейнере кода.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Новый PIN1 должен отличаться от предыдущего.&lt;/li&gt;
+&lt;li&gt;Код PIN1 используется для проверки подлинности&lt;br&gt;
+для доступа.&lt;/li&gt;
+&lt;li&gt;Если вы забыли код PIN1, но знаете PUK-код,&lt;br&gt;
+здесь вы можете установить новый код PIN1.&lt;/li&gt;
+&lt;li&gt;Ваш PUK-код находится в контейнере кода.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Чтобы разблокировать PIN2, введите PUK-код для карты.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK-код с ID-карты в поле кода, если вы не&lt;br&gt;
+тем временем изменилось&lt;/li&gt;
+&lt;li&gt;Если вы не знаете свой PUK-код для своей ID-карты, пожалуйста, посетите&lt;br&gt;
+точка обслуживания клиентов, где вы можете получить новый контейнер кода.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN1</source>
+        <translation>
+&lt;ul&gt;
+&lt;li&gt;Чтобы разблокировать PIN1, введите PUK-код для карты.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK-код с ID-карты в поле кода, если вы не&lt;br&gt;
+тем временем изменилось&lt;/li&gt;
+&lt;li&gt;Если вы не знаете свой PUK-код для своей ID-карты, пожалуйста, посетите&lt;br&gt;
+точка обслуживания клиентов, где вы можете получить новый контейнер кода.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Новый PIN2 должен отличаться от предыдущего.&lt;/li&gt;
+&lt;li&gt;Код PIN2 используется для предоставления цифровой подписи.&lt;/li&gt;
+&lt;li&gt;Если вы вводите код PIN2 неправильно три раза, то подписываете&lt;br&gt;
+сертификат будет заблокирован, и удостоверение личности не будет возможным&lt;br&gt;
+использовать перед подписанием&lt;br&gt;
+разблокировать PUK.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Новый PIN1 должен отличаться от предыдущего.&lt;/li&gt;
+&lt;li&gt;Код PIN1 используется для проверки подлинности&lt;br&gt;
+для доступа.&lt;/li&gt;
+&lt;li&gt;Если вы вводите код PIN1 неправильно три раза, вы получите личную идентификацию&lt;br&gt;
+Сертификат заблокирован, и вы можете использовать только удостоверение личности после&lt;br&gt;
+unblock with PUK.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Если PUK-код исчезнет после изменения кода и&lt;br&gt;
+сертификат будет заблокирован путем ввода трех неправильных PIN1 или PIN2&lt;br&gt;
+то единственным способом получить удостоверение личности является обращение к работе&lt;br&gt;
+&lt;u&gt;точка обслуживания клиентов&lt;/u&gt;.&lt;/li&gt;
+&lt;li&gt;Ваш PUK-код находится в конверте.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+
+
+    <message>
+        <source>%1 unblocking</source>
+        <translation>%1 разблокирование</translation>
+    </message>
+    <message>
+        <source>%1 code change</source>
+        <translation>изменение %1 кода</translation>
+    </message>
+    <message>
+        <source>VALID %1 CODE</source>
+        <translation>действительный %1 КОД</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>ИЗМЕНЕНИЕ</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE</source>
+        <translation>НОВЫЙ %1 КОД</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE AGAIN</source>
+        <translation>НОВЫЙ %1 КОД СНОВА</translation>
+    </message>
+    <message>
+        <source>PUK remaining attempts: %1</source>
+        <translation>PUK оставшиеся попытки:%1</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Оставшиеся попытки:%1</translation>
+    </message>
+</context>
+
 
 
 <context>

@@ -95,8 +95,7 @@ line-height: 15px;
 border: none;</string>
    </property>
    <property name="text">
-    <string>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.
-Sertifikaadi kasutamiseks sisesta PIN1</string>
+    <string>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -179,7 +178,7 @@ QPushButton:hover:!pressed {
 }</string>
    </property>
    <property name="text">
-    <string>KATKESTA</string>
+    <string>CANCEL</string>
    </property>
    <property name="autoDefault">
     <bool>false</bool>

@@ -508,6 +508,123 @@ Learn more info here:</translation>
 
 
 <context>
+    <name>CertificateDetails</name>
+    <message>
+        <source>Certificate Information</source>
+        <translation>Certificate Information</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Certificate details</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SAVE</translation>
+    </message>
+
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>This certificate is intended for following purpose(s):</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Issued to:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Issued by:</translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>Kehtiv:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>From</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>To</translation>
+    </message>
+
+
+    <message>
+        <source>Field</source>
+        <translation>Field</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Value</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Version</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Serial number</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Signature algorithm</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>Valid from</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Valid to</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>Subject</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Public key</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>Enhanced key usage</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation>Certificate policies</translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Authority key identifier</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Subject key identifier</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Key usage</translation>
+    </message>
+
+    <message>
+        <source>Save certificate</source>
+        <translation>Save certificate</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Failed to save file</translation>
+    </message>
+</context>
+
+
+<context>
     <name>Accordion</name>
     <message>
         <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
@@ -535,6 +652,328 @@ Learn more info here:</translation>
         <translation>There is an %1 in reader</translation>
     </message>
 
+</context>
+
+<context>
+    <name>FirstRun</name>
+    <message>
+        <source>CONTINUE</source>
+        <translation>CONTINUE</translation>
+    </message>
+    <message>
+        <source>VIEW NEXT INTRODUCTION</source>
+        <translation>VIEW NEXT INTRODUCTION</translation>
+    </message>
+    <message>
+        <source>Skip introductions</source>
+        <translation>Skip introductions →</translation>
+    </message>
+    <message>
+        <source>VIEW INTRODUCTION</source>
+        <translation>VIEW INTRODUCTION</translation>
+    </message>
+    <message>
+        <source>ENTER INTO APPLICATION</source>
+        <translation>ENTER INTO APPLICATION</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileDialog</name>
+    <message>
+        <source>Enter your phone number with Mobiil-ID to sign up</source>
+        <translation>&lt;b&gt;Enter your phone number with Mobiil-ID&lt;br/&gt;to sign up&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
+        <translation>COUNTRY CODE AND TELEPHONE NUMBER</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>PERSONAL CODE</translation>
+    </message>
+    <message>
+        <source>Remember</source>
+        <translation>Remember</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>SIGN</translation>
+    </message>
+
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Personal code is not valid</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Phone number is not entered</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileProgress</name>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+
+    <message>
+        <source>Signing in process</source>
+        <translation>Signing in process</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Request accepted</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Request timeout</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>User denied or cancelled</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Got signature</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Request pending</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobile-ID not ready, try again later</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Phone absent</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Request sending error</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>SIM error</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Service internal error</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
+        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access sertificate.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed! Please check your internet connection.</source>
+        <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Invalid phone number! Please include correct country code.</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>User is not a Mobile-ID client</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>ID and phone number do not match</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Your Mobile-ID service is not activated.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Mobile-ID user certificates are revoked or suspended.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>PinPopup</name>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
+        <translation>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+
+
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>PIN will be locked next failed attempt</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN has been entered incorrectly one time</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>For using sign certificate enter PIN2 at the reader</translation>
+    </message>
+
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>For using sign certificate enter PIN2</translation>
+    </message>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Selected action requires sign certificate.</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>For using authentication certificate enter PIN1 at the reader</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>For using authentication certificate enter PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Selected action requires authentication certificate.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>PinUnblock</name>
+    <message>
+        <source>VALID PUK CODE</source>
+        <translation>VALID PUK CODE</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>UNBLOCK</translation>
+    </message>
+
+    <message>
+        <source>ConditionsChangePIN2WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;New PIN2 must be different from the previous one.&lt;/li&gt;
+&lt;li&gt;The PIN2 code is used to give a digital signature.&lt;/li&gt;
+&lt;li&gt;If you have forgotten the PIN2 code but you know the PUK code,&lt;br&gt;
+here you can set a new PIN2 code.&lt;/li&gt;
+&lt;li>Your PUK code is located in the code container.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;New PIN1 must be different from the previous one.&lt;/li&gt;
+&lt;li&gt;The PIN1 code is used for identity verification&lt;br&gt;
+for access.&lt;/li&gt;
+&lt;li&gt;If you have forgotten the PIN1 code but you know the PUK code,&lt;br&gt;
+here you can set a new PIN1 code.&lt;/li&gt;
+&lt;li&gt;Your PUK code is located in the code container.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;To unblock PIN2, enter the PUK code for the card.&lt;/li&gt;
+&lt;li&gt;You can find the PUK code from the ID-card in the code box, if you do not&lt;br&gt;
+in the meantime changed&lt;/li&gt;
+&lt;li&gt;If you do not know your PUK code for your ID card, please visit&lt;br&gt;
+a customer service point where you can get a new code container.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN1</source>
+        <translation>
+&lt;ul&gt;
+&lt;li&gt;To unblock PIN1, enter the PUK code for the card.&lt;/li&gt;
+&lt;li&gt;You can find the PUK code from the ID-card in the code box, if you do not&lt;br&gt;
+in the meantime changed&lt;/li&gt;
+&lt;li&gt;If you do not know your PUK code for your ID card, please visit&lt;br&gt;
+a customer service point where you can get a new code container.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;New PIN2 must be different from the previous one.&lt;/li&gt;
+&lt;li&gt;The PIN2 code is used to give a digital signature.&lt;/li&gt;
+&lt;li&gt;If you enter the PIN2 code incorrectly three times, then signing&lt;br&gt;
+the certificate will be blocked and the ID card will not be possible&lt;br&gt;
+to use before signing&lt;br&gt;
+PUK koodiga.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;New PIN1 must be different from the previous one.&lt;/li&gt;
+&lt;li&gt;The PIN1 code is used for identity verification&lt;br&gt;
+for access.&lt;/li&gt;
+&lt;li&gt;If you enter the PIN1 code incorrectly three times, then you will receive a personal identification&lt;br&gt;
+The certificate is blocked and you can only use the ID card after&lt;br&gt;
+unblock with PUK.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;If the PUK code goes away after changing the code, and&lt;br&gt;
+the certificate will be blocked by entering three incorrect PIN1 or PIN2&lt;br&gt;
+then the only way to get an ID card is to turn to work&lt;br&gt;
+&lt;u&gt;customer service point&lt;/u&gt;.&lt;/li&gt;
+&lt;li&gt;Your PUK code is located in the envelope.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+
+
+    <message>
+        <source>%1 unblocking</source>
+        <translation>%1 unblocking</translation>
+    </message>
+    <message>
+        <source>%1 code change</source>
+        <translation>%1 code change</translation>
+    </message>
+    <message>
+        <source>VALID %1 CODE</source>
+        <translation>VALID %1 CODE</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>CHANGE</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE</source>
+        <translation>NEW %1 CODE</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE AGAIN</source>
+        <translation>NEW %1 CODE AGAIN</translation>
+    </message>
+    <message>
+        <source>PUK remaining attempts: %1</source>
+        <translation>PUK remaining attempts:%1</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Remaining attempts:%1</translation>
+    </message>
 </context>
 
 

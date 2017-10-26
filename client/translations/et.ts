@@ -494,6 +494,123 @@ Rohkem infot leiate siit:</translation>
 
 
 <context>
+    <name>CertificateDetails</name>
+    <message>
+        <source>Certificate Information</source>
+        <translation>Sertifikaadi informatsioon</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Sertifikaadi detailid</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SALVESTA</translation>
+    </message>
+
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>Selle sertifikaadi otstarve on:</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Kellele väljastatud:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Väljastaja: </translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>kehtiv:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Alates</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Kuni</translation>
+    </message>
+
+
+    <message>
+        <source>Field</source>
+        <translation>Väli</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versioon</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Signatuuri algoritm</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>Kehtib alates</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Kehtib kuni</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>Subjekt</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Avalik võti</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>Täiendav võtme kasutusala</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Väljastaja võtme identifikaator</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Subjekti võtmelühend</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Võtme kasutusala</translation>
+    </message>
+
+    <message>
+        <source>Save certificate</source>
+        <translation>Salvesta sertifikaat</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Faili salvestamine ebaõnnestus</translation>
+    </message>
+</context>
+
+
+<context>
     <name>Accordion</name>
     <message>
         <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
@@ -519,6 +636,328 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>There is an %1 in reader</source>
         <translation>Lugejas on %1</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FirstRun</name>
+    <message>
+        <source>CONTINUE</source>
+        <translation>JÄTKA</translation>
+    </message>
+    <message>
+        <source>VIEW NEXT INTRODUCTION</source>
+        <translation>VAATA JÄRGMIST TUTVUSTUST</translation>
+    </message>
+    <message>
+        <source>Skip introductions</source>
+        <translation>Jäta tutvustused vahele →</translation>
+    </message>
+    <message>
+        <source>VIEW INTRODUCTION</source>
+        <translation>VAATA TUTVUSTUST</translation>
+    </message>
+    <message>
+        <source>ENTER INTO APPLICATION</source>
+        <translation>SISENE RAKENDUSSE</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileDialog</name>
+    <message>
+        <source>Enter your phone number with Mobiil-ID to sign up</source>
+        <translation>&lt;b&gt;Sisesta oma telefoninumber Mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
+        <translation>RIIGI KOOD JA TELEFONINUMBER</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>ISIKUKOOD</translation>
+    </message>
+    <message>
+        <source>Remember</source>
+        <translation>Pea mind meeles</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTA</translation>
+    </message>
+
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Isikukood pole kehtiv</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Telefoninumber pole sisestatud</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileProgress</name>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+
+    <message>
+        <source>Signing in process</source>
+        <translation>Toimub allkirjastamine</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Päring aktsepteeritud</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Päringu kannatus katkes</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Kasutaja keeldus või katkestas</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Sain allkirja</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Päring ootel</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Telefon ei ole levis</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Päringu saatmise viga</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>SIM kaardi viga</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Teenuse sisemine viga</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
+        <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed! Please check your internet connection.</source>
+        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>Kasutaja ei ole Mobiil-ID klient</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>Isikukood ja telefoni number ei klapi</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
+    </message>
+</context>
+
+<context>
+    <name>PinPopup</name>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.&lt;br/&gt;Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+
+
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>PIN lukustatakse järgmine ebaõnnestunud katse järel</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN on üks kord valesti sisestatud</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Allkirjastamise sertifikaadi kasutamiseks sisestage lugejas PIN2</translation>
+    </message>
+
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Allkirjastamise sertifikaadi kasutamiseks sisestage PIN2</translation>
+    </message>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Valitud toiming nõuab sertifikaati.</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Autentimissertifikaadi kasutamiseks sisestage lugeja PIN1-kood</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Autentsussertifikaadi kasutamiseks sisestage PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Valitud toiming nõuab autentimissertifikaati.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>PinUnblock</name>
+    <message>
+        <source>VALID PUK CODE</source>
+        <translation>KEHTIV PUK KOOD</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>BLOKEERI LAHTI</translation>
+    </message>
+
+    <message>
+        <source>ConditionsChangePIN2WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN2 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
+&lt;li&gt;Kui oled unustanud PIN2 koodi, kuid tead PUK koodi,&lt;br&gt;
+siis siin saad määrata uue PIN2 koodi.&lt;/li&gt;
+&lt;li>Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN1 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
+juurdepääsemiseks.&lt;/li&gt;
+&lt;li&gt;Kui oled unustanud PIN1 koodi, kuid tead PUK koodi,&lt;br&gt;
+siis siin saad määrata uue PIN1 koodi.&lt;/li&gt;
+&lt;li&gt;Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+vahepeal muutnud&lt;/li&gt;
+&lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
+klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN1</source>
+        <translation>
+&lt;ul&gt;
+&lt;li&gt;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+vahepeal muutnud&lt;/li&gt;
+&lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
+klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN2 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
+&lt;li&gt;Kui sisestad PIN2 koodi kolm korda valesti, siis allkirjastamise&lt;br&gt;
+sertifikaat blokeeritakse ning ID-kaarti pole võimalik&lt;br&gt;
+allkirjastamiseks kasutada enne blokeeringu tühistamist&lt;br&gt;
+PUK koodiga.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN1 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
+juurdepääsemiseks.&lt;/li&gt;
+&lt;li&gt;Kui sisestad PIN1 koodi kolm korda valesti, siis isikutuvastuse&lt;br&gt;
+sertifikaat blokeeritakse ning ID-kaarti saad kasutada vaid pärast&lt;br&gt;
+blokeeringu tühistamist PUK koodiga.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Kui PUK kood läheb peale koodi vahetamist meelest ära ja&lt;br&gt;
+sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise&lt;br&gt;
+järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
+&lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
+&lt;li&gt;Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+
+
+    <message>
+        <source>%1 unblocking</source>
+        <translation>%1 lahti blokeerimine</translation>
+    </message>
+    <message>
+        <source>%1 code change</source>
+        <translation>%1 koodi vahetamin</translation>
+    </message>
+    <message>
+        <source>VALID %1 CODE</source>
+        <translation>KEHTIV %1 KOOD</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>MUUDA</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE</source>
+        <translation>UUS %1 KOOD</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE AGAIN</source>
+        <translation>UUS %1 KOOD UUESTI</translation>
+    </message>
+    <message>
+        <source>PUK remaining attempts: %1</source>
+        <translation>PUK katseid jäänud: %1</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Katseid jäänud: %1</translation>
     </message>
 </context>
 

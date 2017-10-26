@@ -72,8 +72,8 @@ void InfoStack::changeEvent(QEvent* event)
 
 void InfoStack::focusEvent(int eventType)
 {
-    if(!ui->photo->pixmap())
-        return;
+	if(!ui->photo->pixmap())
+		return;
 
 	if(eventType == QEvent::Enter)
 	{
@@ -81,11 +81,11 @@ void InfoStack::focusEvent(int eventType)
 	}
 	else
 	{
-        // Ignore multiple enter-leave events sent when moving over button
-        auto boundingRect = QRect(ui->photo->mapToGlobal(ui->photo->geometry().topLeft()),
-                                  ui->photo->mapToGlobal(ui->photo->geometry().bottomRight()));
-        if(!boundingRect.contains(QCursor::pos()))
-            ui->btnPicture->hide();
+		// Ignore multiple enter-leave events sent when moving over button
+		auto boundingRect = QRect(ui->photo->mapToGlobal(ui->photo->geometry().topLeft()),
+								  ui->photo->mapToGlobal(ui->photo->geometry().bottomRight()));
+		if(!boundingRect.contains(QCursor::pos()))
+			ui->btnPicture->hide();
 	}
 }
 
@@ -103,17 +103,17 @@ void InfoStack::update(  const QSmartCardData &t )
 	{
 		if( t.isValid() )
 		{
-            st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
-			   << DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
+			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
+				<< DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
 		}
 		else
 		{
-            st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
+			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
 		}
 	}
 	else
 	{
-        st << tr("You're using Digital identity card"); // ToDo
+		st << tr("You're using Digital identity card"); // ToDo
 	}
 	ui->valueGivenNames->setText( firstName.join( " " ) );
 	ui->valueSurname->setText( t.data( QSmartCardData::SurName ).toString() );
@@ -148,6 +148,6 @@ void InfoStack::showPicture( const QPixmap &pixmap )
 {
 	ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-    ui->btnPicture->setText( tr("SAVE THE PICTURE") );
+	ui->btnPicture->setText( tr("SAVE THE PICTURE") );
 	ui->btnPicture->hide();
 }

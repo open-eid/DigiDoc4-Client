@@ -69,9 +69,9 @@ private:
 	Ui::PageIcon *ui;
 	QWidget *shadow;
 	std::unique_ptr<QSvgWidget> icon;
-    std::unique_ptr<QSvgWidget> notValidCertIcon;
-    std::unique_ptr<QSvgWidget> pinBlockedIcon;
-    std::unique_ptr<QSvgWidget> updateCertIsNeededIcon;
+	std::unique_ptr<QSvgWidget> notValidCertIcon;
+	std::unique_ptr<QSvgWidget> pinBlockedIcon;
+	std::unique_ptr<QSvgWidget> updateCertIsNeededIcon;
 
 	Style active;
 	Style inactive;

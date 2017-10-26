@@ -36,125 +36,125 @@ LabelButton::LabelButton( QWidget *parent )
 
 void LabelButton::init( Style style, const QString &label, int code )
 {
-    this->code = code;
-    this->style = style;
-    QString bgColor = PORCELAIN;
-    
-    switch( style )
-    {
-        case BoxedDeepCerulean:
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", borderRadius );
-            css[ Hover ].style   = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( DEEP_CERULEAN ), borderRadius );
-            css[ Pressed ].style = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", borderRadius );
-            break;
-        case BoxedMojo:
-            css[ Normal ].style  = styleTemplate.arg( bgColor, MOJO, "none", borderRadius );
-            css[ Hover ].style   = styleTemplate.arg( bgColor, MOJO, QString("1px solid %1").arg( MOJO ), borderRadius );
-            css[ Pressed ].style = styleTemplate.arg( MOJO, bgColor, "none", borderRadius );
-            break;
-        case BoxedDeepCeruleanWithCuriousBlue:
-            // Edit
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( bgColor ), borderRadius );
-            css[ Hover ].style   = styleTemplate.arg( bgColor, CURIOUS_BLUE, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
-            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
-            css[ Pressed ].background = CURIOUS_BLUE;
-            break;
-        case DeepCeruleanWithLochmara:
-            // Add files
-            bgColor = WHITE;
-            css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", "" );
-            css[ Hover ].style   = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", "" );
-            css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none", "" );
-            break;
-        case None:
-            // Add files
-            css[ Normal ].style  = QString();
-            css[ Hover ].style   = QString();
-            css[ Pressed ].style = QString();
-            break;
-    }
+	this->code = code;
+	this->style = style;
+	QString bgColor = PORCELAIN;
 
-    css[ Normal ].background = bgColor;
-    css[ Hover ].background = bgColor;
-    setText( label );
+	switch( style )
+	{
+		case BoxedDeepCerulean:
+			css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", borderRadius );
+			css[ Hover ].style   = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( DEEP_CERULEAN ), borderRadius );
+			css[ Pressed ].style = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", borderRadius );
+			break;
+		case BoxedMojo:
+			css[ Normal ].style  = styleTemplate.arg( bgColor, MOJO, "none", borderRadius );
+			css[ Hover ].style   = styleTemplate.arg( bgColor, MOJO, QString("1px solid %1").arg( MOJO ), borderRadius );
+			css[ Pressed ].style = styleTemplate.arg( MOJO, bgColor, "none", borderRadius );
+			break;
+		case BoxedDeepCeruleanWithCuriousBlue:
+			// Edit
+			css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, QString("1px solid %1").arg( bgColor ), borderRadius );
+			css[ Hover ].style   = styleTemplate.arg( bgColor, CURIOUS_BLUE, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
+			css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, QString("1px solid %1").arg( CURIOUS_BLUE ), borderRadius );
+			css[ Pressed ].background = CURIOUS_BLUE;
+			break;
+		case DeepCeruleanWithLochmara:
+			// Add files
+			bgColor = WHITE;
+			css[ Normal ].style  = styleTemplate.arg( bgColor, DEEP_CERULEAN, "none", "" );
+			css[ Hover ].style   = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", "" );
+			css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none", "" );
+			break;
+		case None:
+			// Add files
+			css[ Normal ].style  = QString();
+			css[ Hover ].style   = QString();
+			css[ Pressed ].style = QString();
+			break;
+	}
+
+	css[ Normal ].background = bgColor;
+	css[ Hover ].background = bgColor;
+	setText( label );
 	setFont( Styles::font( Styles::Condensed, 12 ) );
-    normal();
+	normal();
 }
 
 void LabelButton::enterEvent( QEvent *ev )
 {
-    hover();
+	hover();
 }
 
 void LabelButton::leaveEvent( QEvent *ev )
 {
-    normal();
+	normal();
 }
 
 void LabelButton::normal()
 {
-    if ( css[Normal].style.isEmpty() )
-        return;
+	if ( css[Normal].style.isEmpty() )
+		return;
 
-    setStyleSheet( css[Normal].style );
+	setStyleSheet( css[Normal].style );
 
-    if( icon )
-    {
-        icon->load( QString( ":%1" ).arg( css[Normal].icon ) );
-        icon->setStyleSheet(QString("background-color: %1; border: none;").arg( css[Normal].background ));
-    }
+	if( icon )
+	{
+		icon->load( QString( ":%1" ).arg( css[Normal].icon ) );
+		icon->setStyleSheet(QString("background-color: %1; border: none;").arg( css[Normal].background ));
+	}
 }
 
 void LabelButton::hover()
 {
-    if ( css[Hover].style.isEmpty() )
-        return;
+	if ( css[Hover].style.isEmpty() )
+		return;
 
-    setStyleSheet( css[Hover].style );
+	setStyleSheet( css[Hover].style );
 
-    if( icon )
-    {
-        icon->load( QString( ":%1" ).arg( css[Hover].icon ) );
-        icon->setStyleSheet(QString("background-color: %1; border: none;").arg( css[Hover].background ));
-    }
+	if( icon )
+	{
+		icon->load( QString( ":%1" ).arg( css[Hover].icon ) );
+		icon->setStyleSheet(QString("background-color: %1; border: none;").arg( css[Hover].background ));
+	}
 }
 
 void LabelButton::pressed()
 {
-    if ( css[Pressed].style.isEmpty() )
-        return;
+	if ( css[Pressed].style.isEmpty() )
+		return;
 
-    setStyleSheet( css[Pressed].style );
+	setStyleSheet( css[Pressed].style );
 
-    if( icon )
-    {
-        icon->load( QString( ":%1" ).arg( css[Pressed].icon ) );
-        icon->setStyleSheet(QString("background-color: %1; border: none;").arg( css[Pressed].background ));
-    }
+	if( icon )
+	{
+		icon->load( QString( ":%1" ).arg( css[Pressed].icon ) );
+		icon->setStyleSheet(QString("background-color: %1; border: none;").arg( css[Pressed].background ));
+	}
 }
 
 void LabelButton::setIcons( const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int x, int y, int w, int h )
 {
-    css[ Normal ].icon = normalIcon;
-    css[ Hover ].icon = hoverIcon;
-    css[ Pressed ].icon = pressedIcon;
+	css[ Normal ].icon = normalIcon;
+	css[ Hover ].icon = hoverIcon;
+	css[ Pressed ].icon = pressedIcon;
 
-    icon.reset( new QSvgWidget( QString( ":%1" ).arg( css[Normal].icon ), this ) );
-    icon->resize( w, h );
-    icon->move( x, y );
+	icon.reset( new QSvgWidget( QString( ":%1" ).arg( css[Normal].icon ), this ) );
+	icon->resize( w, h );
+	icon->move( x, y );
 }
 
 bool LabelButton::event( QEvent *ev )  
 {
-    // Identify Mouse press Event
-    if( ev->type() == QEvent::MouseButtonPress )
-    {
-        pressed();
-    }
-    else if( ev->type() == QEvent::MouseButtonRelease )
-    {
-        hover();
-        emit clicked(code);
-    }
-    return QLabel::event( ev );
+	// Identify Mouse press Event
+	if( ev->type() == QEvent::MouseButtonPress )
+	{
+		pressed();
+	}
+	else if( ev->type() == QEvent::MouseButtonRelease )
+	{
+		hover();
+		emit clicked(code);
+	}
+	return QLabel::event( ev );
 }

@@ -122,7 +122,7 @@
           <string notr="true">border: none;</string>
          </property>
          <property name="text">
-          <string>Sertifikaadi info</string>
+          <string>Certificate Information</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -192,7 +192,7 @@ span {
            <string notr="true">border: none;</string>
           </property>
           <property name="text">
-           <string>Sertifikaadi detailid</string>
+           <string>Certificate details</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -352,7 +352,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>SULGE</string>
+       <string>CLOSE</string>
       </property>
      </widget>
      <widget class="QPushButton" name="save">
@@ -394,7 +394,7 @@ QPushButton:disabled {
 }</string>
       </property>
       <property name="text">
-       <string>SALVESTA</string>
+       <string>SAVE</string>
       </property>
      </widget>
     </widget>

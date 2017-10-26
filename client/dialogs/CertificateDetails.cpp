@@ -94,14 +94,14 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
 
 	QStringList horzHeaders;
-	horzHeaders << "Väli" << "Väärtus";
+	horzHeaders << tr("Field") << tr("Value");
 	ui->tblDetails->setHorizontalHeaderLabels(horzHeaders);
 
-	ui->addItem("Version", QString("V" + cert.version()));
-	ui->addItem("Seerianumber", QString( "%1 (0x%2)" )
+	ui->addItem(tr("Version"), QString("V" + cert.version()));
+	ui->addItem(tr("Serial number"), QString( "%1 (0x%2)" )
 		.arg( cert.serialNumber().constData() )
 		.arg( cert.serialNumber( true ).constData() ));
-	ui->addItem("Signatuuri algoritm", cert.signatureAlgorithm());
+	ui->addItem(tr("Signature algorithm"), cert.signatureAlgorithm());
 
 	QStringList text, textExt;
 	static const QByteArray ORGID_OID = QByteArrayLiteral("2.5.4.97");
@@ -116,9 +116,9 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 				obj.constData() == ORGID_OID ? "organizationIdentifier" : obj.constData()
 			).arg( data );
 	}
-	ui->addItem("Väljaandja", text.join(", "), textExt.join("\n"));
-	ui->addItem("Kehtib alates", DateTime( cert.effectiveDate().toLocalTime() ).toStringZ("dd.MM.yyyy hh:mm:ss"));
-	ui->addItem("Kehtib kuni", DateTime( cert.expiryDate().toLocalTime() ).toStringZ("dd.MM.yyyy hh:mm:ss"));
+	ui->addItem(tr("Issuer"), text.join(", "), textExt.join("\n"));
+	ui->addItem(tr("Valid from"), DateTime( cert.effectiveDate().toLocalTime() ).toStringZ("dd.MM.yyyy hh:mm:ss"));
+	ui->addItem(tr("Valid to"), DateTime( cert.expiryDate().toLocalTime() ).toStringZ("dd.MM.yyyy hh:mm:ss"));
 
 	text.clear();
 	textExt.clear();
@@ -130,8 +130,8 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 		text << data;
 		textExt << QString( "%1 = %2" ).arg( obj.constData() ).arg( data );
 	}
-	ui->addItem("Subjekt", text.join(", "), textExt.join("\n"));
-	ui->addItem("Avalik võti", cert.keyName(), cert.publicKeyHex());
+	ui->addItem(tr("Subject"), text.join(", "), textExt.join("\n"));
+	ui->addItem(tr("Public key"), cert.keyName(), cert.publicKeyHex());
 	QStringList enhancedKeyUsage = cert.enhancedKeyUsage().values();
 	if( !enhancedKeyUsage.isEmpty() )
 		ui->addItem(tr("Enhanced key usage"), enhancedKeyUsage.join( ", " ), enhancedKeyUsage.join( "\n" ) );
@@ -143,7 +143,6 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	QStringList keyUsage = cert.keyUsage().values();
 	if( !keyUsage.isEmpty() )
 		ui->addItem( tr("Key usage"), keyUsage.join( ", " ), keyUsage.join( "\n" ) );
-
 }
 
 CertificateDetails::~CertificateDetails()

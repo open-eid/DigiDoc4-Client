@@ -32,18 +32,18 @@ class NoCardInfo;
 
 class NoCardInfo : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit NoCardInfo( QWidget *parent = nullptr );
-    ~NoCardInfo();
+	explicit NoCardInfo( QWidget *parent = nullptr );
+	~NoCardInfo();
 
-    void update( const QString &status );
+	void update( const QString &status );
 
 protected:
 	void changeEvent(QEvent* event) override;
 
 private:
-    Ui::NoCardInfo *ui;
-    std::unique_ptr<QSvgWidget> cardIcon;
+	Ui::NoCardInfo *ui;
+	std::unique_ptr<QSvgWidget> cardIcon;
 };

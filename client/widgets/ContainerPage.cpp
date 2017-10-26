@@ -235,7 +235,7 @@ void ContainerPage::showDropdown()
 	}
 	else
 	{
-        otherAction.reset( new MainAction( SignatureMobile, tr("SIGN WITH\nMOBILE ID"), this, false ) );
+		otherAction.reset( new MainAction( SignatureMobile, tr("SIGN WITH\nMOBILE ID"), this, false ) );
 		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
 
@@ -287,9 +287,9 @@ void ContainerPage::showSigningButton()
 {
 	hideOtherAction();
 	if(cardInReader.isNull())
-        showMainAction(SignatureAdd, tr("SIGN WITH\nID ID CARD"));
+		showMainAction(SignatureAdd, tr("SIGN WITH\nID ID CARD"));
 	else
-        showMainAction(SignatureMobile, tr("SIGN WITH\nMOBILE ID"));
+		showMainAction(SignatureMobile, tr("SIGN WITH\nMOBILE ID"));
 }
 
 void ContainerPage::transition(CryptoDoc* container)
@@ -320,7 +320,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-        ui->rightPane->addHeader(tr("Container's time stamps"));
+		ui->rightPane->addHeader(tr("Container's time stamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
 			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
@@ -414,7 +414,7 @@ void ContainerPage::updatePanes(ContainerState state)
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-        ui->leftPane->init(fileName, tr("Decrypted files"));
+		ui->leftPane->init(fileName, tr("Decrypted files"));
 		showRightPane( ItemAddress, tr("Recipients"));
 		hideMainAction();
 		ui->cancel->setText(tr("STARTING"));

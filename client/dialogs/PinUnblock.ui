@@ -65,7 +65,7 @@ QPushButton:hover:!pressed {
 }</string>
    </property>
    <property name="text">
-    <string>KATKESTA</string>
+    <string>CANCEL</string>
    </property>
   </widget>
   <widget class="QPushButton" name="unblock">
@@ -104,7 +104,7 @@ QPushButton:disabled {
 }</string>
    </property>
    <property name="text">
-    <string>BLOKEERI LAHTI</string>
+    <string>UNBLOCK</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelNameId">
@@ -201,7 +201,7 @@ line-height: 16px;</string>
        <string notr="true">color: #353739;</string>
       </property>
       <property name="text">
-       <string>KEHTIV PUK KOOD</string>
+       <string>VALID PUK CODE</string>
       </property>
      </widget>
     </item>
