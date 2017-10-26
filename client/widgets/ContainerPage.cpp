@@ -101,7 +101,7 @@ void ContainerPage::init()
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
     ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
     ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
-    ui->encrypt->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerEncrypt );
+    ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerEncrypt );
     ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
     ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
     ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE UNSIGNED"), Actions::ContainerSave );
@@ -396,7 +396,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane( ItemAddress, tr("Recipients") );
 		showMainAction( EncryptContainer, tr("ENCRYPT") );
 		ui->cancel->setText(tr("STARTING"));
-		ui->convert->setText("ALLKIRJASTA");
+        ui->convert->setText(tr("SIGN"));
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;
@@ -407,7 +407,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane( ItemAddress, tr("Recipients") );
 		showMainAction( DecryptContainer, tr("DECRYPT WITH\nID-CARD") );
 		ui->cancel->setText(tr("STARTING"));
-		ui->convert->setText("ALLKIRJASTA");
+        ui->convert->setText(tr("SIGN"));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;

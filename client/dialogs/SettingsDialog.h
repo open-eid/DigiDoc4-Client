@@ -46,6 +46,7 @@ signals:
 
 private:
 	void initUI();
+    void retranslate(const QString& lang);
 	void initFunctionality();
 	void updateCert();
 	void setProxyEnabled();

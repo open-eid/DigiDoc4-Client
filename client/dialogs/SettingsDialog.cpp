@@ -97,10 +97,10 @@ void SettingsDialog::initUI()
 	ui->cmbGeneralCheckUpdatePeriod->setFont(regularFont);
 	ui->chkGeneralTslRefresh->setFont(regularFont);
 
-	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord päevas");
-	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord nädalas");
-	ui->cmbGeneralCheckUpdatePeriod->addItem("Kord kuus");
-	ui->cmbGeneralCheckUpdatePeriod->addItem("Mitte kunagi");
+    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a day"));
+    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a week"));
+    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a month"));
+    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Never"));
 
 
 	// pageSigning
@@ -213,6 +213,17 @@ void SettingsDialog::initUI()
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 }
 
+void SettingsDialog::retranslate(const QString& lang)
+{
+    emit langChanged(lang);
+    ui->retranslateUi(this);
+
+    ui->cmbGeneralCheckUpdatePeriod->setItemText(0, tr("Once a day"));
+    ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
+    ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
+    ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
+}
+
 void SettingsDialog::initFunctionality()
 {
 	if(Settings::language() == "en")
@@ -228,9 +239,9 @@ void SettingsDialog::initFunctionality()
 		ui->rdGeneralEstonian->setChecked(true);
 	}
 
-	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { emit langChanged("et"); ui->retranslateUi(this); } } );
-	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { emit langChanged("en"); ui->retranslateUi(this); } } );
-	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { emit langChanged("ru"); ui->retranslateUi(this); } } );
+    connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("et"); } );
+    connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("en"); } );
+    connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("ru"); } );
 
 	updateCert();
 #ifdef Q_OS_MAC

@@ -92,6 +92,8 @@ FirstRun::FirstRun(QWidget *parent) :
 				emit langChanged("et");
 				break;
 			}
+
+            ui->retranslateUi(this);
 		}
 			);
 

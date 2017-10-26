@@ -978,6 +978,203 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
 
 
 <context>
+    <name>SettingsDialog</name>
+    <message>
+        <source>Settings</source>
+        <translation>Settings</translation>
+    </message>
+
+    <message>
+        <source>GENERAL</source>
+        <translation>GENERAL</translation>
+    </message>
+    <message>
+        <source>SIGNING</source>
+        <translation>SIGNING</translation>
+    </message>
+    <message>
+        <source>ACCESS CERTIFICATE</source>
+        <translation>ACCESS CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>PROXY</source>
+        <translation>PROXY</translation>
+    </message>
+    <message>
+        <source>DIAGNOSTICS</source>
+        <translation>DIAGNOSTICS</translation>
+    </message>
+    <message>
+        <source>INFO</source>
+        <translation>INFO</translation>
+    </message>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>CHECK FOR UPDATES</source>
+        <translation>CHECK FOR UPDATES</translation>
+    </message>
+    <message>
+        <source>REMOVE UNNECESSARY CERTIFICATES</source>
+        <translation>REMOVE UNNECESSARY CERTIFICATES</translation>
+    </message>
+    <message>
+        <source>INSTALL MANUALLY</source>
+        <translation>INSTALL MANUALLY</translation>
+    </message>
+    <message>
+        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
+        <translation>SAVE DIAGNOSTICS REPORT DISK</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>SHOW CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>USE DEFAULT</source>
+        <translation>USE DEFAULT</translation>
+    </message>
+
+
+    <message>
+        <source>Language</source>
+        <translation>Language</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Check for updates</translation>
+    </message>
+    <message>
+        <source>Online TSL digest check</source>
+        <translation>Online TSL digest check</translation>
+    </message>
+    <message>
+        <source>Container default location</source>
+        <translation>Container default location</translation>
+    </message>
+    <message>
+        <source>Same folder</source>
+        <translation>Same folder</translation>
+    </message>
+    <message>
+        <source>Select the directory by yourself</source>
+        <translation>Select the directory by yourself</translation>
+    </message>
+
+    <message>
+        <source>Default file type</source>
+        <translation>Default file type</translation>
+    </message>
+    <message>
+        <source>ASiC-E - format for future international, European-wide compatibility</source>
+        <translation>ASiC-E - format for future international, European-wide compatibility</translation>
+    </message>
+    <message>
+        <source>BDOC – default digital signature format in Estonia.</source>
+        <translation>BDOC – default digital signature format in Estonia.</translation>
+    </message>
+    <message>
+        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
+        <translation>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation>Role</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Address</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>City</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>State</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Zip</translation>
+    </message>
+
+
+    <message>
+        <source>Ignore server access certificate (IP based access)</source>
+        <translation>Ignore server access certificate (IP based access)</translation>
+    </message>
+
+    <message>
+        <source>No proxy</source>
+        <translation>No proxy</translation>
+    </message>
+    <message>
+        <source>Use system proxy settings</source>
+        <translation>Use system proxy settings</translation>
+    </message>
+    <message>
+        <source>Manual proxy configuration</source>
+        <translation>Manual proxy configuration</translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation>Host</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Port</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Username</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Password</translation>
+    </message>
+
+    <message>
+        <source>"%1 version %2, released %3%4</source>
+        <translation>"%1 version %2, released %3%4</translation>
+    </message>
+
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Checking updates has failed.</translation>
+    </message>
+    <message>
+        <source>Please try again.</source>
+        <translation>Please try again.</translation>
+    </message>
+
+    <message>
+        <source>Once a day</source>
+        <translation>Once a day</translation>
+    </message>
+    <message>
+        <source>Once a week</source>
+        <translation>Once a week</translation>
+    </message>
+    <message>
+        <source>Once a month</source>
+        <translation>Once a month</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>Never</translation>
+    </message>
+</context>
+
+
+
+<context>
     <name>AddressItem</name>
     <message>
         <source>Add</source>
@@ -1011,6 +1208,10 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>ENCRYPT</source>
         <translation>ENCRYPT</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>SIGN</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
@@ -1782,227 +1983,6 @@ Control code: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation>Failed to decrypt document</translation>
-    </message>
-</context>
-<context>
-    <name>SettingsDialog</name>
-    <message>
-        <source>Settings</source>
-        <translation>Settings</translation>
-    </message>
-    <message>
-        <source>Container default location</source>
-        <translation>Container default location</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Role</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation>Resolution</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>State</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Zip</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Select folder</translation>
-    </message>
-    <message>
-        <source>Show signing intro</source>
-        <translation>Show signing introduction</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Same folder</translation>
-    </message>
-    <message>
-        <source>Ask container name</source>
-        <translation>Ask container name</translation>
-    </message>
-    <message>
-        <source>Default file type:</source>
-        <translation>Default file type:</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>General</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Signature</translation>
-    </message>
-    <message>
-        <source>Proxy</source>
-        <translation>Proxy</translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation>Host</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Port</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Username</translation>
-    </message>
-    <message>
-        <source>Show certificate</source>
-        <translation>Show certificate</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Server access certificate</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Ignore server access certificate (IP based access)</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please refer to IT support of your company. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please refer to IT support of your company. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;http://www.id.ee/eng/access&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Always save the last used role, resolution and location</source>
-        <translation>Always save the last used role, resolution and location</translation>
-    </message>
-    <message>
-        <source>Browse container path</source>
-        <translation>Browse container path</translation>
-    </message>
-    <message>
-        <source>Container default location same folder</source>
-        <translation>Container default location same folder</translation>
-    </message>
-    <message>
-        <source>Container default location path</source>
-        <translation>Container default location path</translation>
-    </message>
-    <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Server access certificate is not installed.</translation>
-    </message>
-    <message>
-        <source>Install manually</source>
-        <translation>Install manually</translation>
-    </message>
-    <message>
-        <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
-        <translation>Issued to: %1&lt;br /&gt;Valid to: %2 %3</translation>
-    </message>
-    <message>
-        <source>expired</source>
-        <translation>expired</translation>
-    </message>
-    <message>
-        <source>Show encrypting intro</source>
-        <translation>Show encrypting intro</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Select server access certificate</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>Server access certificates (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Invalid password</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Server access certificate error: %1</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;http://www.id.ee/eng/access&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Enter server access certificate password.</translation>
-    </message>
-    <message>
-        <source>I would like to encrypt for recipients who are using an older DigiDoc3 Crypto
-software (version 3.8 and earlier).</source>
-        <translation>I would like to encrypt for recipients who are using an older DigiDoc3 Crypto
-software (version 3.8 and earlier).</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Signing</translation>
-    </message>
-    <message>
-        <source>Default file type BDOC</source>
-        <translation>Default file type BDOC</translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</translation>
-    </message>
-    <message>
-        <source>Default file type ASiC-E</source>
-        <translation>Default file type ASiC-E</translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC – default digital signature format in Estonia.</translation>
-    </message>
-    <message>
-        <source>Online TSL digest check</source>
-        <translation>Online TSL digest check</translation>
-    </message>
-    <message>
-        <source>No proxy</source>
-        <translation>No proxy</translation>
-    </message>
-    <message>
-        <source>Use system proxy settings</source>
-        <translation>Use system proxy settings</translation>
-    </message>
-    <message>
-        <source>Manual proxy configuration</source>
-        <translation>Manual proxy configuration</translation>
-    </message>
-    <message>
-        <source>I would like to sign with Lithuanian, Latvian, Finnish ID-card</source>
-        <translation>I would like to sign with Lithuanian, Latvian, Finnish ID-card</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Restart now</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Enable proxy for SSL connections</translation>
-    </message>
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries.</source>
-        <translation>ASiC-E – international digital signature format that will be used across European countries.</translation>
-    </message>
-    <message>
-        <source>Use default</source>
-        <translation>Use default</translation>
     </message>
 </context>
 <context>

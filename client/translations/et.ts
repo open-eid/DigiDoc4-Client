@@ -963,6 +963,202 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 
 
 <context>
+    <name>SettingsDialog</name>
+    <message>
+        <source>Settings</source>
+        <translation>Seaded</translation>
+    </message>
+
+    <message>
+        <source>GENERAL</source>
+        <translation>ÜLDINE</translation>
+    </message>
+    <message>
+        <source>SIGNING</source>
+        <translation>ALLKIRJASTAMINE</translation>
+    </message>
+    <message>
+        <source>ACCESS CERTIFICATE</source>
+        <translation>JUURDEPÄÄSUTÕEND</translation>
+    </message>
+    <message>
+        <source>PROXY</source>
+        <translation>PROKSI</translation>
+    </message>
+    <message>
+        <source>DIAGNOSTICS</source>
+        <translation>DIAGNOSTIKA</translation>
+    </message>
+    <message>
+        <source>INFO</source>
+        <translation>INFO</translation>
+    </message>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>CHECK FOR UPDATES</source>
+        <translation>KONROLLI UUENDUSI</translation>
+    </message>
+    <message>
+        <source>REMOVE UNNECESSARY CERTIFICATES</source>
+        <translation>EEMALDA ÜLELIIGSED SERTIFIKAADID</translation>
+    </message>
+    <message>
+        <source>INSTALL MANUALLY</source>
+        <translation>PAIGALDA KÄSITSI</translation>
+    </message>
+    <message>
+        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
+        <translation>SALVESTA DIAGNOSTIKA RAPORT KETTALE</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>NÄITA TÕENDIT</translation>
+    </message>
+    <message>
+        <source>USE DEFAULT</source>
+        <translation>KASUTA VAIKIMISI</translation>
+    </message>
+
+
+    <message>
+        <source>Language</source>
+        <translation>Keel</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Kontrolli uuendusi</translation>
+    </message>
+    <message>
+        <source>Online TSL digest check</source>
+        <translation>Kontrolli TSL värskendust</translation>
+    </message>
+    <message>
+        <source>Container default location</source>
+        <translation>Ümbriku loomise vaikekataloog</translation>
+    </message>
+    <message>
+        <source>Same folder</source>
+        <translation>Samasse kataloogi</translation>
+    </message>
+    <message>
+        <source>Select the directory by yourself</source>
+        <translation>Valin kataloogi ise</translation>
+    </message>
+
+    <message>
+        <source>Default file type</source>
+        <translation>Vaikimisi faili tüüp</translation>
+    </message>
+    <message>
+        <source>ASiC-E - format for future international, European-wide compatibility</source>
+        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming</translation>
+    </message>
+    <message>
+        <source>BDOC – default digital signature format in Estonia.</source>
+        <translation>BDOC - digiallkirja vaikimisi vorming Eestis</translation>
+    </message>
+    <message>
+        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
+        <translation>Kui soovid vormingut muuta, siis tee seda enne, kui valid failid allkirjastamiseks. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation>Roll</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Aadress</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Linn</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Maakond</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Postikood</translation>
+    </message>
+
+
+    <message>
+        <source>Ignore server access certificate (IP based access)</source>
+        <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
+    </message>
+
+    <message>
+        <source>No proxy</source>
+        <translation>Ei kasuta proksit</translation>
+    </message>
+    <message>
+        <source>Use system proxy settings</source>
+        <translation>Kasuta süsteemseid proksi seadeid</translation>
+    </message>
+    <message>
+        <source>Manual proxy configuration</source>
+        <translation>Proksi seaded määratakse käsitsi</translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation>Host</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Port</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Kasutajanimi</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Parool</translation>
+    </message>
+
+    <message>
+        <source>"%1 version %2, released %3%4</source>
+        <translation>"%1 versioon %2, välja lastud %3%4</translation>
+    </message>
+
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Värskenduste kontrollimine on ebaõnnestunud.</translation>
+    </message>
+    <message>
+        <source>Please try again.</source>
+        <translation>Palun proovi uuesti.</translation>
+    </message>
+
+    <message>
+        <source>Once a day</source>
+        <translation>Kord päevas</translation>
+    </message>
+    <message>
+        <source>Once a week</source>
+        <translation>Kord nädalas</translation>
+    </message>
+    <message>
+        <source>Once a month</source>
+        <translation>Kord kuus</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>Mitte kunagi</translation>
+    </message>
+</context>
+
+
+<context>
     <name>AddressItem</name>
     <message>
         <source>Add</source>
@@ -995,6 +1191,10 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>ENCRYPT</source>
         <translation>KRÜPTEERI</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTA</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
@@ -1752,227 +1952,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SettingsDialog</name>
-    <message>
-        <source>Settings</source>
-        <translation>Seaded</translation>
-    </message>
-    <message>
-        <source>Container default location</source>
-        <translation>Ümbriku loomise vaikekataloog</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Roll</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation>Resolutsioon</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Linn</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Maakond</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Indeks</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Vali kataloog</translation>
-    </message>
-    <message>
-        <source>Show signing intro</source>
-        <translation>Näita allkirjastamisel sissejuhatust</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Samasse kataloogi</translation>
-    </message>
-    <message>
-        <source>Ask container name</source>
-        <translation>Küsi dokumendi nime</translation>
-    </message>
-    <message>
-        <source>Default file type:</source>
-        <translation>Vaikimisi faili tüüp:</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Üldine</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
-    </message>
-    <message>
-        <source>Proxy</source>
-        <translation>Proksi</translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation>Host</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Port</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Parool</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Kasutajanimi</translation>
-    </message>
-    <message>
-        <source>Show certificate</source>
-        <translation>Näita tõendit</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Juurdepääsutõend</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please refer to IT support of your company. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-toe poole. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Always save the last used role, resolution and location</source>
-        <translation>Jäta viimati sisestatud roll, resolutsioon ja asukoht meelde</translation>
-    </message>
-    <message>
-        <source>Browse container path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Container default location same folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Container default location path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Juurdepääsutõend ei ole paigaldatud.</translation>
-    </message>
-    <message>
-        <source>Install manually</source>
-        <translation>Paigalda käsitsi</translation>
-    </message>
-    <message>
-        <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
-        <translation>Kellele väljastatud: %1&lt;br /&gt;Kehtib kuni: %2 %3</translation>
-    </message>
-    <message>
-        <source>expired</source>
-        <translation>aegunud</translation>
-    </message>
-    <message>
-        <source>Show encrypting intro</source>
-        <translation>Näita krüpteerimisel sissejuhatust</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Valige juurdepääsutõend</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>Juurdepääsutõendid (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Vigane parool</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Juurdepääsutõendi viga: %1</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Sisestage juurdepääsutõendi parool.</translation>
-    </message>
-    <message>
-        <source>I would like to encrypt for recipients who are using an older DigiDoc3 Crypto
-software (version 3.8 and earlier).</source>
-        <translation>Soovin krüpteerida adressaatidele, kes kasutavad vanemat DigiDoc3 Krüpto
-tarkvara (versioon 3.8 ja varasemad).</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Allkirjastamine</translation>
-    </message>
-    <message>
-        <source>Default file type BDOC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>Kui soovid vormingut muuta, siis tee seda enne, kui lisad ümbrikusse allkirjastatava faili. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</translation>
-    </message>
-    <message>
-        <source>Default file type ASiC-E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC – digitaalallkirja vaikimisi vorming Eestis.</translation>
-    </message>
-    <message>
-        <source>Online TSL digest check</source>
-        <translation>Kontrolli TSL värskendust</translation>
-    </message>
-    <message>
-        <source>No proxy</source>
-        <translation>Ei kasuta proksit</translation>
-    </message>
-    <message>
-        <source>Use system proxy settings</source>
-        <translation>Kasuta süsteemseid proksi seadeid</translation>
-    </message>
-    <message>
-        <source>Manual proxy configuration</source>
-        <translation>Proksi seaded määratakse käsitsi</translation>
-    </message>
-    <message>
-        <source>I would like to sign with Lithuanian, Latvian, Finnish ID-card</source>
-        <translation>Soovin allkirjastada Leedu, Läti, Soome ID-kaardiga</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Taaskäivita rakendus</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
-    </message>
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries.</source>
-        <translation>ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvorming.</translation>
-    </message>
-    <message>
-        <source>Use default</source>
-        <translation>Kasuta vaikimisi</translation>
     </message>
 </context>
 <context>

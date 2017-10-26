@@ -965,6 +965,201 @@ unblock with PUK.&lt;/li&gt;
 </context>
 
 
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+
+    <message>
+        <source>GENERAL</source>
+        <translation>ГЕНЕРАЛЬНАЯ</translation>
+    </message>
+    <message>
+        <source>SIGNING</source>
+        <translation>подпис</translation>
+    </message>
+    <message>
+        <source>ACCESS CERTIFICATE</source>
+        <translation>Справка доступа</translation>
+    </message>
+    <message>
+        <source>PROXY</source>
+        <translation>Прокси</translation>
+    </message>
+    <message>
+        <source>DIAGNOSTICS</source>
+        <translation>ДИАГНОСТИКИ</translation>
+    </message>
+    <message>
+        <source>INFO</source>
+        <translation>ИНФО</translation>
+    </message>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>CHECK FOR UPDATES</source>
+        <translation>ПРОВЕРЬТЕ ОБНОВЛЕНИЯ</translation>
+    </message>
+    <message>
+        <source>REMOVE UNNECESSARY CERTIFICATES</source>
+        <translation>УДАЛИТЬ НЕОБХОДИМЫЕ СЕРТИФИКАТЫ</translation>
+    </message>
+    <message>
+        <source>INSTALL MANUALLY</source>
+        <translation>УСТАНОВИТЬ ВРУЧНУЮ</translation>
+    </message>
+    <message>
+        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
+        <translation>СОХРАНЯЙТЕ ДИАГНОСТИКУ ОТЧЕТ НА ДИСКЕ</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
+    </message>
+    <message>
+        <source>USE DEFAULT</source>
+        <translation>ИСПОЛЬЗОВАТЬ ПО УМОЛЧАНИЮ</translation>
+    </message>
+
+
+    <message>
+        <source>Language</source>
+        <translation>язык</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Проверить наличие обновлений</translation>
+    </message>
+    <message>
+        <source>Online TSL digest check</source>
+        <translation>Проверка обновлений TSL</translation>
+    </message>
+    <message>
+        <source>Container default location</source>
+        <translation>Расположение контейнера по умолчанию</translation>
+    </message>
+    <message>
+        <source>Same folder</source>
+        <translation>Та же папка</translation>
+    </message>
+    <message>
+        <source>Select the directory by yourself</source>
+        <translation>Выберите каталог самостоятельно</translation>
+    </message>
+
+    <message>
+        <source>Default file type</source>
+        <translation>Формат файла по умолчанию</translation>
+    </message>
+    <message>
+        <source>ASiC-E - format for future international, European-wide compatibility</source>
+        <translation>ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.</translation>
+    </message>
+    <message>
+        <source>BDOC – default digital signature format in Estonia.</source>
+        <translation>BDOC – формат цифровой подписи по умолчанию, используемой в Эстонии на данный момент.</translation>
+    </message>
+    <message>
+        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
+        <translation>Если Вы желаете изменить формат цифровой подписи, это нужно сделать до того, как Вы добавите в конверт подписываемый файл. В противном случае будет действовать формат подписи по умолчанию. Если документ уже подписан, то при добавлении к нему второй подписи формат подписи изменить невозможно.</translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation>Роль</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Город</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Уезд</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Индекс</translation>
+    </message>
+
+
+    <message>
+        <source>Ignore server access certificate (IP based access)</source>
+        <translation>Игнорировать справку доступа (доступ по IP)</translation>
+    </message>
+
+    <message>
+        <source>No proxy</source>
+        <translation>Прокси не используется</translation>
+    </message>
+    <message>
+        <source>Use system proxy settings</source>
+        <translation>Использовать системные настройки прокси</translation>
+    </message>
+    <message>
+        <source>Manual proxy configuration</source>
+        <translation>Настроить прокси вручную</translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation>Хост</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Порт</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Имя пользователя</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+
+    <message>
+        <source>"%1 version %2, released %3%4</source>
+        <translation>"%1 версия %2, выпущенный %3%4</translation>
+    </message>
+
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Ошибка проверки обновлений.</translation>
+    </message>
+    <message>
+        <source>Please try again.</source>
+        <translation>Пожалуйста, попробуйте еще раз.</translation>
+    </message>
+
+    <message>
+        <source>Once a day</source>
+        <translation>Один раз в день</translation>
+    </message>
+    <message>
+        <source>Once a week</source>
+        <translation>Раз в неделю</translation>
+    </message>
+    <message>
+        <source>Once a month</source>
+        <translation>Раз в месяц</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>Никогда</translation>
+    </message>
+</context>
+
 
 <context>
     <name>AddressItem</name>
@@ -999,6 +1194,10 @@ unblock with PUK.&lt;/li&gt;
     <message>
         <source>ENCRYPT</source>
         <translation>зашифрованная</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>подписать</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
@@ -1766,260 +1965,6 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SettingsDialog</name>
-    <message>
-        <source>One signature is invalid</source>
-        <translation>One signature is invalid!</translation>
-    </message>
-    <message>
-        <source>Click to resolve problem</source>
-        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Нажмите, чтобы решить проблему&lt;/a&gt;</translation>
-    </message>
-
-    <message>
-        <source>Help</source>
-        <translation>Помощь</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-
-    <message>
-        <source>Drag file here for signing</source>
-        <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia</translation>
-    </message>
-    <message>
-        <source>Open file for signing</source>
-        <translation>Выбрать файл</translation>
-    </message>
-
-    <message>
-        <source>Drag file here for encryption</source>
-        <translation>Перетащите файл здесь, чтобы зашифровать или расшифровать его</translation>
-    </message>
-    <message>
-        <source>Open file for encryption</source>
-        <translation>Выбрать файл</translation>
-    </message>
-
-
-    <message>
-        <source>Select folder</source>
-        <translation>Выбрать папку</translation>
-    </message>
-    <message>
-        <source>Container default location</source>
-        <translation>Расположение контейнера по умолчанию</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Та же папка</translation>
-    </message>
-    <message>
-        <source>Ask container name</source>
-        <translation>Спросить название контейнера</translation>
-    </message>
-    <message>
-        <source>Show signing intro</source>
-        <translation>Показывать введение при подписывании</translation>
-    </message>
-    <message>
-        <source>Default file type:</source>
-        <translation>Формат файла по умолчанию:</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Роль</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation>Резолюция</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Город</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Уезд</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Страна</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Индекс</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Общее</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Подпись</translation>
-    </message>
-    <message>
-        <source>Proxy</source>
-        <translation>Прокси</translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation>Хост</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Порт</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Пароль</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Имя пользователя</translation>
-    </message>
-    <message>
-        <source>Show certificate</source>
-        <translation>См. сертификат</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Справка доступа</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Игнорировать справку доступа (доступ по IP)</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please refer to IT support of your company. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. Чтобы получить возможность пользоваться услугой в большем объеме или использовать ее в коммерческих целях, обратитесь в службу ИТ-поддержки Вашего учреждения. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;http://www.id.ee/rus/access&lt;/a&gt;, по электронной почте sales@sk.ee или по телефону 1777 (только в пределах Эстонии), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Always save the last used role, resolution and location</source>
-        <translation>Сохранить последнюю введённую роль, резолюцию и местоположение</translation>
-    </message>
-    <message>
-        <source>Browse container path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Container default location same folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Container default location path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Отсутствует справка доступа.</translation>
-    </message>
-    <message>
-        <source>Install manually</source>
-        <translation>Установить вручную</translation>
-    </message>
-    <message>
-        <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
-        <translation>Выдан: %1&lt;br /&gt;Действительно до: %2 %3</translation>
-    </message>
-    <message>
-        <source>expired</source>
-        <translation>поросрочен</translation>
-    </message>
-    <message>
-        <source>Show encrypting intro</source>
-        <translation>Показывать подсказку для шифрования</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Выберите PKCS#12 сертификат</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>PKCS#12 Сертификаты (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Ошибочный пароль</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Ошибка справки доступа: %1</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;http://www.id.ee/rus/access&lt;/a&gt;, по электронной почте sales@sk.ee или по телефону 1777 (только в пределах Эстонии), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Введите пароль справки доступа.</translation>
-    </message>
-    <message>
-        <source>I would like to encrypt for recipients who are using an older DigiDoc3 Crypto
-software (version 3.8 and earlier).</source>
-        <translation>Шифровать документы для получателей использующих старые версии
-DigiDoc3 Crypto (версии 3.8 и старше).</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Подписание</translation>
-    </message>
-    <message>
-        <source>Default file type BDOC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>Если Вы желаете изменить формат цифровой подписи, это нужно сделать до того, как Вы добавите в конверт подписываемый файл. В противном случае будет действовать формат подписи по умолчанию. Если документ уже подписан, то при добавлении к нему второй подписи формат подписи изменить невозможно.</translation>
-    </message>
-    <message>
-        <source>Default file type ASiC-E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC – формат цифровой подписи по умолчанию, используемой в Эстонии на данный момент.</translation>
-    </message>
-    <message>
-        <source>Online TSL digest check</source>
-        <translation>Проверка обновлений TSL</translation>
-    </message>
-    <message>
-        <source>No proxy</source>
-        <translation>Прокси не используется</translation>
-    </message>
-    <message>
-        <source>Use system proxy settings</source>
-        <translation>Использовать системные настройки прокси</translation>
-    </message>
-    <message>
-        <source>Manual proxy configuration</source>
-        <translation>Настроить прокси вручную</translation>
-    </message>
-    <message>
-        <source>I would like to sign with Lithuanian, Latvian, Finnish ID-card</source>
-        <translation>Желаю подписывать ИД-картами Латвии, Литвы и Финляндии</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Начать заново</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Включить прокси-сервер для подключения SSL</translation>
-    </message>
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries.</source>
-        <translation>ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.</translation>
-    </message>
-    <message>
-        <source>Use default</source>
-        <translation>Использовать по умолчанию</translation>
     </message>
 </context>
 <context>
