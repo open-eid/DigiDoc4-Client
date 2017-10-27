@@ -12,8 +12,8 @@
 		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
 		<glob pattern="*.bdoc"/>
 		<glob pattern="*.asice"/>
-		<glon pattern="*.sce"/>
-		<glon pattern="*.edoc"/>
+		<glob pattern="*.sce"/>
+		<glob pattern="*.edoc"/>
 	</mime-type>
 	<mime-type type="application/x-ddoc">
 		<comment>DigiDoc signed document</comment>
@@ -32,6 +32,6 @@
 		<comment xml:lang="et">DigiDoc ajatembeldatud dokument</comment>
 		<comment xml:lang="ru">DigiDoc документ с временным штампом</comment>
 		<glob pattern="*.asics"/>
-		<glon pattern="*.scs"/>
+		<glob pattern="*.scs"/>
 	</mime-type>
 </mime-info>
