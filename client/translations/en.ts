@@ -1174,18 +1174,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
 
 
 
-<context>
-    <name>AddressItem</name>
-    <message>
-        <source>Add</source>
-        <translation>ADD</translation>
-    </message>
-    <message>
-        <source>Added</source>
-        <translation>ADDED</translation>
-    </message>
-</context>
-
 
 <context>
     <name>ContainerPage</name>
@@ -1278,7 +1266,245 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>Decrypted files</source>
         <translation>Decrypted files</translation>
     </message>
+</context>
 
+
+<context>
+    <name>SignatureDialog</name>
+    <message>
+        <source>Notice</source>
+        <translation>Notice</translation>
+    </message>
+    <message>
+        <source>Role / resolution</source>
+        <translation>Role / resolution</translation>
+    </message>
+    <message>
+        <source>Signer</source>
+        <translation>Signer</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>City</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>State</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Zip</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+
+    <message>
+        <source>Attribute</source>
+        <translation>Attribute</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Value</translation>
+    </message>
+
+
+    <message>
+        <source>TECHNICAL INFORMATION</source>
+        <translation>TECHNICAL INFORMATION</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Timestamp</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Warnings</translation>
+    </message>
+    <message>
+        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
+        <translation>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Piirangud</translation>
+    </message>
+    <message>
+        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
+        <translation>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Test signature</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>is unknown</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Unknown error</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
+        <translation>This is an invalid signature or malformed digitally signed file. The signature is not valid.</translation>
+    </message>
+    <message>
+        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
+        <translation>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate issuer</source>
+        <translation>Signer&apos;s Certificate issuer</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate</source>
+        <translation>Signer&apos;s Certificate</translation>
+    </message>
+    <message>
+        <source>Signature method</source>
+        <translation>Signature method</translation>
+    </message>
+    <message>
+        <source>Container format</source>
+        <translation>Container format</translation>
+    </message>
+    <message>
+        <source>Signature format</source>
+        <translation>Signature format</translation>
+    </message>
+    <message>
+        <source>Signature policy</source>
+        <translation>Signature policy</translation>
+    </message>
+    <message>
+        <source>Signed file count</source>
+        <translation>Signed file count</translation>
+    </message>
+    <message>
+        <source>Archive Timestamp</source>
+        <translation>Archive Timestamp</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate issuer</source>
+        <translation>Archive TS Certificate issuer</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate</source>
+        <translation>Archive TS Certificate</translation>
+    </message>
+    <message>
+        <source>Signature Timestamp</source>
+        <translation>Signature Timestamp</translation>
+    </message>
+    <message>
+        <source>TS Certificate issuer</source>
+        <translation>TS Certificate issuer</translation>
+    </message>
+    <message>
+        <source>TS Certificate</source>
+        <translation>TS Certificate</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate issuer</source>
+        <translation>OCSP Certificate issuer</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate</source>
+        <translation>OCSP Certificate</translation>
+    </message>
+    <message>
+        <source>Hash value of signature</source>
+        <translation>Hash value of signature</translation>
+    </message>
+    <message>
+        <source>OCSP time</source>
+        <translation>OCSP time</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s computer time (UTC)</source>
+        <translation>Signer&apos;s computer time (UTC)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>Updater</name>
+    <message>
+        <source>Close</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</translation>
+    </message>
+    <message>
+        <source>Certificate renewal</source>
+        <translation>Certificate renewal</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>I agree to the terms of use of certificates.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>I confirm I have saved new PIN1, PIN2 and PUK code.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Enter PIN</translation>
+    </message>
+</context>
+
+<context>
+    <name>WaitDialog</name>
+    <message>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>ADD</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>ADDED</translation>
+    </message>
 </context>
 
 
@@ -1983,195 +2209,6 @@ Control code: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation>Failed to decrypt document</translation>
-    </message>
-</context>
-<context>
-    <name>SignatureDialog</name>
-    <message>
-        <source>Signature format</source>
-        <translation>Signature format</translation>
-    </message>
-    <message>
-        <source>Signed file count</source>
-        <translation>Signed file count</translation>
-    </message>
-    <message>
-        <source>Signer</source>
-        <translation>Signer</translation>
-    </message>
-    <message>
-        <source>Signer location</source>
-        <translation>Signer location</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>State</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Zip</translation>
-    </message>
-    <message>
-        <source>Role / resolution</source>
-        <translation>Role / resolution</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Signature</translation>
-    </message>
-    <message>
-        <source>Attribute</source>
-        <translation>Attribute</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Value</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Unknown error</translation>
-    </message>
-    <message>
-        <source>Signature method</source>
-        <translation>Signature method</translation>
-    </message>
-    <message>
-        <source>Hash value of signature</source>
-        <translation>Hash value of signature</translation>
-    </message>
-    <message>
-        <source>Container format</source>
-        <translation>Container format</translation>
-    </message>
-    <message>
-        <source>Signature policy</source>
-        <translation>Signature policy</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test signature</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Signer&apos;s computer time (UTC)</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate issuer</source>
-        <translation>OCSP Certificate issuer</translation>
-    </message>
-    <message>
-        <source>OCSP time</source>
-        <translation>OCSP time</translation>
-    </message>
-    <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>This is an invalid signature or malformed digitally signed file. The signature is not valid.</translation>
-    </message>
-    <message>
-        <source>&lt;a href=&quot;info&quot;&gt;Technical information&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;info&quot;&gt;Technical information&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Notice</source>
-        <translation>Notice</translation>
-    </message>
-    <message>
-        <source>The current file is a timestamped ASiC-S container. You are not allowed to add or remove timestamps (signatures) to this container.</source>
-        <translation>The current file is a timestamped ASiC-S container. You are not allowed to add or remove timestamps (signatures) to this container.</translation>
-    </message>
-    <message>
-        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container. &lt;a href=&apos;http://www.id.ee/?id=36161&apos;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container. &lt;a href=&apos;http://www.id.ee/?id=36161&apos;&gt;Additional info&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Warnings</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Restrictions</translation>
-    </message>
-    <message>
-        <source>Signature Timestamp</source>
-        <translation>Signature Timestamp</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate issuer</source>
-        <translation>Signer&apos;s Certificate issuer</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate</source>
-        <translation>Signer&apos;s Certificate</translation>
-    </message>
-    <message>
-        <source>TS Certificate issuer</source>
-        <translation>TS Certificate issuer</translation>
-    </message>
-    <message>
-        <source>TS Certificate</source>
-        <translation>TS Certificate</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate</source>
-        <translation>OCSP Certificate</translation>
-    </message>
-    <message>
-        <source>Archive Timestamp</source>
-        <translation>Archive Timestamp</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate issuer</source>
-        <translation>Archive TS Certificate issuer</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate</source>
-        <translation>Archive TS Certificate</translation>
-    </message>
-    <message>
-        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
-The Information System Authority does not retain information regarding the files and users of the service.</source>
-        <translation>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
-The Information System Authority does not retain information regarding the files and users of the service.</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Timestamp</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>status unknown</source>
-        <translation>status unknown</translation>
-    </message>
-    <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</translation>
-    </message>
-    <message>
-        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
-        <translation>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</translation>
     </message>
 </context>
 <context>

@@ -131,7 +131,7 @@
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Maakond</string>
+            <string>State</string>
            </property>
           </widget>
          </item>
@@ -159,7 +159,7 @@
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Linn</string>
+            <string>City</string>
            </property>
           </widget>
          </item>
@@ -187,7 +187,7 @@
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Riik</string>
+            <string>Country</string>
            </property>
           </widget>
          </item>
@@ -291,7 +291,7 @@ background-color: #FFFFFF;</string>
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Roll / resolutsioon</string>
+            <string>Role / resolution</string>
            </property>
           </widget>
          </item>
@@ -349,7 +349,7 @@ background-color: #FFFFFF;</string>
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Postikood</string>
+            <string>Zip</string>
            </property>
           </widget>
          </item>
@@ -425,7 +425,7 @@ background-color: #FFFFFF;</string>
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Allkirjastaja</string>
+            <string>Signer</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -549,7 +549,7 @@ background-color: #FFFFFF;</string>
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Allkiri</string>
+            <string>Signature</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -731,7 +731,7 @@ QPushButton:disabled {
 }</string>
         </property>
         <property name="text">
-         <string>SULGE</string>
+         <string>CLOSE</string>
         </property>
        </widget>
       </item>

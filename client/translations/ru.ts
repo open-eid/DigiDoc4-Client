@@ -391,7 +391,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Timestamp</source>
-        <translation>Отметка</translation>
+        <translation>Временной штамп</translation>
     </message>
     <message>
         <source>Warnings</source>
@@ -403,7 +403,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Test signature</source>
-        <translation>Тестовая подпись</translation>
+        <translation>Пробная подпись</translation>
     </message>
     <message>
         <source>is valid</source>
@@ -1093,7 +1093,6 @@ unblock with PUK.&lt;/li&gt;
         <translation>Индекс</translation>
     </message>
 
-
     <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
@@ -1160,18 +1159,6 @@ unblock with PUK.&lt;/li&gt;
     </message>
 </context>
 
-
-<context>
-    <name>AddressItem</name>
-    <message>
-        <source>Add</source>
-        <translation>ДОБАВИТЬ</translation>
-    </message>
-    <message>
-        <source>Added</source>
-        <translation>добавленной</translation>
-    </message>
-</context>
 
 <context>
     <name>ContainerPage</name>
@@ -1267,6 +1254,245 @@ unblock with PUK.&lt;/li&gt;
     </message>
 </context>
 
+
+<context>
+    <name>SignatureDialog</name>
+    <message>
+        <source>Notice</source>
+        <translation>Предупреждения</translation>
+    </message>
+    <message>
+        <source>Role / resolution</source>
+        <translation>Роль / резолюция</translation>
+    </message>
+    <message>
+        <source>Signer</source>
+        <translation>Подписавшаяся сторона</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Город</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Уезд</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Индекс</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Подпись</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+
+    <message>
+        <source>Attribute</source>
+        <translation>Атрибут</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+
+
+    <message>
+        <source>TECHNICAL INFORMATION</source>
+        <translation>ТЕХНИЧЕСКАЯ ИНФОРМАЦИЯ</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Временной штамп</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>действует</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Предупреждения</translation>
+    </message>
+    <message>
+        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
+        <translation>Данный контейнер имеет меньшую надежность по сравнению с официально признанным в Эстонии контейнером в формате BDOC.</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>ограничения</translation>
+    </message>
+    <message>
+        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
+        <translation>Эта электронная подпись не эквивалентна рукописной подписи и поэтому может использоваться только в тех случаях, когда не требуется квалифицированная электронная подпись.</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Пробная подпись</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>неизвестно</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Неизвестная ошибка</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>недействительна</translation>
+    </message>
+    <message>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Тестовая подпись создается тестовым сертификатом, который отличается от настоящего тем, что с тестовым сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
+        <translation>See on vigane allkiri või vigane digitaalselt allkirjastatud fail. Allkiri ei kehti.</translation>
+    </message>
+    <message>
+        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
+        <translation>Статус подписи отображается «неизвестно», если у вас нет всех сертификатов службы подтверждения работоспособности и / или сертификатов сертификатов, установленных на вашем компьютере (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;дополнительная информация&lt;/a&gt;).</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate issuer</source>
+        <translation>Организация, выдавшая сертификат подписавшего</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate</source>
+        <translation>Сертификат пользователя</translation>
+    </message>
+    <message>
+        <source>Signature method</source>
+        <translation>Метод подписи</translation>
+    </message>
+    <message>
+        <source>Container format</source>
+        <translation>Формат контейнера</translation>
+    </message>
+    <message>
+        <source>Signature format</source>
+        <translation>Формат подписи</translation>
+    </message>
+    <message>
+        <source>Signature policy</source>
+        <translation>Политика цифровой подписи</translation>
+    </message>
+    <message>
+        <source>Signed file count</source>
+        <translation>Количество подписанных файлов</translation>
+    </message>
+    <message>
+        <source>Archive Timestamp</source>
+        <translation>Временной штамп архива</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate issuer</source>
+        <translation>Издатель сертификата временного штампа архива</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate</source>
+        <translation>Издатель сертификата временного штампа архива</translation>
+    </message>
+    <message>
+        <source>Signature Timestamp</source>
+        <translation>Временной штамп подписи</translation>
+    </message>
+    <message>
+        <source>TS Certificate issuer</source>
+        <translation>Издатель сертификата временного штампа</translation>
+    </message>
+    <message>
+        <source>TS Certificate</source>
+        <translation>Сертификат временного штампа</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate issuer</source>
+        <translation>Организация, выдавшая сертификат подтверждения подлинности</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate</source>
+        <translation>Сертификат OCSP</translation>
+    </message>
+    <message>
+        <source>Hash value of signature</source>
+        <translation>Хэш значение подтверждения подлинности подписи</translation>
+    </message>
+    <message>
+        <source>OCSP time</source>
+        <translation>Время подтверждения подлинности подписи</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s computer time (UTC)</source>
+        <translation>Время на компьютере подписывающего (UTC)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>Updater</name>
+    <message>
+        <source>Close</source>
+        <translation>Закрыть/translation></translation>
+    </message>
+    <message>
+        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Update in progress. The process may take up to 10 minutes. Do not remove the card from the reader!</translation>
+    </message>
+    <message>
+        <source>Certificate renewal</source>
+        <translation>Продление сертификата</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>Я согласен с условиями использования сертификатов.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>Я подтверждаю, что сохранил новый код PIN1, PIN2 и PUK.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Sisesta PIN</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WaitDialog</name>
+    <message>
+        <source>Decrypting</source>
+        <translation>Расшифровка</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>ДОБАВИТЬ</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>добавленной</translation>
+    </message>
+</context>
 
 
 <context>
@@ -1965,195 +2191,6 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SignatureDialog</name>
-    <message>
-        <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Signature format</source>
-        <translation>Формат подписи</translation>
-    </message>
-    <message>
-        <source>Signed file count</source>
-        <translation>Количество подписанных файлов</translation>
-    </message>
-    <message>
-        <source>Signer</source>
-        <translation>Подписавшаяся сторона</translation>
-    </message>
-    <message>
-        <source>Signer location</source>
-        <translation>Месторасположение расписавшегося</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Город</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Уезд</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Страна</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Индекс</translation>
-    </message>
-    <message>
-        <source>Role / resolution</source>
-        <translation>Роль / резолюция</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Подпись</translation>
-    </message>
-    <message>
-        <source>Attribute</source>
-        <translation>Атрибут</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Значение</translation>
-    </message>
-    <message>
-        <source>Signature method</source>
-        <translation>Метод подписи</translation>
-    </message>
-    <message>
-        <source>Hash value of signature</source>
-        <translation>Хэш значение подтверждения подлинности подписи</translation>
-    </message>
-    <message>
-        <source>Container format</source>
-        <translation>Формат контейнера</translation>
-    </message>
-    <message>
-        <source>Signature policy</source>
-        <translation>Политика цифровой подписи</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Пробная подпись</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Время на компьютере подписывающего (UTC)</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate issuer</source>
-        <translation>Организация, выдавшая сертификат подтверждения подлинности</translation>
-    </message>
-    <message>
-        <source>OCSP time</source>
-        <translation>Время подтверждения подлинности подписи</translation>
-    </message>
-    <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Данный контейнер имеет меньшую надежность по сравнению с официально признанным в Эстонии контейнером в формате BDOC.</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Тестовая подпись создается тестовым сертификатом, который отличается от настоящего тем, что с тестовым сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>Повреждена подпись или подписанный файл. Данная подпись недействительна.</translation>
-    </message>
-    <message>
-        <source>&lt;a href=&quot;info&quot;&gt;Technical information&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;info&quot;&gt;Техническая информация&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Notice</source>
-        <translation>Предупреждения</translation>
-    </message>
-    <message>
-        <source>The current file is a timestamped ASiC-S container. You are not allowed to add or remove timestamps (signatures) to this container.</source>
-        <translation>Данный документ это ASiC-S контейнер с временным штампом. К данному контейнеру нельзя добавить или удалить из него временной штамп (подпись).</translation>
-    </message>
-    <message>
-        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container. &lt;a href=&apos;http://www.id.ee/?id=36161&apos;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>DigiDoc контейнер имеет старый формат. К данному контейнеру нельзя добавить или удалить из него подпись. &lt;a href=&apos;http://www.id.ee/?id=36162&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>предупреждения</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>oгрaничения</translation>
-    </message>
-    <message>
-        <source>Signature Timestamp</source>
-        <translation>Временной штамп подписи</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate issuer</source>
-        <translation>Организация, выдавшая сертификат подписавшего</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate</source>
-        <translation>Сертификат пользователя</translation>
-    </message>
-    <message>
-        <source>TS Certificate issuer</source>
-        <translation>Издатель сертификата временного штампа</translation>
-    </message>
-    <message>
-        <source>TS Certificate</source>
-        <translation>Сертификат временного штампа</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate</source>
-        <translation>Сертификат OCSP</translation>
-    </message>
-    <message>
-        <source>Archive Timestamp</source>
-        <translation>Временной штамп архива</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate issuer</source>
-        <translation>Издатель сертификата временного штампа архива</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate</source>
-        <translation>Сертификат временного штампа архива</translation>
-    </message>
-    <message>
-        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
-The Information System Authority does not retain information regarding the files and users of the service.</source>
-        <translation>Контроль срока действия дигитальной подписи в формате PDF осуществляется через электронную услугу. Контролируемый файл передается э-услугe.
-Департамент государственной инфосистемы не сохраняет информацию о пользователях э-услуги и файлах.</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>действительна</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>недействительна</translation>
-    </message>
-    <message>
-        <source>status unknown</source>
-        <translation>статус неизвестен</translation>
-    </message>
-    <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;http://id.ee/?lang=ru&amp;id=34529&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
-    </message>
-    <message>
-        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
-        <translation>Эта электронная подпись не эквивалентна рукописной подписи и поэтому может использоваться только в тех случаях, когда не требуется квалифицированная электронная подпись.</translation>
     </message>
 </context>
 <context>

@@ -43,7 +43,7 @@
     <string notr="true">color: #041E42; border: none;</string>
    </property>
    <property name="text">
-    <string>Dekrüpteerimine</string>
+    <string>Decrypting</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

@@ -1159,18 +1159,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 
 
 <context>
-    <name>AddressItem</name>
-    <message>
-        <source>Add</source>
-        <translation>LISA</translation>
-    </message>
-    <message>
-        <source>Added</source>
-        <translation>LISATUD</translation>
-    </message>
-</context>
-
-<context>
     <name>ContainerPage</name>
     <message>
         <source>Container</source>
@@ -1261,6 +1249,245 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Decrypted files</source>
         <translation>Dekrüpteeritud failid</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SignatureDialog</name>
+    <message>
+        <source>Notice</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>Role / resolution</source>
+        <translation>Roll / resolutsioon</translation>
+    </message>
+    <message>
+        <source>Signer</source>
+        <translation>Allkirjastaja</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Linn</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Maakond</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Postikood</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Allkiri</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+
+    <message>
+        <source>Attribute</source>
+        <translation>Attribuut</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+
+    <message>
+        <source>TECHNICAL INFORMATION</source>
+        <translation>TEHNILINE INFORMATSIOON</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Ajatempel</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
+        <translation>Praegune BDOC-konteiner kasutab nõrgemat krüpteerimismeetodit kui Eestis on ametlikult aktsepteeritud.</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Piirangud</translation>
+    </message>
+    <message>
+        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
+        <translation>See e-allkiri ei ole käsitsi kirjutatud allkirjadega samaväärne ja seetõttu saab seda kasutada ainult tehingute puhul, kus kvalifitseeritud e-allkiri pole kohustuslik.</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Testallkiri</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>on teadmata</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;http://www.id.ee/index.php?id=30379&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
+        <translation>See on vigane allkiri või vigane digitaalselt allkirjastatud fail. Allkiri ei kehti.</translation>
+    </message>
+    <message>
+        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
+        <translation>Allkirja olek kuvatakse "tundmatuks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;lisainformatsioon&lt;/a&gt;).</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate issuer</source>
+        <translation>Allkirja sertifikaadi väljastaja</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate</source>
+        <translation>Allkirja sertifikaat</translation>
+    </message>
+    <message>
+        <source>Signature method</source>
+        <translation>Allkirja meetod</translation>
+    </message>
+    <message>
+        <source>Container format</source>
+        <translation>Konteineri formaat</translation>
+    </message>
+    <message>
+        <source>Signature format</source>
+        <translation>Allkirja vorming</translation>
+    </message>
+    <message>
+        <source>Signature policy</source>
+        <translation>Allkirja vorming</translation>
+    </message>
+    <message>
+        <source>Signed file count</source>
+        <translation>Allkirjastatud failide arv</translation>
+    </message>
+    <message>
+        <source>Archive Timestamp</source>
+        <translation>Arhiivi ajatempel</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate issuer</source>
+        <translation>Arhiivi ajatempli sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate</source>
+        <translation>Arhiivi ajatempli sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>Signature Timestamp</source>
+        <translation>Allkirja ajatempel</translation>
+    </message>
+    <message>
+        <source>TS Certificate issuer</source>
+        <translation>Ajatempliteenuse sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>TS Certificate</source>
+        <translation>Ajatempliteenuse sertifikaat</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate issuer</source>
+        <translation>Kehtivuskinnituse sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate</source>
+        <translation>Kehtivuskinnituse sertifikaat</translation>
+    </message>
+    <message>
+        <source>Hash value of signature</source>
+        <translation>Allkirja sõnumilühend</translation>
+    </message>
+    <message>
+        <source>OCSP time</source>
+        <translation>Kehtivuskinnituse aeg</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s computer time (UTC)</source>
+        <translation>Allkirjastaja arvuti kellaaeg</translation>
+    </message>
+</context>
+
+
+
+<context>
+    <name>Updater</name>
+    <message>
+        <source>Close</source>
+        <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Värskendamine toimub Protsess võib kesta kuni 10 minutit. Ärge eemaldage kaarti lugeja poolt!</translation>
+    </message>
+    <message>
+        <source>Certificate renewal</source>
+        <translation>Sertifikaatide uuendamine</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>I agree to the terms of use of certificates.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>I confirm I have saved a new PIN1, PIN2 and PUK code.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Sisesta PIN</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WaitDialog</name>
+    <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerimine</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+</context>
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>LISA</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>LISATUD</translation>
     </message>
 </context>
 
@@ -1952,195 +2179,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SignatureDialog</name>
-    <message>
-        <source>Signature format</source>
-        <translation>Allkirja formaat</translation>
-    </message>
-    <message>
-        <source>Signed file count</source>
-        <translation>Allkirjastatud failide arv</translation>
-    </message>
-    <message>
-        <source>Signer</source>
-        <translation>Allkirjastaja</translation>
-    </message>
-    <message>
-        <source>Signer location</source>
-        <translation>Allkirjastaja asukoht</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Linn</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Maakond</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Indeks</translation>
-    </message>
-    <message>
-        <source>Role / resolution</source>
-        <translation>Roll / resolutsioon</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
-    </message>
-    <message>
-        <source>Attribute</source>
-        <translation>Atribuut</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Väärtus</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>Signature method</source>
-        <translation>Allkirja meetod</translation>
-    </message>
-    <message>
-        <source>Hash value of signature</source>
-        <translation>Allkirja sõnumilühend</translation>
-    </message>
-    <message>
-        <source>Container format</source>
-        <translation>Konteineri formaat</translation>
-    </message>
-    <message>
-        <source>Signature policy</source>
-        <translation>Allkirja vorming</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test allkiri</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Allkirjastaja arvuti aeg (UTC)</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate issuer</source>
-        <translation>Kehtivuskinnituse sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>OCSP time</source>
-        <translation>Kehtivuskinnituse aeg</translation>
-    </message>
-    <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Tegemist on nõrgema usaldusväärsusega kui Eestis ametlikult aksepteeritud BDOC konteiner.</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;http://www.id.ee/index.php?id=30379&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>Tegu on vigase allkirjaga või valesti koostatud digiallkirjastatud failiga. See allkiri ei ole kehtiv.</translation>
-    </message>
-    <message>
-        <source>&lt;a href=&quot;info&quot;&gt;Technical information&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;info&quot;&gt;Tehniline info&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Notice</source>
-        <translation>Hoiatus</translation>
-    </message>
-    <message>
-        <source>The current file is a timestamped ASiC-S container. You are not allowed to add or remove timestamps (signatures) to this container.</source>
-        <translation>Tegemist on ajatembeldatud ASiC-S kontaineriga. Sellele konteinerile ei saa ajatemplit (allkirja) lisada ega eemaldada.</translation>
-    </message>
-    <message>
-        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container. &lt;a href=&apos;http://www.id.ee/?id=36161&apos;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>Tegemist on vanas formaadis DigiDoc konteineriga. Sellele konteinerile ei saa allkirja lisada ega eemaldada. &lt;a href=&apos;http://www.id.ee/?id=36160&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>hoiatusega</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>piirangud</translation>
-    </message>
-    <message>
-        <source>Signature Timestamp</source>
-        <translation>Allkirja ajatempel</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate issuer</source>
-        <translation>Allkirjastaja sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate</source>
-        <translation>Allkirjastaja sertifikaat</translation>
-    </message>
-    <message>
-        <source>TS Certificate issuer</source>
-        <translation>Ajatempliteenuse sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>TS Certificate</source>
-        <translation>Ajatempliteenuse sertifikaat</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate</source>
-        <translation>Kehtivuskinnituse sertifikaat</translation>
-    </message>
-    <message>
-        <source>Archive Timestamp</source>
-        <translation>Arhiivi ajatempel</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate issuer</source>
-        <translation>Arhiivi ajatempli sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate</source>
-        <translation>Arhiivi ajatempli sertifikaat</translation>
-    </message>
-    <message>
-        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
-The Information System Authority does not retain information regarding the files and users of the service.</source>
-        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimine toimub läbi teenuse. Kontrollitav fail edastatakse teenusele.
-Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failide osas.</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Ajatempel</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>status unknown</source>
-        <translation>staatus on teadmata</translation>
-    </message>
-    <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja staatus kuvatakse &quot;teadmata&quot;, kui arvutis puuduvad allkirja kontrollimiseks vajalikud sertifitseerija ja/või kehtivuskinnituse teenuse sertifikaadid (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;täiendav info&lt;/a&gt;).</translation>
-    </message>
-    <message>
-        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
-        <translation>Tegemist on e-allkirjaga, mis on kasutatav nendes toimingutes, kus ei ole nõutud omakäelise allkirjaga võrdväärset kvalifitseeritud e-allkirja ehk digitaalallkirja.</translation>
     </message>
 </context>
 <context>
