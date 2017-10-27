@@ -113,6 +113,7 @@ if( APPLE )
 		COMMAND cp -a /Library/Frameworks/libdigidoc.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
 		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app
 			-executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
+			-executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/MacOS/${PKCS11_NAME} 
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/imageformats -type f -a ! -name libqjpeg.dylib -a ! -name libqsvg.dylib -delete
 		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
@@ -139,6 +140,7 @@ if( APPLE )
 			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Libraries/*
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/*.framework
+			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libopensc.5.dylib
 			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
 		COMMAND codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../..
 			--entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements
