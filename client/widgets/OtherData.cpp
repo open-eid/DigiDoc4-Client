@@ -39,7 +39,7 @@ OtherData::OtherData(QWidget *parent) :
 	ui->lblNoForwarding->setFont( font );
 	ui->labelEestiEe->setFont( Styles::font( Styles::Regular, 12 ) );
     QString decoration = "style='color: #006EB5;  text-decoration: none; font-weight: 900;'";
-	ui->labelEestiEe->setText( "Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist <a href='www.eesti.ee'><span " + decoration + ">eesti.ee</span></a>" );
+    ui->labelEestiEe->setText( tr("For more complete official email tuning, see the portal") + " <a href='www.eesti.ee'><span " + decoration + ">eesti.ee</span></a>" );
     ui->labelEestiEe->setOpenExternalLinks( true );	
 	ui->activate->setFont( condensed );
 	ui->btnCheckEMail->setFont( condensed );
@@ -95,7 +95,7 @@ void OtherData::update( bool activate, const QString &eMail, const quint8 &error
 			if( errorCode )
 				ui->lblEMail->setText( QString("<b>") + eMail + QString("</b>") );  // Show error text here
 			else
-				ui->lblEMail->setText( QString("Teie @eesti.ee posti aadressid on suunatud e-postile <br/><b>") + eMail + QString("</b>") );
+				ui->lblEMail->setText( QString(tr("Your @eesti.ee mail addresses are addressed to e-mail") + " <br/><b>" + eMail + QString("</b>") ) );
 		}
 	}
 }
@@ -116,4 +116,14 @@ QString OtherData::getEmail()
 void OtherData::setFocusToEmail()
 {
 	ui->inputEMail->setFocus();
+}
+
+void OtherData::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
 }

@@ -98,7 +98,7 @@
     <string notr="true">color: #75787B; background: none;</string>
    </property>
    <property name="text">
-    <string>Lugejas on ID kaart</string>
+    <string>There is an ID card in reader</string>
    </property>
   </widget>
   <widget class="LabelButton" name="cardPhoto">

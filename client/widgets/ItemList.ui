@@ -354,7 +354,7 @@ QPushButton:disabled {
 }</string>
               </property>
               <property name="text">
-               <string>OTSI</string>
+               <string>Search</string>
               </property>
              </widget>
             </item>

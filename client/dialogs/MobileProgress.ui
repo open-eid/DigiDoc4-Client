@@ -241,7 +241,7 @@ QPushButton:hover:!pressed {
 }</string>
         </property>
         <property name="text">
-         <string>KATKESTA</string>
+         <string>CANCEL</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>

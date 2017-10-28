@@ -44,6 +44,7 @@ signals:
 
 protected:
 	void paintEvent( QPaintEvent * ) override;
+	void changeEvent(QEvent* event) override;
 
 private:
 	Ui::OtherData *ui;

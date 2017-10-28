@@ -21,7 +21,9 @@
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
 #include "Styles.h"
+#include "common/Settings.h"
 
+#include <QDebug>
 #include <QKeyEvent>
 #include <QLineEdit>
 
@@ -61,6 +63,40 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->lang->addItem("Eesti keel");
 	ui->lang->addItem("English");
 	ui->lang->addItem("Русский язык");
+
+	if(Settings::language() == "en")
+	{
+		ui->lang->setCurrentIndex(1);
+	}
+	else if(Settings::language() == "ru")
+	{
+		ui->lang->setCurrentIndex(2);
+	}
+	else
+	{
+		ui->lang->setCurrentIndex(0);
+	}
+
+	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
+		[this](int index)
+		{
+			switch(index)
+			{
+			case 1:
+				emit langChanged("en");
+				break;
+			case 2:
+				emit langChanged("ru");
+				break;
+			default:
+				emit langChanged("et");
+				break;
+			}
+
+            ui->retranslateUi(this);
+		}
+			);
+
 
 	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->continue_2->setFont(Styles::font(Styles::Condensed, 14));
@@ -209,17 +245,17 @@ void FirstRun::showDetails()
 	switch (page) {
 	case Signing:
 		setStyleSheet("image: url(:/images/FirstRunSigning.png);");
-		ui->next->setText("VAATA JÄRGMIST TUTVUSTUST");
+		ui->next->setText(tr("VIEW NEXT INTRODUCTION"));
 		ui->skip->show();
 		break;
 	case Encryption:
 		setStyleSheet("image: url(:/images/FirstRunEncrypt.png);");
-		ui->next->setText("VAATA JÄRGMIST TUTVUSTUST");
+		ui->next->setText(tr("VIEW NEXT INTRODUCTION"));
 		ui->skip->show();
 		break;
 	default:
 		setStyleSheet("image: url(:/images/FirstRunMyEID.png);");
-		ui->next->setText("SISENE RAKENDUSSE");
+		ui->next->setText(tr("ENTER INTO APPLICATION"));
 		ui->skip->hide();
 		break;
 	}

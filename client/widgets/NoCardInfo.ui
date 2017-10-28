@@ -37,7 +37,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas.</string>
+    <string>No card in reader</string>
    </property>
   </widget>
  </widget>

@@ -61,10 +61,6 @@
         <translation>Ava uus Krüpto aken</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Digiallkirjade kehtivuse kontrollimiseks kasutatava sertifikaatide usaldusnimekirja uuendamine ebaõnnestus. Palun kontrolli oma arvuti internetiühendust ja seda, kas arvutis on kõige uuem ID-tarkvara versioon. Allkirjade verifitseerimiseks kasutatakse aegunud nimekirja. &lt;a href=&quot;http://www.id.ee/?id=37011&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
@@ -197,16 +193,1415 @@ Tüüp: %3</translation>
         <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
     </message>
 </context>
+
+
 <context>
-    <name>MainWindow</name>
+    <name>PageIcon</name>
+    <message>
+        <source>SIGNATURE</source>
+        <translation>ALLKIRI</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>KRÜPTO</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>Minu eID</translation>
+    </message>
+</context>
+
+<context>
+    <name>AddRecipients</name>
+    <message>
+        <source>Cancel</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>KINNITA</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>LISA SERTIFIKAAT KAARDILT</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>LISA SERTIFIKAAT FAILIST</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>VIIMATI LISATUD</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Adressaatide lisamine</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Lisatud adressaadid</translation>
+    </message>
+</context>
+
+<context>
+    <name>InfoStack</name>
+    <message>
+        <source>DOWNLOAD THE PICTURE</source>
+        <translation>LAE PILT ALLA</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Kodakondsus</translation>
+    </message>
+    <message>
+        <source>Given names</source>
+        <translation>Eesnimed</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Isikukood</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Dokument</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Perekonnanimi</translation>
+    </message>
+
+    <message>
+        <source>SAVE THE PICTURE</source>
+        <translation>SALVESTA PILT</translation>
+    </message>
+    <message>
+        <source>You're using Digital identity card</source>
+        <translation>Kasutate ID-KAARTI</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>Kehtiv</translation>
+    </message>
+    <message>
+        <source>until</source>
+        <translation> kuni</translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation>Aegunud</translation>
+    </message>
+</context>
+
+<context>
+    <name>ItemList</name>
+    <message>
+        <source>Search</source>
+        <translation>OTSI</translation>
+    </message>
+
+    <message>
+        <source>Add more files</source>
+        <translation>+ LISA VEEL FAILE</translation>
+    </message>
+    <message>
+        <source>Add addressee</source>
+        <translation>+ LISA ADRESSAAT</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>LISA KÕIK</translation>
+    </message>
+</context>
+
+<context>
+    <name>NoCardInfo</name>
+    <message>
+        <source>No card in reader</source>
+        <translation>Ei leitud ühtegi ID-kaarti
+
+Kontrolli, kas ID-kaart on õiget pidi lugejas.
+Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>NoOtherId</name>
+    <message>
+        <source>Other ID</source>
+        <translation>Teised ID-d</translation>
+    </message>
+    <message>
+        <source>You do not have other eIDs.
+Learn more info here:</source>
+        <translation>Teil ei ole teisi eID-sid.
+Rohkem infot leiate siit:</translation>
+    </message>
+    <message>
+        <source>MOBIIL-ID</source>
+        <translation>MOBIIL-ID</translation>
+    </message>
+    <message>
+        <source>DIGI-ID</source>
+        <translation>DIGI-ID</translation>
+    </message>
+    <message>
+        <source>SMART-ID</source>
+        <translation>SMART-ID</translation>
+    </message>
+</context>
+
+<context>
+    <name>OtherData</name>
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee post</translation>
+    </message>
+    <message>
+        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
+        <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>AKTIVEERI SUUNAMINE</translation>
+    </message>
+    <message>
+        <source>For more complete official email tuning, see the portal</source>
+        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
+        <translation>Teie @eesti.ee posti aadressid on suunatud e-postile</translation>
+    </message>
+</context>
+
+<context>
+    <name>SignatureItem</name>
+    <message>
+        <source>Signature</source>
+        <translation>Allkiri</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Ajatempel</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Piirangud</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Testallkiri</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>on tundmatu</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Allkirjastatud</translation>
+    </message>
+</context>
+
+<context>
+    <name>VerifyCert</name>
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Sertifikaat on aegunud!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Sertifikaat%1kehtib%2 kuni %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Sertifikaat aegub %1 päeva pärast</translation>
+    </message>
+    <message>
+        <source>Person identification certificate</source>
+        <translation>Isikutuvastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>UUENDA SERTIFIKAAT</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>TÜHISTA BLOKEERING</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>MUUDA PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>MUUDA PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1Unustasid PIN%2 koodi?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Allkirjastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Vaata sertifikaadi detaile%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN%1 taas kasutada.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 on blokeeritud, kuna PIN%1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN%1 taas kasutada.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK kood</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>PUK kood asub Sinu koodiümbrikus</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>MUUDA PUK</translation>
+    </message>
+    <message>
+        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
+        <translation>%1PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. %2Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. %2Uue PUK koodi saad vaid uue koodiümbrikuga, mida %3taotle PPA-st%4.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CertificateDetails</name>
+    <message>
+        <source>Certificate Information</source>
+        <translation>Sertifikaadi informatsioon</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Sertifikaadi detailid</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SALVESTA</translation>
+    </message>
+
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>Selle sertifikaadi otstarve on:</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Kellele väljastatud:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Väljastaja: </translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>kehtiv:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Alates</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Kuni</translation>
+    </message>
+
+
+    <message>
+        <source>Field</source>
+        <translation>Väli</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versioon</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Signatuuri algoritm</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>Kehtib alates</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Kehtib kuni</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>Subjekt</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Avalik võti</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>Täiendav võtme kasutusala</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Väljastaja võtme identifikaator</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Subjekti võtmelühend</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Võtme kasutusala</translation>
+    </message>
+
+    <message>
+        <source>Save certificate</source>
+        <translation>Salvesta sertifikaat</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Faili salvestamine ebaõnnestus</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>Accordion</name>
+    <message>
+        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL</translation>
+    </message>
+    <message>
+        <source>REDIRECTION OF EESTI.EE POST</source>
+        <translation>EESTI.EE POSTI SUUNAMINE</translation>
+    </message>
+    <message>
+        <source>MY OTHER eID's</source>
+        <translation>MINU TEISED eID-D</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>There is an ID card in reader</source>
+        <translation>Lugejas on ID kaart</translation>
+    </message>
+    <message>
+        <source>There is an %1 in reader</source>
+        <translation>Lugejas on %1</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FirstRun</name>
+    <message>
+        <source>CONTINUE</source>
+        <translation>JÄTKA</translation>
+    </message>
+    <message>
+        <source>VIEW NEXT INTRODUCTION</source>
+        <translation>VAATA JÄRGMIST TUTVUSTUST</translation>
+    </message>
+    <message>
+        <source>Skip introductions</source>
+        <translation>Jäta tutvustused vahele →</translation>
+    </message>
+    <message>
+        <source>VIEW INTRODUCTION</source>
+        <translation>VAATA TUTVUSTUST</translation>
+    </message>
+    <message>
+        <source>ENTER INTO APPLICATION</source>
+        <translation>SISENE RAKENDUSSE</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileDialog</name>
+    <message>
+        <source>Enter your phone number with Mobiil-ID to sign up</source>
+        <translation>&lt;b&gt;Sisesta oma telefoninumber Mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
+        <translation>RIIGI KOOD JA TELEFONINUMBER</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>ISIKUKOOD</translation>
+    </message>
+    <message>
+        <source>Remember</source>
+        <translation>Pea mind meeles</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTA</translation>
+    </message>
+
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Isikukood pole kehtiv</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Telefoninumber pole sisestatud</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileProgress</name>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+
+    <message>
+        <source>Signing in process</source>
+        <translation>Toimub allkirjastamine</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Päring aktsepteeritud</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Päringu kannatus katkes</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Kasutaja keeldus või katkestas</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Sain allkirja</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Päring ootel</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Telefon ei ole levis</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Päringu saatmise viga</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>SIM kaardi viga</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Teenuse sisemine viga</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
+        <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed! Please check your internet connection.</source>
+        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>Kasutaja ei ole Mobiil-ID klient</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>Isikukood ja telefoni number ei klapi</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
+    </message>
+</context>
+
+<context>
+    <name>PinPopup</name>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.&lt;br/&gt;Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+
+
+    <message>
+        <source>PIN will be locked next failed attempt</source>
+        <translation>PIN lukustatakse järgmine ebaõnnestunud katse järel</translation>
+    </message>
+    <message>
+        <source>PIN has been entered incorrectly one time</source>
+        <translation>PIN on üks kord valesti sisestatud</translation>
+    </message>
+    <message>
+        <source>For using sign certificate enter PIN2 at the reader</source>
+        <translation>Allkirjastamise sertifikaadi kasutamiseks sisestage lugejas PIN2</translation>
+    </message>
+
+    <message>
+        <source>For using sign certificate enter PIN2</source>
+        <translation>Allkirjastamise sertifikaadi kasutamiseks sisestage PIN2</translation>
+    </message>
+    <message>
+        <source>Selected action requires sign certificate.</source>
+        <translation>Valitud toiming nõuab sertifikaati.</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1 at the reader</source>
+        <translation>Autentimissertifikaadi kasutamiseks sisestage lugeja PIN1-kood</translation>
+    </message>
+    <message>
+        <source>For using authentication certificate enter PIN1</source>
+        <translation>Autentsussertifikaadi kasutamiseks sisestage PIN1</translation>
+    </message>
+    <message>
+        <source>Selected action requires authentication certificate.</source>
+        <translation>Valitud toiming nõuab autentimissertifikaati.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>PinUnblock</name>
+    <message>
+        <source>VALID PUK CODE</source>
+        <translation>KEHTIV PUK KOOD</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>BLOKEERI LAHTI</translation>
+    </message>
+
+    <message>
+        <source>ConditionsChangePIN2WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN2 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
+&lt;li&gt;Kui oled unustanud PIN2 koodi, kuid tead PUK koodi,&lt;br&gt;
+siis siin saad määrata uue PIN2 koodi.&lt;/li&gt;
+&lt;li>Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1WithPUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN1 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
+juurdepääsemiseks.&lt;/li&gt;
+&lt;li&gt;Kui oled unustanud PIN1 koodi, kuid tead PUK koodi,&lt;br&gt;
+siis siin saad määrata uue PIN1 koodi.&lt;/li&gt;
+&lt;li&gt;Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+vahepeal muutnud&lt;/li&gt;
+&lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
+klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsUnlockPIN1</source>
+        <translation>
+&lt;ul&gt;
+&lt;li&gt;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+vahepeal muutnud&lt;/li&gt;
+&lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
+klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN2</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN2 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
+&lt;li&gt;Kui sisestad PIN2 koodi kolm korda valesti, siis allkirjastamise&lt;br&gt;
+sertifikaat blokeeritakse ning ID-kaarti pole võimalik&lt;br&gt;
+allkirjastamiseks kasutada enne blokeeringu tühistamist&lt;br&gt;
+PUK koodiga.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePIN1</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Uus PIN1 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
+juurdepääsemiseks.&lt;/li&gt;
+&lt;li&gt;Kui sisestad PIN1 koodi kolm korda valesti, siis isikutuvastuse&lt;br&gt;
+sertifikaat blokeeritakse ning ID-kaarti saad kasutada vaid pärast&lt;br&gt;
+blokeeringu tühistamist PUK koodiga.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+    <message>
+        <source>ConditionsChangePUK</source>
+        <translation>&lt;ul&gt;
+&lt;li&gt;Kui PUK kood läheb peale koodi vahetamist meelest ära ja&lt;br&gt;
+sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise&lt;br&gt;
+järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
+&lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
+&lt;li&gt;Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;/ul&gt;</translation>
+    </message>
+
+
+    <message>
+        <source>%1 unblocking</source>
+        <translation>%1 lahti blokeerimine</translation>
+    </message>
+    <message>
+        <source>%1 code change</source>
+        <translation>%1 koodi vahetamin</translation>
+    </message>
+    <message>
+        <source>VALID %1 CODE</source>
+        <translation>KEHTIV %1 KOOD</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>MUUDA</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE</source>
+        <translation>UUS %1 KOOD</translation>
+    </message>
+    <message>
+        <source>NEW %1 CODE AGAIN</source>
+        <translation>UUS %1 KOOD UUESTI</translation>
+    </message>
+    <message>
+        <source>PUK remaining attempts: %1</source>
+        <translation>PUK katseid jäänud: %1</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Katseid jäänud: %1</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SettingsDialog</name>
     <message>
         <source>Settings</source>
         <translation>Seaded</translation>
+    </message>
+
+    <message>
+        <source>GENERAL</source>
+        <translation>ÜLDINE</translation>
+    </message>
+    <message>
+        <source>SIGNING</source>
+        <translation>ALLKIRJASTAMINE</translation>
+    </message>
+    <message>
+        <source>ACCESS CERTIFICATE</source>
+        <translation>JUURDEPÄÄSUTÕEND</translation>
+    </message>
+    <message>
+        <source>PROXY</source>
+        <translation>PROKSI</translation>
+    </message>
+    <message>
+        <source>DIAGNOSTICS</source>
+        <translation>DIAGNOSTIKA</translation>
+    </message>
+    <message>
+        <source>INFO</source>
+        <translation>INFO</translation>
+    </message>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>CHECK FOR UPDATES</source>
+        <translation>KONROLLI UUENDUSI</translation>
+    </message>
+    <message>
+        <source>REMOVE UNNECESSARY CERTIFICATES</source>
+        <translation>EEMALDA ÜLELIIGSED SERTIFIKAADID</translation>
+    </message>
+    <message>
+        <source>INSTALL MANUALLY</source>
+        <translation>PAIGALDA KÄSITSI</translation>
+    </message>
+    <message>
+        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
+        <translation>SALVESTA DIAGNOSTIKA RAPORT KETTALE</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>NÄITA TÕENDIT</translation>
+    </message>
+    <message>
+        <source>USE DEFAULT</source>
+        <translation>KASUTA VAIKIMISI</translation>
+    </message>
+
+
+    <message>
+        <source>Language</source>
+        <translation>Keel</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Kontrolli uuendusi</translation>
+    </message>
+    <message>
+        <source>Online TSL digest check</source>
+        <translation>Kontrolli TSL värskendust</translation>
+    </message>
+    <message>
+        <source>Container default location</source>
+        <translation>Ümbriku loomise vaikekataloog</translation>
+    </message>
+    <message>
+        <source>Same folder</source>
+        <translation>Samasse kataloogi</translation>
+    </message>
+    <message>
+        <source>Select the directory by yourself</source>
+        <translation>Valin kataloogi ise</translation>
+    </message>
+
+    <message>
+        <source>Default file type</source>
+        <translation>Vaikimisi faili tüüp</translation>
+    </message>
+    <message>
+        <source>ASiC-E - format for future international, European-wide compatibility</source>
+        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming</translation>
+    </message>
+    <message>
+        <source>BDOC – default digital signature format in Estonia.</source>
+        <translation>BDOC - digiallkirja vaikimisi vorming Eestis</translation>
+    </message>
+    <message>
+        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
+        <translation>Kui soovid vormingut muuta, siis tee seda enne, kui valid failid allkirjastamiseks. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation>Roll</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Aadress</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Linn</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Maakond</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Postikood</translation>
+    </message>
+
+
+    <message>
+        <source>Ignore server access certificate (IP based access)</source>
+        <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
+    </message>
+
+    <message>
+        <source>No proxy</source>
+        <translation>Ei kasuta proksit</translation>
+    </message>
+    <message>
+        <source>Use system proxy settings</source>
+        <translation>Kasuta süsteemseid proksi seadeid</translation>
+    </message>
+    <message>
+        <source>Manual proxy configuration</source>
+        <translation>Proksi seaded määratakse käsitsi</translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation>Host</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Port</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Kasutajanimi</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Parool</translation>
+    </message>
+
+    <message>
+        <source>"%1 version %2, released %3%4</source>
+        <translation>"%1 versioon %2, välja lastud %3%4</translation>
+    </message>
+
+    <message>
+        <source>Checking updates has failed.</source>
+        <translation>Värskenduste kontrollimine on ebaõnnestunud.</translation>
+    </message>
+    <message>
+        <source>Please try again.</source>
+        <translation>Palun proovi uuesti.</translation>
+    </message>
+
+    <message>
+        <source>Once a day</source>
+        <translation>Kord päevas</translation>
+    </message>
+    <message>
+        <source>Once a week</source>
+        <translation>Kord nädalas</translation>
+    </message>
+    <message>
+        <source>Once a month</source>
+        <translation>Kord kuus</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>Mitte kunagi</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>ContainerPage</name>
+    <message>
+        <source>Container</source>
+        <translation>Konteiner:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>MUUDA</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← KATKESTA</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>EDASTA E-MAILIGA</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>KRÜPTEERI</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTA</translation>
+    </message>
+    <message>
+        <source>OPEN CONTAINER LOCATION</source>
+        <translation>AVA KONTAINERI ASUKOHT</translation>
+    </message>
+    <message>
+        <source>SAVE UNSIGNED</source>
+        <translation>SALVESTA ALLKIRJASTAMATA</translation>
+    </message>
+
+
+    <message>
+        <source>SIGN WITH\nMOBILE ID</source>
+        <translation>ALLKIRJASTA\nMOBIILI-ID’GA</translation>
+    </message>
+    <message>
+        <source>SIGN WITH\nID ID CARD</source>
+        <translation>ALLKIRJASTA\nID-KAARTIGA</translation>
+    </message>
+    <message>
+        <source>Container's time stamps</source>
+        <translation>Konteineri ajatemplid</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB: Vigane allkiri</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Staatus teadmata</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Test allkiri</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Allkiri on hoiatusega</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>← ALGUSESSE</translation>
+    </message>
+    <message>
+        <source>Container's signatures are missing</source>
+        <translation>Kontaineri allkirjad puuduvad</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Kontaineri allkirjad</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Adressaadid</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Krüpteeritud failid</translation>
+    </message>
+    <message>
+        <source>DECRYPT WITH\nID-CARD</source>
+        <translation>DEKRÜPTEERI\nID-KAARDIGA</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Dekrüpteeritud failid</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SignatureDialog</name>
+    <message>
+        <source>Notice</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>Role / resolution</source>
+        <translation>Roll / resolutsioon</translation>
+    </message>
+    <message>
+        <source>Signer</source>
+        <translation>Allkirjastaja</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Linn</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Maakond</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Postikood</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Allkiri</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+
+    <message>
+        <source>Attribute</source>
+        <translation>Attribuut</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+
+    <message>
+        <source>TECHNICAL INFORMATION</source>
+        <translation>TEHNILINE INFORMATSIOON</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Ajatempel</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
+        <translation>Praegune BDOC-konteiner kasutab nõrgemat krüpteerimismeetodit kui Eestis on ametlikult aktsepteeritud.</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Piirangud</translation>
+    </message>
+    <message>
+        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
+        <translation>See e-allkiri ei ole käsitsi kirjutatud allkirjadega samaväärne ja seetõttu saab seda kasutada ainult tehingute puhul, kus kvalifitseeritud e-allkiri pole kohustuslik.</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Testallkiri</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>on teadmata</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;http://www.id.ee/index.php?id=30379&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
+        <translation>See on vigane allkiri või vigane digitaalselt allkirjastatud fail. Allkiri ei kehti.</translation>
+    </message>
+    <message>
+        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
+        <translation>Allkirja olek kuvatakse "tundmatuks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;lisainformatsioon&lt;/a&gt;).</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate issuer</source>
+        <translation>Allkirja sertifikaadi väljastaja</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s Certificate</source>
+        <translation>Allkirja sertifikaat</translation>
+    </message>
+    <message>
+        <source>Signature method</source>
+        <translation>Allkirja meetod</translation>
+    </message>
+    <message>
+        <source>Container format</source>
+        <translation>Konteineri formaat</translation>
+    </message>
+    <message>
+        <source>Signature format</source>
+        <translation>Allkirja vorming</translation>
+    </message>
+    <message>
+        <source>Signature policy</source>
+        <translation>Allkirja vorming</translation>
+    </message>
+    <message>
+        <source>Signed file count</source>
+        <translation>Allkirjastatud failide arv</translation>
+    </message>
+    <message>
+        <source>Archive Timestamp</source>
+        <translation>Arhiivi ajatempel</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate issuer</source>
+        <translation>Arhiivi ajatempli sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>Archive TS Certificate</source>
+        <translation>Arhiivi ajatempli sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>Signature Timestamp</source>
+        <translation>Allkirja ajatempel</translation>
+    </message>
+    <message>
+        <source>TS Certificate issuer</source>
+        <translation>Ajatempliteenuse sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>TS Certificate</source>
+        <translation>Ajatempliteenuse sertifikaat</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate issuer</source>
+        <translation>Kehtivuskinnituse sertifikaadi väljaandja</translation>
+    </message>
+    <message>
+        <source>OCSP Certificate</source>
+        <translation>Kehtivuskinnituse sertifikaat</translation>
+    </message>
+    <message>
+        <source>Hash value of signature</source>
+        <translation>Allkirja sõnumilühend</translation>
+    </message>
+    <message>
+        <source>OCSP time</source>
+        <translation>Kehtivuskinnituse aeg</translation>
+    </message>
+    <message>
+        <source>Signer&apos;s computer time (UTC)</source>
+        <translation>Allkirjastaja arvuti kellaaeg</translation>
+    </message>
+</context>
+
+
+
+<context>
+    <name>Updater</name>
+    <message>
+        <source>Close</source>
+        <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Värskendamine toimub Protsess võib kesta kuni 10 minutit. Ärge eemaldage kaarti lugeja poolt!</translation>
+    </message>
+    <message>
+        <source>Certificate renewal</source>
+        <translation>Sertifikaatide uuendamine</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>I agree to the terms of use of certificates.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>I confirm I have saved a new PIN1, PIN2 and PUK code.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Sisesta PIN</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WaitDialog</name>
+    <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerimine</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+</context>
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>LISA</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>LISATUD</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MainWindow</name>
+    <message>
+        <source>One signature is invalid</source>
+        <translation>Üks allkiri on kehtetu!</translation>
+    </message>
+    <message>
+        <source>Click to resolve problem</source>
+        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Vajuta probleemi lahendamiseks&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation>Seaded</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia ...</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>... VÕI VALI FAIL KETTALT</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>... VÕI VALI FAIL KETTALT</translation>
+    </message>
+
+    <message>
+        <source>Unrecognized data</source>
+        <translation>Tundmatuid andmeid</translation>
+    </message>
+    <message>
+        <source>signature container</source>
+        <translation>allkirja konteiner</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>krüpto konteiner</translation>
+    </message>
+    <message>
+        <source>Decryption succeeded</source>
+        <translation>Dekrüpteerimine õnnestus!</translation>
+    </message>
+    <message>
+        <source>Encryption succeeded</source>
+        <translation>Krüpteerimine õnnestus!</translation>
+    </message>
+    <message>
+        <source>Select documents</source>
+        <translation>Lisa failid</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 klient</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Konteineri %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documendid (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC teenus ei tööta</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas.</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loen andmeid</translation>
+    </message>
+    <message>
+        <source>The container has been successfully signed!</source>
+        <translation>Konteiner on edukalt allkirjastatud!</translation>
+    </message>
+    <message>
+        <source>Save photo</source>
+        <translation>Salvesta foto</translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg);;All Files (*)</source>
+        <translation>Foto (*.jpg);;Kõik failid (*)</translation>
+    </message>
+
+
+
+
+
     <message>
         <source>Signature</source>
         <translation>Allkiri</translation>
@@ -276,20 +1671,8 @@ Tüüp: %3</translation>
         <translation>Ümbrik ei ole allkirjastatud</translation>
     </message>
     <message>
-        <source>Select documents</source>
-        <translation>Lisa failid</translation>
-    </message>
-    <message>
         <source>Skip this intro</source>
         <translation>Ära rohkem mulle seda sissejuhatust näita</translation>
-    </message>
-    <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>Kaarti pole lugejas</translation>
     </message>
     <message>
         <source>I want to:</source>
@@ -328,10 +1711,6 @@ Tüüp: %3</translation>
         <translation>Fail on juba ümbrikus</translation>
     </message>
     <message>
-        <source>Loading data</source>
-        <translation>Loen andmeid</translation>
-    </message>
-    <message>
         <source>Mobile number:</source>
         <translation>Telefoninumber:</translation>
     </message>
@@ -350,14 +1729,6 @@ Tüüp: %3</translation>
     <message>
         <source>NB! Test signature</source>
         <translation>NB! Test allkiri</translation>
-    </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB: Vigane allkiri</translation>
-    </message>
-    <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 klient</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
@@ -397,16 +1768,8 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
         <translation>Info</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Dokumendid (%1)</translation>
-    </message>
-    <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
-    </message>
-    <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Konteineri %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
     <message>
         <source>File does not exists
@@ -497,10 +1860,6 @@ Kontrolli, kas ID-kaart on õiget pidi lugejas.
 Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
     </message>
     <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
@@ -523,18 +1882,6 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
     <message>
         <source>Personal code</source>
         <translation>Isikukood</translation>
-    </message>
-    <message>
-        <source>Open DigiDoc4 Crypto</source>
-        <translation>Avada DigiDoc4 Krüpto programmi</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Allkiri on hoiatusega</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Staatus teadmata</translation>
     </message>
     <message>
         <source>Remember me</source>
@@ -633,7 +1980,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
 and enter Mobile-ID PIN2-code.
 Control code: %1</source>
         <translation>Veendu kontrollkoodi õigsuses
-ja sisesta telefonil Mobiil-ID PIN2-kood. 
+ja sisesta telefonil Mobiil-ID PIN2-kood.
 Kontrollkood: %1</translation>
     </message>
     <message>
@@ -832,416 +2179,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SettingsDialog</name>
-    <message>
-        <source>Settings</source>
-        <translation>Seaded</translation>
-    </message>
-    <message>
-        <source>Container default location</source>
-        <translation>Ümbriku loomise vaikekataloog</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Roll</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation>Resolutsioon</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Linn</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Maakond</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Indeks</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Vali kataloog</translation>
-    </message>
-    <message>
-        <source>Show signing intro</source>
-        <translation>Näita allkirjastamisel sissejuhatust</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Samasse kataloogi</translation>
-    </message>
-    <message>
-        <source>Ask container name</source>
-        <translation>Küsi dokumendi nime</translation>
-    </message>
-    <message>
-        <source>Default file type:</source>
-        <translation>Vaikimisi faili tüüp:</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Üldine</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
-    </message>
-    <message>
-        <source>Proxy</source>
-        <translation>Proksi</translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation>Host</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Port</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Parool</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Kasutajanimi</translation>
-    </message>
-    <message>
-        <source>Show certificate</source>
-        <translation>Näita tõendit</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Juurdepääsutõend</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please refer to IT support of your company. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-toe poole. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Always save the last used role, resolution and location</source>
-        <translation>Jäta viimati sisestatud roll, resolutsioon ja asukoht meelde</translation>
-    </message>
-    <message>
-        <source>Browse container path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Container default location same folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Container default location path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Juurdepääsutõend ei ole paigaldatud.</translation>
-    </message>
-    <message>
-        <source>Install manually</source>
-        <translation>Paigalda käsitsi</translation>
-    </message>
-    <message>
-        <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
-        <translation>Kellele väljastatud: %1&lt;br /&gt;Kehtib kuni: %2 %3</translation>
-    </message>
-    <message>
-        <source>expired</source>
-        <translation>aegunud</translation>
-    </message>
-    <message>
-        <source>Show encrypting intro</source>
-        <translation>Näita krüpteerimisel sissejuhatust</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Valige juurdepääsutõend</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>Juurdepääsutõendid (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Vigane parool</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Juurdepääsutõendi viga: %1</translation>
-    </message>
-    <message>
-        <source>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</source>
-        <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Sisestage juurdepääsutõendi parool.</translation>
-    </message>
-    <message>
-        <source>I would like to encrypt for recipients who are using an older DigiDoc3 Crypto
-software (version 3.8 and earlier).</source>
-        <translation>Soovin krüpteerida adressaatidele, kes kasutavad vanemat DigiDoc3 Krüpto
-tarkvara (versioon 3.8 ja varasemad).</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Allkirjastamine</translation>
-    </message>
-    <message>
-        <source>Default file type BDOC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>Kui soovid vormingut muuta, siis tee seda enne, kui lisad ümbrikusse allkirjastatava faili. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</translation>
-    </message>
-    <message>
-        <source>Default file type ASiC-E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC – digitaalallkirja vaikimisi vorming Eestis.</translation>
-    </message>
-    <message>
-        <source>Online TSL digest check</source>
-        <translation>Kontrolli TSL värskendust</translation>
-    </message>
-    <message>
-        <source>No proxy</source>
-        <translation>Ei kasuta proksit</translation>
-    </message>
-    <message>
-        <source>Use system proxy settings</source>
-        <translation>Kasuta süsteemseid proksi seadeid</translation>
-    </message>
-    <message>
-        <source>Manual proxy configuration</source>
-        <translation>Proksi seaded määratakse käsitsi</translation>
-    </message>
-    <message>
-        <source>I would like to sign with Lithuanian, Latvian, Finnish ID-card</source>
-        <translation>Soovin allkirjastada Leedu, Läti, Soome ID-kaardiga</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Taaskäivita rakendus</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
-    </message>
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries.</source>
-        <translation>ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvorming.</translation>
-    </message>
-    <message>
-        <source>Use default</source>
-        <translation>Kasuta vaikimisi</translation>
-    </message>
-</context>
-<context>
-    <name>SignatureDialog</name>
-    <message>
-        <source>Signature format</source>
-        <translation>Allkirja formaat</translation>
-    </message>
-    <message>
-        <source>Signed file count</source>
-        <translation>Allkirjastatud failide arv</translation>
-    </message>
-    <message>
-        <source>Signer</source>
-        <translation>Allkirjastaja</translation>
-    </message>
-    <message>
-        <source>Signer location</source>
-        <translation>Allkirjastaja asukoht</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Linn</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Maakond</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Indeks</translation>
-    </message>
-    <message>
-        <source>Role / resolution</source>
-        <translation>Roll / resolutsioon</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
-    </message>
-    <message>
-        <source>Attribute</source>
-        <translation>Atribuut</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Väärtus</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>Signature method</source>
-        <translation>Allkirja meetod</translation>
-    </message>
-    <message>
-        <source>Hash value of signature</source>
-        <translation>Allkirja sõnumilühend</translation>
-    </message>
-    <message>
-        <source>Container format</source>
-        <translation>Konteineri formaat</translation>
-    </message>
-    <message>
-        <source>Signature policy</source>
-        <translation>Allkirja vorming</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test allkiri</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Allkirjastaja arvuti aeg (UTC)</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate issuer</source>
-        <translation>Kehtivuskinnituse sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>OCSP time</source>
-        <translation>Kehtivuskinnituse aeg</translation>
-    </message>
-    <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Tegemist on nõrgema usaldusväärsusega kui Eestis ametlikult aksepteeritud BDOC konteiner.</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;http://www.id.ee/index.php?id=30379&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>Tegu on vigase allkirjaga või valesti koostatud digiallkirjastatud failiga. See allkiri ei ole kehtiv.</translation>
-    </message>
-    <message>
-        <source>&lt;a href=&quot;info&quot;&gt;Technical information&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;info&quot;&gt;Tehniline info&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Notice</source>
-        <translation>Hoiatus</translation>
-    </message>
-    <message>
-        <source>The current file is a timestamped ASiC-S container. You are not allowed to add or remove timestamps (signatures) to this container.</source>
-        <translation>Tegemist on ajatembeldatud ASiC-S kontaineriga. Sellele konteinerile ei saa ajatemplit (allkirja) lisada ega eemaldada.</translation>
-    </message>
-    <message>
-        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container. &lt;a href=&apos;http://www.id.ee/?id=36161&apos;&gt;Additional info&lt;/a&gt;.</source>
-        <translation>Tegemist on vanas formaadis DigiDoc konteineriga. Sellele konteinerile ei saa allkirja lisada ega eemaldada. &lt;a href=&apos;http://www.id.ee/?id=36160&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>hoiatusega</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>piirangud</translation>
-    </message>
-    <message>
-        <source>Signature Timestamp</source>
-        <translation>Allkirja ajatempel</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate issuer</source>
-        <translation>Allkirjastaja sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>Signer&apos;s Certificate</source>
-        <translation>Allkirjastaja sertifikaat</translation>
-    </message>
-    <message>
-        <source>TS Certificate issuer</source>
-        <translation>Ajatempliteenuse sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>TS Certificate</source>
-        <translation>Ajatempliteenuse sertifikaat</translation>
-    </message>
-    <message>
-        <source>OCSP Certificate</source>
-        <translation>Kehtivuskinnituse sertifikaat</translation>
-    </message>
-    <message>
-        <source>Archive Timestamp</source>
-        <translation>Arhiivi ajatempel</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate issuer</source>
-        <translation>Arhiivi ajatempli sertifikaadi väljaandja</translation>
-    </message>
-    <message>
-        <source>Archive TS Certificate</source>
-        <translation>Arhiivi ajatempli sertifikaat</translation>
-    </message>
-    <message>
-        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
-The Information System Authority does not retain information regarding the files and users of the service.</source>
-        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimine toimub läbi teenuse. Kontrollitav fail edastatakse teenusele.
-Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failide osas.</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Ajatempel</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>status unknown</source>
-        <translation>staatus on teadmata</translation>
-    </message>
-    <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja staatus kuvatakse &quot;teadmata&quot;, kui arvutis puuduvad allkirja kontrollimiseks vajalikud sertifitseerija ja/või kehtivuskinnituse teenuse sertifikaadid (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;täiendav info&lt;/a&gt;).</translation>
-    </message>
-    <message>
-        <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
-        <translation>Tegemist on e-allkirjaga, mis on kasutatav nendes toimingutes, kus ei ole nõutud omakäelise allkirjaga võrdväärset kvalifitseeritud e-allkirja ehk digitaalallkirja.</translation>
     </message>
 </context>
 <context>

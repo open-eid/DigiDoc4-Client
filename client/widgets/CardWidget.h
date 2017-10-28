@@ -52,6 +52,7 @@ signals:
 
 protected:
 	bool event( QEvent *ev ) override;
+	void changeEvent(QEvent* event) override;
 
 private:
 	Ui::CardWidget *ui;

@@ -58,7 +58,7 @@ QPushButton:hover:!pressed {
 }</string>
    </property>
    <property name="text">
-    <string>KATKESTA</string>
+    <string>CANCEL</string>
    </property>
    <property name="autoDefault">
     <bool>false</bool>
@@ -105,7 +105,7 @@ QPushButton:disabled {
 }</string>
    </property>
    <property name="text">
-    <string>ALLKIRJASTA</string>
+    <string>SIGN</string>
    </property>
    <property name="default">
     <bool>true</bool>
@@ -152,7 +152,7 @@ border-radius: 2px;
     <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
-    <string>RIIGIKOOD JA TELEFONINUMBER</string>
+    <string>COUNTRY CODE AND TELEPHONE NUMBER</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelNameId">
@@ -173,7 +173,7 @@ border-radius: 2px;
     <string notr="true">color: #041E42; border: none;</string>
    </property>
    <property name="text">
-    <string>&lt;b&gt;Sisesta oma telefoninumber Mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</string>
+    <string>Enter your phone number with Mobiil-ID to sign up</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -196,7 +196,7 @@ QCheckBox::indicator {
 }</string>
    </property>
    <property name="text">
-    <string>Pea mind meeles</string>
+    <string>Remember</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelIdCode">
@@ -218,7 +218,7 @@ QCheckBox::indicator {
     <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
-    <string>ISIKUKOOD</string>
+    <string>PERSONAL CODE</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="idCode">

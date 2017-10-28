@@ -99,12 +99,12 @@ void ContainerPage::init()
 	ui->containerFile->setFont(containerFont);
 
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
-	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, "MUUDA", Actions::ContainerLocation );
-	ui->cancel->init( LabelButton::BoxedMojo, "← KATKESTA", Actions::ContainerCancel );
-	ui->convert->init( LabelButton::BoxedDeepCerulean, "KRÜPTEERI", Actions::ContainerConvert );
-	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, "AVA KONTEINERI ASUKOHT", Actions::ContainerNavigate );
-	ui->email->init( LabelButton::BoxedDeepCerulean, "EDASTA E-MAILIGA", Actions::ContainerEmail );
-	ui->save->init( LabelButton::BoxedDeepCerulean, "SALVESTA ALLKIRJASTAMATA", Actions::ContainerSave );
+    ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
+    ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
+    ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerEncrypt );
+    ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
+    ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
+    ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE UNSIGNED"), Actions::ContainerSave );
 
 	mobileCode = Settings().value("Client/MobileCode").toString();
 
@@ -205,6 +205,16 @@ void ContainerPage::resizeEvent( QResizeEvent *event )
 		elideFileName();
 }
 
+void ContainerPage::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+
 void ContainerPage::setHeader(const QString &file)
 {
 	fileName = file;
@@ -225,7 +235,7 @@ void ContainerPage::showDropdown()
 	}
 	else
 	{
-		otherAction.reset( new MainAction( SignatureMobile, "ALLKIRJASTA\nMOBIILI-ID’GA", this, false ) );
+		otherAction.reset( new MainAction( SignatureMobile, tr("SIGN WITH\nMOBILE ID"), this, false ) );
 		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
 
@@ -267,7 +277,7 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 	{
 		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward));
 		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction));
-		actionConnections.push_back(connect(mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown));	
+		actionConnections.push_back(connect(mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown));
 	}
 
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
@@ -277,9 +287,9 @@ void ContainerPage::showSigningButton()
 {
 	hideOtherAction();
 	if(cardInReader.isNull())
-		showMainAction(SignatureMobile, "ALLKIRJASTA\nMOBIILI-ID’GA");
+		showMainAction(SignatureAdd, tr("SIGN WITH\nID ID CARD"));
 	else
-		showMainAction(SignatureAdd, "ALLKIRJASTA\nID-KAARDIGA");
+		showMainAction(SignatureMobile, tr("SIGN WITH\nMOBILE ID"));
 }
 
 void ContainerPage::transition(CryptoDoc* container)
@@ -310,7 +320,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-		ui->rightPane->addHeader("Konteineri ajatemplid");
+		ui->rightPane->addHeader(tr("Container's time stamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
 			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
@@ -359,55 +369,55 @@ void ContainerPage::updatePanes(ContainerState state)
 		hideRightPane();
 		ui->leftPane->init(fileName);
 		showSigningButton();
-		ui->cancel->setText("← KATKESTA");
+		ui->cancel->setText(tr("CANCEL"));
 		showButtons( { ui->cancel, ui->convert, ui->save } );
 		hideButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		ui->cancel->setText("← ALGUSESSE");
+		ui->cancel->setText(tr("STARTING"));
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemSignature, "Konteineri allkirjad puuduvad" );
+		showRightPane( ItemSignature, tr("Container's signatures are missing"));
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemSignature, "Konteineri allkirjad" );
-		ui->cancel->setText("← ALGUSESSE");
+		showRightPane( ItemSignature, tr("Container's signatures") );
+		ui->cancel->setText(tr("STARTING"));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemAddress, "Adressaadid" );
-		showMainAction( EncryptContainer, "KRÜPTEERI" );
-		ui->cancel->setText("← KATKESTA");
-		ui->convert->setText("ALLKIRJASTA");
+		showRightPane( ItemAddress, tr("Recipients") );
+		showMainAction( EncryptContainer, tr("ENCRYPT") );
+		ui->cancel->setText(tr("STARTING"));
+        ui->convert->setText(tr("SIGN"));
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	case EncryptedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Krüpteeritud failid");
-		showRightPane( ItemAddress, "Adressaadid" );
-		showMainAction( DecryptContainer, "DEKRÜPTEERI\nID-KAARDIGA" );
-		ui->cancel->setText("← ALGUSESSE");
-		ui->convert->setText("ALLKIRJASTA");
+		ui->leftPane->init(fileName, tr("Encrypted files"));
+		showRightPane( ItemAddress, tr("Recipients") );
+		showMainAction( DecryptContainer, tr("DECRYPT WITH\nID-CARD") );
+		ui->cancel->setText(tr("STARTING"));
+        ui->convert->setText(tr("SIGN"));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Dekrüpteeritud failid");
-		showRightPane( ItemAddress, "Adressaadid" );
+		ui->leftPane->init(fileName, tr("Decrypted files"));
+		showRightPane( ItemAddress, tr("Recipients"));
 		hideMainAction();
-		ui->cancel->setText("← ALGUSESSE");
+		ui->cancel->setText(tr("STARTING"));
 		hideButtons( { ui->convert, ui->save } );
 		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
 		break;

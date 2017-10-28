@@ -65,7 +65,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	ui->setupUi(this);
-	
+
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->version->setText( "Ver. " + qApp->applicationVersion() );
 
@@ -99,7 +99,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->signIntroButton->setFont( condensed14 );
 	ui->cryptoIntroLabel->setFont( regular20 );
 	ui->cryptoIntroButton->setFont( condensed14 );
-	
+
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
 
@@ -192,12 +192,29 @@ void MainWindow::buttonClicked( int button )
 		//QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
 		//showWarning( "Not implemented yet" );
 		FirstRun dlg(this);
+
+		connect(&dlg, &FirstRun::langChanged, this,
+				[this](const QString& lang )
+				{
+					qApp->loadTranslation( lang );
+					ui->retranslateUi(this);
+				}
+		);
 		dlg.exec();
+
 		break;
 	}
 	case HeadSettings:
 	{
 		SettingsDialog dlg(this);
+
+		connect(&dlg, &SettingsDialog::langChanged, this,
+				[this](const QString& lang )
+				{
+					qApp->loadTranslation( lang );
+					ui->retranslateUi(this);
+				}
+		);
 		dlg.exec();
 		break;
 	}
@@ -218,7 +235,7 @@ void MainWindow::cachePicture( const QString &id, const QImage &image )
 		QString removedId = index.takeLast().toString();
 		images.remove( removedId );
 	}
-	settings.setValue( "imageIndex", index ); 
+	settings.setValue( "imageIndex", index );
 	settings.setValue( "imageCache", images );
 }
 
@@ -277,7 +294,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 	QStringList files;
 	qDebug() << "Dropped!";
 
-	if (mimeData->hasUrls()) 
+	if (mimeData->hasUrls())
 	{
 		qDebug() << "Dropped urls";
 		for( auto url: mimeData->urls())
@@ -287,12 +304,12 @@ void MainWindow::dropEvent(QDropEvent *event)
 				qDebug() << url.toLocalFile();
 				files << url.toLocalFile();
 			}
-			
+
 		}
-	} 
+	}
 	else
 	{
-		showNotification( "Unrecognized data" );
+		showNotification( tr("Unrecognized data") );
 	}
 	event->acceptProposedAction();
 	clearOverlay();
@@ -339,7 +356,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
 {
-	bool navigate = true;	
+	bool navigate = true;
 	if(page == SignDetails)
 	{
 		navigate = false;
@@ -578,7 +595,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-			notification->start( "Dekrüpteerimine õnnestus!", 750, 1500, 600 );
+			notification->start( tr("Decryption succeeded"), 750, 1500, 600 );
 		}
 		break;
 	case EncryptContainer:
@@ -587,7 +604,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-			notification->start( "Krüpteerimine õnnestus!", 750, 1500, 600 );
+			notification->start( tr("Encryption succeeded"), 750, 1500, 600 );
 		}
 		break;
 	case ContainerEmail:
@@ -621,10 +638,10 @@ void MainWindow::openFiles(const QStringList files)
 	2.1 if UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer
 		- Add file to files to be signed/encrypted
 	2.3 else if SignedContainer
-		- ask if new container should be created with signature container and 
+		- ask if new container should be created with signature container and
 		  files to be opened;
 	2.4 else if EncryptedContainer || DecryptedContainer
-			- ask if should be closed and handle open 
+			- ask if should be closed and handle open
 */
 	auto current = ui->startScreen->currentIndex();
 	QStringList content(files);
@@ -680,7 +697,7 @@ void MainWindow::openFiles(const QStringList files)
 			content.insert(content.begin(), digiDoc->fileName());
 		else
 			create = false;
-		
+
 		page = SignDetails;
 		break;
 	}
@@ -793,12 +810,12 @@ void MainWindow::showCardStatus()
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
-		
+
 		QSharedPointer<const QCardInfo> cardInfo(new QCardInfo(t));
 		ui->cardInfo->update(cardInfo);
 		emit ui->signContainerPage->cardChanged(cardInfo->id);
 		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
-		
+
 		if( t.authCert().type() & SslCertificate::EstEidType )
 		{
 			Styles::cachedPicture( t.data(QSmartCardData::Id ).toString(), { ui->cardInfo, ui->infoStack } );
@@ -806,9 +823,9 @@ void MainWindow::showCardStatus()
 		ui->infoStack->update( t );
 		ui->accordion->updateInfo( smartcard );
 		ui->myEid->invalidCertIcon( !t.authCert().isValid() || !t.signCert().isValid() );
-		ui->myEid->pinIsBlockedIcon( 
-				t.retryCount( QSmartCardData::Pin1Type ) == 0 || 
-				t.retryCount( QSmartCardData::Pin2Type ) == 0 || 
+		ui->myEid->pinIsBlockedIcon(
+				t.retryCount( QSmartCardData::Pin1Type ) == 0 ||
+				t.retryCount( QSmartCardData::Pin2Type ) == 0 ||
 				t.retryCount( QSmartCardData::PukType ) == 0 );
 
 		isUpdateCertificateNeeded();
@@ -820,15 +837,15 @@ void MainWindow::showCardStatus()
 	{
 		emit ui->signContainerPage->cardChanged();
 		emit ui->cryptoContainerPage->cardChanged();
-		
+
 		if ( !QPCSC::instance().serviceRunning() )
-			noReader_NoCard_Loading_Event( "PCSC service is not running" );
+			noReader_NoCard_Loading_Event( tr("PCSC service is not running") );
 		else if ( t.readers().isEmpty() )
-			noReader_NoCard_Loading_Event( "No readers found" );
+			noReader_NoCard_Loading_Event( tr("No readers found") );
 		else if ( t.card().isEmpty() )
-			noReader_NoCard_Loading_Event( "Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas." );
+			noReader_NoCard_Loading_Event( tr("No card in reader") );
 		else
-			noReader_NoCard_Loading_Event( "Loading data", true );
+			noReader_NoCard_Loading_Event( tr("Loading data"), true );
 	}
 
 	// Combo box to select the cards from
@@ -867,7 +884,7 @@ bool MainWindow::sign()
 		ui->signContainerPage->transition(digiDoc);
 
 		FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-		notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+		notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
 		return true;
 	}
 
@@ -909,7 +926,7 @@ void MainWindow::updateCardData()
 
 void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoading )
 {
-	ui->idSelector->hide(); 
+	ui->idSelector->hide();
 	if( isLoading )
 		Application::setOverrideCursor( Qt::BusyCursor );
 
@@ -930,7 +947,7 @@ void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoad
 	hideWarningArea();
 }
 
-// Loads picture 
+// Loads picture
 void MainWindow::photoClicked( const QPixmap *photo )
 {
 	if( photo )
@@ -980,15 +997,15 @@ void MainWindow::removeSignature(int index)
 void MainWindow::savePhoto( const QPixmap *photo )
 {
 	QString fileName = QFileDialog::getSaveFileName(this,
-		"Salvesta foto", "",
-		"Foto (*.jpg);;All Files (*)");
+		tr("Save photo"), "",
+		tr("Photo (*.jpg);;All Files (*)"));
 
 	photo->save( fileName, "JPEG", 100 );
 }
 
 void MainWindow::showWarning( const QString &msg, const QString &details, bool extLink )
 {
-	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");	
+	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");
 	ui->warning->show();
 	ui->warningText->setText( msg );
 	ui->warningAction->setText( details );
@@ -1022,7 +1039,7 @@ void MainWindow::browseOnDisk( const QString &fileName )
 
 void MainWindow::showUpdateCertWarning()
 {
-	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
+	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
 		"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
 }
 

@@ -61,8 +61,8 @@ MobileProgress::MobileProgress( QWidget *parent )
 	mobileResults["SENDING_ERROR"] = tr("Request sending error");
 	mobileResults["SIM_ERROR"] = tr("SIM error");
 	mobileResults["INTERNAL_ERROR"] = tr("Service internal error");
-	mobileResults["OCSP_UNAUTHORIZED"] = tr("Not allowed to use OCSP service!<br/>Please check your server access sertificate.");
-	mobileResults["HOSTNOTFOUND"] = tr("Connecting to SK server failed!<br/>Please check your internet connection.");
+	mobileResults["OCSP_UNAUTHORIZED"] = tr("Not allowed to use OCSP service! Please check your server access sertificate.");
+	mobileResults["HOSTNOTFOUND"] = tr("Connecting to SK server failed! Please check your internet connection.");
 	mobileResults["Invalid PhoneNo"] = tr("Invalid phone number! Please include correct country code.");
 	mobileResults["User is not a Mobile-ID client"] = tr("User is not a Mobile-ID client");
 	mobileResults["ID and phone number do not match"] = tr("ID and phone number do not match");

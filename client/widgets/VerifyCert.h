@@ -52,9 +52,10 @@ signals:
 protected:
 	void enterEvent( QEvent * event ) override;
 	void leaveEvent( QEvent * event ) override;
+	void changeEvent(QEvent* event) override;
 	void processClickedBtn();
-    void processForgotPinLink( QString link );
-    void processCertDetails( QString link );
+	void processForgotPinLink( QString link );
+	void processCertDetails( QString link );
 
 private:
 	void changePinStyle( const QString &background ); 

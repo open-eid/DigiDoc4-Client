@@ -71,6 +71,16 @@ bool CardWidget::event( QEvent *ev )
 	}
 	return QWidget::event( ev );
 }
+void CardWidget::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+
 
 bool CardWidget::isLoading() const
 {
@@ -89,7 +99,7 @@ void CardWidget::update( const QSharedPointer<const QCardInfo> &ci )
 	}
 	else
 	{
-		ui->cardStatus->setText( QString( "Lugejas on %1" ).arg( cardInfo->cardType ) );
+		ui->cardStatus->setText( tr("There is an %1 in reader" ).arg( cardInfo->cardType ) );
 		cardIcon->load( QString(":/images/icon_IDkaart_green.svg") );
 	}
 

@@ -56,28 +56,11 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
     {
         if( type == QSmartCardData::Pin2Type )
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;Uus PIN2 peab olema eelmisest erinev.</li>"
-                            "<li>&nbsp;PIN2 koodi kasutatakse digitaalallkirja andmiseks.</li>"
-                            "<li>&nbsp;Kui oled unustanud PIN2 koodi, kuid tead PUK koodi,<br>&nbsp;"
-                            "siis siin saad määrata uue PIN2 koodi.</li>"
-                            "<li>&nbsp;Sinu PUK kood asub koodiümbrikus.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsChangePIN2WithPUK"));
         }
         else if( type == QSmartCardData::Pin1Type ) 
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;Uus PIN1 peab olema eelmisest erinev.</li>"
-                            "<li>&nbsp;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile<br>&nbsp;"
-                            "juurdepääsemiseks.</li>"
-                            "<li>&nbsp;Kui oled unustanud PIN1 koodi, kuid tead PUK koodi,<br>&nbsp;"
-                            "siis siin saad määrata uue PIN1 koodi.</li>"
-                            "<li>&nbsp;Sinu PUK kood asub koodiümbrikus.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsChangePIN1WithPUK"));
         }
         ui->labelNameId->setText( tr("%1 koodi vahetamine").arg( QSmartCardData::typeString( type ) ) );
         regexpFirstCode.setPattern( "\\d{8,12}" );
@@ -88,29 +71,13 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
     {
         if( type == QSmartCardData::Pin2Type )
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;"
-                            "vahepeal muutnud</li>"
-                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;"
-                            "klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsUnlockPIN2"));
         }
         else if( type == QSmartCardData::Pin1Type )
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.</li>"
-                            "<li>&nbsp;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda<br>&nbsp;"
-                            "vahepeal muutnud</li>"
-                            "<li>&nbsp;Kui sa ei tea oma ID-kaardi PUK koodi, külasta<br>&nbsp;"
-                            "klienditeeninduspunkti, kust saad uue koodiümbriku.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsUnlockPIN1"));
         }
-        ui->labelNameId->setText( tr("%1 lahti blokeerimine").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelNameId->setText( tr("%1 unblocking").arg( QSmartCardData::typeString( type ) ) );
         regexpFirstCode.setPattern( "\\d{8,12}" );
         regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" : "\\d{5,12}" );
     }
@@ -118,52 +85,26 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
     {
         if( type == QSmartCardData::Pin2Type )
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;Uus PIN2 peab olema eelmisest erinev.</li>"
-                            "<li>&nbsp;PIN2 koodi kasutatakse digitaalallkirja andmiseks.</li>"
-                            "<li>&nbsp;Kui sisestad PIN2 koodi kolm korda valesti, siis allkirjastamise<br>&nbsp;"
-                            "sertifikaat blokeeritakse ning ID-kaarti pole võimalik<br>&nbsp;"
-                            "allkirjastamiseks kasutada enne blokeeringu tühistamist<br>&nbsp;"
-                            "PUK koodiga.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsChangePIN2"));
         }
         else if( type == QSmartCardData::Pin1Type )
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;Uus PIN1 peab olema eelmisest erinev.</li>"
-                            "<li>&nbsp;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile<br>&nbsp;"
-                            "juurdepääsemiseks.</li>"
-                            "<li>&nbsp;Kui sisestad PIN1 koodi kolm korda valesti, siis isikutuvastuse<br>&nbsp;"
-                            "sertifikaat blokeeritakse ning ID-kaarti saad kasutada vaid pärast<br>&nbsp;"
-                            "blokeeringu tühistamist PUK koodiga.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsChangePIN1"));
         }
         else if( type == QSmartCardData::PukType )
         {
-            ui->label->setText(
-                        "<ul>"
-                            "<li>&nbsp;Kui PUK kood läheb peale koodi vahetamist meelest ära ja<br>&nbsp;"
-                            "sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise<br>&nbsp;"
-                            "järel, siis ainus võimalus ID-kaart tööle saada on pöörduda<br>&nbsp;"
-                            "<u>klienditeeninduspunkti</u> poole.</li>"
-                            "<li>&nbsp;Sinu PUK kood asub koodiümbrikus.</li>"
-                        "</ul>"
-                        );
+			ui->label->setText(tr("ConditionsChangePUK"));
         }
-        ui->labelNameId->setText( tr("%1 koodi vahetamine").arg( QSmartCardData::typeString( type ) ) );
-        ui->labelPuk->setText( tr( "KEHTIV %1 KOOD").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelPuk->setText( tr( "VALID %1 CODE").arg( QSmartCardData::typeString( type ) ) );
         regexpFirstCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" :
             (type == QSmartCardData::Pin2Type) ? "\\d{5,12}" : "\\d{8,12}" );
         regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" :
             (type == QSmartCardData::Pin2Type) ? "\\d{5,12}" : "\\d{8,12}" );
-        ui->unblock->setText( tr("MUUDA") );
+		ui->unblock->setText( tr("CHANGE") );
     }
-    ui->labelPin->setText( tr( "UUS %1 KOOD").arg( QSmartCardData::typeString( type ) ) );
-    ui->labelRepeat->setText( tr( "UUS %1 KOOD UUESTI").arg( QSmartCardData::typeString( type ) ) );
+	ui->labelPin->setText( tr( "NEW %1 CODE").arg( QSmartCardData::typeString( type ) ) );
+	ui->labelRepeat->setText( tr( "NEW %1 CODE AGAIN").arg( QSmartCardData::typeString( type ) ) );
 
     ui->puk->setValidator( new QRegExpValidator( regexpFirstCode, ui->puk ) );
     ui->pin->setValidator( new QRegExpValidator( regexpFirstCode, ui->pin ) );
@@ -179,9 +120,9 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
     ui->labelPuk->setFont( Styles::font( Styles::Condensed, 12 ) );
     ui->labelAttemptsLeft->setFont( Styles::font( Styles::Regular, 13 ) );
     if( mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk )
-    	ui->labelAttemptsLeft->setText( tr("PUK katseid jäänud: %1").arg( leftAttempts ) );
+		ui->labelAttemptsLeft->setText( tr("PUK remaining attempts: %1").arg( leftAttempts ) );
     else
-    	ui->labelAttemptsLeft->setText( tr("Katseid jäänud: %1").arg( leftAttempts ) );
+		ui->labelAttemptsLeft->setText( tr("Remaining attempts: %1").arg( leftAttempts ) );
 	ui->labelAttemptsLeft->setVisible( leftAttempts < 3 );
 
     connect(ui->puk, &QLineEdit::textChanged, this,

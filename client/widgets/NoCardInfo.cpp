@@ -26,20 +26,30 @@ NoCardInfo::NoCardInfo( QWidget *parent )
 , ui( new Ui::NoCardInfo )
 , cardIcon( new QSvgWidget( this ) )
 {
-    ui->setupUi( this );
-    
-    ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
-    cardIcon->resize( 34, 24 );
-    cardIcon->move( 4, 18 );
-    cardIcon->load( QString(":/images/icon_IDkaart_red.svg") );
+	ui->setupUi( this );
+
+	ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
+	cardIcon->resize( 34, 24 );
+	cardIcon->move( 4, 18 );
+	cardIcon->load( QString(":/images/icon_IDkaart_red.svg") );
 }
 
 NoCardInfo::~NoCardInfo()
 {
-    delete ui;
+	delete ui;
 }
 
 void NoCardInfo::update( const QString &status )
 {
-    ui->cardStatus->setText( status );
+	ui->cardStatus->setText( status );
+}
+
+void NoCardInfo::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
 }

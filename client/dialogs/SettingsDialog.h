@@ -41,8 +41,12 @@ public:
 private Q_SLOTS:
 	void save();
 
+signals:
+	void langChanged(const QString& lang);
+
 private:
 	void initUI();
+    void retranslate(const QString& lang);
 	void initFunctionality();
 	void updateCert();
 	void setProxyEnabled();

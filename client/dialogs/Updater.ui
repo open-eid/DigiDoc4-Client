@@ -127,7 +127,7 @@ font-weight: 700;
 </string>
          </property>
          <property name="text">
-          <string>Sertifikaatide uuendamine</string>
+          <string>Certificate renewal</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -272,7 +272,7 @@ color: #000000;
 </string>
          </property>
          <property name="text">
-          <string>Sisesta PIN</string>
+          <string>Enter PIN</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

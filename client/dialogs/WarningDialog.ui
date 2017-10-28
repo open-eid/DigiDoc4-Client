@@ -225,7 +225,7 @@ QPushButton:hover:!pressed {
 }</string>
         </property>
         <property name="text">
-         <string>SULGE</string>
+         <string>CLOSE</string>
         </property>
        </widget>
       </item>

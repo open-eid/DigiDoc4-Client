@@ -112,7 +112,7 @@ border-width: 1px 0px 0px 0px;
 </string>
       </property>
       <property name="text">
-       <string>Eesnimed</string>
+       <string>Given names</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelSerialNumber">
@@ -135,7 +135,7 @@ border-width: 1px 0px 0px 0px;
 </string>
       </property>
       <property name="text">
-       <string>Dokument</string>
+       <string>Document</string>
       </property>
      </widget>
      <widget class="QLabel" name="valueSerialNumber">
@@ -180,7 +180,7 @@ border-width: 1px 0px 0px 0px;
 </string>
       </property>
       <property name="text">
-       <string>Perekonnanimi</string>
+       <string>Surname</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelCitizenship">
@@ -203,7 +203,7 @@ border-width: 1px 0px 0px 0px;
 </string>
       </property>
       <property name="text">
-       <string>Kodakondsus</string>
+       <string>Citizenship</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelPersonalCode">
@@ -226,7 +226,7 @@ border-width: 1px 0px 0px 0px;
 </string>
       </property>
       <property name="text">
-       <string>Isikukood</string>
+       <string>Personal code</string>
       </property>
      </widget>
      <widget class="QLabel" name="valuePersonalCode">
@@ -361,7 +361,7 @@ QPushButton:hover:!pressed {
 }</string>
       </property>
       <property name="text">
-       <string>LAE PILT ALLA</string>
+       <string>DOWNLOAD THE PICTURE</string>
       </property>
      </widget>
      <widget class="QLabel" name="photo">

@@ -161,3 +161,14 @@ void AddressItem::stateChange(ContainerState state)
 		ui->remove->hide();
 	}
 }
+
+void AddressItem::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
+

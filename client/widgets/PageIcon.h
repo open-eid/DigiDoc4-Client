@@ -57,6 +57,7 @@ protected:
 	void leaveEvent( QEvent *ev ) override;
 	void mouseReleaseEvent( QMouseEvent *event ) override;
 	void paintEvent( QPaintEvent *ev ) override;
+	void changeEvent(QEvent* event) override;
 
 private:
 	struct Style
@@ -68,9 +69,9 @@ private:
 	Ui::PageIcon *ui;
 	QWidget *shadow;
 	std::unique_ptr<QSvgWidget> icon;
-    std::unique_ptr<QSvgWidget> notValidCertIcon;
-    std::unique_ptr<QSvgWidget> pinBlockedIcon;
-    std::unique_ptr<QSvgWidget> updateCertIsNeededIcon;
+	std::unique_ptr<QSvgWidget> notValidCertIcon;
+	std::unique_ptr<QSvgWidget> pinBlockedIcon;
+	std::unique_ptr<QSvgWidget> updateCertIsNeededIcon;
 
 	Style active;
 	Style inactive;

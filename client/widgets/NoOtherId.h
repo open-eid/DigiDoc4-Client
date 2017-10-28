@@ -27,14 +27,17 @@ class NoOtherId;
 
 class NoOtherId : public StyledWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit NoOtherId( QWidget *parent = nullptr );
-    ~NoOtherId();
+	explicit NoOtherId( QWidget *parent = nullptr );
+	~NoOtherId();
 
 	void update( const QString &lblName = "" );
-    
+
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
-    Ui::NoOtherId *ui;
+	Ui::NoOtherId *ui;
 };

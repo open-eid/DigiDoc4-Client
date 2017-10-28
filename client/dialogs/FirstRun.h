@@ -46,6 +46,9 @@ public:
 	explicit FirstRun(QWidget *parent = 0);
 	~FirstRun();
 
+signals:
+	void langChanged(const QString& lang);
+
 private:
 	enum View
 	{

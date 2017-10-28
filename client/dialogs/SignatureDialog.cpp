@@ -37,7 +37,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 ,	d( new Ui::SignatureDialog )
 {
 	d->setupUi( this );
-	d->showErrors->init(false, "TECHNICAL INFORMATION", d->error);
+    d->showErrors->init(false, tr("TECHNICAL INFORMATION"), d->error);
 	d->showErrors->borderless();
 	d->showErrors->hide();
 	d->error->hide();
