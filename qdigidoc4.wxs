@@ -86,7 +86,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
             <File Source="$(var.libs_path)\zlib1.dll"/>
-            <File Source="$(var.libs_path)\xerces-c_3_1.dll"/>
+            <File Source="$(var.libs_path)\xerces-c_3_2.dll"/>
 <?ifdef var.xalan ?>
             <File Source="$(var.libs_path)\XalanMessages_1_11.dll"/>
             <File Source="$(var.libs_path)\Xalan-C_1_11.dll"/>
