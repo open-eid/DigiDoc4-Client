@@ -25,8 +25,7 @@ before_install:
     HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
     pip install --user awscli > /dev/null;
     export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
-    aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/opensc.pkg.zip opensc.pkg.zip --no-sign-request;
-    unzip opensc.pkg.zip;
+    aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/opensc.pkg opensc.pkg --no-sign-request;
     sudo installer -verboseR -pkg opensc.pkg -target /;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
     if [ $? -eq 0 ]; then
