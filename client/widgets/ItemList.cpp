@@ -31,8 +31,8 @@ using namespace ria::qdigidoc4;
 ItemList::ItemList(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::ItemList)
-, headerItems(1)
 , state(UnsignedContainer)
+, headerItems(1)
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();
@@ -174,7 +174,10 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 	}
 
 	if(itemType == ItemAddress)
+	{
+		ui->add->disconnect();
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
+	}
 }
 
 void ItemList::remove(Item *item)

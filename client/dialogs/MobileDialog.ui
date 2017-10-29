@@ -152,7 +152,7 @@ border-radius: 2px;
     <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
-    <string>COUNTRY CODE AND TELEPHONE NUMBER</string>
+    <string>COUNTRY CODE AND PHONE NUMBER</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelNameId">
@@ -173,7 +173,7 @@ border-radius: 2px;
     <string notr="true">color: #041E42; border: none;</string>
    </property>
    <property name="text">
-    <string>Enter your phone number with Mobiil-ID to sign up</string>
+    <string>Enter your phone number to sign with Mobile ID</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -196,7 +196,7 @@ QCheckBox::indicator {
 }</string>
    </property>
    <property name="text">
-    <string>Remember</string>
+    <string>Remember me</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelIdCode">

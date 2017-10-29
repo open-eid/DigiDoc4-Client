@@ -262,7 +262,7 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
     int displayTime = isSuccess ? 2000 : 3000;
     
 	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
-	notification->start( msg, 750, 2500, 600 );
+	notification->start( msg, 750, displayTime, 600 );
 }
 
 void MainWindow::getOtherEID ()

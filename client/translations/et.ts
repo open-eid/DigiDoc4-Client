@@ -247,7 +247,7 @@ Tüüp: %3</translation>
 <context>
     <name>InfoStack</name>
     <message>
-        <source>DOWNLOAD THE PICTURE</source>
+        <source>DOWNLOAD</source>
         <translation>LAE PILT ALLA</translation>
     </message>
     <message>
@@ -285,7 +285,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>until</source>
-        <translation> kuni</translation>
+        <translation> kuni </translation>
     </message>
     <message>
         <source>Expired</source>
@@ -318,10 +318,19 @@ Tüüp: %3</translation>
     <name>NoCardInfo</name>
     <message>
         <source>No card in reader</source>
-        <translation>Ei leitud ühtegi ID-kaarti
-
-Kontrolli, kas ID-kaart on õiget pidi lugejas.
-Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
+        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC teenus ei tööta</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loen andmeid</translation>
     </message>
 </context>
 
@@ -371,12 +380,12 @@ Rohkem infot leiate siit:</translation>
         <translation>AKTIVEERI SUUNAMINE</translation>
     </message>
     <message>
-        <source>For more complete official email tuning, see the portal</source>
-        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
-        <translation>Teie @eesti.ee posti aadressid on suunatud e-postile</translation>
+        <source>Your @eesti.ee e-mail has been forwarded to </source>
+        <translation>Teie @eesti.ee posti aadressid on suunatud e-postile </translation>
     </message>
 </context>
 
@@ -496,7 +505,7 @@ Rohkem infot leiate siit:</translation>
 <context>
     <name>CertificateDetails</name>
     <message>
-        <source>Certificate Information</source>
+        <source>Certificate information</source>
         <translation>Sertifikaadi informatsioon</translation>
     </message>
     <message>
@@ -613,11 +622,11 @@ Rohkem infot leiate siit:</translation>
 <context>
     <name>Accordion</name>
     <message>
-        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
+        <source>PIN/PUK CODES AND CERTIFICATES</source>
         <translation>PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL</translation>
     </message>
     <message>
-        <source>REDIRECTION OF EESTI.EE POST</source>
+        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
         <translation>EESTI.EE POSTI SUUNAMINE</translation>
     </message>
     <message>
@@ -630,11 +639,11 @@ Rohkem infot leiate siit:</translation>
 <context>
     <name>CardWidget</name>
     <message>
-        <source>There is an ID card in reader</source>
+        <source>ID card in reader</source>
         <translation>Lugejas on ID kaart</translation>
     </message>
     <message>
-        <source>There is an %1 in reader</source>
+        <source>%1 in reader</source>
         <translation>Lugejas on %1</translation>
     </message>
 </context>
@@ -647,7 +656,7 @@ Rohkem infot leiate siit:</translation>
         <translation>JÄTKA</translation>
     </message>
     <message>
-        <source>VIEW NEXT INTRODUCTION</source>
+        <source>VIEW NEXT</source>
         <translation>VAATA JÄRGMIST TUTVUSTUST</translation>
     </message>
     <message>
@@ -659,7 +668,7 @@ Rohkem infot leiate siit:</translation>
         <translation>VAATA TUTVUSTUST</translation>
     </message>
     <message>
-        <source>ENTER INTO APPLICATION</source>
+        <source>ENTER THE APPLICATION</source>
         <translation>SISENE RAKENDUSSE</translation>
     </message>
 </context>
@@ -668,11 +677,11 @@ Rohkem infot leiate siit:</translation>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number with Mobiil-ID to sign up</source>
+        <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Sisesta oma telefoninumber Mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
+        <source>COUNTRY CODE AND PHONE NUMBER</source>
         <translation>RIIGI KOOD JA TELEFONINUMBER</translation>
     </message>
     <message>
@@ -680,7 +689,7 @@ Rohkem infot leiate siit:</translation>
         <translation>ISIKUKOOD</translation>
     </message>
     <message>
-        <source>Remember</source>
+        <source>Remember me</source>
         <translation>Pea mind meeles</translation>
     </message>
     <message>
@@ -755,7 +764,7 @@ Rohkem infot leiate siit:</translation>
         <translation>Teenuse sisemine viga</translation>
     </message>
     <message>
-        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
+        <source>Not allowed to use OCSP service! Please check your server access certificate.</source>
         <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
     </message>
     <message>
@@ -1003,7 +1012,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <translation>KONROLLI UUENDUSI</translation>
     </message>
     <message>
-        <source>REMOVE UNNECESSARY CERTIFICATES</source>
+        <source>REMOVE OLD CERTIFICATES</source>
         <translation>EEMALDA ÜLELIIGSED SERTIFIKAADID</translation>
     </message>
     <message>
@@ -1045,8 +1054,8 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <translation>Samasse kataloogi</translation>
     </message>
     <message>
-        <source>Select the directory by yourself</source>
-        <translation>Valin kataloogi ise</translation>
+        <source>Select the default directory</source>
+        <translation>Vali vaikimisi kataloog</translation>
     </message>
 
     <message>
@@ -1054,8 +1063,10 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <translation>Vaikimisi faili tüüp</translation>
     </message>
     <message>
-        <source>ASiC-E - format for future international, European-wide compatibility</source>
-        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming</translation>
+        <source>ASiC-E – international digital signature format that will be used across European countries
+</source>
+        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming
+</translation>
     </message>
     <message>
         <source>BDOC – default digital signature format in Estonia.</source>
@@ -1189,21 +1200,11 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <translation>AVA KONTAINERI ASUKOHT</translation>
     </message>
     <message>
-        <source>SAVE UNSIGNED</source>
+        <source>SAVE WITHOUT SIGNING</source>
         <translation>SALVESTA ALLKIRJASTAMATA</translation>
     </message>
-
-
     <message>
-        <source>SIGN WITH\nMOBILE ID</source>
-        <translation>ALLKIRJASTA\nMOBIILI-ID’GA</translation>
-    </message>
-    <message>
-        <source>SIGN WITH\nID ID CARD</source>
-        <translation>ALLKIRJASTA\nID-KAARTIGA</translation>
-    </message>
-    <message>
-        <source>Container's time stamps</source>
+        <source>Container's timestamps</source>
         <translation>Konteineri ajatemplid</translation>
     </message>
     <message>
@@ -1227,7 +1228,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <translation>← ALGUSESSE</translation>
     </message>
     <message>
-        <source>Container's signatures are missing</source>
+        <source>Container is not signed</source>
         <translation>Kontaineri allkirjad puuduvad</translation>
     </message>
     <message>
@@ -1241,10 +1242,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Encrypted files</source>
         <translation>Krüpteeritud failid</translation>
-    </message>
-    <message>
-        <source>DECRYPT WITH\nID-CARD</source>
-        <translation>DEKRÜPTEERI\nID-KAARDIGA</translation>
     </message>
     <message>
         <source>Decrypted files</source>
@@ -1568,22 +1565,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Save file</source>
         <translation>Salvesta fail</translation>
-    </message>
-    <message>
-        <source>PCSC service is not running</source>
-        <translation>PCSC teenus ei tööta</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>Lugejas ei ole kaarti. Kontrolli, kas ID-kaart on õiget pidi lugejas.</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Loen andmeid</translation>
     </message>
     <message>
         <source>The container has been successfully signed!</source>
@@ -1984,7 +1965,7 @@ ja sisesta telefonil Mobiil-ID PIN2-kood.
 Kontrollkood: %1</translation>
     </message>
     <message>
-        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access sertificate.</source>
+        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
         <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
     </message>
     <message>
@@ -2265,6 +2246,39 @@ Kontrollkood: %1</translation>
     <message>
         <source>Keep</source>
         <translation>Loobu</translation>
+    </message>
+</context>
+<context>
+    <name>MainAction</name>
+    <message>
+        <source>SignatureMobile</source>
+        <translation>ALLKIRJASTA
+MOBIILI-ID’GA</translation>
+    </message>
+    <message>
+        <source>SignatureAdd</source>
+        <translation>ALLKIRJASTA
+ID-KAARDIGA</translation>
+    </message>
+    <message>
+        <source>EncryptContainer</source>
+        <translation>KRÜPTEERI</translation>
+    </message>
+    <message>
+        <source>DecryptContainer</source>
+        <translation>DEKRÜPTEERI
+ID-KAARDIGA</translation>
+    </message>
+</context>
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>ID Card</source>
+        <translation>ID Kaart</translation>
+    </message>
+    <message>
+        <source>Digi ID</source>
+        <translation>Digi ID</translation>
     </message>
 </context>
 </TS>

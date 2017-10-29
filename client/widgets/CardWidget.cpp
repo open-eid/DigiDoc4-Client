@@ -71,39 +71,37 @@ bool CardWidget::event( QEvent *ev )
 	}
 	return QWidget::event( ev );
 }
+
 void CardWidget::changeEvent(QEvent* event)
 {
-	if (event->type() == QEvent::LanguageChange)
-	{
-		ui->retranslateUi(this);
-	}
+	if (event->type() == QEvent::LanguageChange && cardInfo)
+		update(cardInfo);
 
 	QWidget::changeEvent(event);
 }
-
 
 bool CardWidget::isLoading() const
 {
 	return !cardInfo || cardInfo->loading;
 }
 
-void CardWidget::update( const QSharedPointer<const QCardInfo> &ci )
+void CardWidget::update(const QSharedPointer<const QCardInfo> &ci)
 {
 	cardInfo = ci;
-	ui->cardName->setText( cardInfo->fullName );
-	ui->cardCode->setText( cardInfo->id + "   |" );
-	if( cardInfo->loading )
+	ui->cardName->setText(cardInfo->fullName);
+	ui->cardCode->setText(cardInfo->id + "   |");
+	if(cardInfo->loading)
 	{
-		ui->cardStatus->setText( QString() );
-		cardIcon->load( QString(":/images/icon_IDkaart_disabled.svg") );
+		ui->cardStatus->setText(QString());
+		cardIcon->load(QString(":/images/icon_IDkaart_disabled.svg"));
 	}
 	else
 	{
-		ui->cardStatus->setText( tr("There is an %1 in reader" ).arg( cardInfo->cardType ) );
-		cardIcon->load( QString(":/images/icon_IDkaart_green.svg") );
+		ui->cardStatus->setText(tr("%1 in reader").arg(tr(cardInfo->cardType.toLatin1())));
+		cardIcon->load(QString(":/images/icon_IDkaart_green.svg"));
 	}
 
-	setAccessibleDescription( cardInfo->fullName );
+	setAccessibleDescription(cardInfo->fullName);
 }
 
 void CardWidget::showPicture( const QPixmap &pix )

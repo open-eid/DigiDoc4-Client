@@ -44,7 +44,7 @@ public:
 	QString id() const;
 	bool isLoading() const;
 	void showPicture( const QPixmap &pix ) override;
-	void update( const QSharedPointer<const QCardInfo> &ci );
+	void update(const QSharedPointer<const QCardInfo> &ci);
 
 signals:
 	void photoClicked( const QPixmap *pixmap );

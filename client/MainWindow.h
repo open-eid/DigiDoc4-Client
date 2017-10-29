@@ -26,6 +26,7 @@
 #include "widgets/AccordionTitle.h"
 #include "widgets/CardPopup.h"
 #include "widgets/DropdownButton.h"
+#include "widgets/NoCardInfo.h"
 #include "widgets/PageIcon.h"
 
 #include <QButtonGroup>
@@ -112,7 +113,7 @@ private:
 		PagePukChange = 0x17
 	};
 
-	void noReader_NoCard_Loading_Event( const QString &text, bool isLoading = false );
+	void noReader_NoCard_Loading_Event(NoCardInfo::Status status);
 	void cachePicture( const QString &id, const QImage &image );
 	void clearOverlay();
 	void convertToBDoc();

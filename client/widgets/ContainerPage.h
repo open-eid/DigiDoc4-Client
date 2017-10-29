@@ -77,7 +77,7 @@ private:
 	void mobileDialog();
 	void showButtons( std::vector<QWidget*> buttons );
 	void showDropdown();
-	void showMainAction( ria::qdigidoc4::Actions action, const QString &label );
+	void showMainAction(ria::qdigidoc4::Actions action);
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void showSigningButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);

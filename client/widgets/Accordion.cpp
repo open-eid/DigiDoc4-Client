@@ -45,9 +45,9 @@ void Accordion::init()
 	connect( ui->contentOtherData, &OtherData::checkEMailClicked, this, [this](){ emit checkEMail(); } );
 	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
 
-    ui->titleVerifyCert->init(true, tr("CHECK PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
-    ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE POST"), ui->contentOtherData);
-    ui->titleOtherEID->init(false, tr("MY OTHER eID'-D's"), ui->contentOtherEID);
+    ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
+    ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), ui->contentOtherData);
+    ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
@@ -111,9 +111,9 @@ void Accordion::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 
-		ui->titleVerifyCert->setText(tr("CHECK PIN/PUK CODES AND CERTIFICATES"));
-		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE POST"));
-		ui->titleOtherEID->setText(tr("MY OTHER eID'-D's"));
+		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"));
+		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"));
+		ui->titleOtherEID->setText(tr("MY OTHER eID's"));
 	}
 
 	QWidget::changeEvent(event);

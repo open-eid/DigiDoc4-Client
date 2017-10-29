@@ -204,7 +204,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>CRYPTO</source>
-        <translation>Крипто</translation>
+        <translation>КРИПТО</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -224,15 +224,15 @@ Media type: %3</source>
     </message>
     <message>
         <source>From card</source>
-        <translation>ПРИЛОЖЕНИЕ СЕРТИФИКАТ КАРТЫ</translation>
+        <translation>СЕРТИФИКАТ С КАРТЫ</translation>
     </message>
     <message>
         <source>From file</source>
-        <translation>ПРИЛОЖЕНИЕ СЕРТИФИКАТ с файлa</translation>
+        <translation>СЕРТИФИКАТ ИЗ ФАЙЛА</translation>
     </message>
     <message>
         <source>From history</source>
-        <translation>ПОСЛЕДНИЕ ДОБАВЛЕН</translation>
+        <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
     </message>
 
     <message>
@@ -248,12 +248,12 @@ Media type: %3</source>
 <context>
     <name>InfoStack</name>
     <message>
-        <source>DOWNLOAD THE PICTURE</source>
+        <source>DOWNLOAD</source>
         <translation>ЗАГРУЗИТЬ ФОТО</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <translation>гражданство</translation>
+        <translation>Гражданство</translation>
     </message>
     <message>
         <source>Given names</source>
@@ -286,7 +286,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>until</source>
-        <translation> до</translation>
+        <translation> до </translation>
     </message>
     <message>
         <source>Expired</source>
@@ -304,7 +304,7 @@ Media type: %3</source>
 
     <message>
         <source>Add more files</source>
-        <translation>+ ДОБАВИТЬ ФАЙЛОВ</translation>
+        <translation>+ ДОБАВИТЬ ФАЙЛЫ</translation>
     </message>
     <message>
         <source>Add addressee</source>
@@ -321,10 +321,19 @@ Media type: %3</source>
     <name>NoCardInfo</name>
     <message>
         <source>No card in reader</source>
-        <translation>Не найдена ID-карта
-
-Проверьте, правильно ли вставлена ID-карта в считыватель.
-У новых ID-карт чип находится на обратной стороне карты.</translation>
+        <translation>В читателе нет карты; проверьте, введена ли карточка правильно</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>Служба PCSC не работает</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Считывающее устройство не обнаружено</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Читаю данные</translation>
     </message>
 </context>
 
@@ -362,7 +371,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
-        <translation>ПРОВЕРИТЬ состояние @EESTI.EE E-почта</translation>
+        <translation>ПРОВЕРИТЬ СОСТОЯНИЕ @EESTI.EE E-ПОЧТЫ</translation>
     </message>
     <message>
         <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
@@ -373,12 +382,12 @@ Learn more info here:</source>
         <translation>АКТИВИРОВАТЬ ПЕРЕДВИЖЕНИЕ</translation>
     </message>
     <message>
-        <source>For more complete official email tuning, see the portal</source>
-        <translation>Для более полной официальной настройки электронной почты см. Портал</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте в портале &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
-        <translation>Ваши почтовые адреса @ eesti.ee адресованы электронной почте</translation>
+        <source>Your @eesti.ee e-mail has been forwarded to </source>
+        <translation>Ваши почтовые адреса @ eesti.ee адресованы электронной почте </translation>
     </message>
 </context>
 
@@ -500,7 +509,7 @@ Learn more info here:</source>
 <context>
     <name>CertificateDetails</name>
     <message>
-        <source>Certificate Information</source>
+        <source>Certificate information</source>
         <translation>Справочная информация</translation>
     </message>
     <message>
@@ -617,12 +626,12 @@ Learn more info here:</source>
 <context>
     <name>Accordion</name>
     <message>
-        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
+        <source>PIN/PUK CODES AND CERTIFICATES</source>
         <translation>ПРОВЕРИТЬ PIN/PUK И СЕРТИФИКАТЫ</translation>
     </message>
     <message>
-        <source>REDIRECTION OF EESTI.EE POST</source>
-        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE почта</translation>
+        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
+        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
     </message>
     <message>
         <source>MY OTHER eID's</source>
@@ -634,12 +643,12 @@ Learn more info here:</source>
 <context>
     <name>CardWidget</name>
     <message>
-        <source>There is an ID card in reader</source>
-        <translation>В читателе есть ID КАРТ</translation>
+        <source>ID card in reader</source>
+        <translation>В читателе ID карта</translation>
     </message>
     <message>
-        <source>There is an %1 in reader</source>
-        <translation>В читателе есть %1</translation>
+        <source>%1 in reader</source>
+        <translation>В читателе %1</translation>
     </message>
 </context>
 
@@ -647,11 +656,11 @@ Learn more info here:</source>
     <name>FirstRun</name>
     <message>
         <source>CONTINUE</source>
-        <translation>ПРОДОЛЖАТЬ</translation>
+        <translation>ПРОДОЛЖИТЬ</translation>
     </message>
     <message>
-        <source>VIEW NEXT INTRODUCTION</source>
-        <translation>СМОТРЕТЬ СЛЕДУЮЩЕЕ ВВЕДЕНИЕ</translation>
+        <source>VIEW NEXT</source>
+        <translation>ПОСМОТРЕТЬ СЛЕДУЮЩИЙ</translation>
     </message>
     <message>
         <source>Skip introductions</source>
@@ -659,11 +668,11 @@ Learn more info here:</source>
     </message>
     <message>
         <source>VIEW INTRODUCTION</source>
-        <translation>ПРОСМОТРЕТЬ ВВЕДЕНИЕ</translation>
+        <translation>ПОСМОТРЕТЬ ВВЕДЕНИЕ</translation>
     </message>
     <message>
-        <source>ENTER INTO APPLICATION</source>
-        <translation>ВСТУПИТЬ В ПРИМЕНЕНИЕ</translation>
+        <source>ENTER THE APPLICATION</source>
+        <translation>ВОЙТИ В ПРОГРАММУ</translation>
     </message>
 </context>
 
@@ -671,11 +680,11 @@ Learn more info here:</source>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number with Mobiil-ID to sign up</source>
-        <translation>&lt;b&gt;Введите свой номер телефона с помощью Mobiil-ID&lt;br/&gt;для регистрации&lt;/b&gt;</translation>
+        <source>Enter your phone number to sign with Mobile ID</source>
+        <translation>&lt;b&gt;Введите свой номер телефона для&lt;br/&gt;подписи с Mobiil-ID &lt;/b&gt;</translation>
     </message>
     <message>
-        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
+        <source>COUNTRY CODE AND PHONE NUMBER</source>
         <translation>КОД СТРАНЫ И ТЕЛЕФОННЫЙ НОМЕР</translation>
     </message>
     <message>
@@ -683,8 +692,8 @@ Learn more info here:</source>
         <translation>ПЕРСОНАЛЬНЫЙ КОД</translation>
     </message>
     <message>
-        <source>Remember</source>
-        <translation>запомнить</translation>
+        <source>Remember me</source>
+        <translation>Запомнить меня</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -758,7 +767,7 @@ Learn more info here:</source>
         <translation>Внутренняя ошибка услуги</translation>
     </message>
     <message>
-        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
+        <source>Not allowed to use OCSP service! Please check your server access certificate.</source>
         <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
     </message>
     <message>
@@ -944,7 +953,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>CHANGE</source>
-        <translation>ИЗМЕНЕНИЕ</translation>
+        <translation> ИЗМЕНЕНИЕ</translation>
     </message>
     <message>
         <source>NEW %1 CODE</source>
@@ -974,23 +983,23 @@ unblock with PUK.&lt;/li&gt;
 
     <message>
         <source>GENERAL</source>
-        <translation>ГЕНЕРАЛЬНАЯ</translation>
+        <translation>ОСНОВНЫЕ</translation>
     </message>
     <message>
         <source>SIGNING</source>
-        <translation>подпис</translation>
+        <translation>ПОДПИСЬ</translation>
     </message>
     <message>
         <source>ACCESS CERTIFICATE</source>
-        <translation>Справка доступа</translation>
+        <translation>СПРAВКA ДОСТУПA</translation>
     </message>
     <message>
         <source>PROXY</source>
-        <translation>Прокси</translation>
+        <translation>ПРОКСИ</translation>
     </message>
     <message>
         <source>DIAGNOSTICS</source>
-        <translation>ДИАГНОСТИКИ</translation>
+        <translation>ДИАГНОСТИКА</translation>
     </message>
     <message>
         <source>INFO</source>
@@ -1003,11 +1012,11 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>CHECK FOR UPDATES</source>
-        <translation>ПРОВЕРЬТЕ ОБНОВЛЕНИЯ</translation>
+        <translation>ПРОВЕРТЕ ОБНОВЛЕНИЯ</translation>
     </message>
     <message>
-        <source>REMOVE UNNECESSARY CERTIFICATES</source>
-        <translation>УДАЛИТЬ НЕОБХОДИМЫЕ СЕРТИФИКАТЫ</translation>
+        <source>REMOVE OLD CERTIFICATES</source>
+        <translation>УДАЛИТЬ СТАРЫЕ СЕРТИФИКАТЫ</translation>
     </message>
     <message>
         <source>INSTALL MANUALLY</source>
@@ -1029,7 +1038,7 @@ unblock with PUK.&lt;/li&gt;
 
     <message>
         <source>Language</source>
-        <translation>язык</translation>
+        <translation>Язык</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -1048,8 +1057,8 @@ unblock with PUK.&lt;/li&gt;
         <translation>Та же папка</translation>
     </message>
     <message>
-        <source>Select the directory by yourself</source>
-        <translation>Выберите каталог самостоятельно</translation>
+        <source>Select the default directory</source>
+        <translation>Выберите каталог по умолчанию</translation>
     </message>
 
     <message>
@@ -1057,8 +1066,10 @@ unblock with PUK.&lt;/li&gt;
         <translation>Формат файла по умолчанию</translation>
     </message>
     <message>
-        <source>ASiC-E - format for future international, European-wide compatibility</source>
-        <translation>ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.</translation>
+        <source>ASiC-E – international digital signature format that will be used across European countries
+</source>
+        <translation>ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет
+использоваться в европейских государствах</translation>
     </message>
     <message>
         <source>BDOC – default digital signature format in Estonia.</source>
@@ -1168,7 +1179,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>CHANGE</source>
-        <translation>ИЗМЕНЕНИЕ</translation>
+        <translation>ПОМЕНЯТЬ</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -1176,36 +1187,26 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>SEND WITH E-MAIL</source>
-        <translation>ОТПРАВИТЬ С E-MAIL</translation>
+        <translation>ОТПРАВИТЬ С Е-ПOЧТOЙ</translation>
     </message>
     <message>
         <source>ENCRYPT</source>
-        <translation>зашифрованная</translation>
+        <translation>ШИФРОВАТ</translation>
     </message>
     <message>
         <source>SIGN</source>
-        <translation>подписать</translation>
+        <translation>ПОДПИСАТЬ</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
-        <translation>РАСПОЛОЖЕНИЕ ОТКРЫТОГО КОНТЕЙНЕРА</translation>
+        <translation>ПОЙТИ К КОНТЕЙНЕРУ</translation>
     </message>
     <message>
-        <source>SAVE UNSIGNED</source>
-        <translation>СОХРАНИТЬ НЕзашифрованном</translation>
-    </message>
-
-
-    <message>
-        <source>SIGN WITH\nMOBILE ID</source>
-        <translation>ПОДПИСЬ С\nМОБИЛЬНЫМ ИДЕНТОМ</translation>
+        <source>SAVE WITHOUT SIGNING</source>
+        <translation>СОХРАНИТЬ НЕЗАШИФРОВАННЫМ</translation>
     </message>
     <message>
-        <source>SIGN WITH\nID ID CARD</source>
-        <translation>ПОДПИСЬ С\ID КАРТОЙ</translation>
-    </message>
-    <message>
-        <source>Container's time stamps</source>
+        <source>Container's timestamps</source>
         <translation>Временные марки контейнерa</translation>
     </message>
     <message>
@@ -1226,10 +1227,10 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>STARTING</source>
-        <translation>← ТОП</translation>
+        <translation>← НАЧАЛО</translation>
     </message>
     <message>
-        <source>Container's signatures are missing</source>
+        <source>Container is not signed</source>
         <translation>Подписи подписчиков контейнера отсутствуют</translation>
     </message>
     <message>
@@ -1243,10 +1244,6 @@ unblock with PUK.&lt;/li&gt;
     <message>
         <source>Encrypted files</source>
         <translation>Зашифрованные файлы</translation>
-    </message>
-    <message>
-        <source>DECRYPT WITH\nID-CARD</source>
-        <translation>шифровать С\ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Decrypted files</source>
@@ -1516,20 +1513,19 @@ unblock with PUK.&lt;/li&gt;
 
     <message>
         <source>Drag file here for signing</source>
-        <translation>Перетащите файл здесь для подписания или проверки ...</translation>
+        <translation>Перетащите файл сюда для подписания или проверки ...</translation>
     </message>
     <message>
         <source>Open file for signing</source>
-        <translation>... ИЛИ ОТКРЫТЫЙ ФАЙЛ ОТ ДИСКА</translation>
+        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
-
     <message>
         <source>Drag file here for encryption</source>
-        <translation>Перетащите файл здесь для шифрования или дешифрования ...</translation>
+        <translation>Перетащите файл сюда для шифрования или дешифрования ...</translation>
     </message>
     <message>
         <source>Open file for encryption</source>
-        <translation>... ИЛИ ОТКРЫТЫЙ ФАЙЛ ОТ ДИСКА</translation>
+        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
 
     <message>
@@ -1573,22 +1569,6 @@ unblock with PUK.&lt;/li&gt;
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <source>PCSC service is not running</source>
-        <translation>Служба PCSC не работает</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Считывающее устройство не обнаружено</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>У читателя нет карты. Проверьте, находится ли идентификационная карточка правильно в считывателе.</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Читаю данные</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>Контейнер успешно подписан!</translation>
     </message>
@@ -1600,10 +1580,6 @@ unblock with PUK.&lt;/li&gt;
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Фото (*.jpg);;Все файлы (*)</translation>
     </message>
-
-
-
-
     <message>
         <source>Sign</source>
         <translation>Подписать</translation>
@@ -1996,7 +1972,7 @@ Control code: %1</source>
 Kонтрольны код: %1</translation>
     </message>
     <message>
-        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access sertificate.</source>
+        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
         <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
     </message>
     <message>
@@ -2277,6 +2253,39 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Keep</source>
         <translation>Оставить</translation>
+    </message>
+</context>
+<context>
+    <name>MainAction</name>
+    <message>
+        <source>SignatureMobile</source>
+        <translation>ПОДПИСАТЬ С
+МОБИЛЬНЫМ ИД</translation>
+    </message>
+    <message>
+        <source>SignatureAdd</source>
+        <translation>ПОДПИСАТЬ С
+ИД КАРТОЙ</translation>
+    </message>
+    <message>
+        <source>EncryptContainer</source>
+        <translation>ШИФРОВАТ</translation>
+    </message>
+    <message>
+        <source>DecryptContainer</source>
+        <translation>РАЗШИФРОВАТЬ
+С ID-КАРТОЙ</translation>
+    </message>
+</context>
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>ID Card</source>
+        <translation>ИД Карта</translation>
+    </message>
+    <message>
+        <source>Digi ID</source>
+        <translation>Диги ИД</translation>
     </message>
 </context>
 </TS>

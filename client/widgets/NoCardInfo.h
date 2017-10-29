@@ -35,10 +35,17 @@ class NoCardInfo : public QWidget
 	Q_OBJECT
 
 public:
+	enum Status {
+		NoCard,
+		NoPCSC,
+		NoReader,
+		Loading
+	};
+
 	explicit NoCardInfo( QWidget *parent = nullptr );
 	~NoCardInfo();
 
-	void update( const QString &status );
+	void update(Status s);
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -46,4 +53,5 @@ protected:
 private:
 	Ui::NoCardInfo *ui;
 	std::unique_ptr<QSvgWidget> cardIcon;
+	Status status;
 };

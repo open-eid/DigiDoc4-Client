@@ -245,17 +245,17 @@ void FirstRun::showDetails()
 	switch (page) {
 	case Signing:
 		setStyleSheet("image: url(:/images/FirstRunSigning.png);");
-		ui->next->setText(tr("VIEW NEXT INTRODUCTION"));
+		ui->next->setText(tr("VIEW NEXT"));
 		ui->skip->show();
 		break;
 	case Encryption:
 		setStyleSheet("image: url(:/images/FirstRunEncrypt.png);");
-		ui->next->setText(tr("VIEW NEXT INTRODUCTION"));
+		ui->next->setText(tr("VIEW NEXT"));
 		ui->skip->show();
 		break;
 	default:
 		setStyleSheet("image: url(:/images/FirstRunMyEID.png);");
-		ui->next->setText(tr("ENTER INTO APPLICATION"));
+		ui->next->setText(tr("ENTER THE APPLICATION"));
 		ui->skip->hide();
 		break;
 	}

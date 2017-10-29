@@ -224,15 +224,15 @@ Media type: %3</translation>
     </message>
     <message>
         <source>From card</source>
-        <translation>ADD CERTIFICATE FROM CARD</translation>
+        <translation>CERTIFICATE FROM CARD</translation>
     </message>
     <message>
         <source>From file</source>
-        <translation>ADD CERTIFICATE FROM FILE</translation>
+        <translation>CERTIFICATE FROM FILE</translation>
     </message>
     <message>
         <source>From history</source>
-        <translation>ADD LATEST USED</translation>
+        <translation>LATEST USED CERTIFICATE</translation>
     </message>
 
     <message>
@@ -248,8 +248,8 @@ Media type: %3</translation>
 <context>
     <name>InfoStack</name>
     <message>
-        <source>DOWNLOAD THE PICTURE</source>
-        <translation>DOWNLOAD THE PICTURE</translation>
+        <source>DOWNLOAD</source>
+        <translation>DOWNLOAD</translation>
     </message>
     <message>
         <source>Citizenship</source>
@@ -286,7 +286,7 @@ Media type: %3</translation>
     </message>
     <message>
         <source>until</source>
-        <translation> until</translation>
+        <translation> until </translation>
     </message>
     <message>
         <source>Expired</source>
@@ -321,10 +321,19 @@ Media type: %3</translation>
     <name>NoCardInfo</name>
     <message>
         <source>No card in reader</source>
-        <translation>No card in reader
-
-Check if the ID-card is inserted correctly to the reader.
-New ID-cards have chip on the back side of the card.</translation>
+        <translation>No card in reader; check if ID card inserted correctly</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC service is not running</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>No readers found</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loading data</translation>
     </message>
 </context>
 
@@ -382,12 +391,12 @@ Learn more info here:</translation>
         <translation>ACTIVATE REDIRECTION</translation>
     </message>
     <message>
-        <source>For more complete official email tuning, see the portal</source>
-        <translation>For more complete official email tuning, see the portal</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Your @eesti.ee mail addresses are addressed to e-mail</source>
-        <translation>Your @eesti.ee mail addresses are addressed to e-mail</translation>
+        <source>Your @eesti.ee e-mail has been forwarded to </source>
+        <translation>Your @eesti.ee e-mail has been forwarded to </translation>
     </message>
 </context>
 
@@ -510,8 +519,8 @@ Learn more info here:</translation>
 <context>
     <name>CertificateDetails</name>
     <message>
-        <source>Certificate Information</source>
-        <translation>Certificate Information</translation>
+        <source>Certificate information</source>
+        <translation>Certificate information</translation>
     </message>
     <message>
         <source>Certificate details</source>
@@ -631,8 +640,8 @@ Learn more info here:</translation>
         <translation>CHECK PIN/PUK CODES AND CERTIFICATES</translation>
     </message>
     <message>
-        <source>REDIRECTION OF EESTI.EE POST</source>
-        <translation>REDIRECTION OF EESTI.EE POST</translation>
+        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
+        <translation>REDIRECTION OF EESTI.EE E-MAIL</translation>
     </message>
     <message>
         <source>MY OTHER eID's</source>
@@ -644,12 +653,12 @@ Learn more info here:</translation>
 <context>
     <name>CardWidget</name>
     <message>
-        <source>There is an ID card in reader</source>
-        <translation>There is an ID card in reader</translation>
+        <source>ID card in reader</source>
+        <translation>ID card in reader</translation>
     </message>
     <message>
-        <source>There is an %1 in reader</source>
-        <translation>There is an %1 in reader</translation>
+        <source>%1 in reader</source>
+        <translation>%1 in reader</translation>
     </message>
 
 </context>
@@ -661,8 +670,8 @@ Learn more info here:</translation>
         <translation>CONTINUE</translation>
     </message>
     <message>
-        <source>VIEW NEXT INTRODUCTION</source>
-        <translation>VIEW NEXT INTRODUCTION</translation>
+        <source>VIEW NEXT</source>
+        <translation>VIEW NEXT</translation>
     </message>
     <message>
         <source>Skip introductions</source>
@@ -674,7 +683,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>ENTER INTO APPLICATION</source>
-        <translation>ENTER INTO APPLICATION</translation>
+        <translation>ENTER THE APPLICATION</translation>
     </message>
 </context>
 
@@ -682,20 +691,20 @@ Learn more info here:</translation>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number with Mobiil-ID to sign up</source>
-        <translation>&lt;b&gt;Enter your phone number with Mobiil-ID&lt;br/&gt;to sign up&lt;/b&gt;</translation>
+        <source>Enter your phone number to sign with Mobile ID</source>
+        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobile ID&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>COUNTRY CODE AND TELEPHONE NUMBER</source>
-        <translation>COUNTRY CODE AND TELEPHONE NUMBER</translation>
+        <source>COUNTRY CODE AND PHONE NUMBER</source>
+        <translation>COUNTRY CODE AND PHONE NUMBER</translation>
     </message>
     <message>
         <source>PERSONAL CODE</source>
         <translation>PERSONAL CODE</translation>
     </message>
     <message>
-        <source>Remember</source>
-        <translation>Remember</translation>
+        <source>Remember me</source>
+        <translation>Remember me</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -769,8 +778,8 @@ Learn more info here:</translation>
         <translation>Service internal error</translation>
     </message>
     <message>
-        <source>Not allowed to use OCSP service! Please check your server access sertificate.</source>
-        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access sertificate.</translation>
+        <source>Not allowed to use OCSP service! Please check your server access certificate.</source>
+        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
     </message>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
@@ -1018,8 +1027,8 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>CHECK FOR UPDATES</translation>
     </message>
     <message>
-        <source>REMOVE UNNECESSARY CERTIFICATES</source>
-        <translation>REMOVE UNNECESSARY CERTIFICATES</translation>
+        <source>REMOVE OLD CERTIFICATES</source>
+        <translation>REMOVE OLD CERTIFICATES</translation>
     </message>
     <message>
         <source>INSTALL MANUALLY</source>
@@ -1060,8 +1069,8 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>Same folder</translation>
     </message>
     <message>
-        <source>Select the directory by yourself</source>
-        <translation>Select the directory by yourself</translation>
+        <source>Select the default directory</source>
+        <translation>Select the default directory</translation>
     </message>
 
     <message>
@@ -1069,8 +1078,10 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>Default file type</translation>
     </message>
     <message>
-        <source>ASiC-E - format for future international, European-wide compatibility</source>
-        <translation>ASiC-E - format for future international, European-wide compatibility</translation>
+        <source>ASiC-E – international digital signature format that will be used across European countries
+</source>
+        <translation>ASiC-E – international digital signature format that will be used across European countries
+</translation>
     </message>
     <message>
         <source>BDOC – default digital signature format in Estonia.</source>
@@ -1206,21 +1217,12 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>OPEN CONTAINER LOCATION</translation>
     </message>
     <message>
-        <source>SAVE UNSIGNED</source>
-        <translation>SAVE UNSIGNED</translation>
-    </message>
-
-    <message>
-        <source>SIGN WITH\nMOBILE ID</source>
-        <translation>SIGN WITH\nMOBILE ID</translation>
+        <source>SAVE WITHOUT SIGNING</source>
+        <translation>SAVE WITHOUT SIGNING</translation>
     </message>
     <message>
-        <source>SIGN WITH\nID ID CARD</source>
-        <translation>SIGN WITH\nID ID CARD</translation>
-    </message>
-    <message>
-        <source>Container's time stamps</source>
-        <translation>Container's time stamps</translation>
+        <source>Container's timestamps</source>
+        <translation>Container's timestamps</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>
@@ -1240,10 +1242,10 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>STARTING</source>
-        <translation>STARTING</translation>
+        <translation>← START</translation>
     </message>
     <message>
-        <source>Container's signatures are missing</source>
+        <source>Container is not signed</source>
         <translation>Container's signatures are missing</translation>
     </message>
     <message>
@@ -1257,10 +1259,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>Encrypted files</source>
         <translation>Encrypted files</translation>
-    </message>
-    <message>
-        <source>DECRYPT WITH\nID-CARD</source>
-        <translation>DECRYPT WITH\nID-CARD</translation>
     </message>
     <message>
         <source>Decrypted files</source>
@@ -1533,7 +1531,7 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>Open file for signing</source>
-        <translation>... OR OPEN FILE FROM DISK</translation>
+        <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
 
     <message>
@@ -1542,7 +1540,7 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>Open file for encryption</source>
-        <translation>... OR OPEN FILE FROM DISK</translation>
+        <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
 
     <message>
@@ -1584,22 +1582,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>Save file</source>
         <translation>Save file</translation>
-    </message>
-    <message>
-        <source>PCSC service is not running</source>
-        <translation>PCSC service is not running</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>No readers found</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>No card in reader. Check if the ID card is correctly in the reader.</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Loading data</translation>
     </message>
     <message>
         <source>The container has been successfully signed!</source>
@@ -2014,8 +1996,8 @@ and enter Mobile-ID PIN2-code.
 Control code: %1</translation>
     </message>
     <message>
-        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access sertificate.</source>
-        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access sertificate.</translation>
+        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
+        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
     </message>
     <message>
         <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
@@ -2295,6 +2277,39 @@ Control code: %1</translation>
     <message>
         <source>Keep</source>
         <translation>Keep</translation>
+    </message>
+</context>
+<context>
+    <name>MainAction</name>
+    <message>
+        <source>SignatureMobile</source>
+        <translation>SIGN WITH
+MOBILE ID</translation>
+    </message>
+    <message>
+        <source>SignatureAdd</source>
+        <translation>SIGN WITH
+ID CARD</translation>
+    </message>
+    <message>
+        <source>EncryptContainer</source>
+        <translation>ENCRYPT</translation>
+    </message>
+    <message>
+        <source>DecryptContainer</source>
+        <translation>DECRYPT WITH
+ID-CARD</translation>
+    </message>
+</context>
+<context>
+    <name>CardWidget</name>
+    <message>
+        <source>ID Card</source>
+        <translation>ID Card</translation>
+    </message>
+    <message>
+        <source>Digi ID</source>
+        <translation>Digi ID</translation>
     </message>
 </context>
 </TS>

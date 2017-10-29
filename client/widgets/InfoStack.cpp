@@ -140,7 +140,7 @@ void InfoStack::clearData()
 	ui->valueCitizenship->setText( "" ); 
 	ui->valueSerialNumber->setText( "" ); 
 	ui->valueExpiryDate->setText( "" ); 
-    ui->btnPicture->setText( tr("DOWNLOAD THE PICTURE") );
+    ui->btnPicture->setText( tr("DOWNLOAD") );
 	ui->btnPicture->show();	
 }
 

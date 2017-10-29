@@ -179,7 +179,7 @@ background-color: #023565;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>321</width>
+            <width>325</width>
             <height>65</height>
            </rect>
           </property>
@@ -225,7 +225,7 @@ background-color: #023565;</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>108</width>
+            <width>112</width>
             <height>50</height>
            </size>
           </property>
@@ -234,13 +234,13 @@ background-color: #023565;</string>
             <rect>
              <x>0</x>
              <y>4</y>
-             <width>51</width>
+             <width>54</width>
              <height>41</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>49</width>
+             <width>54</width>
              <height>41</height>
             </size>
            </property>
@@ -286,15 +286,15 @@ QToolButton:hover {
           <widget class="QToolButton" name="settings">
            <property name="geometry">
             <rect>
-             <x>53</x>
+             <x>54</x>
              <y>4</y>
-             <width>51</width>
+             <width>58</width>
              <height>41</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>49</width>
+             <width>58</width>
              <height>41</height>
             </size>
            </property>
@@ -344,7 +344,7 @@ QToolButton:hover {
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -753,31 +753,31 @@ font-weight: bold;
 text-decoration: none solid rgb(53, 55, 57);
 border: none;
 </string>
-               </property>
-               <property name="text">
-                <string>Click to resolve problem</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_11">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>10</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
+             </property>
+             <property name="text">
+              <string>Click to resolve problem</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>10</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
         </item>

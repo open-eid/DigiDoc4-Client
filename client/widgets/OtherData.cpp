@@ -37,10 +37,9 @@ OtherData::OtherData(QWidget *parent) :
 	ui->label->setFont( Styles::font( Styles::Regular, 13, QFont::DemiBold ) );
 	ui->lblEMail->setFont( font );
 	ui->lblNoForwarding->setFont( font );
-	ui->labelEestiEe->setFont( Styles::font( Styles::Regular, 12 ) );
-    QString decoration = "style='color: #006EB5;  text-decoration: none; font-weight: 900;'";
-    ui->labelEestiEe->setText( tr("For more complete official email tuning, see the portal") + " <a href='www.eesti.ee'><span " + decoration + ">eesti.ee</span></a>" );
-    ui->labelEestiEe->setOpenExternalLinks( true );	
+	ui->labelEestiEe->setFont(Styles::font(Styles::Regular, 12));
+	ui->labelEestiEe->setOpenExternalLinks(true);
+	ui->labelEestiEe->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->activate->setFont( condensed );
 	ui->btnCheckEMail->setFont( condensed );
 	ui->activate->setStyleSheet(
@@ -95,7 +94,7 @@ void OtherData::update( bool activate, const QString &eMail, const quint8 &error
 			if( errorCode )
 				ui->lblEMail->setText( QString("<b>") + eMail + QString("</b>") );  // Show error text here
 			else
-				ui->lblEMail->setText( QString(tr("Your @eesti.ee mail addresses are addressed to e-mail") + " <br/><b>" + eMail + QString("</b>") ) );
+				ui->lblEMail->setText( QString(tr("Your @eesti.ee e-mail has been forwarded to ") + " <br/><b>" + eMail + QString("</b>") ) );
 		}
 	}
 }

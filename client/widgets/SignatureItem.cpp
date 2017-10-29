@@ -46,15 +46,26 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 {
 	ui->setupUi(this);
 
-	QFont nameFont(Styles::font( Styles::Regular, 14, QFont::DemiBold));
+	QFont nameFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
+	nameMetrics.reset(new QFontMetrics(nameFont));	
 
 	ui->name->setFont(nameFont);
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
 	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
-	
-	const SslCertificate cert = s.cert();
+	init();
+}
+
+void SignatureItem::init()
+{
+	const SslCertificate cert = signature.cert();
+
 	QString accessibility, signingInfo;
+	name = QString();
+	serial = QString();
+	status = QString();
+	statusHtml = QString();
+
 	QTextStream sa(&accessibility);
 	QTextStream sc(&statusHtml);
 	QTextStream si(&signingInfo);
@@ -137,7 +148,6 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	setAccessibleName(label + " " + cert.toString(cert.showCN() ? "CN" : "GN SN"));
 	setAccessibleDescription( accessibility );
 
-	nameMetrics.reset(new QFontMetrics(nameFont));
 	recalculate();
 	changeNameHeight();
 }
@@ -150,9 +160,7 @@ SignatureItem::~SignatureItem()
 void SignatureItem::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
-	{
-		ui->retranslateUi(this);
-	}
+		init();
 
 	QWidget::changeEvent(event);
 }

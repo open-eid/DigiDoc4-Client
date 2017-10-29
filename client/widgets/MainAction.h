@@ -32,16 +32,21 @@ class MainAction : public QWidget
 	Q_OBJECT
 
 public:
-	explicit MainAction( ria::qdigidoc4::Actions action, const QString& label, QWidget *parent, bool showSelector = true );
+	explicit MainAction(ria::qdigidoc4::Actions action, QWidget *parent, bool showSelector = true);
 	~MainAction();
 
-	void update( ria::qdigidoc4::Actions action, const QString& label, bool showSelector = true );
+	void update(ria::qdigidoc4::Actions action, bool showSelector = true);
 
 signals:
 	void action( int action );
 	void dropdown();
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
+	void update();
+
 	Ui::MainAction *ui;
 	ria::qdigidoc4::Actions actionType;
 };

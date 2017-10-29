@@ -145,7 +145,7 @@ void QCardInfo::setCardType( const SslCertificate &cert )
 	}
 	else
 	{
-		cardType = "ID Kaart";
+		cardType = "ID Card";
 	}
 }
 

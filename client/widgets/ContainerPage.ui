@@ -526,13 +526,13 @@ border: none;</string>
        <widget class="LabelButton" name="save">
         <property name="minimumSize">
          <size>
-          <width>160</width>
+          <width>182</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>160</width>
+          <width>182</width>
           <height>25</height>
          </size>
         </property>
@@ -553,7 +553,7 @@ text-align: center;
 border: none;</string>
         </property>
         <property name="text">
-         <string>SAVE UNSIGNED</string>
+         <string>SAVE WITHOUT SIGNING</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -599,15 +599,15 @@ border: none;</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LabelButton</class>
-   <extends>QLabel</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
-  <customwidget>
    <class>ItemList</class>
    <extends>QWidget</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
   </customwidget>
   <customwidget>
    <class>FileList</class>

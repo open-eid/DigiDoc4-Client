@@ -21,7 +21,12 @@
 #include "ui_MainAction.h"
 #include "Styles.h"
 
-MainAction::MainAction( ria::qdigidoc4::Actions action, const QString& label, QWidget *parent, bool showSelector )
+#include <QDebug>
+
+using namespace ria::qdigidoc4;
+
+
+MainAction::MainAction(Actions action, QWidget *parent, bool showSelector)
 : QWidget(parent)
 , ui(new Ui::MainAction)
 {
@@ -31,7 +36,7 @@ MainAction::MainAction( ria::qdigidoc4::Actions action, const QString& label, QW
 	connect( ui->mainAction, &QPushButton::clicked, [this](bool checked){ emit this->action(this->actionType); });
 	connect( ui->otherCards, &QToolButton::clicked, this, &MainAction::dropdown );
 	
-	update( action, label, showSelector );
+	update(action, showSelector);
 }
 
 MainAction::~MainAction()
@@ -39,16 +44,45 @@ MainAction::~MainAction()
 	delete ui;
 }
 
-void MainAction::update( ria::qdigidoc4::Actions action, const QString& label, bool showSelector )
+void MainAction::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+		update();
+
+	QWidget::changeEvent(event);
+}
+
+void MainAction::update()
+{
+	QString label;
+	switch(actionType)
+	{
+	case SignatureMobile:
+		label = tr("SignatureMobile");
+		break;
+	case EncryptContainer:
+		label = tr("EncryptContainer");
+		break;
+	case DecryptContainer:
+		label = tr("DecryptContainer");
+		break;
+	default:
+		label = tr("SignatureAdd");
+		break;
+	}
+
+    qDebug() << label;
+	ui->mainAction->setText(label);
+    ui->mainAction->show();
+}
+
+void MainAction::update(Actions action, bool showSelector)
 {
 	actionType = action;
-	ui->mainAction->setText( label );
-	if ( showSelector ) 
-	{
+	update();
+
+	if (showSelector) 
 		ui->otherCards->show();
-	}
 	else
-	{
 		ui->otherCards->hide();
-	}
 }

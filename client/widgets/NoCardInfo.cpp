@@ -39,17 +39,35 @@ NoCardInfo::~NoCardInfo()
 	delete ui;
 }
 
-void NoCardInfo::update( const QString &status )
+void NoCardInfo::update(Status s)
 {
-	ui->cardStatus->setText( status );
+	QString text;
+	status = s;
+
+	switch(status)
+	{
+	case NoPCSC:
+		text = tr("PCSC service is not running");
+		break;
+	case NoReader:
+		text = tr("No readers found");
+		break;
+	case Loading:
+		text = tr("Loading data");
+		break;
+	default:
+		text = tr("No card in reader");
+		break;
+	}
+
+	ui->cardStatus->setText(text);
+	setAccessibleDescription(text);
 }
 
 void NoCardInfo::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
-	{
-		ui->retranslateUi(this);
-	}
+		update(status);
 
 	QWidget::changeEvent(event);
 }

@@ -48,6 +48,7 @@ protected:
 
 private:
 	void changeNameHeight();
+	void init();
 	void recalculate();
 	QString red(const QString &text);
 	void setIcon(const QString &icon, int width = 17, int height = 20);

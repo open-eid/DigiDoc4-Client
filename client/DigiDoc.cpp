@@ -521,7 +521,6 @@ bool DigiDoc::open( const QString &file )
 	try
 	{
 		b.reset(Container::open(to(file)));
-		QWidget *w = qobject_cast<QWidget*>(parent());
 		if(isService())
 		{
 			qApp->showWarning( tr("The verification of digital signatures in PDF format is performed through an external service. "

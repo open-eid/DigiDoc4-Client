@@ -839,13 +839,13 @@ void MainWindow::showCardStatus()
 		emit ui->cryptoContainerPage->cardChanged();
 
 		if ( !QPCSC::instance().serviceRunning() )
-			noReader_NoCard_Loading_Event( tr("PCSC service is not running") );
+			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( t.readers().isEmpty() )
-			noReader_NoCard_Loading_Event( tr("No readers found") );
+			noReader_NoCard_Loading_Event(NoCardInfo::NoReader);
 		else if ( t.card().isEmpty() )
-			noReader_NoCard_Loading_Event( tr("No card in reader") );
+			noReader_NoCard_Loading_Event(NoCardInfo::NoCard);
 		else
-			noReader_NoCard_Loading_Event( tr("Loading data"), true );
+			noReader_NoCard_Loading_Event(NoCardInfo::Loading);
 	}
 
 	// Combo box to select the cards from
@@ -924,15 +924,14 @@ void MainWindow::updateCardData()
 		cardPopup->update( smartcard );
 }
 
-void MainWindow::noReader_NoCard_Loading_Event( const QString &text, bool isLoading )
+void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 {
 	ui->idSelector->hide();
-	if( isLoading )
-		Application::setOverrideCursor( Qt::BusyCursor );
+	if(status == NoCardInfo::Loading)
+		Application::setOverrideCursor(Qt::BusyCursor);
 
 	ui->noCardInfo->show();
-	ui->noCardInfo->update( text );
-	ui->noCardInfo->setAccessibleDescription( text );
+	ui->noCardInfo->update(status);
 	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
 	ui->infoStack->clearPicture();

@@ -329,9 +329,9 @@ border-width: 1px 0px 0px 0px;
      <widget class="QPushButton" name="btnPicture">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>12</x>
         <y>125</y>
-        <width>86</width>
+        <width>94</width>
         <height>17</height>
        </rect>
       </property>
@@ -361,7 +361,7 @@ QPushButton:hover:!pressed {
 }</string>
       </property>
       <property name="text">
-       <string>DOWNLOAD THE PICTURE</string>
+       <string>DOWNLOAD</string>
       </property>
      </widget>
      <widget class="QLabel" name="photo">

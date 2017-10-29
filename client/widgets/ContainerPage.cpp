@@ -28,7 +28,6 @@
 #include "widgets/FileItem.h"
 #include "widgets/SignatureItem.h"
 
-#include <QDebug>
 #include <QFileDialog>
 #include <QDir>
 #include <QFileInfo>
@@ -104,7 +103,7 @@ void ContainerPage::init()
     ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerEncrypt );
     ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
     ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
-    ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE UNSIGNED"), Actions::ContainerSave );
+    ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
 
 	mobileCode = Settings().value("Client/MobileCode").toString();
 
@@ -235,7 +234,7 @@ void ContainerPage::showDropdown()
 	}
 	else
 	{
-		otherAction.reset( new MainAction( SignatureMobile, tr("SIGN WITH\nMOBILE ID"), this, false ) );
+		otherAction.reset( new MainAction( SignatureMobile, this, false ) );
 		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
 
@@ -252,16 +251,16 @@ void ContainerPage::showRightPane(ItemType itemType, const QString &header)
 	ui->rightPane->show();
 }
 
-void ContainerPage::showMainAction( Actions action, const QString &label )
+void ContainerPage::showMainAction(Actions action)
 {
 	if( mainAction )
 	{
-		mainAction->update( action, label, action == SignatureAdd );
+		mainAction->update(action, action == SignatureAdd);
 		mainAction->show();
 	}
 	else
 	{
-		mainAction.reset( new MainAction( action, label, this, action == SignatureAdd ) );
+		mainAction.reset(new MainAction(action, this, action == SignatureAdd));
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
 		mainAction->show();
 	}
@@ -281,15 +280,16 @@ void ContainerPage::showMainAction( Actions action, const QString &label )
 	}
 
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
+	ui->navigationArea->adjustSize();
 }
 
 void ContainerPage::showSigningButton()
 {
 	hideOtherAction();
 	if(cardInReader.isNull())
-		showMainAction(SignatureAdd, tr("SIGN WITH\nID ID CARD"));
+		showMainAction(SignatureMobile);
 	else
-		showMainAction(SignatureMobile, tr("SIGN WITH\nMOBILE ID"));
+		showMainAction(SignatureAdd);
 }
 
 void ContainerPage::transition(CryptoDoc* container)
@@ -320,7 +320,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-		ui->rightPane->addHeader(tr("Container's time stamps"));
+		ui->rightPane->addHeader(tr("Container's timestamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
 			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
@@ -379,7 +379,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->cancel->setText(tr("STARTING"));
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemSignature, tr("Container's signatures are missing"));
+		showRightPane( ItemSignature, tr("Container is not signed"));
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
@@ -394,7 +394,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemAddress, tr("Recipients") );
-		showMainAction( EncryptContainer, tr("ENCRYPT") );
+		showMainAction(EncryptContainer);
 		ui->cancel->setText(tr("STARTING"));
         ui->convert->setText(tr("SIGN"));
 		showButtons( { ui->cancel, ui->convert } );
@@ -405,7 +405,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, tr("Encrypted files"));
 		showRightPane( ItemAddress, tr("Recipients") );
-		showMainAction( DecryptContainer, tr("DECRYPT WITH\nID-CARD") );
+		showMainAction(DecryptContainer);
 		ui->cancel->setText(tr("STARTING"));
         ui->convert->setText(tr("SIGN"));
 		hideButtons( { ui->save } );

@@ -85,7 +85,7 @@
     <rect>
      <x>185</x>
      <y>38</y>
-     <width>135</width>
+     <width>142</width>
      <height>19</height>
     </rect>
    </property>
@@ -98,7 +98,7 @@
     <string notr="true">color: #75787B; background: none;</string>
    </property>
    <property name="text">
-    <string>There is an ID card in reader</string>
+    <string>ID card in reader</string>
    </property>
   </widget>
   <widget class="LabelButton" name="cardPhoto">

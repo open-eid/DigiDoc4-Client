@@ -221,19 +221,19 @@ QPushButton:disabled {
        <rect>
         <x>333</x>
         <y>8</y>
-        <width>90</width>
+        <width>145</width>
         <height>25</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>90</width>
+        <width>145</width>
         <height>25</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>90</width>
+        <width>145</width>
         <height>25</height>
        </size>
       </property>
