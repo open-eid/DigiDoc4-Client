@@ -78,6 +78,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	SslCertificate c = ( type == QSmartCardData::Pin1Type ) ? t.authCert() : t.signCert();
 	this->isValidCert = c.isValid();
 	this->isBlockedPin = (t.retryCount( type ) == 0) ? true : false;
+	ui->changePIN->show();
 
 	if( !isValidCert )
 	{
@@ -98,11 +99,14 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	{
 	case QSmartCardData::Pin1Type:
 		name = tr("Person identification certificate");
-		changeBtn = ( isBlockedPin ) ? tr("UNBLOCK") : tr("CHANGE PIN1");
-		forgotPinText = tr("%1Forgot PIN%2?%3")
-						.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
-						.arg("1")
-						.arg("</span></a>");
+		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN1");
+		if(t.isSecurePinpad())
+			forgotPinText = "";
+		else
+			forgotPinText = tr("%1Forgot PIN%2?%3")
+							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
+							.arg("1")
+							.arg("</span></a>");
 		detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
 		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
 				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
@@ -110,11 +114,14 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 		break;
 	case QSmartCardData::Pin2Type:
 		name = tr("Signing certificate");
-		changeBtn = ( !isValidCert ) ? tr("RENEW CERTIFICATE") : ( isBlockedPin ) ? tr("UNBLOCK") : tr("CHANGE PIN2");
-		forgotPinText = tr("%1Forgot PIN%2?%3")
-						.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
-						.arg("2")
-						.arg("</span></a>");
+		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2");
+		if(!t.isSecurePinpad())
+			forgotPinText = "";
+		else
+			forgotPinText = tr("%1Forgot PIN%2?%3")
+							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
+							.arg("2")
+							.arg("</span></a>");
 		detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
 		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
 				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
@@ -131,6 +138,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 					.arg("<u>")
 					.arg("</u></span>")
 			: "";
+		ui->changePIN->setDisabled(t.version() == QSmartCardData::VER_USABLEUPDATER);
 		break;
 	default:
 		break;
@@ -212,7 +220,6 @@ void VerifyCert::update(
 			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"13\">" : "" ) );
 	}
 	ui->name->setTextFormat( Qt::RichText );
-	ui->changePIN->show();
 
 	ui->forgotPinLink->setText( forgotPinText );
 	ui->forgotPinLink->setVisible( !forgotPinText.isEmpty() );

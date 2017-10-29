@@ -40,7 +40,6 @@
 #include <QtNetwork/QSslKey>
 #include <QtGui/QPainter>
 #include <QtWidgets/QPushButton>
-#include <QPalette>
 
 #include <openssl/evp.h>
 #include <openssl/rsa.h>
@@ -288,7 +287,6 @@ Updater::Updater(const QString &reader, QWidget *parent)
 {
 	d->setupUi(this);
     setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-//	setWindowFlags(((windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint);
     setWindowModality( Qt::ApplicationModal );
 	d->statusTimer = new QTimeLine(d->pinProgress->maximum() * 1000, d->pinProgress);
 	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);
@@ -579,10 +577,7 @@ int Updater::exec()
 	// Do connection
 	QNetworkAccessManager *net = new QNetworkAccessManager(this);
 	d->request = QNetworkRequest(QUrl(
-		Configuration::instance().object().value("EIDUPDATER-URL").toString()));
-// Newer version: https://github.com/open-eid/qesteidutil/commit/b94f1af56c0be70186c2f67e7334080f68047bc5
-// requires a new version of config file: C:\Users\user.name\AppData\Roaming\RIA\qesteidutil\config.json
-//		Configuration::instance().object().value("EIDUPDATER-URL-TOECC").toString()));
+		Configuration::instance().object().value("EIDUPDATER-URL-TOECC").toString()));
 	d->request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->request.setRawHeader("User-Agent", QString("%1/%2 (%3)")
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());

@@ -91,6 +91,7 @@ public:
 	SslCertificate signCert() const;
 	quint8 retryCount( PinType type ) const;
 	ulong usageCount( PinType type ) const;
+	QString appletVersion() const;
 	CardVersion version() const;
 
 	static QString typeString( PinType type );
