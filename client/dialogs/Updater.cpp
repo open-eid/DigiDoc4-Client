@@ -19,6 +19,7 @@
 
 #include "Updater.h"
 #include "ui_Updater.h"
+#include "QSmartCard_p.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 
@@ -48,8 +49,6 @@
 #include <memory>
 #include <thread>
 
-#define APDU(hex) QByteArray::fromHex(hex)
-
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
 static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 {
@@ -70,10 +69,11 @@ public:
 	QPushButton *close = nullptr, *details = nullptr;
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 	RSA_METHOD rsamethod = *RSA_get_default_method();
+	ECDSA_METHOD *ecmethod = ECDSA_METHOD_new(nullptr);
 #else
 	RSA_METHOD *rsamethod = RSA_meth_dup(RSA_get_default_method());
+	EC_KEY_METHOD *ecmethod = EC_KEY_METHOD_new(nullptr);
 #endif
-	ECDSA_METHOD *ecmethod = ECDSA_METHOD_new(nullptr);
 	QSslCertificate cert;
 	QString session;
 	QNetworkRequest request;
@@ -130,8 +130,12 @@ public:
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey)
 	{
-		QByteArray result = sign(dgst, dgst_len,
-			(UpdaterPrivate*)EC_KEY_get_key_method_data(eckey, nullptr, nullptr, nullptr));
+#if OPENSSL_VERSION_NUMBER < 0x10010000L
+		UpdaterPrivate *d = (UpdaterPrivate*)EC_KEY_get_key_method_data(eckey, nullptr, nullptr, nullptr);
+#else
+		UpdaterPrivate *d = (UpdaterPrivate*)EC_KEY_get_ex_data(eckey, 0);
+#endif
+		QByteArray result = sign(dgst, dgst_len, d);
 		if(result.isEmpty())
 			return nullptr;
 		QByteArray r = result.left(result.size()/2);
@@ -200,7 +204,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 	if(!reader->isPinPad())
 	{
 		okButton = buttonBox->addButton(::Updater::tr("CONTINUE"), QDialogButtonBox::AcceptRole);
-		cancelButton = buttonBox->addButton("CANCEL", QDialogButtonBox::RejectRole);
+		cancelButton = buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
 		setButtonPattern( okButton,  nullptr );
 		setButtonPattern( cancelButton,  "Red" );
 		okButton->setDisabled(true);
@@ -299,13 +303,14 @@ Updater::Updater(const QString &reader, QWidget *parent)
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 	d->rsamethod.name = "Updater";
 	d->rsamethod.rsa_sign = UpdaterPrivate::rsa_sign;
-#else
-	RSA_meth_set1_name(d->rsamethod, "Updater");
-	RSA_meth_set_sign(d->rsamethod, UpdaterPrivate::rsa_sign);
-#endif
 	ECDSA_METHOD_set_app_data(d->ecmethod, d);
 	ECDSA_METHOD_set_name(d->ecmethod, const_cast<char*>("QSmartCard"));
 	ECDSA_METHOD_set_sign(d->ecmethod, UpdaterPrivate::ecdsa_do_sign);
+#else
+	RSA_meth_set1_name(d->rsamethod, "Updater");
+	RSA_meth_set_sign(d->rsamethod, UpdaterPrivate::rsa_sign);
+	EC_KEY_METHOD_set_sign(d->ecmethod, nullptr, nullptr, UpdaterPrivate::ecdsa_do_sign);
+#endif
 
 	QFont regular = Styles::font( Styles::Regular, 13 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
@@ -352,8 +357,10 @@ Updater::~Updater()
 	qInstallMessageHandler(d->oldMsgHandler);
 #if OPENSSL_VERSION_NUMBER >= 0x10010000L
 	RSA_meth_free(d->rsamethod);
-#endif
+	EC_KEY_METHOD_free(d->ecmethod);
+#else
 	ECDSA_METHOD_free(d->ecmethod);
+#endif
 	delete d;
 }
 
@@ -425,8 +432,8 @@ void Updater::process(const QByteArray &data)
 		d->stackedWidget->setCurrentIndex(1);
 		d->message->setText(obj.value("text").toString());
 		Common::setAccessibleName(d->message);
-		QPushButton *noButton = d->buttonBox->addButton(tr("KATKESTA"), QDialogButtonBox::RejectRole);
-		QPushButton *yesButton = d->buttonBox->addButton("ALUSTA", QDialogButtonBox::AcceptRole);
+		QPushButton *noButton = d->buttonBox->addButton(tr("CANCEL"), QDialogButtonBox::RejectRole);
+		QPushButton *yesButton = d->buttonBox->addButton(tr("START"), QDialogButtonBox::AcceptRole);
 		yesButton->setDisabled(true);
 		d->setButtonPattern( yesButton, nullptr );
 		d->setButtonPattern( noButton, "Red" );
@@ -469,7 +476,7 @@ void Updater::process(const QByteArray &data)
 			d->envelopeLabel->setText(obj.value("text").toString());
 			d->stackedWidget->setCurrentIndex(2);
 			QPushButton *yesButton = d->buttonBox->addButton(tr("CONTINUE"), QDialogButtonBox::AcceptRole);
-			QPushButton *cancelButton = d->buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
+			QPushButton *cancelButton = d->buttonBox->addButton(tr("CANCEL"), QDialogButtonBox::RejectRole);
 			d->setButtonPattern( yesButton, nullptr );
 			d->setButtonPattern( cancelButton, "Red" );
 			yesButton->setDisabled(true);
@@ -524,9 +531,11 @@ int Updater::exec()
 	}
 	d->reader->transfer(APDU("00A40000 00"));
 	d->reader->transfer(APDU("00A40100 02 EEEE"));
-	d->reader->transfer(APDU("00A40200 02 AACE"));
+	QPCSCReader::Result data = d->reader->transfer(APDU("00A40200 02 AACE"));
+	QHash<quint8,QByteArray> fci = QSmartCardPrivate::parseFCI(data.data);
+	int size = fci.contains(0x85) ? fci[0x85][0] << 8 | fci[0x85][1] : 0x0600;
 	QByteArray certData;
-	while(certData.size() < 0x0600)
+	while(certData.size() < size)
 	{
 		QByteArray apdu = APDU("00B00000 00");
 		apdu[2] = certData.size() >> 8;
@@ -552,8 +561,13 @@ int Updater::exec()
 		if (d->cert.publicKey().algorithm() == QSsl::Ec)
 		{
 			EC_KEY *ec = EC_KEY_dup((EC_KEY*)d->cert.publicKey().handle());
+#if OPENSSL_VERSION_NUMBER < 0x10010000L
 			EC_KEY_insert_key_method_data(ec, d, nullptr, nullptr, nullptr);
 			ECDSA_set_method(ec, d->ecmethod);
+#else
+			EC_KEY_set_ex_data(ec, 0, d);
+			EC_KEY_set_method(ec, d->ecmethod);
+#endif
 			EVP_PKEY *key = EVP_PKEY_new();
 			EVP_PKEY_set1_EC_KEY(key, ec);
 			//EC_KEY_free(ec);

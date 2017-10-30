@@ -98,6 +98,7 @@ target_link_libraries( ${PROGNAME}
 	Qt5::Svg
 	${LIBDIGIDOCPP_LIBRARY}
 	${ADDITIONAL_LIBRARIES}
+	${CMAKE_THREAD_LIBS_INIT}
 )
 
 if( APPLE )

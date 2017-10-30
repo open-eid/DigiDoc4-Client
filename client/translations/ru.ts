@@ -321,7 +321,7 @@ Media type: %3</source>
     <name>NoCardInfo</name>
     <message>
         <source>No card in reader</source>
-        <translation>В читателе нет карты; проверьте, введена ли карточка правильно</translation>
+        <translation>В считывателе нет карты; проверьте, введена ли карточка правильно</translation>
     </message>
     <message>
         <source>PCSC service is not running</source>
@@ -341,7 +341,7 @@ Media type: %3</source>
     <name>NoOtherId</name>
     <message>
         <source>Other ID</source>
-        <translation>другое ID</translation>
+        <translation>Другое ID</translation>
     </message>
     <message>
         <source>You do not have other eIDs.
@@ -379,15 +379,15 @@ Learn more info here:</source>
     </message>
     <message>
         <source>ACTIVATE REDIRECTION</source>
-        <translation>АКТИВИРОВАТЬ ПЕРЕДВИЖЕНИЕ</translation>
+        <translation>АКТИВИРОВАТЬ ПЕРЕНАПРАВЛЕНИЕ</translation>
     </message>
     <message>
         <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте в портале &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Ваши почтовые адреса @ eesti.ee адресованы электронной почте </translation>
+        <translation>Ваши почтовые адреса @ eesti.ee переадресованы по электронной почте </translation>
     </message>
 </context>
 
@@ -449,7 +449,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Person identification certificate</source>
-        <translation>Сертификат свидетельство личности</translation>
+        <translation>Сертификат идентификации личности</translation>
     </message>
     <message>
         <source>RENEW CERTIFICATE</source>
@@ -457,19 +457,19 @@ Learn more info here:</source>
     </message>
     <message>
         <source>UNBLOCK</source>
-        <translation>ОТМЕНА БЛОКИРОВАНИА</translation>
+        <translation>РАЗБЛОКИРОВАТЬ</translation>
     </message>
     <message>
         <source>CHANGE PIN1</source>
-        <translation>ИЗМЕНЕНИЕ PIN1</translation>
+        <translation>ИЗМЕНИТЬ PIN1</translation>
     </message>
     <message>
         <source>CHANGE PIN2</source>
-        <translation>ИЗМЕНЕНИЕ PIN2</translation>
+        <translation>ИЗМЕНИТЬ PIN2</translation>
     </message>
     <message>
         <source>%1Forgot PIN%2?%3</source>
-        <translation>%1забыл PIN%2?%3</translation>
+        <translation>%1Забыл PIN%2?%3</translation>
     </message>
     <message>
         <source>Signing certificate</source>
@@ -485,7 +485,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 заблокирован, потому что код PIN%1 был введен неверно 3 раза. Разблокируйте его для повторного использования PIN%1.</translation>
+        <translation>PIN%1 заблокирован, потому что PIN%1 код был введен неверно 3 раза. Разблокируйте его для повторного использования PIN%1.</translation>
     </message>
     <message>
         <source>PUK code</source>
@@ -497,11 +497,11 @@ Learn more info here:</source>
     </message>
     <message>
         <source>CHANGE PUK</source>
-        <translation>ИЗМЕНЕНИЕ PUK</translation>
+        <translation>ИЗМЕНИТЬ PUK</translation>
     </message>
     <message>
         <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
-        <translation>%1PUK заблокирован, потому что PUK введен неверно 3 раза. Невозможно отключить сам PUK. %2 До тех пор, пока код PUK заблокирован, можно использовать все параметры eID, кроме PUK. %2 Вы можете использовать новый PUK с новым конвертом кода, который вы можете использовать%3 из PPA%4.</translation>
+        <translation>%1PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. %2 Пока код PUK заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. %2 Новый PUK получите в конверте с кодами %3 из PPA%4.</translation>
     </message>
 </context>
 
@@ -510,7 +510,7 @@ Learn more info here:</source>
     <name>CertificateDetails</name>
     <message>
         <source>Certificate information</source>
-        <translation>Справочная информация</translation>
+        <translation>Информация о сертификате</translation>
     </message>
     <message>
         <source>Certificate details</source>
@@ -531,7 +531,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Issued to:</source>
-        <translation>Выпущено:</translation>
+        <translation>Выдан:</translation>
     </message>
     <message>
         <source>Issued by:</source>
@@ -539,11 +539,11 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Valid:</source>
-        <translation>действительный:</translation>
+        <translation>Действительный:</translation>
     </message>
     <message>
         <source>From</source>
-        <translation>от</translation>
+        <translation>От</translation>
     </message>
     <message>
         <source>To</source>
@@ -553,11 +553,11 @@ Learn more info here:</source>
 
     <message>
         <source>Field</source>
-        <translation>поле</translation>
+        <translation>Поле</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation>значение</translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <source>Version</source>
@@ -573,11 +573,11 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Issuer</source>
-        <translation>эмитент</translation>
+        <translation>Выдавший</translation>
     </message>
     <message>
         <source>Valid from</source>
-        <translation>действительно с</translation>
+        <translation>Действительно с</translation>
     </message>
     <message>
         <source>Valid to</source>
@@ -585,7 +585,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Subject</source>
-        <translation>субъект</translation>
+        <translation>Субъект</translation>
     </message>
     <message>
         <source>Public key</source>
@@ -593,19 +593,19 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Enhanced key usage</source>
-        <translation>дополнительный Использование ключа</translation>
+        <translation>Дополнительное использование ключа</translation>
     </message>
     <message>
         <source>Certificate policies</source>
-        <translation>Полисы сертификатов</translation>
+        <translation>Правила сертификатов</translation>
     </message>
     <message>
         <source>Authority key identifier</source>
-        <translation>Идентификатор ключа полномочие</translation>
+        <translation>Идентификатор личного ключа</translation>
     </message>
     <message>
         <source>Subject key identifier</source>
-        <translation>Идентификатор ключа субъект</translation>
+        <translation>Идентификатор ключа заглавия</translation>
     </message>
     <message>
         <source>Key usage</source>
@@ -644,11 +644,11 @@ Learn more info here:</source>
     <name>CardWidget</name>
     <message>
         <source>ID card in reader</source>
-        <translation>В читателе ID карта</translation>
+        <translation>В считывателе ID карта</translation>
     </message>
     <message>
         <source>%1 in reader</source>
-        <translation>В читателе %1</translation>
+        <translation>В считывателе %1</translation>
     </message>
 </context>
 
@@ -664,7 +664,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Skip introductions</source>
-        <translation>Пропустить введения →</translation>
+        <translation>Пропустить введение →</translation>
     </message>
     <message>
         <source>VIEW INTRODUCTION</source>
@@ -768,7 +768,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Not allowed to use OCSP service! Please check your server access certificate.</source>
-        <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
+        <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность сертификата доступа.</translation>
     </message>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
@@ -800,7 +800,7 @@ Learn more info here:</source>
     <name>PinPopup</name>
     <message>
         <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
-        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.&lt;br/&gt;Sertifikaadi kasutamiseks sisesta PIN1</translation>
+        <translation>Для выбранного действия необходима идентификация личности.&lt;br/&gt;Для использования сертификата идентификации введите PIN1</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -814,36 +814,36 @@ Learn more info here:</source>
 
     <message>
         <source>PIN will be locked next failed attempt</source>
-        <translation>PIN будет заблокирован следующей неудачной попыткой</translation>
+        <translation>PIN будет заблокирован при следующей неудачной попытке</translation>
     </message>
     <message>
         <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN был введен некорректно один раз</translation>
+        <translation>PIN был введен неправильно один раз</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Для использования сертификата знака введите PIN2 у читателя</translation>
+        <translation>Для использования сертификата цифровой подписи введите PIN2 с клавиатуры считывателя</translation>
     </message>
 
     <message>
         <source>For using sign certificate enter PIN2</source>
-        <translation>Для использования сертификата знака введите PIN2</translation>
+        <translation>Для использования сертификата цифровой подписи введите PIN2</translation>
     </message>
     <message>
         <source>Selected action requires sign certificate.</source>
-        <translation>Выбранным действиям требуется сертификат знака.</translation>
+        <translation>Данная операция требует сертификат цифровой подписи.</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Для использования сертификата аутентификации введите PIN1 в считыватель</translation>
+        <translation>Для использования сертификата идентификации введите PIN1 с клавиатуры считывателя</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1</source>
-        <translation>Для использования сертификата аутентификации введите PIN1</translation>
+        <translation>Для использования сертификата идентификации введите PIN1</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
-        <translation>Для выбранного действия требуется сертификат проверки подлинности.</translation>
+        <translation>Данная операция требует сертификат идентификации.</translation>
     </message>
 </context>
 
@@ -852,7 +852,7 @@ Learn more info here:</source>
     <name>PinUnblock</name>
     <message>
         <source>VALID PUK CODE</source>
-        <translation>действительный PUK КОД</translation>
+        <translation>ДЕЙСТВУЮЩИЙ PUK КОД</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -860,81 +860,77 @@ Learn more info here:</source>
     </message>
     <message>
         <source>UNBLOCK</source>
-        <translation>открыть</translation>
+        <translation>РАЗБЛОКИРОВАТЬ</translation>
     </message>
 
     <message>
         <source>ConditionsChangePIN2WithPUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN2 должен отличаться от предыдущего.&lt;/li&gt;
-&lt;li&gt;Код PIN2 используется для предоставления цифровой подписи.&lt;/li&gt;
-&lt;li&gt;Если вы забыли код PIN2, но знаете PUK-код,&lt;br&gt;
-здесь вы можете установить новый код PIN2.&lt;/li&gt;
-&lt;li>Ваш PUK-код находится в контейнере кода.&lt;/li&gt;
+&lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
+&lt;li&gt;PIN2 код используется для дигитальной подписи.&lt;/li&gt;
+&lt;li&gt;Если забыли PIN2 код, но знаете PUK код,&lt;br&gt;
+вы можете назначить новый PIN2 код.&lt;/li&gt;
+&lt;li>Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN1 должен отличаться от предыдущего.&lt;/li&gt;
-&lt;li&gt;Код PIN1 используется для проверки подлинности&lt;br&gt;
-для доступа.&lt;/li&gt;
-&lt;li&gt;Если вы забыли код PIN1, но знаете PUK-код,&lt;br&gt;
-здесь вы можете установить новый код PIN1.&lt;/li&gt;
-&lt;li&gt;Ваш PUK-код находится в контейнере кода.&lt;/li&gt;
+&lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
+&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
+&lt;li&gt;Если забыли PIN1 код, но знаете PUK код,&lt;br&gt;
+вы можете назначить новый PIN1 код.&lt;/li&gt;
+&lt;li&gt;Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Чтобы разблокировать PIN2, введите PUK-код для карты.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK-код с ID-карты в поле кода, если вы не&lt;br&gt;
-тем временем изменилось&lt;/li&gt;
-&lt;li&gt;Если вы не знаете свой PUK-код для своей ID-карты, пожалуйста, посетите&lt;br&gt;
-точка обслуживания клиентов, где вы можете получить новый контейнер кода.&lt;/li&gt;
+&lt;li&gt;Чтобы разблокировать PIN2, введите сначала PUK код.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK код в конверте с кодами, если вы еще не&lt;br&gt;
+поменяли его.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
+центр обслуживания, где вы сможете получить новый конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN1</source>
         <translation>
 &lt;ul&gt;
-&lt;li&gt;Чтобы разблокировать PIN1, введите PUK-код для карты.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK-код с ID-карты в поле кода, если вы не&lt;br&gt;
-тем временем изменилось&lt;/li&gt;
-&lt;li&gt;Если вы не знаете свой PUK-код для своей ID-карты, пожалуйста, посетите&lt;br&gt;
-точка обслуживания клиентов, где вы можете получить новый контейнер кода.&lt;/li&gt;
+&lt;li&gt;Чтобы разблокировать PIN1, введите сначала PUK код.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK код в конверте с кодами, если вы еще не&lt;br&gt;
+поменяли его.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
+центр обслуживания, где вы сможете получить новый конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN2 должен отличаться от предыдущего.&lt;/li&gt;
-&lt;li&gt;Код PIN2 используется для предоставления цифровой подписи.&lt;/li&gt;
-&lt;li&gt;Если вы вводите код PIN2 неправильно три раза, то подписываете&lt;br&gt;
-сертификат будет заблокирован, и удостоверение личности не будет возможным&lt;br&gt;
-использовать перед подписанием&lt;br&gt;
-разблокировать PUK.&lt;/li&gt;
+&lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
+&lt;li&gt;PIN2 код используется для предоставления цифровой подписи.&lt;/li&gt;
+&lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется сертификат&lt;br&gt;
+цифровой подписи и использовать ID-карту для цифровой подписи невозможно,&lt;br&gt;
+пока  блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN1 должен отличаться от предыдущего.&lt;/li&gt;
-&lt;li&gt;Код PIN1 используется для проверки подлинности&lt;br&gt;
-для доступа.&lt;/li&gt;
-&lt;li&gt;Если вы вводите код PIN1 неправильно три раза, вы получите личную идентификацию&lt;br&gt;
-Сертификат заблокирован, и вы можете использовать только удостоверение личности после&lt;br&gt;
-unblock with PUK.&lt;/li&gt;
+&lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
+&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
+&lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется идентификационный&lt;br&gt;
+сертификат и использовать ID-карту невозможно, пока блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Если PUK-код исчезнет после изменения кода и&lt;br&gt;
-сертификат будет заблокирован путем ввода трех неправильных PIN1 или PIN2&lt;br&gt;
-то единственным способом получить удостоверение личности является обращение к работе&lt;br&gt;
-&lt;u&gt;точка обслуживания клиентов&lt;/u&gt;.&lt;/li&gt;
-&lt;li&gt;Ваш PUK-код находится в конверте.&lt;/li&gt;
+&lt;li&gt;Если PUK введён 3 раза неверно, тогда он блокируется.&lt;br&gt;
+Сертификаты можно использовать пока не будут введены 3 раза неправильные&lt;br&gt;
+PIN1 или PIN2. Тогда, для получения новых кодов своей ID-карты, посетите&lt;br&gt;
+&lt;u&gt;центр обслуживания.&lt;/u&gt;.&lt;/li&gt;
+&lt;li&gt;Ваш PUK код находится конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
 
@@ -949,11 +945,11 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>VALID %1 CODE</source>
-        <translation>действительный %1 КОД</translation>
+        <translation>ДЕЙСТВИТЕЛЬНЫЙ %1 КОД</translation>
     </message>
     <message>
         <source>CHANGE</source>
-        <translation> ИЗМЕНЕНИЕ</translation>
+        <translation>ПОМЕНЯТЬ</translation>
     </message>
     <message>
         <source>NEW %1 CODE</source>
@@ -965,11 +961,11 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>PUK remaining attempts: %1</source>
-        <translation>PUK оставшиеся попытки:%1</translation>
+        <translation>PUK оставшиеся попытки: %1</translation>
     </message>
     <message>
         <source>Remaining attempts: %1</source>
-        <translation>Оставшиеся попытки:%1</translation>
+        <translation>Оставшиеся попытки: %1</translation>
     </message>
 </context>
 
@@ -991,7 +987,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>ACCESS CERTIFICATE</source>
-        <translation>СПРAВКA ДОСТУПA</translation>
+        <translation>СЕРТИФИКАТ ДОСТУПA</translation>
     </message>
     <message>
         <source>PROXY</source>
@@ -1012,7 +1008,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>CHECK FOR UPDATES</source>
-        <translation>ПРОВЕРТЕ ОБНОВЛЕНИЯ</translation>
+        <translation>ПРОВЕРИТЬ НА ОБНОВЛЕНИЯ</translation>
     </message>
     <message>
         <source>REMOVE OLD CERTIFICATES</source>
@@ -1024,7 +1020,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>СОХРАНЯЙТЕ ДИАГНОСТИКУ ОТЧЕТ НА ДИСКЕ</translation>
+        <translation>СОХРАНИТЬ ОТЧЕТ ДИАГНОСТИКИ НА ДИСК</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
@@ -1191,7 +1187,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>ENCRYPT</source>
-        <translation>ШИФРОВАТ</translation>
+        <translation>ШИФРОВАТЬ</translation>
     </message>
     <message>
         <source>SIGN</source>
@@ -1199,19 +1195,19 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
-        <translation>ПОЙТИ К КОНТЕЙНЕРУ</translation>
+        <translation>ПАПКА КОНТЕЙНЕРА</translation>
     </message>
     <message>
         <source>SAVE WITHOUT SIGNING</source>
-        <translation>СОХРАНИТЬ НЕЗАШИФРОВАННЫМ</translation>
+        <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
     </message>
     <message>
         <source>Container's timestamps</source>
-        <translation>Временные марки контейнерa</translation>
+        <translation>Временные штампы контейнерa</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>
-        <translation>NB: Недопустимая подпись</translation>
+        <translation>NB: Недействительная подпись</translation>
     </message>
     <message>
         <source>NB! Status unknown</source>
@@ -1219,7 +1215,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Тестовая подпись</translation>
+        <translation>NB! Пробная подпись</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
@@ -1227,7 +1223,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>STARTING</source>
-        <translation>← НАЧАЛО</translation>
+        <translation>← В НАЧАЛО</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1247,7 +1243,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>Decrypted files</source>
-        <translation>Зашифрованные файлы</translation>
+        <translation>Дешифрованные файлы</translation>
     </message>
 </context>
 
@@ -1256,7 +1252,7 @@ unblock with PUK.&lt;/li&gt;
     <name>SignatureDialog</name>
     <message>
         <source>Notice</source>
-        <translation>Предупреждения</translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <source>Role / resolution</source>
@@ -1323,7 +1319,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>Restrictions</source>
-        <translation>ограничения</translation>
+        <translation>Ограничения</translation>
     </message>
     <message>
         <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
@@ -1347,15 +1343,15 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Тестовая подпись создается тестовым сертификатом, который отличается от настоящего тем, что с тестовым сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
+        <translation>Пробная подпись создается пробным сертификатом, который отличается от настоящего тем, что с пробным сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>See on vigane allkiri või vigane digitaalselt allkirjastatud fail. Allkiri ei kehti.</translation>
+        <translation>Повреждена подпись или подписанный файл. Данная подпись недействительна.</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-        <translation>Статус подписи отображается «неизвестно», если у вас нет всех сертификатов службы подтверждения работоспособности и / или сертификатов сертификатов, установленных на вашем компьютере (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;дополнительная информация&lt;/a&gt;).</translation>
+        <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;http://id.ee/?lang=ru&amp;id=34529&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -1435,16 +1431,32 @@ unblock with PUK.&lt;/li&gt;
 <context>
     <name>Updater</name>
     <message>
-        <source>Close</source>
-        <translation>Закрыть/translation></translation>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ></translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation>НАЧИНАТЬ</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>DETAILS</source>
+        <translation>ДЕТАЛИ</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>ПРОДОЛЖИТЬ</translation>
     </message>
     <message>
         <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Update in progress. The process may take up to 10 minutes. Do not remove the card from the reader!</translation>
+        <translation>Производится обновление. Процесс может занять до 10 минут. Не удаляйте карту из считывателя!</translation>
     </message>
     <message>
         <source>Certificate renewal</source>
-        <translation>Продление сертификата</translation>
+        <translation>Обновление сертификата</translation>
     </message>
     <message>
         <source>I agree to the terms of use of certificates.</source>
@@ -1452,11 +1464,11 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>Я подтверждаю, что сохранил новый код PIN1, PIN2 и PUK.</translation>
+        <translation>Я подтверждаю, что сохранил новые PIN1, PIN2 и PUK коды.</translation>
     </message>
     <message>
         <source>Enter PIN</source>
-        <translation>Sisesta PIN</translation>
+        <translation>Введите PIN</translation>
     </message>
 </context>
 
@@ -1487,7 +1499,7 @@ unblock with PUK.&lt;/li&gt;
     </message>
     <message>
         <source>Added</source>
-        <translation>добавленной</translation>
+        <translation>Добавленный</translation>
     </message>
 </context>
 
@@ -1496,7 +1508,7 @@ unblock with PUK.&lt;/li&gt;
     <name>MainWindow</name>
     <message>
         <source>One signature is invalid</source>
-        <translation>One signature is invalid!</translation>
+        <translation>Одна подпись недействительна!</translation>
     </message>
     <message>
         <source>Click to resolve problem</source>
@@ -1730,7 +1742,7 @@ Should I keep the unsigned container or remove it?</source>
     </message>
     <message>
         <source>You can not add files to signed document. Remove all signatures before adding files.</source>
-        <translation>К подписанному контейнеру нельзя добавить файлы. Удалите прежде с контейнера все подписи.</translation>
+        <translation>К подписанному контейнеру нельзя добавить файлы. Прежде удалите с контейнера все подписи.</translation>
     </message>
     <message>
         <source>Sign certificate is not valid</source>
@@ -1784,7 +1796,7 @@ already in container, ovewrite?</source>
     </message>
     <message>
         <source>Empty container</source>
-        <translation>пустой контейнер</translation>
+        <translation>Пустой контейнер</translation>
     </message>
     <message>
         <source>Cards</source>
@@ -1890,7 +1902,7 @@ ASiC-E is an international digital signature format that will be used across Eur
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
         <translation>Добро пожаловать в программу цифрового подписывания!&lt;br /&gt;&lt;br /&gt;
 Помните, что, согласно эстонскому законодательству, цифровая подпись равноценна собственноручной подписи. Чтобы поставить цифровую подпись, необходимо иметь eID документ (ID-карту, Mobiil-ID, digi-ID, карточку э-резидента, дигиштамп и т.д) с действительными сертификатами и интернет-соединение.&lt;br /&gt;
-Для аутентификации используйте код PIN1, а для цифрового подписывания - код PIN2.&lt;br /&gt;&lt;br /&gt;
+Для идентификации используйте код PIN1, а для цифрового подписывания - код PIN2.&lt;br /&gt;&lt;br /&gt;
 BDOC – это используемый в Эстонии формат по умолчанию цифровой подписи. &lt;a href=&quot;https://www.ria.ee/ee/bdoc-ru.html&quot;&gt;Доп. инфо&lt;/a&gt;.&lt;br /&gt;
 DDOC – это ранее использовавшийся формат цифровой подписи. На сегодняшний день можно просматривать и проверять действительность подписей в формате DDOC, но нельзя создавать новые подписи в этом формате.&lt;br /&gt;
 ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
@@ -2269,11 +2281,11 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>EncryptContainer</source>
-        <translation>ШИФРОВАТ</translation>
+        <translation>ШИФРОВАТЬ</translation>
     </message>
     <message>
         <source>DecryptContainer</source>
-        <translation>РАЗШИФРОВАТЬ
+        <translation>ДЕКОДИРОВАРЬ
 С ID-КАРТОЙ</translation>
     </message>
 </context>

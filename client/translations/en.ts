@@ -1450,8 +1450,24 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
 <context>
     <name>Updater</name>
     <message>
-        <source>Close</source>
-        <translation>Close</translation>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation>START</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>DETAILS</source>
+        <translation>DETAILS</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>CONTINUE</translation>
     </message>
     <message>
         <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
