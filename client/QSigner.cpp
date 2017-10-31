@@ -1,5 +1,5 @@
 /*
- * QDigiDocClient
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -216,7 +216,8 @@ void QSigner::run()
 				certs = d->csp->certs();
 				for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
 				{
-					if( i.key().keyUsage().contains( SslCertificate::KeyEncipherment ) )
+					if(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
+						i.key().keyUsage().contains(SslCertificate::KeyAgreement))
 						acards << i.value();
 					if( i.key().keyUsage().contains( SslCertificate::NonRepudiation ) )
 						scards << i.value();
@@ -228,7 +229,8 @@ void QSigner::run()
 				certs = d->cng->certs();
 				for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
 				{
-					if( i.key().keyUsage().contains( SslCertificate::KeyEncipherment ) )
+					if(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
+						i.key().keyUsage().contains(SslCertificate::KeyAgreement))
 						acards << i.value();
 					if( i.key().keyUsage().contains( SslCertificate::NonRepudiation ) )
 						scards << i.value();
@@ -243,7 +245,8 @@ void QSigner::run()
 				Q_FOREACH( const TokenData &t, pkcs11 )
 				{
 					SslCertificate c( t.cert() );
-					if( c.keyUsage().contains( SslCertificate::KeyEncipherment ) )
+					if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+						c.keyUsage().contains(SslCertificate::KeyAgreement))
 						acards << t.card();
 					if( c.keyUsage().contains( SslCertificate::NonRepudiation ) )
 						scards << t.card();
@@ -286,8 +289,9 @@ void QSigner::run()
 				{
 					for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
 					{
-						if( i.value() == at.card() &&
-							i.key().keyUsage().contains( SslCertificate::KeyEncipherment ) )
+						if(i.value() == at.card() &&
+							(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
+							i.key().keyUsage().contains(SslCertificate::KeyAgreement)))
 						{
 							at.setCert( i.key() );
 							break;
@@ -299,7 +303,9 @@ void QSigner::run()
 				{
 					Q_FOREACH( const TokenData &i, pkcs11 )
 					{
-						if( i.card() == at.card() && SslCertificate( i.cert() ).keyUsage().contains( SslCertificate::KeyEncipherment ) )
+						if(i.card() == at.card() &&
+							(SslCertificate(i.cert()).keyUsage().contains(SslCertificate::KeyEncipherment) ||
+							SslCertificate(i.cert()).keyUsage().contains(SslCertificate::KeyAgreement)))
 						{
 							at.setCert( i.cert() );
 							at.setFlags( i.flags() );

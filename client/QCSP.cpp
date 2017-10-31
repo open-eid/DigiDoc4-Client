@@ -1,5 +1,5 @@
 /*
- * QDigiDocClient
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,6 @@
 class QCSPPrivate
 {
 public:
-	HCERTSTORE s = 0;
 	QCSP::PinStatus error = QCSP::PinOK;
 	PCCERT_CONTEXT cert = nullptr;
 };
@@ -43,15 +42,12 @@ QCSP::QCSP(QObject *parent)
 	: QObject(parent)
 	, d(new QCSPPrivate)
 {
-	d->s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
-		X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER, L"MY");
 }
 
 QCSP::~QCSP()
 {
 	if(d->cert)
 		CertFreeCertificateContext(d->cert);
-	CertCloseStore(d->s, 0);
 	delete d;
 }
 
@@ -121,14 +117,16 @@ QCSP::Certs QCSP::certs() const
 	qWarning() << "Start enumerationg certs";
 	QCSP::Certs certs;
 	PCCERT_CONTEXT find = nullptr;
-	while(find = CertFindCertificateInStore(d->s, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, 0, CERT_FIND_ANY, NULL, find))
+	HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
+		X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_READONLY_FLAG, L"MY");
+	while(find = CertFindCertificateInStore(s, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, 0, CERT_FIND_ANY, NULL, find))
 	{
 		DWORD flags = CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG|CRYPT_ACQUIRE_SILENT_FLAG;
 		HCRYPTPROV_OR_NCRYPT_KEY_HANDLE key = 0;
 		DWORD spec = 0;
 		BOOL freeKey = false;
 		CryptAcquireCertificatePrivateKey(find, flags, 0, &key, &spec, &freeKey);
-		SslCertificate cert(QByteArray((const char*)find->pbCertEncoded, find->cbCertEncoded), QSsl::Der);
+		SslCertificate cert(QByteArray::fromRawData((const char*)find->pbCertEncoded, find->cbCertEncoded), QSsl::Der);
 		qDebug() << cert.subjectInfo("CN") << "has key" << key;
 		if(!key)
 			continue;
@@ -144,6 +142,7 @@ QCSP::Certs QCSP::certs() const
 		}
 		certs[cert] = cert.subjectInfo("CN");
 	}
+	CertCloseStore(s, 0);
 	qWarning() << "End enumerationg certs";
 	return certs;
 }
@@ -163,7 +162,10 @@ TokenData QCSP::selectCert(const SslCertificate &cert)
 	if(!tmp)
 		return t;
 
-	d->cert = CertFindCertificateInStore(d->s, X509_ASN_ENCODING, 0, CERT_FIND_EXISTING, tmp, 0);
+	HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
+		X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_READONLY_FLAG, L"MY");
+	d->cert = CertFindCertificateInStore(s, X509_ASN_ENCODING, 0, CERT_FIND_EXISTING, tmp, 0);
+	CertCloseStore(s, 0);
 	CertFreeCertificateContext(tmp);
 	qDebug() << "Selected cert" << cert.subjectInfo("CN");
 	return t;
@@ -171,9 +173,10 @@ TokenData QCSP::selectCert(const SslCertificate &cert)
 
 QByteArray QCSP::sign(int method, const QByteArray &digest)
 {
+	QByteArray result;
 	d->error = PinOK;
 	if(!d->cert)
-		return QByteArray();
+		return result;
 
 	BCRYPT_PKCS1_PADDING_INFO padInfo = { NCRYPT_SHA256_ALGORITHM };
 	ALG_ID alg = CALG_SHA_256;
@@ -194,8 +197,7 @@ QByteArray QCSP::sign(int method, const QByteArray &digest)
 		padInfo.pszAlgId = NCRYPT_SHA512_ALGORITHM;
 		alg = CALG_SHA_512;
 		break;
-	default:
-		return QByteArray();
+	default: break;
 	}
 
 	DWORD flags = CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG;
@@ -205,17 +207,30 @@ QByteArray QCSP::sign(int method, const QByteArray &digest)
 	CryptAcquireCertificatePrivateKey(d->cert, flags, 0, &key, &spec, &freeKey);
 	qDebug() << "Key spec" << spec;
 	if(!key)
-		return QByteArray();
+		return result;
 
-	DWORD size = 256;
-	QByteArray result(size, 0);
 	DWORD err = 0;
 	switch( spec )
 	{
 	case CERT_NCRYPT_KEY_SPEC:
 	{
-		err = NCryptSignHash(key, &padInfo, PBYTE(digest.constData()), DWORD(digest.size()),
-			PBYTE(result.data()), DWORD(result.size()), &size, BCRYPT_PAD_PKCS1);
+		DWORD size = 0;
+		QString algo(5, 0);
+		err = NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), (algo.size() + 1) * 2, &size, 0);
+		algo.resize(size/2 - 1);
+		bool isRSA = algo == "RSA";
+
+		err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
+			nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
+		if(FAILED(err))
+		{
+			if(freeKey)
+				NCryptFreeObject(key);
+			return result;
+		}
+		result.resize(int(size));
+		err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
+			PBYTE(result.data()), DWORD(result.size()), &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
 		if( freeKey )
 			NCryptFreeObject(key);
 		break;
@@ -227,7 +242,7 @@ QByteArray QCSP::sign(int method, const QByteArray &digest)
 		{
 			if(freeKey)
 				CryptReleaseContext(key, 0);
-			return QByteArray();
+			return result;
 		}
 
 		HCRYPTHASH hash = 0;
@@ -235,7 +250,7 @@ QByteArray QCSP::sign(int method, const QByteArray &digest)
 		{
 			if(freeKey)
 				CryptReleaseContext(key, 0);
-			return QByteArray();
+			return result;
 		}
 
 		if(!CryptSetHashParam(hash, HP_HASHVAL, LPBYTE(digest.constData()), 0))
@@ -243,8 +258,12 @@ QByteArray QCSP::sign(int method, const QByteArray &digest)
 			CryptDestroyHash(hash);
 			if(freeKey)
 				CryptReleaseContext(key, 0);
-			return QByteArray();
+			return result;
 		}
+		DWORD size = 0;
+		if(!CryptSignHashW(hash, spec, 0, 0, nullptr, &size))
+			err = GetLastError();
+		result.resize(int(size));
 		if(!CryptSignHashW(hash, spec, 0, 0, LPBYTE(result.data()), &size))
 			err = GetLastError();
 		std::reverse(result.begin(), result.end());
@@ -254,22 +273,19 @@ QByteArray QCSP::sign(int method, const QByteArray &digest)
 		CryptDestroyHash(hash);
 		break;
 	}
-	default:
-		size = 0;
-		if(freeKey)
-			CryptReleaseContext(key, 0);
-		break;
+	default: break;
 	}
 
 	switch(err)
 	{
 	case ERROR_SUCCESS:
-		result.resize(size);
+		d->error = PinOK;
 		return result;
 	case SCARD_W_CANCELLED_BY_USER:
 	case ERROR_CANCELLED:
 		d->error = PinCanceled;
 	default:
-		return QByteArray();
+		result.clear();
+		return result;
 	}
 }

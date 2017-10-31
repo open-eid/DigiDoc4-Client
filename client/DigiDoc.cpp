@@ -136,12 +136,9 @@ void DigiDocSignature::parseException( DigiDocSignature::SignatureStatus &result
 			result = std::max( result, Warning );
 			break;
 		case Exception::DataFileNameSpaceWarning:
-			result = std::max( result, Warning );
-			break;
 		case Exception::IssuerNameSpaceWarning:
-			result = std::max( result, Warning );
-			break;
 		case Exception::ProducedATLateWarning:
+		case Exception::MimeTypeWarning:
 			result = std::max( result, Warning );
 			break;
 		case Exception::CertificateIssuerMissing:
