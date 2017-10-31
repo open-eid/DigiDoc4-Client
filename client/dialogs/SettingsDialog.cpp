@@ -180,7 +180,7 @@ void SettingsDialog::initUI()
 		b.exec();
 	});
 	connect(ui->btNavFromFile, &QPushButton::clicked, []{
-		Configuration::instance().update(true);
+		Configuration::instance().update();
 	});
 //#endif
 
