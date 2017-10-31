@@ -90,3 +90,9 @@ void WarningDialog::addButton(const QString& label, int ret)
 	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
 	layout->insertWidget(buttonOffset++, button);
 }
+
+void WarningDialog::setText(const QString& text)
+{
+	ui->text->setText(text);
+	adjustSize();
+}

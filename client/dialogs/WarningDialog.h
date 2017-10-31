@@ -37,6 +37,7 @@ public:
 
 	void addButton(const QString& label, int ret);
 	void setCancelText(const QString& label);
+	void setText(const QString& text);
 
 private:
 	Ui::WarningDialog *ui;

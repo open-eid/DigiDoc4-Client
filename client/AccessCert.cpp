@@ -31,7 +31,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QStandardPaths>
 #include <QtNetwork/QSslKey>
-#include <QtWidgets/QLabel>
 
 #ifdef Q_OS_MAC
 #include <Security/Security.h>
@@ -45,15 +44,10 @@ public:
 };
 
 AccessCert::AccessCert( QWidget *parent )
-:	QMessageBox( parent )
+:	WarningDialog( "", parent )
 ,	d( new AccessCertPrivate )
 {
-	setIcon( Warning );
-	setStandardButtons( Ok );
-	setWindowTitle( tr("Server access certificate") );
-	setTextFormat( Qt::RichText );
-	if( QLabel *label = findChild<QLabel*>() )
-		label->setOpenExternalLinks( true );
+	setCancelText(::WarningDialog::tr("CLOSE"));
 #ifndef Q_OS_MAC
 	d->cert = Application::confValue( Application::PKCS12Cert ).toString();
 	d->pass = Application::confValue( Application::PKCS12Pass ).toString();
