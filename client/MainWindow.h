@@ -41,6 +41,7 @@ class MainWindow;
 
 class CryptoDoc;
 class DigiDoc;
+class DocumentModel;
 
 class MainWindow : public QWidget
 {
@@ -71,6 +72,7 @@ protected:
 	void dragLeaveEvent( QDragLeaveEvent *event ) override;
 	void dropEvent( QDropEvent *event ) override;
 	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 	void resizeEvent( QResizeEvent *event ) override;
 
 private:
@@ -98,7 +100,10 @@ private:
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 	void removeAddress(int index);
+	void removeCryptoFile(int index);
+	bool removeFile(DocumentModel *model, int index);
 	void removeSignature(int index);
+	void removeSignatureFile(int index);
 	bool save();
 	QString selectFile( const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );

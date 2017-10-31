@@ -136,8 +136,11 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
 	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
 	connect( ui->signContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles );
+
+	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect( ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature );
 	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
+	connect(ui->cryptoContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeCryptoFile);
 	connect( ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress );
 	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
 	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
@@ -353,6 +356,16 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 		else
 			hideWarningArea();
 	}
+
+	QWidget::mousePressEvent(event);
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+	if(ui->logo->underMouse())
+		navigateToPage(Pages::SignIntro);
+	else
+		QWidget::mousePressEvent(event);
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -985,6 +998,39 @@ void MainWindow::removeAddress(int index)
 	}
 }
 
+void MainWindow::removeCryptoFile(int index)
+{
+	if(!cryptoDoc)
+		return;
+
+	if(removeFile(cryptoDoc->documentModel(), index))
+	{
+		if(QFile::exists(cryptoDoc->fileName()))
+			QFile::remove(cryptoDoc->fileName());
+		navigateToPage(Pages::CryptoIntro);
+	}
+}
+
+bool MainWindow::removeFile(DocumentModel *model, int index)
+{
+	bool rc = false;
+	auto count = model->rowCount();
+	if(count != 1)
+	{
+		model->removeRows(index, 1);
+	}
+	else
+	{
+		WarningDialog dlg(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
+		dlg.setCancelText(tr("CANCEL"));
+		dlg.addButton(tr("REMOVE"), ContainerSave);
+		dlg.exec();
+		rc = (dlg.result() == ContainerSave);
+	}
+
+	return rc;
+}
+
 void MainWindow::removeSignature(int index)
 {
 	if(digiDoc)
@@ -992,6 +1038,19 @@ void MainWindow::removeSignature(int index)
 		digiDoc->removeSignature(index);
 		save();
 		ui->signContainerPage->transition(digiDoc);
+	}
+}
+
+void MainWindow::removeSignatureFile(int index)
+{
+	if(!digiDoc)
+		return;
+
+	if(removeFile(digiDoc->documentModel(), index))
+	{
+		if(QFile::exists(digiDoc->fileName()))
+			QFile::remove(digiDoc->fileName());
+		navigateToPage(Pages::SignIntro);
 	}
 }
 

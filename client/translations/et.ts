@@ -1905,7 +1905,21 @@ ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvor
 Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377.
 </translation>
     </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>EEMALDA</translation>
+    </message>
 </context>
+
+
 <context>
     <name>MobileDialog</name>
     <message>
@@ -2239,29 +2253,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>is unknown</source>
         <translation>on teadmata</translation>
-    </message>
-</context>
-<context>
-    <name>TreeWidget</name>
-    <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
-    <message>
-        <source>Remove container</source>
-        <translation>Eemalda ümbrik</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Eemalda</translation>
-    </message>
-    <message>
-        <source>Keep</source>
-        <translation>Loobu</translation>
     </message>
 </context>
 <context>

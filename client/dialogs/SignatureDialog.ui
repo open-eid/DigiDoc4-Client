@@ -111,13 +111,13 @@
           <widget class="QLabel" name="lblSigningCounty">
            <property name="minimumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
@@ -139,13 +139,13 @@
           <widget class="QLabel" name="lblSigningCity">
            <property name="minimumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
@@ -167,13 +167,13 @@
           <widget class="QLabel" name="lblSigningCountry">
            <property name="minimumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
@@ -329,13 +329,13 @@ background-color: #FFFFFF;</string>
           <widget class="QLabel" name="lblSigningZipCode">
            <property name="minimumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>65</width>
+             <width>120</width>
              <height>16</height>
             </size>
            </property>
@@ -495,6 +495,9 @@ background-color: #FFFFFF;</string>
            </property>
            <property name="openExternalLinks">
             <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
@@ -677,6 +680,9 @@ background-color: #f7f7f7;</string>
         </property>
         <property name="text">
          <string>TextLabel</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
         </property>
        </widget>
       </item>

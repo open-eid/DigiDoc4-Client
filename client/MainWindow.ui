@@ -122,6 +122,9 @@ min-width: 0px;
           <height>65</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="styleSheet">
          <string notr="true">background-color: #023565;
 background-color: #023565;</string>
