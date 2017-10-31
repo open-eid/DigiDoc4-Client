@@ -1433,8 +1433,24 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 <context>
     <name>Updater</name>
     <message>
-        <source>Close</source>
-        <translation>Sulge</translation>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation>ALUSTA</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>DETAILS</source>
+        <translation>DETAILID</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>JÄTKA</translation>
     </message>
     <message>
         <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>

@@ -115,7 +115,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	case QSmartCardData::Pin2Type:
 		name = tr("Signing certificate");
 		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2");
-		if(!t.isSecurePinpad())
+		if(t.isSecurePinpad())
 			forgotPinText = "";
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
