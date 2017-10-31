@@ -55,6 +55,7 @@ signals:
 	void action(int code, const QString &idCode = QString(), const QString &phoneNumber = QString());
 	void addFiles(const QStringList &files);
 	void cardChanged(const QString& idCode = QString());
+	void fileRemoved(int row);
 	void moved(const QString &to);	
 	void removed(int row);
 

@@ -114,8 +114,8 @@ void ContainerPage::init()
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
+	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::fileRemoved);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
-	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -155,6 +155,7 @@ void ContainerPage::hideMainAction()
 		mainAction->hide();
 	}
 	ui->mainActionSpacer->changeSize( 1, 20, QSizePolicy::Fixed );
+	ui->navigationArea->layout()->invalidate();
 }
 
 void ContainerPage::hideOtherAction()
@@ -280,7 +281,7 @@ void ContainerPage::showMainAction(Actions action)
 	}
 
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
-	ui->navigationArea->adjustSize();
+	ui->navigationArea->layout()->invalidate();
 }
 
 void ContainerPage::showSigningButton()
@@ -396,7 +397,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane( ItemAddress, tr("Recipients") );
 		showMainAction(EncryptContainer);
 		ui->cancel->setText(tr("STARTING"));
-        ui->convert->setText(tr("SIGN"));
+		ui->convert->setText(tr("SIGN"));
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;

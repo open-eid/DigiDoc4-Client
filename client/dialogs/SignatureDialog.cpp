@@ -31,6 +31,10 @@
 #include <QDesktopServices>
 #include <QTextStream>
 
+
+#define STYLE_TERMINATOR QString("</font>")
+
+
 SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *parent)
 :	QDialog( parent )
 ,	s( signature )
@@ -43,6 +47,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->error->hide();
 	
 	SslCertificate c = signature.cert();
+	QString style = "<font color=\"green\">";
 	QString status = tr("Signature");
 	if(signature.profile() == "TimeStampToken")
 		status = tr("Timestamp");
@@ -53,17 +58,19 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		status += tr("is valid");
 		break;
 	case DigiDocSignature::Warning:
-		status += QString("%1 (%2)").arg(tr("is valid"), tr("Warnings"));
+		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid"), STYLE_TERMINATOR, tr("Warnings"));
 		if( !s.lastError().isEmpty() )
 			d->error->setPlainText( s.lastError() );
 		if( s.warning() & DigiDocSignature::DigestWeak )
 		{
+			decorateNotice("gold");
 			d->info->setText( tr(
 				"The current BDOC container uses weaker encryption method than officialy accepted in Estonia.") );
 		}
 		break;
 	case DigiDocSignature::NonQSCD:
-		status += QString("%1 (%2)").arg(tr("is valid"), tr("Restrictions"));
+		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid"), STYLE_TERMINATOR, tr("Restrictions"));
+		decorateNotice("gold");
 		d->info->setText( tr(
 			"This e-Signature is not equivalent with handwritten signature and therefore "
 			"can be used only in transactions where Qualified e-Signature is not required.") );
@@ -79,14 +86,18 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			"<a href='http://www.id.ee/index.php?id=30494'>Additional information</a>.") );
 		break;
 	case DigiDocSignature::Invalid:
+		style = "<font color=\"red\">";
 		status += tr("is not valid");
 		d->error->setPlainText( s.lastError().isEmpty() ? tr("Unknown error") : s.lastError() );
+		decorateNotice("red");
 		d->info->setText( tr(
 			"This is an invalid signature or malformed digitally signed file. The signature is not valid.") );
 		break;
 	case DigiDocSignature::Unknown:
+		style = "<font color=\"red\">";
 		status += tr("is unknown");
 		d->error->setPlainText( s.lastError().isEmpty() ? tr("Unknown error") : s.lastError() );
+		decorateNotice("red");
 		d->info->setText( tr(
 			"Signature status is displayed \"unknown\" if you don't have all validity confirmation "
 			"service certificates and/or certificate authority certificates installed into your computer "
@@ -106,7 +117,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	}
 
 	QString name = !c.isNull() ? c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) : s.signedBy();
-	d->title->setText(name + " | " + status);
+	d->title->setText(QString("%1 | %2%3%4").arg(name, style, status, STYLE_TERMINATOR));
 	d->close->setFont(Styles::font(Styles::Condensed, 14));
 	connect(d->close, &QPushButton::clicked, this, &CertificateDetails::accept);
 
@@ -199,4 +210,9 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	connect(b, &QLabel::linkActivated, [=]{ QDesktopServices::openUrl( value ); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
+}
+
+void SignatureDialog::decorateNotice(const QString color)
+{
+	d->lblNotice->setText(QString("<font color=\"%1\">%2</font>").arg(color, d->lblNotice->text()));
 }

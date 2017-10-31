@@ -1907,7 +1907,21 @@ DDOC – это ранее использовавшийся формат циф�
 ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
 Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты 1777 (только в пределах Эстонии), (+372) 6773377.</translation>
     </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>УДАЛИТЬ</translation>
+    </message>
 </context>
+
+
 <context>
     <name>MobileDialog</name>
     <message>
@@ -2243,29 +2257,8 @@ Kонтрольны код: %1</translation>
         <translation>неизвестно</translation>
     </message>
 </context>
-<context>
-    <name>TreeWidget</name>
-    <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
-        <source>Remove container</source>
-        <translation>Удалить контейнер</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>Keep</source>
-        <translation>Оставить</translation>
-    </message>
-</context>
+
+
 <context>
     <name>MainAction</name>
     <message>

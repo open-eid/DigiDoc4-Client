@@ -1936,7 +1936,21 @@ DDOC is the old digital signature format. Nowadays you can view and verify docum
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</translation>
     </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>REMOVE</translation>
+    </message>
 </context>
+
+
 <context>
     <name>MobileDialog</name>
     <message>
@@ -2270,29 +2284,6 @@ Control code: %1</translation>
     <message>
         <source>is unknown</source>
         <translation>is unknown</translation>
-    </message>
-</context>
-<context>
-    <name>TreeWidget</name>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
-        <source>Remove container</source>
-        <translation>Remove container</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Remove</translation>
-    </message>
-    <message>
-        <source>Keep</source>
-        <translation>Keep</translation>
     </message>
 </context>
 <context>

@@ -71,7 +71,7 @@ void FileList::remove(Item *item)
 {
 	int i;
 	if(documentModel && (i = index(item)) != -1)
-		documentModel->removeRows(i, 1);
+		emit removed(i);
 }
 
 void FileList::save(FileItem *item)
