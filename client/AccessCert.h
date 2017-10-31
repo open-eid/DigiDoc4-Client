@@ -19,12 +19,14 @@
 
 #pragma once
 
+#include "dialogs/WarningDialog.h"
+
 #include <QtWidgets/QMessageBox>
 
 class QSslCertificate;
 class QSslKey;
 class AccessCertPrivate;
-class AccessCert: public QMessageBox
+class AccessCert: public WarningDialog
 {
 	Q_OBJECT
 
