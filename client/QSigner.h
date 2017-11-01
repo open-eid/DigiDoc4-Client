@@ -72,4 +72,6 @@ private:
 	void throwException( const QString &msg, digidoc::Exception::ExceptionCode code, int line ) const;
 
 	QSignerPrivate *d;
+
+	friend class MainWindow;
 };
