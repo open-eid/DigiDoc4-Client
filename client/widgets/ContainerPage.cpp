@@ -49,6 +49,12 @@ ContainerPage::ContainerPage(QWidget *parent)
 , ui(new Ui::ContainerPage)
 , containerFont(Styles::font(Styles::Regular, 14))
 , fm(QFontMetrics(containerFont))
+, changeLocationText()
+, cancelText()
+, convertText()
+, navigateToContainerText()
+, emailText()
+, saveText()
 {
 	ui->setupUi( this );
 	init();
@@ -104,6 +110,14 @@ void ContainerPage::init()
     ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
     ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
     ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
+
+	changeLocationText = "CHANGE";
+	cancelText = "CANCEL";
+	convertText = "ENCRYPT";
+	navigateToContainerText = "OPEN CONTAINER LOCATION";
+	emailText = "SEND WITH E-MAIL";
+	saveText = "SAVE WITHOUT SIGNING";
+
 
 	mobileCode = Settings().value("Client/MobileCode").toString();
 
@@ -210,10 +224,13 @@ void ContainerPage::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+		translateLabels();
 	}
 
 	QWidget::changeEvent(event);
 }
+
+
 
 void ContainerPage::setHeader(const QString &file)
 {
@@ -373,6 +390,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->cancel->setText(tr("CANCEL"));
 		showButtons( { ui->cancel, ui->convert, ui->save } );
 		hideButtons( { ui->navigateToContainer, ui->email } );
+
+		cancelText = "CANCEL";
 		break;
 	case UnsignedSavedContainer:
 		ui->changeLocation->show();
@@ -380,47 +399,59 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->cancel->setText(tr("STARTING"));
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemSignature, tr("Container is not signed"));
+		showRightPane( ItemSignature, "Container is not signed");
+
+		cancelText = "STARTING";
 		break;
 	case SignedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemSignature, tr("Container's signatures") );
+		showRightPane( ItemSignature, "Container's signatures" );
 		ui->cancel->setText(tr("STARTING"));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+
+		cancelText = "STARTING";
 		break;
 	case UnencryptedContainer:
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemAddress, tr("Recipients") );
+		showRightPane( ItemAddress, "Recipients" );
 		showMainAction(EncryptContainer);
 		ui->cancel->setText(tr("STARTING"));
 		ui->convert->setText(tr("SIGN"));
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
+
+		cancelText = "STARTING";
+		convertText = "SIGN";
 		break;
 	case EncryptedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, tr("Encrypted files"));
-		showRightPane( ItemAddress, tr("Recipients") );
+		ui->leftPane->init(fileName, "Encrypted files");
+		showRightPane( ItemAddress, "Recipients" );
 		showMainAction(DecryptContainer);
 		ui->cancel->setText(tr("STARTING"));
         ui->convert->setText(tr("SIGN"));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+
+		cancelText = "STARTING";
+		convertText = "SIGN";
 		break;
 	case DecryptedContainer:
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, tr("Decrypted files"));
-		showRightPane( ItemAddress, tr("Recipients"));
+		ui->leftPane->init(fileName, "Decrypted files");
+		showRightPane( ItemAddress, "Recipients");
 		hideMainAction();
 		ui->cancel->setText(tr("STARTING"));
 		hideButtons( { ui->convert, ui->save } );
 		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
+
+		cancelText = "STARTING";
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
@@ -433,4 +464,14 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->containerFile->resize(ui->containerFile->width() + buttonWidth,
 		ui->containerFile->height());
 	}
+}
+
+void ContainerPage::translateLabels()
+{
+	ui->changeLocation->setText(tr(qPrintable(changeLocationText)));
+	ui->cancel->setText(tr(qPrintable(cancelText)));
+	ui->convert->setText(tr(qPrintable(convertText)));
+	ui->navigateToContainer->setText(tr(qPrintable(navigateToContainerText)));
+	ui->email->setText(tr(qPrintable(emailText)));
+	ui->save->setText(tr(qPrintable(saveText)));
 }

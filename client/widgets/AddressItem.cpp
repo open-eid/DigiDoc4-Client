@@ -107,7 +107,7 @@ void AddressItem::update(const QString& name, const QString& cardCode, const QSt
 {
 	ui->name->setText( name );
 	ui->code->setText( cardCode );
-    ui->idType->setText( tr(type.toStdString().c_str()) );
+	ui->idType->setText( tr(qPrintable(type)));
     typeText = type;
 	code = cardCode;
 
@@ -184,7 +184,7 @@ void AddressItem::changeEvent(QEvent* event)
             ui->code->setText(code);
         }
 
-        ui->idType->setText( tr(typeText.toStdString().c_str()) );
+		ui->idType->setText(tr(qPrintable(typeText)));
     }
 
 	QWidget::changeEvent(event);

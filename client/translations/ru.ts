@@ -233,15 +233,6 @@ Media type: %3</source>
         <source>From history</source>
         <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
     </message>
-
-    <message>
-        <source>Add recipients</source>
-        <translation>Добавить получателей</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Добавлен получатель</translation>
-    </message>
 </context>
 
 <context>
@@ -326,6 +317,40 @@ Media type: %3</source>
     <message>
         <source>Add all</source>
         <translation>ДОБАВИТЬ ВСЕ</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Добавить получателей</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Добавлен получатель</translation>
+    </message>
+
+    <message>
+        <source>Container is not signed</source>
+        <translation>Подписи подписчиков контейнера отсутствуют</translation>
+    </message>
+    <message>
+        <source>Container's files</source>
+        <translation>Файлы контейнера</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Подписи контейнера</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Получатели</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Зашифрованные файлы</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Дешифрованные файлы</translation>
     </message>
 </context>
 
@@ -1237,26 +1262,6 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     <message>
         <source>STARTING</source>
         <translation>← В НАЧАЛО</translation>
-    </message>
-    <message>
-        <source>Container is not signed</source>
-        <translation>Подписи подписчиков контейнера отсутствуют</translation>
-    </message>
-    <message>
-        <source>Container's signatures</source>
-        <translation>Подписи контейнера</translation>
-    </message>
-    <message>
-        <source>Recipients</source>
-        <translation>Получатели</translation>
-    </message>
-    <message>
-        <source>Encrypted files</source>
-        <translation>Зашифрованные файлы</translation>
-    </message>
-    <message>
-        <source>Decrypted files</source>
-        <translation>Дешифрованные файлы</translation>
     </message>
 </context>
 

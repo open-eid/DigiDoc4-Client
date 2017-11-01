@@ -234,15 +234,6 @@ Media type: %3</translation>
         <source>From history</source>
         <translation>LATEST USED CERTIFICATE</translation>
     </message>
-
-    <message>
-        <source>Add recipients</source>
-        <translation>Add recipients</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Added recipients</translation>
-    </message>
 </context>
 
 <context>
@@ -326,6 +317,40 @@ Media type: %3</translation>
     <message>
         <source>Add all</source>
         <translation>ADD ALL</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Add recipients</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Added recipients</translation>
+    </message>
+
+    <message>
+        <source>Container is not signed</source>
+        <translation>Container's signatures are missing</translation>
+    </message>
+    <message>
+        <source>Container's files</source>
+        <translation>Container's files</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Container's signatures</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Recipients</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Encrypted files</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Decrypted files</translation>
     </message>
 </context>
 
@@ -1256,26 +1281,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>STARTING</source>
         <translation>← START</translation>
-    </message>
-    <message>
-        <source>Container is not signed</source>
-        <translation>Container's signatures are missing</translation>
-    </message>
-    <message>
-        <source>Container's signatures</source>
-        <translation>Container's signatures</translation>
-    </message>
-    <message>
-        <source>Recipients</source>
-        <translation>Recipients</translation>
-    </message>
-    <message>
-        <source>Encrypted files</source>
-        <translation>Encrypted files</translation>
-    </message>
-    <message>
-        <source>Decrypted files</source>
-        <translation>Decrypted files</translation>
     </message>
 </context>
 

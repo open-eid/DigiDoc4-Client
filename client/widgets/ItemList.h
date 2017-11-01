@@ -66,7 +66,7 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
-	QString addLabel() const;
+	QString addLabel();
 	void addressSearch();
 	void addWidget(Item *widget, int index);
 
@@ -75,4 +75,8 @@ private:
 	QString idCode;
 	ria::qdigidoc4::ItemType itemType;
 	QString mobileCode;
+
+	QString headerText;
+	QString listText;
+	QString addText;
 };

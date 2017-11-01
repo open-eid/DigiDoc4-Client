@@ -233,15 +233,6 @@ Tüüp: %3</translation>
         <source>From history</source>
         <translation>VIIMATI LISATUD</translation>
     </message>
-
-    <message>
-        <source>Add recipients</source>
-        <translation>Adressaatide lisamine</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Lisatud adressaadid</translation>
-    </message>
 </context>
 
 <context>
@@ -325,6 +316,40 @@ Tüüp: %3</translation>
     <message>
         <source>Add all</source>
         <translation>LISA KÕIK</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Adressaatide lisamine</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Lisatud adressaadid</translation>
+    </message>
+
+    <message>
+        <source>Container is not signed</source>
+        <translation>Konteineri allkirjad puuduvad</translation>
+    </message>
+    <message>
+        <source>Container's files</source>
+        <translation>Konteineri failid</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Konteineri allkirjad</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Adressaadid</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Krüpteeritud failid</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Dekrüpteeritud failid</translation>
     </message>
 </context>
 
@@ -1211,7 +1236,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
-        <translation>AVA KONTAINERI ASUKOHT</translation>
+        <translation>AVA KONTEINERI ASUKOHT</translation>
     </message>
     <message>
         <source>SAVE WITHOUT SIGNING</source>
@@ -1240,26 +1265,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>STARTING</source>
         <translation>← ALGUSESSE</translation>
-    </message>
-    <message>
-        <source>Container is not signed</source>
-        <translation>Kontaineri allkirjad puuduvad</translation>
-    </message>
-    <message>
-        <source>Container's signatures</source>
-        <translation>Kontaineri allkirjad</translation>
-    </message>
-    <message>
-        <source>Recipients</source>
-        <translation>Adressaadid</translation>
-    </message>
-    <message>
-        <source>Encrypted files</source>
-        <translation>Krüpteeritud failid</translation>
-    </message>
-    <message>
-        <source>Decrypted files</source>
-        <translation>Dekrüpteeritud failid</translation>
     </message>
 </context>
 
