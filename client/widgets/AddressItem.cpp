@@ -67,13 +67,13 @@ AddressItem::AddressItem(const CKey &k, ContainerState state, QWidget *parent)
 	QString type;
 	auto certType = SslCertificate(key.cert).type();
 	if(certType & SslCertificate::DigiIDType)
-		type = "Digi-ID";
+        type = "Digi-ID";
 	else if(certType & SslCertificate::EstEidType)
-		type = "ID-kaart";
+        type = "ID-card";
 	else if(SslCertificate::MobileIDType)
-		type = "Mobiil-ID";
+        type = "Mobile-ID";
 	else
-		type = "UnknownType";
+        type = "Unknown ID";
 
 	update(name, key.cert.subjectInfo("serialNumber").value(0), type, AddressItem::Remove);
 }
@@ -86,9 +86,15 @@ AddressItem::~AddressItem()
 void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode)
 {
 	if(code == cardCode)
-		ui->code->setText(code + tr(" (Sina ise)"));
+    {
+        ui->code->setText(code + tr(" (Yourself)"));
+        isYou = true;
+    }
 	else
+    {
 		ui->code->setText(code);
+        isYou = false;
+    }
 }
 
 void AddressItem::mouseReleaseEvent(QMouseEvent *event)
@@ -101,7 +107,8 @@ void AddressItem::update(const QString& name, const QString& cardCode, const QSt
 {
 	ui->name->setText( name );
 	ui->code->setText( cardCode );
-	ui->idType->setText( type );
+    ui->idType->setText( tr(type.toStdString().c_str()) );
+    typeText = type;
 	code = cardCode;
 
 	ui->added->setEnabled(false);
@@ -167,8 +174,18 @@ void AddressItem::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-	}
+
+        if(isYou)
+        {
+            ui->code->setText(code + tr(" (Yourself)"));
+        }
+        else
+        {
+            ui->code->setText(code);
+        }
+
+        ui->idType->setText( tr(typeText.toStdString().c_str()) );
+    }
 
 	QWidget::changeEvent(event);
 }
-

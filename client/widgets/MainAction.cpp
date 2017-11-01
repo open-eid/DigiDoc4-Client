@@ -71,7 +71,6 @@ void MainAction::update()
 		break;
 	}
 
-    qDebug() << label;
 	ui->mainAction->setText(label);
     ui->mainAction->show();
 }

@@ -294,6 +294,19 @@ Media type: %3</translation>
     </message>
 </context>
 
+<context>
+    <name>FileList</name>
+
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Add files</translation>
+    </message>
+</context>
+
 
 <context>
     <name>ItemList</name>
@@ -1518,6 +1531,27 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>Added</source>
         <translation>ADDED</translation>
+    </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Yourself)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Unknown ID</translation>
     </message>
 </context>
 

@@ -133,6 +133,10 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	QTreeWidget *t = d->signatureView;
 	t->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
+    QStringList horzHeaders;
+    horzHeaders << tr("Attribute") << tr("Value");
+    t->setHeaderLabels(horzHeaders);
+
 	addItem( t, tr("Signer's Certificate issuer"), c.issuerInfo( QSslCertificate::CommonName ) );
 	addItem( t, tr("Signer's Certificate"), c );
 	addItem( t, tr("Signature method"), QUrl( s.signatureMethod() ) );

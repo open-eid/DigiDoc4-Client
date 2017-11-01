@@ -295,6 +295,20 @@ Media type: %3</source>
 
 
 <context>
+    <name>FileList</name>
+
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Добавить файлы</translation>
+    </message>
+</context>
+
+
+<context>
     <name>ItemList</name>
     <message>
         <source>Search</source>
@@ -1499,6 +1513,27 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     <message>
         <source>Added</source>
         <translation>Добавленный</translation>
+    </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Вы сами)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>цифровой</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-карта</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Мобильная-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Неизвестный ID</translation>
     </message>
 </context>
 

@@ -35,14 +35,7 @@ public:
 	~VerifyCert();
 
 	void update( QSmartCardData::PinType type, const QSmartCard *smartCard );
-	void update(
-		const QString &name,
-		const QString &validUntil,
-		const QString &change,
-		const QString &forgotPinText = "",
-		const QString &detailsText = "",
-		const QString &error = "",
-		bool isBlockedPuk = false);
+    void update();
 	void addBorders();
 
 signals:
@@ -67,4 +60,5 @@ private:
 	QString borders;
 
 	QSmartCardData::PinType pinType;
+    QSmartCardData cardData;
 };

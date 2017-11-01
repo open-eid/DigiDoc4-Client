@@ -293,6 +293,20 @@ Tüüp: %3</translation>
     </message>
 </context>
 
+
+<context>
+    <name>FileList</name>
+
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Lisa faile</translation>
+    </message>
+</context>
+
 <context>
     <name>ItemList</name>
     <message>
@@ -1501,6 +1515,27 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Added</source>
         <translation>LISATUD</translation>
+    </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Sina ise)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Tundmatu ID</translation>
     </message>
 </context>
 
