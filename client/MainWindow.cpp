@@ -481,17 +481,15 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 			QString warning, cancelTxt, saveTxt;
 			if(digiDoc->state() == UnsignedContainer)
 			{
-				warning = "Oled lisanud konteinerisse faile, kuid pole neid allkirjastanud. "
-						  "Kas jätan allkirjastamata konteineri alles või eemaldan selle?";
-				cancelTxt = "EEMALDA";
-				saveTxt = "JÄTA ALLES";
+				warning = tr("You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?");
+				cancelTxt = tr("REMOVE");
+				saveTxt = tr("KEEP");
 			}
 			else
 			{
-				warning = "Oled avatud konteinerit muutnud, kuid ei ole muudatusi salvestanud. "
-						  "Kas salvestan muudatused või sulgen salvestamata?";
-				cancelTxt = "ÄRA SALVESTA";
-				saveTxt = "SALVESTA";
+				warning = tr("You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?");
+				cancelTxt = tr("DO NOT SAVE");
+				saveTxt = tr("SAVE");
 			}
 
 			WarningDialog dlg(warning, this);
@@ -555,7 +553,7 @@ void MainWindow::convertToBDoc()
 	ui->startScreen->setCurrentIndex(SignDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( tr("Konverteeritud allkirjadokumendiks!"), 750, 1500, 600 );
+	notification->start( tr("Converted to signed document!"), 750, 1500, 600 );
 }
 
 void MainWindow::convertToCDoc()
@@ -586,7 +584,7 @@ void MainWindow::convertToCDoc()
 	ui->startScreen->setCurrentIndex(CryptoDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( tr("Konverteeritud krüptokontaineriks!"), 750, 1500, 600 );
+	notification->start( tr("Converted to crypto container!"), 750, 1500, 600 );
 }
 
 void MainWindow::moveCryptoContainer()
@@ -943,7 +941,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	ui->signContainerPage->transition(digiDoc);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( "Konteiner on edukalt allkirjastatud!", 750, 1500, 600 );
+	notification->start( "The container has been successfully signed!", 750, 1500, 600 );
 	return true;
 }
 
@@ -1112,15 +1110,14 @@ void MainWindow::browseOnDisk( const QString &fileName )
 
 void MainWindow::showUpdateCertWarning()
 {
-	showWarning("Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.",
-		"<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>Uuenda</span></a>");
+	showWarning(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
+		tr("&lt;a href='#update-Certificate'&gt;&ltspan style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;"));
 }
 
 bool MainWindow::wrapContainer()
 {
-	WarningDialog dlg("Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, "
-		"kuhu lisatakse kontrollitav konteiner ja Sinu valitud failid.", this);
-	dlg.setCancelText("KATKESTA");
+	WarningDialog dlg(tr("Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added."), this);
+	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton("EDASI", ContainerSave);
 	dlg.exec();
 	if(dlg.result() == ContainerSave)
@@ -1135,12 +1132,7 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 		t.version() == QSmartCardData::VER_3_4 &&
 		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
 	{
-		qApp->showWarning( tr(
-			"Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until "
-			"its expiring date and it can be used to login to e-services and give digital signatures. If there are "
-			"problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or "
-			"visit Police and Border Guard Board service point.<br /><br />"
-			"<a href=\"http://id.ee/?id=30519&read=38011\">More info</a>") );
+		qApp->showWarning( tr("Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;"));
 	}
 	smartcard->setProperty("lastcard", t.card());
 

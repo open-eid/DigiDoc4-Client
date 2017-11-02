@@ -1756,9 +1756,82 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
 
 
+
+
     <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
+    </message>
+    <message>
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
+        <translation>Oled lisanud konteinerisse faile, kuid pole neid allkirjastanud. Kas jätan allkirjastamata konteineri alles või eemaldan selle?</translation>
+    </message>
+    <message>
+        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
+        <translation>Oled avatud konteinerit muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>EEMALDA</translation>
+    </message>
+    <message>
+        <source>KEEP</source>
+        <translation>JÄTA ALLES</translation>
+    </message>
+
+
+    <message>
+        <source>DO NOT SAVE</source>
+        <translation>ÄRA SALVESTA</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SALVESTA</translation>
+    </message>
+    <message>
+        <source>Converted to signed document!</source>
+        <translation>Konverteeritud allkirjadokumendiks!</translation>
+    </message>
+    <message>
+        <source>Converted to crypto container!</source>
+        <translation>Konverteeritud krüptokonteineriks!</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Liiguta fail</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+
+    <message>
+        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <translation>Kaarti sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.</translation>
+    </message>
+    <message>
+        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Uuenda&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
+        <translation>Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, kuhu lisatakse kontrollitav konteiner ja Sinu valitud failid.</translation>
+    </message>
+    <message>
+        <source>FORWARD</source>
+        <translation>EDASI</translation>
+    </message>
+    <message>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Teie ID-kaardi sertifikaate ei saa uuendada alates 01.07.2017. Teie dokument on endiselt kehtiv kuni selle aegumiskuupäevani ja seda saab kasutada e-teenuste sisselogimiseks ja digitaalallkirjade saamiseks. Kui teie ID-kaardi kasutamine e-teenustes on probleeme, võtke palun ühendust ID-kaardi kasutajatoega telefonil (+372) 677 3377 või külastage politsei- ja piirivalveteenistuse teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;Lisateave&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate is not registered in the certificate store. Register now?</source>
+        <translation>Sertifikaat ei ole sertifikaadipoes registreeritud. Registreeri kohe?</translation>
     </message>
 
 
@@ -2068,18 +2141,6 @@ DDOC – digitaalallkirja eelmine vorming. Täna saab DDOC allkirju vaadata ja k
 ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvorming.&lt;br /&gt;&lt;br /&gt;
 Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377.
 </translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
     </message>
 </context>
 
