@@ -379,7 +379,7 @@ Media type: %3</translation>
     <name>NoOtherId</name>
     <message>
         <source>Other ID</source>
-        <translation>Other ID's'</translation>
+        <translation>Other ID's</translation>
     </message>
     <message>
         <source>You do not have other eIDs.
@@ -388,7 +388,7 @@ Learn more info here:</source>
 Learn more info here:</translation>
     </message>
     <message>
-        <source>MOBIIL-ID</source>
+        <source>MOBILE-ID</source>
         <translation>MOBIIL-ID</translation>
     </message>
     <message>
@@ -402,10 +402,73 @@ Learn more info here:</translation>
 </context>
 
 <context>
-    <name>OtherData</name>
+    <name>OtherId</name>
     <message>
-        <source>*</source>
-        <translation>*</translation>
+        <source>DOCUMENT</source>
+        <translation>DOCUMENT</translation>
+    </message>
+    <message>
+        <source>DOCUMENT IS VALID UNTIL</source>
+        <translation>DOCUMENT IS VALID UNTIL</translation>
+    </message>
+    <message>
+        <source>STATUS</source>
+        <translation>STATUS</translation>
+    </message>
+    <message>
+        <source>CERTIFICATES</source>
+        <translation>CERTIFICATES</translation>
+    </message>
+    <message>
+        <source>Insert the card into the reader to manage the document</source>
+        <translation>Insert the card into the reader to manage the document</translation>
+    </message>
+
+    <message>
+        <source>Mobile ID</source>
+        <translation>Mobile ID</translation>
+    </message>
+    <message>
+        <source>PHONE NUMBER</source>
+        <translation>PHONE NUMBER</translation>
+    </message>
+    <message>
+        <source>MOBILE OPERATOR</source>
+        <translation>MOBILE OPERATOR</translation>
+    </message>
+    <message>
+        <source>Certificates are </source>
+        <translation>certificates are </translation>
+    </message>
+    <message>
+        <source>activated</source>
+        <translation>activated</translation>
+    </message>
+    <message>
+        <source> and Mobile ID using is </source>
+        <translation>and Mobile ID using is </translation>
+    </message>
+    <message>
+        <source>possible</source>
+        <translation>possible</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>valid</translation>
+    </message>
+
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Not implemented!</source>
+        <translation>Not implemented!</translation>
+    </message>
+    <message>
+        <source> and Digi ID using is </source>
+        <translation> and Digi ID using is </translation>
     </message>
 </context>
 
@@ -477,6 +540,10 @@ Learn more info here:</translation>
     <message>
         <source>Signed on</source>
         <translation>Signed on</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>time</translation>
     </message>
 </context>
 
@@ -722,6 +789,51 @@ Learn more info here:</translation>
     <message>
         <source>ENTER INTO APPLICATION</source>
         <translation>ENTER THE APPLICATION</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>KeyDialog</name>
+    <message>
+        <source>Crypt recipient</source>
+        <translation>Krüpteerida adressaadile</translation>
+    </message>
+    <message>
+        <source>Attribute</source>
+        <translation>Attribuut</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>SHOW CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation>Key</translation>
+    </message>
+    <message>
+        <source>Crypto method</source>
+        <translation>Crypto method</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation>Expires</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
     </message>
 </context>
 
@@ -1651,6 +1763,10 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>Photo (*.jpg);;All Files (*)</translation>
     </message>
 
+    <message>
+        <source>Ver. </source>
+        <translation>Ver. </translation>
+    </message>
 
 
 

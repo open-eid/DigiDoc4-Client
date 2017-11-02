@@ -106,7 +106,7 @@ QPushButton:disabled {
 }</string>
         </property>
         <property name="text">
-         <string>SULGE</string>
+         <string>CLOSE</string>
         </property>
         <property name="default">
          <bool>true</bool>

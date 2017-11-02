@@ -171,7 +171,7 @@
          <string notr="true">color: #75787B; font-size: 11px;</string>
         </property>
         <property name="text">
-         <string>DOKUMENT</string>
+         <string>DOCUMENT</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -196,7 +196,7 @@
          <string notr="true">color: #75787B; font-size: 11px;</string>
         </property>
         <property name="text">
-         <string>DOKUMENT KEHTIB KUNI</string>
+         <string>DOCUMENT IS VALID UNTIL</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -301,7 +301,7 @@
          <string notr="true">color: #75787B; font-size: 11px;</string>
         </property>
         <property name="text">
-         <string>STAATUS</string>
+         <string>STATUS</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -403,7 +403,7 @@
          <string notr="true">color: #75787B; font-size: 11px;</string>
         </property>
         <property name="text">
-         <string>SERTIFIKAADID</string>
+         <string>CERTIFICATES</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -475,7 +475,7 @@
       <string notr="true">color: #75787B; font-size: 11px; border: none;</string>
      </property>
      <property name="text">
-      <string>Dokumendi haldamiseks sisesta kaart lugejasse</string>
+      <string>Insert the card into the reader to manage the document</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

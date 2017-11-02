@@ -22,14 +22,19 @@
 #include "Styles.h"
 #include "effects/HoverFilter.h"
 
-#include <common/DateTime.h>
 #include <common/SslCertificate.h>
 
 #include <QtCore/QTextStream>
 
 InfoStack::InfoStack( QWidget *parent ) :
-	StyledWidget( parent ),
-	ui( new Ui::InfoStack )
+	StyledWidget( parent )
+, ui( new Ui::InfoStack )
+, givenNamesText()
+, surnameText()
+, personalCodeText()
+, citizenshipText()
+, serialNumberText()
+, expireDate()
 {
 	ui->setupUi( this );
 
@@ -64,6 +69,34 @@ void InfoStack::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+
+		ui->valueGivenNames->setText( givenNamesText );
+		ui->valueSurname->setText( surnameText );
+		ui->valuePersonalCode->setText( personalCodeText );
+		ui->valueCitizenship->setText( citizenshipText );
+		ui->valueSerialNumber->setText( serialNumberText );
+
+		QString text;
+		QTextStream st( &text );
+
+		if( certTypeIsEstEid )
+		{
+			if( certIsValid )
+			{
+				st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
+					<< expireDate;
+			}
+			else
+			{
+				st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
+			}
+		}
+		else
+		{
+			st << tr("You're using Digital identity card"); // ToDo
+		}
+
+		ui->valueExpiryDate->setText( text );
 	}
 
 	QWidget::changeEvent(event);
@@ -99,12 +132,16 @@ void InfoStack::update(  const QSmartCardData &t )
 	QString text;
 	QTextStream st( &text );
 
-	if( t.authCert().type() & SslCertificate::EstEidType )
+	certTypeIsEstEid = t.authCert().type() & SslCertificate::EstEidType;
+	certIsValid = t.isValid();
+	expireDate = DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
+
+	if( certTypeIsEstEid )
 	{
-		if( t.isValid() )
+		if( certIsValid )
 		{
 			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
-				<< DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
+				<< expireDate;
 		}
 		else
 		{
@@ -130,18 +167,24 @@ void InfoStack::update(  const QSmartCardData &t )
 		ui->valueSerialNumber->setText( serialNumber + "  |" );
 	}
 	ui->valueExpiryDate->setText( text );
+
+	givenNamesText = ui->valueGivenNames->text();
+	surnameText = ui->valueSurname->text();
+	personalCodeText = ui->valuePersonalCode->text();
+	citizenshipText = ui->valueCitizenship->text();
+	serialNumberText = ui->valueSerialNumber->text();
 }
 
 void InfoStack::clearData()
 {
-	ui->valueGivenNames->setText( "" ); 
-	ui->valueSurname->setText( "" ); 
-	ui->valuePersonalCode->setText( "" ); 
-	ui->valueCitizenship->setText( "" ); 
-	ui->valueSerialNumber->setText( "" ); 
-	ui->valueExpiryDate->setText( "" ); 
-    ui->btnPicture->setText( tr("DOWNLOAD") );
-	ui->btnPicture->show();	
+	ui->valueGivenNames->setText( "" );
+	ui->valueSurname->setText( "" );
+	ui->valuePersonalCode->setText( "" );
+	ui->valueCitizenship->setText( "" );
+	ui->valueSerialNumber->setText( "" );
+	ui->valueExpiryDate->setText( "" );
+	ui->btnPicture->setText( tr("DOWNLOAD") );
+	ui->btnPicture->show();
 }
 
 void InfoStack::showPicture( const QPixmap &pixmap )

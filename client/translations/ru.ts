@@ -388,18 +388,90 @@ Learn more info here:</source>
 Подробнее читайте здесь:</translation>
     </message>
     <message>
-        <source>MOBIIL-ID</source>
-        <translation>MOBIIL-ID</translation>
+        <source>MOBILE-ID</source>
+        <translation>Мобильная-ID</translation>
     </message>
     <message>
         <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
+        <translation>цифровая-ID</translation>
     </message>
     <message>
         <source>SMART-ID</source>
         <translation>SMART-ID</translation>
     </message>
 </context>
+
+<context>
+    <name>OtherId</name>
+    <message>
+        <source>DOCUMENT</source>
+        <translation>ДОКУМЕНТ</translation>
+    </message>
+    <message>
+        <source>DOCUMENT IS VALID UNTIL</source>
+        <translation>ДОКУМЕНТ ГОДЕН ДО</translation>
+    </message>
+    <message>
+        <source>STATUS</source>
+        <translation>СТАТУС</translation>
+    </message>
+    <message>
+        <source>CERTIFICATES</source>
+        <translation>СЕРТИФИКАТЫ</translation>
+    </message>
+    <message>
+        <source>Insert the card into the reader to manage the document</source>
+        <translation>Вставьте карту в считывающее устройство для управления документом</translation>
+    </message>
+
+    <message>
+        <source>Mobile ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>PHONE NUMBER</source>
+        <translation>номер телефона</translation>
+    </message>
+    <message>
+        <source>MOBILE OPERATOR</source>
+        <translation>СОТОВЫЙ ОПЕРАТОР</translation>
+    </message>
+    <message>
+        <source>Certificates are </source>
+        <translation>Сертификаты </translation>
+    </message>
+    <message>
+        <source>activated</source>
+        <translation>активирована</translation>
+    </message>
+    <message>
+        <source> and Mobile ID using is </source>
+        <translation> и использование Mobiil-ID </translation>
+    </message>
+    <message>
+        <source>possible</source>
+        <translation>возможно</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>действительный</translation>
+    </message>
+
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>цифровая-ID</translation>
+    </message>
+    <message>
+        <source>Not implemented!</source>
+        <translation>Не реализована!</translation>
+    </message>
+    <message>
+        <source> and Digi ID using is </source>
+        <translation> и использование Digi-ID </translation>
+    </message>
+</context>
+
 
 <context>
     <name>OtherData</name>
@@ -467,6 +539,10 @@ Learn more info here:</source>
     <message>
         <source>Signed on</source>
         <translation>Подписано</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>время</translation>
     </message>
 </context>
 
@@ -711,6 +787,51 @@ Learn more info here:</source>
     <message>
         <source>ENTER THE APPLICATION</source>
         <translation>ВОЙТИ В ПРОГРАММУ</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>KeyDialog</name>
+    <message>
+        <source>Crypt recipient</source>
+        <translation>Зашифровать получателю</translation>
+    </message>
+    <message>
+        <source>Attribute</source>
+        <translation>Атрибут</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation>ключ</translation>
+    </message>
+    <message>
+        <source>Crypto method</source>
+        <translation>Метод шифровки</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation>Истекает</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Выдавший</translation>
     </message>
 </context>
 
@@ -1526,7 +1647,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>цифровой</translation>
+        <translation>цифровая-ID</translation>
     </message>
     <message>
         <source>ID-card</source>
@@ -1631,6 +1752,15 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Фото (*.jpg);;Все файлы (*)</translation>
     </message>
+
+    <message>
+        <source>Ver. </source>
+        <translation>Вер. </translation>
+    </message>
+
+
+
+
     <message>
         <source>Sign</source>
         <translation>Подписать</translation>

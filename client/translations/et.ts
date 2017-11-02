@@ -387,7 +387,7 @@ Learn more info here:</source>
 Rohkem infot leiate siit:</translation>
     </message>
     <message>
-        <source>MOBIIL-ID</source>
+        <source>MOBILE-ID</source>
         <translation>MOBIIL-ID</translation>
     </message>
     <message>
@@ -399,6 +399,78 @@ Rohkem infot leiate siit:</translation>
         <translation>SMART-ID</translation>
     </message>
 </context>
+
+<context>
+    <name>OtherId</name>
+    <message>
+        <source>DOCUMENT</source>
+        <translation>DOKUMENT</translation>
+    </message>
+    <message>
+        <source>DOCUMENT IS VALID UNTIL</source>
+        <translation>DOKUMENT KEHTIB KUNI</translation>
+    </message>
+    <message>
+        <source>STATUS</source>
+        <translation>STAATUS</translation>
+    </message>
+    <message>
+        <source>CERTIFICATES</source>
+        <translation>SERTIFIKAADID</translation>
+    </message>
+    <message>
+        <source>Insert the card into the reader to manage the document</source>
+        <translation>Dokumendi haldamiseks sisesta kaart lugejasse</translation>
+    </message>
+
+    <message>
+        <source>Mobile ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>PHONE NUMBER</source>
+        <translation>TELEFONI NUMBER</translation>
+    </message>
+    <message>
+        <source>MOBILE OPERATOR</source>
+        <translation>MOBIILI OPERAATOR</translation>
+    </message>
+    <message>
+        <source>Certificates are </source>
+        <translation>Sertifikaadid on </translation>
+    </message>
+    <message>
+        <source>activated</source>
+        <translation>aktiivsed</translation>
+    </message>
+    <message>
+        <source> and Mobile ID using is </source>
+        <translation> ja Mobiil-ID kasutamine on </translation>
+    </message>
+    <message>
+        <source>possible</source>
+        <translation>võimalik</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>Kehtivad</translation>
+    </message>
+
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Not implemented!</source>
+        <translation>Pole implementeeritud!</translation>
+    </message>
+    <message>
+        <source> and Digi ID using is </source>
+        <translation> ja Digi-ID kasutamine on </translation>
+    </message>
+</context>
+
 
 <context>
     <name>OtherData</name>
@@ -465,6 +537,10 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>Signed on</source>
         <translation>Allkirjastatud</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>kell</translation>
     </message>
 </context>
 
@@ -709,6 +785,50 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>ENTER THE APPLICATION</source>
         <translation>SISENE RAKENDUSSE</translation>
+    </message>
+</context>
+
+<context>
+    <name>KeyDialog</name>
+    <message>
+        <source>Crypt recipient</source>
+        <translation>Krüpteerida adressaadile</translation>
+    </message>
+    <message>
+        <source>Attribute</source>
+        <translation>Attribuut</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>NÄITA SERTIFIKAATI</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation>Adressaat</translation>
+    </message>
+    <message>
+        <source>Crypto method</source>
+        <translation>Krüpteerimismeetod</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation>Aegub</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
     </message>
 </context>
 
@@ -1636,6 +1756,10 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
 
 
+    <message>
+        <source>Ver. </source>
+        <translation>Ver. </translation>
+    </message>
 
 
 

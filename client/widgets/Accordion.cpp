@@ -110,7 +110,7 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
 
-	ui->otherID->update( "Teised eID-d");
+	ui->otherID->update("Other ID");
 
 	ui->titleOtherData->setVisible( !( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) ) );
 //	ui->titleOtherData->setDisabled( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) );
@@ -125,6 +125,8 @@ void Accordion::changeEvent(QEvent* event)
 		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"));
 		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"));
 		ui->titleOtherEID->setText(tr("MY OTHER eID's"));
+
+		ui->otherID->update("Other ID");
 	}
 
 	QWidget::changeEvent(event);

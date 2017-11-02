@@ -70,7 +70,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->setupUi(this);
 
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
-	ui->version->setText( "Ver. " + qApp->applicationVersion() );
+	ui->version->setText( tr("Ver. ") + qApp->applicationVersion() );
 
 	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
@@ -323,6 +323,19 @@ void MainWindow::dropEvent(QDropEvent *event)
 		openFiles( files );
 	}
 }
+
+void MainWindow::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+
+		ui->version->setText( tr("Ver. ") + qApp->applicationVersion() );
+	}
+
+	QWidget::changeEvent(event);
+}
+
 
 bool MainWindow::encrypt()
 {
