@@ -803,6 +803,8 @@ void MainWindow::showCardMenu( bool show )
 		cardPopup.reset( new CardPopup( smartcard, this ) );
 		// To select active card from several cards in readers ..
 		connect( cardPopup.get(), &CardPopup::activated, smartcard, &QSmartCard::selectCard, Qt::QueuedConnection );
+		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectSignCard, Qt::QueuedConnection );
+		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectAuthCard, Qt::QueuedConnection );
 		// .. and hide card popup menu
 		connect( cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup );
 		cardPopup->show();
