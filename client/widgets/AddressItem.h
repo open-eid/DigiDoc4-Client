@@ -56,6 +56,5 @@ private:
 
 	QString code;
 	CKey key;
-    bool isYou;
-    QString typeText;
+	QString typeText;
 };

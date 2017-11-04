@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Crypt recipient</string>
+   <string>Encrypt for</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#KeyDialog{ border-radius: 2px; background-color: #FFFFFF; border: none;}</string>

@@ -26,28 +26,23 @@
 
 #include <QtCore/QTextStream>
 
-InfoStack::InfoStack( QWidget *parent ) :
-	StyledWidget( parent )
+InfoStack::InfoStack( QWidget *parent )
+: StyledWidget( parent )
 , ui( new Ui::InfoStack )
-, givenNamesText()
-, surnameText()
-, personalCodeText()
-, citizenshipText()
-, serialNumberText()
-, expireDate()
 {
 	ui->setupUi( this );
 
 	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
 	connect( ui->btnPicture, &QPushButton::clicked, this, [this]() { emit photoClicked( ui->photo->pixmap() ); } );
 
-	QFont font = Styles::font( Styles::Regular, 16 );
-	font.setWeight( QFont::DemiBold );
-	ui->valueGivenNames->setFont( font );
-	ui->valueSurname->setFont( font );
-	ui->valuePersonalCode->setFont( font );
-	ui->valueCitizenship->setFont( font );
-	ui->valueSerialNumber->setFont( font );
+	QFont font = Styles::font(Styles::Regular, 16);
+	font.setWeight(QFont::DemiBold);
+	ui->valueGivenNames->setFont(font);
+	ui->valueSurname->setFont(font);
+	ui->valuePersonalCode->setFont(font);
+	ui->valueCitizenship->setFont(font);
+	ui->valueSerialNumber->setFont(font);
+	ui->valueApplet->setFont(font);
 	ui->valueExpiryDate->setFont( Styles::font( Styles::Regular, 16 ) );
 
 	HoverFilter *filter = new HoverFilter(ui->photo, [this](int eventType){ focusEvent(eventType); }, this);
@@ -69,34 +64,7 @@ void InfoStack::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
-		ui->valueGivenNames->setText( givenNamesText );
-		ui->valueSurname->setText( surnameText );
-		ui->valuePersonalCode->setText( personalCodeText );
-		ui->valueCitizenship->setText( citizenshipText );
-		ui->valueSerialNumber->setText( serialNumberText );
-
-		QString text;
-		QTextStream st( &text );
-
-		if( certTypeIsEstEid )
-		{
-			if( certIsValid )
-			{
-				st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
-					<< expireDate;
-			}
-			else
-			{
-				st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
-			}
-		}
-		else
-		{
-			st << tr("You're using Digital identity card"); // ToDo
-		}
-
-		ui->valueExpiryDate->setText( text );
+		update();
 	}
 
 	QWidget::changeEvent(event);
@@ -122,57 +90,52 @@ void InfoStack::focusEvent(int eventType)
 	}
 }
 
-void InfoStack::update(  const QSmartCardData &t )
+void InfoStack::update()
+{
+	QString text;
+	QTextStream st( &text );
+
+	if(certTypeIsEstEid)
+	{
+		if(certIsValid)
+			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until") << expireDate;
+		else
+			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
+	}
+	else
+	{
+		st << tr("You're using Digital identity card"); // ToDo
+	}
+
+	ui->valueGivenNames->setText(givenNamesText);
+	ui->valueSurname->setText(surnameText);
+	ui->valuePersonalCode->setText(personalCodeText);
+	ui->valueCitizenship->setText(citizenshipText);
+	ui->valueExpiryDate->setText(text);
+	ui->valueApplet->setText(appletVersion);
+	ui->valueSerialNumber->setText(serialNumberText);
+}
+
+void InfoStack::update(const QSmartCardData &t)
 {
 	QStringList firstName = QStringList()
 		<< t.data( QSmartCardData::FirstName1 ).toString()
 		<< t.data( QSmartCardData::FirstName2 ).toString();
 	firstName.removeAll( "" );
 
-	QString text;
-	QTextStream st( &text );
-
 	certTypeIsEstEid = t.authCert().type() & SslCertificate::EstEidType;
 	certIsValid = t.isValid();
-	expireDate = DateTime( t.data( QSmartCardData::Expiry ).toDateTime() ).formatDate( "dd.MM.yyyy" );
+	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate( "dd.MM.yyyy" );
+	givenNamesText = firstName.join(" ");
+	surnameText = t.data(QSmartCardData::SurName).toString();
+	personalCodeText = t.data(QSmartCardData::Id).toString();
+	citizenshipText = t.data(QSmartCardData::Citizen).toString();
+	appletVersion = t.appletVersion();
+	serialNumberText = t.data(QSmartCardData::DocumentId).toString();
+	if(!serialNumberText.isEmpty())
+		serialNumberText += "  |" ;
 
-	if( certTypeIsEstEid )
-	{
-		if( certIsValid )
-		{
-			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
-				<< expireDate;
-		}
-		else
-		{
-			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
-		}
-	}
-	else
-	{
-		st << tr("You're using Digital identity card"); // ToDo
-	}
-	ui->valueGivenNames->setText( firstName.join( " " ) );
-	ui->valueSurname->setText( t.data( QSmartCardData::SurName ).toString() );
-	ui->valuePersonalCode->setText( t.data( QSmartCardData::Id ).toString() );
-	ui->valueCitizenship->setText( t.data( QSmartCardData::Citizen ).toString() );
-
-	QString serialNumber = t.data( QSmartCardData::DocumentId ).toString();
-	if( serialNumber.isEmpty() )
-	{
-		ui->valueSerialNumber->setText( serialNumber );
-	}
-	else
-	{
-		ui->valueSerialNumber->setText( serialNumber + "  |" );
-	}
-	ui->valueExpiryDate->setText( text );
-
-	givenNamesText = ui->valueGivenNames->text();
-	surnameText = ui->valueSurname->text();
-	personalCodeText = ui->valuePersonalCode->text();
-	citizenshipText = ui->valueCitizenship->text();
-	serialNumberText = ui->valueSerialNumber->text();
+	update();
 }
 
 void InfoStack::clearData()

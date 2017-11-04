@@ -23,8 +23,7 @@
 
 NoOtherId::NoOtherId( QWidget *parent ) :
 	StyledWidget( parent ),
-	ui( new Ui::NoOtherId ),
-	lblNameText()
+	ui( new Ui::NoOtherId )
 {
 	ui->setupUi(this);
 
@@ -40,7 +39,7 @@ NoOtherId::NoOtherId( QWidget *parent ) :
 
 NoOtherId::~NoOtherId()
 {
-    delete ui;
+	delete ui;
 }
 
 void NoOtherId::update( const QString &lblName )
