@@ -17,25 +17,23 @@ env:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-    brew install --force openssl pip;
+    command curl -sSL https://rvm.io/mpapis.asc | gpg --import -;
+    rvm get stable;
+    brew install --force openssl;
+    curl -s --location "https://bootstrap.pypa.io/get-pip.py" -o get-pip.py;
+    python get-pip.py --user;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.2/libdigidocpp_3.13.2.1360.pkg" -o libdigidocpp.pkg;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
     HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
-    pip install --user awscli > /dev/null;
     export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
+    pip install --user awscli > /dev/null;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/opensc.pkg opensc.pkg --no-sign-request;
     sudo installer -verboseR -pkg opensc.pkg -target /;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
     if [ $? -eq 0 ]; then
       unzip -qq -d /tmp ${HASH}.zip;
-    else
-      ./prepare_osx_build_environment.sh -p /tmp > /dev/null;
-      if [ ${AWS_ACCESS_KEY_ID:+1} ]; then
-        cd /tmp && zip -q -r $OLDPWD/${HASH}.zip Qt-*-OpenSSL && cd $OLDPWD;
-        aws s3 cp ${HASH}.zip s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip --acl public-read;
-      fi
     fi
   fi
 script: case ${TARGET} in
