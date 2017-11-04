@@ -25,8 +25,8 @@ before_install:
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
     HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
-    pip install --user awscli > /dev/null;
     export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
+    pip install --user awscli > /dev/null;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/opensc.pkg opensc.pkg --no-sign-request;
     sudo installer -verboseR -pkg opensc.pkg -target /;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
