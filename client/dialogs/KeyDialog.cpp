@@ -37,6 +37,11 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 	d->close->setFont(condensed);
 	d->showCert->setFont(condensed);
 
+	QStringList horzHeaders;
+	horzHeaders << tr("Attribute") << tr("Value");
+	d->view->setHeaderLabels(horzHeaders);
+
+
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
 	connect(d->showCert, &QPushButton::clicked, this, &KeyDialog::showCertificate);
 

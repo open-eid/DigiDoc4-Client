@@ -26,8 +26,15 @@
 #include <QtCore/QTextStream>
 
 OtherId::OtherId( QWidget *parent ) :
-	StyledWidget( parent ),
-	ui( new Ui::OtherId )
+  StyledWidget( parent )
+, ui( new Ui::OtherId )
+, isDigiId()
+, telNumber()
+, telOperator()
+, docNumber()
+, docValid()
+, status()
+, validTill()
 {
 	ui->setupUi( this );
 
@@ -52,31 +59,46 @@ OtherId::~OtherId()
 	delete ui;
 }
 
-void OtherId::update( const QString &lblIdName )
-{
-	ui->lblIdName->setText( lblIdName );
-}
 
 void OtherId::updateMobileId( const QString &telNumber, const QString &telOperator, const QString &status, const QString &validTill )
 {
+	this->isDigiId = false;
+	this->telNumber = telNumber;
+	this->telOperator = telOperator;
+	this->docNumber = "";
+	this->status = status;
+	this->validTill = validTill;
+
+	updateMobileId();
+}
+
+void OtherId::updateMobileId()
+{
+	isDigiId = false;
+	telNumber;
+	QString telOperator;
+	QString docNumber;
+	QString status;
+	QString validTill;
+
 	QString text;
 	QTextStream s( &text );
 
     ui->lblDigiIdInfo->setText( "" );
-	ui->lblIdName->setText( tr( "Mobiil-ID" ) );
-	ui->lblLeftHdr->setText( tr( "TELEFONI NUMBER" ) );
+	ui->lblIdName->setText( tr( "Mobile ID" ) );
+	ui->lblLeftHdr->setText( tr( "PHONE NUMBER" ) );
 	ui->lblLeftText->setText( "+" + telNumber );
- 	ui->lblRightHdr->setText( tr( "MOBIILI OPERAATOR" ) );
+	ui->lblRightHdr->setText( tr( "MOBILE OPERATOR" ) );
 	ui->lblRightText->setText( telOperator );
 	if( status == "Active" )
 	{
-		s << tr( "Sertifikaadid on " ) << "<span style='color: #8CC368'>"
-			<< tr( "aktiivsed" ) << "</span>"
-			<< tr( " ja Mobiil-ID kasutamine on " ) << "<span style='color: #8CC368'>"
-			<< tr( "võimalik" ) << "</span>";
+		s << tr( "Certificates are " ) << "<span style='color: #8CC368'>"
+			<< tr( "activated" ) << "</span>"
+			<< tr( " and Mobile ID using is " ) << "<span style='color: #8CC368'>"
+			<< tr( "possible" ) << "</span>";
 
 		ui->lblStatusText->setText( text );
-		ui->lblCertText->setText( "<span style='color: #8CC368'>Kehtivad</span> kuni " + validTill );
+		ui->lblCertText->setText( "<span style='color: #8CC368'>" + tr("Valid") + "</span> kuni " + validTill );
 	}
 	else
 	{
@@ -89,26 +111,41 @@ void OtherId::updateMobileId( const QString &telNumber, const QString &telOperat
 
 void OtherId::updateDigiId( const QString &docNumber, const QString &docValid, const QString &status, const QString &validTill )
 {
+	this->isDigiId = true;
+	this->telNumber = "";
+	this->telOperator = "";
+	this->docNumber = docNumber;
+	this->docValid = docValid;
+	this->status = status;
+	this->validTill = validTill;
+
+	updateDigiId();
+}
+
+
+void OtherId::updateDigiId()
+{
 	QString text;
 	QTextStream s( &text );
 
+	ui->lblDigiIdInfo->setText(tr("Insert the card into the reader to manage the document"));
 	ui->lblIdName->setText( tr( "Digi-ID" ) );
 	ui->lblLeftText->setText( docNumber );
 	ui->lblRightText->setText( docValid );
 	if( status == "Active" )
 	{
-		s << tr( "Sertifikaadid on " ) << "<span style='color: #8CC368'>"
-			<< tr( "aktiivsed" ) << "</span>"
-			<< tr( " ja Digi-ID kasutamine on " ) << "<span style='color: #8CC368'>"
+		s << tr( "Certificates are " ) << "<span style='color: #8CC368'>"
+			<< tr( "activated" ) << "</span>"
+			<< tr( " and Digi ID using is " ) << "<span style='color: #8CC368'>"
 			<< tr( "võimalik" ) << "</span>";
 
 		ui->lblStatusText->setText( text );
-		ui->lblCertText->setText( "<span style='color: #8CC368'>Kehtivad</span> kuni " + validTill );
+		ui->lblCertText->setText( "<span style='color: #8CC368'>" + tr("Valid") + "</span> kuni " + validTill );
 	}
 	else
 	{
 		s << "<span style='color: #e80303'>"
-			<< "Not implemented!" << "</span>";
+			<< tr("Not implemented!") << "</span>";
 		ui->lblStatusText->setText( text );
 		ui->lblCertText->setText( "" );
 	}
@@ -119,6 +156,16 @@ void OtherId::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+
+		if(isDigiId)
+		{
+			updateDigiId();
+		}
+		else
+		{
+			updateMobileId();
+		}
+
 	}
 
 	QWidget::changeEvent(event);

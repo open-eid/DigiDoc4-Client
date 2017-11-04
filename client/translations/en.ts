@@ -234,15 +234,6 @@ Media type: %3</translation>
         <source>From history</source>
         <translation>LATEST USED CERTIFICATE</translation>
     </message>
-
-    <message>
-        <source>Add recipients</source>
-        <translation>Add recipients</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Added recipients</translation>
-    </message>
 </context>
 
 <context>
@@ -294,6 +285,19 @@ Media type: %3</translation>
     </message>
 </context>
 
+<context>
+    <name>FileList</name>
+
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Add files</translation>
+    </message>
+</context>
+
 
 <context>
     <name>ItemList</name>
@@ -313,6 +317,40 @@ Media type: %3</translation>
     <message>
         <source>Add all</source>
         <translation>ADD ALL</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Add recipients</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Added recipients</translation>
+    </message>
+
+    <message>
+        <source>Container is not signed</source>
+        <translation>Container's signatures are missing</translation>
+    </message>
+    <message>
+        <source>Container's files</source>
+        <translation>Container's files</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Container's signatures</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Recipients</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Encrypted files</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Decrypted files</translation>
     </message>
 </context>
 
@@ -341,7 +379,7 @@ Media type: %3</translation>
     <name>NoOtherId</name>
     <message>
         <source>Other ID</source>
-        <translation>Other ID's'</translation>
+        <translation>Other ID's</translation>
     </message>
     <message>
         <source>You do not have other eIDs.
@@ -350,7 +388,7 @@ Learn more info here:</source>
 Learn more info here:</translation>
     </message>
     <message>
-        <source>MOBIIL-ID</source>
+        <source>MOBILE-ID</source>
         <translation>MOBIIL-ID</translation>
     </message>
     <message>
@@ -364,10 +402,73 @@ Learn more info here:</translation>
 </context>
 
 <context>
-    <name>OtherData</name>
+    <name>OtherId</name>
     <message>
-        <source>*</source>
-        <translation>*</translation>
+        <source>DOCUMENT</source>
+        <translation>DOCUMENT</translation>
+    </message>
+    <message>
+        <source>DOCUMENT IS VALID UNTIL</source>
+        <translation>DOCUMENT IS VALID UNTIL</translation>
+    </message>
+    <message>
+        <source>STATUS</source>
+        <translation>STATUS</translation>
+    </message>
+    <message>
+        <source>CERTIFICATES</source>
+        <translation>CERTIFICATES</translation>
+    </message>
+    <message>
+        <source>Insert the card into the reader to manage the document</source>
+        <translation>Insert the card into the reader to manage the document</translation>
+    </message>
+
+    <message>
+        <source>Mobile ID</source>
+        <translation>Mobile ID</translation>
+    </message>
+    <message>
+        <source>PHONE NUMBER</source>
+        <translation>PHONE NUMBER</translation>
+    </message>
+    <message>
+        <source>MOBILE OPERATOR</source>
+        <translation>MOBILE OPERATOR</translation>
+    </message>
+    <message>
+        <source>Certificates are </source>
+        <translation>certificates are </translation>
+    </message>
+    <message>
+        <source>activated</source>
+        <translation>activated</translation>
+    </message>
+    <message>
+        <source> and Mobile ID using is </source>
+        <translation>and Mobile ID using is </translation>
+    </message>
+    <message>
+        <source>possible</source>
+        <translation>possible</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>valid</translation>
+    </message>
+
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Not implemented!</source>
+        <translation>Not implemented!</translation>
+    </message>
+    <message>
+        <source> and Digi ID using is </source>
+        <translation> and Digi ID using is </translation>
     </message>
 </context>
 
@@ -439,6 +540,10 @@ Learn more info here:</translation>
     <message>
         <source>Signed on</source>
         <translation>Signed on</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>time</translation>
     </message>
 </context>
 
@@ -684,6 +789,51 @@ Learn more info here:</translation>
     <message>
         <source>ENTER INTO APPLICATION</source>
         <translation>ENTER THE APPLICATION</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>KeyDialog</name>
+    <message>
+        <source>Crypt recipient</source>
+        <translation>Krüpteerida adressaadile</translation>
+    </message>
+    <message>
+        <source>Attribute</source>
+        <translation>Attribuut</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>SHOW CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation>Key</translation>
+    </message>
+    <message>
+        <source>Crypto method</source>
+        <translation>Crypto method</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation>Expires</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
     </message>
 </context>
 
@@ -1244,26 +1394,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>STARTING</source>
         <translation>← START</translation>
     </message>
-    <message>
-        <source>Container is not signed</source>
-        <translation>Container's signatures are missing</translation>
-    </message>
-    <message>
-        <source>Container's signatures</source>
-        <translation>Container's signatures</translation>
-    </message>
-    <message>
-        <source>Recipients</source>
-        <translation>Recipients</translation>
-    </message>
-    <message>
-        <source>Encrypted files</source>
-        <translation>Encrypted files</translation>
-    </message>
-    <message>
-        <source>Decrypted files</source>
-        <translation>Decrypted files</translation>
-    </message>
 </context>
 
 
@@ -1519,6 +1649,27 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>Added</source>
         <translation>ADDED</translation>
     </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Yourself)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Unknown ID</translation>
+    </message>
 </context>
 
 
@@ -1610,6 +1761,84 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Photo (*.jpg);;All Files (*)</translation>
+    </message>
+
+
+
+    <message>
+        <source>Ver. </source>
+        <translation>Ver. </translation>
+    </message>
+    <message>
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
+        <translation>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</translation>
+    </message>
+    <message>
+        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
+        <translation>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>REMOVE</translation>
+    </message>
+    <message>
+        <source>KEEP</source>
+        <translation>KEEP</translation>
+    </message>
+
+
+    <message>
+        <source>DO NOT SAVE</source>
+        <translation>DO NOT SAVE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SAVE</translation>
+    </message>
+    <message>
+        <source>Converted to signed document!</source>
+        <translation>Converted to signed document!</translation>
+    </message>
+    <message>
+        <source>Converted to crypto container!</source>
+        <translation>Converted to crypto container!</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Move file</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+
+    <message>
+        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <translation>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</translation>
+    </message>
+    <message>
+        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
+        <translation>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</translation>
+    </message>
+    <message>
+        <source>FORWARD</source>
+        <translation>FORWARD</translation>
+    </message>
+    <message>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate is not registered in the certificate store. Register now?</source>
+        <translation>Certificate is not registered in the certificate store. Register now?</translation>
     </message>
 
 
@@ -1935,18 +2164,6 @@ BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https:
 DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
     </message>
 </context>
 

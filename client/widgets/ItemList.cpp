@@ -33,6 +33,9 @@ ItemList::ItemList(QWidget *parent)
 , ui(new Ui::ItemList)
 , state(UnsignedContainer)
 , headerItems(1)
+, headerText()
+, listText()
+, addText()
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();
@@ -47,7 +50,9 @@ ItemList::~ItemList()
 
 void ItemList::addHeader(const QString &label)
 {
-	header = new QLabel(label, this);
+	headerText = label;
+
+	header = new QLabel(tr(qPrintable(label)), this);
 	header->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	header->resize(415, 64);
@@ -70,19 +75,37 @@ void ItemList::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+
+		ui->listHeader->setText(tr(qPrintable(listText)));
+
+		if(header != nullptr)
+			header->setText(tr(qPrintable(headerText)));
+
+		if(ui->add->isVisible())
+			ui->add->setText(tr(qPrintable(addText)));
+
+
 	}
 
 	QWidget::changeEvent(event);
 }
 
-QString ItemList::addLabel() const
+QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile: return tr("Add more files");
-	case ItemAddress: return tr("Add addressee");
-	case ToAddAdresses: return tr("Add all");
-	default: return "";
+	case ItemFile:
+		addText = "Add more files";
+		return tr("Add more files");
+	case ItemAddress:
+		addText = "Add addressee";
+		return tr("Add addressee");
+	case ToAddAdresses:
+		addText = "Add all";
+		return tr("Add all");
+	default:
+		addText = "";
+		return "";
 	}
 }
 
@@ -144,7 +167,8 @@ int ItemList::index(Item *item) const
 void ItemList::init(ItemType item, const QString &header, bool hideFind)
 {
 	itemType = item;
-	ui->listHeader->setText(header);
+	ui->listHeader->setText(tr(qPrintable(header)));
+	listText = header;
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 
 	if(hideFind)

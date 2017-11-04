@@ -43,9 +43,14 @@ signals:
 	void activateEMailClicked();
 
 protected:
+	void update();
+
 	void paintEvent( QPaintEvent * ) override;
 	void changeEvent(QEvent* event) override;
 
 private:
 	Ui::OtherData *ui;
+	bool activate;
+	QString eMail;
+	quint8 errorCode;
 };

@@ -62,10 +62,10 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
         {
 			ui->label->setText(tr("ConditionsChangePIN1WithPUK"));
         }
-        ui->labelNameId->setText( tr("%1 koodi vahetamine").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
         regexpFirstCode.setPattern( "\\d{8,12}" );
         regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" : "\\d{5,12}" );
-        ui->unblock->setText( tr("MUUDA") );
+		ui->unblock->setText( tr("CHANGE") );
     }
     if( mode == PinUnblock::UnBlockPinWithPuk )
     {

@@ -40,4 +40,5 @@ protected:
 
 private:
 	Ui::NoOtherId *ui;
+	QString lblNameText;
 };

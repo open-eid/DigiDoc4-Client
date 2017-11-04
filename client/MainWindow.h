@@ -68,6 +68,7 @@ private Q_SLOTS:
 	void updateCertificate ( const QString &link );
 
 protected:
+	void changeEvent(QEvent* event) override;
 	void dragEnterEvent( QDragEnterEvent *event ) override;
 	void dragLeaveEvent( QDragLeaveEvent *event ) override;
 	void dropEvent( QDropEvent *event ) override;

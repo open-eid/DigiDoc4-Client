@@ -22,8 +22,11 @@
 #include "Styles.h"
 
 OtherData::OtherData(QWidget *parent) :
-	QWidget(parent),
-	ui(new Ui::OtherData)
+  QWidget(parent)
+, ui(new Ui::OtherData)
+, activate()
+, eMail()
+, errorCode()
 {
 	ui->setupUi(this);
 
@@ -57,6 +60,15 @@ OtherData::~OtherData()
 }
 
 void OtherData::update( bool activate, const QString &eMail, const quint8 &errorCode )
+{
+	this->activate = activate;
+	this->eMail = eMail;
+	this->errorCode = errorCode;
+
+	update();
+}
+
+void OtherData::update()
 {
 	if( activate )
 	{
@@ -122,6 +134,8 @@ void OtherData::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+
+		update();
 	}
 
 	QWidget::changeEvent(event);

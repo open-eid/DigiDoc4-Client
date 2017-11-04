@@ -22,6 +22,7 @@
 #include "QSmartCard.h"
 
 #include "Styles.h"
+#include <common/DateTime.h>
 #include "widgets/StyledWidget.h"
 
 namespace Ui {
@@ -51,4 +52,12 @@ private:
 	void focusEvent(int eventType);
 
 	Ui::InfoStack *ui;
+	QString givenNamesText;
+	QString surnameText;
+	QString personalCodeText;
+	QString citizenshipText;
+	QString serialNumberText;
+	bool certTypeIsEstEid;
+	bool certIsValid;
+	QString expireDate;
 };

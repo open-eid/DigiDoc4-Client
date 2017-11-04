@@ -233,15 +233,6 @@ Media type: %3</source>
         <source>From history</source>
         <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
     </message>
-
-    <message>
-        <source>Add recipients</source>
-        <translation>Добавить получателей</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Добавлен получатель</translation>
-    </message>
 </context>
 
 <context>
@@ -295,6 +286,20 @@ Media type: %3</source>
 
 
 <context>
+    <name>FileList</name>
+
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Добавить файлы</translation>
+    </message>
+</context>
+
+
+<context>
     <name>ItemList</name>
     <message>
         <source>Search</source>
@@ -312,6 +317,40 @@ Media type: %3</source>
     <message>
         <source>Add all</source>
         <translation>ДОБАВИТЬ ВСЕ</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Добавить получателей</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Добавлен получатель</translation>
+    </message>
+
+    <message>
+        <source>Container is not signed</source>
+        <translation>Подписи подписчиков контейнера отсутствуют</translation>
+    </message>
+    <message>
+        <source>Container's files</source>
+        <translation>Файлы контейнера</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Подписи контейнера</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Получатели</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Зашифрованные файлы</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Дешифрованные файлы</translation>
     </message>
 </context>
 
@@ -349,18 +388,90 @@ Learn more info here:</source>
 Подробнее читайте здесь:</translation>
     </message>
     <message>
-        <source>MOBIIL-ID</source>
-        <translation>MOBIIL-ID</translation>
+        <source>MOBILE-ID</source>
+        <translation>Мобильная-ID</translation>
     </message>
     <message>
         <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
+        <translation>цифровая-ID</translation>
     </message>
     <message>
         <source>SMART-ID</source>
         <translation>SMART-ID</translation>
     </message>
 </context>
+
+<context>
+    <name>OtherId</name>
+    <message>
+        <source>DOCUMENT</source>
+        <translation>ДОКУМЕНТ</translation>
+    </message>
+    <message>
+        <source>DOCUMENT IS VALID UNTIL</source>
+        <translation>ДОКУМЕНТ ГОДЕН ДО</translation>
+    </message>
+    <message>
+        <source>STATUS</source>
+        <translation>СТАТУС</translation>
+    </message>
+    <message>
+        <source>CERTIFICATES</source>
+        <translation>СЕРТИФИКАТЫ</translation>
+    </message>
+    <message>
+        <source>Insert the card into the reader to manage the document</source>
+        <translation>Вставьте карту в считывающее устройство для управления документом</translation>
+    </message>
+
+    <message>
+        <source>Mobile ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>PHONE NUMBER</source>
+        <translation>номер телефона</translation>
+    </message>
+    <message>
+        <source>MOBILE OPERATOR</source>
+        <translation>СОТОВЫЙ ОПЕРАТОР</translation>
+    </message>
+    <message>
+        <source>Certificates are </source>
+        <translation>Сертификаты </translation>
+    </message>
+    <message>
+        <source>activated</source>
+        <translation>активирована</translation>
+    </message>
+    <message>
+        <source> and Mobile ID using is </source>
+        <translation> и использование Mobiil-ID </translation>
+    </message>
+    <message>
+        <source>possible</source>
+        <translation>возможно</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>действительный</translation>
+    </message>
+
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>цифровая-ID</translation>
+    </message>
+    <message>
+        <source>Not implemented!</source>
+        <translation>Не реализована!</translation>
+    </message>
+    <message>
+        <source> and Digi ID using is </source>
+        <translation> и использование Digi-ID </translation>
+    </message>
+</context>
+
 
 <context>
     <name>OtherData</name>
@@ -428,6 +539,10 @@ Learn more info here:</source>
     <message>
         <source>Signed on</source>
         <translation>Подписано</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>время</translation>
     </message>
 </context>
 
@@ -672,6 +787,51 @@ Learn more info here:</source>
     <message>
         <source>ENTER THE APPLICATION</source>
         <translation>ВОЙТИ В ПРОГРАММУ</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>KeyDialog</name>
+    <message>
+        <source>Crypt recipient</source>
+        <translation>Зашифровать получателю</translation>
+    </message>
+    <message>
+        <source>Attribute</source>
+        <translation>Атрибут</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation>ключ</translation>
+    </message>
+    <message>
+        <source>Crypto method</source>
+        <translation>Метод шифровки</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation>Истекает</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Выдавший</translation>
     </message>
 </context>
 
@@ -1224,26 +1384,6 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>STARTING</source>
         <translation>← В НАЧАЛО</translation>
     </message>
-    <message>
-        <source>Container is not signed</source>
-        <translation>Подписи подписчиков контейнера отсутствуют</translation>
-    </message>
-    <message>
-        <source>Container's signatures</source>
-        <translation>Подписи контейнера</translation>
-    </message>
-    <message>
-        <source>Recipients</source>
-        <translation>Получатели</translation>
-    </message>
-    <message>
-        <source>Encrypted files</source>
-        <translation>Зашифрованные файлы</translation>
-    </message>
-    <message>
-        <source>Decrypted files</source>
-        <translation>Дешифрованные файлы</translation>
-    </message>
 </context>
 
 
@@ -1500,6 +1640,27 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>Added</source>
         <translation>Добавленный</translation>
     </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Вы сами)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>цифровая-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-карта</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Мобильная-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Неизвестный ID</translation>
+    </message>
 </context>
 
 
@@ -1591,6 +1752,87 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Фото (*.jpg);;Все файлы (*)</translation>
     </message>
+
+    <message>
+        <source>Ver. </source>
+        <translation>Вер. </translation>
+    </message>
+    <message>
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
+        <translation>Вы добавили в контейнер% n файлов (ов), но они еще не подписаны. Должен ли я хранить неподписанный контейнер или удалять его?</translation>
+    </message>
+    <message>
+        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
+        <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Смогу ли я сохранить изменения или закрыть его без сохранения?</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>УДАЛИТЬ</translation>
+    </message>
+    <message>
+        <source>KEEP</source>
+        <translation>ДЕРЖАТЬ</translation>
+    </message>
+
+
+    <message>
+        <source>DO NOT SAVE</source>
+        <translation>НЕ СОХРАНЯЙ</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>СОХРАНИТЬ</translation>
+    </message>
+    <message>
+        <source>Converted to signed document!</source>
+        <translation>Конвертировано в подписанный документ!</translation>
+    </message>
+    <message>
+        <source>Converted to crypto container!</source>
+        <translation>Konverteeritud krüptokonteineriks!</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Переместить файл</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+
+
+    <message>
+        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <translation>Карточные сертификаты нуждаются в обновлении. Обновление занимает 2-10 минут и требует подключения к Интернету в режиме реального времени. Карту нельзя удалять из считывателя до окончания обновления.</translation>
+    </message>
+    <message>
+        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Обновить&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
+        <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен управляемый контейнер и выбранные вами файлы.</translation>
+    </message>
+    <message>
+        <source>FORWARD</source>
+        <translation>ВПЕРЕД</translation>
+    </message>
+    <message>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Сертификаты вашей ID-карты не могут быть продлены с 01.07.2017. Ваш документ по-прежнему действует до истечения срока его действия, и его можно использовать для входа в электронные службы и предоставления цифровых подписей. Если у вас есть проблемы с использованием вашей ID-карты в электронных сервисах, обратитесь в службу поддержки ID-карт по телефону (+372) 677 3377 или посетите пункт обслуживания полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;Больше информации&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate is not registered in the certificate store. Register now?</source>
+        <translation>Сертификат не зарегистрирован в хранилище сертификатов. Зарегистрируйтесь сейчас?</translation>
+    </message>
+
+
+
+
     <message>
         <source>Sign</source>
         <translation>Подписать</translation>
@@ -1906,18 +2148,6 @@ BDOC – это используемый в Эстонии формат по у�
 DDOC – это ранее использовавшийся формат цифровой подписи. На сегодняшний день можно просматривать и проверять действительность подписей в формате DDOC, но нельзя создавать новые подписи в этом формате.&lt;br /&gt;
 ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
 Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты 1777 (только в пределах Эстонии), (+372) 6773377.</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
     </message>
 </context>
 

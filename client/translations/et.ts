@@ -233,15 +233,6 @@ Tüüp: %3</translation>
         <source>From history</source>
         <translation>VIIMATI LISATUD</translation>
     </message>
-
-    <message>
-        <source>Add recipients</source>
-        <translation>Adressaatide lisamine</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Lisatud adressaadid</translation>
-    </message>
 </context>
 
 <context>
@@ -293,6 +284,20 @@ Tüüp: %3</translation>
     </message>
 </context>
 
+
+<context>
+    <name>FileList</name>
+
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Lisa faile</translation>
+    </message>
+</context>
+
 <context>
     <name>ItemList</name>
     <message>
@@ -311,6 +316,40 @@ Tüüp: %3</translation>
     <message>
         <source>Add all</source>
         <translation>LISA KÕIK</translation>
+    </message>
+
+    <message>
+        <source>Add recipients</source>
+        <translation>Adressaatide lisamine</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Lisatud adressaadid</translation>
+    </message>
+
+    <message>
+        <source>Container is not signed</source>
+        <translation>Konteineri allkirjad puuduvad</translation>
+    </message>
+    <message>
+        <source>Container's files</source>
+        <translation>Konteineri failid</translation>
+    </message>
+    <message>
+        <source>Container's signatures</source>
+        <translation>Konteineri allkirjad</translation>
+    </message>
+    <message>
+        <source>Recipients</source>
+        <translation>Adressaadid</translation>
+    </message>
+    <message>
+        <source>Encrypted files</source>
+        <translation>Krüpteeritud failid</translation>
+    </message>
+    <message>
+        <source>Decrypted files</source>
+        <translation>Dekrüpteeritud failid</translation>
     </message>
 </context>
 
@@ -348,7 +387,7 @@ Learn more info here:</source>
 Rohkem infot leiate siit:</translation>
     </message>
     <message>
-        <source>MOBIIL-ID</source>
+        <source>MOBILE-ID</source>
         <translation>MOBIIL-ID</translation>
     </message>
     <message>
@@ -360,6 +399,78 @@ Rohkem infot leiate siit:</translation>
         <translation>SMART-ID</translation>
     </message>
 </context>
+
+<context>
+    <name>OtherId</name>
+    <message>
+        <source>DOCUMENT</source>
+        <translation>DOKUMENT</translation>
+    </message>
+    <message>
+        <source>DOCUMENT IS VALID UNTIL</source>
+        <translation>DOKUMENT KEHTIB KUNI</translation>
+    </message>
+    <message>
+        <source>STATUS</source>
+        <translation>STAATUS</translation>
+    </message>
+    <message>
+        <source>CERTIFICATES</source>
+        <translation>SERTIFIKAADID</translation>
+    </message>
+    <message>
+        <source>Insert the card into the reader to manage the document</source>
+        <translation>Dokumendi haldamiseks sisesta kaart lugejasse</translation>
+    </message>
+
+    <message>
+        <source>Mobile ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>PHONE NUMBER</source>
+        <translation>TELEFONI NUMBER</translation>
+    </message>
+    <message>
+        <source>MOBILE OPERATOR</source>
+        <translation>MOBIILI OPERAATOR</translation>
+    </message>
+    <message>
+        <source>Certificates are </source>
+        <translation>Sertifikaadid on </translation>
+    </message>
+    <message>
+        <source>activated</source>
+        <translation>aktiivsed</translation>
+    </message>
+    <message>
+        <source> and Mobile ID using is </source>
+        <translation> ja Mobiil-ID kasutamine on </translation>
+    </message>
+    <message>
+        <source>possible</source>
+        <translation>võimalik</translation>
+    </message>
+    <message>
+        <source>Valid</source>
+        <translation>Kehtivad</translation>
+    </message>
+
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Not implemented!</source>
+        <translation>Pole implementeeritud!</translation>
+    </message>
+    <message>
+        <source> and Digi ID using is </source>
+        <translation> ja Digi-ID kasutamine on </translation>
+    </message>
+</context>
+
 
 <context>
     <name>OtherData</name>
@@ -426,6 +537,10 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>Signed on</source>
         <translation>Allkirjastatud</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>kell</translation>
     </message>
 </context>
 
@@ -670,6 +785,50 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>ENTER THE APPLICATION</source>
         <translation>SISENE RAKENDUSSE</translation>
+    </message>
+</context>
+
+<context>
+    <name>KeyDialog</name>
+    <message>
+        <source>Crypt recipient</source>
+        <translation>Krüpteerida adressaadile</translation>
+    </message>
+    <message>
+        <source>Attribute</source>
+        <translation>Attribuut</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <translation>NÄITA SERTIFIKAATI</translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation>Adressaat</translation>
+    </message>
+    <message>
+        <source>Crypto method</source>
+        <translation>Krüpteerimismeetod</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation>Aegub</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
     </message>
 </context>
 
@@ -1197,7 +1356,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
-        <translation>AVA KONTAINERI ASUKOHT</translation>
+        <translation>AVA KONTEINERI ASUKOHT</translation>
     </message>
     <message>
         <source>SAVE WITHOUT SIGNING</source>
@@ -1226,26 +1385,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>STARTING</source>
         <translation>← ALGUSESSE</translation>
-    </message>
-    <message>
-        <source>Container is not signed</source>
-        <translation>Kontaineri allkirjad puuduvad</translation>
-    </message>
-    <message>
-        <source>Container's signatures</source>
-        <translation>Kontaineri allkirjad</translation>
-    </message>
-    <message>
-        <source>Recipients</source>
-        <translation>Adressaadid</translation>
-    </message>
-    <message>
-        <source>Encrypted files</source>
-        <translation>Krüpteeritud failid</translation>
-    </message>
-    <message>
-        <source>Decrypted files</source>
-        <translation>Dekrüpteeritud failid</translation>
     </message>
 </context>
 
@@ -1502,6 +1641,27 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Added</source>
         <translation>LISATUD</translation>
     </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Sina ise)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Tundmatu ID</translation>
+    </message>
 </context>
 
 
@@ -1596,6 +1756,83 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
 
 
+
+
+    <message>
+        <source>Ver. </source>
+        <translation>Ver. </translation>
+    </message>
+    <message>
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
+        <translation>Oled lisanud konteinerisse faile, kuid pole neid allkirjastanud. Kas jätan allkirjastamata konteineri alles või eemaldan selle?</translation>
+    </message>
+    <message>
+        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
+        <translation>Oled avatud konteinerit muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>EEMALDA</translation>
+    </message>
+    <message>
+        <source>KEEP</source>
+        <translation>JÄTA ALLES</translation>
+    </message>
+
+
+    <message>
+        <source>DO NOT SAVE</source>
+        <translation>ÄRA SALVESTA</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SALVESTA</translation>
+    </message>
+    <message>
+        <source>Converted to signed document!</source>
+        <translation>Konverteeritud allkirjadokumendiks!</translation>
+    </message>
+    <message>
+        <source>Converted to crypto container!</source>
+        <translation>Konverteeritud krüptokonteineriks!</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Liiguta fail</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+
+    <message>
+        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <translation>Kaarti sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.</translation>
+    </message>
+    <message>
+        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Uuenda&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
+        <translation>Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, kuhu lisatakse kontrollitav konteiner ja Sinu valitud failid.</translation>
+    </message>
+    <message>
+        <source>FORWARD</source>
+        <translation>EDASI</translation>
+    </message>
+    <message>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Teie ID-kaardi sertifikaate ei saa uuendada alates 01.07.2017. Teie dokument on endiselt kehtiv kuni selle aegumiskuupäevani ja seda saab kasutada e-teenuste sisselogimiseks ja digitaalallkirjade saamiseks. Kui teie ID-kaardi kasutamine e-teenustes on probleeme, võtke palun ühendust ID-kaardi kasutajatoega telefonil (+372) 677 3377 või külastage politsei- ja piirivalveteenistuse teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;Lisateave&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate is not registered in the certificate store. Register now?</source>
+        <translation>Sertifikaat ei ole sertifikaadipoes registreeritud. Registreeri kohe?</translation>
+    </message>
 
 
 
@@ -1904,18 +2141,6 @@ DDOC – digitaalallkirja eelmine vorming. Täna saab DDOC allkirju vaadata ja k
 ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvorming.&lt;br /&gt;&lt;br /&gt;
 Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377.
 </translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
     </message>
 </context>
 

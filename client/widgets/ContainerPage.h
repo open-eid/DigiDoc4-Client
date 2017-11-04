@@ -82,6 +82,7 @@ private:
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void showSigningButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);
+	void translateLabels();
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
@@ -94,4 +95,11 @@ private:
 	QString fileName;
 	QFontMetrics fm;
 	QString mobileCode;
+
+	QString changeLocationText;
+	QString cancelText;
+	QString convertText;
+	QString navigateToContainerText;
+	QString emailText;
+	QString saveText;
 };
