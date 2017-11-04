@@ -17,7 +17,7 @@ env:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3;
+    gpg --keyserver hkp://pgp.mit.edu --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3;
     rvm get stable;
     brew install --force openssl;
     curl -s --location "https://bootstrap.pypa.io/get-pip.py" -o get-pip.py;
