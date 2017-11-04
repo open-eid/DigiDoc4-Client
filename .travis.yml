@@ -17,6 +17,7 @@ env:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+    rvm get stable;
     brew install --force openssl;
     curl -s --location "https://bootstrap.pypa.io/get-pip.py" -o get-pip.py;
     python get-pip.py --user;
