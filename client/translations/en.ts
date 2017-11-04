@@ -379,7 +379,7 @@ Media type: %3</translation>
     <name>NoOtherId</name>
     <message>
         <source>Other ID</source>
-        <translation>Other ID's</translation>
+        <translation>Other ID&apos;s</translation>
     </message>
     <message>
         <source>You do not have other eIDs.
@@ -796,16 +796,16 @@ Learn more info here:</translation>
 <context>
     <name>KeyDialog</name>
     <message>
-        <source>Crypt recipient</source>
-        <translation>Krüpteerida adressaadile</translation>
+        <source>Encrypt for</source>
+        <translation>Encrypt for</translation>
     </message>
     <message>
         <source>Attribute</source>
-        <translation>Attribuut</translation>
+        <translation>Attribute</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation>Väärtus</translation>
+        <translation>Value</translation>
     </message>
     <message>
         <source>CLOSE</source>
@@ -1770,12 +1770,12 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>Ver. </translation>
     </message>
     <message>
-        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
-        <translation>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</translation>
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
+        <translation>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</translation>
     </message>
     <message>
-        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
-        <translation>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</translation>
+        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
+        <translation>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</translation>
     </message>
     <message>
         <source>REMOVE</source>
@@ -1821,16 +1821,16 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <translation>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</translation>
     </message>
     <message>
-        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>Update</source>
+        <translation>Update</translation>
     </message>
     <message>
-        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
-        <translation>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</translation>
+        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
     </message>
     <message>
-        <source>FORWARD</source>
-        <translation>FORWARD</translation>
+        <source>CONTINUE</source>
+        <translation>CONTINUE</translation>
     </message>
     <message>
         <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
@@ -1840,10 +1840,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>Certificate is not registered in the certificate store. Register now?</source>
         <translation>Certificate is not registered in the certificate store. Register now?</translation>
     </message>
-
-
-
-
     <message>
         <source>Choose file to sign</source>
         <translation>Choose file to signing or verification</translation>

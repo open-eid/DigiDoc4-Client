@@ -330,7 +330,7 @@ Media type: %3</source>
 
     <message>
         <source>Container is not signed</source>
-        <translation>Подписи подписчиков контейнера отсутствуют</translation>
+        <translation>Контейнер не подписан</translation>
     </message>
     <message>
         <source>Container's files</source>
@@ -379,7 +379,7 @@ Media type: %3</source>
     <name>NoOtherId</name>
     <message>
         <source>Other ID</source>
-        <translation>Другое ID</translation>
+        <translation>Другие ID</translation>
     </message>
     <message>
         <source>You do not have other eIDs.
@@ -393,7 +393,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>DIGI-ID</source>
-        <translation>цифровая-ID</translation>
+        <translation>DIGI-ID</translation>
     </message>
     <message>
         <source>SMART-ID</source>
@@ -430,7 +430,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>PHONE NUMBER</source>
-        <translation>номер телефона</translation>
+        <translation>НОМЕР ТЕЛЕФОНА</translation>
     </message>
     <message>
         <source>MOBILE OPERATOR</source>
@@ -460,7 +460,7 @@ Learn more info here:</source>
 
     <message>
         <source>Digi-ID</source>
-        <translation>цифровая-ID</translation>
+        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>Not implemented!</source>
@@ -749,7 +749,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>MY OTHER eID's</source>
-        <translation>МОЙ ДРУГОЙ eID</translation>
+        <translation>МОИ ДРУГИЕ eID</translation>
     </message>
 </context>
 
@@ -794,7 +794,7 @@ Learn more info here:</source>
 <context>
     <name>KeyDialog</name>
     <message>
-        <source>Crypt recipient</source>
+        <source>Encrypt for</source>
         <translation>Зашифровать получателю</translation>
     </message>
     <message>
@@ -1647,7 +1647,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>цифровая-ID</translation>
+        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>ID-card</source>
@@ -1758,12 +1758,12 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <translation>Вер. </translation>
     </message>
     <message>
-        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
-        <translation>Вы добавили в контейнер% n файлов (ов), но они еще не подписаны. Должен ли я хранить неподписанный контейнер или удалять его?</translation>
+        <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
+        <translation>Вы добавили файл(ы) в контейнер, но они еще не подписаны. Сохранить неподписанный контейнер или удалить?</translation>
     </message>
     <message>
-        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
-        <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Смогу ли я сохранить изменения или закрыть его без сохранения?</translation>
+        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
+        <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Сохранить контейнер или закрыть без изменений?</translation>
     </message>
     <message>
         <source>REMOVE</source>
@@ -1810,15 +1810,15 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <translation>Карточные сертификаты нуждаются в обновлении. Обновление занимает 2-10 минут и требует подключения к Интернету в режиме реального времени. Карту нельзя удалять из считывателя до окончания обновления.</translation>
     </message>
     <message>
-        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Обновить&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>Update</source>
+        <translation>Обновить</translation>
     </message>
     <message>
-        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
-        <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен управляемый контейнер и выбранные вами файлы.</translation>
+        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
     </message>
     <message>
-        <source>FORWARD</source>
+        <source>CONTINUE</source>
         <translation>ВПЕРЕД</translation>
     </message>
     <message>
@@ -1829,10 +1829,6 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>Certificate is not registered in the certificate store. Register now?</source>
         <translation>Сертификат не зарегистрирован в хранилище сертификатов. Зарегистрируйтесь сейчас?</translation>
     </message>
-
-
-
-
     <message>
         <source>Sign</source>
         <translation>Подписать</translation>

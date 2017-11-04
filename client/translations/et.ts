@@ -791,7 +791,7 @@ Rohkem infot leiate siit:</translation>
 <context>
     <name>KeyDialog</name>
     <message>
-        <source>Crypt recipient</source>
+        <source>Encrypt for</source>
         <translation>Krüpteerida adressaadile</translation>
     </message>
     <message>
@@ -1763,11 +1763,11 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <translation>Ver. </translation>
     </message>
     <message>
-        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?</source>
+        <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
         <translation>Oled lisanud konteinerisse faile, kuid pole neid allkirjastanud. Kas jätan allkirjastamata konteineri alles või eemaldan selle?</translation>
     </message>
     <message>
-        <source>You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?</source>
+        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
         <translation>Oled avatud konteinerit muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
     </message>
     <message>
@@ -1811,18 +1811,18 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 
     <message>
         <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>Kaarti sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.</translation>
+        <translation>Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.</translation>
     </message>
     <message>
-        <source>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;a href='#update-Certificate'&gt;&lt;span style='color:rgb(53, 55, 57)'&gt;Uuenda&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>Update</source>
+        <translation>Uuenda</translation>
     </message>
     <message>
-        <source>Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added.</source>
-        <translation>Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, kuhu lisatakse kontrollitav konteiner ja Sinu valitud failid.</translation>
+        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, kuhu lisatakse allkirjastatud dokument ja Sinu valitud failid.</translation>
     </message>
     <message>
-        <source>FORWARD</source>
+        <source>CONTINUE</source>
         <translation>EDASI</translation>
     </message>
     <message>
@@ -1833,9 +1833,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Certificate is not registered in the certificate store. Register now?</source>
         <translation>Sertifikaat ei ole sertifikaadipoes registreeritud. Registreeri kohe?</translation>
     </message>
-
-
-
     <message>
         <source>Signature</source>
         <translation>Allkiri</translation>

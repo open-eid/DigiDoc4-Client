@@ -49,12 +49,12 @@ ContainerPage::ContainerPage(QWidget *parent)
 , ui(new Ui::ContainerPage)
 , containerFont(Styles::font(Styles::Regular, 14))
 , fm(QFontMetrics(containerFont))
-, changeLocationText()
-, cancelText()
-, convertText()
-, navigateToContainerText()
-, emailText()
-, saveText()
+, changeLocationText("CHANGE")
+, cancelText("CANCEL")
+, convertText("ENCRYPT")
+, navigateToContainerText("OPEN CONTAINER LOCATION")
+, emailText("SEND WITH E-MAIL")
+, saveText("SAVE WITHOUT SIGNING")
 {
 	ui->setupUi( this );
 	init();
@@ -104,20 +104,12 @@ void ContainerPage::init()
 	ui->containerFile->setFont(containerFont);
 
 	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
-    ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
-    ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
-    ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerConvert );
-    ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
-    ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
-    ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
-
-	changeLocationText = "CHANGE";
-	cancelText = "CANCEL";
-	convertText = "ENCRYPT";
-	navigateToContainerText = "OPEN CONTAINER LOCATION";
-	emailText = "SEND WITH E-MAIL";
-	saveText = "SAVE WITHOUT SIGNING";
-
+	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
+	ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
+	ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerConvert );
+	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
+	ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
+	ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
 
 	mobileCode = Settings().value("Client/MobileCode").toString();
 
@@ -225,6 +217,7 @@ void ContainerPage::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 		translateLabels();
+		elideFileName(true);
 	}
 
 	QWidget::changeEvent(event);
@@ -434,7 +427,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane( ItemAddress, "Recipients" );
 		showMainAction(DecryptContainer);
 		ui->cancel->setText(tr("STARTING"));
-        ui->convert->setText(tr("SIGN"));
+		ui->convert->setText(tr("SIGN"));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 

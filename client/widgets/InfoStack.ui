@@ -57,7 +57,7 @@ border-width: 1px 0px 0px 0px;
      </property>
      <property name="minimumSize">
       <size>
-       <width>580</width>
+       <width>700</width>
        <height>150</height>
       </size>
      </property>
@@ -160,29 +160,6 @@ border-width: 1px 0px 0px 0px;
        <string>valueSerialNumber</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelSurname">
-      <property name="geometry">
-       <rect>
-        <x>300</x>
-        <y>0</y>
-        <width>120</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #75787B;
-</string>
-      </property>
-      <property name="text">
-       <string>Surname</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="labelCitizenship">
       <property name="geometry">
        <rect>
@@ -279,31 +256,6 @@ border-width: 1px 0px 0px 0px;
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="valueSurname">
-      <property name="geometry">
-       <rect>
-        <x>300</x>
-        <y>16</y>
-        <width>250</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto</family>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #041E42;</string>
-      </property>
-      <property name="text">
-       <string>valueSurname</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-     </widget>
      <widget class="QLabel" name="valueCitizenship">
       <property name="geometry">
        <rect>
@@ -392,19 +344,142 @@ border-radius: 2px;
 background-color: #F9FAFA;</string>
       </property>
      </widget>
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>0</y>
+        <width>350</width>
+        <height>35</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;</string>
+      </property>
+      <widget class="QWidget" name="surname" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>126</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>35</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelSurname">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Roboto</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: #75787B;
+</string>
+          </property>
+          <property name="text">
+           <string>Surname</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="valueSurname">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Roboto</family>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: #041E42;</string>
+          </property>
+          <property name="text">
+           <string>valueSurname</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
      <zorder>valueExpiryDate</zorder>
      <zorder>labelGivenNames</zorder>
      <zorder>labelSerialNumber</zorder>
      <zorder>valueSerialNumber</zorder>
-     <zorder>labelSurname</zorder>
      <zorder>labelCitizenship</zorder>
      <zorder>labelPersonalCode</zorder>
      <zorder>valuePersonalCode</zorder>
      <zorder>valueGivenNames</zorder>
-     <zorder>valueSurname</zorder>
      <zorder>valueCitizenship</zorder>
      <zorder>photo</zorder>
      <zorder>btnPicture</zorder>
+     <zorder>widget_2</zorder>
     </widget>
    </item>
    <item>

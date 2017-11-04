@@ -481,13 +481,13 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 			QString warning, cancelTxt, saveTxt;
 			if(digiDoc->state() == UnsignedContainer)
 			{
-				warning = tr("You&apos;ve added %n file(s) to container, but these are not signed yet. Should I keep the unsigned container or remove it?");
+				warning = tr("You've added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?");
 				cancelTxt = tr("REMOVE");
 				saveTxt = tr("KEEP");
 			}
 			else
 			{
-				warning = tr("You&apos;ve changed the open container but have not saved any changes. Will I save the changes or close it without saving?");
+				warning = tr("You've changed the open container but have not saved any changes. Save the changes or close without saving?");
 				cancelTxt = tr("DO NOT SAVE");
 				saveTxt = tr("SAVE");
 			}
@@ -1113,14 +1113,14 @@ void MainWindow::browseOnDisk( const QString &fileName )
 void MainWindow::showUpdateCertWarning()
 {
 	showWarning(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
-		tr("&lt;a href='#update-Certificate'&gt;&ltspan style='color:rgb(53, 55, 57)'&gt;Update&lt;/span&gt;&lt;/a&gt;"));
+		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")));
 }
 
 bool MainWindow::wrapContainer()
 {
-	WarningDialog dlg(tr("Files can not be added to the signed container. The system will create a new container, where the controllable container and the files you select will be added."), this);
+	WarningDialog dlg(tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add."), this);
 	dlg.setCancelText(tr("CANCEL"));
-	dlg.addButton("EDASI", ContainerSave);
+	dlg.addButton(tr("CONTINUE"), ContainerSave);
 	dlg.exec();
 	if(dlg.result() == ContainerSave)
 		return true;

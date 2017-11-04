@@ -243,7 +243,7 @@ background-color: #023565;</string>
            </property>
            <property name="minimumSize">
             <size>
-             <width>54</width>
+             <width>49</width>
              <height>41</height>
             </size>
            </property>
@@ -297,7 +297,7 @@ QToolButton:hover {
            </property>
            <property name="minimumSize">
             <size>
-             <width>58</width>
+             <width>49</width>
              <height>41</height>
             </size>
            </property>
@@ -760,8 +760,14 @@ border: none;
              <property name="text">
               <string>Click to resolve problem</string>
              </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
              </property>
             </widget>
            </item>

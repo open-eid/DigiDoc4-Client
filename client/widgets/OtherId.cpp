@@ -28,30 +28,23 @@
 OtherId::OtherId( QWidget *parent ) :
   StyledWidget( parent )
 , ui( new Ui::OtherId )
-, isDigiId()
-, telNumber()
-, telOperator()
-, docNumber()
-, docValid()
-, status()
-, validTill()
 {
 	ui->setupUi( this );
 
 	QFont font11 = Styles::font( Styles::Regular, 11 );
 	QFont font14 = Styles::font( Styles::Regular, 14 );
 	QFont font18 = Styles::font( Styles::Regular, 18 );
-	
+
 	ui->lblIdName->setFont( font18 );
 	ui->lblLeftHdr->setFont( font11 );
 	ui->lblLeftText->setFont( font14 );
 	ui->lblRightHdr->setFont( font11 );
 	ui->lblRightText->setFont( font14 );
-    ui->lblStatusHdr->setFont( font11 );
-    ui->lblStatusText->setFont( font14 );
-    ui->lblCertHdr->setFont( font11 );
-    ui->lblCertText->setFont( font14 );
-    ui->lblDigiIdInfo->setFont( font11 );
+	ui->lblStatusHdr->setFont( font11 );
+	ui->lblStatusText->setFont( font14 );
+	ui->lblCertHdr->setFont( font11 );
+	ui->lblCertText->setFont( font14 );
+	ui->lblDigiIdInfo->setFont( font11 );
 }
 
 OtherId::~OtherId()
@@ -75,16 +68,11 @@ void OtherId::updateMobileId( const QString &telNumber, const QString &telOperat
 void OtherId::updateMobileId()
 {
 	isDigiId = false;
-	telNumber;
-	QString telOperator;
-	QString docNumber;
-	QString status;
-	QString validTill;
 
 	QString text;
 	QTextStream s( &text );
 
-    ui->lblDigiIdInfo->setText( "" );
+	ui->lblDigiIdInfo->setText( "" );
 	ui->lblIdName->setText( tr( "Mobile ID" ) );
 	ui->lblLeftHdr->setText( tr( "PHONE NUMBER" ) );
 	ui->lblLeftText->setText( "+" + telNumber );

@@ -29,12 +29,6 @@
 InfoStack::InfoStack( QWidget *parent ) :
 	StyledWidget( parent )
 , ui( new Ui::InfoStack )
-, givenNamesText()
-, surnameText()
-, personalCodeText()
-, citizenshipText()
-, serialNumberText()
-, expireDate()
 {
 	ui->setupUi( this );
 
