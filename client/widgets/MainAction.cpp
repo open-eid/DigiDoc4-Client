@@ -72,7 +72,7 @@ void MainAction::update()
 	}
 
 	ui->mainAction->setText(label);
-    ui->mainAction->show();
+	ui->mainAction->show();
 }
 
 void MainAction::update(Actions action, bool showSelector)

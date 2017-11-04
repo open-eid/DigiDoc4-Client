@@ -64,92 +64,92 @@ void VerifyCert::addBorders()
 void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartCard )
 {
 	this->pinType = type;
-    this->cardData = pSmartCard->data();
+	this->cardData = pSmartCard->data();
 	
-    update();
+	update();
 }
 
 void VerifyCert::update()
 {
-    bool isBlockedPuk = cardData.retryCount( QSmartCardData::PukType ) == 0;
+	bool isBlockedPuk = cardData.retryCount( QSmartCardData::PukType ) == 0;
 
-    QString name;
-    QString changeBtn;
-    QString forgotPinText;
-    QString detailsText;
-    QString error;
-    QString txt;
-    QTextStream cert( &txt );
+	QString name;
+	QString changeBtn;
+	QString forgotPinText;
+	QString detailsText;
+	QString error;
+	QString txt;
+	QTextStream cert( &txt );
 
 
-    SslCertificate c = ( pinType == QSmartCardData::Pin1Type ) ? cardData.authCert() : cardData.signCert();
-    this->isValidCert = c.isValid();
-    this->isBlockedPin = (cardData.retryCount( pinType ) == 0) ? true : false;
-    ui->changePIN->show();
+	SslCertificate c = ( pinType == QSmartCardData::Pin1Type ) ? cardData.authCert() : cardData.signCert();
+	this->isValidCert = c.isValid();
+	this->isBlockedPin = (cardData.retryCount( pinType ) == 0) ? true : false;
+	ui->changePIN->show();
 
-    if( !isValidCert )
-    {
-        cert << tr("Certificate has expired!");
-    }
-    else
-    {
-        cert << tr("Certificate%1is valid%2 until %3")
-                .arg(" <span style='color: #37a447'>")
-                .arg("</span> ")
-                .arg(DateTime(c.expiryDate().toLocalTime()).formatDate("dd. MMMM yyyy"));
+	if( !isValidCert )
+	{
+		cert << tr("Certificate has expired!");
+	}
+	else
+	{
+		cert << tr("Certificate%1is valid%2 until %3")
+				.arg(" <span style='color: #37a447'>")
+				.arg("</span> ")
+				.arg(DateTime(c.expiryDate().toLocalTime()).formatDate("dd. MMMM yyyy"));
 
-        int leftDays = std::max<int>( 0, QDateTime::currentDateTime().daysTo( c.expiryDate().toLocalTime() ) );
-        if( leftDays <= 105 && cardData.retryCount( pinType ) != 0 )
-            cert << "<br /><span style='color: red'>" << tr("Certificate expires in %1 days").arg( leftDays ) << "</span>";
-    }
-    switch( pinType )
-    {
-    case QSmartCardData::Pin1Type:
-        name = tr("Person identification certificate");
-        changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN1");
-        if(cardData.isSecurePinpad())
-            forgotPinText = "";
-        else
-            forgotPinText = tr("%1Forgot PIN%2?%3")
-                            .arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
-                            .arg("1")
-                            .arg("</span></a>");
-        detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
-        error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
-                ( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
-                "";
-        break;
-    case QSmartCardData::Pin2Type:
-        name = tr("Signing certificate");
-        changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2");
-        if(cardData.isSecurePinpad())
-            forgotPinText = "";
-        else
-            forgotPinText = tr("%1Forgot PIN%2?%3")
-                            .arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
-                            .arg("2")
-                            .arg("</span></a>");
-        detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
-        error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
-                ( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
-                "";
-        break;
-    case QSmartCardData::PukType:
-        name = tr("PUK code");
-        txt = tr("The PUK code is located in your envelope");
-        changeBtn = tr("CHANGE PUK");
-        error = ( isBlockedPin ) ?
-            tr("%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.")
-                    .arg("<span>")
-                    .arg("<br><br>")
-                    .arg("<u>")
-                    .arg("</u></span>")
-            : "";
-        ui->changePIN->setDisabled(cardData.version() == QSmartCardData::VER_USABLEUPDATER);
-        break;
-    default:
-        break;
-    }
+		int leftDays = std::max<int>( 0, QDateTime::currentDateTime().daysTo( c.expiryDate().toLocalTime() ) );
+		if( leftDays <= 105 && cardData.retryCount( pinType ) != 0 )
+			cert << "<br /><span style='color: red'>" << tr("Certificate expires in %1 days").arg( leftDays ) << "</span>";
+	}
+	switch( pinType )
+	{
+	case QSmartCardData::Pin1Type:
+		name = tr("Authentication certificate");
+		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN1");
+		if(cardData.isSecurePinpad())
+			forgotPinText = "";
+		else
+			forgotPinText = tr("%1Forgot PIN%2?%3")
+							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
+							.arg("1")
+							.arg("</span></a>");
+		detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
+		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
+				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
+				"";
+		break;
+	case QSmartCardData::Pin2Type:
+		name = tr("Signing certificate");
+		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2");
+		if(cardData.isSecurePinpad())
+			forgotPinText = "";
+		else
+			forgotPinText = tr("%1Forgot PIN%2?%3")
+							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
+							.arg("2")
+							.arg("</span></a>");
+		detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
+		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
+				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
+				"";
+		break;
+	case QSmartCardData::PukType:
+		name = tr("PUK code");
+		txt = tr("The PUK code is located in your envelope");
+		changeBtn = tr("CHANGE PUK");
+		error = ( isBlockedPin ) ?
+			tr("%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.")
+					.arg("<span>")
+					.arg("<br><br>")
+					.arg("<u>")
+					.arg("</u></span>")
+			: "";
+		ui->changePIN->setDisabled(cardData.version() == QSmartCardData::VER_USABLEUPDATER);
+		break;
+	default:
+		break;
+	}
 
 
 
@@ -233,13 +233,13 @@ void VerifyCert::update()
 			ui->changePIN->hide();  // hide 'change PUK' button
 		}
 	}
-    ui->validUntil->setText( txt );
+	ui->validUntil->setText( txt );
 	if( pinType != QSmartCardData::PukType )
 		ui->error->setVisible( isBlockedPin || !isValidCert );
 	else
 		ui->error->setVisible( isBlockedPin );
 	ui->error->setText( error );
-    ui->changePIN->setText( changeBtn );
+	ui->changePIN->setText( changeBtn );
 }
 
 void VerifyCert::enterEvent( QEvent * event )
@@ -273,7 +273,7 @@ void VerifyCert::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-        update();
+		update();
 	}
 
 	QWidget::changeEvent(event);

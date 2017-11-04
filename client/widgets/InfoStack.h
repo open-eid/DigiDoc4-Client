@@ -50,14 +50,17 @@ protected:
 
 private:
 	void focusEvent(int eventType);
+	void update();
 
 	Ui::InfoStack *ui;
-	QString givenNamesText;
-	QString surnameText;
-	QString personalCodeText;
-	QString citizenshipText;
-	QString serialNumberText;
+
+	QString appletVersion;
 	bool certTypeIsEstEid;
 	bool certIsValid;
+	QString citizenshipText;
 	QString expireDate;
+	QString givenNamesText;
+	QString personalCodeText;
+	QString serialNumberText;
+	QString surnameText;
 };

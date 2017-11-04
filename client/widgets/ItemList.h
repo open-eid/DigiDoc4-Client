@@ -78,5 +78,4 @@ private:
 
 	QString headerText;
 	QString listText;
-	QString addText;
 };

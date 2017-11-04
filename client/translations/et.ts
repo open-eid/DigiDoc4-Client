@@ -261,6 +261,10 @@ Tüüp: %3</translation>
         <source>Surname</source>
         <translation>Perekonnanimi</translation>
     </message>
+    <message>
+        <source>Applet</source>
+        <translation>Apleti versioon</translation>
+    </message>
 
     <message>
         <source>SAVE THE PICTURE</source>
@@ -466,7 +470,7 @@ Rohkem infot leiate siit:</translation>
         <translation>Pole implementeeritud!</translation>
     </message>
     <message>
-        <source> and Digi ID using is </source>
+        <source> and using Digi ID is </source>
         <translation> ja Digi-ID kasutamine on </translation>
     </message>
 </context>
@@ -559,7 +563,7 @@ Rohkem infot leiate siit:</translation>
         <translation>Sertifikaat aegub %1 päeva pärast</translation>
     </message>
     <message>
-        <source>Person identification certificate</source>
+        <source>Authentication certificate</source>
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
     <message>

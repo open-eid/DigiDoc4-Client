@@ -21,12 +21,10 @@
 #include "ui_OtherData.h"
 #include "Styles.h"
 
-OtherData::OtherData(QWidget *parent) :
-  QWidget(parent)
+OtherData::OtherData(QWidget *parent)
+: QWidget(parent)
 , ui(new Ui::OtherData)
-, activate()
-, eMail()
-, errorCode()
+, activate(false)
 {
 	ui->setupUi(this);
 

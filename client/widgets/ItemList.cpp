@@ -33,9 +33,6 @@ ItemList::ItemList(QWidget *parent)
 , ui(new Ui::ItemList)
 , state(UnsignedContainer)
 , headerItems(1)
-, headerText()
-, listText()
-, addText()
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();
@@ -82,9 +79,7 @@ void ItemList::changeEvent(QEvent* event)
 			header->setText(tr(qPrintable(headerText)));
 
 		if(ui->add->isVisible())
-			ui->add->setText(tr(qPrintable(addText)));
-
-
+			ui->add->setText(tr(qPrintable(addLabel())));
 	}
 
 	QWidget::changeEvent(event);
@@ -94,18 +89,10 @@ QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile:
-		addText = "Add more files";
-		return tr("Add more files");
-	case ItemAddress:
-		addText = "Add addressee";
-		return tr("Add addressee");
-	case ToAddAdresses:
-		addText = "Add all";
-		return tr("Add all");
-	default:
-		addText = "";
-		return "";
+	case ItemFile: return tr("Add more files");
+	case ItemAddress: return tr("Add addressee");
+	case ToAddAdresses: return tr("Add all");
+	default: return "";
 	}
 }
 

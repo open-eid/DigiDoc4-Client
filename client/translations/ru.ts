@@ -261,6 +261,10 @@ Media type: %3</source>
         <source>Surname</source>
         <translation>Фамилия</translation>
     </message>
+    <message>
+        <source>Applet</source>
+        <translation>Версия апплета</translation>
+    </message>
 
     <message>
         <source>SAVE THE PICTURE</source>
@@ -467,7 +471,7 @@ Learn more info here:</source>
         <translation>Не реализована!</translation>
     </message>
     <message>
-        <source> and Digi ID using is </source>
+        <source> and using Digi ID is </source>
         <translation> и использование Digi-ID </translation>
     </message>
 </context>
@@ -562,8 +566,8 @@ Learn more info here:</source>
         <translation>Срок действия сертификата истекает через %1 день</translation>
     </message>
     <message>
-        <source>Person identification certificate</source>
-        <translation>Сертификат идентификации личности</translation>
+        <source>Authentication certificate</source>
+        <translation>Сертификат идентификации</translation>
     </message>
     <message>
         <source>RENEW CERTIFICATE</source>

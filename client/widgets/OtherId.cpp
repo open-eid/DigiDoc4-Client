@@ -124,8 +124,8 @@ void OtherId::updateDigiId()
 	{
 		s << tr( "Certificates are " ) << "<span style='color: #8CC368'>"
 			<< tr( "activated" ) << "</span>"
-			<< tr( " and Digi ID using is " ) << "<span style='color: #8CC368'>"
-			<< tr( "võimalik" ) << "</span>";
+			<< tr( " and using Digi ID is " ) << "<span style='color: #8CC368'>"
+			<< tr( "possible" ) << "</span>";
 
 		ui->lblStatusText->setText( text );
 		ui->lblCertText->setText( "<span style='color: #8CC368'>" + tr("Valid") + "</span> kuni " + validTill );

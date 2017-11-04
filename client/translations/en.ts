@@ -262,6 +262,10 @@ Media type: %3</translation>
         <source>Surname</source>
         <translation>Surname</translation>
     </message>
+    <message>
+        <source>Applet</source>
+        <translation>Applet version</translation>
+    </message>
 
     <message>
         <source>SAVE THE PICTURE</source>
@@ -467,8 +471,8 @@ Learn more info here:</translation>
         <translation>Not implemented!</translation>
     </message>
     <message>
-        <source> and Digi ID using is </source>
-        <translation> and Digi ID using is </translation>
+        <source> and using Digi ID is </source>
+        <translation> and using Digi ID is </translation>
     </message>
 </context>
 
@@ -563,8 +567,8 @@ Learn more info here:</translation>
         <translation>Certificate expires in %1 days</translation>
     </message>
     <message>
-        <source>Person identification certificate</source>
-        <translation>Person identification certificate</translation>
+        <source>Authentication certificate</source>
+        <translation>Authentication certificate</translation>
     </message>
     <message>
         <source>RENEW CERTIFICATE</source>

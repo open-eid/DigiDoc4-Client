@@ -349,124 +349,246 @@ background-color: #F9FAFA;</string>
        <rect>
         <x>300</x>
         <y>0</y>
-        <width>350</width>
+        <width>400</width>
         <height>35</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>380</width>
+        <height>35</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>35</height>
+       </size>
       </property>
       <property name="styleSheet">
        <string notr="true">border: none;</string>
       </property>
-      <widget class="QWidget" name="surname" native="true">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>126</width>
-         <height>35</height>
-        </rect>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>0</number>
        </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
+       <property name="topMargin">
+        <number>0</number>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>35</height>
-        </size>
+       <property name="rightMargin">
+        <number>0</number>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="labelSurname">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>16</height>
-           </size>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="surname" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>19</height>
-           </size>
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-          <property name="font">
-           <font>
-            <family>Roboto</family>
-            <pointsize>12</pointsize>
-           </font>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-          <property name="styleSheet">
-           <string notr="true">color: #75787B;
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelSurname">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #75787B;
 </string>
+            </property>
+            <property name="text">
+             <string>Surname</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="valueSurname">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto</family>
+              <pointsize>16</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #041E42;</string>
+            </property>
+            <property name="text">
+             <string>valueSurname</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="applet" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="text">
-           <string>Surname</string>
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="valueSurname">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>19</height>
-           </size>
+          <property name="rightMargin">
+           <number>0</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>19</height>
-           </size>
+          <property name="bottomMargin">
+           <number>0</number>
           </property>
-          <property name="font">
-           <font>
-            <family>Roboto</family>
-            <pointsize>16</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: #041E42;</string>
-          </property>
-          <property name="text">
-           <string>valueSurname</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+          <item>
+           <widget class="QLabel" name="labelApplet">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #75787B;
+</string>
+            </property>
+            <property name="text">
+             <string>Applet</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="valueApplet">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto</family>
+              <pointsize>16</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #041E42;</string>
+            </property>
+            <property name="text">
+             <string>appletVer</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <zorder>valueExpiryDate</zorder>
      <zorder>labelGivenNames</zorder>
