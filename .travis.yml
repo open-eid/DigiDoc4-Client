@@ -33,7 +33,7 @@ before_install:
     sudo installer -verboseR -pkg opensc.pkg -target /;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
     if [ $? -eq 0 ]; then
-      unzip -d /tmp ${HASH}.zip;
+      unzip -qq -d /tmp ${HASH}.zip;
     fi
   fi
 script: case ${TARGET} in
