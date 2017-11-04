@@ -17,6 +17,7 @@ env:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3;
     rvm get stable;
     brew install --force openssl;
     curl -s --location "https://bootstrap.pypa.io/get-pip.py" -o get-pip.py;
@@ -32,13 +33,7 @@ before_install:
     sudo installer -verboseR -pkg opensc.pkg -target /;
     aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
     if [ $? -eq 0 ]; then
-      unzip -qq -d /tmp ${HASH}.zip;
-    else
-      ./prepare_osx_build_environment.sh -p /tmp > /dev/null;
-      if [ ${AWS_ACCESS_KEY_ID:+1} ]; then
-        cd /tmp && zip -q -r $OLDPWD/${HASH}.zip Qt-*-OpenSSL && cd $OLDPWD;
-        aws s3 cp ${HASH}.zip s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip --acl public-read;
-      fi
+      unzip -d /tmp ${HASH}.zip;
     fi
   fi
 script: case ${TARGET} in
