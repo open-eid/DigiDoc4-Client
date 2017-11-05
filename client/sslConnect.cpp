@@ -171,9 +171,9 @@ QByteArray SSLConnect::getUrl( RequestType type, const QString &value )
 	}
 
 //	Does not align it to center on Unix
-    QFrame popup (qApp->activeWindow(), Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
+	QFrame popup (qApp->activeWindow(), Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
 
-    showPopup( popup, label );
+	showPopup( popup, label );
 /*
 	QProgressDialog p( label, QString(), 0, 0, qApp->activeWindow() );
 	p.setWindowFlags( (p.windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint );

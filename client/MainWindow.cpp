@@ -29,6 +29,9 @@
 #include "QSigner.h"
 #include "Styles.h"
 #include "XmlReader.h"
+#ifdef Q_OS_WIN
+#include "CertStore.h"
+#endif
 #include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
@@ -38,9 +41,7 @@
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "util/FileUtil.h"
-#ifdef Q_OS_WIN
-#include "CertStore.h"
-#endif
+#include "widgets/WarningItem.h"
 
 #include <common/DateTime.h>
 #include <common/Settings.h>
@@ -95,9 +96,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 	buttonGroup->addButton( ui->help, HeadHelp );
 	buttonGroup->addButton( ui->settings, HeadSettings );
 
-	ui->warningText->setFont( regular14 );
-	ui->warningAction->setFont( Styles::font( Styles::Regular, 14, QFont::Bold ) );
-
 	ui->signIntroLabel->setFont( regular20 );
 	ui->signIntroButton->setFont( condensed14 );
 	ui->cryptoIntroLabel->setFont( regular20 );
@@ -129,8 +127,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	ui->accordion->init();
 
-	hideWarningArea();
-
 	connect( ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
 	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
@@ -154,8 +150,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked );
 	connect( ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked );
 	connect( ui->accordion, &Accordion::certDetailsClicked, this, &MainWindow::certDetailsClicked );
-
-	connect( ui->warningAction, &QLabel::linkActivated, this, &MainWindow::updateCertificate );
 }
 
 MainWindow::~MainWindow()
@@ -336,6 +330,34 @@ void MainWindow::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
+void MainWindow::clearCertWarning()
+{
+	for(auto warning: warnings)
+	{
+		if(warning->property("updateCertificateEnabled").toBool())
+		{
+			closeWarning(warning, true);
+			break;
+		}
+	}
+
+	updateWarnings();
+}
+
+bool MainWindow::closeWarning(WarningItem *warning, bool force)
+{
+	if(force || warning->isClosable())
+	{
+		warnings.removeOne(warning);
+		warning->close();
+		delete warning;
+		updateWarnings();
+
+		return true;
+	}
+
+	return false;
+}
 
 bool MainWindow::encrypt()
 {
@@ -354,20 +376,15 @@ void MainWindow::hideCardPopup()
 	showCardMenu( false );
 }
 
-void MainWindow::hideWarningArea()
-{
-	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
-	ui->warning->hide();
-}
-
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-	if( ui->warning->underMouse() )
+	for(auto warning: warnings)
 	{
-		if( ui->warning->property("updateCertificateEnabled").toBool() )
-			showUpdateCertWarning();
-		else
-			hideWarningArea();
+		if(warning->underMouse())
+		{
+			closeWarning(warning);
+			break;
+		}
 	}
 
 	QWidget::mousePressEvent(event);
@@ -855,10 +872,11 @@ void MainWindow::showCardStatus()
 				t.retryCount( QSmartCardData::Pin2Type ) == 0 ||
 				t.retryCount( QSmartCardData::PukType ) == 0 );
 
-		isUpdateCertificateNeeded();
-		ui->myEid->updateCertNeededIcon( ui->warning->property("updateCertificateEnabled").toBool() );
-		if( ui->warning->property("updateCertificateEnabled").toBool() )
+		if(isUpdateCertificateNeeded())
+		{
+			ui->myEid->updateCertNeededIcon(true);
 			showUpdateCertWarning();
+		}
 
 		showIdCardAlerts( t );
 	}
@@ -970,8 +988,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->myEid->invalidCertIcon( false );
 	ui->myEid->pinIsBlockedIcon( false );
 	ui->myEid->updateCertNeededIcon( false );
-	ui->warning->setProperty( "updateCertificateEnabled", false );
-	hideWarningArea();
+	clearCertWarning();
 }
 
 // Loads picture
@@ -1076,15 +1093,33 @@ void MainWindow::savePhoto( const QPixmap *photo )
 	photo->save( fileName, "JPEG", 100 );
 }
 
-void MainWindow::showWarning( const QString &msg, const QString &details, bool extLink )
+void MainWindow::showUpdateCertWarning()
+{
+	for(auto warning: warnings)
+	{
+		if(warning->property("updateCertificateEnabled").toBool())
+			return;
+	}
+
+	showWarning(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
+		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")),
+		false, "updateCertificateEnabled");
+}
+
+void MainWindow::showWarning(const QString &msg, const QString &details, bool extLink, const QString &property)
 {
 	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");
-	ui->warning->show();
-	ui->warningText->setText( msg );
-	ui->warningAction->setText( details );
-	ui->warningAction->setTextFormat( Qt::RichText );
-	ui->warningAction->setTextInteractionFlags( Qt::TextBrowserInteraction );
-	ui->warningAction->setOpenExternalLinks( extLink );
+	WarningItem *warning = new WarningItem(msg, details, extLink, ui->page);
+	if(!property.isEmpty())
+	{
+		warning->setProperty(property.toLatin1(), true);
+		warning->setClosable(false);
+	}
+	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
+	warnings << warning;
+	connect(warning, &WarningItem::linkActivated, this, &MainWindow::updateCertificate);
+	layout->insertWidget(warnings.size(), warning);
+	warning->show();
 }
 
 void MainWindow::containerToEmail( const QString &fileName )
@@ -1110,10 +1145,10 @@ void MainWindow::browseOnDisk( const QString &fileName )
 	QDesktopServices::openUrl( url );
 }
 
-void MainWindow::showUpdateCertWarning()
+void MainWindow::updateWarnings()
 {
-	showWarning(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
-		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")));
+	if(warnings.isEmpty())
+		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
 }
 
 bool MainWindow::wrapContainer()

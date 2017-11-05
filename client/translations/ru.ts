@@ -2149,6 +2149,46 @@ DDOC – это ранее использовавшийся формат циф�
 ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
 Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты 1777 (только в пределах Эстонии), (+372) 6773377.</translation>
     </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 код изменён и сертификат разблокирован!</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 код изменён!</translation>
+    </message>
+    <message>
+        <source>active</source>
+        <translation>активно</translation>
+    </message>
+    <message>
+        <source>not active</source>
+        <translation>неактивно</translation>
+    </message>
+    <message>
+        <source>E-mail address missing or invalid!</source>
+        <translation>Введите адрес эл. почты!</translation>
+    </message>
+    <message>
+        <source>Failed activating email forwards.</source>
+        <translation>Активация перенаправления с эл. почты неуспешна.</translation>
+    </message>
+    <message>
+        <source>Failed loading email settings.</source>
+        <translation>Загрузка настройки эл. почты неуспешна.</translation>
+    </message>
+    <message>
+        <source>Failed loading Mobiil-ID settings.</source>
+        <translation>Загрузка настройки Mobiil-ID неуспешна.</translation>
+    </message>
+    <message>
+        <source>Loading picture failed.</source>
+        <translation>Загрузка картинки неуспешна.</translation>
+    </message>
+    <message>
+        <source>Failed to load data</source>
+        <translation>Не получилось загрузить данные</translation>
+    </message>
 </context>
 
 
@@ -2520,6 +2560,37 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Digi ID</source>
         <translation>Диги ИД</translation>
+    </message>
+</context>
+<context>
+    <name>SSLConnect</name>
+    <message>
+        <source>Certificate is empty</source>
+        <translation>Сертификат пустой</translation>
+    </message>
+    <message>
+        <source>Downloading picture</source>
+        <translation>Загрузка картинки</translation>
+    </message>
+    <message>
+        <source>Failed to connect to host. Are you connected to the internet?</source>
+        <translation>Отсутствует подключение к интернету!</translation>
+    </message>
+    <message>
+        <source>Invalid response</source>
+        <translation>Недействительный ответ</translation>
+    </message>
+    <message>
+        <source>Loading Email info</source>
+        <translation>Загрузка информации электронной почты</translation>
+    </message>
+    <message>
+        <source>Loading Mobile info</source>
+        <translation>Загрузка информации услуги Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>SSL context is missing</source>
+        <translation>Не удалось создать контекст SSL</translation>
     </message>
 </context>
 </TS>

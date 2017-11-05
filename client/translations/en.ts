@@ -2165,6 +2165,46 @@ DDOC is the old digital signature format. Nowadays you can view and verify docum
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</translation>
     </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 has been changed and the certificate has been unblocked!</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 changed!</translation>
+    </message>
+    <message>
+        <source>active</source>
+        <translation>active</translation>
+    </message>
+    <message>
+        <source>not active</source>
+        <translation>not active</translation>
+    </message>
+    <message>
+        <source>E-mail address missing or invalid!</source>
+        <translation>E-mail address missing or invalid!</translation>
+    </message>
+    <message>
+        <source>Failed activating email forwards.</source>
+        <translation>Failed activating email forwards.</translation>
+    </message>
+    <message>
+        <source>Failed loading email settings.</source>
+        <translation>Failed loading email settings.</translation>
+    </message>
+    <message>
+        <source>Failed loading Mobiil-ID settings.</source>
+        <translation>Failed loading Mobiil-ID settings.</translation>
+    </message>
+    <message>
+        <source>Loading picture failed.</source>
+        <translation>Loading picture failed.</translation>
+    </message>
+    <message>
+        <source>Failed to load data</source>
+        <translation>Failed to load data</translation>
+    </message>
 </context>
 
 
@@ -2534,6 +2574,37 @@ ID-CARD</translation>
     <message>
         <source>Digi ID</source>
         <translation>Digi ID</translation>
+    </message>
+</context>
+<context>
+    <name>SSLConnect</name>
+    <message>
+        <source>Certificate is empty</source>
+        <translation>Certificate is empty</translation>
+    </message>
+    <message>
+        <source>Downloading picture</source>
+        <translation>Downloading picture</translation>
+    </message>
+    <message>
+        <source>Failed to connect to host. Are you connected to the internet?</source>
+        <translation>Failed to connect to host. Are you connected to the internet?</translation>
+    </message>
+    <message>
+        <source>Invalid response</source>
+        <translation>Invalid response</translation>
+    </message>
+    <message>
+        <source>Loading Email info</source>
+        <translation>Loading Email info</translation>
+    </message>
+    <message>
+        <source>Loading Mobile info</source>
+        <translation>Loading Mobile info</translation>
+    </message>
+    <message>
+        <source>SSL context is missing</source>
+        <translation>SSL context is missing</translation>
     </message>
 </context>
 </TS>
