@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WarningItem</class>
- <widget class="QWidget" name="WarningItem">
+ <class>WarningRibbon</class>
+ <widget class="QWidget" name="WarningRibbon">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>914</width>
-    <height>32</height>
+    <height>21</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>914</width>
-    <height>26</height>
+    <height>21</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>42</height>
+    <height>21</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
    <string notr="true">padding: 0px 0px 0px 6px;
 border: solid #E89C30;
 border-width: 0px 0px 1px 0px;
-background-color: #F8DDA7;
+background-color: #F0BF72;
 color: #353739;</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -49,38 +49,73 @@ color: #353739;</string>
     <number>1</number>
    </property>
    <item>
-    <widget class="QLabel" name="warningText">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QWidget" name="leftImage" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none; background-image: url(:/images/icon_ribbon_down.svg);</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="details">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>510</width>
+       <width>50</width>
        <height>16</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>16777215</width>
-       <height>30</height>
+       <width>100</width>
+       <height>16</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>Roboto</family>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
        <underline>false</underline>
        <strikeout>false</strikeout>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color:#353739; border: none; background-color: #F8DDA7;</string>
+      <string notr="true">color:#353739; border: none; background-color: #F0BF72;</string>
      </property>
      <property name="text">
-      <string>One signature is invalid</string>
+      <string>%n message</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -88,70 +123,26 @@ color: #353739;</string>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="warningAction">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QWidget" name="rightImage" native="true">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>20</width>
        <height>20</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
-     </property>
      <property name="styleSheet">
-      <string notr="true">color: #353739;
-font-weight: bold;
-text-decoration: none solid rgb(53, 55, 57);
-border: none;
-background-color: #F8DDA7;</string>
-     </property>
-     <property name="text">
-      <string>Click to resolve problem</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::RichText</enum>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="openExternalLinks">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::TextBrowserInteraction</set>
+      <string notr="true">border: none; background-image: url(:/images/icon_ribbon_down.svg);</string>
      </property>
     </widget>
    </item>
    <item>
-    <spacer name="horizontalSpacer">
+    <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>10</width>
+       <width>40</width>
        <height>20</height>
       </size>
      </property>

@@ -1398,6 +1398,14 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>STARTING</source>
         <translation>← START</translation>
     </message>
+    <message>
+        <source>One signature is invalid!</source>
+        <translation>One signature is invalid!</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>More information</translation>
+    </message>
 </context>
 
 
@@ -1679,14 +1687,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>One signature is invalid</source>
-        <translation>One signature is invalid!</translation>
-    </message>
-    <message>
-        <source>Click to resolve problem</source>
-        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Click to solve the problem&lt;/a&gt;</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>Help</translation>
@@ -2605,6 +2605,20 @@ ID-CARD</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL context is missing</translation>
+    </message>
+</context>
+<context>
+    <name>WarningRibbon</name>
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n message</numerusform>
+            <numerusform>%n messages</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Less</translation>
     </message>
 </context>
 </TS>

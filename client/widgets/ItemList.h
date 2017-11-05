@@ -52,6 +52,9 @@ signals:
 	void idChanged(const QString& cardCode, const QString& mobileCode);
 	void removed(int row);
 
+public slots:
+	void details(const QString &id);
+
 protected slots:
 	virtual void remove(Item *item);
 	

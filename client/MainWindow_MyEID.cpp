@@ -299,11 +299,8 @@ void MainWindow::getDigiIdStatus ()
 	ui->accordion->updateDigiIdInfo();
 }
 
-void MainWindow::updateCertificate( const QString &link )
+void MainWindow::updateCertificate()
 {
-	if( link != "#update-Certificate" )
-		return;
-
 #ifdef Q_OS_WIN
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 	CertStore s;

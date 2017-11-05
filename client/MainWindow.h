@@ -42,7 +42,7 @@ class MainWindow;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
-class WarningItem;
+class WarningRibbon;
 
 class MainWindow : public QWidget
 {
@@ -53,20 +53,20 @@ public:
 	~MainWindow();
 
 private Q_SLOTS:
-	void pageSelected( PageIcon *const );
-	void buttonClicked( int button );
-	void showCardStatus();
-	void photoClicked( const QPixmap *photo );
-	void savePhoto( const QPixmap *photo );
-	void getEmailStatus();
 	void activateEmail ();
+	void buttonClicked( int button );
+	void certDetailsClicked( const QString &link );
 	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked( bool isForgotPuk );
-	void certDetailsClicked( const QString &link );
+	void getEmailStatus();
 	void getOtherEID ();
 	void operation(int op, bool started);
-	void updateCertificate ( const QString &link );
+	void pageSelected( PageIcon *const );
+	void photoClicked( const QPixmap *photo );
+	void savePhoto( const QPixmap *photo );
+	void showCardStatus();
+	void warningClicked(const QString &link);
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -79,26 +79,29 @@ protected:
 
 private:
 	void cachePicture( const QString &id, const QImage &image );
+	void browseOnDisk(const QString &fileName);
 	void clearCertWarning();
 	void clearOverlay();
-	bool closeWarning(WarningItem *warning, bool force = false);
+	bool closeWarning(QWidget *warning, bool force = false);
+	void containerToEmail(const QString &fileName);
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt();
 	bool encrypt();
+	void getDigiIdStatus ();
+	void getMobileIdStatus ();
 	void hideCardPopup();
 	void hideWarningArea();
-	void getMobileIdStatus ();
-	void getDigiIdStatus ();
 	bool isUpdateCertificateNeeded();
+	bool isWarningExpanded();
 	void loadPicture();
 	void moveCryptoContainer();
 	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void noReader_NoCard_Loading_Event(NoCardInfo::Status status);
 	void onCryptoAction(int code, const QString &id, const QString &phone);
-	void onSignAction(int code, const QString &idCode, const QString &phoneNumber);
+	void onSignAction(int code, const QString &info1, const QString &info2);
 	void openContainer();
 	void openFiles( const QStringList files );
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
@@ -119,10 +122,9 @@ private:
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
+	void updateCertificate();
 	void updateWarnings();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
-	void containerToEmail( const QString &fileName );
-	void browseOnDisk( const QString &fileName );
 	void showUpdateCertWarning();
 	void showIdCardAlerts(const QSmartCardData& t);
 	bool wrapContainer();
@@ -132,10 +134,11 @@ private:
 
 	Ui::MainWindow *ui;
 
+	QButtonGroup *buttonGroup = nullptr;
 	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
+	WarningRibbon *ribbon = nullptr;
 	DropdownButton *selector = nullptr;
 	QSmartCard *smartcard = nullptr;
-	QButtonGroup *buttonGroup = nullptr;
-	QList<WarningItem*> warnings;
+	QList<QWidget*> warnings;
 };

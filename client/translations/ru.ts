@@ -1388,6 +1388,14 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>STARTING</source>
         <translation>← В НАЧАЛО</translation>
     </message>
+    <message>
+        <source>One signature is invalid!</source>
+        <translation>Одна подпись недействительна!</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>Дополнительная информация</translation>
+    </message>
 </context>
 
 
@@ -1670,14 +1678,6 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
 
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>One signature is invalid</source>
-        <translation>Одна подпись недействительна!</translation>
-    </message>
-    <message>
-        <source>Click to resolve problem</source>
-        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Нажмите, чтобы решить проблему&lt;/a&gt;</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -2276,7 +2276,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Сертификаты Mobiil-ID признаны не действительными или их действие приостановлено.</translation>
+        <translation>Сертификаты Mobiil-ID признаны не действительными или их действие остановлено.</translation>
     </message>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
@@ -2591,6 +2591,20 @@ Kонтрольны код: %1</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>Не удалось создать контекст SSL</translation>
+    </message>
+</context>
+<context>
+    <name>WarningRibbon</name>
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n сообщение</numerusform>
+            <numerusform>%n сообщения</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Меньше</translation>
     </message>
 </context>
 </TS>

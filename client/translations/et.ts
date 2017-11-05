@@ -1390,6 +1390,14 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>STARTING</source>
         <translation>← ALGUSESSE</translation>
     </message>
+    <message>
+        <source>One signature is invalid!</source>
+        <translation>Üks allkiri on kehtetu!</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>Rohkem infot</translation>
+    </message>
 </context>
 
 
@@ -1671,14 +1679,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>One signature is invalid</source>
-        <translation>Üks allkiri on kehtetu!</translation>
-    </message>
-    <message>
-        <source>Click to resolve problem</source>
-        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Vajuta probleemi lahendamiseks&lt;/a&gt;</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
@@ -2583,6 +2583,20 @@ ID-KAARDIGA</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL kontekst puudub</translation>
+    </message>
+</context>
+<context>
+    <name>WarningRibbon</name>
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n teade</numerusform>
+            <numerusform>%n teadet</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Vähem</translation>
     </message>
 </context>
 </TS>

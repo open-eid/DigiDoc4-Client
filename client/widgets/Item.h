@@ -29,7 +29,10 @@ public:
 	explicit Item(QWidget *parent = nullptr);
 	virtual ~Item();
 
+	virtual QString id() const;
+
 public slots:
+	virtual void details();
 	virtual void idChanged(const QString& cardCode, const QString& mobileCode);
 
 signals:

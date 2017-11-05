@@ -51,6 +51,7 @@ public:
 
 	QSslCertificate	cert() const;
 	QDateTime	dateTime() const;
+	QString		id() const;
 	QString		lastError() const;
 	QString		location() const;
 	QStringList	locations() const;

@@ -646,7 +646,7 @@ border: none;</string>
           <property name="minimumSize">
            <size>
             <width>914</width>
-            <height>491</height>
+            <height>350</height>
            </size>
           </property>
           <property name="maximumSize">

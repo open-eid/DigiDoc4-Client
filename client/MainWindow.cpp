@@ -42,6 +42,7 @@
 #include "dialogs/WarningDialog.h"
 #include "util/FileUtil.h"
 #include "widgets/WarningItem.h"
+#include "widgets/WarningRibbon.h"
 
 #include <common/DateTime.h>
 #include <common/Settings.h>
@@ -344,9 +345,9 @@ void MainWindow::clearCertWarning()
 	updateWarnings();
 }
 
-bool MainWindow::closeWarning(WarningItem *warning, bool force)
+bool MainWindow::closeWarning(QWidget *warning, bool force)
 {
-	if(force || warning->isClosable())
+	if(force || !warning->property("updateCertificateEnabled").toBool())
 	{
 		warnings.removeOne(warning);
 		warning->close();
@@ -376,6 +377,11 @@ void MainWindow::hideCardPopup()
 	showCardMenu( false );
 }
 
+bool MainWindow::isWarningExpanded()
+{
+	return warnings.size() < 2 || (ribbon && ribbon->isExpanded());
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 	for(auto warning: warnings)
@@ -386,6 +392,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 			break;
 		}
 	}
+
+	if(ribbon && ribbon->underMouse())
+		ribbon->change();
 
 	QWidget::mousePressEvent(event);
 }
@@ -482,7 +491,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	}
 }
 
-void MainWindow::onSignAction(int action, const QString &idCode, const QString &phoneNumber)
+void MainWindow::onSignAction(int action, const QString &info1, const QString &info2)
 {
 	switch(action)
 	{
@@ -490,7 +499,10 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 		sign();
 		break;
 	case SignatureMobile:
-		signMobile(idCode, phoneNumber);
+		signMobile(info1, info2);
+		break;
+	case SignatureWarning:
+		showWarning(info1, info2);
 		break;
 	case ContainerCancel:
 		if(digiDoc && digiDoc->isModified())
@@ -1117,9 +1129,10 @@ void MainWindow::showWarning(const QString &msg, const QString &details, bool ex
 	}
 	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 	warnings << warning;
-	connect(warning, &WarningItem::linkActivated, this, &MainWindow::updateCertificate);
+	connect(warning, &WarningItem::linkActivated, this, &MainWindow::warningClicked);
 	layout->insertWidget(warnings.size(), warning);
-	warning->show();
+	
+	updateWarnings();
 }
 
 void MainWindow::containerToEmail( const QString &fileName )
@@ -1149,6 +1162,35 @@ void MainWindow::updateWarnings()
 {
 	if(warnings.isEmpty())
 		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
+
+	if(warnings.size() < 2)
+	{
+		if(ribbon)
+		{
+			ribbon->close();
+			delete ribbon;
+			ribbon = nullptr;
+		}
+	}
+	else if(ribbon)
+	{
+		ribbon->updateVisibility();
+	}
+	else
+	{
+		ribbon = new WarningRibbon(&warnings, ui->page);
+		auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
+		layout->insertWidget(warnings.size() + 1, ribbon);
+		ribbon->show();
+	}
+}
+
+void MainWindow::warningClicked(const QString &link)
+{
+	if(link == "#update-Certificate")
+		updateCertificate();
+	else if(link.startsWith("#invalid-signature-"))
+		emit ui->signContainerPage->details(link.right(link.length()-19));
 }
 
 bool MainWindow::wrapContainer()

@@ -140,6 +140,15 @@ void ItemList::clear()
 	}
 }
 
+void ItemList::details(const QString &id)
+{
+	for(auto item: items)
+	{
+		if(item->id() == id)
+			emit item->details();
+	}
+}
+
 ContainerState ItemList::getState() { return state; }
 
 int ItemList::index(Item *item) const
