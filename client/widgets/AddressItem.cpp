@@ -47,6 +47,7 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent, bool showIcon)
 	ui->code->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+	connect(ui->add, &QToolButton::clicked, [this](){ emit add(this);});
 	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
 
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
@@ -54,6 +55,7 @@ AddressItem::AddressItem(ContainerState state, QWidget *parent, bool showIcon)
 
 	ui->add->hide();
 	ui->added->hide();
+	ui->added->setDisabled(true);
 }
 
 AddressItem::AddressItem(const CKey &k, ContainerState state, QWidget *parent)
@@ -105,28 +107,11 @@ void AddressItem::update(const QString& name, const QString& cardCode, const QSt
 	typeText = type;
 	code = cardCode;
 
-	ui->added->setEnabled(false);
+	showButton(show);
+}
 
-	if(show == Added)
-	{
-		setStyleSheet(
-					"border-bottom: 1px solid rgba(217, 217, 216, 0.45);"
-					"background-color: #f0f0f0;"
-					);
-		ui->name->setStyleSheet("color: #75787B;");
-		ui->code->setStyleSheet("color: #75787B;");
-	}
-	else
-	{
-		setStyleSheet(
-					"border-bottom: 1px solid rgba(217, 217, 216, 0.45);"
-					"background-color: #ffffff;"
-					);
-		ui->name->setStyleSheet("color: #363739;");
-		ui->code->setStyleSheet("color: #363739;");
-	}
-
-
+void AddressItem::showButton(ShowToolButton show)
+{
 	switch (show) {
 	case Remove:
 		ui->remove->show();
@@ -149,6 +134,11 @@ void AddressItem::update(const QString& name, const QString& cardCode, const QSt
 		ui->added->hide();
 		break;
 	}
+}
+
+const CKey& AddressItem::getKey() const
+{
+	return key;
 }
 
 void AddressItem::stateChange(ContainerState state)

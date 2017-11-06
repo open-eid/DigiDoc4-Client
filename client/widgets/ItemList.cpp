@@ -98,7 +98,7 @@ QString ItemList::addLabel()
 
 void ItemList::addressSearch()
 {
-	AddRecipients dlg(qApp->activeWindow());
+	AddRecipients dlg(items, qApp->activeWindow());
 	dlg.exec();
 }
 
@@ -197,6 +197,10 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 	{
 		ui->add->disconnect();
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
+	}
+	else if(itemType == ToAddAdresses)
+	{
+		connect(ui->add, &LabelButton::clicked, this, &ItemList::addAll);
 	}
 }
 

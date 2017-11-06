@@ -23,15 +23,22 @@
 
 #include "common_enums.h"
 #include "Styles.h"
+#include "client/Application.h"
+#include "client/QSigner.h"
+#include "common/SslCertificate.h"
+#include "common/TokenData.h"
 #include "effects/Overlay.h"
-#include "widgets/AddressItem.h"
 
+#include <QDebug>
 
-AddRecipients::AddRecipients(QWidget *parent) :
+AddRecipients::AddRecipients(const std::vector<Item *> &items, QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::AddRecipients)
+	ui(new Ui::AddRecipients),
+  leftList(),
+  rightList()
 {
 	init();
+	setAddressItems(items);
 }
 
 AddRecipients::~AddRecipients()
@@ -47,7 +54,7 @@ void AddRecipients::init()
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, "Add recipients", false);
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init(ria::qdigidoc4::ToAddAdresses, "Added recipients");
+	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, "Added recipients");
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
@@ -61,25 +68,105 @@ void AddRecipients::init()
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
+	connect(ui->leftPane, &ItemList::addAll, this, &AddRecipients::addAllRecipientFromLeftPane );
+	connect(ui->rightPane, &ItemList::removed, ui->rightPane, &ItemList::removeItem );
 
-
-	AddressItem *add1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	AddressItem *add2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	add1->update("Aadu Aamer", "34511114231", "ID-kaat", AddressItem::Added);
-	add2->update("Alma Tamm", "44510104561", "Digi-ID", AddressItem::Add);
-	ui->leftPane->addWidget(add1);
-	ui->leftPane->addWidget(add2);
-
-	AddressItem *curr1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	AddressItem *curr2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	AddressItem *curr3 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	curr1->update( "Heino Liin", "34664778636", "ID-kaat", AddressItem::Remove );
-	curr2->update( "Vello Karm", "44510104561", "ID-kaat", AddressItem::Remove );
-	curr3->update( "Ivar Tuisk", "45643644331", "Digi-ID", AddressItem::Remove );
-	ui->rightPane->addWidget( curr2 );
-	ui->rightPane->addWidget( curr1 );
-	ui->rightPane->addWidget( curr3 );
+	connect(ui->fromCard, &QPushButton::clicked, this, &AddRecipients::addRecipientFromCard);
+	connect( qApp->signer(), &QSigner::authDataChanged, this, &AddRecipients::enableRecipientFromCard );
+	enableRecipientFromCard();
 }
+
+void AddRecipients::setAddressItems(const std::vector<Item *> &items)
+{
+	for(Item *item :items)
+	{
+		AddressItem *leftItem = new AddressItem((static_cast<AddressItem *>(item))->getKey(),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+		QString friendlyName = SslCertificate(leftItem->getKey().cert).friendlyName();
+
+		// Add to left pane
+		leftList.insert(friendlyName, leftItem);
+		ui->leftPane->addWidget(leftItem);
+
+		leftItem->showButton(AddressItem::Added);
+		connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightList );
+
+		// Add to right pane
+		addRecipientToRightList(leftItem);
+	}
+}
+
+void AddRecipients::enableRecipientFromCard()
+{
+	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
+}
+
+void AddRecipients::addRecipientToRightList(Item *toAdd)
+{
+	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
+	AddressItem *rightItem = new AddressItem(leftItem->getKey(),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+
+	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
+	ui->rightPane->addWidget(rightItem);
+	rightItem->showButton(AddressItem::Remove);
+
+	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightList );
+	leftItem->showButton(AddressItem::Added);
+}
+
+void AddRecipients::addAllRecipientFromLeftPane()
+{
+	for(auto it = leftList.begin(); it != leftList.end(); ++it )
+	{
+		if(!rightList.contains(it.key()))
+		{
+			addRecipientToRightList(it.value());
+		}
+	}
+}
+
+void AddRecipients::removeRecipientFromRightList(Item *toRemove)
+{
+	AddressItem *rightItem = static_cast<AddressItem *>(toRemove);
+	QString friendlyName = SslCertificate(rightItem->getKey().cert).friendlyName();
+
+	auto it = leftList.find(friendlyName);
+	if(it != leftList.end())
+	{
+		it.value()->showButton(AddressItem::Add);
+		rightList.removeAll(friendlyName);
+	}
+}
+
+
+void AddRecipients::addRecipientFromCard()
+{
+	QList<QSslCertificate> cetrs;
+
+	cetrs << qApp->signer()->tokenauth().cert();
+	for(QSslCertificate& cert : cetrs)
+	{
+		QString friendlyName = SslCertificate(cert).friendlyName();
+		if(!leftList.contains(friendlyName) )
+		{
+			AddressItem *leftItem = new AddressItem(CKey(cert),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+
+			leftList.insert(friendlyName, leftItem);
+			ui->leftPane->addWidget(leftItem);
+
+			if(rightList.contains(friendlyName))
+			{
+				leftItem->showButton(AddressItem::Added);
+			}
+			else
+			{
+				leftItem->showButton(AddressItem::Add);
+			}
+
+			connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightList );
+		}
+	}
+}
+
 
 int AddRecipients::exec()
 {
