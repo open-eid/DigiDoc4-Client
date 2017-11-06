@@ -1390,6 +1390,14 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>STARTING</source>
         <translation>← ALGUSESSE</translation>
     </message>
+    <message>
+        <source>One signature is invalid!</source>
+        <translation>Üks allkiri on kehtetu!</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>Rohkem infot</translation>
+    </message>
 </context>
 
 
@@ -1671,14 +1679,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>One signature is invalid</source>
-        <translation>Üks allkiri on kehtetu!</translation>
-    </message>
-    <message>
-        <source>Click to resolve problem</source>
-        <translation>&lt;a href=&quot;#resolve-problem&quot; style=&quot;color: rgb(53, 55, 57)&quot;&gt;Vajuta probleemi lahendamiseks&lt;/a&gt;</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
@@ -2143,6 +2143,46 @@ ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvor
 Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377.
 </translation>
     </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 kood muudetud!</translation>
+    </message>
+    <message>
+        <source>active</source>
+        <translation>aktiivne</translation>
+    </message>
+    <message>
+        <source>not active</source>
+        <translation>mitteaktiivne</translation>
+    </message>
+    <message>
+        <source>E-mail address missing or invalid!</source>
+        <translation>E-posti aadress sisestamata või vigane!</translation>
+    </message>
+    <message>
+        <source>Failed activating email forwards.</source>
+        <translation>E-posti suunamise aktiveerimine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>Failed loading email settings.</source>
+        <translation>E-posti aadresside laadimine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>Failed loading Mobiil-ID settings.</source>
+        <translation>Mobiil-ID seadete laadimine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>Loading picture failed.</source>
+        <translation>Pildi laadimine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>Failed to load data</source>
+        <translation>Andmete laadimine ebaõnnestus</translation>
+    </message>
 </context>
 
 
@@ -2512,6 +2552,51 @@ ID-KAARDIGA</translation>
     <message>
         <source>Digi ID</source>
         <translation>Digi ID</translation>
+    </message>
+</context>
+<context>
+    <name>SSLConnect</name>
+    <message>
+        <source>Certificate is empty</source>
+        <translation>Sertifikaat on tühi</translation>
+    </message>
+    <message>
+        <source>Downloading picture</source>
+        <translation>Laadin pilti</translation>
+    </message>
+    <message>
+        <source>Failed to connect to host. Are you connected to the internet?</source>
+        <translation>Puudub internetiühendus!</translation>
+    </message>
+    <message>
+        <source>Invalid response</source>
+        <translation>Kehtetu vastus</translation>
+    </message>
+    <message>
+        <source>Loading Email info</source>
+        <translation>Laadin e-posti seadeid</translation>
+    </message>
+    <message>
+        <source>Loading Mobile info</source>
+        <translation>Laadin Mobiil-ID seadeid</translation>
+    </message>
+    <message>
+        <source>SSL context is missing</source>
+        <translation>SSL kontekst puudub</translation>
+    </message>
+</context>
+<context>
+    <name>WarningRibbon</name>
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n teade</numerusform>
+            <numerusform>%n teadet</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Vähem</translation>
     </message>
 </context>
 </TS>

@@ -26,11 +26,12 @@
 #ifdef Q_OS_WIN
 	#include "CertStore.h"
 #endif
-#include "dialogs/Updater.h"
-
-#include "effects/FadeInNotification.h"
-#include <common/SslCertificate.h>
 #include "dialogs/CertificateDetails.h"
+#include "dialogs/Updater.h"
+#include "effects/FadeInNotification.h"
+#include "widgets/WarningItem.h"
+
+#include <common/SslCertificate.h>
 #include <common/Configuration.h>
 #include <common/Settings.h>
 
@@ -56,7 +57,7 @@ void MainWindow::changePin1Clicked( bool isForgotPin, bool isBlockedPin )
 void MainWindow::changePin2Clicked( bool isForgotPin, bool isBlockedPin )
 {
 	QSmartCardData::PinType type = QSmartCardData::Pin2Type;
-    
+
 	if( isForgotPin )
 		pinUnblock( type, isForgotPin );
 	else if( isBlockedPin )
@@ -72,17 +73,17 @@ void MainWindow::changePukClicked( bool isForgotPuk )
 
 void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 {
-	QString text = tr("%1 kood on muudetud ja sertifikaadi blokeering tühistatud!")
+	QString text = tr("%1 has been changed and the certificate has been unblocked!")
 			.arg( QSmartCardData::typeString( type ) );
 
 	if( validateCardError( type, 1025,
 		( (QSmartCard *)smartcard )->pinUnblock( type, isForgotPin ) ) )
 	{
 		if( isForgotPin )
-			text = tr("%1 kood muudetud!").arg( QSmartCardData::typeString( type ) );
+			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
 		showNotification( text, true );
-        ui->accordion->updateInfo( smartcard );
-		ui->myEid->pinIsBlockedIcon( 
+		ui->accordion->updateInfo( smartcard );
+		ui->myEid->warningIcon(
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
@@ -94,9 +95,9 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 	if( validateCardError( type, 1024,
 		( (QSmartCard *)smartcard )->pinChange( type ) ) )
 	{
-		showNotification( tr("%1 kood muudetud!")
+		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
-        ui->accordion->updateInfo( smartcard );
+		ui->accordion->updateInfo( smartcard );
 	}
 }
 
@@ -122,7 +123,7 @@ void MainWindow::getEmailStatus ()
 		code = code ? code : 20;
 		if( code == 20 )
 			ui->accordion->updateOtherData( true, XmlReader::emailErr( code ), code );
-        else
+		else
 			ui->accordion->updateOtherData( false, XmlReader::emailErr( code ), code );
 	}
 	else
@@ -145,7 +146,7 @@ void MainWindow::activateEmail ()
 	if( eMail.isEmpty() )
 	{
 		showNotification( tr("E-mail address missing or invalid!") );
-        ui->accordion->setFocusToEmail();
+		ui->accordion->setFocusToEmail();
 		return;
 	}
 	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
@@ -182,11 +183,11 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	{
 		switch( type )
 		{
-		case SSLConnect::ActivateEmails: showWarning( tr("Failed activating email forwards."), ssl.errorString() ); break;
-		case SSLConnect::EmailInfo: showWarning( tr("Failed loading email settings."), ssl.errorString() ); break;
-		case SSLConnect::MobileInfo: showWarning( tr("Failed loading Mobiil-ID settings."), ssl.errorString() ); break;
-		case SSLConnect::PictureInfo: showWarning( tr("Loading picture failed."), ssl.errorString() ); break;
-		default: showWarning( tr("Failed to load data"), ssl.errorString() ); break;
+		case SSLConnect::ActivateEmails: showWarning(WarningText(tr("Failed activating email forwards."), ssl.errorString())); break;
+		case SSLConnect::EmailInfo: showWarning(WarningText(tr("Failed loading email settings."), ssl.errorString())); break;
+		case SSLConnect::MobileInfo: showWarning(WarningText(tr("Failed loading Mobiil-ID settings."), ssl.errorString())); break;
+		case SSLConnect::PictureInfo: showWarning(WarningText(tr("Loading picture failed."), ssl.errorString())); break;
+		default: showWarning(WarningText(tr("Failed to load data"), ssl.errorString())); break;
 		}
 		return QByteArray();
 	}
@@ -219,7 +220,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		showNotification( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
 		pageSelected( ui->myEid );
 		ui->accordion->updateInfo( smartcard );
-		ui->myEid->pinIsBlockedIcon( 
+		ui->myEid->warningIcon(
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
@@ -257,10 +258,10 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 
 void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
-    QString textColor = isSuccess ? "#ffffff" : "#353739";
-    QString bkColor = isSuccess ? "#8CC368" : "#F8DDA7";
-    int displayTime = isSuccess ? 2000 : 3000;
-    
+	QString textColor = isSuccess ? "#ffffff" : "#353739";
+	QString bkColor = isSuccess ? "#8CC368" : "#F8DDA7";
+	int displayTime = isSuccess ? 2000 : 3000;
+
 	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
 	notification->start( msg, 750, displayTime, 600 );
 }
@@ -275,7 +276,7 @@ void MainWindow::getMobileIdStatus ()
 {
 	if (smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0)
 		return;
-    
+
 	QByteArray buffer = sendRequest( SSLConnect::MobileInfo );
 	if( buffer.isEmpty() )
 		return;
@@ -285,7 +286,7 @@ void MainWindow::getMobileIdStatus ()
 	QVariant mobileData = QVariant::fromValue( xml.readMobileStatus( error ) );
 	if( error )
 	{
-		showWarning( XmlReader::mobileErr( error ), QString() );
+		showWarning(WarningText(XmlReader::mobileErr(error)));
 		return;
 	}
 	ui->accordion->setProperty( "MOBILE_ID_STATUS", mobileData );
@@ -299,11 +300,8 @@ void MainWindow::getDigiIdStatus ()
 	ui->accordion->updateDigiIdInfo();
 }
 
-void MainWindow::updateCertificate( const QString &link )
+void MainWindow::updateCertificate()
 {
-	if( link != "#update-Certificate" )
-		return;
-  
 #ifdef Q_OS_WIN
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 	CertStore s;
@@ -319,11 +317,11 @@ void MainWindow::updateCertificate( const QString &link )
 	smartcard->reload();
 }
 
-void MainWindow::isUpdateCertificateNeeded()
+bool MainWindow::isUpdateCertificateNeeded()
 {
 	QSmartCardData t = smartcard->data();
 
-	ui->warning->setProperty("updateCertificateEnabled",
+	return
 		Settings(qApp->applicationName()).value("updateButton", false).toBool() ||
 		Settings().value("testUpdater", false).toBool() ||							// TODO for testing. Remove it later !!!!!!
 		(
@@ -336,6 +334,5 @@ void MainWindow::isUpdateCertificateNeeded()
 				t.version() & QSmartCardData::VER_HASUPDATER ||
 				t.version() == QSmartCardData::VER_USABLEUPDATER
 			)
-		)
-	);
+		);
 }

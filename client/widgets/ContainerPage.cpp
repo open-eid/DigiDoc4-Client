@@ -116,6 +116,7 @@ void ContainerPage::init()
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
 	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode){ emit ui->rightPane->idChanged(idCode, mobileCode); });
 	connect(this, &ContainerPage::moved, ui->containerFile, &QLabel::setText);
+	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -341,6 +342,13 @@ void ContainerPage::transition(DigiDoc* container)
 	for(const DigiDocSignature &c: container->signatures())
 	{
 		SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
+		if(item->isInvalid())
+		{
+			emit action(Actions::SignatureWarning, tr("One signature is invalid!"),
+				QString("<a href='#invalid-signature-%1' style='color: rgb(53, 55, 57)'>%2</a>")
+					.arg(item->id())
+					.arg(tr("More information")));
+		}
 		ui->rightPane->addWidget(item);
 		if(enableSigning && item->isSelfSigned(cardInReader, mobileCode))
 			enableSigning = false;

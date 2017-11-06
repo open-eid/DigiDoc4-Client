@@ -17,17 +17,26 @@
  *
  */
 
-#include "Item.h"
+#include "StyledWidget.h"
 
-
-Item::Item(QWidget *parent)
-: StyledWidget(parent)
-{
-
+namespace Ui {
+class WarningRibbon;
 }
 
-Item::~Item() {}
+class WarningRibbon : public StyledWidget
+{
+	Q_OBJECT
 
-QString Item::id() const { return ""; }
-void Item::idChanged(const QString& cardCode, const QString& mobileCode) {}
-void Item::details() {}
+public:
+	WarningRibbon(QWidget *parent = nullptr);
+	~WarningRibbon();
+
+	void flip();
+	bool isExpanded() const;
+	void setCount(int count);
+
+private:
+	Ui::WarningRibbon *ui;
+	int count;
+	bool expanded;
+};

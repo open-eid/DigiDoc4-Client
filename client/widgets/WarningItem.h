@@ -17,17 +17,40 @@
  *
  */
 
-#include "Item.h"
+#include "StyledWidget.h"
 
-
-Item::Item(QWidget *parent)
-: StyledWidget(parent)
-{
-
+namespace Ui {
+class WarningItem;
 }
 
-Item::~Item() {}
 
-QString Item::id() const { return ""; }
-void Item::idChanged(const QString& cardCode, const QString& mobileCode) {}
-void Item::details() {}
+struct WarningText {
+	QString text;
+	QString details;
+	bool external;
+	QString property;
+	int page;
+
+	WarningText(const QString &text, const QString &details = QString(), int page = -1);
+	WarningText(const QString &text, const QString &details, bool external, const QString &property);
+};
+
+
+class WarningItem : public StyledWidget
+{
+	Q_OBJECT
+
+public:
+	WarningItem(const WarningText &warningText, QWidget *parent = nullptr);
+	~WarningItem();
+	
+	bool appearsOnPage(int page) const;
+	int page() const;
+
+signals:
+	void linkActivated(const QString& link);
+
+private:
+	Ui::WarningItem *ui;
+	int context;
+};

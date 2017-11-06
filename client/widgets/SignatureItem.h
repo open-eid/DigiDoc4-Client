@@ -38,8 +38,13 @@ public:
 	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~SignatureItem();
 
+	QString id() const override;
 	void idChanged(const QString& cardCode, const QString& mobileCode) override;
+	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
+
+public slots:
+	void details() override;
 
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;

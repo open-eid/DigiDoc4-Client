@@ -52,9 +52,10 @@ public:
 	void transition(DigiDoc* container);
 
 signals:
-	void action(int code, const QString &idCode = QString(), const QString &phoneNumber = QString());
+	void action(int code, const QString &info1 = QString(), const QString &info2 = QString());
 	void addFiles(const QStringList &files);
 	void cardChanged(const QString& idCode = QString());
+	void details(const QString &id);
 	void fileRemoved(int row);
 	void moved(const QString &to);	
 	void removed(int row);

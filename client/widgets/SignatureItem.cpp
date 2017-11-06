@@ -187,6 +187,17 @@ void SignatureItem::changeNameHeight()
 	}
 }
 
+void SignatureItem::details()
+{
+	SignatureDialog dlg(signature, this);
+	dlg.exec();
+}
+
+QString SignatureItem::id() const
+{
+	return signature.id();
+}
+
 void SignatureItem::idChanged(const QString& cardCode, const QString& mobileCode)
 {
 	bool hidden = ui->remove->isHidden();
@@ -198,6 +209,11 @@ void SignatureItem::idChanged(const QString& cardCode, const QString& mobileCode
 	}
 }
 
+bool SignatureItem::isInvalid() const
+{
+	return invalid;
+}
+
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
 {
 	return serial == cardCode || serial == mobileCode;
@@ -205,8 +221,7 @@ bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileC
 
 void SignatureItem::mouseReleaseEvent(QMouseEvent *event)
 {
-	SignatureDialog dlg(signature, this);
-	dlg.exec();
+	details();
 }
 
 void SignatureItem::recalculate()

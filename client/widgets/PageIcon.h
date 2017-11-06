@@ -45,9 +45,8 @@ public:
 	void init( ria::qdigidoc4::Pages page, QWidget *shadow, bool selected );
 	void activate( bool selected );
 	ria::qdigidoc4::Pages getType();
-	void invalidCertIcon( bool show );
-	void pinIsBlockedIcon( bool show );
-	void updateCertNeededIcon( bool show );
+	void invalidIcon( bool show );
+	void warningIcon( bool show );
 	
 signals:
 	void activated( PageIcon *const );
@@ -69,9 +68,8 @@ private:
 	Ui::PageIcon *ui;
 	QWidget *shadow;
 	std::unique_ptr<QSvgWidget> icon;
-	std::unique_ptr<QSvgWidget> notValidCertIcon;
-	std::unique_ptr<QSvgWidget> pinBlockedIcon;
-	std::unique_ptr<QSvgWidget> updateCertIsNeededIcon;
+	std::unique_ptr<QSvgWidget> redIcon;
+	std::unique_ptr<QSvgWidget> orangeIcon;
 
 	Style active;
 	Style inactive;

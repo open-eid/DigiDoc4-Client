@@ -88,6 +88,11 @@ QDateTime DigiDocSignature::dateTime() const
 	return toTime(s->trustedSigningTime());
 }
 
+QString DigiDocSignature::id() const
+{
+	return from(s->id());
+}
+
 QString DigiDocSignature::lastError() const { return m_lastError; }
 
 QString DigiDocSignature::location() const

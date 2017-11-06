@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>914</width>
-    <height>475</height>
+    <height>334</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -243,7 +243,7 @@ border: none;</string>
      <property name="minimumSize">
       <size>
        <width>914</width>
-       <height>399</height>
+       <height>258</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -599,15 +599,15 @@ border: none;</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
+  </customwidget>
+  <customwidget>
    <class>ItemList</class>
    <extends>QWidget</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>LabelButton</class>
-   <extends>QLabel</extends>
-   <header>widgets/LabelButton.h</header>
   </customwidget>
   <customwidget>
    <class>FileList</class>

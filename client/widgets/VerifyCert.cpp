@@ -26,7 +26,6 @@
 #include <common/SslCertificate.h>
 
 #include <QtCore/QTextStream>
-#include <QMessageBox>
 
 VerifyCert::VerifyCert( QWidget *parent ) :
 	StyledWidget( parent ),
@@ -167,7 +166,6 @@ void VerifyCert::update()
 		ui->error->setStyleSheet(
 					"padding: 6px 6px 6px 6px;"
 					"line-height: 14px;"
-					"box-sizing: border-box;"
 					"border: 1px solid #c53e3e;"
 					"border-radius: 2px;"
 					"background-color: #e09797;"
@@ -190,7 +188,6 @@ void VerifyCert::update()
 		ui->error->setStyleSheet(
 					"padding: 6px 6px 6px 6px;"
 					"line-height: 14px;"
-					"box-sizing: border-box;"
 					"border: 1px solid #e89c30;"
 					"border-radius: 2px;"
 					"background-color: #F8DDA7;"
