@@ -42,7 +42,9 @@ class MainWindow;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
+class WarningItem;
 class WarningRibbon;
+class WarningText;
 
 class MainWindow : public QWidget
 {
@@ -82,7 +84,8 @@ private:
 	void browseOnDisk(const QString &fileName);
 	void clearCertWarning();
 	void clearOverlay();
-	bool closeWarning(QWidget *warning, bool force = false);
+	bool closeWarning(WarningItem *warning, bool force = false);
+	void closeWarnings(int page);
 	void containerToEmail(const QString &fileName);
 	void convertToBDoc();
 	void convertToCDoc();
@@ -103,9 +106,10 @@ private:
 	void onCryptoAction(int code, const QString &id, const QString &phone);
 	void onSignAction(int code, const QString &info1, const QString &info2);
 	void openContainer();
-	void openFiles( const QStringList files );
+	void openFiles(const QStringList &files);
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
+	void resetDigiDoc(DigiDoc *doc = nullptr);
 	void removeAddress(int index);
 	void removeCryptoFile(int index);
 	bool removeFile(DocumentModel *model, int index);
@@ -118,13 +122,15 @@ private:
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
-	void showWarning(const QString &msg, const QString &details, bool extLink = false, const QString &property = QString());
+	void showWarning(const WarningText &warningText);
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
 	void updateCertificate();
+	void updateRibbon(int page, bool expanded);
 	void updateWarnings();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
+	bool validateFiles(const QString &container, const QStringList &files);
 	void showUpdateCertWarning();
 	void showIdCardAlerts(const QSmartCardData& t);
 	bool wrapContainer();
@@ -140,5 +146,5 @@ private:
 	WarningRibbon *ribbon = nullptr;
 	DropdownButton *selector = nullptr;
 	QSmartCard *smartcard = nullptr;
-	QList<QWidget*> warnings;
+	QList<WarningItem*> warnings;
 };

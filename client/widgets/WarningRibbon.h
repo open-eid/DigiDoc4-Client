@@ -28,15 +28,15 @@ class WarningRibbon : public StyledWidget
 	Q_OBJECT
 
 public:
-	WarningRibbon(const QList<QWidget*> *warnings, QWidget *parent = nullptr);
+	WarningRibbon(QWidget *parent = nullptr);
 	~WarningRibbon();
 
-	void change();
+	void flip();
 	bool isExpanded() const;
-	void updateVisibility();
+	void setCount(int count);
 
 private:
 	Ui::WarningRibbon *ui;
+	int count;
 	bool expanded;
-	const QList<QWidget*> *warnings;
 };

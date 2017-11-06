@@ -345,7 +345,7 @@ void MainWindow::clearCertWarning()
 	updateWarnings();
 }
 
-bool MainWindow::closeWarning(QWidget *warning, bool force)
+bool MainWindow::closeWarning(WarningItem *warning, bool force)
 {
 	if(force || !warning->property("updateCertificateEnabled").toBool())
 	{
@@ -358,6 +358,17 @@ bool MainWindow::closeWarning(QWidget *warning, bool force)
 	}
 
 	return false;
+}
+
+void MainWindow::closeWarnings(int page)
+{
+	for(auto warning: warnings)
+	{
+		if(warning->page() == page)
+			closeWarning(warning);
+	}
+
+	updateWarnings();
 }
 
 bool MainWindow::encrypt()
@@ -377,11 +388,6 @@ void MainWindow::hideCardPopup()
 	showCardMenu( false );
 }
 
-bool MainWindow::isWarningExpanded()
-{
-	return warnings.size() < 2 || (ribbon && ribbon->isExpanded());
-}
-
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 	for(auto warning: warnings)
@@ -394,7 +400,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 	}
 
 	if(ribbon && ribbon->underMouse())
-		ribbon->change();
+	{
+		ribbon->flip();
+		updateRibbon(ui->startScreen->currentIndex(), ribbon->isExpanded());
+	}
 
 	QWidget::mousePressEvent(event);
 }
@@ -432,8 +441,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		}
 		if(navigate)
 		{
-			delete digiDoc;
-			digiDoc = signatureContainer.release();
+			resetDigiDoc(signatureContainer.release());
 			connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 			ui->signContainerPage->transition(digiDoc);
 		}
@@ -478,16 +486,14 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			cryptoDoc = nullptr;
 		}
 		if(digiDoc)
-		{
-			delete digiDoc;
-			digiDoc = nullptr;
-		}
+			resetDigiDoc();
 	}
 
 	if(navigate)
 	{
 		selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
 		ui->startScreen->setCurrentIndex(page);
+		updateWarnings();
 	}
 }
 
@@ -502,7 +508,8 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		signMobile(info1, info2);
 		break;
 	case SignatureWarning:
-		showWarning(info1, info2);
+		showWarning(WarningText(info1, info2, SignDetails));
+		ui->signature->warningIcon(true);
 		break;
 	case ContainerCancel:
 		if(digiDoc && digiDoc->isModified())
@@ -571,8 +578,7 @@ void MainWindow::convertToBDoc()
 	else
 		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
 
-	delete digiDoc;
-	digiDoc = signatureContainer.release();
+	resetDigiDoc(signatureContainer.release());
 	connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 	delete cryptoDoc;
 	cryptoDoc = nullptr;
@@ -606,8 +612,7 @@ void MainWindow::convertToCDoc()
 
 	delete cryptoDoc;
 	cryptoDoc = cryptoContainer.release();
-	delete digiDoc;
-	digiDoc = nullptr;
+	resetDigiDoc();
 	ui->cryptoContainerPage->transition(cryptoDoc);
 	selectPageIcon(ui->crypto);
 	ui->startScreen->setCurrentIndex(CryptoDetails);
@@ -676,7 +681,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	}
 }
 
-void MainWindow::openFiles(const QStringList files)
+void MainWindow::openFiles(const QStringList &files)
 {
 /*
 	1. If containers are not open:
@@ -732,15 +737,16 @@ void MainWindow::openFiles(const QStringList files)
 	case ContainerState::UnsignedContainer:
 	case ContainerState::UnsignedSavedContainer:
 	case ContainerState::UnencryptedContainer:
-	{
 		page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
-		DocumentModel* model = (current == CryptoDetails) ?
-			cryptoDoc->documentModel() : digiDoc->documentModel();
-		for(auto file: content)
-			model->addFile(file);
 		create = false;
+		if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
+		{
+			DocumentModel* model = (current == CryptoDetails) ?
+				cryptoDoc->documentModel() : digiDoc->documentModel();
+			for(auto file: content)
+				model->addFile(file);
+		}
 		break;
-	}
 	case ContainerState::EncryptedContainer:
 	case ContainerState::DecryptedContainer:
 		// TODO: new container???
@@ -770,6 +776,14 @@ void MainWindow::openContainer()
 void MainWindow::operation(int op, bool started)
 {
 	qDebug() << "Op " << op << (started ? " started" : " ended");
+}
+
+void MainWindow::resetDigiDoc(DigiDoc *doc)
+{
+	ui->signature->warningIcon(false);
+	delete digiDoc;
+	closeWarnings(SignDetails);
+	digiDoc = doc;
 }
 
 void MainWindow::resizeEvent( QResizeEvent *event )
@@ -878,15 +892,15 @@ void MainWindow::showCardStatus()
 		}
 		ui->infoStack->update( t );
 		ui->accordion->updateInfo( smartcard );
-		ui->myEid->invalidCertIcon( !t.authCert().isValid() || !t.signCert().isValid() );
-		ui->myEid->pinIsBlockedIcon(
+		ui->myEid->invalidIcon( !t.authCert().isValid() || !t.signCert().isValid() );
+		ui->myEid->warningIcon(
 				t.retryCount( QSmartCardData::Pin1Type ) == 0 ||
 				t.retryCount( QSmartCardData::Pin2Type ) == 0 ||
 				t.retryCount( QSmartCardData::PukType ) == 0 );
 
 		if(isUpdateCertificateNeeded())
 		{
-			ui->myEid->updateCertNeededIcon(true);
+			ui->myEid->invalidIcon(true);
 			showUpdateCertWarning();
 		}
 
@@ -997,9 +1011,8 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->clearOtherEID();
-	ui->myEid->invalidCertIcon( false );
-	ui->myEid->pinIsBlockedIcon( false );
-	ui->myEid->updateCertNeededIcon( false );
+	ui->myEid->invalidIcon( false );
+	ui->myEid->warningIcon( false );
 	clearCertWarning();
 }
 
@@ -1021,7 +1034,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 		QString error;
 		xml.readEmailStatus( error );
 		if( !error.isEmpty() )
-			showWarning( XmlReader::emailErr( error.toUInt() ), QString() );
+			showWarning(WarningText(XmlReader::emailErr(error.toUInt())));
 		return;
 	}
 
@@ -1113,25 +1126,19 @@ void MainWindow::showUpdateCertWarning()
 			return;
 	}
 
-	showWarning(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
+	showWarning(WarningText(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
 		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")),
-		false, "updateCertificateEnabled");
+		false, "updateCertificateEnabled"));
 }
 
-void MainWindow::showWarning(const QString &msg, const QString &details, bool extLink, const QString &property)
+void MainWindow::showWarning(const WarningText &warningText)
 {
-	ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");
-	WarningItem *warning = new WarningItem(msg, details, extLink, ui->page);
-	if(!property.isEmpty())
-	{
-		warning->setProperty(property.toLatin1(), true);
-		warning->setClosable(false);
-	}
+	WarningItem *warning = new WarningItem(warningText, ui->page);
 	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 	warnings << warning;
 	connect(warning, &WarningItem::linkActivated, this, &MainWindow::warningClicked);
 	layout->insertWidget(warnings.size(), warning);
-	
+
 	updateWarnings();
 }
 
@@ -1158,31 +1165,83 @@ void MainWindow::browseOnDisk( const QString &fileName )
 	QDesktopServices::openUrl( url );
 }
 
+
+void MainWindow::updateRibbon(int page, bool expanded)
+{
+	bool first = true;
+	for(auto warning: warnings)
+	{
+		if(warning->appearsOnPage(page))
+		{
+			warning->setVisible(expanded || first);
+			first = false;
+		}
+	}
+}
+
 void MainWindow::updateWarnings()
 {
-	if(warnings.isEmpty())
-		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
+	int page = ui->startScreen->currentIndex();
+	int count = 0;
+	bool expanded = true;
+	for(auto warning: warnings)
+	{
+		if(warning->appearsOnPage(page))
+			count++;
+	}
 
-	if(warnings.size() < 2)
+	if(!count)
+		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
+	else
+		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");
+
+	if(count < 2)
 	{
 		if(ribbon)
 		{
 			ribbon->close();
 			delete ribbon;
 			ribbon = nullptr;
+			for(auto warning: warnings)
+			{
+				if(warning->appearsOnPage(page))
+					warning->show();
+			}
 		}
 	}
 	else if(ribbon)
 	{
-		ribbon->updateVisibility();
+		ribbon->setCount(count - 1);
+		expanded = ribbon->isExpanded();
 	}
 	else
 	{
-		ribbon = new WarningRibbon(&warnings, ui->page);
+		ribbon = new WarningRibbon(ui->page);
 		auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 		layout->insertWidget(warnings.size() + 1, ribbon);
 		ribbon->show();
+		expanded = ribbon->isExpanded();
 	}
+
+	updateRibbon(page, expanded);
+}
+
+bool MainWindow::validateFiles(const QString &container, const QStringList &files)
+{
+	// Check that container is not dropped into itself
+	QFileInfo containerInfo(container);
+	for(auto file: files)
+	{
+		if(containerInfo == QFileInfo(file))
+		{
+			WarningDialog dlg(tr("Cannot add container to same container\n%1").arg(container), this);
+			dlg.setCancelText(tr("CANCEL"));
+			dlg.exec();	
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void MainWindow::warningClicked(const QString &link)
@@ -1233,4 +1292,5 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 		store.add( t.signCert(), t.card() );
 	}
 #endif
+
 }

@@ -39,20 +39,17 @@ PageIcon::PageIcon(QWidget *parent) :
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
 
-	notValidCertIcon.reset( new QSvgWidget( ":/images/icon_alert_red.svg", this ) );
-	notValidCertIcon->resize( 13, 12 );
-	notValidCertIcon->move( 84, 12 );
-	notValidCertIcon->hide ();
+	redIcon.reset( new QSvgWidget( ":/images/icon_alert_red.svg", this ) );
+	redIcon->resize( 13, 12 );
+	redIcon->move( 84, 12 );
+	redIcon->hide();
+	redIcon->setStyleSheet("border: none;");
 
-	pinBlockedIcon.reset( new QSvgWidget( ":/images/icon_alert_orange.svg", this ) );
-	pinBlockedIcon->resize( 13, 12 );
-	pinBlockedIcon->move( 84, 12 );
-	pinBlockedIcon->hide ();
-
-	updateCertIsNeededIcon.reset( new QSvgWidget( ":/images/icon_alert_red.svg", this ) );    // Put correct icon here. TODO
-	updateCertIsNeededIcon->resize( 13, 12 );
-	updateCertIsNeededIcon->move( 84, 12 );
-	updateCertIsNeededIcon->hide ();
+	orangeIcon.reset( new QSvgWidget( ":/images/icon_alert_orange.svg", this ) );
+	orangeIcon->resize( 13, 12 );
+	orangeIcon->move( 84, 12 );
+	orangeIcon->hide();
+	orangeIcon->setStyleSheet("border: none;");
 }
 
 PageIcon::~PageIcon()
@@ -187,20 +184,14 @@ void PageIcon::paintEvent(QPaintEvent *ev)
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void PageIcon::invalidCertIcon( bool show )
+void PageIcon::invalidIcon(bool show)
 {
-	if( show ) notValidCertIcon->show ();
-	else notValidCertIcon->hide ();
+	if( show ) redIcon->show ();
+	else redIcon->hide ();
 }
 
-void PageIcon::pinIsBlockedIcon( bool show )
+void PageIcon::warningIcon( bool show )
 {
-	if( show ) pinBlockedIcon->show ();
-	else pinBlockedIcon->hide ();
-}
-
-void PageIcon::updateCertNeededIcon( bool show )
-{
-	if( show ) updateCertIsNeededIcon->show ();
-	else updateCertIsNeededIcon->hide ();
+	if( show ) orangeIcon->show ();
+	else orangeIcon->hide ();
 }

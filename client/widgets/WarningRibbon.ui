@@ -27,7 +27,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">padding: 0px 0px 0px 6px;
-border: solid #E89C30;
+border: solid #B5AA92;
 border-width: 0px 0px 1px 0px;
 background-color: #F0BF72;
 color: #353739;</string>

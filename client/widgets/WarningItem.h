@@ -23,21 +23,34 @@ namespace Ui {
 class WarningItem;
 }
 
+
+struct WarningText {
+	QString text;
+	QString details;
+	bool external;
+	QString property;
+	int page;
+
+	WarningText(const QString &text, const QString &details = QString(), int page = -1);
+	WarningText(const QString &text, const QString &details, bool external, const QString &property);
+};
+
+
 class WarningItem : public StyledWidget
 {
 	Q_OBJECT
 
 public:
-	WarningItem(const QString &msg, const QString &details, bool extLink, QWidget *parent = nullptr);
+	WarningItem(const WarningText &warningText, QWidget *parent = nullptr);
 	~WarningItem();
 	
-	bool isClosable() const;
-	void setClosable(bool closable);
+	bool appearsOnPage(int page) const;
+	int page() const;
 
 signals:
 	void linkActivated(const QString& link);
 
 private:
 	Ui::WarningItem *ui;
-	bool closable;
+	int context;
 };

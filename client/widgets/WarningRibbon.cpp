@@ -22,44 +22,38 @@
 
 #include "Styles.h"
 
-WarningRibbon::WarningRibbon(const QList<QWidget*> *warnings, QWidget *parent)
+WarningRibbon::WarningRibbon(QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::WarningRibbon)
 , expanded(false)
-, warnings(warnings)
 {
 	ui->setupUi(this);
 	ui->details->setFont(Styles::font(Styles::Regular, 12, QFont::DemiBold));
 	ui->details->setText(tr("%n message", "", 1));
 
-	updateVisibility();
+	setCount(1);
 }
 
 WarningRibbon::~WarningRibbon()
 {
-	for(auto warning: *warnings)
-		warning->show();
-
 	delete ui;
 }
 
-void WarningRibbon::change()
+void WarningRibbon::flip()
 {
 	expanded = !expanded;
 	if(expanded)
 	{
-		ui->details->setText(tr("Less"));
 		ui->leftImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_up.svg);");
 		ui->rightImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_up.svg);");
 	}
 	else
 	{
-		ui->details->setText(tr("%n message", "", warnings->size() - 1));
 		ui->leftImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_down.svg);");
 		ui->rightImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_down.svg);");
 	}
 
-	updateVisibility();
+	setCount(count);
 }
 
 bool WarningRibbon::isExpanded() const
@@ -67,20 +61,11 @@ bool WarningRibbon::isExpanded() const
 	return expanded;
 }
 
-void WarningRibbon::updateVisibility()
+void WarningRibbon::setCount(int count)
 {
+	this->count = count;
 	if(expanded)
-	{
-		for(auto warning: *warnings)
-			warning->show();
-	}
+		ui->details->setText(tr("Less"));
 	else
-	{
-		bool first = true;
-		for(auto warning: *warnings)
-		{
-			warning->setVisible(first);
-			first = false;
-		}
-	}
+		ui->details->setText(tr("%n message", "", count));
 }

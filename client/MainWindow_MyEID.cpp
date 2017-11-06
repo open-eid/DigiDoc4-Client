@@ -26,11 +26,12 @@
 #ifdef Q_OS_WIN
 	#include "CertStore.h"
 #endif
-#include "dialogs/Updater.h"
-
-#include "effects/FadeInNotification.h"
-#include <common/SslCertificate.h>
 #include "dialogs/CertificateDetails.h"
+#include "dialogs/Updater.h"
+#include "effects/FadeInNotification.h"
+#include "widgets/WarningItem.h"
+
+#include <common/SslCertificate.h>
 #include <common/Configuration.h>
 #include <common/Settings.h>
 
@@ -82,7 +83,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
 		showNotification( text, true );
 		ui->accordion->updateInfo( smartcard );
-		ui->myEid->pinIsBlockedIcon( 
+		ui->myEid->warningIcon(
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
@@ -182,11 +183,11 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	{
 		switch( type )
 		{
-		case SSLConnect::ActivateEmails: showWarning( tr("Failed activating email forwards."), ssl.errorString() ); break;
-		case SSLConnect::EmailInfo: showWarning( tr("Failed loading email settings."), ssl.errorString() ); break;
-		case SSLConnect::MobileInfo: showWarning( tr("Failed loading Mobiil-ID settings."), ssl.errorString() ); break;
-		case SSLConnect::PictureInfo: showWarning( tr("Loading picture failed."), ssl.errorString() ); break;
-		default: showWarning( tr("Failed to load data"), ssl.errorString() ); break;
+		case SSLConnect::ActivateEmails: showWarning(WarningText(tr("Failed activating email forwards."), ssl.errorString())); break;
+		case SSLConnect::EmailInfo: showWarning(WarningText(tr("Failed loading email settings."), ssl.errorString())); break;
+		case SSLConnect::MobileInfo: showWarning(WarningText(tr("Failed loading Mobiil-ID settings."), ssl.errorString())); break;
+		case SSLConnect::PictureInfo: showWarning(WarningText(tr("Loading picture failed."), ssl.errorString())); break;
+		default: showWarning(WarningText(tr("Failed to load data"), ssl.errorString())); break;
 		}
 		return QByteArray();
 	}
@@ -219,7 +220,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		showNotification( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
 		pageSelected( ui->myEid );
 		ui->accordion->updateInfo( smartcard );
-		ui->myEid->pinIsBlockedIcon( 
+		ui->myEid->warningIcon(
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
@@ -285,7 +286,7 @@ void MainWindow::getMobileIdStatus ()
 	QVariant mobileData = QVariant::fromValue( xml.readMobileStatus( error ) );
 	if( error )
 	{
-		showWarning( XmlReader::mobileErr( error ), QString() );
+		showWarning(WarningText(XmlReader::mobileErr(error)));
 		return;
 	}
 	ui->accordion->setProperty( "MOBILE_ID_STATUS", mobileData );

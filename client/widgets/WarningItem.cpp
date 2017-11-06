@@ -22,18 +22,39 @@
 
 #include "Styles.h"
 
-WarningItem::WarningItem(const QString &msg, const QString &details, bool extLink, QWidget *parent)
+
+WarningText::WarningText(const QString &text, const QString &details, int page)
+: text(text)
+, details(details)
+, external(false)
+, page(page)
+{}
+
+WarningText::WarningText(const QString &text, const QString &details, bool external, const QString &property)
+: text(text)
+, details(details)
+, external(external)
+, property(property)
+, page(-1)
+{}
+
+
+WarningItem::WarningItem(const WarningText &warningText, QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::WarningItem)
-, closable(true)
+, context(warningText.page)
 {
 	ui->setupUi(this);
 	ui->warningText->setFont(Styles::font(Styles::Regular, 14));
 	ui->warningAction->setFont(Styles::font(Styles::Regular, 14, QFont::Bold));
 
-	ui->warningText->setText(msg);
-	ui->warningAction->setText(details);
-	ui->warningAction->setOpenExternalLinks(extLink);
+	ui->warningText->setText(warningText.text);
+	ui->warningAction->setText(warningText.details);
+	ui->warningAction->setOpenExternalLinks(warningText.external);
+
+	if(!warningText.property.isEmpty())
+		setProperty(warningText.property.toLatin1(), true);
+
 	connect(ui->warningAction, &QLabel::linkActivated, this, &WarningItem::linkActivated);
 }
 
@@ -42,12 +63,12 @@ WarningItem::~WarningItem()
 	delete ui;
 }
 
-bool WarningItem::isClosable() const 
-{ 
-	return closable;
+bool WarningItem::appearsOnPage(int page) const
+{
+	return page == context || context == -1;
 }
 
-void WarningItem::setClosable(bool closable)
+int WarningItem::page() const
 {
-	this->closable = closable;
+	return context;
 }
