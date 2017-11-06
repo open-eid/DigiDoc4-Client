@@ -51,6 +51,7 @@ public:
 
 signals:
 	void addItem(int code);
+	void addAll();
 	void idChanged(const QString& cardCode, const QString& mobileCode);
 	void removed(int row);
 

@@ -19,7 +19,11 @@
 
 #pragma once
 
+#include "widgets/AddressItem.h"
+
 #include <QDialog>
+#include <QMap>
+
 
 namespace Ui {
 class AddRecipients;
@@ -30,13 +34,23 @@ class AddRecipients : public QDialog
 	Q_OBJECT
 
 public:
-	explicit AddRecipients(QWidget *parent = 0);
+	explicit AddRecipients(const std::vector<Item*>& items, QWidget *parent = 0);
 	~AddRecipients();
 
 	int exec() override;
+
+protected:
+	void setAddressItems(const std::vector<Item*>& items);
+	void enableRecipientFromCard();
+	void addRecipientFromCard();
+	void addRecipientToRightList(Item* toAdd);
+	void addAllRecipientFromLeftPane();
+	void removeRecipientFromRightList(Item *toRemove);
 
 private:
 	void init();
 
 	Ui::AddRecipients *ui;
+	QMap<QString, AddressItem *> leftList;
+	QStringList rightList;
 };

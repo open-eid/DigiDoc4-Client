@@ -36,5 +36,6 @@ public slots:
 	virtual void idChanged(const QString& cardCode, const QString& mobileCode);
 
 signals:
+	void add(Item* item);
 	void remove(Item* item);
 };
