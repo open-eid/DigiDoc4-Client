@@ -24,6 +24,7 @@
 #include "Settings.h"
 #include "Styles.h"
 #include "dialogs/MobileDialog.h"
+#include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
 #include "widgets/FileItem.h"
 #include "widgets/SignatureItem.h"
@@ -133,7 +134,7 @@ void ContainerPage::init()
 
 void ContainerPage::forward(int code)
 {
-	if(code & (SignatureAdd | SignatureMobile))
+	if(code == SignatureAdd || code == SignatureMobile)
 	{
 		if(ui->rightPane->hasItem(
 			[this](Item* const item) -> bool
@@ -143,7 +144,11 @@ void ContainerPage::forward(int code)
 			}
 		))
 		{
-			// TODO
+			WarningDialog dlg(tr("The document has already been signed by you."), this);
+			dlg.addButton(tr("CONTINUE SIGNING"), SignatureAdd);
+			dlg.exec();
+			if(dlg.result() != SignatureAdd)
+				return;
 		}
 	}
 	emit action(code);
@@ -372,18 +377,6 @@ void ContainerPage::transition(DigiDoc* container)
 
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(state);
-
-	// TODO Show invalid signature status
-	// switch( status )
-	// {
-	// case DigiDocSignature::Invalid: viewSignaturesError->setText( tr("NB! Invalid signature") ); break;
-	// case DigiDocSignature::Unknown: viewSignaturesError->setText( "<i>" + tr("NB! Status unknown") + "</i>" ); break;
-	// case DigiDocSignature::Test: viewSignaturesError->setText( tr("NB! Test signature") ); break;
-	// case DigiDocSignature::Warning: viewSignaturesError->setText( "<font color=\"#FFB366\">" + tr("NB! Signature contains warnings") + "</font>" ); break;
-	// case DigiDocSignature::NonQSCD: viewSignaturesError->clear(); break;
-	// case DigiDocSignature::Valid: viewSignaturesError->clear(); break;
-	// }
-	// break;
 }
 
 void ContainerPage::updatePanes(ContainerState state)
