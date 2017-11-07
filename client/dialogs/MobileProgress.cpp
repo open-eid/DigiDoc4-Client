@@ -82,11 +82,11 @@ MobileProgress::MobileProgress( QWidget *parent )
 	taskbar->setWindow(parent->windowHandle());
 	taskbar->progress()->setRange(signProgressBar->minimum(), signProgressBar->maximum());
 	connect(statusTimer, &QTimeLine::frameChanged, taskbar->progress(), &QWinTaskbarProgress::setValue);
-    connect(cancel, &QPushButton::clicked, this, &MobileProgress::stop);
+	connect(cancel, &QPushButton::clicked, this, &MobileProgress::stop);
 #endif
 
-    cancel->setFont(Styles::font(Styles::Condensed, 14));
-    connect(cancel, &QPushButton::clicked, this, &MobileProgress::reject);
+	cancel->setFont(Styles::font(Styles::Condensed, 14));
+	connect(cancel, &QPushButton::clicked, this, &MobileProgress::reject);
 
 	manager = new QNetworkAccessManager( this );
 	connect(manager, &QNetworkAccessManager::finished, this, &MobileProgress::finished);
@@ -158,8 +158,8 @@ void MobileProgress::finished( QNetworkReply *reply )
 		{
 			code->setText( tr("Make sure control code matches with one in phone screen\n"
 				"and enter Mobile-ID PIN2-code.\nControl code: %1").arg( xml.readElementText() ) );
-            code->setAccessibleName( code->text() );
-            adjustSize();
+			code->setAccessibleName( code->text() );
+			adjustSize();
 		}
 		else if( xml.name() == "Sesscode" )
 			sessionCode = xml.readElementText();

@@ -33,8 +33,6 @@
 #include <QImage>
 #include <QWidget>
 
-class DigiDoc;
-
 namespace Ui {
 class MainWindow;
 }
@@ -44,7 +42,7 @@ class DigiDoc;
 class DocumentModel;
 class WarningItem;
 class WarningRibbon;
-class WarningText;
+struct WarningText;
 
 class MainWindow : public QWidget
 {
