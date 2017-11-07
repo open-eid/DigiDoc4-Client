@@ -431,7 +431,8 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(create)
 		{
 			QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
-			QString filename = FileUtil::createFile(files[0], QString(".%1").arg(ext), tr("signature container"));
+			QString defaultDir = Settings(qApp->applicationName()).value("Client/DefaultDir").toString();
+			QString filename = FileUtil::createNewFileName(files[0], QString(".%1").arg(ext), tr("signature container"), defaultDir);
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -457,7 +458,8 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 		if(create)
 		{
-			QString filename = FileUtil::createFile(files[0], ".cdoc", tr("crypto container"));
+			QString defaultDir = Settings(qApp->applicationName()).value("Client/DefaultDir").toString();
+			QString filename = FileUtil::createNewFileName(files[0], ".cdoc", tr("crypto container"), defaultDir);
 			if(!filename.isNull())
 			{
 				cryptoContainer->clear(filename);
