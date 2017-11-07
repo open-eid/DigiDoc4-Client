@@ -72,6 +72,7 @@ private Q_SLOTS:
 
 protected:
 	void changeEvent(QEvent* event) override;
+	void closeEvent(QCloseEvent *event) override;
 	void dragEnterEvent( QDragEnterEvent *event ) override;
 	void dragLeaveEvent( QDragLeaveEvent *event ) override;
 	void dropEvent( QDropEvent *event ) override;
