@@ -44,7 +44,7 @@ class DigiDoc;
 class DocumentModel;
 class WarningItem;
 class WarningRibbon;
-class WarningText;
+struct WarningText;
 
 class MainWindow : public QWidget
 {

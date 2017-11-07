@@ -29,5 +29,6 @@ class FileUtil
 public:
 	static QString create(const QFileInfo &fileInfo, const QString &extension, const QString &type);
 	static QString createFile(const QString &file, const QString &extension, const QString &type);
+	static QString createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir);
 	static ria::qdigidoc4::FileType detect(const QString &filename);
 };
