@@ -81,12 +81,21 @@ void WarningDialog::addButton(const QString& label, int ret)
 	auto layout = qobject_cast<QBoxLayout*>(ui->buttonBar->layout());
 	layout->insertSpacing(buttonOffset++, 35);
 
+	QFont font = Styles::font(Styles::Condensed, 14);
+	QFontMetrics fm(font);
+
 	QPushButton *button = new QPushButton(label, this);
-	button->setMinimumSize(120, 34);
+	button->setCursor(Qt::PointingHandCursor);
+	button->setFont(font);
+
+	int width = 120;
+	int textWidth = fm.width(label);
+	if(textWidth > 115)
+		width = textWidth + 16;
+	button->setMinimumSize(width, 34);
 	button->setStyleSheet("QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\nQPushButton:pressed {background-color: #41B6E6;} "
 		"QPushButton:hover:!pressed {background-color: #008DCF;}\nQPushButton:disabled {background-color: #BEDBED;}");
-	button->setCursor(Qt::PointingHandCursor);
-	button->setFont(Styles::font(Styles::Condensed, 14));
+
 	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
 	layout->insertWidget(buttonOffset++, button);
 }

@@ -69,7 +69,7 @@ background-color: #FFFFFF;</string>
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">margin: 10px 15px 0px 15px;</string>
+      <string notr="true">margin: 10px 15px 0px 15px;  border: none;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -134,7 +134,7 @@ background-color: #FFFFFF;</string>
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">margin: 0px 15px 0px 15px;</string>
+      <string notr="true">margin: 0px 15px 0px 15px; border: none;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -163,6 +163,9 @@ background-color: #FFFFFF;</string>
        <width>16777215</width>
        <height>45</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">

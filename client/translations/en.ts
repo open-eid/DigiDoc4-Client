@@ -549,6 +549,18 @@ Learn more info here:</translation>
         <source>time</source>
         <translation>time</translation>
     </message>
+    <message>
+        <source>Remove signature %1</source>
+        <translation>Remove signature %1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 
 
@@ -958,6 +970,18 @@ Learn more info here:</translation>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
         <translation>Mobile-ID user certificates are revoked or suspended.</translation>
+    </message>
+    <message>
+        <source>Make sure control code matches with one in phone screen
+and enter Mobile-ID PIN2-code.
+Control code: %1</source>
+        <translation>Make sure control code matches with one in phone screen
+and enter Mobile-ID PIN2-code.
+Control code: %1</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
+        <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
     </message>
 </context>
 
@@ -1405,6 +1429,14 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>More information</source>
         <translation>More information</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you.</source>
+        <translation>The document has already been signed by you.</translation>
+    </message>
+    <message>
+        <source>CONTINUE SIGNING</source>
+        <translation>CONTINUE SIGNING</translation>
     </message>
 </context>
 
@@ -2122,14 +2154,6 @@ New ID-cards have chip on the back side of the card.</translation>
         <translation>Personal code</translation>
     </message>
     <message>
-        <source>Continue signing</source>
-        <translation>Continue signing</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you.</source>
-        <translation>The document has already been signed by you.</translation>
-    </message>
-    <message>
         <source>Signing not allowed.</source>
         <translation>Signing not allowed.</translation>
     </message>
@@ -2275,14 +2299,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Sign</translation>
     </message>
     <message>
-        <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
-        <translation>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</translation>
-    </message>
-    <message>
         <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
         <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
     </message>
@@ -2297,10 +2313,6 @@ Control code: %1</translation>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
         <translation>Your Mobile-ID service is not activated.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
-        <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
@@ -2480,69 +2492,8 @@ Control code: %1</translation>
         <translation>Failed to decrypt document</translation>
     </message>
 </context>
-<context>
-    <name>SignatureWidget</name>
-    <message>
-        <source>Show details</source>
-        <translation>Show details</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Remove</translation>
-    </message>
-    <message>
-        <source>Signed on</source>
-        <translation>Signed on</translation>
-    </message>
-    <message>
-        <source>time</source>
-        <translation>time</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test signature</translation>
-    </message>
-    <message>
-        <source>Remove signature %1</source>
-        <translation>Remove signature %1</translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation>Location</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Role</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Signature</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Warnings</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Restrictions</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Timestamp</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <translation>is unknown</translation>
-    </message>
-</context>
+
+
 <context>
     <name>MainAction</name>
     <message>

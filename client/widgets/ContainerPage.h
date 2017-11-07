@@ -66,6 +66,7 @@ protected:
 
 private:
 	void changeCard(const QString& idCode);
+	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void clear();
 	void elideFileName(bool force = false);
 	void forward(int code);

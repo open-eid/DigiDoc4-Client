@@ -26,17 +26,11 @@
 #include "dialogs/MobileDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
-#include "widgets/FileItem.h"
 #include "widgets/SignatureItem.h"
 
-#include <QFileDialog>
 #include <QDir>
 #include <QFileInfo>
 #include <QFontMetrics>
-#include <QGraphicsDropShadowEffect>
-#include <QMessageBox>
-#include <QProgressBar>
-#include <QProgressDialog>
 
 using namespace ria::qdigidoc4;
 
@@ -66,10 +60,9 @@ ContainerPage::~ContainerPage()
 	delete ui;
 }
 
-void ContainerPage::clear()
+void ContainerPage::browseContainer(QString link)
 {
-	ui->leftPane->clear();
-	ui->rightPane->clear();
+	emit action(Actions::ContainerNavigate, link);
 }
 
 void ContainerPage::changeCard(const QString& idCode)
@@ -80,6 +73,35 @@ void ContainerPage::changeCard(const QString& idCode)
 		if(mainAction && (ui->leftPane->getState() & SignatureContainers))
 			showSigningButton();
 	}
+}
+
+bool ContainerPage::checkAction(int code, const QString& selectedCard, const QString& selectedMobile)
+{
+	if(code == SignatureAdd || code == SignatureMobile)
+	{
+		if(ui->rightPane->hasItem(
+			[selectedCard, selectedMobile](Item* const item) -> bool
+			{
+				auto signatureItem = qobject_cast<SignatureItem* const>(item);
+				return signatureItem && signatureItem->isSelfSigned(selectedCard, selectedMobile);
+			}
+		))
+		{
+			WarningDialog dlg(tr("The document has already been signed by you."), this);
+			dlg.addButton(tr("CONTINUE SIGNING"), SignatureAdd);
+			dlg.exec();
+			if(dlg.result() != SignatureAdd)
+				return false;
+		}
+	}
+
+	return true;
+}
+
+void ContainerPage::clear()
+{
+	ui->leftPane->clear();
+	ui->rightPane->clear();
 }
 
 void ContainerPage::elideFileName(bool force)
@@ -95,6 +117,12 @@ void ContainerPage::elideFileName(bool force)
 		elided = false;
 		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName + "</span></a>");
 	}
+}
+
+void ContainerPage::forward(int code)
+{
+	if(checkAction(code, cardInReader, mobileCode))
+		emit action(code);
 }
 
 void ContainerPage::init()
@@ -130,33 +158,6 @@ void ContainerPage::init()
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
-}
-
-void ContainerPage::forward(int code)
-{
-	if(code == SignatureAdd || code == SignatureMobile)
-	{
-		if(ui->rightPane->hasItem(
-			[this](Item* const item) -> bool
-			{
-				auto signatureItem = qobject_cast<SignatureItem* const>(item);
-				return signatureItem && signatureItem->isSelfSigned(cardInReader, mobileCode);
-			}
-		))
-		{
-			WarningDialog dlg(tr("The document has already been signed by you."), this);
-			dlg.addButton(tr("CONTINUE SIGNING"), SignatureAdd);
-			dlg.exec();
-			if(dlg.result() != SignatureAdd)
-				return;
-		}
-	}
-	emit action(code);
-}
-
-void ContainerPage::browseContainer(QString link)
-{
-	emit action(Actions::ContainerNavigate, link);
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
@@ -205,7 +206,8 @@ void ContainerPage::mobileDialog()
 	QString newCode = Settings().value("Client/MobileCode").toString();
 	if( dlg.exec() == QDialog::Accepted )
 	{
-		emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
+		if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
+			emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
 	}
 
 	if (newCode != mobileCode)
@@ -241,8 +243,6 @@ void ContainerPage::changeEvent(QEvent* event)
 
 	QWidget::changeEvent(event);
 }
-
-
 
 void ContainerPage::setHeader(const QString &file)
 {
@@ -353,13 +353,13 @@ void ContainerPage::transition(DigiDoc* container)
 		ui->rightPane->addHeader(tr("Container's timestamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
-			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, ui->rightPane));
+			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, false, ui->rightPane));
 	}
 
 	bool enableSigning = container->isSupported();
 	for(const DigiDocSignature &c: container->signatures())
 	{
-		SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
+		SignatureItem *item = new SignatureItem(c, state, enableSigning, ui->rightPane);
 		if(item->isInvalid())
 		{
 			emit action(Actions::SignatureWarning, tr("One signature is invalid!"),

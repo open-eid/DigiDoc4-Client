@@ -546,6 +546,18 @@ Rohkem infot leiate siit:</translation>
         <source>time</source>
         <translation>kell</translation>
     </message>
+    <message>
+        <source>Remove signature %1</source>
+        <translation>Eemalda allkiri %1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 
 <context>
@@ -953,6 +965,18 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
         <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
+    </message>
+    <message>
+        <source>Make sure control code matches with one in phone screen
+and enter Mobile-ID PIN2-code.
+Control code: %1</source>
+        <translation>Veendu kontrollkoodi õigsuses
+ja sisesta telefonil Mobiil-ID PIN2-kood.
+Kontrollkood: %1</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
+        <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
     </message>
 </context>
 
@@ -1397,6 +1421,14 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>More information</source>
         <translation>Rohkem infot</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you.</source>
+        <translation>Dokument on sinu poolt juba allkirjastatud.</translation>
+    </message>
+    <message>
+        <source>CONTINUE SIGNING</source>
+        <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
     </message>
 </context>
 
@@ -2099,14 +2131,6 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
-        <source>Continue signing</source>
-        <translation>Jätka allkirjastamisega</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you.</source>
-        <translation>Dokument on sinu poolt juba allkirjastatud.</translation>
-    </message>
-    <message>
         <source>Signing not allowed.</source>
         <translation>Allkirja andmine ei ole lubatud.</translation>
     </message>
@@ -2253,14 +2277,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation>Allkirjastan</translation>
     </message>
     <message>
-        <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
-        <translation>Veendu kontrollkoodi õigsuses
-ja sisesta telefonil Mobiil-ID PIN2-kood.
-Kontrollkood: %1</translation>
-    </message>
-    <message>
         <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
         <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
     </message>
@@ -2275,10 +2291,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
         <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
-        <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
@@ -2458,69 +2470,8 @@ Kontrollkood: %1</translation>
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context>
-    <name>SignatureWidget</name>
-    <message>
-        <source>Show details</source>
-        <translation>Vaata üksikasju</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Eemalda</translation>
-    </message>
-    <message>
-        <source>Signed on</source>
-        <translation>Allkirjastati</translation>
-    </message>
-    <message>
-        <source>time</source>
-        <translation>kell</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test allkiri</translation>
-    </message>
-    <message>
-        <source>Remove signature %1</source>
-        <translation>Eemalda allkiri %1</translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation>Asukoht</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Roll</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>hoiatusega</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>piirangud</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Ajatempel</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <translation>on teadmata</translation>
-    </message>
-</context>
+
+
 <context>
     <name>MainAction</name>
     <message>

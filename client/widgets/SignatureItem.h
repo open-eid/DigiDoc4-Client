@@ -35,11 +35,10 @@ class SignatureItem : public Item
 	Q_OBJECT
 
 public:
-	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
+	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, bool isSupported, QWidget *parent = nullptr);
 	~SignatureItem();
 
 	QString id() const override;
-	void idChanged(const QString& cardCode, const QString& mobileCode) override;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
 
@@ -56,6 +55,7 @@ private:
 	void init();
 	void recalculate();
 	QString red(const QString &text);
+	void removeSignature();
 	void setIcon(const QString &icon, int width = 17, int height = 20);
 
 	Ui::SignatureItem *ui;

@@ -548,6 +548,18 @@ Learn more info here:</source>
         <source>time</source>
         <translation>время</translation>
     </message>
+    <message>
+        <source>Remove signature %1</source>
+        <translation>Удалить подпись %1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 
 
@@ -956,6 +968,18 @@ Learn more info here:</source>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
         <translation>Сертификаты Mobiil-ID признаны не действительными или их действие приостановлено.</translation>
+    </message>
+    <message>
+        <source>Make sure control code matches with one in phone screen
+and enter Mobile-ID PIN2-code.
+Control code: %1</source>
+        <translation>Убедитесь в правильности контрольного кодa
+и введите PIN2-код для Mobiil-ID.
+Kонтрольны код: %1</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
+        <translation>Не удалось создать SSL канал передачи данных. Проверьте настройки буферного сервера компьютера или обновления программного обеспечения.</translation>
     </message>
 </context>
 
@@ -1395,6 +1419,14 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     <message>
         <source>More information</source>
         <translation>Дополнительная информация</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you.</source>
+        <translation>Вы уже подписали этот документ.</translation>
+    </message>
+    <message>
+        <source>CONTINUE SIGNING</source>
+        <translation>ПОДПИСАТЬ</translation>
     </message>
 </context>
 
@@ -2098,14 +2130,6 @@ New ID-cards have chip on the back side of the card.</source>
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
-        <source>Continue signing</source>
-        <translation>Подписать</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you.</source>
-        <translation>Вы уже подписали этот документ.</translation>
-    </message>
-    <message>
         <source>Signing not allowed.</source>
         <translation>Подпись невозможна.</translation>
     </message>
@@ -2259,14 +2283,6 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Подписать</translation>
     </message>
     <message>
-        <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
-        <translation>Убедитесь в правильности контрольного кодa
-и введите PIN2-код для Mobiil-ID.
-Kонтрольны код: %1</translation>
-    </message>
-    <message>
         <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
         <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
     </message>
@@ -2281,10 +2297,6 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
         <translation>Не активирована услуга Mobiil-ID.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
-        <translation>Не удалось создать SSL канал передачи данных. Проверьте настройки буферного сервера компьютера или обновления программного обеспечения.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
@@ -2462,69 +2474,6 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Failed to decrypt document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SignatureWidget</name>
-    <message>
-        <source>Signed on</source>
-        <translation>Подписано</translation>
-    </message>
-    <message>
-        <source>Show details</source>
-        <translation>Подробнее</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>time</source>
-        <translation>Время</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Пробная подпись</translation>
-    </message>
-    <message>
-        <source>Remove signature %1</source>
-        <translation>Удалить подпись %1</translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Роль</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Подпись</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>предупреждения</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>oгрaничения</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>действительна</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>недействительна</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <translation>неизвестно</translation>
     </message>
 </context>
 

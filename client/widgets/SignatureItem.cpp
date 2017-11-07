@@ -20,8 +20,10 @@
 #include "SignatureItem.h"
 #include "ui_SignatureItem.h"
 
+#include "Application.h"
 #include "Styles.h"
 #include "dialogs/SignatureDialog.h"
+#include "dialogs/WarningDialog.h"
 #include "effects/ButtonHoverFilter.h"
 
 #include <common/DateTime.h>
@@ -39,7 +41,7 @@ using namespace ria::qdigidoc4;
 #define LINE_HEIGHT 16
 
 
-SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QWidget *parent)
+SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, bool isSupported, QWidget *parent)
 : Item(parent)
 , ui(new Ui::SignatureItem)
 , signature(s)
@@ -52,8 +54,14 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, QW
 	ui->name->setFont(nameFont);
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
 	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
-	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
+	ui->remove->setVisible(isSupported);
+	connect(ui->remove, &QToolButton::clicked, this, &SignatureItem::removeSignature);
 	init();
+}
+
+SignatureItem::~SignatureItem()
+{
+	delete ui;
 }
 
 void SignatureItem::init()
@@ -152,11 +160,6 @@ void SignatureItem::init()
 	changeNameHeight();
 }
 
-SignatureItem::~SignatureItem()
-{
-	delete ui;
-}
-
 void SignatureItem::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
@@ -198,17 +201,6 @@ QString SignatureItem::id() const
 	return signature.id();
 }
 
-void SignatureItem::idChanged(const QString& cardCode, const QString& mobileCode)
-{
-	bool hidden = ui->remove->isHidden();
-	if(isSelfSigned(cardCode, mobileCode) == hidden)
-	{
-		ui->remove->setVisible(hidden);
-		recalculate();
-		changeNameHeight();
-	}
-}
-
 bool SignatureItem::isInvalid() const
 {
 	return invalid;
@@ -234,6 +226,20 @@ void SignatureItem::recalculate()
 QString SignatureItem::red(const QString &text)
 {
 	return "<font color=\"red\">" + text + "</font>";
+}
+
+void SignatureItem::removeSignature()
+{
+	const SslCertificate c = signature.cert();
+	QString msg = tr("Remove signature %1")
+		.arg( c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) );
+
+	WarningDialog dlg(msg, qApp->activeWindow());
+	dlg.setCancelText(tr("CANCEL"));
+	dlg.addButton(tr("OK"), SignatureRemove);
+	dlg.exec();
+	if(dlg.result() == SignatureRemove)
+		emit remove(this);
 }
 
 void SignatureItem::resizeEvent(QResizeEvent *event)
