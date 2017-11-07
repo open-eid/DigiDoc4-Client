@@ -22,6 +22,7 @@
 #include "common_enums.h"
 #include "widgets/Item.h"
 
+#include <functional>
 #include <QWidget>
 
 namespace Ui {
@@ -43,7 +44,8 @@ public:
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
 	void clear();
-	ria::qdigidoc4::ContainerState getState();
+	ria::qdigidoc4::ContainerState getState() const;
+	bool hasItem(std::function<bool(Item* const)> cb);
 	void removeItem(int row);
 	void stateChange(ria::qdigidoc4::ContainerState state);
 

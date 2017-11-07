@@ -149,7 +149,7 @@ void ItemList::details(const QString &id)
 	}
 }
 
-ContainerState ItemList::getState() { return state; }
+ContainerState ItemList::getState() const { return state; }
 
 int ItemList::index(Item *item) const
 {
@@ -158,6 +158,17 @@ int ItemList::index(Item *item) const
 		return std::distance(items.begin(), it);
 
 	return -1;
+}
+
+bool ItemList::hasItem(std::function<bool(Item* const)> cb)
+{
+	for(auto item: items)
+	{
+		if(cb(item))
+			return true;
+	}
+
+	return false;
 }
 
 void ItemList::init(ItemType item, const QString &header, bool hideFind)

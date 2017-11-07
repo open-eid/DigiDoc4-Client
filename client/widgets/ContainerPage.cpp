@@ -133,6 +133,19 @@ void ContainerPage::init()
 
 void ContainerPage::forward(int code)
 {
+	if(code & (SignatureAdd | SignatureMobile))
+	{
+		if(ui->rightPane->hasItem(
+			[this](Item* const item) -> bool
+			{
+				auto signatureItem = qobject_cast<SignatureItem* const>(item);
+				return signatureItem && signatureItem->isSelfSigned(cardInReader, mobileCode);
+			}
+		))
+		{
+			// TODO
+		}
+	}
 	emit action(code);
 }
 
@@ -350,8 +363,6 @@ void ContainerPage::transition(DigiDoc* container)
 					.arg(tr("More information")));
 		}
 		ui->rightPane->addWidget(item);
-		if(enableSigning && item->isSelfSigned(cardInReader, mobileCode))
-			enableSigning = false;
 	}
 
 	if(enableSigning)
