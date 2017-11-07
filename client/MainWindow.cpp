@@ -345,6 +345,11 @@ void MainWindow::clearCertWarning()
 	updateWarnings();
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	resetDigiDoc();
+}
+
 bool MainWindow::closeWarning(WarningItem *warning, bool force)
 {
 	if(force || !warning->property("updateCertificateEnabled").toBool())
@@ -442,7 +447,6 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(navigate)
 		{
 			resetDigiDoc(signatureContainer.release());
-			connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 			ui->signContainerPage->transition(digiDoc);
 		}
 	}
@@ -512,29 +516,6 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		ui->signature->warningIcon(true);
 		break;
 	case ContainerCancel:
-		if(digiDoc && digiDoc->isModified())
-		{
-			QString warning, cancelTxt, saveTxt;
-			if(digiDoc->state() == UnsignedContainer)
-			{
-				warning = tr("You've added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?");
-				cancelTxt = tr("REMOVE");
-				saveTxt = tr("KEEP");
-			}
-			else
-			{
-				warning = tr("You've changed the open container but have not saved any changes. Save the changes or close without saving?");
-				cancelTxt = tr("DO NOT SAVE");
-				saveTxt = tr("SAVE");
-			}
-
-			WarningDialog dlg(warning, this);
-			dlg.setCancelText(cancelTxt);
-			dlg.addButton(saveTxt, ContainerSave);
-			dlg.exec();
-			if(dlg.result() == ContainerSave)
-				save();
-		}
 		navigateToPage(Pages::SignIntro);
 		break;
 	case ContainerConvert:
@@ -579,7 +560,6 @@ void MainWindow::convertToBDoc()
 		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
 
 	resetDigiDoc(signatureContainer.release());
-	connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 	delete cryptoDoc;
 	cryptoDoc = nullptr;
 
@@ -780,10 +760,36 @@ void MainWindow::operation(int op, bool started)
 
 void MainWindow::resetDigiDoc(DigiDoc *doc)
 {
+	if(digiDoc && digiDoc->isModified())
+	{
+		QString warning, cancelTxt, saveTxt;
+		if(digiDoc->state() == UnsignedContainer)
+		{
+			warning = tr("You've added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?");
+			cancelTxt = tr("REMOVE");
+			saveTxt = tr("KEEP");
+		}
+		else
+		{
+			warning = tr("You've changed the open container but have not saved any changes. Save the changes or close without saving?");
+			cancelTxt = tr("DO NOT SAVE");
+			saveTxt = tr("SAVE");
+		}
+
+		WarningDialog dlg(warning, this);
+		dlg.setCancelText(cancelTxt);
+		dlg.addButton(saveTxt, ContainerSave);
+		dlg.exec();
+		if(dlg.result() == ContainerSave)
+			save();
+	}
+
 	ui->signature->warningIcon(false);
 	delete digiDoc;
 	closeWarnings(SignDetails);
 	digiDoc = doc;
+	if(digiDoc)
+		connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
 }
 
 void MainWindow::resizeEvent( QResizeEvent *event )
