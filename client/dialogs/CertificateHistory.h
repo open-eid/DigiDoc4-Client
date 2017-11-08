@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocCrypto
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,45 +19,26 @@
 
 #pragma once
 
-#include "widgets/AddressItem.h"
+#include "crypto/CryptoDoc.h"
 
 #include <QDialog>
-#include <QMap>
 
+namespace Ui { class CertificateHistory; }
 
-namespace Ui {
-class AddRecipients;
-}
-
-class AddRecipients : public QDialog
+class CertificateHistory: public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit AddRecipients(const std::vector<Item*>& items, QWidget *parent = 0);
-	~AddRecipients();
-
-	int exec() override;
+	CertificateHistory( QWidget *parent = 0 );
+	~CertificateHistory();
 
 protected:
-	void setAddressItems(const std::vector<Item*>& items);
-	void enableRecipientFromCard();
-
-	void addRecipientToRightPane(Item* toAdd);
-	void addAllRecipientToRightPane();
-	void removeRecipientFromRightPane(Item *toRemove);
-
-	void addRecipientToLeftPane(const QSslCertificate& cert);
-	void addRecipientFromCard();
-	void addRecipientFromFile();
-
 	QString path() const;
-	void addRecipientFromHistory();
 
-private:
-	void init();
+	void select();
+	void remove();
 
-	Ui::AddRecipients *ui;
-	QMap<QString, AddressItem *> leftList;
-	QStringList rightList;
+
+	Ui::CertificateHistory *ui;
 };
