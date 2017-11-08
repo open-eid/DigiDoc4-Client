@@ -72,6 +72,10 @@
         <source>TSL signing certs</source>
         <translation>TSL signing certs</translation>
     </message>
+    <message>
+        <source>Create %1</source>
+        <translation>Create %1</translation>
+    </message>
 </context>
 <context>
     <name>CheckConnection</name>
@@ -781,8 +785,8 @@ Learn more info here:</translation>
         <source>%1 in reader</source>
         <translation>%1 in reader</translation>
     </message>
-
 </context>
+
 
 <context>
     <name>FirstRun</name>

@@ -72,6 +72,10 @@
         <source>TSL signing certs</source>
         <translation>Сертификаты подписывания TSL</translation>
     </message>
+    <message>
+        <source>Create %1</source>
+        <translation>Создайте %1</translation>
+    </message>
 </context>
 <context>
     <name>CheckConnection</name>
