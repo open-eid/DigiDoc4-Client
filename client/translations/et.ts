@@ -72,6 +72,10 @@
         <source>TSL signing certs</source>
         <translation>TSL signeerimise sertifikaadid</translation>
     </message>
+    <message>
+        <source>Create %1</source>
+        <translation>Loo %1</translation>
+    </message>
 </context>
 <context>
     <name>CheckConnection</name>
