@@ -21,7 +21,6 @@
 #include "AddRecipients.h"
 #include "ui_AddRecipients.h"
 
-#include "CertificateHistory.h"
 #include "common_enums.h"
 #include "FileDialog.h"
 #include "Styles.h"
@@ -84,6 +83,47 @@ void AddRecipients::init()
 
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
 	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
+
+	QFile f( path() );
+	if( !f.open( QIODevice::ReadOnly ) )
+		return;
+
+	QXmlStreamReader xml( &f );
+	if( !xml.readNextStartElement() || xml.name() != "History" )
+		return;
+
+	while( xml.readNextStartElement() )
+	{
+		if( xml.name() == "item" )
+		{
+			QString type;
+			switch (xml.attributes().value( "type" ).toInt())
+			{
+				case SslCertificate::DigiIDType:
+					type = tr("Digi-ID");
+					break;
+				case SslCertificate::EstEidType:
+					type = tr("ID-card");
+					break;
+				case SslCertificate::MobileIDType:
+					type = tr("Mobile-ID");
+					break;
+				default:
+					type = tr("Unknown ID");
+					break;
+			}
+
+			historyCertData.append(
+				{
+					xml.attributes().value( "CN" ).toString(),
+					type,
+					xml.attributes().value( "issuer" ).toString(),
+					xml.attributes().value( "expireDate" ).toString()
+				});
+		}
+		xml.skipCurrentElement();
+	}
+
 }
 
 void AddRecipients::setAddressItems(const std::vector<Item *> &items)
@@ -229,38 +269,51 @@ QString AddRecipients::path() const
 
 void AddRecipients::addRecipientFromHistory()
 {
-	CertificateHistory dlg(this);
+	CertificateHistory dlg(historyCertData, this);
+	connect(&dlg, &CertificateHistory::addSelectedCetrs, this, &AddRecipients::addSelectedCetrs);
+	connect(&dlg, &CertificateHistory::removeSelectedCetrs, this, &AddRecipients::removeSelectedCetrs);
 	dlg.exec();
+}
 
-//	QFile f( path() );
-//	if( !f.open( QIODevice::ReadOnly ) )
-//		return;
+void AddRecipients::addSelectedCetrs(const QList<HistoryCertData>& selectedCertData)
+{
+	qDebug() << "NOT IMPLEMENTES addSelectedCetrs()";
+}
 
-//	QXmlStreamReader xml( &f );
-//	if( !xml.readNextStartElement() || xml.name() != "History" )
-//		return;
+void AddRecipients::removeSelectedCetrs(const QList<HistoryCertData>& removeCertData)
+{
+	if(removeCertData.isEmpty())
+		return;
 
-//	QList<QStringList> m_data;
 
-//	while( xml.readNextStartElement() )
-//	{
-//		if( xml.name() == "item" )
-//		{
-////			m_data << (QStringList()
-////				<< xml.attributes().value( "CN" ).toString()
-////				<< xml.attributes().value( "type" ).toString()
-////				<< xml.attributes().value( "issuer" ).toString()
-////				<< xml.attributes().value( "expireDate" ).toString());
+	QMutableListIterator<HistoryCertData> i(historyCertData);
+	while (i.hasNext())
+	{
+		if(removeCertData.contains(i.next()))
+			i.remove();
+	}
 
-//			qDebug()
-//				<< xml.attributes().value( "CN" ).toString()
-//				<< xml.attributes().value( "type" ).toString()
-//				<< xml.attributes().value( "issuer" ).toString()
-//				<< xml.attributes().value( "expireDate" ).toString();
-//		}
-//		xml.skipCurrentElement();
-//	}
 
+	QString p = path();
+	QDir().mkpath( QFileInfo( p ).absolutePath() );
+	QFile f( p );
+	if( !f.open( QIODevice::WriteOnly|QIODevice::Truncate ) )
+		return;
+
+	QXmlStreamWriter xml( &f );
+	xml.setAutoFormatting( true );
+	xml.writeStartDocument();
+	xml.writeStartElement( "History" );
+	for(const HistoryCertData& certData : historyCertData)
+	{
+		xml.writeStartElement( "item" );
+		xml.writeAttribute( "CN", certData.CN );
+		xml.writeAttribute( "type", certData.type );
+		xml.writeAttribute( "issuer", certData.issuer );
+		xml.writeAttribute( "expireDate", certData.expireDate );
+		xml.writeEndElement();
+	}
+	xml.writeEndDocument();
 }
 
 

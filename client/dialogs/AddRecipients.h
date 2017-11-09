@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "CertificateHistory.h"
 #include "widgets/AddressItem.h"
 
 #include <QDialog>
@@ -57,7 +58,13 @@ protected:
 private:
 	void init();
 
+	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
+	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
+
+
 	Ui::AddRecipients *ui;
 	QMap<QString, AddressItem *> leftList;
 	QStringList rightList;
+
+	QList<HistoryCertData> historyCertData;
 };

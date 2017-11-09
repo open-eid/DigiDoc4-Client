@@ -25,20 +25,37 @@
 
 namespace Ui { class CertificateHistory; }
 
+class HistoryCertData
+{
+public:
+	QString CN;
+	QString type;
+	QString issuer;
+	QString expireDate;
+
+	bool operator==(const HistoryCertData& other);
+};
+
+
 class CertificateHistory: public QDialog
 {
 	Q_OBJECT
 
 public:
-	CertificateHistory( QWidget *parent = 0 );
+	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = 0);
 	~CertificateHistory();
 
+signals:
+	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
+	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
+
 protected:
-	QString path() const;
+	void fillView();
+	void getSelectedItems(QList<HistoryCertData>& selectedCertData);
 
 	void select();
 	void remove();
 
-
 	Ui::CertificateHistory *ui;
+	QList<HistoryCertData>& historyCertData;
 };
