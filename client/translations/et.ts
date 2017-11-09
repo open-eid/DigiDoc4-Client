@@ -233,6 +233,71 @@ Tüüp: %3</translation>
         <source>From history</source>
         <translation>VIIMATI LISATUD</translation>
     </message>
+
+    <message>
+        <source>Failed to open certifiacte</source>
+        <translation>Sertifikaadi avamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Sertifikaadi lugemine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>This certificate is not usable for crypting</source>
+        <translation>Selle sertifikaadiga ei saa krüpteerida</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CertificateHistory</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SELECT</source>
+        <translation>VALI</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>EEMALDA</translation>
+    </message>
+
+    <message>
+        <source>Owner</source>
+        <translation>Omanik</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tüüp</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Tundmatu ID</translation>
+    </message>
 </context>
 
 <context>

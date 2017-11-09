@@ -32,10 +32,19 @@
 #include <QtCore/QXmlStreamWriter>
 
 
+bool HistoryCertData::operator==(const HistoryCertData& other)
+{
+	return	this->CN == other.CN &&
+			this->type == other.type &&
+			this->issuer == other.issuer &&
+			this->expireDate == other.expireDate;
+}
 
-CertificateHistory::CertificateHistory(QWidget *parent )
+
+CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent)
 :	QDialog( parent )
 ,	ui(new Ui::CertificateHistory)
+,	historyCertData(historyCertData)
 {
 	ui->setupUi( this );
 	QFont condensed = Styles::font(Styles::Condensed, 12);
@@ -51,28 +60,8 @@ CertificateHistory::CertificateHistory(QWidget *parent )
 	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::select);
 	connect(ui->remove, &QPushButton::clicked, this, &CertificateHistory::remove);
 
-	QFile f( path() );
-	if( !f.open( QIODevice::ReadOnly ) )
-		return;
-
-	QXmlStreamReader xml( &f );
-	if( !xml.readNextStartElement() || xml.name() != "History" )
-		return;
-
-	while( xml.readNextStartElement() )
-	{
-		if( xml.name() == "item" )
-		{
-			QTreeWidgetItem *i = new QTreeWidgetItem( ui->view );
-			i->setText( 0, xml.attributes().value( "CN" ).toString() );
-			i->setText( 1, xml.attributes().value( "type" ).toString() );
-			i->setText( 2, xml.attributes().value( "issuer" ).toString() );
-			i->setText( 3, xml.attributes().value( "expireDate" ).toString() );
-			ui->view->addTopLevelItem( i );
-		}
-		xml.skipCurrentElement();
-	}
-
+	this->historyCertData = historyCertData;
+	fillView();
 	for(int i = 0; i < 4; i++)
 		ui->view->resizeColumnToContents(i);
 
@@ -86,29 +75,50 @@ CertificateHistory::~CertificateHistory()
 	delete ui;
 }
 
-QString CertificateHistory::path() const
+void CertificateHistory::fillView()
 {
-#ifdef Q_OS_WIN
-	QSettings s( QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), "qdigidoccrypto" );
-	QFileInfo f( s.fileName() );
-	return f.absolutePath() + "/" + f.baseName() + "/certhistory.xml";
-#else
-	return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/certhistory.xml";
-#endif
+	ui->view->clear();
+	for(const HistoryCertData& certData : historyCertData)
+	{
+		QTreeWidgetItem *i = new QTreeWidgetItem( ui->view );
+		i->setText( 0, certData.CN );
+		i->setText( 1, certData.type );
+		i->setText( 2, certData.issuer );
+		i->setText( 3, certData.expireDate );
+		ui->view->addTopLevelItem( i );
+	}
+}
+
+void CertificateHistory::getSelectedItems(QList<HistoryCertData>& selectedCertData)
+{
+	auto selectedRows = ui->view->selectedItems();
+
+	for(QTreeWidgetItem* selectedRow : selectedRows)
+	{
+		selectedCertData.append(
+			{
+				selectedRow->data(0, Qt::DisplayRole).toString(),
+				selectedRow->data(1, Qt::DisplayRole).toString(),
+				selectedRow->data(2, Qt::DisplayRole).toString(),
+				selectedRow->data(3, Qt::DisplayRole).toString(),
+					});
+	}
 }
 
 
 void CertificateHistory::select()
 {
-	auto selectedCerts = ui->view->selectedItems();
+	QList<HistoryCertData> selectedCertData;
 
-	for(QTreeWidgetItem* item : selectedCerts)
-	{
-		qDebug() << item->data(0, Qt::DisplayRole);
-	}
+	getSelectedItems(selectedCertData);
+	emit addSelectedCetrs(selectedCertData);
 }
 
 void CertificateHistory::remove()
 {
-	qDebug() << "NOT IMPLEMENTED REMOVE";
+	QList<HistoryCertData> selectedCertData;
+
+	getSelectedItems(selectedCertData);
+	emit removeSelectedCetrs(selectedCertData);
+	fillView();
 }

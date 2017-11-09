@@ -234,6 +234,72 @@ Media type: %3</translation>
         <source>From history</source>
         <translation>LATEST USED CERTIFICATE</translation>
     </message>
+
+    <message>
+        <source>Failed to open certifiacte</source>
+        <translation>Failed to open certifiacte</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Failed to read certificate</translation>
+    </message>
+    <message>
+        <source>This certificate is not usable for crypting</source>
+        <translation>This certificate is not usable for crypting</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CertificateHistory</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>SELECT</source>
+        <translation>SELECT</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>REMOVE</translation>
+    </message>
+
+    <message>
+        <source>Owner</source>
+        <translation>Owner</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Unknown ID</translation>
+    </message>
+
 </context>
 
 <context>
