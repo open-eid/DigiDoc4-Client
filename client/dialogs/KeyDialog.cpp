@@ -22,6 +22,7 @@
 
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
+#include "effects/Overlay.h"
 
 #include <common/SslCertificate.h>
 
@@ -32,7 +33,10 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 ,	k( key )
 ,	d(new Ui::KeyDialog)
 {
-	d->setupUi( this );
+	d->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
+
 	QFont condensed = Styles::font(Styles::Condensed, 12);
 	d->close->setFont(condensed);
 	d->showCert->setFont(condensed);
@@ -75,4 +79,14 @@ void KeyDialog::showCertificate()
 {
 	CertificateDetails dlg(k.cert, this);
 	dlg.exec();
+}
+
+int KeyDialog::exec()
+{
+	Overlay overlay(parentWidget());
+	overlay.show();
+	auto rc = QDialog::exec();
+	overlay.close();
+
+	return rc;
 }

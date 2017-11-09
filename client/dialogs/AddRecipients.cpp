@@ -26,6 +26,7 @@
 #include "Styles.h"
 #include "client/Application.h"
 #include "client/QSigner.h"
+#include "common/Settings.h"
 #include "common/SslCertificate.h"
 #include "common/TokenData.h"
 #include "effects/Overlay.h"
