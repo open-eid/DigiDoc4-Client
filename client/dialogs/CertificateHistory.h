@@ -45,6 +45,8 @@ public:
 	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = 0);
 	~CertificateHistory();
 
+	int exec() override;
+
 signals:
 	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
 	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);

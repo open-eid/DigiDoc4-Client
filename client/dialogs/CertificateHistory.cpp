@@ -23,6 +23,7 @@
 #include "Styles.h"
 #include "common/SslCertificate.h"
 #include "dialogs/CertificateDetails.h"
+#include "effects/Overlay.h"
 
 #include <QDebug>
 #include <QFile>
@@ -46,7 +47,10 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, 
 ,	ui(new Ui::CertificateHistory)
 ,	historyCertData(historyCertData)
 {
-	ui->setupUi( this );
+	ui->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
+
 	QFont condensed = Styles::font(Styles::Condensed, 12);
 	ui->close->setFont(condensed);
 	ui->select->setFont(condensed);
@@ -121,4 +125,14 @@ void CertificateHistory::remove()
 	getSelectedItems(selectedCertData);
 	emit removeSelectedCetrs(selectedCertData);
 	fillView();
+}
+
+int CertificateHistory::exec()
+{
+	Overlay overlay(parentWidget());
+	overlay.show();
+	auto rc = QDialog::exec();
+	overlay.close();
+
+	return rc;
 }
