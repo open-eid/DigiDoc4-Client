@@ -19,7 +19,12 @@
 
 #pragma once
 
+#include "CertificateHistory.h"
+#include "widgets/AddressItem.h"
+
 #include <QDialog>
+#include <QMap>
+
 
 namespace Ui {
 class AddRecipients;
@@ -30,13 +35,36 @@ class AddRecipients : public QDialog
 	Q_OBJECT
 
 public:
-	explicit AddRecipients(QWidget *parent = 0);
+	explicit AddRecipients(const std::vector<Item*>& items, QWidget *parent = 0);
 	~AddRecipients();
 
 	int exec() override;
 
+protected:
+	void setAddressItems(const std::vector<Item*>& items);
+	void enableRecipientFromCard();
+
+	void addRecipientToRightPane(Item* toAdd);
+	void addAllRecipientToRightPane();
+	void removeRecipientFromRightPane(Item *toRemove);
+
+	void addRecipientToLeftPane(const QSslCertificate& cert);
+	void addRecipientFromCard();
+	void addRecipientFromFile();
+
+	QString path() const;
+	void addRecipientFromHistory();
+
 private:
 	void init();
 
+	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
+	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
+
+
 	Ui::AddRecipients *ui;
+	QMap<QString, AddressItem *> leftList;
+	QStringList rightList;
+
+	QList<HistoryCertData> historyCertData;
 };

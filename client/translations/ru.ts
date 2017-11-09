@@ -237,6 +237,71 @@ Media type: %3</source>
         <source>From history</source>
         <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
     </message>
+
+    <message>
+        <source>Failed to open certifiacte</source>
+        <translation>Открытые сертификата неуспешно</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Чтение сертификата неуспешно</translation>
+    </message>
+    <message>
+        <source>This certificate is not usable for crypting</source>
+        <translation>Данным сертификатом нельзя шифровать</translation>
+    </message>
+</context>
+
+<context>
+    <name>CertificateHistory</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>SELECT</source>
+        <translation>ВЫБРАТЬ</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>УДАЛИТЬ</translation>
+    </message>
+
+    <message>
+        <source>Owner</source>
+        <translation>владелец</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Выдавший</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Дата окончания</translation>
+    </message>
+
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-карта</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Мобильная-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Неизвестный ID</translation>
+    </message>
+
 </context>
 
 <context>

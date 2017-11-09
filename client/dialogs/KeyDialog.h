@@ -33,6 +33,8 @@ public:
 	KeyDialog( const CKey &key, QWidget *parent = 0 );
 	~KeyDialog();
 
+	int exec() override;
+
 private Q_SLOTS:
 	void showCertificate();
 

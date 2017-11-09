@@ -22,16 +22,30 @@
 #include "ui_AddRecipients.h"
 
 #include "common_enums.h"
+#include "FileDialog.h"
 #include "Styles.h"
+#include "client/Application.h"
+#include "client/QSigner.h"
+#include "common/Settings.h"
+#include "common/SslCertificate.h"
+#include "common/TokenData.h"
 #include "effects/Overlay.h"
-#include "widgets/AddressItem.h"
+
+#include <QDebug>
+#include <QMessageBox>
+#include <QStandardPaths>
+#include <QtCore/QXmlStreamReader>
+#include <QtCore/QXmlStreamWriter>
 
 
-AddRecipients::AddRecipients(QWidget *parent) :
+AddRecipients::AddRecipients(const std::vector<Item *> &items, QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::AddRecipients)
+	ui(new Ui::AddRecipients),
+  leftList(),
+  rightList()
 {
 	init();
+	setAddressItems(items);
 }
 
 AddRecipients::~AddRecipients()
@@ -47,7 +61,7 @@ void AddRecipients::init()
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, "Add recipients", false);
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init(ria::qdigidoc4::ToAddAdresses, "Added recipients");
+	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, "Added recipients");
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
@@ -61,25 +75,248 @@ void AddRecipients::init()
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
+	connect(ui->leftPane, &ItemList::addAll, this, &AddRecipients::addAllRecipientToRightPane );
+	connect(ui->rightPane, &ItemList::removed, ui->rightPane, &ItemList::removeItem );
 
+	connect(ui->fromCard, &QPushButton::clicked, this, &AddRecipients::addRecipientFromCard);
+	connect( qApp->signer(), &QSigner::authDataChanged, this, &AddRecipients::enableRecipientFromCard );
+	enableRecipientFromCard();
 
-	AddressItem *add1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	AddressItem *add2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	add1->update("Aadu Aamer", "34511114231", "ID-kaat", AddressItem::Added);
-	add2->update("Alma Tamm", "44510104561", "Digi-ID", AddressItem::Add);
-	ui->leftPane->addWidget(add1);
-	ui->leftPane->addWidget(add2);
+	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
+	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
 
-	AddressItem *curr1 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	AddressItem *curr2 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	AddressItem *curr3 = new AddressItem(ria::qdigidoc4::ContainerState::UnsignedContainer, this);
-	curr1->update( "Heino Liin", "34664778636", "ID-kaat", AddressItem::Remove );
-	curr2->update( "Vello Karm", "44510104561", "ID-kaat", AddressItem::Remove );
-	curr3->update( "Ivar Tuisk", "45643644331", "Digi-ID", AddressItem::Remove );
-	ui->rightPane->addWidget( curr2 );
-	ui->rightPane->addWidget( curr1 );
-	ui->rightPane->addWidget( curr3 );
+	QFile f( path() );
+	if( !f.open( QIODevice::ReadOnly ) )
+		return;
+
+	QXmlStreamReader xml( &f );
+	if( !xml.readNextStartElement() || xml.name() != "History" )
+		return;
+
+	while( xml.readNextStartElement() )
+	{
+		if( xml.name() == "item" )
+		{
+			QString type;
+			switch (xml.attributes().value( "type" ).toInt())
+			{
+				case SslCertificate::DigiIDType:
+					type = tr("Digi-ID");
+					break;
+				case SslCertificate::EstEidType:
+					type = tr("ID-card");
+					break;
+				case SslCertificate::MobileIDType:
+					type = tr("Mobile-ID");
+					break;
+				default:
+					type = tr("Unknown ID");
+					break;
+			}
+
+			historyCertData.append(
+				{
+					xml.attributes().value( "CN" ).toString(),
+					type,
+					xml.attributes().value( "issuer" ).toString(),
+					xml.attributes().value( "expireDate" ).toString()
+				});
+		}
+		xml.skipCurrentElement();
+	}
+
 }
+
+void AddRecipients::setAddressItems(const std::vector<Item *> &items)
+{
+	for(Item *item :items)
+	{
+		AddressItem *leftItem = new AddressItem((static_cast<AddressItem *>(item))->getKey(),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+		QString friendlyName = SslCertificate(leftItem->getKey().cert).friendlyName();
+
+		// Add to left pane
+		leftList.insert(friendlyName, leftItem);
+		ui->leftPane->addWidget(leftItem);
+
+		leftItem->showButton(AddressItem::Added);
+		connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightPane );
+
+		// Add to right pane
+		addRecipientToRightPane(leftItem);
+	}
+}
+
+void AddRecipients::enableRecipientFromCard()
+{
+	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
+}
+
+void AddRecipients::addRecipientToRightPane(Item *toAdd)
+{
+	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
+	AddressItem *rightItem = new AddressItem(leftItem->getKey(),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+
+	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
+	ui->rightPane->addWidget(rightItem);
+	rightItem->showButton(AddressItem::Remove);
+
+	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
+	leftItem->showButton(AddressItem::Added);
+}
+
+void AddRecipients::addAllRecipientToRightPane()
+{
+	for(auto it = leftList.begin(); it != leftList.end(); ++it )
+	{
+		if(!rightList.contains(it.key()))
+		{
+			addRecipientToRightPane(it.value());
+		}
+	}
+}
+
+void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
+{
+	AddressItem *rightItem = static_cast<AddressItem *>(toRemove);
+	QString friendlyName = SslCertificate(rightItem->getKey().cert).friendlyName();
+
+	auto it = leftList.find(friendlyName);
+	if(it != leftList.end())
+	{
+		it.value()->showButton(AddressItem::Add);
+		rightList.removeAll(friendlyName);
+	}
+}
+
+void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
+{
+	QString friendlyName = SslCertificate(cert).friendlyName();
+	if(!leftList.contains(friendlyName) )
+	{
+		AddressItem *leftItem = new AddressItem(CKey(cert),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+
+		leftList.insert(friendlyName, leftItem);
+		ui->leftPane->addWidget(leftItem);
+
+		if(rightList.contains(friendlyName))
+		{
+			leftItem->showButton(AddressItem::Added);
+		}
+		else
+		{
+			leftItem->showButton(AddressItem::Add);
+		}
+
+		connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightPane );
+	}
+}
+
+void AddRecipients::addRecipientFromCard()
+{
+	QList<QSslCertificate> cetrs;
+
+	cetrs << qApp->signer()->tokenauth().cert();
+	for(QSslCertificate& cert : cetrs)
+	{
+		addRecipientToLeftPane(cert);
+	}
+}
+
+void AddRecipients::addRecipientFromFile()
+{
+	QString file = FileDialog::getOpenFileName( this, windowTitle(), QString(),
+		"Certificates (*.pem *.cer *.crt)" );
+	if( file.isEmpty() )
+		return;
+
+	QFile f( file );
+	if( !f.open( QIODevice::ReadOnly ) )
+	{
+		QMessageBox::warning( this, windowTitle(), "Failed to open certifiacte" );
+		return;
+	}
+
+	QSslCertificate cert( &f, QSsl::Pem );
+	if( cert.isNull() )
+	{
+		f.reset();
+		cert = QSslCertificate( &f, QSsl::Der );
+	}
+	if( cert.isNull() )
+	{
+		QMessageBox::warning( this, windowTitle(), "Failed to read certificate" );
+	}
+	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) )
+	{
+		QMessageBox::warning( this, windowTitle(), "This certificate is not usable for crypting" );
+	}
+	else
+		addRecipientToLeftPane(cert);
+
+	f.close();
+}
+
+QString AddRecipients::path() const
+{
+#ifdef Q_OS_WIN
+	QSettings s( QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), "qdigidoccrypto" );
+	QFileInfo f( s.fileName() );
+	return f.absolutePath() + "/" + f.baseName() + "/certhistory.xml";
+#else
+	return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/certhistory.xml";
+#endif
+}
+
+
+void AddRecipients::addRecipientFromHistory()
+{
+	CertificateHistory dlg(historyCertData, this);
+	connect(&dlg, &CertificateHistory::addSelectedCetrs, this, &AddRecipients::addSelectedCetrs);
+	connect(&dlg, &CertificateHistory::removeSelectedCetrs, this, &AddRecipients::removeSelectedCetrs);
+	dlg.exec();
+}
+
+void AddRecipients::addSelectedCetrs(const QList<HistoryCertData>& selectedCertData)
+{
+	qDebug() << "NOT IMPLEMENTES addSelectedCetrs()";
+}
+
+void AddRecipients::removeSelectedCetrs(const QList<HistoryCertData>& removeCertData)
+{
+	if(removeCertData.isEmpty())
+		return;
+
+
+	QMutableListIterator<HistoryCertData> i(historyCertData);
+	while (i.hasNext())
+	{
+		if(removeCertData.contains(i.next()))
+			i.remove();
+	}
+
+
+	QString p = path();
+	QDir().mkpath( QFileInfo( p ).absolutePath() );
+	QFile f( p );
+	if( !f.open( QIODevice::WriteOnly|QIODevice::Truncate ) )
+		return;
+
+	QXmlStreamWriter xml( &f );
+	xml.setAutoFormatting( true );
+	xml.writeStartDocument();
+	xml.writeStartElement( "History" );
+	for(const HistoryCertData& certData : historyCertData)
+	{
+		xml.writeStartElement( "item" );
+		xml.writeAttribute( "CN", certData.CN );
+		xml.writeAttribute( "type", certData.type );
+		xml.writeAttribute( "issuer", certData.issuer );
+		xml.writeAttribute( "expireDate", certData.expireDate );
+		xml.writeEndElement();
+	}
+	xml.writeEndDocument();
+}
+
 
 int AddRecipients::exec()
 {
