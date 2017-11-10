@@ -21,6 +21,10 @@ qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateH
 	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/NoOtherId.ui widgets/OtherData.ui widgets/OtherId.ui 
 	widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui widgets/WarningItem.ui widgets/WarningRibbon.ui )
 
+if( UNIX AND NOT APPLE )
+	find_package( Ldap REQUIRED )
+endif()
+
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
 	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
@@ -51,6 +55,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	Styles.cpp
 	XmlReader.cpp
 	crypto/CryptoDoc.cpp
+	crypto/LdapSearch.cpp
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.cpp
 	dialogs/CertificateHistory.cpp
@@ -84,23 +89,32 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/LabelButton.cpp
 	widgets/MainAction.cpp
 	widgets/NoCardInfo.cpp
-	widgets/NoOtherId.cpp
 	widgets/OtherData.cpp
-	widgets/OtherId.cpp
 	widgets/PageIcon.cpp
 	widgets/SignatureItem.cpp
 	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp
+	widgets/OtherId.cpp
+	widgets/NoOtherId.cpp
 	widgets/WarningItem.cpp
 	widgets/WarningRibbon.cpp
 	)
 add_manifest( ${PROGNAME} )
+
+if( APPLE )
+	set( LDAP_LIBRARIES "-framework LDAP" )
+	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+elseif( WIN32 )
+	set( LDAP_LIBRARIES Wldap32 )
+endif()
+
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
 	Qt5::PrintSupport
 	Qt5::Svg
 	${LIBDIGIDOCPP_LIBRARY}
 	${ADDITIONAL_LIBRARIES}
+	${LDAP_LIBRARIES}
 	${CMAKE_THREAD_LIBS_INIT}
 )
 

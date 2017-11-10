@@ -30,19 +30,21 @@
 #include "common/SslCertificate.h"
 #include "common/TokenData.h"
 #include "effects/Overlay.h"
+#include "crypto/LdapSearch.h"
 
 #include <QDebug>
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
-
+#include <QSslKey>
 
 AddRecipients::AddRecipients(const std::vector<Item *> &items, QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::AddRecipients),
-  leftList(),
-  rightList()
+	QDialog(parent)
+	, ui(new Ui::AddRecipients)
+	, ldap(new LdapSearch(this))
+	, leftList()
+	, rightList()
 {
 	init();
 	setAddressItems(items);
@@ -59,9 +61,9 @@ void AddRecipients::init()
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, "Add recipients", false);
+	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, "Added recipients");
+	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, tr("Added recipients"));
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
@@ -73,6 +75,9 @@ void AddRecipients::init()
 
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
+	connect(ui->leftPane, &ItemList::search, this, &AddRecipients::search);
+	connect(ldap, &LdapSearch::searchResult, this, &AddRecipients::showResult);
+	connect(ldap, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
 	connect(ui->leftPane, &ItemList::addAll, this, &AddRecipients::addAllRecipientToRightPane );
@@ -326,4 +331,50 @@ int AddRecipients::exec()
 	overlay.close();
 
 	return rc;
+}
+
+void AddRecipients::search(const QString &term)
+{
+	ldap->search(QString("(serialNumber=%1)").arg(term));
+}
+
+void AddRecipients::showError( const QString &msg, const QString &details )
+{
+	// disableSearch(false);
+	QMessageBox b( QMessageBox::Warning, windowTitle(), msg );
+	if( !details.isEmpty() )
+		b.setDetailedText( details );
+	b.exec();
+}
+
+void AddRecipients::showResult(const QList<QSslCertificate> &result)
+{
+	QList<QSslCertificate> filter;
+	for(const QSslCertificate &k: result)
+	{
+		SslCertificate c(k);
+/* Filter is commented out temporary !!!
+
+		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
+			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
+			// (searchType->currentIndex() == 0 || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
+			c.type() != SslCertificate::MobileIDType &&
+			c.publicKey().algorithm() == QSsl::Rsa)
+*/			filter << c;
+	}
+	if(filter.isEmpty())
+	{
+		showError( tr("Person or company does not own a valid certificate.<br />"
+			"It is necessary to have a valid certificate for encryption.<br />"
+			"Contact for assistance by email <a href=\"mailto:abi@id.ee\">abi@id.ee</a> "
+			"or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.") );
+	}
+	else
+	{
+		for(const QSslCertificate &k: filter)
+		{
+			addRecipientToLeftPane(k);
+		}
+	}
 }

@@ -38,7 +38,7 @@ public:
 	explicit ItemList(QWidget *parent = nullptr);
 	virtual ~ItemList();
 
-	void init(ria::qdigidoc4::ItemType itemType, const QString &header, bool hideFind = true);
+	void init(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void addHeader(const QString &label);
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
@@ -52,6 +52,7 @@ signals:
 	void addAll();
 	void idChanged(const QString& cardCode, const QString& mobileCode);
 	void removed(int row);
+	void search(const QString &term);
 
 public slots:
 	void details(const QString &id);
@@ -79,7 +80,6 @@ private:
 	QString idCode;
 	ria::qdigidoc4::ItemType itemType;
 	QString mobileCode;
-
 	QString headerText;
 	QString listText;
 };

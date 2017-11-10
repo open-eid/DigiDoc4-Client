@@ -160,14 +160,14 @@ int ItemList::index(Item *item) const
 	return -1;
 }
 
-void ItemList::init(ItemType item, const QString &header, bool hideFind)
+void ItemList::init(ItemType item, const QString &header)
 {
 	itemType = item;
 	ui->listHeader->setText(tr(qPrintable(header)));
 	listText = header;
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 
-	if(hideFind)
+	if(item != ToAddAdresses)
 	{
 		ui->findGroup->hide();
 		ui->listHeader->setStyleSheet("border: solid rgba(217, 217, 216, 0.45);"
@@ -180,6 +180,7 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->listHeader->setStyleSheet("border: none;");
 		ui->findGroup->show();
+		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text());});
 		headerItems = 2;
 	}
 

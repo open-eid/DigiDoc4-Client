@@ -56,7 +56,7 @@ void FileList::addFile( const QString& file )
 
 void FileList::init(const QString &container, const QString &label)
 {
-	ItemList::init(ItemFile, label, true);
+	ItemList::init(ItemFile, label);
 	this->container = container;
 }
 
