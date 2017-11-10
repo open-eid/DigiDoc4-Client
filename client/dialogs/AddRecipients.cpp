@@ -29,6 +29,7 @@
 #include "common/Settings.h"
 #include "common/SslCertificate.h"
 #include "common/TokenData.h"
+#include <common/IKValidator.h>
 #include "effects/Overlay.h"
 #include "crypto/LdapSearch.h"
 
@@ -335,7 +336,19 @@ int AddRecipients::exec()
 
 void AddRecipients::search(const QString &term)
 {
-	ldap->search(QString("(serialNumber=%1)").arg(term));
+	QRegExp isDigit( "\\d*" );
+	if( isDigit.exactMatch(term) && ( term.size() == 11 || term.size() == 8 ) )
+	{
+		if( term.size() == 11 && !IKValidator::isValid( term ) )
+		{
+			QMessageBox::warning( this, windowTitle(),
+				tr("Social security number is not valid!") );
+			return;
+		}
+		ldap->search( QString( "(serialNumber=%1)" ).arg( term ) );
+	}
+	else
+		ldap->search( QString( "(cn=*%1*)" ).arg( term ) );
 }
 
 void AddRecipients::showError( const QString &msg, const QString &details )
