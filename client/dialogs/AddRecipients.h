@@ -30,6 +30,9 @@ namespace Ui {
 class AddRecipients;
 }
 
+class LdapSearch;
+class QSslCertificate;
+
 class AddRecipients : public QDialog
 {
 	Q_OBJECT
@@ -57,6 +60,9 @@ protected:
 
 private:
 	void init();
+	void search(const QString &term);
+	void showError(const QString &msg, const QString &details = QString());
+	void showResult(const QList<QSslCertificate> &result);
 
 	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
 	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
@@ -65,6 +71,7 @@ private:
 	Ui::AddRecipients *ui;
 	QMap<QString, AddressItem *> leftList;
 	QStringList rightList;
+	LdapSearch* ldap;
 
 	QList<HistoryCertData> historyCertData;
 };
