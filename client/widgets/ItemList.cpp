@@ -37,6 +37,8 @@ ItemList::ItemList(QWidget *parent)
 	ui->setupUi(this);
 	ui->findGroup->hide();
 	ui->download->hide();
+	ui->count->setFont(Styles::font(Styles::Condensed, 12));
+	ui->count->hide();
 	connect(this, &ItemList::idChanged, [this](const QString &code, const QString &mobile){idCode = code; mobileCode = mobile;});
 }
 

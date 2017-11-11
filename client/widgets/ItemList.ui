@@ -152,13 +152,13 @@ color: #041E42;</string>
              <widget class="QWidget" name="headerLeft" native="true">
               <property name="minimumSize">
                <size>
-                <width>19</width>
+                <width>38</width>
                 <height>60</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>19</width>
+                <width>38</width>
                 <height>60</height>
                </size>
               </property>
@@ -211,61 +211,102 @@ color: #041E42;</string>
              <widget class="QWidget" name="headerRight" native="true">
               <property name="minimumSize">
                <size>
-                <width>19</width>
+                <width>38</width>
                 <height>60</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>19</width>
+                <width>38</width>
                 <height>60</height>
                </size>
               </property>
               <property name="styleSheet">
                <string notr="true">border: none;</string>
               </property>
-              <widget class="QToolButton" name="download">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>20</y>
-                 <width>19</width>
-                 <height>19</height>
-                </rect>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>0</number>
                </property>
-               <property name="minimumSize">
-                <size>
-                 <width>19</width>
-                 <height>19</height>
-                </size>
+               <property name="leftMargin">
+                <number>0</number>
                </property>
-               <property name="maximumSize">
-                <size>
-                 <width>19</width>
-                 <height>19</height>
-                </size>
+               <property name="topMargin">
+                <number>0</number>
                </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
+               <property name="rightMargin">
+                <number>0</number>
                </property>
-               <property name="styleSheet">
-                <string notr="true">border: none;</string>
+               <property name="bottomMargin">
+                <number>0</number>
                </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normalon>:/images/icon_download.svg</normalon>
-                </iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>15</width>
-                 <height>15</height>
-                </size>
-               </property>
-              </widget>
+               <item>
+                <widget class="QLabel" name="count">
+                 <property name="minimumSize">
+                  <size>
+                   <width>15</width>
+                   <height>19</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>15</width>
+                   <height>19</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">border: none; color: #006EB5;</string>
+                 </property>
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="download">
+                 <property name="minimumSize">
+                  <size>
+                   <width>19</width>
+                   <height>19</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>19</width>
+                   <height>19</height>
+                  </size>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">border: none;</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normalon>:/images/icon_download.svg</normalon>
+                  </iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>15</width>
+                   <height>15</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>

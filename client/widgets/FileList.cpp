@@ -50,8 +50,7 @@ void FileList::addFile( const QString& file )
 	connect(item, &FileItem::open, this, &FileList::open);
 	connect(item, &FileItem::download, this, &FileList::save);
 
-	if(state & (SignedContainer | DecryptedContainer) && items.size() > 1)
-		showDownload();
+	updateDownload();
 }
 
 void FileList::init(const QString &container, const QString &label)
@@ -72,6 +71,13 @@ void FileList::remove(Item *item)
 	int i;
 	if(documentModel && (i = index(item)) != -1)
 		emit removed(i);
+}
+
+void FileList::removeItem(int row)
+{
+	ItemList::removeItem(row);
+
+	updateDownload();
 }
 
 void FileList::save(FileItem *item)
@@ -105,21 +111,33 @@ void FileList::selectFile()
 	emit addFiles(files);
 }
 
-void FileList::showDownload()
-{
-	if(ui->download->isHidden())
-	{
-		ui->download->show();
-		ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
-	}
-}
-
 void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
+	disconnect(documentModel, nullptr, nullptr, nullptr);
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
 	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));
+}
+
+void FileList::updateDownload()
+{
+	if(ui->download->isHidden())
+	{
+		if(state & (UnsignedSavedContainer | SignedContainer | DecryptedContainer) && items.size() > 1)
+		{
+			ui->download->show();
+			ui->count->show();
+			ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
+		}
+	}
+	else if(items.size() <= 1)
+	{
+		ui->download->hide();
+		ui->count->hide();
+	}
+
+	ui->count->setText(QString("%1").arg(items.size()));
 }

@@ -35,8 +35,9 @@ public:
 	explicit FileList(QWidget *parent = nullptr);
 	~FileList();
 
-	void init(const QString &container, const QString &label = "Container's files");
 	void addFile(const QString& file);
+	void init(const QString &container, const QString &label = "Container's files");
+	void removeItem(int row) override;
 	void setModel(DocumentModel *documentModel);
 
 signals:
@@ -51,7 +52,7 @@ private slots:
 
 private:
 	void selectFile();
-	void showDownload();
+	void updateDownload();
 	
 	QString container;
 	DocumentModel *documentModel;

@@ -2285,6 +2285,10 @@ ASiC-E – это разрабатываемый международный фо
         <source>Failed to load data</source>
         <translation>Не получилось загрузить данные</translation>
     </message>
+    <message>
+        <source>Encrypting</source>
+        <translation>Шифровка</translation>
+    </message>
 </context>
 
 
