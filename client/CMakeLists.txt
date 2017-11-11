@@ -15,11 +15,15 @@ include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_IN
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/KeyDialog.ui dialogs/MobileDialog.ui dialogs/MobileProgress.ui 
+qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateHistory.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/KeyDialog.ui dialogs/MobileDialog.ui dialogs/MobileProgress.ui 
 	dialogs/PinPopup.ui dialogs/PinUnblock.ui dialogs/SettingsDialog.ui dialogs/SignatureDialog.ui dialogs/Updater.ui dialogs/WaitDialog.ui dialogs/WarningDialog.ui 
 	widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui 
 	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/NoOtherId.ui widgets/OtherData.ui widgets/OtherId.ui 
 	widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui widgets/WarningItem.ui widgets/WarningRibbon.ui )
+
+if( UNIX AND NOT APPLE )
+	find_package( Ldap REQUIRED )
+endif()
 
 if( APPLE )
 	list( APPEND SOURCES Application_mac.mm )
@@ -51,8 +55,10 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	Styles.cpp
 	XmlReader.cpp
 	crypto/CryptoDoc.cpp
+	crypto/LdapSearch.cpp
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.cpp
+	dialogs/CertificateHistory.cpp
 	dialogs/FirstRun.cpp
 	dialogs/KeyDialog.cpp
 	dialogs/MobileDialog.cpp
@@ -83,23 +89,32 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/LabelButton.cpp
 	widgets/MainAction.cpp
 	widgets/NoCardInfo.cpp
-	widgets/NoOtherId.cpp
 	widgets/OtherData.cpp
-	widgets/OtherId.cpp
 	widgets/PageIcon.cpp
 	widgets/SignatureItem.cpp
 	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp
+	widgets/OtherId.cpp
+	widgets/NoOtherId.cpp
 	widgets/WarningItem.cpp
 	widgets/WarningRibbon.cpp
 	)
 add_manifest( ${PROGNAME} )
+
+if( APPLE )
+	set( LDAP_LIBRARIES "-framework LDAP" )
+	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+elseif( WIN32 )
+	set( LDAP_LIBRARIES Wldap32 )
+endif()
+
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
 	Qt5::PrintSupport
 	Qt5::Svg
 	${LIBDIGIDOCPP_LIBRARY}
 	${ADDITIONAL_LIBRARIES}
+	${LDAP_LIBRARIES}
 	${CMAKE_THREAD_LIBS_INIT}
 )
 

@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocCrypto
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +19,45 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include "crypto/CryptoDoc.h"
 
-class Item : public StyledWidget
+#include <QDialog>
+
+namespace Ui { class CertificateHistory; }
+
+class HistoryCertData
+{
+public:
+	QString CN;
+	QString type;
+	QString issuer;
+	QString expireDate;
+
+	bool operator==(const HistoryCertData& other);
+};
+
+
+class CertificateHistory: public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit Item(QWidget *parent = nullptr);
-	virtual ~Item();
+	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = 0);
+	~CertificateHistory();
 
-	virtual QString id() const;
-
-public slots:
-	virtual void details();
-	virtual void idChanged(const QString& cardCode, const QString& mobileCode);
+	int exec() override;
 
 signals:
-	void add(Item* item);
-	void remove(Item* item);
+	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
+	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
+
+protected:
+	void fillView();
+	void getSelectedItems(QList<HistoryCertData>& selectedCertData);
+
+	void select();
+	void remove();
+
+	Ui::CertificateHistory *ui;
+	QList<HistoryCertData>& historyCertData;
 };

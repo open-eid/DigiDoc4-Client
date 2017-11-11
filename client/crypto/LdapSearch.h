@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocCrypto
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +19,28 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include <QtCore/QObject>
 
-class Item : public StyledWidget
+class QSslCertificate;
+class LdapSearchPrivate;
+class LdapSearch: public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit Item(QWidget *parent = nullptr);
-	virtual ~Item();
+	LdapSearch( QObject *parent = 0 );
+	~LdapSearch();
 
-	virtual QString id() const;
+	void search( const QString &search );
 
-public slots:
-	virtual void details();
-	virtual void idChanged(const QString& cardCode, const QString& mobileCode);
+Q_SIGNALS:
+	void searchResult( const QList<QSslCertificate> &result );
+	void error( const QString &msg, const QString &details );
 
-signals:
-	void add(Item* item);
-	void remove(Item* item);
+private:
+	bool init();
+	void timerEvent( QTimerEvent *e );
+	void setLastError( const QString &msg, int err );
+
+	LdapSearchPrivate *d;
 };

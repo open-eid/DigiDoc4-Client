@@ -98,7 +98,7 @@ QString ItemList::addLabel()
 
 void ItemList::addressSearch()
 {
-	AddRecipients dlg(qApp->activeWindow());
+	AddRecipients dlg(items, qApp->activeWindow());
 	dlg.exec();
 }
 
@@ -171,14 +171,14 @@ bool ItemList::hasItem(std::function<bool(Item* const)> cb)
 	return false;
 }
 
-void ItemList::init(ItemType item, const QString &header, bool hideFind)
+void ItemList::init(ItemType item, const QString &header)
 {
 	itemType = item;
 	ui->listHeader->setText(tr(qPrintable(header)));
 	listText = header;
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 
-	if(hideFind)
+	if(item != ToAddAdresses)
 	{
 		ui->findGroup->hide();
 		ui->listHeader->setStyleSheet("border: solid rgba(217, 217, 216, 0.45);"
@@ -191,6 +191,7 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->listHeader->setStyleSheet("border: none;");
 		ui->findGroup->show();
+		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text());});
 		headerItems = 2;
 	}
 
@@ -208,6 +209,10 @@ void ItemList::init(ItemType item, const QString &header, bool hideFind)
 	{
 		ui->add->disconnect();
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
+	}
+	else if(itemType == ToAddAdresses)
+	{
+		connect(ui->add, &LabelButton::clicked, this, &ItemList::addAll);
 	}
 }
 
