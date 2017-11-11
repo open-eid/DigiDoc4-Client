@@ -21,20 +21,21 @@
 #include "AddRecipients.h"
 #include "ui_AddRecipients.h"
 
+#include "Application.h"
 #include "common_enums.h"
 #include "FileDialog.h"
+#include "QSigner.h"
 #include "Styles.h"
-#include "client/Application.h"
-#include "client/QSigner.h"
-#include "common/Settings.h"
-#include "common/SslCertificate.h"
-#include "common/TokenData.h"
-#include <common/IKValidator.h>
-#include "effects/Overlay.h"
 #include "crypto/LdapSearch.h"
+#include "dialogs/WarningDialog.h"
+#include "effects/Overlay.h"
+
+#include <common/Settings.h>
+#include <common/SslCertificate.h>
+#include <common/TokenData.h>
+#include <common/IKValidator.h>
 
 #include <QDebug>
-#include <QMessageBox>
 #include <QStandardPaths>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
@@ -144,6 +145,7 @@ void AddRecipients::setAddressItems(const std::vector<Item *> &items)
 		leftList.insert(friendlyName, leftItem);
 		ui->leftPane->addWidget(leftItem);
 
+		leftItem->disable(true);
 		leftItem->showButton(AddressItem::Added);
 		connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightPane );
 
@@ -167,6 +169,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd)
 	rightItem->showButton(AddressItem::Remove);
 
 	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
+	leftItem->disable(true);
 	leftItem->showButton(AddressItem::Added);
 }
 
@@ -189,6 +192,7 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	auto it = leftList.find(friendlyName);
 	if(it != leftList.end())
 	{
+		it.value()->disable(false);
 		it.value()->showButton(AddressItem::Add);
 		rightList.removeAll(friendlyName);
 	}
@@ -206,10 +210,12 @@ void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 
 		if(rightList.contains(friendlyName))
 		{
+			leftItem->disable(true);
 			leftItem->showButton(AddressItem::Added);
 		}
 		else
 		{
+			leftItem->disable(false);
 			leftItem->showButton(AddressItem::Add);
 		}
 
@@ -219,10 +225,10 @@ void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 
 void AddRecipients::addRecipientFromCard()
 {
-	QList<QSslCertificate> cetrs;
+	QList<QSslCertificate> certs;
 
-	cetrs << qApp->signer()->tokenauth().cert();
-	for(QSslCertificate& cert : cetrs)
+	certs << qApp->signer()->tokenauth().cert();
+	for(QSslCertificate& cert : certs)
 	{
 		addRecipientToLeftPane(cert);
 	}
@@ -238,7 +244,7 @@ void AddRecipients::addRecipientFromFile()
 	QFile f( file );
 	if( !f.open( QIODevice::ReadOnly ) )
 	{
-		QMessageBox::warning( this, windowTitle(), "Failed to open certifiacte" );
+		WarningDialog::warning(this, tr("Failed to read certificate"));
 		return;
 	}
 
@@ -250,11 +256,11 @@ void AddRecipients::addRecipientFromFile()
 	}
 	if( cert.isNull() )
 	{
-		QMessageBox::warning( this, windowTitle(), "Failed to read certificate" );
+		WarningDialog::warning( this, tr("Failed to read certificate"));
 	}
 	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) )
 	{
-		QMessageBox::warning( this, windowTitle(), "This certificate is not usable for crypting" );
+		WarningDialog::warning( this, tr("This certificate cannot be used for encryption"));
 	}
 	else
 		addRecipientToLeftPane(cert);
@@ -277,17 +283,18 @@ QString AddRecipients::path() const
 void AddRecipients::addRecipientFromHistory()
 {
 	CertificateHistory dlg(historyCertData, this);
-	connect(&dlg, &CertificateHistory::addSelectedCetrs, this, &AddRecipients::addSelectedCetrs);
-	connect(&dlg, &CertificateHistory::removeSelectedCetrs, this, &AddRecipients::removeSelectedCetrs);
+	connect(&dlg, &CertificateHistory::addSelectedCerts, this, &AddRecipients::addSelectedCerts);
+	connect(&dlg, &CertificateHistory::removeSelectedCerts, this, &AddRecipients::removeSelectedCerts);
 	dlg.exec();
 }
 
-void AddRecipients::addSelectedCetrs(const QList<HistoryCertData>& selectedCertData)
+void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertData)
 {
-	qDebug() << "NOT IMPLEMENTES addSelectedCetrs()";
+	// TODO
+	qDebug() << "addSelectedCerts() NOT IMPLEMENTED";
 }
 
-void AddRecipients::removeSelectedCetrs(const QList<HistoryCertData>& removeCertData)
+void AddRecipients::removeSelectedCerts(const QList<HistoryCertData>& removeCertData)
 {
 	if(removeCertData.isEmpty())
 		return;
@@ -337,26 +344,26 @@ int AddRecipients::exec()
 void AddRecipients::search(const QString &term)
 {
 	QRegExp isDigit( "\\d*" );
+	qDebug() << "Search pressed";
 	if( isDigit.exactMatch(term) && ( term.size() == 11 || term.size() == 8 ) )
 	{
 		if( term.size() == 11 && !IKValidator::isValid( term ) )
 		{
-			QMessageBox::warning( this, windowTitle(),
-				tr("Social security number is not valid!") );
+			WarningDialog::warning(this, tr("Personal code is not valid!"));
 			return;
 		}
 		ldap->search( QString( "(serialNumber=%1)" ).arg( term ) );
 	}
 	else
+	{
 		ldap->search( QString( "(cn=*%1*)" ).arg( term ) );
+	}
 }
 
 void AddRecipients::showError( const QString &msg, const QString &details )
 {
 	// disableSearch(false);
-	QMessageBox b( QMessageBox::Warning, windowTitle(), msg );
-	if( !details.isEmpty() )
-		b.setDetailedText( details );
+	WarningDialog b(msg, details, this);
 	b.exec();
 }
 
@@ -366,7 +373,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 	for(const QSslCertificate &k: result)
 	{
 		SslCertificate c(k);
-/* Filter is commented out temporary !!!
+/* TODO Filter is commented out temporary !!!
 
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
@@ -385,6 +392,8 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 	}
 	else
 	{
+		leftList.clear();
+		ui->leftPane->clear();
 		for(const QSslCertificate &k: filter)
 		{
 			addRecipientToLeftPane(k);

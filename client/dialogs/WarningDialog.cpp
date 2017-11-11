@@ -105,3 +105,9 @@ void WarningDialog::setText(const QString& text)
 	ui->text->setText(text);
 	adjustSize();
 }
+
+void WarningDialog::warning(QWidget *parent, const QString& text)
+{
+	WarningDialog dlg(text, QString(), parent);
+	dlg.exec();
+}

@@ -237,18 +237,21 @@ Media type: %3</source>
         <source>From history</source>
         <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
     </message>
-
-    <message>
-        <source>Failed to open certifiacte</source>
-        <translation>Открытые сертификата неуспешно</translation>
-    </message>
     <message>
         <source>Failed to read certificate</source>
         <translation>Чтение сертификата неуспешно</translation>
     </message>
     <message>
-        <source>This certificate is not usable for crypting</source>
+        <source>This certificate cannot be used for encryption</source>
         <translation>Данным сертификатом нельзя шифровать</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid!</source>
+        <translation>Личный код некорректен!</translation>
+    </message>
+    <message>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
+        <translation>У лица или учреждения отсутствует действительный сертификат.&lt;br /&gt;Для шифрования необходим действительный сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.</translation>
     </message>
 </context>
 

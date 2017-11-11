@@ -85,9 +85,34 @@ AddressItem::~AddressItem()
 	delete ui;
 }
 
+void AddressItem::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+
+		idChanged(code, "");
+		ui->idType->setText(tr(qPrintable(typeText)));
+	}
+
+	QWidget::changeEvent(event);
+}
+
+void AddressItem::disable(bool disable)
+{
+	setStyleSheet(QString("border: solid rgba(217, 217, 216, 0.45); border-width: 0px 0px 1px 0px;"
+		"background-color: %1; color: #000000; text-decoration: none solid rgb(0, 0, 0);")
+		.arg(disable ? "#F0F0F0" : "#FFFFFF"));
+}
+
+const CKey& AddressItem::getKey() const
+{
+	return key;
+}
+
 void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode)
 {
-	if(code == cardCode)
+	if(!code.isEmpty() && code == cardCode)
 		ui->code->setText(code + tr(" (Yourself)"));
 	else
 		ui->code->setText(code);
@@ -97,17 +122,6 @@ void AddressItem::mouseReleaseEvent(QMouseEvent *event)
 {
 	KeyDialog dlg(key, this);
 	dlg.exec();
-}
-
-void AddressItem::update(const QString& name, const QString& cardCode, const QString& type, ShowToolButton show)
-{
-	ui->name->setText( name );
-	ui->code->setText( cardCode );
-	ui->idType->setText( tr(qPrintable(type)));
-	typeText = type;
-	code = cardCode;
-
-	showButton(show);
 }
 
 void AddressItem::showButton(ShowToolButton show)
@@ -136,11 +150,6 @@ void AddressItem::showButton(ShowToolButton show)
 	}
 }
 
-const CKey& AddressItem::getKey() const
-{
-	return key;
-}
-
 void AddressItem::stateChange(ContainerState state)
 {
 	if( state == UnencryptedContainer )
@@ -153,15 +162,13 @@ void AddressItem::stateChange(ContainerState state)
 	}
 }
 
-void AddressItem::changeEvent(QEvent* event)
+void AddressItem::update(const QString& name, const QString& cardCode, const QString& type, ShowToolButton show)
 {
-	if (event->type() == QEvent::LanguageChange)
-	{
-		ui->retranslateUi(this);
+	ui->name->setText( name );
+	ui->code->setText( cardCode );
+	ui->idType->setText( tr(qPrintable(type)));
+	typeText = type;
+	code = cardCode;
 
-		idChanged(code, "");
-		ui->idType->setText(tr(qPrintable(typeText)));
-	}
-
-	QWidget::changeEvent(event);
+	showButton(show);
 }

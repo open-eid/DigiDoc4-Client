@@ -237,18 +237,21 @@ Tüüp: %3</translation>
         <source>From history</source>
         <translation>VIIMATI LISATUD</translation>
     </message>
-
-    <message>
-        <source>Failed to open certifiacte</source>
-        <translation>Sertifikaadi avamine ebaõnnestus</translation>
-    </message>
     <message>
         <source>Failed to read certificate</source>
         <translation>Sertifikaadi lugemine ebaõnnestus</translation>
     </message>
     <message>
-        <source>This certificate is not usable for crypting</source>
+        <source>This certificate cannot be used for encryption</source>
         <translation>Selle sertifikaadiga ei saa krüpteerida</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid!</source>
+        <translation>Isikukood pole korrektne!</translation>
+    </message>
+    <message>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista Eesti piires lühinumbril 1777 ja välismaalt (+372) 677 3377.</translation>
     </message>
 </context>
 
