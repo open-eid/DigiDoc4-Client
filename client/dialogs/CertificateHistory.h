@@ -48,8 +48,8 @@ public:
 	int exec() override;
 
 signals:
-	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
-	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
+	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
+	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
 protected:
 	void fillView();

@@ -64,8 +64,8 @@ private:
 	void showError(const QString &msg, const QString &details = QString());
 	void showResult(const QList<QSslCertificate> &result);
 
-	void addSelectedCetrs(const QList<HistoryCertData>& selectedCertData);
-	void removeSelectedCetrs(const QList<HistoryCertData>& removeCertData);
+	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
+	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
 
 	Ui::AddRecipients *ui;

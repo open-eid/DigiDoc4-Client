@@ -115,7 +115,7 @@ void CertificateHistory::select()
 	QList<HistoryCertData> selectedCertData;
 
 	getSelectedItems(selectedCertData);
-	emit addSelectedCetrs(selectedCertData);
+	emit addSelectedCerts(selectedCertData);
 }
 
 void CertificateHistory::remove()
@@ -123,7 +123,7 @@ void CertificateHistory::remove()
 	QList<HistoryCertData> selectedCertData;
 
 	getSelectedItems(selectedCertData);
-	emit removeSelectedCetrs(selectedCertData);
+	emit removeSelectedCerts(selectedCertData);
 	fillView();
 }
 

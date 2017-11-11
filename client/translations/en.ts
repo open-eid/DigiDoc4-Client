@@ -238,18 +238,21 @@ Media type: %3</translation>
         <source>From history</source>
         <translation>LATEST USED CERTIFICATE</translation>
     </message>
-
-    <message>
-        <source>Failed to open certifiacte</source>
-        <translation>Failed to open certifiacte</translation>
-    </message>
     <message>
         <source>Failed to read certificate</source>
         <translation>Failed to read certificate</translation>
     </message>
     <message>
-        <source>This certificate is not usable for crypting</source>
-        <translation>This certificate is not usable for crypting</translation>
+        <source>This certificate cannot be used for encryption</source>
+        <translation>This certificate cannot be used for encryption</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid!</source>
+        <translation>Personal code is not valid!</translation>
+    </message>
+    <message>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
+        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</translation>
     </message>
 </context>
 

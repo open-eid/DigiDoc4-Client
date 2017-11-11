@@ -43,11 +43,12 @@ public:
 	explicit AddressItem(const CKey &k, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~AddressItem();
 
+	void disable(bool disable);
+	const CKey& getKey() const;
 	void idChanged(const QString& cardCode, const QString& mobileCode) override;
+	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
 	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
-	void showButton(ShowToolButton show);
-	const CKey& getKey() const;
 
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
