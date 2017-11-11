@@ -382,6 +382,7 @@ bool MainWindow::encrypt()
 		return false;
 
 	WaitDialog waitDialog(qApp->activeWindow());
+	waitDialog.setText(tr("Encrypting"));
 	waitDialog.open();
 
 	return cryptoDoc->encrypt();

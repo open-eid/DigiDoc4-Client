@@ -1734,7 +1734,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <name>WaitDialog</name>
     <message>
         <source>Decrypting</source>
-        <translation>Dekrüpteerimine</translation>
+        <translation>Dekrüpteerin</translation>
     </message>
 </context>
 
@@ -2278,6 +2278,10 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>Failed to load data</source>
         <translation>Andmete laadimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation>Krüpteerin</translation>
     </message>
 </context>
 

@@ -79,13 +79,16 @@ void FileItem::mouseReleaseEvent(QMouseEvent *event)
 		emit open(this);
 }
 
-
 void FileItem::stateChange(ContainerState state)
 {
 	setEnabled(state != EncryptedContainer);
 
 	switch(state)
 	{
+	case UnsignedSavedContainer:
+		ui->download->show();
+		ui->remove->show();
+		break;
 	case SignedContainer:
 		ui->download->show();
 		ui->remove->hide();

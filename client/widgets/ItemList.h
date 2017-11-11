@@ -46,7 +46,7 @@ public:
 	void clear();
 	ria::qdigidoc4::ContainerState getState() const;
 	bool hasItem(std::function<bool(Item* const)> cb);
-	void removeItem(int row);
+	virtual void removeItem(int row);
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:
