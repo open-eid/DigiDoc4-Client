@@ -346,7 +346,6 @@ void ContainerPage::transition(DigiDoc* container)
 	ui->rightPane->stateChange(state);
 
 	setHeader(container->fileName());
-	DigiDocSignature::SignatureStatus status = DigiDocSignature::Valid;
 
 	if(!container->timestamps().isEmpty())
 	{

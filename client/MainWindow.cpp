@@ -128,29 +128,31 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	ui->accordion->init();
 
-	connect( ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
-	connect( ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer );
-	connect( buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked );
-	connect( ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction );
-	connect( ui->signContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles );
-
+	connect(ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
+	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
+	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked);
+	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
+	connect(ui->signContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles);
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
-	connect( ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature );
-	connect( ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction );
+	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
+
+	connect(ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction);
+	connect(ui->cryptoContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles);
 	connect(ui->cryptoContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeCryptoFile);
-	connect( ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress );
-	connect( ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus );   // To check e-mail
-	connect( ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail );   // To activate e-mail
-	connect( ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked );
-	connect( ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked );   // To load photo
-	connect( ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); } );
-	connect( ui->accordion, &Accordion::checkOtherEID, this, &MainWindow::getOtherEID );
+	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
+
+	connect(ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus);   // To check e-mail
+	connect(ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail);   // To activate e-mail
+	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
+	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
+	connect(ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); });
+	connect(ui->accordion, &Accordion::checkOtherEID, this, &MainWindow::getOtherEID);
 
 	showCardStatus();
-	connect( ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked );
-	connect( ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked );
-	connect( ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked );
-	connect( ui->accordion, &Accordion::certDetailsClicked, this, &MainWindow::certDetailsClicked );
+	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
+	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
+	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
+	connect(ui->accordion, &Accordion::certDetailsClicked, this, &MainWindow::certDetailsClicked);
 }
 
 MainWindow::~MainWindow()

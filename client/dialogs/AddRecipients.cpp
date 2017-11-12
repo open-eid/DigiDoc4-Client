@@ -44,9 +44,9 @@
 AddRecipients::AddRecipients(const std::vector<Item *> &items, QWidget *parent) :
 	QDialog(parent)
 	, ui(new Ui::AddRecipients)
-	, ldap(new LdapSearch(this))
 	, leftList()
 	, rightList()
+	, ldap(new LdapSearch(this))
 {
 	init();
 	setAddressItems(items);
