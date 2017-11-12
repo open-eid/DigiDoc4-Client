@@ -22,9 +22,14 @@
 #include "crypto/CryptoDoc.h"
 #include "widgets/Item.h"
 
+#include <memory>
+
 namespace Ui {
 class AddressItem;
 }
+
+class QFontMetrics;
+class QResizeEvent;
 
 class AddressItem : public Item
 {
@@ -39,8 +44,7 @@ public:
 		Added
 	};
 
-	explicit AddressItem(ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr, bool showIcon = false);
-	explicit AddressItem(const CKey &k, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
+	explicit AddressItem(const CKey &k, QWidget *parent = nullptr, bool showIcon = false);
 	~AddressItem();
 
 	void disable(bool disable);
@@ -51,13 +55,24 @@ public:
 	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
 
 protected:
-	void mouseReleaseEvent(QMouseEvent *event) override;
 	void changeEvent(QEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
 
 private:
+	void changeNameHeight();
+	void recalculate();
+	void setName();
+
 	Ui::AddressItem *ui;
 
 	QString code;
+	bool enlarged;
 	CKey key;
+	QString name;
+	std::unique_ptr<QFontMetrics> nameMetrics;
+	int nameWidth;
+	int reservedWidth;
 	QString typeText;
+	bool yourself;
 };
