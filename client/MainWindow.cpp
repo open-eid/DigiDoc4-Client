@@ -781,6 +781,7 @@ void MainWindow::operation(int op, bool started)
 
 void MainWindow::resetCryptoDoc(CryptoDoc *doc)
 {
+	ui->cryptoContainerPage->clear();
 	delete cryptoDoc;
 	cryptoDoc = doc;
 }
@@ -812,6 +813,8 @@ void MainWindow::resetDigiDoc(DigiDoc *doc)
 	}
 
 	ui->signature->warningIcon(false);
+
+	ui->signContainerPage->clear();
 	delete digiDoc;
 	closeWarnings(SignDetails);
 	digiDoc = doc;

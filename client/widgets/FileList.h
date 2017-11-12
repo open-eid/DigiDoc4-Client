@@ -36,6 +36,7 @@ public:
 	~FileList();
 
 	void addFile(const QString& file);
+	void clear() override;
 	void init(const QString &container, const QString &label = "Container's files");
 	void removeItem(int row) override;
 	void setModel(DocumentModel *documentModel);

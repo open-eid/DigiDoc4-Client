@@ -47,6 +47,7 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage();
 
+	void clear();
 	void setHeader(const QString &file);
 	void transition(CryptoDoc *container);
 	void transition(DigiDoc* container);
@@ -67,7 +68,6 @@ protected:
 private:
 	void changeCard(const QString& idCode);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
-	void clear();
 	void elideFileName(bool force = false);
 	void forward(int code);
 	void browseContainer(QString link);
