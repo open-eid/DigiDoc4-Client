@@ -43,7 +43,7 @@ public:
 	void addHeader(const QString &label);
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
-	void clear();
+	virtual void clear();
 	ria::qdigidoc4::ContainerState getState() const;
 	bool hasItem(std::function<bool(Item* const)> cb);
 	virtual void removeItem(int row);

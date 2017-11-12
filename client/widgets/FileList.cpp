@@ -53,6 +53,12 @@ void FileList::addFile( const QString& file )
 	updateDownload();
 }
 
+void FileList::clear()
+{
+	ItemList::clear();
+	documentModel = nullptr;
+}
+
 void FileList::init(const QString &container, const QString &label)
 {
 	ItemList::init(ItemFile, label);
