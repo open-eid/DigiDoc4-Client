@@ -182,8 +182,30 @@ void MainWindow::pageSelected( PageIcon *const page )
 		break;
 	}
 
+	Pages toPage = page->getType();
+	if(toPage == SignIntro)
+	{
+		if(digiDoc)
+		{
+			navigate = false;
+			selectPageIcon(ui->signature);
+			ui->startScreen->setCurrentIndex(SignDetails);
+			updateWarnings();
+		}
+	}
+	else if(toPage == CryptoIntro)
+	{
+		if(cryptoDoc)
+		{
+			navigate = false;
+			selectPageIcon(ui->crypto);
+			ui->startScreen->setCurrentIndex(CryptoDetails);
+			updateWarnings();
+		}
+	}
+
 	if(navigate)
-		navigateToPage(page->getType());
+		navigateToPage(toPage);
 }
 
 void MainWindow::buttonClicked( int button )
@@ -249,14 +271,13 @@ void MainWindow::clearOverlay()
 ContainerState MainWindow::currentState()
 {
 	auto current = ui->startScreen->currentIndex();
-	bool cryptoPage = (current == CryptoIntro || current == CryptoDetails);
 
-	if(cryptoPage && cryptoDoc)
+	if(current == CryptoIntro || current == CryptoDetails)
 	{
-		return cryptoDoc->state();
+		if(cryptoDoc)
+			return cryptoDoc->state();
 	}
-
-	if(digiDoc)
+	else if(digiDoc)
 	{
 		return digiDoc->state();
 	}
@@ -419,9 +440,15 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(ui->logo->underMouse())
+	{
+		resetCryptoDoc();
+		resetDigiDoc();
 		navigateToPage(Pages::SignIntro);
+	}
 	else
+	{
 		QWidget::mousePressEvent(event);
+	}
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -482,20 +509,9 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		}
 		if(navigate)
 		{
-			delete cryptoDoc;
-			cryptoDoc = cryptoContainer.release();
+			resetCryptoDoc(cryptoContainer.release());
 			ui->cryptoContainerPage->transition(cryptoDoc);
 		}
-	}
-	else
-	{
-		if(cryptoDoc)
-		{
-			delete cryptoDoc;
-			cryptoDoc = nullptr;
-		}
-		if(digiDoc)
-			resetDigiDoc();
 	}
 
 	if(navigate)
@@ -521,6 +537,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		ui->signature->warningIcon(true);
 		break;
 	case ContainerCancel:
+		resetDigiDoc();
 		navigateToPage(Pages::SignIntro);
 		break;
 	case ContainerConvert:
@@ -564,9 +581,8 @@ void MainWindow::convertToBDoc()
 	else
 		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
 
+	resetCryptoDoc();
 	resetDigiDoc(signatureContainer.release());
-	delete cryptoDoc;
-	cryptoDoc = nullptr;
 
 	ui->signContainerPage->transition(digiDoc);
 	selectPageIcon(ui->signature);
@@ -595,8 +611,7 @@ void MainWindow::convertToCDoc()
 	if(!cardData.isNull())
 		cryptoContainer->addKey(CKey(cardData.authCert()));
 
-	delete cryptoDoc;
-	cryptoDoc = cryptoContainer.release();
+	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc();
 	ui->cryptoContainerPage->transition(cryptoDoc);
 	selectPageIcon(ui->crypto);
@@ -627,6 +642,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	switch(action)
 	{
 	case ContainerCancel:
+		resetCryptoDoc();
 		navigateToPage(Pages::CryptoIntro);
 		break;
 	case ContainerConvert:
@@ -761,6 +777,12 @@ void MainWindow::openContainer()
 void MainWindow::operation(int op, bool started)
 {
 	qDebug() << "Op " << op << (started ? " started" : " ended");
+}
+
+void MainWindow::resetCryptoDoc(CryptoDoc *doc)
+{
+	delete cryptoDoc;
+	cryptoDoc = doc;
 }
 
 void MainWindow::resetDigiDoc(DigiDoc *doc)
@@ -1199,6 +1221,8 @@ void MainWindow::updateWarnings()
 	{
 		if(warning->appearsOnPage(page))
 			count++;
+		else
+			warning->hide();
 	}
 
 	if(!count)

@@ -108,6 +108,7 @@ private:
 	void openFiles(const QStringList &files);
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
+	void resetCryptoDoc(CryptoDoc *doc = nullptr);
 	void resetDigiDoc(DigiDoc *doc = nullptr);
 	void removeAddress(int index);
 	void removeCryptoFile(int index);

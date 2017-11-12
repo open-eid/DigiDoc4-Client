@@ -83,6 +83,7 @@ private:
 	void showMainAction(ria::qdigidoc4::Actions action);
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void showSigningButton();
+	void updateDecryptionButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);
 	void translateLabels();
 

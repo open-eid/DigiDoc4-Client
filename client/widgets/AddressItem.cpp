@@ -26,7 +26,6 @@
 
 #include <common/SslCertificate.h>
 
-#include <QDebug>
 #include <QResizeEvent>
 #include <QSvgWidget>
 
@@ -111,7 +110,6 @@ void AddressItem::changeEvent(QEvent* event)
 
 void AddressItem::changeNameHeight()
 {
-	qDebug() << "New width: " << width();
 	if((width() - reservedWidth) < nameWidth)
 	{
 		ui->name->setMinimumHeight(LINE_HEIGHT * 2);
@@ -171,7 +169,6 @@ void AddressItem::recalculate()
 	int oldNameWidth = nameWidth;
 	reservedWidth = buttonWidth;
 	nameWidth = nameMetrics->width(name  + " " + code);
-	qDebug() << "Name width: " << nameWidth << " reserved: " << reservedWidth << " w: " << width();
 
 	if(oldRvWidth != reservedWidth || oldNameWidth != nameWidth)
 		changeNameHeight();

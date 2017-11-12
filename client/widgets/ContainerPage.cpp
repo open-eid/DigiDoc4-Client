@@ -72,6 +72,8 @@ void ContainerPage::changeCard(const QString& idCode)
 		cardInReader = idCode;
 		if(mainAction && (ui->leftPane->getState() & SignatureContainers))
 			showSigningButton();
+		else if(ui->leftPane->getState() & EncryptedContainer)
+			updateDecryptionButton();
 	}
 }
 
@@ -378,6 +380,14 @@ void ContainerPage::transition(DigiDoc* container)
 	updatePanes(state);
 }
 
+void ContainerPage::updateDecryptionButton()
+{
+	if(cardInReader.isNull())
+		hideMainAction();
+	else
+		showMainAction(DecryptContainer);
+}
+
 void ContainerPage::updatePanes(ContainerState state)
 {
 	auto buttonWidth = ui->changeLocation->width();
@@ -436,7 +446,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Encrypted files");
 		showRightPane( ItemAddress, "Recipients" );
-		showMainAction(DecryptContainer);
+		updateDecryptionButton();
 		ui->cancel->setText(tr("STARTING"));
 		ui->convert->setText(tr("SIGN"));
 		hideButtons( { ui->save } );
