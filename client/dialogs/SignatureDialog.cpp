@@ -220,3 +220,13 @@ void SignatureDialog::decorateNotice(const QString color)
 {
 	d->lblNotice->setText(QString("<font color=\"%1\">%2</font>").arg(color, d->lblNotice->text()));
 }
+
+int SignatureDialog::exec()
+{
+	Overlay overlay(qApp->activeWindow());
+	overlay.show();
+	auto rc = QDialog::exec();
+	overlay.close();
+
+	return rc;
+}

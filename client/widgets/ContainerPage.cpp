@@ -332,7 +332,7 @@ void ContainerPage::transition(CryptoDoc* container)
 	setHeader(container->fileName());
 
 	for(const CKey &key: container->keys())
-		ui->rightPane->addWidget(new AddressItem(key, state, ui->rightPane));
+		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
 
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(state);

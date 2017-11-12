@@ -60,8 +60,6 @@ AddRecipients::~AddRecipients()
 void AddRecipients::init()
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setWindowModality( Qt::ApplicationModal );
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
@@ -138,7 +136,7 @@ void AddRecipients::setAddressItems(const std::vector<Item *> &items)
 {
 	for(Item *item :items)
 	{
-		AddressItem *leftItem = new AddressItem((static_cast<AddressItem *>(item))->getKey(),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+		AddressItem *leftItem = new AddressItem((static_cast<AddressItem *>(item))->getKey(), ui->leftPane);
 		QString friendlyName = SslCertificate(leftItem->getKey().cert).friendlyName();
 
 		// Add to left pane
@@ -162,7 +160,7 @@ void AddRecipients::enableRecipientFromCard()
 void AddRecipients::addRecipientToRightPane(Item *toAdd)
 {
 	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
-	AddressItem *rightItem = new AddressItem(leftItem->getKey(),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
 
 	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
 	ui->rightPane->addWidget(rightItem);
@@ -203,7 +201,7 @@ void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	QString friendlyName = SslCertificate(cert).friendlyName();
 	if(!leftList.contains(friendlyName) )
 	{
-		AddressItem *leftItem = new AddressItem(CKey(cert),  ria::qdigidoc4::UnencryptedContainer, ui->leftPane);
+		AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
 
 		leftList.insert(friendlyName, leftItem);
 		ui->leftPane->addWidget(leftItem);

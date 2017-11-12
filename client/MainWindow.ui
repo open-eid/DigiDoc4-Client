@@ -775,13 +775,23 @@ color: #041E42;</string>
                   <bool>false</bool>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">padding: 6px 10px;
-border-radius: 2px;
-background-color: #006eb5;
-color: #ffffff;
-text-decoration: none solid rgb(255, 255, 255);
-text-align: center;
-</string>
+                  <string notr="true">QPushButton {
+	padding: 6px 10px;
+	border-radius: 2px;
+	background-color: #006eb5;
+	color: #ffffff;
+	text-decoration: none solid rgb(255, 255, 255);
+	text-align: center;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
                  </property>
                  <property name="text">
                   <string>Open file for signing</string>
@@ -939,12 +949,23 @@ background-position: bottom;
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">padding: 6px 10px;
-border-radius: 2px;
-background-color: #006eb5;
-color: #ffffff;
-text-decoration: none solid rgb(255, 255, 255);
-text-align: center;</string>
+                  <string notr="true">QPushButton {
+	padding: 6px 10px;
+	border-radius: 2px;
+	background-color: #006eb5;
+	color: #ffffff;
+	text-decoration: none solid rgb(255, 255, 255);
+	text-align: center;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
                  </property>
                  <property name="text">
                   <string>Open file for encryption</string>

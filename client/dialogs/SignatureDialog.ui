@@ -107,92 +107,8 @@
          <string notr="true">border-right: 1px solid #DEE4E9;</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="14" column="0">
-          <widget class="QLabel" name="lblSigningCounty">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>State</string>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="0">
-          <widget class="QLabel" name="lblSigningCity">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>City</string>
-           </property>
-          </widget>
-         </item>
-         <item row="15" column="0">
-          <widget class="QLabel" name="lblSigningCountry">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>Country</string>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="1">
-          <widget class="QLineEdit" name="signerCity">
+         <item row="14" column="1">
+          <widget class="QLineEdit" name="signerState">
            <property name="minimumSize">
             <size>
              <width>300</width>
@@ -295,6 +211,36 @@ background-color: #FFFFFF;</string>
            </property>
           </widget>
          </item>
+         <item row="15" column="1">
+          <widget class="QLineEdit" name="signerCountry">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>395</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item row="16" column="1">
           <widget class="QLineEdit" name="signerZip">
            <property name="sizePolicy">
@@ -353,57 +299,59 @@ background-color: #FFFFFF;</string>
            </property>
           </widget>
          </item>
-         <item row="15" column="1">
-          <widget class="QLineEdit" name="signerCountry">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+         <item row="13" column="0">
+          <widget class="QLabel" name="lblSigningCity">
            <property name="minimumSize">
             <size>
-             <width>300</width>
-             <height>31</height>
+             <width>120</width>
+             <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>395</width>
-             <height>31</height>
+             <width>120</width>
+             <height>16</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>City</string>
            </property>
           </widget>
          </item>
-         <item row="14" column="1">
-          <widget class="QLineEdit" name="signerState">
+         <item row="14" column="0">
+          <widget class="QLabel" name="lblSigningCounty">
            <property name="minimumSize">
             <size>
-             <width>300</width>
-             <height>31</height>
+             <width>120</width>
+             <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>395</width>
-             <height>31</height>
+             <width>120</width>
+             <height>16</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>State</string>
            </property>
           </widget>
          </item>
@@ -412,6 +360,12 @@ background-color: #FFFFFF;</string>
            <property name="minimumSize">
             <size>
              <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
              <height>25</height>
             </size>
            </property>
@@ -482,6 +436,58 @@ background-color: #FFFFFF;</string>
            </property>
            <property name="text">
             <string>Notice</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="0">
+          <widget class="QLabel" name="lblSigningCountry">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>Country</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="QLineEdit" name="signerCity">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>395</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

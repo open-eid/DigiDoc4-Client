@@ -38,6 +38,8 @@ public:
 	explicit SignatureDialog(const DigiDocSignature &signature, QWidget *parent = nullptr);
 	~SignatureDialog();
 
+	int exec() override;
+	
 private:
 	void addItem( QTreeWidget *view, const QString &variable, const QString &value );
 	void addItem( QTreeWidget *view, const QString &variable, const QSslCertificate &cert );

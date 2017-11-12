@@ -144,7 +144,7 @@ text-decoration: none solid rgb(0, 0, 0);
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16</height>
+          <height>32</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -169,35 +169,16 @@ text-decoration: none solid rgb(0, 0, 0);
          <item>
           <widget class="QLabel" name="name">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="maximumSize">
+           <property name="minimumSize">
             <size>
-             <width>16777215</width>
-             <height>16</height>
+             <width>334</width>
+             <height>0</height>
             </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>MARI MAASIKAS MUSTIKAS  </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="code">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>100</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
            </property>
            <property name="maximumSize">
             <size>
@@ -212,10 +193,10 @@ text-decoration: none solid rgb(0, 0, 0);
             </font>
            </property>
            <property name="text">
-            <string>48405050123 (Sina ise)</string>
+            <string>MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
            </property>
-           <property name="margin">
-            <number>0</number>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -307,9 +288,12 @@ text-decoration: none solid rgb(0, 0, 0);
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>40</width>
+       <width>5</width>
        <height>20</height>
       </size>
      </property>
