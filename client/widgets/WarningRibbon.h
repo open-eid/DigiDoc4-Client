@@ -35,6 +35,9 @@ public:
 	bool isExpanded() const;
 	void setCount(int count);
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
 	Ui::WarningRibbon *ui;
 	int count;

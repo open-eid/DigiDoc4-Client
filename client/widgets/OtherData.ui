@@ -61,7 +61,7 @@ color: #353739;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
-QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}
+QPushButton:pressed {  border: none; background-color: #006EB5; color: #FFFFFF;}
 QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}
 QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 </string>

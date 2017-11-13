@@ -418,6 +418,10 @@ Media type: %3</translation>
         <translation>Container's signatures</translation>
     </message>
     <message>
+        <source>Container's timestamps</source>
+        <translation>Container's timestamps</translation>
+    </message>
+    <message>
         <source>Recipients</source>
         <translation>Recipients</translation>
     </message>
@@ -1151,8 +1155,8 @@ here you can set a new PIN1 code.&lt;/li&gt;
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;To unblock PIN2, enter the PUK code for the card.&lt;/li&gt;
-&lt;li&gt;You can find the PUK code from the ID-card in the code box, if you do not&lt;br&gt;
-in the meantime changed&lt;/li&gt;
+&lt;li&gt;You can find the PUK code from the ID-card in the code box,&lt;br&gt;
+if you do not in the meantime changed&lt;/li&gt;
 &lt;li&gt;If you do not know your PUK code for your ID card, please visit&lt;br&gt;
 a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;/ul&gt;</translation>
@@ -1162,8 +1166,8 @@ a customer service point where you can get a new code container.&lt;/li&gt;
         <translation>
 &lt;ul&gt;
 &lt;li&gt;To unblock PIN1, enter the PUK code for the card.&lt;/li&gt;
-&lt;li&gt;You can find the PUK code from the ID-card in the code box, if you do not&lt;br&gt;
-in the meantime changed&lt;/li&gt;
+&lt;li&gt;You can find the PUK code from the ID-card in the code box,&lt;br&gt;
+if you do not in the meantime changed&lt;/li&gt;
 &lt;li&gt;If you do not know your PUK code for your ID card, please visit&lt;br&gt;
 a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;/ul&gt;</translation>
@@ -1175,27 +1179,26 @@ a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;li&gt;The PIN2 code is used to give a digital signature.&lt;/li&gt;
 &lt;li&gt;If you enter the PIN2 code incorrectly three times, then signing&lt;br&gt;
 the certificate will be blocked and the ID card will not be possible&lt;br&gt;
-to use before signing&lt;br&gt;
-PUK koodiga.&lt;/li&gt;
+to use, until it is unblocked via the PUK code.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;New PIN1 must be different from the previous one.&lt;/li&gt;
-&lt;li&gt;The PIN1 code is used for identity verification&lt;br&gt;
-for access.&lt;/li&gt;
-&lt;li&gt;If you enter the PIN1 code incorrectly three times, then you will receive a personal identification&lt;br&gt;
-The certificate is blocked and you can only use the ID card after&lt;br&gt;
-unblock with PUK.&lt;/li&gt;
+&lt;li&gt;The PIN1 code is used for identity verification for access.&lt;/li&gt;
+&lt;li&gt;If you enter the PIN1 code incorrectly three times,then&lt;br&gt;
+a personal identification certificate will be blocked and the ID card&lt;br&gt;
+will not be possible to use to verify identification, until it is&lt;br&gt;
+unblocked via the PUK code.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;If the PUK code goes away after changing the code, and&lt;br&gt;
-the certificate will be blocked by entering three incorrect PIN1 or PIN2&lt;br&gt;
-then the only way to get an ID card is to turn to work&lt;br&gt;
+the certificate will be blocked by entering three incorrect PIN1 or&lt;br&gt;
+PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 &lt;u&gt;customer service point&lt;/u&gt;.&lt;/li&gt;
 &lt;li&gt;Your PUK code is located in the envelope.&lt;/li&gt;
 &lt;/ul&gt;</translation>
@@ -1470,10 +1473,6 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>SAVE WITHOUT SIGNING</source>
         <translation>SAVE WITHOUT SIGNING</translation>
-    </message>
-    <message>
-        <source>Container's timestamps</source>
-        <translation>Container's timestamps</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>

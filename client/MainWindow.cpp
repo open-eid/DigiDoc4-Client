@@ -43,6 +43,7 @@
 #include "util/FileUtil.h"
 #include "widgets/WarningItem.h"
 #include "widgets/WarningRibbon.h"
+#include "widgets/VerifyCert.h"
 
 #include <common/DateTime.h>
 #include <common/Settings.h>
@@ -354,11 +355,11 @@ void MainWindow::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void MainWindow::clearCertWarning()
+void MainWindow::clearWarning(const char* warningIdent)
 {
 	for(auto warning: warnings)
 	{
-		if(warning->property("updateCertificateEnabled").toBool())
+		if(warning->property(warningIdent).toBool())
 		{
 			closeWarning(warning, true);
 			break;
@@ -375,7 +376,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 bool MainWindow::closeWarning(WarningItem *warning, bool force)
 {
-	if(force || !warning->property("updateCertificateEnabled").toBool())
+	if(force || !warning->property(UPDATE_CERT_WARNING).toBool())
 	{
 		warnings.removeOne(warning);
 		warning->close();
@@ -392,7 +393,7 @@ void MainWindow::closeWarnings(int page)
 {
 	for(auto warning: warnings)
 	{
-		if(warning->page() == page)
+		if(warning->page() == page || page == -1)
 			closeWarning(warning);
 	}
 
@@ -910,6 +911,8 @@ void MainWindow::showCardStatus()
 	Application::restoreOverrideCursor();
 	QSmartCardData t = smartcard->data();
 
+	closeWarnings(-1);
+
 	if( !t.isNull() )
 	{
 		ui->idSelector->show();
@@ -939,8 +942,8 @@ void MainWindow::showCardStatus()
 			ui->myEid->invalidIcon(true);
 			showUpdateCertWarning();
 		}
-
 		showIdCardAlerts( t );
+		showPinBlockedWarning( t );
 	}
 	else
 	{
@@ -1049,7 +1052,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->accordion->clearOtherEID();
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
-	clearCertWarning();
+	clearWarning(UPDATE_CERT_WARNING);
 }
 
 // Loads picture
@@ -1158,17 +1161,23 @@ void MainWindow::showUpdateCertWarning()
 {
 	for(auto warning: warnings)
 	{
-		if(warning->property("updateCertificateEnabled").toBool())
+		if(warning->property(UPDATE_CERT_WARNING).toBool())
 			return;
 	}
 
 	showWarning(WarningText(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
 		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")),
-		false, "updateCertificateEnabled"));
+		false, UPDATE_CERT_WARNING));
 }
 
 void MainWindow::showWarning(const WarningText &warningText)
 {
+	if(!warningText.property.isEmpty())
+	for(auto warning: warnings)
+	{
+		if(warning->property(warningText.property.toLatin1()).toBool())
+			return;
+	}
 	WarningItem *warning = new WarningItem(warningText, ui->page);
 	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 	warnings << warning;
@@ -1288,6 +1297,16 @@ void MainWindow::warningClicked(const QString &link)
 		updateCertificate();
 	else if(link.startsWith("#invalid-signature-"))
 		emit ui->signContainerPage->details(link.right(link.length()-19));
+	else if(link == "#unblock-PIN1")
+	{
+		navigateToPage(Pages::MyEid);
+        ui->accordion->changePin1Clicked (false, true);
+	}
+	else if(link == "#unblock-PIN2")
+	{
+		navigateToPage(Pages::MyEid);
+        ui->accordion->changePin2Clicked (false, true);
+	}
 }
 
 bool MainWindow::wrapContainer()
@@ -1330,5 +1349,20 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 		store.add( t.signCert(), t.card() );
 	}
 #endif
+}
 
+void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
+{
+	if(	t.retryCount( QSmartCardData::Pin2Type ) == 0 )
+		showWarning(WarningText(
+			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2"),
+			QString("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK")),
+			-1,
+			UNBLOCK_PIN2_WARNING));
+	if(	t.retryCount( QSmartCardData::Pin1Type ) == 0 )
+		showWarning(WarningText(
+			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1"),
+			QString("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK")),
+			-1,
+			UNBLOCK_PIN1_WARNING));
 }

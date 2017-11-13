@@ -20,14 +20,17 @@
 #include "WarningItem.h"
 #include "ui_WarningItem.h"
 
+#include "MainWindow.h"
 #include "Styles.h"
+#include "VerifyCert.h"
 
 
-WarningText::WarningText(const QString &text, const QString &details, int page)
+WarningText::WarningText(const QString &text, const QString &details, int page, const QString &property)
 : text(text)
 , details(details)
 , external(false)
 , page(page)
+, property(property)
 {}
 
 WarningText::WarningText(const QString &text, const QString &details, bool external, const QString &property)
@@ -38,11 +41,11 @@ WarningText::WarningText(const QString &text, const QString &details, bool exter
 , page(-1)
 {}
 
-
 WarningItem::WarningItem(const WarningText &warningText, QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::WarningItem)
 , context(warningText.page)
+, warnText(warningText)
 {
 	ui->setupUi(this);
 	ui->warningText->setFont(Styles::font(Styles::Regular, 14));
@@ -71,4 +74,34 @@ bool WarningItem::appearsOnPage(int page) const
 int WarningItem::page() const
 {
 	return context;
+}
+
+void WarningItem::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+
+		if( !warnText.property.isEmpty() )
+		{
+			if( warnText.property.toLatin1() == UNBLOCK_PIN2_WARNING )
+			{
+				warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2");
+				warnText.details = QString("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
+			}
+			else if( warnText.property.toLatin1() == UNBLOCK_PIN1_WARNING )
+			{
+				warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1");
+				warnText.details = QString("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
+			}
+			else if( warnText.property.toLatin1() == UPDATE_CERT_WARNING )
+			{
+				warnText.text = MainWindow::tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.");
+				warnText.details = QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update"));
+			}
+		}
+		ui->warningText->setText(warnText.text);
+		ui->warningAction->setText(warnText.details);
+	}
+	QWidget::changeEvent(event);
 }

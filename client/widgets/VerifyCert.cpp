@@ -281,8 +281,8 @@ void VerifyCert::changePinStyle( const QString &background )
 {  
  	ui->changePIN->setStyleSheet(  
  		QString("QPushButton { border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: %1;}"  
- 		"QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}"  
- 		"QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}"  
+ 		"QPushButton:pressed { border: none; background-color: #006EB5; color: %1;}"  
+ 		"QPushButton:hover:!pressed { border-radius: 2px; border: 1px solid #008DCF; color: #008DCF;}"  
  		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )  
  		);  
 }

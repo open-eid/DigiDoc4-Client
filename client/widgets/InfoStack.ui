@@ -76,7 +76,7 @@ border-width: 1px 0px 0px 0px;
         <x>248</x>
         <y>120</y>
         <width>300</width>
-        <height>17</height>
+        <height>19</height>
        </rect>
       </property>
       <property name="font">
@@ -144,7 +144,7 @@ border-width: 1px 0px 0px 0px;
         <x>138</x>
         <y>120</y>
         <width>100</width>
-        <height>17</height>
+        <height>19</height>
        </rect>
       </property>
       <property name="font">

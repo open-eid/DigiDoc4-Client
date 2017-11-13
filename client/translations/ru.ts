@@ -239,7 +239,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Failed to read certificate</source>
-        <translation>Чтение сертификата неуспешно</translation>
+        <translation>Не удалось прочитать сертификат</translation>
     </message>
     <message>
         <source>This certificate cannot be used for encryption</source>
@@ -247,11 +247,11 @@ Media type: %3</source>
     </message>
     <message>
         <source>Personal code is not valid!</source>
-        <translation>Личный код некорректен!</translation>
+        <translation>Личный код недействителен!</translation>
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>У лица или учреждения отсутствует действительный сертификат.&lt;br /&gt;Для шифрования необходим действительный сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.</translation>
+        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для шифрования необходим действующий сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.</translation>
     </message>
 </context>
 
@@ -348,7 +348,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Valid</source>
-        <translation>действительный</translation>
+        <translation>действителен</translation>
     </message>
     <message>
         <source>until</source>
@@ -356,7 +356,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Expired</source>
-        <translation>Истекший</translation>
+        <translation>недействителен</translation>
     </message>
 </context>
 
@@ -415,6 +415,10 @@ Media type: %3</source>
     <message>
         <source>Container's signatures</source>
         <translation>Подписи контейнера</translation>
+    </message>
+    <message>
+        <source>Container's timestamps</source>
+        <translation>Временные штампы контейнерa</translation>
     </message>
     <message>
         <source>Recipients</source>
@@ -1146,10 +1150,11 @@ Kонтрольны код: %1</translation>
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Чтобы разблокировать PIN2, введите сначала PUK код.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK код в конверте с кодами, если вы еще не&lt;br&gt;
-поменяли его.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
-центр обслуживания, где вы сможете получить новый конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK код в конверте с кодами,&lt;br&gt;
+если вы еще не поменяли его.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты,&lt;br&gt;
+посетите центр обслуживания, где вы сможете получить&lt;br&gt;
+новый конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1157,10 +1162,11 @@ Kонтрольны код: %1</translation>
         <translation>
 &lt;ul&gt;
 &lt;li&gt;Чтобы разблокировать PIN1, введите сначала PUK код.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK код в конверте с кодами, если вы еще не&lt;br&gt;
-поменяли его.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
-центр обслуживания, где вы сможете получить новый конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK код в конверте с кодами,&lt;br&gt;
+если вы еще не поменяли его.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты,&lt;br&gt;
+посетите центр обслуживания, где вы сможете получить&lt;br&gt;
+новый конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1168,8 +1174,9 @@ Kонтрольны код: %1</translation>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
 &lt;li&gt;PIN2 код используется для предоставления цифровой подписи.&lt;/li&gt;
-&lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется сертификат&lt;br&gt;
-цифровой подписи и использовать ID-карту для цифровой подписи невозможно,&lt;br&gt;
+&lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется&lt;br&gt;
+сертификат цифровой подписи и использовать ID-карту&lt;br&gt;
+для цифровой подписи невозможно,&lt;br&gt;
 пока  блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1178,17 +1185,18 @@ Kонтрольны код: %1</translation>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
 &lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
-&lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется идентификационный&lt;br&gt;
-сертификат и использовать ID-карту невозможно, пока блокировка не снята PUK кодом.&lt;/li&gt;
+&lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется&lt;br&gt;
+идентификационный сертификат и использовать ID-карту невозможно,&lt;br&gt;
+пока блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Если PUK введён 3 раза неверно, тогда он блокируется.&lt;br&gt;
-Сертификаты можно использовать пока не будут введены 3 раза неправильные&lt;br&gt;
-PIN1 или PIN2. Тогда, для получения новых кодов своей ID-карты, посетите&lt;br&gt;
-&lt;u&gt;центр обслуживания.&lt;/u&gt;.&lt;/li&gt;
+&lt;li&gt;Если PUK введён 3 раза неверно, то он блокируется.&lt;br&gt;
+Сертификаты можно использовать пока не будут введены&lt;br&gt;
+3 раза неправильные PIN1 или PIN2. Тогда, для получения&lt;br&gt;
+новых кодов своей ID-карты, посетите &lt;u&gt;центр обслуживания.&lt;/u&gt;.&lt;/li&gt;
 &lt;li&gt;Ваш PUK код находится конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1459,10 +1467,6 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     <message>
         <source>SAVE WITHOUT SIGNING</source>
         <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>Container's timestamps</source>
-        <translation>Временные штампы контейнерa</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>

@@ -416,6 +416,10 @@ Tüüp: %3</translation>
         <translation>Konteineri allkirjad</translation>
     </message>
     <message>
+        <source>Container's timestamps</source>
+        <translation>Konteineri ajatemplid</translation>
+    </message>
+    <message>
         <source>Recipients</source>
         <translation>Adressaadid</translation>
     </message>
@@ -1201,7 +1205,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>%1 code change</source>
-        <translation>%1 koodi vahetamin</translation>
+        <translation>%1 koodi vahetamine</translation>
     </message>
     <message>
         <source>VALID %1 CODE</source>
@@ -1461,10 +1465,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>SAVE WITHOUT SIGNING</source>
         <translation>SALVESTA ALLKIRJASTAMATA</translation>
-    </message>
-    <message>
-        <source>Container's timestamps</source>
-        <translation>Konteineri ajatemplid</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>

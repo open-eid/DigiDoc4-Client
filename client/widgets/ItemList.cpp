@@ -91,9 +91,9 @@ QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile: return tr("Add more files");
-	case ItemAddress: return tr("Add addressee");
-	case ToAddAdresses: return tr("Add all");
+	case ItemFile: return "Add more files";
+	case ItemAddress: return "Add addressee";
+	case ToAddAdresses: return "Add all";
 	default: return "";
 	}
 }
@@ -203,7 +203,7 @@ void ItemList::init(ItemType item, const QString &header)
 	}
 	else
 	{
-		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == ItemFile ? FileAdd : AddressAdd);
+		ui->add->init(LabelButton::DeepCeruleanWithLochmara, tr(qPrintable(addLabel())), itemType == ItemFile ? FileAdd : AddressAdd);
 		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
 

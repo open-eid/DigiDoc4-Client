@@ -351,7 +351,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-		ui->rightPane->addHeader(tr("Container's timestamps"));
+		ui->rightPane->addHeader("Container's timestamps");
 
 		for(const DigiDocSignature &c: container->timestamps())
 			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, false, ui->rightPane));

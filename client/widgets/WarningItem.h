@@ -31,7 +31,7 @@ struct WarningText {
 	QString property;
 	int page;
 
-	WarningText(const QString &text, const QString &details = QString(), int page = -1);
+	WarningText(const QString &text, const QString &details = QString(), int page = -1, const QString &property = QString());
 	WarningText(const QString &text, const QString &details, bool external, const QString &property);
 };
 
@@ -50,7 +50,11 @@ public:
 signals:
 	void linkActivated(const QString& link);
 
+protected:
+	void changeEvent(QEvent* event) override;
+
 private:
 	Ui::WarningItem *ui;
 	int context;
+    WarningText warnText;
 };
