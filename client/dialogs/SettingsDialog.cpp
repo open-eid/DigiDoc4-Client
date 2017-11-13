@@ -133,6 +133,7 @@ void SettingsDialog::initUI()
 	ui->lblProxyPort->setFont(regularFont);
 	ui->lblProxyUsername->setFont(regularFont);
 	ui->lblProxyPassword->setFont(regularFont);
+	ui->chkProxyEnableForSSL->setFont(regularFont);
 	ui->txtProxyHost->setFont(regularFont);
 	ui->txtProxyPort->setFont(regularFont);
 	ui->txtProxyUsername->setFont(regularFont);
@@ -166,7 +167,7 @@ void SettingsDialog::initUI()
 		package = "<br />" + tr("Base version:") + " " + packages.first();
 #endif
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
-		.arg( tr("DigiDoc4 Client"), qApp->applicationVersion(), BUILD_DATE, package ) );
+		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
 
 //#ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
@@ -216,12 +217,24 @@ void SettingsDialog::initUI()
 void SettingsDialog::retranslate(const QString& lang)
 {
     emit langChanged(lang);
+
+	qApp->loadTranslation( lang );
     ui->retranslateUi(this);
 
     ui->cmbGeneralCheckUpdatePeriod->setItemText(0, tr("Once a day"));
     ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
     ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
     ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
+
+	QString package;
+#ifndef Q_OS_MAC
+	QStringList packages = Common::packages({
+		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "eID software"});
+	if( !packages.isEmpty() )
+		package = "<br />" + tr("Base version:") + " " + packages.first();
+#endif
+	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
+		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
 }
 
 void SettingsDialog::initFunctionality()
@@ -358,6 +371,7 @@ void SettingsDialog::initFunctionality()
 
 //	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
 
+	setProxyEnabled();
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
@@ -410,6 +424,7 @@ void SettingsDialog::setProxyEnabled()
 	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
+	ui->chkProxyEnableForSSL->setEnabled(ui->rdProxyManual->isChecked());
 }
 
 void SettingsDialog::updateProxy()
@@ -418,7 +433,7 @@ void SettingsDialog::updateProxy()
 	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
 	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
 	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
-//	d->proxySSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
+	ui->chkProxyEnableForSSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
 }
 
 void SettingsDialog::save()
@@ -444,7 +459,7 @@ void SettingsDialog::save()
 	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
 	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
 	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
-//	Application::setConfValue( Application::ProxySSL, d->proxySSL->isChecked() );
+	Application::setConfValue( Application::ProxySSL, ui->chkProxyEnableForSSL->isChecked() );
 	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
 	loadProxy(digidoc::Conf::instance());
 	updateProxy();

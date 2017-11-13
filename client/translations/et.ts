@@ -1394,10 +1394,22 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Password</source>
         <translation>Parool</translation>
     </message>
+    <message>
+        <source>Enable proxy for SSL connections</source>
+        <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
+    </message>
 
     <message>
-        <source>"%1 version %2, released %3%4</source>
-        <translation>"%1 versioon %2, välja lastud %3%4</translation>
+        <source>Base version:</source>
+        <translation>Baasversioon:</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 klient</translation>
+    </message>
+    <message>
+        <source>%1 version %2, released %3%4</source>
+        <translation>%1 versioon %2, välja lastud %3%4</translation>
     </message>
 
     <message>

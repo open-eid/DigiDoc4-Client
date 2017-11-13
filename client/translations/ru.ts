@@ -1392,10 +1392,22 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
+    <message>
+        <source>Enable proxy for SSL connections</source>
+        <translation>Включить прокси-сервер для подключения SSL</translation>
+    </message>
 
     <message>
-        <source>"%1 version %2, released %3%4</source>
-        <translation>"%1 версия %2, выпущенный %3%4</translation>
+        <source>Base version:</source>
+        <translation>Базовая версия:</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
+    </message>
+    <message>
+        <source>%1 version %2, released %3%4</source>
+        <translation>%1 версия %2, выпущенный %3%4</translation>
     </message>
 
     <message>
