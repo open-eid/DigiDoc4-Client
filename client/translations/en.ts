@@ -30,7 +30,7 @@
         <translation>Update your signing software. Download and install new ID-software from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</translation>
     </message>
     <message>
-        <source>You&apos;ve completed the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</source>
+        <source>FREE_CERT_EXCEEDED</source>
         <translation>You have reached the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</translation>
     </message>
 </context>
@@ -1444,8 +1444,19 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>Never</source>
         <translation>Never</translation>
     </message>
+    <message>
+        <source>FREE_CERT_EXCEEDED</source>
+        <translation>You have reached the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</translation>
+    </message>
+    <message>
+        <source>Server access certificate is not installed.</source>
+        <translation>Server access certificate is not installed.</translation>
+    </message>
+    <message>
+        <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
+        <translation>Issued to: %1&lt;br /&gt;Valid to: %2 %3</translation>
+    </message>
 </context>
-
 
 
 

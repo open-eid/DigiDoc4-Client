@@ -30,7 +30,7 @@
         <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377. </translation>
     </message>
     <message>
-        <source>You&apos;ve completed the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</source>
+        <source>FREE_CERT_EXCEEDED</source>
         <translation>Täitunud on tasuta teenuse 10 allkirja limiit. Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus&quot;&gt;leping&lt;/a&gt;. Lisainfo: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1892</translation>
     </message>
 </context>
@@ -1436,6 +1436,18 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Never</source>
         <translation>Mitte kunagi</translation>
+    </message>
+    <message>
+        <source>FREE_CERT_EXCEEDED</source>
+        <translation>Täitunud on tasuta teenuse 10 allkirja limiit. Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus&quot;&gt;leping&lt;/a&gt;. Lisainfo: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1892</translation>
+    </message>
+    <message>
+        <source>Server access certificate is not installed.</source>
+        <translation>Juurdepääsutõend ei ole paigaldatud.</translation>
+    </message>
+    <message>
+        <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
+        <translation>Kellele väljastatud: %1&lt;br /&gt;Kehtib kuni: %2 %3</translation>
     </message>
 </context>
 

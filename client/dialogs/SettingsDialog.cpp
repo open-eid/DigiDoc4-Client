@@ -50,15 +50,15 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::SettingsDialog)
 {
-    initUI();
-    initFunctionality();
+	initUI();
+	initFunctionality();
 }
 
 
 
 SettingsDialog::~SettingsDialog()
 {
-    delete ui;
+	delete ui;
 }
 
 void SettingsDialog::initUI()
@@ -97,10 +97,10 @@ void SettingsDialog::initUI()
 	ui->cmbGeneralCheckUpdatePeriod->setFont(regularFont);
 	ui->chkGeneralTslRefresh->setFont(regularFont);
 
-    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a day"));
-    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a week"));
-    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a month"));
-    ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Never"));
+	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a day"));
+	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a week"));
+	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a month"));
+	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Never"));
 
 
 	// pageSigning
@@ -216,15 +216,15 @@ void SettingsDialog::initUI()
 
 void SettingsDialog::retranslate(const QString& lang)
 {
-    emit langChanged(lang);
+	emit langChanged(lang);
 
 	qApp->loadTranslation( lang );
-    ui->retranslateUi(this);
+	ui->retranslateUi(this);
 
-    ui->cmbGeneralCheckUpdatePeriod->setItemText(0, tr("Once a day"));
-    ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
-    ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
-    ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
+	ui->cmbGeneralCheckUpdatePeriod->setItemText(0, tr("Once a day"));
+	ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
+	ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
+	ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
 
 	QString package;
 #ifndef Q_OS_MAC
@@ -235,6 +235,7 @@ void SettingsDialog::retranslate(const QString& lang)
 #endif
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
 		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
+	updateCert();
 }
 
 void SettingsDialog::initFunctionality()
@@ -252,9 +253,9 @@ void SettingsDialog::initFunctionality()
 		ui->rdGeneralEstonian->setChecked(true);
 	}
 
-    connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("et"); } );
-    connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("en"); } );
-    connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("ru"); } );
+	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("et"); } );
+	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("en"); } );
+	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("ru"); } );
 
 	updateCert();
 #ifdef Q_OS_MAC
@@ -394,29 +395,24 @@ void SettingsDialog::initFunctionality()
 	updateDiagnostics();
 }
 
-
 void SettingsDialog::updateCert()
 {
 	QSslCertificate c = AccessCert::cert();
 	if( !c.isNull() )
 		ui->txtAccessCert->setText(
-			tr("Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
-			"Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
-			"Täiendav informatsioon <a href=\"http://www.id.ee/kehtivuskinnitus\">http://www.id.ee/kehtivuskinnitus</a> või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
-			"Issued to: %1<br />Valid to: %2 %3")
-			.arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
-			.arg( c.expiryDate().toString("dd.MM.yyyy") )
-			.arg( !SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
+			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
+			QString(tr("Issued to: %1<br />Valid to: %2 %3"))
+				.arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
+				.arg( c.expiryDate().toString("dd.MM.yyyy") )
+				.arg( !SslCertificate(c).isValid() ? 
+					"<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
 	else
-		ui->txtAccessCert->setText( "Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. "
-									"Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöördu palun oma asutuse IT-toe poole. "
-									"Täiendav informatsioon <a href=\"http://www.id.ee/kehtivuskinnitus\">http://www.id.ee/kehtivuskinnitus</a> või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 677 3377<br /><br />"
-									"<b>" + tr("Server access certificate is not installed.") + "</b>" );
+		ui->txtAccessCert->setText( 
+			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
+			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
 	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
 	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
 }
-
-
 
 void SettingsDialog::setProxyEnabled()
 {

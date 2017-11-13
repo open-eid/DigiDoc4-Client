@@ -309,15 +309,7 @@ bool AccessCert::validate()
 	}
 	else if(count(date) >= 50)
 	{
-		showWarning( tr(
-			"You've completed the free service limit - 10 signatures. Regarding to terms "
-			"and conditions of validity confirmation service you're allowed to use the "
-			"service in extent of 10 signatures per month. If you are going to exceed the limit "
-			"of 10 signatures per month or/and will use the service for commercial purposes, "
-			"please contact to IT support team of your company or sign a contract to use the "
-			"<a href=\"http://sk.ee/en/services/validity-confirmation-services\">service</a>. "
-			"Additional information is available <a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> "
-			"or phone (+372) 610 1892") );
+		showWarning(tr("FREE_CERT_EXCEEDED"));
 	}
 	return true;
 }
