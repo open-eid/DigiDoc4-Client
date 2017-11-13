@@ -1401,10 +1401,22 @@ then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>Password</source>
         <translation>Password</translation>
     </message>
+    <message>
+        <source>Enable proxy for SSL connections</source>
+        <translation>Enable proxy for SSL connections</translation>
+    </message>
 
     <message>
-        <source>"%1 version %2, released %3%4</source>
-        <translation>"%1 version %2, released %3%4</translation>
+        <source>Base version:</source>
+        <translation>Base version:</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
+    </message>
+    <message>
+        <source>%1 version %2, released %3%4</source>
+        <translation>%1 version %2, released %3%4</translation>
     </message>
 
     <message>

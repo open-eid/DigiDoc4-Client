@@ -396,19 +396,19 @@ QPushButton:!checked{
            <rect>
             <x>21</x>
             <y>20</y>
-            <width>90</width>
+            <width>700</width>
             <height>21</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>90</width>
+            <width>700</width>
             <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>90</width>
+            <width>700</width>
             <height>21</height>
            </size>
           </property>
@@ -421,19 +421,19 @@ QPushButton:!checked{
            <rect>
             <x>21</x>
             <y>220</y>
-            <width>270</width>
+            <width>700</width>
             <height>21</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>270</width>
+            <width>700</width>
             <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>270</width>
+            <width>700</width>
             <height>21</height>
            </size>
           </property>
@@ -446,19 +446,19 @@ QPushButton:!checked{
            <rect>
             <x>21</x>
             <y>100</y>
-            <width>300</width>
+            <width>700</width>
             <height>21</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>300</width>
+            <width>700</width>
             <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>300</width>
+            <width>700</width>
             <height>21</height>
            </size>
           </property>
@@ -532,19 +532,19 @@ QComboBox::down-arrow {
            <rect>
             <x>24</x>
             <y>178</y>
-            <width>250</width>
+            <width>700</width>
             <height>16</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>250</width>
+            <width>700</width>
             <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>250</width>
+            <width>700</width>
             <height>16</height>
            </size>
           </property>
@@ -742,21 +742,21 @@ QRadioButton::indicator::checked {
           <widget class="QLineEdit" name="txtGeneralDirectory">
            <property name="geometry">
             <rect>
-             <x>248</x>
+             <x>293</x>
              <y>40</y>
-             <width>516</width>
+             <width>471</width>
              <height>31</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>516</width>
+             <width>471</width>
              <height>31</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>516</width>
+             <width>471</width>
              <height>31</height>
             </size>
            </property>
@@ -771,19 +771,19 @@ background-color: #FFFFFF;</string>
             <rect>
              <x>21</x>
              <y>12</y>
-             <width>140</width>
+             <width>220</width>
              <height>16</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>140</width>
+             <width>220</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>140</width>
+             <width>220</width>
              <height>16</height>
             </size>
            </property>
@@ -813,19 +813,19 @@ QRadioButton::indicator::checked {
             <rect>
              <x>21</x>
              <y>47</y>
-             <width>185</width>
+             <width>228</width>
              <height>16</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>185</width>
+             <width>228</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>185</width>
+             <width>220</width>
              <height>16</height>
             </size>
            </property>
@@ -850,7 +850,7 @@ QRadioButton::indicator::checked {
           <widget class="QToolButton" name="btGeneralChooseDirectory">
            <property name="geometry">
             <rect>
-             <x>210</x>
+             <x>255</x>
              <y>40</y>
              <width>37</width>
              <height>31</height>
@@ -925,19 +925,19 @@ QRadioButton::indicator::checked {
             <rect>
              <x>21</x>
              <y>12</y>
-             <width>630</width>
+             <width>749</width>
              <height>32</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>630</width>
+             <width>749</width>
              <height>32</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>630</width>
+             <width>749</width>
              <height>32</height>
             </size>
            </property>
@@ -969,19 +969,19 @@ QRadioButton::indicator::checked {
             <rect>
              <x>21</x>
              <y>50</y>
-             <width>630</width>
+             <width>749</width>
              <height>16</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>630</width>
+             <width>749</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>630</width>
+             <width>749</width>
              <height>16</height>
             </size>
            </property>
@@ -1043,19 +1043,19 @@ QRadioButton::indicator::checked {
            <rect>
             <x>21</x>
             <y>220</y>
-            <width>70</width>
+            <width>150</width>
             <height>21</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>70</width>
+            <width>150</width>
             <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>70</width>
+            <width>150</width>
             <height>21</height>
            </size>
           </property>
@@ -1370,19 +1370,19 @@ background-color: #FFFFFF;</string>
            <rect>
             <x>21</x>
             <y>150</y>
-            <width>370</width>
+            <width>700</width>
             <height>16</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>370</width>
+            <width>700</width>
             <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>370</width>
+            <width>700</width>
             <height>16</height>
            </size>
           </property>
@@ -1426,19 +1426,19 @@ QCheckBox::indicator:checked {
             <rect>
              <x>21</x>
              <y>20</y>
-             <width>280</width>
+             <width>700</width>
              <height>16</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>280</width>
+             <width>700</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>280</width>
+             <width>700</width>
              <height>16</height>
             </size>
            </property>
@@ -1468,19 +1468,19 @@ QRadioButton::indicator::checked {
             <rect>
              <x>21</x>
              <y>55</y>
-             <width>350</width>
+             <width>700</width>
              <height>16</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>350</width>
+             <width>700</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>350</width>
+             <width>700</width>
              <height>16</height>
             </size>
            </property>
@@ -1507,19 +1507,19 @@ QRadioButton::indicator::checked {
             <rect>
              <x>21</x>
              <y>90</y>
-             <width>280</width>
+             <width>700</width>
              <height>16</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>280</width>
+             <width>700</width>
              <height>16</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>280</width>
+             <width>700</width>
              <height>16</height>
             </size>
            </property>
@@ -1730,6 +1730,19 @@ QRadioButton::indicator::checked {
            <string>Password</string>
           </property>
          </widget>
+         <widget class="QCheckBox" name="chkProxyEnableForSSL">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>277</y>
+            <width>751</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Enable proxy for SSL connections</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="pageDiagnostics">
          <widget class="QTextEdit" name="txtDiagnostics">
@@ -1763,8 +1776,8 @@ QRadioButton::indicator::checked {
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:13pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </widget>
@@ -1925,13 +1938,13 @@ background-color: #f7f7f7;</string>
        <widget class="QPushButton" name="btNavFromFile">
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>0</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
+          <width>16777215</width>
           <height>25</height>
          </size>
         </property>
@@ -1940,6 +1953,8 @@ background-color: #f7f7f7;</string>
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -1963,7 +1978,13 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavSaveReport">
         <property name="minimumSize">
          <size>
-          <width>222</width>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
           <height>25</height>
          </size>
         </property>
@@ -1972,6 +1993,8 @@ QPushButton:disabled {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -1995,13 +2018,13 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavFromHistory">
         <property name="minimumSize">
          <size>
-          <width>190</width>
+          <width>0</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>190</width>
+          <width>16777215</width>
           <height>25</height>
          </size>
         </property>
@@ -2010,6 +2033,8 @@ QPushButton:disabled {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -2033,13 +2058,13 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavUseByDefault">
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>0</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>16777215</width>
           <height>25</height>
          </size>
         </property>
@@ -2048,6 +2073,8 @@ QPushButton:disabled {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -2071,13 +2098,13 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavInstallManually">
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>0</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>16777215</width>
           <height>25</height>
          </size>
         </property>
@@ -2086,6 +2113,8 @@ QPushButton:disabled {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -2109,13 +2138,13 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavShowCertificate">
         <property name="minimumSize">
          <size>
-          <width>90</width>
+          <width>0</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>16777215</width>
           <height>25</height>
          </size>
         </property>
@@ -2124,6 +2153,8 @@ QPushButton:disabled {
 	border-radius: 2px; 
 	border: none;
 	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -2174,6 +2205,8 @@ QPushButton:disabled {
 	border: none;
 	color: #ffffff;
 	background-color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 QPushButton:pressed {
 	background-color: #41B6E6;
