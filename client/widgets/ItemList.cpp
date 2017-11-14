@@ -123,6 +123,7 @@ void ItemList::addWidget(Item *widget)
 void ItemList::clear()
 {
 	ui->download->hide();
+	ui->count->hide();
 
 	if(header)
 	{
