@@ -10,11 +10,11 @@
     <x>0</x>
     <y>0</y>
     <width>507</width>
-    <height>206</height>
+    <height>232</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -22,7 +22,7 @@
   <property name="minimumSize">
    <size>
     <width>507</width>
-    <height>206</height>
+    <height>232</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -68,7 +68,7 @@ background-color: #FFFFFF;</string>
      <x>40</x>
      <y>49</y>
      <width>426</width>
-     <height>35</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -105,7 +105,7 @@ border: none;</string>
    <property name="geometry">
     <rect>
      <x>192</x>
-     <y>106</y>
+     <y>122</y>
      <width>123</width>
      <height>30</height>
     </rect>
@@ -144,7 +144,7 @@ text-align: center;</string>
    <property name="geometry">
     <rect>
      <x>126</x>
-     <y>156</y>
+     <y>172</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -191,7 +191,7 @@ QPushButton:hover:!pressed {
    <property name="geometry">
     <rect>
      <x>261</x>
-     <y>156</y>
+     <y>172</y>
      <width>120</width>
      <height>32</height>
     </rect>

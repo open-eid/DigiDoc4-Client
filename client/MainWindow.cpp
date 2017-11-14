@@ -90,7 +90,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector);
 	selector->hide();
 	selector->resize( 12, 6 );
-	selector->move( 339, 32 );
+	selector->move( 364, 32 );
 	selector->setCursor( Qt::PointingHandCursor );
 	ui->help->installEventFilter( new ButtonHoverFilter( ":/images/icon_Abi.svg", ":/images/icon_Abi_hover.svg", this ) );
 	ui->settings->installEventFilter( new ButtonHoverFilter( ":/images/icon_Seaded.svg", ":/images/icon_Seaded_hover.svg", this ) );
@@ -1173,10 +1173,12 @@ void MainWindow::showUpdateCertWarning()
 void MainWindow::showWarning(const WarningText &warningText)
 {
 	if(!warningText.property.isEmpty())
-	for(auto warning: warnings)
 	{
-		if(warning->property(warningText.property.toLatin1()).toBool())
-			return;
+		for(auto warning: warnings)
+		{
+			if(warning->property(warningText.property.toLatin1()).toBool())
+				return;
+		}
 	}
 	WarningItem *warning = new WarningItem(warningText, ui->page);
 	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());

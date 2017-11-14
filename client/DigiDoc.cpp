@@ -632,7 +632,7 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	case Exception::PINIncorrect:
 		qApp->showWarning(tr("PIN Incorrect"), causes.join("\n")); break;
 	case Exception::PINLocked:
-		qApp->showWarning(tr("PIN Locked. Please use ID-card utility for PIN opening!"), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join("\n")); break;
 	default:
 		qApp->showWarning(msg, causes.join("\n")); break;
 	}

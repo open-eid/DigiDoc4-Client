@@ -131,8 +131,8 @@
         <translation>Check your computer time</translation>
     </message>
     <message>
-        <source>PIN Locked. Please use ID-card utility for PIN opening!</source>
-        <translation>PIN Locked. Please use ID-card utility for PIN opening!</translation>
+        <source>PIN Locked. Unblock to reuse PIN.</source>
+        <translation>PIN Locked. Unblock to reuse PIN.</translation>
     </message>
     <message>
         <source>An error occurred while opening the document.</source>
