@@ -2648,4 +2648,19 @@ ID-CARD</translation>
         <translation>Less</translation>
     </message>
 </context>
+<context>
+    <name>QSmartCard</name>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+</context>
 </TS>

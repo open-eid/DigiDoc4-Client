@@ -463,8 +463,8 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
 		oldPin = p->firstCodeText().toUtf8();
 		newPin = p->newCodeText().toUtf8();
 	}
-	title = tr("Changing %1 code").arg(QSmartCardData::typeString(type));
-	textBody = tr("PinPad lugejaga %1 muutmiseks<br />tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.").arg(QSmartCardData::typeString(type));
+	title = tr("%1 code change").arg(QSmartCardData::typeString(type));
+	textBody = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
 
 	return change(type, newPin, oldPin, title, textBody);
 }
@@ -483,11 +483,11 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 		puk = p->firstCodeText().toUtf8();
 		newPin = p->newCodeText().toUtf8();
 	}
-	title = tr("Unblocking %1 code").arg(QSmartCardData::typeString(type));
+	title = tr("%1 unblocking").arg(QSmartCardData::typeString(type));
 	textBody = (isForgotPin) ?  
-		tr("PinPad lugejaga %1 muutmiseks tuleb kõigepealt<br />sisestada PUK ning siis kaks korda %1.").arg(QSmartCardData::typeString(type))
+		tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type))
     	:
-		tr("PinPad lugejaga %1 blokeeringu tühistamiseks<br />tuleb kõigepealt sisestada PUK ning siis kaks korda %1.").arg(QSmartCardData::typeString(type));
+		tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 
 	return unblock(type, newPin, puk, title, textBody);
 }

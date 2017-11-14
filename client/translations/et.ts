@@ -2626,4 +2626,19 @@ ID-KAARDIGA</translation>
         <translation>Vähem</translation>
     </message>
 </context>
+<context>
+    <name>QSmartCard</name>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+</context>
 </TS>
