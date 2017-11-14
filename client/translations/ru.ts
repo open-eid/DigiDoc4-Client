@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Caught exception!</source>
-        <translation type="unfinished"></translation>
+        <translation>Перехвачена системная ошибка!</translation>
     </message>
     <message>
         <source>New Client window</source>
@@ -140,19 +140,19 @@
     </message>
     <message>
         <source>Failed add file to container</source>
-        <translation>Не удается добавить файл в конверт</translation>
+        <translation>Не удается добавить файл в контейнер</translation>
     </message>
     <message>
         <source>Failed remove signature from container</source>
-        <translation>Не удается удалить подпись из конверта</translation>
+        <translation>Не удается удалить подпись из контейнера</translation>
     </message>
     <message>
         <source>Failed to save container</source>
-        <translation>Не удается сохранить конверт</translation>
+        <translation>Не удается сохранить контейнер</translation>
     </message>
     <message>
         <source>Failed to sign container</source>
-        <translation>Не удается подписать конверт</translation>
+        <translation>Не удается подписать контейнер</translation>
     </message>
     <message>
         <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
@@ -171,7 +171,7 @@
     </message>
     <message>
         <source>Failed remove document from container</source>
-        <translation>Не удается удалить файл из конверта</translation>
+        <translation>Не удается удалить файл из контейнера</translation>
     </message>
     <message>
         <source>Filename: %1
@@ -239,19 +239,19 @@ Media type: %3</source>
     </message>
     <message>
         <source>Failed to read certificate</source>
-        <translation>Чтение сертификата неуспешно</translation>
+        <translation>Не удалось прочитать сертификат</translation>
     </message>
     <message>
         <source>This certificate cannot be used for encryption</source>
-        <translation>Данным сертификатом нельзя шифровать</translation>
+        <translation>Данным сертификатом нельзя зашифровать</translation>
     </message>
     <message>
         <source>Personal code is not valid!</source>
-        <translation>Личный код некорректен!</translation>
+        <translation>Личный код недействителен!</translation>
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>У лица или учреждения отсутствует действительный сертификат.&lt;br /&gt;Для шифрования необходим действительный сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.</translation>
+        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.</translation>
     </message>
 </context>
 
@@ -273,7 +273,7 @@ Media type: %3</source>
 
     <message>
         <source>Owner</source>
-        <translation>владелец</translation>
+        <translation>Владелец</translation>
     </message>
     <message>
         <source>Type</source>
@@ -319,7 +319,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Given names</source>
-        <translation>имена</translation>
+        <translation>Имена</translation>
     </message>
     <message>
         <source>Personal code</source>
@@ -348,7 +348,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Valid</source>
-        <translation>действительный</translation>
+        <translation>Действителен</translation>
     </message>
     <message>
         <source>until</source>
@@ -356,7 +356,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Expired</source>
-        <translation>Истекший</translation>
+        <translation>Недействителен</translation>
     </message>
 </context>
 
@@ -417,6 +417,10 @@ Media type: %3</source>
         <translation>Подписи контейнера</translation>
     </message>
     <message>
+        <source>Container's timestamps</source>
+        <translation>Временные штампы контейнерa</translation>
+    </message>
+    <message>
         <source>Recipients</source>
         <translation>Получатели</translation>
     </message>
@@ -426,7 +430,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Decrypted files</source>
-        <translation>Дешифрованные файлы</translation>
+        <translation>Расшифрованные файлы</translation>
     </message>
 </context>
 
@@ -447,7 +451,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Loading data</source>
-        <translation>Читаю данные</translation>
+        <translation>Данные считываются</translation>
     </message>
 </context>
 
@@ -497,7 +501,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Insert the card into the reader to manage the document</source>
-        <translation>Вставьте карту в считывающее устройство для управления документом</translation>
+        <translation>Вставьте карту в считывающее устройство для работы с документом</translation>
     </message>
 
     <message>
@@ -530,7 +534,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Valid</source>
-        <translation>действительный</translation>
+        <translation>Действителен</translation>
     </message>
 
 
@@ -561,11 +565,11 @@ Learn more info here:</source>
     </message>
     <message>
         <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
-        <translation>Не найдено официальных перенаправлений электронной почты. Чтобы отправить электронное письмо на адрес @ eesti.ee, введите ваш адрес электронной почты:</translation>
+        <translation>Не найдено официальных переадресаций электронной почты. Чтобы отправить электронное письмо на адрес @ eesti.ee, введите ваш адрес электронной почты:</translation>
     </message>
     <message>
         <source>ACTIVATE REDIRECTION</source>
-        <translation>АКТИВИРОВАТЬ ПЕРЕНАПРАВЛЕНИЕ</translation>
+        <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
     </message>
     <message>
         <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
@@ -594,7 +598,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Restrictions</source>
-        <translation>ограничения</translation>
+        <translation>Ограничения</translation>
     </message>
     <message>
         <source>Test signature</source>
@@ -671,7 +675,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Забыл PIN%2?%3</translation>
+        <translation>%1Забыли PIN%2?%3</translation>
     </message>
     <message>
         <source>Signing certificate</source>
@@ -695,7 +699,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>The PUK code is located in your envelope</source>
-        <translation>Код PUK находится в конверте</translation>
+        <translation>PUK код находится в конверте</translation>
     </message>
     <message>
         <source>CHANGE PUK</source>
@@ -703,7 +707,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
-        <translation>%1PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. %2 Пока код PUK заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. %2 Новый PUK получите в конверте с кодами %3 из PPA%4.</translation>
+        <translation>%1PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. %2 Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. %2 Новый PUK получите в конверте с кодами %3 из PPA%4.</translation>
     </message>
 </context>
 
@@ -833,7 +837,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
+        <translation>ПЕРЕАДРЕСАЦИЯ EESTI.EE ПОЧТЫ</translation>
     </message>
     <message>
         <source>MY OTHER eID's</source>
@@ -903,7 +907,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Key</source>
-        <translation>ключ</translation>
+        <translation>Ключ</translation>
     </message>
     <message>
         <source>Crypto method</source>
@@ -1146,10 +1150,11 @@ Kонтрольны код: %1</translation>
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Чтобы разблокировать PIN2, введите сначала PUK код.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK код в конверте с кодами, если вы еще не&lt;br&gt;
-поменяли его.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
-центр обслуживания, где вы сможете получить новый конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK код в конверте с кодами,&lt;br&gt;
+если вы еще не поменяли его.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты,&lt;br&gt;
+посетите центр обслуживания, где вы сможете получить&lt;br&gt;
+новый конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1157,10 +1162,11 @@ Kонтрольны код: %1</translation>
         <translation>
 &lt;ul&gt;
 &lt;li&gt;Чтобы разблокировать PIN1, введите сначала PUK код.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK код в конверте с кодами, если вы еще не&lt;br&gt;
-поменяли его.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
-центр обслуживания, где вы сможете получить новый конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Вы можете найти PUK код в конверте с кодами,&lt;br&gt;
+если вы еще не поменяли его.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты,&lt;br&gt;
+посетите центр обслуживания, где вы сможете получить&lt;br&gt;
+новый конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1168,8 +1174,9 @@ Kонтрольны код: %1</translation>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
 &lt;li&gt;PIN2 код используется для предоставления цифровой подписи.&lt;/li&gt;
-&lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется сертификат&lt;br&gt;
-цифровой подписи и использовать ID-карту для цифровой подписи невозможно,&lt;br&gt;
+&lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется&lt;br&gt;
+сертификат цифровой подписи и использовать ID-карту&lt;br&gt;
+для цифровой подписи невозможно,&lt;br&gt;
 пока  блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1178,17 +1185,18 @@ Kонтрольны код: %1</translation>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
 &lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
-&lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется идентификационный&lt;br&gt;
-сертификат и использовать ID-карту невозможно, пока блокировка не снята PUK кодом.&lt;/li&gt;
+&lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется&lt;br&gt;
+идентификационный сертификат и использовать ID-карту невозможно,&lt;br&gt;
+пока блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Если PUK введён 3 раза неверно, тогда он блокируется.&lt;br&gt;
-Сертификаты можно использовать пока не будут введены 3 раза неправильные&lt;br&gt;
-PIN1 или PIN2. Тогда, для получения новых кодов своей ID-карты, посетите&lt;br&gt;
-&lt;u&gt;центр обслуживания.&lt;/u&gt;.&lt;/li&gt;
+&lt;li&gt;Если PUK введён 3 раза неверно, то он блокируется.&lt;br&gt;
+Сертификаты можно использовать пока не будут введены&lt;br&gt;
+3 раза неправильные PIN1 или PIN2. Тогда, для получения&lt;br&gt;
+новых кодов своей ID-карты, посетите &lt;u&gt;центр обслуживания.&lt;/u&gt;.&lt;/li&gt;
 &lt;li&gt;Ваш PUK код находится конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1204,7 +1212,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>VALID %1 CODE</source>
-        <translation>ДЕЙСТВИТЕЛЬНЫЙ %1 КОД</translation>
+        <translation>ДЕЙСТВУЮЩИЙ %1 КОД</translation>
     </message>
     <message>
         <source>CHANGE</source>
@@ -1332,7 +1340,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>Если Вы желаете изменить формат цифровой подписи, это нужно сделать до того, как Вы добавите в конверт подписываемый файл. В противном случае будет действовать формат подписи по умолчанию. Если документ уже подписан, то при добавлении к нему второй подписи формат подписи изменить невозможно.</translation>
+        <translation>Если Вы желаете изменить формат цифровой подписи, это нужно сделать до того, как Вы добавите в контейнер подписываемый файл. В противном случае будет действовать формат подписи по умолчанию. Если документ уже подписан, то при добавлении к нему второй подписи формат подписи изменить невозможно.</translation>
     </message>
     <message>
         <source>Role</source>
@@ -1483,10 +1491,6 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     <message>
         <source>SAVE WITHOUT SIGNING</source>
         <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>Container's timestamps</source>
-        <translation>Временные штампы контейнерa</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>
@@ -1817,7 +1821,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
 
     <message>
         <source>Drag file here for signing</source>
-        <translation>Перетащите файл сюда для подписания или проверки ...</translation>
+        <translation>Перетащите файл сюда для подписи или проверки ...</translation>
     </message>
     <message>
         <source>Open file for signing</source>
@@ -1825,7 +1829,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>Drag file here for encryption</source>
-        <translation>Перетащите файл сюда для шифрования или дешифрования ...</translation>
+        <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
     </message>
     <message>
         <source>Open file for encryption</source>
@@ -1846,11 +1850,11 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>Decryption succeeded</source>
-        <translation>Расшифровка прошла успешно!</translation>
+        <translation>Расшифровывание прошло успешно!</translation>
     </message>
     <message>
         <source>Encryption succeeded</source>
-        <translation>Шифрование выполнено успешно!</translation>
+        <translation>Зашифровывание выполнено успешно!</translation>
     </message>
     <message>
         <source>Select documents</source>
@@ -1917,11 +1921,11 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>Converted to signed document!</source>
-        <translation>Конвертировано в подписанный документ!</translation>
+        <translation>Переделан в контейнер для подписания!</translation>
     </message>
     <message>
         <source>Converted to crypto container!</source>
-        <translation>Konverteeritud krüptokonteineriks!</translation>
+        <translation>Переделан в контейнер для зашифровывания!</translation>
     </message>
     <message>
         <source>Move file</source>
@@ -1939,7 +1943,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
 
     <message>
         <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>Карточные сертификаты нуждаются в обновлении. Обновление занимает 2-10 минут и требует подключения к Интернету в режиме реального времени. Карту нельзя удалять из считывателя до окончания обновления.</translation>
+        <translation>Сертификаты карты нуждаются в обновлении. Обновление занимает 2-10 минут и требует подключения к Интернету в режиме реального времени. Карту нельзя удалять из считывателя до окончания обновления.</translation>
     </message>
     <message>
         <source>Update</source>
@@ -2003,7 +2007,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
     </message>
     <message>
         <source>You have not signed this container</source>
-        <translation>Данный контейнер не подписан вами</translation>
+        <translation>Данный контейнер вами не подписан</translation>
     </message>
     <message>
         <source>Container is unsigned</source>
@@ -2101,7 +2105,7 @@ PIN1 или PIN2. Тогда, для получения новых кодов с
         <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
 Should I keep the unsigned container or remove it?</source>
         <translation>
-            <numerusform>В контейнер добавлено %n файл, но они не подписаны.
+            <numerusform>В контейнер добавлен %n файл, но он не подписан.
 Оставить неподписанный контейнер или стереть?</numerusform>
             <numerusform>В контейнер добавлено %n файла, но они не подписаны.
 Оставить неподписанный контейнер или стереть?</numerusform>
@@ -2142,7 +2146,7 @@ Should I keep the unsigned container or remove it?</source>
     <message>
         <source>Cannot add container to same container
 %1</source>
-        <translation>Невозможно добавить файл в один и тот же контейнер
+        <translation>Невозможно добавить контейнер в тот же контейнер
 %1</translation>
     </message>
     <message>
@@ -2169,15 +2173,15 @@ already in container, ovewrite?</source>
     </message>
     <message>
         <source>Cards</source>
-        <translation type="unfinished"></translation>
+        <translation>Карточки</translation>
     </message>
     <message>
         <source>Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Языки</translation>
     </message>
     <message>
         <source>Card info</source>
-        <translation type="unfinished"></translation>
+        <translation>Инфо карточки</translation>
     </message>
     <message>
         <source>All fields are optional</source>
@@ -2311,7 +2315,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Encrypting</source>
-        <translation>Шифровка</translation>
+        <translation>Зашифровывание</translation>
     </message>
 </context>
 
@@ -2463,7 +2467,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>ISSUER OF CERTIFICATE</source>
-        <translation>ИМЯ ВЫДАВШЕГО СЕРТИФИКАТА</translation>
+        <translation>ИМЯ ВЫДАВШЕГО СЕРТИФИКАТ</translation>
     </message>
     <message>
         <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
@@ -2553,7 +2557,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Failed to login token</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN код не подтвежден</translation>
     </message>
     <message>
         <source>Failed to sign document</source>
@@ -2592,11 +2596,11 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>EncryptContainer</source>
-        <translation>ШИФРОВАТЬ</translation>
+        <translation>ЗАШИФРОВАТЬ</translation>
     </message>
     <message>
         <source>DecryptContainer</source>
-        <translation>ДЕКОДИРОВАРЬ
+        <translation>РАСШИФРОВАТЬ
 С ID-КАРТОЙ</translation>
     </message>
 </context>
@@ -2627,7 +2631,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Invalid response</source>
-        <translation>Недействительный ответ</translation>
+        <translation>Неверный ответ</translation>
     </message>
     <message>
         <source>Loading Email info</source>
@@ -2639,7 +2643,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>SSL context is missing</source>
-        <translation>Не удалось создать контекст SSL</translation>
+        <translation>Отсутствует контекст SSL</translation>
     </message>
 </context>
 <context>
@@ -2654,6 +2658,21 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>Less</source>
         <translation>Меньше</translation>
+    </message>
+</context>
+<context>
+    <name>QSmartCard</name>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>Для изменения %1 кода с помощью PUK кода Вам необходимо&lt;br&gt;ввести один раз PUK код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
     </message>
 </context>
 </TS>

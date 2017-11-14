@@ -87,6 +87,11 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
+
+		if (type == QSmartCardData::Pin1Type)
+			clearWarning(UNBLOCK_PIN1_WARNING);
+		if (type == QSmartCardData::Pin2Type)
+			clearWarning(UNBLOCK_PIN2_WARNING);
 	}
 }
 
@@ -99,6 +104,8 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 			.arg( QSmartCardData::typeString( type ) ), true );
 		ui->accordion->updateInfo( smartcard );
 	}
+    else
+    	showPinBlockedWarning( smartcard->data() );
 }
 
 void MainWindow::certDetailsClicked( const QString &link )

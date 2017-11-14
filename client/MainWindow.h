@@ -33,6 +33,10 @@
 #include <QImage>
 #include <QWidget>
 
+#define UPDATE_CERT_WARNING "updateCertificateEnabled"
+#define UNBLOCK_PIN1_WARNING "unBlockPIN1"
+#define UNBLOCK_PIN2_WARNING "unBlockPIN2"
+
 namespace Ui {
 class MainWindow;
 }
@@ -81,7 +85,7 @@ protected:
 private:
 	void cachePicture( const QString &id, const QImage &image );
 	void browseOnDisk(const QString &fileName);
-	void clearCertWarning();
+	void clearWarning(const char* warningIdent);
 	void clearOverlay();
 	bool closeWarning(WarningItem *warning, bool force = false);
 	void closeWarnings(int page);
@@ -133,6 +137,7 @@ private:
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showUpdateCertWarning();
 	void showIdCardAlerts(const QSmartCardData& t);
+	void showPinBlockedWarning(const QSmartCardData& t);
 	bool wrapContainer();
 	
 	CryptoDoc* cryptoDoc = nullptr;

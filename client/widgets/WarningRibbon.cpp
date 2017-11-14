@@ -69,3 +69,17 @@ void WarningRibbon::setCount(int count)
 	else
 		ui->details->setText(tr("%n message", "", count));
 }
+
+void WarningRibbon::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+
+		if(expanded)
+			ui->details->setText(tr("Less"));
+		else
+			ui->details->setText(tr("%n message", "", count));
+	}
+	QWidget::changeEvent(event);
+}

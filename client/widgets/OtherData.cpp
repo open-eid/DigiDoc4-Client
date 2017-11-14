@@ -46,7 +46,7 @@ OtherData::OtherData(QWidget *parent)
 	ui->activate->setStyleSheet(
 			"padding: 6px 9px;"
 			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
-			"QPushButton:pressed { background-color: #41B6E6;}"
+			"QPushButton:pressed { border: none; background-color: #006EB5;}"
 			"QPushButton:hover:!pressed { background-color: #008DCF;}"
 			"QPushButton:disabled { background-color: #BEDBED;};"
 			);

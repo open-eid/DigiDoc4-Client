@@ -113,7 +113,6 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 	ui->otherID->update("Other ID");
 
 	ui->titleOtherData->setVisible( !( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) ) );
-//	ui->titleOtherData->setDisabled( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) );
 }
 
 void Accordion::changeEvent(QEvent* event)
@@ -183,10 +182,10 @@ void Accordion::updateDigiIdInfo()
 	QVariant digiIdData = property("DIGI_ID_STATUS").value<QVariant>();
 
 	ui->digiID->updateDigiId(
-		"PA789456123",
-		"01.01.2022",
-		"Activ",
-		"07.08.2022, 20:59:59" );
+		"",
+		"",
+		"",
+		"" );
 
 	ui->digiID->show();
 }

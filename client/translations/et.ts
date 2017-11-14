@@ -416,6 +416,10 @@ Tüüp: %3</translation>
         <translation>Konteineri allkirjad</translation>
     </message>
     <message>
+        <source>Container's timestamps</source>
+        <translation>Konteineri ajatemplid</translation>
+    </message>
+    <message>
         <source>Recipients</source>
         <translation>Adressaadid</translation>
     </message>
@@ -1201,7 +1205,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>%1 code change</source>
-        <translation>%1 koodi vahetamin</translation>
+        <translation>%1 koodi vahetamine</translation>
     </message>
     <message>
         <source>VALID %1 CODE</source>
@@ -1485,10 +1489,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>SAVE WITHOUT SIGNING</source>
         <translation>SALVESTA ALLKIRJASTAMATA</translation>
-    </message>
-    <message>
-        <source>Container's timestamps</source>
-        <translation>Konteineri ajatemplid</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>
@@ -2648,6 +2648,21 @@ ID-KAARDIGA</translation>
     <message>
         <source>Less</source>
         <translation>Vähem</translation>
+    </message>
+</context>
+<context>
+    <name>QSmartCard</name>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
     </message>
 </context>
 </TS>
