@@ -22,6 +22,7 @@
 #include "Application.h"
 #include "FileDialog.h"
 
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 
@@ -43,7 +44,29 @@ FileType FileUtil::detect( const QString &filename )
 	}
 	if( !QString::compare(f.suffix(), "pdf", Qt::CaseInsensitive) )
 	{
-		return SignatureDocument;
+        QFile file(filename);
+
+        if( !file.open( QIODevice::ReadOnly ) )
+            return Other;
+
+        QByteArray blob = file.readAll();
+
+        const char *textToFind[] =
+        {
+            "SubFilter/adbe.pkcs7.detached",
+            "adbe.pkcs7.sha1",
+            "adbe.x509.rsa_sha1",
+
+            "ETSI.CAdES.detached"
+        };
+
+        for(int i = 0; i < sizeof(textToFind) / sizeof(textToFind[0]); i++)
+        {
+            if( blob.indexOf(QByteArray(textToFind[i]), strlen(textToFind[i])) > 0)
+            {
+                return SignatureDocument;
+            }
+        }
 	}
 
 	return Other;
