@@ -104,8 +104,10 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 			.arg( QSmartCardData::typeString( type ) ), true );
 		ui->accordion->updateInfo( smartcard );
 	}
-    else
-    	showPinBlockedWarning( smartcard->data() );
+	else
+	{
+		showPinBlockedWarning( smartcard->data() );
+	}
 }
 
 void MainWindow::certDetailsClicked( const QString &link )
@@ -225,6 +227,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		break;
 	case QSmartCard::BlockedError:
 		showNotification( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
+		showPinBlockedWarning(td);
 		pageSelected( ui->myEid );
 		ui->accordion->updateInfo( smartcard );
 		ui->myEid->warningIcon(

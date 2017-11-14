@@ -131,8 +131,8 @@
         <translation>Kontrollige oma arvuti kella</translation>
     </message>
     <message>
-        <source>PIN Locked. Please use ID-card utility for PIN opening!</source>
-        <translation>PIN on lukus. PIN koodi saab avada ID-kaardi haldusvahendis!</translation>
+        <source>PIN Locked. Unblock to reuse PIN.</source>
+        <translation>PIN on lukus. Tühista blokeering, et PIN-i taas kasutada.</translation>
     </message>
     <message>
         <source>An error occurred while opening the document.</source>
@@ -612,7 +612,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>on tundmatu</translation>
+        <translation>on teadmata</translation>
     </message>
     <message>
         <source>Signed on</source>
@@ -1631,7 +1631,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja olek kuvatakse "tundmatuks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;lisainformatsioon&lt;/a&gt;).</translation>
+        <translation>Allkirja olek kuvatakse "teadmataks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>

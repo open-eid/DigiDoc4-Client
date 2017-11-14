@@ -122,7 +122,7 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 		progress->setValue( progress->maximum() );
         progress->setTextVisible( false );
         progress->resize( 200, 30 );
-		progress->move( 153, 106 );
+		progress->move( 153, 122 );
 		QTimeLine *statusTimer = new QTimeLine( progress->maximum() * 1000, this );
 		statusTimer->setCurveShape( QTimeLine::LinearCurve );
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );

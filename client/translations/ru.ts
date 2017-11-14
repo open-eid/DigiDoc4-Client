@@ -131,8 +131,8 @@
         <translation>Проверьте время Вашего компьютера</translation>
     </message>
     <message>
-        <source>PIN Locked. Please use ID-card utility for PIN opening!</source>
-        <translation>PIN заблокирован. Для разблокирования PIN пожалуйста используйте обслуживание ID-карты!</translation>
+        <source>PIN Locked. Unblock to reuse PIN.</source>
+        <translation>PIN заблокирован. Разблокируйте его для повторного использования PIN.</translation>
     </message>
     <message>
         <source>An error occurred while opening the document.</source>
@@ -837,7 +837,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>ПЕРЕАДРЕСАЦИЯ EESTI.EE ПОЧТЫ</translation>
+        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
     </message>
     <message>
         <source>MY OTHER eID's</source>
