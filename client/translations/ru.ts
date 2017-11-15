@@ -2713,6 +2713,7 @@ ASiC-E – это разрабатываемый международный фо
         <translation>
             <numerusform>%n сообщение</numerusform>
             <numerusform>%n сообщения</numerusform>
+            <numerusform>%n сообщения</numerusform>
         </translation>
     </message>
     <message>
