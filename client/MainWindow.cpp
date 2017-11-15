@@ -1101,6 +1101,7 @@ void MainWindow::removeCryptoFile(int index)
 	{
 		if(QFile::exists(cryptoDoc->fileName()))
 			QFile::remove(cryptoDoc->fileName());
+		resetCryptoDoc();
 		navigateToPage(Pages::CryptoIntro);
 	}
 }
@@ -1144,6 +1145,7 @@ void MainWindow::removeSignatureFile(int index)
 	{
 		if(QFile::exists(digiDoc->fileName()))
 			QFile::remove(digiDoc->fileName());
+		resetDigiDoc();
 		navigateToPage(Pages::SignIntro);
 	}
 }
