@@ -22,7 +22,7 @@
 
 #include "Styles.h"
 
-WarningRibbon::WarningRibbon(QWidget *parent)
+WarningRibbon::WarningRibbon(int count, QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::WarningRibbon)
 , expanded(false)
@@ -31,7 +31,7 @@ WarningRibbon::WarningRibbon(QWidget *parent)
 	ui->details->setFont(Styles::font(Styles::Regular, 12, QFont::DemiBold));
 	ui->details->setText(tr("%n message", "", 1));
 
-	setCount(1);
+	setCount(count);
 }
 
 WarningRibbon::~WarningRibbon()

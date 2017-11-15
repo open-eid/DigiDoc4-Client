@@ -1265,7 +1265,7 @@ void MainWindow::updateWarnings()
 	}
 	else
 	{
-		ribbon = new WarningRibbon(ui->page);
+		ribbon = new WarningRibbon(count - 1, ui->page);
 		auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 		layout->insertWidget(warnings.size() + 1, ribbon);
 		ribbon->show();

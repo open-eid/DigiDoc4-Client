@@ -28,7 +28,7 @@ class WarningRibbon : public StyledWidget
 	Q_OBJECT
 
 public:
-	WarningRibbon(QWidget *parent = nullptr);
+	WarningRibbon(int count, QWidget *parent = nullptr);
 	~WarningRibbon();
 
 	void flip();
