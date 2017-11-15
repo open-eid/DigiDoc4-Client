@@ -36,12 +36,15 @@ public:
 	~WarningDialog();
 
 	void addButton(const QString& label, int ret);
+	void setButtonSize(int width, int margin);
 	void setCancelText(const QString& label);
 	void setText(const QString& text);
 	static void warning(QWidget *parent, const QString& text);
 
 private:
 	Ui::WarningDialog *ui;
+	int buttonMargin;
 	int buttonOffset;
+	int buttonWidth;
 };
 

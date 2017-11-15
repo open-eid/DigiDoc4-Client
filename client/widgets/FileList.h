@@ -45,11 +45,13 @@ signals:
 	void addFiles(const QStringList &files);
 
 protected:
+	void changeEvent(QEvent* event) override;
 	void remove(Item *item) override;
 
 private slots:
 	void open(FileItem *item) const;
 	void save(FileItem *item);
+	void saveAll();
 
 private:
 	void selectFile();

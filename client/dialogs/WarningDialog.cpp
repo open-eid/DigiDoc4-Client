@@ -25,7 +25,9 @@
 WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
 : QDialog(parent)
 , ui(new Ui::WarningDialog)
+, buttonMargin(35)
 , buttonOffset(2)
+, buttonWidth(120)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
@@ -79,7 +81,7 @@ void WarningDialog::setCancelText(const QString& label)
 void WarningDialog::addButton(const QString& label, int ret)
 {
 	auto layout = qobject_cast<QBoxLayout*>(ui->buttonBar->layout());
-	layout->insertSpacing(buttonOffset++, 35);
+	layout->insertSpacing(buttonOffset++, buttonMargin);
 
 	QFont font = Styles::font(Styles::Condensed, 14);
 	QFontMetrics fm(font);
@@ -88,9 +90,9 @@ void WarningDialog::addButton(const QString& label, int ret)
 	button->setCursor(Qt::PointingHandCursor);
 	button->setFont(font);
 
-	int width = 120;
+	int width = buttonWidth;
 	int textWidth = fm.width(label);
-	if(textWidth > 115)
+	if(textWidth > (buttonWidth - 5))
 		width = textWidth + 16;
 	button->setMinimumSize(width, 34);
 	button->setStyleSheet("QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\nQPushButton:pressed {background-color: #41B6E6;} "
@@ -98,6 +100,14 @@ void WarningDialog::addButton(const QString& label, int ret)
 
 	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
 	layout->insertWidget(buttonOffset++, button);
+}
+
+void WarningDialog::setButtonSize(int width, int margin)
+{
+	ui->cancel->setMinimumSize(width, 34);
+	ui->cancel->setMaximumSize(width, 34);
+	buttonWidth = width;
+	buttonMargin = margin;
 }
 
 void WarningDialog::setText(const QString& text)

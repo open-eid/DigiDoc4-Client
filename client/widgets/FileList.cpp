@@ -21,6 +21,7 @@
 #include "ui_ItemList.h"
 
 #include "FileDialog.h"
+#include "dialogs/WarningDialog.h"
 #include "effects/ButtonHoverFilter.h"
 #include "widgets/FileItem.h"
 
@@ -36,6 +37,7 @@ FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
+	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
 }
 
 FileList::~FileList()
@@ -51,6 +53,13 @@ void FileList::addFile( const QString& file )
 	connect(item, &FileItem::download, this, &FileList::save);
 
 	updateDownload();
+}
+
+void FileList::changeEvent(QEvent* event)
+{
+	ItemList::changeEvent(event);
+	if(!ui->count->isHidden())
+		ui->count->setText(QString("%1").arg(items.size()));
 }
 
 void FileList::clear()
@@ -102,6 +111,51 @@ void FileList::save(FileItem *item)
 		if(!dest.isEmpty())
 			documentModel->save(i, dest);
 	}
+}
+
+void FileList::saveAll()
+{
+	QString dir = FileDialog::getExistingDirectory( this,
+			tr("Select folder where files will be stored") );
+	if( dir.isEmpty() )
+			return;
+	int b = QMessageBox::No;	// default
+	for( int i = 0; i < documentModel->rowCount(); ++i )
+	{
+		QString dest = dir + QDir::separator() + documentModel->data(i);
+		if( QFile::exists( dest ) )
+		{
+			if( b == QMessageBox::YesToAll )
+			{
+					QFile::remove( dest );
+					documentModel->save( i, dest );
+					continue;
+			}
+			WarningDialog dlg(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), qApp->activeWindow());
+			dlg.setButtonSize(100, 5);
+			dlg.setCancelText(tr("CANCEL"));
+			dlg.addButton(tr("YES"), QMessageBox::Yes);
+			dlg.addButton(tr("NO"), QMessageBox::No);
+			dlg.addButton(tr("YES TO ALL"), QMessageBox::YesToAll);
+			b = dlg.exec();
+
+			if( b == QMessageBox::Cancel )
+			{
+					break;
+			}
+			else if( b == QMessageBox::No )
+			{
+					dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
+					if( dest.isEmpty() )
+							continue;
+			}
+			else
+			{
+				QFile::remove( dest );
+			}
+		}
+		documentModel->save( i, dest );
+	}	
 }
 
 void FileList::selectFile()

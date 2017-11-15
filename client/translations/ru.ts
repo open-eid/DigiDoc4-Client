@@ -372,6 +372,26 @@ Media type: %3</source>
         <source>Add files</source>
         <translation>Добавить файлы</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>YES TO ALL</source>
+        <translation>ДА ДЛЯ ВСЕХ</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
+    </message>
 </context>
 
 

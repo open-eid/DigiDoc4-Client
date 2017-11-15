@@ -372,6 +372,26 @@ Tüüp: %3</translation>
         <source>Add files</source>
         <translation>Lisa faile</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>YES TO ALL</source>
+        <translation>JAH KÕIGILE</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
+    </message>
 </context>
 
 <context>

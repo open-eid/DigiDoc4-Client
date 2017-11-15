@@ -373,6 +373,22 @@ Media type: %3</translation>
         <source>Add files</source>
         <translation>Add files</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
+    <message>
+        <source>YES TO ALL</source>
+        <translation>YES TO ALL</translation>
+    </message>
 </context>
 
 
