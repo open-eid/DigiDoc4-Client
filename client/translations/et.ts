@@ -2327,6 +2327,45 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>%1 muutmine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>PUK length has to be between 8 and 12</source>
+        <translation>PUK koodi pikkus peab olema 8-12 numbrit</translation>
+    </message>
+    <message>
+        <source>PIN1 length has to be between 4 and 12</source>
+        <translation>PIN1 pikkus peab olema 4-12 numbrit</translation>
+    </message>
+    <message>
+        <source>PIN2 length has to be between 5 and 12</source>
+        <translation>PIN2 pikkus peab olema 5-12 numbrit</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Vale %1 kood. Saad veel proovida %n kord.</numerusform>
+            <numerusform>Vale %1 kood. Saad veel proovida %n korda.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 kood blokeeritud</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Kehtiv ja uus %1 peavad olema erinevad!</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Uued %1 koodid on erinevad</translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 päringu kannatus katkes</translation>
+    </message>
 </context>
 
 

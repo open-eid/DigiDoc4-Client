@@ -2344,6 +2344,45 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Changing %1 failed</translation>
+    </message>
+    <message>
+        <source>PUK length has to be between 8 and 12</source>
+        <translation>PUK length has to be between 8 and 12</translation>
+    </message>
+    <message>
+        <source>PIN1 length has to be between 4 and 12</source>
+        <translation>PIN1 length has to be between 4 and 12</translation>
+    </message>
+    <message>
+        <source>PIN2 length has to be between 5 and 12</source>
+        <translation>PIN2 length has to be between 5 and 12</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
+            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 blocked</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Old and new %1 has to be different!</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>New %1 codes doesn&apos;t match</translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 timeout</translation>
+    </message>
 </context>
 
 

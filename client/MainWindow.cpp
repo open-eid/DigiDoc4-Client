@@ -1026,7 +1026,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	ui->signContainerPage->transition(digiDoc);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( "The container has been successfully signed!", 750, 1500, 600 );
+	notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
 	return true;
 }
 

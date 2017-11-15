@@ -1927,7 +1927,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>KEEP</source>
-        <translation>ДЕРЖАТЬ</translation>
+        <translation>ОСТАВИТЬ</translation>
     </message>
 
 
@@ -2336,6 +2336,46 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>Encrypting</source>
         <translation>Зашифровывание</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Смена %1 кода прошла неудачно</translation>
+    </message>
+    <message>
+        <source>PUK length has to be between 8 and 12</source>
+        <translation>PUK length has to be between 8 and 12</translation>
+    </message>
+    <message>
+        <source>PIN1 length has to be between 4 and 12</source>
+        <translation>Длина PIN1 должна быть 4-12 номера</translation>
+    </message>
+    <message>
+        <source>PIN2 length has to be between 5 and 12</source>
+        <translation>Длина PIN2 должна быть 5-12 номера</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+       <translation>%1 заблокирован</translation>
+     </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Старый и новый %1 должны отличаться!</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Новые %1 коды не сходятся</translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>Время запроса %1 кода истекло</translation>
     </message>
 </context>
 

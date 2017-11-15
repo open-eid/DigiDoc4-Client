@@ -216,17 +216,12 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		if( !td.isNull() && td.isPinpad() )
 		if( td.authCert().subjectInfo( "C" ) == "EE" )	// only for Estonian ID card
 		{
-			switch ( type )
-			{
-			case QSmartCardData::Pin1Type: showNotification( "PIN1 timeout" ); break;
-			case QSmartCardData::Pin2Type: showNotification( "PIN2 timeout" ); break;
-			case QSmartCardData::PukType: showNotification( "PUK timeout" ); break;
-			}
+			showNotification( tr("%1 timeout").arg( QSmartCardData::typeString( type ) ) );
 		}
 #endif
 		break;
 	case QSmartCard::BlockedError:
-		showNotification( QString("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
+		showNotification( tr("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
 		showPinBlockedWarning(td);
 		pageSelected( ui->myEid );
 		ui->accordion->updateInfo( smartcard );
@@ -240,26 +235,28 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 	case QSmartCard::LenghtError:
 		switch( type )
 		{
-		case QSmartCardData::Pin1Type: showNotification( "PIN1 length has to be between 4 and 12" ); break;
-		case QSmartCardData::Pin2Type: showNotification( "PIN2 length has to be between 5 and 12" ); break;
-		case QSmartCardData::PukType: showNotification( "PUK length has to be between 8 and 12" ); break;
+		case QSmartCardData::Pin1Type: showNotification( tr("PIN1 length has to be between 4 and 12") ); break;
+		case QSmartCardData::Pin2Type: showNotification( tr("PIN2 length has to be between 5 and 12") ); break;
+		case QSmartCardData::PukType: showNotification( tr("PUK length has to be between 8 and 12") ); break;
 		}
 		break;
 	case QSmartCard::OldNewPinSameError:
-		showNotification( QString("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
+		showNotification( tr("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
 		break;
 	case QSmartCard::ValidateError:
-		showNotification( QString("Wrong %1 code.").arg( QSmartCardData::typeString( t ) ) + QString("You can try %1 more time(s).").arg( smartcard->data().retryCount( t ) ));
+        showNotification( tr("Wrong %1 code. You can try %n more time(s).", "",
+			smartcard->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
+
 		break;
 	default:
 		switch( flags )
 		{
-		case SSLConnect::ActivateEmails: showNotification( "Failed activating email forwards." ); break;
-		case SSLConnect::EmailInfo: showNotification( "Failed loading email settings." ); break;
-		case SSLConnect::MobileInfo: showNotification( "Failed loading Mobiil-ID settings." ); break;
-		case SSLConnect::PictureInfo: showNotification( "Loading picture failed." ); break;
+		case SSLConnect::ActivateEmails: showNotification( tr("Failed activating email forwards.") ); break;
+		case SSLConnect::EmailInfo: showNotification( tr("Failed loading email settings.") ); break;
+		case SSLConnect::MobileInfo: showNotification( tr("Failed loading Mobiil-ID settings.") ); break;
+		case SSLConnect::PictureInfo: showNotification( tr("Loading picture failed.") ); break;
 		default:
-			showNotification( QString( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
+			showNotification( tr( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
 		}
 		break;
 	}
