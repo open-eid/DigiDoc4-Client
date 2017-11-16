@@ -82,10 +82,10 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 	if(code == SignatureAdd || code == SignatureMobile)
 	{
 		if(ui->rightPane->hasItem(
-			[selectedCard, selectedMobile](Item* const item) -> bool
+			[selectedCard, selectedMobile, code](Item* const item) -> bool
 			{
 				auto signatureItem = qobject_cast<SignatureItem* const>(item);
-				return signatureItem && signatureItem->isSelfSigned(selectedCard, selectedMobile);
+				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureAdd) ? "" : selectedMobile);
 			}
 		))
 		{

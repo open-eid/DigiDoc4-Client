@@ -658,6 +658,12 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded"), 750, 1500, 600 );
 		}
+		else
+			if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
+			{
+				smartcard->reload(); // smartcard should also know that PIN is blocked.
+				showPinBlockedWarning(smartcard->data());
+			}
 		break;
 	case EncryptContainer:
 		if(encrypt())
@@ -999,6 +1005,12 @@ bool MainWindow::sign()
 		notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
 		return true;
 	}
+	else
+		if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
+		{
+			smartcard->reload();
+			showPinBlockedWarning(smartcard->data());
+		}
 
 	return false;
 }
@@ -1302,15 +1314,9 @@ void MainWindow::warningClicked(const QString &link)
 	else if(link.startsWith("#invalid-signature-"))
 		emit ui->signContainerPage->details(link.right(link.length()-19));
 	else if(link == "#unblock-PIN1")
-	{
-		navigateToPage(Pages::MyEid);
         ui->accordion->changePin1Clicked (false, true);
-	}
 	else if(link == "#unblock-PIN2")
-	{
-		navigateToPage(Pages::MyEid);
         ui->accordion->changePin2Clicked (false, true);
-	}
 }
 
 bool MainWindow::wrapContainer()
@@ -1358,15 +1364,21 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 {
 	if(	t.retryCount( QSmartCardData::Pin2Type ) == 0 )
+	{
 		showWarning(WarningText(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2"),
 			QString("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK")),
 			-1,
 			UNBLOCK_PIN2_WARNING));
+		emit ui->signContainerPage->cardChanged(); // hide Sign button
+	}
 	if(	t.retryCount( QSmartCardData::Pin1Type ) == 0 )
+	{
 		showWarning(WarningText(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1"),
 			QString("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK")),
 			-1,
 			UNBLOCK_PIN1_WARNING));
+		emit ui->cryptoContainerPage->cardChanged(); // hide Decrypt button
+	}
 }
