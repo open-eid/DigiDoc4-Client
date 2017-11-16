@@ -1229,15 +1229,17 @@ void MainWindow::browseOnDisk( const QString &fileName )
 
 void MainWindow::updateRibbon(int page, bool expanded)
 {
-	bool first = true;
+	short count = 0;
 	for(auto warning: warnings)
 	{
 		if(warning->appearsOnPage(page))
 		{
-			warning->setVisible(expanded || first);
-			first = false;
+			warning->setVisible(expanded || !count);
+			count++;
 		}
 	}
+	if (count > 1)
+		adjustSize();
 }
 
 void MainWindow::updateWarnings()

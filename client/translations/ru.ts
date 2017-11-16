@@ -158,6 +158,12 @@
         <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
         <translation>Отсутствует IP-основанный доступ. Проверьте настройки справки доступа.</translation>
     </message>
+    <message>
+        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
+The Information System Authority does not retain information regarding the files and users of the service.</source>
+        <translation>Контроль срока действия дигитальной подписи в формате PDF осуществляется через электронную услугу. Контролируемый файл передается э-услугe.
+Департамент государственной инфосистемы не сохраняет информацию о пользователях э-услуги и файлах.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -1790,6 +1796,10 @@ Kонтрольны код: %1</translation>
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Детали</translation>
     </message>
 </context>
 
