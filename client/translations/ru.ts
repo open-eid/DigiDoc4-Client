@@ -452,6 +452,12 @@ Media type: %3</source>
         <source>Decrypted files</source>
         <translation>Расшифрованные файлы</translation>
     </message>
+    <message>
+        <source>RECIPIENT_MESSAGE</source>
+        <translation>&lt;p align=center&gt;Кто является получателем?&lt;/p&gt;
+        &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;
+        &lt;p align=center&gt;Мы автоматически добавили вас в список получателей, чтобы при необходимости расшифровать зашифрованный документ.&lt;/p&gt;</translation>
+    </message>
 </context>
 
 

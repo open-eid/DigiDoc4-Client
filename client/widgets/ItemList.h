@@ -30,6 +30,7 @@ class ItemList;
 }
 
 class QLabel;
+class QSvgWidget;
 
 class ItemList : public QWidget
 {
@@ -76,10 +77,13 @@ private:
 	QString addLabel();
 	void addressSearch();
 	void addWidget(Item *widget, int index);
+	void focusEvent(int eventType);
 
 	QLabel *header = nullptr;
 	int headerItems;
 	QString idCode;
+	QSvgWidget* infoIcon = nullptr;
+	QSvgWidget* infoHoverIcon = nullptr;
 	ria::qdigidoc4::ItemType itemType;
 	QString mobileCode;
 	QString headerText;

@@ -451,6 +451,12 @@ Tüüp: %3</translation>
         <source>Decrypted files</source>
         <translation>Dekrüpteeritud failid</translation>
     </message>
+    <message>
+        <source>RECIPIENT_MESSAGE</source>
+        <translation>&lt;p align=center&gt;Kes on adressaat?&lt;/p&gt;
+        &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;
+        &lt;p align=center&gt;Lisasime Sind automaatselt adressaatide hulka, et saaksid vajadusel hiljem krüpteeritud dokumendi dekrüpteerida.&lt;/p&gt;</translation>
+    </message>
 </context>
 
 <context>

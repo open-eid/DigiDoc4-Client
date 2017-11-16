@@ -22,8 +22,10 @@
 
 #include "Styles.h"
 #include "dialogs/AddRecipients.h"
+#include "effects/HoverFilter.h"
 
 #include <QLabel>
+#include <QSvgWidget>
 
 using namespace ria::qdigidoc4;
 
@@ -82,6 +84,8 @@ void ItemList::changeEvent(QEvent* event)
 
 		if(ui->add->isVisible())
 			ui->add->setText(tr(qPrintable(addLabel())));
+		if(itemType == ItemAddress)
+			ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
 	}
 
 	QWidget::changeEvent(event);
@@ -151,6 +155,19 @@ void ItemList::details(const QString &id)
 			emit item->details();
 	}
 }
+void ItemList::focusEvent(int eventType)
+{
+	if(eventType == QEvent::Enter)
+	{
+		infoIcon->hide();
+		infoHoverIcon->show();
+	}
+	else
+	{
+		infoIcon->show();
+		infoHoverIcon->hide();
+	}
+}
 
 ContainerState ItemList::getState() const { return state; }
 
@@ -184,15 +201,12 @@ void ItemList::init(ItemType item, const QString &header)
 	if(item != ToAddAdresses)
 	{
 		ui->findGroup->hide();
-		ui->listHeader->setStyleSheet("border: solid rgba(217, 217, 216, 0.45);"
-			"border-width: 0px 0px 1px 0px;");
 		headerItems = 1;
 	}
 	else
 	{
 		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
-		ui->listHeader->setStyleSheet("border: none;");
 		ui->findGroup->show();
 		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text());});
 		headerItems = 2;
@@ -211,6 +225,20 @@ void ItemList::init(ItemType item, const QString &header)
 	if(itemType == ItemAddress)
 	{
 		ui->add->disconnect();
+		infoIcon = new QSvgWidget(ui->infoIcon);
+		infoIcon->load(QString(":/images/icon_info.svg"));
+		infoIcon->resize(14, 14);
+		infoIcon->move(1, 1);
+		infoIcon->show();
+		infoHoverIcon = new QSvgWidget(ui->infoIcon);
+		infoHoverIcon->hide();
+		infoHoverIcon->load(QString(":/images/icon_info_hover.svg"));
+		infoHoverIcon->resize(14, 14);
+		infoHoverIcon->move(1, 1);
+		HoverFilter *filter = new HoverFilter(ui->infoIcon, [this](int eventType){ focusEvent(eventType); }, this);
+		ui->infoIcon->installEventFilter(filter);
+		ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
+
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
 	}
 	else if(itemType == ToAddAdresses)

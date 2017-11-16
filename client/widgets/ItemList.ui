@@ -168,9 +168,28 @@ color: #041E42;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="listHeader">
+             <widget class="QWidget" name="leftCenter" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>60</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: none;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="listHeader">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -178,13 +197,13 @@ color: #041E42;</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>62</height>
+                <height>60</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>62</height>
+                <height>60</height>
                </size>
               </property>
               <property name="font">
@@ -194,7 +213,8 @@ color: #041E42;</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">color: #041E42;</string>
+               <string notr="true">color: #041E42;
+border: none;</string>
               </property>
               <property name="lineWidth">
                <number>0</number>
@@ -205,6 +225,53 @@ color: #041E42;</string>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
               </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="rightCenter" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"> border: none;</string>
+              </property>
+              <widget class="QWidget" name="infoIcon" native="true">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>22</y>
+                 <width>16</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QWidget { border: none; }
+QToolTip { 
+	color: #fcfcfc; 
+	background-color: #474747;
+	border-radius: 2px;
+	text-align: center;
+	font-weight: 400; 
+	text-decoration: none solid rgb(252, 252, 252);
+	padding: 5px; font-size: 13px;
+}</string>
+               </property>
+              </widget>
              </widget>
             </item>
             <item>
