@@ -121,6 +121,25 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->close->setFont(Styles::font(Styles::Condensed, 14));
 	connect(d->close, &QPushButton::clicked, this, &CertificateDetails::accept);
 
+	QFont header = Styles::font(Styles::Regular, 18, QFont::Bold);
+	QFont regular = Styles::font(Styles::Regular, 14);
+
+	d->lblSignerHeader->setFont(header);
+	d->lblSignatureHeader->setFont(header);
+	d->lblNotice->setFont(Styles::font(Styles::Regular, 15));
+
+	d->title->setFont(regular);
+	d->lblRole->setFont(regular);
+	d->lblSigningCity->setFont(regular);
+	d->lblSigningCountry->setFont(regular);
+	d->lblSigningCounty->setFont(regular);
+	d->lblSigningZipCode->setFont(regular);
+	d->signerCity->setFont(regular);
+	d->signerState->setFont(regular);
+	d->signerZip->setFont(regular);
+	d->signerCountry->setFont(regular);
+	d->signerRoles->setFont(regular);
+
 	const QStringList l = s.locations();
 	d->signerCity->setText( l.value( 0 ) );
 	d->signerState->setText( l.value( 1 ) );
@@ -182,6 +201,12 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		addItem( t, tr("OCSP time") + " (UTC)", DateTime( s.ocspTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
 	}
 	addItem( t, tr("Signer's computer time (UTC)"), DateTime( s.signTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+
+#ifdef Q_OS_MAC
+	t->setFont(Styles::font(Styles::Regular, 13));
+#else
+	t->setFont(regular);
+#endif
 }
 
 SignatureDialog::~SignatureDialog() { delete d; }
@@ -199,7 +224,8 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	QTreeWidgetItem *i = new QTreeWidgetItem( view );
 	i->setText( 0, variable );
 	QLabel *b = new QLabel( "<a href='cert'>" + SslCertificate(value).subjectInfo( QSslCertificate::CommonName ) + "</a>", view );
-	b->setStyleSheet("margin-left: 2px");
+	b->setFont(Styles::font(Styles::Regular, 14));
+	b->setStyleSheet("margin-left: 2px;");
 	connect(b, &QLabel::linkActivated, [=]{ CertificateDetails( value, this ).exec(); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
@@ -210,7 +236,8 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	QTreeWidgetItem *i = new QTreeWidgetItem( view );
 	i->setText( 0, variable );
 	QLabel *b = new QLabel( "<a href='url'>" + value.toString() + "</a>", view );
-	b->setStyleSheet("margin-left: 2px");
+	b->setFont(Styles::font(Styles::Regular, 14));
+	b->setStyleSheet("margin-left: 2px;");
 	connect(b, &QLabel::linkActivated, [=]{ QDesktopServices::openUrl( value ); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
