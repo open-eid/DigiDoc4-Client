@@ -224,7 +224,11 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	QTreeWidgetItem *i = new QTreeWidgetItem( view );
 	i->setText( 0, variable );
 	QLabel *b = new QLabel( "<a href='cert'>" + SslCertificate(value).subjectInfo( QSslCertificate::CommonName ) + "</a>", view );
+#ifdef Q_OS_MAC
+	b->setFont(Styles::font(Styles::Regular, 13));
+#else
 	b->setFont(Styles::font(Styles::Regular, 14));
+#endif
 	b->setStyleSheet("margin-left: 2px;");
 	connect(b, &QLabel::linkActivated, [=]{ CertificateDetails( value, this ).exec(); });
 	view->setItemWidget( i, 1, b );
@@ -236,7 +240,11 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	QTreeWidgetItem *i = new QTreeWidgetItem( view );
 	i->setText( 0, variable );
 	QLabel *b = new QLabel( "<a href='url'>" + value.toString() + "</a>", view );
+#ifdef Q_OS_MAC
+	b->setFont(Styles::font(Styles::Regular, 13));
+#else
 	b->setFont(Styles::font(Styles::Regular, 14));
+#endif
 	b->setStyleSheet("margin-left: 2px;");
 	connect(b, &QLabel::linkActivated, [=]{ QDesktopServices::openUrl( value ); });
 	view->setItemWidget( i, 1, b );
