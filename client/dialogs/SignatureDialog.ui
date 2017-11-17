@@ -794,6 +794,16 @@ QPushButton:disabled {
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>error</tabstop>
+  <tabstop>signerCity</tabstop>
+  <tabstop>signerState</tabstop>
+  <tabstop>signerCountry</tabstop>
+  <tabstop>signerZip</tabstop>
+  <tabstop>signerRoles</tabstop>
+  <tabstop>signatureView</tabstop>
+  <tabstop>close</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -366,7 +366,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>See on digitaalne isikutunnistus</translation>
+        <translation>Kasutate ID-kaarti</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -913,7 +913,7 @@ Rohkem infot leiate siit:</translation>
 
     <message>
         <source>ID card in reader</source>
-        <translation>Lugejas on ID kaart</translation>
+        <translation>Lugejas on ID-kaart</translation>
     </message>
     <message>
         <source>%1 in reader</source>
@@ -1219,7 +1219,7 @@ siis siin saad määrata uue PIN1 koodi.&lt;/li&gt;
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
 vahepeal muutnud&lt;/li&gt;
 &lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
 klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
@@ -1230,7 +1230,7 @@ klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
         <translation>
 &lt;ul&gt;
 &lt;li&gt;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
 vahepeal muutnud&lt;/li&gt;
 &lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
 klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
@@ -2741,7 +2741,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>SignatureMobile</source>
         <translation>ALLKIRJASTA
-MOBIILI-ID’GA</translation>
+MOBIIL-ID’GA</translation>
     </message>
     <message>
         <source>SignatureAdd</source>
@@ -2764,11 +2764,11 @@ ID-KAARDIGA</translation>
     <name>CardWidget</name>
     <message>
         <source>ID Card</source>
-        <translation>ID Kaart</translation>
+        <translation>ID-kaart</translation>
     </message>
     <message>
         <source>Digi ID</source>
-        <translation>Digi ID</translation>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 

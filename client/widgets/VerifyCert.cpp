@@ -158,9 +158,9 @@ void VerifyCert::update()
 		this->setStyleSheet( "opacity: 0.25; background-color: #F9EBEB;"  + borders );
 		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
 		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
-		ui->changePIN->setStyleSheet( 
-					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
-					"QPushButton:pressed { background-color: #41B6E6;}" 
+		ui->changePIN->setStyleSheet(
+					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
+					"QPushButton:pressed { background-color: #41B6E6;}"
 					"QPushButton:hover:!pressed { background-color: #008DCF;}" 
 					"QPushButton:disabled { background-color: #BEDBED;};" 
 					); 
@@ -179,7 +179,7 @@ void VerifyCert::update()
 		this->setStyleSheet( "opacity: 0.25; background-color: #fcf5ea;"  + borders );
 		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
 		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
-		ui->changePIN->setStyleSheet( 
+		ui->changePIN->setStyleSheet(
 					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
 					"QPushButton:pressed { background-color: #41B6E6;}" 
 					"QPushButton:hover:!pressed { background-color: #008DCF;}" 

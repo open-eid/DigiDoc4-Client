@@ -323,7 +323,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Мобильная-ID</translation>
+        <translation>Мobiil-ID</translation>
     </message>
     <message>
         <source>Unknown ID</source>
@@ -365,7 +365,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>Вы используете дигитальное удостоверение личности</translation>
+        <translation>Вы используете ID-карту</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -521,7 +521,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>MOBILE-ID</source>
-        <translation>Мобильная-ID</translation>
+        <translation>МOBIIL-ID</translation>
     </message>
     <message>
         <source>DIGI-ID</source>
@@ -903,7 +903,7 @@ Learn more info here:</source>
 
     <message>
         <source>ID card in reader</source>
-        <translation>В считывателе ID карта</translation>
+        <translation>В считывателе ID-карта</translation>
     </message>
     <message>
         <source>%1 in reader</source>
@@ -1855,7 +1855,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Мобильная-ID</translation>
+        <translation>Мobiil-ID</translation>
     </message>
     <message>
         <source>Unknown ID</source>
@@ -2741,12 +2741,12 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>SignatureMobile</source>
         <translation>ПОДПИСАТЬ С
-МОБИЛЬНЫМ ИД</translation>
+MOBIIL_ID</translation>
     </message>
     <message>
         <source>SignatureAdd</source>
         <translation>ПОДПИСАТЬ С
-ИД КАРТОЙ</translation>
+ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>EncryptContainer</source>
@@ -2765,11 +2765,11 @@ ASiC-E – это разрабатываемый международный фо
 
     <message>
         <source>ID Card</source>
-        <translation>ИД Карта</translation>
+        <translation>ID-kарта</translation>
     </message>
     <message>
         <source>Digi ID</source>
-        <translation>Диги ИД</translation>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 

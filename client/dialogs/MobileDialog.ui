@@ -244,6 +244,13 @@ border-radius: 2px;
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>phoneNo</tabstop>
+  <tabstop>idCode</tabstop>
+  <tabstop>cbRemember</tabstop>
+  <tabstop>cancel</tabstop>
+  <tabstop>sign</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

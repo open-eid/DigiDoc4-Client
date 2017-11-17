@@ -427,6 +427,13 @@ QPushButton:disabled {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lblCertInfo</tabstop>
+  <tabstop>tblDetails</tabstop>
+  <tabstop>detailedValue</tabstop>
+  <tabstop>save</tabstop>
+  <tabstop>close</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

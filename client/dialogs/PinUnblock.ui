@@ -473,6 +473,13 @@ text-align: cente</string>
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>puk</tabstop>
+  <tabstop>pin</tabstop>
+  <tabstop>repeat</tabstop>
+  <tabstop>cancel</tabstop>
+  <tabstop>unblock</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -563,6 +563,12 @@ background-position: left bottom; }</string>
    <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>download</tabstop>
+  <tabstop>txtFind</tabstop>
+  <tabstop>btnFind</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

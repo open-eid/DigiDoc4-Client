@@ -174,7 +174,6 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
       </property>
       <property name="text">
@@ -218,7 +217,6 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
       </property>
       <property name="text">
@@ -262,7 +260,6 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
       </property>
       <property name="text">
@@ -368,6 +365,13 @@ QPushButton:hover:!pressed {
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>fromCard</tabstop>
+  <tabstop>fromFile</tabstop>
+  <tabstop>fromHistory</tabstop>
+  <tabstop>cancel</tabstop>
+  <tabstop>confirm</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
