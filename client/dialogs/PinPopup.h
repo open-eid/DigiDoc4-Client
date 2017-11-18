@@ -40,15 +40,15 @@ public:
 
 	~PinPopup();
 
-    int exec() override;
-    QString text() const;
+	int exec() override;
+	QString text() const;
 
 signals:
 	void startTimer();
 
 private:
-    void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText=""  );
-    void textEdited( const QString &text );
+	void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText=""  );
+	void textEdited( const QString &text );
 
 	Ui::PinPopup *ui;
 	QRegExp		regexp;

@@ -350,7 +350,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>Вы используете ID карту</translation>
+        <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
     <message>
         <source>Valid</source>

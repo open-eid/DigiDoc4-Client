@@ -30,8 +30,8 @@ class Updater: public QDialog
 public:
 	explicit Updater(const QString &reader, QWidget *parent = 0);
 	~Updater();
-    int exec() override;
-    int execute();
+	int exec() override;
+	int execute();
 
 Q_SIGNALS:
 	void log(const QString &msg);

@@ -169,7 +169,6 @@ void VerifyCert::update()
 					"border: 1px solid #c53e3e;"
 					"border-radius: 2px;"
 					"background-color: #e09797;"
-					"font-family: Arial;"
 					"color: #5c1c1c;"
 					);
 		ui->name->setText(name + " <img src=\":/images/icon_alert_red.svg\" height=\"12\" width=\"13\">");
@@ -191,7 +190,6 @@ void VerifyCert::update()
 					"border: 1px solid #e89c30;"
 					"border-radius: 2px;"
 					"background-color: #F8DDA7;"
-					"font-family: Arial;"
 					);
 		ui->name->setText( name + " <img src=\":/images/icon_alert_orange.svg\" height=\"12\" width=\"13\">" );
 	}
@@ -204,7 +202,7 @@ void VerifyCert::update()
 		ui->verticalSpacerBelowBtn->changeSize(20, 38 - decrease);
 		changePinStyle( "#FFFFFF" );
 		ui->name->setText( name + 
-			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"13\">" : "" ) );
+			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"12\">" : "" ) );
 	}
 	ui->name->setTextFormat( Qt::RichText );
 

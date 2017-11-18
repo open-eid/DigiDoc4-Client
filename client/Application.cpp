@@ -730,7 +730,7 @@ void Application::parseArgs( const QStringList &args )
 	params.removeAll("-noNativeFileDialog");
 
 	QString suffix = QFileInfo( params.value( 0 ) ).suffix();
-	showClient( params );
+	showClient(params, crypto);
 }
 
 int Application::run()
@@ -783,7 +783,7 @@ void Application::showAbout()
 	a->open();
 }
 
-void Application::showClient( const QStringList &params )
+void Application::showClient(const QStringList &params, bool crypto)
 {
 	QWidget *w = 0;
 	for(QWidget *m: qApp->topLevelWidgets())
@@ -808,7 +808,7 @@ void Application::showClient( const QStringList &params )
 		w = new MainWindow();
 	}
 	if( !params.isEmpty() )
-		QMetaObject::invokeMethod( w, "open", Q_ARG(QStringList,params) );
+		QMetaObject::invokeMethod( w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto) );
 	activate( w );
 }
 

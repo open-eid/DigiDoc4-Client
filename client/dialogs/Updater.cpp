@@ -168,9 +168,9 @@ void UpdaterPrivate::setButtonPattern(QPushButton *button, const QString &color)
 			"QPushButton:disabled { background-color: #BEDBED;};" 
 			); 
 	}
-    button->setMinimumHeight( 30 );
-    button->setMinimumWidth( 120 );
-    button->setFont( condensed14 );
+	button->setMinimumHeight( 30 );
+	button->setMinimumWidth( 120 );
+	button->setFont( condensed14 );
 	button->update();
 }
 
@@ -290,8 +290,8 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	, d(new UpdaterPrivate)
 {
 	d->setupUi(this);
-    setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-    setWindowModality( Qt::ApplicationModal );
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
 	d->statusTimer = new QTimeLine(d->pinProgress->maximum() * 1000, d->pinProgress);
 	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);
 	d->statusTimer->setFrameRange(d->pinProgress->maximum(), d->pinProgress->minimum());
@@ -320,7 +320,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->progressRunning->setFont( regular );
 	d->lblHeader->setFont( condensed14 );
 	d->message->setFont( regular );
-    d->buttonBox->setMinimumHeight(30);
+	d->buttonBox->setMinimumHeight(30);
 	d->messageAgree->setFont( regular );
 	d->envelope->setFont( regular );
 	d->envelopeLabel->setFont( regular );
@@ -329,7 +329,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->pinType->setFont( condensed14 );
 	d->details = d->buttonBox->addButton(tr("DETAILS"), QDialogButtonBox::ActionRole);
 	d->setButtonPattern( d->details,  nullptr );
-    d->details->hide();
+	d->details->hide();
 	d->close = d->buttonBox->button(QDialogButtonBox::Close);
 	d->setButtonPattern( d->close,  "Red" );
 	d->close->hide();
@@ -736,10 +736,10 @@ void Updater::run()
 
 int Updater::execute()
 { 
-    Overlay overlay(parentWidget());
-    overlay.show();
-    auto rc = exec();
-    overlay.close();
+	Overlay overlay(parentWidget());
+	overlay.show();
+	auto rc = exec();
+	overlay.close();
 
-    return rc;
+	return rc;
 }

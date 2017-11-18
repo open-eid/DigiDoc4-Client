@@ -44,11 +44,13 @@ public:
 
 	void borderless();
 	void init(bool open, const QString& caption, QWidget* content);
+	void setClosable(bool closable);
 	void setText(const QString& caption);
 	void openSection();
 	void closeSection();
 
 signals:
+	void closed(AccordionTitle* opened);
 	void opened(AccordionTitle* opened);
 
 protected:
@@ -57,5 +59,6 @@ protected:
 private:
 	Ui::AccordionTitle *ui;
 	std::unique_ptr<QSvgWidget> icon;
+	bool closable;
 	QWidget* content;
 };

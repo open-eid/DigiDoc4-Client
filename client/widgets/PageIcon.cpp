@@ -30,14 +30,21 @@ using namespace ria::qdigidoc4;
 #define RIGHT_BORDER "solid #E7E7E7; border-width: 0px 1px 0px 0px"
 
 PageIcon::PageIcon(QWidget *parent) :
-	QWidget(parent),
-	ui(new Ui::PageIcon)
+	StyledWidget(parent),
+	ui(new Ui::PageIcon),
+	invalid(false)
 {
 	ui->setupUi(this);
 
 	icon.reset( new QSvgWidget( this ) );
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
+
+	brightRedIcon.reset( new QSvgWidget( ":/images/icon_alert_bright_red.svg", this ) );
+	brightRedIcon->resize( 13, 12 );
+	brightRedIcon->move( 84, 12 );
+	brightRedIcon->hide();
+	brightRedIcon->setStyleSheet("border: none;");
 
 	redIcon.reset( new QSvgWidget( ":/images/icon_alert_red.svg", this ) );
 	redIcon->resize( 13, 12 );
@@ -87,7 +94,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 	}
 
 	this->selected = selected;
-    this->shadow = shadow;
+	this->shadow = shadow;
 	this->type = type;
 	updateSelection();
 }
@@ -117,12 +124,8 @@ void PageIcon::changeEvent(QEvent* event)
 void PageIcon::activate( bool selected )
 {
 	this->selected = selected;
+	invalidIcon(invalid);
 	updateSelection();
-}
-
-Pages PageIcon::getType()
-{
-	return type;
 }
 
 void PageIcon::enterEvent( QEvent *ev )
@@ -131,6 +134,18 @@ void PageIcon::enterEvent( QEvent *ev )
 	{
 		updateSelection(hover);
 	}
+}
+
+Pages PageIcon::getType()
+{
+	return type;
+}
+
+void PageIcon::invalidIcon(bool show)
+{
+	invalid = show;
+	redIcon->setVisible(show && selected);
+	brightRedIcon->setVisible(show && !selected);
 }
 
 void PageIcon::leaveEvent( QEvent *ev )
@@ -172,22 +187,6 @@ void PageIcon::updateSelection(const Style &style)
 	ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
 	icon->setStyleSheet(QString("background-color: %1; border: none;").arg(style.backColor));
 	setStyleSheet(QString("background-repeat: none; background-color: %1; border: %2;").arg(style.backColor).arg(style.border));
-}
-
-// Custom widget must override paintEvent in order to use stylesheets
-// See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
-void PageIcon::paintEvent(QPaintEvent *ev)
-{
-	QStyleOption opt;
-	opt.init(this);
-	QPainter p(this);
-	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void PageIcon::invalidIcon(bool show)
-{
-	if( show ) redIcon->show ();
-	else redIcon->hide ();
 }
 
 void PageIcon::warningIcon( bool show )

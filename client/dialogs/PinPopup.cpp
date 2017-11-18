@@ -35,7 +35,7 @@ PinPopup::PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *pare
 : QDialog(parent)
 , ui(new Ui::PinPopup)
 {
-    SslCertificate c = t.cert();
+	SslCertificate c = t.cert();
 	init( flags, c.toString( c.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" ), t.flags() );
 }
 
@@ -56,72 +56,72 @@ PinPopup::PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::
 
 PinPopup::~PinPopup()
 {
-    delete ui;
+	delete ui;
 }
 
 void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText )
 {
-    ui->setupUi(this);
-    setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-    setWindowModality( Qt::ApplicationModal );
+	ui->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
 
-    QFont regular = Styles::font( Styles::Regular, 13 );
-    QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-    
-    ui->labelNameId->setFont( Styles::font( Styles::Regular, 14 ) );
-    ui->label->setFont( regular );
-    ui->ok->setFont( condensed14 );
-    ui->cancel->setFont( condensed14 );
-    ui->ok->setEnabled( false );
+	QFont regular = Styles::font( Styles::Regular, 13 );
+	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
+	
+	ui->labelNameId->setFont( Styles::font( Styles::Regular, 14 ) );
+	ui->label->setFont( regular );
+	ui->ok->setFont( condensed14 );
+	ui->cancel->setFont( condensed14 );
+	ui->ok->setEnabled( false );
 
-    connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
-    connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
-    connect( this, &PinPopup::finished, this, &PinPopup::close );
+	connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
+	connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
+	connect( this, &PinPopup::finished, this, &PinPopup::close );
 
-    QString text;
-    
+	QString text;
+	
 	if( !bodyText.isEmpty() ) 
 	{
 		text = bodyText;
 	}
 	else
 	{
-        if( token & TokenData::PinFinalTry )
-            text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
-        else if( token & TokenData::PinCountLow )
-            text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
+		if( token & TokenData::PinFinalTry )
+			text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
+		else if( token & TokenData::PinCountLow )
+			text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
 
-        ui->labelNameId->setText( QString( "<b>%1</b>" ).arg( title ) );
-        if( flags & PinDialog::Pin2Type )
-        {
-            QString t = flags & PinDialog::PinpadFlag ?
-                tr("For using sign certificate enter PIN2 at the reader") :
-                tr("For using sign certificate enter PIN2");
-            text += tr("Selected action requires sign certificate.") + "<br />" + t;
-            regexp.setPattern( "\\d{5,12}" );
-        }
-        else
-        {
-            QString t = flags & PinDialog::PinpadFlag ?
-                tr("For using authentication certificate enter PIN1 at the reader") :
-                tr("For using authentication certificate enter PIN1");
-            text += tr("Selected action requires authentication certificate.") + "<br />" + t;
-            regexp.setPattern( "\\d{4,12}" );
-        }
+		ui->labelNameId->setText( QString( "<b>%1</b>" ).arg( title ) );
+		if( flags & PinDialog::Pin2Type )
+		{
+			QString t = flags & PinDialog::PinpadFlag ?
+				tr("For using sign certificate enter PIN2 at the reader") :
+				tr("For using sign certificate enter PIN2");
+			text += tr("Selected action requires sign certificate.") + "<br />" + t;
+			regexp.setPattern( "\\d{5,12}" );
+		}
+		else
+		{
+			QString t = flags & PinDialog::PinpadFlag ?
+				tr("For using authentication certificate enter PIN1 at the reader") :
+				tr("For using authentication certificate enter PIN1");
+			text += tr("Selected action requires authentication certificate.") + "<br />" + t;
+			regexp.setPattern( "\\d{4,12}" );
+		}
 	}
-    ui->label->setText( text );
-    Common::setAccessibleName( ui->label );
+	ui->label->setText( text );
+	Common::setAccessibleName( ui->label );
 
-    if( flags & PinDialog::PinpadFlag )
+	if( flags & PinDialog::PinpadFlag )
 	{
-        ui->pin->hide();
-        ui->ok->hide();
-        ui->cancel->hide();
+		ui->pin->hide();
+		ui->ok->hide();
+		ui->cancel->hide();
 		QProgressBar *progress = new QProgressBar( this );
 		progress->setRange( 0, 30 );
 		progress->setValue( progress->maximum() );
-        progress->setTextVisible( false );
-        progress->resize( 200, 30 );
+		progress->setTextVisible( false );
+		progress->resize( 200, 30 );
 		progress->move( 153, 122 );
 		QTimeLine *statusTimer = new QTimeLine( progress->maximum() * 1000, this );
 		statusTimer->setCurveShape( QTimeLine::LinearCurve );
@@ -145,15 +145,15 @@ QString PinPopup::text() const { return ui->pin->text(); }
 
 void PinPopup::textEdited( const QString &text )
 { 
-    ui->ok->setEnabled( regexp.exactMatch( text ) );
+	ui->ok->setEnabled( regexp.exactMatch( text ) );
 }
 
 int PinPopup::exec()
 { 
-    Overlay overlay(parentWidget());
-    overlay.show();
-    auto rc = QDialog::exec();
-    overlay.close();
+	Overlay overlay(parentWidget());
+	overlay.show();
+	auto rc = QDialog::exec();
+	overlay.close();
 
-    return rc;
+	return rc;
 }

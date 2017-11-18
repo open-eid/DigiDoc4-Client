@@ -65,6 +65,7 @@ private Q_SLOTS:
 	void changePukClicked( bool isForgotPuk );
 	void getEmailStatus();
 	void getOtherEID ();
+	void open(const QStringList &params, bool crypto);
 	void operation(int op, bool started);
 	void pageSelected( PageIcon *const );
 	void photoClicked( const QPixmap *photo );

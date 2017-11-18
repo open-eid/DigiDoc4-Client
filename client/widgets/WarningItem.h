@@ -56,5 +56,5 @@ protected:
 private:
 	Ui::WarningItem *ui;
 	int context;
-    WarningText warnText;
+	WarningText warnText;
 };

@@ -52,8 +52,10 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 		ui->details->setText(details);
 		ui->details->setTextInteractionFlags(Qt::TextSelectableByMouse);
 		ui->showDetails->borderless();
+		ui->showDetails->setClosable(true);
 		ui->showDetails->show();
 		ui->showDetails->init(false, tr("Details"), ui->details);
+		connect(ui->showDetails, &AccordionTitle::closed, this, &WarningDialog::adjustSize);
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}
 	adjustSize();

@@ -350,7 +350,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>Kasutate ID-KAARTI</translation>
+        <translation>See on digitaalne isikutunnistus</translation>
     </message>
     <message>
         <source>Valid</source>
