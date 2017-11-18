@@ -20,6 +20,7 @@
 #pragma once
 
 #include "common_enums.h"
+#include "widgets/StyledWidget.h"
 
 #include <QFont>
 #include <QPaintEvent>
@@ -34,7 +35,7 @@ namespace Ui {
 class PageIcon;
 }
 
-class PageIcon : public QWidget
+class PageIcon : public StyledWidget
 {
 	Q_OBJECT
 
@@ -55,7 +56,6 @@ protected:
 	void enterEvent( QEvent *ev ) override;
 	void leaveEvent( QEvent *ev ) override;
 	void mouseReleaseEvent( QMouseEvent *event ) override;
-	void paintEvent( QPaintEvent *ev ) override;
 	void changeEvent(QEvent* event) override;
 
 private:
@@ -67,12 +67,14 @@ private:
 
 	Ui::PageIcon *ui;
 	QWidget *shadow;
+	std::unique_ptr<QSvgWidget> brightRedIcon;
 	std::unique_ptr<QSvgWidget> icon;
 	std::unique_ptr<QSvgWidget> redIcon;
 	std::unique_ptr<QSvgWidget> orangeIcon;
 
 	Style active;
 	Style inactive;
+	bool invalid;
 	Style hover;
 	bool selected;
 	ria::qdigidoc4::Pages type;

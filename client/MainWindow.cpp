@@ -658,12 +658,11 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded"), 750, 1500, 600 );
 		}
-		else
-			if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
-			{
-				smartcard->reload(); // smartcard should also know that PIN is blocked.
-				showPinBlockedWarning(smartcard->data());
-			}
+		else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
+		{
+			smartcard->reload(); // smartcard should also know that PIN is blocked.
+			showPinBlockedWarning(smartcard->data());
+		}
 		break;
 	case EncryptContainer:
 		if(encrypt())
@@ -1005,12 +1004,11 @@ bool MainWindow::sign()
 		notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
 		return true;
 	}
-	else
-		if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
-		{
-			smartcard->reload();
-			showPinBlockedWarning(smartcard->data());
-		}
+	else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
+	{
+		smartcard->reload();
+		showPinBlockedWarning(smartcard->data());
+	}
 
 	return false;
 }
@@ -1316,9 +1314,9 @@ void MainWindow::warningClicked(const QString &link)
 	else if(link.startsWith("#invalid-signature-"))
 		emit ui->signContainerPage->details(link.right(link.length()-19));
 	else if(link == "#unblock-PIN1")
-        ui->accordion->changePin1Clicked (false, true);
+		ui->accordion->changePin1Clicked (false, true);
 	else if(link == "#unblock-PIN2")
-        ui->accordion->changePin2Clicked (false, true);
+		ui->accordion->changePin2Clicked (false, true);
 }
 
 bool MainWindow::wrapContainer()
