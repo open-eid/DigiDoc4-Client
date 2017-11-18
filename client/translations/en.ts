@@ -158,6 +158,12 @@
         <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
         <translation>You have not granted IP-based access. Check the settings of your server access certificate.</translation>
     </message>
+    <message>
+        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
+The Information System Authority does not retain information regarding the files and users of the service.</source>
+        <translation>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
+The Information System Authority does not retain information regarding the files and users of the service.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -1796,6 +1802,10 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Details</translation>
     </message>
 </context>
 

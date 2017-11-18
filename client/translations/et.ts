@@ -158,6 +158,12 @@
         <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
         <translation>Puudub IP-põhine ligipääs, kontrolli juurdepääsutõendi seadeid.</translation>
     </message>
+    <message>
+        <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
+The Information System Authority does not retain information regarding the files and users of the service.</source>
+        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimine toimub läbi teenuse. Kontrollitav fail edastatakse teenusele.
+Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failide osas.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -1794,6 +1800,10 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>CLOSE</source>
         <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detailid</translation>
     </message>
 </context>
 

@@ -83,15 +83,28 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
 		showNotification( text, true );
 		ui->accordion->updateInfo( smartcard );
+		if(isUpdateCertificateNeeded())
+		{
+			ui->myEid->invalidIcon(true);
+			showUpdateCertWarning();
+		}
 		ui->myEid->warningIcon(
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
 
+		QCardInfo cardInfo(smartcard->data());
+
 		if (type == QSmartCardData::Pin1Type)
+		{
 			clearWarning(UNBLOCK_PIN1_WARNING);
+			emit ui->cryptoContainerPage->cardChanged(cardInfo.id);
+		}
 		if (type == QSmartCardData::Pin2Type)
+		{
 			clearWarning(UNBLOCK_PIN2_WARNING);
+			emit ui->signContainerPage->cardChanged(cardInfo.id);
+		}
 	}
 }
 
@@ -103,10 +116,6 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
 		ui->accordion->updateInfo( smartcard );
-	}
-	else
-	{
-		showPinBlockedWarning( smartcard->data() );
 	}
 }
 
@@ -187,7 +196,7 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	ssl.setToken( smartcard->data().authCert(), smartcard->key() );
 	QByteArray buffer = ssl.getUrl( type, param );
 	smartcard->logout();
-//	updateData();
+
 	if( !ssl.errorString().isEmpty() )
 	{
 		switch( type )
@@ -205,7 +214,6 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 
 bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )
 {
-	// updateData();
 	QSmartCardData::PinType t = flags == 1025 ? QSmartCardData::PukType : type;
 	QSmartCardData td = smartcard->data();
 	switch( err )
@@ -229,6 +237,8 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
+		if(smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0)
+			clearWarning(UPDATE_CERT_WARNING);
 		break;
 	case QSmartCard::DifferentError:
 		showNotification( QString("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
