@@ -94,7 +94,7 @@ void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
 	}
 
 	this->selected = selected;
-    this->shadow = shadow;
+	this->shadow = shadow;
 	this->type = type;
 	updateSelection();
 }

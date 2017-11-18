@@ -42,7 +42,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 {
 	d->setupUi( this );
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    d->showErrors->init(false, tr("TECHNICAL INFORMATION"), d->error);
+	d->showErrors->init(false, tr("TECHNICAL INFORMATION"), d->error);
 	d->showErrors->borderless();
 	d->showErrors->setClosable(true);
 	d->showErrors->hide();
@@ -154,9 +154,9 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	QTreeWidget *t = d->signatureView;
 	t->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
-    QStringList horzHeaders;
-    horzHeaders << tr("Attribute") << tr("Value");
-    t->setHeaderLabels(horzHeaders);
+	QStringList horzHeaders;
+	horzHeaders << tr("Attribute") << tr("Value");
+	t->setHeaderLabels(horzHeaders);
 
 	addItem( t, tr("Signer's Certificate issuer"), c.issuerInfo( QSslCertificate::CommonName ) );
 	addItem( t, tr("Signer's Certificate"), c );

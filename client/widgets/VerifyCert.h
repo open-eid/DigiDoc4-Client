@@ -35,7 +35,7 @@ public:
 	~VerifyCert();
 
 	void update( QSmartCardData::PinType type, const QSmartCard *smartCard );
-    void update();
+	void update();
 	void addBorders();
 
 signals:
@@ -60,5 +60,5 @@ private:
 	QString borders;
 
 	QSmartCardData::PinType pinType;
-    QSmartCardData cardData;
+	QSmartCardData cardData;
 };

@@ -254,7 +254,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		showNotification( tr("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
 		break;
 	case QSmartCard::ValidateError:
-        showNotification( tr("Wrong %1 code. You can try %n more time(s).", "",
+		showNotification( tr("Wrong %1 code. You can try %n more time(s).", "",
 			smartcard->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
 
 		break;

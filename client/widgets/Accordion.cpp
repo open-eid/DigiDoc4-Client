@@ -46,9 +46,9 @@ void Accordion::init()
 	connect( ui->contentOtherData, &OtherData::checkEMailClicked, this, [this](){ emit checkEMail(); } );
 	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
 
-    ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
-    ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), ui->contentOtherData);
-    ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
+	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
+	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), ui->contentOtherData);
+	ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
@@ -155,9 +155,9 @@ void Accordion::certDetails( const QString &link )
 void Accordion::clearOtherEID()
 {
 	// Set to default Certificate Info page
-	updateOtherData( false );    // E-mail
+	updateOtherData( false );	// E-mail
 	closeOtherSection( ui->titleVerifyCert );
-    ui->titleVerifyCert->openSection();
+	ui->titleVerifyCert->openSection();
 
 	ui->mobID->hide();
 	ui->digiID->hide();

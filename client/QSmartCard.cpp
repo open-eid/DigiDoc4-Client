@@ -380,7 +380,7 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, const QSt
 		case QSmartCardData::Pin2Type: flags = PinDialog::Pin2Type;	break;
 		case QSmartCardData::PukType: flags = PinDialog::PinpadFlag; break;
 		default: return UnknownError;
-	}            
+	}
 	if(d->t.isPinpad())
 	{
 		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, qApp->activeWindow(),bodyText));
@@ -451,7 +451,7 @@ Qt::HANDLE QSmartCard::key()
 
 QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
 {
-    QScopedPointer<PinUnblock> p;
+	QScopedPointer<PinUnblock> p;
 	QByteArray oldPin, newPin;
 	QString title, textBody;
 
@@ -471,7 +471,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
 
 QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool isForgotPin)
 {
-    QScopedPointer<PinUnblock> p;
+	QScopedPointer<PinUnblock> p;
 	QByteArray puk, newPin;
 	QString title, textBody;
 
@@ -486,7 +486,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	title = tr("%1 unblocking").arg(QSmartCardData::typeString(type));
 	textBody = (isForgotPin) ?  
 		tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type))
-    	:
+		:
 		tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 
 	return unblock(type, newPin, puk, title, textBody);
@@ -667,13 +667,13 @@ void QSmartCard::run()
 			if(update)
 			{
 				Q_EMIT dataChanged();
-            }
-            
-            auto added = order.toSet().subtract( d->cache.keys().toSet() );
-            for( auto newCard: added )
-            {
-                readCardData( cards, newCard, false );
-            }
+			}
+
+			auto added = order.toSet().subtract( d->cache.keys().toSet() );
+			for( auto newCard: added )
+			{
+				readCardData( cards, newCard, false );
+			}
 
 			d->m.unlock();
 		}
@@ -720,7 +720,7 @@ bool QSmartCard::readCardData( const QMap<QString,QString> &cards, const QString
 			}
 		}
 
-        tryAgain = !d->updateCounters(reader.data(), t);
+		tryAgain = !d->updateCounters(reader.data(), t);
 		if(reader->transfer(d->PERSONALDATA).resultOk())
 		{
 			QByteArray cmd = d->READRECORD;
@@ -853,7 +853,7 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, const QS
 		case QSmartCardData::Pin1Type: flags = PinDialog::Pin1Type;	break;
 		case QSmartCardData::Pin2Type: flags = PinDialog::Pin2Type;	break;
 		default: return UnknownError;
-	}            
+	}
 	// Make sure pin is locked. ID card is designed so that only blocked PIN could be unblocked with PUK!
 	cmd[3] = type;
 	cmd[4] = char(pin.size() + 1);

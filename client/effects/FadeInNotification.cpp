@@ -35,41 +35,41 @@ FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, 
 
 void FadeInNotification::start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime )
 {
-    this->fadeOutTime = fadeOutTime;
-    setText(label);
-    setAttribute(Qt::WA_DeleteOnClose);
-    setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
-    setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    setFont(Styles::font(Styles::Condensed, 22));
-    setMinimumSize(parentWidget()->width() - leftOffset, 65);
-    if ( leftOffset > 0 )
-    {
-        move( leftOffset, 0 );
-    }
+	this->fadeOutTime = fadeOutTime;
+	setText(label);
+	setAttribute(Qt::WA_DeleteOnClose);
+	setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
+	setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	setFont(Styles::font(Styles::Condensed, 22));
+	setMinimumSize(parentWidget()->width() - leftOffset, 65);
+	if ( leftOffset > 0 )
+	{
+		move( leftOffset, 0 );
+	}
 
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
-    setGraphicsEffect(effect);
-    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
-    a->setDuration(fadeInTime);
-    a->setStartValue(0);
-    a->setEndValue(0.95);
-    a->setEasingCurve(QEasingCurve::InBack);
-    a->start(QPropertyAnimation::DeleteWhenStopped);
+	QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
+	setGraphicsEffect(effect);
+	QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
+	a->setDuration(fadeInTime);
+	a->setStartValue(0);
+	a->setEndValue(0.95);
+	a->setEasingCurve(QEasingCurve::InBack);
+	a->start(QPropertyAnimation::DeleteWhenStopped);
 
-    connect( a, &QPropertyAnimation::finished, this, [this, displayTime]() { QTimer::singleShot(displayTime, this, &FadeInNotification::fadeOut); });
+	connect( a, &QPropertyAnimation::finished, this, [this, displayTime]() { QTimer::singleShot(displayTime, this, &FadeInNotification::fadeOut); });
 
-    show();
+	show();
 }
 
 void FadeInNotification::fadeOut()
 {
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-    setGraphicsEffect(effect);
-    QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
-    a->setDuration(fadeOutTime);
-    a->setStartValue(0.95);
-    a->setEndValue(0);
-    a->setEasingCurve(QEasingCurve::OutBack);
-    a->start(QPropertyAnimation::DeleteWhenStopped);
-    connect( a, &QPropertyAnimation::finished, this, &FadeInNotification::close );
+	QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
+	setGraphicsEffect(effect);
+	QPropertyAnimation *a = new QPropertyAnimation(effect,"opacity");
+	a->setDuration(fadeOutTime);
+	a->setStartValue(0.95);
+	a->setEndValue(0);
+	a->setEasingCurve(QEasingCurve::OutBack);
+	a->start(QPropertyAnimation::DeleteWhenStopped);
+	connect( a, &QPropertyAnimation::finished, this, &FadeInNotification::close );
 }

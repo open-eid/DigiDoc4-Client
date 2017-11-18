@@ -29,7 +29,7 @@ class PinUnblock;
 
 class PinUnblock : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 	enum WorkMode
@@ -39,21 +39,21 @@ public:
 		PinChange = 4,
 		PukChange = 8
 	};
-    PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts );
-    ~PinUnblock();
+	PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts );
+	~PinUnblock();
 
-    int exec() override;
+	int exec() override;
 	QString firstCodeText() const;
 	QString newCodeText() const;
 
 private:
-    void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
-    void setUnblockEnabled();
+	void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
+	void setUnblockEnabled();
 
-    Ui::PinUnblock *ui;
-    QRegExp		regexpFirstCode;
-    QRegExp		regexpNewCode;
-    bool isFirstCodeOk;
-    bool isNewCodeOk;
-    bool isRepeatCodeOk;
+	Ui::PinUnblock *ui;
+	QRegExp		regexpFirstCode;
+	QRegExp		regexpNewCode;
+	bool isFirstCodeOk;
+	bool isNewCodeOk;
+	bool isRepeatCodeOk;
 };
