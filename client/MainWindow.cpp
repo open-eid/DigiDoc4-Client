@@ -773,6 +773,24 @@ void MainWindow::openFiles(const QStringList &files)
 		navigateToPage(page, content, create);
 }
 
+void MainWindow::open(const QStringList &params, bool crypto)
+{
+	if (crypto)
+		navigateToPage(Pages::CryptoIntro);
+
+	QStringList files;
+	for(auto param: params)
+	{
+		const QFileInfo f(param);
+		if(!f.isFile())
+			continue;
+		files << param;
+	}
+
+	if(!files.isEmpty())
+		openFiles(files);
+}
+
 void MainWindow::openContainer()
 {
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"));
