@@ -59,7 +59,7 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      if [ "${IMAGE}" = "ubuntu:16.04" ]; then
+      if [ "${IMAGE}" = "ubuntu:17.04" ]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
