@@ -46,7 +46,7 @@ script: case ${TARGET} in
     make zipdebug macdeployqt zip && cp qdigidoc4*.zip ./$BUILD_NUMBER/ && cd ..;
     ;;
   *)
-    docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e DEBEMAIL="travis-ci@travis" -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
+    docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e DEBEMAIL="travis-ci@travis" -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       set -e;
       apt-get update -qq; 
       apt-get install -y apt-transport-https curl dh-make devscripts dpkg-dev cdbs cmake libldap2-dev libpcsclite-dev libssl-dev qtbase5-dev libqt5svg5-dev qttools5-dev qttools5-dev-tools gettext git curl wget ruby;
@@ -59,6 +59,15 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
+      if [ "${IMAGE}" = "ubuntu:17.04" ]; then
+        export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
+        export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
+        export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
+        export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake -DBREAKPAD=\"\" .";
+        export COVERITY_SCAN_BUILD_COMMAND=make;
+        wget https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh;
+        bash travisci_build_coverity_scan.sh;
+      fi;
       mkdir -p build/$BUILD_NUMBER;
       cp ../qdigidoc4_*.deb build/$BUILD_NUMBER';
   esac
