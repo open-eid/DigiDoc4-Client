@@ -279,6 +279,11 @@ Media type: %3</translation>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</translation>
     </message>
+
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
 </context>
 
 
@@ -877,6 +882,10 @@ Learn more info here:</translation>
     </message>
 
     <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
         <source>Save certificate</source>
         <translation>Save certificate</translation>
     </message>
@@ -1107,6 +1116,10 @@ Learn more info here:</translation>
         <translation>Your Mobiil-ID service is not activated.</translation>
     </message>
     <message>
+        <source>Invalid content</source>
+        <translation>Invalid content</translation>
+    </message>
+    <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
         <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
     </message>
@@ -1117,6 +1130,10 @@ Control code: %1</source>
         <translation>Make sure control code matches with one in phone screen
 and enter Mobiil-ID PIN2-code.
 Control code: %1</translation>
+    </message>
+    <message>
+        <source>SSL Error:</source>
+        <translation>SSL Error:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1829,6 +1846,27 @@ PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
     <message>
         <source>Enter PIN</source>
         <translation>Enter PIN</translation>
+    </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Request timed out</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Invalid content type</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. Check your internet connection and try again.</source>
+        <translation>Updating certificates has failed. Check your internet connection and try again.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>SSL handshake failed. Please restart the update process.</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
+        <translation>Updating certificates has failed. The server is overloaded, try again later.</translation>
     </message>
 </context>
 
@@ -2589,12 +2627,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>Invalid phone number! Please include correct country code.</source>
         <translation>Invalid phone number! Please include correct country code.</translation>
     </message>
-    <message>
-        <source>Invalid content</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
-
 
 <context>
     <name>PrintSheet</name>

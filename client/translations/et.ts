@@ -279,6 +279,11 @@ Tüüp: %3</translation>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista Eesti piires lühinumbril 1777 ja välismaalt (+372) 677 3377.</translation>
     </message>
+
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
 </context>
 
 
@@ -880,6 +885,10 @@ Rohkem infot leiate siit:</translation>
     </message>
 
     <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
         <source>Save certificate</source>
         <translation>Salvesta sertifikaat</translation>
     </message>
@@ -1114,12 +1123,20 @@ Rohkem infot leiate siit:</translation>
         <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
     </message>
     <message>
+        <source>Invalid content</source>
+        <translation>Kehtetu sisu</translation>
+    </message>
+    <message>
         <source>Make sure control code matches with one in phone screen
 and enter Mobile-ID PIN2-code.
 Control code: %1</source>
         <translation>Veendu kontrollkoodi õigsuses
 ja sisesta telefonil Mobiil-ID PIN2-kood.
 Kontrollkood: %1</translation>
+    </message>
+    <message>
+        <source>SSL Error:</source>
+        <translation>SSL Viga:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1822,6 +1839,27 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Enter PIN</source>
         <translation>Sisesta PIN</translation>
+    </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Päring on aegunud</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Kehtetu sisutüüp</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. Check your internet connection and try again.</source>
+        <translation>Sertide uuendamine on ebaõnnestunud. Kontrollige oma Interneti-ühendust ja proovige uuesti.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>SSL ühenduskanali loomine ebaõnnestus. Taaskäivitage värskendusprotsess uuesti.</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
+        <translation>Sertide uuendamine on ebaõnnestunud. Server on ülekoormatud, proovige hiljem uuesti.</translation>
     </message>
 </context>
 
@@ -2553,10 +2591,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
         <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
-    </message>
-    <message>
-        <source>Invalid content</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 

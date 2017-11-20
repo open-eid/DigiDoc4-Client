@@ -296,7 +296,7 @@ void MobileProgress::sslErrors( QNetworkReply *, const QList<QSslError> &err )
 	QStringList msg;
 	for( const QSslError &e: err )
 	{
-		qWarning() << "SSL Error:" << e.error() << e.certificate().subjectInfo( "CN" );
+		qWarning() << tr("SSL Error:") << e.error() << e.certificate().subjectInfo( "CN" );
 		msg << e.errorString();
 	}
 	if( !msg.empty() )

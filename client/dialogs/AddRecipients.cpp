@@ -235,7 +235,7 @@ void AddRecipients::addRecipientFromCard()
 void AddRecipients::addRecipientFromFile()
 {
 	QString file = FileDialog::getOpenFileName( this, windowTitle(), QString(),
-		"Certificates (*.pem *.cer *.crt)" );
+		tr("Certificates (*.cer *.crt *.pem)") );
 	if( file.isEmpty() )
 		return;
 
@@ -342,7 +342,7 @@ int AddRecipients::exec()
 void AddRecipients::search(const QString &term)
 {
 	QRegExp isDigit( "\\d*" );
-	qDebug() << "Search pressed";
+
 	if( isDigit.exactMatch(term) && ( term.size() == 11 || term.size() == 8 ) )
 	{
 		if( term.size() == 11 && !IKValidator::isValid( term ) )

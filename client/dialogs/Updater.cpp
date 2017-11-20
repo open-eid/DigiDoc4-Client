@@ -327,7 +327,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->envelopeAgree->setFont( regular );
 	d->pinLabel->setFont( condensed14 );
 	d->pinType->setFont( condensed14 );
-	d->details = d->buttonBox->addButton(tr("DETAILS"), QDialogButtonBox::ActionRole);
+	d->details = d->buttonBox->addButton(::Updater::tr("DETAILS"), QDialogButtonBox::ActionRole);
 	d->setButtonPattern( d->details,  nullptr );
 	d->details->hide();
 	d->close = d->buttonBox->button(QDialogButtonBox::Close);
@@ -475,8 +475,8 @@ void Updater::process(const QByteArray &data)
 			d->envelope->setPixmap(pinEnvelope);
 			d->envelopeLabel->setText(obj.value("text").toString());
 			d->stackedWidget->setCurrentIndex(2);
-			QPushButton *yesButton = d->buttonBox->addButton(tr("CONTINUE"), QDialogButtonBox::AcceptRole);
-			QPushButton *cancelButton = d->buttonBox->addButton(tr("CANCEL"), QDialogButtonBox::RejectRole);
+			QPushButton *yesButton = d->buttonBox->addButton(::Updater::tr("CONTINUE"), QDialogButtonBox::AcceptRole);
+			QPushButton *cancelButton = d->buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
 			d->setButtonPattern( yesButton, nullptr );
 			d->setButtonPattern( cancelButton, "Red" );
 			yesButton->setDisabled(true);
@@ -662,7 +662,7 @@ int Updater::exec()
 		QTimer *timer = new QTimer(this);
 		timer->setSingleShot(true);
 		connect(timer, &QTimer::timeout, reply, [=]{
-			d->label->setText(tr("Request timed out"));
+			d->label->setText(::Updater::tr("Request timed out"));
 			d->close->show();
 		});
 		connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
@@ -681,18 +681,18 @@ int Updater::exec()
 			}
 			else
 			{
-				d->label->setText("<b><font color=\"red\">" + tr("Invalid content type") + "</font></b>");
+				d->label->setText("<b><font color=\"red\">" + ::Updater::tr("Invalid content type") + "</font></b>");
 				d->close->show();
 			}
 			break;
 		case QNetworkReply::TimeoutError:
 		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::UnknownNetworkError:
-			d->label->setText("<b><font color=\"red\">" + tr("Updating certificates has failed. Check your internet connection and try again.") + "</font></b>");
+			d->label->setText("<b><font color=\"red\">" + ::Updater::tr("Updating certificates has failed. Check your internet connection and try again.") + "</font></b>");
 			d->close->show();
 			break;
 		case QNetworkReply::SslHandshakeFailedError:
-			d->label->setText("<b><font color=\"red\">" + tr("SSL handshake failed. Please restart the update process.") + "</font></b>");
+			d->label->setText("<b><font color=\"red\">" + ::Updater::tr("SSL handshake failed. Please restart the update process.") + "</font></b>");
 			d->close->show();
 			break;
 		default:
@@ -700,7 +700,7 @@ int Updater::exec()
 			{
 			case 503:
 			case 509:
-				d->label->setText("<b>" + tr("Updating certificates has failed. The server is overloaded, try again later.") + "</b>");
+				d->label->setText("<b>" + ::Updater::tr("Updating certificates has failed. The server is overloaded, try again later.") + "</b>");
 				break;
 			default:
 				d->label->setText("<b><font color=\"red\">" + reply->errorString() + "</font></b>");

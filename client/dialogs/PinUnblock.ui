@@ -67,6 +67,9 @@ QPushButton:hover:!pressed {
    <property name="text">
     <string>CANCEL</string>
    </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="unblock">
    <property name="geometry">
@@ -105,6 +108,12 @@ QPushButton:disabled {
    </property>
    <property name="text">
     <string>UNBLOCK</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+   <property name="default">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="labelNameId">
