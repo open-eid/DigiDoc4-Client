@@ -291,7 +291,7 @@ bool MainWindow::decrypt()
 	if(!cryptoDoc)
 		return false;
 
-	WaitDialog waitDialog(qApp->activeWindow());
+	WaitDialog waitDialog(this);
 	waitDialog.open();
 
 	return cryptoDoc->decrypt();
@@ -405,7 +405,7 @@ bool MainWindow::encrypt()
 	if(!cryptoDoc)
 		return false;
 
-	WaitDialog waitDialog(qApp->activeWindow());
+	WaitDialog waitDialog(this);
 	waitDialog.setText(tr("Encrypting"));
 	waitDialog.open();
 
@@ -770,7 +770,12 @@ void MainWindow::openFiles(const QStringList &files)
 	}
 
 	if(create || current != page)
+	{
+		WaitDialog waitDialog(this);
+		waitDialog.setText(tr("Opening"));
+		waitDialog.open();
 		navigateToPage(page, content, create);
+	}
 }
 
 void MainWindow::open(const QStringList &params, bool crypto)
@@ -1006,6 +1011,9 @@ bool MainWindow::sign()
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
+	WaitDialog waitDialog(this);
+	waitDialog.setText(tr("Signing"));
+	waitDialog.open();
 
 	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
 	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
@@ -1017,6 +1025,7 @@ bool MainWindow::sign()
 		access.increment();
 		save();
 		ui->signContainerPage->transition(digiDoc);
+		waitDialog.close();
 
 		FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 		notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
