@@ -60,5 +60,5 @@ private:
 	Ui::AccordionTitle *ui;
 	std::unique_ptr<QSvgWidget> icon;
 	bool closable;
-	QWidget* content;
+	QWidget* content = nullptr;
 };

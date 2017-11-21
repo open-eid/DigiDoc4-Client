@@ -25,6 +25,7 @@ OtherData::OtherData(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::OtherData)
 , activate(false)
+, errorCode(0)
 {
 	ui->setupUi(this);
 

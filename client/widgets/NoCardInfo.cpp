@@ -25,6 +25,7 @@ NoCardInfo::NoCardInfo( QWidget *parent )
 : QWidget( parent )
 , ui( new Ui::NoCardInfo )
 , cardIcon( new QSvgWidget( this ) )
+, status(Loading)
 {
 	ui->setupUi( this );
 

@@ -30,7 +30,9 @@ const QString LabelButton::borderRadius(" border-radius: 2px;");
 const QString LabelButton::styleTemplate( "QLabel { background-color: %1; color: %2;%4 border: %3; text-decoration: none solid; }" );
 
 LabelButton::LabelButton( QWidget *parent )
-: QLabel( parent )
+: QLabel(parent)
+, code(0)
+, style(Style::None)
 {
 }
 

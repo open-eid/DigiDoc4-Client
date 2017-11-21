@@ -66,7 +66,7 @@ private:
 	};
 
 	Ui::PageIcon *ui;
-	QWidget *shadow;
+	QWidget *shadow = nullptr;
 	std::unique_ptr<QSvgWidget> brightRedIcon;
 	std::unique_ptr<QSvgWidget> icon;
 	std::unique_ptr<QSvgWidget> redIcon;
