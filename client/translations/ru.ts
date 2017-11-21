@@ -481,6 +481,10 @@ Media type: %3</source>
         &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;
         &lt;p align=center&gt;Мы автоматически добавили вас в список получателей, чтобы при необходимости расшифровать зашифрованный документ.&lt;/p&gt;</translation>
     </message>
+    <message>
+        <source>Enter personal code, company or registry code</source>
+        <translation>Введите личный код, учреждение или код регистра</translation>
+    </message>
 </context>
 
 

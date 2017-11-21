@@ -82,8 +82,8 @@ void ItemList::changeEvent(QEvent* event)
 		if(header != nullptr)
 			header->setText(tr(qPrintable(headerText)));
 
-		if(ui->add->isVisible())
-			ui->add->setText(tr(qPrintable(addLabel())));
+		ui->add->setText(tr(qPrintable(addLabel())));
+
 		if(itemType == ItemAddress)
 			ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
 	}
@@ -208,6 +208,7 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->findGroup->show();
+		ui->txtFind->setPlaceholderText(tr("Enter personal code, company or registry code"));
 		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text()); });
 		ui->btnFind->setDisabled(ui->txtFind->text().isEmpty());
 		connect(ui->txtFind, &QLineEdit::textChanged, [=](const QString &text){

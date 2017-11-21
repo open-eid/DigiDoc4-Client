@@ -485,6 +485,10 @@ Tüüp: %3</translation>
         &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;
         &lt;p align=center&gt;Lisasime Sind automaatselt adressaatide hulka, et saaksid vajadusel hiljem krüpteeritud dokumendi dekrüpteerida.&lt;/p&gt;</translation>
     </message>
+    <message>
+        <source>Enter personal code, company or registry code</source>
+        <translation>Sisesta isikukood, asutus või registrikood</translation>
+    </message>
 </context>
 
 
