@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="et">
+
 <context>
     <name>AccessCert</name>
+
     <message>
         <source>Failed to save server access certificate file to %1!
 %2</source>
@@ -34,8 +36,11 @@
         <translation>Täitunud on tasuta teenuse 10 allkirja limiit. Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus&quot;&gt;leping&lt;/a&gt;. Lisainfo: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1892</translation>
     </message>
 </context>
+
+
 <context>
     <name>Application</name>
+
     <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 klient</translation>
@@ -77,8 +82,11 @@
         <translation>Loo %1</translation>
     </message>
 </context>
+
+
 <context>
     <name>CheckConnection</name>
+
     <message>
         <source>Check proxy settings</source>
         <translation>Kontrolli proxy seadeid</translation>
@@ -92,8 +100,11 @@
         <translation>Kontrolli Interneti ühendust</translation>
     </message>
 </context>
+
+
 <context>
     <name>DigiDoc</name>
+
     <message>
         <source>Container is not open</source>
         <translation>Ümbrik ei ole avatud</translation>
@@ -165,8 +176,11 @@ The Information System Authority does not retain information regarding the files
 Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failide osas.</translation>
     </message>
 </context>
+
+
 <context>
     <name>DocumentModel</name>
+
     <message>
         <source>Save</source>
         <translation>Salvesta</translation>
@@ -196,8 +210,11 @@ Tüüp: %3</translation>
         <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
     </message>
 </context>
+
+
 <context>
     <name>FileDialog</name>
+
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
@@ -207,6 +224,7 @@ Tüüp: %3</translation>
 
 <context>
     <name>PageIcon</name>
+
     <message>
         <source>SIGNATURE</source>
         <translation>ALLKIRI</translation>
@@ -221,8 +239,10 @@ Tüüp: %3</translation>
     </message>
 </context>
 
+
 <context>
     <name>AddRecipients</name>
+
     <message>
         <source>Cancel</source>
         <translation>KATKESTA</translation>
@@ -277,7 +297,6 @@ Tüüp: %3</translation>
         <source>REMOVE</source>
         <translation>EEMALDA</translation>
     </message>
-
     <message>
         <source>Owner</source>
         <translation>Omanik</translation>
@@ -294,7 +313,6 @@ Tüüp: %3</translation>
         <source>Expiry date</source>
         <translation>Expiry date</translation>
     </message>
-
     <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
@@ -313,8 +331,10 @@ Tüüp: %3</translation>
     </message>
 </context>
 
+
 <context>
     <name>InfoStack</name>
+
     <message>
         <source>DOWNLOAD</source>
         <translation>LAE PILT ALLA</translation>
@@ -400,8 +420,10 @@ Tüüp: %3</translation>
     </message>
 </context>
 
+
 <context>
     <name>ItemList</name>
+
     <message>
         <source>Search</source>
         <translation>OTSI</translation>
@@ -465,8 +487,10 @@ Tüüp: %3</translation>
     </message>
 </context>
 
+
 <context>
     <name>NoCardInfo</name>
+
     <message>
         <source>No card in reader</source>
         <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
@@ -488,6 +512,7 @@ Tüüp: %3</translation>
 
 <context>
     <name>NoOtherId</name>
+
     <message>
         <source>Other ID</source>
         <translation>Teised ID-d</translation>
@@ -514,6 +539,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>OtherId</name>
+
     <message>
         <source>DOCUMENT</source>
         <translation>DOKUMENT</translation>
@@ -586,6 +612,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>OtherData</name>
+
     <message>
         <source>@eesti.ee post</source>
         <translation>@eesti.ee post</translation>
@@ -612,8 +639,10 @@ Rohkem infot leiate siit:</translation>
     </message>
 </context>
 
+
 <context>
     <name>SignatureItem</name>
+
     <message>
         <source>Signature</source>
         <translation>Allkiri</translation>
@@ -668,8 +697,10 @@ Rohkem infot leiate siit:</translation>
     </message>
 </context>
 
+
 <context>
     <name>VerifyCert</name>
+
     <message>
         <source>Certificate has expired!</source>
         <translation>Sertifikaat on aegunud!</translation>
@@ -743,6 +774,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>CertificateDetails</name>
+
     <message>
         <source>Certificate information</source>
         <translation>Sertifikaadi informatsioon</translation>
@@ -860,6 +892,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>Accordion</name>
+
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
         <translation>PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL</translation>
@@ -877,6 +910,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>CardWidget</name>
+
     <message>
         <source>ID card in reader</source>
         <translation>Lugejas on ID kaart</translation>
@@ -890,6 +924,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>FirstRun</name>
+
     <message>
         <source>CONTINUE</source>
         <translation>JÄTKA</translation>
@@ -912,8 +947,10 @@ Rohkem infot leiate siit:</translation>
     </message>
 </context>
 
+
 <context>
     <name>KeyDialog</name>
+
     <message>
         <source>Encrypt for</source>
         <translation>Krüpteerida adressaadile</translation>
@@ -959,6 +996,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>MobileDialog</name>
+
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Sisesta oma telefoninumber Mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</translation>
@@ -997,6 +1035,7 @@ Rohkem infot leiate siit:</translation>
 
 <context>
     <name>MobileProgress</name>
+
     <message>
         <source>CANCEL</source>
         <translation>KATKESTA</translation>
@@ -1599,7 +1638,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>CLOSE</source>
         <translation>SULGE</translation>
     </message>
-
     <message>
         <source>Attribute</source>
         <translation>Attribuut</translation>
@@ -1608,7 +1646,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Value</source>
         <translation>Väärtus</translation>
     </message>
-
     <message>
         <source>TECHNICAL INFORMATION</source>
         <translation>TEHNILINE INFORMATSIOON</translation>
@@ -1740,7 +1777,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
 </context>
 
 
-
 <context>
     <name>Updater</name>
     <message>
@@ -1807,6 +1843,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
 </context>
 
+
 <context>
     <name>AddressItem</name>
     <message>
@@ -1817,7 +1854,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Added</source>
         <translation>LISATUD</translation>
     </message>
-
     <message>
         <source> (Yourself)</source>
         <translation> (Sina ise)</translation>
@@ -1851,7 +1887,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Settings</source>
         <translation>Seaded</translation>
     </message>
-
     <message>
         <source>Drag file here for signing</source>
         <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia ...</translation>
@@ -1860,7 +1895,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Open file for signing</source>
         <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
-
     <message>
         <source>Drag file here for encryption</source>
         <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
@@ -1869,7 +1903,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Open file for encryption</source>
         <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
-
     <message>
         <source>Unrecognized data</source>
         <translation>Tundmatuid andmeid</translation>
@@ -1922,10 +1955,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Foto (*.jpg);;Kõik failid (*)</translation>
     </message>
-
-
-
-
     <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
@@ -1946,8 +1975,6 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
         <source>KEEP</source>
         <translation>JÄTA ALLES</translation>
     </message>
-
-
     <message>
         <source>DO NOT SAVE</source>
         <translation>ÄRA SALVESTA</translation>
@@ -2382,6 +2409,50 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>%1 timeout</source>
         <translation>%1 päringu kannatus katkes</translation>
     </message>
+    <message>
+        <source>Success</source>
+        <translation>Toiming õnnestus</translation>
+    </message>
+    <message>
+        <source>ID-card has not been published by locally recognized verification provider.</source>
+        <translation>ID-kaart pole väljastatud riiklikult tunnustatud sertifitseerija poolt.</translation>
+    </message>
+    <message>
+        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
+        <translation>Sisestati vale PIN kood, katkestati PIN koodi sisestamine, tekkisid probleemid sertifikaatidega või puudub ID-kaardi tugi brauseris.</translation>
+    </message>
+    <message>
+        <source>ID-card certificate is not valid.</source>
+        <translation>ID-kaardi sertifikaat ei kehti.</translation>
+    </message>
+    <message>
+        <source>Entrance is permitted only with Estonian personal code.</source>
+        <translation>Sisemine on lubatud ainult Eesti isikukoodiga.</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
+    </message>
+    <message>
+        <source>There was an error with request to KMA.</source>
+        <translation>KMA päringu tegemisel tekkis viga.</translation>
+    </message>
+    <message>
+        <source>No official email forwarding addresses was found</source>
+        <translation>Ühtegi ametliku e-posti suunamist ei leitud</translation>
+    </message>
+    <message>
+        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
+        <translation>Teie e-posti konto on suletud. Avamiseks saatke palun e-kiri aadressil toimetaja@eesti.ee või helistage telefonil 663 0215.</translation>
+    </message>
+    <message>
+        <source>Invalid email address</source>
+        <translation>Vigane e-posti aadress</translation>
+    </message>
+    <message>
+        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
+        <translation>Suunamine on salvestatud, ning sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
+    </message>
 </context>
 
 
@@ -2476,6 +2547,8 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation type="unfinished"></translation>
     </message>
 </context>
+
+
 <context>
     <name>PrintSheet</name>
     <message>
@@ -2583,6 +2656,8 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation>NB! PIIRANGUTEGA</translation>
     </message>
 </context>
+
+
 <context>
     <name>QPKCS11</name>
     <message>
@@ -2610,6 +2685,8 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation type="unfinished"></translation>
     </message>
 </context>
+
+
 <context>
     <name>QSigner</name>
     <message>
@@ -2669,6 +2746,8 @@ ID-KAARDIGA</translation>
 ID-KAARDIGA</translation>
     </message>
 </context>
+
+
 <context>
     <name>CardWidget</name>
     <message>
@@ -2680,6 +2759,8 @@ ID-KAARDIGA</translation>
         <translation>Digi ID</translation>
     </message>
 </context>
+
+
 <context>
     <name>SSLConnect</name>
     <message>
@@ -2711,6 +2792,8 @@ ID-KAARDIGA</translation>
         <translation>SSL kontekst puudub</translation>
     </message>
 </context>
+
+
 <context>
     <name>WarningRibbon</name>
     <message numerus="yes">
@@ -2725,6 +2808,8 @@ ID-KAARDIGA</translation>
         <translation>Vähem</translation>
     </message>
 </context>
+
+
 <context>
     <name>QSmartCard</name>
     <message>
@@ -2738,6 +2823,32 @@ ID-KAARDIGA</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>LDAP initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>LDAP otsingu initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Ei saanud LDAP päringule vastust</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>Ei saa ühendust LDAP serveriga.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Veakood: %1 (%2)</translation>
     </message>
 </context>
 </TS>

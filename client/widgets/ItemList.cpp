@@ -208,7 +208,11 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->findGroup->show();
-		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text());});
+		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text()); });
+		ui->btnFind->setDisabled(ui->txtFind->text().isEmpty());
+		connect(ui->txtFind, &QLineEdit::textChanged, [=](const QString &text){
+			ui->btnFind->setDisabled(text.isEmpty());
+		});		
 		headerItems = 2;
 	}
 

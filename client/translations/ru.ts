@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
+
 <context>
     <name>AccessCert</name>
+
     <message>
         <source>Failed to save server access certificate file to %1!
 %2</source>
@@ -34,8 +36,11 @@
         <translation>Вы использовали 10 бесплатных подписей. Согласно условиям использования услуги подтверждения действительности Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;услуги&lt;/a&gt;. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1892</translation>
     </message>
 </context>
+
+
 <context>
     <name>Application</name>
+
     <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 клиент</translation>
@@ -77,8 +82,11 @@
         <translation>Создайте %1</translation>
     </message>
 </context>
+
+
 <context>
     <name>CheckConnection</name>
+
     <message>
         <source>Check proxy settings</source>
         <translation>Проверте настройки прокси</translation>
@@ -92,8 +100,11 @@
         <translation>Проверьте подключение к Интернету</translation>
     </message>
 </context>
+
+
 <context>
     <name>DigiDoc</name>
+
     <message>
         <source>Container is not open</source>
         <translation>Контейнер не открыт</translation>
@@ -165,8 +176,11 @@ The Information System Authority does not retain information regarding the files
 Департамент государственной инфосистемы не сохраняет информацию о пользователях э-услуги и файлах.</translation>
     </message>
 </context>
+
+
 <context>
     <name>DocumentModel</name>
+
     <message>
         <source>Save</source>
         <translation>Сохранить</translation>
@@ -196,8 +210,11 @@ Media type: %3</source>
         <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
     </message>
 </context>
+
+
 <context>
     <name>FileDialog</name>
+
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
@@ -207,6 +224,7 @@ Media type: %3</source>
 
 <context>
     <name>PageIcon</name>
+
     <message>
         <source>SIGNATURE</source>
         <translation>ПОДПИСЬ</translation>
@@ -221,8 +239,10 @@ Media type: %3</source>
     </message>
 </context>
 
+
 <context>
     <name>AddRecipients</name>
+
     <message>
         <source>Cancel</source>
         <translation>ОТМЕНА</translation>
@@ -261,6 +281,7 @@ Media type: %3</source>
     </message>
 </context>
 
+
 <context>
     <name>CertificateHistory</name>
 
@@ -276,7 +297,6 @@ Media type: %3</source>
         <source>REMOVE</source>
         <translation>УДАЛИТЬ</translation>
     </message>
-
     <message>
         <source>Owner</source>
         <translation>Владелец</translation>
@@ -293,7 +313,6 @@ Media type: %3</source>
         <source>Expiry date</source>
         <translation>Дата окончания</translation>
     </message>
-
     <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
@@ -310,11 +329,12 @@ Media type: %3</source>
         <source>Unknown ID</source>
         <translation>Неизвестный ID</translation>
     </message>
-
 </context>
+
 
 <context>
     <name>InfoStack</name>
+
     <message>
         <source>DOWNLOAD</source>
         <translation>ЗАГРУЗИТЬ ФОТО</translation>
@@ -343,7 +363,6 @@ Media type: %3</source>
         <source>Applet</source>
         <translation>Версия апплета</translation>
     </message>
-
     <message>
         <source>SAVE THE PICTURE</source>
         <translation>СОХРАНИТЬ ФОТО</translation>
@@ -403,11 +422,11 @@ Media type: %3</source>
 
 <context>
     <name>ItemList</name>
+
     <message>
         <source>Search</source>
         <translation>НАЙТИ</translation>
     </message>
-
     <message>
         <source>Add more files</source>
         <translation>+ ДОБАВИТЬ ФАЙЛЫ</translation>
@@ -420,7 +439,6 @@ Media type: %3</source>
         <source>Add all</source>
         <translation>ДОБАВИТЬ ВСЕ</translation>
     </message>
-
     <message>
         <source>Add recipients</source>
         <translation>Добавить получателей</translation>
@@ -429,7 +447,6 @@ Media type: %3</source>
         <source>Added recipients</source>
         <translation>Добавлен получатель</translation>
     </message>
-
     <message>
         <source>Container is not signed</source>
         <translation>Контейнер не подписан</translation>
@@ -469,6 +486,7 @@ Media type: %3</source>
 
 <context>
     <name>NoCardInfo</name>
+
     <message>
         <source>No card in reader</source>
         <translation>В считывателе нет карты; проверьте, введена ли карточка правильно</translation>
@@ -487,8 +505,10 @@ Media type: %3</source>
     </message>
 </context>
 
+
 <context>
     <name>NoOtherId</name>
+
     <message>
         <source>Other ID</source>
         <translation>Другие ID</translation>
@@ -513,8 +533,10 @@ Learn more info here:</source>
     </message>
 </context>
 
+
 <context>
     <name>OtherId</name>
+
     <message>
         <source>DOCUMENT</source>
         <translation>ДОКУМЕНТ</translation>
@@ -535,7 +557,6 @@ Learn more info here:</source>
         <source>Insert the card into the reader to manage the document</source>
         <translation>Вставьте карту в считывающее устройство для работы с документом</translation>
     </message>
-
     <message>
         <source>Mobile ID</source>
         <translation>Mobiil-ID</translation>
@@ -568,8 +589,6 @@ Learn more info here:</source>
         <source>Valid</source>
         <translation>Действителен</translation>
     </message>
-
-
     <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
@@ -587,6 +606,7 @@ Learn more info here:</source>
 
 <context>
     <name>OtherData</name>
+
     <message>
         <source>@eesti.ee post</source>
         <translation>@eesti.ee почта</translation>
@@ -616,6 +636,7 @@ Learn more info here:</source>
 
 <context>
     <name>SignatureItem</name>
+
     <message>
         <source>Signature</source>
         <translation>Подпись</translation>
@@ -673,6 +694,7 @@ Learn more info here:</source>
 
 <context>
     <name>VerifyCert</name>
+
     <message>
         <source>Certificate has expired!</source>
         <translation>Срок действия сертификата истек!</translation>
@@ -746,6 +768,7 @@ Learn more info here:</source>
 
 <context>
     <name>CertificateDetails</name>
+
     <message>
         <source>Certificate information</source>
         <translation>Информация о сертификате</translation>
@@ -762,7 +785,6 @@ Learn more info here:</source>
         <source>SAVE</source>
         <translation>СОХРАНИТЬ</translation>
     </message>
-
     <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>Этот сертификат предназначен для следующих целей:</translation>
@@ -787,8 +809,6 @@ Learn more info here:</source>
         <source>To</source>
         <translation>До</translation>
     </message>
-
-
     <message>
         <source>Field</source>
         <translation>Поле</translation>
@@ -849,7 +869,6 @@ Learn more info here:</source>
         <source>Key usage</source>
         <translation>Использование ключа</translation>
     </message>
-
     <message>
         <source>Save certificate</source>
         <translation>Сохранить сертификат</translation>
@@ -863,6 +882,7 @@ Learn more info here:</source>
 
 <context>
     <name>Accordion</name>
+
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
         <translation>ПРОВЕРИТЬ PIN/PUK И СЕРТИФИКАТЫ</translation>
@@ -880,6 +900,7 @@ Learn more info here:</source>
 
 <context>
     <name>CardWidget</name>
+
     <message>
         <source>ID card in reader</source>
         <translation>В считывателе ID карта</translation>
@@ -890,8 +911,10 @@ Learn more info here:</source>
     </message>
 </context>
 
+
 <context>
     <name>FirstRun</name>
+
     <message>
         <source>CONTINUE</source>
         <translation>ПРОДОЛЖИТЬ</translation>
@@ -917,6 +940,7 @@ Learn more info here:</source>
 
 <context>
     <name>KeyDialog</name>
+
     <message>
         <source>Encrypt for</source>
         <translation>Зашифровать получателю</translation>
@@ -962,6 +986,7 @@ Learn more info here:</source>
 
 <context>
     <name>MobileDialog</name>
+
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Введите свой номер телефона для&lt;br/&gt;подписи с Mobiil-ID &lt;/b&gt;</translation>
@@ -986,7 +1011,6 @@ Learn more info here:</source>
         <source>SIGN</source>
         <translation>ПОДПИСЬ</translation>
     </message>
-
     <message>
         <source>Personal code is not valid</source>
         <translation>Личный код недействителен</translation>
@@ -1000,11 +1024,11 @@ Learn more info here:</source>
 
 <context>
     <name>MobileProgress</name>
+
     <message>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
     </message>
-
     <message>
         <source>Signing in process</source>
         <translation>Подписывание</translation>
@@ -1091,8 +1115,10 @@ Kонтрольны код: %1</translation>
     </message>
 </context>
 
+
 <context>
     <name>PinPopup</name>
+
     <message>
         <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
         <translation>Для выбранного действия необходима идентификация личности.&lt;br/&gt;Для использования сертификата идентификации введите PIN1</translation>
@@ -1105,8 +1131,6 @@ Kонтрольны код: %1</translation>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-
-
     <message>
         <source>PIN will be locked next failed attempt</source>
         <translation>PIN будет заблокирован при следующей неудачной попытке</translation>
@@ -1119,7 +1143,6 @@ Kонтрольны код: %1</translation>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Для использования сертификата цифровой подписи введите PIN2 с клавиатуры считывателя</translation>
     </message>
-
     <message>
         <source>For using sign certificate enter PIN2</source>
         <translation>Для использования сертификата цифровой подписи введите PIN2</translation>
@@ -1145,6 +1168,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>PinUnblock</name>
+
     <message>
         <source>VALID PUK CODE</source>
         <translation>ДЕЙСТВУЮЩИЙ PUK КОД</translation>
@@ -1232,8 +1256,6 @@ Kонтрольны код: %1</translation>
 &lt;li&gt;Ваш PUK код находится конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
-
-
     <message>
         <source>%1 unblocking</source>
         <translation>%1 разблокирование</translation>
@@ -1271,11 +1293,11 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>SettingsDialog</name>
+
     <message>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
-
     <message>
         <source>GENERAL</source>
         <translation>ОСНОВНЫЕ</translation>
@@ -1300,7 +1322,6 @@ Kонтрольны код: %1</translation>
         <source>INFO</source>
         <translation>ИНФО</translation>
     </message>
-
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
@@ -1329,8 +1350,6 @@ Kонтрольны код: %1</translation>
         <source>USE DEFAULT</source>
         <translation>ИСПОЛЬЗОВАТЬ ПО УМОЛЧАНИЮ</translation>
     </message>
-
-
     <message>
         <source>Language</source>
         <translation>Язык</translation>
@@ -1355,7 +1374,6 @@ Kонтрольны код: %1</translation>
         <source>Select the default directory</source>
         <translation>Выберите каталог по умолчанию</translation>
     </message>
-
     <message>
         <source>Default file type</source>
         <translation>Формат файла по умолчанию</translation>
@@ -1398,12 +1416,10 @@ Kонтрольны код: %1</translation>
         <source>Zip</source>
         <translation>Индекс</translation>
     </message>
-
     <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
     </message>
-
     <message>
         <source>No proxy</source>
         <translation>Прокси не используется</translation>
@@ -1436,7 +1452,6 @@ Kонтрольны код: %1</translation>
         <source>Enable proxy for SSL connections</source>
         <translation>Включить прокси-сервер для подключения SSL</translation>
     </message>
-
     <message>
         <source>Base version:</source>
         <translation>Базовая версия:</translation>
@@ -1449,7 +1464,6 @@ Kонтрольны код: %1</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 версия %2, выпущенный %3%4</translation>
     </message>
-
     <message>
         <source>Checking updates has failed.</source>
         <translation>Ошибка проверки обновлений.</translation>
@@ -1458,7 +1472,6 @@ Kонтрольны код: %1</translation>
         <source>Please try again.</source>
         <translation>Пожалуйста, попробуйте еще раз.</translation>
     </message>
-
     <message>
         <source>Once a day</source>
         <translation>Один раз в день</translation>
@@ -1492,6 +1505,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>ContainerPage</name>
+
     <message>
         <source>Container</source>
         <translation>Kонтейнер:</translation>
@@ -1565,6 +1579,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>SignatureDialog</name>
+
     <message>
         <source>Notice</source>
         <translation>Предупреждение</translation>
@@ -1601,7 +1616,6 @@ Kонтрольны код: %1</translation>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
     </message>
-
     <message>
         <source>Attribute</source>
         <translation>Атрибут</translation>
@@ -1610,8 +1624,6 @@ Kонтрольны код: %1</translation>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
-
-
     <message>
         <source>TECHNICAL INFORMATION</source>
         <translation>ТЕХНИЧЕСКАЯ ИНФОРМАЦИЯ</translation>
@@ -1745,6 +1757,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>Updater</name>
+
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ></translation>
@@ -1790,6 +1803,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>WaitDialog</name>
+
     <message>
         <source>Decrypting</source>
         <translation>Расшифровка</translation>
@@ -1799,6 +1813,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>WarningDialog</name>
+
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
@@ -1812,6 +1827,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>AddressItem</name>
+
     <message>
         <source>Add</source>
         <translation>ДОБАВИТЬ</translation>
@@ -1846,6 +1862,7 @@ Kонтрольны код: %1</translation>
 
 <context>
     <name>MainWindow</name>
+
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -1854,7 +1871,6 @@ Kонтрольны код: %1</translation>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
-
     <message>
         <source>Drag file here for signing</source>
         <translation>Перетащите файл сюда для подписи или проверки ...</translation>
@@ -1924,7 +1940,6 @@ Kонтрольны код: %1</translation>
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Фото (*.jpg);;Все файлы (*)</translation>
     </message>
-
     <message>
         <source>Ver. </source>
         <translation>Вер. </translation>
@@ -1945,8 +1960,6 @@ Kонтрольны код: %1</translation>
         <source>KEEP</source>
         <translation>ОСТАВИТЬ</translation>
     </message>
-
-
     <message>
         <source>DO NOT SAVE</source>
         <translation>НЕ СОХРАНЯЙ</translation>
@@ -1975,8 +1988,6 @@ Kонтрольны код: %1</translation>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
     </message>
-
-
     <message>
         <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
         <translation>Сертификаты карты нуждаются в обновлении. Обновление занимает 2-10 минут и требует подключения к Интернету в режиме реального времени. Карту нельзя удалять из считывателя до окончания обновления.</translation>
@@ -2393,11 +2404,56 @@ ASiC-E – это разрабатываемый международный фо
         <source>%1 timeout</source>
         <translation>Время запроса %1 кода истекло</translation>
     </message>
+    <message>
+        <source>Success</source>
+        <translation>Выполнение успешно</translation>
+    </message>
+    <message>
+        <source>ID-card has not been published by locally recognized verification provider.</source>
+        <translation>ID- карта не была выдана разрешённым сертифицирующим органом.</translation>
+    </message>
+    <message>
+        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
+        <translation>Ввели неверный PIN код, прервали введение PIN кода, возникли проблемы с сертификатами или отсутствует поддержка ID- карты в браузере.</translation>
+    </message>
+    <message>
+        <source>ID-card certificate is not valid.</source>
+        <translation>Сертификат ID- карты недействителен.</translation>
+    </message>
+    <message>
+        <source>Entrance is permitted only with Estonian personal code.</source>
+        <translation>Вход разрешён только с эстонским личным кодом.</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Неизвестная ошибка</translation>
+    </message>
+    <message>
+        <source>There was an error with request to KMA.</source>
+        <translation>В запросе КМА возникла ошибка.</translation>
+    </message>
+    <message>
+        <source>No official email forwarding addresses was found</source>
+        <translation>Не было найдено ни одной официальной пересылки эл. почты</translation>
+    </message>
+    <message>
+        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
+        <translation>Ваша учётная запись эл. почты закрыта. Для открытия пошлите письмо на toimetaja@eesti.ee или позвоните по телефону 663 0215.</translation>
+    </message>
+    <message>
+        <source>Invalid email address</source>
+        <translation>Неверный адрес эл. почты</translation>
+    </message>
+    <message>
+        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
+        <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
+    </message>
 </context>
 
 
 <context>
     <name>MobileDialog</name>
+
     <message>
         <source>Signing in process</source>
         <translation>Подписывание</translation>
@@ -2487,8 +2543,11 @@ ASiC-E – это разрабатываемый международный фо
         <translation type="unfinished"></translation>
     </message>
 </context>
+
+
 <context>
     <name>PrintSheet</name>
+
     <message>
         <source>SIGNED FILES</source>
         <translation>ПОДПИСАННЫЕ ФАЙЛЫ</translation>
@@ -2594,8 +2653,11 @@ ASiC-E – это разрабатываемый международный фо
         <translation>NB! ОГРАНИЧЕНИЯ</translation>
     </message>
 </context>
+
+
 <context>
     <name>QPKCS11</name>
+
     <message>
         <source>PIN Canceled</source>
         <translation type="unfinished"></translation>
@@ -2621,8 +2683,11 @@ ASiC-E – это разрабатываемый международный фо
         <translation type="unfinished"></translation>
     </message>
 </context>
+
+
 <context>
     <name>QSigner</name>
+
     <message>
         <source>Failed to load PKCS#11 module</source>
         <translation>Неудачная загрузка модуля PKCS#11</translation>
@@ -2660,6 +2725,7 @@ ASiC-E – это разрабатываемый международный фо
 
 <context>
     <name>MainAction</name>
+
     <message>
         <source>SignatureMobile</source>
         <translation>ПОДПИСАТЬ С
@@ -2680,8 +2746,11 @@ ASiC-E – это разрабатываемый международный фо
 С ID-КАРТОЙ</translation>
     </message>
 </context>
+
+
 <context>
     <name>CardWidget</name>
+
     <message>
         <source>ID Card</source>
         <translation>ИД Карта</translation>
@@ -2691,8 +2760,11 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Диги ИД</translation>
     </message>
 </context>
+
+
 <context>
     <name>SSLConnect</name>
+
     <message>
         <source>Certificate is empty</source>
         <translation>Сертификат пустой</translation>
@@ -2722,8 +2794,11 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Отсутствует контекст SSL</translation>
     </message>
 </context>
+
+
 <context>
     <name>WarningRibbon</name>
+
     <message numerus="yes">
         <source>%n message</source>
         <translation>
@@ -2737,8 +2812,11 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Меньше</translation>
     </message>
 </context>
+
+
 <context>
     <name>QSmartCard</name>
+
     <message>
         <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
         <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
@@ -2750,6 +2828,32 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>Инициализация LDAP неудалась</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>Инициализация поиска LDAP неуспешна</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Получение ответа неуспешно</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>Не могу подключиться к LDAP серверу.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Код ошибки:%1 (%2)</translation>
     </message>
 </context>
 </TS>
