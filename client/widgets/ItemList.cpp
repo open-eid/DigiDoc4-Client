@@ -35,6 +35,7 @@ ItemList::ItemList(QWidget *parent)
 , ui(new Ui::ItemList)
 , state(UnsignedContainer)
 , headerItems(1)
+, itemType(ItemAddress)
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();

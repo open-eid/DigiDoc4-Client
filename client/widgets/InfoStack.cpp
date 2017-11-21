@@ -29,6 +29,8 @@
 InfoStack::InfoStack( QWidget *parent )
 : StyledWidget( parent )
 , ui( new Ui::InfoStack )
+, certTypeIsEstEid(false)
+, certIsValid(true)
 {
 	ui->setupUi( this );
 

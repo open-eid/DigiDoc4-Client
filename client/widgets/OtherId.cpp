@@ -25,9 +25,10 @@
 
 #include <QtCore/QTextStream>
 
-OtherId::OtherId( QWidget *parent ) :
-  StyledWidget( parent )
-, ui( new Ui::OtherId )
+OtherId::OtherId(QWidget *parent)
+: StyledWidget(parent)
+, ui(new Ui::OtherId)
+, isDigiId(false)
 {
 	ui->setupUi( this );
 

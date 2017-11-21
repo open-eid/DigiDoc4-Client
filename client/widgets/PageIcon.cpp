@@ -29,10 +29,12 @@ using namespace ria::qdigidoc4;
 #define BOTTOM_BORDER "solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px"
 #define RIGHT_BORDER "solid #E7E7E7; border-width: 0px 1px 0px 0px"
 
-PageIcon::PageIcon(QWidget *parent) :
-	StyledWidget(parent),
-	ui(new Ui::PageIcon),
-	invalid(false)
+PageIcon::PageIcon(QWidget *parent)
+: StyledWidget(parent)
+, ui(new Ui::PageIcon)
+, invalid(false)
+, selected(false)
+, type(Pages::SignIntro)
 {
 	ui->setupUi(this);
 
@@ -64,7 +66,7 @@ PageIcon::~PageIcon()
 	delete ui;
 }
 
-void PageIcon::init( Pages type, QWidget *shadow,  bool selected )
+void PageIcon::init( Pages type, QWidget *shadow, bool selected )
 {
 	QFont font = Styles::font( Styles::Condensed, 16 );
 	switch( type )

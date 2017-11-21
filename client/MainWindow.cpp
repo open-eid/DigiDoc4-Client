@@ -1265,13 +1265,13 @@ void MainWindow::updateRibbon(int page, bool expanded)
 	}
 	if (count > 1)
 	{
-        QSize	sizeBeforeAdjust = size();
+		QSize	sizeBeforeAdjust = size();
 
 		adjustSize();
 
-        QSize	sizeAfterAdjust = size();
-        // keep the size set-up by user, if possible
-        resize(sizeBeforeAdjust.width(), sizeBeforeAdjust.height() > sizeAfterAdjust.height() ? sizeBeforeAdjust.height() : sizeAfterAdjust.height());
+		QSize	sizeAfterAdjust = size();
+		// keep the size set-up by user, if possible
+		resize(sizeBeforeAdjust.width(), sizeBeforeAdjust.height() > sizeAfterAdjust.height() ? sizeBeforeAdjust.height() : sizeAfterAdjust.height());
 	}
 }
 

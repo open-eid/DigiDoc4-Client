@@ -58,5 +58,5 @@ private:
 	void updateDownload();
 	
 	QString container;
-	DocumentModel *documentModel;
+	DocumentModel *documentModel = nullptr;
 };

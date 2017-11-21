@@ -27,11 +27,12 @@
 
 #include <QtCore/QTextStream>
 
-VerifyCert::VerifyCert( QWidget *parent ) :
-	StyledWidget( parent ),
-	ui( new Ui::VerifyCert ),
-	isValidCert( false ),
-	isBlockedPin( false )
+VerifyCert::VerifyCert(QWidget *parent) :
+	StyledWidget(parent),
+	ui(new Ui::VerifyCert),
+	isValidCert(false),
+	isBlockedPin(false),
+	pinType(QSmartCardData::Pin1Type)
 {
 	ui->setupUi( this );
 
