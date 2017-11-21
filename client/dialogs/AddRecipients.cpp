@@ -106,16 +106,16 @@ void AddRecipients::init()
 			switch (xml.attributes().value( "type" ).toInt())
 			{
 				case SslCertificate::DigiIDType:
-					type = tr("Digi-ID");
+					type = CertificateHistory::tr("Digi-ID");
 					break;
 				case SslCertificate::EstEidType:
-					type = tr("ID-card");
+					type = CertificateHistory::tr("ID-card");
 					break;
 				case SslCertificate::MobileIDType:
-					type = tr("Mobile-ID");
+					type = CertificateHistory::tr("Mobile-ID");
 					break;
 				default:
-					type = tr("Unknown ID");
+					type = CertificateHistory::tr("Unknown ID");
 					break;
 			}
 

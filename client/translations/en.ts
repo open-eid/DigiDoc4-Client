@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
+
 <context>
-    <name>AccessCert</name>
+   <name>AccessCert</name>
+
     <message>
         <source>Failed to save server access certificate file to %1!
 %2</source>
@@ -34,8 +36,11 @@
         <translation>You have reached the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</translation>
     </message>
 </context>
+
+
 <context>
     <name>Application</name>
+
     <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 client</translation>
@@ -77,8 +82,11 @@
         <translation>Create %1</translation>
     </message>
 </context>
+
+
 <context>
     <name>CheckConnection</name>
+
     <message>
         <source>Check proxy settings</source>
         <translation>Check proxy settings</translation>
@@ -92,8 +100,11 @@
         <translation>Check internet connection</translation>
     </message>
 </context>
+
+
 <context>
     <name>DigiDoc</name>
+
     <message>
         <source>Container is not open</source>
         <translation>Container is not open</translation>
@@ -165,8 +176,11 @@ The Information System Authority does not retain information regarding the files
 The Information System Authority does not retain information regarding the files and users of the service.</translation>
     </message>
 </context>
+
+
 <context>
     <name>DocumentModel</name>
+
     <message>
         <source>Save</source>
         <translation>Save</translation>
@@ -196,8 +210,11 @@ Media type: %3</translation>
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
 </context>
+
+
 <context>
     <name>FileDialog</name>
+
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
@@ -205,9 +222,9 @@ Media type: %3</translation>
 </context>
 
 
-
 <context>
     <name>PageIcon</name>
+
     <message>
         <source>SIGNATURE</source>
         <translation>SIGNATURE</translation>
@@ -222,8 +239,10 @@ Media type: %3</translation>
     </message>
 </context>
 
+
 <context>
     <name>AddRecipients</name>
+
     <message>
         <source>Cancel</source>
         <translation>CANCEL</translation>
@@ -317,6 +336,7 @@ Media type: %3</translation>
 
 <context>
     <name>InfoStack</name>
+
     <message>
         <source>DOWNLOAD</source>
         <translation>DOWNLOAD</translation>
@@ -400,6 +420,7 @@ Media type: %3</translation>
 
 <context>
     <name>ItemList</name>
+
     <message>
         <source>Search</source>
         <translation>SEARCH</translation>
@@ -461,11 +482,16 @@ Media type: %3</translation>
         &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;
         &lt;p align=center&gt;We automatically added you to the list of recipients, so you can decrypt the encrypted document if necessary.&lt;/p&gt;</translation>
     </message>
+    <message>
+        <source>Enter personal code, company or registry code</source>
+        <translation>Enter personal code, company or registry code</translation>
+    </message>
 </context>
 
 
 <context>
     <name>NoCardInfo</name>
+
     <message>
         <source>No card in reader</source>
         <translation>No card in reader; check if ID card inserted correctly</translation>
@@ -486,6 +512,7 @@ Media type: %3</translation>
 
 <context>
     <name>NoOtherId</name>
+
     <message>
         <source>Other ID</source>
         <translation>Other ID&apos;s</translation>
@@ -510,8 +537,10 @@ Learn more info here:</translation>
     </message>
 </context>
 
+
 <context>
     <name>OtherId</name>
+
     <message>
         <source>DOCUMENT</source>
         <translation>DOCUMENT</translation>
@@ -584,6 +613,7 @@ Learn more info here:</translation>
 
 <context>
     <name>OtherData</name>
+
     <message>
         <source>@eesti.ee post</source>
         <translation>@eesti.ee post</translation>
@@ -611,9 +641,9 @@ Learn more info here:</translation>
 </context>
 
 
-
 <context>
     <name>SignatureItem</name>
+
     <message>
         <source>Signature</source>
         <translation>Signature</translation>
@@ -671,6 +701,7 @@ Learn more info here:</translation>
 
 <context>
     <name>VerifyCert</name>
+
     <message>
         <source>Certificate has expired!</source>
         <translation>Certificate has expired!</translation>
@@ -744,6 +775,7 @@ Learn more info here:</translation>
 
 <context>
     <name>CertificateDetails</name>
+
     <message>
         <source>Certificate information</source>
         <translation>Certificate information</translation>
@@ -861,6 +893,7 @@ Learn more info here:</translation>
 
 <context>
     <name>Accordion</name>
+
     <message>
         <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
         <translation>CHECK PIN/PUK CODES AND CERTIFICATES</translation>
@@ -878,6 +911,7 @@ Learn more info here:</translation>
 
 <context>
     <name>CardWidget</name>
+
     <message>
         <source>ID card in reader</source>
         <translation>ID card in reader</translation>
@@ -891,6 +925,7 @@ Learn more info here:</translation>
 
 <context>
     <name>FirstRun</name>
+
     <message>
         <source>CONTINUE</source>
         <translation>CONTINUE</translation>
@@ -916,6 +951,7 @@ Learn more info here:</translation>
 
 <context>
     <name>KeyDialog</name>
+
     <message>
         <source>Encrypt for</source>
         <translation>Encrypt for</translation>
@@ -961,6 +997,7 @@ Learn more info here:</translation>
 
 <context>
     <name>MobileDialog</name>
+
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobile ID&lt;/b&gt;</translation>
@@ -999,6 +1036,7 @@ Learn more info here:</translation>
 
 <context>
     <name>MobileProgress</name>
+
     <message>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
@@ -1093,6 +1131,7 @@ Control code: %1</translation>
 
 <context>
     <name>PinPopup</name>
+
     <message>
         <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
         <translation>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</translation>
@@ -1145,6 +1184,7 @@ Control code: %1</translation>
 
 <context>
     <name>PinUnblock</name>
+
     <message>
         <source>VALID PUK CODE</source>
         <translation>VALID PUK CODE</translation>
@@ -1270,6 +1310,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>SettingsDialog</name>
+
     <message>
         <source>Settings</source>
         <translation>Settings</translation>
@@ -1493,6 +1534,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>ContainerPage</name>
+
     <message>
         <source>Container</source>
         <translation>Container:</translation>
@@ -1566,6 +1608,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>SignatureDialog</name>
+
     <message>
         <source>Notice</source>
         <translation>Notice</translation>
@@ -1746,6 +1789,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>Updater</name>
+
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -1790,6 +1834,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>WaitDialog</name>
+
     <message>
         <source>Decrypting</source>
         <translation>Decrypting</translation>
@@ -1799,6 +1844,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>WarningDialog</name>
+
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -1812,6 +1858,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>AddressItem</name>
+
     <message>
         <source>Add</source>
         <translation>ADD</translation>
@@ -1846,6 +1893,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
 
 <context>
     <name>MainWindow</name>
+
     <message>
         <source>Help</source>
         <translation>Help</translation>
@@ -2399,11 +2447,56 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>%1 timeout</source>
         <translation>%1 timeout</translation>
     </message>
+    <message>
+        <source>Success</source>
+        <translation>Success</translation>
+    </message>
+    <message>
+        <source>ID-card has not been published by locally recognized verification provider.</source>
+        <translation>ID-card has not been published by locally recognized verification provider.</translation>
+    </message>
+    <message>
+        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
+        <translation>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</translation>
+    </message>
+    <message>
+        <source>ID-card certificate is not valid.</source>
+        <translation>ID-card certificate is not valid.</translation>
+    </message>
+    <message>
+        <source>Entrance is permitted only with Estonian personal code.</source>
+        <translation>Entrance is permitted only with Estonian personal code.</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Unknown error</translation>
+    </message>
+    <message>
+        <source>There was an error with request to KMA.</source>
+        <translation>There was an error with request to KMA.</translation>
+    </message>
+    <message>
+        <source>No official email forwarding addresses was found</source>
+        <translation>No official email forwarding addresses was found</translation>
+    </message>
+    <message>
+        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
+        <translation>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</translation>
+    </message>
+    <message>
+        <source>Invalid email address</source>
+        <translation>Invalid email address</translation>
+    </message>
+    <message>
+        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
+        <translation>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</translation>
+    </message>
 </context>
 
 
 <context>
     <name>MobileDialog</name>
+
     <message>
         <source>Signing in process</source>
         <translation>Signing in process</translation>
@@ -2493,8 +2586,11 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation type="unfinished"></translation>
     </message>
 </context>
+
+
 <context>
     <name>PrintSheet</name>
+
     <message>
         <source>SIGNED FILES</source>
         <translation>SIGNED FILES</translation>
@@ -2600,8 +2696,11 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>NB! RESTRICTIONS</translation>
     </message>
 </context>
+
+
 <context>
     <name>QPKCS11</name>
+
     <message>
         <source>PIN Canceled</source>
         <translation>PIN Canceled</translation>
@@ -2627,8 +2726,11 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>PKCS11 unknown error</translation>
     </message>
 </context>
+
+
 <context>
     <name>QSigner</name>
+
     <message>
         <source>Failed to load PKCS#11 module</source>
         <translation>Failed to load PKCS#11 module</translation>
@@ -2666,6 +2768,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
 
 <context>
     <name>MainAction</name>
+
     <message>
         <source>SignatureMobile</source>
         <translation>SIGN WITH
@@ -2686,8 +2789,11 @@ ID CARD</translation>
 ID-CARD</translation>
     </message>
 </context>
+
+
 <context>
     <name>CardWidget</name>
+
     <message>
         <source>ID Card</source>
         <translation>ID Card</translation>
@@ -2697,8 +2803,11 @@ ID-CARD</translation>
         <translation>Digi ID</translation>
     </message>
 </context>
+
+
 <context>
     <name>SSLConnect</name>
+
     <message>
         <source>Certificate is empty</source>
         <translation>Certificate is empty</translation>
@@ -2728,8 +2837,11 @@ ID-CARD</translation>
         <translation>SSL context is missing</translation>
     </message>
 </context>
+
+
 <context>
     <name>WarningRibbon</name>
+
     <message numerus="yes">
         <source>%n message</source>
         <translation>
@@ -2742,8 +2854,11 @@ ID-CARD</translation>
         <translation>Less</translation>
     </message>
 </context>
+
+
 <context>
     <name>QSmartCard</name>
+
     <message>
         <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
         <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
@@ -2755,6 +2870,32 @@ ID-CARD</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>Failed to init ldap</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>Failed to init ldap search</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Failed to get result</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>LDAP server is unavailable.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Error Code: %1 (%2)</translation>
     </message>
 </context>
 </TS>
