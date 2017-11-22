@@ -55,8 +55,26 @@ border-width: 2px 2px 2px 2px; </string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 1px solid #D9D9D8;
-border-width: 0px 1px 0px 0px;</string>
+      <string notr="true">QScrollArea#scrollArea {
+	border: 1px solid #D9D9D8;
+	border-width: 0px 1px 0px 0px;
+}
+QScrollBar{
+	width: 10px;
+	padding: 5px 5px 5px 0;
+	border: none;
+	background: #FFFFFF;
+}
+QScrollBar::handle:vertical{
+	background-color: #DEE4E9;
+	margin: 0 0 0 0;
+	border-radius: 2px;
+	height: 145px;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	border: none;
+	background: #FFFFFF;
+ }</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>

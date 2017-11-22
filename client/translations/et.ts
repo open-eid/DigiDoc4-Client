@@ -2457,6 +2457,14 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
         <translation>Suunamine on salvestatud, ning sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
     </message>
+    <message>
+        <source>Opening</source>
+        <translation>Avamine</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Allkirjastamine</translation>
+    </message>
 </context>
 
 
