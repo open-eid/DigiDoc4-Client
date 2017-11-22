@@ -359,10 +359,6 @@ Tüüp: %3</translation>
         <source>Surname</source>
         <translation>Perekonnanimi</translation>
     </message>
-    <message>
-        <source>Applet</source>
-        <translation>Apleti versioon</translation>
-    </message>
 
     <message>
         <source>SAVE THE PICTURE</source>
@@ -1527,6 +1523,10 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Kellele väljastatud: %1&lt;br /&gt;Kehtib kuni: %2 %3</translation>
+    </message>
+        <message>
+        <source>Applet</source>
+        <translation>Apleti versioon</translation>
     </message>
 </context>
 

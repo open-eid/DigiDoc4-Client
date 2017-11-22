@@ -360,10 +360,6 @@ Media type: %3</source>
         <translation>Фамилия</translation>
     </message>
     <message>
-        <source>Applet</source>
-        <translation>Версия апплета</translation>
-    </message>
-    <message>
         <source>SAVE THE PICTURE</source>
         <translation>СОХРАНИТЬ ФОТО</translation>
     </message>
@@ -1503,6 +1499,10 @@ Kонтрольны код: %1</translation>
     <message>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Выдан: %1&lt;br /&gt;Действительно до: %2 %3</translation>
+    </message>
+    <message>
+        <source>Applet</source>
+        <translation>Версия апплета</translation>
     </message>
 </context>
 
