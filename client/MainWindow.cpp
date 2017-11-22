@@ -230,7 +230,9 @@ void MainWindow::buttonClicked( int button )
 	}
 	case HeadSettings:
 	{
-		SettingsDialog dlg(this);
+		QSmartCardData t = smartcard->data();
+		QString appletVersion = t.isNull() ? QString() : t.appletVersion();
+		SettingsDialog dlg(this, appletVersion);
 
 		connect(&dlg, &SettingsDialog::langChanged, this,
 				[this](const QString& lang )

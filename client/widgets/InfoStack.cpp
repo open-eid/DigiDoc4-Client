@@ -44,7 +44,6 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->valuePersonalCode->setFont(font);
 	ui->valueCitizenship->setFont(font);
 	ui->valueSerialNumber->setFont(font);
-	ui->valueApplet->setFont(font);
 	ui->valueExpiryDate->setFont( Styles::font( Styles::Regular, 16 ) );
 
 	HoverFilter *filter = new HoverFilter(ui->photo, [this](int eventType){ focusEvent(eventType); }, this);
@@ -114,7 +113,6 @@ void InfoStack::update()
 	ui->valuePersonalCode->setText(personalCodeText);
 	ui->valueCitizenship->setText(citizenshipText);
 	ui->valueExpiryDate->setText(text);
-	ui->valueApplet->setText(appletVersion);
 	ui->valueSerialNumber->setText(serialNumberText);
 }
 
@@ -132,7 +130,6 @@ void InfoStack::update(const QSmartCardData &t)
 	surnameText = t.data(QSmartCardData::SurName).toString();
 	personalCodeText = t.data(QSmartCardData::Id).toString();
 	citizenshipText = t.data(QSmartCardData::Citizen).toString();
-	appletVersion = t.appletVersion();
 	serialNumberText = t.data(QSmartCardData::DocumentId).toString();
 	if(!serialNumberText.isEmpty())
 		serialNumberText += "  |" ;

@@ -361,10 +361,6 @@ Media type: %3</translation>
         <source>Surname</source>
         <translation>Surname</translation>
     </message>
-    <message>
-        <source>Applet</source>
-        <translation>Applet version</translation>
-    </message>
 
     <message>
         <source>SAVE THE PICTURE</source>
@@ -1527,6 +1523,10 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
     <message>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Issued to: %1&lt;br /&gt;Valid to: %2 %3</translation>
+    </message>
+        <message>
+        <source>Applet</source>
+        <translation>Applet version</translation>
     </message>
 </context>
 

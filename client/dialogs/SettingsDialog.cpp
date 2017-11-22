@@ -46,14 +46,14 @@
 #include <QtNetwork/QNetworkProxy>
 
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::SettingsDialog)
+SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
+: QDialog(parent)
+, ui(new Ui::SettingsDialog)
+, appletVersion(appletVersion)
 {
 	initUI();
 	initFunctionality();
 }
-
 
 
 SettingsDialog::~SettingsDialog()
@@ -532,6 +532,13 @@ void SettingsDialog::updateDiagnostics()
 	Diagnostics *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
 	connect(worker, &Diagnostics::destroyed, this, [=]{
+		if(!appletVersion.isEmpty())
+		{
+			QString info;
+			QTextStream s(&info);
+			s << "<b>" << tr("Applet") << ":</b> " << appletVersion;
+			ui->txtDiagnostics->append(info);
+		}
 		ui->txtDiagnostics->setEnabled(true);
 		ui->txtDiagnostics->moveCursor(QTextCursor::Start) ;
 		ui->txtDiagnostics->ensureCursorVisible() ;
