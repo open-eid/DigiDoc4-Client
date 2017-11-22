@@ -2452,6 +2452,14 @@ ASiC-E – это разрабатываемый международный фо
         <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
         <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
     </message>
+    <message>
+        <source>Opening</source>
+        <translation>Открывание</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Подписывание</translation>
+    </message>
 </context>
 
 

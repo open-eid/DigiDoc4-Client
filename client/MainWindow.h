@@ -114,7 +114,7 @@ private:
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 	void resetCryptoDoc(CryptoDoc *doc = nullptr);
-	void resetDigiDoc(DigiDoc *doc = nullptr);
+	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
 	void removeAddress(int index);
 	void removeCryptoFile(int index);
 	bool removeFile(DocumentModel *model, int index);

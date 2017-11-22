@@ -402,9 +402,27 @@ background-color: #FFFFFF;</string>
          <item row="12" column="0" colspan="2">
           <widget class="QTextEdit" name="error">
            <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
+            <string notr="true">QTextEdit {
+	border: 1px solid #DEE4E9;
+	border-radius: 2px;
+	background-color: #FFFFFF;
+}
+QScrollBar {
+	width: 10px;
+	padding: 5px 5px 5px 0;
+	border: none;
+	background: #FFFFFF;
+}
+QScrollBar::handle:vertical{
+	background-color: #DEE4E9;
+	margin: 0 0 0 0;
+	border-radius: 2px;
+	height: 145px;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	border: none;
+	background: #FFFFFF;
+ }</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>

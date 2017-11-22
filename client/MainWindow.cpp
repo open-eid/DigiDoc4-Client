@@ -590,7 +590,7 @@ void MainWindow::convertToBDoc()
 	ui->startScreen->setCurrentIndex(SignDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( tr("Converted to signed document!"), 750, 1500, 600 );
+	notification->start( tr("Converted to signed document!"), 750, 3000, 1200 );
 }
 
 void MainWindow::convertToCDoc()
@@ -613,13 +613,13 @@ void MainWindow::convertToCDoc()
 		cryptoContainer->addKey(CKey(cardData.authCert()));
 
 	resetCryptoDoc(cryptoContainer.release());
-	resetDigiDoc();
+	resetDigiDoc(nullptr, false);
 	ui->cryptoContainerPage->transition(cryptoDoc);
 	selectPageIcon(ui->crypto);
 	ui->startScreen->setCurrentIndex(CryptoDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( tr("Converted to crypto container!"), 750, 1500, 600 );
+	notification->start( tr("Converted to crypto container!"), 750, 3000, 1200 );
 }
 
 void MainWindow::moveCryptoContainer()
@@ -656,7 +656,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-			notification->start( tr("Decryption succeeded"), 750, 1500, 600 );
+			notification->start( tr("Decryption succeeded"), 750, 3000, 1200 );
 		}
 		else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
 		{
@@ -670,7 +670,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			ui->cryptoContainerPage->transition(cryptoDoc);
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-			notification->start( tr("Encryption succeeded"), 750, 1500, 600 );
+			notification->start( tr("Encryption succeeded"), 750, 3000, 1200 );
 		}
 		break;
 	case ContainerEmail:
@@ -815,9 +815,9 @@ void MainWindow::resetCryptoDoc(CryptoDoc *doc)
 	cryptoDoc = doc;
 }
 
-void MainWindow::resetDigiDoc(DigiDoc *doc)
+void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 {
-	if(digiDoc && digiDoc->isModified())
+	if(warnOnChange && digiDoc && digiDoc->isModified())
 	{
 		QString warning, cancelTxt, saveTxt;
 		if(digiDoc->state() == UnsignedContainer)
@@ -1028,7 +1028,7 @@ bool MainWindow::sign()
 		waitDialog.close();
 
 		FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-		notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
+		notification->start( tr("The container has been successfully signed!"), 750, 3000, 1200 );
 		return true;
 	}
 	else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
@@ -1063,7 +1063,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	ui->signContainerPage->transition(digiDoc);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( tr("The container has been successfully signed!"), 750, 1500, 600 );
+	notification->start( tr("The container has been successfully signed!"), 750, 3000, 1200 );
 	return true;
 }
 
@@ -1182,7 +1182,7 @@ void MainWindow::removeSignatureFile(int index)
 	{
 		if(QFile::exists(digiDoc->fileName()))
 			QFile::remove(digiDoc->fileName());
-		resetDigiDoc();
+		resetDigiDoc(nullptr, false);
 		navigateToPage(Pages::SignIntro);
 	}
 }
