@@ -578,7 +578,7 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 		qDebug() << containerFile.name << " vs " << file;
 		if(containerFile.name == fileName)
 		{
-			d->setLastError(QString("File '%1' already in container").arg(file));
+			d->setLastError(DocumentModel::tr("'%1' file already in container").arg(file));
 			return;
 		}
 	}

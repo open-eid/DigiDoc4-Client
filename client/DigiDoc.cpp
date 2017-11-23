@@ -303,6 +303,15 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 
 void SDocumentModel::addFile(const QString &file, const QString &mime)
 {
+	QString fileName(QFileInfo(file).fileName());
+	for(int row = 0; row < rowCount(); row++)
+	{
+		if(fileName == from(doc->b->dataFiles().at(row)->fileName()))
+		{
+			qApp->showWarning(DocumentModel::tr("'%1' file already in container").arg(file), QString());
+			return;
+		}
+	}
 	if(doc->addFile(file, mime))
 		emit added(file);
 }

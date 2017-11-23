@@ -209,6 +209,10 @@ Media type: %3</translation>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
+    <message>
+        <source>'%1' file already in container</source>
+        <translation>'%1' file already in container</translation>
+    </message>
 </context>
 
 

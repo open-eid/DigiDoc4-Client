@@ -209,6 +209,10 @@ Media type: %3</source>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
         <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
     </message>
+    <message>
+        <source>'%1' file already in container</source>
+        <translation>'%1' файл  уже в контейнере</translation>
+    </message>
 </context>
 
 
