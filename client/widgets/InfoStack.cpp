@@ -29,8 +29,6 @@
 InfoStack::InfoStack( QWidget *parent )
 : StyledWidget( parent )
 , ui( new Ui::InfoStack )
-, certTypeIsEstEid(false)
-, certIsValid(true)
 , appletVersion()
 , certTypeIsEstEid(false)
 , certIsValid(false)
