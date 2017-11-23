@@ -99,7 +99,7 @@ background-color: #F4F5F6;
       <item>
        <widget class="QLabel" name="container">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -599,15 +599,15 @@ border: none;</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LabelButton</class>
-   <extends>QLabel</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
-  <customwidget>
    <class>ItemList</class>
    <extends>QWidget</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
   </customwidget>
   <customwidget>
    <class>FileList</class>

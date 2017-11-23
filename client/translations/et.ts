@@ -341,7 +341,7 @@ Tüüp: %3</translation>
 
     <message>
         <source>DOWNLOAD</source>
-        <translation>LAE PILT ALLA</translation>
+        <translation>LAADI PILT</translation>
     </message>
     <message>
         <source>Citizenship</source>
@@ -818,7 +818,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Valid:</source>
-        <translation>kehtiv:</translation>
+        <translation>Kehtiv:</translation>
     </message>
     <message>
         <source>From</source>
@@ -1165,40 +1165,37 @@ Kontrollkood: %1</translation>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-
-
     <message>
         <source>PIN will be locked next failed attempt</source>
-        <translation>PIN lukustatakse järgmine ebaõnnestunud katse järel</translation>
+        <translation>Järgmise vale sisestusega lukustub PIN</translation>
     </message>
     <message>
         <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN on üks kord valesti sisestatud</translation>
+        <translation>PIN-i on sisestatud vigaselt üks kord</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Allkirjastamise sertifikaadi kasutamiseks sisestage lugejas PIN2</translation>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
     </message>
-
     <message>
         <source>For using sign certificate enter PIN2</source>
-        <translation>Allkirjastamise sertifikaadi kasutamiseks sisestage PIN2</translation>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN2</translation>
     </message>
     <message>
         <source>Selected action requires sign certificate.</source>
-        <translation>Valitud toiming nõuab sertifikaati.</translation>
+        <translation>Valitud tegevuse jaoks on vaja kasutada allkirjastamise sertifikaati.</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Autentimissertifikaadi kasutamiseks sisestage lugeja PIN1-kood</translation>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN1 kaardilugeja sõrmistikult</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1</source>
-        <translation>Autentsussertifikaadi kasutamiseks sisestage PIN1</translation>
+        <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
-        <translation>Valitud toiming nõuab autentimissertifikaati.</translation>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
     </message>
 </context>
 
@@ -1221,41 +1218,46 @@ Kontrollkood: %1</translation>
     <message>
         <source>ConditionsChangePIN2WithPUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN2 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
-&lt;li&gt;Kui oled unustanud PIN2 koodi, kuid tead PUK koodi,&lt;br&gt;
-siis siin saad määrata uue PIN2 koodi.&lt;/li&gt;
-&lt;li>Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;li&gt;Kui olete unustanud PIN2 koodi, kuid teate PUK koodi,&lt;br&gt;
+siis siin saate määrata uue PIN2 koodi.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
+vahepeal muutnud.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN1 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
 juurdepääsemiseks.&lt;/li&gt;
-&lt;li&gt;Kui oled unustanud PIN1 koodi, kuid tead PUK koodi,&lt;br&gt;
-siis siin saad määrata uue PIN1 koodi.&lt;/li&gt;
-&lt;li&gt;Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;li&gt;Kui olete unustanud PIN1 koodi, kuid teate PUK koodi,&lt;br&gt;
+siis siin saate määrata uue PIN1 koodi.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
+vahepeal muutnud.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
+&lt;li&gt;Sertifikaadi blokeeringu tühistamiseks sisesta kaardi PUK&lt;br&gt;
+kood.&lt;/li&gt;
 &lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
 vahepeal muutnud&lt;/li&gt;
+&lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
 klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN1</source>
-        <translation>
-&lt;ul&gt;
-&lt;li&gt;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
-vahepeal muutnud&lt;/li&gt;
+        <translation>&lt;ul&gt;
+&lt;li&gt;Sertifikaadi blokeeringu tühistamiseks sisesta kaardi PUK&lt;br&gt;
+kood.&lt;/li&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
+vahepeal muutnud.&lt;/li&gt;
+&lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
 klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
 &lt;/ul&gt;</translation>
@@ -1263,33 +1265,35 @@ klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
     <message>
         <source>ConditionsChangePIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN2 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
-&lt;li&gt;Kui sisestad PIN2 koodi kolm korda valesti, siis allkirjastamise&lt;br&gt;
-sertifikaat blokeeritakse ning ID-kaarti pole võimalik&lt;br&gt;
-allkirjastamiseks kasutada enne blokeeringu tühistamist&lt;br&gt;
-PUK koodiga.&lt;/li&gt;
+&lt;li&gt;Kui sisestad PIN2 koodi kolm korda valesti, siis&lt;br&gt;
+allkirjastamise sertifikaat blokeeritakse ning ID-kaarti&lt;br&gt;
+pole võimalik allkirjastamiseks kasutada enne&lt;br&gt;
+blokeeringu tühistamist PUK koodi abil.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN1 peab olema eelmisest erinev.&lt;/li&gt;
+&lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
 juurdepääsemiseks.&lt;/li&gt;
-&lt;li&gt;Kui sisestad PIN1 koodi kolm korda valesti, siis isikutuvastuse&lt;br&gt;
-sertifikaat blokeeritakse ning ID-kaarti saad kasutada vaid pärast&lt;br&gt;
-blokeeringu tühistamist PUK koodiga.&lt;/li&gt;
+&lt;li&gt;Kui sisestad PIN1 koodi kolm korda valesti, siis&lt;br&gt;
+isikutuvastamise sertifikaat blokeeritakse ning&lt;br&gt;
+ID-kaarti pole võimalik isikutuvastamiseks kasutada&lt;br&gt;
+enne blokeeringu tühistamist PUK koodi abil.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Kui PUK kood läheb peale koodi vahetamist meelest ära ja&lt;br&gt;
-sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise&lt;br&gt;
-järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
-&lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
-&lt;li&gt;Sinu PUK kood asub koodiümbrikus.&lt;/li&gt;
+&lt;li&gt;PUK koodi abil saab tühistada sertifikaadi blokeeringu, kui&lt;br&gt;
+PIN1 või PIN2 koodi on 3 korda järjest valesti sisestatud.&lt;/li&gt;
+&lt;li&gt;Kui peale vahetamist PUK kood läheb meelest ära ja&lt;br&gt;
+sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2&lt;br&gt;
+sisetamise järel, siis ainus võimalus ID-kaart jälle tööle&lt;br&gt;
+saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
 
@@ -1300,7 +1304,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>%1 code change</source>
-        <translation>%1 koodi vahetamine</translation>
+        <translation>%1 koodi vahetus</translation>
     </message>
     <message>
         <source>VALID %1 CODE</source>
@@ -1379,7 +1383,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>SALVESTA DIAGNOSTIKA RAPORT KETTALE</translation>
+        <translation>SALVESTA DIAGNOSTIKA</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
@@ -1538,7 +1542,7 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
-        <translation>Täitunud on tasuta teenuse 10 allkirja limiit. Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus&quot;&gt;leping&lt;/a&gt;. Lisainfo: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1892</translation>
+        <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/a&gt; või ID-abiliini telefonil 1777 (vaid Eesti-siseselt), (+372) 6773377</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>

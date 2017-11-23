@@ -342,7 +342,7 @@ Media type: %3</translation>
 
     <message>
         <source>DOWNLOAD</source>
-        <translation>DOWNLOAD</translation>
+        <translation>LOAD PICTURE</translation>
     </message>
     <message>
         <source>Citizenship</source>
@@ -1167,8 +1167,6 @@ Control code: %1</translation>
         <source>OK</source>
         <translation>OK</translation>
     </message>
-
-
     <message>
         <source>PIN will be locked next failed attempt</source>
         <translation>PIN will be locked next failed attempt</translation>
@@ -1181,7 +1179,6 @@ Control code: %1</translation>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>For using sign certificate enter PIN2 at the reader</translation>
     </message>
-
     <message>
         <source>For using sign certificate enter PIN2</source>
         <translation>For using sign certificate enter PIN2</translation>
@@ -1210,7 +1207,7 @@ Control code: %1</translation>
 
     <message>
         <source>VALID PUK CODE</source>
-        <translation>VALID PUK CODE</translation>
+        <translation>CURRENT PUK CODE</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -1223,75 +1220,83 @@ Control code: %1</translation>
 
     <message>
         <source>ConditionsChangePIN2WithPUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;New PIN2 must be different from the previous one.&lt;/li&gt;
-&lt;li&gt;The PIN2 code is used to give a digital signature.&lt;/li&gt;
-&lt;li&gt;If you have forgotten the PIN2 code but you know the PUK code,&lt;br&gt;
-here you can set a new PIN2 code.&lt;/li&gt;
-&lt;li>Your PUK code is located in the code container.&lt;/li&gt;
+        <translation>&lt;ul&gt;		
+&lt;li&gt;New PIN2 must be different from current PIN2.&lt;/li&gt;
+&lt;li&gt;PIN2 code is used to digitally sign documents.&lt;/li&gt;
+&lt;li&gt;If you have forgotten PIN2, but know PUK, then &lt;br&gt;
+here you can enter new PIN2.&lt;/li&gt;
+&lt;li&gt;PUK code is written in the envelope, that is given&lt;br&gt;
+with the ID-card.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;New PIN1 must be different from the previous one.&lt;/li&gt;
-&lt;li&gt;The PIN1 code is used for identity verification&lt;br&gt;
-for access.&lt;/li&gt;
-&lt;li&gt;If you have forgotten the PIN1 code but you know the PUK code,&lt;br&gt;
-here you can set a new PIN1 code.&lt;/li&gt;
-&lt;li&gt;Your PUK code is located in the code container.&lt;/li&gt;
+&lt;li&gt;New PIN1 must be different from current PIN1.&lt;/li&gt;
+&lt;li&gt;PIN1 code is used for accessing identification&lt;br&gt;
+certificates.&lt;/li&gt;
+&lt;li&gt;If you have forgotten PIN1, but know PUK, then here&lt;br&gt;
+you can enter new PIN1.&lt;/li&gt;
+&lt;li&gt;PUK code is written in the envelope, that is given&lt;br&gt;
+with the ID-card.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;To unblock PIN2, enter the PUK code for the card.&lt;/li&gt;
-&lt;li&gt;You can find the PUK code from the ID-card in the code box,&lt;br&gt;
-if you do not in the meantime changed&lt;/li&gt;
-&lt;li&gt;If you do not know your PUK code for your ID-card, please visit&lt;br&gt;
-a customer service point where you can get a new code container.&lt;/li&gt;
+&lt;li&gt;To unblock the certificate you have to enter the PUK&lt;br&gt;
+code.&lt;/li&gt;
+&lt;li&gt;You can find your PUK code inside the ID-card codes&lt;br&gt;
+envelope.&lt;/li&gt;
+&lt;li&gt;New PIN2 must be different from current PIN2.&lt;/li&gt;
+&lt;li&gt;If you do not know the PUK code for your ID card, please&lt;br&gt;
+visit the service center to obtain new PIN codes.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN1</source>
-        <translation>
-&lt;ul&gt;
-&lt;li&gt;To unblock PIN1, enter the PUK code for the card.&lt;/li&gt;
-&lt;li&gt;You can find the PUK code from the ID-card in the code box,&lt;br&gt;
-if you do not in the meantime changed&lt;/li&gt;
-&lt;li&gt;If you do not know your PUK code for your ID-card, please visit&lt;br&gt;
-a customer service point where you can get a new code container.&lt;/li&gt;
+        <translation>&lt;ul&gt;
+&lt;li&gt;To unblock the certificate you have to enter the PUK&lt;br&gt;
+code.&lt;/li&gt;
+&lt;li&gt;You can find your PUK code inside the ID-card codes&lt;br&gt;
+envelope.&lt;/li&gt;
+&lt;li&gt;New PIN1 must be different from current PIN1.&lt;/li&gt;
+&lt;li&gt;If you do not know the PUK code for your ID-card, please&lt;br&gt;
+visit the service center to obtain new PIN codes.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;New PIN2 must be different from the previous one.&lt;/li&gt;
-&lt;li&gt;The PIN2 code is used to give a digital signature.&lt;/li&gt;
-&lt;li&gt;If you enter the PIN2 code incorrectly three times, then signing&lt;br&gt;
-the certificate will be blocked and the ID-card will not be possible&lt;br&gt;
-to use, until it is unblocked via the PUK code.&lt;/li&gt;
+&lt;li&gt;New PIN2 must be different from current PIN2.&lt;/li&gt;
+&lt;li&gt;PIN2 code is used to digitally sign documents.&lt;/li&gt;
+&lt;li&gt;If PIN2 is inserted incorrectly 3 times the signing&lt;br&gt;
+certificate will be blocked and it will be impossible&lt;br&gt;
+to use ID-card to digital signing, until it is&lt;br&gt;
+unblocked via the PUK code.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;New PIN1 must be different from the previous one.&lt;/li&gt;
-&lt;li&gt;The PIN1 code is used for identity verification for access.&lt;/li&gt;
-&lt;li&gt;If you enter the PIN1 code incorrectly three times,then&lt;br&gt;
-a personal identification certificate will be blocked and the ID-card&lt;br&gt;
-will not be possible to use to verify identification, until it is&lt;br&gt;
-unblocked via the PUK code.&lt;/li&gt;
+&lt;li&gt;New PIN1 must be different from current PIN1.&lt;/li&gt;
+&lt;li&gt;PIN1 code is used for accessing identification certificates.&lt;/li&gt;
+&lt;li&gt;If PIN1 is inserted incorrectly 3 times the identification&lt;br&gt;
+certificate will be blocked and it will be impossible to use&lt;br&gt;
+ID-card to verify identification, until it is unblocked via&lt;br&gt;
+the PUK code.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;If the PUK code goes away after changing the code, and&lt;br&gt;
-the certificate will be blocked by entering three incorrect PIN1 or&lt;br&gt;
-PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
-&lt;u&gt;customer service point&lt;/u&gt;.&lt;/li&gt;
-&lt;li&gt;Your PUK code is located in the envelope.&lt;/li&gt;
+
+&lt;li&gt;PUK code is used for unblocking the certificates,&lt;br&gt;
+when PIN1 or PIN2 has been entered 3 times&lt;br&gt;
+incorrectly.&lt;/li&gt;
+&lt;li&gt;If you forget the PUK code or the certificates remain&lt;br&gt;
+blocked, you have to visit the &lt;u&gt;service center&lt;/u&gt; to obtain&lt;br&gt;
+new codes.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
 
@@ -1302,11 +1307,11 @@ PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>%1 code change</source>
-        <translation>%1 code change</translation>
+        <translation>Change %1 code</translation>
     </message>
     <message>
         <source>VALID %1 CODE</source>
-        <translation>VALID %1 CODE</translation>
+        <translation>CURRENT %1 CODE</translation>
     </message>
     <message>
         <source>CHANGE</source>
@@ -1318,7 +1323,7 @@ PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>NEW %1 CODE AGAIN</source>
-        <translation>NEW %1 CODE AGAIN</translation>
+        <translation>REPEATE NEW %1 CODE</translation>
     </message>
     <message>
         <source>PUK remaining attempts: %1</source>
@@ -1382,7 +1387,7 @@ PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>SAVE DIAGNOSTICS REPORT DISK</translation>
+        <translation>SAVE DIAGNOSTICS</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
@@ -1541,7 +1546,7 @@ PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
-        <translation>You have reached the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</translation>
+        <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;http://www.id.ee/eng/access&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>
