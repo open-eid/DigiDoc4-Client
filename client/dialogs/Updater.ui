@@ -320,6 +320,11 @@ color: #000000;
              <height>34</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">padding: 0px 10px;
 border: 1px solid #DEE4E9;

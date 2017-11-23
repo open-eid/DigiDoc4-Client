@@ -1179,7 +1179,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
+        <translation>ОТМЕНИТЬ</translation>
     </message>
     <message>
         <source>UNBLOCK</source>
@@ -1192,7 +1192,7 @@ Kонтрольны код: %1</translation>
 &lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
 &lt;li&gt;PIN2 код используется для дигитальной подписи.&lt;/li&gt;
 &lt;li&gt;Если забыли PIN2 код, но знаете PUK код,&lt;br&gt;
-вы можете назначить новый PIN2 код.&lt;/li&gt;
+тогда можете создать новый PIN2 код.&lt;/li&gt;
 &lt;li>Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1200,43 +1200,45 @@ Kонтрольны код: %1</translation>
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
-&lt;li&gt;Если забыли PIN1 код, но знаете PUK код,&lt;br&gt;
-вы можете назначить новый PIN1 код.&lt;/li&gt;
+&lt;li&gt;PIN1 код используется для доступа к сертификату&lt;br&gt;
+идентификации личности.&lt;/li&gt;
+&lt;li&gt;Если вы забыли PIN1, при помощи PUK кода можно&lt;br&gt;
+ввести новый PIN1 код.&lt;/li&gt;
 &lt;li&gt;Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Чтобы разблокировать PIN2, введите сначала PUK код.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK код в конверте с кодами,&lt;br&gt;
-если вы еще не поменяли его.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты,&lt;br&gt;
-посетите центр обслуживания, где вы сможете получить&lt;br&gt;
-новый конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Для разблокировки сертификата введите PUK код.&lt;/li&gt;
+&lt;li&gt;PUK код находится в конверте с кодами, который выдаётся&lt;br&gt;
+при получении ID-карты или смене сертификатов.&lt;/li&gt;
+&lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
+центр обслуживания, где вы сможете получить&lt;br&gt;
+конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN1</source>
-        <translation>
-&lt;ul&gt;
-&lt;li&gt;Чтобы разблокировать PIN1, введите сначала PUK код.&lt;/li&gt;
-&lt;li&gt;Вы можете найти PUK код в конверте с кодами,&lt;br&gt;
-если вы еще не поменяли его.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты,&lt;br&gt;
-посетите центр обслуживания, где вы сможете получить&lt;br&gt;
-новый конверт с кодами.&lt;/li&gt;
+        <translation>&lt;ul&gt;
+&lt;li&gt;Для разблокировки сертификата введите PUK код.&lt;/li&gt;
+&lt;li&gt;PUK код находится в конверте с кодами, который&lt;br&gt;
+выдаётся при получении ID-карты или смене сертификатов.&lt;/li&gt;
+&lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
+&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
+центр обслуживания, где вы сможете получить&lt;br&gt;
+конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN2</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN2 код используется для предоставления цифровой подписи.&lt;/li&gt;
+&lt;li&gt;PIN2 код используется для дигитальной подписи.&lt;/li&gt;
 &lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется&lt;br&gt;
-сертификат цифровой подписи и использовать ID-карту&lt;br&gt;
-для цифровой подписи невозможно,&lt;br&gt;
+сертификат цифровой подписи и использовать&lt;br&gt;
+ID-карту для цифровой подписи невозможно,&lt;br&gt;
 пока  блокировка не снята PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1244,20 +1246,24 @@ Kонтрольны код: %1</translation>
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
+&lt;li&gt;PIN1 код используется для доступа к сертификатам&lt;br&gt;
+идентификации личности.&lt;/li&gt;
 &lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется&lt;br&gt;
-идентификационный сертификат и использовать ID-карту невозможно,&lt;br&gt;
-пока блокировка не снята PUK кодом.&lt;/li&gt;
+идентификационный сертификат и использовать&lt;br&gt;
+ID-карту невозможно, пока блокировка не снята&lt;br&gt;
+PUK кодом.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
-&lt;li&gt;Если PUK введён 3 раза неверно, то он блокируется.&lt;br&gt;
-Сертификаты можно использовать пока не будут введены&lt;br&gt;
-3 раза неправильные PIN1 или PIN2. Тогда, для получения&lt;br&gt;
-новых кодов своей ID-карты, посетите &lt;u&gt;центр обслуживания.&lt;/u&gt;.&lt;/li&gt;
-&lt;li&gt;Ваш PUK код находится конверте с кодами.&lt;/li&gt;
+&lt;li&gt;PUK код - это код, разблокирующий заблокированные&lt;br&gt;
+сертификаты, если код PIN1 или PIN2 был введён неверно&lt;br&gt;
+3 раза подряд.&lt;/li&gt;
+&lt;li&gt;Если после смены PUK код забывается и сетрификат&lt;br&gt;
+блокируется из-за неверно введённых PIN1 или PIN2, то&lt;br&gt;
+единственной возможностью восстановить работо-&lt;br&gt;
+способность ID-карты, это обратиться в &lt;u&gt;бюро обслуживания.&lt;/u&gt;&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1266,7 +1272,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>%1 code change</source>
-        <translation>изменение %1 кода</translation>
+        <translation>Замена %1 кода</translation>
     </message>
     <message>
         <source>VALID %1 CODE</source>
@@ -1282,7 +1288,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>NEW %1 CODE AGAIN</source>
-        <translation>НОВЫЙ %1 КОД СНОВА</translation>
+        <translation>НОВЫЙ %1 КОД ЗАНОВО</translation>
     </message>
     <message>
         <source>PUK remaining attempts: %1</source>
@@ -1344,7 +1350,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>СОХРАНИТЬ ОТЧЕТ ДИАГНОСТИКИ НА ДИСК</translation>
+        <translation>СОХРАНИТЬ ДИАГНОСТИКУ</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
@@ -1494,7 +1500,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
-        <translation>Вы использовали 10 бесплатных подписей. Согласно условиям использования услуги подтверждения действительности Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;услуги&lt;/a&gt;. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1892</translation>
+        <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;http://www.id.ee/rus/access&lt;/a&gt;, по электронной почте sales@sk.ee или по телефону 1777 (только в пределах Эстонии), (+372) 6773377</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>
@@ -2773,7 +2779,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Digi ID</source>
-        <translation>Диги ИД</translation>
+        <translation>Диги-ИД</translation>
     </message>
 </context>
 
