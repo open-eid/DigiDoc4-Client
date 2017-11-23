@@ -104,9 +104,9 @@ border: none;</string>
   <widget class="QLineEdit" name="pin">
    <property name="geometry">
     <rect>
-     <x>192</x>
+     <x>182</x>
      <y>122</y>
-     <width>123</width>
+     <width>141</width>
      <height>30</height>
     </rect>
    </property>
@@ -118,7 +118,7 @@ border: none;</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>9</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="styleSheet">
