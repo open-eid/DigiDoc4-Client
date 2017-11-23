@@ -289,7 +289,6 @@ Media type: %3</translation>
 
 <context>
     <name>CertificateHistory</name>
-
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -321,22 +320,17 @@ Media type: %3</translation>
     </message>
 
     <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-card</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <source>TEMPLE</source>
+        <translation>TEMPLE</translation>
     </message>
     <message>
-        <source>Unknown ID</source>
-        <translation>Unknown ID</translation>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
-
 </context>
 
 <context>
@@ -391,7 +385,6 @@ Media type: %3</translation>
 
 <context>
     <name>FileList</name>
-
     <message>
         <source>Save file</source>
         <translation>Save file</translation>
@@ -416,6 +409,15 @@ Media type: %3</translation>
         <source>YES TO ALL</source>
         <translation>YES TO ALL</translation>
     </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>*</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>*</translation>
+    </message>
 </context>
 
 
@@ -427,6 +429,10 @@ Media type: %3</translation>
         <translation>SEARCH</translation>
     </message>
 
+    <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Enter the personal code, institution or registry code</translation>
+    </message>
     <message>
         <source>Add more files</source>
         <translation>+ ADD MORE FILES</translation>
@@ -620,12 +626,12 @@ Learn more info here:</translation>
         <translation>@eesti.ee post</translation>
     </message>
     <message>
-        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
-        <translation>CHECK @ EESTI.EE E-MAIL STATUS</translation>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
+        <translation>CHECK @EESTI.EE E-MAIL STATUS</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
-        <translation>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</translation>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
+        <translation>No official email redirects found. To send email to @eesti.ee, please enter your email address:</translation>
     </message>
     <message>
         <source>ACTIVATE REDIRECTION</source>
@@ -900,8 +906,8 @@ Learn more info here:</translation>
     <name>Accordion</name>
 
     <message>
-        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>CHECK PIN/PUK CODES AND CERTIFICATES</translation>
+        <source>PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>PIN/PUK CODES AND CERTIFICATES</translation>
     </message>
     <message>
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>

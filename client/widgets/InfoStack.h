@@ -63,4 +63,5 @@ private:
 	QString personalCodeText;
 	QString serialNumberText;
 	QString surnameText;
+	QString pictureText;
 };

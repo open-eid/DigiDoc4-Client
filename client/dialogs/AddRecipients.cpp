@@ -60,6 +60,8 @@ AddRecipients::~AddRecipients()
 void AddRecipients::init()
 {
 	ui->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
@@ -105,17 +107,14 @@ void AddRecipients::init()
 			QString type;
 			switch (xml.attributes().value( "type" ).toInt())
 			{
-				case SslCertificate::DigiIDType:
+				case CertificateHistory::DigiID:
 					type = CertificateHistory::tr("Digi-ID");
 					break;
-				case SslCertificate::EstEidType:
-					type = CertificateHistory::tr("ID-card");
-					break;
-				case SslCertificate::MobileIDType:
-					type = CertificateHistory::tr("Mobile-ID");
+				case CertificateHistory::TEMPEL:
+					type = CertificateHistory::tr("TEMPLE");
 					break;
 				default:
-					type = CertificateHistory::tr("Unknown ID");
+					type = CertificateHistory::tr("ID-card");
 					break;
 			}
 

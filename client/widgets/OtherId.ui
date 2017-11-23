@@ -78,7 +78,7 @@
       <string notr="true">border: none; color: #041E42; font-size: 18px; 	font-weight: 500;</string>
      </property>
      <property name="text">
-      <string>Mobiil-ID</string>
+      <string>Mobile ID</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignHCenter|Qt::AlignTop</set>

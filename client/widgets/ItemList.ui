@@ -450,7 +450,7 @@ border-radius: 2px;
 background-color: #FFFFFF;</string>
               </property>
               <property name="placeholderText">
-               <string> Sisesta isikukood, asutus või registrikood</string>
+               <string>Enter the personal code, institution or registry code</string>
               </property>
              </widget>
             </item>

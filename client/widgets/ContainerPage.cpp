@@ -396,76 +396,76 @@ void ContainerPage::updatePanes(ContainerState state)
 	switch( state )
 	{
 	case UnsignedContainer:
+		cancelText = "CANCEL";
+
 		ui->changeLocation->show();
 		ui->rightPane->clear();
 		hideRightPane();
 		ui->leftPane->init(fileName);
 		showSigningButton();
-		ui->cancel->setText(tr("CANCEL"));
+		ui->cancel->setText(tr(qPrintable(cancelText)));
 		showButtons( { ui->cancel, ui->convert, ui->save } );
 		hideButtons( { ui->navigateToContainer, ui->email } );
-
-		cancelText = "CANCEL";
 		break;
 	case UnsignedSavedContainer:
+		cancelText = "STARTING";
+
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		ui->cancel->setText(tr("STARTING"));
+		ui->cancel->setText(tr(qPrintable(cancelText)));
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
 		showRightPane( ItemSignature, "Container is not signed");
-
-		cancelText = "STARTING";
 		break;
 	case SignedContainer:
+		cancelText = "STARTING";
+
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemSignature, "Container's signatures" );
-		ui->cancel->setText(tr("STARTING"));
+		ui->cancel->setText(tr(qPrintable(cancelText)));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
-
-		cancelText = "STARTING";
 		break;
 	case UnencryptedContainer:
+		cancelText = "STARTING";
+		convertText = "SIGN";
+
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemAddress, "Recipients" );
 		showMainAction(EncryptContainer);
-		ui->cancel->setText(tr("STARTING"));
-		ui->convert->setText(tr("SIGN"));
+		ui->cancel->setText(tr(qPrintable(cancelText)));
+		ui->convert->setText(tr(qPrintable(convertText)));
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
-
-		cancelText = "STARTING";
-		convertText = "SIGN";
 		break;
 	case EncryptedContainer:
+		cancelText = "STARTING";
+		convertText = "SIGN";
+
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Encrypted files");
 		showRightPane( ItemAddress, "Recipients" );
 		updateDecryptionButton();
-		ui->cancel->setText(tr("STARTING"));
-		ui->convert->setText(tr("SIGN"));
+		ui->cancel->setText(tr(qPrintable(cancelText)));
+		ui->convert->setText(tr(qPrintable(convertText)));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
-
-		cancelText = "STARTING";
-		convertText = "SIGN";
 		break;
 	case DecryptedContainer:
+		cancelText = "STARTING";
+
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Decrypted files");
 		showRightPane( ItemAddress, "Recipients");
 		hideMainAction();
-		ui->cancel->setText(tr("STARTING"));
+		ui->cancel->setText(tr(qPrintable(cancelText)));
 		hideButtons( { ui->convert, ui->save } );
 		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
-
-		cancelText = "STARTING";
 		break;
 	default:
 		// Uninitialized cannot be shown on container page

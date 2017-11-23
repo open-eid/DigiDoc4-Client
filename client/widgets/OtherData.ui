@@ -67,7 +67,7 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 </string>
      </property>
      <property name="text">
-      <string>CHECK @ EESTI.EE E-MAIL STATUS</string>
+      <string>CHECK @EESTI.EE E-MAIL STATUS</string>
      </property>
     </widget>
    </item>
@@ -123,7 +123,10 @@ color: #353739;</string>
 color: #353739;</string>
         </property>
         <property name="text">
-         <string>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</string>
+         <string>No official email redirects found. To send email to @eesti.ee, please enter your email address:</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -155,13 +158,13 @@ text-decoration: underline;
        <widget class="QPushButton" name="activate">
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>220</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
+          <width>220</width>
           <height>16777215</height>
          </size>
         </property>

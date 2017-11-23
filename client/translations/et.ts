@@ -289,7 +289,6 @@ Tüüp: %3</translation>
 
 <context>
     <name>CertificateHistory</name>
-
     <message>
         <source>CLOSE</source>
         <translation>SULGE</translation>
@@ -319,20 +318,16 @@ Tüüp: %3</translation>
         <translation>Expiry date</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-kaart</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <source>TEMPLE</source>
+        <translation>TEMPEL</translation>
     </message>
     <message>
-        <source>Unknown ID</source>
-        <translation>Tundmatu ID</translation>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 
@@ -390,7 +385,6 @@ Tüüp: %3</translation>
 
 <context>
     <name>FileList</name>
-
     <message>
         <source>Save file</source>
         <translation>Salvesta fail</translation>
@@ -415,6 +409,11 @@ Tüüp: %3</translation>
         <source>YES TO ALL</source>
         <translation>JAH KÕIGILE</translation>
     </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>Vali kataloog kuhu failid salvestatakse</translation>
+    </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
@@ -430,6 +429,10 @@ Tüüp: %3</translation>
         <translation>OTSI</translation>
     </message>
 
+    <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Sisteta isikukood, asutus või registri kood</translation>
+    </message>
     <message>
         <source>Add more files</source>
         <translation>+ LISA VEEL FAILE</translation>
@@ -623,11 +626,11 @@ Rohkem infot leiate siit:</translation>
         <translation>@eesti.ee post</translation>
     </message>
     <message>
-        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
         <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
         <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
     </message>
     <message>

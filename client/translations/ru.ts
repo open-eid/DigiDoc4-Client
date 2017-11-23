@@ -289,7 +289,6 @@ Media type: %3</source>
 
 <context>
     <name>CertificateHistory</name>
-
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
@@ -319,20 +318,16 @@ Media type: %3</source>
         <translation>Дата окончания</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-карта</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Мobiil-ID</translation>
+        <source>TEMPLE</source>
+        <translation>STAMP</translation>
     </message>
     <message>
-        <source>Unknown ID</source>
-        <translation>Неизвестный ID</translation>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 
@@ -389,7 +384,6 @@ Media type: %3</source>
 
 <context>
     <name>FileList</name>
-
     <message>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
@@ -414,6 +408,11 @@ Media type: %3</source>
         <source>YES TO ALL</source>
         <translation>ДА ДЛЯ ВСЕХ</translation>
     </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>Выберите папку для сохранения файлов</translation>
+    </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
@@ -427,6 +426,10 @@ Media type: %3</source>
     <message>
         <source>Search</source>
         <translation>НАЙТИ</translation>
+    </message>
+    <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Введите личный код, учреждение или код реестра</translation>
     </message>
     <message>
         <source>Add more files</source>
@@ -617,12 +620,12 @@ Learn more info here:</source>
         <translation>@eesti.ee почта</translation>
     </message>
     <message>
-        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
         <translation>ПРОВЕРИТЬ СОСТОЯНИЕ @EESTI.EE E-ПОЧТЫ</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
-        <translation>Не найдено официальных переадресаций электронной почты. Чтобы отправить электронное письмо на адрес @ eesti.ee, введите ваш адрес электронной почты:</translation>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
+        <translation>Не найдено официальных переадресаций электронной почты. Чтобы отправить электронное письмо на адрес @eesti.ee, введите ваш адрес электронной почты:</translation>
     </message>
     <message>
         <source>ACTIVATE REDIRECTION</source>
@@ -894,7 +897,7 @@ Learn more info here:</source>
 
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>ПРОВЕРИТЬ PIN/PUK И СЕРТИФИКАТЫ</translation>
+        <translation>PIN/PUK И СЕРТИФИКАТЫ</translation>
     </message>
     <message>
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>

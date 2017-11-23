@@ -58,6 +58,8 @@ void NoOtherId::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+
+		update(lblNameText);
 	}
 
 	QWidget::changeEvent(event);

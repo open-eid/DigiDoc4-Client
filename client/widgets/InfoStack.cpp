@@ -31,6 +31,16 @@ InfoStack::InfoStack( QWidget *parent )
 , ui( new Ui::InfoStack )
 , certTypeIsEstEid(false)
 , certIsValid(true)
+, appletVersion()
+, certTypeIsEstEid(false)
+, certIsValid(false)
+, citizenshipText()
+, expireDate()
+, givenNamesText()
+, personalCodeText()
+, serialNumberText()
+, surnameText()
+, pictureText("DOWNLOAD")
 {
 	ui->setupUi( this );
 
@@ -114,6 +124,7 @@ void InfoStack::update()
 	ui->valueCitizenship->setText(citizenshipText);
 	ui->valueExpiryDate->setText(text);
 	ui->valueSerialNumber->setText(serialNumberText);
+	ui->btnPicture->setText(tr(qPrintable(pictureText)));
 }
 
 void InfoStack::update(const QSmartCardData &t)
@@ -145,7 +156,8 @@ void InfoStack::clearData()
 	ui->valueCitizenship->setText( "" );
 	ui->valueSerialNumber->setText( "" );
 	ui->valueExpiryDate->setText( "" );
-	ui->btnPicture->setText( tr("DOWNLOAD") );
+	pictureText = "DOWNLOAD";
+	ui->btnPicture->setText(tr(qPrintable(pictureText)));
 	ui->btnPicture->show();
 }
 
@@ -153,6 +165,7 @@ void InfoStack::showPicture( const QPixmap &pixmap )
 {
 	ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-	ui->btnPicture->setText( tr("SAVE THE PICTURE") );
+	pictureText = "SAVE THE PICTURE";
+	ui->btnPicture->setText(tr(qPrintable(pictureText)));
 	ui->btnPicture->hide();
 }
