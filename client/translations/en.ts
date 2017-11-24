@@ -2508,6 +2508,10 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>Signing</source>
         <translation>Signing</translation>
     </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Redundant certificates have been successfully removed.</translation>
+    </message>
 </context>
 
 

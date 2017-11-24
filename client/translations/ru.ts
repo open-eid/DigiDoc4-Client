@@ -2470,6 +2470,10 @@ ASiC-E – это разрабатываемый международный фо
         <source>Signing</source>
         <translation>Подписывание</translation>
     </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Лишние сертификаты успешно удалены.</translation>
+    </message>
 </context>
 
 

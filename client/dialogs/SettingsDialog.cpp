@@ -201,6 +201,7 @@ void SettingsDialog::initUI()
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
+	connect( ui->btnNavFromHistory, &QPushButton::clicked, this,  [this](){ emit removeOldCert(); } );
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
 	connect( ui->btnMenuSigning, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuSigning); ui->stackedWidget->setCurrentIndex(1); } );
@@ -236,6 +237,7 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
 		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
 	updateCert();
+	updateDiagnostics();
 }
 
 void SettingsDialog::initFunctionality()
@@ -614,8 +616,12 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavInstallManually->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
 	ui->btNavFromFile->setVisible(button == ui->btnMenuGeneral);
-	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);
+#ifdef Q_OS_WIN
+	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);
+#else
+	ui->btnNavFromHistory->setVisible(false);
+#endif
 }
 
 int SettingsDialog::exec()

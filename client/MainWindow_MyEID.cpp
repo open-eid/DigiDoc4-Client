@@ -353,3 +353,24 @@ bool MainWindow::isUpdateCertificateNeeded()
 			)
 		);
 }
+
+void MainWindow::removeOldCert()
+{
+#ifdef Q_OS_WIN
+	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
+	QSmartCardData data = smartcard->data();
+	CertStore s;
+	for( const SslCertificate &c: s.list())
+	{
+		if( c.subjectInfo( "O" ).contains("ESTEID") )
+			s.remove( c );
+	}
+	QString personalCode = data.signCert().subjectInfo("serialNumber");
+
+	if( !personalCode.isEmpty() ) {
+		s.add( data.authCert(), data.card() );
+		s.add( data.signCert(), data.card() );
+	}
+	qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
+#endif
+}
