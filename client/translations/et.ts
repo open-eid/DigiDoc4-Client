@@ -2514,6 +2514,10 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Üleliigsed sertifikaadid edukalt eemaldatud.</translation>
+    </message>
 </context>
 
 
