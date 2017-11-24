@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
+    <width>355</width>
     <height>65</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
   <widget class="QLabel" name="cardName">
    <property name="geometry">
     <rect>
-     <x>49</x>
+     <x>54</x>
      <y>7</y>
      <width>298</width>
      <height>24</height>
@@ -62,7 +62,7 @@
   <widget class="QLabel" name="cardCode">
    <property name="geometry">
     <rect>
-     <x>49</x>
+     <x>54</x>
      <y>38</y>
      <width>116</width>
      <height>19</height>
@@ -83,7 +83,7 @@
   <widget class="QLabel" name="cardStatus">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>38</y>
      <width>166</width>
      <height>19</height>
@@ -104,7 +104,7 @@
   <widget class="LabelButton" name="cardPhoto">
    <property name="geometry">
     <rect>
-     <x>5</x>
+     <x>10</x>
      <y>10</y>
      <width>34</width>
      <height>45</height>

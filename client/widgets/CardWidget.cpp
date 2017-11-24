@@ -43,7 +43,7 @@ CardWidget::CardWidget( const QString &cardId, QWidget *parent )
 
 	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart_green.svg", this ) );
 	cardIcon->resize( 17, 12 );
-	cardIcon->move( 159, 42 );
+	cardIcon->move( 164, 42 );
 
 	connect( ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked( ui->cardPhoto->pixmap() ); } );
 }
