@@ -104,6 +104,9 @@ QPushButton:disabled {
    <property name="text">
     <string>VIEW INTRODUCTION</string>
    </property>
+   <property name="autoDefault">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="viewEncryption">
    <property name="geometry">
@@ -243,6 +246,12 @@ QPushButton:disabled {
    </property>
    <property name="text">
     <string>Skip introductions</string>
+   </property>
+   <property name="autoDefault">
+    <bool>true</bool>
+   </property>
+   <property name="default">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="next">

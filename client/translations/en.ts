@@ -283,12 +283,16 @@ Media type: %3</translation>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</translation>
     </message>
+
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
 </context>
 
 
 <context>
     <name>CertificateHistory</name>
-
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -320,22 +324,17 @@ Media type: %3</translation>
     </message>
 
     <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-card</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Mobile-ID</translation>
+        <source>TEMPLE</source>
+        <translation>TEMPLE</translation>
     </message>
     <message>
-        <source>Unknown ID</source>
-        <translation>Unknown ID</translation>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
-
 </context>
 
 <context>
@@ -390,7 +389,6 @@ Media type: %3</translation>
 
 <context>
     <name>FileList</name>
-
     <message>
         <source>Save file</source>
         <translation>Save file</translation>
@@ -415,6 +413,15 @@ Media type: %3</translation>
         <source>YES TO ALL</source>
         <translation>YES TO ALL</translation>
     </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>*</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>*</translation>
+    </message>
 </context>
 
 
@@ -426,6 +433,10 @@ Media type: %3</translation>
         <translation>SEARCH</translation>
     </message>
 
+    <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Enter the personal code, institution or registry code</translation>
+    </message>
     <message>
         <source>Add more files</source>
         <translation>+ ADD MORE FILES</translation>
@@ -564,7 +575,7 @@ Learn more info here:</translation>
 
     <message>
         <source>Mobile ID</source>
-        <translation>Mobile ID</translation>
+        <translation>Mobiil-ID</translation>
     </message>
     <message>
         <source>PHONE NUMBER</source>
@@ -584,7 +595,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source> and Mobile ID using is </source>
-        <translation>and Mobile ID using is </translation>
+        <translation>and Mobiil-ID using is </translation>
     </message>
     <message>
         <source>possible</source>
@@ -606,7 +617,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source> and using Digi ID is </source>
-        <translation> and using Digi ID is </translation>
+        <translation> and using Digi-ID is </translation>
     </message>
 </context>
 
@@ -619,12 +630,12 @@ Learn more info here:</translation>
         <translation>@eesti.ee post</translation>
     </message>
     <message>
-        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
-        <translation>CHECK @ EESTI.EE E-MAIL STATUS</translation>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
+        <translation>CHECK @EESTI.EE E-MAIL STATUS</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
-        <translation>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</translation>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
+        <translation>No official email redirects found. To send email to @eesti.ee, please enter your email address:</translation>
     </message>
     <message>
         <source>ACTIVATE REDIRECTION</source>
@@ -807,7 +818,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>Valid:</source>
-        <translation>Kehtiv:</translation>
+        <translation>Valid:</translation>
     </message>
     <message>
         <source>From</source>
@@ -881,6 +892,10 @@ Learn more info here:</translation>
     </message>
 
     <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
         <source>Save certificate</source>
         <translation>Save certificate</translation>
     </message>
@@ -895,8 +910,8 @@ Learn more info here:</translation>
     <name>Accordion</name>
 
     <message>
-        <source>CHECK PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>CHECK PIN/PUK CODES AND CERTIFICATES</translation>
+        <source>PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>PIN/PUK CODES AND CERTIFICATES</translation>
     </message>
     <message>
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>
@@ -914,7 +929,7 @@ Learn more info here:</translation>
 
     <message>
         <source>ID card in reader</source>
-        <translation>ID card in reader</translation>
+        <translation>ID-card in reader</translation>
     </message>
     <message>
         <source>%1 in reader</source>
@@ -1000,7 +1015,7 @@ Learn more info here:</translation>
 
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
-        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobile ID&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobiil-ID&lt;/b&gt;</translation>
     </message>
     <message>
         <source>COUNTRY CODE AND PHONE NUMBER</source>
@@ -1068,7 +1083,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobile-ID not ready, try again later</translation>
+        <translation>Mobiil-ID not ready, try again later</translation>
     </message>
     <message>
         <source>Phone absent</source>
@@ -1100,7 +1115,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>User is not a Mobile-ID client</source>
-        <translation>User is not a Mobile-ID client</translation>
+        <translation>User is not a Mobiil-ID client</translation>
     </message>
     <message>
         <source>ID and phone number do not match</source>
@@ -1108,19 +1123,27 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
-        <translation>Your Mobile-ID service is not activated.</translation>
+        <translation>Your Mobiil-ID service is not activated.</translation>
+    </message>
+    <message>
+        <source>Invalid content</source>
+        <translation>Invalid content</translation>
     </message>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Mobile-ID user certificates are revoked or suspended.</translation>
+        <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
 and enter Mobile-ID PIN2-code.
 Control code: %1</source>
         <translation>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
+and enter Mobiil-ID PIN2-code.
 Control code: %1</translation>
+    </message>
+    <message>
+        <source>SSL Error:</source>
+        <translation>SSL Error:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1225,7 +1248,7 @@ here you can set a new PIN1 code.&lt;/li&gt;
 &lt;li&gt;To unblock PIN2, enter the PUK code for the card.&lt;/li&gt;
 &lt;li&gt;You can find the PUK code from the ID-card in the code box,&lt;br&gt;
 if you do not in the meantime changed&lt;/li&gt;
-&lt;li&gt;If you do not know your PUK code for your ID card, please visit&lt;br&gt;
+&lt;li&gt;If you do not know your PUK code for your ID-card, please visit&lt;br&gt;
 a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1236,7 +1259,7 @@ a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;li&gt;To unblock PIN1, enter the PUK code for the card.&lt;/li&gt;
 &lt;li&gt;You can find the PUK code from the ID-card in the code box,&lt;br&gt;
 if you do not in the meantime changed&lt;/li&gt;
-&lt;li&gt;If you do not know your PUK code for your ID card, please visit&lt;br&gt;
+&lt;li&gt;If you do not know your PUK code for your ID-card, please visit&lt;br&gt;
 a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1246,7 +1269,7 @@ a customer service point where you can get a new code container.&lt;/li&gt;
 &lt;li&gt;New PIN2 must be different from the previous one.&lt;/li&gt;
 &lt;li&gt;The PIN2 code is used to give a digital signature.&lt;/li&gt;
 &lt;li&gt;If you enter the PIN2 code incorrectly three times, then signing&lt;br&gt;
-the certificate will be blocked and the ID card will not be possible&lt;br&gt;
+the certificate will be blocked and the ID-card will not be possible&lt;br&gt;
 to use, until it is unblocked via the PUK code.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -1256,7 +1279,7 @@ to use, until it is unblocked via the PUK code.&lt;/li&gt;
 &lt;li&gt;New PIN1 must be different from the previous one.&lt;/li&gt;
 &lt;li&gt;The PIN1 code is used for identity verification for access.&lt;/li&gt;
 &lt;li&gt;If you enter the PIN1 code incorrectly three times,then&lt;br&gt;
-a personal identification certificate will be blocked and the ID card&lt;br&gt;
+a personal identification certificate will be blocked and the ID-card&lt;br&gt;
 will not be possible to use to verify identification, until it is&lt;br&gt;
 unblocked via the PUK code.&lt;/li&gt;
 &lt;/ul&gt;</translation>
@@ -1266,7 +1289,7 @@ unblocked via the PUK code.&lt;/li&gt;
         <translation>&lt;ul&gt;
 &lt;li&gt;If the PUK code goes away after changing the code, and&lt;br&gt;
 the certificate will be blocked by entering three incorrect PIN1 or&lt;br&gt;
-PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
+PIN2 then the only way to get an ID-card is to turn to work&lt;br&gt;
 &lt;u&gt;customer service point&lt;/u&gt;.&lt;/li&gt;
 &lt;li&gt;Your PUK code is located in the envelope.&lt;/li&gt;
 &lt;/ul&gt;</translation>
@@ -1834,6 +1857,27 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
         <source>Enter PIN</source>
         <translation>Enter PIN</translation>
     </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Request timed out</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Invalid content type</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. Check your internet connection and try again.</source>
+        <translation>Updating certificates has failed. Check your internet connection and try again.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>SSL handshake failed. Please restart the update process.</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
+        <translation>Updating certificates has failed. The server is overloaded, try again later.</translation>
+    </message>
 </context>
 
 <context>
@@ -1886,7 +1930,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Mobile-ID</translation>
+        <translation>Mobiil-ID</translation>
     </message>
     <message>
         <source>Unknown ID</source>
@@ -2153,7 +2197,7 @@ PIN2 then the only way to get an ID card is to turn to work&lt;br&gt;
     </message>
     <message>
         <source>Use Mobile ID</source>
-        <translation>Use Mobile ID</translation>
+        <translation>Use Mobiil-ID</translation>
     </message>
     <message>
         <source>Use ID-card</source>
@@ -2535,7 +2579,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobile-ID not ready, try again later</translation>
+        <translation>Mobiil-ID not ready, try again later</translation>
     </message>
     <message>
         <source>Phone absent</source>
@@ -2555,7 +2599,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>Signing with Mobile-ID</source>
-        <translation>Signing with Mobile-ID</translation>
+        <translation>Signing with Mobiil-ID</translation>
     </message>
     <message>
         <source>%v sec</source>
@@ -2563,7 +2607,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>User is not a Mobile-ID client</source>
-        <translation>User is not a Mobile-ID client</translation>
+        <translation>User is not a Mobiil-ID client</translation>
     </message>
     <message>
         <source>ID and phone number do not match</source>
@@ -2583,22 +2627,17 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Mobile-ID user certificates are revoked or suspended.</translation>
+        <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
     </message>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
-        <translation>Your Mobile-ID service is not activated.</translation>
+        <translation>Your Mobiil-ID service is not activated.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
         <translation>Invalid phone number! Please include correct country code.</translation>
     </message>
-    <message>
-        <source>Invalid content</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
-
 
 <context>
     <name>PrintSheet</name>
@@ -2784,12 +2823,12 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     <message>
         <source>SignatureMobile</source>
         <translation>SIGN WITH
-MOBILE ID</translation>
+MOBIIL-ID</translation>
     </message>
     <message>
         <source>SignatureAdd</source>
         <translation>SIGN WITH
-ID CARD</translation>
+ID-CARD</translation>
     </message>
     <message>
         <source>EncryptContainer</source>
@@ -2808,11 +2847,11 @@ ID-CARD</translation>
 
     <message>
         <source>ID Card</source>
-        <translation>ID Card</translation>
+        <translation>ID-card</translation>
     </message>
     <message>
         <source>Digi ID</source>
-        <translation>Digi ID</translation>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 

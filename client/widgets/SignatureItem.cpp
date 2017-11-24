@@ -163,7 +163,10 @@ void SignatureItem::init()
 void SignatureItem::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
 		init();
+	}
 
 	QWidget::changeEvent(event);
 }

@@ -436,6 +436,13 @@ border-radius: 2px;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pinInput</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>log</tabstop>
+  <tabstop>messageAgree</tabstop>
+  <tabstop>envelopeAgree</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -42,6 +42,13 @@ class CertificateHistory: public QDialog
 	Q_OBJECT
 
 public:
+	enum KeyType
+	{
+		IDCard = 0,
+		TEMPEL = 1,
+		DigiID = 2
+	};
+
 	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = 0);
 	~CertificateHistory();
 

@@ -283,12 +283,16 @@ Tüüp: %3</translation>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista Eesti piires lühinumbril 1777 ja välismaalt (+372) 677 3377.</translation>
     </message>
+
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
 </context>
 
 
 <context>
     <name>CertificateHistory</name>
-
     <message>
         <source>CLOSE</source>
         <translation>SULGE</translation>
@@ -318,20 +322,16 @@ Tüüp: %3</translation>
         <translation>Expiry date</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-kaart</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <source>TEMPLE</source>
+        <translation>TEMPEL</translation>
     </message>
     <message>
-        <source>Unknown ID</source>
-        <translation>Tundmatu ID</translation>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 
@@ -370,7 +370,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>See on digitaalne isikutunnistus</translation>
+        <translation>Kasutate ID-kaarti</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -389,7 +389,6 @@ Tüüp: %3</translation>
 
 <context>
     <name>FileList</name>
-
     <message>
         <source>Save file</source>
         <translation>Salvesta fail</translation>
@@ -414,6 +413,11 @@ Tüüp: %3</translation>
         <source>YES TO ALL</source>
         <translation>JAH KÕIGILE</translation>
     </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>Vali kataloog kuhu failid salvestatakse</translation>
+    </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
@@ -429,6 +433,10 @@ Tüüp: %3</translation>
         <translation>OTSI</translation>
     </message>
 
+    <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Sisteta isikukood, asutus või registri kood</translation>
+    </message>
     <message>
         <source>Add more files</source>
         <translation>+ LISA VEEL FAILE</translation>
@@ -622,11 +630,11 @@ Rohkem infot leiate siit:</translation>
         <translation>@eesti.ee post</translation>
     </message>
     <message>
-        <source>CHECK @ EESTI.EE E-MAIL STATUS</source>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
         <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @ eesti.ee, please enter your email address:</source>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
         <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
     </message>
     <message>
@@ -884,6 +892,10 @@ Rohkem infot leiate siit:</translation>
     </message>
 
     <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
         <source>Save certificate</source>
         <translation>Salvesta sertifikaat</translation>
     </message>
@@ -917,7 +929,7 @@ Rohkem infot leiate siit:</translation>
 
     <message>
         <source>ID card in reader</source>
-        <translation>Lugejas on ID kaart</translation>
+        <translation>Lugejas on ID-kaart</translation>
     </message>
     <message>
         <source>%1 in reader</source>
@@ -1118,12 +1130,20 @@ Rohkem infot leiate siit:</translation>
         <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
     </message>
     <message>
+        <source>Invalid content</source>
+        <translation>Kehtetu sisu</translation>
+    </message>
+    <message>
         <source>Make sure control code matches with one in phone screen
 and enter Mobile-ID PIN2-code.
 Control code: %1</source>
         <translation>Veendu kontrollkoodi õigsuses
 ja sisesta telefonil Mobiil-ID PIN2-kood.
 Kontrollkood: %1</translation>
+    </message>
+    <message>
+        <source>SSL Error:</source>
+        <translation>SSL Viga:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1223,7 +1243,7 @@ siis siin saad määrata uue PIN1 koodi.&lt;/li&gt;
         <source>ConditionsUnlockPIN2</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;PIN2 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
 vahepeal muutnud&lt;/li&gt;
 &lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
 klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
@@ -1234,7 +1254,7 @@ klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
         <translation>
 &lt;ul&gt;
 &lt;li&gt;PIN1 blokeeringu tühistamiseks sisesta kaardi PUK kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaarti koodiümbrikust, kui sa pole seda&lt;br&gt;
+&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
 vahepeal muutnud&lt;/li&gt;
 &lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
 klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
@@ -1826,6 +1846,27 @@ järel, siis ainus võimalus ID-kaart tööle saada on pöörduda&lt;br&gt;
     <message>
         <source>Enter PIN</source>
         <translation>Sisesta PIN</translation>
+    </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Päring on aegunud</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Kehtetu sisutüüp</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. Check your internet connection and try again.</source>
+        <translation>Sertide uuendamine on ebaõnnestunud. Kontrollige oma Interneti-ühendust ja proovige uuesti.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>SSL ühenduskanali loomine ebaõnnestus. Taaskäivitage värskendusprotsess uuesti.</translation>
+    </message>
+    <message>
+        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
+        <translation>Sertide uuendamine on ebaõnnestunud. Server on ülekoormatud, proovige hiljem uuesti.</translation>
     </message>
 </context>
 
@@ -2558,10 +2599,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>Invalid phone number! Please include correct country code.</source>
         <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
     </message>
-    <message>
-        <source>Invalid content</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 
 
@@ -2745,7 +2782,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>SignatureMobile</source>
         <translation>ALLKIRJASTA
-MOBIILI-ID’GA</translation>
+MOBIIL-ID’GA</translation>
     </message>
     <message>
         <source>SignatureAdd</source>
@@ -2768,11 +2805,11 @@ ID-KAARDIGA</translation>
     <name>CardWidget</name>
     <message>
         <source>ID Card</source>
-        <translation>ID Kaart</translation>
+        <translation>ID-kaart</translation>
     </message>
     <message>
         <source>Digi ID</source>
-        <translation>Digi ID</translation>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 

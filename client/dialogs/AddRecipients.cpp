@@ -60,6 +60,8 @@ AddRecipients::~AddRecipients()
 void AddRecipients::init()
 {
 	ui->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
@@ -105,17 +107,14 @@ void AddRecipients::init()
 			QString type;
 			switch (xml.attributes().value( "type" ).toInt())
 			{
-				case SslCertificate::DigiIDType:
+				case CertificateHistory::DigiID:
 					type = CertificateHistory::tr("Digi-ID");
 					break;
-				case SslCertificate::EstEidType:
-					type = CertificateHistory::tr("ID-card");
-					break;
-				case SslCertificate::MobileIDType:
-					type = CertificateHistory::tr("Mobile-ID");
+				case CertificateHistory::TEMPEL:
+					type = CertificateHistory::tr("TEMPLE");
 					break;
 				default:
-					type = CertificateHistory::tr("Unknown ID");
+					type = CertificateHistory::tr("ID-card");
 					break;
 			}
 
@@ -235,7 +234,7 @@ void AddRecipients::addRecipientFromCard()
 void AddRecipients::addRecipientFromFile()
 {
 	QString file = FileDialog::getOpenFileName( this, windowTitle(), QString(),
-		"Certificates (*.pem *.cer *.crt)" );
+		tr("Certificates (*.cer *.crt *.pem)") );
 	if( file.isEmpty() )
 		return;
 
@@ -342,7 +341,7 @@ int AddRecipients::exec()
 void AddRecipients::search(const QString &term)
 {
 	QRegExp isDigit( "\\d*" );
-	qDebug() << "Search pressed";
+
 	if( isDigit.exactMatch(term) && ( term.size() == 11 || term.size() == 8 ) )
 	{
 		if( term.size() == 11 && !IKValidator::isValid( term ) )

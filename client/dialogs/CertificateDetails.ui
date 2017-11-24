@@ -380,6 +380,12 @@ QPushButton:disabled {
       <property name="text">
        <string>CLOSE</string>
       </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QPushButton" name="save">
       <property name="geometry">
@@ -422,11 +428,21 @@ QPushButton:disabled {
       <property name="text">
        <string>SAVE</string>
       </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lblCertInfo</tabstop>
+  <tabstop>tblDetails</tabstop>
+  <tabstop>detailedValue</tabstop>
+  <tabstop>save</tabstop>
+  <tabstop>close</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

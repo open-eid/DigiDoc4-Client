@@ -1794,8 +1794,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:13pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </widget>
@@ -2002,11 +2002,13 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
         </property>
         <property name="text">
          <string>CHECK FOR UPDATES</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -2042,11 +2044,13 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
         </property>
         <property name="text">
          <string>SAVE DIAGNOSTICS REPORT TO DISK</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -2082,11 +2086,13 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
         </property>
         <property name="text">
          <string>REMOVE OLD CERTIFICATES</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -2122,11 +2128,13 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
         </property>
         <property name="text">
          <string>USE DEFAULT</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -2162,11 +2170,13 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
         </property>
         <property name="text">
          <string>INSTALL MANUALLY</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -2202,11 +2212,13 @@ QPushButton:hover:!pressed {
 }
 QPushButton:disabled {
 	color: #75787B;
-	background-color: #BEDBED;
 }</string>
         </property>
         <property name="text">
          <string>SHOW CERTIFICATE</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -2257,6 +2269,12 @@ QPushButton:disabled {
         <property name="text">
          <string>CLOSE</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -2280,6 +2298,48 @@ QPushButton:disabled {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>btnMenuGeneral</tabstop>
+  <tabstop>btnMenuSigning</tabstop>
+  <tabstop>btnMenuCertificate</tabstop>
+  <tabstop>btnMenuProxy</tabstop>
+  <tabstop>btnMenuDiagnostics</tabstop>
+  <tabstop>btnMenuInfo</tabstop>
+  <tabstop>btNavFromFile</tabstop>
+  <tabstop>btnNavSaveReport</tabstop>
+  <tabstop>btnNavFromHistory</tabstop>
+  <tabstop>btnNavUseByDefault</tabstop>
+  <tabstop>btnNavInstallManually</tabstop>
+  <tabstop>btnNavShowCertificate</tabstop>
+  <tabstop>btNavClose</tabstop>
+  <tabstop>rdGeneralEstonian</tabstop>
+  <tabstop>rdGeneralRussian</tabstop>
+  <tabstop>rdGeneralEnglish</tabstop>
+  <tabstop>cmbGeneralCheckUpdatePeriod</tabstop>
+  <tabstop>chkGeneralTslRefresh</tabstop>
+  <tabstop>rdGeneralSameDirectory</tabstop>
+  <tabstop>rdGeneralSpecifyDirectory</tabstop>
+  <tabstop>btGeneralChooseDirectory</tabstop>
+  <tabstop>txtGeneralDirectory</tabstop>
+  <tabstop>rdSigningAsice</tabstop>
+  <tabstop>rdSigningBdoc</tabstop>
+  <tabstop>txtSigningRole</tabstop>
+  <tabstop>txtSigningCity</tabstop>
+  <tabstop>txtSigningCounty</tabstop>
+  <tabstop>txtSigningCountry</tabstop>
+  <tabstop>txtSigningZipCode</tabstop>
+  <tabstop>chkIgnoreAccessCert</tabstop>
+  <tabstop>rdProxyNone</tabstop>
+  <tabstop>rdProxySystem</tabstop>
+  <tabstop>rdProxyManual</tabstop>
+  <tabstop>txtProxyHost</tabstop>
+  <tabstop>txtProxyPort</tabstop>
+  <tabstop>txtProxyUsername</tabstop>
+  <tabstop>txtProxyPassword</tabstop>
+  <tabstop>chkProxyEnableForSSL</tabstop>
+  <tabstop>txtDiagnostics</tabstop>
+  <tabstop>txtInfo</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

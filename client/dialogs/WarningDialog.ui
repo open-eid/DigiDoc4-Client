@@ -233,6 +233,9 @@ QPushButton:hover:!pressed {
         <property name="text">
          <string>CLOSE</string>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -277,6 +280,9 @@ QPushButton:hover:!pressed {
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>cancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

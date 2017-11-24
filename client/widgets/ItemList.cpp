@@ -79,6 +79,7 @@ void ItemList::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 
 		ui->listHeader->setText(tr(qPrintable(listText)));
+		ui->txtFind->setPlaceholderText(tr("Enter the personal code, institution or registry code"));
 
 		if(header != nullptr)
 			header->setText(tr(qPrintable(headerText)));
