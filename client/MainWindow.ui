@@ -166,9 +166,9 @@ background-color: #023565;</string>
         <widget class="QWidget" name="idSelector" native="true">
          <property name="geometry">
           <rect>
-           <x>5</x>
+           <x>0</x>
            <y>0</y>
-           <width>385</width>
+           <width>390</width>
            <height>65</height>
           </rect>
          </property>
@@ -182,7 +182,7 @@ background-color: #023565;</string>
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>350</width>
+            <width>355</width>
             <height>65</height>
            </rect>
           </property>
@@ -191,9 +191,9 @@ background-color: #023565;</string>
         <widget class="NoCardInfo" name="noCardInfo" native="true">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>0</x>
            <y>0</y>
-           <width>551</width>
+           <width>561</width>
            <height>65</height>
           </rect>
          </property>

@@ -23,7 +23,7 @@
 #define BORDER_WIDTH 2
 #define ROW_HEIGHT 66
 #define WIDTH 365
-#define X_POSITION 115
+#define X_POSITION 110
 
 CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 : StyledWidget(parent)
