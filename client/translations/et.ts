@@ -370,7 +370,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>Kasutate ID-kaarti</translation>
+        <translation>See on digitaalne isikutunnistus</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -876,7 +876,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Certificate policies</source>
-        <translation></translation>
+        <translation>Sertifikaadi reeglid</translation>
     </message>
     <message>
         <source>Authority key identifier</source>
@@ -934,6 +934,10 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>%1 in reader</source>
         <translation>Lugejas on %1</translation>
+    </message>
+    <message>
+        <source>LOAD</source>
+        <translation>LAADI</translation>
     </message>
 </context>
 

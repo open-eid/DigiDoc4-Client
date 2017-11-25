@@ -369,7 +369,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>You're using Digital identity card</source>
-        <translation>Вы используете ID-карту</translation>
+        <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -924,6 +924,11 @@ Learn more info here:</source>
     <message>
         <source>%1 in reader</source>
         <translation>В считывателе %1</translation>
+    </message>
+    <message>
+        <source>LOAD</source>
+        <translation>ЗАГРУ
+ЗИТЬ</translation>
     </message>
 </context>
 

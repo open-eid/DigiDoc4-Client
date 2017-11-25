@@ -132,6 +132,9 @@ border-radius: 2px;
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
    </property>
+   <property name="placeholderText">
+    <string>37254321</string>
+   </property>
   </widget>
   <widget class="QLabel" name="labelPhone">
    <property name="geometry">
@@ -241,6 +244,9 @@ border-radius: 2px;
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
+   </property>
+   <property name="placeholderText">
+    <string>47101010033</string>
    </property>
   </widget>
  </widget>
