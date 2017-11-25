@@ -115,7 +115,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	else if(!noError)
 	{
 		d->showErrors->show();
-		d->showErrors->borderless();		
+		d->showErrors->borderless();
 	}
 
 	QString name = !c.isNull() ? c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) : s.signedBy();

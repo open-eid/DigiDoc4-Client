@@ -876,7 +876,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Certificate policies</source>
-        <translation></translation>
+        <translation>Sertifikaadi reeglid</translation>
     </message>
     <message>
         <source>Authority key identifier</source>

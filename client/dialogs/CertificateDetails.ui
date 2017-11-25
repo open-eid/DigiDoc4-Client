@@ -245,7 +245,18 @@ span {
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">border: none;</string>
+            <string notr="true">#tblDetails {
+	border:none;
+}
+QHeaderView::section {
+	border: 1px solid #D9D9D8;
+	border-width: 0px 1px 1px 0px;
+	text-align: center;
+	padding: 2px 0px 3px 0px;
+	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #FFFFFF, stop:1 #FFFFFF);
+}
+</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
