@@ -26,6 +26,8 @@ namespace Ui {
 class VerifyCert;
 }
 
+class QSvgWidget;
+
 class VerifyCert : public StyledWidget
 {
 	Q_OBJECT
@@ -58,6 +60,10 @@ private:
 	bool isValidCert;
 	bool isBlockedPin;
 	QString borders;
+
+	QSvgWidget* greenIcon;
+	QSvgWidget* orangeIcon;
+	QSvgWidget* redIcon;
 
 	QSmartCardData::PinType pinType;
 	QSmartCardData cardData;

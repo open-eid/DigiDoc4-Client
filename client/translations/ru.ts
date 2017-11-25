@@ -1773,7 +1773,7 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>OCSP Certificate issuer</source>
-        <translation>Организация, выдавшая сертификат подтверждения подлинности</translation>
+        <translation>Организация, выдавшая сертификат OCSP</translation>
     </message>
     <message>
         <source>OCSP Certificate</source>

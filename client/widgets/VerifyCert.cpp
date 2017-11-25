@@ -26,6 +26,7 @@
 #include <common/SslCertificate.h>
 
 #include <QtCore/QTextStream>
+#include <QSvgWidget>
 
 VerifyCert::VerifyCert(QWidget *parent) :
 	StyledWidget(parent),
@@ -39,6 +40,24 @@ VerifyCert::VerifyCert(QWidget *parent) :
 	connect( ui->changePIN, &QPushButton::clicked, this, &VerifyCert::processClickedBtn );
 	connect( ui->forgotPinLink, &QLabel::linkActivated, this, &VerifyCert::processForgotPinLink );
 	connect( ui->details, &QLabel::linkActivated, this, &VerifyCert::processCertDetails );
+
+	greenIcon = new QSvgWidget( ":/images/icon_check.svg", ui->nameRight);
+	greenIcon->resize(12, 13);
+	greenIcon->move(5, 5);
+	greenIcon->hide();
+	greenIcon->setStyleSheet("border: none;");
+
+	orangeIcon = new QSvgWidget(":/images/icon_alert_orange.svg", ui->nameRight);
+	orangeIcon->resize(13, 13);
+	orangeIcon->move(5, 5);
+	orangeIcon->hide();
+	orangeIcon->setStyleSheet("border: none;");
+
+	redIcon = new QSvgWidget(":/images/icon_alert_red.svg", ui->nameRight);
+	redIcon->resize(13, 13);
+	redIcon->move(5, 5);
+	redIcon->hide();
+	redIcon->setStyleSheet("border: none;");
 
 	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
@@ -172,7 +191,10 @@ void VerifyCert::update()
 					"background-color: #e09797;"
 					"color: #5c1c1c;"
 					);
-		ui->name->setText(name + " <img src=\":/images/icon_alert_red.svg\" height=\"12\" width=\"13\">");
+		ui->name->setText(name);
+		greenIcon->hide();
+		orangeIcon->hide();
+		redIcon->show();
 	}
 	else if( isBlockedPin )
 	{
@@ -192,9 +214,12 @@ void VerifyCert::update()
 					"border-radius: 2px;"
 					"background-color: #F8DDA7;"
 					);
-		ui->name->setText( name + " <img src=\":/images/icon_alert_orange.svg\" height=\"12\" width=\"13\">" );
+		ui->name->setText(name);
+		greenIcon->hide();
+		redIcon->hide();
+		orangeIcon->show();
 	}
-	else 
+	else
 	{
 		this->setStyleSheet( "background-color: #ffffff;" + borders );
 		// Check height: if warning shown, decrease height by 30px (15*2)
@@ -202,8 +227,13 @@ void VerifyCert::update()
 		ui->verticalSpacerAboveBtn->changeSize(20, 32 - decrease);
 		ui->verticalSpacerBelowBtn->changeSize(20, 38 - decrease);
 		changePinStyle( "#FFFFFF" );
-		ui->name->setText( name + 
-			( ( pinType != QSmartCardData::PukType ) ? " <img src=\":/images/icon_check.svg\" height=\"12\" width=\"12\">" : "" ) );
+		ui->name->setText(name);
+		orangeIcon->hide();
+		redIcon->hide();
+		if(pinType != QSmartCardData::PukType)
+			greenIcon->show();
+		else
+			greenIcon->hide();
 	}
 	ui->name->setTextFormat( Qt::RichText );
 

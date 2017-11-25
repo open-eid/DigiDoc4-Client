@@ -231,7 +231,7 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 #else
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
-	b->setStyleSheet("margin-left: 2px;");
+	b->setStyleSheet("margin-left: 2px; border: none;");
 	connect(b, &QLabel::linkActivated, [=]{ CertificateDetails( value, this ).exec(); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
@@ -247,7 +247,7 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 #else
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
-	b->setStyleSheet("margin-left: 2px;");
+	b->setStyleSheet("margin-left: 2px; border: none;");
 	connect(b, &QLabel::linkActivated, [=]{ QDesktopServices::openUrl( value ); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );

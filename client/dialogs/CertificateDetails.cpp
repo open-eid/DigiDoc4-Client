@@ -143,6 +143,9 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	QStringList keyUsage = cert.keyUsage().values();
 	if( !keyUsage.isEmpty() )
 		ui->addItem( tr("Key usage"), keyUsage.join( ", " ), keyUsage.join( "\n" ) );
+
+	// Disable resizing
+	ui->tblDetails->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 CertificateDetails::~CertificateDetails()
