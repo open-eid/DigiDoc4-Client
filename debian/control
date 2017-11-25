@@ -34,8 +34,9 @@ Description: Estonian digital signature application
  DigiDoc4 Client can be used to sign digitally with ID-card and Mobile-ID, 
  check the validity of digital signatures and open and save documents 
  inside the signature container. Digitally signed containers are files 
- with .bdoc or .asice extensions; read-only support is provided for older
- .ddoc format which can additionally be wrapped in .asics timestamped container.
+ with .bdoc or .asice extensions; read-only support is provided for 
+ older .ddoc format which can additionally be wrapped in .asics timestamped 
+ container.
  .
  DigiDoc4 Client enables you also to secure files for safe transfer using
  your ID-card, and decrypt secured documents addressed to you. Securing or
