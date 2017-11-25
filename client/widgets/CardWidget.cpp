@@ -40,12 +40,19 @@ CardWidget::CardWidget( const QString &cardId, QWidget *parent )
 	ui->cardCode->setFont( font );
 	ui->cardStatus->setFont( font );
 	ui->cardPhoto->init( LabelButton::None, "", CardPhoto );
+	ui->load->setFont(Styles::font(Styles::Condensed, 9));
+	ui->load->hide();
 
 	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart_green.svg", this ) );
 	cardIcon->resize( 17, 12 );
 	cardIcon->move( 164, 42 );
 
-	connect( ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked( ui->cardPhoto->pixmap() ); } );
+	connect(ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked(ui->cardPhoto->pixmap()); });
+	connect(ui->cardPhoto, &LabelButton::entered, this, [this]() { 
+		if(!ui->cardPhoto->property("PICTURE").isValid())
+			ui->load->show(); 
+		});
+	connect(ui->cardPhoto, &LabelButton::left, this, [this]() { ui->load->hide(); });
 }
 
 CardWidget::~CardWidget()
@@ -90,6 +97,7 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci)
 	cardInfo = ci;
 	ui->cardName->setText(cardInfo->fullName);
 	ui->cardCode->setText(cardInfo->id + "   |");
+	ui->load->setText(tr("LOAD"));
 	if(cardInfo->loading)
 	{
 		ui->cardStatus->setText(QString());

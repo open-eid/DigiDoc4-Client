@@ -86,11 +86,13 @@ void LabelButton::init( Style style, const QString &label, int code )
 void LabelButton::enterEvent( QEvent *ev )
 {
 	hover();
+	emit entered();
 }
 
 void LabelButton::leaveEvent( QEvent *ev )
 {
 	normal();
+	emit left();
 }
 
 void LabelButton::normal()

@@ -935,6 +935,10 @@ Learn more info here:</translation>
         <source>%1 in reader</source>
         <translation>%1 in reader</translation>
     </message>
+    <message>
+        <source>LOAD</source>
+        <translation>LOAD</translation>
+    </message>
 </context>
 
 
@@ -1323,7 +1327,7 @@ new codes.&lt;/li&gt;
     </message>
     <message>
         <source>NEW %1 CODE AGAIN</source>
-        <translation>REPEATE NEW %1 CODE</translation>
+        <translation>REPEAT NEW %1 CODE</translation>
     </message>
     <message>
         <source>PUK remaining attempts: %1</source>

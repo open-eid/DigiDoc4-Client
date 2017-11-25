@@ -68,14 +68,17 @@ background-color: #F4F5F6;
 </string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
        <number>3</number>
       </property>
       <property name="rightMargin">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
        <number>7</number>
@@ -90,7 +93,7 @@ background-color: #F4F5F6;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>6</width>
+          <width>8</width>
           <height>20</height>
          </size>
         </property>
@@ -112,7 +115,7 @@ background-color: #F4F5F6;
         </property>
         <property name="maximumSize">
          <size>
-          <width>70</width>
+          <width>74</width>
           <height>16777215</height>
          </size>
         </property>
@@ -163,6 +166,9 @@ border: none;</string>
         </property>
         <property name="text">
          <string>C:\Downloads\Leping.bdoc</string>
+        </property>
+        <property name="margin">
+         <number>5</number>
         </property>
        </widget>
       </item>
@@ -599,15 +605,15 @@ border: none;</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
+  </customwidget>
+  <customwidget>
    <class>ItemList</class>
    <extends>QWidget</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>LabelButton</class>
-   <extends>QLabel</extends>
-   <header>widgets/LabelButton.h</header>
   </customwidget>
   <customwidget>
    <class>FileList</class>

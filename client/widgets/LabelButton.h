@@ -47,6 +47,8 @@ public:
 
 signals:
 	void clicked(int code);
+	void entered();
+	void left();
 
 protected:
 	void enterEvent( QEvent *ev ) override;
