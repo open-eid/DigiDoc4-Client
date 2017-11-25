@@ -241,6 +241,7 @@ void MainWindow::buttonClicked( int button )
 					ui->retranslateUi(this);
 				}
 		);
+		connect(&dlg, &SettingsDialog::removeOldCert, this,	&MainWindow::removeOldCert);
 		dlg.exec();
 		break;
 	}

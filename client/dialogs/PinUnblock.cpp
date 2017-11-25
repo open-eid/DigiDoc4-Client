@@ -116,7 +116,11 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	ui->labelNameId->setFont( headerFont );
 	ui->cancel->setFont( condensed14 );
 	ui->unblock->setFont( condensed14 );
+#if defined(Q_OS_MAC)
+	ui->label->setFont( Styles::font( Styles::Regular, 13 ) );
+#else
 	ui->label->setFont( Styles::font( Styles::Regular, 14 ) );
+#endif
 	ui->labelPuk->setFont( Styles::font( Styles::Condensed, 12 ) );
 	ui->labelAttemptsLeft->setFont( Styles::font( Styles::Regular, 13 ) );
 	if( mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk )

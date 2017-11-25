@@ -72,6 +72,7 @@ private Q_SLOTS:
 	void savePhoto( const QPixmap *photo );
 	void showCardStatus();
 	void warningClicked(const QString &link);
+	void removeOldCert();
 
 protected:
 	void changeEvent(QEvent* event) override;

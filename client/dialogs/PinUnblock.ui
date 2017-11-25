@@ -151,8 +151,8 @@ text-align: center;</string>
     <rect>
      <x>20</x>
      <y>60</y>
-     <width>420</width>
-     <height>100</height>
+     <width>430</width>
+     <height>110</height>
     </rect>
    </property>
    <property name="font">
@@ -259,7 +259,7 @@ line-height: 16px;</string>
 border-radius: 2px;
 padding: 0px 10px;
 background-color: #ffffff;
-font-size: 14px;
+font-size: 16px;
 color: #000000;
 font-weight: 400;
 line-height: 14px;</string>
@@ -355,7 +355,7 @@ font-size: 12px;</string>
 border-radius: 2px;
 padding: 0px 10px;
 background-color: #ffffff;
-font-size: 14px;
+font-size: 16px;
 color: #000000;
 font-weight: 400;
 line-height: 14px;</string>
@@ -448,7 +448,7 @@ font-size: 12px;</string>
 border-radius: 2px;
 padding: 0px 10px;
 background-color: #ffffff;
-font-size: 14px;
+font-size: 16px;
 color: #000000;
 font-weight: 400;
 line-height: 14px;</string>
