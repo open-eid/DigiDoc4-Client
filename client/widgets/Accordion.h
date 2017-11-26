@@ -51,17 +51,14 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private Q_SLOTS:
-	void changePin1( bool isForgotPin, bool isBlockedPin );
-	void changePin2( bool isForgotPin, bool isBlockedPin );
-	void changePuk( bool isForgotPuk, bool isBlockedPin );
 	void certDetails( const QString &link );
 
 signals:
 	void checkEMail();
 	void activateEMail();
-	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePukClicked( bool isForgotPuk );
+	void changePin1Clicked(bool isForgotPin, bool isBlockedPin);
+	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
+	void changePukClicked();
 	void certDetailsClicked( const QString &link );
 	void checkOtherEID();
 

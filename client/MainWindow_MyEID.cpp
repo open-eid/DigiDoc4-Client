@@ -66,9 +66,9 @@ void MainWindow::changePin2Clicked( bool isForgotPin, bool isBlockedPin )
 		pinPukChange( type );
 }
 
-void MainWindow::changePukClicked( bool isForgotPuk )
+void MainWindow::changePukClicked()
 {
-	pinPukChange( QSmartCardData::PukType );
+	pinPukChange(QSmartCardData::PukType);
 }
 
 void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )

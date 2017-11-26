@@ -28,8 +28,8 @@ struct WarningText {
 	QString text;
 	QString details;
 	bool external;
-	QString property;
 	int page;
+	QString property;
 
 	WarningText(const QString &text, const QString &details = QString(), int page = -1, const QString &property = QString());
 	WarningText(const QString &text, const QString &details, bool external, const QString &property);
