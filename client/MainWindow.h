@@ -62,7 +62,7 @@ private Q_SLOTS:
 	void certDetailsClicked( const QString &link );
 	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePukClicked( bool isForgotPuk );
+	void changePukClicked();
 	void getEmailStatus();
 	void getOtherEID ();
 	void open(const QStringList &params, bool crypto);

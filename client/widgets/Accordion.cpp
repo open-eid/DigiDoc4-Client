@@ -54,9 +54,9 @@ void Accordion::init()
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherEID, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 
-	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1 );
-	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2 );
-	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePuk );
+	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
+	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
+	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
 
 	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails );
 	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails );
@@ -129,22 +129,6 @@ void Accordion::changeEvent(QEvent* event)
 	}
 
 	QWidget::changeEvent(event);
-}
-
-
-void Accordion::changePin1( bool isForgotPin, bool isBlockedPin )
-{
-	emit changePin1Clicked ( isForgotPin, isBlockedPin );
-}
-
-void Accordion::changePin2( bool isForgotPin, bool isBlockedPin )
-{
-	emit changePin2Clicked ( isForgotPin, isBlockedPin );
-}
-
-void Accordion::changePuk( bool isForgotPuk, bool isBlockedPin )
-{
-	emit changePukClicked ( isForgotPuk );
 }
 
 void Accordion::certDetails( const QString &link )

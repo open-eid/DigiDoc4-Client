@@ -883,14 +883,3 @@ void DdCliApplication::diagnostics(QTextStream &s) const
 	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
 }
-
-void Application::showSettings( int page, const QString &path )
-{
-/*
-	SettingsDialog *s = new SettingsDialog( page, activeWindow() );
-	s->addAction( d->closeAction );
-	s->open();
-	if( !path.isEmpty() )
-		s->activateAccessCert( path );
- */
-}
