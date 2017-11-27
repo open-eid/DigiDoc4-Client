@@ -1,0 +1,166 @@
+/*
+ * QDigiDoc4
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
+#include "FirstRun2.h"
+#include "ui_FirstRun2.h"
+#include "Styles.h"
+
+#include <QPixmap>
+#include <QSvgWidget>
+
+FirstRun2::FirstRun2(QWidget *parent) :
+	QDialog(parent),
+	ui(new Ui::FirstRun2)
+{
+	ui->setupUi(this);
+	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowModality( Qt::ApplicationModal );
+
+	auto buttonFont = Styles::font(Styles::Condensed, 14);
+	auto labelFont = Styles::font(Styles::Regular, 18);
+	auto dmLabelFont = Styles::font(Styles::Regular, 18);
+	auto regular12 = Styles::font(Styles::Regular, 12);
+	auto regular14 = Styles::font(Styles::Regular, 14);
+	auto titleFont = Styles::font(Styles::Regular, 20, QFont::DemiBold);
+
+	//	Page 1: language
+	ui->lang->setFont(Styles::font(Styles::Regular, 18));
+	ui->lang->addItem("Eesti keel");
+	ui->lang->addItem("English");
+	ui->lang->addItem("Русский язык");
+
+	ui->title->setFont(Styles::font(Styles::Regular, 20, QFont::Bold));
+	ui->welcome->setFont(titleFont);
+	ui->intro->setFont(regular14);
+	ui->langLabel->setFont(regular12);
+	ui->lang->setFont(labelFont);
+
+	ui->continueBtn->setFont(buttonFont);
+	connect(ui->continueBtn, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Intro);});
+
+	QSvgWidget* coatOfArs = new QSvgWidget(":/images/Logo_Suur.svg", ui->coatOfArms);
+	coatOfArs->show();
+	QSvgWidget* leaves = new QSvgWidget(":/images/vapilehed.svg", ui->leaves);
+	leaves->show();
+	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
+	structureFunds->show();
+
+	// Page 2: intro
+	ui->introTitle->setFont(titleFont);
+	ui->labelSign->setFont(dmLabelFont);
+	ui->labelCrypto->setFont(dmLabelFont);
+	ui->labelEid->setFont(dmLabelFont);
+	ui->signIntro->setFont(regular14);
+	ui->cryptoIntro->setFont(regular14);
+	ui->eidIntro->setFont(regular14);
+	ui->skip->setFont(regular12);
+
+	ui->viewSigning->setFont(buttonFont);
+	ui->viewEncryption->setFont(buttonFont);
+	ui->viewEid->setFont(buttonFont);
+	connect(ui->viewSigning, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
+	connect(ui->viewEncryption, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->viewEid, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
+
+	QSvgWidget* signIcon = new QSvgWidget(":/images/icon_Allkiri_hover.svg", ui->signWidget);
+	signIcon->resize(151, 131);
+	signIcon->move(0, 0);
+	signIcon->show();
+	ui->signWidget->show();
+	QSvgWidget* cryptoIcon = new QSvgWidget(":/images/icon_Krypto_hover.svg", ui->cryptoWidget);
+	cryptoIcon->resize(106, 117);
+	cryptoIcon->move(0, 0);
+	cryptoIcon->show();
+	QSvgWidget* eidIcon = new QSvgWidget(":/images/icon_Minu_eID_hover.svg", ui->eidWidget);
+	eidIcon->resize(138, 97);
+	eidIcon->move(0, 0);
+	eidIcon->show();
+
+	// Page 3: Signing
+	ui->signTitle->setFont(titleFont);
+	ui->labelSign1->setFont(dmLabelFont);
+	ui->labelSign2->setFont(dmLabelFont);
+	ui->labelSign3->setFont(dmLabelFont);
+	ui->textSign1->setFont(regular14);
+	ui->textSign2->setFont(regular14);
+	ui->textSign3->setFont(regular14);
+	ui->skip_2->setFont(regular12);
+
+	ui->next->setFont(buttonFont);
+	connect(ui->next, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+
+	QPixmap sign1 = QPixmap(":/images/intro_sign-select.png");
+	ui->signImage1->setProperty("PICTURE", sign1);
+	ui->signImage1->setPixmap(sign1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap sign2 = QPixmap(":/images/intro_sign-sign.png");
+	ui->signImage2->setProperty("PICTURE", sign2);
+	ui->signImage2->setPixmap(sign2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap sign3 = QPixmap(":/images/intro_sign-pin.png");
+	ui->signImage3->setProperty("PICTURE", sign3);
+	ui->signImage3->setPixmap(sign3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+	// Page 4: Crypto
+	ui->cryptoTitle->setFont(titleFont);
+	ui->labelCrypto1->setFont(dmLabelFont);
+	ui->labelCrypto2->setFont(dmLabelFont);
+	ui->labelCrypto3->setFont(dmLabelFont);
+	ui->textCrypto1->setFont(regular14);
+	ui->textCrypto2->setFont(regular14);
+	ui->textCrypto3->setFont(regular14);
+	ui->skip_3->setFont(regular12);
+
+	ui->next_2->setFont(buttonFont);
+	connect(ui->next_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
+
+	QPixmap crypto1 = QPixmap(":/images/intro_crypto-select.png");
+	ui->cryptoImage1->setProperty("PICTURE", crypto1);
+	ui->cryptoImage1->setPixmap(crypto1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap crypto2 = QPixmap(":/images/intro_crypto-recipient.png");
+	ui->cryptoImage2->setProperty("PICTURE", crypto2);
+	ui->cryptoImage2->setPixmap(crypto2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap crypto3 = QPixmap(":/images/intro_crypto-encrypt.png");
+	ui->cryptoImage3->setProperty("PICTURE", crypto3);
+	ui->cryptoImage3->setPixmap(crypto3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+	// Page 5: My eID
+	ui->eidTitle->setFont(titleFont);
+	ui->labelEid1->setFont(dmLabelFont);
+	ui->labelEid2->setFont(dmLabelFont);
+	ui->labelEid3->setFont(dmLabelFont);
+	ui->textEid1->setFont(regular14);
+	ui->textEid2->setFont(regular14);
+	ui->textEid3->setFont(regular14);
+
+	ui->enter->setFont(buttonFont);
+
+	QPixmap eid1 = QPixmap(":/images/intro_eid-manage.png");
+	ui->eidImage1->setProperty("PICTURE", eid1);
+	ui->eidImage1->setPixmap(eid1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap eid2 = QPixmap(":/images/intro_eid-other.png");
+	ui->eidImage2->setProperty("PICTURE", eid2);
+	ui->eidImage2->setPixmap(eid2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap eid3 = QPixmap(":/images/intro_eid-info.png");
+	ui->eidImage3->setProperty("PICTURE", eid3);
+	ui->eidImage3->setPixmap(eid3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+}
+
+FirstRun2::~FirstRun2()
+{
+	delete ui;
+}

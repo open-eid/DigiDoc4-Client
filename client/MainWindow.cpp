@@ -35,7 +35,7 @@
 #include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
-#include "dialogs/FirstRun.h"
+#include "dialogs/FirstRun2.h"
 #include "dialogs/MobileProgress.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
@@ -215,15 +215,16 @@ void MainWindow::buttonClicked( int button )
 	{
 	case HeadHelp:
 	{
-		FirstRun dlg(this);
+		FirstRun2 dlg(this);
 
+/*
 		connect(&dlg, &FirstRun::langChanged, this,
 				[this](const QString& lang )
 				{
 					qApp->loadTranslation( lang );
 					ui->retranslateUi(this);
 				}
-		);
+		);*/
 		dlg.exec();
 
 		break;
