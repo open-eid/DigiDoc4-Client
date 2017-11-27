@@ -7,11 +7,6 @@
 		<file>arrow_up_white.svg</file>
 		<file>bg_lovid.svg</file>
 		<file>digidoc_icon_128x128.png</file>
-		<file>FirstRun1.png</file>
-		<file>FirstRun2.png</file>
-		<file>FirstRunEncrypt.png</file>
-		<file>FirstRunMyEID.png</file>
-		<file>FirstRunSigning.png</file>
 		<file>icon_Abi.svg</file>
 		<file>icon_Abi_hover.svg</file>
 		<file>icon_ajatempel.svg</file>
@@ -50,7 +45,22 @@
 		<file>icon_ribbon_up.svg</file>
 		<file>icon_Seaded.svg</file>
 		<file>icon_Seaded_hover.svg</file>
+		<file>intro_crypto-select.png</file>
+		<file>intro_crypto-recipient.png</file>
+		<file>intro_crypto-encrypt.png</file>
+		<file>intro_eid-manage.png</file>
+		<file>intro_eid-other.png</file>
+		<file>intro_eid-info.png</file>
+		<file>intro_one.png</file>
+		<file>intro_sign-pin.png</file>
+		<file>intro_sign-select.png</file>
+		<file>intro_sign-sign.png</file>
+		<file>intro_three.png</file>
+		<file>intro_two.png</file>
 		<file>Logo_small.svg</file>
+		<file>Logo_Suur.svg</file>
+		<file>Struktuurifondid.svg</file>
+		<file>vapilehed.svg</file>
 		<file>wait.gif</file>
 	</qresource>
 </RCC>
