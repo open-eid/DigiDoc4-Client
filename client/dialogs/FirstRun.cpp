@@ -17,65 +17,49 @@
  *
  */
 
-
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
 #include "Styles.h"
-#include "common/Settings.h"
 
-#include <QDebug>
+#include <common/Settings.h>
+
 #include <QKeyEvent>
-#include <QLineEdit>
-
-
-bool ArrowKeyFilter::eventFilter(QObject* obj, QEvent* event)
-{
-	if (event->type()==QEvent::KeyPress)
-	{
-		QKeyEvent* key = static_cast<QKeyEvent*>(event);
-		if ( key->key()==Qt::Key_Left || key->key() == Qt::Key_Right )
-		{
-			FirstRun *dlg = qobject_cast<FirstRun*>( obj );
-			if( dlg )
-			{
-				dlg->navigate( key->key()==Qt::Key_Right );
-				return true;
-			}
-		}
-	}
-
-	return QObject::eventFilter(obj, event);
-}
-
-
+#include <QPixmap>
+#include <QSvgWidget>
 
 FirstRun::FirstRun(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::FirstRun),
-	page(Language)
+	ui(new Ui::FirstRun)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	installEventFilter( new ArrowKeyFilter );
+	auto buttonFont = Styles::font(Styles::Condensed, 14);
+	auto labelFont = Styles::font(Styles::Regular, 18);
+	auto dmLabelFont = Styles::font(Styles::Regular, 18);
+	auto regular12 = Styles::font(Styles::Regular, 12);
+	auto regular14 = Styles::font(Styles::Regular, 14);
+	auto titleFont = Styles::font(Styles::Regular, 20, QFont::DemiBold);
 
+	//	Page 1: language
+	ui->title->setFont(Styles::font(Styles::Regular, 20, QFont::Bold));
+	ui->welcome->setFont(titleFont);
+	ui->intro->setFont(regular14);
+	ui->langLabel->setFont(regular12);
+	ui->lang->setFont(labelFont);
+
+	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->lang->addItem("Eesti keel");
 	ui->lang->addItem("English");
 	ui->lang->addItem("Русский язык");
 
 	if(Settings::language() == "en")
-	{
 		ui->lang->setCurrentIndex(1);
-	}
 	else if(Settings::language() == "ru")
-	{
 		ui->lang->setCurrentIndex(2);
-	}
 	else
-	{
 		ui->lang->setCurrentIndex(0);
-	}
 
 	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
 		[this](int index)
@@ -93,172 +77,126 @@ FirstRun::FirstRun(QWidget *parent) :
 				break;
 			}
 
-            ui->retranslateUi(this);
+			ui->retranslateUi(this);
 		}
-			);
-
-
-	ui->lang->setFont(Styles::font(Styles::Regular, 18));
-	ui->continue_2->setFont(Styles::font(Styles::Condensed, 14));
-	ui->viewSigning->setFont(Styles::font(Styles::Condensed, 14));
-	ui->viewEncryption->setFont(Styles::font(Styles::Condensed, 14));
-	ui->viewEid->setFont(Styles::font(Styles::Condensed, 14));
-	ui->next->setFont(Styles::font(Styles::Condensed, 14));
-	ui->skip->setFont(Styles::font(Styles::Condensed, 12));
-
-	ui->viewSigning->hide();
-	ui->viewEncryption->hide();
-	ui->viewEid->hide();
-
-	ui->next->hide();
-	ui->skip->hide();
-
-	ui->gotoSigning->hide();
-	ui->gotoEncryption->hide();
-	ui->gotoEid->hide();
-
-	connect(ui->continue_2, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( Intro );
-			}
-	);
-
-	connect(ui->viewSigning, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( Signing );
-			}
-	);
-
-	connect(ui->viewEncryption, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( Encryption );
-			}
 		);
+	ui->continueBtn->setFont(buttonFont);
+	connect(ui->continueBtn, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Intro);});
 
-	connect(ui->viewEid, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( MyEid );
-			}
-	);
+	QSvgWidget* coatOfArs = new QSvgWidget(":/images/Logo_Suur.svg", ui->coatOfArms);
+	coatOfArs->show();
+	QSvgWidget* leaves = new QSvgWidget(":/images/vapilehed.svg", ui->leaves);
+	leaves->show();
+	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
+	structureFunds->show();
 
+	// Page 2: intro
+	ui->introTitle->setFont(titleFont);
+	ui->labelSign->setFont(dmLabelFont);
+	ui->labelCrypto->setFont(dmLabelFont);
+	ui->labelEid->setFont(dmLabelFont);
+	ui->signIntro->setFont(regular14);
+	ui->cryptoIntro->setFont(regular14);
+	ui->eidIntro->setFont(regular14);
+	ui->skip->setFont(regular12);
+	connect(ui->skip, &QPushButton::clicked, this, [this](){ emit close(); });
 
-	connect(ui->next, &QPushButton::clicked, this,
-			[this]()
-			{
-				navigate( true );
-			}
-		);
+	ui->viewSigning->setFont(buttonFont);
+	ui->viewEncryption->setFont(buttonFont);
+	ui->viewEid->setFont(buttonFont);
+	connect(ui->viewSigning, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
+	connect(ui->viewEncryption, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->viewEid, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
-	connect(ui->skip, &QPushButton::clicked, this,
-			[this]()
-			{
-				emit close();
-			}
-		);
+	QSvgWidget* signIcon = new QSvgWidget(":/images/icon_Allkiri_hover.svg", ui->signWidget);
+	signIcon->resize(150, 110);
+	signIcon->move(0, 0);
+	signIcon->show();
+	ui->signWidget->show();
+	QSvgWidget* cryptoIcon = new QSvgWidget(":/images/icon_Krypto_hover.svg", ui->cryptoWidget);
+	cryptoIcon->resize(106, 117);
+	cryptoIcon->move(0, 0);
+	cryptoIcon->show();
+	QSvgWidget* eidIcon = new QSvgWidget(":/images/icon_Minu_eID_hover.svg", ui->eidWidget);
+	eidIcon->resize(138, 97);
+	eidIcon->move(0, 0);
+	eidIcon->show();
 
-	connect(ui->gotoSigning, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( Signing );
-			}
-		);
-	connect(ui->gotoEncryption, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( Encryption );
-			}
-		);
-	connect(ui->gotoEid, &QPushButton::clicked, this,
-			[this]()
-			{
-				toPage( MyEid );
-			}
-		);
-}
+	// Page 3: Signing
+	ui->signTitle->setFont(titleFont);
+	ui->labelSign1->setFont(dmLabelFont);
+	ui->labelSign2->setFont(dmLabelFont);
+	ui->labelSign3->setFont(dmLabelFont);
+	ui->textSign1->setFont(regular14);
+	ui->textSign2->setFont(regular14);
+	ui->textSign3->setFont(regular14);
+	ui->skip_2->setFont(regular12);
+	connect(ui->skip_2, &QPushButton::clicked, this, [this](){ emit close(); });
 
-void FirstRun::toPage( View toPage )
-{
-	page = toPage;
-	if( toPage == Language )
-	{
-		ui->lang->show();
-		ui->continue_2->show();
+	ui->next->setFont(buttonFont);
+	connect(ui->next, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
 
-		ui->viewSigning->hide();
-		ui->viewEncryption->hide();
-		ui->viewEid->hide();
-		ui->next->hide();
-		ui->skip->hide();
-		ui->gotoSigning->hide();
-		ui->gotoEncryption->hide();
-		ui->gotoEid->hide();
-	
-		setStyleSheet("image: url(:/images/FirstRun1.png);");
-	}
-	else
-	{
-		ui->lang->hide();
-		ui->continue_2->hide();
+	QPixmap sign1 = QPixmap(":/images/intro_sign-select.png");
+	ui->signImage1->setProperty("PICTURE", sign1);
+	ui->signImage1->setPixmap(sign1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap sign2 = QPixmap(":/images/intro_sign-sign.png");
+	ui->signImage2->setProperty("PICTURE", sign2);
+	ui->signImage2->setPixmap(sign2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap sign3 = QPixmap(":/images/intro_sign-pin.png");
+	ui->signImage3->setProperty("PICTURE", sign3);
+	ui->signImage3->setPixmap(sign3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	connect(ui->gotoEncryption, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->gotoEid, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
-		if( toPage == Intro)
-		{
-			ui->viewSigning->show();
-			ui->viewEncryption->show();
-			ui->viewEid->show();
-			ui->skip->show();
+	// Page 4: Crypto
+	ui->cryptoTitle->setFont(titleFont);
+	ui->labelCrypto1->setFont(dmLabelFont);
+	ui->labelCrypto2->setFont(dmLabelFont);
+	ui->labelCrypto3->setFont(dmLabelFont);
+	ui->textCrypto1->setFont(regular14);
+	ui->textCrypto2->setFont(regular14);
+	ui->textCrypto3->setFont(regular14);
+	ui->skip_3->setFont(regular12);
+	connect(ui->skip_3, &QPushButton::clicked, this, [this](){ emit close(); });
 
-			ui->next->hide();
-			ui->gotoSigning->hide();
-			ui->gotoEncryption->hide();
-			ui->gotoEid->hide();
-			setStyleSheet("image: url(:/images/FirstRun2.png);");
-		}
-		else
-		{
-			ui->viewSigning->hide();
-			ui->viewEncryption->hide();
-			ui->viewEid->hide();
-			ui->next->show();
-		
-			ui->gotoSigning->show();
-			ui->gotoEncryption->show();
-			ui->gotoEid->show();
-			showDetails();
-		}
-	}
-}
+	ui->next_2->setFont(buttonFont);
+	connect(ui->next_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
-void FirstRun::showDetails()
-{
-	QString normal = "border: none; image: url(:/images/icon_dot.png);";
-	QString active = "border: none; image: url(:/images/icon_dot_active.png);";
+	QPixmap crypto1 = QPixmap(":/images/intro_crypto-select.png");
+	ui->cryptoImage1->setProperty("PICTURE", crypto1);
+	ui->cryptoImage1->setPixmap(crypto1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap crypto2 = QPixmap(":/images/intro_crypto-recipient.png");
+	ui->cryptoImage2->setProperty("PICTURE", crypto2);
+	ui->cryptoImage2->setPixmap(crypto2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap crypto3 = QPixmap(":/images/intro_crypto-encrypt.png");
+	ui->cryptoImage3->setProperty("PICTURE", crypto3);
+	ui->cryptoImage3->setPixmap(crypto3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	connect(ui->gotoSigning_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
+	connect(ui->gotoEid_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
-	ui->gotoSigning->setStyleSheet(page == Signing ? active : normal);
-	ui->gotoEncryption->setStyleSheet(page == Encryption ? active : normal);
-	ui->gotoEid->setStyleSheet(page == MyEid ? active : normal);
+	// Page 5: My eID
+	ui->eidTitle->setFont(titleFont);
+	ui->labelEid1->setFont(dmLabelFont);
+	ui->labelEid2->setFont(dmLabelFont);
+	ui->labelEid3->setFont(dmLabelFont);
+	ui->textEid1->setFont(regular14);
+	ui->textEid2->setFont(regular14);
+	ui->textEid3->setFont(regular14);
 
+	ui->enter->setFont(buttonFont);
+	connect(ui->enter, &QPushButton::clicked, this, [this](){ emit close(); });
 
-	switch (page) {
-	case Signing:
-		setStyleSheet("image: url(:/images/FirstRunSigning.png);");
-		ui->next->setText(tr("VIEW NEXT"));
-		ui->skip->show();
-		break;
-	case Encryption:
-		setStyleSheet("image: url(:/images/FirstRunEncrypt.png);");
-		ui->next->setText(tr("VIEW NEXT"));
-		ui->skip->show();
-		break;
-	default:
-		setStyleSheet("image: url(:/images/FirstRunMyEID.png);");
-		ui->next->setText(tr("ENTER THE APPLICATION"));
-		ui->skip->hide();
-		break;
-	}
+	QPixmap eid1 = QPixmap(":/images/intro_eid-manage.png");
+	ui->eidImage1->setProperty("PICTURE", eid1);
+	ui->eidImage1->setPixmap(eid1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap eid2 = QPixmap(":/images/intro_eid-other.png");
+	ui->eidImage2->setProperty("PICTURE", eid2);
+	ui->eidImage2->setPixmap(eid2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	QPixmap eid3 = QPixmap(":/images/intro_eid-info.png");
+	ui->eidImage3->setProperty("PICTURE", eid3);
+	ui->eidImage3->setPixmap(eid3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	connect(ui->gotoSigning_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
+	connect(ui->gotoEncryption_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
 }
 
 FirstRun::~FirstRun()
@@ -266,19 +204,25 @@ FirstRun::~FirstRun()
 	delete ui;
 }
 
-void FirstRun::navigate( bool forward )
+void FirstRun::keyPressEvent(QKeyEvent *event)
 {
-	if( forward )
+	int next = ui->stack->currentIndex();
+	switch(event->key())
 	{
-		if( page == MyEid )
-		{
-			emit close();
-			return;
-		}
-		toPage( static_cast<View>(page + 1) );
+	case Qt::Key_Left:
+		next = ui->stack->currentIndex() - 1;
+		if(next < Language)
+			next = Language;
+		break;
+	case Qt::Key_Right:
+		next = ui->stack->currentIndex() + 1;
+		if(next > MyEid)
+			next = MyEid;
+	default:
+		QDialog::keyPressEvent(event);
+		break;
 	}
-	else if( page != Language )
-	{
-		toPage( static_cast<View>(page - 1) );
-	}
+
+	if(next != ui->stack->currentIndex())
+		ui->stack->setCurrentIndex(next);
 }

@@ -19,24 +19,13 @@
 
 #pragma once
 
-#include <memory>
-
 #include <QDialog>
-#include <QEvent>
-#include <QPainter>
-
 
 namespace Ui {
 class FirstRun;
 }
 
-class ArrowKeyFilter : public QObject
-{
-	Q_OBJECT
-protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
-};
-
+class QKeyEvent;
 
 class FirstRun : public QDialog
 {
@@ -45,6 +34,9 @@ class FirstRun : public QDialog
 public:
 	explicit FirstRun(QWidget *parent = 0);
 	~FirstRun();
+
+protected:
+	void keyPressEvent(QKeyEvent *event);
 
 signals:
 	void langChanged(const QString& lang);
@@ -59,13 +51,6 @@ private:
 		MyEid
 	};
 
-	void showDetails();
-	void navigate( bool forward );
-	void toPage( View toPage );
-	
 	Ui::FirstRun *ui;
-
-	View page;
-
-	friend class ArrowKeyFilter;
 };
+
