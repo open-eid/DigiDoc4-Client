@@ -210,8 +210,8 @@ Media type: %3</translation>
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
     <message>
-        <source>'%1' file already in container</source>
-        <translation>'%1' file already in container</translation>
+        <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
+        <translation>Cannot add the file to the envelope. File '%1' is already in container.</translation>
     </message>
 </context>
 
@@ -2329,10 +2329,6 @@ new codes.&lt;/li&gt;
         <translation>This container is </translation>
     </message>
     <message>
-        <source>File already in container</source>
-        <translation>File already in container</translation>
-    </message>
-    <message>
         <source>Mobile number:</source>
         <translation>Mobile number:</translation>
     </message>
@@ -2408,12 +2404,6 @@ Should I keep the unsigned container or remove it?</numerusform>
 %1</source>
         <translation>Cannot add container to same container
 %1</translation>
-    </message>
-    <message>
-        <source>%1
-already in container, ovewrite?</source>
-        <translation>%1
-already in container, ovewrite?</translation>
     </message>
     <message>
         <source>Signing in process</source>

@@ -308,7 +308,7 @@ void SDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		if(fileName == from(doc->b->dataFiles().at(row)->fileName()))
 		{
-			qApp->showWarning(DocumentModel::tr("'%1' file already in container").arg(file), QString());
+			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName), QString());
 			return;
 		}
 	}
