@@ -75,6 +75,7 @@ void AddRecipients::init()
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	ui->confirm->setFont(Styles::font(Styles::Condensed, 14));
 
+	ui->confirm->setDisabled(!rightList.size());
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
 	connect(ui->leftPane, &ItemList::search, this, &AddRecipients::search);
@@ -168,6 +169,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd)
 	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
 	leftItem->disable(true);
 	leftItem->showButton(AddressItem::Added);
+	ui->confirm->setDisabled(!rightList.size());
 }
 
 void AddRecipients::addAllRecipientToRightPane()
@@ -179,6 +181,7 @@ void AddRecipients::addAllRecipientToRightPane()
 			addRecipientToRightPane(it.value());
 		}
 	}
+	ui->confirm->setDisabled(!rightList.size());
 }
 
 void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
@@ -193,6 +196,7 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 		it.value()->showButton(AddressItem::Add);
 		rightList.removeAll(friendlyName);
 	}
+	ui->confirm->setDisabled(!rightList.size());
 }
 
 void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
@@ -340,6 +344,9 @@ int AddRecipients::exec()
 
 void AddRecipients::search(const QString &term)
 {
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	ui->confirm->setDefault(false);
+	ui->confirm->setAutoDefault(false);
 	QRegExp isDigit( "\\d*" );
 
 	if( isDigit.exactMatch(term) && ( term.size() == 11 || term.size() == 8 ) )
@@ -359,6 +366,7 @@ void AddRecipients::search(const QString &term)
 
 void AddRecipients::showError( const QString &msg, const QString &details )
 {
+	QApplication::restoreOverrideCursor();
 	// disableSearch(false);
 	WarningDialog b(msg, details, this);
 	b.exec();
@@ -396,4 +404,5 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 			addRecipientToLeftPane(k);
 		}
 	}
+	QApplication::restoreOverrideCursor();
 }

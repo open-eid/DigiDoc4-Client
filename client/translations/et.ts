@@ -991,11 +991,11 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc kliendiga saad dokumentidele anda ID-kaardi ja Mobiil-ID digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada konteineris sisalduvaid dokumente.</translation>
+        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada konteineris sisalduvaid dokumente.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
-        <translation>DigiDoc kliendiga saad ka andmeid salastada (krüpteerida) ja salastatud andmeid muuta uuesti kõigile loetavaks. Krüpteerimiseks kasutatakse ID-kaardi isikutuvastamise sertifikaati.</translation>
+        <translation>DigiDoc rakendusega saad ka andmeid salastada (krüpteerida) ja salastatud andmeid muuta uuesti kõigile loetavaks. Saad saata konfidentsiaalseid dokumente (soovitud inimesele).</translation>
     </message>
     <message>
         <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
@@ -1023,11 +1023,11 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid salvestada ID-kaardi või Mobiil-ID-ga. Võid salvestada konterineri ka allkirjasta-mata.</translation>
+        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid salvestada ID-kaardi või Mobiil-ID-ga. Võid salvestada konterineri ka allkirjasta&#173;mata.</translation>
     </message>
     <message>
         <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>Sisestades PIN2 koodi annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja-ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
+        <translation>Sisestades PIN2 koodi annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja&#173;ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
@@ -1043,15 +1043,15 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
-        <translation>Krüpteerimiseks peab olema valitud adressaat. Lohista krüpteeritav fail oma arvutist DigiDoc rakendusse või vali fail kettalt. Võid lohistada või valida ka mitu faili korraga.</translation>
+        <translation>Lohista krüpteeritav fail oma arvutist DigiDoc rakendusse või vali fail kettalt. Võid lohistada või valida ka mitu faili korraga.</translation>
     </message>
     <message>
         <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
-        <translation>Vali inimesed, kes saavad faili avada. Adressaa-tide listi oled Sina juba lisatud, et saaksid ka ise oma krüpteeritud faili avada.</translation>
+        <translation>Vali inimesed, kes saavad faili avada. Adressaa&#173;tide listi oled Sina juba lisatud, et saaksid ka ise oma krüpteeritud faili avada.</translation>
     </message>
     <message>
         <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
-        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri-tud. Sul on nüüd võimalik avada konterineri asu-koht või edastada fail e-postiga.</translation>
+        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri&#173;tud. Sul on nüüd võimalik avada krüpteeritud faili või edastada fail e-postiga.</translation>
     </message>
     <message>
         <source>How to manage your electronic identities?</source>
@@ -1071,7 +1071,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
-        <translation>“Minu eID” alt leiad oma PIN1, PIN2 ja PUK koodi muutmise võimaluse ning sertifikaatide detail-andmed. Siin saad ka oma blokeeritud PIN-e PUK koodi abil lukust lahti teha.</translation>
+        <translation>“Minu eID” alt leiad oma PIN1, PIN2 ja PUK koodi muutmise võimaluse ning sertifikaatide detail&#173;andmed. Siin saad ka oma blokeeritud PIN-e PUK koodi abil lukust lahti teha.</translation>
     </message>
     <message>
         <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
