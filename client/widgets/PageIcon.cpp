@@ -77,7 +77,7 @@ void PageIcon::init( Pages type, QWidget *shadow, bool selected )
 		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 34, 38 );
 		icon->move( 38, 26 );	
-		ui->label->setText( "CRYPTO" );
+		ui->label->setText( tr("CRYPTO") );
 		break;
 	case MyEid:
 		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
@@ -85,7 +85,7 @@ void PageIcon::init( Pages type, QWidget *shadow, bool selected )
 		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 44, 31 );
 		icon->move( 33, 28 );	
-		ui->label->setText( "My eID" );
+		ui->label->setText( tr("My eID") );
 		break;
 	default:
 		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };

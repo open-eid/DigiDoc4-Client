@@ -441,7 +441,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Add addressee</source>
-        <translation>+ ДОБАВИТЬ АДРЕСА</translation>
+        <translation>+ ДОБАВИТЬ ПОЛУЧАТЕЛЕЙ</translation>
     </message>
     <message>
         <source>Add all</source>
@@ -937,6 +937,14 @@ Learn more info here:</source>
     <name>FirstRun</name>
 
     <message>
+        <source>Welcome to the Estonian eID application DigiDoc!</source>
+        <translation>Добро пожаловать в Эстонское приложение eID DigiDoc!</translation>
+    </message>
+    <message>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <translation>DigiDoc создан для управления эстонскими eID и является официальным приложением для цифровой подписи и шифрования</translation>
+    </message>
+    <message>
         <source>CONTINUE</source>
         <translation>ПРОДОЛЖИТЬ</translation>
     </message>
@@ -957,116 +965,112 @@ Learn more info here:</source>
         <translation>ВОЙТИ В ПРОГРАММУ</translation>
     </message>
     <message>
-        <source>Welcome to the Estonian eID application DigiDoc!</source>
-        <translation>Tere tulemast eesti eID rakenduse DigiDoc kasutajaks!</translation>
-    </message>
-    <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
-        <translation>DigiDoc on loodud eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks</translation>
-    </message>
-    <message>
         <source>The DigiDoc application allows you to:</source>
-        <translation>DigiDoc rakendus võimaldab sul:</translation>
+        <translation>DigiDoc приложение позволяет Вам:</translation>
     </message>
     <message>
         <source>Sign documents</source>
-        <translation>Dokumente allkirjastada</translation>
+        <translation>Подписывать документы</translation>
+    </message>
+    <message>
+        <source>Encrypt documents</source>
+        <translation>Шифровать документы</translation>
     </message>
     <message>
         <source>Manage your eID-s</source>
-        <translation>Oma eID-sid hallata</translation>
+        <translation>Управлять своими eID</translation>
     </message>
     <message>
         <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc kliendiga saad dokumentidele anda ID-kaardi ja Mobiil-ID digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada konteineris sisalduvaid dokumente.</translation>
+        <translation>DigiDoc приложение используется для цифро- вой подписи с помощью ID-карты и Мobiil-ID, проверки подлинности цифровых подписей, открытия и сохранения документов.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
-        <translation>DigiDoc kliendiga saad ka andmeid salastada (krüpteerida) ja salastatud andmeid muuta uuesti kõigile loetavaks. Krüpteerimiseks kasutatakse ID-kaardi isikutuvastamise sertifikaati.</translation>
+        <translation>DigiDoc приложение может использоваться для шифрования и расшифровки данных. Для шифрования программа использует сертификат идентификации ID-карты.</translation>
     </message>
     <message>
         <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
-        <translation>Halda oma ID-kaardi PIN ja PUK koode ning teosta sertifikaatide uuendusi. Vaata ja halda oma teisi elektroonilisi identiteete.</translation>
+        <translation>Управлять PIN/PUK кодами Вашей ID-карты и обновлением сертификатов. Просматривать и управлять другими Вашими электронными удостоверениями (eID).</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
-        <translation>Kuidas anda digitaalset allkirja?</translation>
+        <translation>Как подписывать документ в цифровом виде?</translation>
     </message>
     <message>
         <source>Select file</source>
-        <translation>Vali fail</translation>
+        <translation>Выберите файл</translation>
     </message>
     <message>
         <source>Choose the signing method</source>
-        <translation>Vali allkirjastamise viis</translation>
+        <translation>Выберите метод подписи</translation>
     </message>
     <message>
         <source>Enter PIN2</source>
-        <translation>Sisesta PIN2</translation>
+        <translation>Введите PIN2</translation>
     </message>
     <message>
         <source>To sign the file, drag it from your computer to the DigiDoc application or click the "... or load a file from disk" button. You can drag or select multiple files at a time.</source>
-        <translation>Faili allkirjastamiseks lohista fail oma arvutist DigiDoc rakendusse või vajuta nupul “… või vali fail kettalt”. Võid lohistada või valida ka mitu faili korraga.</translation>
+        <translation>Чтобы подписать файл, перетащите его из компьютера в приложение DigiDoc или нажмите кнопку «... или загрузите файл с диска». Вы можете одновременно пере- таскивать или выбирать несколько файлов.</translation>
     </message>
     <message>
         <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid salvestada ID-kaardi või Mobiil-ID-ga. Võid salvestada konterineri ka allkirjasta-mata.</translation>
+        <translation>После того, как файлы были выбраны, проверьте их и решите, хотите ли вы подписывать их ID-картой или Mobiil-ID. Вы также можете сохранить файлы в контейнере не подписывая его.</translation>
     </message>
     <message>
         <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>Sisestades PIN2 koodi annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja-ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
+        <translation>Введя PIN2 код, вы подписываете документ цифровой подписью, которая по закону равносильна подписи «от руки». PIN2 код Вы найдете в конверте, который прилагается к Вашей ID-карте или Mobiili-ID.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
-        <translation>Kuidas krüpteerida?</translation>
+        <translation>Как зашифровать документы?</translation>
     </message>
     <message>
         <source>Add recipients</source>
-        <translation>Lisa adressaadid</translation>
+        <translation>Добавьте получателей</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <translation>Krüpteeri</translation>
+        <translation>Зашифровать</translation>
     </message>
     <message>
         <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
-        <translation>Krüpteerimiseks peab olema valitud adressaat. Lohista krüpteeritav fail oma arvutist DigiDoc rakendusse või vali fail kettalt. Võid lohistada või valida ka mitu faili korraga.</translation>
+        <translation>Для шифрования данных выберите получателя. Перетащите файл, который нужно зашифро- вать, с вашего компьютера в приложение DigiDoc или выберите файл с диска. Одновре- менно можно выбирать несколько файлов.</translation>
     </message>
     <message>
         <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
-        <translation>Vali inimesed, kes saavad faili avada. Adressaa-tide listi oled Sina juba lisatud, et saaksid ka ise oma krüpteeritud faili avada.</translation>
+        <translation>Выберите людей, которые смогут открыть контейнер. Вы добавляетесь в список получателей по умолчанию, чтобы вы также могли открыть свой зашифрованный контейнер.</translation>
     </message>
     <message>
         <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
-        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri-tud. Sul on nüüd võimalik avada konterineri asu-koht või edastada fail e-postiga.</translation>
+        <translation>Нажмите кнопку «Зашифровать», и контейнер с файлами будет зашифрован. Теперь у вас есть возможность открыть папку с контейнером или переслать его по электронной почте.</translation>
     </message>
     <message>
         <source>How to manage your electronic identities?</source>
-        <translation>Kuidas hallata oma eID-sid?</translation>
+        <translation>Как управлять своими eID?</translation>
     </message>
     <message>
         <source>Manage PIN and PUK codes</source>
-        <translation>Halda PIN ja PUK koode</translation>
+        <translation>Управление PIN и PUK кодами</translation>
     </message>
     <message>
         <source>Manage Mobile-ID or Digi-ID</source>
-        <translation>Halda Mobiil-IDd või Digi-IDd</translation>
+        <translation>Управление Mobiil-ID и Digi-ID</translation>
     </message>
     <message>
         <source>Check personal data</source>
-        <translation>Kontrolli isikuandmeid</translation>
+        <translation>Проверка личных данных</translation>
     </message>
     <message>
         <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
-        <translation>“Minu eID” alt leiad oma PIN1, PIN2 ja PUK koodi muutmise võimaluse ning sertifikaatide detail-andmed. Siin saad ka oma blokeeritud PIN-e PUK koodi abil lukust lahti teha.</translation>
+        <translation>В «Мой eID» можно изменить свои PIN1, PIN2 и PUK, и увидеть данные сертификатов. Также можно разблокировать PUK-кодом заблокированный PIN-код.</translation>
     </message>
     <message>
         <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
-        <translation>Mobiil-ID ja Digi-ID andmete vaatamiseks pead esmalt sisestama PIN1 koodi. Siit saad infot nende sertifikaatide kehtivuse kohta.</translation>
+        <translation>Чтобы просмотреть информацию о Mobiil-ID и Digi-ID, вы должны сначала ввести PIN1 код. Вам будут показаны данные о действительности этих сертификатов.</translation>
     </message>
     <message>
         <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
-        <translation>“Minu eID” annab ka hea ülevaate oma kontaktandmetest ning pakub võimaluse oma @eesti.ee e-posti suunata.</translation>
+        <translation>«Мой eID» дает хороший обзор вашей контактной информации и возможность переадресации электронной почты @eesti.ee на Ваш электронный адрес.</translation>
     </message>
 </context>
 
@@ -2379,6 +2383,42 @@ Should I keep the unsigned container or remove it?</source>
     <message>
         <source>Empty container</source>
         <translation>Пустой контейнер</translation>
+    </message>
+    <message>
+        <source>No keys specified</source>
+        <translation>Не выбран ни один ключ</translation>
+    </message>
+    <message>
+        <source>Container is encrypted</source>
+        <translation>Контейнер зашифрован</translation>
+    </message>
+    <message>
+        <source>Document not open</source>
+        <translation>Документ не открыт</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Неудачное сохранение файла</translation>
+    </message>
+    <message>
+        <source>Failed to create temporary files&lt;br /&gt;%1</source>
+        <translation>Неудачное создание временных файлов&lt;br /&gt;%1</translation>
+    </message>
+    <message>
+        <source>Error parsing document</source>
+        <translation>Ошибка анализа документа</translation>
+    </message>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Key already exists</source>
+        <translation>Адресат уже добавлен</translation>
+    </message>
+    <message>
+        <source>You do not have the key to decrypt this document</source>
+        <translation>У вас отсутствует ключ для расшифровки документа</translation>
     </message>
     <message>
         <source>Cards</source>
