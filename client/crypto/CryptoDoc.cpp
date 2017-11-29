@@ -578,7 +578,7 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 		qDebug() << containerFile.name << " vs " << file;
 		if(containerFile.name == fileName)
 		{
-			d->setLastError(DocumentModel::tr("'%1' file already in container").arg(file));
+			d->setLastError(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
 			return;
 		}
 	}

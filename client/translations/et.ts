@@ -210,8 +210,8 @@ Tüüp: %3</translation>
         <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
     </message>
     <message>
-        <source>'%1' file already in container</source>
-        <translation>'%1' fail on juba konteineris</translation>
+        <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
+        <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud '%1' on juba konteineris olemas.</translation>
     </message>
 </context>
 
@@ -2302,10 +2302,6 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <translation>See ümbrik on</translation>
     </message>
     <message>
-        <source>File already in container</source>
-        <translation>Fail on juba ümbrikus</translation>
-    </message>
-    <message>
         <source>Mobile number:</source>
         <translation>Telefoninumber:</translation>
     </message>
@@ -2377,12 +2373,6 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
 %1</source>
         <translation>Konteineri lisamine samasse konteinerisse ebaõnnestus
 %1</translation>
-    </message>
-    <message>
-        <source>%1
-already in container, ovewrite?</source>
-        <translation>%1
-on juba ümbrikus. Kas kirjutan üle?</translation>
     </message>
     <message>
         <source>Signing in process</source>

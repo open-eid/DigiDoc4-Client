@@ -210,8 +210,8 @@ Media type: %3</source>
         <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
     </message>
     <message>
-        <source>'%1' file already in container</source>
-        <translation>'%1' файл  уже в контейнере</translation>
+        <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
+        <translation>Невозможно добавить файл в контейнер. Файл '%1' уже в контейнере.</translation>
     </message>
 </context>
 
@@ -2193,10 +2193,6 @@ PUK кодом.&lt;/li&gt;
         <translation>Добавить подпись</translation>
     </message>
     <message>
-        <source>File already in container</source>
-        <translation>Файл уже в контейнере</translation>
-    </message>
-    <message>
         <source>Save container</source>
         <translation>Сохранить контейнер</translation>
     </message>
@@ -2367,12 +2363,6 @@ Should I keep the unsigned container or remove it?</source>
 %1</source>
         <translation>Невозможно добавить контейнер в тот же контейнер
 %1</translation>
-    </message>
-    <message>
-        <source>%1
-already in container, ovewrite?</source>
-        <translation>%1
-уже в контейнере, переписать?</translation>
     </message>
     <message>
         <source>Signing in process</source>
