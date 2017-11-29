@@ -982,7 +982,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc приложение используется для цифро- вой подписи с помощью ID-карты и Мobiil-ID, проверки подлинности цифровых подписей, открытия и сохранения документов.</translation>
+        <translation>DigiDoc приложение используется для цифро&#173;вой подписи с помощью ID-карты и Мobiil-ID, проверки подлинности цифровых подписей, открытия и сохранения документов.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
@@ -1010,7 +1010,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>To sign the file, drag it from your computer to the DigiDoc application or click the "... or load a file from disk" button. You can drag or select multiple files at a time.</source>
-        <translation>Чтобы подписать файл, перетащите его из компьютера в приложение DigiDoc или нажмите кнопку «... или загрузите файл с диска». Вы можете одновременно пере- таскивать или выбирать несколько файлов.</translation>
+        <translation>Чтобы подписать файл, перетащите его из компьютера в приложение DigiDoc или нажмите кнопку «... или загрузите файл с диска». Вы можете одновременно пере&#173;таскивать или выбирать несколько файлов.</translation>
     </message>
     <message>
         <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
@@ -1034,7 +1034,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
-        <translation>Для шифрования данных выберите получателя. Перетащите файл, который нужно зашифро- вать, с вашего компьютера в приложение DigiDoc или выберите файл с диска. Одновре- менно можно выбирать несколько файлов.</translation>
+        <translation>Для шифрования данных выберите получателя. Перетащите файл, который нужно зашифро&#173;вать, с вашего компьютера в приложение DigiDoc или выберите файл с диска. Одновре&#173;менно можно выбирать несколько файлов.</translation>
     </message>
     <message>
         <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
@@ -2010,7 +2010,7 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>Added</source>
-        <translation>Добавленный</translation>
+        <translation>Добавлен</translation>
     </message>
 
     <message>
