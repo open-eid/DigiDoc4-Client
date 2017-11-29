@@ -199,9 +199,9 @@ QPushButton:disabled {
     <widget class="QLabel" name="welcome">
      <property name="geometry">
       <rect>
-       <x>262</x>
+       <x>210</x>
        <y>276</y>
-       <width>500</width>
+       <width>620</width>
        <height>24</height>
       </rect>
      </property>
@@ -713,9 +713,9 @@ QPushButton:disabled {
     <widget class="QLabel" name="introTitle">
      <property name="geometry">
       <rect>
-       <x>338</x>
+       <x>270</x>
        <y>50</y>
-       <width>348</width>
+       <width>500</width>
        <height>24</height>
       </rect>
      </property>
@@ -759,9 +759,9 @@ color: #041E42;</string>
     <widget class="QLabel" name="signTitle">
      <property name="geometry">
       <rect>
-       <x>362</x>
+       <x>260</x>
        <y>50</y>
-       <width>300</width>
+       <width>500</width>
        <height>24</height>
       </rect>
      </property>
@@ -1627,9 +1627,9 @@ QPushButton:disabled {
     <widget class="QLabel" name="cryptoTitle">
      <property name="geometry">
       <rect>
-       <x>384</x>
+       <x>270</x>
        <y>50</y>
-       <width>256</width>
+       <width>500</width>
        <height>24</height>
       </rect>
      </property>
@@ -1799,7 +1799,7 @@ image: url(:/images/icon_dot_active.png);</string>
       <rect>
        <x>30</x>
        <y>345</y>
-       <width>258</width>
+       <width>300</width>
        <height>21</height>
       </rect>
      </property>
@@ -1822,7 +1822,7 @@ color: #041E42;</string>
       <rect>
        <x>363</x>
        <y>345</y>
-       <width>258</width>
+       <width>300</width>
        <height>21</height>
       </rect>
      </property>
@@ -1845,7 +1845,7 @@ color: #041E42;</string>
       <rect>
        <x>696</x>
        <y>345</y>
-       <width>258</width>
+       <width>280</width>
        <height>21</height>
       </rect>
      </property>
@@ -2002,9 +2002,9 @@ QPushButton:disabled {
     <widget class="QLabel" name="eidTitle">
      <property name="geometry">
       <rect>
-       <x>312</x>
+       <x>220</x>
        <y>50</y>
-       <width>400</width>
+       <width>600</width>
        <height>24</height>
       </rect>
      </property>

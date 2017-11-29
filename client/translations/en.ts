@@ -981,7 +981,11 @@ Learn more info here:</translation>
         <source>Sign documents</source>
         <translation>Sign documents</translation>
     </message>
-    <message>
+     <message>
+        <source>Encrypt documents</source>
+        <translation>Encrypt documents</translation>
+    </message>
+   <message>
         <source>Manage your eID-s</source>
         <translation>Manage your eID-s</translation>
     </message>
@@ -2430,6 +2434,42 @@ already in container, ovewrite?</translation>
     <message>
         <source>Empty container</source>
         <translation>Empty container</translation>
+    </message>
+    <message>
+        <source>No keys specified</source>
+        <translation>No keys specified</translation>
+    </message>
+    <message>
+        <source>Container is encrypted</source>
+        <translation>Container is encrypted</translation>
+    </message>
+    <message>
+        <source>Document not open</source>
+        <translation>Document not open</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Failed to save file</translation>
+    </message>
+    <message>
+        <source>Failed to create temporary files&lt;br /&gt;%1</source>
+        <translation>Failed to create temporary files&lt;br /&gt;%1</translation>
+    </message>
+    <message>
+        <source>Error parsing document</source>
+        <translation>Error parsing document</translation>
+    </message>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Failed to save file &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Key already exists</source>
+        <translation>Key already exists</translation>
+    </message>
+    <message>
+        <source>You do not have the key to decrypt this document</source>
+        <translation>You do not have the key to decrypt this document</translation>
     </message>
     <message>
         <source>Cards</source>
