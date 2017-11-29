@@ -572,7 +572,7 @@ color: #041E42;</string>
        <x>30</x>
        <y>340</y>
        <width>298</width>
-       <height>64</height>
+       <height>70</height>
       </rect>
      </property>
      <property name="font">
@@ -602,7 +602,7 @@ line-height: 16px;</string>
        <x>363</x>
        <y>340</y>
        <width>298</width>
-       <height>64</height>
+       <height>70</height>
       </rect>
      </property>
      <property name="font">

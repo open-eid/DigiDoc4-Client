@@ -995,7 +995,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
-        <translation>DigiDoc rakendusega saad ka andmeid salastada (krüpteerida) ja salastatud andmeid muuta uuesti kõigile loetavaks. Saad saata konfidentsiaalseid dokumente (soovitud inimesele).</translation>
+        <translation>DigiDoc rakendusega saad ka andmeid salasta&#173;da ja krüpteeritud andmeid muuta uuesti kõigile loetavaks. Salastatud konfidentsiaalseid doku&#173;mente saavad lugeda ainult soovitud inimesed.</translation>
     </message>
     <message>
         <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
@@ -1051,7 +1051,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
-        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri&#173;tud. Sul on nüüd võimalik avada krüpteeritud faili või edastada fail e-postiga.</translation>
+        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri&#173;tud. Sul on nüüd võimalik avada krüpteeritud faili asu&#173;koht või edastada fail e-postiga.</translation>
     </message>
     <message>
         <source>How to manage your electronic identities?</source>
