@@ -419,10 +419,14 @@ QScrollBar::handle:vertical{
 	border-radius: 2px;
 	height: 145px;
 }
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-	border: none;
-	background: #FFFFFF;
- }</string>
+QScrollBar::add-line:vertical {
+      border: none;
+      background: none;
+}
+QScrollBar::sub-line:vertical {
+      border: none;
+      background: none;
+}</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
