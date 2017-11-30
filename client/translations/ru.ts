@@ -1286,7 +1286,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Для использования сертификата цифровой подписи введите PIN2 с клавиатуры считывателя</translation>
+        <translation>Для использования сертификата цифровой подписи введите PIN2&lt;br/&gt;с клавиатуры считывателя.</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2</source>
@@ -1298,7 +1298,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Для использования сертификата идентификации введите PIN1 с клавиатуры считывателя</translation>
+        <translation>Для использования сертификата идентификации введите PIN1&lt;br/&gt;с клавиатуры считывателя.</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1</source>
@@ -1403,7 +1403,7 @@ PUK кодом.&lt;/li&gt;
 3 раза подряд.&lt;/li&gt;
 &lt;li&gt;Если после смены PUK код забывается и сетрификат&lt;br&gt;
 блокируется из-за неверно введённых PIN1 или PIN2, то&lt;br&gt;
-единственной возможностью восстановить работо-&lt;br&gt;
+единственной возможностью восстановить работо&#173;&lt;br&gt;
 способность ID-карты, это обратиться в &lt;u&gt;бюро обслуживания.&lt;/u&gt;&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
@@ -2616,11 +2616,11 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Ввели неверный PIN код, прервали введение PIN кода, возникли проблемы с сертификатами или отсутствует поддержка ID- карты в браузере.</translation>
+        <translation>Ввели неверный PIN код, прервали введение PIN кода, возникли проблемы с сертификатами или отсутствует поддержка ID-карты в браузере.</translation>
     </message>
     <message>
         <source>ID-card certificate is not valid.</source>
-        <translation>Сертификат ID- карты недействителен.</translation>
+        <translation>Сертификат ID-карты недействителен.</translation>
     </message>
     <message>
         <source>Entrance is permitted only with Estonian personal code.</source>

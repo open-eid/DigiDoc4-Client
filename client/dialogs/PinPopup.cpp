@@ -91,7 +91,6 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 		else if( token & TokenData::PinCountLow )
 			text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
 
-		ui->labelNameId->setText( QString( "<b>%1</b>" ).arg( title ) );
 		if( flags & PinDialog::Pin2Type )
 		{
 			QString t = flags & PinDialog::PinpadFlag ?
@@ -109,6 +108,7 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 			regexp.setPattern( "\\d{4,12}" );
 		}
 	}
+	ui->labelNameId->setText( QString( "<b>%1</b>" ).arg( title ) );
 	ui->label->setText( text );
 	Common::setAccessibleName( ui->label );
 
