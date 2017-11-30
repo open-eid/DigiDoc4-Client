@@ -801,10 +801,16 @@ void Application::showClient(const QStringList &params, bool crypto)
 		if( settings.value("showIntro", true).toBool() )
 		{
 			FirstRun dlg;
+			connect(&dlg, &FirstRun::langChanged, this,
+					[this](const QString& lang )
+					{
+						loadTranslation( lang );
+					}
+			);
 			dlg.exec();
 			settings.setValue( "showIntro", false ); 
 		}
-	
+
 		w = new MainWindow();
 	}
 	if( !params.isEmpty() )

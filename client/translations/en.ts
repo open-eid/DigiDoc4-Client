@@ -2640,7 +2640,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>New %1 codes doesn&apos;t match</source>
-        <translation>New %1 codes doesn&apos;t match</translation>
+        <translation>New %1 codes don&apos;t match</translation>
     </message>
     <message>
         <source>%1 timeout</source>
