@@ -241,7 +241,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 			clearWarning(UPDATE_CERT_WARNING);
 		break;
 	case QSmartCard::DifferentError:
-		showNotification( QString("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
+		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
 	case QSmartCard::LenghtError:
 		switch( type )
 		{
