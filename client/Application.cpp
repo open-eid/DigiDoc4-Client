@@ -264,9 +264,6 @@ Application::Application( int &argc, char **argv )
 	: Common( argc, argv, APP, ":/images/digidoc_icon_128x128.png" )
 	, d( new ApplicationPrivate )
 {
-	if(isCrashReport())
-		return;
-
 	QStringList args = arguments();
 	args.removeFirst();
 #ifndef Q_OS_MAC

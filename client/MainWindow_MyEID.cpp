@@ -269,7 +269,7 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
 	QString textColor = isSuccess ? "#ffffff" : "#353739";
 	QString bkColor = isSuccess ? "#8CC368" : "#F8DDA7";
-	int displayTime = isSuccess ? 2000 : 3000;
+	int displayTime = isSuccess ? 2000 : 6000;
 
 	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
 	notification->start( msg, 750, displayTime, 600 );

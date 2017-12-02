@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>435</width>
-    <height>318</height>
+    <height>333</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,7 +27,7 @@ background-color: #FFFFFF;</string>
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="processPage">
       <layout class="QVBoxLayout" name="processPageLayout" stretch="0,0,0,1">
@@ -71,6 +71,34 @@ background-color: #FFFFFF;</string>
        </item>
        <item>
         <widget class="QPlainTextEdit" name="log">
+         <property name="styleSheet">
+          <string notr="true">QPlainTextEdit {
+	border: 1px solid #DEE4E9;
+	border-radius: 2px;
+	background-color: #FFFFFF;
+}
+QScrollBar {
+	width: 10px;
+	padding: 5px 5px 5px 0;
+	margin: 2px 0px 2px 0;
+	border: none;
+	background: #FFFFFF;
+}
+QScrollBar::handle:vertical{
+	background-color: #DEE4E9;
+	margin: 0 0 0 0;
+	border-radius: 2px;
+	height: 145px;
+}
+QScrollBar::add-line:vertical {
+      border: none;
+      background: none;
+}
+QScrollBar::sub-line:vertical {
+      border: none;
+      background: none;
+}</string>
+         </property>
          <property name="undoRedoEnabled">
           <bool>false</bool>
          </property>
@@ -145,13 +173,13 @@ font-weight: 700;
          <property name="minimumSize">
           <size>
            <width>400</width>
-           <height>180</height>
+           <height>189</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>400</width>
-           <height>180</height>
+           <height>189</height>
           </size>
          </property>
          <property name="wordWrap">
