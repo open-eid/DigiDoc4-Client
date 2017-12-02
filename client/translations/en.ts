@@ -2202,7 +2202,7 @@ new codes.&lt;/li&gt;
 
     <message>
         <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</translation>
+        <translation>&lt;b&gt;Your ID card certificates need to be updated.&lt;/b&gt; Updating takes ca 2-10 minutes and requires an active internet connection. Do not remove the ID card from the smartcard reader until the update is complete.</translation>
     </message>
     <message>
         <source>Update</source>

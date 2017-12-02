@@ -2179,7 +2179,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
 
     <message>
         <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>Kaardi sertifikaadid vajavad uuendamist. Uuendamine võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast enne uuenduse lõppu välja võtta.</translation>
+        <translation>&lt;b&gt;Kaardi sertifikaadid vajavad uuendamist.&lt;/b&gt; Uuendamise protseduur võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast välja võtta enne uuenduse lõppu.</translation>
     </message>
     <message>
         <source>Update</source>
