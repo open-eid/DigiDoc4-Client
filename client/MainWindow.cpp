@@ -963,16 +963,7 @@ void MainWindow::showCardStatus()
 		ui->infoStack->update( t );
 		ui->accordion->updateInfo( smartcard );
 		ui->myEid->invalidIcon( !t.authCert().isValid() || !t.signCert().isValid() );
-		ui->myEid->warningIcon(
-				t.retryCount( QSmartCardData::Pin1Type ) == 0 ||
-				t.retryCount( QSmartCardData::Pin2Type ) == 0 ||
-				t.retryCount( QSmartCardData::PukType ) == 0 );
-
-		if(isUpdateCertificateNeeded())
-		{
-			ui->myEid->invalidIcon(true);
-			showUpdateCertWarning();
-		}
+		updateCardWarnings();
 		showIdCardAlerts( t );
 		showPinBlockedWarning( t );
 	}
@@ -1207,6 +1198,7 @@ void MainWindow::showUpdateCertWarning()
 			return;
 	}
 
+	emit ui->accordion->showCertWarnings();
 	showWarning(WarningText(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
 		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")),
 		false, UPDATE_CERT_WARNING));

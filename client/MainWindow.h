@@ -132,6 +132,7 @@ private:
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
+	void updateCardWarnings();
 	void updateCertificate();
 	void updateRibbon(int page, bool expanded);
 	void updateWarnings();

@@ -193,6 +193,8 @@ void PageIcon::updateSelection(const Style &style)
 
 void PageIcon::warningIcon( bool show )
 {
-	if( show ) orangeIcon->show ();
-	else orangeIcon->hide ();
+	if(!invalid && show)
+		orangeIcon->show();
+	else
+		orangeIcon->hide();
 }
