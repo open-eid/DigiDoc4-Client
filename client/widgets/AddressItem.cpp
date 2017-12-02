@@ -22,7 +22,6 @@
 
 #include "Styles.h"
 #include "dialogs/KeyDialog.h"
-#include "effects/ButtonHoverFilter.h"
 
 #include <common/SslCertificate.h>
 
@@ -61,9 +60,11 @@ AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
 	ui->name->setFont(nameFont);
 	nameMetrics.reset(new QFontMetrics(nameFont));
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
-	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+
+	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
+	ui->remove->init(LabelButton::White, "", 0);
 	connect(ui->add, &QToolButton::clicked, [this](){ emit add(this);});
-	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
+	connect(ui->remove, &LabelButton::clicked, [this](){ emit remove(this);});
 
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	ui->added->setFont(Styles::font(Styles::Condensed, 12));

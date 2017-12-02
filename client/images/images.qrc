@@ -24,6 +24,7 @@
 		<file>icon_dot_active.png</file>
 		<file>icon_download_hover.svg</file>
 		<file>icon_download.svg</file>
+		<file>icon_download_pressed.svg</file>
 		<file>icon_Edit_hover.svg</file>
 		<file>icon_Edit_pressed.svg</file>
 		<file>icon_Edit.svg</file>
@@ -41,6 +42,7 @@
 		<file>icon_radio_checked.png</file>
 		<file>icon_remove_hover.svg</file>
 		<file>icon_remove.svg</file>
+		<file>icon_remove_pressed.svg</file>
 		<file>icon_ribbon_down.svg</file>
 		<file>icon_ribbon_up.svg</file>
 		<file>icon_Seaded.svg</file>

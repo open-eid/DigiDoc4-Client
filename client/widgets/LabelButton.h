@@ -37,6 +37,7 @@ public:
 		BoxedMojo,
 		BoxedDeepCeruleanWithCuriousBlue, // Edit
 		DeepCeruleanWithLochmara, // Add files
+		White,
 		None
 	};
 

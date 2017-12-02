@@ -68,6 +68,13 @@ void LabelButton::init( Style style, const QString &label, int code )
 			css[ Hover ].style   = styleTemplate.arg( DEEP_CERULEAN, bgColor, "none", "" );
 			css[ Pressed ].style = styleTemplate.arg( CURIOUS_BLUE, bgColor, "none", "" );
 			break;
+		case White:
+			// Add files
+			bgColor = WHITE;
+			css[ Normal ].style  = QString("border: none; background-color: none;");
+			css[ Hover ].style   = QString("border: none; background-color: none;");
+			css[ Pressed ].style = QString("border: none; background-color: none;");
+			break;
 		case None:
 			// Add files
 			css[ Normal ].style  = QString();
@@ -148,17 +155,19 @@ void LabelButton::setIcons( const QString &normalIcon, const QString &hoverIcon,
 	icon->move( x, y );
 }
 
-bool LabelButton::event( QEvent *ev )  
+bool LabelButton::event(QEvent *ev)  
 {
 	// Identify Mouse press Event
 	if( ev->type() == QEvent::MouseButtonPress )
 	{
 		pressed();
+        return true;
 	}
 	else if( ev->type() == QEvent::MouseButtonRelease )
 	{
 		hover();
 		emit clicked(code);
+        return true;
 	}
 	return QLabel::event( ev );
 }

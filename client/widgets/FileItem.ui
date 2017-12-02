@@ -90,31 +90,7 @@ border: none;</string>
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="remove">
-     <property name="minimumSize">
-      <size>
-       <width>19</width>
-       <height>19</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normalon>:/images/icon_remove.svg</normalon>
-      </iconset>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QToolButton" name="download">
+    <widget class="LabelButton" name="remove">
      <property name="minimumSize">
       <size>
        <width>19</width>
@@ -136,21 +112,58 @@ border: none;</string>
      <property name="text">
       <string/>
      </property>
-     <property name="icon">
-      <iconset>
-       <normalon>:/images/icon_download.svg</normalon>
-      </iconset>
+    </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <property name="iconSize">
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
-       <width>15</width>
-       <height>15</height>
+       <width>2</width>
+       <height>20</height>
       </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="LabelButton" name="download">
+     <property name="minimumSize">
+      <size>
+       <width>19</width>
+       <height>19</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>19</width>
+       <height>19</height>
+      </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

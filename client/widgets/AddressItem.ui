@@ -300,8 +300,14 @@ text-decoration: none solid rgb(0, 0, 0);
     </spacer>
    </item>
    <item>
-    <widget class="QToolButton" name="remove">
+    <widget class="LabelButton" name="remove">
      <property name="minimumSize">
+      <size>
+       <width>19</width>
+       <height>19</height>
+      </size>
+     </property>
+     <property name="maximumSize">
       <size>
        <width>19</width>
        <height>19</height>
@@ -317,21 +323,10 @@ text-decoration: none solid rgb(0, 0, 0);
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none; color: #363739;</string>
+      <string notr="true">border: none; background-color: none;</string>
      </property>
      <property name="text">
       <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normalon>:/images/icon_remove.svg</normalon>
-      </iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
      </property>
     </widget>
    </item>
@@ -427,6 +422,13 @@ QToolButton:disabled {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QLabel</extends>
+   <header>widgets/LabelButton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -36,8 +36,11 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
+	ui->download->setIcons("/images/icon_download.svg", "/images/icon_download_hover.svg",  "/images/icon_download_pressed.svg", 1, 1, 17, 17);
+	ui->download->init(LabelButton::White, "", 0);
+
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
-	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
+	connect(ui->download, &LabelButton::clicked, this, &FileList::saveAll);
 }
 
 FileList::~FileList()

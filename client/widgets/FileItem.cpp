@@ -20,7 +20,6 @@
 #include "FileItem.h"
 #include "ui_FileItem.h"
 #include "Styles.h"
-#include "effects/ButtonHoverFilter.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -33,13 +32,15 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
-	ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
-	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+	ui->download->setIcons("/images/icon_download.svg", "/images/icon_download_hover.svg",  "/images/icon_download_pressed.svg", 1, 1, 17, 17);
+	ui->download->init(LabelButton::White, "", 0);
+	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
+	ui->remove->init(LabelButton::White, "", 0);
 
 	stateChange(state);
 
-	connect(ui->download, &QToolButton::clicked, [this](){ emit download(this);});
-	connect(ui->remove, &QToolButton::clicked, [this](){ emit remove(this);});
+	connect(ui->download, &LabelButton::clicked, [this](){ emit download(this);});
+	connect(ui->remove, &LabelButton::clicked, [this](){ emit remove(this);});
 }
 
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )

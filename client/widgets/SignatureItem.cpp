@@ -24,7 +24,6 @@
 #include "Styles.h"
 #include "dialogs/SignatureDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "effects/ButtonHoverFilter.h"
 
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
@@ -53,9 +52,10 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, bo
 
 	ui->name->setFont(nameFont);
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
-	ui->remove->installEventFilter( new ButtonHoverFilter( ":/images/icon_remove.svg", ":/images/icon_remove_hover.svg", this ) );
+	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
+	ui->remove->init(LabelButton::White, "", 0);
 	ui->remove->setVisible(isSupported);
-	connect(ui->remove, &QToolButton::clicked, this, &SignatureItem::removeSignature);
+	connect(ui->remove, &LabelButton::clicked, this, &SignatureItem::removeSignature);
 	init();
 }
 
