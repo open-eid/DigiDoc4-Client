@@ -331,6 +331,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->setButtonPattern( d->details,  nullptr );
 	d->details->hide();
 	d->close = d->buttonBox->button(QDialogButtonBox::Close);
+	d->close->setText(::Updater::tr("CLOSE"));
 	d->setButtonPattern( d->close,  "Red" );
 	d->close->hide();
 	d->log->hide();
@@ -730,7 +731,7 @@ void Updater::run()
 		{"cmd", "START"},
 		{"lang", Settings().language()},
 		{"platform", qApp->applicationOs()},
-		{"version", qApp->applicationVersion()}
+		{"version", "3.12.10.1265"}
 	});
 }
 
