@@ -211,7 +211,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
-        <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud '%1' on juba konteineris olemas.</translation>
+        <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud '%1' on juba ümbrikus olemas.</translation>
     </message>
 </context>
 
@@ -461,7 +461,11 @@ Tüüp: %3</translation>
 
     <message>
         <source>Container is not signed</source>
-        <translation>Konteineri allkirjad puuduvad</translation>
+        <translation>Ümbriku allkirjad puuduvad</translation>
+    </message>
+    <message>
+        <source>Content of the envelope</source>
+        <translation>Ümbriku sisu</translation>
     </message>
     <message>
         <source>Container's files</source>
@@ -469,11 +473,11 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>Container's signatures</source>
-        <translation>Konteineri allkirjad</translation>
+        <translation>Ümbriku allkirjad</translation>
     </message>
     <message>
         <source>Container's timestamps</source>
-        <translation>Konteineri ajatemplid</translation>
+        <translation>Ümbriku ajatemplid</translation>
     </message>
     <message>
         <source>Recipients</source>
@@ -991,7 +995,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada konteineris sisalduvaid dokumente.</translation>
+        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
@@ -1682,6 +1686,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
 <context>
     <name>ContainerPage</name>
     <message>
+        <source>Envelope</source>
+        <translation>Ümbrik:</translation>
+    </message>
+    <message>
         <source>Container</source>
         <translation>Konteiner:</translation>
     </message>
@@ -1704,6 +1712,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>SIGN</source>
         <translation>ALLKIRJASTA</translation>
+    </message>
+    <message>
+        <source>OPEN ENVELOPE LOCATION</source>
+        <translation>AVA ÜMBRIKU ASUKOHT</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>
@@ -1868,7 +1880,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>Container format</source>
-        <translation>Konteineri formaat</translation>
+        <translation>Ümbriku formaat</translation>
     </message>
     <message>
         <source>Signature format</source>
@@ -2082,7 +2094,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>signature container</source>
-        <translation>allkirja konteiner</translation>
+        <translation>allkirja ümbrik</translation>
     </message>
     <message>
         <source>crypto container</source>
@@ -2106,7 +2118,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
-        <translation>Konteineri %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
+        <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
     <message>
         <source>Documents (%1)</source>
@@ -2118,7 +2130,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>The container has been successfully signed!</source>
-        <translation>Konteiner on edukalt allkirjastatud!</translation>
+        <translation>Ümbrik on edukalt allkirjastatud!</translation>
     </message>
     <message>
         <source>Save photo</source>
@@ -2134,11 +2146,11 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
-        <translation>Oled lisanud konteinerisse faile, kuid pole neid allkirjastanud. Kas jätan allkirjastamata konteineri alles või eemaldan selle?</translation>
+        <translation>Oled lisanud ümbrikusse faile, kuid pole neid allkirjastanud. Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</translation>
     </message>
     <message>
         <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
-        <translation>Oled avatud konteinerit muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
+        <translation>Oled avatud ümbrikut muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
     </message>
     <message>
         <source>REMOVE</source>
@@ -2187,7 +2199,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
-        <translation>Allkirjastatud konteinerisse ei saa faile lisada. Süsteem loob uue konteineri, kuhu lisatakse allkirjastatud dokument ja Sinu valitud failid.</translation>
+        <translation>Allkirjastatud ümbrikusse ei saa faile lisada. Süsteem loob uue ümbriku, kuhu lisatakse allkirjastatud dokument ja Sinu valitud failid.</translation>
     </message>
     <message>
         <source>CONTINUE</source>
@@ -2239,7 +2251,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>Save container</source>
-        <translation>Salvesta Ümbrik</translation>
+        <translation>Salvesta ümbrik</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -2375,7 +2387,7 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
     <message>
         <source>Cannot add container to same container
 %1</source>
-        <translation>Konteineri lisamine samasse konteinerisse ebaõnnestus
+        <translation>Ümbriku lisamine samasse ümbrikusse ebaõnnestus
 %1</translation>
     </message>
     <message>

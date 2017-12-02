@@ -99,10 +99,11 @@ private:
 	QFontMetrics fm;
 	QString mobileCode;
 
-	QString changeLocationText;
 	QString cancelText;
+	QString changeLocationText;
+	QString envelope;
 	QString convertText;
-	QString navigateToContainerText;
 	QString emailText;
+	QString navigateToContainerText;
 	QString saveText;
 };
