@@ -464,6 +464,10 @@ Media type: %3</translation>
         <translation>Container's signatures are missing</translation>
     </message>
     <message>
+        <source>Content of the envelope</source>
+        <translation>Container's files</translation>
+    </message>
+    <message>
         <source>Container's files</source>
         <translation>Container's files</translation>
     </message>
@@ -1688,6 +1692,10 @@ new codes.&lt;/li&gt;
     <name>ContainerPage</name>
 
     <message>
+        <source>Envelope</source>
+        <translation>Container:</translation>
+    </message>
+    <message>
         <source>Container</source>
         <translation>Container:</translation>
     </message>
@@ -1710,6 +1718,10 @@ new codes.&lt;/li&gt;
     <message>
         <source>SIGN</source>
         <translation>SIGN</translation>
+    </message>
+    <message>
+        <source>OPEN ENVELOPE LOCATION</source>
+        <translation>OPEN CONTAINER LOCATION</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>

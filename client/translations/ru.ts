@@ -457,7 +457,11 @@ Media type: %3</source>
     </message>
     <message>
         <source>Container is not signed</source>
-        <translation>Контейнер не подписан</translation>
+        <translation>Файлы контейнера</translation>
+    </message>
+    <message>
+        <source>Content of the envelope</source>
+        <translation>Файлы контейнера</translation>
     </message>
     <message>
         <source>Container's files</source>
@@ -1662,6 +1666,10 @@ PUK кодом.&lt;/li&gt;
     <name>ContainerPage</name>
 
     <message>
+        <source>Envelope</source>
+        <translation>Kонтейнер:</translation>
+    </message>
+    <message>
         <source>Container</source>
         <translation>Kонтейнер:</translation>
     </message>
@@ -1684,6 +1692,10 @@ PUK кодом.&lt;/li&gt;
     <message>
         <source>SIGN</source>
         <translation>ПОДПИСАТЬ</translation>
+    </message>
+    <message>
+        <source>OPEN ENVELOPE LOCATION</source>
+        <translation>ПАПКА КОНТЕЙНЕРА</translation>
     </message>
     <message>
         <source>OPEN CONTAINER LOCATION</source>

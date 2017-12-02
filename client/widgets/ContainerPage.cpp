@@ -44,11 +44,12 @@ ContainerPage::ContainerPage(QWidget *parent)
 , ui(new Ui::ContainerPage)
 , containerFont(Styles::font(Styles::Regular, 14))
 , fm(QFontMetrics(containerFont))
-, changeLocationText("CHANGE")
 , cancelText("CANCEL")
+, changeLocationText("CHANGE")
 , convertText("ENCRYPT")
-, navigateToContainerText("OPEN CONTAINER LOCATION")
 , emailText("SEND WITH E-MAIL")
+, envelope("Envelope")
+, navigateToContainerText("OPEN CONTAINER LOCATION")
 , saveText("SAVE WITHOUT SIGNING")
 {
 	ui->setupUi( this );
@@ -397,73 +398,71 @@ void ContainerPage::updatePanes(ContainerState state)
 	{
 	case UnsignedContainer:
 		cancelText = "CANCEL";
+		navigateToContainerText = "OPEN ENVELOPE LOCATION";
 
 		ui->changeLocation->show();
 		ui->rightPane->clear();
 		hideRightPane();
-		ui->leftPane->init(fileName);
+		ui->leftPane->init(fileName, "Content of the envelope");
 		showSigningButton();
-		ui->cancel->setText(tr(qPrintable(cancelText)));
 		showButtons( { ui->cancel, ui->convert, ui->save } );
 		hideButtons( { ui->navigateToContainer, ui->email } );
 		break;
 	case UnsignedSavedContainer:
 		cancelText = "STARTING";
+		navigateToContainerText = "OPEN ENVELOPE LOCATION";
 
 		ui->changeLocation->show();
-		ui->leftPane->init(fileName);
-		ui->cancel->setText(tr(qPrintable(cancelText)));
+		ui->leftPane->init(fileName, "Content of the envelope");
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
 		showRightPane( ItemSignature, "Container is not signed");
 		break;
 	case SignedContainer:
 		cancelText = "STARTING";
+		navigateToContainerText = "OPEN ENVELOPE LOCATION";
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName);
+		ui->leftPane->init(fileName, "Content of the envelope");
 		showRightPane( ItemSignature, "Container's signatures" );
-		ui->cancel->setText(tr(qPrintable(cancelText)));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
 		cancelText = "STARTING";
 		convertText = "SIGN";
+		envelope = "Container";
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane( ItemAddress, "Recipients" );
 		showMainAction(EncryptContainer);
-		ui->cancel->setText(tr(qPrintable(cancelText)));
-		ui->convert->setText(tr(qPrintable(convertText)));
 		showButtons( { ui->cancel, ui->convert } );
 		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	case EncryptedContainer:
 		cancelText = "STARTING";
 		convertText = "SIGN";
+		envelope = "Container";
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Encrypted files");
 		showRightPane( ItemAddress, "Recipients" );
 		updateDecryptionButton();
-		ui->cancel->setText(tr(qPrintable(cancelText)));
-		ui->convert->setText(tr(qPrintable(convertText)));
 		hideButtons( { ui->save } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
 		cancelText = "STARTING";
+		envelope = "Container";
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, "Decrypted files");
 		showRightPane( ItemAddress, "Recipients");
 		hideMainAction();
-		ui->cancel->setText(tr(qPrintable(cancelText)));
 		hideButtons( { ui->convert, ui->save } );
 		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
 		break;
@@ -478,12 +477,15 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->containerFile->resize(ui->containerFile->width() + buttonWidth,
 		ui->containerFile->height());
 	}
+
+	translateLabels();
 }
 
 void ContainerPage::translateLabels()
 {
 	ui->changeLocation->setText(tr(qPrintable(changeLocationText)));
 	ui->cancel->setText(tr(qPrintable(cancelText)));
+	ui->container->setText(tr(qPrintable(envelope)));
 	ui->convert->setText(tr(qPrintable(convertText)));
 	ui->navigateToContainer->setText(tr(qPrintable(navigateToContainerText)));
 	ui->email->setText(tr(qPrintable(emailText)));

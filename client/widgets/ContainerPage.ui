@@ -109,7 +109,7 @@ background-color: #F4F5F6;
         </property>
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>45</width>
           <height>22</height>
          </size>
         </property>
