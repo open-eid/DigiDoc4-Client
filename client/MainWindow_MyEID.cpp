@@ -83,15 +83,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
 		showNotification( text, true );
 		ui->accordion->updateInfo( smartcard );
-		if(isUpdateCertificateNeeded())
-		{
-			ui->myEid->invalidIcon(true);
-			showUpdateCertWarning();
-		}
-		ui->myEid->warningIcon(
-				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
-				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
-				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
+		updateCardWarnings();
 
 		QCardInfo cardInfo(smartcard->data());
 
@@ -373,4 +365,19 @@ void MainWindow::removeOldCert()
 	}
 	qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
 #endif
+}
+
+void MainWindow::updateCardWarnings()
+{
+	bool showWarning = false;
+	if(isUpdateCertificateNeeded())
+	{
+		showWarning = true;
+		showUpdateCertWarning();
+	}
+	if(!showWarning)
+		showWarning = smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
+			smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
+			smartcard->data().retryCount( QSmartCardData::PukType ) == 0;
+	ui->myEid->warningIcon(showWarning);
 }

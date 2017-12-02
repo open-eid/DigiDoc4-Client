@@ -37,15 +37,18 @@ public:
 	~Accordion();
 
 	void init();
-	void closeOtherSection( AccordionTitle* opened );
-	void updateOtherData( bool activate, const QString &eMail = "", const quint8 &errorCode = 0 );
-	QString getEmail();
-	void setFocusToEmail();
-	void updateInfo( const QSmartCard *smartCard );
 	void clearOtherEID();
-	void updateMobileIdInfo();
-	void updateDigiIdInfo();
+	void closeOtherSection( AccordionTitle* opened );
+	QString getEmail();
 	void idCheckOtherEIdNeeded( AccordionTitle* opened );
+	void setFocusToEmail();
+	void updateDigiIdInfo();
+	void updateInfo( const QSmartCard *smartCard );
+	void updateMobileIdInfo();
+	void updateOtherData( bool activate, const QString &eMail = "", const quint8 &errorCode = 0 );
+
+signals:
+	void showCertWarnings();
 
 protected:
 	void changeEvent(QEvent* event) override;

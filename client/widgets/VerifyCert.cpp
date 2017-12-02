@@ -88,7 +88,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	update();
 }
 
-void VerifyCert::update()
+void VerifyCert::update(bool showWarning)
 {
 	bool isBlockedPuk = cardData.retryCount( QSmartCardData::PukType ) == 0;
 
@@ -228,9 +228,12 @@ void VerifyCert::update()
 		ui->verticalSpacerBelowBtn->changeSize(20, 38 - decrease);
 		changePinStyle( "#FFFFFF" );
 		ui->name->setText(name);
-		orangeIcon->hide();
 		redIcon->hide();
-		if(pinType != QSmartCardData::PukType)
+		if(showWarning && pinType != QSmartCardData::PukType)
+			orangeIcon->show();
+		else
+			orangeIcon->hide();
+		if(!showWarning && pinType != QSmartCardData::PukType)
 			greenIcon->show();
 		else
 			greenIcon->hide();
@@ -299,7 +302,7 @@ void VerifyCert::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		update();
+		update(orangeIcon->isVisible());
 	}
 
 	QWidget::changeEvent(event);
@@ -329,4 +332,14 @@ void VerifyCert::processForgotPinLink( QString link )
 void VerifyCert::processCertDetails( QString link )
 {
 	emit certDetailsClicked( (pinType == QSmartCardData::Pin1Type) ? "PIN1" : "PIN2" );
+}
+
+void VerifyCert::showWarningIcon()
+{
+	if(redIcon->isVisible())
+		return;
+
+	greenIcon->hide();
+	orangeIcon->show();
+	redIcon->hide();
 }

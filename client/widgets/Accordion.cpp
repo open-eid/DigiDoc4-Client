@@ -54,12 +54,15 @@ void Accordion::init()
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherEID, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 
+	connect(this, &Accordion::showCertWarnings, ui->authBox, &VerifyCert::showWarningIcon);
+	connect(this, &Accordion::showCertWarnings, ui->signBox, &VerifyCert::showWarningIcon);
+
 	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
 	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
 
-	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails );
-	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails );
+	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails);
+	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails);
 
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();

@@ -27,13 +27,13 @@
     <number>2</number>
    </property>
    <property name="leftMargin">
-    <number>10</number>
+    <number>5</number>
    </property>
    <property name="topMargin">
     <number>2</number>
    </property>
    <property name="rightMargin">
-    <number>10</number>
+    <number>5</number>
    </property>
    <property name="bottomMargin">
     <number>2</number>
@@ -52,17 +52,23 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
+    <widget class="QWidget" name="nameWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>49</height>
+       <height>21</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -79,9 +85,12 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="nameWidget" native="true">
+       <widget class="QWidget" name="nameLeft" native="true"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="name">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -92,65 +101,56 @@
           <height>21</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>18</pointsize>
+         </font>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QWidget" name="nameLeft" native="true"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="name">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>21</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>18</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none; color: #041E42;</string>
-           </property>
-           <property name="text">
-            <string>name</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="nameRight" native="true"/>
-         </item>
-        </layout>
+        <property name="styleSheet">
+         <string notr="true">border: none; color: #041E42;</string>
+        </property>
+        <property name="text">
+         <string>name</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
+      <item>
+       <widget class="QWidget" name="nameRight" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="centerWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>49</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QWidget" name="widget_3" native="true">
         <property name="sizePolicy">

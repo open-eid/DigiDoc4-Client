@@ -36,13 +36,16 @@ public:
 	explicit VerifyCert( QWidget *parent = nullptr );
 	~VerifyCert();
 
-	void update( QSmartCardData::PinType type, const QSmartCard *smartCard );
-	void update();
 	void addBorders();
+	void update(QSmartCardData::PinType type, const QSmartCard *smartCard);
+	void update(bool warning = false);
 
 signals:
 	void changePinClicked( bool isForgotPin, bool isBlockedPin );
 	void certDetailsClicked( QString link );
+
+public slots:
+	void showWarningIcon();
 
 protected:
 	void enterEvent( QEvent * event ) override;
