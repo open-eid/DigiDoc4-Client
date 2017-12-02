@@ -2166,7 +2166,7 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>Сертификаты карты нуждаются в обновлении. Обновление занимает 2-10 минут и требует подключения к Интернету в режиме реального времени. Карту нельзя удалять из считывателя до окончания обновления.</translation>
+        <translation>&lt;b&gt;Сертификаты Вашей ID-карты необходимо обновить.&lt;/b&gt; Обновление занимает около 2-10 минут и требует наличия интернет-соединения. Не извлекайте ID-карту из считывающего устройства до завершения процесса обновления.</translation>
     </message>
     <message>
         <source>Update</source>

@@ -1773,6 +1773,7 @@ QRadioButton::indicator::checked {
 QScrollBar {
 	width: 10px;
 	padding: 5px 5px 5px 0;
+	margin: 2px 0px 2px 0;
 	border: none;
 	background: #FFFFFF;
 }
@@ -1839,6 +1840,7 @@ p, li { white-space: pre-wrap; }
 QScrollBar{
 	width: 10px;
 	padding: 5px 5px 5px 0;
+	margin: 2px 0px 2px 0;
 	border: none;
 	background: #FFFFFF;
 }
