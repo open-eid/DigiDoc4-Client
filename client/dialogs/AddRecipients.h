@@ -21,6 +21,7 @@
 
 #include "CertificateHistory.h"
 #include "widgets/AddressItem.h"
+#include "widgets/ItemList.h"
 
 #include <QDialog>
 #include <QMap>
@@ -38,40 +39,41 @@ class AddRecipients : public QDialog
 	Q_OBJECT
 
 public:
-	explicit AddRecipients(const std::vector<Item*>& items, QWidget *parent = 0);
+	explicit AddRecipients(ItemList* itemList, QWidget *parent = 0);
 	~AddRecipients();
 
 	int exec() override;
-
-protected:
-	void setAddressItems(const std::vector<Item*>& items);
-	void enableRecipientFromCard();
-
-	void addRecipientToRightPane(Item* toAdd);
-	void addAllRecipientToRightPane();
-	void removeRecipientFromRightPane(Item *toRemove);
-
-	void addRecipientToLeftPane(const QSslCertificate& cert);
-	void addRecipientFromCard();
-	void addRecipientFromFile();
-
-	QString path() const;
-	void addRecipientFromHistory();
+	QList<CKey> keys();
+	bool isUpdated();
 
 private:
 	void init();
+
+	void addAllRecipientToRightPane();
+	void addRecipientFromCard();
+	void addRecipientFromFile();
+	void addRecipientFromHistory();
+	void addRecipientToLeftPane(const QSslCertificate& cert);
+	void addRecipientToRightPane(Item* toAdd, bool update = true);
+
+	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
+
+	void enableRecipientFromCard();
+	void initAddressItems(const std::vector<Item*>& items);
+
+	QString path() const;
+	void removeRecipientFromRightPane(Item *toRemove);
+	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
+
 	void search(const QString &term);
 	void showError(const QString &msg, const QString &details = QString());
 	void showResult(const QList<QSslCertificate> &result);
-
-	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
-	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
-
 
 	Ui::AddRecipients *ui;
 	QMap<QString, AddressItem *> leftList;
 	QStringList rightList;
 	LdapSearch* ldap;
+	bool updated;
 
 	QList<HistoryCertData> historyCertData;
 };

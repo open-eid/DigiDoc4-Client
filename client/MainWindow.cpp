@@ -140,6 +140,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction);
 	connect(ui->cryptoContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles);
 	connect(ui->cryptoContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeCryptoFile);
+	connect(ui->cryptoContainerPage, &ContainerPage::keysSelected, this, &MainWindow::updateKeys);
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
 
 	connect(ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus);   // To check e-mail
@@ -318,19 +319,15 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 	QStringList files;
-	qDebug() << "Dropped!";
 
 	if (mimeData->hasUrls())
 	{
-		qDebug() << "Dropped urls";
 		for( auto url: mimeData->urls())
 		{
 			if (url.scheme() == "file" )
 			{
-				qDebug() << url.toLocalFile();
 				files << url.toLocalFile();
 			}
-
 		}
 	}
 	else
@@ -1411,4 +1408,16 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 			UNBLOCK_PIN1_WARNING));
 		emit ui->cryptoContainerPage->cardChanged(); // hide Decrypt button
 	}
+}
+
+void MainWindow::updateKeys(QList<CKey> keys)
+{
+	if(!cryptoDoc)
+		return;
+
+	for(int i = cryptoDoc->keys().size() - 1; i >= 0; i--)
+		cryptoDoc->removeKey(i);
+	for(auto key: keys)
+		cryptoDoc->addKey(key);
+	ui->cryptoContainerPage->update(cryptoDoc);
 }

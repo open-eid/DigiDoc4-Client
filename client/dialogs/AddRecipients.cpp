@@ -41,15 +41,16 @@
 #include <QtCore/QXmlStreamWriter>
 #include <QSslKey>
 
-AddRecipients::AddRecipients(const std::vector<Item *> &items, QWidget *parent) :
-	QDialog(parent)
-	, ui(new Ui::AddRecipients)
-	, leftList()
-	, rightList()
-	, ldap(new LdapSearch(this))
+AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent) :
+QDialog(parent)
+, ui(new Ui::AddRecipients)
+, leftList()
+, rightList()
+, ldap(new LdapSearch(this))
+, updated(false)
 {
 	init();
-	setAddressItems(items);
+	initAddressItems(itemList->items);
 }
 
 AddRecipients::~AddRecipients()
@@ -132,46 +133,6 @@ void AddRecipients::init()
 
 }
 
-void AddRecipients::setAddressItems(const std::vector<Item *> &items)
-{
-	for(Item *item :items)
-	{
-		AddressItem *leftItem = new AddressItem((static_cast<AddressItem *>(item))->getKey(), ui->leftPane);
-		QString friendlyName = SslCertificate(leftItem->getKey().cert).friendlyName();
-
-		// Add to left pane
-		leftList.insert(friendlyName, leftItem);
-		ui->leftPane->addWidget(leftItem);
-
-		leftItem->disable(true);
-		leftItem->showButton(AddressItem::Added);
-		connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightPane );
-
-		// Add to right pane
-		addRecipientToRightPane(leftItem);
-	}
-}
-
-void AddRecipients::enableRecipientFromCard()
-{
-	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
-}
-
-void AddRecipients::addRecipientToRightPane(Item *toAdd)
-{
-	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
-	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
-
-	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
-	ui->rightPane->addWidget(rightItem);
-	rightItem->showButton(AddressItem::Remove);
-
-	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
-	leftItem->disable(true);
-	leftItem->showButton(AddressItem::Added);
-	ui->confirm->setDisabled(!rightList.size());
-}
-
 void AddRecipients::addAllRecipientToRightPane()
 {
 	for(auto it = leftList.begin(); it != leftList.end(); ++it )
@@ -182,46 +143,6 @@ void AddRecipients::addAllRecipientToRightPane()
 		}
 	}
 	ui->confirm->setDisabled(!rightList.size());
-}
-
-void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
-{
-	AddressItem *rightItem = static_cast<AddressItem *>(toRemove);
-	QString friendlyName = SslCertificate(rightItem->getKey().cert).friendlyName();
-
-	auto it = leftList.find(friendlyName);
-	if(it != leftList.end())
-	{
-		it.value()->disable(false);
-		it.value()->showButton(AddressItem::Add);
-		rightList.removeAll(friendlyName);
-	}
-	ui->confirm->setDisabled(!rightList.size());
-}
-
-void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
-{
-	QString friendlyName = SslCertificate(cert).friendlyName();
-	if(!leftList.contains(friendlyName) )
-	{
-		AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
-
-		leftList.insert(friendlyName, leftItem);
-		ui->leftPane->addWidget(leftItem);
-
-		if(rightList.contains(friendlyName))
-		{
-			leftItem->disable(true);
-			leftItem->showButton(AddressItem::Added);
-		}
-		else
-		{
-			leftItem->disable(false);
-			leftItem->showButton(AddressItem::Add);
-		}
-
-		connect(leftItem, &AddressItem::add, this, &AddRecipients::addRecipientToRightPane );
-	}
 }
 
 void AddRecipients::addRecipientFromCard()
@@ -264,9 +185,121 @@ void AddRecipients::addRecipientFromFile()
 		WarningDialog::warning( this, tr("This certificate cannot be used for encryption"));
 	}
 	else
+	{
 		addRecipientToLeftPane(cert);
+	}
 
 	f.close();
+}
+
+void AddRecipients::addRecipientFromHistory()
+{
+	CertificateHistory dlg(historyCertData, this);
+	connect(&dlg, &CertificateHistory::addSelectedCerts, this, &AddRecipients::addSelectedCerts);
+	connect(&dlg, &CertificateHistory::removeSelectedCerts, this, &AddRecipients::removeSelectedCerts);
+	dlg.exec();
+}
+
+void AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
+{
+	QString friendlyName = SslCertificate(cert).friendlyName();
+	if(!leftList.contains(friendlyName) )
+	{
+		AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
+
+		leftList.insert(friendlyName, leftItem);
+		ui->leftPane->addWidget(leftItem);
+
+		if(rightList.contains(friendlyName))
+		{
+			leftItem->disable(true);
+			leftItem->showButton(AddressItem::Added);
+		}
+		else
+		{
+			leftItem->disable(false);
+			leftItem->showButton(AddressItem::Add);
+		}
+
+		connect(leftItem, &AddressItem::add, this, [this](Item *item){ addRecipientToRightPane(item, true); });
+	}
+}
+
+void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
+{
+	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
+	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
+	updated = update;
+
+	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
+	ui->rightPane->addWidget(rightItem);
+	rightItem->showButton(AddressItem::Remove);
+
+	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
+	leftItem->disable(true);
+	leftItem->showButton(AddressItem::Added);
+	ui->confirm->setDisabled(!rightList.size());
+}
+
+void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertData)
+{
+	// TODO
+	qDebug() << "addSelectedCerts() NOT IMPLEMENTED";
+}
+
+void AddRecipients::enableRecipientFromCard()
+{
+	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
+}
+
+int AddRecipients::exec()
+{
+	Overlay overlay(parentWidget());
+	overlay.show();
+	auto rc = QDialog::exec();
+	overlay.close();
+
+	return rc;
+}
+
+void AddRecipients::initAddressItems(const std::vector<Item *> &items)
+{
+	for(Item *item: items)
+	{
+		AddressItem *leftItem = new AddressItem((qobject_cast<AddressItem *>(item))->getKey(), ui->leftPane);
+		QString friendlyName = SslCertificate(leftItem->getKey().cert).friendlyName();
+
+		// Add to left pane
+		leftList.insert(friendlyName, leftItem);
+		ui->leftPane->addWidget(leftItem);
+
+		leftItem->disable(true);
+		leftItem->showButton(AddressItem::Added);
+		connect(leftItem, &AddressItem::add, this, [this](Item *item){ addRecipientToRightPane(item, true); });
+
+		// Add to right pane
+		addRecipientToRightPane(leftItem, false);
+	}
+}
+
+bool AddRecipients::isUpdated()
+{
+	return updated;
+}
+
+QList<CKey> AddRecipients::keys()
+{
+	QList<CKey> recipients;
+	AddressItem *address;
+
+	for(auto item: ui->rightPane->items)
+	{
+		address = qobject_cast<AddressItem *>(item);
+		if(address)
+			recipients << address->getKey();
+	}
+
+	return recipients;
 }
 
 QString AddRecipients::path() const
@@ -280,19 +313,20 @@ QString AddRecipients::path() const
 #endif
 }
 
-
-void AddRecipients::addRecipientFromHistory()
+void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 {
-	CertificateHistory dlg(historyCertData, this);
-	connect(&dlg, &CertificateHistory::addSelectedCerts, this, &AddRecipients::addSelectedCerts);
-	connect(&dlg, &CertificateHistory::removeSelectedCerts, this, &AddRecipients::removeSelectedCerts);
-	dlg.exec();
-}
+	AddressItem *rightItem = static_cast<AddressItem *>(toRemove);
+	QString friendlyName = SslCertificate(rightItem->getKey().cert).friendlyName();
 
-void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertData)
-{
-	// TODO
-	qDebug() << "addSelectedCerts() NOT IMPLEMENTED";
+	auto it = leftList.find(friendlyName);
+	if(it != leftList.end())
+	{
+		it.value()->disable(false);
+		it.value()->showButton(AddressItem::Add);
+		rightList.removeAll(friendlyName);
+		updated = true;
+	}
+	ui->confirm->setDisabled(!rightList.size());
 }
 
 void AddRecipients::removeSelectedCerts(const QList<HistoryCertData>& removeCertData)
@@ -329,17 +363,6 @@ void AddRecipients::removeSelectedCerts(const QList<HistoryCertData>& removeCert
 		xml.writeEndElement();
 	}
 	xml.writeEndDocument();
-}
-
-
-int AddRecipients::exec()
-{
-	Overlay overlay(parentWidget());
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
 }
 
 void AddRecipients::search(const QString &term)

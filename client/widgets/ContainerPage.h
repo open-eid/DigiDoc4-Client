@@ -20,7 +20,6 @@
 #pragma once
 
 #include "common_enums.h"
-#include "crypto/CryptoDoc.h"
 #include "widgets/ItemList.h"
 #include "widgets/MainAction.h"
 
@@ -35,6 +34,8 @@ namespace Ui {
 class ContainerPage;
 }
 
+class CKey;
+class CryptoDoc;
 class DigiDoc;
 class QFont;
 class QFontMetrics;
@@ -51,6 +52,7 @@ public:
 	void setHeader(const QString &file);
 	void transition(CryptoDoc *container);
 	void transition(DigiDoc* container);
+	void update(CryptoDoc *container);
 
 signals:
 	void action(int code, const QString &info1 = QString(), const QString &info2 = QString());
@@ -58,6 +60,7 @@ signals:
 	void cardChanged(const QString& idCode = QString());
 	void details(const QString &id);
 	void fileRemoved(int row);
+	void keysSelected(QList<CKey> keys);
 	void moved(const QString &to);	
 	void removed(int row);
 
@@ -66,6 +69,7 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
+	void addressSearch();
 	void changeCard(const QString& idCode);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName(bool force = false);
@@ -101,9 +105,9 @@ private:
 
 	QString cancelText;
 	QString changeLocationText;
-	QString envelope;
 	QString convertText;
 	QString emailText;
+	QString envelope;
 	QString navigateToContainerText;
 	QString saveText;
 };

@@ -23,6 +23,8 @@
 #include "DigiDoc.h"
 #include "Settings.h"
 #include "Styles.h"
+#include "crypto/CryptoDoc.h"
+#include "dialogs/AddRecipients.h"
 #include "dialogs/MobileDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
@@ -31,6 +33,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFontMetrics>
+#include <QMessageBox>
 
 using namespace ria::qdigidoc4;
 
@@ -59,6 +62,14 @@ ContainerPage::ContainerPage(QWidget *parent)
 ContainerPage::~ContainerPage()
 {
 	delete ui;
+}
+
+void ContainerPage::addressSearch()
+{
+	AddRecipients dlg(ui->rightPane, qApp->activeWindow());
+	auto rc = dlg.exec();
+	if(rc && dlg.isUpdated())
+		emit keysSelected(dlg.keys());
 }
 
 void ContainerPage::browseContainer(QString link)
@@ -156,6 +167,7 @@ void ContainerPage::init()
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::fileRemoved);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
+	connect(ui->rightPane, &ItemList::addressSearch, this, &ContainerPage::addressSearch);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -379,6 +391,14 @@ void ContainerPage::transition(DigiDoc* container)
 
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(state);
+}
+
+void ContainerPage::update(CryptoDoc* container)
+{
+	ui->rightPane->clear();
+
+	for(const CKey &key: container->keys())
+		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
 }
 
 void ContainerPage::updateDecryptionButton()

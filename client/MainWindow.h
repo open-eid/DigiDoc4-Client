@@ -41,6 +41,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class CKey;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
@@ -141,6 +142,7 @@ private:
 	void showUpdateCertWarning();
 	void showIdCardAlerts(const QSmartCardData& t);
 	void showPinBlockedWarning(const QSmartCardData& t);
+	void updateKeys(QList<CKey> keys);
 	bool wrapContainer();
 	
 	CryptoDoc* cryptoDoc = nullptr;

@@ -450,6 +450,8 @@ void CryptoDocPrivate::writeCDoc(QIODevice *cdoc, const QByteArray &key, const Q
 	w.writeStartElement(DS, "KeyInfo");
 	for(const CKey &k: keys)
 	{
+        if(k.cert.publicKey().algorithm() != QSsl::Rsa)
+            continue;
 		w.writeStartElement(DENC, "EncryptedKey");
 		if(!k.id.isEmpty())
 			w.writeAttribute("Id", k.id);
@@ -809,7 +811,13 @@ bool CryptoDoc::encrypt( const QString &filename )
 	}
 	if( d->encrypted )
 		return true;
-	if( d->keys.isEmpty() )
+    int count = 0;
+    for(auto key: d->keys)
+    {
+        if(key.cert.publicKey().algorithm() == QSsl::Rsa)
+           count++;
+    }
+	if(!count)
 	{
 		d->setLastError( tr("No keys specified") );
 		return false;
