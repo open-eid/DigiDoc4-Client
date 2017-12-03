@@ -87,10 +87,10 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
 	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
 
-	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->idSelector);
+	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->selector);
 	selector->hide();
 	selector->resize( 12, 6 );
-	selector->move( 364, 32 );
+	selector->move( 9, 32 );
 	selector->setCursor( Qt::PointingHandCursor );
 	ui->help->installEventFilter( new ButtonHoverFilter( ":/images/icon_Abi.svg", ":/images/icon_Abi_hover.svg", this ) );
 	ui->settings->installEventFilter( new ButtonHoverFilter( ":/images/icon_Seaded.svg", ":/images/icon_Seaded_hover.svg", this ) );

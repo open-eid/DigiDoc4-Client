@@ -21,6 +21,7 @@
 
 #include "QSmartCard.h"
 #include "Styles.h"
+#include "widgets/StyledWidget.h"
 
 #include <QFont>
 #include <QScopedPointer>
@@ -31,7 +32,7 @@ namespace Ui {
 class CardWidget;
 }
 
-class CardWidget : public QWidget, public PictureInterface
+class CardWidget : public StyledWidget, public PictureInterface
 {
 	Q_OBJECT
 

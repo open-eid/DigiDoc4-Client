@@ -19,6 +19,7 @@
 
 #include "CardWidget.h"
 #include "ui_CardWidget.h"
+
 #include "common_enums.h"
 #include "Styles.h"
 #include "widgets/LabelButton.h"
@@ -29,7 +30,7 @@ CardWidget::CardWidget( QWidget *parent )
 : CardWidget( QString(), parent ) { }
 
 CardWidget::CardWidget( const QString &cardId, QWidget *parent )
-: QWidget( parent )
+: StyledWidget( parent )
 , ui( new Ui::CardWidget )
 , cardId( cardId )
 {
@@ -44,8 +45,9 @@ CardWidget::CardWidget( const QString &cardId, QWidget *parent )
 	ui->load->hide();
 
 	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart_green.svg", this ) );
+	cardIcon->setStyleSheet("background: none;");
 	cardIcon->resize( 17, 12 );
-	cardIcon->move( 164, 42 );
+	cardIcon->move( 169, 42 );
 
 	connect(ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked(ui->cardPhoto->pixmap()); });
 	connect(ui->cardPhoto, &LabelButton::entered, this, [this]() { 
