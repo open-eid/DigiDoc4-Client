@@ -103,6 +103,52 @@
 
 
 <context>
+    <name>CryptoDoc</name>
+
+    <message>
+        <source>Container is encrypted</source>
+        <translation>Turvaümbrik on krüpteeritud</translation>
+    </message>
+    <message>
+        <source>Container is not open</source>
+        <translation>Turvaümbrik ei ole avatud</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Faili salvestamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Document not open</source>
+        <translation>Turvaümbrik pole avatud</translation>
+    </message>
+    <message>
+        <source>Key already exists</source>
+        <translation>Adressaat on juba lisatud</translation>
+    </message>
+    <message>
+        <source>Failed to create temporary files&lt;br /&gt;%1</source>
+        <translation>Ajutiste failde loomine ebaõnnestus&lt;br /&gt;%1</translation>
+    </message>
+    <message>
+        <source>You do not have the key to decrypt this document</source>
+        <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
+    </message>
+    <message>
+        <source>Container is not encrypted</source>
+        <translation>Turvaümbrik ei ole krüpteeritud</translation>
+    </message>
+    <message>
+        <source>Error parsing document</source>
+        <translation>Viga dokumendi parsimisel</translation>
+    </message>
+    <message>
+        <source>No keys specified</source>
+        <translation>Ühtegi adressaati ei ole lisatud</translation>
+    </message>
+</context>
+
+
+<context>
     <name>DigiDoc</name>
 
     <message>
@@ -212,6 +258,14 @@ Tüüp: %3</translation>
     <message>
         <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
         <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud '%1' on juba ümbrikus olemas.</translation>
+    </message>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Faili &apos;%1&apos; salvestamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Internal error</source>
+        <translation>Sisemine viga</translation>
     </message>
 </context>
 
@@ -2399,48 +2453,8 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
         <translation>Nõustun</translation>
     </message>
     <message>
-        <source>Container is not open</source>
-        <translation>Ümbrik ei ole avatud</translation>
-    </message>
-    <message>
         <source>Empty container</source>
         <translation>Tühi ümbrik</translation>
-    </message>
-    <message>
-        <source>No keys specified</source>
-        <translation>Ühtegi adressaati ei ole lisatud</translation>
-    </message>
-    <message>
-        <source>Container is encrypted</source>
-        <translation>Turvaümbrik on krüpteeritud</translation>
-    </message>
-    <message>
-        <source>Document not open</source>
-        <translation>Turvaümbrik pole avatud</translation>
-    </message>
-    <message>
-        <source>Failed to save file</source>
-        <translation>Faili salvestamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Ajutiste failde loomine ebaõnnestus&lt;br /&gt;%1</translation>
-    </message>
-    <message>
-        <source>Error parsing document</source>
-        <translation>Viga dokumendi parsimisel</translation>
-    </message>
-    <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Faili salvestamine ebaõnnestus &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Key already exists</source>
-        <translation>Adressaat on juba lisatud</translation>
-    </message>
-    <message>
-        <source>You do not have the key to decrypt this document</source>
-        <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
     </message>
     <message>
         <source>Cards</source>

@@ -103,6 +103,52 @@
 
 
 <context>
+    <name>CryptoDoc</name>
+
+    <message>
+        <source>Container is encrypted</source>
+        <translation>Container is encrypted</translation>
+    </message>
+    <message>
+        <source>Container is not open</source>
+        <translation>Container is not open</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Failed to save file</translation>
+    </message>
+    <message>
+        <source>Document not open</source>
+        <translation>Document not open</translation>
+    </message>
+    <message>
+        <source>Key already exists</source>
+        <translation>Key already exists</translation>
+    </message>
+    <message>
+        <source>Failed to create temporary files&lt;br /&gt;%1</source>
+        <translation>Failed to create temporary files&lt;br /&gt;%1</translation>
+    </message>
+    <message>
+        <source>You do not have the key to decrypt this document</source>
+        <translation>You do not have the key to decrypt this document</translation>
+    </message>
+    <message>
+        <source>Container is not encrypted</source>
+        <translation>Container is not encrypted</translation>
+    </message>
+    <message>
+        <source>Error parsing document</source>
+        <translation>Error parsing document</translation>
+    </message>
+    <message>
+        <source>No keys specified</source>
+        <translation>No keys specified</translation>
+    </message>
+</context>
+
+
+<context>
     <name>DigiDoc</name>
 
     <message>
@@ -212,6 +258,14 @@ Media type: %3</translation>
     <message>
         <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
         <translation>Cannot add the file to the envelope. File '%1' is already in container.</translation>
+    </message>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Failed to save file &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Internal error</source>
+        <translation>Internal error</translation>
     </message>
 </context>
 
@@ -2430,48 +2484,8 @@ Should I keep the unsigned container or remove it?</numerusform>
         <translation>I agree</translation>
     </message>
     <message>
-        <source>Container is not open</source>
-        <translation>Container is not open</translation>
-    </message>
-    <message>
         <source>Empty container</source>
         <translation>Empty container</translation>
-    </message>
-    <message>
-        <source>No keys specified</source>
-        <translation>No keys specified</translation>
-    </message>
-    <message>
-        <source>Container is encrypted</source>
-        <translation>Container is encrypted</translation>
-    </message>
-    <message>
-        <source>Document not open</source>
-        <translation>Document not open</translation>
-    </message>
-    <message>
-        <source>Failed to save file</source>
-        <translation>Failed to save file</translation>
-    </message>
-    <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Failed to create temporary files&lt;br /&gt;%1</translation>
-    </message>
-    <message>
-        <source>Error parsing document</source>
-        <translation>Error parsing document</translation>
-    </message>
-    <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Failed to save file &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Key already exists</source>
-        <translation>Key already exists</translation>
-    </message>
-    <message>
-        <source>You do not have the key to decrypt this document</source>
-        <translation>You do not have the key to decrypt this document</translation>
     </message>
     <message>
         <source>Cards</source>

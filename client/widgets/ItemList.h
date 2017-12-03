@@ -51,9 +51,11 @@ public:
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:
-	void addItem(int code);
 	void addAll();
+	void addItem(int code);
+	void addressSearch();
 	void idChanged(const QString& cardCode, const QString& mobileCode);
+	void keysSelected(QList<Item *> keys);
 	void removed(int row);
 	void search(const QString &term);
 
@@ -75,9 +77,9 @@ protected:
 
 private:
 	QString addLabel();
-	void addressSearch();
 	void addWidget(Item *widget, int index);
 	void focusEvent(int eventType);
+	void setRecipientTooltip();
 
 	QLabel *header = nullptr;
 	int headerItems;
@@ -88,4 +90,6 @@ private:
 	QString mobileCode;
 	QString headerText;
 	QString listText;
+
+	friend class AddRecipients;
 };

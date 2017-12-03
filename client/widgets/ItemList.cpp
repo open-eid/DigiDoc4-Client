@@ -21,7 +21,6 @@
 #include "ui_ItemList.h"
 
 #include "Styles.h"
-#include "dialogs/AddRecipients.h"
 #include "effects/HoverFilter.h"
 
 #include <QLabel>
@@ -87,7 +86,7 @@ void ItemList::changeEvent(QEvent* event)
 		ui->add->setText(tr(qPrintable(addLabel())));
 
 		if(itemType == ItemAddress)
-			ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
+			setRecipientTooltip();
 	}
 
 	QWidget::changeEvent(event);
@@ -102,12 +101,6 @@ QString ItemList::addLabel()
 	case ToAddAdresses: return "Add all";
 	default: return "";
 	}
-}
-
-void ItemList::addressSearch()
-{
-	AddRecipients dlg(items, qApp->activeWindow());
-	dlg.exec();
 }
 
 void ItemList::addWidget(Item *widget, int index)
@@ -237,17 +230,17 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->add->disconnect();
 		infoIcon = new QSvgWidget(ui->infoIcon);
 		infoIcon->load(QString(":/images/icon_info.svg"));
-		infoIcon->resize(14, 14);
+		infoIcon->resize(15, 15);
 		infoIcon->move(1, 1);
 		infoIcon->show();
 		infoHoverIcon = new QSvgWidget(ui->infoIcon);
 		infoHoverIcon->hide();
 		infoHoverIcon->load(QString(":/images/icon_info_hover.svg"));
-		infoHoverIcon->resize(14, 14);
+		infoHoverIcon->resize(15, 15);
 		infoHoverIcon->move(1, 1);
 		HoverFilter *filter = new HoverFilter(ui->infoIcon, [this](int eventType){ focusEvent(eventType); }, this);
 		ui->infoIcon->installEventFilter(filter);
-		ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
+		setRecipientTooltip();
 
 		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
 	}
@@ -272,6 +265,18 @@ void ItemList::removeItem(int row)
 	auto item = items[row];
 	item->close();
 	items.erase(items.begin()+row);
+}
+
+void ItemList::setRecipientTooltip()
+{
+#ifdef Q_OS_WIN
+	// Windows might not show the tooltip correctly (does not fit) in case of tooltip stylesheet;
+	// Add empty paragraph in order to avoid cutting the text.
+	// See https://bugreports.qt.io/browse/QTBUG-26576
+	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE") + "<p> </p>");
+#else
+	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
+#endif
 }
 
 void ItemList::stateChange( ContainerState state )

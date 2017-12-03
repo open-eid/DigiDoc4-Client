@@ -103,6 +103,52 @@
 
 
 <context>
+    <name>CryptoDoc</name>
+
+    <message>
+        <source>Container is encrypted</source>
+        <translation>Контейнер зашифрован</translation>
+    </message>
+    <message>
+        <source>Container is not open</source>
+        <translation>Контейнер не открыт</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Неудачное сохранение файла</translation>
+    </message>
+    <message>
+        <source>Document not open</source>
+        <translation>Документ не открыт</translation>
+    </message>
+    <message>
+        <source>Key already exists</source>
+        <translation>Адресат уже добавлен</translation>
+    </message>
+    <message>
+        <source>Failed to create temporary files&lt;br /&gt;%1</source>
+        <translation>Неудачное создание временных файлов&lt;br /&gt;%1</translation>
+    </message>
+    <message>
+        <source>You do not have the key to decrypt this document</source>
+        <translation>У вас отсутствует ключ для расшифровки документа</translation>
+    </message>
+    <message>
+        <source>Container is not encrypted</source>
+        <translation>Контейнер не зашифрован</translation>
+    </message>
+    <message>
+        <source>Error parsing document</source>
+        <translation>Ошибка анализа документа</translation>
+    </message>
+    <message>
+        <source>No keys specified</source>
+        <translation>Не выбран ни один ключ</translation>
+    </message>
+</context>
+
+
+<context>
     <name>DigiDoc</name>
 
     <message>
@@ -212,6 +258,14 @@ Media type: %3</source>
     <message>
         <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
         <translation>Невозможно добавить файл в контейнер. Файл '%1' уже в контейнере.</translation>
+    </message>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Internal error</source>
+        <translation>Внутренняя ошибка</translation>
     </message>
 </context>
 
@@ -2389,48 +2443,8 @@ Should I keep the unsigned container or remove it?</source>
         <translation>Подтверждаю</translation>
     </message>
     <message>
-        <source>Container is not open</source>
-        <translation>Контейнер не открыт</translation>
-    </message>
-    <message>
         <source>Empty container</source>
         <translation>Пустой контейнер</translation>
-    </message>
-    <message>
-        <source>No keys specified</source>
-        <translation>Не выбран ни один ключ</translation>
-    </message>
-    <message>
-        <source>Container is encrypted</source>
-        <translation>Контейнер зашифрован</translation>
-    </message>
-    <message>
-        <source>Document not open</source>
-        <translation>Документ не открыт</translation>
-    </message>
-    <message>
-        <source>Failed to save file</source>
-        <translation>Неудачное сохранение файла</translation>
-    </message>
-    <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Неудачное создание временных файлов&lt;br /&gt;%1</translation>
-    </message>
-    <message>
-        <source>Error parsing document</source>
-        <translation>Ошибка анализа документа</translation>
-    </message>
-    <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Key already exists</source>
-        <translation>Адресат уже добавлен</translation>
-    </message>
-    <message>
-        <source>You do not have the key to decrypt this document</source>
-        <translation>У вас отсутствует ключ для расшифровки документа</translation>
     </message>
     <message>
         <source>Cards</source>

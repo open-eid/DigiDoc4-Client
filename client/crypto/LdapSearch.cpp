@@ -23,7 +23,6 @@
 
 #include <QtCore/QTimerEvent>
 #include <QtNetwork/QSslCertificate>
-#include <QDebug>
 
 #ifdef Q_OS_WIN
 #include <Windows.h>
@@ -64,7 +63,6 @@ bool LdapSearch::init()
 	if( d->ldap )
 		return true;
 
-	qDebug() << qApp->confValue(Application::LDAP_HOST);
 	QByteArray host = qApp->confValue(Application::LDAP_HOST).toByteArray();
 	if( !(d->ldap = ldap_init((char*)host.constData(), 389)) )
 	{

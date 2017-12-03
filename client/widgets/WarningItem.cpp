@@ -37,8 +37,8 @@ WarningText::WarningText(const QString &text, const QString &details, bool exter
 : text(text)
 , details(details)
 , external(external)
-, property(property)
 , page(-1)
+, property(property)
 {}
 
 WarningItem::WarningItem(const WarningText &warningText, QWidget *parent)
