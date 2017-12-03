@@ -224,8 +224,8 @@ void VerifyCert::update(bool showWarning)
 		this->setStyleSheet( "background-color: #ffffff;" + borders );
 		// Check height: if warning shown, decrease height by 30px (15*2)
 		int decrease = height() < 210 ? 15 : 0;
-		ui->verticalSpacerAboveBtn->changeSize(20, 32 - decrease);
-		ui->verticalSpacerBelowBtn->changeSize(20, 38 - decrease);
+		ui->verticalSpacerAboveBtn->changeSize(20, 29 - decrease);
+		ui->verticalSpacerBelowBtn->changeSize(20, 34 - decrease);
 		changePinStyle( "#FFFFFF" );
 		ui->name->setText(name);
 		redIcon->hide();

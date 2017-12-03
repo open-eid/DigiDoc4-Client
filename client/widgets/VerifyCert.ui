@@ -288,7 +288,7 @@ background-color: #F8DDA7;
           <property name="minimumSize">
            <size>
             <width>157</width>
-            <height>29</height>
+            <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
