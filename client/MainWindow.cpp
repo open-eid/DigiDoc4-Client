@@ -537,6 +537,10 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		showWarning(WarningText(info1, info2, SignDetails));
 		ui->signature->warningIcon(true);
 		break;
+	case ClearSignatureWarning:
+		ui->signature->warningIcon(false);
+		closeWarnings(SignDetails);
+		break;
 	case ContainerCancel:
 		resetDigiDoc();
 		navigateToPage(Pages::SignIntro);
