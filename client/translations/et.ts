@@ -1997,6 +1997,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
 
 <context>
     <name>Updater</name>
+
     <message>
         <source>CLOSE</source>
         <translation>SULGE</translation>
@@ -2019,7 +2020,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Värskendamine toimub Protsess võib kesta kuni 10 minutit. Ärge eemaldage kaarti lugeja poolt!</translation>
+        <translation>Toimub uuendamine. Uuendamise protsess kestab kuni 10 minutit. Ära eemalda kaarti lugejast!</translation>
     </message>
     <message>
         <source>Certificate renewal</source>
@@ -2027,11 +2028,11 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>I agree to the terms of use of certificates.</source>
-        <translation>I agree to the terms of use of certificates.</translation>
+        <translation>Nõustun sertifikaatide kasutustingimustega.</translation>
     </message>
     <message>
         <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>I confirm I have saved a new PIN1, PIN2 and PUK code.</translation>
+        <translation>Kinnitan, et olen uued PIN- ja PUK-koodid üles kirjutanud.</translation>
     </message>
     <message>
         <source>Enter PIN</source>
@@ -2048,15 +2049,19 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>Updating certificates has failed. Check your internet connection and try again.</source>
-        <translation>Sertide uuendamine on ebaõnnestunud. Kontrollige oma Interneti-ühendust ja proovige uuesti.</translation>
+        <translation>Uuendamine ebaõnnestus. Kontrolli arvuti internetiühendust ja proovi uuesti.</translation>
     </message>
     <message>
         <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>SSL ühenduskanali loomine ebaõnnestus. Taaskäivitage värskendusprotsess uuesti.</translation>
+        <translation>SSL-turvakanali loomine ebaõnnestus. Palun alustage uuendamist uuesti.</translation>
     </message>
     <message>
         <source>Updating certificates has failed. The server is overloaded, try again later.</source>
-        <translation>Sertide uuendamine on ebaõnnestunud. Server on ülekoormatud, proovige hiljem uuesti.</translation>
+        <translation>Sertifikaatide uuendamine ebaõnnestus. Server on ülekoormatud, proovi mõne aja pärast uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Sertifikaadi laadimine ebaõnnestus</translation>
     </message>
 </context>
 

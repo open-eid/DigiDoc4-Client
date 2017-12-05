@@ -1,5 +1,5 @@
 /*
- * QEstEidUtil
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -128,7 +128,7 @@ public:
 	}
 
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey)
+		const BIGNUM *, const BIGNUM *, EC_KEY *eckey)
 	{
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
 		UpdaterPrivate *d = (UpdaterPrivate*)EC_KEY_get_key_method_data(eckey, nullptr, nullptr, nullptr);
@@ -545,7 +545,7 @@ int Updater::exec()
 		if(!result.resultOk())
 		{
 			d->reader->endTransaction();
-			d->label->setText(tr("Failed to read certificate"));
+			d->label->setText(::Updater::tr("Failed to read certificate"));
 			return QDialog::exec();
 		}
 		certData += result.data;
@@ -667,7 +667,7 @@ int Updater::exec()
 			d->close->show();
 		});
 		connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
-		timer->start(30*1000);
+		timer->start(5*60*1000);
 	}, Qt::QueuedConnection);
 	connect(net, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply){
 		switch(reply->error())
@@ -683,6 +683,7 @@ int Updater::exec()
 			else
 			{
 				d->label->setText("<b><font color=\"red\">" + ::Updater::tr("Invalid content type") + "</font></b>");
+				d->progressRunning->clear();
 				d->close->show();
 			}
 			break;
@@ -690,10 +691,12 @@ int Updater::exec()
 		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::UnknownNetworkError:
 			d->label->setText("<b><font color=\"red\">" + ::Updater::tr("Updating certificates has failed. Check your internet connection and try again.") + "</font></b>");
+			d->progressRunning->clear();
 			d->close->show();
 			break;
 		case QNetworkReply::SslHandshakeFailedError:
 			d->label->setText("<b><font color=\"red\">" + ::Updater::tr("SSL handshake failed. Please restart the update process.") + "</font></b>");
+			d->progressRunning->clear();
 			d->close->show();
 			break;
 		default:
@@ -706,6 +709,7 @@ int Updater::exec()
 			default:
 				d->label->setText("<b><font color=\"red\">" + reply->errorString() + "</font></b>");
 			}
+			d->progressRunning->clear();
 			d->close->show();
 		}
 		reply->deleteLater();
@@ -721,8 +725,16 @@ void Updater::run()
 		return;
 
 	SslCertificate c(d->cert);
-	bool result = d->reader->connect() &&
-		d->verifyPIN(c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), 1).resultOk();
+
+	if(!d->reader->connect())
+		return accept();
+#ifdef Q_OS_MAC
+	d->reader->beginTransaction();
+#endif
+	bool result = d->verifyPIN(c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), 1).resultOk();
+#ifdef Q_OS_MAC
+	d->reader->endTransaction();
+#endif
 	d->reader->disconnect();
 	if(!result)
 		return accept();
@@ -743,4 +755,9 @@ int Updater::execute()
 	overlay.close();
 
 	return rc;
+}
+
+void Updater::reject()
+{
+	//skip reject/ESC operation
 }
