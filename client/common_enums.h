@@ -62,7 +62,8 @@ enum Actions {
     SignatureAdd,
     SignatureMobile,
     SignatureRemove,
-    SignatureWarning
+	SignatureWarning,
+	ClearSignatureWarning
 };
 
 enum FileType {

@@ -356,6 +356,8 @@ void ContainerPage::transition(CryptoDoc* container)
 void ContainerPage::transition(DigiDoc* container)
 {
 	clear();
+	emit action(ClearSignatureWarning);
+
 	ContainerState state = container->state();
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
