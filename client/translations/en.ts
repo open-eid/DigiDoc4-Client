@@ -2069,7 +2069,12 @@ new codes.&lt;/li&gt;
         <source>Updating certificates has failed. The server is overloaded, try again later.</source>
         <translation>Updating certificates has failed. The server is overloaded, try again later.</translation>
     </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Failed to read certificate</translation>
+    </message>
 </context>
+
 
 <context>
     <name>WaitDialog</name>

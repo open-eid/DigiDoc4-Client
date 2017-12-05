@@ -1981,7 +1981,7 @@ PUK кодом.&lt;/li&gt;
 
     <message>
         <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ></translation>
+        <translation>ЗАКРЫТЬ</translation>
     </message>
     <message>
         <source>START</source>
@@ -1993,7 +1993,7 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>DETAILS</source>
-        <translation>ДЕТАЛИ</translation>
+        <translation>ПОДРОБНОСТИ</translation>
     </message>
     <message>
         <source>CONTINUE</source>
@@ -2005,7 +2005,7 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>Certificate renewal</source>
-        <translation>Обновление сертификата</translation>
+        <translation>Обновление сертификатов</translation>
     </message>
     <message>
         <source>I agree to the terms of use of certificates.</source>
@@ -2013,7 +2013,7 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>Я подтверждаю, что сохранил новые PIN1, PIN2 и PUK коды.</translation>
+        <translation>Подтверждаю что записал новые значения для PIN- и PUK-кодов.</translation>
     </message>
     <message>
         <source>Enter PIN</source>
@@ -2030,15 +2030,19 @@ PUK кодом.&lt;/li&gt;
     </message>
     <message>
         <source>Updating certificates has failed. Check your internet connection and try again.</source>
-        <translation>Ошибка обновления сертификатов. Проверьте подключение к Интернету и повторите попытку.</translation>
+        <translation>Не удалось обновить сертификаты. Проверьте подключение к Интернету и повторите попытку.</translation>
     </message>
     <message>
         <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>Не удалось создать SSL канал передачи данных. Пожалуйста, перезапустите процесс обновления.</translation>
+        <translation>Создание защищённого SSL канала не удалось. Просьба начать процесс обновления сначала.</translation>
     </message>
     <message>
         <source>Updating certificates has failed. The server is overloaded, try again later.</source>
-        <translation>Ошибка обновления сертификатов. Сервер перегружен, повторите попытку позже.</translation>
+        <translation>Не удалось обновить сертификаты. Сервер перегружен, попробуйте обновить сертификаты позже.</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Не удалось прочитать сертификат</translation>
     </message>
 </context>
 

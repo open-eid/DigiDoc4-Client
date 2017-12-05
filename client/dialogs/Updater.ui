@@ -173,13 +173,13 @@ font-weight: 700;
          <property name="minimumSize">
           <size>
            <width>400</width>
-           <height>189</height>
+           <height>195</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>400</width>
-           <height>189</height>
+           <height>195</height>
           </size>
          </property>
          <property name="wordWrap">
@@ -211,7 +211,7 @@ font-weight: 700;
           </size>
          </property>
          <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
+          <enum>Qt::LeftToRight</enum>
          </property>
          <property name="styleSheet">
           <string notr="true"/>

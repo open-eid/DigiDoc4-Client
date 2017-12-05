@@ -87,10 +87,6 @@ QFont Styles::font( Styles::Font font, int size, QFont::Weight weight )
 {
 	QFont f = Styles::font( font, size );
 	f.setWeight( weight );
-#ifdef Q_OS_WIN
-	// to make the bold fonts look more nice on Windows: "avoid subpixel antialiasing on the fonts if possible"
-	f.setStyleStrategy(QFont::NoSubpixelAntialias);
-#endif
 	return f;
 }
 
