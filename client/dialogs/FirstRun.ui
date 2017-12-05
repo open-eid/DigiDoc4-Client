@@ -1021,7 +1021,7 @@ image: url(:/images/icon_dot.png);</string>
       <string/>
      </property>
     </widget>
-    <widget class="QWidget" name="widget_4" native="true">
+    <widget class="QLabel" name="signOne">
      <property name="geometry">
       <rect>
        <x>29</x>
@@ -1031,11 +1031,10 @@ image: url(:/images/icon_dot.png);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-image: url(:/images/intro_one.png);</string>
+      <string notr="true">border: none;</string>
      </property>
     </widget>
-    <widget class="QWidget" name="widget_9" native="true">
+    <widget class="QLabel" name="signTwo">
      <property name="geometry">
       <rect>
        <x>362</x>
@@ -1045,11 +1044,10 @@ background-image: url(:/images/intro_one.png);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-image: url(:/images/intro_two.png);</string>
+      <string notr="true">border: none;</string>
      </property>
     </widget>
-    <widget class="QWidget" name="widget_10" native="true">
+    <widget class="QLabel" name="signThree">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -1059,8 +1057,7 @@ background-image: url(:/images/intro_two.png);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-image: url(:/images/intro_three.png);</string>
+      <string notr="true">border: none;</string>
      </property>
     </widget>
     <widget class="QLabel" name="labelSign1">
@@ -1323,7 +1320,7 @@ image: url(:/images/icon_dot_active.png);</string>
       <string/>
      </property>
     </widget>
-    <widget class="QWidget" name="widget_5" native="true">
+    <widget class="QLabel" name="cryptoOne">
      <property name="geometry">
       <rect>
        <x>29</x>
@@ -1333,11 +1330,10 @@ image: url(:/images/icon_dot_active.png);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-image: url(:/images/intro_one.png);</string>
+      <string notr="true">border: none;</string>
      </property>
     </widget>
-    <widget class="QWidget" name="widget_8" native="true">
+    <widget class="QLabel" name="cryptoTwo">
      <property name="geometry">
       <rect>
        <x>362</x>
@@ -1347,11 +1343,10 @@ background-image: url(:/images/intro_one.png);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-image: url(:/images/intro_two.png);</string>
+      <string notr="true">border: none;</string>
      </property>
     </widget>
-    <widget class="QWidget" name="widget_11" native="true">
+    <widget class="QLabel" name="cryptoThree">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -1361,8 +1356,7 @@ background-image: url(:/images/intro_two.png);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-image: url(:/images/intro_three.png);</string>
+      <string notr="true">border: none;</string>
      </property>
     </widget>
     <widget class="QLabel" name="labelCrypto1">
