@@ -33,7 +33,17 @@ class SettingsDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit SettingsDialog(QWidget *parent = 0, QString appletVersion = "");
+	enum {
+		GeneralSettings,
+		SigningSettings,
+		AccessCertSettings,
+		NetworkSettings,
+		DiagnosticsSettings,
+		LicenseSettings
+	};
+
+	explicit SettingsDialog(QWidget *parent = nullptr, QString appletVersion = "");
+	explicit SettingsDialog(int page, QWidget *parent = nullptr, QString appletVersion = "");
 	~SettingsDialog();
 
 	int exec() override;

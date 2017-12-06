@@ -88,6 +88,7 @@ protected:
 private:
 	void cachePicture( const QString &id, const QImage &image );
 	void browseOnDisk(const QString &fileName);
+	bool checkConnection();
 	void clearWarning(const char* warningIdent);
 	void clearOverlay();
 	bool closeWarning(WarningItem *warning, bool force = false);
@@ -129,6 +130,7 @@ private:
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
+	void showSettings(int page);
 	void showWarning(const WarningText &warningText);
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);

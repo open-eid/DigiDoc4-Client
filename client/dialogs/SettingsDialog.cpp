@@ -55,6 +55,35 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	initFunctionality();
 }
 
+SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
+: SettingsDialog(parent, appletVersion)
+{
+	ui->stackedWidget->setCurrentIndex(page);
+
+	if(page != GeneralSettings)
+	{
+		ui->btnMenuGeneral->setChecked(false);
+		switch(page)
+		{
+		case SigningSettings:
+			ui->btnMenuSigning->setChecked(true);
+			break;
+		case AccessCertSettings:
+			ui->btnMenuCertificate->setChecked(true);
+			break;
+		case NetworkSettings:
+			ui->btnMenuProxy->setChecked(true);
+			break;
+		case DiagnosticsSettings:
+			ui->btnMenuDiagnostics->setChecked(true);
+			break;
+		case LicenseSettings:
+			ui->btnMenuInfo->setChecked(true);
+			break;
+		}
+	}
+}
+
 
 SettingsDialog::~SettingsDialog()
 {
