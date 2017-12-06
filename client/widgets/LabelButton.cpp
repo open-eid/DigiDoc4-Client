@@ -161,13 +161,13 @@ bool LabelButton::event(QEvent *ev)
 	if( ev->type() == QEvent::MouseButtonPress )
 	{
 		pressed();
-        return true;
+		return true;
 	}
 	else if( ev->type() == QEvent::MouseButtonRelease )
 	{
 		hover();
 		emit clicked(code);
-        return true;
+		return true;
 	}
 	return QLabel::event( ev );
 }

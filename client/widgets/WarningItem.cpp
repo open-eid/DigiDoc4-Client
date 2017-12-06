@@ -97,7 +97,7 @@ void WarningItem::changeEvent(QEvent* event)
 			else if( warnText.property.toLatin1() == UPDATE_CERT_WARNING )
 			{
 				warnText.text = MainWindow::tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.");
-				warnText.details = QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update"));
+				warnText.details = QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(MainWindow::tr("Update"));
 			}
 		}
 		ui->warningText->setText(warnText.text);
