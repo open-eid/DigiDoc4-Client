@@ -816,13 +816,6 @@ void Application::showClient(const QStringList &params, bool crypto)
 	activate( w );
 }
 
-void Application::showSettings(int page)
-{
-	SettingsDialog *s = new SettingsDialog( page, activeWindow() );
-	s->addAction( d->closeAction );
-	s->open();
-}
-
 void Application::showTSLWarning(QEventLoop *e)
 {
 	showWarning( tr(

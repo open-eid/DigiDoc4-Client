@@ -232,19 +232,7 @@ void MainWindow::buttonClicked( int button )
 	}
 	case HeadSettings:
 	{
-		QSmartCardData t = smartcard->data();
-		QString appletVersion = t.isNull() ? QString() : t.appletVersion();
-		SettingsDialog dlg(this, appletVersion);
-
-		connect(&dlg, &SettingsDialog::langChanged, this,
-				[this](const QString& lang )
-				{
-					qApp->loadTranslation( lang );
-					ui->retranslateUi(this);
-				}
-		);
-		connect(&dlg, &SettingsDialog::removeOldCert, this,	&MainWindow::removeOldCert);
-		dlg.exec();
+		showSettings(SettingsDialog::GeneralSettings);
 		break;
 	}
 	default:
@@ -354,6 +342,30 @@ void MainWindow::changeEvent(QEvent* event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+bool MainWindow::checkConnection()
+{
+	CheckConnection connection;
+	if(!connection.check("http://ocsp.sk.ee"))
+	{
+		qApp->showWarning(connection.errorString(), connection.errorDetails());
+		switch(connection.error())
+		{
+		case QNetworkReply::ProxyConnectionRefusedError:
+		case QNetworkReply::ProxyConnectionClosedError:
+		case QNetworkReply::ProxyNotFoundError:
+		case QNetworkReply::ProxyTimeoutError:
+		case QNetworkReply::ProxyAuthenticationRequiredError:
+		case QNetworkReply::UnknownProxyError:
+			showSettings(SettingsDialog::NetworkSettings);
+		default:
+			break;
+		}
+		return false;
+	}
+
+	return true;
 }
 
 void MainWindow::clearWarning(const char* warningIdent)
@@ -1002,25 +1014,27 @@ void MainWindow::showOverlay( QWidget *parent )
 	overlay->show();
 }
 
+void MainWindow::showSettings(int page)
+{
+	QSmartCardData t = smartcard->data();
+	QString appletVersion = t.isNull() ? QString() : t.appletVersion();
+	SettingsDialog dlg(page, this, appletVersion);
+
+	connect(&dlg, &SettingsDialog::langChanged, this,
+			[this](const QString& lang )
+			{
+				qApp->loadTranslation( lang );
+				ui->retranslateUi(this);
+			}
+	);
+	connect(&dlg, &SettingsDialog::removeOldCert, this,	&MainWindow::removeOldCert);
+	dlg.exec();
+}
+
 bool MainWindow::sign()
 {
-	CheckConnection connection;
-	if( !connection.check( "http://ocsp.sk.ee" ) )
-	{
-		qApp->showWarning(connection.errorString(), connection.errorDetails());
-		switch( connection.error() )
-		{
-		case QNetworkReply::ProxyConnectionRefusedError:
-		case QNetworkReply::ProxyConnectionClosedError:
-		case QNetworkReply::ProxyNotFoundError:
-		case QNetworkReply::ProxyTimeoutError:
-		case QNetworkReply::ProxyAuthenticationRequiredError:
-		case QNetworkReply::UnknownProxyError:
-			qApp->showSettings(SettingsDialog::NetworkSettings);
-		default: break;
-		}
+	if(!checkConnection())
 		return false;
-	}
 
 	AccessCert access(this);
 	if( !access.validate() )
@@ -1056,6 +1070,9 @@ bool MainWindow::sign()
 
 bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 {
+	if(!checkConnection())
+		return false;
+
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
