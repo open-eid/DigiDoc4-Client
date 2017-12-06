@@ -69,6 +69,10 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	ui->tblDetails->setFont(smallFont);
 	ui->detailedValue->setFont(smallFont);
 
+	QFont condensed14 = Styles::font(Styles::Condensed, 14);
+	ui->close->setFont(condensed14);
+	ui->save->setFont(condensed14);
+
 	ui->lblCertHeader->setText(tr("Certificate information"));
 
 	QString i;
