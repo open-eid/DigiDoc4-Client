@@ -137,14 +137,11 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->next, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
 
 	QPixmap sign1 = QPixmap(":/images/intro_sign-select.png");
-	ui->signImage1->setProperty("PICTURE", sign1);
-	ui->signImage1->setPixmap(sign1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->signImage1->setPixmap(sign1.scaled(ui->signImage1->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap sign2 = QPixmap(":/images/intro_sign-sign.png");
-	ui->signImage2->setProperty("PICTURE", sign2);
-	ui->signImage2->setPixmap(sign2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->signImage2->setPixmap(sign2.scaled(ui->signImage2->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap sign3 = QPixmap(":/images/intro_sign-pin.png");
-	ui->signImage3->setProperty("PICTURE", sign3);
-	ui->signImage3->setPixmap(sign3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->signImage3->setPixmap(sign3.scaled(ui->signImage3->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap one = QPixmap(":/images/intro_one.svg");
 	QPixmap two = QPixmap(":/images/intro_two.svg");
 	QPixmap three = QPixmap(":/images/intro_three.svg");
@@ -169,14 +166,11 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->next_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
 	QPixmap crypto1 = QPixmap(":/images/intro_crypto-select.png");
-	ui->cryptoImage1->setProperty("PICTURE", crypto1);
-	ui->cryptoImage1->setPixmap(crypto1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->cryptoImage1->setPixmap(crypto1.scaled(ui->cryptoImage1->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap crypto2 = QPixmap(":/images/intro_crypto-recipient.png");
-	ui->cryptoImage2->setProperty("PICTURE", crypto2);
-	ui->cryptoImage2->setPixmap(crypto2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->cryptoImage2->setPixmap(crypto2.scaled(ui->cryptoImage2->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap crypto3 = QPixmap(":/images/intro_crypto-encrypt.png");
-	ui->cryptoImage3->setProperty("PICTURE", crypto3);
-	ui->cryptoImage3->setPixmap(crypto3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->cryptoImage3->setPixmap(crypto3.scaled(ui->cryptoImage3->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->cryptoOne->setPixmap(one.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->cryptoTwo->setPixmap(two.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->cryptoThree->setPixmap(three.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
