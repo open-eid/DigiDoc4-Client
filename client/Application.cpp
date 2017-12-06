@@ -25,7 +25,6 @@
 #include "QSigner.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
-#include "dialogs/SettingsDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/AboutDialog.h>
