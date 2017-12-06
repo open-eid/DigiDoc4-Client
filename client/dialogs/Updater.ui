@@ -172,13 +172,13 @@ font-weight: 700;
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
+           <width>420</width>
            <height>195</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>420</width>
            <height>195</height>
           </size>
          </property>
