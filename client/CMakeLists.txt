@@ -43,6 +43,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	AccessCert.cpp
 	Application.cpp
+	CheckConnection.cpp
 	DigiDoc.cpp
 	DocumentModel.cpp
 	FileDialog.cpp

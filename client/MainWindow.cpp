@@ -22,6 +22,7 @@
 
 #include "AccessCert.h"
 #include "Application.h"
+#include "CheckConnection.h"
 #include "Colors.h"
 #include "DigiDoc.h"
 #include "FileDialog.h"
@@ -1003,6 +1004,24 @@ void MainWindow::showOverlay( QWidget *parent )
 
 bool MainWindow::sign()
 {
+	CheckConnection connection;
+	if( !connection.check( "http://ocsp.sk.ee" ) )
+	{
+		qApp->showWarning(connection.errorString(), connection.errorDetails());
+		switch( connection.error() )
+		{
+		case QNetworkReply::ProxyConnectionRefusedError:
+		case QNetworkReply::ProxyConnectionClosedError:
+		case QNetworkReply::ProxyNotFoundError:
+		case QNetworkReply::ProxyTimeoutError:
+		case QNetworkReply::ProxyAuthenticationRequiredError:
+		case QNetworkReply::UnknownProxyError:
+			qApp->showSettings(SettingsDialog::NetworkSettings);
+		default: break;
+		}
+		return false;
+	}
+
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;

@@ -55,6 +55,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	initFunctionality();
 }
 
+SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
+: SettingsDialog(parent, appletVersion)
+{
+	ui->stackedWidget->setCurrentIndex(page);
+}
+
 
 SettingsDialog::~SettingsDialog()
 {

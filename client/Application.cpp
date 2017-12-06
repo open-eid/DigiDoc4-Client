@@ -25,6 +25,7 @@
 #include "QSigner.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/SettingsDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/AboutDialog.h>
@@ -813,6 +814,13 @@ void Application::showClient(const QStringList &params, bool crypto)
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod( w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto) );
 	activate( w );
+}
+
+void Application::showSettings(int page)
+{
+	SettingsDialog *s = new SettingsDialog( page, activeWindow() );
+	s->addAction( d->closeAction );
+	s->open();
 }
 
 void Application::showTSLWarning(QEventLoop *e)
