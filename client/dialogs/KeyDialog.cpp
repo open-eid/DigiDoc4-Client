@@ -27,14 +27,13 @@
 #include <common/SslCertificate.h>
 
 
-
 KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 :	QDialog( parent )
 ,	k( key )
 ,	d(new Ui::KeyDialog)
 {
 	d->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
@@ -42,7 +41,7 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 	d->showCert->setFont(condensed);
 
 	QStringList horzHeaders;
-	horzHeaders << tr("Attribute") << tr("Value");
+	horzHeaders << tr("Attribute") << tr("Value"); 
 	d->view->setHeaderLabels(horzHeaders);
 
 
@@ -53,13 +52,16 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 
 	addItem( tr("Key"), k.recipient );
 	addItem( tr("Crypto method"), k.method );
+	if(!k.agreement.isEmpty())
+		addItem(tr("Agreement method"), k.agreement);
+	if(!k.derive.isEmpty())
+		addItem(tr("Key derivation method"), k.derive);
+	if(!k.concatDigest.isEmpty())
+		addItem(tr("ConcatKDF digest method"), k.concatDigest);
 	//addItem( tr("ID"), k.id );
 	addItem( tr("Expires"), key.cert.expiryDate().toLocalTime().toString("dd.MM.yyyy hh:mm:ss") );
 	addItem( tr("Issuer"), SslCertificate(key.cert).issuerInfo( QSslCertificate::CommonName ) );
 	d->view->resizeColumnToContents( 0 );
-#ifdef Q_OS_WIN32
-	setStyleSheet("QWidget#KeyDialog{ border-radius: 2px; background-color: #FFFFFF; border: solid #D9D9D8; border-width: 1px 1px 1px 1px;}");
-#endif
 }
 
 KeyDialog::~KeyDialog()

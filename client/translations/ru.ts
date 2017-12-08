@@ -143,7 +143,7 @@
     </message>
     <message>
         <source>No keys specified</source>
-        <translation>Не выбран ни один ключ</translation>
+        <translation>Не выбрано ни одного получателя</translation>
     </message>
 </context>
 

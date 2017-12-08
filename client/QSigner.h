@@ -49,7 +49,8 @@ public:
 	~QSigner();
 
 	digidoc::X509Cert cert() const override;
-	ErrorCode decrypt( const QByteArray &in, QByteArray &out );
+	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);
 	std::vector<unsigned char> sign( const std::string &method,
 		const std::vector<unsigned char> &digest ) const override;
 	TokenData tokenauth() const;
