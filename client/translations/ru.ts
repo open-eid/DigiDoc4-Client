@@ -337,10 +337,21 @@ Media type: %3</source>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.</translation>
     </message>
-
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
         <translation>Сертификаты (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
+        <translation>Вы уверены, что хотите использовать для зашифровки сертификат, который просрочился %1?&lt;br /&gt;&lt;br /&gt;В случае, когда расшифровщик обновит сертификат, расшифровка будет невозможна.</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
     </message>
 </context>
 
@@ -380,8 +391,8 @@ Media type: %3</source>
         <translation>ID-карта</translation>
     </message>
     <message>
-        <source>TEMPLE</source>
-        <translation>STAMP</translation>
+        <source>e-Seal</source>
+        <translation>э-Печать</translation>
     </message>
     <message>
         <source>Digi-ID</source>
@@ -2102,6 +2113,10 @@ PUK кодом.&lt;/li&gt;
     <message>
         <source>Unknown ID</source>
         <translation>Неизвестный ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>э-Печать</translation>
     </message>
 </context>
 

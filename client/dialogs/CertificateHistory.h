@@ -34,6 +34,7 @@ public:
 	QString expireDate;
 
 	bool operator==(const HistoryCertData& other);
+	QString typeName() const;
 };
 
 

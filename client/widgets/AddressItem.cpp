@@ -83,10 +83,12 @@ AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
 		type = "Digi-ID";
 	else if(certType & SslCertificate::EstEidType)
 		type = "ID-card";
-	else if(SslCertificate::MobileIDType)
+	else if(certType & SslCertificate::TempelType)
+		type = "e-Seal";
+	else if(certType & SslCertificate::MobileIDType)
 		type = "Mobile-ID";
 	else
-		type = "Unknown ID";
+		type = "";
 
 	update(name, key.cert.subjectInfo("serialNumber").value(0), type, AddressItem::Remove);
 }

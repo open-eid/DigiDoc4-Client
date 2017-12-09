@@ -30,13 +30,17 @@ public:
 	{
 		setPalette(Qt::transparent);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
-		setMinimumSize(parent->width(), parent->height());
-		parent->setGraphicsEffect(new QGraphicsBlurEffect);
+		if(parent)
+		{
+			setMinimumSize(parent->width(), parent->height());
+			parent->setGraphicsEffect(new QGraphicsBlurEffect);
+		}
 	}
 
 	~Overlay()
 	{
-		parentWidget()->setGraphicsEffect(nullptr);
+		if(parentWidget())
+			parentWidget()->setGraphicsEffect(nullptr);
 	}
 
 protected:

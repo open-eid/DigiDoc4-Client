@@ -53,7 +53,7 @@ private:
 	void addRecipientFromCard();
 	void addRecipientFromFile();
 	void addRecipientFromHistory();
-	void addRecipientToLeftPane(const QSslCertificate& cert);
+	AddressItem * addRecipientToLeftPane(const QSslCertificate& cert);
 	void addRecipientToRightPane(Item* toAdd, bool update = true);
 
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
@@ -62,17 +62,22 @@ private:
 	void initAddressItems(const std::vector<Item*>& items);
 
 	QString path() const;
+	void rememberCerts(const QList<HistoryCertData>& selectedCertData);
 	void removeRecipientFromRightPane(Item *toRemove);
 	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
+	void saveHistory();
 	void search(const QString &term);
 	void showError(const QString &msg, const QString &details = QString());
 	void showResult(const QList<QSslCertificate> &result);
+	HistoryCertData toHistory(const QSslCertificate& cert) const;
 
 	Ui::AddRecipients *ui;
 	QMap<QString, AddressItem *> leftList;
 	QStringList rightList;
 	LdapSearch* ldap;
+	bool personSearch;
+	bool select;
 	bool updated;
 
 	QList<HistoryCertData> historyCertData;
