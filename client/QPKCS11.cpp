@@ -37,6 +37,20 @@
 
 #define toQByteArray(X) QByteArray::fromRawData((const char*)X, sizeof(X)).toUpper()
 
+QWidget* rootWindow()
+{
+	QWidget* win = qApp->activeWindow();
+	QWidget* root = nullptr;
+
+	while(win)
+	{
+		root = win;
+		win = win->parentWidget();
+	}
+
+	return root;
+}
+
 QByteArray QPKCS11Private::attribute( CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type ) const
 {
 	if(!f)
@@ -324,7 +338,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	bool pin2 = SslCertificate( t.cert() ).keyUsage().keys().contains( SslCertificate::NonRepudiation );
 	if( token.flags & CKF_PROTECTED_AUTHENTICATION_PATH )
 	{
-		PinPopup p( pin2 ? PinDialog::Pin2PinpadType : PinDialog::Pin1PinpadType, t, qApp->activeWindow() );
+		PinPopup p( pin2 ? PinDialog::Pin2PinpadType : PinDialog::Pin1PinpadType, t, rootWindow() );
 		connect( d, &QPKCS11Private::started, &p, &PinPopup::startTimer );
 		p.open();
 
@@ -336,7 +350,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	}
 	else
 	{
-		PinPopup p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, qApp->activeWindow() );
+		PinPopup p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, rootWindow() );
 		if( !p.exec() )
 			return PinCanceled;
 		QByteArray pin = p.text().toUtf8();
