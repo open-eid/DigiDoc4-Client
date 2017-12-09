@@ -21,6 +21,7 @@
 #include "ui_Accordion.h"
 
 #include "XmlReader.h"
+#include <common/Settings.h>
 #include <common/SslCertificate.h>
 
 Q_DECLARE_METATYPE(MobileStatus)
@@ -49,6 +50,10 @@ void Accordion::init()
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
 	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), ui->contentOtherData);
 	ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
+	if(Settings().value("showEID", false).toBool())
+		ui->titleOtherEID->show();
+	else
+		ui->titleOtherEID->hide();
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
