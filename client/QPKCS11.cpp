@@ -22,7 +22,9 @@
 #include "dialogs/PinPopup.h"
 #include <common/QPCSC.h>
 #include <common/Settings.h>
+#include <crypto/CryptoDoc.h>
 
+#include <QtCore/QCryptographicHash>
 #include <QtCore/QDebug>
 #include <QtCore/QEventLoop>
 #include <QtCore/QFile>
@@ -168,6 +170,47 @@ QString QPKCS11::errorString( PinStatus error )
 	case QPKCS11::DeviceError: return tr("PKCS11 device error");
 	default: return tr("PKCS11 unknown error");
 	}
+}
+
+QByteArray QPKCS11::derive(const QByteArray &publicKey) const
+{
+	QVector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	if(key.size() != 1)
+		return QByteArray();
+
+	CK_ECDH1_DERIVE_PARAMS ecdh_parms = { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
+	CK_MECHANISM mech = { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
+	CK_BBOOL _true = TRUE;
+	CK_BBOOL _false = FALSE;
+	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
+	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
+	CK_ULONG key_len = CK_ULONG((publicKey.size() - 1) / 2);
+	QVector<CK_ATTRIBUTE> newkey_template{
+		{CKA_TOKEN, &_false, sizeof(_false)},
+		{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
+		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
+		{CKA_ENCRYPT, &_true, sizeof(_true)},
+		{CKA_DECRYPT, &_true, sizeof(_true)},
+		{CKA_VALUE_LEN, &key_len, sizeof(key_len)}
+	};
+	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
+	if(d->f->C_DeriveKey(d->session, &mech, key[0], newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
+		return QByteArray();
+
+	return d->attribute(d->session, newkey, CKA_VALUE);
+}
+
+QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+{
+	QCryptographicHash::Algorithm hash = QCryptographicHash::Sha256;
+	if(digest == "http://www.w3.org/2001/04/xmlenc#sha256")
+		hash = QCryptographicHash::Sha256;
+	if(digest == "http://www.w3.org/2001/04/xmlenc#sha384")
+		hash = QCryptographicHash::Sha384;
+	if(digest == "http://www.w3.org/2001/04/xmlenc#sha512")
+		hash = QCryptographicHash::Sha512;
+	return CryptoDoc::concatKDF(hash, keySize, derive(publicKey), algorithmID + partyUInfo + partyVInfo);
 }
 
 QByteArray QPKCS11::decrypt( const QByteArray &data ) const
@@ -466,6 +509,17 @@ QByteArray QPKCS11Stack::encrypt(const QByteArray &data) const
 QByteArray QPKCS11Stack::decrypt(const QByteArray &data) const
 {
 	return d->active ? d->active->decrypt(data) : QByteArray();
+}
+
+QByteArray QPKCS11Stack::derive(const QByteArray &publicKey) const
+{
+	return d->active ? d->active->derive(publicKey) : QByteArray();
+}
+
+QByteArray QPKCS11Stack::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+{
+	return d->active ? d->active->deriveConcatKDF(publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo) : QByteArray();
 }
 
 bool QPKCS11Stack::load(const QString &defaultDriver)

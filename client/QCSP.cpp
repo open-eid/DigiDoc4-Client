@@ -24,7 +24,6 @@
 #include <QtCore/QDebug>
 #include <QtWidgets/QApplication.h>
 
-#include <qt_windows.h>
 #include <WinCrypt.h>
 
 #include <openssl/obj_mac.h>
@@ -39,7 +38,7 @@ public:
 
 
 QCSP::QCSP(QObject *parent)
-	: QObject(parent)
+	: QWin(parent)
 	, d(new QCSPPrivate)
 {
 }
@@ -110,6 +109,42 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 	}
 }
 
+QByteArray QCSP::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+{
+	d->error = PinUnknown;
+	QByteArray derived;
+	DWORD flags = CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG;
+	HCRYPTPROV_OR_NCRYPT_KEY_HANDLE key = 0;
+	DWORD spec = 0;
+	BOOL freeKey = false;
+	CryptAcquireCertificatePrivateKey(d->cert, flags, 0, &key, &spec, &freeKey);
+	qDebug() << "Key spec" << spec;
+	if(!key)
+		return derived;
+	NCRYPT_PROV_HANDLE prov = 0;
+	DWORD size = 0;
+	if(NCryptGetProperty(key, NCRYPT_PROVIDER_HANDLE_PROPERTY, PBYTE(&prov), sizeof(prov), &size, 0))
+	{
+		if(freeKey)
+			NCryptFreeObject(key);
+		return derived;
+	}
+	int err = derive(prov, key, publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo, derived);
+	if(freeKey)
+		NCryptFreeObject(key);
+	switch(err)
+	{
+	case ERROR_SUCCESS:
+		d->error = PinOK;
+		return derived;
+	case SCARD_W_CANCELLED_BY_USER:
+		d->error = PinCanceled;
+	default:
+		return derived;
+	}
+}
+
 QCSP::PinStatus QCSP::lastError() const { return d->error; }
 
 QCSP::Certs QCSP::certs() const
@@ -171,7 +206,7 @@ TokenData QCSP::selectCert(const SslCertificate &cert)
 	return t;
 }
 
-QByteArray QCSP::sign(int method, const QByteArray &digest)
+QByteArray QCSP::sign(int method, const QByteArray &digest) const
 {
 	QByteArray result;
 	d->error = PinOK;

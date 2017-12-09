@@ -47,6 +47,9 @@ public:
 
 	QByteArray encrypt( const QByteArray &data ) const;
 	QByteArray decrypt( const QByteArray &data ) const;
+	QByteArray derive(const QByteArray &publicKey) const;
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const;
 	bool isLoaded() const;
 	bool load( const QString &driver );
 	PinStatus login( const TokenData &t );
@@ -70,6 +73,9 @@ public:
 
 	QByteArray encrypt( const QByteArray &data ) const;
 	QByteArray decrypt( const QByteArray &data ) const;
+	QByteArray derive(const QByteArray &publicKey) const;
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const;
 	bool isLoaded() const;
 	bool load( const QString &defaultDriver );
 	QPKCS11::PinStatus login( const TokenData &t );

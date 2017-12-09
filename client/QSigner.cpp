@@ -25,8 +25,7 @@
 #include "QCSP.h"
 #include "QCNG.h"
 #else
-class QCSP;
-class QCNG;
+class QWin;
 #endif
 #include "QPKCS11.h"
 #include <common/TokenData.h>
@@ -41,12 +40,19 @@ class QCNG;
 
 #include <openssl/obj_mac.h>
 
+#if QT_VERSION < 0x050700
+template <class T>
+constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
+{
+        return t;
+}
+#endif
+
 class QSignerPrivate
 {
 public:
 	QSigner::ApiType api = QSigner::PKCS11;
-	QCSP			*csp = nullptr;
-	QCNG			*cng = nullptr;
+	QWin			*win = nullptr;
 	QPKCS11Stack	*pkcs11 = nullptr;
 	TokenData		auth, sign;
 	volatile bool	terminate = false;
@@ -62,7 +68,7 @@ QSigner::QSigner( ApiType api, QObject *parent )
 	d->api = api;
 	d->auth.setCard( "loading" );
 	d->sign.setCard( "loading" );
-	connect( this, SIGNAL(error(QString)), SLOT(showWarning(QString)) );
+	connect(this, &QSigner::error, this, &QSigner::showWarning);
 	start();
 }
 
@@ -81,7 +87,8 @@ X509Cert QSigner::cert() const
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-QSigner::ErrorCode QSigner::decrypt( const QByteArray &in, QByteArray &out )
+QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo)
 {
 	if( d->count.loadAcquire() > 0 )
 	{
@@ -124,25 +131,21 @@ QSigner::ErrorCode QSigner::decrypt( const QByteArray &in, QByteArray &out )
 			Q_EMIT error( tr("Failed to login token") + " " + QPKCS11::errorString( status ) );
 			return DecryptFailed;
 		}
-		out = d->pkcs11->decrypt( in );
+		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
+			out = d->pkcs11->decrypt(in);
+		else
+			out = d->pkcs11->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
 		d->pkcs11->logout();
 	}
 #ifdef Q_OS_WIN
-	else if( d->csp )
+	else if(d->win)
 	{
-		d->csp->selectCert( d->auth.cert() );
-		out = d->csp->decrypt( in );
-		if( d->csp->lastError() == QCSP::PinCanceled )
-		{
-			d->count.deref();
-			return PinCanceled;
-		}
-	}
-	else if( d->cng )
-	{
-		d->cng->selectCert( d->auth.cert() );
-		out = d->cng->decrypt( in );
-		if( d->cng->lastError() == QCNG::PinCanceled )
+		d->win->selectCert(d->auth.cert());
+		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
+			out = d->win->decrypt(in);
+		else
+			out = d->win->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
+		if(d->win->lastError() == QWin::PinCanceled)
 		{
 			d->count.deref();
 			return PinCanceled;
@@ -160,7 +163,7 @@ QSigner::ErrorCode QSigner::decrypt( const QByteArray &in, QByteArray &out )
 void QSigner::reloadauth() const
 {
 	QEventLoop e;
-	QObject::connect( this, SIGNAL(authDataChanged(TokenData)), &e, SLOT(quit()) );
+	QObject::connect(this, &QSigner::authDataChanged, &e, &QEventLoop::quit);
 	d->count.ref();
 	d->auth.setCert( QSslCertificate() );
 	d->count.deref();
@@ -170,7 +173,7 @@ void QSigner::reloadauth() const
 void QSigner::reloadsign() const
 {
 	QEventLoop e;
-	QObject::connect( this, SIGNAL(signDataChanged(TokenData)), &e, SLOT(quit()) );
+	QObject::connect(this, &QSigner::signDataChanged, &e, &QEventLoop::quit);
 	d->count.ref();
 	d->sign.setCert( QSslCertificate() );
 	d->count.deref();
@@ -188,8 +191,8 @@ void QSigner::run()
 	switch( d->api )
 	{
 #ifdef Q_OS_WIN
-	case CAPI: d->csp = new QCSP( this ); break;
-	case CNG: d->cng = new QCNG( this ); break;
+	case CAPI: d->win = new QCSP( this ); break;
+	case CNG: d->win = new QCNG( this ); break;
 #endif
 	default: d->pkcs11 = new QPKCS11Stack( this ); break;
 	}
@@ -210,39 +213,26 @@ void QSigner::run()
 			TokenData sold = d->sign, st = sold;
 			QStringList acards, scards, readers;
 #ifdef Q_OS_WIN
-			QCNG::Certs certs;
-			if( d->csp )
+			QWin::Certs certs;
+			if(d->win)
 			{
-				certs = d->csp->certs();
-				for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
+				certs = d->win->certs();
+				for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 				{
 					if(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
 						i.key().keyUsage().contains(SslCertificate::KeyAgreement))
 						acards << i.value();
-					if( i.key().keyUsage().contains( SslCertificate::NonRepudiation ) )
+					if(i.key().keyUsage().contains(SslCertificate::NonRepudiation))
 						scards << i.value();
 				}
-				readers << "blank";
-			}
-			if( d->cng )
-			{
-				certs = d->cng->certs();
-				for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
-				{
-					if(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
-						i.key().keyUsage().contains(SslCertificate::KeyAgreement))
-						acards << i.value();
-					if( i.key().keyUsage().contains( SslCertificate::NonRepudiation ) )
-						scards << i.value();
-				}
-				readers << d->cng->readers();
+				readers << d->win->readers();
 			}
 #endif
 			QList<TokenData> pkcs11;
 			if( d->pkcs11 && d->pkcs11->isLoaded() )
 			{
 				pkcs11 = d->pkcs11->tokens();
-				Q_FOREACH( const TokenData &t, pkcs11 )
+				for(const TokenData &t: qAsConst(pkcs11))
 				{
 					SslCertificate c( t.cert() );
 					if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
@@ -285,15 +275,15 @@ void QSigner::run()
 			if( acards.contains( at.card() ) && at.cert().isNull() ) // read auth cert
 			{
 #ifdef Q_OS_WIN
-				if( d->csp || d->cng )
+				if(d->win)
 				{
-					for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
+					for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 					{
 						if(i.value() == at.card() &&
 							(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
 							i.key().keyUsage().contains(SslCertificate::KeyAgreement)))
 						{
-							at.setCert( i.key() );
+							at.setCert(i.key());
 							break;
 						}
 					}
@@ -301,7 +291,7 @@ void QSigner::run()
 				else
 #endif
 				{
-					Q_FOREACH( const TokenData &i, pkcs11 )
+					for(const TokenData &i: qAsConst(pkcs11))
 					{
 						if(i.card() == at.card() &&
 							(SslCertificate(i.cert()).keyUsage().contains(SslCertificate::KeyEncipherment) ||
@@ -318,14 +308,14 @@ void QSigner::run()
 			if( scards.contains( st.card() ) && st.cert().isNull() ) // read sign cert
 			{
 #ifdef Q_OS_WIN
-				if( d->csp || d->cng )
+				if(d->win)
 				{
-					for( QCNG::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i )
+					for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 					{
-						if( i.value() == st.card() &&
-							i.key().keyUsage().contains( SslCertificate::NonRepudiation ) )
+						if(i.value() == st.card() &&
+							i.key().keyUsage().contains(SslCertificate::NonRepudiation))
 						{
-							st.setCert( i.key() );
+							st.setCert(i.key());
 							break;
 						}
 					}
@@ -333,7 +323,7 @@ void QSigner::run()
 				else
 #endif
 				{
-					Q_FOREACH( const TokenData &i, pkcs11 )
+					for(const TokenData &i: qAsConst(pkcs11))
 					{
 						if( i.card() == st.card() && SslCertificate( i.cert() ).keyUsage().contains( SslCertificate::NonRepudiation ) )
 						{
@@ -416,28 +406,18 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::General, __LINE__ );
 		}
 
-		sig = d->pkcs11->sign( type, QByteArray::fromRawData( (const char*)&digest[0], int(digest.size()) ) );
+		sig = d->pkcs11->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 		d->pkcs11->logout();
 	}
 #ifdef Q_OS_WIN
-	else if( d->csp )
+	else if(d->win)
 	{
-		d->csp->selectCert( d->sign.cert() );
-		sig = d->csp->sign( type, QByteArray::fromRawData( (const char*)&digest[0], int(digest.size()) ) );
-		if( d->csp->lastError() == QCSP::PinCanceled )
+		d->win->selectCert(d->sign.cert());
+		sig = d->win->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+		if(d->win->lastError() == QWin::PinCanceled)
 		{
 			d->count.deref();
-			throwException( tr("Failed to login token"), Exception::PINCanceled, __LINE__ );
-		}
-	}
-	else if( d->cng )
-	{
-		d->cng->selectCert( d->sign.cert() );
-		sig = d->cng->sign( type, QByteArray::fromRawData( (const char*)&digest[0], int(digest.size()) ) );
-		if( d->cng->lastError() == QCNG::PinCanceled )
-		{
-			d->count.deref();
-			throwException( tr("Failed to login token"), Exception::PINCanceled, __LINE__ );
+			throwException(tr("Failed to login token"), Exception::PINCanceled, __LINE__);
 		}
 	}
 #endif

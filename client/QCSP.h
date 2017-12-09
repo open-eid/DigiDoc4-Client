@@ -19,33 +19,24 @@
 
 #pragma once
 
-#include <QObject>
+#include "QWin.h"
 
-#include <common/SslCertificate.h>
 
 class QCSPPrivate;
-class TokenData;
-
-class QCSP: public QObject
+class QCSP: public QWin
 {
 	Q_OBJECT
 public:
-	typedef QHash<SslCertificate,QString> Certs;
-	enum PinStatus
-	{
-		PinOK,
-		PinCanceled,
-		PinUnknown,
-	};
-
 	explicit QCSP( QObject *parent = 0 );
 	~QCSP();
 
-	Certs certs() const;
-	QByteArray decrypt( const QByteArray &data );
-	PinStatus lastError() const;
-	TokenData selectCert( const SslCertificate &cert );
-	QByteArray sign( int method, const QByteArray &digest );
+	Certs certs() const override;
+	QByteArray decrypt(const QByteArray &data) override;
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
+	PinStatus lastError() const override;
+	TokenData selectCert(const SslCertificate &cert) override;
+	QByteArray sign(int method, const QByteArray &digest) const override;
 
 private:
 	QCSPPrivate *d;

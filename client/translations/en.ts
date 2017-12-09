@@ -143,7 +143,7 @@
     </message>
     <message>
         <source>No keys specified</source>
-        <translation>No keys specified</translation>
+        <translation>No recipients specified</translation>
     </message>
 </context>
 

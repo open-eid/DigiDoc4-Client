@@ -249,7 +249,8 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 
 void AddRecipients::enableRecipientFromCard()
 {
-	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
+	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() ||
+		qApp->signer()->tokenauth().cert().publicKey().algorithm() != QSsl::Rsa);
 }
 
 int AddRecipients::exec()
@@ -407,8 +408,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
 			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
 			// (searchType->currentIndex() == 0 || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
-			c.type() != SslCertificate::MobileIDType &&
-			c.publicKey().algorithm() == QSsl::Rsa)
+			c.type() != SslCertificate::MobileIDType)
 */			filter << c;
 	}
 	if(filter.isEmpty())

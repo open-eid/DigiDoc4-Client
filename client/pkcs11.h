@@ -153,6 +153,8 @@ extern "C" {
 
 #define ck_mechanism_type_t CK_MECHANISM_TYPE
 
+#define ck_rsa_pkcs_mgf_type_t CK_RSA_PKCS_MGF_TYPE
+
 #define ck_mechanism _CK_MECHANISM
 #define parameter pParameter
 #define parameter_len ulParameterLen
@@ -355,6 +357,8 @@ typedef unsigned long ck_key_type_t;
 #define CKK_BLOWFISH		(0x20UL)
 #define CKK_TWOFISH		(0x21UL)
 #define CKK_GOSTR3410		(0x30UL)
+#define CKK_GOSTR3411		(0x31UL)
+#define CKK_GOST28147		(0x32UL)
 #define CKK_VENDOR_DEFINED	(1UL << 31)
 
 
@@ -476,6 +480,8 @@ struct ck_date
 
 typedef unsigned long ck_mechanism_type_t;
 
+typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
+
 #define CKM_RSA_PKCS_KEY_PAIR_GEN	(0UL)
 #define CKM_RSA_PKCS			(1UL)
 #define CKM_RSA_9796			(2UL)
@@ -506,6 +512,8 @@ typedef unsigned long ck_mechanism_type_t;
 #define CKM_SHA256_RSA_PKCS_PSS		(0x43UL)
 #define CKM_SHA384_RSA_PKCS_PSS		(0x44UL)
 #define CKM_SHA512_RSA_PKCS_PSS		(0x45UL)
+#define CKM_SHA224_RSA_PKCS		(0x46UL)
+#define CKM_SHA224_RSA_PKCS_PSS		(0x47UL)
 #define CKM_RC2_KEY_GEN			(0x100UL)
 #define CKM_RC2_ECB			(0x101UL)
 #define	CKM_RC2_CBC			(0x102UL)
@@ -551,6 +559,9 @@ typedef unsigned long ck_mechanism_type_t;
 #define CKM_SHA256			(0x250UL)
 #define CKM_SHA256_HMAC			(0x251UL)
 #define CKM_SHA256_HMAC_GENERAL		(0x252UL)
+#define CKM_SHA224			(0x255UL)
+#define CKM_SHA224_HMAC			(0x256UL)
+#define CKM_SHA224_HMAC_GENERAL		(0x257UL)
 #define CKM_SHA384			(0x260UL)
 #define CKM_SHA384_HMAC			(0x261UL)
 #define CKM_SHA384_HMAC_GENERAL		(0x262UL)
@@ -655,6 +666,10 @@ typedef unsigned long ck_mechanism_type_t;
 #define CKM_EC_KEY_PAIR_GEN		(0x1040UL)
 #define CKM_ECDSA			(0x1041UL)
 #define CKM_ECDSA_SHA1			(0x1042UL)
+#define CKM_ECDSA_SHA224		(0x1043UL)
+#define CKM_ECDSA_SHA256		(0x1044UL)
+#define CKM_ECDSA_SHA384		(0x1045UL)
+#define CKM_ECDSA_SHA512		(0x1046UL)
 #define CKM_ECDH1_DERIVE		(0x1050UL)
 #define CKM_ECDH1_COFACTOR_DERIVE	(0x1051UL)
 #define CKM_ECMQV_DERIVE		(0x1052UL)
@@ -671,10 +686,27 @@ typedef unsigned long ck_mechanism_type_t;
 #define CKM_AES_MAC			(0x1083UL)
 #define CKM_AES_MAC_GENERAL		(0x1084UL)
 #define CKM_AES_CBC_PAD			(0x1085UL)
+#define CKM_AES_CTR				(0x1086UL)
+#define CKM_AES_GCM				(0x1087UL)
+#define CKM_AES_CCM				(0x1088UL)
+#define CKM_AES_CTS				(0x1089UL)
+#define CKM_BLOWFISH_KEY_GEN    (0x1090UL)
+#define CKM_BLOWFISH_CBC        (0x1091UL)
+#define CKM_TWOFISH_KEY_GEN     (0x1092UL)
+#define CKM_TWOFISH_CBC         (0x1093UL)
 #define CKM_GOSTR3410_KEY_PAIR_GEN	(0x1200UL)
 #define CKM_GOSTR3410			(0x1201UL)
 #define CKM_GOSTR3410_WITH_GOSTR3411	(0x1202UL)
+#define CKM_GOSTR3410_KEY_WRAP  (0x1203UL)
+#define CKM_GOSTR3410_DERIVE    (0x1204UL)
 #define CKM_GOSTR3411			(0x1210UL)
+#define CKM_GOSTR3411_HMAC      (0x1211UL)
+#define CKM_GOST28147_KEY_GEN   (0x1220UL)
+#define CKM_GOST28147_ECB       (0x1221UL)
+#define CKM_GOST28147           (0x1222UL)
+#define CKM_GOST28147_MAC       (0x1223UL)
+#define CKM_GOST28147_KEY_WRAP  (0x1224UL)
+
 #define CKM_DSA_PARAMETER_GEN		(0x2000UL)
 #define CKM_DH_PKCS_PARAMETER_GEN	(0x2001UL)
 #define CKM_X9_42_DH_PARAMETER_GEN	(0x2002UL)
@@ -715,12 +747,34 @@ struct ck_mechanism_info
 #define CKF_EC_F_2M			(1UL << 21)
 #define CKF_EC_ECPARAMETERS	(1UL << 22)
 #define CKF_EC_NAMEDCURVE	(1UL << 23)
-#define CKF_EC_UNCOMPRESES	(1UL << 24)
+#define CKF_EC_UNCOMPRESS	(1UL << 24)
 #define CKF_EC_COMPRESS		(1UL << 25)
 
 /* Flags for C_WaitForSlotEvent.  */
 #define CKF_DONT_BLOCK				(1UL)
 
+/* Flags for Key derivation */
+#define CKD_NULL			(1UL << 0)
+
+typedef struct CK_ECDH1_DERIVE_PARAMS {
+	unsigned long  kdf;
+	unsigned long  ulSharedDataLen;
+	unsigned char *  pSharedData;
+	unsigned long  ulPublicDataLen;
+	unsigned char *  pPublicData;
+} CK_ECDH1_DERIVE_PARAMS;
+
+typedef struct CK_RSA_PKCS_PSS_PARAMS {
+   ck_mechanism_type_t hashAlg;
+   unsigned long mgf;
+   unsigned long sLen;
+} CK_RSA_PKCS_PSS_PARAMS;
+
+#define CKG_MGF1_SHA1			(0x00000001UL)
+#define CKG_MGF1_SHA224		(0x00000005UL)
+#define CKG_MGF1_SHA256		(0x00000002UL)
+#define CKG_MGF1_SHA384		(0x00000003UL)
+#define CKG_MGF1_SHA512		(0x00000004UL)
 
 typedef unsigned long ck_rv_t;
 
@@ -1258,6 +1312,8 @@ typedef struct ck_date *CK_DATE_PTR;
 
 typedef ck_mechanism_type_t *CK_MECHANISM_TYPE_PTR;
 
+typedef ck_rsa_pkcs_mgf_type_t *CK_RSA_PKCS_MGF_TYPE_PTR;
+
 typedef struct ck_mechanism CK_MECHANISM;
 typedef struct ck_mechanism *CK_MECHANISM_PTR;
 
@@ -1327,6 +1383,8 @@ typedef struct ck_c_initialize_args *CK_C_INITIALIZE_ARGS_PTR;
 #undef ck_date
 
 #undef ck_mechanism_type_t
+
+#undef ck_rsa_pkcs_mgf_type_t
 
 #undef ck_mechanism
 #undef parameter

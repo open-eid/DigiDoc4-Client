@@ -29,9 +29,7 @@
 #include <QtWidgets/QWidget>
 #include <QtNetwork/QSslKey>
 
-#include <qt_windows.h>
 #include <WinCrypt.h>
-#include <ncrypt.h>
 
 #include <openssl/obj_mac.h>
 
@@ -111,7 +109,7 @@ QByteArray QCNGPrivate::prop( NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags )
 
 
 QCNG::QCNG( QObject *parent )
-:	QObject( parent )
+:	QWin( parent )
 ,	d( new QCNGPrivate )
 {
 	d->err = QCNG::PinOK;
@@ -142,6 +140,34 @@ QByteArray QCNG::decrypt( const QByteArray &data )
 	default: break;
 	}
 	return QByteArray();
+}
+
+QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+{
+	d->err = PinUnknown;
+	QByteArray derived;
+	NCRYPT_PROV_HANDLE prov = 0;
+	if(NCryptOpenStorageProvider(&prov, LPCWSTR(d->selected.provider.utf16()), 0))
+		return derived;
+	NCRYPT_KEY_HANDLE key = 0;
+	if(NCryptOpenKey(prov, &key, LPWSTR(d->selected.key.utf16()), d->selected.spec, 0))
+	{
+		NCryptFreeObject(prov);
+		return derived;
+	}
+	int err = derive(prov, key, publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo, derived);
+	NCryptFreeObject(key);
+	switch(err)
+	{
+	case ERROR_SUCCESS:
+		d->err = PinOK;
+		return derived;
+	case SCARD_W_CANCELLED_BY_USER:
+		d->err = PinCanceled;
+	default:
+		return derived;
+	}
 }
 
 QCNG::PinStatus QCNG::lastError() const { return d->err; }
@@ -179,11 +205,6 @@ QCNG::Certs QCNG::certs() const
 			i.value().guid : i.key().subjectInfo( QSslCertificate::CommonName );
 	}
 	return result;
-}
-
-QStringList QCNG::readers() const
-{
-	return QPCSC::instance().drivers();
 }
 
 TokenData QCNG::selectCert( const SslCertificate &cert )
