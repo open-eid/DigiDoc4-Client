@@ -337,10 +337,21 @@ Tüüp: %3</translation>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista Eesti piires lühinumbril 1777 ja välismaalt (+372) 677 3377.</translation>
     </message>
-
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
         <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
+        <translation>Kas oled kindel, et soovid kasutada krüpteerimiseks sertifikaati, mis aegus %1?&lt;br /&gt;&lt;br /&gt;Juhul, kui dekrüpteerija on oma sertifikaate uuendanud, ei ole dekrüpteerimine võimalik.</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
     </message>
 </context>
 
@@ -380,8 +391,8 @@ Tüüp: %3</translation>
         <translation>ID-kaart</translation>
     </message>
     <message>
-        <source>TEMPLE</source>
-        <translation>TEMPEL</translation>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
     </message>
     <message>
         <source>Digi-ID</source>
@@ -2117,6 +2128,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>Unknown ID</source>
         <translation>Tundmatu ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
     </message>
 </context>
 

@@ -273,10 +273,15 @@ void ItemList::setRecipientTooltip()
 	// Windows might not show the tooltip correctly (does not fit) in case of tooltip stylesheet;
 	// Add empty paragraph in order to avoid cutting the text.
 	// See https://bugreports.qt.io/browse/QTBUG-26576
-	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE") + "<p> </p>");
+	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE") + "<p></p><p></p>");
 #else
 	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
 #endif
+}
+
+void ItemList::setTerm(const QString &term)
+{
+	ui->txtFind->setText(term);
 }
 
 void ItemList::stateChange( ContainerState state )

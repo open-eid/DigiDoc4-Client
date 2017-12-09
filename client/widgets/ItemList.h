@@ -48,6 +48,7 @@ public:
 	ria::qdigidoc4::ContainerState getState() const;
 	bool hasItem(std::function<bool(Item* const)> cb);
 	virtual void removeItem(int row);
+	void setTerm(const QString &term);
 	void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:

@@ -41,6 +41,24 @@ bool HistoryCertData::operator==(const HistoryCertData& other)
 			this->expireDate == other.expireDate;
 }
 
+QString HistoryCertData::typeName() const
+{
+	QString name;
+	switch (QString(type).toInt())
+	{
+		case CertificateHistory::DigiID:
+			name = CertificateHistory::tr("Digi-ID");
+			break;
+		case CertificateHistory::TEMPEL:
+			name = CertificateHistory::tr("e-Seal");
+			break;
+		default:
+			name = CertificateHistory::tr("ID-card");
+			break;
+	}
+
+	return name;
+}
 
 CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent)
 :	QDialog( parent )
@@ -62,6 +80,7 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, 
 
 	connect(ui->close, &QPushButton::clicked, this, &CertificateHistory::reject);
 	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::select);
+	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::reject);
 	connect(ui->remove, &QPushButton::clicked, this, &CertificateHistory::remove);
 
 	this->historyCertData = historyCertData;
@@ -85,11 +104,12 @@ void CertificateHistory::fillView()
 	for(const HistoryCertData& certData : historyCertData)
 	{
 		QTreeWidgetItem *i = new QTreeWidgetItem( ui->view );
-		i->setText( 0, certData.CN );
-		i->setText( 1, certData.type );
-		i->setText( 2, certData.issuer );
-		i->setText( 3, certData.expireDate );
-		ui->view->addTopLevelItem( i );
+		i->setText(0, certData.CN);
+		i->setData(1, Qt::UserRole, certData.type);
+		i->setText(1, certData.typeName());
+		i->setText(2, certData.issuer);
+		i->setText(3, certData.expireDate);
+		ui->view->addTopLevelItem(i);
 	}
 }
 
@@ -102,10 +122,10 @@ void CertificateHistory::getSelectedItems(QList<HistoryCertData>& selectedCertDa
 		selectedCertData.append(
 			{
 				selectedRow->data(0, Qt::DisplayRole).toString(),
-				selectedRow->data(1, Qt::DisplayRole).toString(),
+				selectedRow->data(1, Qt::UserRole).toString(),
 				selectedRow->data(2, Qt::DisplayRole).toString(),
 				selectedRow->data(3, Qt::DisplayRole).toString(),
-					});
+			});
 	}
 }
 

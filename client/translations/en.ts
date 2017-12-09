@@ -337,10 +337,21 @@ Media type: %3</translation>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
         <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</translation>
     </message>
-
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
         <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
+        <translation>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
     </message>
 </context>
 
@@ -376,14 +387,13 @@ Media type: %3</translation>
         <source>Expiry date</source>
         <translation>Expiry date</translation>
     </message>
-
     <message>
         <source>ID-card</source>
         <translation>ID-card</translation>
     </message>
     <message>
-        <source>TEMPLE</source>
-        <translation>TEMPLE</translation>
+        <source>e-Seal</source>
+        <translation>e-Seal</translation>
     </message>
     <message>
         <source>Digi-ID</source>
@@ -497,7 +507,7 @@ Media type: %3</translation>
     </message>
     <message>
         <source>Add addressee</source>
-        <translation>+ ADD ADDRESSEE</translation>
+        <translation>+ ADD RECIPIENT</translation>
     </message>
     <message>
         <source>Add all</source>
@@ -2131,6 +2141,10 @@ new codes.&lt;/li&gt;
     <message>
         <source>Unknown ID</source>
         <translation>Unknown ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Seal</translation>
     </message>
 </context>
 
