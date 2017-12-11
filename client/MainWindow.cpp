@@ -1051,13 +1051,15 @@ bool MainWindow::sign()
 	if(digiDoc->sign(city, state, zip, country, role, ""))
 	{
 		access.increment();
-		save();
-		ui->signContainerPage->transition(digiDoc);
-		waitDialog.close();
+		if(save())
+		{
+			ui->signContainerPage->transition(digiDoc);
+			waitDialog.close();
 
-		FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-		notification->start( tr("The container has been successfully signed!"), 750, 3000, 1200 );
-		return true;
+			FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+			notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+			return true;
+		}
 	}
 	else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
 	{
@@ -1089,12 +1091,14 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 		return false;
 
 	access.increment();
-	save();
+	if(save())
+	{
+		ui->signContainerPage->transition(digiDoc);
 
-	ui->signContainerPage->transition(digiDoc);
+		FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+		notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+	}
 
-	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-	notification->start( tr("The container has been successfully signed!"), 750, 3000, 1200 );
 	return true;
 }
 

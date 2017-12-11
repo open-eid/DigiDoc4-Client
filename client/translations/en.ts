@@ -987,7 +987,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>MY OTHER eID's</source>
-        <translation>MY OTHER eID's</translation>
+        <translation>MY OTHER eID's (DEMO VERSION)</translation>
     </message>
 </context>
 

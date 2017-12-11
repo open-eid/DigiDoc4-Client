@@ -94,6 +94,7 @@ private:
 	void activate( QWidget *w );
 	void diagnostics(QTextStream &s) override;
 	bool event( QEvent *e ) override;
+	QWidget* mainWindow();
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
 
 #if defined(Q_OS_MAC)

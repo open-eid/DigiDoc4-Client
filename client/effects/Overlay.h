@@ -17,6 +17,8 @@
  *
  */
 
+#pragma once
+
 #include <QGraphicsBlurEffect>
 #include <QPainter>
 #include <QPaintEvent>

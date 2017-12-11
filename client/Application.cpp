@@ -477,7 +477,7 @@ void Application::closeWindow()
 {
 #ifndef Q_OS_MAC
 	if( MainWindow *w = qobject_cast<MainWindow*>(activeWindow()) )
-		w->close(); // w->closeDoc();
+		w->close();
 	else
 #endif
 	if( QDialog *d = qobject_cast<QDialog*>(activeWindow()) )
@@ -687,6 +687,20 @@ void Application::mailTo( const QUrl &url )
 }
 #endif
 
+QWidget* Application::mainWindow()
+{
+	QWidget* win = activeWindow();
+	QWidget* root = nullptr;
+
+	while(win)
+	{
+		root = win;
+		win = win->parentWidget();
+	}
+
+	return root;
+}
+
 bool Application::notify( QObject *o, QEvent *e )
 {
 	try
@@ -775,7 +789,7 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 
 void Application::showAbout()
 {
-	AboutDialog *a = new AboutDialog( activeWindow() );
+	AboutDialog *a = new AboutDialog( qApp->mainWindow() );
 	a->addAction( d->closeAction );
 	a->open();
 }
@@ -830,13 +844,13 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 	QStringList causes;
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	WarningDialog d(msg, causes.join("\n"), activeWindow());
+	WarningDialog d(msg, causes.join("\n"), qApp->mainWindow());
 	d.exec();
 }
 
 void Application::showWarning( const QString &msg, const QString &details )
 {
-	WarningDialog d(msg, details, activeWindow());
+	WarningDialog d(msg, details, qApp->mainWindow());
 	d.exec();
 }
 

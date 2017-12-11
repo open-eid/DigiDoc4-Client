@@ -21,10 +21,25 @@
 #include "WaitDialog.h"
 #include "ui_WaitDialog.h"
 
+#include "Application.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 
 #include <QMovie>
+
+WaitHider::WaitHider(WaitDialog *dialog)
+: dialog(dialog)
+{
+	if(dialog)
+		dialog->hide();
+}
+
+WaitHider::~WaitHider()
+{
+	if(dialog)
+		dialog->show();
+}
+
 
 WaitDialog::WaitDialog(QWidget *parent) :
 	QDialog(parent),
@@ -62,6 +77,12 @@ int WaitDialog::exec()
 	closeOverlay();
 
 	return rc;
+}
+
+WaitHider WaitDialog::hider()
+{
+	WaitDialog *waitDialog = qobject_cast<WaitDialog*>(qApp->activeWindow());
+	return WaitHider(waitDialog);
 }
 
 void WaitDialog::open()

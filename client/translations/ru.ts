@@ -978,7 +978,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>MY OTHER eID's</source>
-        <translation>МОИ ДРУГИЕ eID</translation>
+        <translation>МОИ ДРУГИЕ eID (ДЕМОНСТРАЦИЯ)</translation>
     </message>
 </context>
 
