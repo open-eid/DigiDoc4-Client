@@ -36,6 +36,7 @@
 #include <common/Settings.h>
 
 #include <QtCore/QJsonObject>
+#include <QDateTime>
 #include <QMessageBox>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslKey>
@@ -69,6 +70,25 @@ void MainWindow::changePin2Clicked( bool isForgotPin, bool isBlockedPin )
 void MainWindow::changePukClicked()
 {
 	pinPukChange(QSmartCardData::PukType);
+}
+
+bool MainWindow::checkExpiration()
+{
+	QSmartCardData t = smartcard->data();
+
+	int expiresIn = 106;
+	for(const SslCertificate &cert: {t.authCert(), t.signCert()})
+	{
+		expiresIn = std::min<int>(expiresIn,
+			QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
+	}
+
+	if(expiresIn <= 0)
+		showWarning(WarningText(WarningItem::tr("Certificates have expired!"), "", -1, CERT_EXPIRY_WARNING));
+	else if(expiresIn <= 105)
+		showWarning(WarningText(WarningItem::tr("Certificates expire soon!"), "", -1, CERT_EXPIRY_WARNING));
+
+	return (expiresIn <= 105);
 }
 
 void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
@@ -375,6 +395,9 @@ void MainWindow::updateCardWarnings()
 		showWarning = true;
 		showUpdateCertWarning();
 	}
+	if(checkExpiration())
+		showWarning = true;
+
 	if(!showWarning)
 		showWarning = smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 			smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 

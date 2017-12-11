@@ -3104,4 +3104,18 @@ ID-KAARDIGA</translation>
         <translation>Veakood: %1 (%2)</translation>
     </message>
 </context>
+
+
+<context>
+    <name>WarningItem</name>
+
+    <message>
+        <source>Certificates have expired!</source>
+        <translation>Sertifikaadid on aegunud!</translation>
+    </message>
+    <message>
+        <source>Certificates expire soon!</source>
+        <translation>Sertifikaadid aeguvad varsti!</translation>
+    </message>
+</context>
 </TS>

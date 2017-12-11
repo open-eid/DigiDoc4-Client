@@ -3149,4 +3149,18 @@ ID-CARD</translation>
         <translation>Error Code: %1 (%2)</translation>
     </message>
 </context>
+
+
+<context>
+    <name>WarningItem</name>
+
+    <message>
+        <source>Certificates have expired!</source>
+        <translation>Certificates have expired!</translation>
+    </message>
+    <message>
+        <source>Certificates expire soon!</source>
+        <translation>Certificates will expire soon!</translation>
+    </message>
+</context>
 </TS>

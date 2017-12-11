@@ -3111,4 +3111,18 @@ ID-КАРТОЙ</translation>
         <translation>Код ошибки:%1 (%2)</translation>
     </message>
 </context>
+
+
+<context>
+    <name>WarningItem</name>
+
+    <message>
+        <source>Certificates have expired!</source>
+        <translation>Срок действия сертификатов истек!</translation>
+    </message>
+    <message>
+        <source>Certificates expire soon!</source>
+        <translation>Срок действия сертификатов скоро истекает!</translation>
+    </message>
+</context>
 </TS>

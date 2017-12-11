@@ -33,6 +33,8 @@
 #include <QImage>
 #include <QWidget>
 
+#define CERT_EXPIRED_WARNING "certExpired"
+#define CERT_EXPIRY_WARNING "certExpiry"
 #define UPDATE_CERT_WARNING "updateCertificateEnabled"
 #define UNBLOCK_PIN1_WARNING "unBlockPIN1"
 #define UNBLOCK_PIN2_WARNING "unBlockPIN2"
@@ -89,6 +91,7 @@ private:
 	void cachePicture( const QString &id, const QImage &image );
 	void browseOnDisk(const QString &fileName);
 	bool checkConnection();
+	bool checkExpiration();
 	void clearWarning(const char* warningIdent);
 	void clearOverlay();
 	bool closeWarning(WarningItem *warning, bool force = false);

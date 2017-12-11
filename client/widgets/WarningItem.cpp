@@ -99,6 +99,14 @@ void WarningItem::changeEvent(QEvent* event)
 				warnText.text = MainWindow::tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.");
 				warnText.details = QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(MainWindow::tr("Update"));
 			}
+			else if( warnText.property.toLatin1() == CERT_EXPIRED_WARNING )
+			{
+				warnText.text = tr("Certificates have expired!");
+			}
+			else if( warnText.property.toLatin1() == CERT_EXPIRY_WARNING )
+			{
+				warnText.text = tr("Certificates expire soon!");
+			}
 		}
 		ui->warningText->setText(warnText.text);
 		ui->warningAction->setText(warnText.details);
