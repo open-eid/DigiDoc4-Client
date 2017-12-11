@@ -529,19 +529,19 @@ Media type: %3</translation>
     </message>
     <message>
         <source>Content of the envelope</source>
-        <translation>Container's files</translation>
+        <translation>Container files</translation>
     </message>
     <message>
         <source>Container's files</source>
-        <translation>Container's files</translation>
+        <translation>Container files</translation>
     </message>
     <message>
         <source>Container's signatures</source>
-        <translation>Container's signatures</translation>
+        <translation>Container signatures</translation>
     </message>
     <message>
         <source>Container's timestamps</source>
-        <translation>Container's timestamps</translation>
+        <translation>Container timestamps</translation>
     </message>
     <message>
         <source>Recipients</source>
@@ -573,7 +573,7 @@ Media type: %3</translation>
 
     <message>
         <source>No card in reader</source>
-        <translation>No card in reader; check if ID card inserted correctly</translation>
+        <translation>No card in card reader; check if ID card is inserted correctly</translation>
     </message>
     <message>
         <source>PCSC service is not running</source>
@@ -581,7 +581,7 @@ Media type: %3</translation>
     </message>
     <message>
         <source>No readers found</source>
-        <translation>No readers found</translation>
+        <translation>No card readers found</translation>
     </message>
     <message>
         <source>Loading data</source>
@@ -761,7 +761,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>time</source>
-        <translation>time</translation>
+        <translation>at</translation>
     </message>
     <message>
         <source>Remove signature %1</source>
@@ -997,11 +997,11 @@ Learn more info here:</translation>
 
     <message>
         <source>ID card in reader</source>
-        <translation>ID-card in reader</translation>
+        <translation>ID-card in card reader</translation>
     </message>
     <message>
         <source>%1 in reader</source>
-        <translation>%1 in reader</translation>
+        <translation>%1 in card reader</translation>
     </message>
     <message>
         <source>LOAD</source>
@@ -1143,7 +1143,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
-        <translation>Mobiil-ID ja Digi-ID andmete vaatamiseks pead esmalt sisestama PIN1 koodi. Siit saad infot nende sertifikaatide kehtivuse kohta.</translation>
+        <translation>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</translation>
     </message>
     <message>
         <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
@@ -2555,9 +2555,9 @@ Should I keep the unsigned container or remove it?</numerusform>
 
 Check if the ID-card is inserted correctly to the reader.
 New ID-cards have chip on the back side of the card.</source>
-        <translation>No card in reader
+        <translation>No card in card reader
 
-Check if the ID-card is inserted correctly to the reader.
+Check if the ID-card is inserted correctly to the card reader.
 New ID-cards have chip on the back side of the card.</translation>
     </message>
     <message>
