@@ -41,7 +41,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 ,	d( new Ui::SignatureDialog )
 {
 	d->setupUi( this );
-	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
+	setWindowModality( Qt::ApplicationModal );
 	d->showErrors->init(false, tr("TECHNICAL INFORMATION"), d->error);
 	d->showErrors->borderless();
 	d->showErrors->setClosable(true);

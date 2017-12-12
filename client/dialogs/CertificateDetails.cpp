@@ -55,7 +55,7 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	cert(qSslCert)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
 	QFont headerFont = Styles::font( Styles::Regular, 18 );

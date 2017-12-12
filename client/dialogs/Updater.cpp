@@ -290,7 +290,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	, d(new UpdaterPrivate)
 {
 	d->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	d->statusTimer = new QTimeLine(d->pinProgress->maximum() * 1000, d->pinProgress);
 	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);

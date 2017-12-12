@@ -13,6 +13,12 @@
     <height>222</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>222</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Encrypt for</string>
   </property>
