@@ -384,7 +384,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>Expiry date</source>
-        <translation>Expiry date</translation>
+        <translation>Aegumiskuupäev</translation>
     </message>
     <message>
         <source>ID-card</source>
@@ -988,7 +988,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>MY OTHER eID's</source>
-        <translation>MINU TEISED eID-D</translation>
+        <translation>MINU TEISED eID-D (DEMOVERSIOON)</translation>
     </message>
 </context>
 

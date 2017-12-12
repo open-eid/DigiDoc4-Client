@@ -21,6 +21,7 @@
 #include "ui_PinPopup.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
+#include "dialogs/WaitDialog.h"
 
 #include <common/Common.h>
 #include <common/SslCertificate.h>
@@ -150,6 +151,7 @@ void PinPopup::textEdited( const QString &text )
 
 int PinPopup::exec()
 { 
+	auto hider = WaitDialog::hider();
 	Overlay overlay(parentWidget());
 	overlay.show();
 	auto rc = QDialog::exec();

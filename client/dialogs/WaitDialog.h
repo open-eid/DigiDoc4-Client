@@ -25,6 +25,23 @@ namespace Ui {
 class WaitDialog;
 }
 
+class WaitDialog;
+
+class WaitHider
+{
+private:
+	WaitHider(WaitDialog *dialog);
+
+public:
+	~WaitHider();
+
+private:
+	WaitDialog *dialog;
+
+	friend class WaitDialog;
+};
+
+
 class Overlay;
 
 class WaitDialog : public QDialog
@@ -37,6 +54,8 @@ public:
 
 	int exec() override;
 	void open() override;
+
+	static WaitHider hider();
 
 public slots:
 	void setText(const QString &text);
