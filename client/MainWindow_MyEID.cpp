@@ -74,7 +74,7 @@ void MainWindow::changePukClicked()
 
 bool MainWindow::checkExpiration()
 {
-	QSmartCardData t = smartcard->data();
+	QSmartCardData t = qApp->smartcard()->data();
 
 	int expiresIn = 106;
 	for(const SslCertificate &cert: {t.authCert(), t.signCert()})
@@ -97,15 +97,15 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			.arg( QSmartCardData::typeString( type ) );
 
 	if( validateCardError( type, 1025,
-		( (QSmartCard *)smartcard )->pinUnblock( type, isForgotPin ) ) )
+		( (QSmartCard *)qApp->smartcard() )->pinUnblock( type, isForgotPin ) ) )
 	{
 		if( isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
 		showNotification( text, true );
-		ui->accordion->updateInfo( smartcard );
+		ui->accordion->updateInfo( qApp->smartcard() );
 		updateCardWarnings();
 
-		QCardInfo cardInfo(smartcard->data());
+		QCardInfo cardInfo(qApp->smartcard()->data());
 
 		if (type == QSmartCardData::Pin1Type)
 		{
@@ -123,17 +123,17 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 void MainWindow::pinPukChange( QSmartCardData::PinType type )
 {
 	if( validateCardError( type, 1024,
-		( (QSmartCard *)smartcard )->pinChange( type ) ) )
+		( (QSmartCard *)qApp->smartcard() )->pinChange( type ) ) )
 	{
 		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
-		ui->accordion->updateInfo( smartcard );
+		ui->accordion->updateInfo( qApp->smartcard() );
 	}
 }
 
 void MainWindow::certDetailsClicked( const QString &link )
 {
-	CertificateDetails dlg( (link == "PIN1") ? smartcard->data().authCert() : smartcard->data().signCert(), this );
+	CertificateDetails dlg( (link == "PIN1") ? qApp->smartcard()->data().authCert() : qApp->smartcard()->data().signCert(), this );
 	dlg.exec();
 }
 
@@ -201,13 +201,13 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	default: showLoading( tr( "Loading data" ) ); break;
 	}
 */
-	if( !validateCardError( QSmartCardData::Pin1Type, type, smartcard->login( QSmartCardData::Pin1Type ) ) )
+	if( !validateCardError( QSmartCardData::Pin1Type, type, qApp->smartcard()->login( QSmartCardData::Pin1Type ) ) )
 		return QByteArray();
 
 	SSLConnect ssl;
-	ssl.setToken( smartcard->data().authCert(), smartcard->key() );
+	ssl.setToken( qApp->smartcard()->data().authCert(), qApp->smartcard()->key() );
 	QByteArray buffer = ssl.getUrl( type, param );
-	smartcard->logout();
+	qApp->smartcard()->logout();
 
 	if( !ssl.errorString().isEmpty() )
 	{
@@ -227,7 +227,7 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )
 {
 	QSmartCardData::PinType t = flags == 1025 ? QSmartCardData::PukType : type;
-	QSmartCardData td = smartcard->data();
+	QSmartCardData td = qApp->smartcard()->data();
 	switch( err )
 	{
 	case QSmartCard::NoError: return true;
@@ -244,12 +244,12 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		showNotification( tr("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
 		showPinBlockedWarning(td);
 		pageSelected( ui->myEid );
-		ui->accordion->updateInfo( smartcard );
+		ui->accordion->updateInfo( qApp->smartcard() );
 		ui->myEid->warningIcon(
-				smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
-				smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
-				smartcard->data().retryCount( QSmartCardData::PukType ) == 0 );
-		if(smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0)
+				qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
+				qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
+				qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0 );
+		if(qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
 			clearWarning(UPDATE_CERT_WARNING);
 		break;
 	case QSmartCard::DifferentError:
@@ -267,7 +267,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		break;
 	case QSmartCard::ValidateError:
 		showNotification( tr("Wrong %1 code. You can try %n more time(s).", "",
-			smartcard->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
+			qApp->smartcard()->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
 
 		break;
 	default:
@@ -303,7 +303,7 @@ void MainWindow::getOtherEID ()
 
 void MainWindow::getMobileIdStatus ()
 {
-	if (smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0)
+	if (qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
 		return;
 
 	QByteArray buffer = sendRequest( SSLConnect::MobileInfo );
@@ -340,15 +340,15 @@ void MainWindow::updateCertificate()
 			s.remove(c);
 	}
 #endif
-	smartcard->d->m.lock();
-	Updater(smartcard->data().reader(), this).execute();
-	smartcard->d->m.unlock();
-	smartcard->reload();
+	qApp->smartcard()->d->m.lock();
+	Updater(qApp->smartcard()->data().reader(), this).execute();
+	qApp->smartcard()->d->m.unlock();
+	qApp->smartcard()->reload();
 }
 
 bool MainWindow::isUpdateCertificateNeeded()
 {
-	QSmartCardData t = smartcard->data();
+	QSmartCardData t = qApp->smartcard()->data();
 
 	return
 		Settings(qApp->applicationName()).value("updateButton", false).toBool() ||
@@ -370,7 +370,7 @@ void MainWindow::removeOldCert()
 {
 #ifdef Q_OS_WIN
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
-	QSmartCardData data = smartcard->data();
+	QSmartCardData data = qApp->smartcard()->data();
 	CertStore s;
 	for( const SslCertificate &c: s.list())
 	{
@@ -399,8 +399,8 @@ void MainWindow::updateCardWarnings()
 		showWarning = true;
 
 	if(!showWarning)
-		showWarning = smartcard->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
-			smartcard->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
-			smartcard->data().retryCount( QSmartCardData::PukType ) == 0;
+		showWarning = qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
+			qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
+			qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0;
 	ui->myEid->warningIcon(showWarning);
 }

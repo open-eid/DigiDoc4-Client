@@ -23,6 +23,7 @@
 
 #include "MainWindow.h"
 #include "QSigner.h"
+#include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/WarningDialog.h"
@@ -253,6 +254,7 @@ public:
 	QAction		*closeAction = nullptr, *newClientAction = nullptr, *newCryptoAction = nullptr;
 	MacMenuBar	*bar = nullptr;
 	QSigner		*signer = nullptr;
+	QSmartCard	*smartcard = nullptr;
 	QTranslator	appTranslator, commonTranslator, cryptoTranslator, qtTranslator;
 	QString		lang;
 	QTimer		lastWindowTimer;
@@ -322,6 +324,8 @@ Application::Application( int &argc, char **argv )
 	{
 		digidoc::Conf::init( new DigidocConf );
 		d->signer = new QSigner( api, this );
+		d->smartcard = new QSmartCard( this );
+		d->smartcard->start();
 
 		auto readVersion = [](const QString &path) -> uint {
 			QFile f(path);
@@ -740,8 +744,10 @@ void Application::parseArgs( const QStringList &args )
 	params.removeAll("-pkcs11");
 	params.removeAll("-noNativeFileDialog");
 
-	QString suffix = QFileInfo( params.value( 0 ) ).suffix();
-	showClient(params, crypto);
+	QString suffix = QFileInfo(params.value(0)).suffix();
+	showClient(params, crypto || (params.size() == 1 && 
+								  (QString::compare("cdoc", suffix, Qt::CaseInsensitive) == 0) )
+								 );
 }
 
 int Application::run()
@@ -800,7 +806,9 @@ void Application::showClient(const QStringList &params, bool crypto)
 	for(QWidget *m: qApp->topLevelWidgets())
 	{
 		MainWindow *main = qobject_cast<MainWindow*>(m);
-		if( main )
+		if(main && 
+			((!crypto && main->digiDocPath().isEmpty()) || (crypto && main->cryptoPath().isEmpty()))
+		)
 		{
 			w = main;
 			break;
@@ -855,6 +863,8 @@ void Application::showWarning( const QString &msg, const QString &details )
 }
 
 QSigner* Application::signer() const { return d->signer; }
+
+QSmartCard* Application::smartcard() const { return d->smartcard; }
 
 void Application::waitForTSL( const QString &file )
 {

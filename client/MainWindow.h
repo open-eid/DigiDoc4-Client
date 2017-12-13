@@ -59,6 +59,9 @@ public:
 	explicit MainWindow( QWidget *parent = 0 );
 	~MainWindow();
 
+	QString cryptoPath();
+	QString digiDocPath();
+
 private Q_SLOTS:
 	void activateEmail ();
 	void buttonClicked( int button );
@@ -160,6 +163,5 @@ private:
 	std::unique_ptr<Overlay> overlay;
 	WarningRibbon *ribbon = nullptr;
 	DropdownButton *selector = nullptr;
-	QSmartCard *smartcard = nullptr;
 	QList<WarningItem*> warnings;
 };

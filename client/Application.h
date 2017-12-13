@@ -32,6 +32,7 @@
 
 namespace digidoc { class Exception; }
 class QAction;
+class QSmartCard;
 class QSigner;
 class ApplicationPrivate;
 class Application: public Common
@@ -66,6 +67,7 @@ public:
 	void loadTranslation( const QString &lang );
 	bool notify( QObject *o, QEvent *e ) override;
 	QSigner* signer() const;
+	QSmartCard* smartcard() const;
 	int run();
 	void waitForTSL( const QString &file );
 
