@@ -41,6 +41,8 @@
 #include <QStandardPaths>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
+#include <QMessageBox>
+#include <QtNetwork/QSslError>
 
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent) :
 QDialog(parent)
@@ -243,12 +245,22 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 				"When decrypter has updated certificates then decrypting is impossible.")
 				.arg(expiryDate.toString( "dd.MM.yyyy hh:mm:ss")), this);
 		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), ria::qdigidoc4::EncryptContainer);
+		dlg.addButton(tr("YES"), QMessageBox::Yes);
 		dlg.exec();
-		if(dlg.result() != ria::qdigidoc4::EncryptContainer)
+		if(dlg.result() != QMessageBox::Yes)
 			return;
 	}
-
+	QList<QSslError> errors = QSslCertificate::verify(QList<QSslCertificate>() << leftItem->getKey().cert);
+	errors.removeAll(QSslError(QSslError::CertificateExpired, leftItem->getKey().cert));
+	if(!errors.isEmpty())
+	{
+		WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
+		dlg.setCancelText(tr("NO"));
+		dlg.addButton(tr("YES"), QMessageBox::Yes);
+		dlg.exec();
+		if(dlg.result() != QMessageBox::Yes)
+			return;
+	}
 	updated = update;
 
 	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
@@ -385,9 +397,9 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	{
 		it.value()->disable(false);
 		it.value()->showButton(AddressItem::Add);
-		rightList.removeAll(friendlyName);
-		updated = true;
 	}
+	rightList.removeAll(friendlyName);
+	updated = true;
 	ui->confirm->setDisabled(!rightList.size());
 }
 

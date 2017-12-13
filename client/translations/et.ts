@@ -353,6 +353,10 @@ Tüüp: %3</translation>
         <source>NO</source>
         <translation>EI</translation>
     </message>
+    <message>
+        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
+        <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
+    </message>
 </context>
 
 
