@@ -2122,6 +2122,10 @@ PUK кодом.&lt;/li&gt;
         <source>e-Seal</source>
         <translation>э-Печать</translation>
     </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Истекает</translation>
+    </message>
 </context>
 
 

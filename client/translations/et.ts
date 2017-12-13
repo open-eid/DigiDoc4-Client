@@ -2137,6 +2137,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <source>e-Seal</source>
         <translation>e-Tempel</translation>
     </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Aegub</translation>
+    </message>
 </context>
 
 

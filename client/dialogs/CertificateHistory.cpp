@@ -52,8 +52,11 @@ QString HistoryCertData::typeName() const
 		case CertificateHistory::TEMPEL:
 			name = CertificateHistory::tr("e-Seal");
 			break;
-		default:
+		case CertificateHistory::IDCard:
 			name = CertificateHistory::tr("ID-card");
+			break;
+		default:
+			name = CertificateHistory::tr("Other");
 			break;
 	}
 
