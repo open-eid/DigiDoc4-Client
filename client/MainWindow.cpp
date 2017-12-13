@@ -322,6 +322,7 @@ void MainWindow::clearWarning(const char* warningIdent)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	resetDigiDoc();
+	ui->startScreen->setCurrentIndex(SignIntro);
 }
 
 bool MainWindow::closeWarning(WarningItem *warning, bool force)

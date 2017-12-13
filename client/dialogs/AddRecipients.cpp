@@ -238,28 +238,31 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 	if (rightList.contains(SslCertificate(leftItem->getKey().cert).friendlyName()))
 		return;
 
-	auto expiryDate = leftItem->getKey().cert.expiryDate();
-	if(expiryDate <= QDateTime::currentDateTime())
+	if(update)
 	{
-		WarningDialog dlg(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-				"When decrypter has updated certificates then decrypting is impossible.")
-				.arg(expiryDate.toString( "dd.MM.yyyy hh:mm:ss")), this);
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), QMessageBox::Yes);
-		dlg.exec();
-		if(dlg.result() != QMessageBox::Yes)
-			return;
-	}
-	QList<QSslError> errors = QSslCertificate::verify(QList<QSslCertificate>() << leftItem->getKey().cert);
-	errors.removeAll(QSslError(QSslError::CertificateExpired, leftItem->getKey().cert));
-	if(!errors.isEmpty())
-	{
-		WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), QMessageBox::Yes);
-		dlg.exec();
-		if(dlg.result() != QMessageBox::Yes)
-			return;
+		auto expiryDate = leftItem->getKey().cert.expiryDate();
+		if(expiryDate <= QDateTime::currentDateTime())
+		{
+			WarningDialog dlg(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
+					"When decrypter has updated certificates then decrypting is impossible.")
+					.arg(expiryDate.toString( "dd.MM.yyyy hh:mm:ss")), this);
+			dlg.setCancelText(tr("NO"));
+			dlg.addButton(tr("YES"), QMessageBox::Yes);
+			dlg.exec();
+			if(dlg.result() != QMessageBox::Yes)
+				return;
+		}
+		QList<QSslError> errors = QSslCertificate::verify(QList<QSslCertificate>() << leftItem->getKey().cert);
+		errors.removeAll(QSslError(QSslError::CertificateExpired, leftItem->getKey().cert));
+		if(!errors.isEmpty())
+		{
+			WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
+			dlg.setCancelText(tr("NO"));
+			dlg.addButton(tr("YES"), QMessageBox::Yes);
+			dlg.exec();
+			if(dlg.result() != QMessageBox::Yes)
+				return;
+		}
 	}
 	updated = update;
 
@@ -281,26 +284,6 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 
 	HistoryCertData certData = selectedCertData.first();
 	QString term = (certData.type == "1") ? certData.CN : certData.CN.split(',').value(2);
-/*
-	QString certKey;
-
-	// it would be nice to add to (take from) certKey from certhistory.xml, but how to support the existing file?
-	switch (QString(certData.type).toInt())
-	{
-		case CertificateHistory::DigiID:
-			certKey = certData.CN + ",DIGI-ID E-RESIDENT";
-			break;
-		case CertificateHistory::TEMPEL:
-			certKey = certData.CN.replace(',', ' ');
-			break;
-		default:
-			certKey = certData.CN + ",ID-CARD"; // ID-KAART
-			break;
-	}
-	
-	if (rightList.contains(certKey))
-		return;
-*/
 	ui->leftPane->setTerm(term);
 	search(term);
 	select = true;
@@ -522,7 +505,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 HistoryCertData AddRecipients::toHistory(const QSslCertificate& c) const
 {
 	HistoryCertData hcd;
-	QString type = "0";
+	QString type = "3";
 	SslCertificate cert(c);
 	auto certType = cert.type();
 
@@ -530,6 +513,8 @@ HistoryCertData AddRecipients::toHistory(const QSslCertificate& c) const
 		type = "2";
 	else if(certType & SslCertificate::TempelType)
 		type = "1";
+	else if(certType & SslCertificate::EstEidType)
+		type = "0";
 
 	hcd.CN = cert.subjectInfo("CN");
 	hcd.type = type;

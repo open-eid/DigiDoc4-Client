@@ -403,6 +403,10 @@ Media type: %3</translation>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Other</source>
+        <translation>Other</translation>
+    </message>
 </context>
 
 <context>
@@ -2149,6 +2153,10 @@ new codes.&lt;/li&gt;
     <message>
         <source>e-Seal</source>
         <translation>e-Seal</translation>
+    </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Expires on</translation>
     </message>
 </context>
 

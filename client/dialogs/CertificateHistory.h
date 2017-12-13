@@ -47,7 +47,8 @@ public:
 	{
 		IDCard = 0,
 		TEMPEL = 1,
-		DigiID = 2
+		DigiID = 2,
+		Other = 3
 	};
 
 	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = 0);

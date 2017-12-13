@@ -402,6 +402,10 @@ Media type: %3</source>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Other</source>
+        <translation> </translation>
+    </message>
 </context>
 
 
@@ -2121,6 +2125,10 @@ PUK кодом.&lt;/li&gt;
     <message>
         <source>e-Seal</source>
         <translation>э-Печать</translation>
+    </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Истекает</translation>
     </message>
 </context>
 

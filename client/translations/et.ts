@@ -402,6 +402,10 @@ Tüüp: %3</translation>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Other</source>
+        <translation>Muu</translation>
+    </message>
 </context>
 
 
@@ -2136,6 +2140,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>e-Seal</source>
         <translation>e-Tempel</translation>
+    </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Aegub</translation>
     </message>
 </context>
 

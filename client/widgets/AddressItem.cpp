@@ -23,10 +23,12 @@
 #include "Styles.h"
 #include "dialogs/KeyDialog.h"
 
+#include <common/DateTime.h>
 #include <common/SslCertificate.h>
 
 #include <QResizeEvent>
 #include <QSvgWidget>
+#include <QTextStream>
 
 using namespace ria::qdigidoc4;
 
@@ -78,17 +80,28 @@ AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
 			key.cert.subjectInfo("CN").value(0);
 
 	QString type;
+	QTextStream st(&type);
+
 	auto certType = SslCertificate(key.cert).type();
 	if(certType & SslCertificate::DigiIDType)
-		type = "Digi-ID";
+		st << tr("Digi-ID");
 	else if(certType & SslCertificate::EstEidType)
-		type = "ID-card";
+		st << tr("ID-card");
 	else if(certType & SslCertificate::TempelType)
-		type = "e-Seal";
+		st << tr("e-Seal");
 	else if(certType & SslCertificate::MobileIDType)
-		type = "Mobile-ID";
-	else
-		type = "";
+		st << tr("Mobile-ID");
+
+	if(!showIcon)
+	{
+		DateTime date(key.cert.expiryDate().toLocalTime());
+		if(!date.isNull())
+		{
+			if(!type.isEmpty())
+				st << " - ";
+			st << tr("Expires on") << " " << date.formatDate("dd. MMMM yyyy");
+		}
+	}
 
 	update(name, key.cert.subjectInfo("serialNumber").value(0), type, AddressItem::Remove);
 }
