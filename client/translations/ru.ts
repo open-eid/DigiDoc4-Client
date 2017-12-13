@@ -402,6 +402,10 @@ Media type: %3</source>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Other</source>
+        <translation> </translation>
+    </message>
 </context>
 
 
