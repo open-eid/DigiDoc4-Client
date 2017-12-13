@@ -353,6 +353,10 @@ Media type: %3</translation>
         <source>NO</source>
         <translation>NO</translation>
     </message>
+    <message>
+        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
+        <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
+    </message>
 </context>
 
 

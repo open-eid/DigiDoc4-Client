@@ -30,7 +30,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 , buttonWidth(120)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 
 	connect( ui->cancel, &QPushButton::clicked, this, &WarningDialog::reject );
 	connect( this, &WarningDialog::finished, this, &WarningDialog::close );
@@ -59,10 +59,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}
 	adjustSize();
-
-#ifdef Q_OS_WIN32
-	setStyleSheet("QWidget#WarningDialog{ border-radius: 2px; background-color: #FFFFFF; border: solid #D9D9D8; border-width: 1px 1px 1px 1px;}");
-#endif
+	setFixedSize( size() );
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)
@@ -116,6 +113,7 @@ void WarningDialog::setText(const QString& text)
 {
 	ui->text->setText(text);
 	adjustSize();
+	setFixedSize( size() );
 }
 
 void WarningDialog::warning(QWidget *parent, const QString& text)

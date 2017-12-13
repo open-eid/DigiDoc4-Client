@@ -34,6 +34,7 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
+	setFixedSize( size() );
 
 	auto buttonFont = Styles::font(Styles::Condensed, 14);
 	auto labelFont = Styles::font(Styles::Regular, 18);

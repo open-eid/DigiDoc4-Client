@@ -353,6 +353,10 @@ Media type: %3</source>
         <source>NO</source>
         <translation>НЕТ</translation>
     </message>
+    <message>
+        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
+        <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
+    </message>
 </context>
 
 

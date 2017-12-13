@@ -875,7 +875,9 @@ void Application::waitForTSL( const QString &file )
 		return;
 
 	QProgressDialog p( tr("Loading TSL lists"), QString(), 0, 0, qApp->activeWindow() );
-	p.setWindowFlags( (p.windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowCloseButtonHint );
+	p.setWindowFlags( (Qt::Dialog | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint ) & ~Qt::WindowTitleHint );
+	p.setWindowModality( Qt::ApplicationModal );
+	p.setFixedSize( p.size() );
 	if( QProgressBar *bar = p.findChild<QProgressBar*>() )
 		bar->setTextVisible( false );
 	p.setMinimumWidth( 300 );

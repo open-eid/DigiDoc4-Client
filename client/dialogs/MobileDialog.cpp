@@ -33,6 +33,7 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
+	setFixedSize( size() );
 
 	connect( ui->sign, &QPushButton::clicked, this, &MobileDialog::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );

@@ -41,6 +41,8 @@
 #include <QStandardPaths>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
+#include <QMessageBox>
+#include <QtNetwork/QSslError>
 
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent) :
 QDialog(parent)
@@ -64,7 +66,7 @@ AddRecipients::~AddRecipients()
 void AddRecipients::init()
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"));
@@ -145,7 +147,9 @@ void AddRecipients::addRecipientFromCard()
 	certs << qApp->signer()->tokenauth().cert();
 	for(QSslCertificate& cert : certs)
 	{
-		addRecipientToLeftPane(cert);
+		Item *item = addRecipientToLeftPane( cert );
+		if( item )
+			addRecipientToRightPane( item, true );
 	}
 }
 
@@ -173,15 +177,17 @@ void AddRecipients::addRecipientFromFile()
 	{
 		WarningDialog::warning( this, tr("Failed to read certificate"));
 	}
-	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) )
+	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) &&
+		!SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
 	{
 		WarningDialog::warning( this, tr("This certificate cannot be used for encryption"));
 	}
 	else
 	{
-		addRecipientToLeftPane(cert);
+		Item *item = addRecipientToLeftPane( cert );
+		if( item )
+			addRecipientToRightPane( item, true );
 	}
-
 	f.close();
 }
 
@@ -218,7 +224,6 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 
 		connect(leftItem, &AddressItem::add, this, [this](Item *item) {
 			addRecipientToRightPane(item, true);
-			rememberCerts({toHistory((qobject_cast<AddressItem *>(item))->getKey().cert)});
 		});
 	}
 
@@ -230,6 +235,9 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
 	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
 
+	if (rightList.contains(SslCertificate(leftItem->getKey().cert).friendlyName()))
+		return;
+
 	auto expiryDate = leftItem->getKey().cert.expiryDate();
 	if(expiryDate <= QDateTime::currentDateTime())
 	{
@@ -237,12 +245,22 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 				"When decrypter has updated certificates then decrypting is impossible.")
 				.arg(expiryDate.toString( "dd.MM.yyyy hh:mm:ss")), this);
 		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), ria::qdigidoc4::EncryptContainer);
+		dlg.addButton(tr("YES"), QMessageBox::Yes);
 		dlg.exec();
-		if(dlg.result() != ria::qdigidoc4::EncryptContainer)
+		if(dlg.result() != QMessageBox::Yes)
 			return;
 	}
-
+	QList<QSslError> errors = QSslCertificate::verify(QList<QSslCertificate>() << leftItem->getKey().cert);
+	errors.removeAll(QSslError(QSslError::CertificateExpired, leftItem->getKey().cert));
+	if(!errors.isEmpty())
+	{
+		WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
+		dlg.setCancelText(tr("NO"));
+		dlg.addButton(tr("YES"), QMessageBox::Yes);
+		dlg.exec();
+		if(dlg.result() != QMessageBox::Yes)
+			return;
+	}
 	updated = update;
 
 	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
@@ -253,6 +271,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 	leftItem->disable(true);
 	leftItem->showButton(AddressItem::Added);
 	ui->confirm->setDisabled(!rightList.size());
+	rememberCerts({toHistory(leftItem->getKey().cert)});
 }
 
 void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertData)
@@ -260,7 +279,28 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	if(selectedCertData.isEmpty())
 		return;
 
-	QString term = selectedCertData.first().CN;
+	HistoryCertData certData = selectedCertData.first();
+	QString term = (certData.type == "1") ? certData.CN : certData.CN.split(',').value(2);
+/*
+	QString certKey;
+
+	// it would be nice to add to (take from) certKey from certhistory.xml, but how to support the existing file?
+	switch (QString(certData.type).toInt())
+	{
+		case CertificateHistory::DigiID:
+			certKey = certData.CN + ",DIGI-ID E-RESIDENT";
+			break;
+		case CertificateHistory::TEMPEL:
+			certKey = certData.CN.replace(',', ' ');
+			break;
+		default:
+			certKey = certData.CN + ",ID-CARD"; // ID-KAART
+			break;
+	}
+	
+	if (rightList.contains(certKey))
+		return;
+*/
 	ui->leftPane->setTerm(term);
 	search(term);
 	select = true;
@@ -357,9 +397,9 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	{
 		it.value()->disable(false);
 		it.value()->showButton(AddressItem::Add);
-		rightList.removeAll(friendlyName);
-		updated = true;
 	}
+	rightList.removeAll(friendlyName);
+	updated = true;
 	ui->confirm->setDisabled(!rightList.size());
 }
 

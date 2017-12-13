@@ -66,7 +66,7 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, 
 ,	historyCertData(historyCertData)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
@@ -82,16 +82,16 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, 
 	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::select);
 	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::reject);
 	connect(ui->remove, &QPushButton::clicked, this, &CertificateHistory::remove);
+	connect(ui->view, &QTreeWidget::itemActivated, this, &CertificateHistory::select);
+	connect(ui->view, &QTreeWidget::itemActivated, this, &CertificateHistory::reject);
 
 	this->historyCertData = historyCertData;
 	fillView();
+	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 	for(int i = 0; i < 4; i++)
 		ui->view->resizeColumnToContents(i);
-
-#ifdef Q_OS_WIN32
-	setStyleSheet("QWidget#CertificateHistory{ border-radius: 2px; background-color: #FFFFFF; border: solid #D9D9D8; border-width: 1px 1px 1px 1px;}");
-#endif
 }
+
 
 CertificateHistory::~CertificateHistory()
 {
