@@ -119,14 +119,13 @@ MainWindow::MainWindow( QWidget *parent ) :
 #endif
 
 	setAcceptDrops( true );
-	smartcard = new QSmartCard( this );
+
 	// Refresh ID card info in card widget
-	connect( smartcard, &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );
+	connect( qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );
 	// Refresh card info in card pop-up menu
-	connect( smartcard, &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
+	connect( qApp->smartcard(), &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
 	// Show card pop-up menu
 	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
-	smartcard->start();
 
 	ui->accordion->init();
 
@@ -162,7 +161,6 @@ MainWindow::~MainWindow()
 {
 	delete ui;
 	delete buttonGroup;
-	delete smartcard;
 }
 
 void MainWindow::pageSelected( PageIcon *const page )
@@ -211,6 +209,15 @@ void MainWindow::pageSelected( PageIcon *const page )
 		navigateToPage(toPage);
 }
 
+void MainWindow::browseOnDisk( const QString &fileName )
+{
+	if ( !QFileInfo( fileName ).exists() )
+		return;
+	QUrl url = QUrl::fromLocalFile( fileName );
+	url.setScheme( "browse" );
+	QDesktopServices::openUrl( url );
+}
+
 void MainWindow::buttonClicked( int button )
 {
 	switch( button )
@@ -256,82 +263,6 @@ void MainWindow::cachePicture( const QString &id, const QImage &image )
 	settings.setValue( "imageCache", images );
 }
 
-void MainWindow::clearOverlay()
-{
-	overlay->close();
-	overlay.reset( nullptr );
-}
-
-ContainerState MainWindow::currentState()
-{
-	auto current = ui->startScreen->currentIndex();
-
-	if(current == CryptoIntro || current == CryptoDetails)
-	{
-		if(cryptoDoc)
-			return cryptoDoc->state();
-	}
-	else if(digiDoc)
-	{
-		return digiDoc->state();
-	}
-
-	return ContainerState::Uninitialized;
-}
-
-bool MainWindow::decrypt()
-{
-	if(!cryptoDoc)
-		return false;
-
-	WaitDialog waitDialog(this);
-	waitDialog.open();
-
-	return cryptoDoc->decrypt();
-}
-
-void MainWindow::dragEnterEvent(QDragEnterEvent *event)
-{
-	event->acceptProposedAction();
-
-	showOverlay(this);
-}
-
-void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
-{
-	event->accept();
-
-	clearOverlay();
-}
-
-void MainWindow::dropEvent(QDropEvent *event)
-{
-	const QMimeData *mimeData = event->mimeData();
-	QStringList files;
-
-	if (mimeData->hasUrls())
-	{
-		for( auto url: mimeData->urls())
-		{
-			if (url.scheme() == "file" )
-			{
-				files << url.toLocalFile();
-			}
-		}
-	}
-	else
-	{
-		showNotification( tr("Unrecognized data") );
-	}
-	event->acceptProposedAction();
-	clearOverlay();
-
-	if( !files.isEmpty() )
-	{
-		openFiles( files );
-	}
-}
-
 void MainWindow::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
@@ -366,6 +297,12 @@ bool MainWindow::checkConnection()
 	}
 
 	return true;
+}
+
+void MainWindow::clearOverlay()
+{
+	overlay->close();
+	overlay.reset( nullptr );
 }
 
 void MainWindow::clearWarning(const char* warningIdent)
@@ -411,6 +348,92 @@ void MainWindow::closeWarnings(int page)
 	}
 
 	updateWarnings();
+}
+
+QString MainWindow::cryptoPath()
+{
+	if(cryptoDoc)
+		return cryptoDoc->fileName();
+
+	return QString();
+}
+
+ContainerState MainWindow::currentState()
+{
+	auto current = ui->startScreen->currentIndex();
+
+	if(current == CryptoIntro || current == CryptoDetails)
+	{
+		if(cryptoDoc)
+			return cryptoDoc->state();
+	}
+	else if(digiDoc)
+	{
+		return digiDoc->state();
+	}
+
+	return ContainerState::Uninitialized;
+}
+
+bool MainWindow::decrypt()
+{
+	if(!cryptoDoc)
+		return false;
+
+	WaitDialog waitDialog(this);
+	waitDialog.open();
+
+	return cryptoDoc->decrypt();
+}
+
+QString MainWindow::digiDocPath()
+{
+	if(digiDoc)
+		return digiDoc->fileName();
+
+	return QString();
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+	event->acceptProposedAction();
+
+	showOverlay(this);
+}
+
+void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
+{
+	event->accept();
+
+	clearOverlay();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+	const QMimeData *mimeData = event->mimeData();
+	QStringList files;
+
+	if (mimeData->hasUrls())
+	{
+		for( auto url: mimeData->urls())
+		{
+			if (url.scheme() == "file" )
+			{
+				files << url.toLocalFile();
+			}
+		}
+	}
+	else
+	{
+		showNotification( tr("Unrecognized data") );
+	}
+	event->acceptProposedAction();
+	clearOverlay();
+
+	if( !files.isEmpty() )
+	{
+		openFiles( files );
+	}
 }
 
 bool MainWindow::encrypt()
@@ -509,7 +532,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 				cryptoContainer->clear(filename);
 				for(auto file: files)
 					cryptoContainer->documentModel()->addFile(file);
-				auto cardData = smartcard->data();
+				auto cardData = qApp->smartcard()->data();
 				if(!cardData.isNull())
 				{
 					cryptoContainer->addKey(CKey(cardData.authCert()));
@@ -625,7 +648,7 @@ void MainWindow::convertToCDoc()
 	else
 		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
 
-	auto cardData = smartcard->data();
+	auto cardData = qApp->smartcard()->data();
 	if(!cardData.isNull())
 		cryptoContainer->addKey(CKey(cardData.authCert()));
 
@@ -677,8 +700,8 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 		}
 		else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
 		{
-			smartcard->reload(); // smartcard should also know that PIN is blocked.
-			showPinBlockedWarning(smartcard->data());
+			qApp->smartcard()->reload(); // QSmartCard should also know that PIN is blocked.
+			showPinBlockedWarning(qApp->smartcard()->data());
 		}
 		break;
 	case EncryptContainer:
@@ -936,9 +959,9 @@ void MainWindow::showCardMenu( bool show )
 {
 	if( show )
 	{
-		cardPopup.reset( new CardPopup( smartcard, this ) );
+		cardPopup.reset( new CardPopup( qApp->smartcard(), this ) );
 		// To select active card from several cards in readers ..
-		connect( cardPopup.get(), &CardPopup::activated, smartcard, &QSmartCard::selectCard, Qt::QueuedConnection );
+		connect( cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection );
 		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectSignCard, Qt::QueuedConnection );
 		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectAuthCard, Qt::QueuedConnection );
 		// .. and hide card popup menu
@@ -954,7 +977,7 @@ void MainWindow::showCardMenu( bool show )
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
-	QSmartCardData t = smartcard->data();
+	QSmartCardData t = qApp->smartcard()->data();
 
 	closeWarnings(-1);
 
@@ -975,7 +998,7 @@ void MainWindow::showCardStatus()
 			Styles::cachedPicture( t.data(QSmartCardData::Id ).toString(), { ui->cardInfo, ui->infoStack } );
 		}
 		ui->infoStack->update( t );
-		ui->accordion->updateInfo( smartcard );
+		ui->accordion->updateInfo( qApp->smartcard() );
 		ui->myEid->invalidIcon( !t.authCert().isValid() || !t.signCert().isValid() );
 		updateCardWarnings();
 		showIdCardAlerts( t );
@@ -1016,7 +1039,7 @@ void MainWindow::showOverlay( QWidget *parent )
 
 void MainWindow::showSettings(int page)
 {
-	QSmartCardData t = smartcard->data();
+	QSmartCardData t = qApp->smartcard()->data();
 	QString appletVersion = t.isNull() ? QString() : t.appletVersion();
 	SettingsDialog dlg(page, this, appletVersion);
 
@@ -1063,8 +1086,8 @@ bool MainWindow::sign()
 	}
 	else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
 	{
-		smartcard->reload();
-		showPinBlockedWarning(smartcard->data());
+		qApp->smartcard()->reload();
+		showPinBlockedWarning(qApp->smartcard()->data());
 	}
 
 	return false;
@@ -1105,7 +1128,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 void MainWindow::updateCardData()
 {
 	if( cardPopup )
-		cardPopup->update( smartcard );
+		cardPopup->update( qApp->smartcard() );
 }
 
 void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
@@ -1149,7 +1172,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 		return;
 	}
 
-	cachePicture( smartcard->data().data(QSmartCardData::Id).toString(), image );
+	cachePicture( qApp->smartcard()->data().data(QSmartCardData::Id).toString(), image );
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
@@ -1278,16 +1301,6 @@ void MainWindow::containerToEmail( const QString &fileName )
 	QDesktopServices::openUrl( url );
 }
 
-void MainWindow::browseOnDisk( const QString &fileName )
-{
-	if ( !QFileInfo( fileName ).exists() )
-		return;
-	QUrl url = QUrl::fromLocalFile( fileName );
-	url.setScheme( "browse" );
-	QDesktopServices::openUrl( url );
-}
-
-
 void MainWindow::updateRibbon(int page, bool expanded)
 {
 	short count = 0;
@@ -1404,13 +1417,13 @@ bool MainWindow::wrapContainer()
 
 void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 {
-	if(smartcard->property( "lastcard" ).toString() != t.card() &&
+	if(qApp->smartcard()->property( "lastcard" ).toString() != t.card() &&
 		t.version() == QSmartCardData::VER_3_4 &&
 		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
 	{
 		qApp->showWarning( tr("Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;"));
 	}
-	smartcard->setProperty("lastcard", t.card());
+	qApp->smartcard()->setProperty("lastcard", t.card());
 
 #ifdef Q_OS_WIN
 	CertStore store;
