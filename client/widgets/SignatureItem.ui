@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>415</width>
+    <width>0</width>
     <height>44</height>
    </size>
   </property>
@@ -102,7 +102,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
      </property>
      <property name="minimumSize">
       <size>
-       <width>446</width>
+       <width>0</width>
        <height>38</height>
       </size>
      </property>
@@ -151,7 +151,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>446</width>
+          <width>0</width>
           <height>16</height>
          </size>
         </property>
@@ -246,7 +246,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>421</width>
+          <width>0</width>
           <height>16</height>
          </size>
         </property>
