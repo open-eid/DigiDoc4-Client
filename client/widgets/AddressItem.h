@@ -52,7 +52,7 @@ public:
 	void idChanged(const QString& cardCode, const QString& mobileCode) override;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
-	void update(const QString& name, const QString& code, const QString &type, ShowToolButton show);
+	void update(const QString& name, const QString& code, const QString &type, const QString& strDate, ShowToolButton show);
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -63,6 +63,7 @@ private:
 	void changeNameHeight();
 	void recalculate();
 	void setName();
+	void setIdType();
 
 	Ui::AddressItem *ui;
 
@@ -74,5 +75,6 @@ private:
 	int nameWidth;
 	int reservedWidth;
 	QString typeText;
+	QString expireDateText;
 	bool yourself;
 };

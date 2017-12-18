@@ -79,31 +79,28 @@ AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
 			key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
 			key.cert.subjectInfo("CN").value(0);
 
-	QString type;
-	QTextStream st(&type);
+	QString type, strDate;
 
 	auto certType = SslCertificate(key.cert).type();
 	if(certType & SslCertificate::DigiIDType)
-		st << tr("Digi-ID");
+		type = "Digi-ID";
 	else if(certType & SslCertificate::EstEidType)
-		st << tr("ID-card");
+		type = "ID-card";
 	else if(certType & SslCertificate::TempelType)
-		st << tr("e-Seal");
+		type = "e-Seal";
 	else if(certType & SslCertificate::MobileIDType)
-		st << tr("Mobile-ID");
+		type = "Mobile-ID";
 
 	if(!showIcon)
 	{
 		DateTime date(key.cert.expiryDate().toLocalTime());
 		if(!date.isNull())
 		{
-			if(!type.isEmpty())
-				st << " - ";
-			st << tr("Expires on") << " " << date.formatDate("dd. MMMM yyyy");
+			strDate = date.formatDate("dd. MMMM yyyy");
 		}
 	}
 
-	update(name, key.cert.subjectInfo("serialNumber").value(0), type, AddressItem::Remove);
+	update(name, key.cert.subjectInfo("serialNumber").value(0), type, strDate, AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()
@@ -118,7 +115,8 @@ void AddressItem::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 
 		setName();
-		ui->idType->setText(tr(qPrintable(typeText)));
+
+		setIdType();
 	}
 
 	QWidget::changeEvent(event);
@@ -243,13 +241,30 @@ void AddressItem::stateChange(ContainerState state)
 	}
 }
 
-void AddressItem::update(const QString& cardName, const QString& cardCode, const QString& type, ShowToolButton show)
+void AddressItem::update(const QString& cardName, const QString& cardCode, const QString& type, const QString& strDate, ShowToolButton show)
 {
-	ui->idType->setText( tr(qPrintable(type)));
 	typeText = type;
+	expireDateText = strDate;
 	code = cardCode;
 	name = cardName;
 
+	setIdType();
 	showButton(show);
 	changeNameHeight();
+}
+
+void AddressItem::setIdType()
+{
+	QString str;
+	QTextStream st(&str);
+	st << tr(qPrintable(typeText));
+
+	if(!expireDateText.isEmpty())
+	{
+		if(!typeText.isEmpty())
+			st << " - ";
+		st << tr("Expires on") << " " << expireDateText;
+	}
+
+	ui->idType->setText(str);
 }

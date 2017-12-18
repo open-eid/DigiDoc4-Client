@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Failed to save server access certificate file to KeyChain!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сохранить файл сертификата доступа к серверу в цепочку ключей!</translation>
     </message>
     <message>
         <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</source>
@@ -404,7 +404,7 @@ Media type: %3</source>
     </message>
     <message>
         <source>Other</source>
-        <translation> </translation>
+        <translation>Неопределен</translation>
     </message>
 </context>
 
@@ -2709,7 +2709,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Opening</source>
-        <translation>Открывание</translation>
+        <translation>Открывается</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -2927,7 +2927,7 @@ ASiC-E – это разрабатываемый международный фо
 
     <message>
         <source>PIN Canceled</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN-код отменен</translation>
     </message>
     <message>
         <source>PIN locked</source>
@@ -2939,15 +2939,15 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>PKCS11 general error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка PKCS11</translation>
     </message>
     <message>
         <source>PKCS11 device error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка PKCS11 устройства</translation>
     </message>
     <message>
         <source>PKCS11 unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная ошибка PKCS11</translation>
     </message>
 </context>
 
@@ -2977,15 +2977,15 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Операция подписи/расшифровки уже выполняется в другом окне.></translation>
     </message>
     <message>
         <source>Authentication certificate is not selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сертификат идентификации не выбран</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось расшифровать документ</translation>
     </message>
 </context>
 
