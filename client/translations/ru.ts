@@ -1059,7 +1059,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc приложение используется для цифро&#173;вой подписи с помощью ID-карты и Мobiil-ID, проверки подлинности цифровых подписей, открытия и сохранения документов.</translation>
+        <translation>DigiDoc приложение используется для цифро&#173;вой подписи с помощью ID-карты и Мobiil-ID, проверки подлинности подписей, открытия и сохранения документов.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
@@ -1067,7 +1067,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
-        <translation>Управлять PIN/PUK кодами Вашей ID-карты и обновлением сертификатов. Просматривать и управлять другими Вашими электронными удостоверениями (eID).</translation>
+        <translation>Управлять PIN/PUK кодами Вашей ID-карты и обновлением сертификатов. Просма&#173;тривать и управлять другими Вашими электронными удостоверениями (eID).</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
@@ -1087,7 +1087,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>To sign the file, drag it from your computer to the DigiDoc application or click the "... or load a file from disk" button. You can drag or select multiple files at a time.</source>
-        <translation>Чтобы подписать файл, перетащите его из компьютера в приложение DigiDoc или нажмите кнопку «... или загрузите файл с диска». Вы можете одновременно пере&#173;таскивать или выбирать несколько файлов.</translation>
+        <translation>Чтобы подписать файл, перетащите его из компьютера в прило&#173;жение DigiDoc или нажмите кнопку «... или загрузите файл с диска». Вы можете одновременно пере&#173;таскивать или выбирать несколько файлов.</translation>
     </message>
     <message>
         <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
@@ -1111,7 +1111,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
-        <translation>Для шифрования данных выберите получателя. Перетащите файл, который нужно зашифро&#173;вать, с вашего компьютера в приложение DigiDoc или выберите файл с диска. Одновре&#173;менно можно выбирать несколько файлов.</translation>
+        <translation>Для шифрования данных выберите получа&#173;теля. Перетащите файл, который нужно зашифровать, с вашего компьютера в приложение или выберите файл с диска. Одновременно можно выбирать несколько файлов.</translation>
     </message>
     <message>
         <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
@@ -1557,6 +1557,10 @@ PUK кодом.&lt;/li&gt;
     <message>
         <source>CHECK FOR UPDATES</source>
         <translation>ПРОВЕРИТЬ НА ОБНОВЛЕНИЯ</translation>
+    </message>
+    <message>
+        <source>FIRST RUN</source>
+        <translation>ПЕРВЫЙ ЗАПУСК</translation>
     </message>
     <message>
         <source>REMOVE OLD CERTIFICATES</source>
