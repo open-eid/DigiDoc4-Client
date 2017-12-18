@@ -1019,7 +1019,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
-        <translation>DigiDoc создан для управления эстонскими eID и является официальным приложением для цифровой подписи и шифрования</translation>
+        <translation>DigiDoc создан для управления эстонскими eID и является официальным приложением для цифровой подписи и шифрования.</translation>
     </message>
     <message>
         <source>CONTINUE</source>

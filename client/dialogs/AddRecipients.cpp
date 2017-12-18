@@ -283,7 +283,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 		return;
 
 	HistoryCertData certData = selectedCertData.first();
-	QString term = (certData.type == "1") ? certData.CN : certData.CN.split(',').value(2);
+	QString term = (certData.type == "1" || certData.type == "3") ? certData.CN : certData.CN.split(',').value(2);
 	ui->leftPane->setTerm(term);
 	search(term);
 	select = true;
