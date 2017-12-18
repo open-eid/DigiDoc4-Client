@@ -23,7 +23,9 @@
    <string>Encrypt for</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#KeyDialog{ border-radius: 2px; background-color: #FFFFFF; border: none;}</string>
+   <string notr="true">QWidget{ background-color: #FFFFFF; border: none;}
+QWidget#KeyDialog{ border-radius: 2px; }
+</string>
   </property>
   <layout class="QVBoxLayout" name="KeyDialogLayout">
    <item>
