@@ -1024,11 +1024,11 @@ Rohkem infot leiate siit:</translation>
 
     <message>
         <source>Welcome to the Estonian eID application DigiDoc!</source>
-        <translation>Tere tulemast eesti eID rakenduse DigiDoc kasutajaks!</translation>
+        <translation>Tere tulemast Eesti eID rakenduse DigiDoc kasutajaks!</translation>
     </message>
     <message>
         <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
-        <translation>DigiDoc on loodud eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
+        <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
     </message>
     <message>
         <source>CONTINUE</source>
