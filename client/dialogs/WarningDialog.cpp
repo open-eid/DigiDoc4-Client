@@ -59,7 +59,9 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}
 	adjustSize();
+#ifndef Q_OS_MAC
 	setFixedSize( size() );
+#endif
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)
@@ -113,7 +115,9 @@ void WarningDialog::setText(const QString& text)
 {
 	ui->text->setText(text);
 	adjustSize();
+#ifndef Q_OS_MAC
 	setFixedSize( size() );
+#endif
 }
 
 void WarningDialog::warning(QWidget *parent, const QString& text)
