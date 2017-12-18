@@ -1027,7 +1027,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
-        <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</translation>
+        <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
     </message>
     <message>
         <source>CONTINUE</source>
