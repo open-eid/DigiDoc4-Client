@@ -1571,6 +1571,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <translation>KONROLLI UUENDUSI</translation>
     </message>
     <message>
+        <source>FIRST RUN</source>
+        <translation>ESMANE TUTVUSTUS</translation>
+    </message>
+    <message>
         <source>REMOVE OLD CERTIFICATES</source>
         <translation>EEMALDA ÜLELIIGSED SERTIFIKAADID</translation>
     </message>

@@ -1982,10 +1982,51 @@ background-color: #f7f7f7;</string>
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="btnFirstRun">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+}</string>
+        </property>
+        <property name="text">
+         <string>FIRST RUN</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btNavFromFile">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>
@@ -2029,7 +2070,7 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavSaveReport">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>
@@ -2073,7 +2114,7 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavFromHistory">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>
@@ -2117,7 +2158,7 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavUseByDefault">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>
@@ -2161,7 +2202,7 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavInstallManually">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>
@@ -2205,7 +2246,7 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btnNavShowCertificate">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>

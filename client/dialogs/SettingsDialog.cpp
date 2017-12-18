@@ -31,6 +31,7 @@
 #include "common/SslCertificate.h"
 #include "FileDialog.h"
 #include "dialogs/CertificateDetails.h"
+#include "dialogs/FirstRun.h"
 #include "effects/Overlay.h"
 
 #include <digidocpp/Conf.h>
@@ -182,6 +183,7 @@ void SettingsDialog::initUI()
 	ui->btnNavUseByDefault->setFont(condensed12);
 	ui->btnNavInstallManually->setFont(condensed12);
 	ui->btnNavShowCertificate->setFont(condensed12);
+	ui->btnFirstRun->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
 
 	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
@@ -224,6 +226,21 @@ void SettingsDialog::initUI()
 			QSslCertificate cert = AccessCert::cert();
 
 			CertificateDetails dlg(cert, this);
+			dlg.exec();
+		}
+			);
+	connect(ui->btnFirstRun, &QPushButton::clicked, this,
+			 [this]()
+		{
+			FirstRun dlg(this);
+
+			connect(&dlg, &FirstRun::langChanged, this,
+					[this](const QString& lang )
+					{
+						retranslate(lang);
+						selectLanguage();
+					}
+			);
 			dlg.exec();
 		}
 			);
@@ -271,19 +288,7 @@ void SettingsDialog::retranslate(const QString& lang)
 
 void SettingsDialog::initFunctionality()
 {
-	if(Settings::language() == "en")
-	{
-		ui->rdGeneralEnglish->setChecked(true);
-	}
-	else if(Settings::language() == "ru")
-	{
-		ui->rdGeneralRussian->setChecked(true);
-	}
-	else
-	{
-		ui->rdGeneralEstonian->setChecked(true);
-	}
-
+	selectLanguage();
 	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("et"); } );
 	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("en"); } );
 	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("ru"); } );
@@ -443,6 +448,16 @@ void SettingsDialog::updateCert()
 			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
 	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
 	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
+}
+
+void SettingsDialog::selectLanguage()
+{
+	if(Settings::language() == "en")
+		ui->rdGeneralEnglish->setChecked(true);
+	else if(Settings::language() == "ru")
+		ui->rdGeneralRussian->setChecked(true);
+	else
+		ui->rdGeneralEstonian->setChecked(true);
 }
 
 void SettingsDialog::setProxyEnabled()
@@ -645,6 +660,7 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavInstallManually->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
 	ui->btNavFromFile->setVisible(button == ui->btnMenuGeneral);
+	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);
 #ifdef Q_OS_WIN
 	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);

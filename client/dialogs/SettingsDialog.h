@@ -60,6 +60,7 @@ private:
 	void retranslate(const QString& lang);
 	void initFunctionality();
 	void updateCert();
+	void selectLanguage();
 	void setProxyEnabled();
 	void updateProxy();
 	void loadProxy( const digidoc::Conf *conf );
