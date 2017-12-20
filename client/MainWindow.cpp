@@ -654,16 +654,14 @@ void MainWindow::convertToCDoc()
 
 void MainWindow::moveCryptoContainer()
 {
-	const QFileInfo f(cryptoDoc->fileName());
-	QString to = FileDialog::getSaveFileName(this, tr("Move file"), cryptoDoc->fileName(), f.suffix());
+	QString to = selectFile(tr("Move file"),cryptoDoc->fileName(), true);
 	if(!to.isNull() && cryptoDoc->move(to))
 		ui->cryptoContainerPage->moved(to);
 }
 
 void MainWindow::moveSignatureContainer()
 {
-	const QFileInfo f(digiDoc->fileName());
-	QString to = FileDialog::getSaveFileName(this, tr("Move file"), digiDoc->fileName(), f.suffix());
+	QString to = selectFile(tr("Move file"),digiDoc->fileName(), true);
 	if(!to.isNull() && digiDoc->move(to))
 		ui->signContainerPage->moved(to);
 }
@@ -896,7 +894,7 @@ bool MainWindow::save()
 					.arg(digiDoc->fileName().normalized(QString::NormalizationForm_C)),
 				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
 		{
-			QString file = selectFile(digiDoc->fileName(), true);
+			QString file = selectFile(tr("Save file"), digiDoc->fileName(), true);
 			if( !file.isEmpty() )
 			{
 				return digiDoc->save(file);
@@ -908,18 +906,20 @@ bool MainWindow::save()
 	return false;
 }
 
-QString MainWindow::selectFile( const QString &filename, bool fixedExt )
+QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )
 {
-	static const QString adoc = tr("Documents (%1)").arg( "*.adoc" );
-	static const QString bdoc = tr("Documents (%1)").arg( "*.bdoc" );
-	static const QString edoc = tr("Documents (%1)").arg( "*.edoc" );
-	static const QString asic = tr("Documents (%1)").arg( "*.asice *.sce" );
+	const QString adoc = tr("Documents (%1)").arg( "*.adoc" );
+	const QString bdoc = tr("Documents (%1)").arg( "*.bdoc" );
+	const QString cdoc = tr("Documents (%1)").arg( "*.cdoc" );
+	const QString edoc = tr("Documents (%1)").arg( "*.edoc" );
+	const QString asic = tr("Documents (%1)").arg( "*.asice *.sce" );
 	const QString ext = QFileInfo( filename ).suffix().toLower();
 	QStringList exts;
 	QString active;
 	if( fixedExt )
 	{
 		if( ext == "bdoc" ) exts << bdoc;
+		if( ext == "cdoc" ) exts << cdoc;
 		if( ext == "asic" || ext == "sce" ) exts << asic;
 		if( ext == "edoc" ) exts << edoc;
 		if( ext == "adoc" ) exts << adoc;
@@ -928,12 +928,13 @@ QString MainWindow::selectFile( const QString &filename, bool fixedExt )
 	{
 		exts << bdoc << asic << edoc << adoc;
 		if( ext == "bdoc" ) active = bdoc;
+		if( ext == "cdoc" ) active = cdoc;
 		if( ext == "asice" || ext == "sce" ) active = asic;
 		if( ext == "edoc" ) active = edoc;
 		if( ext == "adoc" ) active = adoc;
 	}
 
-	return FileDialog::getSaveFileName( this, tr("Save file"), filename, exts.join(";;"), &active );
+	return FileDialog::getSaveFileName( this, title, filename, exts.join(";;"), &active );
 }
 
 void MainWindow::selectPageIcon( PageIcon* page )

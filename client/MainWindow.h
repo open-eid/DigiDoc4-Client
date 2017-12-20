@@ -130,7 +130,7 @@ private:
 	void removeSignature(int index);
 	void removeSignatureFile(int index);
 	bool save();
-	QString selectFile( const QString &filename, bool fixedExt );
+	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPageIcon( PageIcon* page );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void showCardMenu( bool show );
