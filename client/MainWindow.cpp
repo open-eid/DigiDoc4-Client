@@ -920,7 +920,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	{
 		if( ext == "bdoc" ) exts << bdoc;
 		if( ext == "cdoc" ) exts << cdoc;
-		if( ext == "asic" || ext == "sce" ) exts << asic;
+		if( ext == "asice" || ext == "sce" ) exts << asic;
 		if( ext == "edoc" ) exts << edoc;
 		if( ext == "adoc" ) exts << adoc;
 	}
