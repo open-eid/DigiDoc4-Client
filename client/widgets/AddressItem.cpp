@@ -231,7 +231,7 @@ void AddressItem::showButton(ShowToolButton show)
 
 void AddressItem::stateChange(ContainerState state)
 {
-	if( state == UnencryptedContainer )
+	if( state & (UnencryptedContainer | DecryptedContainer))
 	{
 		ui->remove->show();
 	}

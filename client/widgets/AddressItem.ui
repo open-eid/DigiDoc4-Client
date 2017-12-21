@@ -29,6 +29,12 @@
     <bold>false</bold>
    </font>
   </property>
+  <property name="cursor">
+   <cursorShape>PointingHandCursor</cursorShape>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -192,11 +198,17 @@ text-decoration: none solid rgb(0, 0, 0);
              <pointsize>14</pointsize>
             </font>
            </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::NoTextInteraction</set>
            </property>
           </widget>
          </item>
