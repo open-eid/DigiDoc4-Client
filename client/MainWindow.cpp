@@ -934,6 +934,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 		if( ext == "adoc" ) active = adoc;
 	}
 
+	auto hider = WaitDialog::hider();
 	return FileDialog::getSaveFileName( this, title, filename, exts.join(";;"), &active );
 }
 

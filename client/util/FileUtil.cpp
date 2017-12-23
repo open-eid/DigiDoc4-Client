@@ -21,6 +21,7 @@
 
 #include "Application.h"
 #include "FileDialog.h"
+#include "dialogs/WaitDialog.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -65,6 +66,7 @@ QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, co
 	QString fileName = QDir::toNativeSeparators(fileInfo.dir().path() + QDir::separator() + fileInfo.completeBaseName() + extension);
 	if(QFile::exists(fileName))
 	{
+		auto hider = WaitDialog::hider();
 		QString capitalized = type[0].toUpper() + type.mid(1);
 		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), qApp->tr("Create %1").arg(type), fileName,
 						QString("%1 (*%2)").arg(capitalized).arg(extension));
