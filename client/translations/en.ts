@@ -488,11 +488,11 @@ Media type: %3</translation>
 
     <message>
         <source>Select folder where files will be stored</source>
-        <translation>*</translation>
+        <translation>Select folder where files will be stored</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>*</translation>
+        <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
     </message>
 </context>
 

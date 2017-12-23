@@ -481,12 +481,12 @@ void ContainerPage::updatePanes(ContainerState state)
 		envelope = "Container";
 
 		resize = !ui->changeLocation->isHidden();
-		ui->changeLocation->hide();
+		ui->changeLocation->show();
 		ui->leftPane->init(fileName, "Decrypted files");
 		showRightPane( ItemAddress, "Recipients");
-		hideMainAction();
-		hideButtons( { ui->convert, ui->save } );
-		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
+		showMainAction(EncryptContainer);
+		showButtons( { ui->cancel, ui->convert } );
+		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
 		break;
 	default:
 		// Uninitialized cannot be shown on container page

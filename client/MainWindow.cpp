@@ -386,9 +386,12 @@ QString MainWindow::digiDocPath()
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-	event->acceptProposedAction();
-
-	showOverlay(this);
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasUrls() && (currentState() & ~(SignedContainer | EncryptedContainer)))
+	{
+		event->acceptProposedAction();
+		showOverlay(this);
+	}
 }
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
@@ -403,7 +406,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 	const QMimeData *mimeData = event->mimeData();
 	QStringList files;
 
-	if (mimeData->hasUrls())
+	if (mimeData->hasUrls() && (currentState() & ~(SignedContainer | EncryptedContainer)))
 	{
 		for( auto url: mimeData->urls())
 		{
@@ -772,7 +775,8 @@ void MainWindow::openFiles(const QStringList &files)
 	case ContainerState::UnsignedContainer:
 	case ContainerState::UnsignedSavedContainer:
 	case ContainerState::UnencryptedContainer:
-		page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
+	case ContainerState::DecryptedContainer:
+		page = (state & (ContainerState::UnencryptedContainer | ContainerState::DecryptedContainer)) ? CryptoDetails : SignDetails;
 		create = false;
 		if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
 		{
@@ -783,7 +787,6 @@ void MainWindow::openFiles(const QStringList &files)
 		}
 		break;
 	case ContainerState::EncryptedContainer:
-	case ContainerState::DecryptedContainer:
 		// TODO: new container???
 		create = false;
 		break;

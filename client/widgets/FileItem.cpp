@@ -86,6 +86,7 @@ void FileItem::stateChange(ContainerState state)
 
 	switch(state)
 	{
+	case DecryptedContainer:
 	case UnsignedSavedContainer:
 		ui->download->show();
 		ui->remove->show();
@@ -96,10 +97,6 @@ void FileItem::stateChange(ContainerState state)
 		break;
 	case EncryptedContainer:
 		ui->download->hide();
-		ui->remove->hide();
-		break;
-	case DecryptedContainer:
-		ui->download->show();
 		ui->remove->hide();
 		break;
 	default:

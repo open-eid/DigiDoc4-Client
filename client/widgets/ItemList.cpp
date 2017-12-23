@@ -287,7 +287,7 @@ void ItemList::setTerm(const QString &term)
 void ItemList::stateChange( ContainerState state )
 {
 	this->state = state;
-	ui->add->setVisible(state & (SignatureContainers | UnencryptedContainer));
+	ui->add->setVisible(state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer | DecryptedContainer));
 
 	for(auto item: items)
 	{

@@ -1123,7 +1123,7 @@ QList<QString> CryptoDoc::files()
 
 bool CryptoDoc::move(const QString &to)
 {
-	if(containerState == ContainerState::UnencryptedContainer)
+	if(containerState & (ContainerState::UnencryptedContainer | ContainerState::DecryptedContainer))
 	{
 		d->fileName = to;
 		return true;
