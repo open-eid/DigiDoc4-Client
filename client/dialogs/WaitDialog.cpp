@@ -82,6 +82,15 @@ int WaitDialog::exec()
 WaitHider WaitDialog::hider()
 {
 	WaitDialog *waitDialog = qobject_cast<WaitDialog*>(qApp->activeWindow());
+	if(!waitDialog)
+	{
+		for(auto widget: qApp->topLevelWidgets())
+		{
+			waitDialog = qobject_cast<WaitDialog*>(widget);
+			if(waitDialog)
+				break;
+		}
+	}
 	return WaitHider(waitDialog);
 }
 
