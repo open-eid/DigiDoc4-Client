@@ -20,9 +20,13 @@
 #include "Styles.h"
 #include "Settings.h"
 
+#include <QDebug>
 #include <QFontDatabase>
+#include <QFontMetrics>
+#include <QGuiApplication>
 #include <QImage>
 #include <QPixmap>
+#include <QScreen>
 #include <QVariantList>
 
 #ifndef Q_OS_MAC
@@ -49,6 +53,36 @@ public:
 		regular = QFontDatabase::applicationFontFamilies(
 			QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf")
 		).at(0);
+
+	//	Width should be 470
+		QString text = "Allkirjastamiseks või kontrollimiseks lohista fail siia…";
+		qDebug() << "Width of text '" << text << "' with font size 20 should be 470";
+		for(auto size = 12; size <= 20; size++)
+		{
+			qDebug() << "Font size " << size 
+				<< ": width " << QFontMetrics(QFont(regular, size)).width(text)
+				<<  "/ bold " << QFontMetrics(QFont(bold, size)).width(text);
+		}
+		text = "MUUDA";
+		qDebug() << "Width of text '" << text << "' with condensed font size 12 should be 36";
+		for(auto size = 6; size <= 12; size++)
+		{
+			qDebug() << "Font size " << size 
+				<< ": width " << QFontMetrics(QFont(condensed, size)).width(text)
+				<<  "/ bold " << QFontMetrics(QFont(condensedBold, size)).width(text);
+		}
+		// http://doc.qt.io/qt-5/highdpi.html
+		// http://doc.qt.io/qt-5/scalability.html
+		qreal refDpi = 93.;
+		qreal refHeight = 1920.;
+		qreal refWidth = 1200.;
+		QRect rect = QGuiApplication::primaryScreen()->geometry();
+		qreal height = qMax(rect.width(), rect.height());
+		qreal width = qMin(rect.width(), rect.height());
+		qreal dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
+		qreal ratio = qMin(height/refHeight, width/refWidth);
+		qreal ratioFont = qMin(height*refDpi/(dpi*refHeight), width*refDpi/(dpi*refWidth));
+		qDebug() << "DPI: " << dpi << " Calc ratio:" << ratio << " Calc font ratio: " << ratioFont;
 	};
 	QString fontName( Styles::Font font )
 	{
