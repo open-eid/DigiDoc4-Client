@@ -56,7 +56,7 @@ public:
 
 	//	Width should be 470
 		QString text = "Allkirjastamiseks või kontrollimiseks lohista fail siia…";
-		qDebug() << "Width of text '" << text << "' with font size 20 should be 470";
+		qDebug() << "Width of text " << text << " with font size 20 should be 470";
 		for(auto size = 12; size <= 20; size++)
 		{
 			qDebug() << "Font size " << size 
@@ -64,12 +64,44 @@ public:
 				<<  "/ bold " << QFontMetrics(QFont(bold, size)).width(text);
 		}
 		text = "MUUDA";
-		qDebug() << "Width of text '" << text << "' with condensed font size 12 should be 36";
+		qDebug() << "Width of text " << text << " with condensed font size 12 should be 36";
 		for(auto size = 6; size <= 12; size++)
 		{
 			qDebug() << "Font size " << size 
 				<< ": width " << QFontMetrics(QFont(condensed, size)).width(text)
 				<<  "/ bold " << QFontMetrics(QFont(condensedBold, size)).width(text);
+		}
+		text = "Lugejas on ID kaart";
+		qDebug() << "Width of text " << text << " with condensed font size 16 should be 120";
+		for(auto size = 10; size <= 16; size++)
+		{
+			qDebug() << "Font size " << size 
+				<< ": width " << QFontMetrics(QFont(condensed, size)).width(text)
+				<<  "/ bold " << QFontMetrics(QFont(condensedBold, size)).width(text);
+		}
+		text = "Ver. 4.0.0.1";
+		qDebug() << "Width of text " << text << " with font size 12 should be 57";
+		for(auto size = 8; size <= 12; size++)
+		{
+			qDebug() << "Font size " << size 
+				<< ": width " << QFontMetrics(QFont(regular, size)).width(text)
+				<<  "/ bold " << QFontMetrics(QFont(regular, size)).width(text);
+		}
+		text = "Dokument2.pdf";
+		qDebug() << "Width of text " << text << " with font size 14 should be 96";
+		for(auto size = 9; size <= 14; size++)
+		{
+			qDebug() << "Font size " << size 
+				<< ": width " << QFontMetrics(QFont(regular, size)).width(text)
+				<<  "/ bold " << QFontMetrics(QFont(regular, size)).width(text);
+		}
+		text = "Krüpteerimine õnnestus!";
+		qDebug() << "Width of text " << text << " with font size 22 should be 236";
+		for(auto size = 16; size <= 22; size++)
+		{
+			qDebug() << "Font size " << size 
+				<< ": width " << QFontMetrics(QFont(regular, size)).width(text)
+				<<  "/ bold " << QFontMetrics(QFont(regular, size)).width(text);
 		}
 		// http://doc.qt.io/qt-5/highdpi.html
 		// http://doc.qt.io/qt-5/scalability.html
