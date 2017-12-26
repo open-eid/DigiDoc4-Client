@@ -418,23 +418,23 @@ Media type: %3</source>
     </message>
     <message>
         <source>Citizenship</source>
-        <translation>Гражданство</translation>
+        <translation>ГРАЖДАНСТВО</translation>
     </message>
     <message>
         <source>Given names</source>
-        <translation>Имена</translation>
+        <translation>ИМЕНА</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>Личный код</translation>
+        <translation>ЛИЧНЫЙ КОД</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation>Документ</translation>
+        <translation>ДОКУМЕНТ</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Фамилия</translation>
+        <translation>ФАМИЛИЯ</translation>
     </message>
     <message>
         <source>SAVE THE PICTURE</source>
