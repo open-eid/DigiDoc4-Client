@@ -87,12 +87,14 @@ public:
 			QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf")
 		).at(0);
 
+#ifdef Q_OS_MAC
 		// See http://doc.qt.io/qt-5/highdpi.html
 		// and http://doc.qt.io/qt-5/scalability.html
 		for (auto sample : condensedSamples)
 			condensedMapping[sample.fontSize] = calcFontSize(sample, condensed);
 		for (auto sample : regularSamples)
 			regularMapping[sample.fontSize] = calcFontSize(sample, regular);
+#endif
 	};
 	QString fontName( Styles::Font font )
 	{
