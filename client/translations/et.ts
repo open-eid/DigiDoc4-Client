@@ -418,23 +418,23 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <translation>Kodakondsus</translation>
+        <translation>KODAKONDSUS</translation>
     </message>
     <message>
         <source>Given names</source>
-        <translation>Eesnimed</translation>
+        <translation>EESNIMED</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>Isikukood</translation>
+        <translation>ISIKUKOOD</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation>Dokument</translation>
+        <translation>DOKUMENT</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Perekonnanimi</translation>
+        <translation>PEREKONNANIMI</translation>
     </message>
 
     <message>

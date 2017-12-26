@@ -418,23 +418,23 @@ Media type: %3</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <translation>Citizenship</translation>
+        <translation>CITIZENSHIP</translation>
     </message>
     <message>
         <source>Given names</source>
-        <translation>Given names</translation>
+        <translation>GIVEN NAMES</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>Personal code</translation>
+        <translation>PERSONAL CODE</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation>Document</translation>
+        <translation>DOCUMENT</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Surname</translation>
+        <translation>SURNAME</translation>
     </message>
 
     <message>

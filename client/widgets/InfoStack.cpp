@@ -44,6 +44,13 @@ InfoStack::InfoStack( QWidget *parent )
 
 	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
 	connect( ui->btnPicture, &QPushButton::clicked, this, [this]() { emit photoClicked( ui->photo->pixmap() ); } );
+	
+	QFont labelFont = Styles::font(Styles::Condensed, 11);
+	ui->labelGivenNames->setFont(labelFont);
+	ui->labelSurname->setFont(labelFont);
+	ui->labelPersonalCode->setFont(labelFont);
+	ui->labelCitizenship->setFont(labelFont);
+	ui->labelSerialNumber->setFont(labelFont);
 
 	QFont font = Styles::font(Styles::Regular, 16);
 	font.setWeight(QFont::DemiBold);
