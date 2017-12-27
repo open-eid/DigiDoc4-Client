@@ -25,6 +25,9 @@ namespace Ui {
 class FileItem;
 }
 
+class QFont;
+class QFontMetrics;
+
 class FileItem : public Item
 {
 	Q_OBJECT
@@ -45,7 +48,15 @@ protected:
 	void enterEvent(QEvent *event) override;
 	void leaveEvent (QEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
 
 private:
+	void setFileName(bool force);
+
 	Ui::FileItem *ui;
+	bool elided;
+	QFont fileFont;
+	QString fileName;
+	QFontMetrics fm;
+	int width;
 };

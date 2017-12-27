@@ -365,7 +365,7 @@ void SDocumentModel::open(int row)
 #else
 	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );
 #endif
-	QDesktopServices::openUrl( QUrl::fromLocalFile( f.absoluteFilePath() ) );
+	emit openFile(f.absoluteFilePath());
 }
 
 bool SDocumentModel::removeRows(int row, int count)

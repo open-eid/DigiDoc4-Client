@@ -98,6 +98,7 @@ private:
 	bool event( QEvent *e ) override;
 	QWidget* mainWindow();
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
+	QWidget* uniqueRoot();
 
 #if defined(Q_OS_MAC)
 	void initMacEvents();

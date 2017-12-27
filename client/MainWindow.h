@@ -72,6 +72,7 @@ private Q_SLOTS:
 	void getEmailStatus();
 	void getOtherEID ();
 	void open(const QStringList &params, bool crypto);
+	void openFile(const QString &file);
 	void operation(int op, bool started);
 	void pageSelected( PageIcon *const );
 	void photoClicked( const QPixmap *photo );
@@ -119,7 +120,7 @@ private:
 	void onCryptoAction(int code, const QString &id, const QString &phone);
 	void onSignAction(int code, const QString &info1, const QString &info2);
 	void openContainer();
-	void openFiles(const QStringList &files);
+	void openFiles(const QStringList &files, bool addFile = false);
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 	void resetCryptoDoc(CryptoDoc *doc = nullptr);
@@ -151,7 +152,7 @@ private:
 	void showIdCardAlerts(const QSmartCardData& t);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(QList<CKey> keys);
-	bool wrapContainer();
+	bool wrapContainer(bool signing);
 	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;

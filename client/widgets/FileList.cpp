@@ -177,7 +177,8 @@ void FileList::selectFile()
 void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
-	disconnect(documentModel, nullptr, nullptr, nullptr);
+	disconnect(documentModel, &DocumentModel::added, nullptr, nullptr);
+	disconnect(documentModel, &DocumentModel::removed, nullptr, nullptr);
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
 	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
 	auto count = documentModel->rowCount();

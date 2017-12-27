@@ -39,6 +39,7 @@ public:
 
 signals:
 	void added(const QString &file);
+	void openFile(const QString &file);
 	void removed(int row);
 	
 public slots:

@@ -2278,6 +2278,10 @@ PUK кодом.&lt;/li&gt;
         <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
     </message>
     <message>
+        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
+        <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
+    </message>
+    <message>
         <source>CONTINUE</source>
         <translation>ВПЕРЕД</translation>
     </message>

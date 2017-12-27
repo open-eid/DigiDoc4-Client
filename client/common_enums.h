@@ -66,6 +66,13 @@ enum Actions {
 	ClearSignatureWarning
 };
 
+enum ExtensionType {
+    ExtSignature,
+    ExtCrypto,
+    ExtPDF,
+    ExtOther
+};
+
 enum FileType {
     SignatureDocument,
     CryptoDocument,

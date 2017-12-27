@@ -30,35 +30,51 @@ using namespace ria::qdigidoc4;
 
 FileType FileUtil::detect( const QString &filename )
 {
-	const QFileInfo f( filename );
-	if( !f.isFile() ) return Other;
+	ExtensionType ext = extension(filename);
 
-	QStringList exts = QStringList() << "bdoc" << "ddoc" << "asice" << "sce" << "asics" << "scs" << "edoc" << "adoc";
-	if( exts.contains( f.suffix(), Qt::CaseInsensitive ) )
+	switch(ext)
 	{
-		return SignatureDocument;
-	}
-	if( !QString::compare(f.suffix(), "cdoc", Qt::CaseInsensitive) )
-	{
-		return CryptoDocument;
-	}
-	if( !QString::compare(f.suffix(), "pdf", Qt::CaseInsensitive) )
-	{
-		QFile file(filename);
-
-		if( !file.open( QIODevice::ReadOnly ) )
-			return Other;
-
-		QByteArray blob = file.readAll();
-
-		for(auto token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
+		case ExtSignature:
+			return SignatureDocument;
+		case ExtCrypto:
+			return CryptoDocument;
+		case ExtPDF:
 		{
-			if(blob.indexOf(QByteArray(token)) > 0)
-				return SignatureDocument;
+			QFile file(filename);
+
+			if( !file.open( QIODevice::ReadOnly ) )
+				return Other;
+
+			QByteArray blob = file.readAll();
+
+			for(auto token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
+			{
+				if(blob.indexOf(QByteArray(token)) > 0)
+					return SignatureDocument;
+			}
+			return Other;
 		}
+		default:
+			return Other;
 	}
 
 	return Other;
+}
+
+ExtensionType FileUtil::extension(const QString &filename)
+{
+	static QStringList exts = QStringList() << "bdoc" << "ddoc" << "asice" << "sce" << "asics" << "scs" << "edoc" << "adoc";
+	const QFileInfo f( filename );
+	if( !f.isFile() ) return ExtOther;
+
+	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
+		return ExtSignature;
+	if(!QString::compare(f.suffix(), "cdoc", Qt::CaseInsensitive))
+		return ExtCrypto;
+	if(!QString::compare(f.suffix(), "pdf", Qt::CaseInsensitive))
+		return ExtPDF;
+
+	return ExtOther;
 }
 
 QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, const QString &type)

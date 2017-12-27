@@ -132,12 +132,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
 	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked);
 	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
-	connect(ui->signContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles);
+	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
 
 	connect(ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction);
-	connect(ui->cryptoContainerPage, &ContainerPage::addFiles, this, &MainWindow::openFiles);
+	connect(ui->cryptoContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->cryptoContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeCryptoFile);
 	connect(ui->cryptoContainerPage, &ContainerPage::keysSelected, this, &MainWindow::updateKeys);
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
@@ -310,6 +310,7 @@ void MainWindow::clearWarning(const char* warningIdent)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	resetCryptoDoc();
 	resetDigiDoc();
 	ui->startScreen->setCurrentIndex(SignIntro);
 }
@@ -420,10 +421,8 @@ void MainWindow::dropEvent(QDropEvent *event)
 	event->acceptProposedAction();
 	clearOverlay();
 
-	if( !files.isEmpty() )
-	{
-		openFiles( files );
-	}
+	if(!files.isEmpty())
+		openFiles(files, true);
 }
 
 bool MainWindow::encrypt()
@@ -716,7 +715,21 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	}
 }
 
-void MainWindow::openFiles(const QStringList &files)
+void MainWindow::openFile(const QString &file)
+{
+	ExtensionType ext = FileUtil::extension(file);
+
+	// If possible open the file in same main window
+	if((ext == ExtensionType::ExtSignature && !digiDoc) || (ext == ExtensionType::ExtCrypto && !cryptoDoc))
+	{
+		openFiles(QStringList(file));
+		return;
+	}
+
+	QDesktopServices::openUrl(QUrl::fromLocalFile(file));
+}
+
+void MainWindow::openFiles(const QStringList &files, bool addFile)
 {
 /*
 	1. If containers are not open:
@@ -730,12 +743,12 @@ void MainWindow::openFiles(const QStringList &files)
 
 	2. If container open:
 	2.1 if UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer
-		- Add file to files to be signed/encrypted
-	2.3 else if SignedContainer
-		- ask if new container should be created with signature container and
-		  files to be opened;
-	2.4 else if EncryptedContainer || DecryptedContainer
-			- ask if should be closed and handle open
+		- If dropped/file add selected, add file to files to be signed/encrypted
+		- else open file in another view
+	2.3 else
+		- If dropped/file add selected, ask if new container should be created with 
+		  current container and files to be opened;
+		- else open file in another view
 */
 	auto current = ui->startScreen->currentIndex();
 	QStringList content(files);
@@ -772,28 +785,44 @@ void MainWindow::openFiles(const QStringList &files)
 	case ContainerState::UnsignedContainer:
 	case ContainerState::UnsignedSavedContainer:
 	case ContainerState::UnencryptedContainer:
-		page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
-		create = false;
-		if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
+		if(addFile)
 		{
-			DocumentModel* model = (current == CryptoDetails) ?
-				cryptoDoc->documentModel() : digiDoc->documentModel();
-			for(auto file: content)
-				model->addFile(file);
+			page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
+			create = false;
+			if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
+			{
+				DocumentModel* model = (current == CryptoDetails) ?
+					cryptoDoc->documentModel() : digiDoc->documentModel();
+				for(auto file: content)
+					model->addFile(file);
+			}
+		}
+		else
+		{
+			// If browsed (double-clicked in Explorer/Finder, clicked on bdoc/cdoc in opened container)
+			// or recently opened file is opened, then new container should be created.
+			create = true;
+			page = (state == ContainerState::UnencryptedContainer) ? SignDetails : CryptoDetails;
 		}
 		break;
-	case ContainerState::EncryptedContainer:
-	case ContainerState::DecryptedContainer:
-		// TODO: new container???
-		create = false;
-		break;
 	default:
-		if(wrapContainer())
-			content.insert(content.begin(), digiDoc->fileName());
-		else
-			create = false;
+		if(addFile)
+		{
+			bool crypto = state & CryptoContainers;
+			if(wrapContainer(!crypto))
+				content.insert(content.begin(), crypto ? cryptoDoc->fileName() : digiDoc->fileName());
+			else
+				create = false;
 
-		page = SignDetails;
+			page = crypto ? CryptoDetails : SignDetails;
+		}
+		else
+		{
+			// If browsed (double-clicked in Explorer/Finder, clicked on bdoc/cdoc in opened container)
+			// or recently opened file is opened, then new container should be created.
+			create = true;
+			page = (state & CryptoContainers) ? SignDetails : CryptoDetails;
+		}
 		break;
 	}
 
@@ -841,6 +870,8 @@ void MainWindow::resetCryptoDoc(CryptoDoc *doc)
 	ui->cryptoContainerPage->clear();
 	delete cryptoDoc;
 	cryptoDoc = doc;
+	if(cryptoDoc)
+		connect(cryptoDoc->documentModel(), &DocumentModel::openFile, this, &MainWindow::openFile);
 }
 
 void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
@@ -876,7 +907,10 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	closeWarnings(SignDetails);
 	digiDoc = doc;
 	if(digiDoc)
+	{
 		connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
+		connect(digiDoc->documentModel(), &DocumentModel::openFile, this, &MainWindow::openFile);
+	}
 }
 
 void MainWindow::resizeEvent( QResizeEvent *event )
@@ -1395,9 +1429,12 @@ void MainWindow::warningClicked(const QString &link)
 		ui->accordion->changePin2Clicked (false, true);
 }
 
-bool MainWindow::wrapContainer()
+bool MainWindow::wrapContainer(bool signing)
 {
-	WarningDialog dlg(tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add."), this);
+	QString msg = signing ?
+		tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
+		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
+	WarningDialog dlg(msg, this);
 	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
 	dlg.exec();

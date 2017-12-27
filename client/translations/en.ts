@@ -2310,6 +2310,10 @@ new codes.&lt;/li&gt;
         <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
     </message>
     <message>
+        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
+        <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
+    </message>
+    <message>
         <source>CONTINUE</source>
         <translation>CONTINUE</translation>
     </message>

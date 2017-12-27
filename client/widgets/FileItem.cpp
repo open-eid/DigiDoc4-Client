@@ -29,9 +29,12 @@ using namespace ria::qdigidoc4;
 FileItem::FileItem(ContainerState state, QWidget *parent)
 : Item(parent)
 , ui(new Ui::FileItem)
+, elided(false)
+, fileFont(Styles::font(Styles::Regular, 14))
+, fm(fileFont)
 {
 	ui->setupUi(this);
-	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
+	ui->fileName->setFont(fileFont);
 	ui->download->setIcons("/images/icon_download.svg", "/images/icon_download_hover.svg",  "/images/icon_download_pressed.svg", 1, 1, 17, 17);
 	ui->download->init(LabelButton::White, "", 0);
 	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
@@ -46,9 +49,12 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
 : FileItem( state, parent )
 {
-	const QFileInfo f( file );
+	const QFileInfo f(file);
+	fileName = f.fileName();
+
 	setMouseTracking(true);
-	ui->fileName->setText( f.fileName() );
+	width = fm.width(fileName);
+	setFileName(true);
 }
 
 FileItem::~FileItem()
@@ -65,7 +71,7 @@ void FileItem::enterEvent(QEvent *event)
 
 QString FileItem::getFile()
 {
-	return ui->fileName->text();
+	return fileName;
 }
 
 void FileItem::leaveEvent(QEvent *event)
@@ -78,6 +84,25 @@ void FileItem::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(isEnabled())
 		emit open(this);
+}
+
+void FileItem::resizeEvent(QResizeEvent *event)
+{
+	setFileName(false);
+}
+
+void FileItem::setFileName(bool force)
+{
+	if(ui->fileName->width() < width)
+	{
+		elided = true;
+		ui->fileName->setText(fm.elidedText(fileName, Qt::ElideMiddle, ui->fileName->width()));
+	}
+	else if(elided || force)
+	{
+		elided = false;
+		ui->fileName->setText(fileName);
+	}
 }
 
 void FileItem::stateChange(ContainerState state)

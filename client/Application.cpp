@@ -802,18 +802,10 @@ void Application::showAbout()
 
 void Application::showClient(const QStringList &params, bool crypto)
 {
-	QWidget *w = 0;
-	for(QWidget *m: qApp->topLevelWidgets())
-	{
-		MainWindow *main = qobject_cast<MainWindow*>(m);
-		if(main && 
-			((!crypto && main->digiDocPath().isEmpty()) || (crypto && main->cryptoPath().isEmpty()))
-		)
-		{
-			w = main;
-			break;
-		}
-	}
+	QWidget *w = nullptr;
+	MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
+	if(main && ((!crypto && main->digiDocPath().isEmpty()) || (crypto && main->cryptoPath().isEmpty())))
+		w = main;
 	if( !w )
 	{
 		Settings settings;
@@ -865,6 +857,25 @@ void Application::showWarning( const QString &msg, const QString &details )
 QSigner* Application::signer() const { return d->signer; }
 
 QSmartCard* Application::smartcard() const { return d->smartcard; }
+
+QWidget* Application::uniqueRoot()
+{
+	MainWindow* root = nullptr;
+
+	// Return main window if only one main window is opened
+	for(auto w : topLevelWidgets())
+	{
+		MainWindow* r = qobject_cast<MainWindow*>(w);
+		if(r)
+		{
+			if(root)
+				return nullptr;
+			root = r;
+		}
+	}
+
+	return root;
+}
 
 void Application::waitForTSL( const QString &file )
 {
