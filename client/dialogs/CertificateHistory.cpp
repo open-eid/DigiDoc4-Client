@@ -93,6 +93,7 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, 
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 	for(int i = 0; i < 4; i++)
 		ui->view->resizeColumnToContents(i);
+	adjustSize();
 }
 
 

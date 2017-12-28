@@ -1193,6 +1193,18 @@ Rohkem infot leiate siit:</translation>
         <translation>Krüpteerimismeetod</translation>
     </message>
     <message>
+        <source>Agreement method</source>
+        <translation>Aktsepteeritud meetod</translation>
+    </message>
+    <message>
+        <source>Key derivation method</source>
+        <translation>Key derivation method</translation>
+    </message>
+    <message>
+        <source>ConcatKDF digest method</source>
+        <translation>ConcatKDF digest method</translation>
+    </message>
+    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>

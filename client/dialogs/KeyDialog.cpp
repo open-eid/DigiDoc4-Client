@@ -62,6 +62,8 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 	addItem( tr("Expires"), key.cert.expiryDate().toLocalTime().toString("dd.MM.yyyy hh:mm:ss") );
 	addItem( tr("Issuer"), SslCertificate(key.cert).issuerInfo( QSslCertificate::CommonName ) );
 	d->view->resizeColumnToContents( 0 );
+	if(!k.agreement.isEmpty())
+		adjustSize();
 }
 
 KeyDialog::~KeyDialog()

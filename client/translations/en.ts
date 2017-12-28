@@ -1192,6 +1192,18 @@ Learn more info here:</translation>
         <translation>Crypto method</translation>
     </message>
     <message>
+        <source>Agreement method</source>
+        <translation>Agreement method</translation>
+    </message>
+    <message>
+        <source>Key derivation method</source>
+        <translation>Key derivation method</translation>
+    </message>
+    <message>
+        <source>ConcatKDF digest method</source>
+        <translation>ConcatKDF digest method</translation>
+    </message>
+    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>

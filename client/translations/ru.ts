@@ -1184,6 +1184,18 @@ Learn more info here:</source>
         <translation>Метод шифровки</translation>
     </message>
     <message>
+        <source>Agreement method</source>
+        <translation>Метод подтверждения</translation>
+    </message>
+    <message>
+        <source>Key derivation method</source>
+        <translation>Метод деривации ключа</translation>
+    </message>
+    <message>
+        <source>ConcatKDF digest method</source>
+        <translation>Метод подсчета ConcatKDF</translation>
+    </message>
+    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>
