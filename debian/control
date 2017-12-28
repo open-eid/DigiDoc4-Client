@@ -13,7 +13,7 @@ Build-Depends:
  libqt5svg5-dev,
  qttools5-dev,
  qttools5-dev-tools
-Standards-Version: 0.1.0
+Standards-Version: 0.2.0
 Homepage: https://github.com/open-eid/DigiDoc4-Client
 
 Package: qdigidoc4
