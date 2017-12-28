@@ -2360,10 +2360,6 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <translation>Ava ümbrik</translation>
     </message>
     <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Vali kataloog kuhu failid salvestatakse</translation>
-    </message>
-    <message>
         <source>This container is signed by you</source>
         <translation>See ümbrik on sinu poolt allkirjastatud</translation>
     </message>
@@ -2418,10 +2414,6 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>Personal code:</source>
         <translation>Isikukood:</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>

@@ -2318,10 +2318,6 @@ PUK кодом.&lt;/li&gt;
         <translation>Открыть контейнер</translation>
     </message>
     <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Выберите папку для сохранения файлов</translation>
-    </message>
-    <message>
         <source>Container:</source>
         <translation>Контейнер:</translation>
     </message>
@@ -2400,10 +2396,6 @@ PUK кодом.&lt;/li&gt;
     <message>
         <source>This container is </source>
         <translation>Данный контейнер</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>
