@@ -441,6 +441,7 @@ void AddRecipients::search(const QString &term)
 		{
 			if(!IKValidator::isValid(term))
 			{
+				QApplication::restoreOverrideCursor();
 				WarningDialog::warning(this, tr("Personal code is not valid!"));
 				return;
 			}

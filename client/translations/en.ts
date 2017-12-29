@@ -488,11 +488,11 @@ Media type: %3</translation>
 
     <message>
         <source>Select folder where files will be stored</source>
-        <translation>*</translation>
+        <translation>Select folder where files will be stored</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>*</translation>
+        <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
     </message>
 </context>
 
@@ -1190,6 +1190,18 @@ Learn more info here:</translation>
     <message>
         <source>Crypto method</source>
         <translation>Crypto method</translation>
+    </message>
+    <message>
+        <source>Agreement method</source>
+        <translation>Agreement method</translation>
+    </message>
+    <message>
+        <source>Key derivation method</source>
+        <translation>Key derivation method</translation>
+    </message>
+    <message>
+        <source>ConcatKDF digest method</source>
+        <translation>ConcatKDF digest method</translation>
     </message>
     <message>
         <source>ID</source>
@@ -2382,10 +2394,6 @@ new codes.&lt;/li&gt;
         <translation>Open container</translation>
     </message>
     <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Select folder where files will be stored</translation>
-    </message>
-    <message>
         <source>This container is signed by you</source>
         <translation>This container is signed by you</translation>
     </message>
@@ -2440,10 +2448,6 @@ new codes.&lt;/li&gt;
     <message>
         <source>Personal code:</source>
         <translation>Personal code:</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>

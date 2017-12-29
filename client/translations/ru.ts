@@ -1184,6 +1184,18 @@ Learn more info here:</source>
         <translation>Метод шифровки</translation>
     </message>
     <message>
+        <source>Agreement method</source>
+        <translation>Метод подтверждения</translation>
+    </message>
+    <message>
+        <source>Key derivation method</source>
+        <translation>Метод деривации ключа</translation>
+    </message>
+    <message>
+        <source>ConcatKDF digest method</source>
+        <translation>Метод подсчета ConcatKDF</translation>
+    </message>
+    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>
@@ -1476,12 +1488,12 @@ PUK кодом.&lt;/li&gt;
         <source>ConditionsChangePUK</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;PUK код - это код, разблокирующий заблокированные&lt;br&gt;
-сертификаты, если код PIN1 или PIN2 был введён неверно&lt;br&gt;
-3 раза подряд.&lt;/li&gt;
-&lt;li&gt;Если после смены PUK код забывается и сетрификат&lt;br&gt;
-блокируется из-за неверно введённых PIN1 или PIN2, то&lt;br&gt;
-единственной возможностью восстановить работо&#173;&lt;br&gt;
-способность ID-карты, это обратиться в &lt;u&gt;бюро обслуживания.&lt;/u&gt;&lt;/li&gt;
+сертификаты, если код PIN1 или PIN2 был введён&lt;br&gt;
+неверно 3 раза подряд.&lt;/li&gt;
+&lt;li&gt;Если PUK код забыт и сетрификат блокируется из-за&lt;br&gt;
+неверно введённых PIN1 или PIN2, то единственной&lt;br&gt;
+возможностью восстановить работоспособность&lt;br&gt;
+ID-карты, это обратиться в &lt;u&gt;бюро обслуживания.&lt;/u&gt;&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -2318,10 +2330,6 @@ PUK кодом.&lt;/li&gt;
         <translation>Открыть контейнер</translation>
     </message>
     <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Выберите папку для сохранения файлов</translation>
-    </message>
-    <message>
         <source>Container:</source>
         <translation>Контейнер:</translation>
     </message>
@@ -2400,10 +2408,6 @@ PUK кодом.&lt;/li&gt;
     <message>
         <source>This container is </source>
         <translation>Данный контейнер</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>
