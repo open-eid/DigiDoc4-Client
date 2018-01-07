@@ -43,6 +43,21 @@ QByteArray toByteArray(const NSData *data)
 	return ba;
 }
 
+QVariant findBookmark(const QVariantMap &bookmarks, const QString &path)
+{
+	if(bookmarks.contains(path))
+		return bookmarks[path];
+
+	for(auto bookmark : bookmarks.keys())
+	{
+		if(path.startsWith(bookmark))
+			return bookmarks[bookmark];
+	}
+
+	return QVariant();
+}
+
+
 void MacUtil::bookmark(char const* path)
 {
 	std::string url;
@@ -67,7 +82,7 @@ void MacUtil::bookmark(char const* path)
 		NSLog(@"MacUtil - Created bookmark for URL (%@)", folder);
 		Settings settings;
 		QVariantMap bookmarks = settings.value("BookmarkedFolders").toMap();
-		bookmarks[url_path] = toByteArray(bookmark);
+		bookmarks[path] = toByteArray(bookmark);
 		settings.setValue("BookmarkedFolders", bookmarks);
 	}
 }
@@ -84,20 +99,20 @@ bool MacUtil::isWritable(char const* path)
 	NSString *folder = [NSString stringWithUTF8String:url_path];
 	NSURL *bookmarkedURL = [NSURL URLWithString:folder];
 	BOOL ok = [bookmarkedURL startAccessingSecurityScopedResource];
-	NSLog(@"MacUtil - Accessed ok: %d URL (%@)", ok, folder);
 
 	if(!ok)
 	{
 		Settings settings;
 		QVariantMap bookmarks = settings.value("BookmarkedFolders").toMap();
-		if(bookmarks.contains(url_path))
+		QVariant bookmark = findBookmark(bookmarks, path);
+		if(!bookmark.isNull())
 		{
-			NSData *bookmark = toNSData(bookmarks[url_path].toByteArray());
+			NSData *bookmarkData = toNSData(bookmark.toByteArray());
 			NSError *error = nil;
-			bookmarkedURL = [NSURL URLByResolvingBookmarkData:bookmark options:NSURLBookmarkResolutionWithSecurityScope
+			bookmarkedURL = [NSURL URLByResolvingBookmarkData:bookmarkData options:NSURLBookmarkResolutionWithSecurityScope
 				relativeToURL:nil bookmarkDataIsStale:nil error:&error];
 			ok = [bookmarkedURL startAccessingSecurityScopedResource];
-			NSLog(@"MacUtil - Accessed bookmark ok: %d URL (%@)", ok, folder);
+			NSLog(@"MacUtil - Accessed bookmark ok: %d URL (%@)", ok, bookmarkedURL);
 		}
 	}
 
