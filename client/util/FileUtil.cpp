@@ -18,10 +18,14 @@
 */
 
 #include "FileUtil.h"
+#ifdef Q_OS_OSX
+#include "MacUtil.h"
+#endif
 
 #include "Application.h"
 #include "FileDialog.h"
 #include "dialogs/WaitDialog.h"
+#include "dialogs/WarningDialog.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -104,8 +108,32 @@ QString FileUtil::createFile(const QString &file, const QString &extension, cons
 QString FileUtil::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir)
 {
 	const QFileInfo f( file );
-	QString dir = defaultDir.isEmpty() ?  f.absolutePath() : defaultDir;
+	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
 	QString filePath = dir + QDir::separator() + f.completeBaseName();
 
-	return create(QFileInfo(filePath), extension, type);
+	QString containerPath = create(QFileInfo(filePath), extension, type);
+#ifdef Q_OS_OSX
+	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
+	// app sandbox; user must explicitly give permission to write data to the specific folders.
+	if(!MacUtil::isWritable(dir.toUtf8().constData()))
+	{
+		auto hider = WaitDialog::hider();
+		WarningDialog dlg(qApp->tr("ALLOW_ACCESS").arg(dir), qApp->activeWindow());
+		dlg.setCancelText(qApp->tr("CANCEL"));
+		dlg.addButton(qApp->tr("ALLOW"), 1);
+		dlg.exec();
+		if(dlg.result() != 1)
+			return QString();
+
+		QString containerDir = FileDialog::getExistingDirectory(qApp->activeWindow(), "Select destination folder", dir);
+		if(containerDir.isEmpty())
+			return QString();
+
+		MacUtil::bookmark(containerDir.toUtf8().constData());
+		QString newFilePath = containerDir + QDir::separator() + f.completeBaseName();
+		if(dir != containerDir)
+			containerPath = create(QFileInfo(newFilePath), extension, type);
+	}
+#endif
+	return containerPath;
 }

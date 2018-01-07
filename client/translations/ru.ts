@@ -81,6 +81,18 @@
         <source>Create %1</source>
         <translation>Создайте %1</translation>
     </message>
+    <message>
+        <source>ALLOW_ACCESS</source>
+        <translation>App Store приложения на macOS требуют, чтобы пользователь позволил доступ к файловой системе.&lt;br /&gt;Разрешите доступ к папке '%1' или укажите альтернативное место для сохранения конверта.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>ALLOW</source>
+        <translation>ПОЗВОЛИТЬ</translation>
+    </message>
 </context>
 
 
