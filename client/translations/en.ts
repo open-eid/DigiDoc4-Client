@@ -81,6 +81,18 @@
         <source>Create %1</source>
         <translation>Create %1</translation>
     </message>
+    <message>
+        <source>ALLOW_ACCESS</source>
+        <translation>App Store applications on macOS require user to explicitly give access to the file system.&lt;br /&gt;Allow access to folder '%1' or specify alternative location where to save the envelope.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>ALLOW</source>
+        <translation>ALLOW</translation>
+    </message>
 </context>
 
 

@@ -81,6 +81,18 @@
         <source>Create %1</source>
         <translation>Loo %1</translation>
     </message>
+    <message>
+        <source>ALLOW_ACCESS</source>
+        <translation>App Store rakenduste ligipääs failisüsteemile on piiratud ning kasutaja peab valima kataloogi millele rakendus ligi pääseb.&lt;br /&gt;Luba rakendusele kataloogile '%1' ligi pääseda või vali teine kataloog kuhu ümbrik salvestada.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>ALLOW</source>
+        <translation>LUBA</translation>
+    </message>
 </context>
 
 
