@@ -1781,6 +1781,15 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <source>Applet</source>
         <translation>Apleti versioon</translation>
     </message>
+    <message>
+        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
+Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+Additional licenses and components</source>
+        <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
+Küsimuste korral pöörduge ID-abiliini poole e-kirja teel &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helistage Eesti-siseselt lühinumbril 1777, välismaalt (+372) 677 3377.&lt;/p&gt;
+Täiendavad litsentsid ja komponendid</translation>
+    </message>
+
 </context>
 
 

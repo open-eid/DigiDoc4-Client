@@ -1810,21 +1810,21 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>10</y>
+            <y>191</y>
             <width>771</width>
-            <height>511</height>
+            <height>330</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>771</width>
-            <height>511</height>
+            <height>330</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>771</width>
-            <height>511</height>
+            <height>330</height>
            </size>
           </property>
           <property name="font">
@@ -1882,6 +1882,52 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextBrowserInteraction</set>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QWidget" name="structureFunds" native="true">
+          <property name="geometry">
+           <rect>
+            <x>339</x>
+            <y>35</y>
+            <width>111</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>111</width>
+            <height>61</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>111</width>
+            <height>61</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLabel" name="contact">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>104</y>
+            <width>771</width>
+            <height>81</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
+Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+Additional licenses and components</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
           <property name="openExternalLinks">
            <bool>true</bool>

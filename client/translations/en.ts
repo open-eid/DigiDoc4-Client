@@ -1776,9 +1776,17 @@ new codes.&lt;/li&gt;
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Issued to: %1&lt;br /&gt;Valid to: %2 %3</translation>
     </message>
-        <message>
+    <message>
         <source>Applet</source>
         <translation>Applet version</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
+Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+Additional licenses and components</source>
+        <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
+Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+Additional licenses and components</translation>
     </message>
 </context>
 

@@ -40,6 +40,7 @@
 #include <QInputDialog>
 #include <QIODevice>
 #include <QStandardPaths>
+#include <QSvgWidget>
 #include <QTextBrowser>
 #include <QThread>
 #include <QThreadPool>
@@ -170,6 +171,10 @@ void SettingsDialog::initUI()
 	ui->txtProxyPassword->setFont(regularFont);
 
 	// pageDiagnostics
+	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
+	ui->contact->setFont(regularFont);
+	structureFunds->show();
+
 	ui->txtDiagnostics->setFont(regularFont);
 
 	// pageInfo
