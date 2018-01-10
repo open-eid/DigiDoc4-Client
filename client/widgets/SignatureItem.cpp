@@ -199,6 +199,16 @@ void SignatureItem::details()
 	dlg.exec();
 }
 
+QString SignatureItem::getName() const
+{
+	return name;
+}
+
+QString SignatureItem::getStatus() const
+{
+	return status;
+}
+
 QString SignatureItem::id() const
 {
 	return signature.id();

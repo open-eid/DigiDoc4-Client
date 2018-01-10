@@ -38,6 +38,8 @@ public:
 	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, bool isSupported, QWidget *parent = nullptr);
 	~SignatureItem();
 
+	QString getName() const;
+	QString getStatus() const;
 	QString id() const override;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;

@@ -378,7 +378,7 @@ void ContainerPage::transition(DigiDoc* container)
 		SignatureItem *item = new SignatureItem(c, state, enableSigning, ui->rightPane);
 		if(item->isInvalid())
 		{
-			emit action(Actions::SignatureWarning, tr("One signature is invalid!"),
+			emit action(Actions::SignatureWarning, QString("%1 - %2!").arg(item->getName()).arg(item->getStatus()),
 				QString("<a href='#invalid-signature-%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(item->id())
 					.arg(tr("More information")));

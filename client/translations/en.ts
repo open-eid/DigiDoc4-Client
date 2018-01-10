@@ -1856,10 +1856,6 @@ Additional licenses and components</translation>
         <translation>← START</translation>
     </message>
     <message>
-        <source>One signature is invalid!</source>
-        <translation>One signature is invalid!</translation>
-    </message>
-    <message>
         <source>More information</source>
         <translation>More information</translation>
     </message>

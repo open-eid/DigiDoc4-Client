@@ -1856,10 +1856,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>← ALGUSESSE</translation>
     </message>
     <message>
-        <source>One signature is invalid!</source>
-        <translation>Üks allkiri on kehtetu!</translation>
-    </message>
-    <message>
         <source>More information</source>
         <translation>Rohkem infot</translation>
     </message>
