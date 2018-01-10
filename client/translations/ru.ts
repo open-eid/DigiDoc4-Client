@@ -1836,10 +1836,6 @@ Additional licenses and components</source>
         <translation>← В НАЧАЛО</translation>
     </message>
     <message>
-        <source>One signature is invalid!</source>
-        <translation>Одна подпись недействительна!</translation>
-    </message>
-    <message>
         <source>More information</source>
         <translation>Дополнительная информация</translation>
     </message>

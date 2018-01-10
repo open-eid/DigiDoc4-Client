@@ -125,7 +125,8 @@ QString FileUtil::createNewFileName(const QString &file, const QString &extensio
 		if(dlg.result() != 1)
 			return QString();
 
-		QString containerDir = FileDialog::getExistingDirectory(qApp->activeWindow(), "Select destination folder", dir);
+		QString containerDir = QFileDialog::getExistingDirectory(qApp->activeWindow(), "Select destination folder", dir, 
+			QFileDialog::ShowDirsOnly);
 		if(containerDir.isEmpty())
 			return QString();
 
