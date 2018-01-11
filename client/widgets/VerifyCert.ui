@@ -411,7 +411,7 @@ text-align: center;
          <set>Qt::AlignCenter</set>
         </property>
         <property name="textInteractionFlags">
-         <set>Qt::TextBrowserInteraction</set>
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
         </property>
        </widget>
       </item>
@@ -450,7 +450,7 @@ text-align: center;</string>
          <set>Qt::AlignCenter</set>
         </property>
         <property name="textInteractionFlags">
-         <set>Qt::TextBrowserInteraction</set>
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
         </property>
        </widget>
       </item>

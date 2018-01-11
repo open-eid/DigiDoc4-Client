@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
+    <width>438</width>
     <height>333</height>
    </rect>
   </property>
@@ -20,14 +20,17 @@
    <string>Certificate update</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-radius: 2px;
-background-color: #FFFFFF;</string>
+   <string notr="true">QDialog
+{
+border-radius: 2px;
+background-color: #FFFFFF;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="UpdaterLayout">
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="processPage">
       <layout class="QVBoxLayout" name="processPageLayout" stretch="0,0,0,1">
@@ -354,10 +357,12 @@ color: #000000;
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">padding: 0px 10px;
+            <string notr="true">QLineEdit
+{
+padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
-</string>
+}</string>
            </property>
            <property name="maxLength">
             <number>12</number>

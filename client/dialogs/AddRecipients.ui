@@ -62,8 +62,11 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: 1px solid #c8c8c8;
-background-color: #ffffff;</string>
+      <string notr="true">QWidget#containerLists
+{
+border: 1px solid #c8c8c8;
+background-color: #ffffff;
+}</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">

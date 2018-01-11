@@ -28,7 +28,8 @@
   <property name="styleSheet">
    <string notr="true">background-color: #ffffff;
 border: 1px solid #D9D9D8;
-border-width: 2px 2px 2px 2px; </string>
+border-width: 2px 2px 2px 2px; 
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -110,6 +111,10 @@ QScrollBar::sub-line:vertical {
       </property>
       <property name="styleSheet">
        <string notr="true">border: none;
+QWidget#items
+{
+background-color: #ffffff;
+}
 </string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -439,9 +444,12 @@ QToolTip {
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 1px solid #DEE4E9;
+               <string notr="true">#txtFind
+{
+border: 1px solid #DEE4E9;
 border-radius: 2px;
-background-color: #FFFFFF;</string>
+background-color: #FFFFFF;
+}</string>
               </property>
               <property name="placeholderText">
                <string>Enter the personal code, institution or registry code</string>
@@ -536,7 +544,7 @@ QPushButton:disabled {
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">QWidget { background-image: url(:/images/bg_lovid.svg);
+            <string notr="true">QWidget#widget { background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: left bottom; }</string>
            </property>

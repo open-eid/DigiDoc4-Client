@@ -23,8 +23,11 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-radius: 2px;
-background-color: #FFFFFF;</string>
+   <string notr="true">QDialog
+{
+   border-radius: 2px;
+   background-color: #FFFFFF;
+}</string>
   </property>
   <widget class="QPushButton" name="cancel">
    <property name="geometry">
@@ -261,14 +264,17 @@ line-height: 16px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: 1px solid #DEE4E9;
+    <string notr="true">QLineEdit
+{
+border: 1px solid #DEE4E9;
 border-radius: 2px;
 padding: 0px 10px;
 background-color: #ffffff;
 font-size: 16px;
 color: #000000;
 font-weight: 400;
-line-height: 14px;</string>
+line-height: 14px;
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -357,14 +363,17 @@ font-size: 12px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: 1px solid #DEE4E9;
+    <string notr="true">QLineEdit
+{
+border: 1px solid #DEE4E9;
 border-radius: 2px;
 padding: 0px 10px;
 background-color: #ffffff;
 font-size: 16px;
 color: #000000;
 font-weight: 400;
-line-height: 14px;</string>
+line-height: 14px;
+}</string>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
@@ -450,14 +459,17 @@ font-size: 12px;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: 1px solid #DEE4E9;
+    <string notr="true">QLineEdit
+{
+border: 1px solid #DEE4E9;
 border-radius: 2px;
 padding: 0px 10px;
 background-color: #ffffff;
 font-size: 16px;
 color: #000000;
 font-weight: 400;
-line-height: 14px;</string>
+line-height: 14px;
+}</string>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
