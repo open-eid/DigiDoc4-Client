@@ -18,9 +18,6 @@
 */
 
 #include "FileUtil.h"
-#ifdef Q_OS_OSX
-#include "MacUtil.h"
-#endif
 
 #include "Application.h"
 #include "FileDialog.h"
@@ -84,15 +81,21 @@ ExtensionType FileUtil::extension(const QString &filename)
 QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, const QString &type)
 {
 	QString fileName = QDir::toNativeSeparators(fileInfo.dir().path() + QDir::separator() + fileInfo.completeBaseName() + extension);
+#ifndef Q_OS_OSX
+	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
+	// app sandbox; user must explicitly give permission to write data to the specific folders.
 	if(QFile::exists(fileName))
 	{
+#endif
 		auto hider = WaitDialog::hider();
 		QString capitalized = type[0].toUpper() + type.mid(1);
 		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), qApp->tr("Create %1").arg(type), fileName,
 						QString("%1 (*%2)").arg(capitalized).arg(extension));
 		if(!fileName.isEmpty())
 			QFile::remove( fileName );
+#ifndef Q_OS_OSX
 	}
+#endif
 
 	return fileName;
 }
@@ -111,30 +114,5 @@ QString FileUtil::createNewFileName(const QString &file, const QString &extensio
 	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
 	QString filePath = dir + QDir::separator() + f.completeBaseName();
 
-	QString containerPath = create(QFileInfo(filePath), extension, type);
-#ifdef Q_OS_OSX
-	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
-	// app sandbox; user must explicitly give permission to write data to the specific folders.
-	if(!MacUtil::isWritable(dir.toUtf8().constData()))
-	{
-		auto hider = WaitDialog::hider();
-		WarningDialog dlg(qApp->tr("ALLOW_ACCESS").arg(dir), qApp->activeWindow());
-		dlg.setCancelText(qApp->tr("CANCEL"));
-		dlg.addButton(qApp->tr("ALLOW"), 1);
-		dlg.exec();
-		if(dlg.result() != 1)
-			return QString();
-
-		QString containerDir = QFileDialog::getExistingDirectory(qApp->activeWindow(), "Select destination folder", dir, 
-			QFileDialog::ShowDirsOnly);
-		if(containerDir.isEmpty())
-			return QString();
-
-		MacUtil::bookmark(containerDir.toUtf8().constData());
-		QString newFilePath = containerDir + QDir::separator() + f.completeBaseName();
-		if(dir != containerDir)
-			containerPath = create(QFileInfo(newFilePath), extension, type);
-	}
-#endif
-	return containerPath;
+	return create(QFileInfo(filePath), extension, type);
 }

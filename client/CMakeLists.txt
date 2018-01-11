@@ -26,7 +26,7 @@ if( UNIX AND NOT APPLE )
 endif()
 
 if( APPLE )
-	list( APPEND SOURCES Application_mac.mm util/MacUtil.mm )
+	list( APPEND SOURCES Application_mac.mm )
 	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	list( APPEND ADDITIONAL_LIBRARIES "-framework Security" "-framework Quartz" )
 elseif( WIN32 )
