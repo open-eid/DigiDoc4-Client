@@ -68,11 +68,12 @@ void SignatureItem::init()
 {
 	const SslCertificate cert = signature.cert();
 
-	QString accessibility, signingInfo;
+	QString accessibility, signingInfo, status;
+	link = QString();
 	name = QString();
 	serial = QString();
-	status = QString();
 	statusHtml = QString();
+	error = QString();
 
 	QTextStream sa(&accessibility);
 	QTextStream sc(&statusHtml);
@@ -121,10 +122,14 @@ void SignatureItem::init()
 		sc << "<font color=\"green\">" << label << " " << tr("is valid") << "</font> <font>(" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
+		error = "%n signatures are not valid";
+		link = "http://id.ee/?lang=en&id=34317";
 		sa << tr("is not valid");
 		sc << "<font color=\"red\">" << label << " " << tr("is not valid");
 		break;
 	case DigiDocSignature::Unknown:
+		error = "%n signatures are unknown";
+		link = "http://id.ee/?lang=en&id=34317";
 		sa << tr("is unknown");
 		sc << "<font color=\"red\">" << label << " " << tr("is unknown");
 		break;
@@ -156,7 +161,9 @@ void SignatureItem::init()
 	setAccessibleName(label + " " + cert.toString(cert.showCN() ? "CN" : "GN SN"));
 	setAccessibleDescription( accessibility );
 
-	recalculate();
+	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
+	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
+	nameWidth = nameMetrics->width(name  + " - " + status);
 	changeNameHeight();
 }
 
@@ -199,14 +206,14 @@ void SignatureItem::details()
 	dlg.exec();
 }
 
-QString SignatureItem::getName() const
+QString SignatureItem::getError() const
 {
-	return name;
+	return error;
 }
 
-QString SignatureItem::getStatus() const
+QString SignatureItem::getLink() const
 {
-	return status;
+	return link;
 }
 
 QString SignatureItem::id() const
@@ -227,13 +234,6 @@ bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileC
 void SignatureItem::mouseReleaseEvent(QMouseEvent *event)
 {
 	details();
-}
-
-void SignatureItem::recalculate()
-{
-	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
-	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
-	nameWidth = nameMetrics->width(name  + " - " + status);
 }
 
 QString SignatureItem::red(const QString &text)

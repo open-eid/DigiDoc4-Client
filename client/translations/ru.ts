@@ -770,6 +770,26 @@ Learn more info here:</source>
         <source>is unknown</source>
         <translation>неизвестно</translation>
     </message>
+    <message numerus="yes">
+        <source>%n signatures are not valid</source>
+        <translation>
+            <numerusform>%n подпись не действует</numerusform>
+            <numerusform>%n подписи недействительны</numerusform>
+            <numerusform>%n подписи недействительны</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are unknown</source>
+        <translation>
+            <numerusform>%n подпись неизвестна</numerusform>
+            <numerusform>%n подписи неизвестны</numerusform>
+            <numerusform>%n подписи неизвестны</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>http://id.ee/?lang=en&amp;id=34317</source>
+        <translation>http://id.ee/?lang=ru&amp;id=34529</translation>
+    </message>
     <message>
         <source>Signed on</source>
         <translation>Подписано</translation>
@@ -1107,7 +1127,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>Введя PIN2 код, вы подписываете документ цифровой подписью, которая по закону равносильна подписи «от руки». PIN2 код Вы найдете в конверте, который прилагается к Вашей ID-карте или Mobiili-ID.</translation>
+        <translation>Введя PIN2 код, вы подписываете документ цифровой подписью, которая по закону равносильна подписи «от руки». PIN2 код Вы найдете в конверте, который прилагается к Вашей ID-карте или Mobiil-ID.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
@@ -3025,7 +3045,7 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>SignatureMobile</source>
         <translation>ПОДПИСАТЬ С
-MOBIIL_ID</translation>
+MOBIIL-ID</translation>
     </message>
     <message>
         <source>SignatureAdd</source>
