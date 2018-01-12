@@ -123,7 +123,7 @@ void SignatureItem::init()
 		break;
 	case DigiDocSignature::Invalid:
 		error = "%n signatures are not valid";
-		link = "http://id.ee/?lang=en&id=34317";
+		link = "https://www.id.ee/index.php?id=30591";
 		sa << tr("is not valid");
 		sc << "<font color=\"red\">" << label << " " << tr("is not valid");
 		break;

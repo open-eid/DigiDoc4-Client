@@ -794,6 +794,10 @@ Learn more info here:</translation>
         <translation>http://id.ee/?lang=en&amp;id=34317</translation>
     </message>
     <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30591</translation>
+    </message>
+    <message>
         <source>Signed on</source>
         <translation>Signed on</translation>
     </message>

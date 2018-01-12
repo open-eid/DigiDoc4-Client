@@ -795,6 +795,10 @@ Rohkem infot leiate siit:</translation>
         <translation>https://www.id.ee/?lang=et&amp;id=34054</translation>
     </message>
     <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30573</translation>
+    </message>
+    <message>
         <source>Signed on</source>
         <translation>Allkirjastatud</translation>
     </message>

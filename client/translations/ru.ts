@@ -791,6 +791,10 @@ Learn more info here:</source>
         <translation>http://id.ee/?lang=ru&amp;id=34529</translation>
     </message>
     <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30604</translation>
+    </message>
+    <message>
         <source>Signed on</source>
         <translation>Подписано</translation>
     </message>
