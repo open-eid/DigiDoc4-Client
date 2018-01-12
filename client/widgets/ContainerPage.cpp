@@ -373,17 +373,31 @@ void ContainerPage::transition(DigiDoc* container)
 	}
 
 	bool enableSigning = container->isSupported();
+	QMap<QString, std::pair<int, QString>> errors;
 	for(const DigiDocSignature &c: container->signatures())
 	{
 		SignatureItem *item = new SignatureItem(c, state, enableSigning, ui->rightPane);
 		if(item->isInvalid())
 		{
-			emit action(Actions::SignatureWarning, QString("%1 - %2!").arg(item->getName()).arg(item->getStatus()),
-				QString("<a href='#invalid-signature-%1' style='color: rgb(53, 55, 57)'>%2</a>")
-					.arg(item->id())
-					.arg(tr("More information")));
+			auto counter = errors.value(item->getError());
+			if(!counter.first)
+				counter.second = item->getLink();
+			counter.first++;
+			errors[item->getError()] = counter;
 		}
 		ui->rightPane->addWidget(item);
+	}
+
+	if(!errors.isEmpty())
+	{
+		QMap<QString, std::pair<int, QString>>::const_iterator i;
+		for (i = errors.constBegin(); i != errors.constEnd(); ++i)
+		{
+			emit action(Actions::SignatureWarning, 
+				SignatureItem::tr(i.key().toStdString().c_str(), "", i.value().first),
+				QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
+						.arg(SignatureItem::tr(i.value().second.toStdString().c_str()), tr("More information")));
+		}
 	}
 
 	if(enableSigning)

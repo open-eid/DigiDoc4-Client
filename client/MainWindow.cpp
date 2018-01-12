@@ -321,7 +321,7 @@ bool MainWindow::closeWarning(WarningItem *warning, bool force)
 	{
 		warnings.removeOne(warning);
 		warning->close();
-		delete warning;
+		warning->deleteLater();
 		updateWarnings();
 
 		return true;
@@ -1427,6 +1427,8 @@ void MainWindow::warningClicked(const QString &link)
 		ui->accordion->changePin1Clicked (false, true);
 	else if(link == "#unblock-PIN2")
 		ui->accordion->changePin2Clicked (false, true);
+	else if(link.startsWith("http"))
+		QDesktopServices::openUrl(QUrl(link));
 }
 
 bool MainWindow::wrapContainer(bool signing)

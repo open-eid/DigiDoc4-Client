@@ -775,6 +775,28 @@ Learn more info here:</translation>
         <source>is unknown</source>
         <translation>is unknown</translation>
     </message>
+    <message numerus="yes">
+        <source>%n signatures are not valid</source>
+        <translation>
+            <numerusform>%n signature is not valid</numerusform>
+            <numerusform>%n signatures are not valid</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are unknown</source>
+        <translation>
+            <numerusform>%n signature is unknown</numerusform>
+            <numerusform>%n signatures are unknown</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>http://id.ee/?lang=en&amp;id=34317</source>
+        <translation>http://id.ee/?lang=en&amp;id=34317</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30591</translation>
+    </message>
     <message>
         <source>Signed on</source>
         <translation>Signed on</translation>

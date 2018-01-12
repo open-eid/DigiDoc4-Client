@@ -776,6 +776,28 @@ Rohkem infot leiate siit:</translation>
         <source>is unknown</source>
         <translation>on teadmata</translation>
     </message>
+    <message numerus="yes">
+        <source>%n signatures are not valid</source>
+        <translation>
+            <numerusform>%n allkiri ei ole kehtiv</numerusform>
+            <numerusform>%n allkirja ei ole kehtivad</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are unknown</source>
+        <translation>
+            <numerusform>%n allkiri on teadmata</numerusform>
+            <numerusform>%n allkirja on teadmata</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>http://id.ee/?lang=en&amp;id=34317</source>
+        <translation>https://www.id.ee/?lang=et&amp;id=34054</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30573</translation>
+    </message>
     <message>
         <source>Signed on</source>
         <translation>Allkirjastatud</translation>
@@ -1970,7 +1992,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja olek kuvatakse "teadmataks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;lisainformatsioon&lt;/a&gt;).</translation>
+        <translation>Allkirja olek kuvatakse "teadmataks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='https://www.id.ee/?lang=et&amp;id=34054'&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>

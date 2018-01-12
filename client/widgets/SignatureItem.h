@@ -38,8 +38,8 @@ public:
 	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, bool isSupported, QWidget *parent = nullptr);
 	~SignatureItem();
 
-	QString getName() const;
-	QString getStatus() const;
+	QString getError() const;
+	QString getLink() const;
 	QString id() const override;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
@@ -55,7 +55,6 @@ protected:
 private:
 	void changeNameHeight();
 	void init();
-	void recalculate();
 	QString red(const QString &text);
 	void removeSignature();
 	void setIcon(const QString &icon, int width = 17, int height = 20);
@@ -67,9 +66,10 @@ private:
 	bool invalid;
 	int nameWidth;
 	int reservedWidth;
+	QString error;
+	QString link;
 	QString name;
 	QString serial;
-	QString status;
 	QString statusHtml;
 	std::unique_ptr<QFontMetrics> nameMetrics;
 };
