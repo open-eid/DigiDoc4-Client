@@ -35,8 +35,11 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-radius: 2px;
-background-color: #FFFFFF;</string>
+   <string notr="true">QDialog
+{
+border-radius: 2px;
+background-color: #FFFFFF;
+}</string>
   </property>
   <widget class="QLabel" name="labelNameId">
    <property name="geometry">
@@ -122,13 +125,16 @@ border: none;</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">padding: 0px 10px;
+    <string notr="true">QLineEdit
+{
+padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
 background-color: #ffffff;
 color: #000000;
 line-height: 9px;
-text-align: center;</string>
+text-align: center;
+}</string>
    </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>

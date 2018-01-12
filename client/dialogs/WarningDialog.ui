@@ -29,8 +29,11 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-radius: 2px;
-background-color: #FFFFFF;</string>
+   <string notr="true">QDialog
+{
+border-radius: 2px;
+background-color: #FFFFFF;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -69,7 +72,10 @@ background-color: #FFFFFF;</string>
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">margin: 10px 15px 0px 15px;  border: none;</string>
+      <string notr="true">QLabel
+{
+margin: 10px 15px 0px 15px;  border: none;
+}</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -134,7 +140,10 @@ background-color: #FFFFFF;</string>
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">margin: 0px 15px 0px 15px; border: none;</string>
+      <string notr="true">QLabel
+{
+margin: 0px 15px 0px 15px; border: none;
+}</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
