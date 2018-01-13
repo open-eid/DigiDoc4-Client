@@ -659,8 +659,10 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 		qApp->signer()->setSignatureProductionPlace(
 			to(city), to(state), to(zip), to(country) );
 		std::vector<std::string> roles;
-		if( !role.isEmpty() || !role2.isEmpty() )
-			roles.push_back( to((QStringList() << role << role2).join(" / ")) );
+		if(!role2.isEmpty())
+			roles.push_back(to((QStringList() << role << role2).join(" / ")));
+		else if(!role.isEmpty())
+			roles.push_back(to(role));
 		qApp->signer()->setSignerRoles( roles );
 		qApp->signer()->setProfile( signatureFormat() == "LT" ? "time-stamp" : "time-mark" );
 		qApp->waitForTSL( fileName() );
