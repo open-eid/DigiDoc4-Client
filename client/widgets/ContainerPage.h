@@ -64,6 +64,9 @@ signals:
 	void moved(const QString &to);	
 	void removed(int row);
 
+public slots:
+	void clearPopups();
+
 protected:
 	void resizeEvent( QResizeEvent *event ) override;
 	void changeEvent(QEvent* event) override;

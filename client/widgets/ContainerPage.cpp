@@ -118,6 +118,11 @@ void ContainerPage::clear()
 	ui->rightPane->clear();
 }
 
+void ContainerPage::clearPopups()
+{
+	hideOtherAction();
+}
+
 void ContainerPage::elideFileName(bool force)
 {
 	if(ui->containerFile->width() < containerFileWidth)

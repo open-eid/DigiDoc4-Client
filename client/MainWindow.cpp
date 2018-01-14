@@ -83,9 +83,12 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->crypto->init( Pages::CryptoIntro, ui->cryptoShadow, false );
 	ui->myEid->init( Pages::MyEid, ui->myEidShadow, false );
 
-	connect( ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected );
-	connect( ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected );
-	connect( ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected );
+	connect(ui->signature, &PageIcon::activated, this, &MainWindow::clearPopups);
+	connect(ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected);
+	connect(ui->crypto, &PageIcon::activated, this, &MainWindow::clearPopups);
+	connect(ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected);
+	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::clearPopups);
+	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected);
 
 	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->selector);
 	selector->hide();
@@ -125,6 +128,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect( qApp->smartcard(), &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
 	// Show card pop-up menu
 	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
+
+	connect(this, &MainWindow::clearPopups, ui->signContainerPage, &ContainerPage::clearPopups);
+	connect(this, &MainWindow::clearPopups, this, &MainWindow::hideCardPopup);
 
 	ui->accordion->init();
 
@@ -465,6 +471,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
+	emit clearPopups();
 	if(ui->logo->underMouse())
 	{
 		resetCryptoDoc();
