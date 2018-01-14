@@ -62,6 +62,9 @@ public:
 	QString cryptoPath();
 	QString digiDocPath();
 
+signals:
+	void clearPopups();
+
 private Q_SLOTS:
 	void activateEmail ();
 	void buttonClicked( int button );
