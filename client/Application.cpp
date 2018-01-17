@@ -804,7 +804,7 @@ void Application::showClient(const QStringList &params, bool crypto)
 {
 	QWidget *w = nullptr;
 	MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
-	if(main && ((!crypto && main->digiDocPath().isEmpty()) || (crypto && main->cryptoPath().isEmpty())))
+	if(main && main->digiDocPath().isEmpty() && main->cryptoPath().isEmpty())
 		w = main;
 	if( !w )
 	{

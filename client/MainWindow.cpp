@@ -724,15 +724,6 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 
 void MainWindow::openFile(const QString &file)
 {
-	ExtensionType ext = FileUtil::extension(file);
-
-	// If possible open the file in same main window
-	if((ext == ExtensionType::ExtSignature && !digiDoc) || (ext == ExtensionType::ExtCrypto && !cryptoDoc))
-	{
-		openFiles(QStringList(file));
-		return;
-	}
-
 	QDesktopServices::openUrl(QUrl::fromLocalFile(file));
 }
 
