@@ -291,8 +291,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 
 void AddRecipients::enableRecipientFromCard()
 {
-	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() ||
-		qApp->signer()->tokenauth().cert().publicKey().algorithm() != QSsl::Rsa);
+	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
 }
 
 int AddRecipients::exec()

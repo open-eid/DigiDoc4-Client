@@ -109,7 +109,7 @@
     </message>
     <message>
         <source>Check internet connection</source>
-        <translation>Kontrolli Interneti ühendust</translation>
+        <translation>Kontrolli Interneti-ühendust</translation>
     </message>
 </context>
 

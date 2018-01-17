@@ -1485,7 +1485,9 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 
 void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 {
-	if(	t.retryCount( QSmartCardData::Pin2Type ) == 0 )
+	bool isBlockedPuk = t.retryCount( QSmartCardData::PukType ) == 0;
+
+	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin2Type ) == 0 )
 	{
 		showWarning(WarningText(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2"),
@@ -1494,7 +1496,7 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 			UNBLOCK_PIN2_WARNING));
 		emit ui->signContainerPage->cardChanged(); // hide Sign button
 	}
-	if(	t.retryCount( QSmartCardData::Pin1Type ) == 0 )
+	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin1Type ) == 0 )
 	{
 		showWarning(WarningText(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1"),
