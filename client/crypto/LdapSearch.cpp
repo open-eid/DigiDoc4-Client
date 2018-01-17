@@ -40,10 +40,8 @@
 class LdapSearchPrivate
 {
 public:
-	LdapSearchPrivate(): ldap(0), msg_id(0) {}
-
-	LDAP *ldap;
-	ULONG msg_id;
+	LDAP *ldap = nullptr;
+	ULONG msg_id = 0;
 };
 
 LdapSearch::LdapSearch( QObject *parent )
@@ -144,7 +142,7 @@ void LdapSearch::timerEvent( QTimerEvent *e )
 			{
 				berval **cert = ldap_get_values_len( d->ldap, entry, attr );
 				for( ULONG i = 0; i < ldap_count_values_len( cert ); ++i )
-					list << QSslCertificate( QByteArray( cert[i]->bv_val, cert[i]->bv_len ), QSsl::Der );
+					list << QSslCertificate(QByteArray::fromRawData(cert[i]->bv_val, int(cert[i]->bv_len)), QSsl::Der);
 				ldap_value_free_len( cert );
 			}
 			ldap_memfree( attr );

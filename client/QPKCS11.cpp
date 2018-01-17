@@ -24,7 +24,6 @@
 #include <common/Settings.h>
 #include <crypto/CryptoDoc.h>
 
-#include <QtCore/QCryptographicHash>
 #include <QtCore/QDebug>
 #include <QtCore/QEventLoop>
 #include <QtCore/QFile>
@@ -58,7 +57,7 @@ QByteArray QPKCS11Private::attribute( CK_SESSION_HANDLE session, CK_OBJECT_HANDL
 	CK_ATTRIBUTE attr = { type, 0, 0 };
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
 		return QByteArray();
-	QByteArray data( attr.ulValueLen, 0 );
+	QByteArray data( int(attr.ulValueLen), 0 );
 	attr.pValue = data.data();
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
 		return QByteArray();
@@ -71,14 +70,14 @@ QVector<CK_OBJECT_HANDLE> QPKCS11Private::findObject(CK_SESSION_HANDLE session, 
 		return QVector<CK_OBJECT_HANDLE>();
 	QVector<CK_ATTRIBUTE> attr{ { CKA_CLASS, &cls, sizeof(cls) } };
 	if(!id.isEmpty())
-		attr.append({ CKA_ID, (void*)id.data(), (unsigned long)id.size() });
-	if(f->C_FindObjectsInit(session, attr.data(), attr.size()) != CKR_OK)
+		attr.append({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
+	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
 		return QVector<CK_OBJECT_HANDLE>();
 
 	CK_ULONG count = 32;
-	QVector<CK_OBJECT_HANDLE> result( count );
-	CK_RV err = f->C_FindObjects( session, result.data(), result.count(), &count );
-	result.resize( count );
+	QVector<CK_OBJECT_HANDLE> result(int(count), CK_INVALID_HANDLE);
+	CK_RV err = f->C_FindObjects(session, result.data(), CK_ULONG(result.count()), &count);
+	result.resize( int(count) );
 	f->C_FindObjectsFinal( session );
 	return err == CKR_OK ? result : QVector<CK_OBJECT_HANDLE>();
 }
@@ -95,9 +94,9 @@ QVector<CK_SLOT_ID> QPKCS11Private::slotIds( bool token_present ) const
 	CK_ULONG size = 0;
 	if( f->C_GetSlotList( token_present, 0, &size ) != CKR_OK )
 		return QVector<CK_SLOT_ID>();
-	QVector<CK_SLOT_ID> result( size );
+	QVector<CK_SLOT_ID> result(int(size), 0);
 	if( f->C_GetSlotList( token_present, result.data(), &size ) == CKR_OK )
-		result.resize( size );
+		result.resize(int(size));
 	else
 		result.clear();
 	return result;
@@ -163,11 +162,11 @@ QByteArray QPKCS11::encrypt( const QByteArray &data ) const
 		return QByteArray();
 
 	CK_ULONG size = 0;
-	if( d->f->C_Encrypt( d->session, CK_CHAR_PTR(data.constData()), data.size(), 0, &size ) != CKR_OK )
+	if(d->f->C_Encrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), 0, &size) != CKR_OK)
 		return QByteArray();
 
-	QByteArray result( size, 0 );
-	if( d->f->C_Encrypt( d->session, CK_CHAR_PTR(data.constData()), data.size(), CK_CHAR_PTR(result.data()), &size ) != CKR_OK )
+	QByteArray result(int(size), 0);
+	if(d->f->C_Encrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), CK_CHAR_PTR(result.data()), &size) != CKR_OK)
 		return QByteArray();
 	return result;
 }
@@ -194,18 +193,13 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 
 	CK_ECDH1_DERIVE_PARAMS ecdh_parms = { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
 	CK_MECHANISM mech = { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
-	CK_BBOOL _true = TRUE;
 	CK_BBOOL _false = FALSE;
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
-	CK_ULONG key_len = CK_ULONG((publicKey.size() - 1) / 2);
 	QVector<CK_ATTRIBUTE> newkey_template{
 		{CKA_TOKEN, &_false, sizeof(_false)},
 		{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
 		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
-		{CKA_ENCRYPT, &_true, sizeof(_true)},
-		{CKA_DECRYPT, &_true, sizeof(_true)},
-		{CKA_VALUE_LEN, &key_len, sizeof(key_len)}
 	};
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
 	if(d->f->C_DeriveKey(d->session, &mech, key[0], newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
@@ -217,14 +211,7 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	QCryptographicHash::Algorithm hash = QCryptographicHash::Sha256;
-	if(digest == "http://www.w3.org/2001/04/xmlenc#sha256")
-		hash = QCryptographicHash::Sha256;
-	if(digest == "http://www.w3.org/2001/04/xmlenc#sha384")
-		hash = QCryptographicHash::Sha384;
-	if(digest == "http://www.w3.org/2001/04/xmlenc#sha512")
-		hash = QCryptographicHash::Sha512;
-	return CryptoDoc::concatKDF(hash, keySize, derive(publicKey), algorithmID + partyUInfo + partyVInfo);
+	return CryptoDoc::concatKDF(digest, quint32(keySize), derive(publicKey), algorithmID + partyUInfo + partyVInfo);
 }
 
 QByteArray QPKCS11::decrypt( const QByteArray &data ) const
@@ -238,11 +225,11 @@ QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 		return QByteArray();
 
 	CK_ULONG size = 0;
-	if( d->f->C_Decrypt( d->session, CK_CHAR_PTR(data.constData()), data.size(), 0, &size ) != CKR_OK )
+	if(d->f->C_Decrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), 0, &size) != CKR_OK)
 		return QByteArray();
 
 	QByteArray result( size, 0 );
-	if( d->f->C_Decrypt( d->session, CK_CHAR_PTR(data.constData()), data.size(), CK_CHAR_PTR(result.data()), &size ) != CKR_OK )
+	if(d->f->C_Decrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), CK_CHAR_PTR(result.data()), &size) != CKR_OK)
 		return QByteArray();
 	return result;
 }
@@ -354,7 +341,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 		if( !p.exec() )
 			return PinCanceled;
 		QByteArray pin = p.text().toUtf8();
-		err = d->f->C_Login( d->session, CKU_USER, CK_CHAR_PTR(pin.constData()), pin.size() );
+		err = d->f->C_Login(d->session, CKU_USER, CK_CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 	}
 
 	if( d->f->C_GetTokenInfo( sessinfo.slotID, &token ) == CKR_OK )
@@ -463,13 +450,13 @@ QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
 	data.append(digest);
 
 	CK_ULONG size = 0;
-	if( d->f->C_Sign( d->session, CK_CHAR_PTR(data.constData()),
-			data.size(), 0, &size ) != CKR_OK )
+	if(d->f->C_Sign(d->session, CK_CHAR_PTR(data.constData()),
+			CK_ULONG(data.size()), 0, &size) != CKR_OK)
 		return QByteArray();
 
 	QByteArray sig( size, 0 );
-	if( d->f->C_Sign( d->session, CK_CHAR_PTR(data.constData()),
-			data.size(), CK_CHAR_PTR(sig.data()), &size ) != CKR_OK )
+	if(d->f->C_Sign(d->session, CK_CHAR_PTR(data.constData()),
+			CK_ULONG(data.size()), CK_CHAR_PTR(sig.data()), &size) != CKR_OK)
 		return QByteArray();
 	return sig;
 }
@@ -484,8 +471,8 @@ bool QPKCS11::verify( const QByteArray &data, const QByteArray &signature ) cons
 	if(d->f->C_VerifyInit(d->session, &mech, key[0]) != CKR_OK)
 		return false;
 
-	return d->f->C_Verify( d->session, CK_CHAR_PTR(data.constData()),
-		data.size(), CK_CHAR_PTR(signature.data()), signature.size() ) == CKR_OK;
+	return d->f->C_Verify(d->session, CK_CHAR_PTR(data.constData()),
+		CK_ULONG(data.size()), CK_CHAR_PTR(signature.data()), CK_ULONG(signature.size())) == CKR_OK;
 }
 
 

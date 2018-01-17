@@ -69,7 +69,7 @@ Q_LOGGING_CATEGORY(CRYPTO,"CRYPTO")
 template <class T>
 constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
 {
-        return t;
+	return t;
 }
 #endif
 
@@ -470,8 +470,18 @@ QByteArray CryptoDocPrivate::readCDoc(QIODevice *cdoc, bool data)
 	}
 	while( !xml.atEnd() )
 	{
-		if( !xml.readNextStartElement() )
-			continue;
+		switch(xml.readNext())
+		{
+		case QXmlStreamReader::StartElement: break;
+		case QXmlStreamReader::DTD:
+			qCWarning(CRYPTO) << "XML DTD Declarations are not supported";
+			return QByteArray();
+		case QXmlStreamReader::EntityReference:
+			qCWarning(CRYPTO) << "XML ENTITY References are not supported";
+			return QByteArray();
+		default: continue;
+		}
+
 		if(data)
 		{
 			// EncryptedData/KeyInfo
@@ -664,7 +674,7 @@ void CryptoDocPrivate::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey
 					case 48: concatDigest = SHA384_MTH; break;
 					default: concatDigest = SHA512_MTH; break;
 					}
-					QByteArray encryptionKey = CryptoDoc::concatKDF(CryptoDocPrivate::SHA_MTH[concatDigest], KWAES_SIZE[encryptionMethod],
+					QByteArray encryptionKey = CryptoDoc::concatKDF(concatDigest, KWAES_SIZE[encryptionMethod],
 						sharedSecret, props.value("DocumentFormat").toUtf8() + SsDer + k.cert.toDer());
 #ifndef NDEBUG
 					qDebug() << "ENC Ss" << SsDer.toHex();
@@ -727,8 +737,18 @@ void CryptoDocPrivate::readDDoc(QIODevice *ddoc)
 	QXmlStreamReader x(ddoc);
 	while(!x.atEnd())
 	{
-		if(!x.readNextStartElement())
-			continue;
+		switch(x.readNext())
+		{
+		case QXmlStreamReader::StartElement: break;
+		case QXmlStreamReader::DTD:
+			qCWarning(CRYPTO) << "XML DTD Declarations are not supported";
+			return;
+		case QXmlStreamReader::EntityReference:
+			qCWarning(CRYPTO) << "XML ENTITY References are not supported";
+			return;
+		default: continue;
+		}
+
 		if(x.name() == "DataFile")
 		{
 			File file;
@@ -961,8 +981,9 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 	return false;
 }
 
-QByteArray CryptoDoc::concatKDF(QCryptographicHash::Algorithm hashAlg, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
+QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
 {
+	QCryptographicHash::Algorithm hashAlg = CryptoDocPrivate::SHA_MTH[digestMethod];
 	quint32 hashLen = 0;
 	switch(hashAlg)
 	{
