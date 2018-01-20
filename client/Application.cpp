@@ -26,6 +26,7 @@
 #include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/AboutDialog.h>
@@ -885,7 +886,8 @@ void Application::waitForTSL( const QString &file )
 	if( d->ready )
 		return;
 
-	QProgressDialog p( tr("Loading TSL lists"), QString(), 0, 0, qApp->activeWindow() );
+	auto hider = WaitDialog::hider();
+	QProgressDialog p( tr("Loading TSL lists"), QString(), 0, 0, qApp->mainWindow() );
 	p.setWindowFlags( (Qt::Dialog | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint ) & ~Qt::WindowTitleHint );
 	p.setWindowModality( Qt::ApplicationModal );
 	p.setFixedSize( p.size() );
