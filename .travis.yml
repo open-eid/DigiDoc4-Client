@@ -10,7 +10,7 @@ matrix:
     env: TARGET=osx
     sudo: true
   - os: linux
-    env: TARGET=ubuntu:17.04
+    env: TARGET=ubuntu:17.10
     sudo: false
 env:
   global:
