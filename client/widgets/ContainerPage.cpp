@@ -64,6 +64,15 @@ ContainerPage::~ContainerPage()
 	delete ui;
 }
 
+void ContainerPage::addError(const SignatureItem* item, QMap<QString, std::pair<int, QString>> &errors)
+{
+	auto counter = errors.value(item->getError());
+	if(!counter.first)
+		counter.second = item->getLink();
+	counter.first++;
+	errors[item->getError()] = counter;
+}
+
 void ContainerPage::addressSearch()
 {
 	AddRecipients dlg(ui->rightPane, qApp->activeWindow());
@@ -364,6 +373,7 @@ void ContainerPage::transition(DigiDoc* container)
 	emit action(ClearSignatureWarning);
 
 	ContainerState state = container->state();
+	QMap<QString, std::pair<int, QString>> errors;
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
 
@@ -374,22 +384,20 @@ void ContainerPage::transition(DigiDoc* container)
 		ui->rightPane->addHeader("Container's timestamps");
 
 		for(const DigiDocSignature &c: container->timestamps())
-			ui->rightPane->addHeaderWidget(new SignatureItem(c, state, false, ui->rightPane));
+		{
+			SignatureItem *item = new SignatureItem(c, state, false, ui->rightPane);
+			if(item->isInvalid())
+				addError(item, errors);
+			ui->rightPane->addHeaderWidget(item);
+		}
 	}
 
 	bool enableSigning = container->isSupported();
-	QMap<QString, std::pair<int, QString>> errors;
 	for(const DigiDocSignature &c: container->signatures())
 	{
 		SignatureItem *item = new SignatureItem(c, state, enableSigning, ui->rightPane);
 		if(item->isInvalid())
-		{
-			auto counter = errors.value(item->getError());
-			if(!counter.first)
-				counter.second = item->getLink();
-			counter.first++;
-			errors[item->getError()] = counter;
-		}
+			addError(item, errors);
 		ui->rightPane->addWidget(item);
 	}
 

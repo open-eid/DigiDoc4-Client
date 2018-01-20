@@ -779,11 +779,27 @@ Learn more info here:</source>
         </translation>
     </message>
     <message numerus="yes">
+        <source>%n timestamps are not valid</source>
+        <translation>
+            <numerusform>%n временной штамп не действует</numerusform>
+            <numerusform>%n временных штампов недействительны</numerusform>
+            <numerusform>%n временных штампов недействительны</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
         <source>%n signatures are unknown</source>
         <translation>
             <numerusform>%n подпись неизвестна</numerusform>
             <numerusform>%n подписи неизвестны</numerusform>
             <numerusform>%n подписи неизвестны</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are unknown</source>
+        <translation>
+            <numerusform>%n временной штамп неизвестна</numerusform>
+            <numerusform>%n временных штампов неизвестны</numerusform>
+            <numerusform>%n временных штампов неизвестны</numerusform>
         </translation>
     </message>
     <message>

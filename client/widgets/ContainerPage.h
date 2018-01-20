@@ -39,6 +39,7 @@ class CryptoDoc;
 class DigiDoc;
 class QFont;
 class QFontMetrics;
+class SignatureItem;
 
 class ContainerPage : public QWidget
 {
@@ -72,6 +73,7 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
+	void addError(const SignatureItem* item, QMap<QString, std::pair<int, QString>> &errors);
 	void addressSearch();
 	void changeCard(const QString& idCode);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
