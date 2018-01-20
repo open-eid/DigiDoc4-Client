@@ -87,9 +87,11 @@ void SignatureItem::init()
 	else
 		name = signature.signedBy().toHtmlEscaped();
 
+	bool isSignature = true;
 	QString label = tr("Signature");
 	if(signature.profile() == "TimeStampToken")
 	{
+		isSignature = false;
 		label = tr("Timestamp");
 		setIcon(":/images/icon_ajatempel.svg");
 	}
@@ -122,13 +124,19 @@ void SignatureItem::init()
 		sc << "<font color=\"green\">" << label << " " << tr("is valid") << "</font> <font>(" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
-		error = "%n signatures are not valid";
+		if(isSignature)
+			error = "%n signatures are not valid";
+		else
+			error = "%n timestamps are not valid";
 		link = "https://www.id.ee/index.php?id=30591";
 		sa << tr("is not valid");
 		sc << "<font color=\"red\">" << label << " " << tr("is not valid");
 		break;
 	case DigiDocSignature::Unknown:
-		error = "%n signatures are unknown";
+		if(isSignature)
+			error = "%n signatures are unknown";
+		else
+			error = "%n timestamps are unknown";
 		link = "http://id.ee/?lang=en&id=34317";
 		sa << tr("is unknown");
 		sc << "<font color=\"red\">" << label << " " << tr("is unknown");
