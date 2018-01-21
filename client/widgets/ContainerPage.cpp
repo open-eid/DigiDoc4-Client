@@ -413,7 +413,7 @@ void ContainerPage::transition(DigiDoc* container)
 		}
 	}
 
-	if(enableSigning)
+	if(enableSigning || container->isService())
 		showSigningButton();
 	else
 		hideMainAction();

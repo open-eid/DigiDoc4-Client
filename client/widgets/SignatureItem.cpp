@@ -236,6 +236,9 @@ bool SignatureItem::isInvalid() const
 
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
 {
+	if(serial.isEmpty())
+		return false;
+
 	return serial == cardCode || serial == mobileCode;
 }
 

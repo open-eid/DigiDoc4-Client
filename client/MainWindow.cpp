@@ -560,10 +560,16 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	switch(action)
 	{
 	case SignatureAdd:
-		sign();
+		if(digiDoc->isService())
+			wrapAndSign();
+		else
+			sign();
 		break;
 	case SignatureMobile:
-		signMobile(info1, info2);
+		if(digiDoc->isService())
+			wrapAndMobileSign(info1, info2);
+		else
+			signMobile(info1, info2);
 		break;
 	case SignatureWarning:
 		showWarning(WarningText(info1, info2, SignDetails));
@@ -604,26 +610,8 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 
 void MainWindow::convertToBDoc()
 {
-	QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
-	QString filename = FileUtil::create(QFileInfo(cryptoDoc->fileName()), QString(".%1").arg(ext), tr("signature container"));
-	if(filename.isNull())
+	if(!wrap(cryptoDoc->fileName(), cryptoDoc->state() == EncryptedContainer))
 		return;
-
-	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
-	signatureContainer->create(filename);
-
-	// If encrypted, add whole cryptocontainer to signature container; otherwise content only
-	if(cryptoDoc->state() == EncryptedContainer)
-		signatureContainer->documentModel()->addFile(cryptoDoc->fileName());
-	else
-		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
-
-	resetCryptoDoc();
-	resetDigiDoc(signatureContainer.release());
-
-	ui->signContainerPage->transition(digiDoc);
-	selectPageIcon(ui->signature);
-	ui->startScreen->setCurrentIndex(SignDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 	notification->start( tr("Converted to signed document!"), 750, 3000, 1200 );
@@ -1144,9 +1132,10 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 
 		FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 		notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 void MainWindow::updateCardData()
@@ -1427,6 +1416,70 @@ void MainWindow::warningClicked(const QString &link)
 		ui->accordion->changePin2Clicked (false, true);
 	else if(link.startsWith("http"))
 		QDesktopServices::openUrl(QUrl(link));
+}
+
+bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
+{
+	QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
+	QString filename = FileUtil::create(QFileInfo(wrappedFile), QString(".%1").arg(ext), tr("signature container"));
+	if(filename.isNull())
+		return false;
+
+	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
+	signatureContainer->create(filename);
+
+	// If encrypted container or pdf, add whole file to signature container; otherwise content only
+	if(enclose)
+		signatureContainer->documentModel()->addFile(wrappedFile);
+	else
+		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
+
+	resetCryptoDoc();
+	resetDigiDoc(signatureContainer.release());
+
+	ui->signContainerPage->transition(digiDoc);
+	selectPageIcon(ui->signature);
+	ui->startScreen->setCurrentIndex(SignDetails);
+
+	return true;
+}
+
+void MainWindow::wrapAndSign()
+{
+	showOverlay(this);
+	QString wrappedFile = digiDoc->fileName();
+	if(!wrap(wrappedFile, true))
+	{
+		clearOverlay();
+		return;
+	}
+
+	if(!sign())
+	{
+		resetDigiDoc(nullptr, false);
+		navigateToPage(SignDetails, {wrappedFile}, false);
+	}
+
+	clearOverlay();
+}
+
+void MainWindow::wrapAndMobileSign(const QString &idCode, const QString &phoneNumber)
+{
+	showOverlay(this);
+	QString wrappedFile = digiDoc->fileName();
+	if(!wrap(wrappedFile, true))
+	{
+		clearOverlay();
+		return;
+	}
+
+	if(!signMobile(idCode, phoneNumber))
+	{
+		resetDigiDoc(nullptr, false);
+		navigateToPage(SignDetails, {wrappedFile}, false);
+	}
+
+	clearOverlay();
 }
 
 bool MainWindow::wrapContainer(bool signing)

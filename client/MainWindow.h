@@ -155,6 +155,9 @@ private:
 	void showIdCardAlerts(const QSmartCardData& t);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(QList<CKey> keys);
+	bool wrap(const QString& wrappedFile, bool enclose);
+	void wrapAndSign();
+	void wrapAndMobileSign(const QString &idCode, const QString &phoneNumber);
 	bool wrapContainer(bool signing);
 	
 	CryptoDoc* cryptoDoc = nullptr;
