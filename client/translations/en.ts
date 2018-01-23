@@ -482,20 +482,20 @@ Media type: %3</translation>
         <translation>Add files</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
+        <source>NO</source>
+        <translation>NO</translation>
     </message>
     <message>
         <source>YES</source>
         <translation>YES</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>NO</translation>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>SAVE WITH OTHER NAME</translation>
     </message>
     <message>
-        <source>YES TO ALL</source>
-        <translation>YES TO ALL</translation>
+        <source>REPLACE ALL</source>
+        <translation>REPLACE ALL</translation>
     </message>
 
     <message>

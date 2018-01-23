@@ -482,20 +482,20 @@ Media type: %3</source>
         <translation>Добавить файлы</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
+        <source>NO</source>
+        <translation>НЕТ</translation>
     </message>
     <message>
         <source>YES</source>
         <translation>ДА</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>СОХРАНИТЬ ПОД ДРУГИМ ИМЕНЕМ</translation>
     </message>
     <message>
-        <source>YES TO ALL</source>
-        <translation>ДА ДЛЯ ВСЕХ</translation>
+        <source>REPLACE ALL</source>
+        <translation>ЗАМЕНИТЬ ВСЕ</translation>
     </message>
 
     <message>
@@ -797,7 +797,7 @@ Learn more info here:</source>
     <message numerus="yes">
         <source>%n timestamps are unknown</source>
         <translation>
-            <numerusform>%n временной штамп неизвестна</numerusform>
+            <numerusform>%n временной штамп неизвестен</numerusform>
             <numerusform>%n временных штампов неизвестны</numerusform>
             <numerusform>%n временных штампов неизвестны</numerusform>
         </translation>

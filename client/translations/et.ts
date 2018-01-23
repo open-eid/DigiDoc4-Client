@@ -483,20 +483,20 @@ Tüüp: %3</translation>
         <translation>Lisa faile</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
+        <source>NO</source>
+        <translation>EI</translation>
     </message>
     <message>
         <source>YES</source>
         <translation>JAH</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>SALVESTA TEISE NIMEGA</translation>
     </message>
     <message>
-        <source>YES TO ALL</source>
-        <translation>JAH KÕIGILE</translation>
+        <source>REPLACE ALL</source>
+        <translation>KIRJUTA KÕIK ÜLE</translation>
     </message>
 
     <message>
@@ -2002,11 +2002,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>See on vigane allkiri või vigane digitaalselt allkirjastatud fail. Allkiri ei kehti.</translation>
+        <translation>See allkiri või allkirjastatud fail on vigane. Allkiri ei ole kehtiv.</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja olek kuvatakse "teadmataks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='https://www.id.ee/?lang=et&amp;id=34054'&gt;lisainformatsioon&lt;/a&gt;).</translation>
+		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui teie arvitisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>

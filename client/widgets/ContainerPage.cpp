@@ -275,7 +275,7 @@ void ContainerPage::changeEvent(QEvent* event)
 
 void ContainerPage::setHeader(const QString &file)
 {
-	fileName = file;
+	fileName = QDir::toNativeSeparators (file);
 	containerFileWidth = fm.width(fileName);
 	elideFileName(true);
 }

@@ -135,11 +135,11 @@ void FileList::saveAll()
 					continue;
 			}
 			WarningDialog dlg(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), qApp->activeWindow());
-			dlg.setButtonSize(100, 5);
-			dlg.setCancelText(tr("CANCEL"));
+			dlg.setButtonSize(60, 5);
+			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
-			dlg.addButton(tr("NO"), QMessageBox::No);
-			dlg.addButton(tr("YES TO ALL"), QMessageBox::YesToAll);
+			dlg.addButton(tr("SAVE WITH OTHER NAME"), QMessageBox::No);
+			dlg.addButton(tr("REPLACE ALL"), QMessageBox::YesToAll);
 			b = dlg.exec();
 
 			if( b == QMessageBox::Cancel )

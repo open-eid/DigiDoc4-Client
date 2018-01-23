@@ -89,6 +89,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
 
 SettingsDialog::~SettingsDialog()
 {
+	QApplication::restoreOverrideCursor();
 	delete ui;
 }
 
@@ -262,6 +263,7 @@ void SettingsDialog::initUI()
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
 
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
+	connect( this, &SettingsDialog::finished, this, [this](){ QApplication::restoreOverrideCursor(); } );
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 }

@@ -60,6 +60,7 @@ QDialog(parent)
 
 AddRecipients::~AddRecipients()
 {
+	QApplication::restoreOverrideCursor();
 	delete ui;
 }
 
