@@ -241,6 +241,12 @@ background-color: #F8DDA7;
         <property name="wordWrap">
          <bool>true</bool>
         </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+        </property>
        </widget>
       </item>
       <item>

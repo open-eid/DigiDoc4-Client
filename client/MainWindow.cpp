@@ -1503,7 +1503,7 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 		t.version() == QSmartCardData::VER_3_4 &&
 		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
 	{
-		qApp->showWarning( tr("Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;"));
+		qApp->showWarning( tr("Your ID-card certificates cannot be renewed starting from 01.07.2017."));
 	}
 	qApp->smartcard()->setProperty("lastcard", t.card());
 

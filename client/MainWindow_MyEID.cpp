@@ -84,7 +84,7 @@ bool MainWindow::checkExpiration()
 	}
 
 	if(expiresIn <= 0)
-		showWarning(WarningText(WarningItem::tr("Certificates have expired!"), "", -1, CERT_EXPIRY_WARNING));
+		showWarning(WarningText(WarningItem::tr("Certificates have expired!"), "", -1, CERT_EXPIRED_WARNING));
 	else if(expiresIn <= 105)
 		showWarning(WarningText(WarningItem::tr("Certificates expire soon!"), "", -1, CERT_EXPIRY_WARNING));
 

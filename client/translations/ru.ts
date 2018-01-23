@@ -901,8 +901,8 @@ Learn more info here:</source>
         <translation>ИЗМЕНИТЬ PUK</translation>
     </message>
     <message>
-        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
-        <translation>%1PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. %2 Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. %2 Новый PUK получите в конверте с кодами %3 из PPA%4.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Новый PUK получите в конверте с кодами &lt;a href=&quot;https://www.politsei.ee/ru/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad.dot&quot;&gt;из PPA&lt;/a&gt;.</translation>
     </message>
 </context>
 
@@ -2355,8 +2355,8 @@ Additional licenses and components</source>
         <translation>ВПЕРЕД</translation>
     </message>
     <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
-        <translation>Сертификаты вашей ID-карты не могут быть продлены с 01.07.2017. Ваш документ по-прежнему действует до истечения срока его действия, и его можно использовать для входа в электронные службы и предоставления цифровых подписей. Если у вас есть проблемы с использованием вашей ID-карты в электронных сервисах, обратитесь в службу поддержки ID-карт по телефону (+372) 677 3377 или посетите пункт обслуживания полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;Больше информации&lt;/a&gt;</translation>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
+        <translation>С 01.07.2017 обновление сертификатов на этой карте больше невозможно. Документ действителен до истечения срока его действия, и его можно использовать для авторизации в дигитальных сервисах и создания дигитальной подписи. Если возникнут проблемы с использованием карты в дигитальных сервисах, обратитесь в службу поддержки ID-карты по телефону (+372) 677 3377 или посетите один из пунктов обслуживания Департамента полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30625&amp;read=38012&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
