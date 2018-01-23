@@ -482,20 +482,20 @@ Media type: %3</translation>
         <translation>Add files</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
+        <source>NO</source>
+        <translation>NO</translation>
     </message>
     <message>
         <source>YES</source>
         <translation>YES</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>NO</translation>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>SAVE WITH OTHER NAME</translation>
     </message>
     <message>
-        <source>YES TO ALL</source>
-        <translation>YES TO ALL</translation>
+        <source>REPLACE ALL</source>
+        <translation>REPLACE ALL</translation>
     </message>
 
     <message>
@@ -902,8 +902,8 @@ Learn more info here:</translation>
         <translation>CHANGE PUK</translation>
     </message>
     <message>
-        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
-        <translation>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href='https://www.politsei.ee/en/nouanded/isikut-toendavad-dokumendid/kui-id-kaardi-koodid-kaovad.dot'&gt;from PPA&lt;/a&gt;.</translation>
     </message>
 </context>
 
@@ -2382,7 +2382,7 @@ Additional licenses and components</translation>
         <translation>CONTINUE</translation>
     </message>
     <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
         <translation>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
     </message>
     <message>

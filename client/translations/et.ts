@@ -483,20 +483,20 @@ Tüüp: %3</translation>
         <translation>Lisa faile</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
+        <source>NO</source>
+        <translation>EI</translation>
     </message>
     <message>
         <source>YES</source>
         <translation>JAH</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>SALVESTA TEISE NIMEGA</translation>
     </message>
     <message>
-        <source>YES TO ALL</source>
-        <translation>JAH KÕIGILE</translation>
+        <source>REPLACE ALL</source>
+        <translation>KIRJUTA KÕIK ÜLE</translation>
     </message>
 
     <message>
@@ -903,8 +903,8 @@ Rohkem infot leiate siit:</translation>
         <translation>MUUDA PUK</translation>
     </message>
     <message>
-        <source>%1PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. %2 As long as the PUK code is blocked, all eID options can be used, except PUK code. %2You can only use the new PUK code with the new code envelope that you can use%3 from PPA%4.</source>
-        <translation>%1PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. %2Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. %2Uue PUK koodi saad vaid uue koodiümbrikuga, mida %3taotle PPA-st%4.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href='https://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/'&gt;taotle PPA-st&lt;/a&gt;.</translation>
     </message>
 </context>
 
@@ -2002,11 +2002,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
-        <translation>See on vigane allkiri või vigane digitaalselt allkirjastatud fail. Allkiri ei kehti.</translation>
+        <translation>See allkiri või allkirjastatud fail on vigane. Allkiri ei ole kehtiv.</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja olek kuvatakse "teadmataks", kui teil pole teie arvutisse installitud kõiki kehtivuskinnituse teenuse sertifikaate ja / või sertifikaadi sertifikaadi sertifikaate (&lt;a href='https://www.id.ee/?lang=et&amp;id=34054'&gt;lisainformatsioon&lt;/a&gt;).</translation>
+		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui teie arvitisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -2365,8 +2365,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>EDASI</translation>
     </message>
     <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
-        <translation>Teie ID-kaardi sertifikaate ei saa uuendada alates 01.07.2017. Teie dokument on endiselt kehtiv kuni selle aegumiskuupäevani ja seda saab kasutada e-teenuste sisselogimiseks ja digitaalallkirjade saamiseks. Kui teie ID-kaardi kasutamine e-teenustes on probleeme, võtke palun ühendust ID-kaardi kasutajatoega telefonil (+372) 677 3377 või külastage politsei- ja piirivalveteenistuse teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;Lisateave&lt;/a&gt;</translation>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
+        <translation>Teie ID-kaardi sertifikaate ei ole võimalik alates 01.07.2017 uuendada. Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril 1777 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
