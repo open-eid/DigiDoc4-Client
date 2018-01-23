@@ -52,16 +52,17 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	SslCertificate c = signature.cert();
 	QString style = "<font color=\"green\">";
 	QString status = tr("Signature");
-	if(signature.profile() == "TimeStampToken")
+	bool	isTS = (signature.profile() == "TimeStampToken") ? true : false;
+	if(isTS)
 		status = tr("Timestamp");
 	status += " ";
 	switch( s.validate() )
 	{
 	case DigiDocSignature::Valid:
-		status += tr("is valid");
+		status += tr("is valid", isTS ? "Timestamp" : "Signature");
 		break;
 	case DigiDocSignature::Warning:
-		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid"), STYLE_TERMINATOR, tr("Warnings"));
+		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Warnings"));
 		if( !s.lastError().isEmpty() )
 			d->error->setPlainText( s.lastError() );
 		if( s.warning() & DigiDocSignature::DigestWeak )
@@ -72,14 +73,14 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		}
 		break;
 	case DigiDocSignature::NonQSCD:
-		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid"), STYLE_TERMINATOR, tr("Restrictions"));
+		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Restrictions"));
 		decorateNotice("gold");
 		d->info->setText( tr(
 			"This e-Signature is not equivalent with handwritten signature and therefore "
 			"can be used only in transactions where Qualified e-Signature is not required.") );
 		break;
 	case DigiDocSignature::Test:
-		status += QString("%1 (%2)").arg(tr("is valid"), tr("Test signature"));
+		status += QString("%1 (%2)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), tr("Test signature"));
 		if( !s.lastError().isEmpty() )
 			d->error->setPlainText( s.lastError() );
 		d->info->setText( tr(
@@ -90,7 +91,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		break;
 	case DigiDocSignature::Invalid:
 		style = "<font color=\"red\">";
-		status += tr("is not valid");
+		status += tr("is not valid", isTS ? "Timestamp" : "Signature");
 		d->error->setPlainText( s.lastError().isEmpty() ? tr("Unknown error") : s.lastError() );
 		decorateNotice("red");
 		d->info->setText( tr(
@@ -98,7 +99,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		break;
 	case DigiDocSignature::Unknown:
 		style = "<font color=\"red\">";
-		status += tr("is unknown");
+		status += tr("is unknown", isTS ? "Timestamp" : "Signature");
 		d->error->setPlainText( s.lastError().isEmpty() ? tr("Unknown error") : s.lastError() );
 		decorateNotice("red");
 		d->info->setText( tr(

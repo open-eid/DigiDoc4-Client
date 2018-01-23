@@ -760,20 +760,38 @@ Learn more info here:</source>
     </message>
     <message>
         <source>is valid</source>
-        <translation>действует</translation>
+		<comment>Signature</comment>
+        <translation>действительна</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+		<comment>Timestamp</comment>
+        <translation>действителен</translation>
     </message>
     <message>
         <source>is not valid</source>
-        <translation>не действует</translation>
+		<comment>Signature</comment>
+        <translation>недействительна</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+		<comment>Timestamp</comment>
+        <translation>недействителен</translation>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>неизвестно</translation>
+		<comment>Signature</comment>
+        <translation>неизвестная</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+		<comment>Timestamp</comment>
+        <translation>неизвестный</translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
         <translation>
-            <numerusform>%n подпись не действует</numerusform>
+            <numerusform>%n подпись недействительна</numerusform>
             <numerusform>%n подписи недействительны</numerusform>
             <numerusform>%n подписи недействительны</numerusform>
         </translation>
@@ -781,7 +799,7 @@ Learn more info here:</source>
     <message numerus="yes">
         <source>%n timestamps are not valid</source>
         <translation>
-            <numerusform>%n временной штамп не действует</numerusform>
+            <numerusform>%n временной штамп недействителен</numerusform>
             <numerusform>%n временных штампов недействительны</numerusform>
             <numerusform>%n временных штампов недействительны</numerusform>
         </translation>
@@ -940,7 +958,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>Valid:</source>
-        <translation>Действительный:</translation>
+        <translation>Действителен:</translation>
     </message>
     <message>
         <source>From</source>
@@ -1947,7 +1965,13 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>is valid</source>
-        <translation>действует</translation>
+		<comment>Signature</comment>
+        <translation>действительна</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+		<comment>Timestamp</comment>
+        <translation>действителен</translation>
     </message>
     <message>
         <source>Warnings</source>
@@ -1971,7 +1995,13 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>неизвестно</translation>
+		<comment>Signature</comment>
+        <translation>неизвестная</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+		<comment>Timestamp</comment>
+        <translation>неизвестный</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -1979,7 +2009,13 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>is not valid</source>
+		<comment>Signature</comment>
         <translation>недействительна</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+		<comment>Timestamp</comment>
+        <translation>недействителен</translation>
     </message>
     <message>
         <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>

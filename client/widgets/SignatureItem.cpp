@@ -108,20 +108,20 @@ void SignatureItem::init()
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
-		sa << tr("is valid");
-		sc << "<font color=\"green\">" << label << " " << tr("is valid") << "</font>";
+		sa << tr("is valid", isSignature ? "Signature" : "Timestamp");
+		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font>";
 		break;
 	case DigiDocSignature::Warning:
-		sa << tr("is valid") << " (" << tr("Warnings") << ")";
-		sc << "<font color=\"green\">" << label << " " << tr("is valid") << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
+		sa << tr("is valid", isSignature ? "Signature" : "Timestamp") << " (" << tr("Warnings") << ")";
+		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
 		break;
 	case DigiDocSignature::NonQSCD:
-		sa << tr("is valid") << " (" << tr("Restrictions") << ")";
-		sc << "<font color=\"green\">" << label << " " << tr("is valid") << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
+		sa << tr("is valid", isSignature ? "Signature" : "Timestamp") << " (" << tr("Restrictions") << ")";
+		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
 		break;
 	case DigiDocSignature::Test:
-		sa << tr("is valid") << " (" << tr("Test signature") << ")";
-		sc << "<font color=\"green\">" << label << " " << tr("is valid") << "</font> <font>(" << tr("Test signature") << ")";
+		sa << tr("is valid", isSignature ? "Signature" : "Timestamp") << " (" << tr("Test signature") << ")";
+		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font> <font>(" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
 		if(isSignature)
@@ -129,8 +129,8 @@ void SignatureItem::init()
 		else
 			error = "%n timestamps are not valid";
 		link = "https://www.id.ee/index.php?id=30591";
-		sa << tr("is not valid");
-		sc << "<font color=\"red\">" << label << " " << tr("is not valid");
+		sa << tr("is not valid", isSignature ? "Signature" : "Timestamp");
+		sc << "<font color=\"red\">" << label << " " << tr("is not valid", isSignature ? "Signature" : "Timestamp");
 		break;
 	case DigiDocSignature::Unknown:
 		if(isSignature)
@@ -138,8 +138,8 @@ void SignatureItem::init()
 		else
 			error = "%n timestamps are unknown";
 		link = "http://id.ee/?lang=en&id=34317";
-		sa << tr("is unknown");
-		sc << "<font color=\"red\">" << label << " " << tr("is unknown");
+		sa << tr("is unknown", isSignature ? "Signature" : "Timestamp");
+		sc << "<font color=\"red\">" << label << " " << tr("is unknown", isSignature ? "Signature" : "Timestamp");
 		break;
 	}
 	sc << "</span>";
