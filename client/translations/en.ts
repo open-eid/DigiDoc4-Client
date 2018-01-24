@@ -1685,10 +1685,8 @@ new codes.&lt;/li&gt;
         <translation>Default file type</translation>
     </message>
     <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries
-</source>
-        <translation>ASiC-E – international digital signature format that will be used across European countries
-</translation>
+        <source>ASiC-E – international digital signature format that will be used across European countries</source>
+        <translation>ASiC-E – international digital signature format that will be used across European countries.</translation>
     </message>
     <message>
         <source>BDOC – default digital signature format in Estonia.</source>

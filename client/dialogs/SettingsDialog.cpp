@@ -453,6 +453,7 @@ void SettingsDialog::updateCert()
 		ui->txtAccessCert->setText( 
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
+	ui->txtAccessCert->adjustSize();
 	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
 	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
 }

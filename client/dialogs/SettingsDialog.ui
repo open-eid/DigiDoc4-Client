@@ -1019,19 +1019,19 @@ QRadioButton::indicator::checked {
             <x>21</x>
             <y>130</y>
             <width>749</width>
-            <height>60</height>
+            <height>70</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>749</width>
-            <height>60</height>
+            <height>70</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>749</width>
-            <height>60</height>
+            <height>70</height>
            </size>
           </property>
           <property name="text">
@@ -1367,7 +1367,7 @@ background-color: #FFFFFF;
           <property name="maximumSize">
            <size>
             <width>749</width>
-            <height>120</height>
+            <height>130</height>
            </size>
           </property>
           <property name="text">
@@ -1393,7 +1393,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>150</y>
+            <y>160</y>
             <width>700</width>
             <height>16</height>
            </rect>

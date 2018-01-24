@@ -1686,7 +1686,7 @@ ID-карты, это обратиться в &lt;u&gt;бюро обслужив
     </message>
     <message>
         <source>Select the default directory</source>
-        <translation>Выберите каталог по умолчанию</translation>
+        <translation>Выберите каталог</translation>
     </message>
     <message>
         <source>Default file type</source>
@@ -1696,7 +1696,7 @@ ID-карты, это обратиться в &lt;u&gt;бюро обслужив
         <source>ASiC-E – international digital signature format that will be used across European countries
 </source>
         <translation>ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет
-использоваться в европейских государствах</translation>
+использоваться в европейских государствах.</translation>
     </message>
     <message>
         <source>BDOC – default digital signature format in Estonia.</source>
