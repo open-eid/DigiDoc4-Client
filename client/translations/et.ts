@@ -1688,12 +1688,12 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>ASiC-E – international digital signature format that will be used across European countries
 </source>
-        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming
+        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming.
 </translation>
     </message>
     <message>
         <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC - digiallkirja vaikimisi vorming Eestis</translation>
+        <translation>BDOC - digiallkirja vaikimisi vorming Eestis.</translation>
     </message>
     <message>
         <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>

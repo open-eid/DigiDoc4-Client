@@ -312,7 +312,7 @@ text-align: center;</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>418</y>
+       <y>460</y>
        <width>298</width>
        <height>34</height>
       </rect>
@@ -361,7 +361,7 @@ QPushButton:disabled {
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>418</y>
+       <y>460</y>
        <width>298</width>
        <height>34</height>
       </rect>
@@ -407,7 +407,7 @@ QPushButton:disabled {
      <property name="geometry">
       <rect>
        <x>696</x>
-       <y>418</y>
+       <y>460</y>
        <width>298</width>
        <height>34</height>
       </rect>
@@ -572,7 +572,7 @@ color: #041E42;</string>
        <x>30</x>
        <y>340</y>
        <width>298</width>
-       <height>72</height>
+       <height>120</height>
       </rect>
      </property>
      <property name="font">
@@ -602,7 +602,7 @@ line-height: 16px;</string>
        <x>363</x>
        <y>340</y>
        <width>298</width>
-       <height>72</height>
+       <height>120</height>
       </rect>
      </property>
      <property name="font">
@@ -632,7 +632,7 @@ line-height: 16px;</string>
        <x>696</x>
        <y>340</y>
        <width>298</width>
-       <height>72</height>
+       <height>120</height>
       </rect>
      </property>
      <property name="font">
@@ -829,7 +829,7 @@ border-radius: 3px;</string>
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>481</y>
+       <y>500</y>
        <width>298</width>
        <height>34</height>
       </rect>
@@ -875,7 +875,7 @@ QPushButton:disabled {
      <property name="geometry">
       <rect>
        <x>436</x>
-       <y>525</y>
+       <y>540</y>
        <width>151</width>
        <height>25</height>
       </rect>
@@ -929,7 +929,7 @@ QPushButton:disabled {
      <property name="geometry">
       <rect>
        <x>490</x>
-       <y>558</y>
+       <y>573</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -961,7 +961,7 @@ image: url(:/images/icon_dot_active.png);</string>
      <property name="geometry">
       <rect>
        <x>520</x>
-       <y>558</y>
+       <y>573</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -993,7 +993,7 @@ image: url(:/images/icon_dot.png);</string>
      <property name="geometry">
       <rect>
        <x>505</x>
-       <y>558</y>
+       <y>573</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1112,7 +1112,7 @@ color: #041E42;</string>
        <x>30</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>150</height>
       </rect>
      </property>
      <property name="font">
@@ -1142,7 +1142,7 @@ line-height: 16px;</string>
        <x>363</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>110</height>
       </rect>
      </property>
      <property name="font">
@@ -1195,7 +1195,7 @@ color: #041E42;</string>
        <x>696</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>150</height>
       </rect>
      </property>
      <property name="font">
@@ -1228,7 +1228,7 @@ line-height: 16px;</string>
      <property name="geometry">
       <rect>
        <x>490</x>
-       <y>558</y>
+       <y>573</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1260,7 +1260,7 @@ image: url(:/images/icon_dot.png);</string>
      <property name="geometry">
       <rect>
        <x>520</x>
-       <y>558</y>
+       <y>573</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1292,7 +1292,7 @@ image: url(:/images/icon_dot.png);</string>
      <property name="geometry">
       <rect>
        <x>505</x>
-       <y>558</y>
+       <y>573</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1411,7 +1411,7 @@ color: #041E42;</string>
        <x>30</x>
        <y>386</y>
        <width>298</width>
-       <height>104</height>
+       <height>160</height>
       </rect>
      </property>
      <property name="font">
@@ -1441,7 +1441,7 @@ line-height: 16px;</string>
        <x>363</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>110</height>
       </rect>
      </property>
      <property name="font">
@@ -1494,7 +1494,7 @@ color: #041E42;</string>
        <x>696</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>140</height>
       </rect>
      </property>
      <property name="font">
@@ -1522,7 +1522,7 @@ line-height: 16px;</string>
      <property name="geometry">
       <rect>
        <x>436</x>
-       <y>525</y>
+       <y>540</y>
        <width>151</width>
        <height>25</height>
       </rect>
@@ -1576,7 +1576,7 @@ QPushButton:disabled {
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>481</y>
+       <y>500</y>
        <width>298</width>
        <height>34</height>
       </rect>
@@ -1696,7 +1696,7 @@ border-radius: 3px;</string>
      <property name="geometry">
       <rect>
        <x>490</x>
-       <y>558</y>
+       <y>570</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1728,7 +1728,7 @@ image: url(:/images/icon_dot.png);</string>
      <property name="geometry">
       <rect>
        <x>505</x>
-       <y>558</y>
+       <y>570</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1760,7 +1760,7 @@ image: url(:/images/icon_dot.png);</string>
      <property name="geometry">
       <rect>
        <x>520</x>
-       <y>558</y>
+       <y>570</y>
        <width>15</width>
        <height>15</height>
       </rect>
@@ -1863,7 +1863,7 @@ color: #041E42;</string>
        <x>30</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>150</height>
       </rect>
      </property>
      <property name="font">
@@ -1893,7 +1893,7 @@ line-height: 16px;</string>
        <x>363</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>110</height>
       </rect>
      </property>
      <property name="font">
@@ -1923,7 +1923,7 @@ line-height: 16px;</string>
        <x>696</x>
        <y>386</y>
        <width>298</width>
-       <height>88</height>
+       <height>140</height>
       </rect>
      </property>
      <property name="font">
@@ -1951,7 +1951,7 @@ line-height: 16px;</string>
      <property name="geometry">
       <rect>
        <x>363</x>
-       <y>481</y>
+       <y>500</y>
        <width>298</width>
        <height>34</height>
       </rect>
