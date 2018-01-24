@@ -171,7 +171,8 @@ void FileList::selectFile()
 	if(f.isFile()) dir = f.dir().path();
 
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Add files"), dir);
-	emit addFiles(files);
+	if (!files.isEmpty())
+		emit addFiles(files);
 }
 
 void FileList::setModel(DocumentModel *documentModel)
