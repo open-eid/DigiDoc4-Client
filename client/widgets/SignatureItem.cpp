@@ -36,8 +36,14 @@
 using namespace ria::qdigidoc4;
 
 #define ICON_WIDTH 19
-#define ITEM_HEIGHT 44
-#define LINE_HEIGHT 16
+
+#if defined(Q_OS_WIN)
+	#define ITEM_HEIGHT 46
+	#define LINE_HEIGHT 18
+#else
+	#define ITEM_HEIGHT 44
+	#define LINE_HEIGHT 16
+#endif
 
 
 SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, bool isSupported, QWidget *parent)

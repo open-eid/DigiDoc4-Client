@@ -841,7 +841,16 @@ void MainWindow::open(const QStringList &params, bool crypto)
 
 void MainWindow::openContainer()
 {
-	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"));
+	auto current = ui->startScreen->currentIndex();
+	auto filter = QString();
+
+	if(current == CryptoIntro)
+		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1)").arg( "*.cdoc");
+	else if(current == SignIntro)
+		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1%2)").arg( "*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc")
+				.arg(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? "" : " *.pdf");
+
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), QString(), filter);
 	if(!files.isEmpty())
 		openFiles(files);
 }
