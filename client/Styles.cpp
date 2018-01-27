@@ -59,7 +59,7 @@ const FontSample regularSamples[] = {
 	{ 11, "Dokumendi haldamiseks sisesta kaart lugejasse", 233 },
 	{ 12, "Ver. 4.0.0.1", 57 },
 	{ 13, "Dokument2.pdf", 80 }, // Estimated
-	{ 14, "Dokument2.pdf", 96 },
+	{ 14, "Dokument2.pdf", 95 },
 	{ 15, "MARI MAASIKAS", 110 }, // Estimated
 	{ 16, "MARI MAASIKAS", 124 },
 	{ 18, "Isikutuvastamise sertifikaat", 221 },

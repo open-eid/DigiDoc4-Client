@@ -67,7 +67,7 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 
-	QFont regular = Styles::font( Styles::Regular, 13 );
+	QFont regular = Styles::font( Styles::Regular, 14 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	
 	ui->labelNameId->setFont( Styles::font( Styles::Regular, 14 ) );
