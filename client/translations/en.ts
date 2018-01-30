@@ -778,29 +778,29 @@ Learn more info here:</translation>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
         <translation>
-            <numerusform>%n signature is not valid</numerusform>
-            <numerusform>%n signatures are not valid</numerusform>
+            <numerusform>%n signature is not valid!</numerusform>
+            <numerusform>%n signatures are not valid!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n timestamps are not valid</source>
         <translation>
-            <numerusform>%n timestamp is not valid</numerusform>
-            <numerusform>%n timestamps are not valid</numerusform>
+            <numerusform>%n timestamp is not valid!</numerusform>
+            <numerusform>%n timestamps are not valid!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are unknown</source>
         <translation>
-            <numerusform>%n signature is unknown</numerusform>
-            <numerusform>%n signatures are unknown</numerusform>
+            <numerusform>%n signature is unknown!</numerusform>
+            <numerusform>%n signatures are unknown!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n timestamps are unknown</source>
         <translation>
-            <numerusform>%n timestamp is unknown</numerusform>
-            <numerusform>%n timestamps are unknown</numerusform>
+            <numerusform>%n timestamp is unknown!</numerusform>
+            <numerusform>%n timestamps are unknown!</numerusform>
         </translation>
     </message>
     <message>
