@@ -779,29 +779,29 @@ Rohkem infot leiate siit:</translation>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
         <translation>
-            <numerusform>%n allkiri ei ole kehtiv</numerusform>
-            <numerusform>%n allkirja ei ole kehtivad</numerusform>
+            <numerusform>%n allkiri ei ole kehtiv!</numerusform>
+            <numerusform>%n allkirja ei ole kehtivad!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n timestamps are not valid</source>
         <translation>
-            <numerusform>%n ajatempel ei ole kehtiv</numerusform>
-            <numerusform>%n ajatemplit ei ole kehtivad</numerusform>
+            <numerusform>%n ajatempel ei ole kehtiv!</numerusform>
+            <numerusform>%n ajatemplit ei ole kehtivad!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are unknown</source>
         <translation>
-            <numerusform>%n allkiri on teadmata</numerusform>
-            <numerusform>%n allkirja on teadmata</numerusform>
+            <numerusform>%n allkiri on teadmata!</numerusform>
+            <numerusform>%n allkirja on teadmata!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n timestamps are unknown</source>
         <translation>
-            <numerusform>%n ajatempel on teadmata</numerusform>
-            <numerusform>%n ajatemplit on teadmata</numerusform>
+            <numerusform>%n ajatempel on teadmata!</numerusform>
+            <numerusform>%n ajatemplit on teadmata!</numerusform>
         </translation>
     </message>
     <message>
