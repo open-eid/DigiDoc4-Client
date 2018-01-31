@@ -20,9 +20,9 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
+#include "QCardLock.h"
 #include "QSigner.h"
 #include "XmlReader.h"
-#include "QSmartCard_p.h"
 #ifdef Q_OS_WIN
 	#include "CertStore.h"
 #endif
@@ -340,9 +340,10 @@ void MainWindow::updateCertificate()
 			s.remove(c);
 	}
 #endif
-	qApp->smartcard()->d->m.lock();
-	Updater(qApp->smartcard()->data().reader(), this).execute();
-	qApp->smartcard()->d->m.unlock();
+	{
+		QCardLocker locker;
+		Updater(qApp->smartcard()->data().reader(), this).execute();
+	}
 	qApp->smartcard()->reload();
 }
 

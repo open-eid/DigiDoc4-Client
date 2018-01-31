@@ -18,6 +18,7 @@
  */
 
 #include "QSigner.h"
+#include "QCardLock.h"
 
 #include "Application.h"
 
@@ -32,10 +33,8 @@ class QWin;
 
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <QtCore/QFile>
 #include <QtCore/QEventLoop>
 #include <QtCore/QStringList>
-#include <QtCore/QSysInfo>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/obj_mac.h>
@@ -56,7 +55,6 @@ public:
 	QPKCS11Stack	*pkcs11 = nullptr;
 	TokenData		auth, sign;
 	volatile bool	terminate = false;
-	QAtomicInt		count;
 };
 
 using namespace digidoc;
@@ -90,17 +88,16 @@ X509Cert QSigner::cert() const
 QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo)
 {
-	if( d->count.loadAcquire() > 0 )
+	if(!QCardLock::instance().exclusiveTryLock())
 	{
 		Q_EMIT error( tr("Signing/decrypting is already in progress another window.") );
 		return DecryptFailed;
 	}
 
-	d->count.ref();
 	if( !d->auth.cards().contains( d->auth.card() ) || d->auth.cert().isNull() )
 	{
 		Q_EMIT error( tr("Authentication certificate is not selected.") );
-		d->count.deref();
+		QCardLock::instance().exclusiveUnlock();
 		return DecryptFailed;
 	}
 
@@ -111,10 +108,10 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		{
 		case QPKCS11::PinOK: break;
 		case QPKCS11::PinCanceled:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			return PinCanceled;
 		case QPKCS11::PinIncorrect:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			reloadauth();
 			if( !(d->auth.flags() & TokenData::PinLocked) )
 			{
@@ -123,11 +120,11 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 			}
 			// else pin locked, fall through
 		case QPKCS11::PinLocked:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			Q_EMIT error( QPKCS11::errorString( status ) );
 			return PinLocked;
 		default:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			Q_EMIT error( tr("Failed to login token") + " " + QPKCS11::errorString( status ) );
 			return DecryptFailed;
 		}
@@ -147,7 +144,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 			out = d->win->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
 		if(d->win->lastError() == QWin::PinCanceled)
 		{
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			return PinCanceled;
 		}
 	}
@@ -155,7 +152,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 
 	if( out.isEmpty() )
 		Q_EMIT error( tr("Failed to decrypt document") );
-	d->count.deref();
+	QCardLock::instance().exclusiveUnlock();
 	reloadauth();
 	return !out.isEmpty() ? DecryptOK : DecryptFailed;
 }
@@ -164,9 +161,10 @@ void QSigner::reloadauth() const
 {
 	QEventLoop e;
 	QObject::connect(this, &QSigner::authDataChanged, &e, &QEventLoop::quit);
-	d->count.ref();
-	d->auth.setCert( QSslCertificate() );
-	d->count.deref();
+	{
+		QCardLocker locker;
+		d->auth.setCert( QSslCertificate() );
+	}
 	e.exec();
 }
 
@@ -174,9 +172,10 @@ void QSigner::reloadsign() const
 {
 	QEventLoop e;
 	QObject::connect(this, &QSigner::signDataChanged, &e, &QEventLoop::quit);
-	d->count.ref();
-	d->sign.setCert( QSslCertificate() );
-	d->count.deref();
+	{
+		QCardLocker locker;
+		d->sign.setCert( QSslCertificate() );
+	}
 	e.exec();
 }
 
@@ -206,9 +205,8 @@ void QSigner::run()
 			return;
 		}
 
-		if( !d->count.loadAcquire() )
+		if(QCardLock::instance().readTryLock())
 		{
-			d->count.deref();
 			TokenData aold = d->auth, at = aold;
 			TokenData sold = d->sign, st = sold;
 			QStringList acards, scards, readers;
@@ -340,7 +338,7 @@ void QSigner::run()
 				Q_EMIT authDataChanged(d->auth = at);
 			if( sold != st )
 				Q_EMIT signDataChanged(d->sign = st);
-			d->count.ref();
+			QCardLock::instance().readUnlock();
 		}
 
 		sleep( 5 );
@@ -368,13 +366,12 @@ void QSigner::showWarning( const QString &msg )
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
 {
-	if( d->count.loadAcquire() > 0 )
+	if(!QCardLock::instance().exclusiveTryLock())
 		throwException( tr("Signing/decrypting is already in progress another window."), Exception::General, __LINE__ );
 
-	d->count.ref();
 	if( !d->sign.cards().contains( d->sign.card() ) || d->sign.cert().isNull() )
 	{
-		d->count.deref();
+		QCardLock::instance().exclusiveUnlock();
 		throwException( tr("Signing certificate is not selected."), Exception::General, __LINE__ );
 	}
 
@@ -392,17 +389,17 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		{
 		case QPKCS11::PinOK: break;
 		case QPKCS11::PinCanceled:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINCanceled, __LINE__ );
 		case QPKCS11::PinIncorrect:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINIncorrect, __LINE__ );
 		case QPKCS11::PinLocked:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINLocked, __LINE__ );
 		default:
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::General, __LINE__ );
 		}
 
@@ -416,13 +413,13 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		sig = d->win->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 		if(d->win->lastError() == QWin::PinCanceled)
 		{
-			d->count.deref();
+			QCardLock::instance().exclusiveUnlock();
 			throwException(tr("Failed to login token"), Exception::PINCanceled, __LINE__);
 		}
 	}
 #endif
 
-	d->count.deref();
+	QCardLock::instance().exclusiveUnlock();
 	reloadsign();
 	if( sig.isEmpty() )
 		throwException( tr("Failed to sign document"), Exception::General, __LINE__ );

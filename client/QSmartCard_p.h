@@ -22,7 +22,6 @@
 #include <common/QPCSC.h>
 #include <common/SslCertificate.h>
 
-#include <QtCore/QMutex>
 #include <QtCore/QStringList>
 #include <QtCore/QTextCodec>
 #include <QtCore/QVariant>
@@ -48,7 +47,6 @@ public:
 		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
 
 	QSharedPointer<QPCSCReader> reader;
-	QMutex			m;
 	QSmartCardData	t;
 	QMap<QString, QSharedPointer<QCardInfo>> cache;
 	volatile bool	terminate = false;
