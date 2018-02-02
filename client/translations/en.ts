@@ -233,6 +233,14 @@ The Information System Authority does not retain information regarding the files
         <translation>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
 The Information System Authority does not retain information regarding the files and users of the service.</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 
 

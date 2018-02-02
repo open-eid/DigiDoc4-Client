@@ -233,6 +233,14 @@ The Information System Authority does not retain information regarding the files
         <translation>Контроль срока действия дигитальной подписи в формате PDF осуществляется через электронную услугу. Контролируемый файл передается э-услугe.
 Департамент государственной инфосистемы не сохраняет информацию о пользователях э-услуги и файлах.</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 
 
