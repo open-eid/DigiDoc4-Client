@@ -22,6 +22,7 @@
 #include "Application.h"
 #include "FileDialog.h"
 #include "QSigner.h"
+#include "dialogs/WarningDialog.h"
 
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
@@ -534,9 +535,17 @@ bool DigiDoc::open( const QString &file )
 		b.reset(Container::open(to(file)));
 		if(isService())
 		{
-			qApp->showWarning( tr("The verification of digital signatures in PDF format is performed through an external service. "
+			QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
+			if(parent == nullptr)
+				parent = qApp->activeWindow();
+			WarningDialog dlg(tr("The verification of digital signatures in PDF format is performed through an external service. "
 					"The file requiring verification will be forwarded to the service.\n"
-					"The Information System Authority does not retain information regarding the files and users of the service.") );
+					"The Information System Authority does not retain information regarding the files and users of the service."), parent);
+			dlg.setCancelText(tr("CANCEL"));
+			dlg.addButton(tr("OK"), ContainerSave);
+			dlg.exec();
+			if(dlg.result() != ContainerSave)
+				return false;
 		}
 		else if(isReadOnlyTS())
 		{

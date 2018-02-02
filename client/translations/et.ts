@@ -233,6 +233,14 @@ The Information System Authority does not retain information regarding the files
         <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimine toimub läbi teenuse. Kontrollitav fail edastatakse teenusele.
 Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failide osas.</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
 </context>
 
 
@@ -1773,7 +1781,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>%1 version %2, released %3%4</source>
-        <translation>%1 versioon %2, välja lastud %3%4</translation>
+        <translation>%1 versioon %2, avalikustatud %3%4</translation>
     </message>
 
     <message>
