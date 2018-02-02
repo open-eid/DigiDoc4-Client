@@ -647,6 +647,9 @@ background-color: #023664;
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+        </property>
        </widget>
       </widget>
      </item>
@@ -1169,8 +1172,7 @@ background-color: #F4F5F6;</string>
              </widget>
             </item>
             <item>
-             <widget class="Accordion" name="accordion" native="true">
-             </widget>
+             <widget class="Accordion" name="accordion" native="true"/>
             </item>
            </layout>
           </widget>

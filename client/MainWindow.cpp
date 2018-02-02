@@ -73,7 +73,10 @@ MainWindow::MainWindow( QWidget *parent ) :
 	ui->setupUi(this);
 
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
-	ui->version->setText( tr("Ver. ") + qApp->applicationVersion() );
+	ui->version->setText(QString("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
+		.arg(tr("Ver. ")).arg(qApp->applicationVersion()));
+	connect(ui->version, &QLabel::linkActivated, this, 
+		[this]() {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
@@ -264,7 +267,8 @@ void MainWindow::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 
-		ui->version->setText( tr("Ver. ") + qApp->applicationVersion() );
+		ui->version->setText(QString("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
+			.arg(tr("Ver. ")).arg(qApp->applicationVersion()));
 	}
 
 	QWidget::changeEvent(event);
