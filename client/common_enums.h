@@ -95,5 +95,20 @@ enum Pages {
     MyEid
 };
 
+enum WarningType {
+    NoWarning = 0,
+
+    CertExpiredWarning,
+    CertExpiryWarning,
+    UnblockPin1Warning,
+    UnblockPin2Warning,
+    UpdateCertWarning,
+
+    InvalidSignatureWarning,
+    InvalidTimestampWarning,
+    UnknownSignatureWarning,
+    UnknownTimestampWarning,
+};
+
 }
 }

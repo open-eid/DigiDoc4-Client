@@ -84,9 +84,9 @@ bool MainWindow::checkExpiration()
 	}
 
 	if(expiresIn <= 0)
-		showWarning(WarningText(WarningItem::tr("Certificates have expired!"), "", -1, CERT_EXPIRED_WARNING));
+		showWarning(WarningText(WarningType::CertExpiredWarning));
 	else if(expiresIn <= 105)
-		showWarning(WarningText(WarningItem::tr("Certificates expire soon!"), "", -1, CERT_EXPIRY_WARNING));
+		showWarning(WarningText(WarningType::CertExpiryWarning));
 
 	return (expiresIn <= 105);
 }
@@ -109,12 +109,12 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 
 		if (type == QSmartCardData::Pin1Type)
 		{
-			clearWarning(UNBLOCK_PIN1_WARNING);
+			clearWarning(WarningType::UnblockPin1Warning);
 			emit ui->cryptoContainerPage->cardChanged(cardInfo.id);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
-			clearWarning(UNBLOCK_PIN2_WARNING);
+			clearWarning(WarningType::UnblockPin2Warning);
 			emit ui->signContainerPage->cardChanged(cardInfo.id);
 		}
 	}
@@ -250,7 +250,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0 );
 		if(qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
-			clearWarning(UPDATE_CERT_WARNING);
+			clearWarning(WarningType::UpdateCertWarning);
 		break;
 	case QSmartCard::DifferentError:
 		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;

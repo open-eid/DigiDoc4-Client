@@ -144,6 +144,10 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
+	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](const WarningText &warningText) {
+		showWarning(warningText);
+		ui->signature->warningIcon(true);
+	});
 
 	connect(ui->cryptoContainerPage, &ContainerPage::action, this, &MainWindow::onCryptoAction);
 	connect(ui->cryptoContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
@@ -304,11 +308,11 @@ void MainWindow::clearOverlay()
 	overlay.reset( nullptr );
 }
 
-void MainWindow::clearWarning(const char* warningIdent)
+void MainWindow::clearWarning(int warningType)
 {
 	for(auto warning: warnings)
 	{
-		if(warning->property(warningIdent).toBool())
+		if(warning->warningType() == warningType)
 		{
 			closeWarning(warning, true);
 			break;
@@ -327,7 +331,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 bool MainWindow::closeWarning(WarningItem *warning, bool force)
 {
-	if(force || !warning->property(UPDATE_CERT_WARNING).toBool())
+	if(force || warning->warningType() != WarningType::UpdateCertWarning)
 	{
 		warnings.removeOne(warning);
 		warning->close();
@@ -574,10 +578,6 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 			wrapAndMobileSign(info1, info2);
 		else
 			signMobile(info1, info2);
-		break;
-	case SignatureWarning:
-		showWarning(WarningText(info1, info2, SignDetails));
-		ui->signature->warningIcon(true);
 		break;
 	case ClearSignatureWarning:
 		ui->signature->warningIcon(false);
@@ -1173,7 +1173,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->accordion->clearOtherEID();
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
-	clearWarning(UPDATE_CERT_WARNING);
+	clearWarning(WarningType::UpdateCertWarning);
 }
 
 // Loads picture
@@ -1284,23 +1284,21 @@ void MainWindow::showUpdateCertWarning()
 {
 	for(auto warning: warnings)
 	{
-		if(warning->property(UPDATE_CERT_WARNING).toBool())
+		if(warning->warningType() == WarningType::UpdateCertWarning)
 			return;
 	}
 
 	emit ui->accordion->showCertWarnings();
-	showWarning(WarningText(tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update."),
-		QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(tr("Update")),
-		false, UPDATE_CERT_WARNING));
+	showWarning(WarningText(WarningType::UpdateCertWarning));
 }
 
 void MainWindow::showWarning(const WarningText &warningText)
 {
-	if(!warningText.property.isEmpty())
+	if(warningText.warningType)
 	{
 		for(auto warning: warnings)
 		{
-			if(warning->property(warningText.property.toLatin1()).toBool())
+			if(warning->warningType() == warningText.warningType)
 				return;
 		}
 	}
@@ -1546,20 +1544,12 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 
 	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin2Type ) == 0 )
 	{
-		showWarning(WarningText(
-			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2"),
-			QString("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK")),
-			-1,
-			UNBLOCK_PIN2_WARNING));
+		showWarning(WarningText(WarningType::UnblockPin2Warning));
 		emit ui->signContainerPage->cardChanged(); // hide Sign button
 	}
 	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin1Type ) == 0 )
 	{
-		showWarning(WarningText(
-			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1"),
-			QString("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK")),
-			-1,
-			UNBLOCK_PIN1_WARNING));
+		showWarning(WarningText(WarningType::UnblockPin1Warning));
 		emit ui->cryptoContainerPage->cardChanged(); // hide Decrypt button
 	}
 }

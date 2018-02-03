@@ -25,21 +25,30 @@
 #include "VerifyCert.h"
 
 
-WarningText::WarningText(const QString &text, const QString &details, int page, const QString &property)
+WarningText::WarningText(const QString &text, const QString &details, int page)
 : text(text)
 , details(details)
+, counter(0)
 , external(false)
 , page(page)
-, property(property)
+, warningType(ria::qdigidoc4::NoWarning)
 {}
 
-WarningText::WarningText(const QString &text, const QString &details, bool external, const QString &property)
-: text(text)
-, details(details)
-, external(external)
+WarningText::WarningText(ria::qdigidoc4::WarningType warningType)
+: external(false)
+, counter(0)
 , page(-1)
-, property(property)
-{}
+, warningType(warningType)
+{
+}
+
+WarningText::WarningText(ria::qdigidoc4::WarningType warningType, int counter)
+: external(true)
+, counter(counter)
+, page(ria::qdigidoc4::SignDetails)
+, warningType(warningType)
+{
+}
 
 WarningItem::WarningItem(const WarningText &warningText, QWidget *parent)
 : StyledWidget(parent)
@@ -51,12 +60,10 @@ WarningItem::WarningItem(const WarningText &warningText, QWidget *parent)
 	ui->warningText->setFont(Styles::font(Styles::Regular, 14));
 	ui->warningAction->setFont(Styles::font(Styles::Regular, 14, QFont::Bold));
 
-	ui->warningText->setText(warningText.text);
-	ui->warningAction->setText(warningText.details);
-	ui->warningAction->setOpenExternalLinks(warningText.external);
-
-	if(!warningText.property.isEmpty())
-		setProperty(warningText.property.toLatin1(), true);
+	lookupWarning();
+	ui->warningText->setText(warnText.text);
+	ui->warningAction->setText(warnText.details);
+	ui->warningAction->setOpenExternalLinks(warnText.external);
 
 	connect(ui->warningAction, &QLabel::linkActivated, this, &WarningItem::linkActivated);
 }
@@ -82,34 +89,63 @@ void WarningItem::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 
-		if( !warnText.property.isEmpty() )
-		{
-			if( warnText.property.toLatin1() == UNBLOCK_PIN2_WARNING )
-			{
-				warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2");
-				warnText.details = QString("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
-			}
-			else if( warnText.property.toLatin1() == UNBLOCK_PIN1_WARNING )
-			{
-				warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1");
-				warnText.details = QString("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
-			}
-			else if( warnText.property.toLatin1() == UPDATE_CERT_WARNING )
-			{
-				warnText.text = MainWindow::tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.");
-				warnText.details = QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(MainWindow::tr("Update"));
-			}
-			else if( warnText.property.toLatin1() == CERT_EXPIRED_WARNING )
-			{
-				warnText.text = tr("Certificates have expired!");
-			}
-			else if( warnText.property.toLatin1() == CERT_EXPIRY_WARNING )
-			{
-				warnText.text = tr("Certificates expire soon!");
-			}
-		}
+		lookupWarning();
 		ui->warningText->setText(warnText.text);
 		ui->warningAction->setText(warnText.details);
 	}
 	QWidget::changeEvent(event);
+}
+
+void WarningItem::lookupWarning()
+{
+	switch(warnText.warningType)
+	{
+		case ria::qdigidoc4::CertExpiredWarning:
+			warnText.text = tr("Certificates have expired!");
+			break;
+		case ria::qdigidoc4::CertExpiryWarning:
+			warnText.text = tr("Certificates expire soon!");
+			break;
+		case ria::qdigidoc4::UnblockPin1Warning:
+			warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1");
+			warnText.details = QString("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
+			break;
+		case ria::qdigidoc4::UnblockPin2Warning:
+			warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2");
+			warnText.details = QString("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
+			break;
+		case ria::qdigidoc4::UpdateCertWarning:
+			warnText.text = MainWindow::tr("Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.");
+			warnText.details = QString("<a href='#update-Certificate'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(MainWindow::tr("Update"));
+			break;
+
+		case ria::qdigidoc4::InvalidSignatureWarning:
+			warnText.text = tr("%n signatures are not valid", "", warnText.counter);
+			warnText.details = QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
+						.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
+			break;
+		case ria::qdigidoc4::InvalidTimestampWarning:
+			warnText.text = tr("%n timestamps are not valid", "", warnText.counter);
+			warnText.details = QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
+						.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
+			break;
+		case ria::qdigidoc4::UnknownSignatureWarning:
+			warnText.text = tr("%n signatures are unknown", "", warnText.counter);
+			warnText.details = QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
+						.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
+			break;
+		case ria::qdigidoc4::UnknownTimestampWarning:
+			warnText.text = tr("%n timestamps are unknown", "", warnText.counter);
+			warnText.details = QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
+						.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
+			break;
+
+		default:
+			break;
+	}
+}
+
+ria::qdigidoc4::WarningType WarningItem::warningType() const
+{
+	return warnText.warningType;
 }

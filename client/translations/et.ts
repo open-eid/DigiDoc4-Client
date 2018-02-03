@@ -784,42 +784,6 @@ Rohkem infot leiate siit:</translation>
         <source>is unknown</source>
         <translation>on teadmata</translation>
     </message>
-    <message numerus="yes">
-        <source>%n signatures are not valid</source>
-        <translation>
-            <numerusform>%n allkiri ei ole kehtiv!</numerusform>
-            <numerusform>%n allkirja ei ole kehtivad!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n timestamps are not valid</source>
-        <translation>
-            <numerusform>%n ajatempel ei ole kehtiv!</numerusform>
-            <numerusform>%n ajatemplit ei ole kehtivad!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n signatures are unknown</source>
-        <translation>
-            <numerusform>%n allkiri on teadmata!</numerusform>
-            <numerusform>%n allkirja on teadmata!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n timestamps are unknown</source>
-        <translation>
-            <numerusform>%n ajatempel on teadmata!</numerusform>
-            <numerusform>%n ajatemplit on teadmata!</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>https://www.id.ee/?lang=et&amp;id=34054</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/index.php?id=30591</source>
-        <translation>https://www.id.ee/index.php?id=30573</translation>
-    </message>
     <message>
         <source>Signed on</source>
         <translation>Allkirjastatud</translation>
@@ -1898,10 +1862,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>STARTING</source>
         <translation>← ALGUSESSE</translation>
-    </message>
-    <message>
-        <source>More information</source>
-        <translation>Rohkem infot</translation>
     </message>
     <message>
         <source>The document has already been signed by you.</source>
@@ -3201,6 +3161,46 @@ ID-KAARDIGA</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Sertifikaadid aeguvad varsti!</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are not valid</source>
+        <translation>
+            <numerusform>%n allkiri ei ole kehtiv!</numerusform>
+            <numerusform>%n allkirja ei ole kehtivad!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are not valid</source>
+        <translation>
+            <numerusform>%n ajatempel ei ole kehtiv!</numerusform>
+            <numerusform>%n ajatemplit ei ole kehtivad!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are unknown</source>
+        <translation>
+            <numerusform>%n allkiri on teadmata!</numerusform>
+            <numerusform>%n allkirja on teadmata!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are unknown</source>
+        <translation>
+            <numerusform>%n ajatempel on teadmata!</numerusform>
+            <numerusform>%n ajatemplit on teadmata!</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>http://id.ee/?lang=en&amp;id=34317</source>
+        <translation>https://www.id.ee/?lang=et&amp;id=34054</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30573</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>Rohkem infot</translation>
     </message>
 </context>
 </TS>
