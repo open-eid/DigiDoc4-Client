@@ -116,6 +116,7 @@ void VerifyCert::update(bool showWarning)
 				.arg(" <span style='color: #37a447'>")
 				.arg("</span> ")
 				.arg(DateTime(c.expiryDate().toLocalTime()).formatDate("dd. MMMM yyyy"));
+		cert << "<br />" << tr("key has been used %1 times", pinType == QSmartCardData::Pin1Type ? "pin1" : "pin2").arg(cardData.usageCount(pinType));
 
 		int leftDays = std::max<int>( 0, QDateTime::currentDateTime().daysTo( c.expiryDate().toLocalTime() ) );
 		if( leftDays <= 105 && cardData.retryCount( pinType ) != 0 )
