@@ -890,6 +890,10 @@ Learn more info here:</source>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
         <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Новый PUK получите в конверте с кодами &lt;a href=&quot;https://www.politsei.ee/ru/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad.dot&quot;&gt;из PPA&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <translation>Сертификат использован %1 раз</translation>
+    </message>
 </context>
 
 

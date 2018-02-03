@@ -42,7 +42,7 @@ PageIcon::PageIcon(QWidget *parent)
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
 
-	brightRedIcon.reset( new QSvgWidget( ":/images/icon_alert_bright_red.svg", this ) );
+	brightRedIcon.reset( new QSvgWidget( ":/images/icon_alert_filled_red.svg", this ) );
 	brightRedIcon->resize( 13, 12 );
 	brightRedIcon->move( 84, 12 );
 	brightRedIcon->hide();
