@@ -783,42 +783,6 @@ Learn more info here:</translation>
         <source>is unknown</source>
         <translation>is unknown</translation>
     </message>
-    <message numerus="yes">
-        <source>%n signatures are not valid</source>
-        <translation>
-            <numerusform>%n signature is not valid!</numerusform>
-            <numerusform>%n signatures are not valid!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n timestamps are not valid</source>
-        <translation>
-            <numerusform>%n timestamp is not valid!</numerusform>
-            <numerusform>%n timestamps are not valid!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n signatures are unknown</source>
-        <translation>
-            <numerusform>%n signature is unknown!</numerusform>
-            <numerusform>%n signatures are unknown!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n timestamps are unknown</source>
-        <translation>
-            <numerusform>%n timestamp is unknown!</numerusform>
-            <numerusform>%n timestamps are unknown!</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>http://id.ee/?lang=en&amp;id=34317</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/index.php?id=30591</source>
-        <translation>https://www.id.ee/index.php?id=30591</translation>
-    </message>
     <message>
         <source>Signed on</source>
         <translation>Signed on</translation>
@@ -1898,10 +1862,6 @@ Additional licenses and components</translation>
     <message>
         <source>STARTING</source>
         <translation>← START</translation>
-    </message>
-    <message>
-        <source>More information</source>
-        <translation>More information</translation>
     </message>
     <message>
         <source>The document has already been signed by you.</source>
@@ -3241,6 +3201,46 @@ ID-CARD</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Certificates will expire soon!</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are not valid</source>
+        <translation>
+            <numerusform>%n signature is not valid!</numerusform>
+            <numerusform>%n signatures are not valid!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are not valid</source>
+        <translation>
+            <numerusform>%n timestamp is not valid!</numerusform>
+            <numerusform>%n timestamps are not valid!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are unknown</source>
+        <translation>
+            <numerusform>%n signature is unknown!</numerusform>
+            <numerusform>%n signatures are unknown!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are unknown</source>
+        <translation>
+            <numerusform>%n timestamp is unknown!</numerusform>
+            <numerusform>%n timestamps are unknown!</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>http://id.ee/?lang=en&amp;id=34317</source>
+        <translation>http://id.ee/?lang=en&amp;id=34317</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30591</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>More information</translation>
     </message>
 </context>
 </TS>

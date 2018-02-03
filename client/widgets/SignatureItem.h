@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "common_enums.h"
 #include "DigiDoc.h"
 #include "widgets/Item.h"
 
@@ -38,8 +39,7 @@ public:
 	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, bool isSupported, QWidget *parent = nullptr);
 	~SignatureItem();
 
-	QString getError() const;
-	QString getLink() const;
+	ria::qdigidoc4::WarningType getError() const;
 	QString id() const override;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
@@ -66,8 +66,7 @@ private:
 	bool invalid;
 	int nameWidth;
 	int reservedWidth;
-	QString error;
-	QString link;
+	ria::qdigidoc4::WarningType error;
 	QString name;
 	QString serial;
 	QString statusHtml;

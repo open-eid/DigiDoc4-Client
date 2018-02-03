@@ -796,46 +796,6 @@ Learn more info here:</source>
 		<comment>Timestamp</comment>
         <translation>неизвестный</translation>
     </message>
-    <message numerus="yes">
-        <source>%n signatures are not valid</source>
-        <translation>
-            <numerusform>%n подпись недействительна!</numerusform>
-            <numerusform>%n подписи недействительны!</numerusform>
-            <numerusform>%n подписи недействительны!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n timestamps are not valid</source>
-        <translation>
-            <numerusform>%n временной штамп недействителен!</numerusform>
-            <numerusform>%n временных штампов недействительны!</numerusform>
-            <numerusform>%n временных штампов недействительны!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n signatures are unknown</source>
-        <translation>
-            <numerusform>%n подпись неизвестна!</numerusform>
-            <numerusform>%n подписи неизвестны!</numerusform>
-            <numerusform>%n подписи неизвестны!</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n timestamps are unknown</source>
-        <translation>
-            <numerusform>%n временной штамп неизвестен!</numerusform>
-            <numerusform>%n временных штампов неизвестны!</numerusform>
-            <numerusform>%n временных штампов неизвестны!</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>http://id.ee/?lang=ru&amp;id=34529</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/index.php?id=30591</source>
-        <translation>https://www.id.ee/index.php?id=30604</translation>
-    </message>
     <message>
         <source>Signed on</source>
         <translation>Подписано</translation>
@@ -1900,10 +1860,6 @@ Additional licenses and components</source>
     <message>
         <source>STARTING</source>
         <translation>← В НАЧАЛО</translation>
-    </message>
-    <message>
-        <source>More information</source>
-        <translation>Дополнительная информация</translation>
     </message>
     <message>
         <source>The document has already been signed by you.</source>
@@ -3248,6 +3204,50 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Срок действия сертификатов скоро истекает!</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are not valid</source>
+        <translation>
+            <numerusform>%n подпись недействительна!</numerusform>
+            <numerusform>%n подписи недействительны!</numerusform>
+            <numerusform>%n подписи недействительны!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are not valid</source>
+        <translation>
+            <numerusform>%n временной штамп недействителен!</numerusform>
+            <numerusform>%n временных штампов недействительны!</numerusform>
+            <numerusform>%n временных штампов недействительны!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n signatures are unknown</source>
+        <translation>
+            <numerusform>%n подпись неизвестная!</numerusform>
+            <numerusform>%n подписи неизвестны!</numerusform>
+            <numerusform>%n подписи неизвестны!</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n timestamps are unknown</source>
+        <translation>
+            <numerusform>%n временной штамп неизвестен!</numerusform>
+            <numerusform>%n временных штампов неизвестны!</numerusform>
+            <numerusform>%n временных штампов неизвестны!</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>http://id.ee/?lang=en&amp;id=34317</source>
+        <translation>http://id.ee/?lang=ru&amp;id=34529</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30591</source>
+        <translation>https://www.id.ee/index.php?id=30604</translation>
+    </message>
+    <message>
+        <source>More information</source>
+        <translation>Дополнительная информация</translation>
     </message>
 </context>
 </TS>

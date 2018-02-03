@@ -64,12 +64,10 @@ ContainerPage::~ContainerPage()
 	delete ui;
 }
 
-void ContainerPage::addError(const SignatureItem* item, QMap<QString, std::pair<int, QString>> &errors)
+void ContainerPage::addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors)
 {
 	auto counter = errors.value(item->getError());
-	if(!counter.first)
-		counter.second = item->getLink();
-	counter.first++;
+	counter++;
 	errors[item->getError()] = counter;
 }
 
@@ -373,7 +371,7 @@ void ContainerPage::transition(DigiDoc* container)
 	emit action(ClearSignatureWarning);
 
 	ContainerState state = container->state();
-	QMap<QString, std::pair<int, QString>> errors;
+	QMap<ria::qdigidoc4::WarningType, int> errors;
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
 
@@ -403,14 +401,9 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!errors.isEmpty())
 	{
-		QMap<QString, std::pair<int, QString>>::const_iterator i;
+		QMap<ria::qdigidoc4::WarningType, int>::const_iterator i;
 		for (i = errors.constBegin(); i != errors.constEnd(); ++i)
-		{
-			emit action(Actions::SignatureWarning, 
-				SignatureItem::tr(i.key().toStdString().c_str(), "", i.value().first),
-				QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
-						.arg(SignatureItem::tr(i.value().second.toStdString().c_str()), tr("More information")));
-		}
+			emit warning(WarningText(i.key(), i.value()));
 	}
 
 	if(enableSigning || container->isService())

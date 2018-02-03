@@ -75,11 +75,10 @@ void SignatureItem::init()
 	const SslCertificate cert = signature.cert();
 
 	QString accessibility, signingInfo, status;
-	link = QString();
 	name = QString();
 	serial = QString();
 	statusHtml = QString();
-	error = QString();
+	error = ria::qdigidoc4::NoWarning;
 
 	QTextStream sa(&accessibility);
 	QTextStream sc(&statusHtml);
@@ -131,19 +130,17 @@ void SignatureItem::init()
 		break;
 	case DigiDocSignature::Invalid:
 		if(isSignature)
-			error = "%n signatures are not valid";
+			error = ria::qdigidoc4::InvalidSignatureWarning;
 		else
-			error = "%n timestamps are not valid";
-		link = "https://www.id.ee/index.php?id=30591";
+			error = ria::qdigidoc4::InvalidTimestampWarning;
 		sa << tr("is not valid", isSignature ? "Signature" : "Timestamp");
 		sc << "<font color=\"red\">" << label << " " << tr("is not valid", isSignature ? "Signature" : "Timestamp");
 		break;
 	case DigiDocSignature::Unknown:
 		if(isSignature)
-			error = "%n signatures are unknown";
+			error = ria::qdigidoc4::UnknownSignatureWarning;
 		else
-			error = "%n timestamps are unknown";
-		link = "http://id.ee/?lang=en&id=34317";
+			error = ria::qdigidoc4::UnknownTimestampWarning;
 		sa << tr("is unknown", isSignature ? "Signature" : "Timestamp");
 		sc << "<font color=\"red\">" << label << " " << tr("is unknown", isSignature ? "Signature" : "Timestamp");
 		break;
@@ -220,14 +217,9 @@ void SignatureItem::details()
 	dlg.exec();
 }
 
-QString SignatureItem::getError() const
+ria::qdigidoc4::WarningType SignatureItem::getError() const
 {
 	return error;
-}
-
-QString SignatureItem::getLink() const
-{
-	return link;
 }
 
 QString SignatureItem::id() const

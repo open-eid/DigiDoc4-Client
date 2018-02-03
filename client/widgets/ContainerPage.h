@@ -22,6 +22,7 @@
 #include "common_enums.h"
 #include "widgets/ItemList.h"
 #include "widgets/MainAction.h"
+#include "widgets/WarningItem.h"
 
 #include <QPushButton>
 #include <QResizeEvent>
@@ -64,6 +65,7 @@ signals:
 	void keysSelected(QList<CKey> keys);
 	void moved(const QString &to);	
 	void removed(int row);
+	void warning(const WarningText &warningText);
 
 public slots:
 	void clearPopups();
@@ -73,7 +75,7 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
-	void addError(const SignatureItem* item, QMap<QString, std::pair<int, QString>> &errors);
+	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
 	void changeCard(const QString& idCode);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
