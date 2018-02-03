@@ -170,7 +170,7 @@ void ContainerPage::init()
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
 	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode){ emit ui->rightPane->idChanged(idCode, mobileCode); });
-	connect(this, &ContainerPage::moved, ui->containerFile, &QLabel::setText);
+	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
