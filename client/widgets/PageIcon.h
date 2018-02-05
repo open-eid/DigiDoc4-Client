@@ -59,22 +59,30 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
+	enum IconType {
+		None,
+		Warning,
+		Error
+	};
 	struct Style
 	{
 		QFont font;
 		QString image, backColor, foreColor, border;
 	};
 
+	void updateIcon();
+
 	Ui::PageIcon *ui;
 	QWidget *shadow = nullptr;
 	std::unique_ptr<QSvgWidget> brightRedIcon;
+	std::unique_ptr<QSvgWidget> filledOrangeIcon;
 	std::unique_ptr<QSvgWidget> icon;
 	std::unique_ptr<QSvgWidget> redIcon;
 	std::unique_ptr<QSvgWidget> orangeIcon;
 
 	Style active;
+	IconType iconType;
 	Style inactive;
-	bool invalid;
 	Style hover;
 	bool selected;
 	ria::qdigidoc4::Pages type;

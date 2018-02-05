@@ -32,7 +32,7 @@ using namespace ria::qdigidoc4;
 PageIcon::PageIcon(QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::PageIcon)
-, invalid(false)
+, iconType(None)
 , selected(false)
 , type(Pages::SignIntro)
 {
@@ -53,6 +53,12 @@ PageIcon::PageIcon(QWidget *parent)
 	redIcon->move( 84, 12 );
 	redIcon->hide();
 	redIcon->setStyleSheet("border: none;");
+
+	filledOrangeIcon.reset( new QSvgWidget( ":/images/icon_alert_filled_orange.svg", this ) );
+	filledOrangeIcon->resize( 13, 12 );
+	filledOrangeIcon->move( 84, 12 );
+	filledOrangeIcon->hide();
+	filledOrangeIcon->setStyleSheet("border: none;");
 
 	orangeIcon.reset( new QSvgWidget( ":/images/icon_alert_orange.svg", this ) );
 	orangeIcon->resize( 13, 12 );
@@ -126,7 +132,7 @@ void PageIcon::changeEvent(QEvent* event)
 void PageIcon::activate( bool selected )
 {
 	this->selected = selected;
-	invalidIcon(invalid);
+	updateIcon();
 	updateSelection();
 }
 
@@ -145,9 +151,8 @@ Pages PageIcon::getType()
 
 void PageIcon::invalidIcon(bool show)
 {
-	invalid = show;
-	redIcon->setVisible(show && selected);
-	brightRedIcon->setVisible(show && !selected);
+	iconType = show ? Error : None;
+	updateIcon();
 }
 
 void PageIcon::leaveEvent( QEvent *ev )
@@ -161,6 +166,14 @@ void PageIcon::leaveEvent( QEvent *ev )
 void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 {
 	emit activated(this);
+}
+
+void PageIcon::updateIcon()
+{
+	redIcon->setVisible(iconType == Error && selected);
+	brightRedIcon->setVisible(iconType == Error && !selected);
+	orangeIcon->setVisible(iconType == Warning && selected);
+	filledOrangeIcon->setVisible(iconType == Warning && !selected);
 }
 
 void PageIcon::updateSelection()
@@ -183,7 +196,6 @@ void PageIcon::updateSelection()
 	updateSelection(style);
 }
 
-
 void PageIcon::updateSelection(const Style &style)
 {
 	ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
@@ -191,10 +203,9 @@ void PageIcon::updateSelection(const Style &style)
 	setStyleSheet(QString("background-repeat: none; background-color: %1; border: %2;").arg(style.backColor).arg(style.border));
 }
 
-void PageIcon::warningIcon( bool show )
+void PageIcon::warningIcon(bool show)
 {
-	if(!invalid && show)
-		orangeIcon->show();
-	else
-		orangeIcon->hide();
+	if(iconType != Error)
+		iconType = show ? Warning : None;
+	updateIcon();
 }
