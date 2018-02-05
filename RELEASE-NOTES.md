@@ -1,3 +1,14 @@
+DigiDoc4 version 0.3.0 release notes
+--------------------------------------
+
+- On macOS always ask permission to create signature- or cryptocontainer
+- Show validation result summary on warning ribbon
+- Always open encapsulated documents in new window
+- Enable signing of signed PDF-s by wrapping in new container
+- Additional UI and translation improvements 
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v0.2.0-BETA...v0.3.0-BETA)
+
 DigiDoc4 version 0.2.0 release notes
 --------------------------------------
 
