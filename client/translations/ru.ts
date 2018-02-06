@@ -1637,6 +1637,11 @@ ID-карты, это обратиться в &lt;u&gt;бюро обслужив
         <translation>ИСПОЛЬЗОВАТЬ ПО УМОЛЧАНИЮ</translation>
     </message>
     <message>
+        <source>CHECK CONNECTIONS</source>
+        <translation>ПРОВЕРЬТЕ НАСТРОЙКИ ИНТЕРНЕТА</translation>
+    </message>
+
+    <message>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
@@ -1738,6 +1743,11 @@ ID-карты, это обратиться в &lt;u&gt;бюро обслужив
         <source>Enable proxy for SSL connections</source>
         <translation>Включить прокси-сервер для подключения SSL</translation>
     </message>
+    <message>
+        <source>The connection to certificate status service is successful!</source>
+        <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
+    </message>
+
     <message>
         <source>Base version:</source>
         <translation>Базовая версия:</translation>

@@ -1630,6 +1630,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <source>USE DEFAULT</source>
         <translation>KASUTA VAIKIMISI</translation>
     </message>
+    <message>
+        <source>CHECK CONNECTIONS</source>
+        <translation>KONTROLLI INTERNETIÜHENDUST</translation>
+    </message>
 
 
     <message>
@@ -1737,6 +1741,10 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>Enable proxy for SSL connections</source>
         <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
+    </message>
+    <message>
+        <source>The connection to certificate status service is successful!</source>
+        <translation>Interneti seaded on korrektsed, kehtivuskinnitusteenus on kättesaadav!</translation>
     </message>
 
     <message>

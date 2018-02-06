@@ -102,7 +102,7 @@ public:
 
 	std::string proxyHost() const override
 	{
-		switch(s2.value("proxyConfig").toUInt())
+		switch(s2.value("Client/proxyConfig").toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().hostName().toStdString();
@@ -112,7 +112,7 @@ public:
 
 	std::string proxyPort() const override
 	{
-		switch(s2.value("proxyConfig").toUInt())
+		switch(s2.value("Client/proxyConfig").toUInt())
 		{
 		case 0: return std::string();
 		case 1: return QString::number(systemProxy().port()).toStdString();
@@ -122,7 +122,7 @@ public:
 
 	std::string proxyUser() const override
 	{
-		switch(s2.value("proxyConfig").toUInt())
+		switch(s2.value("Client/proxyConfig").toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().user().toStdString();
@@ -132,7 +132,7 @@ public:
 
 	std::string proxyPass() const override
 	{
-		switch(s2.value("proxyConfig").toUInt())
+		switch(s2.value("Client/proxyConfig").toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().password().toStdString();

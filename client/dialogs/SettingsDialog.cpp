@@ -23,7 +23,10 @@
 
 #include "Application.h"
 #include "AccessCert.h"
+#include "CheckConnection.h"
+#include "Colors.h"
 #include "Styles.h"
+#include "effects/FadeInNotification.h"
 
 #include "common/Configuration.h"
 #include "common/Diagnostics.h"
@@ -191,6 +194,7 @@ void SettingsDialog::initUI()
 	ui->btnNavShowCertificate->setFont(condensed12);
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
+	ui->btnCheckConnection->setFont(condensed12);
 
 	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
 
@@ -226,6 +230,7 @@ void SettingsDialog::initUI()
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
 
+	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
 	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
 			 [this]()
 		{
@@ -266,6 +271,23 @@ void SettingsDialog::initUI()
 	connect( this, &SettingsDialog::finished, this, [this](){ QApplication::restoreOverrideCursor(); } );
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
+}
+
+void SettingsDialog::checkConnection()
+{
+	Application::restoreOverrideCursor();
+	saveProxy();
+	CheckConnection connection;
+	if(!connection.check("http://ocsp.sk.ee"))
+	{
+		qApp->showWarning(connection.errorString(), connection.errorDetails());
+	}
+	else
+	{
+		FadeInNotification* notification = new FadeInNotification(this, 
+			ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 0, 120);
+		notification->start(tr("The connection to certificate status service is successful!"), 750, 3000, 1200);
+	}
 }
 
 void SettingsDialog::retranslate(const QString& lang)
@@ -492,6 +514,19 @@ void SettingsDialog::save()
 	Settings(qApp->applicationName()).setValue("Client/DefaultDir", ui->txtGeneralDirectory->text());
 #endif
 
+	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
+	saveProxy();
+	saveSignatureInfo(
+		ui->txtSigningRole->text(),
+		ui->txtSigningCity->text(),
+		ui->txtSigningCounty->text(),
+		ui->txtSigningCountry->text(),
+		ui->txtSigningZipCode->text(),
+		true );
+}
+
+void SettingsDialog::saveProxy()
+{
 	if(ui->rdProxyNone->isChecked())
 	{
 		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 0);
@@ -510,17 +545,8 @@ void SettingsDialog::save()
 	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
 	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
 	Application::setConfValue( Application::ProxySSL, ui->chkProxyEnableForSSL->isChecked() );
-	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
 	loadProxy(digidoc::Conf::instance());
 	updateProxy();
-
-	saveSignatureInfo(
-		ui->txtSigningRole->text(),
-		ui->txtSigningCity->text(),
-		ui->txtSigningCounty->text(),
-		ui->txtSigningCountry->text(),
-		ui->txtSigningZipCode->text(),
-		true );
 }
 
 void SettingsDialog::loadProxy( const digidoc::Conf *conf )
@@ -669,6 +695,7 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
 	ui->btNavFromFile->setVisible(button == ui->btnMenuGeneral);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
+	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);
 #ifdef Q_OS_WIN
 	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);

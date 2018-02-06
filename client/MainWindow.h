@@ -91,7 +91,6 @@ protected:
 private:
 	void cachePicture( const QString &id, const QImage &image );
 	void browseOnDisk(const QString &fileName);
-	bool checkConnection();
 	bool checkExpiration();
 	void clearWarning(int warningType);
 	void clearOverlay();

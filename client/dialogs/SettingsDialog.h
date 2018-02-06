@@ -56,6 +56,7 @@ signals:
 	void removeOldCert();
 
 private:
+	void checkConnection();
 	void initUI();
 	void retranslate(const QString& lang);
 	void initFunctionality();
@@ -67,6 +68,7 @@ private:
 	void openDirectory();
 	void updateDiagnostics();
 	void saveDiagnostics();
+	void saveProxy();
 	void saveSignatureInfo(
 			const QString &role,
 			const QString &city,
