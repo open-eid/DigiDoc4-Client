@@ -25,11 +25,12 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset )
+FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset, int height )
 : QLabel(parent)
 , bgColor(bgColor)
 , fgColor(fgColor)
 , fadeOutTime(1000)
+, height(height)
 , leftOffset(leftOffset)
 {
 }
@@ -42,7 +43,7 @@ void FadeInNotification::start( const QString &label, int fadeInTime, int displa
 	setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
 	setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	setFont(Styles::font(Styles::Condensed, 22));
-	setMinimumSize(parentWidget()->width() - leftOffset, 65);
+	setMinimumSize(parentWidget()->width() - leftOffset, height);
 	if ( leftOffset > 0 )
 	{
 		move( leftOffset, 0 );

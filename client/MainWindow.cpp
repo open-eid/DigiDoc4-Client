@@ -22,7 +22,6 @@
 
 #include "AccessCert.h"
 #include "Application.h"
-#include "CheckConnection.h"
 #include "Colors.h"
 #include "DigiDoc.h"
 #include "FileDialog.h"
@@ -276,30 +275,6 @@ void MainWindow::changeEvent(QEvent* event)
 	}
 
 	QWidget::changeEvent(event);
-}
-
-bool MainWindow::checkConnection()
-{
-	CheckConnection connection;
-	if(!connection.check("http://ocsp.sk.ee"))
-	{
-		qApp->showWarning(connection.errorString(), connection.errorDetails());
-		switch(connection.error())
-		{
-		case QNetworkReply::ProxyConnectionRefusedError:
-		case QNetworkReply::ProxyConnectionClosedError:
-		case QNetworkReply::ProxyNotFoundError:
-		case QNetworkReply::ProxyTimeoutError:
-		case QNetworkReply::ProxyAuthenticationRequiredError:
-		case QNetworkReply::UnknownProxyError:
-			showSettings(SettingsDialog::NetworkSettings);
-		default:
-			break;
-		}
-		return false;
-	}
-
-	return true;
 }
 
 void MainWindow::clearOverlay()
@@ -1081,9 +1056,6 @@ void MainWindow::showSettings(int page)
 
 bool MainWindow::sign()
 {
-	if(!checkConnection())
-		return false;
-
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
@@ -1120,9 +1092,6 @@ bool MainWindow::sign()
 
 bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 {
-	if(!checkConnection())
-		return false;
-
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;

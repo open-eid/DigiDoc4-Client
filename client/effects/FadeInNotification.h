@@ -27,9 +27,9 @@ class FadeInNotification : public QLabel
 	Q_OBJECT
 
 public:
-	explicit FadeInNotification( QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset = 0 );
+	explicit FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset = 0, int height = 65);
 
-	void start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime );
+	void start(const QString &label, int fadeInTime, int displayTime, int fadeOutTime);
 
 private:
 	void fadeOut();
@@ -37,5 +37,6 @@ private:
 	QString bgColor;
 	QString fgColor;
 	int fadeOutTime;
+	int height;
 	int leftOffset;
 };
