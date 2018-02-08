@@ -111,6 +111,10 @@
         <source>Check internet connection</source>
         <translation>Kontrolli Interneti-ühendust</translation>
     </message>
+    <message>
+        <source>%1, cannot connect to certificate status service!</source>
+        <translation>%1, kehtivuskinnitusteenus ei ole kättesaadav!</translation>
+    </message>
 </context>
 
 

@@ -50,17 +50,22 @@ QNetworkReply::NetworkError CheckConnection::error() const { return m_error; }
 QString CheckConnection::errorDetails() const { return qtmessage; }
 QString CheckConnection::errorString() const
 {
-	switch( m_error )
+	if (m_error == QNetworkReply::NoError)
+		return QString();
+
+	QString error;
+	switch(m_error)
 	{
-	case QNetworkReply::NoError: return QString();
 	case QNetworkReply::ProxyConnectionRefusedError:
 	case QNetworkReply::ProxyConnectionClosedError:
 	case QNetworkReply::ProxyNotFoundError:
 	case QNetworkReply::ProxyTimeoutError:
-		return tr("Check proxy settings");
+		error = tr("Check proxy settings");
 	case QNetworkReply::ProxyAuthenticationRequiredError:
-		return tr("Check proxy username and password");
+		error = tr("Check proxy username and password");
 	default:
-		return tr("Check internet connection");
+		error = tr("Check internet connection");
 	}
+
+	return tr("%1, cannot connect to certificate status service!").arg(error);
 }

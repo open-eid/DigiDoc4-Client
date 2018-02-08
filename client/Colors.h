@@ -39,8 +39,9 @@ namespace colors
 	static const char* DARKER_ALABASTER = "#f7f7f7";
 	static const char* PORCELAIN = "#f4f5f6";
 	static const char* WHITE = "#ffffff";
-	// Golds
+	// Golds-yellows
 	static const char* CLAY_CREEK = "#998B66";
+	static const char* MARZIPAN = "#F8DDA7";
 	// Green
 	static const char* MANTIS = "#8CC368";
 }

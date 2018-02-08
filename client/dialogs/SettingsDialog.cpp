@@ -275,15 +275,25 @@ void SettingsDialog::initUI()
 
 void SettingsDialog::checkConnection()
 {
-	Application::restoreOverrideCursor();
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	saveProxy();
 	CheckConnection connection;
 	if(!connection.check("http://ocsp.sk.ee"))
 	{
-		qApp->showWarning(connection.errorString(), connection.errorDetails());
+		Application::restoreOverrideCursor();
+		FadeInNotification* notification = new FadeInNotification(this, 
+			ria::qdigidoc4::colors::MOJO, ria::qdigidoc4::colors::MARZIPAN, 0, 120);
+		QString error;
+		QString details = connection.errorDetails();
+		QTextStream s(&error);
+		s << connection.errorString();
+		if (!details.isEmpty())
+			s << "\n\n" << details << ".";
+		notification->start(error, 750, 6000, 1200);
 	}
 	else
 	{
+		Application::restoreOverrideCursor();
 		FadeInNotification* notification = new FadeInNotification(this, 
 			ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 0, 120);
 		notification->start(tr("The connection to certificate status service is successful!"), 750, 3000, 1200);

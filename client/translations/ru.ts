@@ -111,6 +111,10 @@
         <source>Check internet connection</source>
         <translation>Проверьте подключение к Интернету</translation>
     </message>
+    <message>
+        <source>%1, cannot connect to certificate status service!</source>
+        <translation>%1, услуга подтверждения действительности не доступна!</translation>
+    </message>
 </context>
 
 

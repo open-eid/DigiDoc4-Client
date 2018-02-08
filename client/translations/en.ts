@@ -111,6 +111,10 @@
         <source>Check internet connection</source>
         <translation>Check internet connection</translation>
     </message>
+    <message>
+        <source>%1, cannot connect to certificate status service!</source>
+        <translation>%1, cannot connect to certificate status service!</translation>
+    </message>
 </context>
 
 
