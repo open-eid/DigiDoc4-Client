@@ -60,7 +60,7 @@ PageIcon::PageIcon(QWidget *parent)
 	filledOrangeIcon->hide();
 	filledOrangeIcon->setStyleSheet("border: none;");
 
-	orangeIcon.reset( new QSvgWidget( ":/images/icon_alert_orange.svg", this ) );
+	orangeIcon.reset( new QSvgWidget( ":/images/icon_alert_whitebg_orange.svg", this ) );
 	orangeIcon->resize( 13, 12 );
 	orangeIcon->move( 84, 12 );
 	orangeIcon->hide();
