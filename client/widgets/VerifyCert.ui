@@ -330,6 +330,37 @@ background-color: #F8DDA7;
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="tempelText">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #353739; border: none;</string>
+     </property>
+     <property name="text">
+      <string>PIN can be changed only using eToken utility</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacerBelowBtn">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

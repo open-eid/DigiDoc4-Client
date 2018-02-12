@@ -25,11 +25,10 @@
 #define WIDTH 365
 #define X_POSITION 110
 
-CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
+CardPopup::CardPopup(const TokenData &token, const QMap<QString, QSharedPointer<QCardInfo>> &cache, QWidget *parent)
 : StyledWidget(parent)
 {
-	QString selected = smartCard->data().card();
-	auto cards = smartCard->data().cards();
+	auto cards = token.cards();
 
 	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + ( (cards.size() > 1) ? BORDER_WIDTH : 0 ) );
 	move( X_POSITION, ROW_HEIGHT );
@@ -38,7 +37,7 @@ CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 	int i = 0;
 	for( auto card: cards )
 	{
-		if( card == selected )
+		if( card == token.card() )
 			continue;
 		auto item = new QWidget( this );
 		item->resize( WIDTH - 2, ROW_HEIGHT - 1);
@@ -46,11 +45,16 @@ CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 		item->setStyleSheet( "QWidget:!hover { border:none; } QWidget:hover { border:none; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5));}" );
 		
 		auto cardWidget = new CardWidget( card, item );
-		auto cardData = smartCard->cache()[card];
+		auto cardData = cache[card];
 		if( cardData.isNull() )
-			cardData.reset( new QCardInfo( card ) );
+		{
+			cardData.reset(new QCardInfo);
+			cardData->id = card;
+		}
 		else
+		{
 			Styles::cachedPicture( cardData->id, {cardWidget} );
+		}
 		cardWidget->move( 0, 0 );
 		cardWidget->update( cardData );
 		void activated( const QString &card );
@@ -63,11 +67,11 @@ CardPopup::CardPopup( const QSmartCard *smartCard, QWidget *parent )
 	}
 }
 
-void CardPopup::update( const QSmartCard *smartCard )
+void CardPopup::update(const QMap<QString, QSharedPointer<QCardInfo>> &cache)
 {
 	for( auto cardWidget: cardWidgets )
 	{
-		auto cardData = smartCard->cache()[cardWidget->id()];
+		auto cardData = cache[cardWidget->id()];
 		if( cardWidget->isLoading() && !cardData.isNull() )
 		{
 			cardWidget->update( cardData );

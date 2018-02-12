@@ -464,7 +464,23 @@ Tüüp: %3</translation>
         <source>Surname</source>
         <translation>PEREKONNANIMI</translation>
     </message>
-
+    <message>
+        <source>NAME</source>
+        <translation>NIMI</translation>
+    </message>
+    <message>
+        <source>SERIAL</source>
+        <translation>SEERIANUMBER</translation>
+    </message>
+    <message>
+        <source>COUNTRY</source>
+        <translation>RIIK</translation>
+    </message>
+    <message>
+        <source>DEVICE</source>
+        <translation>SEADE</translation>
+    </message>
+    
     <message>
         <source>SAVE THE PICTURE</source>
         <translation>SALVESTA PILT</translation>
@@ -472,6 +488,10 @@ Tüüp: %3</translation>
     <message>
         <source>You're using Digital identity card</source>
         <translation>See on digitaalne isikutunnistus</translation>
+    </message>
+    <message>
+        <source>You're using e-Seal</source>
+        <translation>See on e-Tempel</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -889,6 +909,10 @@ Rohkem infot leiate siit:</translation>
     <message>
         <source>key has been used %1 times</source>
         <translation>Sertifikaati on kasutatud %1 korda</translation>
+    </message>
+    <message>
+        <source>PIN can be changed only using eToken utility</source>
+        <translation>PIN koodi saab muuta ainult e-Templi tarkvaraga</translation>
     </message>
 </context>
 
@@ -3075,6 +3099,10 @@ ID-KAARDIGA</translation>
     <message>
         <source>Digi ID</source>
         <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
     </message>
 </context>
 

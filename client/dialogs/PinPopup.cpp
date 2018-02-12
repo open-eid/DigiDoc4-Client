@@ -33,19 +33,21 @@
 #include <QtWidgets/QPushButton>
 
 PinPopup::PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent )
-: QDialog(parent)
-, ui(new Ui::PinPopup)
+: PinPopup(flags, t.cert(), t.flags(), parent)
 {
-	SslCertificate c = t.cert();
-	init( flags, c.toString( c.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" ), t.flags() );
 }
 
-PinPopup::PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent )
+PinPopup::PinPopup( PinDialog::PinFlags flags, const SslCertificate &c, TokenData::TokenFlags token, QWidget *parent )
 : QDialog(parent)
 , ui(new Ui::PinPopup)
 {
-	SslCertificate c = cert;
 	init( flags, c.toString( c.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" ), token );
+	if(c.type() & SslCertificate::TempelType)
+	{
+		regexp.setPattern(".{4,}");
+		ui->pin->setValidator(new QRegExpValidator(regexp, ui->pin));
+		ui->pin->setMaxLength(32767);
+	}
 }
 
 PinPopup::PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText )

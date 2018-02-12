@@ -48,7 +48,6 @@ public:
 
 	QSharedPointer<QPCSCReader> reader;
 	QSmartCardData	t;
-	QMap<QString, QSharedPointer<QCardInfo>> cache;
 	volatile bool	terminate = false;
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 	RSA_METHOD		rsamethod = *RSA_get_default_method();
@@ -87,7 +86,6 @@ public:
 	static const QHash<QByteArray,QSmartCardData::CardVersion> atrList;
 
 	QString card, reader, appletVersion;
-	QStringList cards, readers;
 	QHash<QSmartCardData::PersonalDataType,QVariant> data;
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;

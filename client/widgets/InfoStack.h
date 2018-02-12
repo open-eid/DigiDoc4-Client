@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "QSmartCard.h"
-
 #include "Styles.h"
 #include <common/DateTime.h>
 #include "widgets/StyledWidget.h"
@@ -28,6 +26,9 @@
 namespace Ui {
 class InfoStack;
 }
+
+struct QCardInfo;
+class QSmartCardData;
 
 class InfoStack : public StyledWidget, public PictureInterface
 {
@@ -38,9 +39,10 @@ public:
 	~InfoStack();
 
 	void clearData();
-	void clearPicture();
-	void update( const QSmartCardData &t );
-	void showPicture( const QPixmap &pixmap ) override;
+	void clearPicture() override;
+	void update(const QCardInfo &cardInfo);
+	void update(const QSmartCardData &t);
+	void showPicture(const QPixmap &pixmap) override;
 
 signals:
 	void photoClicked( const QPixmap *pixmap );
@@ -57,7 +59,7 @@ private:
 	QWidget* alternativeIcon;
 
 	QString appletVersion;
-	bool certTypeIsEstEid;
+	int certType;
 	bool certIsValid;
 	bool certIsResident;
 	QString citizenshipText;

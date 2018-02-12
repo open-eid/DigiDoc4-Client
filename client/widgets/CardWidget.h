@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "QSmartCard.h"
+#include "QCardInfo.h"
 #include "Styles.h"
 #include "widgets/StyledWidget.h"
 
@@ -41,7 +41,7 @@ public:
 	explicit CardWidget( const QString &cardId, QWidget *parent = nullptr );
 	~CardWidget();
 
-	void clearPicture();
+	void clearPicture() override;
 	QString id() const;
 	bool isLoading() const;
 	void showPicture( const QPixmap &pix ) override;
@@ -56,8 +56,11 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
+	void clearSeal();
+
 	Ui::CardWidget *ui;
 	QString cardId;
 	QScopedPointer<QSvgWidget> cardIcon;
 	QSharedPointer<const QCardInfo> cardInfo;
+	QWidget *sealWidget;
 };
