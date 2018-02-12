@@ -119,7 +119,7 @@ void QSigner::cacheCardData(const QSet<QString> &cards)
 	if(d->win)
 	{
 		QWin::Certs certs = d->win->certs();
-		for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); i)
+		for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 		{
 			if(!d->cache.contains(i.value()) && i.key().keyUsage().contains(SslCertificate::NonRepudiation))
 				d->cache.insert(i.value(), QSharedPointer<QCardInfo>(toCardInfo(i.key())));
