@@ -41,7 +41,16 @@ QWidget* rootWindow()
 	QWidget* win = qApp->activeWindow();
 	QWidget* root = nullptr;
 
-	while(win)
+    if (!win)
+        for (QWidget *widget: qApp->topLevelWidgets()) {
+            if (widget->isWindow())
+            {
+                win = widget;
+                break;
+            }
+        }
+
+    while(win)
 	{
 		root = win;
 		win = win->parentWidget();
