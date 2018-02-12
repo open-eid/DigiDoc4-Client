@@ -376,6 +376,7 @@ void QSigner::run()
 				{
 					for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 					{
+						qCDebug(SLog) << "Check card:" << i.value();
 						if(i.value() == st.card() &&
 							i.key().keyUsage().contains(SslCertificate::NonRepudiation))
 						{
@@ -397,6 +398,7 @@ void QSigner::run()
 						}
 					}
 				}
+				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();
 			}
 
 			auto added = scards.toSet().subtract(d->cache.keys().toSet());
