@@ -359,7 +359,7 @@ Application::Application( int &argc, char **argv )
 
 		qRegisterMetaType<QEventLoop*>("QEventLoop*");
 		digidoc::initialize( QString( "%1/%2 (%3)" )
-			.arg( applicationName(), applicationVersion(), applicationOs() ).toUtf8().constData(),
+			.arg( "qdigidocclient", applicationVersion(), applicationOs() ).toUtf8().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
 				if(ex) {
