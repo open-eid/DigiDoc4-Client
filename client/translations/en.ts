@@ -3121,6 +3121,11 @@ MOBIIL-ID</translation>
 ID-CARD</translation>
     </message>
     <message>
+        <source>SignatureToken</source>
+        <translation>SIGN WITH
+E-SEAL</translation>
+    </message>
+    <message>
         <source>EncryptContainer</source>
         <translation>ENCRYPT</translation>
     </message>

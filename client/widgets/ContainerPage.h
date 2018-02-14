@@ -59,7 +59,7 @@ public:
 signals:
 	void action(int code, const QString &info1 = QString(), const QString &info2 = QString());
 	void addFiles(const QStringList &files);
-	void cardChanged(const QString& idCode = QString());
+	void cardChanged(const QString& idCode = QString(), bool seal = false);
 	void details(const QString &id);
 	void fileRemoved(int row);
 	void keysSelected(QList<CKey> keys);
@@ -77,7 +77,7 @@ protected:
 private:
 	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
-	void changeCard(const QString& idCode);
+	void changeCard(const QString& idCode, bool seal);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName(bool force = false);
 	void forward(int code);
@@ -117,4 +117,5 @@ private:
 	QString envelope;
 	QString navigateToContainerText;
 	QString saveText;
+	bool seal;
 };

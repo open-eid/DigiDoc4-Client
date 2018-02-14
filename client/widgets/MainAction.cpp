@@ -21,12 +21,10 @@
 #include "ui_MainAction.h"
 #include "Styles.h"
 
-#include <QDebug>
-
 using namespace ria::qdigidoc4;
 
 
-MainAction::MainAction(Actions action, QWidget *parent, bool showSelector)
+MainAction::MainAction(Actions action, QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::MainAction)
 {
@@ -36,7 +34,7 @@ MainAction::MainAction(Actions action, QWidget *parent, bool showSelector)
 	connect( ui->mainAction, &QPushButton::clicked, [this](){ emit this->action(this->actionType); });
 	connect( ui->otherCards, &QToolButton::clicked, this, &MainAction::dropdown );
 	
-	update(action, showSelector);
+	update(action);
 }
 
 MainAction::~MainAction()
@@ -60,6 +58,9 @@ void MainAction::update()
 	case SignatureMobile:
 		label = tr("SignatureMobile");
 		break;
+	case SignatureToken:
+		label = tr("SignatureToken");
+		break;
 	case EncryptContainer:
 		label = tr("EncryptContainer");
 		break;
@@ -75,12 +76,12 @@ void MainAction::update()
 	ui->mainAction->show();
 }
 
-void MainAction::update(Actions action, bool showSelector)
+void MainAction::update(Actions action)
 {
 	actionType = action;
 	update();
 
-	if (showSelector) 
+	if (action == SignatureAdd || action == SignatureToken) 
 		ui->otherCards->show();
 	else
 		ui->otherCards->hide();

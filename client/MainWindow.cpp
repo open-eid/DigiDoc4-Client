@@ -546,6 +546,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	switch(action)
 	{
 	case SignatureAdd:
+	case SignatureToken:
 		if(digiDoc->isService())
 			wrapAndSign();
 		else
@@ -982,7 +983,7 @@ void MainWindow::showCardStatus()
 		qCDebug(MLog) << "Select card" << t.card();
 		auto cardInfo = qApp->signer()->cache()[t.card()];
 		ui->cardInfo->update(cardInfo);
-		emit ui->signContainerPage->cardChanged(cardInfo->id);
+		emit ui->signContainerPage->cardChanged(cardInfo->id, cardInfo->type & SslCertificate::TempelType);
 		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
 
 		if(cardInfo->type & SslCertificate::EstEidType)

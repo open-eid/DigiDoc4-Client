@@ -3116,6 +3116,11 @@ MOBIIL-ID</translation>
 ID-КАРТОЙ</translation>
     </message>
     <message>
+        <source>SignatureToken</source>
+        <translation>ПОДПИСАТЬ С
+Э-ПЕЧАТЬЮ</translation>
+    </message>
+    <message>
         <source>EncryptContainer</source>
         <translation>ЗАШИФРОВАТЬ</translation>
     </message>
