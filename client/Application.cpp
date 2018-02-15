@@ -260,6 +260,7 @@ public:
 	QString		lang;
 	QTimer		lastWindowTimer;
 	volatile bool ready = false;
+	bool		initialized = false;
 	bool		macEvents = false;
 };
 
@@ -563,6 +564,14 @@ bool Application::event( QEvent *e )
 #endif
 	default: return Common::event( e );
 	}
+}
+
+bool Application::initialized()
+{
+	bool isInitialized = d->initialized;
+	d->initialized = true; 
+
+	return isInitialized;
 }
 
 void Application::loadTranslation( const QString &lang )

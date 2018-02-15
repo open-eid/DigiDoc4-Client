@@ -25,13 +25,19 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset, int height )
+FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset, int height)
+: FadeInNotification(parent, fgColor, bgColor, QPoint(leftOffset, 0), parent->width() - leftOffset, height)
+{
+}
+
+FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, const QPoint &pos, int width, int height)
 : QLabel(parent)
 , bgColor(bgColor)
 , fgColor(fgColor)
 , fadeOutTime(1000)
 , height(height)
-, leftOffset(leftOffset)
+, position(pos)
+, width(width)
 {
 }
 
@@ -43,11 +49,8 @@ void FadeInNotification::start( const QString &label, int fadeInTime, int displa
 	setStyleSheet(QString("background-color: %2; color: %1;").arg(fgColor, bgColor));
 	setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	setFont(Styles::font(Styles::Condensed, 22));
-	setMinimumSize(parentWidget()->width() - leftOffset, height);
-	if ( leftOffset > 0 )
-	{
-		move( leftOffset, 0 );
-	}
+	setMinimumSize(width, height);
+	move(position);
 
 	QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
 	setGraphicsEffect(effect);

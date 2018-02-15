@@ -112,6 +112,10 @@
         <translation>Kontrolli Interneti-ühendust</translation>
     </message>
     <message>
+        <source>Cannot connect to certificate status service!</source>
+        <translation>Kehtivuskinnitusteenus ei ole kättesaadav!</translation>
+    </message>
+    <message>
         <source>%1, cannot connect to certificate status service!</source>
         <translation>%1, kehtivuskinnitusteenus ei ole kättesaadav!</translation>
     </message>
@@ -1080,7 +1084,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>The DigiDoc application allows you to:</source>
-        <translation>DigiDoc rakendus võimaldab sul:</translation>
+        <translation>DigiDoc rakendus võimaldab Sinul:</translation>
     </message>
     <message>
         <source>Sign documents</source>
@@ -1096,7 +1100,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
+        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID-ga digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
@@ -1128,11 +1132,11 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid salvestada ID-kaardi või Mobiil-ID-ga. Võid salvestada konterineri ka allkirjasta&#173;mata.</translation>
+        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi või Mobiil-ID-ga. Võid salvestada konteineri ka allkirjasta&#173;mata.</translation>
     </message>
     <message>
         <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>Sisestades PIN2 koodi annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja&#173;ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
+        <translation>Sisestades PIN2 koodi, annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja&#173;ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
@@ -1168,7 +1172,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Manage Mobile-ID or Digi-ID</source>
-        <translation>Halda Mobiil-IDd või Digi-IDd</translation>
+        <translation>Halda Mobiil-ID-d või Digi-ID-d</translation>
     </message>
     <message>
         <source>Check personal data</source>

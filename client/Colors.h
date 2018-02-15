@@ -44,6 +44,8 @@ namespace colors
 	static const char* MARZIPAN = "#F8DDA7";
 	// Green
 	static const char* MANTIS = "#8CC368";
+	// Other
+	static const char* NONE = "none";
 }
 }
 }

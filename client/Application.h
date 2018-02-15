@@ -64,6 +64,7 @@ public:
 	explicit Application( int &argc, char **argv );
 	~Application();
 
+	bool initialized();
 	void loadTranslation( const QString &lang );
 	bool notify( QObject *o, QEvent *e ) override;
 	QSigner* signer() const;
