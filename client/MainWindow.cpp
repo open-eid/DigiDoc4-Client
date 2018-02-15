@@ -1031,6 +1031,22 @@ void MainWindow::showCardStatus()
 	}
 }
 
+void MainWindow::showEvent(QShowEvent *event)
+{
+	static int height = 94;
+	static int width = 166;
+
+	if(!qApp->initialized())
+	{
+		FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
+			QPoint(this->width() - width - 15, this->height() - height - 15), width, height);
+		QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", notification);
+		structureFunds->resize(width, height);
+		structureFunds->show();
+		notification->start("", 400, 4000, 1100);
+	}
+}
+
 void MainWindow::showOverlay( QWidget *parent )
 {
 	overlay.reset( new Overlay(parent) );

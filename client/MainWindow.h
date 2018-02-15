@@ -87,6 +87,7 @@ protected:
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void resizeEvent( QResizeEvent *event ) override;
+	void showEvent(QShowEvent *event) override;
 
 private:
 	void cachePicture( const QString &id, const QImage &image );

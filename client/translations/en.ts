@@ -112,6 +112,10 @@
         <translation>Check internet connection</translation>
     </message>
     <message>
+        <source>Cannot connect to certificate status service!</source>
+        <translation>Cannot connect to certificate status service!</translation>
+    </message>
+    <message>
         <source>%1, cannot connect to certificate status service!</source>
         <translation>%1, cannot connect to certificate status service!</translation>
     </message>
@@ -1181,7 +1185,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
-        <translation>Under “My eID“, you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</translation>
+        <translation>Under “My eID“, you will find the option to modify your PIN1, PIN2 and PUK, and you can see the details of the certificates. Here you can also unlock your blocked PIN codes with the PUK code.</translation>
     </message>
     <message>
         <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
