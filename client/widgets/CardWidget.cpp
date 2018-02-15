@@ -111,6 +111,19 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci)
 		ui->cardStatus->setText(tr("%1 in reader").arg(tr(cardInfo->cardType.toLatin1())));
 		cardIcon->load(QString(":/images/icon_IDkaart_green.svg"));
 	}
+	
+	if(ci->isEResident)
+	{
+		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
+		ui->cardPhoto->hide();
+		cardIcon->move(169 - 27, 42);
+	}
+	else
+	{
+		ui->horizontalSpacer->changeSize(10, 20, QSizePolicy::Fixed);
+		ui->cardPhoto->show();
+		cardIcon->move(169, 42);
+	}
 
 	setAccessibleDescription(cardInfo->fullName);
 }

@@ -49,14 +49,17 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
+	void clearAlternativeIcon();
 	void focusEvent(int eventType);
 	void update();
 
 	Ui::InfoStack *ui;
+	QWidget* alternativeIcon;
 
 	QString appletVersion;
 	bool certTypeIsEstEid;
 	bool certIsValid;
+	bool certIsResident;
 	QString citizenshipText;
 	QString expireDate;
 	QString givenNamesText;
