@@ -47,7 +47,7 @@ Client is actively developed and is currently in alpha-stage.
 
 6. Execute
 
-        /usr/local/bin/qdigidocclient
+        /usr/local/bin/qdigidoc4
 
 ### macOS
 
