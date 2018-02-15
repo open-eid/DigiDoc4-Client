@@ -108,10 +108,11 @@ QString QSmartCardData::typeString(QSmartCardData::PinType type)
 
 
 
-QCardInfo::QCardInfo( const QString& id )
+QCardInfo::QCardInfo(const QString& id)
 : id(id)
-, fullName( "Loading ..." )
-, loading( true )
+, fullName("Loading ...")
+, isEResident(false)
+, loading(true)
 {
 }
 
@@ -162,6 +163,7 @@ void QCardInfo::setCardType( const SslCertificate &cert )
 	{
 		cardType = "ID Card";
 	}
+	isEResident = cert.subjectInfo("O").contains("E-RESIDENT");
 }
 
 

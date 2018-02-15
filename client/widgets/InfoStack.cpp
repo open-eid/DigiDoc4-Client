@@ -24,14 +24,17 @@
 
 #include <common/SslCertificate.h>
 
+#include <QSvgWidget>
 #include <QtCore/QTextStream>
 
 InfoStack::InfoStack( QWidget *parent )
 : StyledWidget( parent )
 , ui( new Ui::InfoStack )
+, alternativeIcon( nullptr )
 , appletVersion()
 , certTypeIsEstEid(false)
 , certIsValid(false)
+, certIsResident(false)
 , citizenshipText()
 , expireDate()
 , givenNamesText()
@@ -70,6 +73,16 @@ InfoStack::~InfoStack()
 	delete ui;
 }
 
+void InfoStack::clearAlternativeIcon()
+{
+	if(!alternativeIcon)
+		return;
+
+	alternativeIcon->hide();
+	alternativeIcon->close();
+	delete alternativeIcon;
+	alternativeIcon = nullptr;
+}
 void InfoStack::clearPicture()
 {
 	ui->photo->clear();
@@ -89,7 +102,7 @@ void InfoStack::changeEvent(QEvent* event)
 
 void InfoStack::focusEvent(int eventType)
 {
-	if(!ui->photo->pixmap())
+	if(certIsResident || !ui->photo->pixmap())
 		return;
 
 	if(eventType == QEvent::Enter)
@@ -141,6 +154,18 @@ void InfoStack::update(const QSmartCardData &t)
 
 	certTypeIsEstEid = t.authCert().type() & SslCertificate::EstEidType;
 	certIsValid = t.isValid();
+	certIsResident = t.authCert().subjectInfo("O").contains("E-RESIDENT");
+	clearAlternativeIcon();
+	if(certIsResident)
+	{
+		QSvgWidget *icon = new QSvgWidget(":/images/icon_person_blue.svg", ui->photo);
+		icon->resize(109, 118);
+		icon->setStyleSheet("border: none;");
+		icon->move(10, 16);
+		icon->show();
+		alternativeIcon = icon;
+		ui->btnPicture->hide();
+	}
 	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate( "dd.MM.yyyy" );
 	givenNamesText = firstName.join(" ");
 	surnameText = t.data(QSmartCardData::SurName).toString();
@@ -168,6 +193,7 @@ void InfoStack::clearData()
 
 void InfoStack::showPicture( const QPixmap &pixmap )
 {
+	clearAlternativeIcon();
 	ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 	pictureText = "SAVE THE PICTURE";

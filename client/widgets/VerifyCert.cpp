@@ -134,7 +134,7 @@ void VerifyCert::update(bool showWarning)
 							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
 							.arg("1")
 							.arg("</span></a>");
-		detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
+		detailsText = tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>");
 		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
 				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
 				"";
@@ -149,7 +149,7 @@ void VerifyCert::update(bool showWarning)
 							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
 							.arg("2")
 							.arg("</span></a>");
-		detailsText = ( isValidCert ) ? tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>") : "";
+		detailsText = tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>");
 		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
 				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
 				"";

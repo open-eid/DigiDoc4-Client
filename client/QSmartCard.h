@@ -115,6 +115,7 @@ struct QCardInfo
 	QString id;
 	QString fullName;
 	QString cardType;
+	bool isEResident;
 	bool loading;
 
 private:
