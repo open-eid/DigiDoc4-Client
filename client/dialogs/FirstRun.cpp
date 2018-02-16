@@ -26,6 +26,8 @@
 #include <QKeyEvent>
 #include <QPixmap>
 #include <QSvgWidget>
+#include <QTextStream>
+
 
 FirstRun::FirstRun(QWidget *parent) :
 	QDialog(parent),
@@ -79,6 +81,7 @@ FirstRun::FirstRun(QWidget *parent) :
 			}
 
 			ui->retranslateUi(this);
+			loadImages();
 		}
 		);
 	ui->continueBtn->setFont(buttonFont);
@@ -137,12 +140,6 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->next->setFont(buttonFont);
 	connect(ui->next, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
 
-	QPixmap sign1 = QPixmap(":/images/intro_sign-select.png");
-	ui->signImage1->setPixmap(sign1.scaled(ui->signImage1->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	QPixmap sign2 = QPixmap(":/images/intro_sign-sign.png");
-	ui->signImage2->setPixmap(sign2.scaled(ui->signImage2->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	QPixmap sign3 = QPixmap(":/images/intro_sign-pin.png");
-	ui->signImage3->setPixmap(sign3.scaled(ui->signImage3->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap one = QPixmap(":/images/intro_one.svg");
 	QPixmap two = QPixmap(":/images/intro_two.svg");
 	QPixmap three = QPixmap(":/images/intro_three.svg");
@@ -166,12 +163,6 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->next_2->setFont(buttonFont);
 	connect(ui->next_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
-	QPixmap crypto1 = QPixmap(":/images/intro_crypto-select.png");
-	ui->cryptoImage1->setPixmap(crypto1.scaled(ui->cryptoImage1->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	QPixmap crypto2 = QPixmap(":/images/intro_crypto-recipient.png");
-	ui->cryptoImage2->setPixmap(crypto2.scaled(ui->cryptoImage2->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	QPixmap crypto3 = QPixmap(":/images/intro_crypto-encrypt.png");
-	ui->cryptoImage3->setPixmap(crypto3.scaled(ui->cryptoImage3->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->cryptoOne->setPixmap(one.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->cryptoTwo->setPixmap(two.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	ui->cryptoThree->setPixmap(three.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
@@ -190,17 +181,13 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->enter->setFont(buttonFont);
 	connect(ui->enter, &QPushButton::clicked, this, [this](){ emit close(); });
 
-	QPixmap eid1 = QPixmap(":/images/intro_eid-manage.png");
-	ui->eidImage1->setProperty("PICTURE", eid1);
-	ui->eidImage1->setPixmap(eid1.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	QPixmap eid2 = QPixmap(":/images/intro_eid-other.png");
 	ui->eidImage2->setProperty("PICTURE", eid2);
 	ui->eidImage2->setPixmap(eid2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	QPixmap eid3 = QPixmap(":/images/intro_eid-info.png");
-	ui->eidImage3->setProperty("PICTURE", eid3);
-	ui->eidImage3->setPixmap(eid3.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	connect(ui->gotoSigning_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
 	connect(ui->gotoEncryption_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+
+	loadImages();
 }
 
 FirstRun::~FirstRun()
@@ -229,4 +216,27 @@ void FirstRun::keyPressEvent(QKeyEvent *event)
 
 	if(next != ui->stack->currentIndex())
 		ui->stack->setCurrentIndex(next);
+}
+
+void FirstRun::loadPixmap(const QString &base, const QString &lang, QLabel *parent)
+{
+	QString resource;
+ 	QTextStream st(&resource);
+
+	st << ":/images/" << base << '_' << lang << ".png";
+	parent->setPixmap(QPixmap(resource).scaled(parent->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+}
+
+void FirstRun::loadImages()
+{
+	QString lang = Settings::language();
+
+	loadPixmap("intro_sign-select", lang, ui->signImage1);
+	loadPixmap("intro_sign-sign", lang, ui->signImage2);
+	loadPixmap("intro_sign-pin", lang, ui->signImage3);
+	loadPixmap("intro_crypto-select", lang, ui->cryptoImage1);
+	loadPixmap("intro_crypto-recipient", lang, ui->cryptoImage2);
+	loadPixmap("intro_crypto-encrypt", lang, ui->cryptoImage3);
+	loadPixmap("intro_eid-manage", lang, ui->eidImage1);
+	loadPixmap("intro_eid-info", lang, ui->eidImage3);
 }
