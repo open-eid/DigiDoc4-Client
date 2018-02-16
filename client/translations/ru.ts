@@ -3265,7 +3265,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30591</source>
-        <translation>https://www.id.ee/index.php?id=30604</translation>
+        <translation>https://www.id.ee/index.php?id=38500</translation>
     </message>
     <message>
         <source>More information</source>
