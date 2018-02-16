@@ -50,16 +50,32 @@
 		<file>icon_ribbon_up.svg</file>
 		<file>icon_Seaded.svg</file>
 		<file>icon_Seaded_hover.svg</file>
-		<file>intro_crypto-select.png</file>
-		<file>intro_crypto-recipient.png</file>
-		<file>intro_crypto-encrypt.png</file>
-		<file>intro_eid-manage.png</file>
+		<file>intro_crypto-select_en.png</file>
+		<file>intro_crypto-select_et.png</file>
+		<file>intro_crypto-select_ru.png</file>
+		<file>intro_crypto-recipient_en.png</file>
+		<file>intro_crypto-recipient_et.png</file>
+		<file>intro_crypto-recipient_ru.png</file>
+		<file>intro_crypto-encrypt_en.png</file>
+		<file>intro_crypto-encrypt_et.png</file>
+		<file>intro_crypto-encrypt_ru.png</file>
+		<file>intro_eid-manage_en.png</file>
+		<file>intro_eid-manage_et.png</file>
+		<file>intro_eid-manage_ru.png</file>
 		<file>intro_eid-other.png</file>
-		<file>intro_eid-info.png</file>
+		<file>intro_eid-info_en.png</file>
+		<file>intro_eid-info_et.png</file>
+		<file>intro_eid-info_ru.png</file>
 		<file>intro_one.svg</file>
-		<file>intro_sign-pin.png</file>
-		<file>intro_sign-select.png</file>
-		<file>intro_sign-sign.png</file>
+		<file>intro_sign-pin_en.png</file>
+		<file>intro_sign-pin_et.png</file>
+		<file>intro_sign-pin_ru.png</file>
+		<file>intro_sign-select_en.png</file>
+		<file>intro_sign-select_et.png</file>
+		<file>intro_sign-select_ru.png</file>
+		<file>intro_sign-sign_en.png</file>
+		<file>intro_sign-sign_et.png</file>
+		<file>intro_sign-sign_ru.png</file>
 		<file>intro_three.svg</file>
 		<file>intro_two.svg</file>
 		<file>Logo_small.svg</file>

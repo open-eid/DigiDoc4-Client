@@ -26,6 +26,7 @@ class FirstRun;
 }
 
 class QKeyEvent;
+class QLabel;
 
 class FirstRun : public QDialog
 {
@@ -42,6 +43,9 @@ signals:
 	void langChanged(const QString& lang);
 
 private:
+	void loadImages();
+	void loadPixmap(const QString &base, const QString &lang, QLabel *parent);
+
 	enum View
 	{
 		Language,
