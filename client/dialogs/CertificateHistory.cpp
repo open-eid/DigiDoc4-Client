@@ -25,7 +25,6 @@
 #include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QMessageBox>
 #include <QStandardPaths>
