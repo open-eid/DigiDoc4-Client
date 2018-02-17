@@ -38,6 +38,7 @@ public:
 	~Accordion();
 
 	void init();
+	void clear();
 	void clearOtherEID();
 	void closeOtherSection( AccordionTitle* opened );
 	QString getEmail();

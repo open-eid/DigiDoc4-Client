@@ -39,6 +39,7 @@ public:
 	~VerifyCert();
 
 	void addBorders();
+	void clear();
 	void update(QSmartCardData::PinType type, const QSmartCard *smartCard);
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
 	void update(bool warning = false);

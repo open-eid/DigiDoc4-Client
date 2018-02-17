@@ -83,6 +83,15 @@ void VerifyCert::addBorders()
 	borders = " border: solid #DFE5E9; border-width: 1px 1px 0px 1px; ";
 }
 
+void VerifyCert::clear()
+{
+	c = SslCertificate();
+	isBlockedPin = false;
+	cardData = QSmartCardData();
+	
+	update();
+}
+
 void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartCard )
 {
 	this->pinType = type;

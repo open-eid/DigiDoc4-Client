@@ -29,4 +29,5 @@ struct QCardInfo
 	QString country;
 	int type;
 	bool loading;
+	bool isEResident;
 };

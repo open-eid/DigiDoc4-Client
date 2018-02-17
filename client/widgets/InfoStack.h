@@ -51,12 +51,12 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
-	void clearAlternativeIcon();
+	void clearAlternateIcon();
 	void focusEvent(int eventType);
 	void update();
 
 	Ui::InfoStack *ui;
-	QWidget* alternativeIcon;
+	QWidget* alternateIcon;
 
 	QString appletVersion;
 	int certType;

@@ -81,6 +81,14 @@ void Accordion::init()
 	ui->otherID->setStyleSheet( otherIdStyle.arg("0") );
 }
 
+void Accordion::clear()
+{
+	ui->authBox->clear();
+	ui->signBox->clear();
+	ui->pukBox->clear();
+	clearOtherEID();
+}
+
 void Accordion::closeOtherSection(AccordionTitle* opened)
 {
 	openSection->closeSection();

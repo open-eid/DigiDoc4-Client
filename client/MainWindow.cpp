@@ -986,6 +986,8 @@ void MainWindow::showCardStatus()
 		emit ui->signContainerPage->cardChanged(cardInfo->id, cardInfo->type & SslCertificate::TempelType);
 		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
 
+		ui->infoStack->clearData();
+		ui->accordion->clear();
 		if(cardInfo->type & SslCertificate::EstEidType)
 		{
 			Styles::cachedPicture(cardInfo->id, {ui->cardInfo, ui->infoStack});

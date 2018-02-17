@@ -33,7 +33,7 @@
 InfoStack::InfoStack( QWidget *parent )
 : StyledWidget( parent )
 , ui( new Ui::InfoStack )
-, alternativeIcon( nullptr )
+, alternateIcon( nullptr )
 , appletVersion()
 , certType(0)
 , certIsValid(false)
@@ -76,15 +76,15 @@ InfoStack::~InfoStack()
 	delete ui;
 }
 
-void InfoStack::clearAlternativeIcon()
+void InfoStack::clearAlternateIcon()
 {
-	if(!alternativeIcon)
+	if(!alternateIcon)
 		return;
 
-	alternativeIcon->hide();
-	alternativeIcon->close();
-	delete alternativeIcon;
-	alternativeIcon = nullptr;
+	alternateIcon->hide();
+	alternateIcon->close();
+	delete alternateIcon;
+	alternateIcon = nullptr;
 }
 
 void InfoStack::clearData()
@@ -102,7 +102,6 @@ void InfoStack::clearData()
 
 void InfoStack::clearPicture()
 {
-	clearAlternativeIcon();
 	ui->photo->clear();
 }
 
@@ -120,13 +119,12 @@ void InfoStack::changeEvent(QEvent* event)
 
 void InfoStack::focusEvent(int eventType)
 {
-	if(certIsResident || !ui->photo->pixmap())
+	if(alternateIcon || !ui->photo->pixmap())
 		return;
 
 	if(eventType == QEvent::Enter)
 	{
-		if(!sealWidget)
-			ui->btnPicture->show();
+		ui->btnPicture->show();
 	}
 	else
 	{
@@ -140,7 +138,7 @@ void InfoStack::focusEvent(int eventType)
 
 void InfoStack::showPicture( const QPixmap &pixmap )
 {
-	clearAlternativeIcon();
+	clearAlternateIcon();
 	ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 	pictureText = "SAVE THE PICTURE";
@@ -178,6 +176,9 @@ void InfoStack::update()
 	ui->btnPicture->setText(tr(qPrintable(pictureText)));
 	ui->btnPicture->hide();
 
+	if(!certIsResident)
+		clearAlternateIcon();
+
 	if(certType & SslCertificate::TempelType)
 	{
 		ui->labelGivenNames->setText(tr("NAME"));
@@ -195,7 +196,7 @@ void InfoStack::update()
 		seal->move(10, 25);
 		seal->setStyleSheet("border: none;");
 		seal->show();
-		alternativeIcon = seal;
+		alternateIcon = seal;
 	}
 	else
 	{
@@ -206,8 +207,6 @@ void InfoStack::update()
 		ui->labelSerialNumber->setText(tr("Document"));
 		ui->valueSerialNumber->setMinimumWidth(100);
 		ui->valueSerialNumber->setMaximumWidth(100);
-
-		clearAlternativeIcon();
 	}
 
 }
@@ -235,7 +234,7 @@ void InfoStack::update(const QSmartCardData &t)
 	certType = t.authCert().type();
 	certIsValid = t.isValid();
 	certIsResident = t.authCert().subjectInfo("O").contains("E-RESIDENT");
-	clearAlternativeIcon();
+	clearAlternateIcon();
 	if(certIsResident)
 	{
 		QSvgWidget *icon = new QSvgWidget(":/images/icon_person_blue.svg", ui->photo);
@@ -243,7 +242,7 @@ void InfoStack::update(const QSmartCardData &t)
 		icon->setStyleSheet("border: none;");
 		icon->move(10, 16);
 		icon->show();
-		alternativeIcon = icon;
+		alternateIcon = icon;
 		ui->btnPicture->hide();
 	}
 	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate( "dd.MM.yyyy" );
