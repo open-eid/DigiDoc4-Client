@@ -64,6 +64,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QWidget( parent ),
 	ui( new Ui::MainWindow )
 {
+	setAttribute(Qt::WA_DeleteOnClose, true);
+
 	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	QFont regular14 = Styles::font( Styles::Regular, 14 );
@@ -698,13 +700,9 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 {
 /*
 	1. If containers are not open:
-	1.1 If one file and known filetype
-			- Open either
-				-- signed (sign. container)
-				-- or encrypted (crypto container)
-	1.2 else (Unknown type/multiple files):
-			- If on encrypt page, open encryption view
-			- else open signing view
+		- If on myEid page and either crypto- or signature document, open corresponding view
+		- If on encrypt page, open encryption view
+		- else open signing view
 
 	2. If container open:
 	2.1 if UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer
@@ -718,7 +716,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 	auto current = ui->startScreen->currentIndex();
 	QStringList content(files);
 	ContainerState state = currentState();
-	Pages page = SignDetails;
+	Pages page = (current == CryptoIntro) ? CryptoDetails : SignDetails;
 	bool create = true;
 	switch(state)
 	{
@@ -727,24 +725,14 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 		if(content.size() == 1)
 		{
 			auto fileType = FileUtil::detect(content[0]);
-			if(fileType == CryptoDocument)
+			if(current == MyEid)
+				page = (fileType == CryptoDocument) ? CryptoDetails : SignDetails;
+
+			if( (fileType == CryptoDocument && page == CryptoDetails) ||
+				(fileType == SignatureDocument && page == SignDetails))
 			{
-				page = CryptoDetails;
 				create = false;
 			}
-			else if(fileType == SignatureDocument)
-			{
-				page = SignDetails;
-				create = false;
-			}
-			else if(current == CryptoIntro)
-			{
-				page = CryptoDetails;
-			}
-		}
-		else if(current == CryptoIntro)
-		{
-			page = CryptoDetails;
 		}
 		break;
 	case ContainerState::UnsignedContainer:
@@ -804,6 +792,8 @@ void MainWindow::open(const QStringList &params, bool crypto)
 {
 	if (crypto)
 		navigateToPage(Pages::CryptoIntro);
+	else
+		navigateToPage(Pages::SignIntro);
 
 	QStringList files;
 	for(auto param: params)

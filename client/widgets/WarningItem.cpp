@@ -27,24 +27,24 @@
 
 WarningText::WarningText(const QString &text, const QString &details, int page)
 : text(text)
-, details(details)
 , counter(0)
+, details(details)
 , external(false)
 , page(page)
 , warningType(ria::qdigidoc4::NoWarning)
 {}
 
 WarningText::WarningText(ria::qdigidoc4::WarningType warningType)
-: external(false)
-, counter(0)
+: counter(0)
+, external(false)
 , page(-1)
 , warningType(warningType)
 {
 }
 
 WarningText::WarningText(ria::qdigidoc4::WarningType warningType, int counter)
-: external(true)
-, counter(counter)
+: counter(counter)
+, external(true)
 , page(ria::qdigidoc4::SignDetails)
 , warningType(warningType)
 {
