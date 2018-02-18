@@ -501,7 +501,7 @@ void QSmartCard::logout()
 
 void QSmartCard::reload() { selectCard(d->t.card());  }
 
-void QSmartCard::reloadCard(const QString &card)
+void QSmartCard::reloadCard(const QString &card, bool isCardId)
 {
 	qCDebug(CLog) << "Polling";
 	if(!d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == card)
@@ -509,7 +509,10 @@ void QSmartCard::reloadCard(const QString &card)
 
 	qCDebug(CLog) << "Poll" << card;
 	QByteArray cardid = d->READRECORD;
-	cardid[2] = 8;
+	if(isCardId)
+		cardid[2] = QSmartCardData::DocumentId + 1;
+	else
+		cardid[2] = QSmartCardData::Id + 1;
 
 	// Check available cards
 	QString selectedReader;
@@ -537,6 +540,7 @@ void QSmartCard::reloadCard(const QString &card)
 			default: return false;
 			}
 
+			bool readerMatched = false;
 			QPCSCReader::Result result;
 			#define TRANSFERIFNOT(X) result = reader->transfer(X); \
 				if(result.err) return false; \
@@ -559,14 +563,15 @@ void QSmartCard::reloadCard(const QString &card)
 			TRANSFERIFNOT(cardid)
 				continue;
 			QString nr = d->codec->toUnicode(result.data);
-			if(!nr.isEmpty())
+			if(isCardId)
+				readerMatched = !nr.isEmpty() && (nr == card);
+			else
+				readerMatched = !nr.isEmpty() && card.endsWith(QStringLiteral(",") + nr);
+			qCDebug(CLog) << "Card id:" << nr;
+			if(readerMatched)
 			{
-				qCDebug(CLog) << "Reader" << name << ":" << nr;
-                if(nr == card)
-                {
-                    selectedReader = name;
-                    return true;
-                }
+				selectedReader = name;
+				return true;
 			}
 		}
 		return true;
@@ -595,12 +600,12 @@ void QSmartCard::reloadCard(const QString &card)
 	if(!selectedReader.isEmpty() && d->t.isNull())
 	{
 		qCDebug(CLog) << "Read card" << card << "info";
-		if(readCardData(selectedReader, card))
+		if(readCardData(selectedReader))
 			qDebug() << "Failed to read card info, try again next round";
 	}
 }
 
-bool QSmartCard::readCardData(const QString &selectedReader, const QString &card)
+bool QSmartCard::readCardData(const QString &selectedReader)
 {
 	bool tryAgain = false;
 	QSharedPointer<QPCSCReader> reader(d->connect(selectedReader));

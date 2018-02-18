@@ -128,7 +128,7 @@ public:
 	ErrorType login( QSmartCardData::PinType type );
 	void logout();
 	void reload();
-	void reloadCard(const QString &card);
+	void reloadCard(const QString &card, bool isCardId);
 	ErrorType unblock( QSmartCardData::PinType type, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
@@ -141,7 +141,7 @@ private Q_SLOTS:
 	void selectCard( const QString &card );
 
 private:
-	bool readCardData(const QString &selectedReader, const QString &card);
+	bool readCardData(const QString &selectedReader);
 	
 	QSmartCardPrivate *d;
 

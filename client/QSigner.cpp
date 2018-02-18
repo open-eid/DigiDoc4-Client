@@ -411,7 +411,7 @@ void QSigner::run()
 				Q_EMIT authDataChanged(d->auth = at);
 			if( sold != st )
 				Q_EMIT signDataChanged(d->sign = st);
-			d->smartcard->reloadCard(st.card());
+			d->smartcard->reloadCard(st.card(), d->api != QSigner::CAPI);
 
 			QCardLock::instance().readUnlock();
 		}

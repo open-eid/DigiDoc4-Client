@@ -38,14 +38,14 @@ class CardWidget : public StyledWidget, public PictureInterface
 
 public:
 	explicit CardWidget( QWidget *parent = nullptr );
-	explicit CardWidget( const QString &cardId, QWidget *parent = nullptr );
+	explicit CardWidget( const QString &id, QWidget *parent = nullptr );
 	~CardWidget();
 
 	void clearPicture() override;
 	QString id() const;
 	bool isLoading() const;
 	void showPicture( const QPixmap &pix ) override;
-	void update(const QSharedPointer<const QCardInfo> &ci);
+	void update(const QSharedPointer<const QCardInfo> &ci, const QString &cardId);
 
 signals:
 	void photoClicked( const QPixmap *pixmap );
@@ -59,7 +59,7 @@ private:
 	void clearSeal();
 
 	Ui::CardWidget *ui;
-	QString cardId;
+	QString card;
 	QScopedPointer<QSvgWidget> cardIcon;
 	QSharedPointer<const QCardInfo> cardInfo;
 	QWidget *sealWidget;

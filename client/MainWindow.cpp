@@ -982,12 +982,17 @@ void MainWindow::showCardStatus()
 
 		qCDebug(MLog) << "Select card" << t.card();
 		auto cardInfo = qApp->signer()->cache()[t.card()];
-		ui->cardInfo->update(cardInfo);
+
+		if(ui->cardInfo->id() != t.card())
+		{
+			ui->infoStack->clearData();
+			ui->accordion->clear();
+		}
+
+		ui->cardInfo->update(cardInfo, t.card());
 		emit ui->signContainerPage->cardChanged(cardInfo->id, cardInfo->type & SslCertificate::TempelType);
 		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
 
-		ui->infoStack->clearData();
-		ui->accordion->clear();
 		if(cardInfo->type & SslCertificate::EstEidType)
 		{
 			Styles::cachedPicture(cardInfo->id, {ui->cardInfo, ui->infoStack});
