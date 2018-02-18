@@ -81,6 +81,14 @@ void Accordion::init()
 	ui->otherID->setStyleSheet( otherIdStyle.arg("0") );
 }
 
+void Accordion::clear()
+{
+	ui->authBox->clear();
+	ui->signBox->clear();
+	ui->pukBox->clear();
+	clearOtherEID();
+}
+
 void Accordion::closeOtherSection(AccordionTitle* opened)
 {
 	openSection->closeSection();
@@ -104,6 +112,21 @@ void Accordion::setFocusToEmail()
 	ui->contentOtherData->setFocusToEmail();
 }
 
+void Accordion::updateInfo(const QCardInfo &cardInfo, const SslCertificate &authCert, const SslCertificate &signCert)
+{
+	ui->authBox->setVisible(!authCert.isNull());
+	if(!authCert.isNull())
+		ui->authBox->update(QSmartCardData::Pin1Type, authCert);
+
+	ui->signBox->setVisible(!signCert.isNull());
+	if (!signCert.isNull())
+		ui->signBox->update(QSmartCardData::Pin2Type, signCert);
+
+	ui->pukBox->hide();
+	ui->otherID->update("Other ID");
+	ui->titleOtherData->hide();
+}
+
 void Accordion::updateInfo( const QSmartCard *smartCard )
 {
 	QSmartCardData t = smartCard->data();
@@ -116,6 +139,7 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 	if ( !t.signCert().isNull() )
 		ui->signBox->update( QSmartCardData::Pin2Type, smartCard );
 
+	ui->pukBox->show();
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
 
 	ui->otherID->update("Other ID");

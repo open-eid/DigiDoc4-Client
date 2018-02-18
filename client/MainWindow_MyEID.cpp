@@ -20,6 +20,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
+#include "QCardInfo.h"
 #include "QCardLock.h"
 #include "QSigner.h"
 #include "XmlReader.h"
@@ -74,10 +75,8 @@ void MainWindow::changePukClicked()
 
 bool MainWindow::checkExpiration()
 {
-	QSmartCardData t = qApp->smartcard()->data();
-
 	int expiresIn = 106;
-	for(const SslCertificate &cert: {t.authCert(), t.signCert()})
+	for(const SslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
 	{
 		expiresIn = std::min<int>(expiresIn,
 			QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
@@ -97,7 +96,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			.arg( QSmartCardData::typeString( type ) );
 
 	if( validateCardError( type, 1025,
-		( (QSmartCard *)qApp->smartcard() )->pinUnblock( type, isForgotPin ) ) )
+		qApp->smartcard()->pinUnblock( type, isForgotPin ) ) )
 	{
 		if( isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
@@ -105,17 +104,17 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 		ui->accordion->updateInfo( qApp->smartcard() );
 		updateCardWarnings();
 
-		QCardInfo cardInfo(qApp->smartcard()->data());
+		QString card = qApp->smartcard()->data().card();
 
 		if (type == QSmartCardData::Pin1Type)
 		{
 			clearWarning(WarningType::UnblockPin1Warning);
-			emit ui->cryptoContainerPage->cardChanged(cardInfo.id);
+			emit ui->cryptoContainerPage->cardChanged(card);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
 			clearWarning(WarningType::UnblockPin2Warning);
-			emit ui->signContainerPage->cardChanged(cardInfo.id);
+			emit ui->cryptoContainerPage->cardChanged(card);
 		}
 	}
 }
@@ -123,7 +122,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 void MainWindow::pinPukChange( QSmartCardData::PinType type )
 {
 	if( validateCardError( type, 1024,
-		( (QSmartCard *)qApp->smartcard() )->pinChange( type ) ) )
+		qApp->smartcard()->pinChange( type ) ) )
 	{
 		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
@@ -133,7 +132,7 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 
 void MainWindow::certDetailsClicked( const QString &link )
 {
-	CertificateDetails dlg( (link == "PIN1") ? qApp->smartcard()->data().authCert() : qApp->smartcard()->data().signCert(), this );
+	CertificateDetails dlg((link == "PIN1") ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this);
 	dlg.exec();
 }
 
@@ -399,7 +398,7 @@ void MainWindow::updateCardWarnings()
 	if(checkExpiration())
 		showWarning = true;
 
-	if(!showWarning)
+	if(!showWarning && !qApp->smartcard()->data().isNull())
 		showWarning = qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 			qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 			qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0;

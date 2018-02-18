@@ -54,6 +54,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 , envelope("Envelope")
 , navigateToContainerText("OPEN CONTAINER LOCATION")
 , saveText("SAVE WITHOUT SIGNING")
+, seal(false)
 {
 	ui->setupUi( this );
 	init();
@@ -84,11 +85,12 @@ void ContainerPage::browseContainer(QString link)
 	emit action(Actions::ContainerNavigate, link);
 }
 
-void ContainerPage::changeCard(const QString& idCode)
+void ContainerPage::changeCard(const QString& idCode, bool seal)
 {
 	if(cardInReader != idCode)
 	{
 		cardInReader = idCode;
+		this->seal = seal;
 		if(mainAction && (ui->leftPane->getState() & SignatureContainers))
 			showSigningButton();
 		else if(ui->leftPane->getState() & EncryptedContainer)
@@ -98,7 +100,7 @@ void ContainerPage::changeCard(const QString& idCode)
 
 bool ContainerPage::checkAction(int code, const QString& selectedCard, const QString& selectedMobile)
 {
-	if(code == SignatureAdd || code == SignatureMobile)
+	if(code == SignatureAdd || code == SignatureToken || code == SignatureMobile)
 	{
 		if(ui->rightPane->hasItem(
 			[selectedCard, selectedMobile, code](Item* const item) -> bool
@@ -169,7 +171,7 @@ void ContainerPage::init()
 	mobileCode = Settings().value("Client/MobileCode").toString();
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
-	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode){ emit ui->rightPane->idChanged(idCode, mobileCode); });
+	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal){ emit ui->rightPane->idChanged(idCode, mobileCode); });
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -240,7 +242,7 @@ void ContainerPage::mobileDialog()
 	if (newCode != mobileCode)
 	{
 		mobileCode = newCode;
-		emit cardChanged(cardInReader);
+		emit cardChanged(cardInReader, seal);
 	}
 }
 
@@ -291,7 +293,7 @@ void ContainerPage::showDropdown()
 	}
 	else
 	{
-		otherAction.reset( new MainAction( SignatureMobile, this, false ) );
+		otherAction.reset( new MainAction( SignatureMobile, this ) );
 		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
 
@@ -312,12 +314,12 @@ void ContainerPage::showMainAction(Actions action)
 {
 	if( mainAction )
 	{
-		mainAction->update(action, action == SignatureAdd);
+		mainAction->update(action);
 		mainAction->show();
 	}
 	else
 	{
-		mainAction.reset(new MainAction(action, this, action == SignatureAdd));
+		mainAction.reset(new MainAction(action, this));
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
 		mainAction->show();
 	}
@@ -345,6 +347,8 @@ void ContainerPage::showSigningButton()
 	hideOtherAction();
 	if(cardInReader.isNull())
 		showMainAction(SignatureMobile);
+	else if(seal)
+		showMainAction(SignatureToken);
 	else
 		showMainAction(SignatureAdd);
 }

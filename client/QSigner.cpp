@@ -18,6 +18,7 @@
  */
 
 #include "QSigner.h"
+#include "QCardInfo.h"
 #include "QCardLock.h"
 
 #include "Application.h"
@@ -33,19 +34,49 @@ class QWin;
 
 #include <digidocpp/crypto/X509Cert.h>
 
+#include <QtCore/QDebug>
 #include <QtCore/QEventLoop>
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QStringList>
+#include <QtCore/QSet>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/obj_mac.h>
+
+Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 
 #if QT_VERSION < 0x050700
 template <class T>
 constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
 {
-        return t;
+	return t;
 }
 #endif
+
+QCardInfo *toCardInfo(const SslCertificate &c)
+{
+	QCardInfo *ci = new QCardInfo;
+
+	ci->country = c.toString("C");
+	ci->id = c.subjectInfo("serialNumber");
+	ci->isEResident = c.subjectInfo("O").contains("E-RESIDENT");
+	ci->loading = false;
+	ci->type = c.type();
+
+	if(c.type() & SslCertificate::TempelType)
+	{
+		ci->fullName = c.toString("CN");
+		ci->cardType = "e-Seal";
+	}
+	else
+	{
+		ci->fullName = c.toString("GN SN");
+		ci->cardType = c.type() & SslCertificate::DigiIDType ? "Digi ID" : "ID Card";
+	}
+
+	return ci;
+}
+
 
 class QSignerPrivate
 {
@@ -53,8 +84,10 @@ public:
 	QSigner::ApiType api = QSigner::PKCS11;
 	QWin			*win = nullptr;
 	QPKCS11Stack	*pkcs11 = nullptr;
+	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
 	volatile bool	terminate = false;
+	QMap<QString, QSharedPointer<QCardInfo>> cache;
 };
 
 using namespace digidoc;
@@ -66,6 +99,7 @@ QSigner::QSigner( ApiType api, QObject *parent )
 	d->api = api;
 	d->auth.setCard( "loading" );
 	d->sign.setCard( "loading" );
+	d->smartcard = new QSmartCard(parent);
 	connect(this, &QSigner::error, this, &QSigner::showWarning);
 	start();
 }
@@ -74,7 +108,38 @@ QSigner::~QSigner()
 {
 	d->terminate = true;
 	wait();
+	delete d->smartcard;
 	delete d;
+}
+
+const QMap<QString, QSharedPointer<QCardInfo>> QSigner::cache() const { return d->cache; }
+
+void QSigner::cacheCardData(const QSet<QString> &cards)
+{
+#ifdef Q_OS_WIN
+	if(d->win)
+	{
+		QWin::Certs certs = d->win->certs();
+		for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
+		{
+			if(!d->cache.contains(i.value()) && i.key().keyUsage().contains(SslCertificate::NonRepudiation))
+				d->cache.insert(i.value(), QSharedPointer<QCardInfo>(toCardInfo(i.key())));
+		}
+	}
+	else
+#endif
+	{
+		QList<TokenData> pkcs11 = d->pkcs11->tokens();
+		for(const TokenData &i: qAsConst(pkcs11))
+		{
+			if(!d->cache.contains(i.card()))
+			{
+				auto sslCert = SslCertificate(i.cert());
+				if(sslCert.keyUsage().contains(SslCertificate::NonRepudiation))
+					d->cache.insert(i.card(), QSharedPointer<QCardInfo>(toCardInfo(sslCert)));
+			}
+		}
+	}
 }
 
 X509Cert QSigner::cert() const
@@ -260,6 +325,7 @@ void QSigner::run()
 			}
 			if( !st.card().isEmpty() && !scards.contains( st.card() ) )
 			{
+				qCDebug(SLog) << "Disconnected from card" << st.card();
 				st.setCard( QString() );
 				st.setCert( QSslCertificate() );
 			}
@@ -305,11 +371,13 @@ void QSigner::run()
 
 			if( scards.contains( st.card() ) && st.cert().isNull() ) // read sign cert
 			{
+				qCDebug(SLog) << "Read sign cert" << st.card();
 #ifdef Q_OS_WIN
 				if(d->win)
 				{
 					for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 					{
+						qCDebug(SLog) << "Check card:" << i.value();
 						if(i.value() == st.card() &&
 							i.key().keyUsage().contains(SslCertificate::NonRepudiation))
 						{
@@ -331,17 +399,25 @@ void QSigner::run()
 						}
 					}
 				}
+				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();
 			}
+
+			auto added = scards.toSet().subtract(d->cache.keys().toSet());
+			if(!added.isEmpty())
+				cacheCardData(added);
 
 			// update data if something has changed
 			if( aold != at )
 				Q_EMIT authDataChanged(d->auth = at);
 			if( sold != st )
 				Q_EMIT signDataChanged(d->sign = st);
+			d->smartcard->reloadCard(st.card(), d->api != QSigner::CAPI);
+
 			QCardLock::instance().readUnlock();
 		}
 
-		sleep( 5 );
+		if(!d->terminate)
+			sleep( 5 );
 	}
 }
 
@@ -434,5 +510,6 @@ void QSigner::throwException( const QString &msg, Exception::ExceptionCode code,
 	throw e;
 }
 
+QSmartCard * QSigner::smartcard() const { return d->smartcard; }
 TokenData QSigner::tokenauth() const { return d->auth; }
 TokenData QSigner::tokensign() const { return d->sign; }

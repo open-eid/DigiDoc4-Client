@@ -24,15 +24,20 @@
 #include "Styles.h"
 #include "widgets/LabelButton.h"
 
+#include <common/SslCertificate.h>
+
+#include <QSvgWidget>
+
 using namespace ria::qdigidoc4;
 
 CardWidget::CardWidget( QWidget *parent )
 : CardWidget( QString(), parent ) { }
 
-CardWidget::CardWidget( const QString &cardId, QWidget *parent )
+CardWidget::CardWidget( const QString &id, QWidget *parent )
 : StyledWidget( parent )
 , ui( new Ui::CardWidget )
-, cardId( cardId )
+, card( id )
+, sealWidget(nullptr)
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
@@ -64,19 +69,31 @@ CardWidget::~CardWidget()
 
 void CardWidget::clearPicture()
 {
+	clearSeal();
 	ui->cardPhoto->clear();
+}
+
+void CardWidget::clearSeal()
+{
+	if(sealWidget)
+	{
+		sealWidget->hide();
+		sealWidget->close();
+		delete sealWidget;
+		sealWidget = nullptr;
+	}
 }
 
 QString CardWidget::id() const
 {
-	return cardId;
+	return card;
 }
 
 bool CardWidget::event( QEvent *ev )
 {
 	if(ev->type() == QEvent::MouseButtonRelease)
 	{
-		emit selected( cardId );
+		emit selected( card );
 		return true;
 	}
 	return QWidget::event( ev );
@@ -85,7 +102,7 @@ bool CardWidget::event( QEvent *ev )
 void CardWidget::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange && cardInfo)
-		update(cardInfo);
+		update(cardInfo, card);
 
 	QWidget::changeEvent(event);
 }
@@ -95,9 +112,10 @@ bool CardWidget::isLoading() const
 	return !cardInfo || cardInfo->loading;
 }
 
-void CardWidget::update(const QSharedPointer<const QCardInfo> &ci)
+void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString &cardId)
 {
 	cardInfo = ci;
+	card = cardId;
 	ui->cardName->setText(cardInfo->fullName);
 	ui->cardCode->setText(cardInfo->id + "   |");
 	ui->load->setText(tr("LOAD"));
@@ -125,11 +143,25 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci)
 		cardIcon->move(169, 42);
 	}
 
+	clearSeal();
+	if(cardInfo->type & SslCertificate::TempelType)
+	{
+		ui->cardPhoto->clear();
+		QSvgWidget* seal = new QSvgWidget(ui->cardPhoto);
+		seal->load(QString(":/images/icon_digitempel.svg"));
+		seal->resize(32, 32);
+		seal->move(1, 6);
+		seal->show();
+		seal->setStyleSheet("border: none;");
+		sealWidget = seal;
+	}
+
 	setAccessibleDescription(cardInfo->fullName);
 }
 
 void CardWidget::showPicture( const QPixmap &pix )
 {
+	clearSeal();
 	ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 }

@@ -32,10 +32,10 @@ class MainAction : public QWidget
 	Q_OBJECT
 
 public:
-	explicit MainAction(ria::qdigidoc4::Actions action, QWidget *parent, bool showSelector = true);
+	explicit MainAction(ria::qdigidoc4::Actions action, QWidget *parent);
 	~MainAction();
 
-	void update(ria::qdigidoc4::Actions action, bool showSelector = true);
+	void update(ria::qdigidoc4::Actions action);
 
 signals:
 	void action( int action );

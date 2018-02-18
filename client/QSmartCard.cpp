@@ -28,12 +28,15 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QScopedPointer>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QApplication>
 
 #include <openssl/evp.h>
 #include <thread>
+
+Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
 const QHash<QByteArray,QSmartCardData::CardVersion> QSmartCardDataPrivate::atrList = {
 	{"3BFE9400FF80B1FA451F034573744549442076657220312E3043", QSmartCardData::VER_1_0}, /*ESTEID_V1_COLD_ATR*/
@@ -73,7 +76,6 @@ QSmartCardData& QSmartCardData::operator =(const QSmartCardData &other) = defaul
 QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) { qSwap(d, other.d); return *this; }
 
 QString QSmartCardData::card() const { return d->card; }
-QStringList QSmartCardData::cards() const { return d->cards; }
 
 bool QSmartCardData::isNull() const
 { return d->data.isEmpty() && d->authCert.isNull() && d->signCert.isNull(); }
@@ -84,7 +86,6 @@ bool QSmartCardData::isValid() const
 { return d->data.value(Expiry).toDateTime() >= QDateTime::currentDateTime(); }
 
 QString QSmartCardData::reader() const { return d->reader; }
-QStringList QSmartCardData::readers() const { return d->readers; }
 
 QVariant QSmartCardData::data(PersonalDataType type) const
 { return d->data.value(type); }
@@ -107,70 +108,9 @@ QString QSmartCardData::typeString(QSmartCardData::PinType type)
 }
 
 
-
-QCardInfo::QCardInfo(const QString& id)
-: id(id)
-, fullName("Loading ...")
-, isEResident(false)
-, loading(true)
-{
-}
-
-QCardInfo::QCardInfo( const QSmartCardData &scd )
-{
-	id = scd.data( QSmartCardData::Id ).toString();
-	loading = false;
-	setFullName( 
-		scd.data( QSmartCardData::FirstName1 ).toString(),
-		scd.data( QSmartCardData::FirstName2 ).toString(),
-		scd.data( QSmartCardData::SurName ).toString()
-	);
-	setCardType( scd.authCert() );
-}
-
-QCardInfo::QCardInfo( const QSmartCardDataPrivate &scdp )
-{
-	id = scdp.data[ QSmartCardData::Id ].toString();
-	loading = false;
-	setFullName( 
-		scdp.data[ QSmartCardData::FirstName1 ].toString(),
-		scdp.data[ QSmartCardData::FirstName2 ].toString(),
-		scdp.data[ QSmartCardData::SurName ].toString()
-	);
-	setCardType( scdp.authCert );
-}
-	
-void QCardInfo::setFullName( const QString &firstName1, const QString &firstName2, const QString &surName )
-{
-	QStringList firstName = QStringList()
-		<< firstName1
-		<< firstName2;
-	firstName.removeAll( "" );
-	QStringList name = QStringList()
-		<< firstName
-		<< surName;
-	name.removeAll( "" );
-	fullName = name.join(" ");
-}
-
-void QCardInfo::setCardType( const SslCertificate &cert )
-{
-	if( cert.type() & SslCertificate::DigiIDType )
-	{
-		cardType = "Digi ID";
-	}
-	else
-	{
-		cardType = "ID Card";
-	}
-	isEResident = cert.subjectInfo("O").contains("E-RESIDENT");
-}
-
-
-
 QSharedPointer<QPCSCReader> QSmartCardPrivate::connect(const QString &reader)
 {
-	qDebug() << "Connecting to reader" << reader;
+	qCDebug(CLog) << "Connecting to reader" << reader;
 	QSharedPointer<QPCSCReader> r(new QPCSCReader(reader, &QPCSC::instance()));
 	if(r->connect() && r->beginTransaction())
 		return r;
@@ -330,7 +270,7 @@ bool QSmartCardPrivate::updateCounters(QPCSCReader *reader, QSmartCardDataPrivat
 
 
 QSmartCard::QSmartCard(QObject *parent)
-:	QThread(parent)
+:	QObject(parent)
 ,	d(new QSmartCardPrivate)
 {
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
@@ -345,15 +285,11 @@ QSmartCard::QSmartCard(QObject *parent)
 	EC_KEY_METHOD_set_sign(d->ecmethod, nullptr, nullptr, QSmartCardPrivate::ecdsa_do_sign);
 #endif
 
-	d->t.d->readers = QPCSC::instance().readers();
-	d->t.d->cards = QStringList() << "loading";
 	d->t.d->card = "loading";
 }
 
 QSmartCard::~QSmartCard()
 {
-	d->terminate = true;
-	wait();
 #if OPENSSL_VERSION_NUMBER >= 0x10010000L
 	RSA_meth_free(d->rsamethod);
 	EC_KEY_METHOD_free(d->ecmethod);
@@ -408,8 +344,6 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, const QSt
 
 	return d->handlePinResult(reader.data(), result, true);
 }
-
-QMap<QString, QSharedPointer<QCardInfo>> QSmartCard::cache() const { return d->cache; };
 
 QSmartCardData QSmartCard::data() const { return d->t; }
 
@@ -567,149 +501,118 @@ void QSmartCard::logout()
 
 void QSmartCard::reload() { selectCard(d->t.card());  }
 
-void QSmartCard::run()
+void QSmartCard::reloadCard(const QString &card, bool isCardId)
 {
+	qCDebug(CLog) << "Polling";
+	if(!d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == card)
+		return;
+
+	qCDebug(CLog) << "Poll" << card;
 	QByteArray cardid = d->READRECORD;
-	cardid[2] = 8;
+	if(isCardId)
+		cardid[2] = QSmartCardData::DocumentId + 1;
+	else
+		cardid[2] = QSmartCardData::Id + 1;
 
-	while(!d->terminate)
-	{
-		if(QCardLock::instance().readTryLock())
+	// Check available cards
+	QString selectedReader;
+	const QStringList readers = QPCSC::instance().readers();
+	if(![&] {
+		for(const QString &name: readers)
 		{
-			// Get list of available cards
-			QMap<QString,QString> cards;
-			const QStringList readers = QPCSC::instance().readers();
-			if(![&] {
-				for(const QString &name: readers)
-				{
-					qDebug() << "Connecting to reader" << name;
-					QScopedPointer<QPCSCReader> reader(new QPCSCReader(name, &QPCSC::instance()));
-					if(!reader->isPresent())
-						continue;
+			qCDebug(CLog) << "Connecting to reader" << name;
+			QScopedPointer<QPCSCReader> reader(new QPCSCReader(name, &QPCSC::instance()));
+			if(!reader->isPresent())
+				continue;
 
-					if(!QSmartCardDataPrivate::atrList.contains(reader->atr()))
-					{
-						qDebug() << "Unknown ATR" << reader->atr();
-						continue;
-					}
-
-					switch(reader->connectEx())
-					{
-					case 0x8010000CL: continue; //SCARD_E_NO_SMARTCARD
-					case 0:
-						if(reader->beginTransaction())
-							break;
-					default: return false;
-					}
-
-					QPCSCReader::Result result;
-					#define TRANSFERIFNOT(X) result = reader->transfer(X); \
-						if(result.err) return false; \
-						if(!result)
-
-					TRANSFERIFNOT(d->MASTER_FILE)
-					{	// Master file selection failed, test if it is updater applet
-						TRANSFERIFNOT(d->UPDATER_AID)
-							continue; // Updater applet not found
-						TRANSFERIFNOT(d->MASTER_FILE)
-						{	//Found updater applet but cannot select master file, select back 3.5
-							reader->transfer(d->AID35);
-							continue;
-						}
-					}
-					TRANSFERIFNOT(d->ESTEIDDF)
-						continue;
-					TRANSFERIFNOT(d->PERSONALDATA)
-						continue;
-					TRANSFERIFNOT(cardid)
-						continue;
-					QString nr = d->codec->toUnicode(result.data);
-					if(!nr.isEmpty())
-						cards[nr] = name;
-				}
-				return true;
-			}())
+			if(!QSmartCardDataPrivate::atrList.contains(reader->atr()))
 			{
-				qDebug() << "Failed to poll card, try again next round";
-				QCardLock::instance().readUnlock();
-				sleep(5);
+				qCDebug(CLog) << "Unknown ATR" << reader->atr();
 				continue;
 			}
 
-			// cardlist has changed
-			QStringList order = cards.keys();
-			std::sort(order.begin(), order.end(), TokenData::cardsOrder);
-			bool update = d->t.cards() != order || d->t.readers() != readers;
-
-			// check if selected card is still in slot
-			if(!d->t.card().isEmpty() && !order.contains(d->t.card()))
+			switch(reader->connectEx())
 			{
-				update = true;
-				d->t.d = new QSmartCardDataPrivate();
+			case 0x8010000CL: continue; //SCARD_E_NO_SMARTCARD
+			case 0:
+				if(reader->beginTransaction())
+					break;
+			default: return false;
 			}
 
-			d->t.d->cards = order;
-			d->t.d->readers = readers;
+			bool readerMatched = false;
+			QPCSCReader::Result result;
+			#define TRANSFERIFNOT(X) result = reader->transfer(X); \
+				if(result.err) return false; \
+				if(!result)
 
-			// if none is selected select first from cardlist
-			if(d->t.card().isEmpty() && !d->t.cards().isEmpty())
-			{
-				QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-				t->card = d->t.cards().first();
-				t->data.clear();
-				t->authCert = QSslCertificate();
-				t->signCert = QSslCertificate();
-				d->t.d = t;
-				update = true;
-				Q_EMIT dataChanged();
-			}
-
-			// read card data
-			if(d->t.cards().contains(d->t.card()) && d->t.isNull())
-			{
-				update = true;
-				if(readCardData( cards, d->t.card(), true ))
-				{
-					qDebug() << "Failed to read card info, try again next round";
-					update = false;
+			TRANSFERIFNOT(d->MASTER_FILE)
+			{	// Master file selection failed, test if it is updater applet
+				TRANSFERIFNOT(d->UPDATER_AID)
+					continue; // Updater applet not found
+				TRANSFERIFNOT(d->MASTER_FILE)
+				{	//Found updater applet but cannot select master file, select back 3.5
+					reader->transfer(d->AID35);
+					continue;
 				}
 			}
-
-			// update data if something has changed
-			if(update)
+			TRANSFERIFNOT(d->ESTEIDDF)
+				continue;
+			TRANSFERIFNOT(d->PERSONALDATA)
+				continue;
+			TRANSFERIFNOT(cardid)
+				continue;
+			QString nr = d->codec->toUnicode(result.data);
+			if(isCardId)
+				readerMatched = !nr.isEmpty() && (nr == card);
+			else
+				readerMatched = !nr.isEmpty() && card.endsWith(QStringLiteral(",") + nr);
+			qCDebug(CLog) << "Card id:" << nr;
+			if(readerMatched)
 			{
-				Q_EMIT dataChanged();
+				selectedReader = name;
+				return true;
 			}
-
-			auto added = order.toSet().subtract( d->cache.keys().toSet() );
-			for( auto newCard: added )
-			{
-				readCardData( cards, newCard, false );
-			}
-
-			QCardLock::instance().readUnlock();
 		}
-		sleep(5);
+		return true;
+	}())
+	{
+		qCDebug(CLog) << "Failed to poll card, try again next round";
+		return;
+	}
+
+	// check if selected card is same as signer
+	if(!d->t.card().isEmpty() && card != d->t.card())
+		d->t.d = new QSmartCardDataPrivate();
+
+	// select signer card
+	if(d->t.card().isEmpty() || d->t.card() != card)
+	{
+		QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+		t->card = card;
+		t->data.clear();
+		t->authCert = QSslCertificate();
+		t->signCert = QSslCertificate();
+		d->t.d = t;
+	}
+
+	// read card data
+	if(!selectedReader.isEmpty() && d->t.isNull())
+	{
+		qCDebug(CLog) << "Read card" << card << "info";
+		if(readCardData(selectedReader))
+			qDebug() << "Failed to read card info, try again next round";
 	}
 }
 
-bool QSmartCard::readCardData( const QMap<QString,QString> &cards, const QString &card, bool selectedCard )
+bool QSmartCard::readCardData(const QString &selectedReader)
 {
 	bool tryAgain = false;
-	QSharedPointer<QPCSCReader> reader(d->connect(cards.value(card)));
+	QSharedPointer<QPCSCReader> reader(d->connect(selectedReader));
 	if(!reader.isNull())
 	{
 		QSharedDataPointer<QSmartCardDataPrivate> t;
-		QSharedPointer<QSmartCardData> scd;
-		if( selectedCard )
-		{
-			t = d->t.d;
-		}
-		else
-		{
-			scd.reset( new QSmartCardData );
-			t = scd->d;
-		}
+		t = d->t.d;
 		t->reader = reader->name();
 		t->pinpad = reader->isPinPad();
 		t->version = QSmartCardDataPrivate::atrList.value(reader->atr(), QSmartCardData::VER_INVALID);
@@ -807,20 +710,10 @@ bool QSmartCard::readCardData( const QMap<QString,QString> &cards, const QString
 			t->data[QSmartCardData::IssueDate] = t->authCert.effectiveDate();
 			t->data[QSmartCardData::Expiry] = t->authCert.expiryDate();
 		}
-		if(tryAgain)
-		{
-			qDebug() << "Failed to read card info, try again next round";
-		}
-		else if( !d->cache.contains( card ) )
-		{
-			qDebug() << "Successfully read data of card " << card;
-			d->cache.insert( card, QSharedPointer<QCardInfo>(new QCardInfo( *t )) );
-			Q_EMIT dataLoaded();
-		}
-
-		if( selectedCard && !tryAgain )
+		if(!tryAgain)
 		{
 			d->t.d = t;
+			emit dataChanged();
 		}
 	}
 

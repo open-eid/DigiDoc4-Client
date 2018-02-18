@@ -29,13 +29,15 @@ namespace Ui {
 class PinPopup;
 }
 
+class SslCertificate;
+
 class PinPopup : public QDialog
 {
 	Q_OBJECT
 
 public:
 	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = nullptr );
-	PinPopup( PinDialog::PinFlags flags, const QSslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr );
+	PinPopup( PinDialog::PinFlags flags, const SslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr );
 	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr, const QString &bodyText = "" );
 
 	~PinPopup();

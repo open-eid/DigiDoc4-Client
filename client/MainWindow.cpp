@@ -51,6 +51,7 @@
 
 #include <QDebug>
 #include <QFileDialog>
+#include <QLoggingCategory>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QSvgWidget>
@@ -59,6 +60,8 @@
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
+
+Q_LOGGING_CATEGORY(MLog, "qdigidoc4.MainWindow")
 
 MainWindow::MainWindow( QWidget *parent ) :
 	QWidget( parent ),
@@ -127,9 +130,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	setAcceptDrops( true );
 
 	// Refresh ID card info in card widget
-	connect( qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::showCardStatus );
-	// Refresh card info in card pop-up menu
-	connect( qApp->smartcard(), &QSmartCard::dataLoaded, this, &MainWindow::updateCardData );
+	connect(qApp->signer(), &QSigner::signDataChanged, this, &MainWindow::showCardStatus);
+	// Refresh card info on "My EID" page
+	connect(qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
 	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 
@@ -513,11 +516,9 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 				cryptoContainer->clear(filename);
 				for(auto file: files)
 					cryptoContainer->documentModel()->addFile(file);
-				auto cardData = qApp->smartcard()->data();
-				if(!cardData.isNull())
-				{
-					cryptoContainer->addKey(CKey(cardData.authCert()));
-				}
+				auto authCert = qApp->signer()->tokenauth().cert();
+				if(!authCert.isNull())
+					cryptoContainer->addKey(CKey(authCert));
 				navigate = true;
 			}
 		}
@@ -545,6 +546,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	switch(action)
 	{
 	case SignatureAdd:
+	case SignatureToken:
 		if(digiDoc->isService())
 			wrapAndSign();
 		else
@@ -826,7 +828,7 @@ void MainWindow::openContainer()
 
 void MainWindow::operation(int op, bool started)
 {
-	qDebug() << "Op " << op << (started ? " started" : " ended");
+	qCDebug(MLog) << "Op " << op << (started ? " started" : " ended");
 }
 
 void MainWindow::resetCryptoDoc(CryptoDoc *doc)
@@ -949,7 +951,7 @@ void MainWindow::showCardMenu( bool show )
 {
 	if( show )
 	{
-		cardPopup.reset( new CardPopup( qApp->smartcard(), this ) );
+		cardPopup.reset(new CardPopup(qApp->signer()->tokensign(), qApp->signer()->cache(), this));
 		// To select active card from several cards in readers ..
 		connect( cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection );
 		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectSignCard, Qt::QueuedConnection );
@@ -967,32 +969,43 @@ void MainWindow::showCardMenu( bool show )
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
-	QSmartCardData t = qApp->smartcard()->data();
+	TokenData t = qApp->signer()->tokensign();
 
 	closeWarnings(-1);
 
-	if( !t.isNull() )
+	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
 		ui->idSelector->show();
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
 
-		QSharedPointer<const QCardInfo> cardInfo(new QCardInfo(t));
-		ui->cardInfo->update(cardInfo);
-		emit ui->signContainerPage->cardChanged(cardInfo->id);
+		qCDebug(MLog) << "Select card" << t.card();
+		auto cardInfo = qApp->signer()->cache()[t.card()];
+
+		if(ui->cardInfo->id() != t.card())
+		{
+			ui->infoStack->clearData();
+			ui->accordion->clear();
+		}
+
+		ui->cardInfo->update(cardInfo, t.card());
+		emit ui->signContainerPage->cardChanged(cardInfo->id, cardInfo->type & SslCertificate::TempelType);
 		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
 
-		if( t.authCert().type() & SslCertificate::EstEidType )
+		if(cardInfo->type & SslCertificate::EstEidType)
 		{
-			Styles::cachedPicture( t.data(QSmartCardData::Id ).toString(), { ui->cardInfo, ui->infoStack } );
+			Styles::cachedPicture(cardInfo->id, {ui->cardInfo, ui->infoStack});
 		}
-		ui->infoStack->update( t );
-		ui->accordion->updateInfo( qApp->smartcard() );
-		ui->myEid->invalidIcon( !t.authCert().isValid() || !t.signCert().isValid() );
-		updateCardWarnings();
-		showIdCardAlerts( t );
-		showPinBlockedWarning( t );
+		else if(cardInfo->type & SslCertificate::TempelType)
+		{
+			ui->infoStack->update(*cardInfo);
+			const SslCertificate &authCert = qApp->signer()->tokenauth().cert();
+			const SslCertificate &signCert = t.cert();
+			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
+			ui->myEid->invalidIcon(!authCert.isValid() || !signCert.isValid());
+			updateCardWarnings();
+ 		}
 	}
 	else
 	{
@@ -1128,12 +1141,29 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 
 void MainWindow::updateCardData()
 {
-	if( cardPopup )
-		cardPopup->update( qApp->smartcard() );
+	if(cardPopup)
+		cardPopup->update(qApp->signer()->cache());
+}
+
+void MainWindow::updateMyEid()
+{
+	Application::restoreOverrideCursor();
+	QSmartCardData t = qApp->smartcard()->data();
+
+	if(!t.card().isEmpty() && !t.signCert().isNull())
+	{
+		ui->infoStack->update(t);
+		ui->accordion->updateInfo(qApp->smartcard());
+		ui->myEid->invalidIcon(!t.authCert().isValid() || !t.authCert().isValid());
+		updateCardWarnings();
+		showIdCardAlerts(t);
+		showPinBlockedWarning(t);
+	}
 }
 
 void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 {
+	qCDebug(MLog) << "noReader_NoCard_Loading_Event" << status;
 	ui->idSelector->hide();
 	if(status == NoCardInfo::Loading)
 		Application::setOverrideCursor(Qt::BusyCursor);

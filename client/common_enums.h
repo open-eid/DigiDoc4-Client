@@ -61,6 +61,7 @@ enum Actions {
 
     SignatureAdd,
     SignatureMobile,
+    SignatureToken,
     SignatureRemove,
 	SignatureWarning,
 	ClearSignatureWarning

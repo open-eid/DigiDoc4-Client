@@ -19,38 +19,15 @@
 
 #pragma once
 
-#include <memory>
+#include <QString>
 
-#include <QtCore/QtGlobal>
-#include <QFont>
-#include <QPixmap>
-
-class PictureInterface
+struct QCardInfo
 {
-public:
-	virtual ~PictureInterface() {};
-
-	virtual void clearPicture() = 0;
-	virtual void showPicture( const QPixmap &pixmap) = 0;
-};
-
-class StylesPrivate;
-class Styles
-{
-public:
-	enum Font {
-		Bold,
-		Condensed,
-		CondensedBold,
-		Regular
-	};
-
-	static QFont font( Font font, int size );
-	static QFont font( Font font, int size, QFont::Weight weight );
-	static void cachedPicture( const QString &id, std::vector<PictureInterface*> pictureWidgets );
-
-private:
-	explicit Styles();
-
-	Q_DISABLE_COPY(Styles);
+	QString id;
+	QString fullName;
+	QString cardType;
+	QString country;
+	int type;
+	bool loading;
+	bool isEResident;
 };
