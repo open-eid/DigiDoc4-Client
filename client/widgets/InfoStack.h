@@ -58,7 +58,6 @@ private:
 	Ui::InfoStack *ui;
 	QWidget* alternateIcon;
 
-	QString appletVersion;
 	int certType;
 	bool certIsValid;
 	bool certIsResident;

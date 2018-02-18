@@ -34,7 +34,6 @@ InfoStack::InfoStack( QWidget *parent )
 : StyledWidget( parent )
 , ui( new Ui::InfoStack )
 , alternateIcon( nullptr )
-, appletVersion()
 , certType(0)
 , certIsValid(false)
 , certIsResident(false)
@@ -89,6 +88,7 @@ void InfoStack::clearAlternateIcon()
 
 void InfoStack::clearData()
 {
+	clearAlternateIcon();
 	ui->valueGivenNames->setText( "" );
 	ui->valueSurname->setText( "" );
 	ui->valuePersonalCode->setText( "" );
