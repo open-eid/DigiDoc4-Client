@@ -359,9 +359,15 @@ color: #000000;
            <property name="styleSheet">
             <string notr="true">QLineEdit
 {
-padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
+padding: 0px 10px;
+background-color: #ffffff;
+font-size: 16px;
+color: #000000;
+font-weight: 400;
+line-height: 14px;
+text-align: center;
 }</string>
            </property>
            <property name="maxLength">
