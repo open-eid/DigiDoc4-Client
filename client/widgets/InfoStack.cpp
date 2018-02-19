@@ -207,6 +207,8 @@ void InfoStack::update()
 		ui->labelSerialNumber->setText(tr("Document"));
 		ui->valueSerialNumber->setMinimumWidth(100);
 		ui->valueSerialNumber->setMaximumWidth(100);
+        if(!alternateIcon)
+            ui->btnPicture->show();
 	}
 
 }
