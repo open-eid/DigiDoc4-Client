@@ -1,3 +1,15 @@
+DigiDoc4 version 0.4.0 release notes
+--------------------------------------
+
+- eToken (e-Seal) support
+- Navigation logic changes; signature container wrapped in crypto-container on crypto page and vice versa
+- ASiC-E signing fix
+- Network proxy support in DigiDoc4 client
+- Multiple text and UI/UX improvements
+- Card polling backend changes
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v0.3.0-BETA...v0.4.0-BETA)
+
 DigiDoc4 version 0.3.0 release notes
 --------------------------------------
 
