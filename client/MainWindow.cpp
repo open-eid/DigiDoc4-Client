@@ -1042,7 +1042,7 @@ void MainWindow::showEvent(QShowEvent *event)
 	if(!qApp->initialized())
 	{
 		FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
-			QPoint(this->width() - width - 15, this->height() - height - 15), width, height);
+			QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
 		QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", notification);
 		structureFunds->resize(width, height);
 		structureFunds->show();

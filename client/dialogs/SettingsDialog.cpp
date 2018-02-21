@@ -26,7 +26,6 @@
 #include "CheckConnection.h"
 #include "Colors.h"
 #include "FileDialog.h"
-#include "QCardLock.h"
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
