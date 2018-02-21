@@ -704,6 +704,18 @@ QWidget* Application::mainWindow()
 	QWidget* win = activeWindow();
 	QWidget* root = nullptr;
 
+	if (!win)
+	{	// Happens on Ubuntu only.
+		for (QWidget *widget: qApp->topLevelWidgets())
+		{
+			if (widget->isWindow())
+			{
+				win = widget;
+				break;
+			}
+		}
+	}
+
 	while(win)
 	{
 		root = win;
