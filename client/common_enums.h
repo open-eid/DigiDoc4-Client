@@ -109,6 +109,12 @@ enum WarningType {
     InvalidTimestampWarning,
     UnknownSignatureWarning,
     UnknownTimestampWarning,
+
+    EmailActivationWarning,
+    EmailLoadingWarning,
+    MobileLoadingWarning,
+    PictureLoadingWarning,
+    SSLLoadingWarning
 };
 
 }

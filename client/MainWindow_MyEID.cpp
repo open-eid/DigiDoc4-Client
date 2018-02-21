@@ -212,11 +212,11 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	{
 		switch( type )
 		{
-		case SSLConnect::ActivateEmails: showWarning(WarningText(tr("Failed activating email forwards."), ssl.errorString())); break;
-		case SSLConnect::EmailInfo: showWarning(WarningText(tr("Failed loading email settings."), ssl.errorString())); break;
-		case SSLConnect::MobileInfo: showWarning(WarningText(tr("Failed loading Mobiil-ID settings."), ssl.errorString())); break;
-		case SSLConnect::PictureInfo: showWarning(WarningText(tr("Loading picture failed."), ssl.errorString())); break;
-		default: showWarning(WarningText(tr("Failed to load data"), ssl.errorString())); break;
+		case SSLConnect::ActivateEmails: showWarning(WarningText(WarningType::EmailActivationWarning, ssl.errorString())); break;
+		case SSLConnect::EmailInfo: showWarning(WarningText(WarningType::EmailLoadingWarning, ssl.errorString())); break;
+		case SSLConnect::MobileInfo: showWarning(WarningText(WarningType::MobileLoadingWarning, ssl.errorString())); break;
+		case SSLConnect::PictureInfo: showWarning(WarningText(WarningType::PictureLoadingWarning, ssl.errorString())); break;
+		default: showWarning(WarningText(WarningType::SSLLoadingWarning, ssl.errorString())); break;
 		}
 		return QByteArray();
 	}

@@ -229,7 +229,7 @@ color: #041E42;</string>
        <x>262</x>
        <y>320</y>
        <width>500</width>
-       <height>32</height>
+       <height>40</height>
       </rect>
      </property>
      <property name="font">
@@ -248,7 +248,7 @@ border: none;</string>
       <string>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignHCenter|Qt::AlignTop</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
