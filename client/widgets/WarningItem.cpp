@@ -34,8 +34,9 @@ WarningText::WarningText(const QString &text, const QString &details, int page)
 , warningType(ria::qdigidoc4::NoWarning)
 {}
 
-WarningText::WarningText(ria::qdigidoc4::WarningType warningType)
+WarningText::WarningText(ria::qdigidoc4::WarningType warningType, const QString &details)
 : counter(0)
+, details(details)
 , external(false)
 , page(-1)
 , warningType(warningType)
@@ -138,6 +139,22 @@ void WarningItem::lookupWarning()
 			warnText.text = tr("%n timestamps are unknown", "", warnText.counter);
 			warnText.details = QString("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 						.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
+			break;
+
+		case ria::qdigidoc4::EmailActivationWarning:
+			warnText.text = MainWindow::tr("Failed activating email forwards.");
+			break;
+		case ria::qdigidoc4::EmailLoadingWarning:
+			warnText.text = MainWindow::tr("Failed loading email settings.");
+			break;
+		case ria::qdigidoc4::MobileLoadingWarning:
+			warnText.text = MainWindow::tr("Failed loading Mobiil-ID settings.");
+			break;
+		case ria::qdigidoc4::PictureLoadingWarning:
+			warnText.text = MainWindow::tr("Loading picture failed.");
+			break;
+		case ria::qdigidoc4::SSLLoadingWarning:
+			warnText.text = MainWindow::tr("Failed to load data");
 			break;
 
 		default:

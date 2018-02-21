@@ -37,7 +37,7 @@ struct WarningText {
 	ria::qdigidoc4::WarningType warningType;
 
 	WarningText(const QString &text, const QString &details = QString(), int page = -1);
-	WarningText(ria::qdigidoc4::WarningType warningType);
+	WarningText(ria::qdigidoc4::WarningType warningType, const QString &details = QString());
 	WarningText(ria::qdigidoc4::WarningType warningType, int counter);
 };
 
