@@ -186,6 +186,8 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 			// else pin locked, fall through
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
+			if (status != QPKCS11::PinIncorrect)
+				reloadauth();
 			Q_EMIT error( QPKCS11::errorString( status ) );
 			return PinLocked;
 		default:
@@ -210,6 +212,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		if(d->win->lastError() == QWin::PinCanceled)
 		{
 			QCardLock::instance().exclusiveUnlock();
+			smartcard()->reload(); // QSmartCard should also know that PIN1 is blocked.
 			return PinCanceled;
 		}
 	}
@@ -490,6 +493,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		if(d->win->lastError() == QWin::PinCanceled)
 		{
 			QCardLock::instance().exclusiveUnlock();
+			smartcard()->reload(); // QSmartCard should also know that PIN2 is blocked.
 			throwException(tr("Failed to login token"), Exception::PINCanceled, __LINE__);
 		}
 	}

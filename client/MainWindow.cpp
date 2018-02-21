@@ -663,9 +663,9 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded"), 750, 3000, 1200 );
 		}
-		else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
+		else if((qApp->signer()->tokenauth().flags() & TokenData::PinLocked))
 		{
-			qApp->smartcard()->reload(); // QSmartCard should also know that PIN is blocked.
+			qApp->smartcard()->reload(); // QSmartCard should also know that PIN1 is blocked.
 			showPinBlockedWarning(qApp->smartcard()->data());
 		}
 		break;

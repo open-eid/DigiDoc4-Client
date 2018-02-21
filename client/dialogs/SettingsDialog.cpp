@@ -623,7 +623,6 @@ void SettingsDialog::updateDiagnostics()
 	Diagnostics *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
 	connect(worker, &Diagnostics::destroyed, this, [=]{
-		QCardLock::instance().exclusiveUnlock();
 		if(!appletVersion.isEmpty())
 		{
 			QString info;
@@ -636,7 +635,6 @@ void SettingsDialog::updateDiagnostics()
 		ui->txtDiagnostics->ensureCursorVisible() ;
 		QApplication::restoreOverrideCursor();
 	});
-	QCardLock::instance().exclusiveLock();
 	QThreadPool::globalInstance()->start( worker );
 	if(Settings(QSettings::SystemScope).value("disableSave", false).toBool())
 	{
