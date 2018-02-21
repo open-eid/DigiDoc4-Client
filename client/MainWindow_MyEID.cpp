@@ -114,7 +114,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 		if (type == QSmartCardData::Pin2Type)
 		{
 			clearWarning(WarningType::UnblockPin2Warning);
-			emit ui->cryptoContainerPage->cardChanged(card);
+			emit ui->signContainerPage->cardChanged(card);
 		}
 	}
 }
