@@ -3245,7 +3245,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>https://www.id.ee/?lang=et&amp;id=34054</translation>
+        <translation>https://www.id.ee/index.php?id=38498</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30591</source>
