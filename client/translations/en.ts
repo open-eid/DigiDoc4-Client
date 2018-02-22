@@ -3291,7 +3291,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>http://id.ee/?lang=en&amp;id=34317</translation>
+        <translation>https://www.id.ee/index.php?id=38499</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30591</source>
