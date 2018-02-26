@@ -472,6 +472,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINCanceled, __LINE__ );
 		case QPKCS11::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
+			reloadsign();
 			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINIncorrect, __LINE__ );
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
