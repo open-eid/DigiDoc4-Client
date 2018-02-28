@@ -348,7 +348,7 @@ void SDocumentModel::open(int row)
 		return;
 
 	QFileInfo f(save(row, FileDialog::tempPath(
-		from(doc->b->dataFiles().at(row)->fileName())
+		FileDialog::safeName(from(doc->b->dataFiles().at(row)->fileName()))
 	)));
 	if( !f.exists() )
 		return;
@@ -552,7 +552,7 @@ bool DigiDoc::open( const QString &file )
 			const DataFile *f = b->dataFiles().at(0);
 			if(QFileInfo(from(f->fileName())).suffix().toLower() == "ddoc")
 			{
-				const QString tmppath = FileDialog::tempPath(from(f->fileName()));
+				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
 				QFileInfo f(tmppath);
 				if(f.exists(tmppath))
