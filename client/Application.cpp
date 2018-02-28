@@ -96,8 +96,6 @@ public:
 				reload();
 		});
 		s.beginGroup( "Client" );
-		// TODO PROXY
-		// SettingsDialog::loadProxy(this);
 	}
 
 	std::string proxyHost() const override
@@ -296,7 +294,8 @@ Application::Application( int &argc, char **argv )
 	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
 	connect( d->newClientAction, SIGNAL(triggered()), SLOT(showClient()) );
 
-	setQuitOnLastWindowClosed( true );  // Oleg: this is needed to release application from memory (Windows)
+	// This is needed to release application from memory (Windows)
+	setQuitOnLastWindowClosed( true ); 
 	d->lastWindowTimer.setSingleShot(true);
 	connect(&d->lastWindowTimer, &QTimer::timeout, [](){ if(topLevelWindows().isEmpty()) quit(); });
 	connect(this, &Application::lastWindowClosed, [&](){ d->lastWindowTimer.start(10*1000); });

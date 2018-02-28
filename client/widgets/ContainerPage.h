@@ -52,14 +52,14 @@ public:
 
 	void clear();
 	void setHeader(const QString &file);
-	void transition(CryptoDoc *container);
+	void transition(CryptoDoc *container, bool canDecrypt);
 	void transition(DigiDoc* container);
-	void update(CryptoDoc *container);
+	void update(bool canDecrypt, CryptoDoc *container = nullptr);
 
 signals:
 	void action(int code, const QString &info1 = QString(), const QString &info2 = QString());
 	void addFiles(const QStringList &files);
-	void cardChanged(const QString& idCode = QString(), bool seal = false);
+	void cardChanged(const QString& idCode = QString(), bool seal = false, const QByteArray &serialNumber = QByteArray());
 	void details(const QString &id);
 	void fileRemoved(int row);
 	void keysSelected(QList<CKey> keys);
@@ -117,5 +117,6 @@ private:
 	QString envelope;
 	QString navigateToContainerText;
 	QString saveText;
+	bool canDecrypt;
 	bool seal;
 };

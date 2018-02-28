@@ -54,6 +54,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 , envelope("Envelope")
 , navigateToContainerText("OPEN CONTAINER LOCATION")
 , saveText("SAVE WITHOUT SIGNING")
+, canDecrypt(false)
 , seal(false)
 {
 	ui->setupUi( this );
@@ -125,6 +126,7 @@ void ContainerPage::clear()
 {
 	ui->leftPane->clear();
 	ui->rightPane->clear();
+	canDecrypt = false;
 }
 
 void ContainerPage::clearPopups()
@@ -171,7 +173,8 @@ void ContainerPage::init()
 	mobileCode = Settings().value("Client/MobileCode").toString();
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
-	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal){ emit ui->rightPane->idChanged(idCode, mobileCode); });
+	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal, const QByteArray& serialNumber)
+		{ emit ui->rightPane->idChanged(idCode, mobileCode, serialNumber); });
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -353,9 +356,10 @@ void ContainerPage::showSigningButton()
 		showMainAction(SignatureAdd);
 }
 
-void ContainerPage::transition(CryptoDoc* container)
+void ContainerPage::transition(CryptoDoc* container, bool canDecrypt)
 {
 	clear();
+	this->canDecrypt = canDecrypt;
 	ContainerState state = container->state();
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
@@ -419,17 +423,23 @@ void ContainerPage::transition(DigiDoc* container)
 	updatePanes(state);
 }
 
-void ContainerPage::update(CryptoDoc* container)
+void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 {
-	ui->rightPane->clear();
+	this->canDecrypt = canDecrypt;
+	if(ui->leftPane->getState() & EncryptedContainer)
+		updateDecryptionButton();
 
+	if(!container)
+		return;
+
+	ui->rightPane->clear();
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
 }
 
 void ContainerPage::updateDecryptionButton()
 {
-	if(cardInReader.isNull())
+	if(!canDecrypt || cardInReader.isNull())
 		hideMainAction();
 	else
 		showMainAction(DecryptContainer);
