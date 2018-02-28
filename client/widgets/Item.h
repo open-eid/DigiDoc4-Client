@@ -33,7 +33,7 @@ public:
 
 public slots:
 	virtual void details();
-	virtual void idChanged(const QString& cardCode, const QString& mobileCode);
+	virtual void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber);
 
 signals:
 	void add(Item* item);

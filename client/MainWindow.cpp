@@ -529,7 +529,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(navigate)
 		{
 			resetCryptoDoc(cryptoContainer.release());
-			ui->cryptoContainerPage->transition(cryptoDoc);
+			ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
 		}
 	}
 
@@ -621,7 +621,7 @@ void MainWindow::convertToCDoc()
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
-	ui->cryptoContainerPage->transition(cryptoDoc);
+	ui->cryptoContainerPage->transition(cryptoDoc, false);
 	selectPageIcon(ui->crypto);
 	ui->startScreen->setCurrentIndex(CryptoDetails);
 
@@ -658,7 +658,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	case DecryptContainer:
 		if(decrypt())
 		{
-			ui->cryptoContainerPage->transition(cryptoDoc);
+			ui->cryptoContainerPage->transition(cryptoDoc, false);
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded"), 750, 3000, 1200 );
@@ -672,7 +672,7 @@ void MainWindow::onCryptoAction(int action, const QString &id, const QString &ph
 	case EncryptContainer:
 		if(encrypt())
 		{
-			ui->cryptoContainerPage->transition(cryptoDoc);
+			ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Encryption succeeded"), 750, 3000, 1200 );
@@ -990,8 +990,13 @@ void MainWindow::showCardStatus()
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
-		emit ui->signContainerPage->cardChanged(cardInfo->id, cardInfo->type & SslCertificate::TempelType);
-		emit ui->cryptoContainerPage->cardChanged(cardInfo->id);
+
+		bool seal = cardInfo->type & SslCertificate::TempelType;
+		const SslCertificate &authCert = qApp->signer()->tokenauth().cert();
+		emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
+		emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
+		if(cryptoDoc)
+			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
 
 		if(cardInfo->type & SslCertificate::EstEidType)
 		{
@@ -1000,7 +1005,6 @@ void MainWindow::showCardStatus()
 		else if(cardInfo->type & SslCertificate::TempelType)
 		{
 			ui->infoStack->update(*cardInfo);
-			const SslCertificate &authCert = qApp->signer()->tokenauth().cert();
 			const SslCertificate &signCert = t.cert();
 			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
 			ui->myEid->invalidIcon(!authCert.isValid() || !signCert.isValid());
@@ -1214,7 +1218,7 @@ void MainWindow::removeAddress(int index)
 	if(cryptoDoc)
 	{
 		cryptoDoc->removeKey(index);
-		ui->cryptoContainerPage->transition(cryptoDoc);
+		ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
 	}
 }
 
@@ -1568,5 +1572,5 @@ void MainWindow::updateKeys(QList<CKey> keys)
 		cryptoDoc->removeKey(i);
 	for(auto key: keys)
 		cryptoDoc->addKey(key);
-	ui->cryptoContainerPage->update(cryptoDoc);
+	ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()), cryptoDoc);
 }

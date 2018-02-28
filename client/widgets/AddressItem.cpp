@@ -156,9 +156,10 @@ const CKey& AddressItem::getKey() const
 	return key;
 }
 
-void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode)
+void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber)
 {
-	yourself = (!code.isEmpty() && code == cardCode);
+	yourself = (!code.isEmpty() && code == cardCode) && (serialNumber == key.cert.serialNumber());
+
 	setName();
 }
 

@@ -1024,7 +1024,7 @@ void CryptoDoc::clear( const QString &file )
 	d->mime.clear();
 }
 
-ContainerState CryptoDoc::state()
+ContainerState CryptoDoc::state() const
 {
 	return containerState;
 }

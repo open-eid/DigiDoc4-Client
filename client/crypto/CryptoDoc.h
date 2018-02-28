@@ -90,7 +90,7 @@ public:
 	bool open( const QString &file );
 	void removeKey( int id );
 	bool saveDDoc( const QString &filename );
-	ria::qdigidoc4::ContainerState state();	
+	ria::qdigidoc4::ContainerState state() const;
 
 	static QByteArray concatKDF(const QString &digestMethod,
 		quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);

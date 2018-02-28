@@ -55,7 +55,7 @@ signals:
 	void addAll();
 	void addItem(int code);
 	void addressSearch();
-	void idChanged(const QString& cardCode, const QString& mobileCode);
+	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber);
 	void keysSelected(QList<Item *> keys);
 	void removed(int row);
 	void search(const QString &term);
@@ -91,6 +91,7 @@ private:
 	QString mobileCode;
 	QString headerText;
 	QString listText;
+	QByteArray serialNumber;
 
 	friend class AddRecipients;
 };

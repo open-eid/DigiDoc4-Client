@@ -29,5 +29,5 @@ Item::Item(QWidget *parent)
 Item::~Item() {}
 
 QString Item::id() const { return ""; }
-void Item::idChanged(const QString& cardCode, const QString& mobileCode) {}
+void Item::idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) {}
 void Item::details() {}
