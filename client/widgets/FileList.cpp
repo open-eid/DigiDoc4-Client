@@ -105,12 +105,19 @@ void FileList::save(FileItem *item)
 	{
 		QDir dir = QFileInfo(container).dir();
 		QString dest = dir.absolutePath() + QDir::separator() + item->getFile();
+
+#ifndef Q_OS_OSX
+		// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
+		// app sandbox; user must explicitly give permission to write data to the specific folders.
 		if(QFile::exists(dest))
 		{
+#endif
 			dest = FileDialog::getSaveFileName(this, tr("Save file"), dest);
 			if(!dest.isEmpty())
 				QFile::remove( dest );
+#ifndef Q_OS_OSX
 		}
+#endif
 		if(!dest.isEmpty())
 			documentModel->save(i, dest);
 	}
