@@ -870,7 +870,7 @@ void CDocumentModel::open(int row)
 {
 	if(d->encrypted)
 		return;
-	QFileInfo f(copy(row, FileDialog::tempPath(data(row))));
+	QFileInfo f(copy(row, FileDialog::tempPath(FileDialog::safeName(data(row)))));
 	if( !f.exists() )
 		return;
 	d->tempFiles << f.absoluteFilePath();
