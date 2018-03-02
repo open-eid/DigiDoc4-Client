@@ -37,8 +37,10 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 	setWindowModality( Qt::ApplicationModal );
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
+	QFont regularFont = Styles::font(Styles::Regular, 13);
 	d->close->setFont(condensed);
 	d->showCert->setFont(condensed);
+	d->view->setFont(regularFont);
 
 	QStringList horzHeaders;
 	horzHeaders << tr("Attribute") << tr("Value"); 
