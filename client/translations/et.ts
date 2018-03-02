@@ -1636,7 +1636,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>CHECK FOR UPDATES</source>
-        <translation>KONROLLI UUENDUSI</translation>
+        <translation>KONTROLLI UUENDUSI</translation>
     </message>
     <message>
         <source>FIRST RUN</source>
