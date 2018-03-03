@@ -2018,7 +2018,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui teie arvitisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
+		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui teie arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>

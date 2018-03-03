@@ -83,6 +83,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 		[this]() {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
+	coatOfArms->setStyleSheet("border: none;");
 	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
 	coatOfArms->resize( 80, 32 );
 	coatOfArms->move( 15, 17 );

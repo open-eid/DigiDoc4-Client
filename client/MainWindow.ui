@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Digidoc4 klient</string>
+   <string>DigiDoc4 client</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -127,7 +127,7 @@ min-width: 0px;
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: #023565;
-background-color: #023565;</string>
+border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
         </property>
         <widget class="QWidget" name="logoRightShadow" native="true">
          <property name="geometry">
