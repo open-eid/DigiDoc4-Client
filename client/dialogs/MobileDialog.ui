@@ -168,9 +168,9 @@ border-radius: 2px;
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>11</y>
+     <y>8</y>
      <width>360</width>
-     <height>32</height>
+     <height>38</height>
     </rect>
    </property>
    <property name="font">
