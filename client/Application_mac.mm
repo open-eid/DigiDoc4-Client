@@ -51,7 +51,7 @@
 	QStringList result;
 	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
 		result << QString::fromNSString( filename );
-	QMetaObject::invokeMethod( qApp, "showCrypto", Q_ARG(QStringList,result) );
+	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,true) );
 }
 @end
 
