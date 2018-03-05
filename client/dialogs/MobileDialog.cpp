@@ -26,6 +26,8 @@
 
 #include <common/IKValidator.h>
 
+#define COUNTRY_CODE_EST "372"
+
 MobileDialog::MobileDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::MobileDialog)
@@ -56,7 +58,7 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
 	ui->idCode->setText( s.value( "Client/MobileCode" ).toString() );
 	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
-	ui->phoneNo->setText( s.value( "Client/MobileNumber" ).toString() );
+	ui->phoneNo->setText(s.value("Client/MobileNumber", COUNTRY_CODE_EST).toString());
 	ui->cbRemember->setChecked( s2.value( "MobileSettings", true ).toBool() );
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
@@ -81,12 +83,13 @@ void MobileDialog::enableSign()
 	{
 		Settings s;
 		s.setValueEx( "Client/MobileCode", ui->idCode->text(), QString() );
-		s.setValueEx( "Client/MobileNumber", ui->phoneNo->text(), QString() );
+		s.setValueEx( "Client/MobileNumber", ui->phoneNo->text(),
+			ui->phoneNo->text() == COUNTRY_CODE_EST ? COUNTRY_CODE_EST : QString());
 	}
 	ui->sign->setToolTip(QString());
 	if( !IKValidator::isValid( ui->idCode->text() ) )
 		ui->sign->setToolTip( tr("Personal code is not valid") );
-	if( ui->phoneNo->text().isEmpty())
+	if(ui->phoneNo->text().isEmpty() || ui->phoneNo->text() == COUNTRY_CODE_EST)
 		ui->sign->setToolTip( tr("Phone number is not entered") );
 	ui->sign->setEnabled( ui->sign->toolTip().isEmpty() );
 }
