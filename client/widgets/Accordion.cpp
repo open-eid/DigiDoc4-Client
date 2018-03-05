@@ -48,16 +48,25 @@ void Accordion::init()
 	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
 
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), ui->contentVerifyCert);
+	ui->titleVerifyCert->setClosable(true);
 	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), ui->contentOtherData);
+	ui->titleOtherData->setClosable(true);
 	ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
+	ui->titleOtherEID->setClosable(true);
 	if(Settings().value("showEID", false).toBool())
 		ui->titleOtherEID->show();
 	else
 		ui->titleOtherEID->hide();
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
+	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, 
+		[this](){open(ui->titleOtherData);});
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
+	connect(ui->titleOtherData, &AccordionTitle::closed, this,
+		[this](){open(ui->titleVerifyCert);});
 	connect(ui->titleOtherEID, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
+	connect(ui->titleOtherEID, &AccordionTitle::closed, this, 
+		[this](){open(ui->titleVerifyCert);});
 
 	connect(this, &Accordion::showCertWarnings, ui->authBox, &VerifyCert::showWarningIcon);
 	connect(this, &Accordion::showCertWarnings, ui->signBox, &VerifyCert::showWarningIcon);
@@ -105,6 +114,12 @@ void Accordion::updateOtherData( bool activate, const QString &eMail, const quin
 QString Accordion::getEmail()
 {
 	return ui->contentOtherData->getEmail();
+}
+
+void Accordion::open(AccordionTitle* opened)
+{
+	openSection = opened;
+	openSection->openSection();
 }
 
 void Accordion::setFocusToEmail()
