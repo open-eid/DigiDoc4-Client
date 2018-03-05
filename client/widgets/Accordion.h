@@ -43,6 +43,7 @@ public:
 	void closeOtherSection( AccordionTitle* opened );
 	QString getEmail();
 	void idCheckOtherEIdNeeded( AccordionTitle* opened );
+	void open(AccordionTitle* opened);
 	void setFocusToEmail();
 	void updateDigiIdInfo();
 	void updateInfo(const QCardInfo &cardInfo, const SslCertificate &authCert, const SslCertificate &signCert);
