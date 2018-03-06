@@ -206,10 +206,7 @@ void MainWindow::pageSelected( PageIcon *const page )
 		if(digiDoc)
 		{
 			navigate = false;
-			selectPageIcon(ui->signature);
-			ui->startScreen->setCurrentIndex(SignDetails);
-			updateWarnings();
-			adjustDrops();
+			selectPage(SignDetails);
 		}
 	}
 	else if(toPage == CryptoIntro)
@@ -217,10 +214,7 @@ void MainWindow::pageSelected( PageIcon *const page )
 		if(cryptoDoc)
 		{
 			navigate = false;
-			selectPageIcon(ui->crypto);
-			ui->startScreen->setCurrentIndex(CryptoDetails);
-			updateWarnings();
-			adjustDrops();
+			selectPage(CryptoDetails);
 		}
 	}
 
@@ -529,12 +523,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	}
 
 	if(navigate)
-	{
-		selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
-		ui->startScreen->setCurrentIndex(page);
-		updateWarnings();
-		adjustDrops();
-	}
+		selectPage(page);
 }
 
 void MainWindow::onSignAction(int action, const QString &info1, const QString &info2)
@@ -618,8 +607,7 @@ void MainWindow::convertToCDoc()
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
 	ui->cryptoContainerPage->transition(cryptoDoc, false);
-	selectPageIcon(ui->crypto);
-	ui->startScreen->setCurrentIndex(CryptoDetails);
+	selectPage(CryptoDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 	notification->start( tr("Converted to crypto container!"), 750, 3000, 1200 );
@@ -746,6 +734,8 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 					cryptoDoc->documentModel() : digiDoc->documentModel();
 				for(auto file: content)
 					model->addFile(file);
+				selectPage(page);
+				return;
 			}
 		}
 		else
@@ -932,6 +922,14 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 
 	auto hider = WaitDialog::hider();
 	return FileDialog::getSaveFileName( this, title, filename, exts.join(";;"), &active );
+}
+
+void MainWindow::selectPage(Pages page)
+{
+	selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
+	ui->startScreen->setCurrentIndex(page);
+	updateWarnings();
+	adjustDrops();
 }
 
 void MainWindow::selectPageIcon( PageIcon* page )
@@ -1456,8 +1454,7 @@ bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 	resetDigiDoc(signatureContainer.release());
 
 	ui->signContainerPage->transition(digiDoc);
-	selectPageIcon(ui->signature);
-	ui->startScreen->setCurrentIndex(SignDetails);
+	selectPage(SignDetails);
 
 	return true;
 }

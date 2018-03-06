@@ -130,6 +130,7 @@ private:
 	void removeSignatureFile(int index);
 	bool save();
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
+	void selectPage(ria::qdigidoc4::Pages page);
 	void selectPageIcon( PageIcon* page );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void showCardMenu( bool show );
