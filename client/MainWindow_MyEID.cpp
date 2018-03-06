@@ -190,16 +190,6 @@ void MainWindow::activateEmail ()
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
 {
-/*
-	switch( type )
-	{
-	case SSLConnect::ActivateEmails: showLoading(  tr("Activating email settings") ); break;
-	case SSLConnect::EmailInfo: showLoading( tr("Loading email settings") ); break;
-	case SSLConnect::MobileInfo: showLoading( tr("Requesting Mobiil-ID status") ); break;
-	case SSLConnect::PictureInfo: showLoading( tr("Loading picture") ); break;
-	default: showLoading( tr( "Loading data" ) ); break;
-	}
-*/
 	if( !validateCardError( QSmartCardData::Pin1Type, type, qApp->smartcard()->login( QSmartCardData::Pin1Type ) ) )
 		return QByteArray();
 

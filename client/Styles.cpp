@@ -169,22 +169,3 @@ QFont Styles::font( Styles::Font font, int size, QFont::Weight weight )
 	f.setWeight( weight );
 	return f;
 }
-
-void Styles::cachedPicture(const QString &id, std::vector<PictureInterface*> pictureWidgets)
-{
-	Settings settings;
-	QVariantList index = settings.value("imageIndex").toList();
-
-	if(index.contains(id))
-	{
-		QImage image = settings.value("imageCache").toMap().value(id).value<QImage>();
-		QPixmap pixmap = QPixmap::fromImage( image );
-		for(auto widget: pictureWidgets)
-			widget->showPicture(pixmap);
-	}
-	else
-	{
-		for(auto widget: pictureWidgets)
-			widget->clearPicture();
-	}
-}

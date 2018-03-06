@@ -47,7 +47,6 @@ public:
 
 	static QFont font( Font font, int size );
 	static QFont font( Font font, int size, QFont::Weight weight );
-	static void cachedPicture( const QString &id, std::vector<PictureInterface*> pictureWidgets );
 
 private:
 	explicit Styles();
