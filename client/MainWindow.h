@@ -91,7 +91,7 @@ protected:
 	void showEvent(QShowEvent *event) override;
 
 private:
-	void cachePicture( const QString &id, const QImage &image );
+	void adjustDrops();
 	void browseOnDisk(const QString &fileName);
 	bool checkExpiration();
 	void clearWarning(int warningType);

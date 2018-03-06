@@ -281,7 +281,7 @@ Tüüp: %3</translation>
     </message>
     <message>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
+        <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada Sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
     </message>
     <message>
         <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
@@ -657,7 +657,7 @@ Tüüp: %3</translation>
     <message>
         <source>You do not have other eIDs.
 Learn more info here:</source>
-        <translation>Teil ei ole teisi eID-sid.
+        <translation>Sul ei ole teisi eID-sid.
 Rohkem infot leiate siit:</translation>
     </message>
     <message>
@@ -772,7 +772,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Teie @eesti.ee posti aadressid on suunatud e-postile </translation>
+        <translation>Sinu @eesti.ee posti aadressid on suunatud e-postile </translation>
     </message>
 </context>
 
@@ -1909,7 +1909,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>The document has already been signed by you.</source>
-        <translation>Dokument on sinu poolt juba allkirjastatud.</translation>
+        <translation>Dokument on Sinu poolt juba allkirjastatud.</translation>
     </message>
     <message>
         <source>CONTINUE SIGNING</source>
@@ -2018,7 +2018,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui teie arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
+		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -2378,7 +2378,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
-        <translation>Teie ID-kaardi sertifikaate ei ole võimalik alates 01.07.2017 uuendada. Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril 1777 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
+        <translation>Sinu ID-kaardi sertifikaate ei ole võimalik alates 01.07.2017 uuendada. Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril 1777 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
@@ -2438,7 +2438,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>This container is signed by you</source>
-        <translation>See ümbrik on sinu poolt allkirjastatud</translation>
+        <translation>See ümbrik on Sinu poolt allkirjastatud</translation>
     </message>
     <message>
         <source>You have not signed this container</source>
@@ -2777,7 +2777,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     </message>
     <message>
         <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
-        <translation>Teie e-posti konto on suletud. Avamiseks saatke palun e-kiri aadressil toimetaja@eesti.ee või helistage telefonil 663 0215.</translation>
+        <translation>Sinu e-posti konto on suletud. Avamiseks saatke palun e-kiri aadressil toimetaja@eesti.ee või helistage telefonil 663 0215.</translation>
     </message>
     <message>
         <source>Invalid email address</source>
@@ -2785,7 +2785,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     </message>
     <message>
         <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
-        <translation>Suunamine on salvestatud, ning sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
+        <translation>Suunamine on salvestatud, ning Sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
     </message>
     <message>
         <source>Opening</source>

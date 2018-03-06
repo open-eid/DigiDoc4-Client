@@ -209,6 +209,7 @@ void MainWindow::pageSelected( PageIcon *const page )
 			selectPageIcon(ui->signature);
 			ui->startScreen->setCurrentIndex(SignDetails);
 			updateWarnings();
+			adjustDrops();
 		}
 	}
 	else if(toPage == CryptoIntro)
@@ -219,11 +220,20 @@ void MainWindow::pageSelected( PageIcon *const page )
 			selectPageIcon(ui->crypto);
 			ui->startScreen->setCurrentIndex(CryptoDetails);
 			updateWarnings();
+			adjustDrops();
 		}
 	}
 
 	if(navigate)
 		navigateToPage(toPage);
+}
+
+void MainWindow::adjustDrops()
+{
+	if(currentState() == SignedContainer)
+		setAcceptDrops(false);
+	else
+		setAcceptDrops(true);
 }
 
 void MainWindow::browseOnDisk( const QString &fileName )
@@ -252,22 +262,6 @@ void MainWindow::buttonClicked( int button )
 	default:
 		break;
 	}
-}
-
-void MainWindow::cachePicture( const QString &id, const QImage &image )
-{
-	Settings settings;
-	QVariantList index = settings.value("imageIndex").toList();
-	QVariantMap images = settings.value("imageCache").toMap();
-	index.insert( 0, id );
-	images[id] = image;
-	if( index.size() > 10 )
-	{
-		QString removedId = index.takeLast().toString();
-		images.remove( removedId );
-	}
-	settings.setValue( "imageIndex", index );
-	settings.setValue( "imageCache", images );
 }
 
 void MainWindow::changeEvent(QEvent* event)
@@ -539,6 +533,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
 		ui->startScreen->setCurrentIndex(page);
 		updateWarnings();
+		adjustDrops();
 	}
 }
 
@@ -999,11 +994,7 @@ void MainWindow::showCardStatus()
 		if(cryptoDoc)
 			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
 
-		if(cardInfo->type & SslCertificate::EstEidType)
-		{
-			Styles::cachedPicture(cardInfo->id, {ui->cardInfo, ui->infoStack});
-		}
-		else if(cardInfo->type & SslCertificate::TempelType)
+		if(cardInfo->type & SslCertificate::TempelType)
 		{
 			ui->infoStack->update(*cardInfo);
 			const SslCertificate &signCert = t.cert();
@@ -1102,6 +1093,7 @@ bool MainWindow::sign()
 
 			FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 			notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+			adjustDrops();
 			return true;
 		}
 	}
@@ -1138,6 +1130,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 
 		FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 		notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+		adjustDrops();
 		return true;
 	}
 
@@ -1192,6 +1185,10 @@ void MainWindow::photoClicked( const QPixmap *photo )
 	if( photo )
 		return savePhoto( photo );
 
+	// No action if card data is not loaded yet
+	if(qApp->smartcard()->data().isNull())
+		return;
+
 	QByteArray buffer = sendRequest( SSLConnect::PictureInfo );
 
 	if( buffer.isEmpty() )
@@ -1208,7 +1205,6 @@ void MainWindow::photoClicked( const QPixmap *photo )
 		return;
 	}
 
-	cachePicture( qApp->smartcard()->data().data(QSmartCardData::Id).toString(), image );
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
@@ -1264,6 +1260,7 @@ void MainWindow::removeSignature(int index)
 		digiDoc->removeSignature(index);
 		save();
 		ui->signContainerPage->transition(digiDoc);
+		adjustDrops();
 	}
 }
 

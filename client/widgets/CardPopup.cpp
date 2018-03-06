@@ -51,10 +51,6 @@ CardPopup::CardPopup(const TokenData &token, const QMap<QString, QSharedPointer<
 			cardData.reset(new QCardInfo);
 			cardData->id = card;
 		}
-		else
-		{
-			Styles::cachedPicture( cardData->id, {cardWidget} );
-		}
 		cardWidget->move(0, 0);
 		cardWidget->update(cardData, card);
 		connect(cardWidget, &CardWidget::selected, this, &CardPopup::activated);
@@ -72,9 +68,6 @@ void CardPopup::update(const QMap<QString, QSharedPointer<QCardInfo>> &cache)
 	{
 		auto cardData = cache[cardWidget->id()];
 		if( cardWidget->isLoading() && !cardData.isNull() )
-		{
 			cardWidget->update(cardData, cardWidget->id());
-			Styles::cachedPicture( cardData->id, {cardWidget} );
-		}
 	}
 }

@@ -216,7 +216,7 @@ void ItemList::init(ItemType item, const QString &header)
 		headerItems = 2;
 	}
 
-	if (itemType == ItemSignature || item == AddedAdresses)
+	if (itemType == ItemSignature || item == AddedAdresses || this->state == SignedContainer)
 	{
 		ui->add->hide();
 	}
@@ -288,10 +288,8 @@ void ItemList::setTerm(const QString &term)
 void ItemList::stateChange( ContainerState state )
 {
 	this->state = state;
-	ui->add->setVisible(state & (SignatureContainers | UnencryptedContainer));
+	ui->add->setVisible(state & (UnsignedContainer | UnsignedSavedContainer | UnencryptedContainer));
 
 	for(auto item: items)
-	{
 		item->stateChange(state);
-	}
 }

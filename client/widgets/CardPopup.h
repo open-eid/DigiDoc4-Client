@@ -19,7 +19,6 @@
 
 #pragma once 
 
-#include "common_enums.h"
 #include "QCardInfo.h"
 #include "widgets/CardWidget.h"
 #include "widgets/StyledWidget.h"
