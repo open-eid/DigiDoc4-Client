@@ -23,6 +23,7 @@
 
 #include <QtCore/QtGlobal>
 #include <QFont>
+#include <QPixmap>
 
 class PictureInterface
 {
