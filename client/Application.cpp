@@ -26,6 +26,7 @@
 #include "QSigner.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
@@ -96,6 +97,7 @@ public:
 				reload();
 		});
 		s.beginGroup( "Client" );
+		SettingsDialog::loadProxy(this);
 	}
 
 	std::string proxyHost() const override
