@@ -1,3 +1,17 @@
+DigiDoc4 version 0.5.0 release notes
+--------------------------------------
+
+- Always load proxy settings on startup in case if settings changed externally
+- User's picture caching removed
+- Multiple UI/UX improvements: myEid sections closed on new click,
+  Estonian country code prefilled in Mobile ID dialog, repeated warnings etc.
+- Malicious filenames sanitized when saving bdoc/cdoc content
+- Crash on incorrect PIN2 fixed on Linux
+- MacOS Services option "Encrypt with DigiDoc4" implemented
+- MacOS App Sandbox fix: ask permissions when downloading bdoc/cdoc content
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v0.4.0-BETA...v0.5.0-BETA)
+
 DigiDoc4 version 0.4.0 release notes
 --------------------------------------
 
