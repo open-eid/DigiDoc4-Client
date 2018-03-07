@@ -47,6 +47,7 @@ public:
 	~SettingsDialog();
 
 	int exec() override;
+	static void loadProxy( const digidoc::Conf *conf );
 
 private Q_SLOTS:
 	void save();
@@ -64,7 +65,6 @@ private:
 	void selectLanguage();
 	void setProxyEnabled();
 	void updateProxy();
-	void loadProxy( const digidoc::Conf *conf );
 	void openDirectory();
 	void updateDiagnostics();
 	void saveDiagnostics();
