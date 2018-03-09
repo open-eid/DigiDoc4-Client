@@ -48,6 +48,8 @@ public:
 protected:
 	void paintEvent(QPaintEvent *event) override
 	{
+		if(parentWidget())
+			setMinimumSize(parentWidget()->width(), parentWidget()->height());
 		QPainter painter( this );
 		painter.setRenderHint( QPainter::Antialiasing );
 		// Opacity 90%
