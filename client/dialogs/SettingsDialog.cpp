@@ -99,8 +99,13 @@ SettingsDialog::~SettingsDialog()
 void SettingsDialog::initUI()
 {
 	ui->setupUi(this);
+#ifdef Q_OS_MAC
+	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
+	setWindowModality(Qt::WindowModal);
+#else
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	setWindowModality(Qt::ApplicationModal);
+#endif 
 
 	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
