@@ -1614,8 +1614,14 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <translation>ALLKIRJASTAMINE</translation>
     </message>
     <message>
+        <comment>not-win</comment>
         <source>ACCESS CERTIFICATE</source>
         <translation>JUURDEPÄÄSUTÕEND</translation>
+    </message>
+    <message>
+        <comment>win</comment>
+        <source>ACCESS CERTIFICATE</source>
+        <translation>JUURDEPÄÄSUTŌEND</translation>
     </message>
     <message>
         <source>PROXY</source>
@@ -1655,6 +1661,12 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
         <translation>SALVESTA DIAGNOSTIKA</translation>
     </message>
     <message>
+        <comment>not-win</comment>
+        <source>SHOW CERTIFICATE</source>
+        <translation>NÄITA TÕENDIT</translation>
+    </message>
+    <message>
+        <comment>win</comment>
         <source>SHOW CERTIFICATE</source>
         <translation>NÄITA TŌENDIT</translation>
     </message>

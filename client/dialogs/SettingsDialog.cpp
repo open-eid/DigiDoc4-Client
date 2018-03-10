@@ -116,6 +116,13 @@ void SettingsDialog::initUI()
 	ui->btnMenuGeneral->setFont(condensed12);
 	ui->btnMenuSigning->setFont(condensed12);
 	ui->btnMenuCertificate->setFont(condensed12);
+	ui->btnMenuCertificate->setText(tr("ACCESS CERTIFICATE",
+#ifdef Q_OS_WIN
+		"win"
+#else
+		"not-win"
+#endif
+	));
 	ui->btnMenuProxy->setFont(condensed12);
 	ui->btnMenuDiagnostics->setFont(condensed12);
 	ui->btnMenuInfo->setFont(condensed12);
@@ -197,6 +204,13 @@ void SettingsDialog::initUI()
 	ui->btnNavUseByDefault->setFont(condensed12);
 	ui->btnNavInstallManually->setFont(condensed12);
 	ui->btnNavShowCertificate->setFont(condensed12);
+	ui->btnNavShowCertificate->setText(tr("SHOW CERTIFICATE",
+#ifdef Q_OS_WIN
+		"win"
+#else
+		"not-win"
+#endif
+	));
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
 	ui->btnCheckConnection->setFont(condensed12);
