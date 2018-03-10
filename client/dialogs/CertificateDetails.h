@@ -41,6 +41,7 @@ public:
 	~CertificateDetails();
 
 	void saveCert();
+	static QString decodeCN(const QString &cn);
 	int exec() override;
 
 public slots:

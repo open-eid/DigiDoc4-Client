@@ -51,31 +51,6 @@
 #include <QtNetwork/QNetworkProxy>
 
 
-bool isDoubleEncodedUtf8(const QByteArray &str)
-{
-	// Detect double-encoded UTF-8 strings.
-	// E.g. 'Infosüsteemi' encoded to UTF-8, and then decoded to Latin1 is
-	// displayed as 'InfosÃ¼steemi'; In python3:
-	// > 'Infosüsteemi'.encode('utf-8').decode('latin1').encode('utf-8')
-	// > b'Infos\xc3\x83\xc2\xbcsteemi'
-	// > # Reverse
-	// b'Infos\xc3\x83\xc2\xbcsteemi'.decode('utf-8').encode('latin1').decode('utf-8')
-	// See "double" encoded UTF-8 sequence within Latin-1 Supplement:
-	// http://blogs.perl.org/users/chansen/2010/10/coping-with-double-encoded-utf-8.html
-	for(int i = 0; i < str.length() - 3; ++i)
-	{
-		if(str[i] == '\xc3' && str[i+2] == '\xc2')
-		{
-			if( (str[i+1] >= '\x82' && str[i+1] <= '\x84') &&
-				(str[i+3] >= '\x80' && str[i+3] <= '\xBF'))
-				return true;
-			i += 3;
-		}
-	}
-
-	return false;
-}
-
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 : QDialog(parent)
 , ui(new Ui::SettingsDialog)
@@ -505,14 +480,10 @@ void SettingsDialog::updateCert()
 	QSslCertificate c = AccessCert::cert();
 	if( !c.isNull() )
 	{
-		auto cn = SslCertificate(c).subjectInfo(QSslCertificate::CommonName);
-		auto cnUtf8 = cn.toUtf8();
-		if(isDoubleEncodedUtf8(cnUtf8))
-			cn = QString(cnUtf8).toLatin1();
 		ui->txtAccessCert->setText(
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			QString(tr("Issued to: %1<br />Valid to: %2 %3"))
-				.arg( cn )
+				.arg(CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)))
 				.arg( c.expiryDate().toString("dd.MM.yyyy") )
 				.arg( !SslCertificate(c).isValid() ? 
 					"<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
