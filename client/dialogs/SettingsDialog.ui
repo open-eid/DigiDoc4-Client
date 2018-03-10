@@ -220,6 +220,12 @@ QPushButton:!checked{
          </item>
          <item>
           <widget class="QPushButton" name="btnMenuCertificate">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -251,6 +257,9 @@ QPushButton:!checked{
             <string>ACCESS CERTIFICATE</string>
            </property>
            <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="flat">
             <bool>true</bool>
            </property>
           </widget>
@@ -1327,19 +1336,19 @@ background-color: #FFFFFF;
            <rect>
             <x>21</x>
             <y>442</y>
-            <width>65</width>
+            <width>75</width>
             <height>16</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>65</width>
+            <width>75</width>
             <height>16</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>65</width>
+            <width>75</width>
             <height>16</height>
            </size>
           </property>
@@ -1654,7 +1663,7 @@ QRadioButton::indicator::checked {
            </size>
           </property>
           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
+           <enum>QLineEdit::Password</enum>
           </property>
          </widget>
          <widget class="QLabel" name="lblProxyHost">
@@ -1918,7 +1927,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>339</x>
-            <y>35</y>
+            <y>31</y>
             <width>111</width>
             <height>61</height>
            </rect>
@@ -1940,9 +1949,9 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>104</y>
+            <y>100</y>
             <width>771</width>
-            <height>81</height>
+            <height>86</height>
            </rect>
           </property>
           <property name="text">
@@ -2314,6 +2323,12 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnNavInstallManually">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
@@ -2358,6 +2373,12 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnNavShowCertificate">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
