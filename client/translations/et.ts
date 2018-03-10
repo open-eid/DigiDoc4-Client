@@ -1656,7 +1656,7 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
-        <translation>NÄITA TÕENDIT</translation>
+        <translation>NÄITA TŌENDIT</translation>
     </message>
     <message>
         <source>USE DEFAULT</source>
