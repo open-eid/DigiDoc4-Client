@@ -116,6 +116,13 @@ void SettingsDialog::initUI()
 	ui->btnMenuGeneral->setFont(condensed12);
 	ui->btnMenuSigning->setFont(condensed12);
 	ui->btnMenuCertificate->setFont(condensed12);
+	ui->btnMenuCertificate->setText(tr("ACCESS CERTIFICATE",
+#ifdef Q_OS_WIN
+		"win"
+#else
+		"not-win"
+#endif
+	));
 	ui->btnMenuProxy->setFont(condensed12);
 	ui->btnMenuDiagnostics->setFont(condensed12);
 	ui->btnMenuInfo->setFont(condensed12);
@@ -197,6 +204,13 @@ void SettingsDialog::initUI()
 	ui->btnNavUseByDefault->setFont(condensed12);
 	ui->btnNavInstallManually->setFont(condensed12);
 	ui->btnNavShowCertificate->setFont(condensed12);
+	ui->btnNavShowCertificate->setText(tr("SHOW CERTIFICATE",
+#ifdef Q_OS_WIN
+		"win"
+#else
+		"not-win"
+#endif
+	));
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
 	ui->btnCheckConnection->setFont(condensed12);
@@ -479,17 +493,21 @@ void SettingsDialog::updateCert()
 {
 	QSslCertificate c = AccessCert::cert();
 	if( !c.isNull() )
+	{
 		ui->txtAccessCert->setText(
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			QString(tr("Issued to: %1<br />Valid to: %2 %3"))
-				.arg( SslCertificate(c).subjectInfo( QSslCertificate::CommonName ) )
+				.arg(CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)))
 				.arg( c.expiryDate().toString("dd.MM.yyyy") )
 				.arg( !SslCertificate(c).isValid() ? 
 					"<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
+	}
 	else
+	{
 		ui->txtAccessCert->setText( 
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
+	}
 	ui->txtAccessCert->adjustSize();
 	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
 	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );

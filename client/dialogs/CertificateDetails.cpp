@@ -33,6 +33,32 @@
 #include <QTextStream>
 
 
+bool isDoubleEncodedUtf8(const QString &cn)
+{
+	// Detect double-encoded UTF-8 strings.
+	// E.g. 'Infosüsteemi' encoded to UTF-8, and then decoded to Latin1 is
+	// displayed as 'InfosÃ¼steemi'; In python3:
+	// > 'Infosüsteemi'.encode('utf-8').decode('latin1').encode('utf-8')
+	// > b'Infos\xc3\x83\xc2\xbcsteemi'
+	// > # Reverse
+	// b'Infos\xc3\x83\xc2\xbcsteemi'.decode('utf-8').encode('latin1').decode('utf-8')
+	// See "double" encoded UTF-8 sequence within Latin-1 Supplement:
+	// http://blogs.perl.org/users/chansen/2010/10/coping-with-double-encoded-utf-8.html
+	QByteArray str = cn.toUtf8();
+	for(int i = 0; i < str.length() - 3; ++i)
+	{
+		if(str[i] == '\xc3' && str[i+2] == '\xc2')
+		{
+			if( (str[i+1] >= '\x82' && str[i+1] <= '\x84') &&
+				(str[i+3] >= '\x80' && str[i+3] <= '\xBF'))
+				return true;
+			i += 3;
+		}
+	}
+
+	return false;
+}
+
 class CertificateDetailsPrivate: public Ui::CertificateDetails
 {
 public:
@@ -83,9 +109,9 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 		s << "<li>" << tr(ext.toStdString().c_str()) << "</li>";
 	s << "</ul>";
 	s << "<br />";
-	s << "<b>" << tr("Issued to:") << "</b><br />" << cert.subjectInfo( QSslCertificate::CommonName );
+	s << "<b>" << tr("Issued to:") << "</b><br />" << decodeCN(cert.subjectInfo( QSslCertificate::CommonName));
 	s << "<br /><br />";
-	s << "<b>" << tr("Issued by:") << "</b><br />" << cert.issuerInfo( QSslCertificate::CommonName );
+	s << "<b>" << tr("Issued by:") << "</b><br />" << decodeCN(cert.issuerInfo(QSslCertificate::CommonName));
 	s << "<br /><br />";
 	s << "<b>" << tr("Valid:") << "</b><br />";
 	s << "<b>" << tr("From") << "</b> " << cert.effectiveDate().toLocalTime().toString( "dd.MM.yyyy" ) << "<br />";
@@ -114,7 +140,7 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 		const QString &data = cert.issuerInfo( obj );
 		if( data.isEmpty() )
 			continue;
-		text << data;
+		text << decodeCN(data);
 		// organizationIdentifier OID might not be known by SSL backend
 		textExt << QString( "%1 = %2" ).arg(
 				obj.constData() == ORGID_OID ? "organizationIdentifier" : obj.constData()
@@ -131,7 +157,7 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 		const QString &data = cert.subjectInfo( obj );
 		if( data.isEmpty() )
 			continue;
-		text << data;
+		text << decodeCN(data);
 		textExt << QString( "%1 = %2" ).arg( obj.constData() ).arg( data );
 	}
 	ui->addItem(tr("Subject"), text.join(", "), textExt.join("\n"));
@@ -174,6 +200,14 @@ void CertificateDetails::saveCert()
 		QMessageBox::warning( this, tr("Save certificate"), tr("Failed to save file") );
 }
 
+QString CertificateDetails::decodeCN(const QString &cn)
+{
+	if(isDoubleEncodedUtf8(cn))
+		return QString(cn.toUtf8()).toLatin1();
+
+	return cn;
+}
+
 int CertificateDetails::exec()
 {
 	Overlay overlay( parentWidget() );
@@ -189,9 +223,9 @@ void CertificateDetails::on_tblDetails_itemSelectionChanged()
 	const QList<QTableWidgetItem*> &list = ui->tblDetails->selectedItems();
 	if( !list.isEmpty() )
 	{
-		auto contentItem = list.last(); //constLast();
+		auto contentItem = list.last();
 		auto userData = contentItem->data(Qt::UserRole);
 		ui->detailedValue->setPlainText(userData.isNull() ?
-			contentItem->data(Qt::DisplayRole).toString() : userData.toString());
+			contentItem->data(Qt::DisplayRole).toString() : decodeCN(userData.toString()));
 	}
 }
