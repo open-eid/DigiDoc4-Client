@@ -78,8 +78,11 @@ bool MainWindow::checkExpiration()
 	int expiresIn = 106;
 	for(const SslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
 	{
-		expiresIn = std::min<int>(expiresIn,
-			QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
+		if(!cert.isNull())
+		{
+			expiresIn = std::min<int>(expiresIn,
+				QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
+		}
 	}
 
 	if(expiresIn <= 0)
