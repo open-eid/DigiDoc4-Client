@@ -54,6 +54,11 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	connect( ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject );
 	connect( this, &PinUnblock::finished, this, &PinUnblock::close );
 
+	QFont condensed12 = Styles::font(Styles::Condensed, 12);
+	ui->labelPuk->setFont(condensed12);
+	ui->labelPin->setFont(condensed12);
+	ui->labelRepeat->setFont(condensed12);
+
 	if( mode == PinUnblock::ChangePinWithPuk )
 	{
 		if( type == QSmartCardData::Pin2Type )
@@ -123,7 +128,6 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 #else
 	ui->label->setFont( Styles::font( Styles::Regular, 14 ) );
 #endif
-	ui->labelPuk->setFont( Styles::font( Styles::Condensed, 12 ) );
 	ui->labelAttemptsLeft->setFont( Styles::font( Styles::Regular, 13 ) );
 	if( mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk )
 		ui->labelAttemptsLeft->setText( tr("PUK remaining attempts: %1").arg( leftAttempts ) );

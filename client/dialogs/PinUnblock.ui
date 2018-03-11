@@ -313,9 +313,14 @@ line-height: 14px;
     </property>
     <item>
      <widget class="QLabel" name="labelPin">
+      <property name="font">
+       <font>
+        <family>Roboto Condensed</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: #353739;
-font-size: 12px;</string>
+       <string notr="true">color: #353739;</string>
       </property>
       <property name="text">
        <string>pin</string>
@@ -409,9 +414,14 @@ line-height: 14px;
     </property>
     <item>
      <widget class="QLabel" name="labelRepeat">
+      <property name="font">
+       <font>
+        <family>Roboto Condensed</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: #353739;
-font-size: 12px;</string>
+       <string notr="true">color: #353739;</string>
       </property>
       <property name="text">
        <string>repeat</string>
