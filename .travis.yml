@@ -56,7 +56,7 @@ script: case ${TARGET} in
       apt-get update -qq;
       apt-get install -y libdigidocpp-dev;
       export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}").${BUILD_NUMBER};
-      dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSION};
+      dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
       set +e;

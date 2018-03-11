@@ -3,7 +3,7 @@ Encoding=UTF-8
 Type=Application
 
 Exec=qdigidoc4 %F
-Icon=qdigidoc-client
+Icon=qdigidoc4
 
 Name=DigiDoc4 Client
 Name[et]=DigiDoc4 klient
