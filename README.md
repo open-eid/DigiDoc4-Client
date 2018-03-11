@@ -4,7 +4,7 @@
  * &copy; Estonian Information System Authority
  * [Architecture of ID-software](http://open-eid.github.io)
 
-Client is actively developed and is currently in alpha-stage.
+Client is currently BETA software.
 
 ## Building
 [![Build Status](https://travis-ci.org/open-eid/DigiDoc4-Client.svg?branch=master)](https://travis-ci.org/open-eid/DigiDoc4-Client)
@@ -26,10 +26,12 @@ Client is actively developed and is currently in alpha-stage.
 
          sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev
 
+   * Also runtime dependency opensc-pkcs11 is needed with the [EstEID ECDH token support](https://github.com/OpenSC/OpenSC/commit/2846295e1f12790bd9d8b01531affbf6feccf22c); until OpenSC distribution with these changes is not distributed dependency has to be built manually or downloaded from [installer.id.ee](https://installer.id.ee/media/ubuntu/pool/main/o/opensc/)
+
 2. Fetch the source
 
-        git clone --recursive https://github.com/open-eid/qdigidoc
-        cd qdigidoc
+        git clone --recursive https://github.com/open-eid/DigiDoc4-Client
+        cd DigiDoc4-Client
 
 3. Configure
 
@@ -47,7 +49,7 @@ Client is actively developed and is currently in alpha-stage.
 
 6. Execute
 
-        /usr/local/bin/qdigidocclient
+        /usr/local/bin/qdigidoc4
 
 ### macOS
 
@@ -58,7 +60,7 @@ Client is actively developed and is currently in alpha-stage.
        Since Qt 5.6 default SSL backend is SecureTransport and this project depends on openssl.
        See how to build [OSX Qt from source](#building-osx-qt-from-source).
        
-       Alternatively build Qt with openssl backend using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script.
+       Alternatively build Qt with openssl backend using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script; by default Qt is built in the `~/cmake_builds` folder but alternate build path can be defined with the `-p` option.
    * [libdigidocpp-*.pkg](https://github.com/open-eid/libdigidocpp/releases)
 
 2. Fetch the source
