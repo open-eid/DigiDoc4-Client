@@ -1156,7 +1156,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi või Mobiil-ID-ga. Võid salvestada konteineri ka allkirjasta&#173;mata.</translation>
+        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi või Mobiil-ID-ga. Võid salvestada ümbriku ka allkirjasta&#173;mata.</translation>
     </message>
     <message>
         <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
