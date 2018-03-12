@@ -879,7 +879,7 @@ void CDocumentModel::open(int row)
 	exts << ".PIF" << ".SCR";
 	if( exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) &&
 		QMessageBox::warning( qApp->activeWindow(), tr("DigiDoc4 client"),
-			tr("This is an executable file! "
+			DocumentModel::tr("This is an executable file! "
 				"Executable files may contain viruses or other malicious code that could harm your computer. "
 				"Are you sure you want to launch this file?"),
 			QMessageBox::Yes|QMessageBox::No, QMessageBox::No ) == QMessageBox::No )
@@ -897,7 +897,7 @@ bool CDocumentModel::removeRows(int row, int count)
 
 	if( d->files.isEmpty() || row >= d->files.size() )
 	{
-		d->setLastError( tr("Internal error") );
+		d->setLastError( DocumentModel::tr("Internal error") );
 		return false;
 	}
 

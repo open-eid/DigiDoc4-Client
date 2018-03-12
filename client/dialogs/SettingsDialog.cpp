@@ -71,19 +71,19 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
 		switch(page)
 		{
 		case SigningSettings:
-			ui->btnMenuSigning->setChecked(true);
+			changePage(ui->btnMenuSigning);
 			break;
 		case AccessCertSettings:
-			ui->btnMenuCertificate->setChecked(true);
+			changePage(ui->btnMenuCertificate);
 			break;
 		case NetworkSettings:
-			ui->btnMenuProxy->setChecked(true);
+			changePage(ui->btnMenuProxy);
 			break;
 		case DiagnosticsSettings:
-			ui->btnMenuDiagnostics->setChecked(true);
+			changePage(ui->btnMenuDiagnostics);
 			break;
 		case LicenseSettings:
-			ui->btnMenuInfo->setChecked(true);
+			changePage(ui->btnMenuInfo);
 			break;
 		}
 	}

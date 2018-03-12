@@ -268,14 +268,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
     <message>
-        <source>Filename: %1
-Filesize: %2
-Media type: %3</source>
-        <translation>Nimetus: %1
-Suurus: %2
-Tüüp: %3</translation>
-    </message>
-    <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 klient</translation>
     </message>
@@ -1226,7 +1218,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>Attribute</source>
-        <translation>Attribuut</translation>
+        <translation>Atribuut</translation>
     </message>
     <message>
         <source>Value</source>
@@ -1970,7 +1962,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Attribute</source>
-        <translation>Attribuut</translation>
+        <translation>Atribuut</translation>
     </message>
     <message>
         <source>Value</source>
