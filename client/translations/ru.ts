@@ -268,14 +268,6 @@ The Information System Authority does not retain information regarding the files
         <translation>Не удается удалить файл из контейнера</translation>
     </message>
     <message>
-        <source>Filename: %1
-Filesize: %2
-Media type: %3</source>
-        <translation>Имя файла: %1
-Размер: %2
-Тип: %3</translation>
-    </message>
-    <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 клиент</translation>
     </message>

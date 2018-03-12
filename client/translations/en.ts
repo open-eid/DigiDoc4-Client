@@ -268,14 +268,6 @@ The Information System Authority does not retain information regarding the files
         <translation>Failed remove document from container</translation>
     </message>
     <message>
-        <source>Filename: %1
-Filesize: %2
-Media type: %3</source>
-        <translation>Filename: %1
-Filesize: %2
-Media type: %3</translation>
-    </message>
-    <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 client</translation>
     </message>
