@@ -33,14 +33,15 @@ int main(int argc, char *argv[])
 	territories.removeFirst();
 	QString path = territories.first();
 	territories.removeFirst();
+	QString url = territories.first();
+	territories.removeFirst();
 
 	QNetworkAccessManager m;
 	QObject::connect(&m, &QNetworkAccessManager::sslErrors, [](QNetworkReply *r, const QList<QSslError> &errors){
 		r->ignoreSslErrors(errors);
 	});
 
-	QNetworkReply *r = m.get(QNetworkRequest(QUrl(
-		"https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml")));
+	QNetworkReply *r = m.get(QNetworkRequest(QUrl(url)));
 	QObject::connect(r, &QNetworkReply::finished, [&](){
 		QFile f(path + "/" + r->request().url().fileName());
 		if(f.open(QFile::ReadWrite))

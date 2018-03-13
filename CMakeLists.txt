@@ -26,5 +26,8 @@ if(UNIX AND NOT APPLE)
 endif()
 include_directories( ${LIBDIGIDOCPP_INCLUDE_DIR} )
 
+set_env( TSL_URL "https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml" CACHE STRING "TSL trust list primary URL" )
+set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )
+
 add_subdirectory( common )
 add_subdirectory( client )
