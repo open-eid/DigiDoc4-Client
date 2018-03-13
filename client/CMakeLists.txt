@@ -3,9 +3,9 @@ set_app_name( PROGNAME qdigidoc4 )
 add_executable( TSLDownload TSLDownload.cpp )
 target_link_libraries( TSLDownload Qt5::Network )
 add_custom_command(
-	OUTPUT TSL.qrc tl-mp.xml EE.xml
+	OUTPUT TSL.qrc
 	DEPENDS TSLDownload
-	COMMAND $<TARGET_FILE:TSLDownload> "${CMAKE_CURRENT_BINARY_DIR}" EE
+	COMMAND $<TARGET_FILE:TSLDownload> "${CMAKE_CURRENT_BINARY_DIR}" ${TSL_URL} ${TSL_INCLUDE}
 	WORKING_DIRECTORY ${_qt5Core_install_prefix}/bin
 )
 
