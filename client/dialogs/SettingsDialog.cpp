@@ -255,7 +255,7 @@ void SettingsDialog::initUI()
 		{
 			QSslCertificate cert = AccessCert::cert();
 
-			CertificateDetails dlg(cert, this);
+			CertificateDetails dlg(cert, this, true);
 			dlg.exec();
 		}
 			);

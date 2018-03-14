@@ -41,8 +41,13 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 ,	d( new Ui::SignatureDialog )
 {
 	d->setupUi( this );
+#ifdef Q_OS_MAC
+	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
+	setWindowModality(Qt::WindowModal);
+#else
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
+#endif
 	d->showErrors->init(false, tr("TECHNICAL INFORMATION"), d->error);
 	d->showErrors->borderless();
 	d->showErrors->setClosable(true);
@@ -234,7 +239,7 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
 	b->setStyleSheet("margin-left: 2px; border: none;");
-	connect(b, &QLabel::linkActivated, [=]{ CertificateDetails( value, this ).exec(); });
+	connect(b, &QLabel::linkActivated, [=]{ CertificateDetails( value, this, true ).exec(); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
 }

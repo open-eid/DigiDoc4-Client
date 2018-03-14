@@ -135,7 +135,7 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 
 void MainWindow::certDetailsClicked( const QString &link )
 {
-	CertificateDetails dlg((link == "PIN1") ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this);
+	CertificateDetails dlg((link == "PIN1") ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this, true);
 	dlg.exec();
 }
 
