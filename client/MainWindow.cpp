@@ -354,8 +354,7 @@ bool MainWindow::decrypt()
 	if(!cryptoDoc)
 		return false;
 
-	WaitDialog waitDialog(this);
-	waitDialog.open();
+	WaitDialogHolder waitDialog(this);
 
 	return cryptoDoc->decrypt();
 }
@@ -413,9 +412,7 @@ bool MainWindow::encrypt()
 	if(!cryptoDoc)
 		return false;
 
-	WaitDialog waitDialog(this);
-	waitDialog.setText(tr("Encrypting"));
-	waitDialog.open();
+	WaitDialogHolder waitDialog(this, tr("Encrypting"));
 
 	return cryptoDoc->encrypt();
 }
@@ -769,9 +766,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 
 	if(create || current != page)
 	{
-		WaitDialog waitDialog(this);
-		waitDialog.setText(tr("Opening"));
-		waitDialog.open();
+		WaitDialogHolder waitDialog(this, tr("Opening"));
 		navigateToPage(page, content, create);
 	}
 }
@@ -920,7 +915,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 		if( ext == "adoc" ) active = adoc;
 	}
 
-	auto hider = WaitDialog::hider();
+	WaitDialogHider hider;
 	return FileDialog::getSaveFileName( this, title, filename, exts.join(";;"), &active );
 }
 
@@ -1073,9 +1068,7 @@ bool MainWindow::sign()
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
-	WaitDialog waitDialog(this);
-	waitDialog.setText(tr("Signing"));
-	waitDialog.open();
+	WaitDialogHolder waitDialog(this, tr("Signing"));
 
 	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
 	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();

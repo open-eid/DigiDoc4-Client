@@ -153,8 +153,8 @@ void PinPopup::textEdited( const QString &text )
 }
 
 int PinPopup::exec()
-{ 
-	auto hider = WaitDialog::hider();
+{
+	WaitDialogHider hider;
 	Overlay overlay(parentWidget());
 	overlay.show();
 	auto rc = QDialog::exec();

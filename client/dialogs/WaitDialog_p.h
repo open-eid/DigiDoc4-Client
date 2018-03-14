@@ -19,29 +19,37 @@
 
 #pragma once
 
-#include <QString>
-#include <QWidget>
+#include <QDialog>
+
+namespace Ui {
+class WaitDialog;
+}
 
 class Overlay;
 
-class WaitDialogHider
+class WaitDialog : public QDialog
 {
+	Q_OBJECT
+
 public:
-	WaitDialogHider();
-	~WaitDialogHider();
+	explicit WaitDialog(QWidget *parent = nullptr, Overlay *o = nullptr);
+	~WaitDialog();
+
+	int exec() override;
+	void open() override;
+	QString text();
+
+	static WaitDialog* create(QWidget *parent, Overlay *o = nullptr);
+	static void destroy();
+
+	void closeOverlay();
+	Overlay* detachOverlay();
+	static WaitDialog* instance();
+	void showOverlay();
+	void setText(const QString &text);
 
 private:
-	QString text;
-	Overlay *overlay;
-	QWidget *parent;
-};
-
-
-class WaitDialogHolder
-{
-public:
-	WaitDialogHolder(QWidget *parent, const QString& text = QString());
-	~WaitDialogHolder();
-
-	void close();
+	Ui::WaitDialog *ui;
+	Overlay *overlay = nullptr;
+	static WaitDialog *waitDialog;
 };
