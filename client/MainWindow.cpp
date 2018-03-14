@@ -997,7 +997,8 @@ void MainWindow::showCardStatus()
 			ui->infoStack->update(*cardInfo);
 			const SslCertificate &signCert = t.cert();
 			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
-			ui->myEid->invalidIcon(!authCert.isValid() || !signCert.isValid());
+			ui->myEid->invalidIcon((!authCert.isNull() && !authCert.isValid()) || 
+				(!signCert.isNull() && !signCert.isValid()));
 			updateCardWarnings();
  		}
 	}
