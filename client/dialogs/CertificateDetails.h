@@ -37,7 +37,7 @@ class CertificateDetails : public QDialog
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0);
+	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0, bool showSheet = false);
 	~CertificateDetails();
 
 	void saveCert();

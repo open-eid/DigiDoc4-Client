@@ -75,14 +75,26 @@ public:
 
 
 
-CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget *parent) :
+CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget *parent, bool showSheet) :
 	QDialog(parent),
 	ui(new CertificateDetailsPrivate),
 	cert(qSslCert)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-	setWindowModality( Qt::ApplicationModal );
+	bool sheet = false;
+#ifdef Q_OS_MAC
+	sheet = showSheet;
+#endif	
+	if (sheet)
+	{
+		setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
+		setWindowModality(Qt::WindowModal);
+	}
+	else
+	{
+		setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
+		setWindowModality( Qt::ApplicationModal );
+	}
 
 	QFont headerFont = Styles::font( Styles::Regular, 18 );
 	QFont regularFont = Styles::font( Styles::Regular, 14 );
