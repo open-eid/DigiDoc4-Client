@@ -87,7 +87,7 @@ QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, co
 	if(QFile::exists(fileName))
 	{
 #endif
-		auto hider = WaitDialog::hider();
+		WaitDialogHider hider;
 		QString capitalized = type[0].toUpper() + type.mid(1);
 		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), qApp->tr("Create %1").arg(type), fileName,
 						QString("%1 (*%2)").arg(capitalized).arg(extension));

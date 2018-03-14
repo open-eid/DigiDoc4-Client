@@ -906,7 +906,7 @@ void Application::waitForTSL( const QString &file )
 	if( d->ready )
 		return;
 
-	auto hider = WaitDialog::hider();
+	WaitDialogHider hider;
 	QProgressDialog p( tr("Loading TSL lists"), QString(), 0, 0, qApp->mainWindow() );
 	p.setWindowFlags( (Qt::Dialog | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint ) & ~Qt::WindowTitleHint );
 	p.setWindowModality( Qt::ApplicationModal );
