@@ -29,6 +29,8 @@
 #include <QMovie>
 
 WaitDialogHider::WaitDialogHider()
+: overlay(nullptr)
+, parent(nullptr)
 {
 	WaitDialog *d = WaitDialog::instance();
 	if(d)
@@ -48,6 +50,11 @@ WaitDialogHider::~WaitDialogHider()
 		d->setText(text);
 		d->open();
 	}
+}
+
+bool WaitDialogHider::hasOverlay()
+{
+	return overlay != nullptr;
 }
 
 

@@ -30,6 +30,8 @@ public:
 	WaitDialogHider();
 	~WaitDialogHider();
 
+	bool hasOverlay();
+
 private:
 	QString text;
 	Overlay *overlay;
