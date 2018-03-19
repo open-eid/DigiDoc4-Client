@@ -333,10 +333,14 @@ void QSigner::run()
 				st.setCert( QSslCertificate() );
 			}
 
+			// Some tokens (e.g. e-Seals) can have only authentication or signing cert;
+			// Do not select first card in case if only one of the tokens is empty.
+			bool update = at.card().isEmpty() && st.card().isEmpty();
+
 			// if none is selected select first from cardlist
-			if( at.card().isEmpty() && !acards.isEmpty() )
+			if( update && !acards.isEmpty() )
 				at.setCard( acards.first() );
-			if( st.card().isEmpty() && !scards.isEmpty() )
+			if( update && !scards.isEmpty() )
 				st.setCard( scards.first() );
 
 			if( acards.contains( at.card() ) && at.cert().isNull() ) // read auth cert
@@ -429,7 +433,7 @@ void QSigner::selectAuthCard( const QString &card )
 	TokenData t = d->auth;
 	t.setCard( card );
 	t.setCert( QSslCertificate() );
-	Q_EMIT signDataChanged(d->auth = t);
+	Q_EMIT authDataChanged(d->auth = t);
 }
 
 void QSigner::selectSignCard( const QString &card )
