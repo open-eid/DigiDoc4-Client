@@ -876,7 +876,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Uuenda sertifikaat, et PIN%1 taas kasutada.</translation>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
@@ -1487,8 +1487,7 @@ vahepeal muutnud.&lt;/li&gt;
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
-juurdepääsemiseks.&lt;/li&gt;
+&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamiseks.&lt;/li&gt;
 &lt;li&gt;Kui olete unustanud PIN1 koodi, kuid teate PUK koodi,&lt;br&gt;
 siis siin saate määrata uue PIN1 koodi.&lt;/li&gt;
 &lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
@@ -1503,9 +1502,9 @@ kood.&lt;/li&gt;
 &lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
 vahepeal muutnud&lt;/li&gt;
 &lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
-klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+&lt;li&gt;Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta&lt;br&gt;
+&lt;a href=&quot;https://www.politsei.ee&quot;&gt;Politsei- ja Piirivalve esindust&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
+koodiümbrik.&lt;/li&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN1</source>
@@ -1515,9 +1514,9 @@ kood.&lt;/li&gt;
 &lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
 vahepeal muutnud.&lt;/li&gt;
 &lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;Kui sa ei tea oma ID-kaardi PUK koodi, külasta&lt;br&gt;
-klienditeeninduspunkti, kust saad uue koodiümbriku.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+&lt;li&gt;Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta&lt;br&gt;
+&lt;a href=&quot;https://www.politsei.ee&quot;&gt;Politsei- ja Piirivalve esindust&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
+koodiümbrik.&lt;/li&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN2</source>
