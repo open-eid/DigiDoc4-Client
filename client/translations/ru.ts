@@ -889,7 +889,7 @@ Learn more info here:</source>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Инструкции по ходатайству нового документа находятся &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;здесь&lt;/a&gt;.</translation>
+        <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Инструкции по ходатайству нового документа находятся &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
@@ -1493,8 +1493,7 @@ Kонтрольны код: %1</translation>
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN1 код используется для доступа к сертификату&lt;br&gt;
-идентификации личности.&lt;/li&gt;
+&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
 &lt;li&gt;Если вы забыли PIN1, при помощи PUK кода можно&lt;br&gt;
 ввести новый PIN1 код.&lt;/li&gt;
 &lt;li&gt;Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
@@ -1507,9 +1506,9 @@ Kонтрольны код: %1</translation>
 &lt;li&gt;PUK код находится в конверте с кодами, который выдаётся&lt;br&gt;
 при получении ID-карты или смене сертификатов.&lt;/li&gt;
 &lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
-центр обслуживания, где вы сможете получить&lt;br&gt;
-конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;центр &lt;br&gt;
+обслуживания Департамента полиции и пограничной&lt;br&gt;
+охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1519,9 +1518,9 @@ Kонтрольны код: %1</translation>
 &lt;li&gt;PUK код находится в конверте с кодами, который&lt;br&gt;
 выдаётся при получении ID-карты или смене сертификатов.&lt;/li&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;Если вы не знаете PUK код своей ID-карты, посетите&lt;br&gt;
-центр обслуживания, где вы сможете получить&lt;br&gt;
-конверт с кодами.&lt;/li&gt;
+&lt;li&gt;Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;центр &lt;br&gt;
+обслуживания Департамента полиции и пограничной&lt;br&gt;
+охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.&lt;/li&gt;
 &lt;/ul&gt;</translation>
     </message>
     <message>
@@ -1539,8 +1538,7 @@ ID-карту для цифровой подписи невозможно,&lt;br
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN1 код используется для доступа к сертификатам&lt;br&gt;
-идентификации личности.&lt;/li&gt;
+&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
 &lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется&lt;br&gt;
 идентификационный сертификат и использовать&lt;br&gt;
 ID-карту невозможно, пока блокировка не снята&lt;br&gt;

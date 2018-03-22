@@ -875,7 +875,7 @@ Learn more info here:</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 can not be used the certificates has expired. You can find instructions on how to get a new document from &lt;a href=&quot;http://www.politsei.ee/en/teenused/isikut-toendavad-dokumendid/id-kaart/taiskasvanule/&quot;&gt;here&lt;/a&gt;.</translation>
+        <translation>PIN%1 can not be used the certificates has expired. You can find instructions on how to get a new document from &lt;a href=&quot;http://www.politsei.ee/en/teenused/isikut-toendavad-dokumendid/id-kaart/taiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
@@ -1495,8 +1495,7 @@ with the ID-card.&lt;/li&gt;
         <source>ConditionsChangePIN1WithPUK</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;New PIN1 must be different from current PIN1.&lt;/li&gt;
-&lt;li&gt;PIN1 code is used for accessing identification&lt;br&gt;
-certificates.&lt;/li&gt;
+&lt;li&gt;PIN1 code is used for confirming the identity of a person.&lt;/li&gt;
 &lt;li&gt;If you have forgotten PIN1, but know PUK, then here&lt;br&gt;
 you can enter new PIN1.&lt;/li&gt;
 &lt;li&gt;PUK code is written in the envelope, that is given&lt;br&gt;
@@ -1511,9 +1510,9 @@ code.&lt;/li&gt;
 &lt;li&gt;You can find your PUK code inside the ID-card codes&lt;br&gt;
 envelope.&lt;/li&gt;
 &lt;li&gt;New PIN2 must be different from current PIN2.&lt;/li&gt;
-&lt;li&gt;If you do not know the PUK code for your ID card, please&lt;br&gt;
-visit the service center to obtain new PIN codes.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+&lt;li&gt;If you have forgotten the PUK code for your ID card, please&lt;br&gt;
+visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to
+&lt;br&gt;obtain new PIN codes.&lt;/li&gt;</translation>
     </message>
     <message>
         <source>ConditionsUnlockPIN1</source>
@@ -1523,9 +1522,9 @@ code.&lt;/li&gt;
 &lt;li&gt;You can find your PUK code inside the ID-card codes&lt;br&gt;
 envelope.&lt;/li&gt;
 &lt;li&gt;New PIN1 must be different from current PIN1.&lt;/li&gt;
-&lt;li&gt;If you do not know the PUK code for your ID-card, please&lt;br&gt;
-visit the service center to obtain new PIN codes.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+&lt;li&gt;If you have forgotten the PUK code for your ID card, please&lt;br&gt;
+visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to
+&lt;br&gt;obtain new PIN codes.&lt;/li&gt;</translation>
     </message>
     <message>
         <source>ConditionsChangePIN2</source>
@@ -1542,7 +1541,7 @@ unblocked via the PUK code.&lt;/li&gt;
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;New PIN1 must be different from current PIN1.&lt;/li&gt;
-&lt;li&gt;PIN1 code is used for accessing identification certificates.&lt;/li&gt;
+&lt;li&gt;PIN1 code is used for confirming the identity of a person.&lt;/li&gt;
 &lt;li&gt;If PIN1 is inserted incorrectly 3 times the identification&lt;br&gt;
 certificate will be blocked and it will be impossible to use&lt;br&gt;
 ID-card to verify identification, until it is unblocked via&lt;br&gt;

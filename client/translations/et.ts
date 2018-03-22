@@ -876,7 +876,7 @@ Rohkem infot leiate siit:</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;siit&lt;/a&gt;.</translation>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
@@ -1503,7 +1503,7 @@ kood.&lt;/li&gt;
 vahepeal muutnud&lt;/li&gt;
 &lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta&lt;br&gt;
-&lt;a href=&quot;https://www.politsei.ee&quot;&gt;Politsei- ja Piirivalve esindust&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
+&lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Politsei- ja Piirivalve esindust&lt;/span&gt;&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
 koodiümbrik.&lt;/li&gt;</translation>
     </message>
     <message>
@@ -1515,7 +1515,7 @@ kood.&lt;/li&gt;
 vahepeal muutnud.&lt;/li&gt;
 &lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
 &lt;li&gt;Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta&lt;br&gt;
-&lt;a href=&quot;https://www.politsei.ee&quot;&gt;Politsei- ja Piirivalve esindust&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
+&lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Politsei- ja Piirivalve esindust&lt;/span&gt;&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
 koodiümbrik.&lt;/li&gt;</translation>
     </message>
     <message>
@@ -1533,8 +1533,7 @@ blokeeringu tühistamist PUK koodi abil.&lt;/li&gt;
         <source>ConditionsChangePIN1</source>
         <translation>&lt;ul&gt;
 &lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamise sertifikaadile&lt;br&gt;
-juurdepääsemiseks.&lt;/li&gt;
+&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamiseks.&lt;/li&gt;
 &lt;li&gt;Kui sisestad PIN1 koodi kolm korda valesti, siis&lt;br&gt;
 isikutuvastamise sertifikaat blokeeritakse ning&lt;br&gt;
 ID-kaarti pole võimalik isikutuvastamiseks kasutada&lt;br&gt;
