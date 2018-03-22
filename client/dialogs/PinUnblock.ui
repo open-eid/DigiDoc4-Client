@@ -178,6 +178,12 @@ line-height: 16px;</string>
    <property name="text">
     <string>TextLabel</string>
    </property>
+   <property name="openExternalLinks">
+    <bool>true</bool>
+   </property>
+   <property name="textInteractionFlags">
+    <set>Qt::TextBrowserInteraction</set>
+   </property>
   </widget>
   <widget class="QWidget" name="widgetLabelPuk" native="true">
    <property name="geometry">
