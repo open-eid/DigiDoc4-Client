@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>333</height>
+    <height>363</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -182,7 +182,7 @@ font-weight: 700;
          <property name="maximumSize">
           <size>
            <width>420</width>
-           <height>195</height>
+           <height>300</height>
           </size>
          </property>
          <property name="wordWrap">
