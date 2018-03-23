@@ -559,6 +559,7 @@ bool QPKCS11Stack::load(const QString &defaultDriver)
 	d->drivers.insert("otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C");
 	d->drivers.insert("/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8");
 	d->drivers.insert("/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000");
+	d->drivers.insert("/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4");
 #endif
 	updateDrivers();
 	return isLoaded();
