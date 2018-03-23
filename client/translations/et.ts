@@ -2343,7 +2343,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Converted to crypto container!</source>
-        <translation>Konverteeritud krüptokonteineriks!</translation>
+        <translation>Konverteeritud turvaümbrikuks!</translation>
     </message>
     <message>
         <source>Move file</source>

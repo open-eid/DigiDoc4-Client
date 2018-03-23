@@ -118,7 +118,8 @@ QString Accordion::getEmail()
 
 void Accordion::open(AccordionTitle* opened)
 {
-	openSection = opened;
+	if (opened->isVisible ())
+		openSection = opened;
 	openSection->openSection();
 }
 
