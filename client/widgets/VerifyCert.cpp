@@ -150,7 +150,7 @@ void VerifyCert::update(bool showWarning)
 	case QSmartCardData::Pin1Type:
 		name = tr("Authentication certificate");
 		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN1");
-		if(isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()))
+		if(isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()) || !isValidCert)
 			forgotPinText = "";
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
@@ -165,7 +165,7 @@ void VerifyCert::update(bool showWarning)
 	case QSmartCardData::Pin2Type:
 		name = tr("Signing certificate");
 		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2");
-		if(isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()))
+		if(isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()) || !isValidCert)
 			forgotPinText = "";
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
@@ -282,6 +282,7 @@ void VerifyCert::update(bool showWarning)
 			ui->changePIN->hide();  // hide 'change PUK' button
 		}
 	}
+	ui->changePIN->setVisible( isValidCert );  // If not valid cert then hide 'CHANGE PIN/PUK' button
 	ui->validUntil->setText( txt );
 	if( pinType != QSmartCardData::PukType )
 		ui->error->setVisible( isBlockedPin || !isValidCert );

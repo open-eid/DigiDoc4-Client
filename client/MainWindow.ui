@@ -638,6 +638,9 @@ background-color: #023664;
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: #006EB5;</string>
         </property>

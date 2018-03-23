@@ -435,6 +435,9 @@ background-color: #F8DDA7;
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: #75787B;
 line-height: 19px;
@@ -471,6 +474,9 @@ text-align: center;
           <family>Roboto</family>
           <pointsize>12</pointsize>
          </font>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">color: #75787B;
