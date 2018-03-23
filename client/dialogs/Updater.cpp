@@ -335,6 +335,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->setButtonPattern( d->close,  "Red" );
 	d->close->hide();
 	d->log->hide();
+	d->log->setFont( regular );
 	connect(d->details, &QPushButton::clicked, [=]{
 		d->log->setVisible(!d->log->isVisible());
 		if(d->progressRunning)
