@@ -522,7 +522,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 		{
 			std::vector<unsigned char> v = cert;
 			if(!v.empty())
-				list << QSslCertificate(QByteArray((const char*)&v[0], int(v.size())), QSsl::Der);
+				list << QSslCertificate(QByteArray::fromRawData((const char*)v.data(), int(v.size())), QSsl::Der);
 		}
 		return QVariant::fromValue(list);
 	}

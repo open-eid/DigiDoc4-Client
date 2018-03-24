@@ -781,7 +781,6 @@ void CryptoDocPrivate::writeDDoc(QIODevice *ddoc)
 		x.writeStartElement("DataFile");
 		writeAttributes(x, {{"ContentType", "EMBEDDED_BASE64"}, {"Filename", file.name},
 			{"Id", file.id}, {"MimeType", file.mime}, {"Size", QString::number(file.data.size())}});
-		x.writeDefaultNamespace("http://www.sk.ee/DigiDoc/v1.3.0#");
 		writeBase64(x, file.data);
 		x.writeEndElement(); //DataFile
 	}
@@ -1055,7 +1054,7 @@ bool CryptoDoc::decrypt()
 	}
 
 	bool decrypted = false;
-	bool isECDH = qApp->signer()->tokenauth().cert().publicKey().algorithm() == QSsl::Ec;
+	bool isECDH = key.cert.publicKey().algorithm() == QSsl::Ec;
 	QByteArray decryptedKey;
 	while( !decrypted )
 	{
