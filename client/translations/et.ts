@@ -93,6 +93,10 @@
         <source>ALLOW</source>
         <translation>LUBA</translation>
     </message>
+    <message>
+        <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
+        <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
+    </message>
 </context>
 
 
