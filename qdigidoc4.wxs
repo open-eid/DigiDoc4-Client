@@ -47,14 +47,6 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
     <Condition Message="[ProductName] requires Windows 7 or higher.">
       <![CDATA[Installed OR (VersionNT >= 601)]]>
     </Condition>
-<?ifndef var.qt_path ?>
-    <Upgrade Id="{d3aa8bd7-e1e6-46d0-97a6-c9b87d2b830b}">
-      <UpgradeVersion Minimum="1.0.0.0" Maximum="99.0.0.0" IncludeMinimum="yes" IncludeMaximum="no" OnlyDetect="yes" Property="IDUPDATER_INSTALLED"/>
-    </Upgrade>
-    <Condition Message="ID Updater package is required">
-      <![CDATA[Installed OR IDUPDATER_INSTALLED]]>
-    </Condition>
-<?endif ?>
     <UIRef Id="WixUI_Minimal2" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
