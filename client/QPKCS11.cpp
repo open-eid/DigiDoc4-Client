@@ -80,7 +80,11 @@ QVector<CK_OBJECT_HANDLE> QPKCS11Private::findObject(CK_SESSION_HANDLE session, 
 {
 	if(!f)
 		return QVector<CK_OBJECT_HANDLE>();
-	QVector<CK_ATTRIBUTE> attr{ { CKA_CLASS, &cls, sizeof(cls) } };
+	CK_BBOOL _true = CK_TRUE;
+	QVector<CK_ATTRIBUTE> attr{
+		{ CKA_CLASS, &cls, sizeof(cls) },
+		{ CKA_TOKEN, &_true, sizeof(_true) }
+	};
 	if(!id.isEmpty())
 		attr.append({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
 	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
@@ -425,7 +429,7 @@ QList<TokenData> QPKCS11::tokens() const
 				continue;
 			TokenData t;
 			t.setCard( card );
-			t.setCert( cert );
+			t.setCert(QSslCertificate(d->attribute(session, obj, CKA_VALUE), QSsl::Der));
 			d->updateTokenFlags( t, token.flags );
 			list << t;
 		}

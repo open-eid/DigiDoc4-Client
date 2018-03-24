@@ -147,7 +147,8 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
-	regexp.setPattern(QString("\\d{%1,%2}").arg(minLen).arg(maxLen));
+	QString charPattern = regexp.pattern().startsWith(".") ? "." : "\\d";
+	regexp.setPattern(QString("%1{%2,%3}").arg(charPattern).arg(minLen).arg(maxLen));
 }
 
 QString PinPopup::text() const { return ui->pin->text(); }
