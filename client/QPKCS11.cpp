@@ -350,6 +350,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	else
 	{
 		PinPopup p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, rootWindow() );
+		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;
 		QByteArray pin = p.text().toUtf8();

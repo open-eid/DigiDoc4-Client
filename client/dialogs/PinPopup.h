@@ -43,6 +43,7 @@ public:
 	~PinPopup();
 
 	int exec() override;
+	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
 	QString text() const;
 
 signals:

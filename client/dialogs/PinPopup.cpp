@@ -101,7 +101,7 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 				tr("For using sign certificate enter PIN2 at the reader") :
 				tr("For using sign certificate enter PIN2");
 			text += tr("Selected action requires sign certificate.") + "<br />" + t;
-			regexp.setPattern( "\\d{5,12}" );
+			setPinLen(5);
 		}
 		else
 		{
@@ -109,7 +109,7 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 				tr("For using authentication certificate enter PIN1 at the reader") :
 				tr("For using authentication certificate enter PIN1");
 			text += tr("Selected action requires authentication certificate.") + "<br />" + t;
-			regexp.setPattern( "\\d{4,12}" );
+			setPinLen(4);
 		}
 	}
 	ui->labelNameId->setText( QString( "<b>%1</b>" ).arg( title ) );
@@ -143,6 +143,11 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 
 		textEdited( QString() );
 	}
+}
+
+void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
+{
+	regexp.setPattern(QString("\\d{%1,%2}").arg(minLen).arg(maxLen));
 }
 
 QString PinPopup::text() const { return ui->pin->text(); }
