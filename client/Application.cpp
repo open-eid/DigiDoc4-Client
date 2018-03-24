@@ -522,7 +522,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 		{
 			std::vector<unsigned char> v = cert;
 			if(!v.empty())
-				list << QSslCertificate(QByteArray((const char*)&v[0], int(v.size())), QSsl::Der);
+				list << QSslCertificate(QByteArray::fromRawData((const char*)v.data(), int(v.size())), QSsl::Der);
 		}
 		return QVariant::fromValue(list);
 	}
@@ -735,6 +735,10 @@ bool Application::notify( QObject *o, QEvent *e )
 	catch( const digidoc::Exception &e )
 	{
 		showWarning( tr("Caught exception!"), e );
+	}
+	catch(const std::bad_alloc &e)
+	{
+		showWarning(tr("Added file(s) exceeds the maximum size limit of the container(120MB)."), QString::fromLocal8Bit(e.what()));
 	}
 	catch(...)
 	{

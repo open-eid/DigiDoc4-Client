@@ -69,7 +69,7 @@ QByteArray QPKCS11Private::attribute( CK_SESSION_HANDLE session, CK_OBJECT_HANDL
 	CK_ATTRIBUTE attr = { type, 0, 0 };
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
 		return QByteArray();
-	QByteArray data( int(attr.ulValueLen), 0 );
+	QByteArray data(int(attr.ulValueLen), 0);
 	attr.pValue = data.data();
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
 		return QByteArray();
@@ -80,7 +80,11 @@ QVector<CK_OBJECT_HANDLE> QPKCS11Private::findObject(CK_SESSION_HANDLE session, 
 {
 	if(!f)
 		return QVector<CK_OBJECT_HANDLE>();
-	QVector<CK_ATTRIBUTE> attr{ { CKA_CLASS, &cls, sizeof(cls) } };
+	CK_BBOOL _true = CK_TRUE;
+	QVector<CK_ATTRIBUTE> attr{
+		{ CKA_CLASS, &cls, sizeof(cls) },
+		{ CKA_TOKEN, &_true, sizeof(_true) }
+	};
 	if(!id.isEmpty())
 		attr.append({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
 	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
@@ -89,7 +93,7 @@ QVector<CK_OBJECT_HANDLE> QPKCS11Private::findObject(CK_SESSION_HANDLE session, 
 	CK_ULONG count = 32;
 	QVector<CK_OBJECT_HANDLE> result(int(count), CK_INVALID_HANDLE);
 	CK_RV err = f->C_FindObjects(session, result.data(), CK_ULONG(result.count()), &count);
-	result.resize( int(count) );
+	result.resize(int(count));
 	f->C_FindObjectsFinal( session );
 	return err == CKR_OK ? result : QVector<CK_OBJECT_HANDLE>();
 }
@@ -240,7 +244,7 @@ QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 	if(d->f->C_Decrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), 0, &size) != CKR_OK)
 		return QByteArray();
 
-	QByteArray result( size, 0 );
+	QByteArray result(int(size), 0);
 	if(d->f->C_Decrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), CK_CHAR_PTR(result.data()), &size) != CKR_OK)
 		return QByteArray();
 	return result;
@@ -350,6 +354,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	else
 	{
 		PinPopup p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, rootWindow() );
+		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;
 		QByteArray pin = p.text().toUtf8();
@@ -419,12 +424,9 @@ QList<TokenData> QPKCS11::tokens() const
 
 		for( CK_OBJECT_HANDLE obj: d->findObject( session, CKO_CERTIFICATE ) )
 		{
-			SslCertificate cert( d->attribute( session, obj, CKA_VALUE ), QSsl::Der );
-			if( cert.isCA() )
-				continue;
 			TokenData t;
 			t.setCard( card );
-			t.setCert( cert );
+			t.setCert(QSslCertificate(d->attribute(session, obj, CKA_VALUE), QSsl::Der));
 			d->updateTokenFlags( t, token.flags );
 			list << t;
 		}
@@ -466,7 +468,7 @@ QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
 			CK_ULONG(data.size()), 0, &size) != CKR_OK)
 		return QByteArray();
 
-	QByteArray sig( size, 0 );
+	QByteArray sig(int(size), 0);
 	if(d->f->C_Sign(d->session, CK_CHAR_PTR(data.constData()),
 			CK_ULONG(data.size()), CK_CHAR_PTR(sig.data()), &size) != CKR_OK)
 		return QByteArray();
