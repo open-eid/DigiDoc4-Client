@@ -72,6 +72,9 @@ MobileProgress::MobileProgress( QWidget *parent )
 	setupUi( this );
 	code->setBuddy( signProgressBar );
 
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
+	setWindowModality( Qt::ApplicationModal );
+
 	statusTimer = new QTimeLine( signProgressBar->maximum() * 1000, this );
 	statusTimer->setCurveShape( QTimeLine::LinearCurve );
 	statusTimer->setFrameRange( signProgressBar->minimum(), signProgressBar->maximum() );
