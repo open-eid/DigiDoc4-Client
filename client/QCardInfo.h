@@ -30,4 +30,5 @@ struct QCardInfo
 	int type;
 	bool loading;
 	bool isEResident;
+	bool valid;
 };

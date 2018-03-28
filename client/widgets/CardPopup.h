@@ -23,9 +23,8 @@
 #include "widgets/CardWidget.h"
 #include "widgets/StyledWidget.h"
 
-#include <common/TokenData.h>
-
 #include <QMap>
+#include <QSet>
 #include <QSharedPointer>
 
 class CardPopup : public StyledWidget
@@ -33,8 +32,8 @@ class CardPopup : public StyledWidget
 	Q_OBJECT
 
 public:
-	explicit CardPopup(const TokenData &token, const QMap<QString, QSharedPointer<QCardInfo>> &cache,
-		QWidget *parent = nullptr);
+	explicit CardPopup(const QSet<QString> &cards, const QString &selectedCard,
+		const QMap<QString, QSharedPointer<QCardInfo>> &cache, QWidget *parent = nullptr);
 
 	void update(const QMap<QString, QSharedPointer<QCardInfo>> &cache);
 

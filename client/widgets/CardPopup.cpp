@@ -25,11 +25,10 @@
 #define WIDTH 365
 #define X_POSITION 110
 
-CardPopup::CardPopup(const TokenData &token, const QMap<QString, QSharedPointer<QCardInfo>> &cache, QWidget *parent)
+CardPopup::CardPopup(const QSet<QString> &cards, const QString &selectedCard, 
+	const QMap<QString, QSharedPointer<QCardInfo>> &cache, QWidget *parent)
 : StyledWidget(parent)
 {
-	auto cards = token.cards();
-
 	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + ( (cards.size() > 1) ? BORDER_WIDTH : 0 ) );
 	move( X_POSITION, ROW_HEIGHT );
 	setStyleSheet( "border: solid rgba(217, 217, 216, 0.45); border-width: 0px 2px 2px 1px; background-color: rgba(255, 255, 255, 0.95);" );
@@ -37,7 +36,7 @@ CardPopup::CardPopup(const TokenData &token, const QMap<QString, QSharedPointer<
 	int i = 0;
 	for( auto card: cards )
 	{
-		if( card == token.card() )
+		if( card == selectedCard )
 			continue;
 		auto item = new QWidget( this );
 		item->resize( WIDTH - 2, ROW_HEIGHT - 1);

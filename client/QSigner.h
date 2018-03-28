@@ -62,6 +62,7 @@ public:
 
 Q_SIGNALS:
 	void authDataChanged( const TokenData &token );
+	void dataChanged();
 	void signDataChanged( const TokenData &token );
 	void error( const QString &msg );
 
