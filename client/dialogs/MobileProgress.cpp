@@ -69,8 +69,8 @@ MobileProgress::MobileProgress( QWidget *parent )
 	mobileResults["Certificate status unknown"] = tr("Your Mobile-ID service is not activated.");
 	mobileResults["Certificate is revoked"] = tr("Mobile-ID user certificates are revoked or suspended.");
 
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setupUi( this );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	code->setBuddy( signProgressBar );
 
 	statusTimer = new QTimeLine( signProgressBar->maximum() * 1000, this );
