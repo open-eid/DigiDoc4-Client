@@ -857,6 +857,11 @@ QString CDocumentModel::data(int row) const
 	return f.name;
 }
 
+QString CDocumentModel::fileId(int row) const
+{
+	return data(row);
+}
+
 QString CDocumentModel::mime(int row) const
 {
 	const CryptoDocPrivate::File &f = d->files.at(row);

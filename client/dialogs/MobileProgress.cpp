@@ -70,6 +70,7 @@ MobileProgress::MobileProgress( QWidget *parent )
 	mobileResults["Certificate is revoked"] = tr("Mobile-ID user certificates are revoked or suspended.");
 
 	setupUi( this );
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	code->setBuddy( signProgressBar );
 
 	statusTimer = new QTimeLine( signProgressBar->maximum() * 1000, this );
@@ -264,7 +265,7 @@ void MobileProgress::sign( const DigiDoc *doc, const QString &ssid, const QStrin
 	{
 		r.writeStartElement( "DataFileDigest" );
 		r.writeAttribute( XML_SCHEMA_INSTANCE, "type", QString( "m:" ).append( "DataFileDigest" ) );
-		r.writeParameter( "Id", m->data(i) );
+		r.writeParameter( "Id", m->fileId(i) );
 		r.writeParameter( "DigestType", "sha256" );
 		r.writeParameter( "DigestValue", doc->getFileDigest( i ).toBase64() );
 		r.writeParameter( "MimeType", m->mime(i) );
