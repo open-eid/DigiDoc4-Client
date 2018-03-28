@@ -31,6 +31,7 @@ public:
 	virtual void addFile(const QString &file, const QString &mime = "application/octet-stream") = 0;
 	virtual void addTempFiles(const QStringList &files) = 0;
 	virtual QString data(int row) const = 0;
+	virtual QString fileId(int row) const = 0;
 	virtual QString mime(int row) const = 0;
 	virtual bool removeRows(int row, int count) = 0;
 	virtual int rowCount() const = 0;

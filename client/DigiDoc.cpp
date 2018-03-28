@@ -334,6 +334,14 @@ QString SDocumentModel::data(int row) const
 	return from(doc->b->dataFiles().at(row)->fileName());
 }
 
+QString SDocumentModel::fileId(int row) const
+{
+	if(row >= rowCount())
+		return QString();
+
+	return QString::fromUtf8(doc->b->dataFiles().at(row)->fileName().c_str());
+}
+
 QString SDocumentModel::mime(int row) const
 {
 	if(row >= rowCount())
