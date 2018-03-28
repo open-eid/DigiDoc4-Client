@@ -77,6 +77,16 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 	return ci;
 }
 
+bool isMatchingType(const SslCertificate &cert, bool signing)
+{
+	// Check if cert is signing or authentication cert
+	if(signing)
+		return cert.keyUsage().contains(SslCertificate::NonRepudiation);
+	
+	return cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+		   cert.keyUsage().contains(SslCertificate::KeyAgreement);
+}
+
 
 class QSignerPrivate
 {
@@ -114,7 +124,7 @@ QSigner::~QSigner()
 
 const QMap<QString, QSharedPointer<QCardInfo>> QSigner::cache() const { return d->cache; }
 
-void QSigner::cacheCardData(const QSet<QString> &cards)
+void QSigner::cacheCardData(const QSet<QString> &cards, bool signingCert)
 {
 #ifdef Q_OS_WIN
 	if(d->win)
@@ -122,7 +132,7 @@ void QSigner::cacheCardData(const QSet<QString> &cards)
 		QWin::Certs certs = d->win->certs();
 		for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 		{
-			if(!d->cache.contains(i.value()) && i.key().keyUsage().contains(SslCertificate::NonRepudiation))
+			if(!d->cache.contains(i.value()) && isMatchingType(i.key(), signingCert))
 				d->cache.insert(i.value(), QSharedPointer<QCardInfo>(toCardInfo(i.key())));
 		}
 	}
@@ -135,7 +145,7 @@ void QSigner::cacheCardData(const QSet<QString> &cards)
 			if(!d->cache.contains(i.card()))
 			{
 				auto sslCert = SslCertificate(i.cert());
-				if(sslCert.keyUsage().contains(SslCertificate::NonRepudiation))
+				if(isMatchingType(sslCert, signingCert))
 					d->cache.insert(i.card(), QSharedPointer<QCardInfo>(toCardInfo(sslCert)));
 			}
 		}
@@ -409,15 +419,24 @@ void QSigner::run()
 				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();
 			}
 
-			auto added = scards.toSet().subtract(d->cache.keys().toSet());
+			auto added = scards.toSet().unite(acards.toSet()).subtract(d->cache.keys().toSet());
 			if(!added.isEmpty())
-				cacheCardData(added);
+				cacheCardData(added, st.card().isEmpty());
 
+			bool changed = false;
 			// update data if something has changed
-			if( aold != at )
+			if(aold != at)
+			{
+				changed = true;
 				Q_EMIT authDataChanged(d->auth = at);
-			if( sold != st )
+			}
+			if(sold != st)
+			{
+				changed = true;
 				Q_EMIT signDataChanged(d->sign = st);
+			}
+			if(changed)
+				Q_EMIT dataChanged();
 			d->smartcard->reloadCard(st.card(), d->api != QSigner::CAPI);
 
 			QCardLock::instance().readUnlock();

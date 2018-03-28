@@ -62,11 +62,12 @@ public:
 
 Q_SIGNALS:
 	void authDataChanged( const TokenData &token );
+	void dataChanged();
 	void signDataChanged( const TokenData &token );
 	void error( const QString &msg );
 
 private Q_SLOTS:
-	void cacheCardData(const QSet<QString> &cards);
+	void cacheCardData(const QSet<QString> &cards, bool signingCert);
 	void selectAuthCard( const QString &card );
 	void selectSignCard( const QString &card );
 	void showWarning( const QString &msg );

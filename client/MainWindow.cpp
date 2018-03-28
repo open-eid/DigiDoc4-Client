@@ -131,7 +131,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	setAcceptDrops( true );
 
 	// Refresh ID card info in card widget
-	connect(qApp->signer(), &QSigner::signDataChanged, this, &MainWindow::showCardStatus);
+	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
 	// Refresh card info on "My EID" page
 	connect(qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
@@ -958,7 +958,9 @@ void MainWindow::showCardMenu( bool show )
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
-	TokenData t = qApp->signer()->tokensign();
+	TokenData st = qApp->signer()->tokensign();
+	TokenData at = qApp->signer()->tokenauth();
+	const TokenData &t = st.card().isEmpty() ? at : st;
 
 	closeWarnings(-1);
 
@@ -981,7 +983,7 @@ void MainWindow::showCardStatus()
 		ui->cardInfo->update(cardInfo, t.card());
 
 		bool seal = cardInfo->type & SslCertificate::TempelType;
-		const SslCertificate &authCert = qApp->signer()->tokenauth().cert();
+		const SslCertificate &authCert = at.cert();
 		emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
 		emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
 		if(cryptoDoc)
@@ -990,7 +992,7 @@ void MainWindow::showCardStatus()
 		if(cardInfo->type & SslCertificate::TempelType)
 		{
 			ui->infoStack->update(*cardInfo);
-			const SslCertificate &signCert = t.cert();
+			const SslCertificate &signCert = st.cert();
 			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
 			ui->myEid->invalidIcon((!authCert.isNull() && !authCert.isValid()) || 
 				(!signCert.isNull() && !signCert.isValid()));
