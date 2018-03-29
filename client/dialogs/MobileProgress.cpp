@@ -73,6 +73,9 @@ MobileProgress::MobileProgress( QWidget *parent )
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	code->setBuddy( signProgressBar );
 
+	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
+	setWindowModality( Qt::ApplicationModal );
+
 	statusTimer = new QTimeLine( signProgressBar->maximum() * 1000, this );
 	statusTimer->setCurveShape( QTimeLine::LinearCurve );
 	statusTimer->setFrameRange( signProgressBar->minimum(), signProgressBar->maximum() );
@@ -86,7 +89,15 @@ MobileProgress::MobileProgress( QWidget *parent )
 	connect(cancel, &QPushButton::clicked, this, &MobileProgress::stop);
 #endif
 
-	cancel->setFont(Styles::font(Styles::Condensed, 14));
+	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
+	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
+	QFont header = Styles::font( Styles::Condensed, 20 );
+	header.setWeight( QFont::Bold );
+	code->setFont( header );
+	labelError->setFont( condensed12 );
+	signProgressBar->setFont( condensed12 );
+
+	cancel->setFont( condensed14 );
 	connect(cancel, &QPushButton::clicked, this, &MobileProgress::reject);
 
 	manager = new QNetworkAccessManager( this );

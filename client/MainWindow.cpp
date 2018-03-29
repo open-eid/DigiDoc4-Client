@@ -976,6 +976,7 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
+			clearWarning(WarningType::UpdateCertWarning);
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
