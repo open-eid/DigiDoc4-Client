@@ -70,7 +70,6 @@ MobileProgress::MobileProgress( QWidget *parent )
 	mobileResults["Certificate is revoked"] = tr("Mobile-ID user certificates are revoked or suspended.");
 
 	setupUi( this );
-	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	code->setBuddy( signProgressBar );
 
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
@@ -89,13 +88,12 @@ MobileProgress::MobileProgress( QWidget *parent )
 	connect(cancel, &QPushButton::clicked, this, &MobileProgress::stop);
 #endif
 
-	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont header = Styles::font( Styles::Condensed, 20 );
-	header.setWeight( QFont::Bold );
+	QFont regular14 = Styles::font( Styles::Regular, 14 );
+	QFont header = Styles::font( Styles::Regular, 20, QFont::DemiBold );
 	code->setFont( header );
-	labelError->setFont( condensed12 );
-	signProgressBar->setFont( condensed12 );
+	labelError->setFont( regular14 );
+	signProgressBar->setFont( regular14 );
 
 	cancel->setFont( condensed14 );
 	connect(cancel, &QPushButton::clicked, this, &MobileProgress::reject);
