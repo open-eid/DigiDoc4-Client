@@ -960,7 +960,7 @@ void MainWindow::showCardStatus()
 	Application::restoreOverrideCursor();
 	TokenData st = qApp->signer()->tokensign();
 	TokenData at = qApp->signer()->tokenauth();
-	const TokenData &t = st.card().isEmpty() ? at : st;
+	const TokenData &t = st.cert().isNull() ? at : st;
 
 	closeWarnings(-1);
 
@@ -982,17 +982,25 @@ void MainWindow::showCardStatus()
 
 		ui->cardInfo->update(cardInfo, t.card());
 
-		bool seal = cardInfo->type & SslCertificate::TempelType;
 		const SslCertificate &authCert = at.cert();
-		emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
-		emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
+		const SslCertificate &signCert = st.cert();
+		bool seal = cardInfo->type & SslCertificate::TempelType;
+
+		// Card (e.g. e-Seal) can have only one cert
+		if(!signCert.isNull())
+			emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
+		else
+			emit ui->signContainerPage->cardChanged();
+		if(!authCert.isNull())
+			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
+		else
+			emit ui->cryptoContainerPage->cardChanged();
 		if(cryptoDoc)
 			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
 
 		if(cardInfo->type & SslCertificate::TempelType)
 		{
 			ui->infoStack->update(*cardInfo);
-			const SslCertificate &signCert = st.cert();
 			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
 			ui->myEid->invalidIcon((!authCert.isNull() && !authCert.isValid()) || 
 				(!signCert.isNull() && !signCert.isValid()));
