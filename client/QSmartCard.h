@@ -122,17 +122,17 @@ public:
 	explicit QSmartCard( QObject *parent = nullptr );
 	~QSmartCard();
 
-	ErrorType change( QSmartCardData::PinType type, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
+	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	Qt::HANDLE key();
-	ErrorType login( QSmartCardData::PinType type );
+	ErrorType login( QSmartCardData::PinType type, QWidget* parent );
 	void logout();
 	void reload();
 	void reloadCard(const QString &card, bool isCardId);
-	ErrorType unblock( QSmartCardData::PinType type, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
+	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
-	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
-	ErrorType pinChange( QSmartCardData::PinType type );
+	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false, QWidget* parent = nullptr );
+	ErrorType pinChange( QSmartCardData::PinType type, QWidget* parent = nullptr );
 
 signals:
 	void dataChanged();

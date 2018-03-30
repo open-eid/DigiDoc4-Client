@@ -99,7 +99,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			.arg( QSmartCardData::typeString( type ) );
 
 	if( validateCardError( type, 1025,
-		qApp->smartcard()->pinUnblock( type, isForgotPin ) ) )
+		qApp->smartcard()->pinUnblock( type, isForgotPin, this ) ) )
 	{
 		if( isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
@@ -125,7 +125,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 void MainWindow::pinPukChange( QSmartCardData::PinType type )
 {
 	if( validateCardError( type, 1024,
-		qApp->smartcard()->pinChange( type ) ) )
+		qApp->smartcard()->pinChange( type, this ) ) )
 	{
 		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
@@ -193,7 +193,7 @@ void MainWindow::activateEmail ()
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
 {
-	if( !validateCardError( QSmartCardData::Pin1Type, type, qApp->smartcard()->login( QSmartCardData::Pin1Type ) ) )
+	if( !validateCardError( QSmartCardData::Pin1Type, type, qApp->smartcard()->login( QSmartCardData::Pin1Type, this ) ) )
 		return QByteArray();
 
 	SSLConnect ssl;

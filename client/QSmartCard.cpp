@@ -299,7 +299,7 @@ QSmartCard::~QSmartCard()
 	delete d;
 }
 
-QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText)
+QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText)
 {
 	PinDialog::PinFlags flags;
 	QCardLocker locker;
@@ -322,7 +322,7 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, const QSt
 	}
 	if(d->t.isPinpad())
 	{
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, qApp->activeWindow(),bodyText));
+		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, parent, bodyText));
 
 		std::thread([&]{
 			Q_EMIT p->startTimer();
@@ -386,7 +386,7 @@ Qt::HANDLE QSmartCard::key()
 	}
 }
 
-QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
+QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidget* parent)
 {
 	QScopedPointer<PinUnblock> p;
 	QByteArray oldPin, newPin;
@@ -394,7 +394,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock(PinUnblock::PinChange, qApp->activeWindow(), type, d->t.retryCount(type)));
+		p.reset(new PinUnblock(PinUnblock::PinChange, parent, type, d->t.retryCount(type)));
 		if (!p->exec())
 			return CancelError;
 		oldPin = p->firstCodeText().toUtf8();
@@ -406,10 +406,10 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type)
 		title = cert.toString( cert.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" );
 		textBody = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
 	}
-	return change(type, newPin, oldPin, title, textBody);
+	return change(type, parent, newPin, oldPin, title, textBody);
 }
 
-QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool isForgotPin)
+QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool isForgotPin, QWidget* parent)
 {
 	QScopedPointer<PinUnblock> p;
 	QByteArray puk, newPin;
@@ -417,7 +417,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock((isForgotPin) ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, qApp->activeWindow(), type, d->t.retryCount(QSmartCardData::PukType)));
+		p.reset(new PinUnblock((isForgotPin) ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, parent, type, d->t.retryCount(QSmartCardData::PukType)));
 		if (!p->exec())
 			return CancelError;
 		puk = p->firstCodeText().toUtf8();
@@ -432,10 +432,10 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 			:
 			tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 	}
-	return unblock(type, newPin, puk, title, textBody);
+	return unblock(type, parent, newPin, puk, title, textBody);
 }
 
-QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)
+QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type, QWidget* parent)
 {
 	PinDialog::PinFlags flags = PinDialog::Pin1Type;
 	QSslCertificate cert;
@@ -450,13 +450,13 @@ QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type)
 	QByteArray pin;
 	if(!d->t.isPinpad())
 	{
-		p.reset(new PinPopup(flags, cert, 0, qApp->activeWindow()));
+		p.reset(new PinPopup(flags, cert, 0, parent));
 		if(!p->exec())
 			return CancelError;
 		pin = p->text().toUtf8();
 	}
 	else
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), cert, 0, qApp->activeWindow()));
+		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), cert, 0, parent));
 
 	QCardLock::instance().exclusiveLock();
 	d->reader = d->connect(d->t.reader());
@@ -732,7 +732,7 @@ void QSmartCard::selectCard(const QString &card)
 	Q_EMIT dataChanged();
 }
 
-QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)
+QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)
 {
 	PinDialog::PinFlags flags;
 	QCardLocker locker;
@@ -772,7 +772,7 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, const QS
 
 	if(d->t.isPinpad()) {
 
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, qApp->activeWindow(),bodyText));
+		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, parent, bodyText));
 
 		std::thread([&]{
 			Q_EMIT p->startTimer();

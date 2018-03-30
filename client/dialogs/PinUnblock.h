@@ -48,6 +48,7 @@ public:
 
 private:
 	void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
+	void initIntro(WorkMode mode, QSmartCardData::PinType type);
 	void setUnblockEnabled();
 
 	Ui::PinUnblock *ui;
