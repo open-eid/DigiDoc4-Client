@@ -459,7 +459,7 @@ line-height: 14px;
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>40</y>
+     <y>35</y>
      <width>381</width>
      <height>20</height>
     </rect>
@@ -483,7 +483,7 @@ text-align: cente</string>
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>60</y>
+     <y>70</y>
      <width>410</width>
      <height>132</height>
     </rect>
@@ -1334,6 +1334,30 @@ text-align: left;</string>
      </spacer>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="labelPinValidation">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>50</y>
+     <width>381</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none;
+height: 14px;
+font-size: 13px;
+color: #c53e3e;
+font-weight: 400;
+text-align: cente</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <tabstops>

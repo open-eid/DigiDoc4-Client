@@ -1623,6 +1623,27 @@ Kontrollkood: %1</translation>
         <source>Remaining attempts: %1</source>
         <translation>Katseid jäänud: %1</translation>
     </message>
+
+    <message>
+        <source>New PIN%1 code can't be increasing sequence</source>
+        <translation>Uus PIN%1 ei saa olla kasvavate numbrite jada</translation>
+    </message>
+    <message>
+        <source>New PIN%1 code can't be decreasing sequence</source>
+        <translation>Uus PIN%1 ei saa olla kahanevate numbrite jada</translation>
+    </message>
+    <message>
+        <source>New PIN%1 code can't be sequence of same numbers</source>
+        <translation>Uus PIN%1 ei saa olla korduvate numbrite jada</translation>
+    </message>
+    <message>
+        <source>New PIN%1 code can't be part of your personal code</source>
+        <translation>Uus PIN%1 ei saa olla osa Sinu isikukoodist</translation>
+    </message>
+    <message>
+        <source>New PIN%1 code can't be your date of birth</source>
+        <translation>Uus PIN%1 ei saa olla Sinu sünnikuupäev</translation>
+    </message>
 </context>
 
 

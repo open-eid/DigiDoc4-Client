@@ -41,14 +41,17 @@ struct LineText
 	const char *text;
 };
 
-PinUnblock::PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts ) :
-	QDialog( parent ),
-	ui( new Ui::PinUnblock ),
-	regexpFirstCode(),
-	regexpNewCode(),
-	isFirstCodeOk( false ),
-	isNewCodeOk( false ),
-	isRepeatCodeOk( false )
+PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
+	const QDate &birthDate, const QString &personalCode)
+: QDialog(parent)
+, ui(new Ui::PinUnblock)
+, birthDate(birthDate)
+, personalCode(personalCode)
+, regexpFirstCode()
+, regexpNewCode()
+, isFirstCodeOk(false)
+, isNewCodeOk(false)
+, isRepeatCodeOk(false)
 {
 	init( mode, type, leftAttempts );
 	adjustSize();
@@ -106,13 +109,15 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	ui->pin->setValidator( new QRegExpValidator( regexpFirstCode, ui->pin ) );
 	ui->repeat->setValidator( new QRegExpValidator( regexpFirstCode, ui->repeat ) );
 
-	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont headerFont( Styles::font( Styles::Regular, 18 ) );
+	QFont condensed14(Styles::font(Styles::Condensed, 14));
+	QFont headerFont(Styles::font(Styles::Regular, 18));
+	QFont regular13(Styles::font(Styles::Regular, 13));
 	headerFont.setWeight( QFont::Bold );
 	ui->labelNameId->setFont( headerFont );
 	ui->cancel->setFont( condensed14 );
 	ui->unblock->setFont( condensed14 );
-	ui->labelAttemptsLeft->setFont( Styles::font( Styles::Regular, 13 ) );
+	ui->labelAttemptsLeft->setFont(regular13);
+	ui->labelPinValidation->setFont(regular13);
 	if( mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk )
 		ui->labelAttemptsLeft->setText( tr("PUK remaining attempts: %1").arg( leftAttempts ) );
 	else
@@ -129,17 +134,18 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 				}
 			);
 	connect(ui->pin, &QLineEdit::textChanged, this,
-				[this](const QString &text)
+				[this, type](const QString &text)
 				{
-					isNewCodeOk = regexpNewCode.exactMatch(text);
-					isRepeatCodeOk = ui->pin->text() == ui->repeat->text();
+					ui->labelPinValidation->setText("");
+					isNewCodeOk = regexpNewCode.exactMatch(text) && validatePin(text, type);
+					isRepeatCodeOk = !text.isEmpty() && ui->pin->text() == ui->repeat->text();
 					setUnblockEnabled();
 				}
 			);
 	connect(ui->repeat, &QLineEdit::textChanged, this,
 				[this]()
 				{
-					isRepeatCodeOk = ui->pin->text() == ui->repeat->text();
+					isRepeatCodeOk = !ui->pin->text().isEmpty() && ui->pin->text() == ui->repeat->text();
 					setUnblockEnabled();
 				}
 			);
@@ -290,3 +296,38 @@ int PinUnblock::exec()
 QString PinUnblock::firstCodeText() const { return ui->puk->text(); }
 
 QString PinUnblock::newCodeText() const { return ui->pin->text(); }
+
+bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type)
+{
+	const static QString SEQUENCE_ASCENDING = "1234567890123456789012";
+	const static QString SEQUENCE_DESCENDING = "0987654321098765432109";
+	QString pinType = QSmartCardData::Pin1Type ? "1" : "2";
+
+	if(SEQUENCE_ASCENDING.contains(pin))
+	{
+		ui->labelPinValidation->setText(tr("New PIN%1 code can't be increasing sequence").arg(pinType));
+		return false;
+	}
+	if(SEQUENCE_DESCENDING.contains(pin))
+	{
+		ui->labelPinValidation->setText(tr("New PIN%1 code can't be decreasing sequence").arg(pinType));
+		return false;
+	}
+	if(pin.count(pin[1]) == pin.length())
+	{
+		ui->labelPinValidation->setText(tr("New PIN%1 code can't be sequence of same numbers").arg(pinType));
+		return false;
+	}
+	if(personalCode.contains(pin))
+	{
+		ui->labelPinValidation->setText(tr("New PIN%1 code can't be part of your personal code").arg(pinType));
+		return false;
+	}
+	if(pin == birthDate.toString("yyyy") || pin == birthDate.toString("ddMM") || pin == birthDate.toString("MMdd"))
+	{
+		ui->labelPinValidation->setText(tr("New PIN%1 code can't be your date of birth").arg(pinType));
+		return false;
+	}
+
+	return true;
+}
