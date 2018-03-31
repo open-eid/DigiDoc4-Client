@@ -560,13 +560,13 @@ text-align: cente</string>
         <widget class="QLabel" name="line1_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -660,13 +660,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line2_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -760,13 +760,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line3_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -860,13 +860,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line4_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -960,13 +960,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line5_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -1060,13 +1060,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line6_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -1160,13 +1160,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line7_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
@@ -1260,13 +1260,13 @@ text-align: left;</string>
         <widget class="QLabel" name="line8_bullet">
          <property name="minimumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>20</width>
+           <width>15</width>
            <height>16</height>
           </size>
          </property>

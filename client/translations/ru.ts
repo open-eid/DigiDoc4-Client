@@ -1521,11 +1521,15 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>You can find your PUK code inside the ID-card codes</source>
-        <translation>PUK код находится в конверте с кодами, который выдаётся</translation>
+        <translation>PUK код находится в конверте с кодами, который</translation>
     </message>
     <message>
         <source>envelope.</source>
-        <translation>при получении ID-карты или смене сертификатов.</translation>
+        <translation>выдаётся при получении ID-карты или смене</translation>
+    </message>
+    <message>
+        <source>PUK_LINE3</source>
+        <translation>сертификатов.</translation>
     </message>
     <message>
         <source>If you have forgotten the PUK code for your ID card, please</source>

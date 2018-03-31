@@ -1529,6 +1529,10 @@ Control code: %1</translation>
         <translation>envelope.</translation>
     </message>
     <message>
+        <source>PUK_LINE3</source>
+        <translation> </translation>
+    </message>
+    <message>
         <source>If you have forgotten the PUK code for your ID card, please</source>
         <translation>If you have forgotten the PUK code for your ID card, please</translation>
     </message>

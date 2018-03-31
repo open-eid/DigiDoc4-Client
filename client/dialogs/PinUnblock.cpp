@@ -175,6 +175,7 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 			<< LineText{false, false, "code."}
 			<< LineText{false, true, "You can find your PUK code inside the ID-card codes"}
 			<< LineText{false, false, "envelope."}
+			<< LineText{false, false, "PUK_LINE3"}
 			<< LineText{true, true, "New PIN%1 must be different from current PIN%1."}
 			<< LineText{false, true, "If you have forgotten the PUK code for your ID card, please"}
 			<< LineText{false, false, "VISIT_SERVICE_CENTRE"}
@@ -226,28 +227,28 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 						{ ui->line7, ui->line7_bullet, ui->line7_text }, 
 						{ ui->line8, ui->line8_bullet, ui->line8_text }};
 
+    int lineOffset = 0;
 	for(int i = 0; i < labels.size(); i++)
 	{
 		auto lbl = labels.at(i);
 		auto text = lbl.replacePin ? tr(lbl.text).arg(pin) : tr(lbl.text);
 
 		if(text.trimmed().isEmpty())
-		{
-			lines[i].line->hide();
 			continue;
-		}
 
 		if(lbl.showBullet)
-			lines[i].bullet->setText("&bull;");
+			lines[lineOffset].bullet->setText("&bull;");
 		else
-			lines[i].bullet->setText("");
-		lines[i].bullet->setFont(font);
-		lines[i].text->setText(text);
-		lines[i].text->setFont(font);
+			lines[lineOffset].bullet->setText("");
+		lines[lineOffset].bullet->setFont(font);
+		lines[lineOffset].text->setText(text);
+		lines[lineOffset].text->setFont(font);
+        
+        lineOffset++;
 	}
 
 	// hide empty rows
-	for(int i = labels.size(); i < 8; i++)
+	for(int i = lineOffset; i < 8; i++)
 		lines[i].line->hide();
 }
 

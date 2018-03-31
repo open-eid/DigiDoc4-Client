@@ -1521,6 +1521,10 @@ Kontrollkood: %1</translation>
         <translation>vahepeal muutnud.</translation>
     </message>
     <message>
+        <source>PUK_LINE3</source>
+        <translation> </translation>
+    </message>
+    <message>
         <source>If you have forgotten the PUK code for your ID card, please</source>
         <translation>Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta</translation>
     </message>
