@@ -703,19 +703,30 @@ void Application::mailTo( const QUrl &url )
 QWidget* Application::mainWindow()
 {
 	QWidget* win = activeWindow();
+	QWidget* first = nullptr;
 	QWidget* root = nullptr;
 
 	if (!win)
-	{	// Happens on Ubuntu only.
+	{	
+		// Prefer main window; on Mac also the menu is top level window
 		for (QWidget *widget: qApp->topLevelWidgets())
 		{
 			if (widget->isWindow())
 			{
-				win = widget;
-				break;
+				if (!first)
+					first = widget;
+
+				if(qobject_cast<MainWindow*>(widget))
+				{
+					win = widget;
+					break;
+				}
 			}
 		}
 	}
+
+	if(!win)
+		win = first;
 
 	while(win)
 	{

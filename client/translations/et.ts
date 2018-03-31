@@ -1477,83 +1477,121 @@ Kontrollkood: %1</translation>
     </message>
 
     <message>
-        <source>ConditionsChangePIN2WithPUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
-&lt;li&gt;Kui olete unustanud PIN2 koodi, kuid teate PUK koodi,&lt;br&gt;
-siis siin saate määrata uue PIN2 koodi.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
-vahepeal muutnud.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>New PIN%1 must be different from current PIN%1.</source>
+        <translation>Uus PIN%1 peab olema erinev eelmisest.</translation>
     </message>
     <message>
-        <source>ConditionsChangePIN1WithPUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamiseks.&lt;/li&gt;
-&lt;li&gt;Kui olete unustanud PIN1 koodi, kuid teate PUK koodi,&lt;br&gt;
-siis siin saate määrata uue PIN1 koodi.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
-vahepeal muutnud.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>PIN2 code is used to digitally sign documents.</source>
+        <translation>PIN2 koodi kasutatakse digitaalallkirja andmiseks.</translation>
     </message>
     <message>
-        <source>ConditionsUnlockPIN2</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Sertifikaadi blokeeringu tühistamiseks sisesta kaardi PUK&lt;br&gt;
-kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikust, kui sa pole seda&lt;br&gt;
-vahepeal muutnud&lt;/li&gt;
-&lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta&lt;br&gt;
-&lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Politsei- ja Piirivalve esindust&lt;/span&gt;&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
-koodiümbrik.&lt;/li&gt;</translation>
+        <source>PIN1 code is used for confirming the identity of a person.</source>
+        <translation>PIN1 koodi kasutatakse isikutuvastamiseks.</translation>
     </message>
     <message>
-        <source>ConditionsUnlockPIN1</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Sertifikaadi blokeeringu tühistamiseks sisesta kaardi PUK&lt;br&gt;
-kood.&lt;/li&gt;
-&lt;li&gt;PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda&lt;br&gt;
-vahepeal muutnud.&lt;/li&gt;
-&lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta&lt;br&gt;
-&lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Politsei- ja Piirivalve esindust&lt;/span&gt;&lt;/a&gt;, kus väljastatakse uus&lt;br&gt;
-koodiümbrik.&lt;/li&gt;</translation>
+        <source>If you have forgotten PIN%1, but know PUK, then</source>
+        <translation>Kui oled unustanud PIN%1 koodi, kuid tead PUK koodi,</translation>
     </message>
     <message>
-        <source>ConditionsChangePIN2</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN2 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;PIN2 koodi kasutatakse digitaalallkirja andmiseks.&lt;/li&gt;
-&lt;li&gt;Kui sisestad PIN2 koodi kolm korda valesti, siis&lt;br&gt;
-allkirjastamise sertifikaat blokeeritakse ning ID-kaarti&lt;br&gt;
-pole võimalik allkirjastamiseks kasutada enne&lt;br&gt;
-blokeeringu tühistamist PUK koodi abil.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>here you can enter new PIN%1.</source>
+        <translation>siis siin saad määrata uue PIN%1 koodi.</translation>
     </message>
     <message>
-        <source>ConditionsChangePIN1</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Uus PIN1 peab olema erinev eelmisest.&lt;/li&gt;
-&lt;li&gt;PIN1 koodi kasutatakse isikutuvastamiseks.&lt;/li&gt;
-&lt;li&gt;Kui sisestad PIN1 koodi kolm korda valesti, siis&lt;br&gt;
-isikutuvastamise sertifikaat blokeeritakse ning&lt;br&gt;
-ID-kaarti pole võimalik isikutuvastamiseks kasutada&lt;br&gt;
-enne blokeeringu tühistamist PUK koodi abil.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>PUK code is written in the envelope, that is given</source>
+        <translation>PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda</translation>
     </message>
     <message>
-        <source>ConditionsChangePUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;PUK koodi abil saab tühistada sertifikaadi blokeeringu, kui&lt;br&gt;
-PIN1 või PIN2 koodi on 3 korda järjest valesti sisestatud.&lt;/li&gt;
-&lt;li&gt;Kui peale vahetamist PUK kood läheb meelest ära ja&lt;br&gt;
-sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2&lt;br&gt;
-sisetamise järel, siis ainus võimalus ID-kaart jälle tööle&lt;br&gt;
-saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>with the ID-card.</source>
+        <translation>vahepeal muutnud.</translation>
+    </message>
+    <message>
+        <source>To unblock the certificate you have to enter the PUK</source>
+        <translation>Sertifikaadi blokeeringu tühistamiseks sisesta kaardi PUK</translation>
+    </message>
+    <message>
+        <source>code.</source>
+        <translation>kood.</translation>
+    </message>
+    <message>
+        <source>You can find your PUK code inside the ID-card codes</source>
+        <translation>PUK koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda</translation>
+    </message>
+    <message>
+        <source>envelope.</source>
+        <translation>vahepeal muutnud.</translation>
+    </message>
+    <message>
+        <source>PUK_LINE3</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <source>If you have forgotten the PUK code for your ID card, please</source>
+        <translation>Kui sa oled unustanud enda ID-kaardi PUK koodi, külasta</translation>
+    </message>
+    <message>
+        <source>VISIT_SERVICE_CENTRE</source>
+        <translation>&lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Politsei- ja Piirivalve esindust&lt;/span&gt;&lt;/a&gt;, kus väljastatakse uus</translation>
+    </message>
+    <message>
+        <source>obtain new PIN codes.</source>
+        <translation>koodiümbrik.</translation>
+    </message>
+    <message>
+        <source>If PIN2 is inserted incorrectly 3 times the signing</source>
+        <translation>Kui sisestad PIN2 koodi kolm korda valesti, siis</translation>
+    </message>
+    <message>
+        <source>If PIN1 is inserted incorrectly 3 times the identification</source>
+        <translation>Kui sisestad PIN1 koodi kolm korda valesti, siis</translation>
+    </message>
+    <message>
+        <source>auth certificate will be blocked and it will be impossible</source>
+        <translation>isikutuvastamise sertifikaat blokeeritakse ning</translation>
+    </message>
+    <message>
+        <source>signing certificate will be blocked and it will be impossible</source>
+        <translation>allkirjastamise sertifikaat blokeeritakse ning ID-kaarti</translation>
+    </message>
+    <message>
+        <source>to use ID-card to digital signing, until it is</source>
+        <translation>pole võimalik allkirjastamiseks kasutada</translation>
+    </message>
+    <message>
+        <source>to use ID-card to verify identification, until it is</source>
+        <translation>ID-kaarti pole võimalik isikutuvastamiseks kasutada</translation>
+    </message>
+    <message>
+        <source>unblocked via the PUK code.</source>
+        <translation>enne blokeeringu tühistamist PUK koodi abil.</translation>
+    </message>
+
+    <message>
+        <source>PUK code is used for unblocking the certificates, when</source>
+        <translation>PUK koodi abil saab tühistada sertifikaadi blokeeringu, kui</translation>
+    </message>
+    <message>
+        <source>PIN1 or PIN2 has been entered 3 times incorrectly.</source>
+        <translation>PIN1 või PIN2 koodi on 3 korda järjest valesti sisestatud.</translation>
+    </message>
+    <message>
+        <source>PUK_INFO_LINE3</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <source>If you forget the PUK code or the certificates remain</source>
+        <translation>Kui peale vahetamist PUK kood läheb meelest ära ja</translation>
+    </message>
+    <message>
+        <source>PUK_BLOCKED_LINE2</source>
+        <translation>sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2</translation>
+    </message>
+    <message>
+        <source>new codes.</source>
+        <translation>sisetamise järel, siis ainus võimalus ID-kaart jälle tööle</translation>
+    </message>
+    <message>
+        <source>PUK_BLOCKED_LINE4</source>
+        <translation>saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.</translation>
     </message>
 
 
@@ -1588,6 +1626,27 @@ saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.&lt;/li&gt;
     <message>
         <source>Remaining attempts: %1</source>
         <translation>Katseid jäänud: %1</translation>
+    </message>
+
+    <message>
+        <source>New %1 code can't be increasing sequence</source>
+        <translation>Uus %1 ei saa olla kasvavate numbrite jada</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be decreasing sequence</source>
+        <translation>Uus %1 ei saa olla kahanevate numbrite jada</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be sequence of same numbers</source>
+        <translation>Uus %1 ei saa olla korduvate numbrite jada</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be part of your personal code</source>
+        <translation>Uus %1 ei saa olla osa Sinu isikukoodist</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be your date of birth</source>
+        <translation>Uus %1 ei saa olla Sinu sünnikuupäev</translation>
     </message>
 </context>
 

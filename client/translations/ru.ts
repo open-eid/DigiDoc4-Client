@@ -1484,83 +1484,123 @@ Kонтрольны код: %1</translation>
     </message>
 
     <message>
-        <source>ConditionsChangePIN2WithPUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN2 код используется для дигитальной подписи.&lt;/li&gt;
-&lt;li&gt;Если забыли PIN2 код, но знаете PUK код,&lt;br&gt;
-тогда можете создать новый PIN2 код.&lt;/li&gt;
-&lt;li>Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>New PIN%1 must be different from current PIN%1.</source>
+        <translation>Новый PIN%1 должен отличаться от старого.</translation>
     </message>
     <message>
-        <source>ConditionsChangePIN1WithPUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
-&lt;li&gt;Если вы забыли PIN1, при помощи PUK кода можно&lt;br&gt;
-ввести новый PIN1 код.&lt;/li&gt;
-&lt;li&gt;Ваш PUK код находится в конверте с кодами.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>PIN2 code is used to digitally sign documents.</source>
+        <translation>PIN2 код используется для дигитальной подписи.</translation>
     </message>
     <message>
-        <source>ConditionsUnlockPIN2</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Для разблокировки сертификата введите PUK код.&lt;/li&gt;
-&lt;li&gt;PUK код находится в конверте с кодами, который выдаётся&lt;br&gt;
-при получении ID-карты или смене сертификатов.&lt;/li&gt;
-&lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;центр &lt;br&gt;
-обслуживания Департамента полиции и пограничной&lt;br&gt;
-охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>PIN1 code is used for confirming the identity of a person.</source>
+        <translation>PIN1 код используется для идентификации личности.</translation>
     </message>
     <message>
-        <source>ConditionsUnlockPIN1</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Для разблокировки сертификата введите PUK код.&lt;/li&gt;
-&lt;li&gt;PUK код находится в конверте с кодами, который&lt;br&gt;
-выдаётся при получении ID-карты или смене сертификатов.&lt;/li&gt;
-&lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;центр &lt;br&gt;
-обслуживания Департамента полиции и пограничной&lt;br&gt;
-охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>If you have forgotten PIN%1, but know PUK, then</source>
+        <translation>Если вы забыли PIN%1 код, но знаете PUK код,</translation>
     </message>
     <message>
-        <source>ConditionsChangePIN2</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN2 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN2 код используется для дигитальной подписи.&lt;/li&gt;
-&lt;li&gt;Если PIN2 введён 3 раза неверно, тогда блокируется&lt;br&gt;
-сертификат цифровой подписи и использовать&lt;br&gt;
-ID-карту для цифровой подписи невозможно,&lt;br&gt;
-пока  блокировка не снята PUK кодом.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>here you can enter new PIN%1.</source>
+        <translation>тогда здесь вы можете ввести новый PIN%1 код.</translation>
     </message>
     <message>
-        <source>ConditionsChangePIN1</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;Новый PIN1 должен отличаться от старого.&lt;/li&gt;
-&lt;li&gt;PIN1 код используется для идентификации личности.&lt;/li&gt;
-&lt;li&gt;Если PIN1 введён 3 раза неверно, тогда блокируется&lt;br&gt;
-идентификационный сертификат и использовать&lt;br&gt;
-ID-карту невозможно, пока блокировка не снята&lt;br&gt;
-PUK кодом.&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>PUK code is written in the envelope, that is given</source>
+        <translation>Ваш PUK код находится в конверте с кодами.</translation>
     </message>
     <message>
-        <source>ConditionsChangePUK</source>
-        <translation>&lt;ul&gt;
-&lt;li&gt;PUK код - это код, разблокирующий заблокированные&lt;br&gt;
-сертификаты, если код PIN1 или PIN2 был введён&lt;br&gt;
-неверно 3 раза подряд.&lt;/li&gt;
-&lt;li&gt;Если PUK код забыт и сетрификат блокируется из-за&lt;br&gt;
-неверно введённых PIN1 или PIN2, то единственной&lt;br&gt;
-возможностью восстановить работоспособность&lt;br&gt;
-ID-карты, это обратиться в &lt;u&gt;бюро обслуживания.&lt;/u&gt;&lt;/li&gt;
-&lt;/ul&gt;</translation>
+        <source>with the ID-card.</source>
+        <translation> </translation>
     </message>
+    <message>
+        <source>To unblock the certificate you have to enter the PUK</source>
+        <translation>Для разблокировки сертификата введите PUK код.</translation>
+    </message>
+    <message>
+        <source>code.</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <source>You can find your PUK code inside the ID-card codes</source>
+        <translation>PUK код находится в конверте с кодами, который</translation>
+    </message>
+    <message>
+        <source>envelope.</source>
+        <translation>выдаётся при получении ID-карты или смене</translation>
+    </message>
+    <message>
+        <source>PUK_LINE3</source>
+        <translation>сертификатов.</translation>
+    </message>
+    <message>
+        <source>If you have forgotten the PUK code for your ID card, please</source>
+        <translation>Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>VISIT_SERVICE_CENTRE</source>
+        <translation>&lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;обслуживания Департамента полиции и пограничной&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>obtain new PIN codes.</source>
+        <translation>&lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.</translation>
+    </message>
+    <message>
+        <source>If PIN2 is inserted incorrectly 3 times the signing</source>
+        <translation>Если PIN2 введён 3 раза неверно, тогда блокируется</translation>
+    </message>
+    <message>
+        <source>If PIN1 is inserted incorrectly 3 times the identification</source>
+        <translation>Если PIN1 введён 3 раза неверно, тогда блокируется</translation>
+    </message>
+    <message>
+        <source>auth certificate will be blocked and it will be impossible</source>
+        <translation>идентификационный сертификат и использовать</translation>
+    </message>
+    <message>
+        <source>signing certificate will be blocked and it will be impossible</source>
+        <translation>сертификат цифровой подписи и использовать</translation>
+    </message>
+    <message>
+        <source>to use ID-card to digital signing, until it is</source>
+        <translation>ID-карту для цифровой подписи невозможно,</translation>
+    </message>
+    <message>
+        <source>to use ID-card to verify identification, until it is</source>
+        <translation>ID-карту для идентификации личности невозможно,</translation>
+    </message>
+    <message>
+        <source>unblocked via the PUK code.</source>
+        <translation>пока блокировка не снята PUK кодом.</translation>
+    </message>
+
+    <message>
+        <source>PUK code is used for unblocking the certificates, when</source>
+        <translation>PUK код - это код, разблокирующий заблокированные</translation>
+    </message>
+    <message>
+        <source>PIN1 or PIN2 has been entered 3 times incorrectly.</source>
+        <translation>сертификаты, если код PIN1 или PIN2 был введён</translation>
+    </message>
+    <message>
+        <source>PUK_INFO_LINE3</source>
+        <translation>неверно 3 раза подряд.</translation>
+    </message>
+    <message>
+        <source>If you forget the PUK code or the certificates remain</source>
+        <translation>Если PUK код забыт и сетрификат блокируется из-за</translation>
+    </message>
+    <message>
+        <source>PUK_BLOCKED_LINE2</source>
+        <translation>неверно введённых PIN1 или PIN2, то единственной</translation>
+    </message>
+    <message>
+        <source>new codes.</source>
+        <translation>возможностью восстановить работоспособность</translation>
+    </message>
+    <message>
+        <source>PUK_BLOCKED_LINE4</source>
+        <translation>ID-карты, это обратиться в &lt;u&gt;бюро обслуживания.&lt;/u&gt;</translation>
+    </message>
+
     <message>
         <source>%1 unblocking</source>
         <translation>%1 разблокирование</translation>
@@ -1592,6 +1632,27 @@ ID-карты, это обратиться в &lt;u&gt;бюро обслужив
     <message>
         <source>Remaining attempts: %1</source>
         <translation>Оставшиеся попытки: %1</translation>
+    </message>
+
+    <message>
+        <source>New %1 code can't be increasing sequence</source>
+        <translation>Новый %1 не может увеличиваться</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be decreasing sequence</source>
+        <translation>Новый %1 не может уменьшаться</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be sequence of same numbers</source>
+        <translation>Новый %1 не может быть рядом одинаковых номеров</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be part of your personal code</source>
+        <translation>Новый %1 не может быть частью вашего личного кода</translation>
+    </message>
+    <message>
+        <source>New %1 code can't be your date of birth</source>
+        <translation>Новый %1 не может быть вашей датой рождения</translation>
     </message>
 </context>
 

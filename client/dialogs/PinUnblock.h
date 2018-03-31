@@ -21,6 +21,7 @@
 
 #include "QSmartCard.h"
 
+#include <QDate>
 #include <QDialog>
 
 namespace Ui {
@@ -39,7 +40,8 @@ public:
 		PinChange = 4,
 		PukChange = 8
 	};
-	PinUnblock( WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts );
+	PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
+		const QDate &birthDate, const QString &personalCode);
 	~PinUnblock();
 
 	int exec() override;
@@ -48,11 +50,15 @@ public:
 
 private:
 	void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
+	void initIntro(WorkMode mode, QSmartCardData::PinType type);
 	void setUnblockEnabled();
+	bool validatePin(const QString& pin, QSmartCardData::PinType type);
 
 	Ui::PinUnblock *ui;
-	QRegExp		regexpFirstCode;
-	QRegExp		regexpNewCode;
+	QDate birthDate;
+	QString personalCode;
+	QRegExp regexpFirstCode;
+	QRegExp regexpNewCode;
 	bool isFirstCodeOk;
 	bool isNewCodeOk;
 	bool isRepeatCodeOk;
