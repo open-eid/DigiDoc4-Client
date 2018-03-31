@@ -1490,11 +1490,11 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>If you have forgotten PIN%1, but know PUK, then</source>
-        <translation>Kui olete unustanud PIN%1 koodi, kuid teate PUK koodi,</translation>
+        <translation>Kui oled unustanud PIN%1 koodi, kuid tead PUK koodi,</translation>
     </message>
     <message>
         <source>here you can enter new PIN%1.</source>
-        <translation>siis siin saate määrata uue PIN%1 koodi.</translation>
+        <translation>siis siin saad määrata uue PIN%1 koodi.</translation>
     </message>
     <message>
         <source>PUK code is written in the envelope, that is given</source>
