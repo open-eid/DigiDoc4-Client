@@ -1533,7 +1533,7 @@ Kонтрольны код: %1</translation>
     </message>
     <message>
         <source>If you have forgotten the PUK code for your ID card, please</source>
-        <translation>Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;центр&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation>Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>VISIT_SERVICE_CENTRE</source>
