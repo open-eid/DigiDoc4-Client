@@ -482,9 +482,9 @@ text-align: cente</string>
   <widget class="QWidget" name="infoBox" native="true">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>30</x>
      <y>70</y>
-     <width>410</width>
+     <width>420</width>
      <height>132</height>
     </rect>
    </property>
