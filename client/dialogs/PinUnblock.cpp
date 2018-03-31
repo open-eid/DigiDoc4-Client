@@ -301,31 +301,31 @@ bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type)
 {
 	const static QString SEQUENCE_ASCENDING = "1234567890123456789012";
 	const static QString SEQUENCE_DESCENDING = "0987654321098765432109";
-	QString pinType = QSmartCardData::Pin1Type ? "1" : "2";
+	QString pinType = type == QSmartCardData::Pin1Type ? "PIN1" : (type == QSmartCardData::Pin2Type ? "PIN2" : "PUK");
 
 	if(SEQUENCE_ASCENDING.contains(pin))
 	{
-		ui->labelPinValidation->setText(tr("New PIN%1 code can't be increasing sequence").arg(pinType));
+		ui->labelPinValidation->setText(tr("New %1 code can't be increasing sequence").arg(pinType));
 		return false;
 	}
 	if(SEQUENCE_DESCENDING.contains(pin))
 	{
-		ui->labelPinValidation->setText(tr("New PIN%1 code can't be decreasing sequence").arg(pinType));
+		ui->labelPinValidation->setText(tr("New %1 code can't be decreasing sequence").arg(pinType));
 		return false;
 	}
 	if(pin.count(pin[1]) == pin.length())
 	{
-		ui->labelPinValidation->setText(tr("New PIN%1 code can't be sequence of same numbers").arg(pinType));
+		ui->labelPinValidation->setText(tr("New %1 code can't be sequence of same numbers").arg(pinType));
 		return false;
 	}
 	if(personalCode.contains(pin))
 	{
-		ui->labelPinValidation->setText(tr("New PIN%1 code can't be part of your personal code").arg(pinType));
+		ui->labelPinValidation->setText(tr("New %1 code can't be part of your personal code").arg(pinType));
 		return false;
 	}
 	if(pin == birthDate.toString("yyyy") || pin == birthDate.toString("ddMM") || pin == birthDate.toString("MMdd"))
 	{
-		ui->labelPinValidation->setText(tr("New PIN%1 code can't be your date of birth").arg(pinType));
+		ui->labelPinValidation->setText(tr("New %1 code can't be your date of birth").arg(pinType));
 		return false;
 	}
 

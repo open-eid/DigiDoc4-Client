@@ -1632,24 +1632,24 @@ Control code: %1</translation>
     </message>
 
     <message>
-        <source>New PIN%1 code can't be increasing sequence</source>
-        <translation>New PIN%1 code can't be increasing sequence</translation>
+        <source>New %1 code can't be increasing sequence</source>
+        <translation>New %1 code can't be increasing sequence</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be decreasing sequence</source>
-        <translation>New PIN%1 code can't be decreasing sequence</translation>
+        <source>New %1 code can't be decreasing sequence</source>
+        <translation>New %1 code can't be decreasing sequence</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be sequence of same numbers</source>
-        <translation>New PIN%1 code can't be sequence of same numbers</translation>
+        <source>New %1 code can't be sequence of same numbers</source>
+        <translation>New %1 code can't be sequence of same numbers</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be part of your personal code</source>
-        <translation>New PIN%1 code can't be part of your personal code</translation>
+        <source>New %1 code can't be part of your personal code</source>
+        <translation>New %1 code can't be part of your personal code</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be your date of birth</source>
-        <translation>New PIN%1 code can't be your date of birth</translation>
+        <source>New %1 code can't be your date of birth</source>
+        <translation>New %1 code can't be your date of birth</translation>
     </message>
 </context>
 

@@ -1631,24 +1631,24 @@ Kонтрольны код: %1</translation>
     </message>
 
     <message>
-        <source>New PIN%1 code can't be increasing sequence</source>
-        <translation>Новый PIN%1 не может увеличиваться</translation>
+        <source>New %1 code can't be increasing sequence</source>
+        <translation>Новый %1 не может увеличиваться</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be decreasing sequence</source>
-        <translation>Новый PIN%1 не может уменьшаться</translation>
+        <source>New %1 code can't be decreasing sequence</source>
+        <translation>Новый %1 не может уменьшаться</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be sequence of same numbers</source>
-        <translation>Новый PIN%1 не может быть рядом одинаковых номеров</translation>
+        <source>New %1 code can't be sequence of same numbers</source>
+        <translation>Новый %1 не может быть рядом одинаковых номеров</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be part of your personal code</source>
-        <translation>Новый PIN%1 не может быть частью вашего личного кода</translation>
+        <source>New %1 code can't be part of your personal code</source>
+        <translation>Новый %1 не может быть частью вашего личного кода</translation>
     </message>
     <message>
-        <source>New PIN%1 code can't be your date of birth</source>
-        <translation>Новый PIN%1 не может быть вашей датой рождения</translation>
+        <source>New %1 code can't be your date of birth</source>
+        <translation>Новый %1 не может быть вашей датой рождения</translation>
     </message>
 </context>
 
