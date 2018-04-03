@@ -133,7 +133,7 @@ void QSigner::cacheCardData(const QSet<QString> &cards, bool signingCert)
 		QWin::Certs certs = d->win->certs();
 		for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
 		{
-			if(!d->cache.contains(i.value()) && isMatchingType(i.key(), signingCert))
+			if((!d->cache.contains(i.value()) || !d->cache[i.card()]->valid) && isMatchingType(i.key(), signingCert))
 				d->cache.insert(i.value(), QSharedPointer<QCardInfo>(toCardInfo(i.key())));
 		}
 	}
@@ -330,6 +330,8 @@ void QSigner::run()
 			at.setReaders( readers );
 			st.setCards( scards );
 			st.setReaders( readers );
+
+			qCDebug(SLog) << "Auth cards" << acards << "Sign cards" << scards;
 
 			// check if selected card is still in slot
 			if( !at.card().isEmpty() && !acards.contains( at.card() ) )
