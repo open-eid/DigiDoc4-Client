@@ -329,8 +329,6 @@ void QSigner::run()
 			st.setCards( scards );
 			st.setReaders( readers );
 
-			qCDebug(SLog) << "Auth cards" << acards << "Sign cards" << scards;
-
 			// check if selected card is still in slot
 			if( !at.card().isEmpty() && !acards.contains( at.card() ) )
 			{
