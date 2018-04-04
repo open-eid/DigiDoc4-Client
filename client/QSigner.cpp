@@ -464,20 +464,18 @@ void QSigner::run()
 	}
 }
 
-void QSigner::selectAuthCard( const QString &card )
+void QSigner::selectCard(const QString &card)
 {
 	TokenData t = d->auth;
 	t.setCard( card );
 	t.setCert( QSslCertificate() );
 	Q_EMIT authDataChanged(d->auth = t);
-}
 
-void QSigner::selectSignCard( const QString &card )
-{
-	TokenData t = d->sign;
+	t = d->sign;
 	t.setCard( card );
 	t.setCert( QSslCertificate() );
 	Q_EMIT signDataChanged(d->sign = t);
+	Q_EMIT dataChanged();
 }
 
 void QSigner::showWarning( const QString &msg )

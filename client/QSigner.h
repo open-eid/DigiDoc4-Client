@@ -68,8 +68,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
 	void cacheCardData(const QSet<QString> &cards);
-	void selectAuthCard( const QString &card );
-	void selectSignCard( const QString &card );
+	void selectCard(const QString &card);
 	void showWarning( const QString &msg );
 
 private:

@@ -952,8 +952,7 @@ void MainWindow::showCardMenu(bool show)
 		cardPopup.reset(new CardPopup(cards(), t.card(), qApp->signer()->cache(), this));
 		// To select active card from several cards in readers ..
 		connect(cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
-		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectSignCard, Qt::QueuedConnection);
-		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectAuthCard, Qt::QueuedConnection);
+		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		// .. and hide card popup menu
 		connect(cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup);
 		cardPopup->show();
