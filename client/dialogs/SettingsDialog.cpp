@@ -287,7 +287,7 @@ void SettingsDialog::initUI()
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
 
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
-	connect( this, &SettingsDialog::finished, this, [this](){ QApplication::restoreOverrideCursor(); } );
+	connect( this, &SettingsDialog::finished, this, [](){ QApplication::restoreOverrideCursor(); } );
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 }
@@ -404,7 +404,7 @@ void SettingsDialog::initFunctionality()
 		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(3);
 	}
 	connect( ui->cmbGeneralCheckUpdatePeriod, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
-			[this](int index)
+			[](int index)
 			{
 				switch(index)
 				{
@@ -433,8 +433,8 @@ void SettingsDialog::initFunctionality()
 	{
 		ui->rdSigningBdoc->setChecked(true);
 	}
-	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "bdoc", "bdoc" ); } } );
-	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [this](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "asice", "bdoc" ); } } );
+	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "bdoc", "bdoc" ); } } );
+	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "asice", "bdoc" ); } } );
 
 	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
 	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );

@@ -131,7 +131,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	setAcceptDrops( true );
 
 	// Refresh ID card info in card widget
-	connect(qApp->signer(), &QSigner::signDataChanged, this, &MainWindow::showCardStatus);
+	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
 	// Refresh card info on "My EID" page
 	connect(qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
@@ -256,6 +256,12 @@ void MainWindow::buttonClicked( int button )
 	default:
 		break;
 	}
+}
+
+QSet<QString> MainWindow::cards() const
+{
+	return qApp->signer()->tokenauth().cards().toSet()
+		.unite(qApp->signer()->tokensign().cards().toSet());
 }
 
 void MainWindow::changeEvent(QEvent* event)
@@ -936,20 +942,22 @@ void MainWindow::selectPageIcon( PageIcon* page )
 	}
 }
 
-void MainWindow::showCardMenu( bool show )
+void MainWindow::showCardMenu(bool show)
 {
-	if( show )
+	if(show)
 	{
-		cardPopup.reset(new CardPopup(qApp->signer()->tokensign(), qApp->signer()->cache(), this));
+		const TokenData &t = qApp->signer()->tokensign().cert().isNull() ? qApp->signer()->tokenauth()
+			: qApp->signer()->tokensign();
+
+		cardPopup.reset(new CardPopup(cards(), t.card(), qApp->signer()->cache(), this));
 		// To select active card from several cards in readers ..
-		connect( cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection );
-		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectSignCard, Qt::QueuedConnection );
-		connect( cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectAuthCard, Qt::QueuedConnection );
+		connect(cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
+		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		// .. and hide card popup menu
-		connect( cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup );
+		connect(cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup);
 		cardPopup->show();
 	}
-	else if( cardPopup )
+	else if(cardPopup)
 	{
 		cardPopup->close();
 	}
@@ -958,7 +966,9 @@ void MainWindow::showCardMenu( bool show )
 void MainWindow::showCardStatus()
 {
 	Application::restoreOverrideCursor();
-	TokenData t = qApp->signer()->tokensign();
+	TokenData st = qApp->signer()->tokensign();
+	TokenData at = qApp->signer()->tokenauth();
+	const TokenData &t = st.cert().isNull() ? at : st;
 
 	closeWarnings(-1);
 
@@ -981,17 +991,25 @@ void MainWindow::showCardStatus()
 
 		ui->cardInfo->update(cardInfo, t.card());
 
+		const SslCertificate &authCert = at.cert();
+		const SslCertificate &signCert = st.cert();
 		bool seal = cardInfo->type & SslCertificate::TempelType;
-		const SslCertificate &authCert = qApp->signer()->tokenauth().cert();
-		emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
-		emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
+
+		// Card (e.g. e-Seal) can have only one cert
+		if(!signCert.isNull())
+			emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
+		else
+			emit ui->signContainerPage->cardChanged();
+		if(!authCert.isNull())
+			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
+		else
+			emit ui->cryptoContainerPage->cardChanged();
 		if(cryptoDoc)
 			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
 
 		if(cardInfo->type & SslCertificate::TempelType)
 		{
 			ui->infoStack->update(*cardInfo);
-			const SslCertificate &signCert = t.cert();
 			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
 			ui->myEid->invalidIcon((!authCert.isNull() && !authCert.isValid()) || 
 				(!signCert.isNull() && !signCert.isValid()));
@@ -1014,7 +1032,7 @@ void MainWindow::showCardStatus()
 	}
 
 	// Combo box to select the cards from
-	if( t.cards().size() > 1 )
+	if(cards().size() > 1)
 	{
 		selector->show();
 	}

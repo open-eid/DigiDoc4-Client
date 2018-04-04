@@ -93,6 +93,7 @@ protected:
 private:
 	void adjustDrops();
 	void browseOnDisk(const QString &fileName);
+	QSet<QString> cards() const;
 	bool checkExpiration();
 	void clearWarning(int warningType);
 	void clearOverlay();

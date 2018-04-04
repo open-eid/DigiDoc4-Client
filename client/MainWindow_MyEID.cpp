@@ -32,9 +32,10 @@
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningItem.h"
 
-#include <common/SslCertificate.h>
 #include <common/Configuration.h>
 #include <common/Settings.h>
+#include <common/SslCertificate.h>
+#include <common/TokenData.h>
 
 #include <QtCore/QJsonObject>
 #include <QDateTime>
