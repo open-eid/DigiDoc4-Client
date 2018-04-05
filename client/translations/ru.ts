@@ -1920,6 +1920,10 @@ Additional licenses and components</source>
         <translation>ОТПРАВИТЬ С Е-ПOЧТOЙ</translation>
     </message>
     <message>
+        <source>PRINT SUMMARY</source>
+        <translation>ПОДТВЕРЖДАЮЩИЙ ЛИСТ</translation>
+    </message>
+    <message>
         <source>ENCRYPT</source>
         <translation>ШИФРОВАТЬ</translation>
     </message>
@@ -2384,6 +2388,8 @@ Additional licenses and components</source>
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Фото (*.jpg);;Все файлы (*)</translation>
     </message>
+
+
     <message>
         <source>Ver. </source>
         <translation>Вер. </translation>
@@ -2675,10 +2681,6 @@ Should I keep the unsigned container or remove it?</source>
     <message>
         <source>Send container to email</source>
         <translation>Отослать контейнер по эл. почте</translation>
-    </message>
-    <message>
-        <source>Print summary</source>
-        <translation>Распечатать подтверждающий лист</translation>
     </message>
     <message>
         <source>Browse container location</source>
@@ -3040,7 +3042,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
-        <translation>Неотъемлемой частью этого листа подтверждения подписей является распечатка названных файлов на бумаге в разделе &lt;b&gt;&quot;Подписанные файлы&quot;&lt;/b&gt;.</translation>
+        <translation>Неотъемлемой частью этого листа подтверждения подписей является распечатка файлов на бумаге из раздела &lt;b&gt;&quot;Подписанные файлы&quot;&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>COMPANY</source>

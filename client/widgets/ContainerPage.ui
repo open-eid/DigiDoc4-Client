@@ -529,6 +529,43 @@ border: none;</string>
        </widget>
       </item>
       <item>
+       <widget class="LabelButton" name="summary">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+color: #006eb5;
+text-decoration: none solid rgb(0, 110, 181);
+text-align: center;
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>SUMMARY</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="LabelButton" name="save">
         <property name="minimumSize">
          <size>

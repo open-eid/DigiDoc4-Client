@@ -1926,6 +1926,10 @@ Additional licenses and components</translation>
         <translation>SEND WITH E-MAIL</translation>
     </message>
     <message>
+        <source>PRINT SUMMARY</source>
+        <translation>PRINT SUMMARY</translation>
+    </message>
+    <message>
         <source>ENCRYPT</source>
         <translation>ENCRYPT</translation>
     </message>
@@ -2379,7 +2383,6 @@ Additional licenses and components</translation>
     </message>
 
 
-
     <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
@@ -2679,10 +2682,6 @@ Should I keep the unsigned container or remove it?</numerusform>
     <message>
         <source>Send container to email</source>
         <translation>Send container to email</translation>
-    </message>
-    <message>
-        <source>Print summary</source>
-        <translation>Print summary</translation>
     </message>
     <message>
         <source>Browse container location</source>

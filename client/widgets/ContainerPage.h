@@ -114,6 +114,7 @@ private:
 	QString changeLocationText;
 	QString convertText;
 	QString emailText;
+	QString summaryText;
 	QString envelope;
 	QString navigateToContainerText;
 	QString saveText;

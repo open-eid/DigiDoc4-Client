@@ -56,6 +56,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	sslConnect.cpp
 	Styles.cpp
 	XmlReader.cpp
+	PrintSheet.cpp
 	crypto/CryptoDoc.cpp
 	crypto/LdapSearch.cpp
 	dialogs/AddRecipients.cpp

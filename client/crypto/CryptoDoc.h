@@ -35,6 +35,7 @@ public:
 	void addTempFiles(const QStringList &files) override;
 	QString data(int row) const override;
 	QString fileId(int row) const override;
+ 	QString fileSize(int row) const override;
 	QString mime(int row) const override;
 	bool removeRows(int row, int count) override;
 	int rowCount() const override;

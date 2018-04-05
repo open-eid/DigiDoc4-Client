@@ -46,6 +46,7 @@ enum Actions {
     ContainerConvert,
     ContainerEncrypt,
     ContainerEmail,
+	ContainerSummary,
     ContainerLocation,
     ContainerNavigate,
     ContainerSave,
