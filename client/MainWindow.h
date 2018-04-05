@@ -156,6 +156,7 @@ private:
 	void wrapAndSign();
 	void wrapAndMobileSign(const QString &idCode, const QString &phoneNumber);
 	bool wrapContainer(bool signing);
+	void containerSummary();
 	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;

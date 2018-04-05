@@ -1933,6 +1933,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>EDASTA E-MAILIGA</translation>
     </message>
     <message>
+        <source>PRINT SUMMARY</source>
+        <translation>TRÜKI KINNITUSLEHT</translation>
+    </message>
+    <message>
         <source>ENCRYPT</source>
         <translation>KRÜPTEERI</translation>
     </message>
@@ -2372,6 +2376,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Foto (*.jpg);;Kõik failid (*)</translation>
     </message>
+
+	
     <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
@@ -2661,10 +2667,6 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
     <message>
         <source>Send container to email</source>
         <translation>Saada ümbrik e-postiga</translation>
-    </message>
-    <message>
-        <source>Print summary</source>
-        <translation>Trüki kinnitusleht</translation>
     </message>
     <message>
         <source>Browse container location</source>

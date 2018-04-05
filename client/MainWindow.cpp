@@ -24,6 +24,7 @@
 #include "Application.h"
 #include "Colors.h"
 #include "DigiDoc.h"
+#include "PrintSheet.h"
 #include "FileDialog.h"
 #include "QPCSC.h"
 #include "QSigner.h"
@@ -57,6 +58,9 @@
 #include <QSvgWidget>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrinterInfo>
+#include <QtPrintSupport/QPrintPreviewDialog>
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
@@ -565,6 +569,10 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	case ContainerEmail:
 		if(digiDoc)
 			containerToEmail(digiDoc->fileName());
+		break;
+	case ContainerSummary:
+		if(digiDoc)
+			containerSummary();
 		break;
 	case ContainerLocation:
 		if(digiDoc)
@@ -1581,4 +1589,25 @@ void MainWindow::updateKeys(QList<CKey> keys)
 	for(auto key: keys)
 		cryptoDoc->addKey(key);
 	ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()), cryptoDoc);
+}
+
+void MainWindow::containerSummary()
+{
+#ifdef Q_OS_WIN
+	if( QPrinterInfo::availablePrinterNames().isEmpty() )
+	{
+		qApp->showWarning(
+			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!") );
+		return;
+	}
+#endif
+	QPrintPreviewDialog *dialog = new QPrintPreviewDialog( this );
+	dialog->printer()->setPaperSize( QPrinter::A4 );
+	dialog->printer()->setOrientation( QPrinter::Portrait );
+	dialog->setMinimumHeight( 700 );
+	connect( dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer){
+		PrintSheet(digiDoc, printer);
+	});
+	dialog->exec();
+	dialog->deleteLater();
 }

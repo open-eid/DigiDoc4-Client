@@ -51,6 +51,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 , changeLocationText("CHANGE")
 , convertText("ENCRYPT")
 , emailText("SEND WITH E-MAIL")
+, summaryText("PRINT SUMMARY")
 , envelope("Envelope")
 , navigateToContainerText("OPEN CONTAINER LOCATION")
 , saveText("SAVE WITHOUT SIGNING")
@@ -168,6 +169,7 @@ void ContainerPage::init()
 	ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerConvert );
 	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
 	ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
+	ui->summary->init( LabelButton::BoxedDeepCerulean, tr("PRINT SUMMARY"), Actions::ContainerSummary );
 	ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
 
 	mobileCode = Settings().value("Client/MobileCode").toString();
@@ -187,6 +189,7 @@ void ContainerPage::init()
 	connect(ui->rightPane, &ItemList::addressSearch, this, &ContainerPage::addressSearch);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->summary, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
@@ -462,7 +465,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Content of the envelope");
 		showSigningButton();
 		showButtons( { ui->cancel, ui->convert, ui->save } );
-		hideButtons( { ui->navigateToContainer, ui->email } );
+		hideButtons( { ui->navigateToContainer, ui->email, ui->summary } );
 		break;
 	case UnsignedSavedContainer:
 		cancelText = "STARTING";
@@ -470,7 +473,7 @@ void ContainerPage::updatePanes(ContainerState state)
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName, "Content of the envelope");
-		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
 		hideButtons( { ui->save } );
 		showRightPane( ItemSignature, "Container is not signed");
 		break;
@@ -483,7 +486,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Content of the envelope");
 		showRightPane( ItemSignature, "Container's signatures" );
 		hideButtons( { ui->save } );
-		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
 		break;
 	case UnencryptedContainer:
 		cancelText = "STARTING";
@@ -495,7 +498,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane( ItemAddress, "Recipients" );
 		showMainAction(EncryptContainer);
 		showButtons( { ui->cancel, ui->convert } );
-		hideButtons( { ui->save, ui->navigateToContainer, ui->email } );
+		hideButtons( { ui->save, ui->navigateToContainer, ui->email, ui->summary } );
 		break;
 	case EncryptedContainer:
 		cancelText = "STARTING";
@@ -507,7 +510,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Encrypted files");
 		showRightPane( ItemAddress, "Recipients" );
 		updateDecryptionButton();
-		hideButtons( { ui->save } );
+		hideButtons( { ui->save, ui->summary } );
 		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case DecryptedContainer:
@@ -519,7 +522,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Decrypted files");
 		showRightPane( ItemAddress, "Recipients");
 		hideMainAction();
-		hideButtons( { ui->convert, ui->save } );
+		hideButtons( { ui->convert, ui->save, ui->summary } );
 		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
 		break;
 	default:
@@ -545,5 +548,6 @@ void ContainerPage::translateLabels()
 	ui->convert->setText(tr(qPrintable(convertText)));
 	ui->navigateToContainer->setText(tr(qPrintable(navigateToContainerText)));
 	ui->email->setText(tr(qPrintable(emailText)));
+	ui->summary->setText(tr(qPrintable(summaryText)));
 	ui->save->setText(tr(qPrintable(saveText)));
 }
