@@ -92,6 +92,7 @@ FirstRun::FirstRun(QWidget *parent) :
 	QSvgWidget* leaves = new QSvgWidget(":/images/vapilehed.svg", ui->leaves);
 	leaves->show();
 	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
+	structureFunds->resize(ui->structureFunds->width(), ui->structureFunds->height());
 	structureFunds->show();
 
 	// Page 2: intro
