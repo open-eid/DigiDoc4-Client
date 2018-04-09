@@ -188,8 +188,9 @@ void SettingsDialog::initUI()
 
 	// pageDiagnostics
 	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
-	ui->contact->setFont(regularFont);
+	structureFunds->resize(ui->structureFunds->width(), ui->structureFunds->height());
 	structureFunds->show();
+	ui->contact->setFont(regularFont);
 
 	ui->txtDiagnostics->setFont(regularFont);
 
