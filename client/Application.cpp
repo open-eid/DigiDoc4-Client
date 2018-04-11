@@ -422,6 +422,8 @@ void Application::activate( QWidget *w )
 {
 #ifdef Q_OS_MAC
 	w->installEventFilter( d->bar );
+	// Required for restoring minimized window on macOS
+	w->setWindowState(Qt::WindowActive);
 #endif
 	w->addAction( d->closeAction );
 	w->activateWindow();
@@ -839,9 +841,18 @@ void Application::showAbout()
 void Application::showClient(const QStringList &params, bool crypto)
 {
 	QWidget *w = nullptr;
-	MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
-	if(main && main->digiDocPath().isEmpty() && main->cryptoPath().isEmpty())
-		w = main;
+	if(params.isEmpty())
+	{
+	// If no files selected (e.g. restoring minimized window), select first
+		w = qobject_cast<MainWindow*>(qApp->mainWindow());
+	}
+	else
+	{
+	// else select first window with no open files
+		MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
+		if(main && main->digiDocPath().isEmpty() && main->cryptoPath().isEmpty())
+			w = main;
+	}
 	if( !w )
 	{
 		Settings settings;
