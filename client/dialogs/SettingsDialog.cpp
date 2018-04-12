@@ -154,6 +154,7 @@ void SettingsDialog::initUI()
 	ui->lblSigningFileType->setFont(headerFont);
 	ui->lblSigningRole->setFont(headerFont);
 	ui->lblSigningAddress->setFont(headerFont);
+	ui->chkShowPrintSummary->setFont(regularFont);
 
 	ui->rdSigningAsice->setFont(regularFont);
 	ui->rdSigningBdoc->setFont(regularFont);
@@ -487,6 +488,9 @@ void SettingsDialog::initFunctionality()
 	updateProxy();
 	ui->chkIgnoreAccessCert->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
 
+	ui->chkShowPrintSummary->setChecked(Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool());
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
+
 	updateDiagnostics();
 }
 
@@ -557,6 +561,8 @@ void SettingsDialog::save()
 		ui->txtSigningCountry->text(),
 		ui->txtSigningZipCode->text(),
 		true );
+
+	Settings(qApp->applicationName()).setValue("Client/ShowPrintSummary", ui->chkShowPrintSummary->isChecked() );
 }
 
 void SettingsDialog::saveProxy()

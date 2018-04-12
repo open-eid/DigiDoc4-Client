@@ -69,6 +69,7 @@ signals:
 
 public slots:
 	void clearPopups();
+	void togglePrinting(bool enable);
 
 protected:
 	void resizeEvent( QResizeEvent *event ) override;

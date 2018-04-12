@@ -1777,6 +1777,10 @@ Kontrollkood: %1</translation>
         <translation>Kui soovid vormingut muuta, siis tee seda enne, kui valid failid allkirjastamiseks. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</translation>
     </message>
     <message>
+        <source>Show print summary</source>
+        <translation>Näita kinnituslehte</translation>
+    </message>
+    <message>
         <source>Role</source>
         <translation>Roll</translation>
     </message>

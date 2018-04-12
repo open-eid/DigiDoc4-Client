@@ -193,6 +193,11 @@ void ContainerPage::init()
 	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
+
+	if( Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool() )
+		ui->summary->show();
+	else
+		ui->summary->hide();
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
@@ -452,6 +457,7 @@ void ContainerPage::updatePanes(ContainerState state)
 {
 	auto buttonWidth = ui->changeLocation->width();
 	bool resize = false;
+	bool showPrintSummary = Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool();
 
 	switch( state )
 	{
@@ -473,7 +479,10 @@ void ContainerPage::updatePanes(ContainerState state)
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName, "Content of the envelope");
-		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
+		if( showPrintSummary )
+			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
+		else
+			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		hideButtons( { ui->save } );
 		showRightPane( ItemSignature, "Container is not signed");
 		break;
@@ -486,7 +495,10 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, "Content of the envelope");
 		showRightPane( ItemSignature, "Container's signatures" );
 		hideButtons( { ui->save } );
-		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
+		if( showPrintSummary )
+			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
+		else
+			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
 		break;
 	case UnencryptedContainer:
 		cancelText = "STARTING";
@@ -538,6 +550,11 @@ void ContainerPage::updatePanes(ContainerState state)
 	}
 
 	translateLabels();
+}
+
+void ContainerPage::togglePrinting(bool enable)
+{
+	ui->summary->setVisible(enable);
 }
 
 void ContainerPage::translateLabels()

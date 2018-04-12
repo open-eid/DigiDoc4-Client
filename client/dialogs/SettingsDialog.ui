@@ -1060,7 +1060,7 @@ QRadioButton::indicator::checked {
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>220</y>
+            <y>245</y>
             <width>150</width>
             <height>21</height>
            </rect>
@@ -1085,7 +1085,7 @@ QRadioButton::indicator::checked {
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>248</y>
+            <y>273</y>
             <width>330</width>
             <height>31</height>
            </rect>
@@ -1115,7 +1115,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>300</y>
+            <y>325</y>
             <width>70</width>
             <height>21</height>
            </rect>
@@ -1140,7 +1140,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>100</x>
-            <y>330</y>
+            <y>355</y>
             <width>670</width>
             <height>31</height>
            </rect>
@@ -1170,7 +1170,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>100</x>
-            <y>365</y>
+            <y>390</y>
             <width>670</width>
             <height>31</height>
            </rect>
@@ -1200,7 +1200,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>100</x>
-            <y>400</y>
+            <y>425</y>
             <width>670</width>
             <height>31</height>
            </rect>
@@ -1230,7 +1230,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>100</x>
-            <y>435</y>
+            <y>460</y>
             <width>670</width>
             <height>31</height>
            </rect>
@@ -1260,7 +1260,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>337</y>
+            <y>362</y>
             <width>65</width>
             <height>16</height>
            </rect>
@@ -1285,7 +1285,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>372</y>
+            <y>397</y>
             <width>65</width>
             <height>16</height>
            </rect>
@@ -1310,7 +1310,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>407</y>
+            <y>432</y>
             <width>65</width>
             <height>16</height>
            </rect>
@@ -1335,7 +1335,7 @@ background-color: #FFFFFF;
           <property name="geometry">
            <rect>
             <x>21</x>
-            <y>442</y>
+            <y>467</y>
             <width>75</width>
             <height>16</height>
            </rect>
@@ -1354,6 +1354,45 @@ background-color: #FFFFFF;
           </property>
           <property name="text">
            <string>Zip</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="chkShowPrintSummary">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>210</y>
+            <width>700</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>700</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>700</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/images/icon_checkbox.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/images/icon_checkbox_check.png);
+}</string>
+          </property>
+          <property name="text">
+           <string>Show print summary</string>
           </property>
          </widget>
         </widget>
