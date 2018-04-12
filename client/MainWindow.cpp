@@ -1087,6 +1087,7 @@ void MainWindow::showSettings(int page)
 			}
 	);
 	connect(&dlg, &SettingsDialog::removeOldCert, this,	&MainWindow::removeOldCert);
+	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
 	dlg.exec();
 }
 

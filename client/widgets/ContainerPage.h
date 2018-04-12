@@ -69,11 +69,11 @@ signals:
 
 public slots:
 	void clearPopups();
+	void togglePrinting(bool enable);
 
 protected:
 	void resizeEvent( QResizeEvent *event ) override;
 	void changeEvent(QEvent* event) override;
-	bool event(QEvent *event) override;
 
 private:
 	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);

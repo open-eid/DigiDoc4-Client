@@ -272,19 +272,6 @@ void ContainerPage::resizeEvent( QResizeEvent *event )
 		elideFileName();
 }
 
-bool ContainerPage::event(QEvent *event)
-{
-	if( event->type() == QEvent::User )
-	{
-		if( ui->summary->isHidden() )
-			ui->summary->show();
-		else
-			ui->summary->hide();
-	}
-
-	return QWidget::event(event); 
-}
-
 void ContainerPage::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
@@ -563,6 +550,11 @@ void ContainerPage::updatePanes(ContainerState state)
 	}
 
 	translateLabels();
+}
+
+void ContainerPage::togglePrinting(bool enable)
+{
+	ui->summary->setVisible(enable);
 }
 
 void ContainerPage::translateLabels()

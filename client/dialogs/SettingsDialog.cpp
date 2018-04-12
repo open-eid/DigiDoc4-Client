@@ -29,7 +29,6 @@
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
-#include "widgets/ContainerPage.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
 
@@ -489,19 +488,8 @@ void SettingsDialog::initFunctionality()
 	updateProxy();
 	ui->chkIgnoreAccessCert->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
 
-	ui->chkShowPrintSummary->setChecked( Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool() );
-	
-	connect( ui->chkShowPrintSummary, &QCheckBox::toggled, this, [this](bool checked) { 
-		for (QWidget *widget : qApp->allWidgets())
-		{
-			if(qobject_cast<ContainerPage*>(widget))
-			{
-				const QEvent::Type myEventType = QEvent::Type(QEvent::User);
-				qApp->sendEvent(widget, new QEvent(myEventType ));
-				break;
-			}
-		}
-	} );
+	ui->chkShowPrintSummary->setChecked(Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool());
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
 
 	updateDiagnostics();
 }
