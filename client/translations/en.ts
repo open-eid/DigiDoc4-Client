@@ -1769,6 +1769,10 @@ Control code: %1</translation>
         <translation>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</translation>
     </message>
     <message>
+        <source>Show print summary</source>
+        <translation>Show print summary</translation>
+    </message>
+    <message>
         <source>Role</source>
         <translation>Role</translation>
     </message>

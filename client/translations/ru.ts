@@ -1768,6 +1768,10 @@ Kонтрольны код: %1</translation>
         <translation>Если Вы желаете изменить формат цифровой подписи, это нужно сделать до того, как Вы добавите в контейнер подписываемый файл. В противном случае будет действовать формат подписи по умолчанию. Если документ уже подписан, то при добавлении к нему второй подписи формат подписи изменить невозможно.</translation>
     </message>
     <message>
+        <source>Show print summary</source>
+        <translation>Показать подтверждающий лист</translation>
+    </message>
+    <message>
         <source>Role</source>
         <translation>Роль</translation>
     </message>
