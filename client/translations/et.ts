@@ -1648,6 +1648,10 @@ Kontrollkood: %1</translation>
         <source>New %1 code can't be your date of birth</source>
         <translation>Uus %1 ei saa olla Sinu sünnikuupäev</translation>
     </message>
+    <message>
+        <source>Current %1 code and new %1 code must be different</source>
+        <translation>Kehtiv %1 kood ja uus %1 kood peavad olema erinevad</translation>
+    </message>
 </context>
 
 

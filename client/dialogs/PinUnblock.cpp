@@ -134,10 +134,10 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 				}
 			);
 	connect(ui->pin, &QLineEdit::textChanged, this,
-				[this, type](const QString &text)
+				[this, type, mode](const QString &text)
 				{
 					ui->labelPinValidation->setText("");
-					isNewCodeOk = regexpNewCode.exactMatch(text) && validatePin(text, type);
+					isNewCodeOk = regexpNewCode.exactMatch(text) && validatePin(text, type, mode);
 					isRepeatCodeOk = !text.isEmpty() && ui->pin->text() == ui->repeat->text();
 					setUnblockEnabled();
 				}
@@ -298,12 +298,17 @@ QString PinUnblock::firstCodeText() const { return ui->puk->text(); }
 
 QString PinUnblock::newCodeText() const { return ui->pin->text(); }
 
-bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type)
+bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type, WorkMode mode)
 {
 	const static QString SEQUENCE_ASCENDING = "1234567890123456789012";
 	const static QString SEQUENCE_DESCENDING = "0987654321098765432109";
 	QString pinType = type == QSmartCardData::Pin1Type ? "PIN1" : (type == QSmartCardData::Pin2Type ? "PIN2" : "PUK");
 
+	if(mode == PinUnblock::PinChange && pin == ui->puk->text())
+	{
+		ui->labelPinValidation->setText(tr("Current %1 code and new %1 code must be different").arg(pinType));
+		return false;
+	}
 	if(SEQUENCE_ASCENDING.contains(pin))
 	{
 		ui->labelPinValidation->setText(tr("New %1 code can't be increasing sequence").arg(pinType));

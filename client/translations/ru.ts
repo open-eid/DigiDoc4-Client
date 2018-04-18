@@ -1654,6 +1654,10 @@ Kонтрольный код: %1</translation>
         <source>New %1 code can't be your date of birth</source>
         <translation>Новый %1 не может быть вашей датой рождения</translation>
     </message>
+    <message>
+        <source>Current %1 code and new %1 code must be different</source>
+        <translation>Новый %1 должен отличаться от старого %1</translation>
+    </message>
 </context>
 
 
