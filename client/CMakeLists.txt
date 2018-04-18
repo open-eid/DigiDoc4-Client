@@ -275,7 +275,7 @@ elseif(WIN32)
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
 		#Popups GUI
-		#COMMAND MakeCert.exe /n "CN=E5DCD264-562E-4971-841F-882B880346CF" /r /h 0 /eku "1.3.6.1.5.5.7.3.3,1.3.6.1.4.1.311.10.3.13" /m 120 /a sha256 /sv qdigidoc4.pvk qdigidoc4.cer
+		#COMMAND MakeCert.exe /n "CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" /r /h 0 /eku "1.3.6.1.5.5.7.3.3,1.3.6.1.4.1.311.10.3.13" /m 120 /a sha256 /sv qdigidoc4.pvk qdigidoc4.cer
 		#COMMAND Pvk2Pfx.exe /pvk qdigidoc4.pvk /spc qdigidoc4.cer /pfx qdigidoc4.pfx /f
 		COMMAND signtool.exe sign -f ${CMAKE_SOURCE_DIR}/qdigidoc4.pfx -fd SHA256 -v ${MSI_FILE}.appx
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
