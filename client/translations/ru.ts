@@ -1404,7 +1404,7 @@ and enter Mobile-ID PIN2-code.
 Control code: %1</source>
         <translation>Убедитесь в правильности контрольного кодa
 и введите PIN2-код для Mobiil-ID.
-Kонтрольны код: %1</translation>
+Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>SSL Error:</source>
