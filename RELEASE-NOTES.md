@@ -1,3 +1,19 @@
+DigiDoc4 version 0.6.0 release notes
+--------------------------------------
+
+- Various notification translations and links changed
+- macOS UI changes: dialogs as sheets, restore window when icon in dock is clicked
+- Support for eTokens with only auth or signing certs, Linux support for eTokens
+- Ubuntu packaging fixes
+- Small UI changes (SF logo, fonts in various windows homogenized)
+- Additional checks added for PIN change (increasing/decreasing sequence, repeated digits etc)
+- Signature envelope printing functionality ported from DigiDoc3
+- Rules for detecting eSeal signature type updated (additional SK policy, qcStatements extension checked)
+- DigiDoc4 packaged as Windows store app
+- Various small fixes and documentation updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v0.5.0-BETA...v0.6.0-BETA)
+
 DigiDoc4 version 0.5.0 release notes
 --------------------------------------
 
