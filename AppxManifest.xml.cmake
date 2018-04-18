@@ -3,8 +3,8 @@
     xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
     xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
     xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
-  <Identity Name="ASSK.digidoc4" ProcessorArchitecture="${PLATFORM}" Version="${PROJECT_VERSION}.0"
-    Publisher="CN=E5DCD264-562E-4971-841F-882B880346CF" />
+  <Identity Name="RiigiInfossteemiAmet.DigiDoc4client" ProcessorArchitecture="${PLATFORM}" Version="${PROJECT_VERSION}.0"
+    Publisher="CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" />
   <Properties>
     <DisplayName>DigiDoc4 Client</DisplayName>
     <PublisherDisplayName>Riigi Infosüsteemi Amet</PublisherDisplayName>
