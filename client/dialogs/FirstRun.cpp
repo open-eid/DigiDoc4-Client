@@ -31,12 +31,14 @@
 
 FirstRun::FirstRun(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::FirstRun)
+	ui(new Ui::FirstRun),
+	dragged(false)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
+	setCursor(Qt::OpenHandCursor);
 
 	auto buttonFont = Styles::font(Styles::Condensed, 14);
 	auto labelFont = Styles::font(Styles::Regular, 18);
@@ -51,6 +53,7 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->intro->setFont(regular14);
 	ui->langLabel->setFont(regular12);
 	ui->lang->setFont(labelFont);
+	ui->lang->setCursor(Qt::PointingHandCursor);
 
 	ui->lang->setFont(Styles::font(Styles::Regular, 18));
 	ui->lang->addItem("Eesti keel");
@@ -217,6 +220,29 @@ void FirstRun::keyPressEvent(QKeyEvent *event)
 
 	if(next != ui->stack->currentIndex())
 		ui->stack->setCurrentIndex(next);
+}
+
+void FirstRun::mouseMoveEvent(QMouseEvent *event)
+{
+	if (!dragged)
+		return;
+
+	const QPoint delta = event->globalPos() - lastPos;
+	move(x()+delta.x(), y()+delta.y());
+	lastPos = event->globalPos();
+}
+
+void FirstRun::mousePressEvent(QMouseEvent *event)
+{
+	setCursor(Qt::ClosedHandCursor);
+	dragged = true;
+	lastPos = event->globalPos();
+}
+
+void FirstRun::mouseReleaseEvent(QMouseEvent *event)
+{
+	setCursor(Qt::OpenHandCursor);
+	dragged = false;
 }
 
 void FirstRun::loadPixmap(const QString &base, const QString &lang, QLabel *parent)

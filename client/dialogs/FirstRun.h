@@ -37,7 +37,10 @@ public:
 	~FirstRun();
 
 protected:
-	void keyPressEvent(QKeyEvent *event);
+	void keyPressEvent(QKeyEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
 	void langChanged(const QString& lang);
@@ -56,5 +59,7 @@ private:
 	};
 
 	Ui::FirstRun *ui;
+	bool dragged;
+	QPoint lastPos;
 };
 
