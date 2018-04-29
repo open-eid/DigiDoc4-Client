@@ -21,15 +21,7 @@
 #include "ui_CertificateHistory.h"
 
 #include "Styles.h"
-#include "common/SslCertificate.h"
-#include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
-
-#include <QFile>
-#include <QMessageBox>
-#include <QStandardPaths>
-#include <QtCore/QXmlStreamReader>
-#include <QtCore/QXmlStreamWriter>
 
 
 bool HistoryCertData::operator==(const HistoryCertData& other)

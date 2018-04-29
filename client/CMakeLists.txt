@@ -26,8 +26,9 @@ if( UNIX AND NOT APPLE )
 endif()
 
 if( APPLE )
-	list( APPEND SOURCES Application_mac.mm )
+	list( APPEND SOURCES Application_mac.mm util/CertUtil_mac.mm )
 	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
+	set_source_files_properties( util/CertUtil_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	list( APPEND ADDITIONAL_LIBRARIES "-framework Security" "-framework Quartz" )
 elseif( WIN32 )
 	find_package( Qt5 COMPONENTS WinExtras )
@@ -76,6 +77,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
 	effects/HoverFilter.cpp
+	util/CertUtil.cpp
 	util/FileUtil.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp

@@ -24,6 +24,7 @@
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
+#include "util/CertUtil.h"
 
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
@@ -128,7 +129,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	QString name = !c.isNull() ? c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) : s.signedBy();
 	d->title->setText(QString("%1 | %2%3%4").arg(name, style, status, STYLE_TERMINATOR));
 	d->close->setFont(Styles::font(Styles::Condensed, 14));
-	connect(d->close, &QPushButton::clicked, this, &CertificateDetails::accept);
+	connect(d->close, &QPushButton::clicked, this, &SignatureDialog::accept);
 
 	QFont header = Styles::font(Styles::Regular, 18, QFont::Bold);
 	QFont regular = Styles::font(Styles::Regular, 14);
@@ -232,14 +233,15 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 {
 	QTreeWidgetItem *i = new QTreeWidgetItem( view );
 	i->setText( 0, variable );
-	QLabel *b = new QLabel( "<a href='cert'>" + CertificateDetails::decodeCN(SslCertificate(value).subjectInfo(QSslCertificate::CommonName)) + "</a>", view );
+	SslCertificate c(value);
+	QLabel *b = new QLabel( "<a href='cert'>" + CertificateDetails::decodeCN(c.subjectInfo(QSslCertificate::CommonName)) + "</a>", view );
 #ifdef Q_OS_MAC
 	b->setFont(Styles::font(Styles::Regular, 13));
 #else
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
 	b->setStyleSheet("margin-left: 2px; border: none;");
-	connect(b, &QLabel::linkActivated, [=]{ CertificateDetails( value, this, true ).exec(); });
+	connect(b, &QLabel::linkActivated, this, [=]{ CertUtil::showCertificate(c, this); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
 }

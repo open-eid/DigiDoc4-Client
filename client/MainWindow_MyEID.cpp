@@ -25,11 +25,11 @@
 #include "QSigner.h"
 #include "XmlReader.h"
 #ifdef Q_OS_WIN
-	#include "CertStore.h"
+#include "CertStore.h"
 #endif
-#include "dialogs/CertificateDetails.h"
 #include "dialogs/Updater.h"
 #include "effects/FadeInNotification.h"
+#include "util/CertUtil.h"
 #include "widgets/WarningItem.h"
 
 #include <common/Configuration.h>
@@ -136,8 +136,9 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 
 void MainWindow::certDetailsClicked( const QString &link )
 {
-	CertificateDetails dlg((link == "PIN1") ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this, true);
-	dlg.exec();
+	bool pin1 = link == "PIN1";
+	CertUtil::showCertificate(pin1 ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this,
+		pin1 ? "-auth" : "-sign");
 }
 
 void MainWindow::getEmailStatus ()

@@ -29,6 +29,7 @@ namespace Ui {
 
 class QAbstractButton;
 class QTreeWidget;
+class SslCertificate;
 
 class SignatureDialog : public QDialog
 {
@@ -39,7 +40,7 @@ public:
 	~SignatureDialog();
 
 	int exec() override;
-	
+
 private:
 	void addItem( QTreeWidget *view, const QString &variable, const QString &value );
 	void addItem( QTreeWidget *view, const QString &variable, const QSslCertificate &cert );

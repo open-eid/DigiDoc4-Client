@@ -262,6 +262,9 @@ public:
 	volatile bool ready = false;
 	bool		initialized = false;
 	bool		macEvents = false;
+#ifdef Q_OS_WIN
+	QStringList	tempFiles;
+#endif // Q_OS_WIN
 };
 
 Application::Application( int &argc, char **argv )
@@ -387,6 +390,12 @@ Application::Application( int &argc, char **argv )
 
 Application::~Application()
 {
+#ifdef Q_OS_WIN
+	for(const QString &file: d->tempFiles)
+		QFile::remove(file);
+	d->tempFiles.clear();
+#endif // Q_OS_WIN
+
 #ifndef Q_OS_MAC
 	if( isRunning() )
 	{
@@ -430,6 +439,13 @@ void Application::activate( QWidget *w )
 	w->show();
 	w->raise();
 }
+
+#ifdef Q_OS_WIN
+void Application::addTempFile(const QString &file)
+{
+	d->tempFiles << file;
+}
+#endif
 
 void Application::browse( const QUrl &url )
 {
