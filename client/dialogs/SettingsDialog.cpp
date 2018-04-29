@@ -31,6 +31,7 @@
 #include "dialogs/FirstRun.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
+#include "util/CertUtil.h"
 
 #include "common/Configuration.h"
 #include "common/Diagnostics.h"
@@ -255,10 +256,7 @@ void SettingsDialog::initUI()
 	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
 			 [this]()
 		{
-			QSslCertificate cert = AccessCert::cert();
-
-			CertificateDetails dlg(cert, this, true);
-			dlg.exec();
+			CertUtil::showCertificate(SslCertificate(AccessCert::cert()), this);
 		}
 			);
 	connect(ui->btnFirstRun, &QPushButton::clicked, this,

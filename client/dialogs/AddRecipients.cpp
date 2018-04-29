@@ -234,7 +234,6 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 {
 	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
-	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
 
 	if (rightList.contains(SslCertificate(leftItem->getKey().cert).friendlyName()))
 		return;
@@ -268,6 +267,8 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 	updated = update;
 
 	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
+
+	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
 	ui->rightPane->addWidget(rightItem);
 	rightItem->showButton(AddressItem::Remove);
 
