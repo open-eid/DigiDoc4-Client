@@ -41,6 +41,7 @@
 #include <digidocpp/Conf.h>
 
 #include <QFile>
+#include <QDesktopServices>
 #include <QInputDialog>
 #include <QIODevice>
 #include <QStandardPaths>
@@ -48,6 +49,7 @@
 #include <QTextBrowser>
 #include <QThread>
 #include <QThreadPool>
+#include <QUrl>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QNetworkProxy>
 
@@ -201,7 +203,12 @@ void SettingsDialog::initUI()
 
 	// navigationArea
 	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
-	ui->btNavFromFile->setFont(condensed12);
+	ui->btAppStore->setFont(condensed12);
+#if defined(Q_OS_MAC)
+	ui->btAppStore->setText(tr("OPEN IN APP STORE"));
+#elif defined(Q_OS_LINUX)
+	ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
+#endif
 	ui->btnNavFromHistory->setFont(condensed12);
 
 	ui->btnNavUseByDefault->setFont(condensed12);
@@ -243,8 +250,14 @@ void SettingsDialog::initUI()
 		b.setDetailedText(error);
 		b.exec();
 	});
-	connect(ui->btNavFromFile, &QPushButton::clicked, []{
+	connect(ui->btAppStore, &QPushButton::clicked, []{
+#if defined(Q_OS_WIN)
+		QDesktopServices::openUrl(QUrl("https://www.microsoft.com/et-ee/store/p/digidoc-client/9nblggh441j3");
+#elif defined(Q_OS_MAC)
+		QDesktopServices::openUrl(QUrl("https://itunes.apple.com/ee/app/digidoc3-client/id561422020?mt=12"));
+#else
 		Configuration::instance().update();
+#endif
 	});
 //#endif
 
@@ -330,6 +343,12 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
+
+#if defined(Q_OS_MAC)
+	ui->btAppStore->setText(tr("OPEN IN APP STORE"));
+#elif defined(Q_OS_LINUX)
+	ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
+#endif
 
 	QString package;
 #ifndef Q_OS_MAC
@@ -731,7 +750,7 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavInstallManually->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
-	ui->btNavFromFile->setVisible(button == ui->btnMenuGeneral);
+	ui->btAppStore->setVisible(button == ui->btnMenuGeneral);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);

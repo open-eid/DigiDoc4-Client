@@ -1701,6 +1701,14 @@ Kонтрольный код: %1</translation>
         <translation>ПРОВЕРИТЬ НА ОБНОВЛЕНИЯ</translation>
     </message>
     <message>
+        <source>OPEN IN APP STORE</source>
+        <translation>ОТКРЫТЬ В APP STORE</translation>
+    </message>
+    <message>
+        <source>OPEN IN MICROSOFT STORE</source>
+        <translation>ОТКРЫТЬ В MICROSOFT STORE</translation>
+    </message>
+    <message>
         <source>FIRST RUN</source>
         <translation>ПЕРВЫЙ ЗАПУСК</translation>
     </message>

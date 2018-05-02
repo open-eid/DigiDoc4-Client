@@ -1704,6 +1704,14 @@ Control code: %1</translation>
         <translation>CHECK FOR UPDATES</translation>
     </message>
     <message>
+        <source>OPEN IN APP STORE</source>
+        <translation>OPEN IN APP STORE</translation>
+    </message>
+    <message>
+        <source>OPEN IN MICROSOFT STORE</source>
+        <translation>OPEN IN MICROSOFT STORE</translation>
+    </message>
+    <message>
         <source>REMOVE OLD CERTIFICATES</source>
         <translation>REMOVE OLD CERTIFICATES</translation>
     </message>

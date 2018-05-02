@@ -1702,6 +1702,14 @@ Kontrollkood: %1</translation>
         <translation>KONTROLLI UUENDUSI</translation>
     </message>
     <message>
+        <source>OPEN IN APP STORE</source>
+        <translation>AVA RAKENDUSTE POES</translation>
+    </message>
+    <message>
+        <source>OPEN IN MICROSOFT STORE</source>
+        <translation>AVA RAKENDUSTE POES</translation>
+    </message>
+    <message>
         <source>FIRST RUN</source>
         <translation>ESMANE TUTVUSTUS</translation>
     </message>
