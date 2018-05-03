@@ -56,7 +56,10 @@
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
-#include <VersionHelpers.h>
+bool IsWindows8OrGreater()
+{
+	return !QSysInfo::productVersion().startsWidth("7");
+}
 #endif
 
 
@@ -211,6 +214,7 @@ void SettingsDialog::initUI()
 	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
 	ui->btAppStore->setFont(condensed12);
 #if defined(Q_OS_WIN)
+	// No app store for Windows 7
 	if (!IsWindows8OrGreater())
 		ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
 #elif defined(Q_OS_MAC)
@@ -265,7 +269,7 @@ void SettingsDialog::initUI()
 	connect(ui->btAppStore, &QPushButton::clicked, []{
 #if defined(Q_OS_WIN)
 		if (IsWindows8OrGreater())
-			QDesktopServices::openUrl(QUrl("https://www.microsoft.com/et-ee/store/p/digidoc-client/9nblggh441j3");
+			QDesktopServices::openUrl(QUrl("https://www.microsoft.com/et-ee/store/p/digidoc-client/9nblggh441j3"));
 		else
 			Configuration::instance().update();
 #elif defined(Q_OS_MAC)
@@ -384,6 +388,7 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
 
 #if defined(Q_OS_WIN)
+	// No app store for Windows 7
 	if (!IsWindows8OrGreater())
 		ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
 #elif defined(Q_OS_MAC)
