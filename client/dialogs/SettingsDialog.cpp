@@ -56,10 +56,8 @@
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
-bool IsWindows8OrGreater()
-{
-	return !QSysInfo::productVersion().startsWidth("7");
-}
+#include <qt_windows.h>
+#include <VersionHelpers.h>
 #endif
 
 
