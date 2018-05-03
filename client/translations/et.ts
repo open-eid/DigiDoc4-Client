@@ -1702,12 +1702,12 @@ Kontrollkood: %1</translation>
         <translation>KONTROLLI UUENDUSI</translation>
     </message>
     <message>
-        <source>OPEN IN APP STORE</source>
-        <translation>AVA RAKENDUSTE POES</translation>
+        <source>REFRESH IN APP STORE</source>
+        <translation>VÄRSKENDA RAKENDUSTE POES</translation>
     </message>
     <message>
-        <source>OPEN IN MICROSOFT STORE</source>
-        <translation>AVA RAKENDUSTE POES</translation>
+        <source>REFRESH IN MICROSOFT STORE</source>
+        <translation>VÄRSKENDA RAKENDUSTE POES</translation>
     </message>
     <message>
         <source>FIRST RUN</source>
