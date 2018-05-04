@@ -267,7 +267,7 @@ void SettingsDialog::initUI()
 	connect(ui->btAppStore, &QPushButton::clicked, []{
 #if defined(Q_OS_WIN)
 		if (IsWindows8OrGreater())
-			QDesktopServices::openUrl(QUrl("https://www.microsoft.com/et-ee/store/p/digidoc-client/9nblggh441j3"));
+			QDesktopServices::openUrl(QUrl("https://www.microsoft.com/et-ee/search/result.aspx?q=DigiDoc4+Client"));
 		else
 			Configuration::instance().update();
 #elif defined(Q_OS_MAC)
