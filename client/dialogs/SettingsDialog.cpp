@@ -41,15 +41,24 @@
 #include <digidocpp/Conf.h>
 
 #include <QFile>
+#include <QDesktopServices>
 #include <QInputDialog>
 #include <QIODevice>
 #include <QStandardPaths>
 #include <QSvgWidget>
+#include <QSysInfo>
 #include <QTextBrowser>
 #include <QThread>
 #include <QThreadPool>
-#include <QtNetwork/QSslCertificate>
+#include <QUrl>
+#include <QtCore/QJsonObject>
 #include <QtNetwork/QNetworkProxy>
+#include <QtNetwork/QSslCertificate>
+
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <VersionHelpers.h>
+#endif
 
 
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
@@ -201,7 +210,16 @@ void SettingsDialog::initUI()
 
 	// navigationArea
 	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
-	ui->btNavFromFile->setFont(condensed12);
+	ui->btAppStore->setFont(condensed12);
+#if defined(Q_OS_WIN)
+	// No app store for Windows 7
+	if (!IsWindows8OrGreater())
+		ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
+#elif defined(Q_OS_MAC)
+	ui->btAppStore->setText(tr("REFRESH IN APP STORE"));
+#else
+	ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
+#endif
 	ui->btnNavFromHistory->setFont(condensed12);
 
 	ui->btnNavUseByDefault->setFont(condensed12);
@@ -235,7 +253,10 @@ void SettingsDialog::initUI()
 //#ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
+		{
+			ui->btAppStore->setVisible(ui->stackedWidget->currentIndex() == GeneralSettings && hasNewerVersion());
 			return;
+		}
 		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
 			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
 			QMessageBox::Ok, this);
@@ -243,8 +264,17 @@ void SettingsDialog::initUI()
 		b.setDetailedText(error);
 		b.exec();
 	});
-	connect(ui->btNavFromFile, &QPushButton::clicked, []{
+	connect(ui->btAppStore, &QPushButton::clicked, []{
+#if defined(Q_OS_WIN)
+		if (IsWindows8OrGreater())
+			QDesktopServices::openUrl(QUrl("https://www.microsoft.com/store/apps/9PFPFK4DJ1S6"));
+		else
+			Configuration::instance().update();
+#elif defined(Q_OS_MAC)
+		QDesktopServices::openUrl(QUrl("https://itunes.apple.com/ee/app/digidoc3-client/id561422020?mt=12"));
+#else
 		Configuration::instance().update();
+#endif
 	});
 //#endif
 
@@ -319,6 +349,30 @@ void SettingsDialog::checkConnection()
 	}
 }
 
+bool SettingsDialog::hasNewerVersion()
+{
+	QStringList curList = qApp->applicationVersion().split('.');
+	QStringList avaList = Configuration::instance().object()["QDIGIDOC4-LATEST"].toString().split('.');
+	for( int i = 0; i < std::max<int>(curList.size(), avaList.size()); ++i )
+	{
+		bool curconv = false, avaconv = false;
+		unsigned int cur = curList.value(i).toUInt( &curconv );
+		unsigned int ava = avaList.value(i).toUInt( &avaconv );
+		if( curconv && avaconv )
+		{
+			if( cur != ava )
+				return cur < ava;
+		}
+		else
+		{
+			int status = QString::localeAwareCompare( curList.value(i), avaList.value(i) );
+			if( status != 0 )
+				return status < 0;
+		}
+	}
+	return false;
+}
+
 void SettingsDialog::retranslate(const QString& lang)
 {
 	emit langChanged(lang);
@@ -330,6 +384,16 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
+
+#if defined(Q_OS_WIN)
+	// No app store for Windows 7
+	if (!IsWindows8OrGreater())
+		ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
+#elif defined(Q_OS_MAC)
+	ui->btAppStore->setText(tr("REFRESH IN APP STORE"));
+#else
+	ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
+#endif
 
 	QString package;
 #ifndef Q_OS_MAC
@@ -731,7 +795,7 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavInstallManually->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
-	ui->btNavFromFile->setVisible(button == ui->btnMenuGeneral);
+	ui->btAppStore->setVisible(button == ui->btnMenuGeneral && hasNewerVersion());
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);

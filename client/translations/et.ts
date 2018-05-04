@@ -1702,6 +1702,14 @@ Kontrollkood: %1</translation>
         <translation>KONTROLLI UUENDUSI</translation>
     </message>
     <message>
+        <source>REFRESH IN APP STORE</source>
+        <translation>VÄRSKENDA RAKENDUSTE POES</translation>
+    </message>
+    <message>
+        <source>REFRESH IN MICROSOFT STORE</source>
+        <translation>VÄRSKENDA RAKENDUSTE POES</translation>
+    </message>
+    <message>
         <source>FIRST RUN</source>
         <translation>ESMANE TUTVUSTUS</translation>
     </message>
