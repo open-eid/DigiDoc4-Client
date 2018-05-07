@@ -62,24 +62,26 @@ QWidget* rootWindow()
 	return root;
 }
 
-QByteArray QPKCS11Private::attribute( CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type ) const
+QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
+	QByteArray data;
 	if(!f)
-		return QByteArray();
-	CK_ATTRIBUTE attr = { type, 0, 0 };
+		return data;
+	CK_ATTRIBUTE attr = { type, nullptr, 0 };
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
 		return QByteArray();
-	QByteArray data(int(attr.ulValueLen), 0);
+	data.resize(int(attr.ulValueLen));
 	attr.pValue = data.data();
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
-		return QByteArray();
+		data.clear();
 	return data;
 }
 
-QVector<CK_OBJECT_HANDLE> QPKCS11Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
+QVector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
 {
+	QVector<CK_OBJECT_HANDLE> result;
 	if(!f)
-		return QVector<CK_OBJECT_HANDLE>();
+		return result;
 	CK_BBOOL _true = CK_TRUE;
 	QVector<CK_ATTRIBUTE> attr{
 		{ CKA_CLASS, &cls, sizeof(cls) },
@@ -88,29 +90,32 @@ QVector<CK_OBJECT_HANDLE> QPKCS11Private::findObject(CK_SESSION_HANDLE session, 
 	if(!id.isEmpty())
 		attr.append({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
 	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
-		return QVector<CK_OBJECT_HANDLE>();
+		return result;
 
 	CK_ULONG count = 32;
-	QVector<CK_OBJECT_HANDLE> result(int(count), CK_INVALID_HANDLE);
-	CK_RV err = f->C_FindObjects(session, result.data(), CK_ULONG(result.count()), &count);
 	result.resize(int(count));
+	if(f->C_FindObjects(session, result.data(), CK_ULONG(result.count()), &count) == CKR_OK)
+		result.resize(int(count));
+	else
+		result.clear();
 	f->C_FindObjectsFinal( session );
-	return err == CKR_OK ? result : QVector<CK_OBJECT_HANDLE>();
+	return result;
 }
 
-void QPKCS11Private::run()
+void QPKCS11::Private::run()
 {
-	result = f->C_Login( session, CKU_USER, 0, 0 );
+	result = f->C_Login(session, CKU_USER, nullptr, 0);
 }
 
-QVector<CK_SLOT_ID> QPKCS11Private::slotIds( bool token_present ) const
+QVector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
 {
+	QVector<CK_SLOT_ID> result;
 	if(!f)
-		return QVector<CK_SLOT_ID>();
+		return result;
 	CK_ULONG size = 0;
-	if( f->C_GetSlotList( token_present, 0, &size ) != CKR_OK )
-		return QVector<CK_SLOT_ID>();
-	QVector<CK_SLOT_ID> result(int(size), 0);
+	if(f->C_GetSlotList(token_present, nullptr, &size) != CKR_OK)
+		return result;
+	result.resize(int(size));
 	if( f->C_GetSlotList( token_present, result.data(), &size ) == CKR_OK )
 		result.resize(int(size));
 	else
@@ -118,73 +123,25 @@ QVector<CK_SLOT_ID> QPKCS11Private::slotIds( bool token_present ) const
 	return result;
 }
 
-void QPKCS11Private::updateTokenFlags( TokenData &t, CK_ULONG f ) const
+void QPKCS11::Private::updateTokenFlags(TokenData &t, CK_ULONG f) const
 {
 	t.setFlag( TokenData::PinCountLow, f & CKF_SO_PIN_COUNT_LOW || f & CKF_USER_PIN_COUNT_LOW );
 	t.setFlag( TokenData::PinFinalTry, f & CKF_SO_PIN_FINAL_TRY || f & CKF_USER_PIN_FINAL_TRY );
 	t.setFlag( TokenData::PinLocked, f & CKF_SO_PIN_LOCKED || f & CKF_USER_PIN_LOCKED );
 }
 
-CK_RV QPKCS11Private::createMutex( CK_VOID_PTR_PTR mutex )
-{
-	*mutex = CK_VOID_PTR(new QMutex);
-	if( *mutex ) return CKR_OK;
-	return CKR_HOST_MEMORY;
-}
-
-CK_RV QPKCS11Private::destroyMutex( CK_VOID_PTR mutex )
-{
-	delete static_cast<QMutex*>(mutex);
-	return CKR_OK;
-}
-
-CK_RV QPKCS11Private::lockMutex( CK_VOID_PTR mutex )
-{
-	static_cast<QMutex*>( mutex )->lock();
-	return CKR_OK;
-}
-
-CK_RV unlockMutex( CK_VOID_PTR mutex )
-{
-	static_cast<QMutex*>( mutex )->unlock();
-	return CKR_OK;
-}
-
 
 
 QPKCS11::QPKCS11( QObject *parent )
 :	QObject( parent )
-,	d( new QPKCS11Private )
+,	d(new Private)
 {
 }
 
 QPKCS11::~QPKCS11()
 {
-	logout();
-	if( d->f )
-		d->f->C_Finalize( 0 );
-	d->lib.unload();
+	unload();
 	delete d;
-}
-
-QByteArray QPKCS11::encrypt( const QByteArray &data ) const
-{
-	QVector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
-	if(key.size() != 1)
-		return QByteArray();
-
-	CK_MECHANISM mech = { CKM_RSA_PKCS, 0, 0 };
-	if(d->f->C_EncryptInit(d->session, &mech, key[0]) != CKR_OK)
-		return QByteArray();
-
-	CK_ULONG size = 0;
-	if(d->f->C_Encrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), 0, &size) != CKR_OK)
-		return QByteArray();
-
-	QByteArray result(int(size), 0);
-	if(d->f->C_Encrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), CK_CHAR_PTR(result.data()), &size) != CKR_OK)
-		return QByteArray();
-	return result;
 }
 
 QString QPKCS11::errorString( PinStatus error )
@@ -236,28 +193,31 @@ QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 	if(key.size() != 1)
 		return QByteArray();
 
-	CK_MECHANISM mech = { CKM_RSA_PKCS, 0, 0 };
+	CK_MECHANISM mech = { CKM_RSA_PKCS, nullptr, 0 };
 	if(d->f->C_DecryptInit(d->session, &mech, key[0]) != CKR_OK)
 		return QByteArray();
 
 	CK_ULONG size = 0;
-	if(d->f->C_Decrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), 0, &size) != CKR_OK)
+	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK)
 		return QByteArray();
 
 	QByteArray result(int(size), 0);
-	if(d->f->C_Decrypt(d->session, CK_CHAR_PTR(data.constData()), CK_ULONG(data.size()), CK_CHAR_PTR(result.data()), &size) != CKR_OK)
+	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(result.data()), &size) != CKR_OK)
 		return QByteArray();
 	return result;
 }
 
 bool QPKCS11::isLoaded() const
 {
-	return d->f != 0;
+	return d->f != nullptr;
 }
 
 bool QPKCS11::load( const QString &driver )
 {
+	if(d->lib.fileName() == driver && isLoaded())
+		return true;
 	qWarning() << "Loading:" << driver;
+	unload();
 	d->lib.setFileName( driver );
 	CK_C_GetFunctionList l = CK_C_GetFunctionList(d->lib.resolve( "C_GetFunctionList" ));
 	if( !l || l( &d->f ) != CKR_OK )
@@ -266,16 +226,7 @@ bool QPKCS11::load( const QString &driver )
 		return false;
 	}
 
-#if 0
-	CK_C_INITIALIZE_ARGS init_args = {
-		QPKCS11Private::createMutex,
-		QPKCS11Private::destroyMutex,
-		QPKCS11Private::lockMutex,
-		QPKCS11Private::destroyMutex,
-		0, 0 };
-#else
-	CK_C_INITIALIZE_ARGS init_args = { 0, 0, 0, 0, CKF_OS_LOCKING_OK, 0 };
-#endif
+	CK_C_INITIALIZE_ARGS init_args = { nullptr, nullptr, nullptr, nullptr, CKF_OS_LOCKING_OK, nullptr };
 	CK_RV err = d->f->C_Initialize( &init_args );
 	if( err != CKR_OK && err != CKR_CRYPTOKI_ALREADY_INITIALIZED )
 	{
@@ -291,6 +242,7 @@ bool QPKCS11::load( const QString &driver )
 		<< QString("%1 (%2.%3)").arg( toQByteArray( info.libraryDescription ).constData() )
 			.arg( info.libraryVersion.major ).arg( info.libraryVersion.minor ) << endl
 		<< "Flags:" << info.flags;
+	d->isFinDriver = toQByteArray(info.libraryDescription).contains("MPOLLUX");
 	return true;
 }
 
@@ -301,12 +253,13 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	QVector<CK_SLOT_ID> list = d->slotIds( true );
 	// Hack: Workaround broken FIN pkcs11 drivers exposing Signing certificate in slot 1
 	std::reverse(list.begin(), list.end());
+	CK_SLOT_ID currentSlot = 0;
 	for( CK_SLOT_ID slot: list )
 	{
 		if( d->session )
 			d->f->C_CloseSession( d->session );
 		d->session = 0;
-		if( d->f->C_OpenSession( slot, CKF_SERIAL_SESSION, 0, 0, &d->session ) != CKR_OK )
+		if(d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
 			continue;
 
 		for( CK_OBJECT_HANDLE obj: d->findObject( d->session, CKO_CERTIFICATE ) )
@@ -318,18 +271,18 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 			}
 		}
 		if(!d->id.isEmpty())
+		{
+			currentSlot = slot;
 			break;
+		}
 	}
 
-	CK_SESSION_INFO sessinfo;
-	if(d->id.isEmpty() || d->f->C_GetSessionInfo(d->session, &sessinfo) != CKR_OK)
-		return UnknownError;
-
 	CK_TOKEN_INFO token;
-	if( d->f->C_GetTokenInfo( sessinfo.slotID, &token ) != CKR_OK )
+	if(d->id.isEmpty() || d->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK)
 		return UnknownError;
 
-	if( !(token.flags & CKF_LOGIN_REQUIRED) )
+	// Hack: Workaround broken FIN pkcs11 drivers not providing CKF_LOGIN_REQUIRED info
+	if(!d->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
 		return PinOK;
 
 	TokenData t = _t;
@@ -342,11 +295,11 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	if( token.flags & CKF_PROTECTED_AUTHENTICATION_PATH )
 	{
 		PinPopup p( pin2 ? PinDialog::Pin2PinpadType : PinDialog::Pin1PinpadType, t, rootWindow() );
-		connect( d, &QPKCS11Private::started, &p, &PinPopup::startTimer );
+		connect(d, &Private::started, &p, &PinPopup::startTimer);
 		p.open();
 
 		QEventLoop e;
-		connect( d, &QPKCS11Private::finished, &e, &QEventLoop::quit );
+		connect(d, &Private::finished, &e, &QEventLoop::quit);
 		d->start();
 		e.exec();
 		err = d->result;
@@ -358,17 +311,16 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 		if( !p.exec() )
 			return PinCanceled;
 		QByteArray pin = p.text().toUtf8();
-		err = d->f->C_Login(d->session, CKU_USER, CK_CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 	}
 
-	if( d->f->C_GetTokenInfo( sessinfo.slotID, &token ) == CKR_OK )
+	if(d->f->C_GetTokenInfo(currentSlot, &token) == CKR_OK)
 		d->updateTokenFlags( t, token.flags );
 
 	switch( err )
 	{
 	case CKR_OK:
-	case CKR_USER_ALREADY_LOGGED_IN:
-		return PinOK;
+	case CKR_USER_ALREADY_LOGGED_IN: return PinOK;
 	case CKR_CANCEL:
 	case CKR_FUNCTION_CANCELED: return PinCanceled;
 	case CKR_PIN_INCORRECT: return t.flags() & TokenData::PinLocked ? PinLocked : PinIncorrect;
@@ -402,7 +354,7 @@ QList<TokenData> QPKCS11::tokens() const
 		QString card = toQByteArray( token.serialNumber ).trimmed();
 
 		CK_SESSION_HANDLE session = 0;
-		if( d->f->C_OpenSession( slot, CKF_SERIAL_SESSION, 0, 0, &session ) != CKR_OK )
+		if(d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &session) != CKR_OK)
 			continue;
 
 		for( CK_OBJECT_HANDLE obj: d->findObject( session, CKO_CERTIFICATE ) )
@@ -428,7 +380,7 @@ QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
 	CK_ATTRIBUTE attribute = { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
 	d->f->C_GetAttributeValue(d->session, key[0], &attribute, 1);
 
-	CK_MECHANISM mech = { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, 0, 0 };
+	CK_MECHANISM mech = { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, nullptr, 0 };
 	if(d->f->C_SignInit(d->session, &mech, key[0]) != CKR_OK)
 		return QByteArray();
 
@@ -447,50 +399,42 @@ QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
 	data.append(digest);
 
 	CK_ULONG size = 0;
-	if(d->f->C_Sign(d->session, CK_CHAR_PTR(data.constData()),
-			CK_ULONG(data.size()), 0, &size) != CKR_OK)
+	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK)
 		return QByteArray();
 
 	QByteArray sig(int(size), 0);
-	if(d->f->C_Sign(d->session, CK_CHAR_PTR(data.constData()),
-			CK_ULONG(data.size()), CK_CHAR_PTR(sig.data()), &size) != CKR_OK)
+	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(sig.data()), &size) != CKR_OK)
 		return QByteArray();
 	return sig;
 }
 
-bool QPKCS11::verify( const QByteArray &data, const QByteArray &signature ) const
+void QPKCS11::unload()
 {
-	QVector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
-	if(key.size() != 1)
-		return false;
-
-	CK_MECHANISM mech = { CKM_RSA_PKCS, 0, 0 };
-	if(d->f->C_VerifyInit(d->session, &mech, key[0]) != CKR_OK)
-		return false;
-
-	return d->f->C_Verify(d->session, CK_CHAR_PTR(data.constData()),
-		CK_ULONG(data.size()), CK_CHAR_PTR(signature.data()), CK_ULONG(signature.size())) == CKR_OK;
+	logout();
+	if(d->f)
+		d->f->C_Finalize(nullptr);
+	d->f = nullptr;
+	d->lib.unload();
 }
 
 
 
-class QPKCS11StackPrivate
+class QPKCS11Stack::Private
 {
 public:
+	QPKCS11 *active = new QPKCS11();
 	QMultiHash<QString,QByteArray> drivers;
-	QPKCS11 *active = nullptr;
-	QString activeDriver;
 };
 
 QPKCS11Stack::QPKCS11Stack( QObject *parent )
 :	QObject( parent )
-,	d( new QPKCS11StackPrivate )
+,	d(new Private)
 {
 }
 
 bool QPKCS11Stack::isLoaded() const
 {
-	return d->active && d->active->isLoaded();
+	return d->active->isLoaded();
 }
 
 QPKCS11Stack::~QPKCS11Stack()
@@ -499,95 +443,79 @@ QPKCS11Stack::~QPKCS11Stack()
 	delete d;
 }
 
-QByteArray QPKCS11Stack::encrypt(const QByteArray &data) const
-{
-	return d->active ? d->active->encrypt(data) : QByteArray();
-}
-
 QByteArray QPKCS11Stack::decrypt(const QByteArray &data) const
 {
-	return d->active ? d->active->decrypt(data) : QByteArray();
+	return d->active->decrypt(data);
 }
 
 QByteArray QPKCS11Stack::derive(const QByteArray &publicKey) const
 {
-	return d->active ? d->active->derive(publicKey) : QByteArray();
+	return d->active->derive(publicKey);
 }
 
 QByteArray QPKCS11Stack::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	return d->active ? d->active->deriveConcatKDF(publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo) : QByteArray();
+	return d->active->deriveConcatKDF(publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo);
 }
 
 bool QPKCS11Stack::load(const QString &defaultDriver)
 {
-	d->drivers.insert(defaultDriver, QByteArray());
+	d->drivers = {
+		{ defaultDriver, QByteArray() },
 #ifdef Q_OS_MAC
-	d->drivers.insert("/Library/latvia-eid/lib/otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C");
-	d->drivers.insert("/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3BF81300008131FE45536D617274417070F8");
-	d->drivers.insert("/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000");
+		{ "/Library/latvia-eid/lib/otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3BF81300008131FE45536D617274417070F8" },
+		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000" },
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
+#elif defined(Q_OS_WIN)
+		{ "OTLvP11.dll", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3BF81300008131FE45536D617274417070F8" },
+		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3B7D94000080318065B08311C0A983009000" },
+#else
+		{ "otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ "/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8" },
+		{ "/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000" },
+		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
+		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
+#endif
+	};
+#ifdef Q_OS_MAC
 	if(QFile::exists("/Library/mPolluxDigiSign/libcryptoki.dylib"))
 		d->drivers.insert("/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944");
 	else
 		d->drivers.insert("/Library/OpenSC/lib/opensc-pkcs11.so", "3B7B940000806212515646696E454944");
-	d->drivers.insert("/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030");
-	d->drivers.insert("/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4");
 	QVariantMap PKCS11 = Settings().value("PKCS11").toMap();
 	for(auto it = PKCS11.cbegin(), end = PKCS11.cend(); it != end; ++it)
 		d->drivers.insert(it.value().toString(), it.key().toLocal8Bit());
-#elif defined(Q_OS_WIN)
-	d->drivers.insert("OTLvP11.dll", "3BDD18008131FE45904C41545649412D65494490008C");
-	d->drivers.insert(qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3BF81300008131FE45536D617274417070F8");
-	d->drivers.insert(qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3B7D94000080318065B08311C0A983009000");
-#else
-	d->drivers.insert("otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C");
-	d->drivers.insert("/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8");
-	d->drivers.insert("/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000");
-	d->drivers.insert("/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4");
 #endif
-	updateDrivers();
-	return isLoaded();
-}
-
-void QPKCS11Stack::loadDriver(const QString &driver) const
-{
-	if(!driver.isEmpty() && d->activeDriver == driver)
-		return;
-	if(driver.isEmpty() && d->activeDriver == d->drivers.key(""))
-		return;
-	delete d->active;
-	d->activeDriver = driver.isEmpty() ? d->drivers.key("") : driver;
-	d->active = new QPKCS11();
-	d->active->load( d->activeDriver );
+	return updateDrivers();
 }
 
 QList<TokenData> QPKCS11Stack::tokens() const
 {
-	QList<TokenData> list;
 	updateDrivers();
-	if(d->active)
-		list << d->active->tokens();
-	return list;
+	return d->active->tokens();
 }
 
 QPKCS11::PinStatus QPKCS11Stack::login(const TokenData &t)
 {
-	return d->active ? d->active->login(t) : QPKCS11::UnknownError;
+	return d->active->login(t);
 }
 
 void QPKCS11Stack::logout()
 {
-	if( d->active )
-		d->active->logout();
+	d->active->logout();
 }
 
 QByteArray QPKCS11Stack::sign(int type, const QByteArray &digest) const
 {
-	return d->active ? d->active->sign(type, digest) : QByteArray();
+	return d->active->sign(type, digest);
 }
 
-void QPKCS11Stack::updateDrivers() const
+bool QPKCS11Stack::updateDrivers() const
 {
 	QList<QByteArray> atrs;
 	for(const QString &reader: QPCSC::instance().readers())
@@ -600,12 +528,7 @@ void QPKCS11Stack::updateDrivers() const
 	{
 		QString driver = d->drivers.key(atr);
 		if(!driver.isEmpty())
-			return loadDriver(driver);
+			return d->active->load(driver);
 	}
-	loadDriver(QString());
-}
-
-bool QPKCS11Stack::verify(const QByteArray &data, const QByteArray &signature) const
-{
-	return d->active ? d->active->verify(data, signature) : false;
+	return d->active->load(d->drivers.key(""));
 }
