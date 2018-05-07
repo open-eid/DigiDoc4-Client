@@ -25,6 +25,7 @@
 template<class Key, class T> class QHash;
 class SslCertificate;
 class QSmartCardDataPrivate;
+class QSslKey;
 
 class QSmartCardData
 {
@@ -71,10 +72,10 @@ public:
 
 	QSmartCardData();
 	QSmartCardData( const QSmartCardData &other );
-	QSmartCardData( QSmartCardData &&other );
+	QSmartCardData( QSmartCardData &&other )  noexcept;
 	~QSmartCardData();
 	QSmartCardData& operator=( const QSmartCardData &other );
-	QSmartCardData& operator=( QSmartCardData &&other );
+	QSmartCardData& operator=( QSmartCardData &&other )  noexcept;
 
 	QString card() const;
 	QString reader() const;
@@ -119,12 +120,12 @@ public:
 		OldNewPinSameError
 	};
 
-	explicit QSmartCard( QObject *parent = nullptr );
+	explicit QSmartCard(QObject *parent = nullptr);
 	~QSmartCard();
 
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
-	Qt::HANDLE key();
+	QSslKey key() const;
 	ErrorType login( QSmartCardData::PinType type, QWidget* parent );
 	void logout();
 	void reload();

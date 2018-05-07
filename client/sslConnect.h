@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include <QtNetwork/QNetworkAccessManager>
 
-class QSslCertificate;
 class QFrame;
+class QSslCertificate;
+class QSslKey;
 
-class SSLConnectPrivate;
-class SSLConnect: public QObject
+class SSLConnect: public QNetworkAccessManager
 {
 	Q_OBJECT
 
@@ -37,14 +37,15 @@ public:
 		PictureInfo
 	};
 
-	explicit SSLConnect( QObject *parent = 0 );
+	explicit SSLConnect(QObject *parent = nullptr);
 	~SSLConnect();
 
 	QString errorString() const;
-	QByteArray getUrl( RequestType type, const QString &value = QString() );
-	void setToken( const QSslCertificate &cert, Qt::HANDLE key );
-	void showPopup( QFrame &popup, const QString &labelText );
+	QByteArray getUrl(RequestType type, const QString &value = QString());
+	void setToken(const QSslCertificate &cert, const QSslKey &key);
+	void showPopup(QFrame &popup, const QString &labelText);
 
 private:
-	SSLConnectPrivate	*d;
+	class Private;
+	Private *d;
 };

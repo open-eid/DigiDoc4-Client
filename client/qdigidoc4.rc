@@ -20,7 +20,7 @@ BEGIN
 	BEGIN
 		BLOCK "040904B0"
 		BEGIN
-			VALUE "CompanyName", ORG
+			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "DigiDoc4 Client"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", APP
@@ -31,7 +31,7 @@ BEGIN
 		END
 		BLOCK "042504B0"
 		BEGIN
-			VALUE "CompanyName", ORG
+			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "DigiDoc4 Klient"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", APP

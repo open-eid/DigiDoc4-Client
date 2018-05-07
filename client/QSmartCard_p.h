@@ -40,7 +40,7 @@ public:
 	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
 	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d);
 
-	static QByteArray sign(const unsigned char *dgst, int digst_len, QSmartCardPrivate *d);
+	static QByteArray sign(const QByteArray &dgst, QSmartCardPrivate *d);
 	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
 		unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
@@ -77,7 +77,7 @@ public:
 	const QByteArray CHANGE =		APDU("00240000 00");
 	const QByteArray REPLACE =		APDU("002C0000 00");
 	const QByteArray VERIFY =		APDU("00200000 00");
-	const QByteArray APPLETVER =	APDU("00CA0100 03");
+	const QByteArray APPLETVER =	APDU("00CA0100 00");
 };
 
 class QSmartCardDataPrivate: public QSharedData
