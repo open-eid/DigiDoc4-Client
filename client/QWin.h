@@ -32,7 +32,6 @@ class QWin: public QObject
 {
 	Q_OBJECT
 public:
-	typedef QHash<SslCertificate,QString> Certs;
 	enum PinStatus
 	{
 		PinOK,
@@ -43,12 +42,11 @@ public:
 	explicit QWin(QObject *parent = nullptr): QObject(parent) {}
 	virtual ~QWin() = default;
 
-	virtual Certs certs() const = 0;
+	virtual QList<TokenData> tokens() const = 0;
 	virtual QByteArray decrypt( const QByteArray &data ) = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual PinStatus lastError() const = 0;
-	QStringList readers() const;
 	virtual TokenData selectCert( const SslCertificate &cert ) = 0;
 	virtual QByteArray sign( int method, const QByteArray &digest ) const = 0;
 

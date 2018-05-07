@@ -42,7 +42,7 @@ public:
 		UnknownError
 	};
 
-	explicit QPKCS11( QObject *parent = 0 );
+	explicit QPKCS11(QObject *parent = nullptr);
 	~QPKCS11();
 
 	QByteArray encrypt( const QByteArray &data ) const;
@@ -54,7 +54,6 @@ public:
 	bool load( const QString &driver );
 	PinStatus login( const TokenData &t );
 	void logout();
-	QStringList readers() const;
 	QByteArray sign( int type, const QByteArray &digest ) const;
 	QList<TokenData> tokens() const;
 	bool verify( const QByteArray &data, const QByteArray &signature ) const;
@@ -68,7 +67,7 @@ class QPKCS11Stack: public QObject
 {
 	Q_OBJECT
 public:
-	explicit QPKCS11Stack( QObject *parent = 0 );
+	explicit QPKCS11Stack(QObject *parent = nullptr);
 	~QPKCS11Stack();
 
 	QByteArray encrypt( const QByteArray &data ) const;
@@ -80,7 +79,6 @@ public:
 	bool load( const QString &defaultDriver );
 	QPKCS11::PinStatus login( const TokenData &t );
 	void logout();
-	QStringList readers() const;
 	QByteArray sign( int type, const QByteArray &digest ) const;
 	QList<TokenData> tokens() const;
 	bool verify( const QByteArray &data, const QByteArray &signature ) const;

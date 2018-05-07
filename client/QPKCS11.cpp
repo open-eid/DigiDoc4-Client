@@ -390,23 +390,6 @@ void QPKCS11::logout()
 	d->session = 0;
 }
 
-QStringList QPKCS11::readers() const
-{
-	QStringList readers;
-	for( CK_SLOT_ID slot: d->slotIds( false ) )
-	{
-		CK_SLOT_INFO info;
-		d->f->C_GetSlotInfo( slot, &info );
-		QByteArray man = toQByteArray( info.manufacturerID ).trimmed();
-		QByteArray desc = toQByteArray( info.slotDescription ).trimmed();
-		if( man.contains( "OpenSC" ) && desc.contains( "Virtual" ) )
-			continue;
-		readers << desc;
-	}
-	readers.removeDuplicates();
-	return readers;
-}
-
 QList<TokenData> QPKCS11::tokens() const
 {
 	QList<TokenData> list;
@@ -577,11 +560,6 @@ void QPKCS11Stack::loadDriver(const QString &driver) const
 	d->activeDriver = driver.isEmpty() ? d->drivers.key("") : driver;
 	d->active = new QPKCS11();
 	d->active->load( d->activeDriver );
-}
-
-QStringList QPKCS11Stack::readers() const
-{
-	return QPCSC::instance().readers();
 }
 
 QList<TokenData> QPKCS11Stack::tokens() const

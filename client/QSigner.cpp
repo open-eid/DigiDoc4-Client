@@ -30,6 +30,7 @@
 class QWin;
 #endif
 #include "QPKCS11.h"
+#include <common/QPCSC.h>
 #include <common/TokenData.h>
 
 #include <digidocpp/crypto/X509Cert.h>
@@ -125,28 +126,20 @@ const QMap<QString, QSharedPointer<QCardInfo>> QSigner::cache() const { return d
 
 void QSigner::cacheCardData(const QSet<QString> &cards)
 {
+	QList<TokenData> tokens;
 #ifdef Q_OS_WIN
 	if(d->win)
-	{
-		QWin::Certs certs = d->win->certs();
-		for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
-		{
-			if((!d->cache.contains(i.value()) || !d->cache[i.value()]->valid) && isMatchingType(i.key()))
-				d->cache.insert(i.value(), QSharedPointer<QCardInfo>(toCardInfo(i.key())));
-		}
-	}
-	else
+		tokens = d->win->tokens();
 #endif
+	if(d->pkcs11 && d->pkcs11->isLoaded())
+		tokens = d->pkcs11->tokens();
+	for(const TokenData &i: qAsConst(tokens))
 	{
-		QList<TokenData> pkcs11 = d->pkcs11->tokens();
-		for(const TokenData &i: qAsConst(pkcs11))
+		if(!d->cache.contains(i.card()) || !d->cache[i.card()]->valid)
 		{
-			if(!d->cache.contains(i.card()) || !d->cache[i.card()]->valid)
-			{
-				auto sslCert = SslCertificate(i.cert());
-				if(isMatchingType(sslCert))
-					d->cache.insert(i.card(), QSharedPointer<QCardInfo>(toCardInfo(sslCert)));
-			}
+			auto sslCert = SslCertificate(i.cert());
+			if(isMatchingType(sslCert))
+				d->cache.insert(i.card(), QSharedPointer<QCardInfo>(toCardInfo(sslCert)));
 		}
 	}
 }
@@ -286,44 +279,29 @@ void QSigner::run()
 		{
 			TokenData aold = d->auth, at = aold;
 			TokenData sold = d->sign, st = sold;
-			QStringList acards, scards, readers;
+			QList<TokenData> tokens;
 #ifdef Q_OS_WIN
-			QWin::Certs certs;
 			if(d->win)
-			{
-				certs = d->win->certs();
-				for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
-				{
-					if(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
-						i.key().keyUsage().contains(SslCertificate::KeyAgreement))
-						acards << i.value();
-					if(i.key().keyUsage().contains(SslCertificate::NonRepudiation))
-						scards << i.value();
-				}
-				readers << d->win->readers();
-			}
+				tokens = d->win->tokens();
 #endif
-			QList<TokenData> pkcs11;
 			if( d->pkcs11 && d->pkcs11->isLoaded() )
+				tokens = d->pkcs11->tokens();
+			QStringList acards, scards;
+			for(const TokenData &t: qAsConst(tokens))
 			{
-				pkcs11 = d->pkcs11->tokens();
-				for(const TokenData &t: qAsConst(pkcs11))
-				{
-					SslCertificate c( t.cert() );
-					if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-						c.keyUsage().contains(SslCertificate::KeyAgreement))
-						acards << t.card();
-					if( c.keyUsage().contains( SslCertificate::NonRepudiation ) )
-						scards << t.card();
-				}
-				acards.removeDuplicates();
-				scards.removeDuplicates();
-				readers = d->pkcs11->readers();
+				SslCertificate c(t.cert());
+				if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+					c.keyUsage().contains(SslCertificate::KeyAgreement))
+					acards << t.card();
+				if( c.keyUsage().contains(SslCertificate::NonRepudiation))
+					scards << t.card();
 			}
+			acards.removeDuplicates();
+			scards.removeDuplicates();
 
 			std::sort( acards.begin(), acards.end(), TokenData::cardsOrder );
 			std::sort( scards.begin(), scards.end(), TokenData::cardsOrder );
-			std::sort( readers.begin(), readers.end() );
+			QStringList readers = QPCSC::instance().drivers();
 			at.setCards( acards );
 			at.setReaders( readers );
 			st.setCards( scards );
@@ -362,36 +340,17 @@ void QSigner::run()
 			// with expired and valid cert), then pick first valid cert with the id.
 			if( acards.contains( at.card() ) && at.cert().isNull() )
 			{
-#ifdef Q_OS_WIN
-				if(d->win)
+				for(const TokenData &i: qAsConst(tokens))
 				{
-					for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
+					SslCertificate sslCert(i.cert());
+					if(i.card() == at.card() &&
+						(sslCert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+						sslCert.keyUsage().contains(SslCertificate::KeyAgreement)))
 					{
-						if(i.value() == at.card() &&
-							(i.key().keyUsage().contains(SslCertificate::KeyEncipherment) ||
-							i.key().keyUsage().contains(SslCertificate::KeyAgreement)))
-						{
-							at.setCert(i.key());
-							if(i.key().isValid())
-								break;
-						}
-					}
-				}
-				else
-#endif
-				{
-					for(const TokenData &i: qAsConst(pkcs11))
-					{
-						SslCertificate sslCert(i.cert());
-						if(i.card() == at.card() &&
-							(sslCert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-							sslCert.keyUsage().contains(SslCertificate::KeyAgreement)))
-						{
-							at.setCert( i.cert() );
-							at.setFlags( i.flags() );
-							if(sslCert.isValid())
-								break;
-						}
+						at.setCert( i.cert() );
+						at.setFlags( i.flags() );
+						if(sslCert.isValid())
+							break;
 					}
 				}
 			}
@@ -401,34 +360,15 @@ void QSigner::run()
 			if( scards.contains( st.card() ) && st.cert().isNull() )
 			{
 				qCDebug(SLog) << "Read sign cert" << st.card();
-#ifdef Q_OS_WIN
-				if(d->win)
+				for(const TokenData &i: qAsConst(tokens))
 				{
-					for(QWin::Certs::const_iterator i = certs.constBegin(); i != certs.constEnd(); ++i)
+					SslCertificate sslCert(i.cert());
+					if( i.card() == st.card() && sslCert.keyUsage().contains( SslCertificate::NonRepudiation ) )
 					{
-						qCDebug(SLog) << "Check card:" << i.value();
-						if(i.value() == st.card() &&
-							i.key().keyUsage().contains(SslCertificate::NonRepudiation))
-						{
-							st.setCert(i.key());
-							if(i.key().isValid())
-								break;
-						}
-					}
-				}
-				else
-#endif
-				{
-					for(const TokenData &i: qAsConst(pkcs11))
-					{
-						SslCertificate sslCert(i.cert());
-						if( i.card() == st.card() && sslCert.keyUsage().contains( SslCertificate::NonRepudiation ) )
-						{
-							st.setCert( i.cert() );
-							st.setFlags( i.flags() );
-							if(sslCert.isValid())
-								break;
-						}
+						st.setCert( i.cert() );
+						st.setFlags( i.flags() );
+						if(sslCert.isValid())
+							break;
 					}
 				}
 				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();

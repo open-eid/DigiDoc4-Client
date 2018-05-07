@@ -42,7 +42,7 @@ int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArra
 	NCRYPT_KEY_HANDLE publicKeyHandle = 0;
 	NCRYPT_SECRET_HANDLE sharedSecret = 0;
 	SECURITY_STATUS err = 0;
-	if((err = NCryptImportKey(prov, NULL, BCRYPT_ECCPUBLIC_BLOB, NULL, &publicKeyHandle, PBYTE(blob.data()), DWORD(blob.size()), 0)) ||
+	if((err = NCryptImportKey(prov, NULL, BCRYPT_ECCPUBLIC_BLOB, nullptr, &publicKeyHandle, PBYTE(blob.data()), DWORD(blob.size()), 0)) ||
 		(err = NCryptSecretAgreement(key, publicKeyHandle, &sharedSecret, 0)))
 	{
 		if(publicKeyHandle)
@@ -82,9 +82,4 @@ int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArra
 	NCryptFreeObject(sharedSecret);
 	NCryptFreeObject(prov);
 	return err;
-}
-
-QStringList QWin::readers() const
-{
-	return QPCSC::instance().drivers();
 }
