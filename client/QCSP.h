@@ -21,16 +21,14 @@
 
 #include "QWin.h"
 
-
-class QCSPPrivate;
 class QCSP: public QWin
 {
 	Q_OBJECT
 public:
-	explicit QCSP( QObject *parent = 0 );
-	~QCSP();
+	explicit QCSP(QObject *parent = nullptr);
+	~QCSP() override;
 
-	Certs certs() const override;
+	QList<TokenData> tokens() const override;
 	QByteArray decrypt(const QByteArray &data) override;
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
@@ -39,5 +37,6 @@ public:
 	QByteArray sign(int method, const QByteArray &digest) const override;
 
 private:
-	QCSPPrivate *d;
+	class Private;
+	Private *d;
 };

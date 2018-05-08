@@ -134,7 +134,7 @@ public:
 		const BIGNUM *, const BIGNUM *, EC_KEY *eckey)
 	{
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
-		UpdaterPrivate *d = (UpdaterPrivate*)EC_KEY_get_key_method_data(eckey, nullptr, nullptr, nullptr);
+		UpdaterPrivate *d = (UpdaterPrivate*)ECDSA_get_ex_data(eckey, 0);
 #else
 		UpdaterPrivate *d = (UpdaterPrivate*)EC_KEY_get_ex_data(eckey, 0);
 #endif
@@ -570,7 +570,7 @@ int Updater::exec()
 		{
 			EC_KEY *ec = EC_KEY_dup((EC_KEY*)d->cert.publicKey().handle());
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
-			EC_KEY_insert_key_method_data(ec, d, nullptr, nullptr, nullptr);
+			ECDSA_set_ex_data(ec, 0, d);
 			ECDSA_set_method(ec, d->ecmethod);
 #else
 			EC_KEY_set_ex_data(ec, 0, d);

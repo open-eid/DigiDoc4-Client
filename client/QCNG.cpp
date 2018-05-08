@@ -24,10 +24,10 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QLibrary>
-#include <QtCore/QStringList.h>
+#include <QtCore/QStringList>
+#include <QtNetwork/QSslKey>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
-#include <QtNetwork/QSslKey>
 
 #include <WinCrypt.h>
 
@@ -39,10 +39,10 @@ struct QCNGCache
 	DWORD spec;
 };
 
-class QCNGPrivate
+class QCNG::Private
 {
 public:
-	void enumKeys( QHash<SslCertificate,QCNGCache> &cache, LPCWSTR provider, LPCWSTR scope = 0 );
+	void enumKeys(QHash<SslCertificate,QCNGCache> &cache, LPCWSTR provider, LPCWSTR scope = nullptr);
 	NCRYPT_KEY_HANDLE key() const;
 	QByteArray prop( NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags = 0 ) const;
 
@@ -51,29 +51,29 @@ public:
 	QHash<SslCertificate,QCNGCache> cache;
 };
 
-void QCNGPrivate::enumKeys( QHash<SslCertificate,QCNGCache> &cache, LPCWSTR provider, LPCWSTR scope )
+void QCNG::Private::enumKeys( QHash<SslCertificate,QCNGCache> &cache, LPCWSTR provider, LPCWSTR scope )
 {
 	QCNGCache c;
-	c.provider = QString( (QChar*)provider );
+	c.provider = QString::fromWCharArray(provider);
 
 	NCRYPT_PROV_HANDLE h = 0;
 	SECURITY_STATUS err = NCryptOpenStorageProvider( &h, provider, 0 );
 
-	NCryptKeyName *keyname = 0;
-	PVOID pos = 0;
+	NCryptKeyName *keyname = nullptr;
+	PVOID pos = nullptr;
 	while( NCryptEnumKeys( h, scope, &keyname, &pos, NCRYPT_SILENT_FLAG ) == ERROR_SUCCESS )
 	{
-		c.key = QString( (QChar*)keyname->pszName );
+		c.key = QString::fromWCharArray(keyname->pszName);
 		c.spec = keyname->dwLegacyKeySpec;
 		qWarning() << "key" << c.key
 			<< "spec" << c.spec
-			<< "alg" << QString( (QChar*)keyname->pszAlgid )
+			<< "alg" << QString::fromWCharArray(keyname->pszAlgid)
 			<< "flags" << keyname->dwFlags;
 
 		NCRYPT_KEY_HANDLE key = 0;
 		err = NCryptOpenKey( h, &key, keyname->pszName, keyname->dwLegacyKeySpec, NCRYPT_SILENT_FLAG );
 		NCryptFreeBuffer( keyname );
-		keyname = 0;
+		keyname = nullptr;
 
 		SslCertificate cert( prop( key, NCRYPT_CERTIFICATE_PROPERTY ), QSsl::Der );
 		c.guid = prop( h, NCRYPT_SMARTCARD_GUID_PROPERTY );
@@ -83,7 +83,7 @@ void QCNGPrivate::enumKeys( QHash<SslCertificate,QCNGCache> &cache, LPCWSTR prov
 	NCryptFreeObject( h );
 }
 
-NCRYPT_KEY_HANDLE QCNGPrivate::key() const
+NCRYPT_KEY_HANDLE QCNG::Private::key() const
 {
 	NCRYPT_PROV_HANDLE prov = 0;
 	NCryptOpenStorageProvider( &prov, LPCWSTR(selected.provider.utf16()), 0 );
@@ -93,16 +93,17 @@ NCRYPT_KEY_HANDLE QCNGPrivate::key() const
 	return key;
 }
 
-QByteArray QCNGPrivate::prop( NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags ) const
+QByteArray QCNG::Private::prop( NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags ) const
 {
-	if( !handle )
-		return QByteArray();
+	QByteArray data;
+	if(!handle)
+		return data;
 	DWORD size = 0;
-	if( NCryptGetProperty( handle, param, 0, 0, &size, flags ) )
-		return QByteArray();
-	QByteArray data( size, 0 );
-	if( NCryptGetProperty( handle, param, PBYTE(data.data()), size, &size, flags ) )
-		return QByteArray();
+	if(NCryptGetProperty(handle, param, nullptr, 0, &size, flags))
+		return data;
+	data.resize(int(size));
+	if(NCryptGetProperty(handle, param, PBYTE(data.data()), size, &size, flags))
+		data.clear();
 	return data;
 }
 
@@ -110,7 +111,7 @@ QByteArray QCNGPrivate::prop( NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags )
 
 QCNG::QCNG( QObject *parent )
 :	QWin( parent )
-,	d( new QCNGPrivate )
+,	d( new Private )
 {
 	d->err = QCNG::PinOK;
 }
@@ -124,16 +125,16 @@ QByteArray QCNG::decrypt( const QByteArray &data )
 {
 	d->err = PinUnknown;
 	DWORD size = 256;
-	QByteArray res( size, 0 );
+	QByteArray res(int(size), 0);
 	NCRYPT_KEY_HANDLE k = d->key();
-	DWORD err = NCryptDecrypt( k, PBYTE(data.constData()), data.size(), 0,
-		PBYTE(res.data()), res.size(), &size, NCRYPT_PAD_PKCS1_FLAG );
+	SECURITY_STATUS err = NCryptDecrypt(k, PBYTE(data.constData()), DWORD(data.size()), nullptr,
+		PBYTE(res.data()), DWORD(res.size()), &size, NCRYPT_PAD_PKCS1_FLAG);
 	NCryptFreeObject( k );
 	switch( err )
 	{
 	case ERROR_SUCCESS:
 		d->err = PinOK;
-		res.resize( size );
+		res.resize(int(size));
 		return res;
 	case SCARD_W_CANCELLED_BY_USER:
 		d->err = PinCanceled; break;
@@ -172,22 +173,22 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, const QString &dig
 
 QCNG::PinStatus QCNG::lastError() const { return d->err; }
 
-QCNG::Certs QCNG::certs() const
+QList<TokenData> QCNG::tokens() const
 {
 	qWarning() << "Start enumerationg providers";
 	QHash<SslCertificate,QCNGCache> cache;
 	DWORD count = 0;
-	NCryptProviderName *names = 0;
+	NCryptProviderName *names = nullptr;
 	NCryptEnumStorageProviders( &count, &names, NCRYPT_SILENT_FLAG );
 	for( DWORD i = 0; i < count; ++i )
 	{
-		qWarning() << "Found provider" << QString( (QChar*)names[i].pszName );
+		qWarning() << "Found provider" << QString::fromWCharArray(names[i].pszName);
 		if( wcscmp( names[i].pszName, MS_SMART_CARD_KEY_STORAGE_PROVIDER ) == 0 )
 		{
 			for( const QString &reader: QPCSC::instance().readers() )
 			{
 				qWarning() << reader;
-				QString scope = QString( "\\\\.\\%1\\" ).arg( reader );
+				QString scope = QString(R"(\\.\%1\)").arg(reader);
 				d->enumKeys( cache, names[i].pszName, LPCWSTR(scope.utf16()) );
 			}
 		}
@@ -198,11 +199,14 @@ QCNG::Certs QCNG::certs() const
 	d->cache = cache;
 	qWarning() << "End enumerationg providers";
 
-	Certs result;
+	QList<TokenData> result;
 	for(QHash<SslCertificate,QCNGCache>::const_iterator i = cache.constBegin(); i != cache.constEnd(); ++i)
 	{
-		result[i.key()] = i.key().type() & SslCertificate::EstEidType || i.key().type() & SslCertificate::DigiIDType ?
-			i.value().guid : i.key().subjectInfo( QSslCertificate::CommonName );
+		TokenData t;
+		t.setCard(i.key().type() & SslCertificate::EstEidType || i.key().type() & SslCertificate::DigiIDType ?
+			i.value().guid : i.key().subjectInfo(QSslCertificate::CommonName));
+		t.setCert(i.key());
+		result << t;
 	}
 	return result;
 }
@@ -241,7 +245,7 @@ QByteArray QCNG::sign( int method, const QByteArray &digest ) const
 	QByteArray res;
 	NCRYPT_KEY_HANDLE k = d->key();
 	QString algo(5, 0);
-	SECURITY_STATUS err = NCryptGetProperty(k, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), (algo.size() + 1) * 2, &size, 0);
+	SECURITY_STATUS err = NCryptGetProperty(k, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
 	algo.resize(size/2 - 1);
 	bool isRSA = algo == "RSA";
 	err = NCryptSignHash(k, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),

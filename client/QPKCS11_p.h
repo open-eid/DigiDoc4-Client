@@ -26,7 +26,7 @@
 #include <QtCore/QLibrary>
 #include <QtCore/QThread>
 
-class QPKCS11Private: public QThread
+class QPKCS11::Private: public QThread
 {
 	Q_OBJECT
 public:
@@ -35,16 +35,12 @@ public:
 	QVector<CK_SLOT_ID> slotIds( bool token_present ) const;
 	void updateTokenFlags( TokenData &t, CK_ULONG f ) const;
 
-	static CK_RV createMutex( CK_VOID_PTR_PTR mutex );
-	static CK_RV destroyMutex( CK_VOID_PTR mutex );
-	static CK_RV lockMutex( CK_VOID_PTR mutex );
-	static CK_RV unlockMutex( CK_VOID_PTR mutex );
-
 	QLibrary		lib;
 	CK_FUNCTION_LIST_PTR f = nullptr;
+	bool			isFinDriver = false;
 	CK_SESSION_HANDLE session = 0;
 	QByteArray		id;
 
-	void run();
+	void run() override;
 	CK_RV result = CKR_OK;
 };
