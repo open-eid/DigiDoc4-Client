@@ -1892,7 +1892,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
-        <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;http://www.id.ee/eng/access&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</translation>
+        <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/eng/access&lt;/span&gt;&lt;/a&gt; or phone 1777 (only from Estonia), (+372) 6773377</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>
@@ -1911,7 +1911,7 @@ Control code: %1</translation>
 Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt; or by phone (+372) 666 8888.&lt;/p&gt;
 Additional licenses and components</translation>
     </message>
 </context>

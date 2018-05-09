@@ -1886,7 +1886,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
-        <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;http://www.id.ee/rus/access&lt;/a&gt;, по электронной почте sales@sk.ee или по телефону 1777 (только в пределах Эстонии), (+372) 6773377</translation>
+        <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/rus/access&lt;/span&gt;&lt;/a&gt;, по электронной почте sales@sk.ee или по телефону 1777 (только в пределах Эстонии), (+372) 6773377</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>
@@ -1905,7 +1905,7 @@ Kонтрольный код: %1</translation>
 Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
-В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи 1777 или из-за границы на номер (+372) 677 3377.&lt;/p&gt;
+Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt; или позвоните по телефону (+372) 666 8888.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
     </message>
 
