@@ -176,18 +176,13 @@ FirstRun::FirstRun(QWidget *parent) :
 	// Page 5: My eID
 	ui->eidTitle->setFont(titleFont);
 	ui->labelEid1->setFont(dmLabelFont);
-	ui->labelEid2->setFont(dmLabelFont);
 	ui->labelEid3->setFont(dmLabelFont);
 	ui->textEid1->setFont(regular14);
-	ui->textEid2->setFont(regular14);
 	ui->textEid3->setFont(regular14);
 
 	ui->enter->setFont(buttonFont);
 	connect(ui->enter, &QPushButton::clicked, this, [this](){ emit close(); });
 
-	QPixmap eid2 = QPixmap(":/images/intro_eid-other.png");
-	ui->eidImage2->setProperty("PICTURE", eid2);
-	ui->eidImage2->setPixmap(eid2.scaled(298, 216, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	connect(ui->gotoSigning_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
 	connect(ui->gotoEncryption_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
 

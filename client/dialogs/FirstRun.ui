@@ -647,7 +647,7 @@ color: #353739;
 line-height: 16px;</string>
      </property>
      <property name="text">
-      <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</string>
+      <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1791,7 +1791,7 @@ image: url(:/images/icon_dot_active.png);</string>
     <widget class="QLabel" name="labelEid1">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>138</x>
        <y>345</y>
        <width>300</width>
        <height>21</height>
@@ -1811,33 +1811,10 @@ color: #041E42;</string>
       <string>Manage PIN and PUK codes</string>
      </property>
     </widget>
-    <widget class="QLabel" name="labelEid2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>345</y>
-       <width>300</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Manage Mobile-ID or Digi-ID</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="labelEid3">
      <property name="geometry">
       <rect>
-       <x>696</x>
+       <x>588</x>
        <y>345</y>
        <width>280</width>
        <height>21</height>
@@ -1860,7 +1837,7 @@ color: #041E42;</string>
     <widget class="QLabel" name="textEid1">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>138</x>
        <y>386</y>
        <width>298</width>
        <height>150</height>
@@ -1887,40 +1864,10 @@ line-height: 16px;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="textEid2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>386</y>
-       <width>298</width>
-       <height>110</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #353739;
-line-height: 16px;</string>
-     </property>
-     <property name="text">
-      <string>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="textEid3">
      <property name="geometry">
       <rect>
-       <x>696</x>
+       <x>588</x>
        <y>386</y>
        <width>298</width>
        <height>140</height>
@@ -2023,7 +1970,7 @@ color: #041E42;</string>
     <widget class="QLabel" name="eidImage3">
      <property name="geometry">
       <rect>
-       <x>696</x>
+       <x>588</x>
        <y>104</y>
        <width>298</width>
        <height>216</height>
@@ -2037,21 +1984,7 @@ border-radius: 3px;</string>
     <widget class="QLabel" name="eidImage1">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="eidImage2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
+       <x>138</x>
        <y>104</y>
        <width>298</width>
        <height>216</height>
