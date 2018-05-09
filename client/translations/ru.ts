@@ -1133,8 +1133,8 @@ Learn more info here:</source>
         <translation>DigiDoc приложение может использоваться для шифрования и расшифровки данных. Для шифрования программа использует сертификат идентификации ID-карты.</translation>
     </message>
     <message>
-        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
-        <translation>Управлять PIN/PUK кодами Вашей ID-карты и обновлением сертификатов. Просма&#173;тривать и управлять другими Вашими электронными удостоверениями (eID).</translation>
+        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
+        <translation>Управлять PIN/PUK кодами Вашей ID-карты и обновлением сертификатов.</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
@@ -1197,20 +1197,12 @@ Learn more info here:</source>
         <translation>Управление PIN и PUK кодами</translation>
     </message>
     <message>
-        <source>Manage Mobile-ID or Digi-ID</source>
-        <translation>Управление Mobiil-ID и Digi-ID</translation>
-    </message>
-    <message>
         <source>Check personal data</source>
         <translation>Проверка личных данных</translation>
     </message>
     <message>
         <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
         <translation>В «Мой eID» можно изменить свои PIN1, PIN2 и PUK, и увидеть данные сертификатов. Также можно разблокировать PUK-кодом заблокированный PIN-код.</translation>
-    </message>
-    <message>
-        <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
-        <translation>Чтобы просмотреть информацию о Mobiil-ID и Digi-ID, вы должны сначала ввести PIN1 код. Вам будут показаны данные о действительности этих сертификатов.</translation>
     </message>
     <message>
         <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>

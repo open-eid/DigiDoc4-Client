@@ -1132,8 +1132,8 @@ Learn more info here:</translation>
         <translation>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</translation>
     </message>
     <message>
-        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
-        <translation>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</translation>
+        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
+        <translation>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
@@ -1196,20 +1196,12 @@ Learn more info here:</translation>
         <translation>Manage PIN and PUK codes</translation>
     </message>
     <message>
-        <source>Manage Mobile-ID or Digi-ID</source>
-        <translation>Manage Mobile-ID or Digi-ID</translation>
-    </message>
-    <message>
         <source>Check personal data</source>
         <translation>Check personal data</translation>
     </message>
     <message>
         <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
         <translation>Under “My eID“, you will find the option to modify your PIN1, PIN2 and PUK, and you can see the details of the certificates. Here you can also unlock your blocked PIN codes with the PUK code.</translation>
-    </message>
-    <message>
-        <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
-        <translation>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</translation>
     </message>
     <message>
         <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>

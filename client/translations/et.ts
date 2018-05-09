@@ -1127,8 +1127,8 @@ Rohkem infot leiate siit:</translation>
         <translation>DigiDoc rakendusega saad ka andmeid salasta&#173;da ja krüpteeritud andmeid muuta uuesti kõigile loetavaks. Salastatud konfidentsiaalseid doku&#173;mente saavad lugeda ainult soovitud inimesed.</translation>
     </message>
     <message>
-        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals. View and manage your other electronic identities.</source>
-        <translation>Halda oma ID-kaardi PIN ja PUK koode ning teosta sertifikaatide uuendusi. Vaata ja halda oma teisi elektroonilisi identiteete.</translation>
+        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
+        <translation>Halda oma ID-kaardi PIN ja PUK koode ning teosta sertifikaatide uuendusi.</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
@@ -1191,20 +1191,12 @@ Rohkem infot leiate siit:</translation>
         <translation>Halda PIN ja PUK koode</translation>
     </message>
     <message>
-        <source>Manage Mobile-ID or Digi-ID</source>
-        <translation>Halda Mobiil-ID-d või Digi-ID-d</translation>
-    </message>
-    <message>
         <source>Check personal data</source>
         <translation>Kontrolli isikuandmeid</translation>
     </message>
     <message>
         <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
         <translation>“Minu eID” alt leiad oma PIN1, PIN2 ja PUK koodi muutmise võimaluse ning sertifikaatide detail&#173;andmed. Siin saad ka oma blokeeritud PIN-e PUK koodi abil lukust lahti teha.</translation>
-    </message>
-    <message>
-        <source>To view information about Mobile-ID and Digi-ID, you must first enter the PIN1 code. The page shows details about the validity of these certificates.</source>
-        <translation>Mobiil-ID ja Digi-ID andmete vaatamiseks pead esmalt sisestama PIN1 koodi. Siit saad infot nende sertifikaatide kehtivuse kohta.</translation>
     </message>
     <message>
         <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
