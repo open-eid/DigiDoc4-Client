@@ -2166,6 +2166,10 @@ Additional licenses and components</translation>
         <source>Signer&apos;s computer time (UTC)</source>
         <translation>Signer&apos;s computer time (UTC)</translation>
     </message>
+    <message>
+        <source>SIGNATURE_WARNING</source>
+        <translation>The signature is valid, but, for example, the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href='https://www.id.ee/?lang=en&amp;id=38499'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
+    </message>
 </context>
 
 
