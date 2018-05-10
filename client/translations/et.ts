@@ -2169,6 +2169,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Signer&apos;s computer time (UTC)</source>
         <translation>Allkirjastaja arvuti kellaaeg</translation>
     </message>
+    <message>
+        <source>SIGNATURE_WARNING</source>
+        <translation>Allkiri on küll kehtiv, aga näiteks konteineril on mingi eripära. Tavaliselt on selline eripära tekkinud konteinerite tegemisel kogemata. Kuna aga konteinerit ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, siis näidatakse nende kohta välja &lt;a href='https://www.id.ee/index.php?id=38498'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
 </context>
 
 

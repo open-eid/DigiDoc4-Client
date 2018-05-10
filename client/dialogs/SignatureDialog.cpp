@@ -69,14 +69,14 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		break;
 	case DigiDocSignature::Warning:
 		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Warnings"));
-		if( !s.lastError().isEmpty() )
+		decorateNotice("gold");
+		if(!s.lastError().isEmpty())
 			d->error->setPlainText( s.lastError() );
-		if( s.warning() & DigiDocSignature::DigestWeak )
-		{
-			decorateNotice("gold");
+		if(s.warning() & DigiDocSignature::DigestWeak )
 			d->info->setText( tr(
 				"The current BDOC container uses weaker encryption method than officialy accepted in Estonia.") );
-		}
+		else
+			d->info->setText(tr("SIGNATURE_WARNING"));
 		break;
 	case DigiDocSignature::NonQSCD:
 		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Restrictions"));

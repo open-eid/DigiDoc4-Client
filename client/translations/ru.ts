@@ -2175,6 +2175,10 @@ Additional licenses and components</source>
         <source>Signer&apos;s computer time (UTC)</source>
         <translation>Время на компьютере подписывающего (UTC)</translation>
     </message>
+    <message>
+        <source>SIGNATURE_WARNING</source>
+        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href='https://www.id.ee/?lang=en&amp;id=38500'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
 </context>
 
 
