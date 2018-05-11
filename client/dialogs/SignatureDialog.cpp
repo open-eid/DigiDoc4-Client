@@ -269,7 +269,18 @@ void SignatureDialog::decorateNotice(const QString color)
 
 int SignatureDialog::exec()
 {
-	Overlay overlay(qApp->activeWindow());
+	QWidget* win = qApp->activeWindow();
+	if (!win)
+	{
+		QWidget* root = parentWidget();
+		while(root)
+		{
+			win = root;
+			root = root->parentWidget();
+		}
+	}
+
+	Overlay overlay(win);
 	overlay.show();
 	auto rc = QDialog::exec();
 	overlay.close();

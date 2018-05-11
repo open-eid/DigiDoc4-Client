@@ -1885,21 +1885,21 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>181</y>
+            <y>186</y>
             <width>771</width>
-            <height>340</height>
+            <height>335</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>771</width>
-            <height>340</height>
+            <height>335</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>771</width>
-            <height>340</height>
+            <height>335</height>
            </size>
           </property>
           <property name="font">
