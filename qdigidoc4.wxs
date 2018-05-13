@@ -77,6 +77,56 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
               <Shortcut Id="ClientStartMenu" Advertise="yes" Name="!(loc.qdigidocclientLabel)" Icon="qdigidoc4.exe"
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
+            <ProgId Id="qdigidocclient.adoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="adoc" ContentType="application/vnd.lt.archyvai.adoc-2008">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.bdoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="bdoc" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.edoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="edoc" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.asice" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="asice" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.sce" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="sce" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.ddoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="ddoc" ContentType="application/x-ddoc">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.p12d" Description="DigiDoc PKCS#12 certificate" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="p12d" ContentType="application/x-p12d">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.cdoc" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="3">
+              <Extension Id="cdoc" ContentType="application/x-cdoc">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='-crypto "%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.asics" Description="DigiDoc timestamped document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="asics" ContentType="application/vnd.etsi.asic-s+zip">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidocclient.scs" Description="DigiDoc timestamped document" Icon="qdigidoc4.exe" IconIndex="1">
+              <Extension Id="scs" ContentType="application/vnd.etsi.asic-s+zip">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
             <File Source="$(var.libs_path)\zlib1.dll"/>
             <File Source="$(var.libs_path)\xerces-c_3_2.dll"/>
 <?ifdef var.xalan ?>
