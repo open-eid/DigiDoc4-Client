@@ -255,7 +255,7 @@ void SettingsDialog::initUI()
 #elif defined(Q_OS_MAC)
 		QDesktopServices::openUrl(QUrl("https://itunes.apple.com/us/app/digidoc4-client/id1370791134?ls=1&mt=12"));
 #else
-		QDesktopServices::openUrl(QUrl("https://installer.id.ee/?lang=est&os=linux"));
+		QDesktopServices::openUrl(QUrl("https://installer.id.ee/?lang=eng&os=linux"));
 #endif
 	});
 
