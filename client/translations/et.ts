@@ -1690,16 +1690,16 @@ Kontrollkood: %1</translation>
         <translation>SULGE</translation>
     </message>
     <message>
-        <source>CHECK FOR UPDATES</source>
-        <translation>KONTROLLI UUENDUSI</translation>
+        <source>https://installer.id.ee/?lang=eng</source>
+        <translation>https://installer.id.ee/?lang=est</translation>
     </message>
     <message>
-        <source>REFRESH IN APP STORE</source>
-        <translation>VÄRSKENDA RAKENDUSTE POES</translation>
+        <source>https://installer.id.ee/?lang=eng&amp;os=linux</source>
+        <translation>https://installer.id.ee/?lang=est&amp;os=linux</translation>
     </message>
     <message>
-        <source>REFRESH IN MICROSOFT STORE</source>
-        <translation>VÄRSKENDA RAKENDUSTE POES</translation>
+        <source>NEW VERSION AVAILABLE</source>
+        <translation>UUS VERSIOON SAADAVAL</translation>
     </message>
     <message>
         <source>FIRST RUN</source>

@@ -1692,16 +1692,16 @@ Control code: %1</translation>
         <translation>CLOSE</translation>
     </message>
     <message>
-        <source>CHECK FOR UPDATES</source>
-        <translation>CHECK FOR UPDATES</translation>
+        <source>https://installer.id.ee/?lang=eng</source>
+        <translation>https://installer.id.ee/?lang=eng</translation>
     </message>
     <message>
-        <source>REFRESH IN APP STORE</source>
-        <translation>REFRESH IN APP STORE</translation>
+        <source>https://installer.id.ee/?lang=eng&amp;os=linux</source>
+        <translation>https://installer.id.ee/?lang=eng&amp;os=linux</translation>
     </message>
     <message>
-        <source>REFRESH IN MICROSOFT STORE</source>
-        <translation>REFRESH IN MICROSOFT STORE</translation>
+        <source>NEW VERSION AVAILABLE</source>
+        <translation>NEW VERSION AVAILABLE</translation>
     </message>
     <message>
         <source>REMOVE OLD CERTIFICATES</source>

@@ -55,11 +55,6 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 
-#ifdef Q_OS_WIN
-#include <qt_windows.h>
-#include <VersionHelpers.h>
-#endif
-
 
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 : QDialog(parent)
@@ -211,15 +206,6 @@ void SettingsDialog::initUI()
 	// navigationArea
 	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
 	ui->btAppStore->setFont(condensed12);
-#if defined(Q_OS_WIN)
-	// No app store for Windows 7
-	if (!IsWindows8OrGreater())
-		ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
-#elif defined(Q_OS_MAC)
-	ui->btAppStore->setText(tr("REFRESH IN APP STORE"));
-#else
-	ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
-#endif
 	ui->btnNavFromHistory->setFont(condensed12);
 
 	ui->btnNavUseByDefault->setFont(condensed12);
@@ -250,7 +236,6 @@ void SettingsDialog::initUI()
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
 		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
 
-//#ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
 		{
@@ -266,17 +251,13 @@ void SettingsDialog::initUI()
 	});
 	connect(ui->btAppStore, &QPushButton::clicked, []{
 #if defined(Q_OS_WIN)
-		if (IsWindows8OrGreater())
-			QDesktopServices::openUrl(QUrl("https://www.microsoft.com/store/apps/9PFPFK4DJ1S6"));
-		else
-			Configuration::instance().update();
+		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng")));
 #elif defined(Q_OS_MAC)
-		QDesktopServices::openUrl(QUrl("https://itunes.apple.com/ee/app/digidoc3-client/id561422020?mt=12"));
+		QDesktopServices::openUrl(QUrl("https://itunes.apple.com/us/app/digidoc4-client/id1370791134?ls=1&mt=12"));
 #else
-		Configuration::instance().update();
+		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng&os=linux")));
 #endif
 	});
-//#endif
 
 
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
@@ -384,16 +365,6 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
 	ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
-
-#if defined(Q_OS_WIN)
-	// No app store for Windows 7
-	if (!IsWindows8OrGreater())
-		ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
-#elif defined(Q_OS_MAC)
-	ui->btAppStore->setText(tr("REFRESH IN APP STORE"));
-#else
-	ui->btAppStore->setText(tr("CHECK FOR UPDATES"));
-#endif
 
 	QString package;
 #ifndef Q_OS_MAC
