@@ -1689,16 +1689,16 @@ Kонтрольный код: %1</translation>
         <translation>ЗАКРЫТЬ</translation>
     </message>
     <message>
-        <source>CHECK FOR UPDATES</source>
-        <translation>ПРОВЕРИТЬ НА ОБНОВЛЕНИЯ</translation>
+        <source>https://installer.id.ee/?lang=eng</source>
+        <translation>https://installer.id.ee/?lang=rus</translation>
     </message>
     <message>
-        <source>REFRESH IN APP STORE</source>
-        <translation>ОБНОВИТЬ В APP STORE</translation>
+        <source>https://installer.id.ee/?lang=eng&amp;os=linux</source>
+        <translation>https://installer.id.ee/?lang=rus&amp;os=linux</translation>
     </message>
     <message>
-        <source>REFRESH IN MICROSOFT STORE</source>
-        <translation>ОБНОВИТЬ В MICROSOFT STORE</translation>
+        <source>NEW VERSION AVAILABLE</source>
+        <translation>ДОСТУПНА НОВАЯ ВЕРСИЯ</translation>
     </message>
     <message>
         <source>FIRST RUN</source>
