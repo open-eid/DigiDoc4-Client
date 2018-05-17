@@ -298,6 +298,11 @@ else()
 			)
 		endforeach()
 		install(
+			FILES images/qdigidoc_crypto_document_${RES}x${RES}.png
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
+			RENAME application-x-cdoc.png
+		)
+		install(
 			FILES images/digidoc_icon_${RES}x${RES}.png
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/apps/
 			RENAME qdigidoc4.png
