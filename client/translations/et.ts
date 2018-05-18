@@ -2171,7 +2171,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>Allkiri on küll kehtiv, aga näiteks konteineril on mingi eripära. Tavaliselt on selline eripära tekkinud konteinerite tegemisel kogemata. Kuna aga konteinerit ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, siis näidatakse nende kohta välja &lt;a href='https://www.id.ee/index.php?id=38498'&gt;&lt;span style='color: #006EB5; text-decoration: underline; font-weight: 900;'&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Allkiri on küll kehtiv, aga näiteks konteineril on mingi eripära. Tavaliselt on selline eripära tekkinud konteineri tegemisel. Kuna aga konteinerit ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, siis näidatakse selliste konteinerite korral &lt;a href='https://www.id.ee/index.php?id=38498'&gt;&lt;span style='color: #006EB5; text-decoration: underline; font-weight: 900;'&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
 </context>
 
