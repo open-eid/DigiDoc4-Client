@@ -101,6 +101,9 @@ private:
 	void diagnostics(QTextStream &s) override;
 	bool event( QEvent *e ) override;
 	QWidget* mainWindow();
+#ifndef Q_OS_MAC
+	void migrateSettings();
+#endif
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
 	QWidget* uniqueRoot();
 

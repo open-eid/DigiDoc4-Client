@@ -395,7 +395,7 @@ void SettingsDialog::initFunctionality()
 	ui->btGeneralChooseDirectory->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
-	ui->txtGeneralDirectory->setText( Settings(qApp->applicationName()).value( "Client/DefaultDir" ).toString() );
+	ui->txtGeneralDirectory->setText( Settings().value( "Client/DefaultDir" ).toString() );
 	if(ui->txtGeneralDirectory->text().isEmpty())
 	{
 		ui->rdGeneralSameDirectory->setChecked( true );
@@ -492,13 +492,13 @@ void SettingsDialog::initFunctionality()
 //#endif
 
 
-	ui->txtSigningRole->setText( Settings(qApp->applicationName()).value( "Client/Role" ).toString() );
-//	ui->signResolutionInput->setText( Settings(qApp->applicationName()).value( "Client/Resolution" ).toString() );
-	ui->txtSigningCity->setText( Settings(qApp->applicationName()).value( "Client/City" ).toString() );
-	ui->txtSigningCounty->setText( Settings(qApp->applicationName()).value( "Client/State" ).toString() );
-	ui->txtSigningCountry->setText( Settings(qApp->applicationName()).value( "Client/Country" ).toString() );
-	ui->txtSigningZipCode->setText( Settings(qApp->applicationName()).value( "Client/Zip" ).toString() );
-
+	Settings s;
+	s.beginGroup("Client");
+	ui->txtSigningRole->setText(s.value("Role").toString());
+	ui->txtSigningCity->setText(s.value("City").toString());
+	ui->txtSigningCounty->setText(s.value("State").toString());
+	ui->txtSigningCountry->setText(s.value("Country").toString());
+	ui->txtSigningZipCode->setText(s.value("Zip").toString());
 
 //	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
 
@@ -583,7 +583,7 @@ void SettingsDialog::updateProxy()
 void SettingsDialog::save()
 {
 #ifndef Q_OS_MAC
-	Settings(qApp->applicationName()).setValue("Client/DefaultDir", ui->txtGeneralDirectory->text());
+	Settings().setValue("Client/DefaultDir", ui->txtGeneralDirectory->text());
 #endif
 
 	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
@@ -593,8 +593,8 @@ void SettingsDialog::save()
 		ui->txtSigningCity->text(),
 		ui->txtSigningCounty->text(),
 		ui->txtSigningCountry->text(),
-		ui->txtSigningZipCode->text(),
-		true );
+		ui->txtSigningZipCode->text()
+		);
 
 	Settings(qApp->applicationName()).setValue("Client/ShowPrintSummary", ui->chkShowPrintSummary->isChecked() );
 }
@@ -648,13 +648,13 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 
 void SettingsDialog::openDirectory()
 {
-	QString dir = Settings(qApp->applicationName()).value( "Client/DefaultDir" ).toString();
+	QString dir = Settings().value( "Client/DefaultDir" ).toString();
 	dir = FileDialog::getExistingDirectory( this, tr("Select folder"), dir );
 
 	if(!dir.isEmpty())
 	{
 		ui->rdGeneralSpecifyDirectory->setChecked( true );
-		Settings(qApp->applicationName()).setValue( "Client/DefaultDir", dir );
+		Settings().setValue( "Client/DefaultDir", dir );
 		ui->txtGeneralDirectory->setText( dir );
 	}
 }
@@ -665,17 +665,15 @@ void SettingsDialog::saveSignatureInfo(
 		const QString &city,
 		const QString &state,
 		const QString &country,
-		const QString &zip,
-		bool force )
+		const QString &zip)
 {
-	if( force || Settings(qApp->applicationName()).value( "Client/Overwrite", "false" ).toBool() )
-	{
-		Settings(qApp->applicationName()).setValue( "Client/Role", role );
-		Settings(qApp->applicationName()).setValue( "Client/City", city );
-		Settings(qApp->applicationName()).setValue( "Client/State", state ),
-		Settings(qApp->applicationName()).setValue( "Client/Country", country );
-		Settings(qApp->applicationName()).setValue( "Client/Zip", zip );
-	}
+	Settings s;
+	s.beginGroup("Client");
+	s.setValue("Role", role);
+	s.setValue("City", city);
+	s.setValue("State", state),
+	s.setValue("Country", country);
+	s.setValue("Zip", zip);
 }
 
 void SettingsDialog::updateDiagnostics()

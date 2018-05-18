@@ -256,7 +256,7 @@ public:
 	MacMenuBar	*bar = nullptr;
 	QSigner		*signer = nullptr;
 
-	QTranslator	appTranslator, commonTranslator, cryptoTranslator, qtTranslator;
+	QTranslator	appTranslator, commonTranslator, qtTranslator;
 	QString		lang;
 	QTimer		lastWindowTimer;
 	volatile bool ready = false;
@@ -287,7 +287,6 @@ Application::Application( int &argc, char **argv )
 
 	installTranslator( &d->appTranslator );
 	installTranslator( &d->commonTranslator );
-	installTranslator( &d->cryptoTranslator );
 	installTranslator( &d->qtTranslator );
 	loadTranslation( Settings::language() );
 
@@ -603,7 +602,6 @@ void Application::loadTranslation( const QString &lang )
 
 	d->appTranslator.load( ":/translations/" + lang );
 	d->commonTranslator.load( ":/translations/common_" + lang );
-	d->cryptoTranslator.load( ":/translations/crypto_" + lang );
 	d->qtTranslator.load( ":/translations/qt_" + lang );
 	if( d->closeAction ) d->closeAction->setText( tr("Close window") );
 	if( d->newClientAction ) d->newClientAction->setText( tr("New Client window") );
@@ -755,6 +753,23 @@ QWidget* Application::mainWindow()
 	return root;
 }
 
+#ifndef Q_OS_MAC
+void Application::migrateSettings()
+{
+	Settings dd3Settings("qdigidocclient");
+	Settings settings(qApp->applicationName());
+	QString key = "type";
+	if(dd3Settings.contains(key))
+		settings.setValue("Client/Type", dd3Settings.value(key));
+	key = "Client/proxyConfig";
+	if(dd3Settings.contains(key))
+	{
+		settings.setValue(key, dd3Settings.value(key));
+		SettingsDialog::loadProxy(digidoc::Conf::instance());
+	}
+}
+#endif // Q_OS_MAC
+
 bool Application::notify( QObject *o, QEvent *e )
 {
 	try
@@ -872,7 +887,11 @@ void Application::showClient(const QStringList &params, bool crypto)
 	if( !w )
 	{
 		Settings settings;
-		if( settings.value("showIntro", true).toBool() )
+#ifndef Q_OS_MAC
+		if(!settings.contains("showIntro"))
+			migrateSettings();
+#endif // !Q_OS_MAC
+		if(settings.value("showIntro", true).toBool())
 		{
 			FirstRun dlg;
 			connect(&dlg, &FirstRun::langChanged, this,
