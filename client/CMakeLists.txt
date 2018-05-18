@@ -127,6 +127,11 @@ if( APPLE )
 	set_target_properties( ${PROGNAME} PROPERTIES
 		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 	)
+        add_custom_command( TARGET ${PROGNAME} POST_BUILD
+                COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
+                COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
+                COMMAND cp -a $<TARGET_FILE_DIR:DigiDocQL>/../../../DigiDocQL.qlgenerator
+                        $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook )
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}> )
 	get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
