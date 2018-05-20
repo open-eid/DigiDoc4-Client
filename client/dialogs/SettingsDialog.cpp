@@ -105,7 +105,7 @@ void SettingsDialog::initUI()
 {
 	ui->setupUi(this);
 #ifdef Q_OS_MAC
-	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
+	setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint);
 	setWindowModality(Qt::WindowModal);
 #else
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
@@ -168,6 +168,7 @@ void SettingsDialog::initUI()
 	ui->lblSigningCounty->setFont(regularFont);
 	ui->lblSigningCountry->setFont(regularFont);
 	ui->lblSigningZipCode->setFont(regularFont);
+	ui->txtSigningRole->setFont(regularFont);
 	ui->txtSigningCity->setFont(regularFont);
 	ui->txtSigningCounty->setFont(regularFont);
 	ui->txtSigningCountry->setFont(regularFont);
