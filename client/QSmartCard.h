@@ -72,10 +72,10 @@ public:
 
 	QSmartCardData();
 	QSmartCardData( const QSmartCardData &other );
-	QSmartCardData( QSmartCardData &&other )  noexcept;
+	QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT;
 	~QSmartCardData();
 	QSmartCardData& operator=( const QSmartCardData &other );
-	QSmartCardData& operator=( QSmartCardData &&other )  noexcept;
+	QSmartCardData& operator=(QSmartCardData &&other) Q_DECL_NOEXCEPT;
 
 	QString card() const;
 	QString reader() const;
