@@ -26,8 +26,8 @@
 #include <QtCore/QTextCodec>
 #include <QtCore/QVariant>
 
-#include <openssl/rsa.h>
 #include <openssl/ecdsa.h>
+#include <openssl/rsa.h>
 
 #define APDU QByteArray::fromHex
 
@@ -48,13 +48,12 @@ public:
 
 	QSharedPointer<QPCSCReader> reader;
 	QSmartCardData	t;
-	volatile bool	terminate = false;
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 	RSA_METHOD		rsamethod = *RSA_get_default_method();
 	ECDSA_METHOD	*ecmethod = ECDSA_METHOD_new(nullptr);
 #else
 	RSA_METHOD		*rsamethod = RSA_meth_dup(RSA_get_default_method());
-	EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(nullptr);
+	EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(EC_KEY_get_default_method());
 #endif
 	QTextCodec		*codec = QTextCodec::codecForName("Windows-1252");
 

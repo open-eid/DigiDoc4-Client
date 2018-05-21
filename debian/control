@@ -21,6 +21,7 @@ Architecture: any
 Depends:
  opensc,
  fonts-liberation,
+ pcscd,
  ${shlibs:Depends} ${misc:Depends}
 Conflicts:
  libdigidocpp0 (<<3.0)
