@@ -761,10 +761,10 @@ void Application::migrateSettings()
 	QString key = "type";
 	if(dd3Settings.contains(key))
 		settings.setValue("Client/Type", dd3Settings.value(key));
-	key = "Client/proxyConfig";
+	key = "proxyConfig";
 	if(dd3Settings.contains(key))
 	{
-		settings.setValue(key, dd3Settings.value(key));
+		settings.setValue("Client/proxyConfig", dd3Settings.value(key));
 		SettingsDialog::loadProxy(digidoc::Conf::instance());
 	}
 }
