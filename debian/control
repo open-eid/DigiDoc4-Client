@@ -26,7 +26,7 @@ Depends:
 Conflicts:
  libdigidocpp0 (<<3.0)
 Replaces:
- qdigidoc (<< 3.13.6)
+ qdigidoc (<< 3.14)
 Description: Estonian digital signature application
  ID-software allows you to use your ID-card electronically – use
  private and governmental e-services, digitally sign documents
