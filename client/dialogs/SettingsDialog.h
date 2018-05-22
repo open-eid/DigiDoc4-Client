@@ -76,8 +76,8 @@ private:
 			const QString &city,
 			const QString &state,
 			const QString &country,
-			const QString &zip,
-			bool force );
+			const QString &zip
+			);
 
 	void installCert();
 	void removeCert();

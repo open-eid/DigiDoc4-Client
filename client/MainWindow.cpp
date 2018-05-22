@@ -478,7 +478,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(create)
 		{
 			QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
-			QString defaultDir = Settings(qApp->applicationName()).value("Client/DefaultDir").toString();
+			QString defaultDir = Settings().value("Client/DefaultDir").toString();
 			QString filename = FileUtil::createNewFileName(files[0], QString(".%1").arg(ext), tr("signature container"), defaultDir);
 			if(!filename.isNull())
 			{
@@ -505,7 +505,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 		if(create)
 		{
-			QString defaultDir = Settings(qApp->applicationName()).value("Client/DefaultDir").toString();
+			QString defaultDir = Settings().value("Client/DefaultDir").toString();
 			QString filename = FileUtil::createNewFileName(files[0], ".cdoc", tr("crypto container"), defaultDir);
 			if(!filename.isNull())
 			{
@@ -1098,11 +1098,13 @@ bool MainWindow::sign()
 		return false;
 	WaitDialogHolder waitDialog(this, tr("Signing"));
 
-	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
-	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
-	QString state = Settings(qApp->applicationName()).value( "Client/State" ).toString();
-	QString country = Settings(qApp->applicationName()).value( "Client/Country" ).toString();
-	QString zip = Settings(qApp->applicationName()).value( "Client/Zip" ).toString();
+	Settings s;
+	s.beginGroup("Client");
+	QString role = s.value("Role").toString();
+	QString city = s.value("City").toString();
+	QString state = s.value("State").toString();
+	QString country = s.value("Country").toString();
+	QString zip = s.value("Zip").toString();
 	if(digiDoc->sign(city, state, zip, country, role, ""))
 	{
 		access.increment();
@@ -1132,11 +1134,13 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	if( !access.validate() )
 		return false;
 
-	QString role = Settings(qApp->applicationName()).value( "Client/Role" ).toString();
-	QString city = Settings(qApp->applicationName()).value( "Client/City" ).toString();
-	QString state = Settings(qApp->applicationName()).value( "Client/State" ).toString();
-	QString country = Settings(qApp->applicationName()).value( "Client/Country" ).toString();
-	QString zip = Settings(qApp->applicationName()).value( "Client/Zip" ).toString();
+	Settings s;
+	s.beginGroup("Client");
+	QString role = s.value("Role").toString();
+	QString city = s.value("City").toString();
+	QString state = s.value("State").toString();
+	QString country = s.value("Country").toString();
+	QString zip = s.value("Zip").toString();
 	MobileProgress m(this);
 	m.setSignatureInfo(city, state, zip, country, role);
 	m.sign(digiDoc, idCode, phoneNumber);
