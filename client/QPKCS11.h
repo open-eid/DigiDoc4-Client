@@ -21,8 +21,6 @@
 
 #include <QtCore/QObject>
 
-#include <common/SslCertificate.h>
-
 class TokenData;
 
 class QPKCS11: public QObject
@@ -45,42 +43,21 @@ public:
 
 	QByteArray decrypt( const QByteArray &data ) const;
 	QByteArray derive(const QByteArray &publicKey) const;
+#ifndef NO_PKCS11_CRYPTO
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const;
+#endif
 	bool isLoaded() const;
 	bool load( const QString &driver );
 	void unload();
 	PinStatus login( const TokenData &t );
 	void logout();
+	bool reload(const QString &driver);
 	QByteArray sign( int type, const QByteArray &digest ) const;
 	QList<TokenData> tokens() const;
 
 	static QString errorString( PinStatus error );
 private:
-	class Private;
-	Private *d;
-};
-
-class QPKCS11Stack: public QObject
-{
-	Q_OBJECT
-public:
-	explicit QPKCS11Stack(QObject *parent = nullptr);
-	~QPKCS11Stack();
-
-	QByteArray decrypt( const QByteArray &data ) const;
-	QByteArray derive(const QByteArray &publicKey) const;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const;
-	bool isLoaded() const;
-	bool load( const QString &defaultDriver );
-	QPKCS11::PinStatus login( const TokenData &t );
-	void logout();
-	QByteArray sign( int type, const QByteArray &digest ) const;
-	QList<TokenData> tokens() const;
-
-private:
-	bool updateDrivers() const;
 	class Private;
 	Private *d;
 };

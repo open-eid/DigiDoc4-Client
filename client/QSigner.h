@@ -25,7 +25,6 @@
 #include <digidocpp/crypto/Signer.h>
 
 struct QCardInfo;
-class QSignerPrivate;
 class TokenData;
 
 class QSigner: public QThread, public digidoc::Signer
@@ -47,7 +46,7 @@ public:
 		DecryptFailed,
 		DecryptOK
 	};
-	explicit QSigner( ApiType api, QObject *parent = nullptr );
+	explicit QSigner(ApiType api, QObject *parent = nullptr);
 	~QSigner();
 
 	const QMap<QString, QSharedPointer<QCardInfo>> cache() const;
@@ -69,7 +68,6 @@ Q_SIGNALS:
 private Q_SLOTS:
 	void cacheCardData(const QSet<QString> &cards);
 	void selectCard(const QString &card);
-	void showWarning( const QString &msg );
 
 private:
 	void reloadauth() const;
@@ -77,7 +75,8 @@ private:
 	void run() override;
 	void throwException( const QString &msg, digidoc::Exception::ExceptionCode code, int line ) const;
 
-	QSignerPrivate *d;
+	class Private;
+	Private *d;
 
 	friend class MainWindow;
 };

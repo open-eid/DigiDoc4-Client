@@ -31,6 +31,7 @@ class QWin;
 #endif
 #include "QPKCS11.h"
 #include <common/QPCSC.h>
+#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
 #include <digidocpp/crypto/X509Cert.h>
@@ -88,35 +89,36 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 }
 
 
-class QSignerPrivate
+class QSigner::Private
 {
 public:
 	QSigner::ApiType api = QSigner::PKCS11;
 	QWin			*win = nullptr;
-	QPKCS11Stack	*pkcs11 = nullptr;
+	QPKCS11			*pkcs11 = nullptr;
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
-	volatile bool	terminate = false;
 	QMap<QString, QSharedPointer<QCardInfo>> cache;
 };
 
 using namespace digidoc;
 
 QSigner::QSigner( ApiType api, QObject *parent )
-:	QThread( parent )
-,	d( new QSignerPrivate )
+	: QThread(parent)
+	, d(new Private)
 {
 	d->api = api;
 	d->auth.setCard( "loading" );
 	d->sign.setCard( "loading" );
 	d->smartcard = new QSmartCard(parent);
-	connect(this, &QSigner::error, this, &QSigner::showWarning);
+	connect(this, &QSigner::error, qApp, [](const QString &msg) {
+		qApp->showWarning(msg);
+	});
 	start();
 }
 
 QSigner::~QSigner()
 {
-	d->terminate = true;
+	requestInterruption();
 	wait();
 	delete d->smartcard;
 	delete d;
@@ -251,7 +253,6 @@ void QSigner::reloadsign() const
 
 void QSigner::run()
 {
-	d->terminate = false;
 	d->auth.clear();
 	d->auth.setCard( "loading" );
 	d->sign.clear();
@@ -263,13 +264,13 @@ void QSigner::run()
 	case CAPI: d->win = new QCSP( this ); break;
 	case CNG: d->win = new QCNG( this ); break;
 #endif
-	default: d->pkcs11 = new QPKCS11Stack( this ); break;
+	default: d->pkcs11 = new QPKCS11(this); break;
 	}
 
 	QString driver = qApp->confValue( Application::PKCS11Module ).toString();
-	while( !d->terminate )
+	while(!isInterruptionRequested())
 	{
-		if( d->pkcs11 && !d->pkcs11->isLoaded() && !d->pkcs11->load( driver ) )
+		if(d->pkcs11 && !d->pkcs11->reload(driver))
 		{
 			Q_EMIT error( tr("Failed to load PKCS#11 module") + "\n" + driver );
 			return;
@@ -284,7 +285,7 @@ void QSigner::run()
 			if(d->win)
 				tokens = d->win->tokens();
 #endif
-			if( d->pkcs11 && d->pkcs11->isLoaded() )
+			if(d->pkcs11)
 				tokens = d->pkcs11->tokens();
 			QStringList acards, scards;
 			for(const TokenData &t: qAsConst(tokens))
@@ -293,7 +294,7 @@ void QSigner::run()
 				if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 					c.keyUsage().contains(SslCertificate::KeyAgreement))
 					acards << t.card();
-				if( c.keyUsage().contains(SslCertificate::NonRepudiation))
+				if(c.keyUsage().contains(SslCertificate::NonRepudiation))
 					scards << t.card();
 			}
 			acards.removeDuplicates();
@@ -397,7 +398,7 @@ void QSigner::run()
 			QCardLock::instance().readUnlock();
 		}
 
-		if(!d->terminate)
+		if(!isInterruptionRequested())
 			sleep( 5 );
 	}
 }
@@ -415,9 +416,6 @@ void QSigner::selectCard(const QString &card)
 	Q_EMIT signDataChanged(d->sign = t);
 	Q_EMIT dataChanged();
 }
-
-void QSigner::showWarning( const QString &msg )
-{ qApp->showWarning( msg ); }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
 {
