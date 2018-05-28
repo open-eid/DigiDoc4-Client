@@ -60,7 +60,7 @@ script: case ${TARGET} in
       export DEBEMAIL="travis-ci@travis";
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSION};
       mkdir -p tmp/build && cp ../qdigidoc4_${VERSION}.orig.tar.xz tmp/ && cd tmp/build;
-      tar xvzf ../qdigidoc4_${VERSION}.orig.tar.xz;
+      tar xf ../qdigidoc4_${VERSION}.orig.tar.xz;
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
       set +e;
