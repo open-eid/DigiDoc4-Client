@@ -19,11 +19,11 @@ before_install:
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     command curl -sSL https://rvm.io/mpapis.asc | gpg --import -;
     rvm get stable;
-    brew install --force openssl;
+    brew update && brew install --force openssl;
     curl -s --location "https://bootstrap.pypa.io/get-pip.py" -o get-pip.py;
     python get-pip.py --user;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
-    curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.2/libdigidocpp_3.13.2.1360.pkg" -o libdigidocpp.pkg;
+    curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.5/libdigidocpp_3.13.5.1369.pkg" -o libdigidocpp.pkg;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
     HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
@@ -46,16 +46,18 @@ script: case ${TARGET} in
     make zipdebug macdeployqt zip && cp qdigidoc4*.zip ./$BUILD_NUMBER/ && cd ..;
     ;;
   *)
-    docker run -e BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} -e DEBFULLNAME="Travis" -e DEBEMAIL="travis-ci@travis" -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
+    docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       set -e;
       apt-get update -qq; 
-      apt-get install -y apt-transport-https curl dh-make devscripts dpkg-dev cdbs cmake libldap2-dev libpcsclite-dev libssl-dev qtbase5-dev libqt5svg5-dev qttools5-dev qttools5-dev-tools gettext git curl wget ruby;
+      apt-get install -y apt-transport-https curl dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev git curl wget ruby;
       curl https://installer.id.ee/media/install-scripts/ria-public.key | apt-key add -;
       curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | apt-key add -;
       echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list;
       apt-get update -qq;
       apt-get install -y libdigidocpp-dev;
       export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}").${BUILD_NUMBER};
+      export DEBFULLNAME="Travis";
+      export DEBEMAIL="travis-ci@travis";
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
@@ -64,10 +66,9 @@ script: case ${TARGET} in
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
-        export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake -DBREAKPAD=\"\" .";
+        export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake .";
         export COVERITY_SCAN_BUILD_COMMAND=make;
-        wget https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh;
-        bash travisci_build_coverity_scan.sh;
+        wget -O - https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh | bash;
       fi;
       mkdir -p build/$BUILD_NUMBER;
       cp ../qdigidoc4_*.deb build/$BUILD_NUMBER';

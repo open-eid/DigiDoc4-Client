@@ -21,7 +21,12 @@ qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateH
 	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/NoOtherId.ui widgets/OtherData.ui widgets/OtherId.ui 
 	widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui widgets/WarningItem.ui widgets/WarningRibbon.ui )
 
-if( UNIX AND NOT APPLE )
+if( APPLE )
+	set( LDAP_LIBRARIES "-framework LDAP" )
+	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+elseif( WIN32 )
+	set( LDAP_LIBRARIES Wldap32 )
+else()
 	find_package( Ldap REQUIRED )
 endif()
 
@@ -105,13 +110,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/WarningRibbon.cpp
 	)
 add_manifest( ${PROGNAME} )
-
-if( APPLE )
-	set( LDAP_LIBRARIES "-framework LDAP" )
-	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-elseif( WIN32 )
-	set( LDAP_LIBRARIES Wldap32 )
-endif()
 
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon

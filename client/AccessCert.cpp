@@ -106,7 +106,7 @@ void AccessCert::increment()
 
 bool AccessCert::isDefaultCert(const QSslCertificate &cert) const
 {
-	return QList<QByteArray>({
+	static const QList<QByteArray> list {
 		// CN = Sertifitseerimiskeskus AS, SN = 0E:EB:07
 		QByteArray::fromHex("8cb7b0f9aa8c1270422c6cf85d25134a47273758"),
 		// CN = Sertifitseerimiskeskus AS, SN = 10:CC:4F
@@ -114,8 +114,11 @@ bool AccessCert::isDefaultCert(const QSslCertificate &cert) const
 		// CN = DigiDoc3 Client ver 3.11, SN = 11:9E:E0
 		QByteArray::fromHex("97dfcf8894c908031694345a1452a9b5efce537d"),
 		// CN = DigiDoc3 Client ver 3.12, SN = 12:05:79
-		QByteArray::fromHex("2a704f8a69b1837426a3498008600512e78f84d6")
-	}).contains(cert.digest(QCryptographicHash::Sha1));
+		QByteArray::fromHex("2a704f8a69b1837426a3498008600512e78f84d6"),
+		// CN=Riigi Infos\xC3\xBCsteemi Amet, SN = da:98:09:46:6d:57:51:65:48:8b:b2:14:0d:9e:19:27
+		QByteArray::fromHex("aa8ee5735ec72d411bc88d39dec0b3648b1b4c81")
+	};
+	return list.contains(cert.digest(QCryptographicHash::Sha1));
 }
 
 bool AccessCert::installCert( const QByteArray &data, const QString &password )
