@@ -19,7 +19,6 @@ Architecture: any
 Depends:
  opensc,
  fonts-liberation,
- pcscd,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -46,13 +45,3 @@ Description: Estonian digital signature application
  people in the short term. The ID-card’s authentication certificate is
  used for encryption. A secure container file will be created upon
  encryption with the extension .cdoc.
-
-Package: qdigidoc4-dbg
-Architecture: any
-Section: debug
-Depends:
- libdigidocpp-dbg ${misc:Depends},
- qdigidoc4 (=${binary:Version})
-Description: Debugging symbols for qdigidoc4
- This package contains the debugging symbols for Estonian ID card digital
- signature desktop tools.
