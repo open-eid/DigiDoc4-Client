@@ -72,7 +72,7 @@ script: case ${TARGET} in
         export COVERITY_SCAN_BUILD_COMMAND=make;
         wget -O - https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh | bash;
       fi;
-      cd ../..
+      cd ../..;
       mkdir -p build/$BUILD_NUMBER;
       cp tmp/qdigidoc4_*.deb build/$BUILD_NUMBER';
   esac
