@@ -9,10 +9,8 @@ Build-Depends:
  libldap2-dev,
  libpcsclite-dev,
  libssl-dev,
- qtbase5-dev,
- libqt5svg5-dev,
  qttools5-dev,
- qttools5-dev-tools
+ libqt5svg5-dev
 Standards-Version: 0.2.0
 Homepage: https://github.com/open-eid/DigiDoc4-Client
 
@@ -21,8 +19,8 @@ Architecture: any
 Depends:
  opensc,
  fonts-liberation,
- pcscd,
- ${shlibs:Depends} ${misc:Depends}
+ ${shlibs:Depends},
+ ${misc:Depends}
 Conflicts:
  libdigidocpp0 (<<3.0)
 Replaces:
@@ -47,13 +45,3 @@ Description: Estonian digital signature application
  people in the short term. The ID-card’s authentication certificate is
  used for encryption. A secure container file will be created upon
  encryption with the extension .cdoc.
-
-Package: qdigidoc4-dbg
-Architecture: any
-Section: debug
-Depends:
- libdigidocpp-dbg ${misc:Depends},
- qdigidoc4 (=${binary:Version})
-Description: Debugging symbols for qdigidoc4
- This package contains the debugging symbols for Estonian ID card digital
- signature desktop tools.
