@@ -11,7 +11,8 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
  -dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
  -dcertsLocation="C:\target\Estonian ID Card Development\libdigidocpp\certs"
  -dqt_path=C:\Qt\5.3\msvc2013
- -dclient_path=client\qdigidocclient.exe
+ -dclient_path=client\qdigidoc4.exe
+ -dclient3_path="C:\target\Estonian ID Card Development\qdigidoc\client\qdigidocclient.exe"
 
 "%WIX%\bin\light.exe" -out qdigidoc.msi qdigidoc.wixobj CertsFragment.wixobj -v -ext WixUIExtension
 -->
@@ -35,13 +36,18 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
 <?endif?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Name="DigiDoc4 Client" UpgradeCode="D3D551AE-C7B6-436A-967E-E68CFE2EA3FF"
+  <Product Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
     <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
     <Icon Id="qdigidoc4.exe" SourceFile="$(var.client_path)"/>
+<?ifdef var.digidoc3 ?>
+    <Icon Id="qdigidocclient.exe" SourceFile="$(var.digidoc3)"/>
+<?endif?>
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.exe"/>
     <Property Id="DESKTOP_SHORTCUT" Value="0"/>
+    <Property Id="INSTALL_DIGIDOC3" Value="0"/>
+    <Property Id="INSTALL_DIGIDOC4" Value="1"/>
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
       "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
     <Condition Message="[ProductName] requires Windows 7 or higher.">
@@ -53,28 +59,106 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
       <!-- Program Menu shortcut -->
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ProgramMenuDir" Name="!(loc.idcardLabel)">
-          <Component Id="ProgramMenuDir" Guid="16A9EACF-B5D3-4FDC-8E9F-C03C8FA46DFF">
+          <Component Id="ProgramMenuDir4" Guid="16A9EACF-B5D3-4FDC-8E9F-C03C8FA46DFF">
             <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
             <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
           </Component>
+<?ifdef var.digidoc3 ?>
+          <Component Id="ProgramMenuDir" Guid="5d26b9c2-cc87-452e-8132-76f0fc8f3e2c">
+            <Condition>INSTALL_DIGIDOC3 = 1</Condition>
+            <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+          </Component>
+<?endif?>
         </Directory>
       </Directory>
 
       <!-- Desktop shortcut -->
       <Directory Id="DesktopFolder">
-        <Component Id="DesktopShortcut" Guid="7B821ED0-4838-4290-997C-AA4119F99DAD" Transitive="yes">
-          <Condition>DESKTOP_SHORTCUT = 1</Condition>
-          <Shortcut Id="ClientDesktopShortcut" Name="!(loc.qdigidocclientLabel)"
+        <Component Id="DesktopShortcut4" Guid="7B821ED0-4838-4290-997C-AA4119F99DAD" Transitive="yes">
+          <Condition>(DESKTOP_SHORTCUT = 1) AND (INSTALL_DIGIDOC4 = 1)</Condition>
+          <Shortcut Id="ClientDesktopShortcut4" Name="!(loc.qdigidoc4Label)"
                     Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
+          <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut4" Value="1" Type="integer" KeyPath="yes"/>
+        </Component>
+<?ifdef var.digidoc3 ?>
+        <Component Id="DesktopShortcut" Guid="412b4616-001f-49ec-a9be-c942eb165e31" Transitive="yes">
+          <Condition>(DESKTOP_SHORTCUT = 1) AND (INSTALL_DIGIDOC3 = 1)</Condition>
+          <Shortcut Id="ClientDesktopShortcut" Name="!(loc.qdigidocclientLabel)"
+                    Target="[!qdigidocclient.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
+          <Shortcut Id="CryptoDesktopShortcut" Name="!(loc.qdigidoccryptoLabel)" Icon="qdigidocclient.exe" IconIndex="2"
+                    Target="[!qdigidocclient.exe]" WorkingDirectory="APPLICATIONFOLDER" Arguments="-crypto"/>
           <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
         </Component>
+<?endif?>
       </Directory>
 
       <Directory Id='$(var.PlatformProgramFilesFolder)'>
         <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client">
-          <Component Id="Application" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB">
+<?ifdef var.digidoc3 ?>
+          <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda46f">
+            <Condition>INSTALL_DIGIDOC3 = 1</Condition>
+            <File Source="$(var.digidoc3)" KeyPath='yes'>
+              <Shortcut Id="ClientStartMenu" Advertise="yes" Name="!(loc.qdigidocclientLabel)" Icon="qdigidocclient.exe"
+                Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
+              <Shortcut Id="CryptoStartMenu" Advertise="yes" Name="!(loc.qdigidoccryptoLabel)" Icon="qdigidocclient.exe" IconIndex="2"
+                Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER" Arguments="-crypto"/>
+            </File>
+            <ProgId Id="qdigidoc4.adoc" Description="DigiDoc signed document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="adoc" ContentType="application/vnd.lt.archyvai.adoc-2008">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.bdoc" Description="DigiDoc signed document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="bdoc" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.edoc" Description="DigiDoc signed document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="edoc" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.asice" Description="DigiDoc signed document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="asice" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.sce" Description="DigiDoc signed document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="sce" ContentType="application/vnd.etsi.asic-e+zip">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.ddoc" Description="DigiDoc signed document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="ddoc" ContentType="application/x-ddoc">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.p12d" Description="DigiDoc PKCS#12 certificate" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="p12d" ContentType="application/x-p12d">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.cdoc" Description="DigiDoc encrypted container" Icon="qdigidocclient.exe" IconIndex="3">
+              <Extension Id="cdoc" ContentType="application/x-cdoc">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='-crypto "%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.asics" Description="DigiDoc timestamped document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="asics" ContentType="application/vnd.etsi.asic-s+zip">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.scs" Description="DigiDoc timestamped document" Icon="qdigidocclient.exe" IconIndex="1">
+              <Extension Id="scs" ContentType="application/vnd.etsi.asic-s+zip">
+                <Verb Id="open" TargetFile="qdigidocclient.exe" Command="Open" Argument='"%1"' />
+              </Extension>
+            </ProgId>
+          </Component>
+<?endif?>
+          <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB">
+            <Condition>INSTALL_DIGIDOC4 = 1</Condition>
             <File Source="$(var.client_path)" KeyPath='yes'>
-              <Shortcut Id="ClientStartMenu" Advertise="yes" Name="!(loc.qdigidocclientLabel)" Icon="qdigidoc4.exe"
+              <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="!(loc.qdigidoc4Label)" Icon="qdigidoc4.exe"
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
             <ProgId Id="qdigidoc4.adoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
@@ -127,6 +211,8 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
                 <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
               </Extension>
             </ProgId>
+          </Component>
+          <Component Id="Base" Guid="6976e89e-e815-444a-9b1f-5ee63cfe230d">
             <File Source="$(var.libs_path)\zlib1.dll"/>
             <File Source="$(var.libs_path)\xerces-c_3_2.dll"/>
 <?ifdef var.xalan ?>
@@ -193,10 +279,16 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
     </Directory>
 
     <Feature Id="InstallDigidoc" Level="1" Title="DigiDoc4 Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
+      <ComponentRef Id='ProgramMenuDir4' />
+      <ComponentRef Id="DesktopShortcut4" />
+      <ComponentRef Id="Application4"/>
+      <ComponentRef Id="Base"/>
+      <ComponentGroupRef Id="Schemas"/>
+<?ifdef var.digidoc3 ?>
       <ComponentRef Id='ProgramMenuDir' />
       <ComponentRef Id="DesktopShortcut" />
       <ComponentRef Id="Application"/>
-      <ComponentGroupRef Id="Schemas"/>
+<?endif?>
 <?ifdef var.certsLocation ?>
       <ComponentGroupRef Id="Certs"/>
 <?endif?>
