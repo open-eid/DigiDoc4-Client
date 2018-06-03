@@ -64,7 +64,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
           </Component>
 <?ifdef var.digidoc3 ?>
-          <Component Id="ProgramMenuDir" Guid="5d26b9c2-cc87-452e-8132-76f0fc8f3e2c">
+          <Component Id="ProgramMenuDir" Guid="5d26b9c2-cc87-452e-8132-76f0fc8f3e2c" Transitive="yes">
             <Condition>INSTALL_DIGIDOC3 = 1</Condition>
             <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
           </Component>
@@ -95,7 +95,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
       <Directory Id='$(var.PlatformProgramFilesFolder)'>
         <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client">
 <?ifdef var.digidoc3 ?>
-          <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda46f">
+          <Component Id="Application" Guid="810cbd57-b24d-49ee-939a-a1fc38dda46f" Transitive="yes">
             <Condition>INSTALL_DIGIDOC3 = 1</Condition>
             <File Source="$(var.digidoc3)" KeyPath='yes'>
               <Shortcut Id="ClientStartMenu" Advertise="yes" Name="!(loc.qdigidocclientLabel)" Icon="qdigidocclient.exe"
@@ -155,7 +155,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             </ProgId>
           </Component>
 <?endif?>
-          <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB">
+          <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB" Transitive="yes">
             <Condition>INSTALL_DIGIDOC4 = 1</Condition>
             <File Source="$(var.client_path)" KeyPath='yes'>
               <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="!(loc.qdigidoc4Label)" Icon="qdigidoc4.exe"
