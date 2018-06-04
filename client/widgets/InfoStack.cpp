@@ -139,7 +139,6 @@ void InfoStack::focusEvent(int eventType)
 void InfoStack::showPicture( const QPixmap &pixmap )
 {
 	clearAlternateIcon();
-	ui->photo->setProperty( "PICTURE", pixmap );
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 	pictureText = "SAVE THE PICTURE";
 	ui->btnPicture->setText(tr(qPrintable(pictureText)));

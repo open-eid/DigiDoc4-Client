@@ -56,7 +56,7 @@ CardWidget::CardWidget( const QString &id, QWidget *parent )
 
 	connect(ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked(ui->cardPhoto->pixmap()); });
 	connect(ui->cardPhoto, &LabelButton::entered, this, [this]() { 
-		if(!ui->cardPhoto->property("PICTURE").isValid())
+		if(!ui->cardPhoto->pixmap())
 			ui->load->show(); 
 		});
 	connect(ui->cardPhoto, &LabelButton::left, this, [this]() { ui->load->hide(); });
@@ -162,6 +162,5 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 void CardWidget::showPicture( const QPixmap &pix )
 {
 	clearSeal();
-	ui->cardPhoto->setProperty( "PICTURE", pix );
 	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 }
