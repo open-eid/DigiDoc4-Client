@@ -1195,6 +1195,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
 	ui->infoStack->clearPicture();
+	ui->version->setProperty("PICTURE", QVariant());
 	ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->clearOtherEID();
@@ -1207,7 +1208,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 void MainWindow::photoClicked( const QPixmap *photo )
 {
 	if( photo )
-		return savePhoto( photo );
+		return savePhoto();
 
 	// No action if card data is not loaded yet
 	if(qApp->smartcard()->data().isNull())
@@ -1232,6 +1233,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
+	ui->version->setProperty("PICTURE", pixmap);
 }
 
 void MainWindow::removeAddress(int index)
@@ -1302,13 +1304,25 @@ void MainWindow::removeSignatureFile(int index)
 	}
 }
 
-void MainWindow::savePhoto( const QPixmap *photo )
+void MainWindow::savePhoto()
 {
-	QString fileName = QFileDialog::getSaveFileName(this,
-		tr("Save photo"), "",
-		tr("Photo (*.jpg);;All Files (*)"));
+	if(!ui->version->property("PICTURE").isValid())
+		return;
 
-	photo->save( fileName, "JPEG", 100 );
+	QPixmap pix = ui->version->property("PICTURE").value<QPixmap>();
+	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+	fileName += "/" + qApp->smartcard()->data().card();
+	fileName = QFileDialog::getSaveFileName(this,
+		tr("Save photo"), fileName,
+		tr("Photo (*.jpg *.jpeg);;All Files (*)"));
+
+	if(fileName.isEmpty())
+		return;
+	QStringList exts = QStringList() << "jpg" << "jpeg";
+	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
+		fileName.append(".jpg");
+	if(!pix.save(fileName))
+		showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
 void MainWindow::showUpdateCertWarning()

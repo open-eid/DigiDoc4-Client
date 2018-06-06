@@ -73,7 +73,7 @@ private Q_SLOTS:
 	void operation(int op, bool started);
 	void pageSelected( PageIcon *const );
 	void photoClicked( const QPixmap *photo );
-	void savePhoto( const QPixmap *photo );
+	void savePhoto();
 	void showCardStatus();
 	void updateMyEid();
 	void warningClicked(const QString &link);
