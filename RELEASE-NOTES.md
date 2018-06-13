@@ -1,3 +1,21 @@
+DigiDoc4 version 4.0.0 release notes
+--------------------------------------
+
+- Windows DigiDoc4 installer changed to upgrade of DigiDoc3
+  - DigiDoc3 executable included in DigiDoc4 msi
+  - Version bumped to 4.0.0 in order to satisfy Windows Installer checks
+- Windows: Signature- and crypto documents associated with DigiDoc4 instead of DigiDoc3
+- Linux/Debian package marked as replacement of qdigidoc (DigiDoc3 client)
+- Windows/Linux: DigiDoc3 settings migrated to DigiDoc4 during first run
+- Linux shell extensions and macOS QuickLook preview ported from DigiDoc3
+- New OCSP access certificate added
+- Certificates opened in OS system viewer instead of custom dialog
+- Various small UI/UX fixes (FirstRun dialog draggable, help texts updated etc)
+- Settings dialog on macOS fixed, text boxes accept keyboard input
+- Picture loading fixed on Linux
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v0.6.0-BETA...v4.0.0)
+
 DigiDoc4 version 0.6.0 release notes
 --------------------------------------
 
