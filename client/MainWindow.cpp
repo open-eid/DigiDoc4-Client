@@ -1233,7 +1233,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
-	ui->version->setProperty("PICTURE", pixmap);
+	ui->version->setProperty("PICTURE", buffer);
 }
 
 void MainWindow::removeAddress(int index)
@@ -1309,7 +1309,6 @@ void MainWindow::savePhoto()
 	if(!ui->version->property("PICTURE").isValid())
 		return;
 
-	QPixmap pix = ui->version->property("PICTURE").value<QPixmap>();
 	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
 	fileName += "/" + qApp->smartcard()->data().card();
 	fileName = QFileDialog::getSaveFileName(this,
@@ -1321,7 +1320,9 @@ void MainWindow::savePhoto()
 	QStringList exts = QStringList() << "jpg" << "jpeg";
 	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
 		fileName.append(".jpg");
-	if(!pix.save(fileName))
+	QByteArray pix = ui->version->property("PICTURE").value<QByteArray>();
+	QFile f(fileName);
+	if(!f.open(QFile::WriteOnly) || f.write(pix) != pix.size())
 		showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
