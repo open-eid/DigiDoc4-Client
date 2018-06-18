@@ -24,6 +24,7 @@
 #include <QtCore/QtGlobal>
 #include <QFont>
 #include <QPixmap>
+#include <QStyle>
 
 class PictureInterface
 {
