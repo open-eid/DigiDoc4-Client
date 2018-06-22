@@ -289,7 +289,7 @@ bool AccessCert::validate()
 			showWarning( tr(
 				"Server access certificate expired on %1. To renew the certificate please "
 				"contact IT support team of your company. Additional information is available "
-				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1892")
+				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
 				.arg(c.expiryDate().toLocalTime().toString("dd.MM.yyyy")) );
 			return false;
 		}
@@ -298,7 +298,7 @@ bool AccessCert::validate()
 			showWarning( tr(
 				"Server access certificate is about to expire on %1. To renew the certificate "
 				"please contact IT support team of your company. Additional information is available "
-				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1892")
+				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
 				.arg(c.expiryDate().toLocalTime().toString("dd.MM.yyyy")) );
 		}
 	}

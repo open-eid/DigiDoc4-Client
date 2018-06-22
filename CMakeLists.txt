@@ -30,6 +30,7 @@ set_env( TSL_URL "https://ec.europa.eu/information_society/policy/esignature/tru
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )
 
 if(APPLE)
+        set(BUNDLE_NAME qdigidoc4) 
         add_subdirectory( extensions/DigiDocQL )
 elseif(UNIX)
         option(ENABLE_KDE "Install KDE service menu (default: TRUE)" TRUE)

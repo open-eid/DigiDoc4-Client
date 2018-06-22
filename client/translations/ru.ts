@@ -20,12 +20,12 @@
         <translation>Не удалось сохранить файл сертификата доступа к серверу в цепочку ключей!</translation>
     </message>
     <message>
-        <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</source>
-        <translation>Срок действительности справки доступа истек %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1892</translation>
+        <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
+        <translation>Срок действительности справки доступа истек %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1892</source>
-        <translation>Срок действительности справки доступа истекает %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1892</translation>
+        <source>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
+        <translation>Срок действительности справки доступа истекает %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
     </message>
     <message>
         <source>Update your signing software. Download and install new ID-software from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
@@ -33,7 +33,7 @@
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
-        <translation>Вы использовали 10 бесплатных подписей. Согласно условиям использования услуги подтверждения действительности Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;услуги&lt;/a&gt;. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1892</translation>
+        <translation>Вы использовали 10 бесплатных подписей. Согласно условиям использования услуги подтверждения действительности Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;услуги&lt;/a&gt;. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
     </message>
 </context>
 
