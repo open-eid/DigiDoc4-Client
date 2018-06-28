@@ -1,6 +1,6 @@
 # DigiDoc4 Client
 
-![EU Regional Development Fund](EL_Regionaalarengu_Fond_horisontaalne-vaike.jpg)
+![European Regional Development Fund](https://github.com/e-gov/RIHA-Frontend/raw/master/logo/EU/EU.png "European Regional Development Fund - DO NOT REMOVE THIS IMAGE BEFORE 05.03.2020")
 
  * License: LGPL 2.1
  * &copy; Estonian Information System Authority
