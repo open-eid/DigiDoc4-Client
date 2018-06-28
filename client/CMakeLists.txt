@@ -298,7 +298,7 @@ else()
 	install( FILES qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
 	install( FILES qdigidoc4.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )
 	foreach(RES 16 22 32 48 128)
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-x-p12d.png)
+		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-x-p12d.png application-vnd.lt.archyvai.adoc-2008.png)
 			install(
 				FILES images/qdigidoc_client_document_${RES}x${RES}.png
 				DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
