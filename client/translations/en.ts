@@ -1895,6 +1895,10 @@ Control code: %1</translation>
         <translation>Issued to: %1&lt;br /&gt;Valid to: %2 %3</translation>
     </message>
     <message>
+        <source>expired</source>
+        <translation>expired</translation>
+    </message>
+    <message>
         <source>Applet</source>
         <translation>Applet version</translation>
     </message>

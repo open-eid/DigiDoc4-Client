@@ -1889,6 +1889,10 @@ Kонтрольный код: %1</translation>
         <translation>Выдан: %1&lt;br /&gt;Действительно до: %2 %3</translation>
     </message>
     <message>
+        <source>expired</source>
+        <translation>недействителен</translation>
+    </message>
+    <message>
         <source>Applet</source>
         <translation>Версия апплета</translation>
     </message>
