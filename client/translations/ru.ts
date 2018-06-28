@@ -2955,10 +2955,6 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Подписывается с Mobiil-ID</translation>
     </message>
     <message>
-        <source>%v sec</source>
-        <translation>%v сек</translation>
-    </message>
-    <message>
         <source>User is not a Mobile-ID client</source>
         <translation>Пользователь не является клиентом Mobiil-ID</translation>
     </message>
@@ -2989,6 +2985,16 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
         <translation>Ошибка! Номер телефона должен содержать код страны.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileProgress</name>
+
+    <message>
+        <source>%v sec</source>
+        <translation>%v сек</translation>
     </message>
 </context>
 

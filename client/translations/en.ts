@@ -2955,10 +2955,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Signing with Mobiil-ID</translation>
     </message>
     <message>
-        <source>%v sec</source>
-        <translation>%v sec</translation>
-    </message>
-    <message>
         <source>User is not a Mobile-ID client</source>
         <translation>User is not a Mobiil-ID client</translation>
     </message>
@@ -2991,6 +2987,17 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Invalid phone number! Please include correct country code.</translation>
     </message>
 </context>
+
+
+<context>
+    <name>MobileProgress</name>
+
+    <message>
+        <source>%v sec</source>
+        <translation>%v sec</translation>
+    </message>
+</context>
+
 
 <context>
     <name>PrintSheet</name>
