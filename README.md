@@ -1,5 +1,7 @@
 # DigiDoc4 Client
 
+![EU Regional Development Fund](EL_Regionaalarengu_Fond_horisontaalne-vaike.jpg)
+
  * License: LGPL 2.1
  * &copy; Estonian Information System Authority
  * [Architecture of ID-software](http://open-eid.github.io)
