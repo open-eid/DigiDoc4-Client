@@ -287,6 +287,8 @@ void ContainerPage::changeEvent(QEvent* event)
 void ContainerPage::setHeader(const QString &file)
 {
 	fileName = QDir::toNativeSeparators (file);
+	window()->setWindowFilePath(fileName);
+	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 client") : QFileInfo(file).fileName());
 	containerFileWidth = fm.width(fileName);
 	elideFileName(true);
 }
