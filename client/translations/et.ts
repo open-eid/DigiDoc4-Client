@@ -1902,7 +1902,11 @@ Kontrollkood: %1</translation>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Kellele väljastatud: %1&lt;br /&gt;Kehtib kuni: %2 %3</translation>
     </message>
-        <message>
+    <message>
+        <source>expired</source>
+        <translation>aegunud</translation>
+    </message>
+    <message>
         <source>Applet</source>
         <translation>Apleti versioon</translation>
     </message>
