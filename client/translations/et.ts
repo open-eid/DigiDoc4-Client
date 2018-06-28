@@ -2932,10 +2932,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation>Allkirjastan Mobiil-ID -ga</translation>
     </message>
     <message>
-        <source>%v sec</source>
-        <translation>%v sek</translation>
-    </message>
-    <message>
         <source>User is not a Mobile-ID client</source>
         <translation>Kasutaja ei ole Mobiil-ID klient</translation>
     </message>
@@ -2966,6 +2962,16 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
         <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MobileProgress</name>
+
+    <message>
+        <source>%v sec</source>
+        <translation>%v sek</translation>
     </message>
 </context>
 
