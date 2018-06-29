@@ -2171,7 +2171,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Allkirjastaja arvuti kellaaeg</translation>
+        <translation>Allkirjastaja arvuti kellaaeg (UTC)</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
