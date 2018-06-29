@@ -45,12 +45,12 @@ public:
 	void stop();
 
 private Q_SLOTS:
-	void endProgress();
 	void finished( QNetworkReply *reply );
 	void sendStatusRequest();
 	void sslErrors( QNetworkReply *reply, const QList<QSslError> &errors );
 
 private:
+	void endProgress(const QString &msg);
 	static bool isTest( const QString &ssid, const QString &cell );
 
 	QTimeLine *statusTimer;

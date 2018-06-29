@@ -79,7 +79,7 @@ MobileProgress::MobileProgress( QWidget *parent )
 	statusTimer->setCurveShape( QTimeLine::LinearCurve );
 	statusTimer->setFrameRange( signProgressBar->minimum(), signProgressBar->maximum() );
 	connect(statusTimer, &QTimeLine::frameChanged, signProgressBar, &QProgressBar::setValue);
-	connect(statusTimer, &QTimeLine::finished, this, &MobileProgress::endProgress);
+	connect(statusTimer, &QTimeLine::finished, this, [this] { endProgress(mobileResults.value("EXPIRED_TRANSACTION")); });
 #ifdef Q_OS_WIN
 	taskbar = new QWinTaskbarButton(this);
 	taskbar->setWindow(parent->windowHandle());
@@ -115,22 +115,22 @@ MobileProgress::MobileProgress( QWidget *parent )
 		.arg( qApp->applicationName() ).arg( qApp->applicationVersion() ).arg( Common::applicationOs() ).toUtf8() );
 }
 
-void MobileProgress::endProgress()
+void MobileProgress::endProgress(const QString &msg)
 {
-	labelError->setText( mobileResults.value( "EXPIRED_TRANSACTION" ) );
+	labelError->setText(msg);
+	signProgressBar->hide();
 	stop();
 }
 
 void MobileProgress::finished( QNetworkReply *reply )
 {
+	QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> d(reply);
 	switch( reply->error() )
 	{
 	case QNetworkReply::NoError:
 		if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains("text/xml"))
 		{
-			labelError->setText( tr("Invalid content") );
-			stop();
-			reply->deleteLater();
+			endProgress(tr("Invalid content"));
 			return;
 		}
 	case QNetworkReply::UnknownContentError:
@@ -139,18 +139,14 @@ void MobileProgress::finished( QNetworkReply *reply )
 #endif
 		break;
 	case QNetworkReply::HostNotFoundError:
-		labelError->setText( mobileResults.value( "HOSTNOTFOUND" ) );
-		stop();
-		reply->deleteLater();
+		endProgress(mobileResults.value("HOSTNOTFOUND"));
 		return;
 	case QNetworkReply::SslHandshakeFailedError:
+		signProgressBar->hide();
 		stop();
-		reply->deleteLater();
 		return;
 	default:
-		labelError->setText( reply->errorString() );
-		stop();
-		reply->deleteLater();
+		endProgress(reply->errorString());
 		return;
 	}
 
@@ -178,19 +174,16 @@ void MobileProgress::finished( QNetworkReply *reply )
 		else if( xml.name() == "Signature" )
 			m_signature = xml.readElementText().toUtf8();
 	}
-	reply->deleteLater();
 
 	if( !fault.isEmpty() )
 	{
-		labelError->setText( mobileResults.value( message, message ) );
-		stop();
+		endProgress(mobileResults.value(message, message));
 		return;
 	}
 
 	if( sessionCode.isEmpty() )
 	{
-		labelError->setText( mobileResults.value( message ) );
-		stop();
+		endProgress(mobileResults.value(message));
 		return;
 	}
 
