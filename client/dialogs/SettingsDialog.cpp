@@ -475,21 +475,20 @@ void SettingsDialog::initFunctionality()
 	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
 	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
 
-/* Ei esine uues dialoogis */
-//	d->tokenRestart->hide();
-//#ifdef Q_OS_WIN
-//	connect( d->tokenRestart, &QPushButton::clicked, []{
-//		qApp->setProperty("restart", true);
-//		qApp->quit();
-//	});
-//	d->tokenBackend->setChecked(Settings(qApp->applicationName()).value("Client/tokenBackend").toUInt());
-//	connect( d->tokenBackend, &QCheckBox::toggled, [=](bool checked){
-//		Settings(qApp->applicationName()).setValueEx("Client/tokenBackend", int(checked), 0);
-//		d->tokenRestart->show();
-//	});
-//#else
-//	d->tokenBackend->hide();
-//#endif
+	ui->tokenRestart->hide();
+#ifdef Q_OS_WIN
+	connect(ui->tokenRestart, &QPushButton::clicked, this, []{
+		qApp->setProperty("restart", true);
+		qApp->quit();
+	});
+	ui->tokenBackend->setChecked(Settings(qApp->applicationName()).value(QStringLiteral("tokenBackend")).toUInt());
+	connect(ui->tokenBackend, &QCheckBox::toggled, ui->tokenRestart, [=](bool checked){
+		Settings(qApp->applicationName()).setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
+		ui->tokenRestart->show();
+	});
+#else
+	ui->tokenBackend->hide();
+#endif
 
 
 	Settings s;
