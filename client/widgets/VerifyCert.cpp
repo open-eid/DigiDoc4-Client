@@ -249,14 +249,8 @@ void VerifyCert::update(bool showWarning)
 		changePinStyle( "#FFFFFF" );
 		ui->name->setText(name);
 		redIcon->hide();
-		if(showWarning && pinType != QSmartCardData::PukType)
-			orangeIcon->show();
-		else
-			orangeIcon->hide();
-		if(!showWarning && pinType != QSmartCardData::PukType)
-			greenIcon->show();
-		else
-			greenIcon->hide();
+		orangeIcon->setVisible(showWarning && pinType != QSmartCardData::PukType);
+		greenIcon->setVisible(!showWarning && pinType != QSmartCardData::PukType);
 	}
 	ui->name->setTextFormat( Qt::RichText );
 
@@ -271,8 +265,7 @@ void VerifyCert::update(bool showWarning)
 		if( pinType != QSmartCardData::PukType )
 		{
 			ui->forgotPinLink->setVisible( false ); // hide 'Forgot PIN. code?' label
-			if( isBlockedPin )
-				ui->changePIN->setVisible( false );  // hide 'Tühista BLOKEERING' button
+			ui->changePIN->setHidden(isBlockedPin);  // hide 'Tühista BLOKEERING' button
 		}
 		else
 		{
@@ -282,23 +275,17 @@ void VerifyCert::update(bool showWarning)
 			ui->changePIN->hide();  // hide 'change PUK' button
 		}
 	}
-	ui->changePIN->setVisible( isValidCert );  // If not valid cert then hide 'CHANGE PIN/PUK' button
+	else
+		ui->changePIN->setVisible(isValidCert);  // If not valid cert then hide 'CHANGE PIN/PUK' button
 	ui->validUntil->setText( txt );
 	if( pinType != QSmartCardData::PukType )
 		ui->error->setVisible( isBlockedPin || !isValidCert );
 	else
 		ui->error->setVisible( isBlockedPin );
 	ui->error->setText( error );
-	if(isTempelType)
-	{
-		ui->changePIN->hide();
-		ui->tempelText->show();
-	}
-	else
-	{
-		ui->changePIN->setText(changeBtn);
-		ui->tempelText->hide();
-	}
+	ui->tempelText->setVisible(isTempelType);
+	ui->changePIN->setHidden(isTempelType);
+	ui->changePIN->setText(changeBtn);
 }
 
 void VerifyCert::enterEvent( QEvent * event )
