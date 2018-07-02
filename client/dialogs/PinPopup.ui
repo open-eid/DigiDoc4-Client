@@ -44,9 +44,9 @@ background-color: #FFFFFF;
   <widget class="QLabel" name="labelNameId">
    <property name="geometry">
     <rect>
-     <x>103</x>
+     <x>22</x>
      <y>11</y>
-     <width>300</width>
+     <width>461</width>
      <height>16</height>
     </rect>
    </property>
