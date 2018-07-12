@@ -68,7 +68,7 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 	QCardInfo *ci = new QCardInfo;
 
 	ci->country = c.toString("C");
-	ci->id = c.subjectInfo("serialNumber");
+	ci->id = c.personalCode();
 	ci->isEResident = c.subjectInfo("O").contains("E-RESIDENT");
 	ci->loading = false;
 	ci->type = c.type();
