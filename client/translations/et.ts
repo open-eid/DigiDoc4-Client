@@ -1942,7 +1942,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>SEND WITH E-MAIL</source>
-        <translation>EDASTA E-MAILIGA</translation>
+        <translation>EDASTA E-POSTIGA</translation>
     </message>
     <message>
         <source>PRINT SUMMARY</source>
