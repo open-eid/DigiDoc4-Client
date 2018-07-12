@@ -908,6 +908,21 @@ QRadioButton::indicator::checked {
           <layout class="QHBoxLayout" name="tokenBackendLayout" stretch="1,0">
            <item>
             <widget class="QCheckBox" name="tokenBackend">
+             <property name="styleSheet">
+              <string notr="true">QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/images/icon_checkbox.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/images/icon_checkbox_check.png);
+}
+</string>
+             </property>
              <property name="text">
               <string>I would like to sign with Lithuanian, Latvian ID-card</string>
              </property>
