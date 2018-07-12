@@ -158,13 +158,13 @@ text-decoration: underline;
        <widget class="QPushButton" name="activate">
         <property name="minimumSize">
          <size>
-          <width>220</width>
+          <width>267</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>220</width>
+          <width>267</width>
           <height>16777215</height>
          </size>
         </property>
