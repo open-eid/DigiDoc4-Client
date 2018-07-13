@@ -257,9 +257,9 @@ border: none;</string>
     <widget class="QLabel" name="langLabel">
      <property name="geometry">
       <rect>
-       <x>345</x>
+       <x>262</x>
        <y>394</y>
-       <width>334</width>
+       <width>500</width>
        <height>14</height>
       </rect>
      </property>
