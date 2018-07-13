@@ -78,13 +78,17 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QFont regular14 = Styles::font( Styles::Regular, 14 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
+	Settings s(qApp->applicationName());
+	if(s.value("Client/Type") == "ddoc")
+		s.remove("Client/Type");
+
 	ui->setupUi(this);
 
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->version->setText(QString("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
 		.arg(tr("Ver. ")).arg(qApp->applicationVersion()));
 	connect(ui->version, &QLabel::linkActivated, this, 
-		[this]() {showSettings(SettingsDialog::DiagnosticsSettings);});
+		[this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->setStyleSheet("border: none;");
@@ -181,7 +185,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 MainWindow::~MainWindow()
 {
 	delete ui;
-	delete buttonGroup;
 }
 
 void MainWindow::pageSelected( PageIcon *const page )
