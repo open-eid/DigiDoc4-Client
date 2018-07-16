@@ -364,6 +364,8 @@ Application::Application( int &argc, char **argv )
 			.arg( "qdigidocclient", applicationVersion(), applicationOs() ).toUtf8().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
+				Q_EMIT qApp->TSLLoadingFinished();
+				qApp->d->ready = true;
 				if(ex) {
 					QStringList causes;
 					digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
@@ -371,8 +373,6 @@ Application::Application( int &argc, char **argv )
 					QMetaObject::invokeMethod( qApp, "showWarning",
 						Q_ARG(QString,tr("Failed to initalize.")), Q_ARG(QString,causes.join("\n")) );
 				}
-				qApp->d->ready = true;
-				Q_EMIT qApp->TSLLoadingFinished();
 			}
 		);
 	}
