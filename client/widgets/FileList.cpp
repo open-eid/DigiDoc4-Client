@@ -36,15 +36,12 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
-	ui->download->setIcons("/images/icon_download.svg", "/images/icon_download_hover.svg",  "/images/icon_download_pressed.svg", 1, 1, 17, 17);
-	ui->download->init(LabelButton::White, "", 0);
+	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"),
+		QStringLiteral("/images/icon_download_pressed.svg"), 1, 1, 17, 17);
+	ui->download->init(LabelButton::White, QString(), 0);
 
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
 	connect(ui->download, &LabelButton::clicked, this, &FileList::saveAll);
-}
-
-FileList::~FileList()
-{
 }
 
 void FileList::addFile( const QString& file )
@@ -62,7 +59,7 @@ void FileList::changeEvent(QEvent* event)
 {
 	ItemList::changeEvent(event);
 	if(!ui->count->isHidden())
-		ui->count->setText(QString("%1").arg(items.size()));
+		ui->count->setText(QString::number(items.size()));
 }
 
 void FileList::clear()
@@ -103,23 +100,12 @@ void FileList::save(FileItem *item)
 	int i;
 	if(documentModel && (i = index(item)) != -1)
 	{
-		QDir dir = QFileInfo(container).dir();
-		QString dest = dir.absolutePath() + QDir::separator() + item->getFile();
-
-#ifndef Q_OS_OSX
-		// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
-		// app sandbox; user must explicitly give permission to write data to the specific folders.
-		if(QFile::exists(dest))
-		{
-#endif
-			dest = FileDialog::getSaveFileName(this, tr("Save file"), dest);
-			if(!dest.isEmpty())
-				QFile::remove( dest );
-#ifndef Q_OS_OSX
-		}
-#endif
-		if(!dest.isEmpty())
-			documentModel->save(i, dest);
+		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
+			QFileInfo(container).dir().absolutePath() + QDir::separator() + item->getFile());
+		if(dest.isEmpty())
+			return;
+		QFile::remove( dest );
+		documentModel->save(i, dest);
 	}
 }
 
@@ -202,7 +188,7 @@ void FileList::updateDownload()
 		{
 			ui->download->show();
 			ui->count->show();
-			ui->download->installEventFilter( new ButtonHoverFilter( ":/images/icon_download.svg", ":/images/icon_download_hover.svg", this ) );
+			ui->download->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_download.svg"), QStringLiteral(":/images/icon_download_hover.svg"), this));
 		}
 	}
 	else if(items.size() <= 1)
@@ -211,5 +197,5 @@ void FileList::updateDownload()
 		ui->count->hide();
 	}
 
-	ui->count->setText(QString("%1").arg(items.size()));
+	ui->count->setText(QString::number(items.size()));
 }

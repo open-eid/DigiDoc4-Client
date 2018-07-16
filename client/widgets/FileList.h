@@ -33,7 +33,6 @@ class FileList : public ItemList
 
 public:
 	explicit FileList(QWidget *parent = nullptr);
-	~FileList();
 
 	void addFile(const QString& file);
 	void clear() override;
