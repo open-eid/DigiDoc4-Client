@@ -307,7 +307,7 @@ bool AccessCert::validate()
 		showWarning( tr(
 			"Update your signing software. Download and install new ID-software from "
 			"<a href=\"http://www.id.ee\">www.id.ee</a>. Additional info is available "
-			"<a href=\"mailto:abi@id.ee\">abi@id.ee</a> or ID-helpline 1777 (only from Estonia), (+372) 6773377.") );
+			"ID-helpline (+372) 666 8888.") );
 		return c.isValid();
 	}
 	else if(count(date) >= 50)
