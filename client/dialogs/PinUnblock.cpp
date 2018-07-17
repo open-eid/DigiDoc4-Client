@@ -25,6 +25,7 @@
 
 #include <QLabel>
 #include <QList>
+#include <QtGui/QRegExpValidator>
 
 
 struct InfoLine

@@ -41,6 +41,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QSslKey>
 #include <QtGui/QPainter>
+#include <QtGui/QRegExpValidator>
 #include <QtWidgets/QPushButton>
 
 #include <openssl/evp.h>
