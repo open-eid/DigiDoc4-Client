@@ -1,7 +1,7 @@
 language: c++
-sudo: true
+sudo: false
 dist: trusty
-osx_image: xcode9.3
+osx_image: xcode9.4
 services:
 - docker
 matrix:
@@ -10,44 +10,38 @@ matrix:
     env: TARGET=osx
     sudo: true
   - os: linux
-    env: TARGET=ubuntu:17.10
-    sudo: false
+    env: TARGET=ubuntu:18.04
 env:
   global:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
+  - PATH=${PATH}:$HOME/.local/bin:$HOME/Library/Python/2.7/bin;
+  - AWS_DEFAULT_REGION=eu-west-1
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-    command curl -sSL https://rvm.io/mpapis.asc | gpg --import -;
-    rvm get stable;
+    sudo easy_install pip;
     brew update && brew install --force openssl;
-    curl -s --location "https://bootstrap.pypa.io/get-pip.py" -o get-pip.py;
-    python get-pip.py --user;
+    pip install --user awscli > /dev/null;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
-    curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.5/libdigidocpp_3.13.5.1369.pkg" -o libdigidocpp.pkg;
+    curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.6/libdigidocpp_3.13.6.1371.pkg" -o libdigidocpp.pkg;
+    HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
+    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.17.0.7.pkg opensc.pkg --no-sign-request;
+    aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
-    HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
-    export PATH=$PATH:`echo ~/Library/Python/*/bin` ;
-    pip install --user awscli > /dev/null;
-    aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/opensc_0.17.0.6.pkg opensc.pkg --no-sign-request;
     sudo installer -verboseR -pkg opensc.pkg -target /;
-    aws s3 cp s3://open-eid-digidoc4/cache/${TARGET}/${HASH}.zip ${HASH}.zip --no-sign-request;
-    if [ $? -eq 0 ]; then
-      unzip -qq -d /tmp ${HASH}.zip;
-    fi
+    unzip -qq -d /tmp ${HASH}.zip;
+    rm -rf ${HASH}.zip opensc.pkg libdigidocpp.pkg libdigidoc.pkg;
   fi
 script: case ${TARGET} in
   *osx*)
     QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1);
     echo "Qt - ${QT_DIR}";
-    set -e;
     mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
     mkdir -p $BUILD_NUMBER;
     make zipdebug macdeployqt zip && cp qdigidoc4*.zip ./$BUILD_NUMBER/ && cd ..;
     ;;
   *)
-    docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v $(pwd):$(pwd) -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
-      set -e;
+    docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v ${HOME}:${HOME} -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       apt-get update -qq; 
       apt-get install -y apt-transport-https curl dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev git curl wget ruby;
       curl https://installer.id.ee/media/install-scripts/ria-public.key | apt-key add -;
@@ -59,11 +53,8 @@ script: case ${TARGET} in
       export DEBFULLNAME="Travis";
       export DEBEMAIL="travis-ci@travis";
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSION};
-      mkdir -p tmp/build && cp ../qdigidoc4_${VERSION}.orig.tar.xz tmp/ && cd tmp/build;
-      tar xf ../qdigidoc4_${VERSION}.orig.tar.xz;
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      set +e;
       if [ "${IMAGE}" = "ubuntu:17.04" ]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
@@ -72,19 +63,18 @@ script: case ${TARGET} in
         export COVERITY_SCAN_BUILD_COMMAND=make;
         wget -O - https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh | bash;
       fi;
-      cd ../..;
       mkdir -p build/$BUILD_NUMBER;
-      cp tmp/qdigidoc4_*.deb build/$BUILD_NUMBER';
+      cp ../qdigidoc4_* build/$BUILD_NUMBER';
   esac
 deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  region: $AWS_REGION
-  bucket: digidoc4-builds
+  region: $AWS_DEFAULT_REGION
+  bucket: open-eid
   skip_cleanup: true
   local_dir: build/$BUILD_NUMBER
-  upload-dir: ${TARGET}
+  upload-dir: digidoc4-nightly/${TARGET}
   acl: public_read
   on:
     branch: master
