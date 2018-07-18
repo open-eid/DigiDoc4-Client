@@ -32,9 +32,6 @@ using namespace ria::qdigidoc4;
 ItemList::ItemList(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::ItemList)
-, state(UnsignedContainer)
-, headerItems(1)
-, itemType(ItemAddress)
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();
@@ -84,7 +81,7 @@ void ItemList::changeEvent(QEvent* event)
 		if(header != nullptr)
 			header->setText(tr(qPrintable(headerText)));
 
-		ui->add->setText(tr(qPrintable(addLabel())));
+		ui->add->setText(addLabel());
 
 		if(itemType == ItemAddress)
 			setRecipientTooltip();
@@ -97,10 +94,10 @@ QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile: return "Add more files";
-	case ItemAddress: return "Add addressee";
-	case ToAddAdresses: return "Add all";
-	default: return "";
+	case ItemFile: return tr("Add more files");
+	case ItemAddress: return tr("Add addressee");
+	case ToAddAdresses: return tr("Add all");
+	default: return QString();
 	}
 }
 
@@ -153,16 +150,8 @@ void ItemList::details(const QString &id)
 }
 void ItemList::focusEvent(int eventType)
 {
-	if(eventType == QEvent::Enter)
-	{
-		infoIcon->hide();
-		infoHoverIcon->show();
-	}
-	else
-	{
-		infoIcon->show();
-		infoHoverIcon->hide();
-	}
+	infoIcon->setHidden(eventType == QEvent::Enter);
+	infoHoverIcon->setVisible(eventType == QEvent::Enter);
 }
 
 ContainerState ItemList::getState() const { return state; }
@@ -222,7 +211,7 @@ void ItemList::init(ItemType item, const QString &header)
 	}
 	else
 	{
-		ui->add->init(LabelButton::DeepCeruleanWithLochmara, tr(qPrintable(addLabel())), itemType == ItemFile ? FileAdd : AddressAdd);
+		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == ItemFile ? FileAdd : AddressAdd);
 		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
 
@@ -230,13 +219,13 @@ void ItemList::init(ItemType item, const QString &header)
 	{
 		ui->add->disconnect();
 		infoIcon = new QSvgWidget(ui->infoIcon);
-		infoIcon->load(QString(":/images/icon_info.svg"));
+		infoIcon->load(QStringLiteral(":/images/icon_info.svg"));
 		infoIcon->resize(15, 15);
 		infoIcon->move(1, 1);
 		infoIcon->show();
 		infoHoverIcon = new QSvgWidget(ui->infoIcon);
 		infoHoverIcon->hide();
-		infoHoverIcon->load(QString(":/images/icon_info_hover.svg"));
+		infoHoverIcon->load(QStringLiteral(":/images/icon_info_hover.svg"));
 		infoHoverIcon->resize(15, 15);
 		infoHoverIcon->move(1, 1);
 		HoverFilter *filter = new HoverFilter(ui->infoIcon, [this](int eventType){ focusEvent(eventType); }, this);
@@ -274,7 +263,7 @@ void ItemList::setRecipientTooltip()
 	// Windows might not show the tooltip correctly (does not fit) in case of tooltip stylesheet;
 	// Add empty paragraph in order to avoid cutting the text.
 	// See https://bugreports.qt.io/browse/QTBUG-26576
-	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE") + "<p></p><p></p>");
+	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE") + "<br /><br />");
 #else
 	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
 #endif

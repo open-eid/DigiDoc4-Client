@@ -71,7 +71,7 @@ protected:
 
 	Ui::ItemList* ui;
 	std::vector<Item*> items;
-	ria::qdigidoc4::ContainerState state;
+	ria::qdigidoc4::ContainerState state = ria::qdigidoc4::UnsignedContainer;
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -83,11 +83,11 @@ private:
 	void setRecipientTooltip();
 
 	QLabel *header = nullptr;
-	int headerItems;
+	int headerItems = 1;
 	QString idCode;
 	QSvgWidget* infoIcon = nullptr;
 	QSvgWidget* infoHoverIcon = nullptr;
-	ria::qdigidoc4::ItemType itemType;
+	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
 	QString mobileCode;
 	QString headerText;
 	QString listText;
