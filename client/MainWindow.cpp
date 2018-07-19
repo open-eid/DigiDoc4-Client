@@ -1043,15 +1043,10 @@ void MainWindow::showCardStatus()
 	}
 
 	// Combo box to select the cards from
-	if(cards().size() > 1)
-	{
-		selector->show();
-	}
-	else
-	{
-		selector->hide();
+	selector->setVisible(cards().size() > 1);
+	ui->cardInfo->setCursor(selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
+	if(selector->isHidden())
 		hideCardPopup();
-	}
 }
 
 void MainWindow::showEvent(QShowEvent *event)
