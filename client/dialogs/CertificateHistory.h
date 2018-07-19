@@ -51,7 +51,7 @@ public:
 		Other = 3
 	};
 
-	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = 0);
+	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = nullptr);
 	~CertificateHistory();
 
 	int exec() override;
@@ -60,13 +60,10 @@ signals:
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
 	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
-protected:
+private:
 	void fillView();
-	void getSelectedItems(QList<HistoryCertData>& selectedCertData);
-
-	void select();
-	void remove();
+	QList<HistoryCertData> selectedItems() const;
 
 	Ui::CertificateHistory *ui;
-	QList<HistoryCertData>& historyCertData;
+	QList<HistoryCertData> &historyCertData;
 };
