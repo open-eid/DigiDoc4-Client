@@ -538,6 +538,26 @@ QComboBox::down-arrow {
 	image: url(:/images/arrow_down.svg);
 }</string>
           </property>
+          <item>
+           <property name="text">
+            <string>Once a day</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a week</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a month</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Never</string>
+           </property>
+          </item>
          </widget>
          <widget class="QCheckBox" name="chkGeneralTslRefresh">
           <property name="geometry">

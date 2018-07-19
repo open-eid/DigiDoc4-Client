@@ -55,6 +55,10 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <QProcess>
+#endif
 
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 : QDialog(parent)
@@ -146,14 +150,13 @@ void SettingsDialog::initUI()
 	ui->btGeneralChooseDirectory->setFont(regularFont);
 	ui->txtGeneralDirectory->setFont(regularFont);
 
+#ifdef Q_OS_WIN
 	ui->cmbGeneralCheckUpdatePeriod->setFont(regularFont);
+#else
+	ui->lblGeneralCheckUpdatePeriod->hide();
+	ui->cmbGeneralCheckUpdatePeriod->hide();
+#endif
 	ui->chkGeneralTslRefresh->setFont(regularFont);
-
-	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a day"));
-	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a week"));
-	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Once a month"));
-	ui->cmbGeneralCheckUpdatePeriod->addItem(tr("Never"));
-
 
 	// pageSigning
 	ui->lblSigningFileType->setFont(headerFont);
@@ -362,11 +365,6 @@ void SettingsDialog::retranslate(const QString& lang)
 	qApp->loadTranslation( lang );
 	ui->retranslateUi(this);
 
-	ui->cmbGeneralCheckUpdatePeriod->setItemText(0, tr("Once a day"));
-	ui->cmbGeneralCheckUpdatePeriod->setItemText(1, tr("Once a week"));
-	ui->cmbGeneralCheckUpdatePeriod->setItemText(2, tr("Once a month"));
-	ui->cmbGeneralCheckUpdatePeriod->setItemText(3, tr("Never"));
-
 	QString package;
 #ifndef Q_OS_MAC
 	QStringList packages = Common::packages({
@@ -421,45 +419,33 @@ void SettingsDialog::initFunctionality()
 		} } );
 #endif
 
-	QString checkUpdatesFreq = Settings(qApp->applicationName()).value( "Client/CheckUpdatesFreq" ).toString();
-
-	if(checkUpdatesFreq == "Day")
+#ifdef Q_OS_WIN
+	if (QFile::exists(qApp->applicationDirPath() + "/id-updater.exe"))
 	{
-		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(0);
-	}
-	else if(checkUpdatesFreq == "Week")
-	{
-		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(1);
-	}
-	else if(checkUpdatesFreq == "Month")
-	{
-		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(2);
-	}
-	else if(checkUpdatesFreq == "Never")
-	{
-		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(3);
-	}
-	connect( ui->cmbGeneralCheckUpdatePeriod, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
-			[](int index)
+		int selected = QProcess::execute("id-updater", {"-status"});
+		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(selected > 0 && selected < 4 ? selected : 2);
+		connect(ui->cmbGeneralCheckUpdatePeriod,
+			static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, [](int index)
+		{
+			auto runPrivileged = [](const QString &program, const QString &arguments) {
+				ShellExecuteW(nullptr, L"runas", PCWSTR(program.utf16()), PCWSTR(arguments.utf16()), nullptr, SW_HIDE);
+			};
+			switch(index)
 			{
-				switch(index)
-				{
-				case 1:
-					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Week", "Day" );
-					break;
-				case 2:
-					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Month", "Day" );
-					break;
-				case 3:
-					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Never", "Day" );
-					break;
-				default:
-					Settings(qApp->applicationName()).setValueEx( "Client/CheckUpdatesFreq", "Day", "Day" );
-					break;
-				}
+			case 1: return runPrivileged("id-updater", "-daily");
+			case 2: return runPrivileged("id-updater", "-weekly");
+			case 3: return runPrivileged("id-updater", "-monthly");
+			case 4: return runPrivileged("id-updater", "-remove");
+			default: break;
 			}
-				);
-
+		});
+	}
+	else
+	{
+		ui->cmbGeneralCheckUpdatePeriod->hide();
+		ui->lblGeneralCheckUpdatePeriod->hide();
+	}
+#endif
 
 	if(Settings(qApp->applicationName()).value( "Client/Type" ).toString() == "asice")
 	{
