@@ -16,12 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="cursor">
-   <cursorShape>PointingHandCursor</cursorShape>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <widget class="QLabel" name="cardStatus">
    <property name="geometry">
     <rect>
