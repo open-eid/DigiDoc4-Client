@@ -34,30 +34,23 @@ bool HistoryCertData::operator==(const HistoryCertData& other)
 
 QString HistoryCertData::typeName() const
 {
-	QString name;
 	switch (QString(type).toInt())
 	{
-		case CertificateHistory::DigiID:
-			name = CertificateHistory::tr("Digi-ID");
-			break;
-		case CertificateHistory::TEMPEL:
-			name = CertificateHistory::tr("e-Seal");
-			break;
-		case CertificateHistory::IDCard:
-			name = CertificateHistory::tr("ID-card");
-			break;
-		default:
-			name = CertificateHistory::tr("Other");
-			break;
+	case CertificateHistory::DigiID:
+		return CertificateHistory::tr("Digi-ID");
+	case CertificateHistory::TEMPEL:
+		return CertificateHistory::tr("e-Seal");
+	case CertificateHistory::IDCard:
+		return CertificateHistory::tr("ID-card");
+	default:
+		return CertificateHistory::tr("Other");
 	}
-
-	return name;
 }
 
-CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent)
+CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData, QWidget *parent)
 :	QDialog( parent )
 ,	ui(new Ui::CertificateHistory)
-,	historyCertData(historyCertData)
+,	historyCertData(_historyCertData)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
@@ -68,22 +61,20 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData>& historyCertData, 
 	ui->select->setFont(condensed);
 	ui->remove->setFont(condensed);
 
-	QStringList horzHeaders;
-	horzHeaders << tr("Owner") << tr("Type") << tr("Issuer") << tr("Expiry date");
-	ui->view->setHeaderLabels(horzHeaders);
-
 	connect(ui->close, &QPushButton::clicked, this, &CertificateHistory::reject);
-	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::select);
+	connect(ui->select, &QPushButton::clicked, this, [&]{
+		emit addSelectedCerts(selectedItems());
+	});
 	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::reject);
-	connect(ui->remove, &QPushButton::clicked, this, &CertificateHistory::remove);
-	connect(ui->view, &QTreeWidget::itemActivated, this, &CertificateHistory::select);
-	connect(ui->view, &QTreeWidget::itemActivated, this, &CertificateHistory::reject);
+	connect(ui->remove, &QPushButton::clicked, this, [&]{
+		emit removeSelectedCerts(selectedItems());
+		fillView();
+	});
+	connect(ui->view, &QTreeWidget::itemActivated, ui->select, &QPushButton::clicked);
 
-	this->historyCertData = historyCertData;
 	fillView();
+	ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-	for(int i = 0; i < 4; i++)
-		ui->view->resizeColumnToContents(i);
 	adjustSize();
 }
 
@@ -108,38 +99,19 @@ void CertificateHistory::fillView()
 	}
 }
 
-void CertificateHistory::getSelectedItems(QList<HistoryCertData>& selectedCertData)
+QList<HistoryCertData> CertificateHistory::selectedItems() const
 {
-	auto selectedRows = ui->view->selectedItems();
-
-	for(QTreeWidgetItem* selectedRow : selectedRows)
+	QList<HistoryCertData> selectedCertData;
+	for(QTreeWidgetItem* selectedRow : ui->view->selectedItems())
 	{
-		selectedCertData.append(
-			{
-				selectedRow->data(0, Qt::DisplayRole).toString(),
-				selectedRow->data(1, Qt::UserRole).toString(),
-				selectedRow->data(2, Qt::DisplayRole).toString(),
-				selectedRow->data(3, Qt::DisplayRole).toString(),
-			});
+		selectedCertData.append({
+			selectedRow->data(0, Qt::DisplayRole).toString(),
+			selectedRow->data(1, Qt::UserRole).toString(),
+			selectedRow->data(2, Qt::DisplayRole).toString(),
+			selectedRow->data(3, Qt::DisplayRole).toString(),
+		});
 	}
-}
-
-
-void CertificateHistory::select()
-{
-	QList<HistoryCertData> selectedCertData;
-
-	getSelectedItems(selectedCertData);
-	emit addSelectedCerts(selectedCertData);
-}
-
-void CertificateHistory::remove()
-{
-	QList<HistoryCertData> selectedCertData;
-
-	getSelectedItems(selectedCertData);
-	emit removeSelectedCerts(selectedCertData);
-	fillView();
+	return selectedCertData;
 }
 
 int CertificateHistory::exec()
