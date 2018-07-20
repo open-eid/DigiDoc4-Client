@@ -46,7 +46,7 @@ public:
 	}
 
 protected:
-	void paintEvent(QPaintEvent *event) override
+	void paintEvent(QPaintEvent *) override
 	{
 		if(parentWidget())
 			setMinimumSize(parentWidget()->width(), parentWidget()->height());

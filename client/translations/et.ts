@@ -1789,30 +1789,9 @@ Kontrollkood: %1</translation>
         <translation>Näita kinnituslehte</translation>
     </message>
     <message>
-        <source>Role</source>
-        <translation>Roll</translation>
+        <source>Ask role and address info on signing</source>
+        <translation>Küsi rolli ja aadressi igal allkirjastamisel</translation>
     </message>
-    <message>
-        <source>Address</source>
-        <translation>Aadress</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Linn</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Maakond</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Postikood</translation>
-    </message>
-
 
     <message>
         <source>Ignore server access certificate (IP based access)</source>
@@ -3164,6 +3143,57 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
 
 
 <context>
+    <name>QSmartCard</name>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>RoleAddressDialog</name>
+
+    <message>
+        <source>Role</source>
+        <translation>Roll</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Aadress</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Linn</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Maakond</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Postikood</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjastan</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MainAction</name>
     <message>
         <source>SignatureMobile</source>
@@ -3254,23 +3284,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Less</source>
         <translation>Vähem</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSmartCard</name>
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
     </message>
 </context>
 

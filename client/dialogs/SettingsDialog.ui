@@ -1117,306 +1117,6 @@ QRadioButton::indicator::checked {
            <bool>true</bool>
           </property>
          </widget>
-         <widget class="QLabel" name="lblSigningRole">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>245</y>
-            <width>150</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>150</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Role</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSigningRole">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>273</y>
-            <width>330</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>330</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>330</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblSigningAddress">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>325</y>
-            <width>70</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>70</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>70</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Address</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSigningCity">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>355</y>
-            <width>670</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSigningCounty">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>390</y>
-            <width>670</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSigningCountry">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>425</y>
-            <width>670</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtSigningZipCode">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>460</y>
-            <width>670</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>670</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblSigningCity">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>362</y>
-            <width>65</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>65</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>65</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>City</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblSigningCounty">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>397</y>
-            <width>65</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>65</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>65</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>State</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblSigningCountry">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>432</y>
-            <width>65</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>65</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>65</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Country</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblSigningZipCode">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>467</y>
-            <width>75</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>75</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>75</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Zip</string>
-          </property>
-         </widget>
          <widget class="QCheckBox" name="chkShowPrintSummary">
           <property name="geometry">
            <rect>
@@ -1454,6 +1154,45 @@ QCheckBox::indicator:checked {
           </property>
           <property name="text">
            <string>Show print summary</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="chkRoleAddressInfo">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>240</y>
+            <width>700</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>700</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>700</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/images/icon_checkbox.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/images/icon_checkbox_check.png);
+}</string>
+          </property>
+          <property name="text">
+           <string>Ask role and address info on signing</string>
           </property>
          </widget>
         </widget>
@@ -2622,11 +2361,6 @@ QPushButton:disabled {
   <tabstop>txtGeneralDirectory</tabstop>
   <tabstop>rdSigningAsice</tabstop>
   <tabstop>rdSigningBdoc</tabstop>
-  <tabstop>txtSigningRole</tabstop>
-  <tabstop>txtSigningCity</tabstop>
-  <tabstop>txtSigningCounty</tabstop>
-  <tabstop>txtSigningCountry</tabstop>
-  <tabstop>txtSigningZipCode</tabstop>
   <tabstop>chkIgnoreAccessCert</tabstop>
   <tabstop>rdProxyNone</tabstop>
   <tabstop>rdProxySystem</tabstop>

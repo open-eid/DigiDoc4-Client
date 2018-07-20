@@ -1782,30 +1782,9 @@ Control code: %1</translation>
         <translation>Show print summary</translation>
     </message>
     <message>
-        <source>Role</source>
-        <translation>Role</translation>
+        <source>Ask role and address info on signing</source>
+        <translation>Ask role and address info on signing</translation>
     </message>
-    <message>
-        <source>Address</source>
-        <translation>Address</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>State</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Zip</translation>
-    </message>
-
 
     <message>
         <source>Ignore server access certificate (IP based access)</source>
@@ -3191,6 +3170,58 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
 
 
 <context>
+    <name>QSmartCard</name>
+
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>RoleAddressDialog</name>
+
+    <message>
+        <source>Role</source>
+        <translation>Role</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Address</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>City</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>State</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Zip</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MainAction</name>
 
     <message>
@@ -3285,24 +3316,6 @@ ID-CARD</translation>
     <message>
         <source>Less</source>
         <translation>Less</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSmartCard</name>
-
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
     </message>
 </context>
 
