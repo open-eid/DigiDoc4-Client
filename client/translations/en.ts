@@ -112,10 +112,6 @@
         <translation>Check proxy username and password</translation>
     </message>
     <message>
-        <source>Check internet connection</source>
-        <translation>Check internet connection</translation>
-    </message>
-    <message>
         <source>Cannot connect to certificate status service!</source>
         <translation>Cannot connect to certificate status service!</translation>
     </message>
@@ -2903,6 +2899,10 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     <message>
         <source>Redundant certificates have been successfully removed.</source>
         <translation>Redundant certificates have been successfully removed.</translation>
+    </message>
+    <message>
+        <source>Check internet connection</source>
+        <translation>Check internet connection</translation>
     </message>
 </context>
 

@@ -29,10 +29,13 @@
 #include <Windows.h>
 #include <Winldap.h>
 #include <Winber.h>
+#define lasterror LdapGetLastError()
 #else
 #define LDAP_DEPRECATED 1
+#include <errno.h>
 #include <sys/time.h>
 #include <ldap.h>
+#define lasterror errno
 #define ULONG int
 #define LDAP_TIMEVAL timeval
 #endif
@@ -63,16 +66,16 @@ bool LdapSearch::init()
 		return true;
 
 	QByteArray host = qApp->confValue(Application::LDAP_HOST).toByteArray();
-	if( !(d->ldap = ldap_init((char*)host.constData(), 389)) )
+	if( !(d->ldap = ldap_init(const_cast<char*>(host.constData()), 389)) )
 	{
-		setLastError( tr("Failed to init ldap"), -1 );
+		setLastError(tr("Failed to init ldap"), lasterror);
 		return false;
 	}
 
 	int version = LDAP_VERSION3;
 	ldap_set_option( d->ldap, LDAP_OPT_PROTOCOL_VERSION, &version );
 
-	int err = ldap_simple_bind_s( d->ldap, 0, 0 );
+	int err = ldap_simple_bind_s(d->ldap, nullptr, nullptr);
 	if( err )
 		setLastError( tr("Failed to init ldap"), err );
 	return !err;
@@ -83,10 +86,10 @@ void LdapSearch::search( const QString &search )
 	if( !init() )
 		return;
 
-	char *attrs[] = { const_cast<char*>("userCertificate;binary"), 0 };
+	char *attrs[] = { const_cast<char*>("userCertificate;binary"), nullptr };
 
 	int err = ldap_search_ext( d->ldap, "c=EE", LDAP_SCOPE_SUBTREE,
-		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, 0, 0, 0, 0, &d->msg_id );
+		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, nullptr, nullptr, 0, 0, &d->msg_id);
 	if( err )
 		setLastError( tr("Failed to init ldap search"), err );
 	else
@@ -99,10 +102,9 @@ void LdapSearch::setLastError( const QString &msg, int err )
 	QString details;
 	switch( err )
 	{
-	case -1:
-		break;
 	case LDAP_UNAVAILABLE:
-		res += "<br />";
+	case LDAP_SERVER_DOWN:
+		res += QLatin1String("<br />");
 		res += tr("LDAP server is unavailable.");
 		break;
 	default:
@@ -114,7 +116,7 @@ void LdapSearch::setLastError( const QString &msg, int err )
 
 void LdapSearch::timerEvent( QTimerEvent *e )
 {
-	LDAPMessage *result = 0;
+	LDAPMessage *result = nullptr;
 	LDAP_TIMEVAL t = { 5, 0 };
 	int err = ldap_result( d->ldap, d->msg_id, LDAP_MSG_ALL, &t, &result );
 	switch( err )
@@ -135,7 +137,7 @@ void LdapSearch::timerEvent( QTimerEvent *e )
 	for( LDAPMessage *entry = ldap_first_entry( d->ldap, result );
 		 entry; entry = ldap_next_entry( d->ldap, entry ) )
 	{
-		BerElement *pos = 0;
+		BerElement *pos = nullptr;
 		for( char *attr = ldap_first_attribute( d->ldap, entry, &pos );
 			 attr; attr = ldap_next_attribute( d->ldap, entry, pos ) )
 		{

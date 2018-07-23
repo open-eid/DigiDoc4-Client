@@ -22,6 +22,7 @@
 
 #include "AccessCert.h"
 #include "Application.h"
+#include "CheckConnection.h"
 #include "Colors.h"
 #include "DigiDoc.h"
 #include "PrintSheet.h"
@@ -877,7 +878,7 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	}
 }
 
-void MainWindow::resizeEvent( QResizeEvent *event )
+void MainWindow::resizeEvent(QResizeEvent *)
 {
 	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
 }
@@ -906,12 +907,12 @@ bool MainWindow::save()
 
 QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )
 {
-	const QString adoc = tr("Documents (%1)").arg( "*.adoc" );
-	const QString bdoc = tr("Documents (%1)").arg( "*.bdoc" );
-	const QString cdoc = tr("Documents (%1)").arg( "*.cdoc" );
-	const QString edoc = tr("Documents (%1)").arg( "*.edoc" );
-	const QString asic = tr("Documents (%1)").arg( "*.asice *.sce" );
-	const QString ext = QFileInfo( filename ).suffix().toLower();
+	static const QString adoc = tr("Documents (%1)").arg(QStringLiteral("*.adoc"));
+	static const QString bdoc = tr("Documents (%1)").arg(QStringLiteral("*.bdoc"));
+	static const QString cdoc = tr("Documents (%1)").arg(QStringLiteral("*.cdoc"));
+	static const QString edoc = tr("Documents (%1)").arg(QStringLiteral("*.edoc"));
+	static const QString asic = tr("Documents (%1)").arg(QStringLiteral("*.asice *.sce"));
+	static const QString ext = QFileInfo( filename ).suffix().toLower();
 	QStringList exts;
 	QString active;
 	if( fixedExt )
@@ -1049,7 +1050,7 @@ void MainWindow::showCardStatus()
 		hideCardPopup();
 }
 
-void MainWindow::showEvent(QShowEvent *event)
+void MainWindow::showEvent(QShowEvent *)
 {
 	static int height = 94;
 	static int width = 166;
@@ -1058,10 +1059,10 @@ void MainWindow::showEvent(QShowEvent *event)
 	{
 		FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
 			QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
-		QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", notification);
+		QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 		structureFunds->resize(width, height);
 		structureFunds->show();
-		notification->start("", 400, 4000, 1100);
+		notification->start(QString(), 400, 4000, 1100);
 	}
 }
 
@@ -1091,19 +1092,26 @@ void MainWindow::showSettings(int page)
 
 bool MainWindow::sign()
 {
+	CheckConnection connection;
+	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
+	{
+		showWarning(WarningText(tr("Check internet connection")));
+		return false;
+	}
+
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
 	WaitDialogHolder waitDialog(this, tr("Signing"));
 
 	Settings s;
-	s.beginGroup("Client");
-	QString role = s.value("Role").toString();
-	QString city = s.value("City").toString();
-	QString state = s.value("State").toString();
-	QString country = s.value("Country").toString();
-	QString zip = s.value("Zip").toString();
-	if(digiDoc->sign(city, state, zip, country, role, ""))
+	s.beginGroup(QStringLiteral("Client"));
+	QString role = s.value(QStringLiteral("Role")).toString();
+	QString city = s.value(QStringLiteral("City")).toString();
+	QString state = s.value(QStringLiteral("State")).toString();
+	QString country = s.value(QStringLiteral("Country")).toString();
+	QString zip = s.value(QStringLiteral("Zip")).toString();
+	if(digiDoc->sign(city, state, zip, country, role, QString()))
 	{
 		access.increment();
 		if(save())
@@ -1128,17 +1136,24 @@ bool MainWindow::sign()
 
 bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 {
+	CheckConnection connection;
+	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
+	{
+		showWarning(WarningText(tr("Check internet connection")));
+		return false;
+	}
+
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
 
 	Settings s;
-	s.beginGroup("Client");
-	QString role = s.value("Role").toString();
-	QString city = s.value("City").toString();
-	QString state = s.value("State").toString();
-	QString country = s.value("Country").toString();
-	QString zip = s.value("Zip").toString();
+	s.beginGroup(QStringLiteral("Client"));
+	QString role = s.value(QStringLiteral("Role")).toString();
+	QString city = s.value(QStringLiteral("City")).toString();
+	QString state = s.value(QStringLiteral("State")).toString();
+	QString country = s.value(QStringLiteral("Country")).toString();
+	QString zip = s.value(QStringLiteral("Zip")).toString();
 	MobileProgress m(this);
 	m.setSignatureInfo(city, state, zip, country, role);
 	m.sign(digiDoc, idCode, phoneNumber);
@@ -1355,7 +1370,7 @@ void MainWindow::containerToEmail( const QString &fileName )
 	QUrlQuery q;
 	QUrl url;
 
-	if ( !QFileInfo( fileName ).exists() )
+	if(!QFileInfo::exists(fileName))
 		return;
 	q.addQueryItem( "subject", QFileInfo( fileName ).fileName() );
 	q.addQueryItem( "attachment", QFileInfo( fileName ).absoluteFilePath() );

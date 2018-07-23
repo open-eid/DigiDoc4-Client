@@ -112,10 +112,6 @@
         <translation>Проверьте имя пользователя и пароль прокси</translation>
     </message>
     <message>
-        <source>Check internet connection</source>
-        <translation>Проверьте подключение к Интернету</translation>
-    </message>
-    <message>
         <source>Cannot connect to certificate status service!</source>
         <translation>Услуга подтверждения действительности не доступна!</translation>
     </message>
@@ -2903,6 +2899,10 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>Redundant certificates have been successfully removed.</source>
         <translation>Лишние сертификаты успешно удалены.</translation>
+    </message>
+    <message>
+        <source>Check internet connection</source>
+        <translation>Проверьте подключение к Интернету</translation>
     </message>
 </context>
 

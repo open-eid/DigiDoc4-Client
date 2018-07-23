@@ -19,8 +19,6 @@
 
 #include "CheckConnection.h"
 
-#include <common/Common.h>
-
 #include <QtCore/QEventLoop>
 #include <QtNetwork/QNetworkRequest>
 
@@ -32,13 +30,11 @@ CheckConnection::CheckConnection( QObject *parent )
 bool CheckConnection::check( const QString &url )
 {
 	QEventLoop e;
-	QNetworkRequest req( url );
-#if 0
-	req.setRawHeader( "User-Agent", QString( "%1/%2 (%3)")
-		.arg( qApp->applicationName() ).arg( qApp->applicationVersion() ).arg( Common::applicationOs() ).toUtf8() );
-#endif
-	QNetworkReply *reply = get( req );
-	connect( reply, SIGNAL(finished()), &e, SLOT(quit()) );
+	QNetworkReply *reply = head(QNetworkRequest(url));
+	connect(reply, &QNetworkReply::sslErrors, reply, [&](const QList<QSslError> &errors){
+		reply->ignoreSslErrors(errors);
+	});
+	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
 	m_error = reply->error();
 	qtmessage = reply->errorString();
@@ -50,22 +46,17 @@ QNetworkReply::NetworkError CheckConnection::error() const { return m_error; }
 QString CheckConnection::errorDetails() const { return qtmessage; }
 QString CheckConnection::errorString() const
 {
-	if (m_error == QNetworkReply::NoError)
-		return QString();
-
-	QString error;
 	switch(m_error)
 	{
+	case QNetworkReply::NoError: return QString();
 	case QNetworkReply::ProxyConnectionRefusedError:
 	case QNetworkReply::ProxyConnectionClosedError:
 	case QNetworkReply::ProxyNotFoundError:
 	case QNetworkReply::ProxyTimeoutError:
-		error = tr("Check proxy settings");
+		return tr("%1, cannot connect to certificate status service!").arg(tr("Check proxy settings"));
 	case QNetworkReply::ProxyAuthenticationRequiredError:
-		error = tr("Check proxy username and password");
+		return tr("%1, cannot connect to certificate status service!").arg(tr("Check proxy username and password"));
 	default:
 		return tr("Cannot connect to certificate status service!");
 	}
-
-	return tr("%1, cannot connect to certificate status service!").arg(error);
 }
