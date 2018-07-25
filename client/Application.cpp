@@ -39,7 +39,7 @@
 #include <digidocpp/XmlConf.h>
 #include <digidocpp/crypto/X509Cert.h>
 
-#include "qtsingleapplication/src/qtlocalpeer.h"
+#include <qtsingleapplication/src/qtlocalpeer.h>
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>

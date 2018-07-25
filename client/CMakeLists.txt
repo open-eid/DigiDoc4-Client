@@ -10,7 +10,7 @@ add_custom_command(
 )
 
 add_definitions( -DPKCS11_MODULE="${PKCS11_MODULE}" )
-include_directories( ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/common ${OPENSSL_INCLUDE_DIR} ${Qt5Svg_INCLUDE_DIRS} )
+include_directories( ${CMAKE_SOURCE_DIR} )
 
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
@@ -73,7 +73,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/MobileDialog.cpp
 	dialogs/MobileProgress.cpp
 	dialogs/PinPopup.cpp
-   	dialogs/Updater.cpp
+	dialogs/Updater.cpp
 	dialogs/PinUnblock.cpp
 	dialogs/SettingsDialog.cpp
 	dialogs/SignatureDialog.cpp
@@ -125,11 +125,11 @@ if( APPLE )
 	set_target_properties( ${PROGNAME} PROPERTIES
 		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 	)
-        add_custom_command( TARGET ${PROGNAME} POST_BUILD
-                COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
-                COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
-                COMMAND cp -a $<TARGET_FILE_DIR:DigiDocQL>/../../../DigiDocQL.qlgenerator
-                        $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook )
+	add_custom_command( TARGET ${PROGNAME} POST_BUILD
+		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
+		COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
+		COMMAND cp -a $<TARGET_FILE_DIR:DigiDocQL>/../../../DigiDocQL.qlgenerator
+			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook )
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}> )
 	get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
@@ -170,9 +170,9 @@ if( APPLE )
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../.. --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
-		else
+			else
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../.. --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements\;
-		fi
+			fi
 	)
 	add_custom_target( productbuild DEPENDS ${PROGNAME}
 		COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app /Applications
