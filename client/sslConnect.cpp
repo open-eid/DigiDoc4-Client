@@ -39,10 +39,12 @@ public:
 	QString errorString;
 };
 
-SSLConnect::SSLConnect(QObject *parent)
+SSLConnect::SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject *parent)
 	: QNetworkAccessManager(parent)
 	, d(new Private)
 {
+	d->ssl.setPrivateKey(key);
+	d->ssl.setLocalCertificate(cert);
 	connect(this, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
 		QList<QSslError> ignore;
 		for(const QSslError &error: errors)
@@ -69,38 +71,32 @@ SSLConnect::~SSLConnect()
 QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 {
 	QJsonObject obj = Configuration::instance().object();
-	QString label;
-	QByteArray contentType;
+	QString label = tr("Loading Email info");
+	QByteArray contentType = "application/xml";
 	QNetworkRequest req;
+	req.setSslConfiguration(d->ssl);
+	req.setRawHeader("User-Agent", QString(QStringLiteral("%1/%2 (%3)"))
+		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	switch(type)
 	{
 	case MobileInfo:
 	{
 		label = tr("Loading Mobile info");
-		req = QNetworkRequest(
-			obj.value(QLatin1String("MID-URL")).toString(QStringLiteral("https://id.sk.ee/MIDInfoWS/")));
+		req.setUrl(obj.value(QLatin1String("MID-URL")).toString(QStringLiteral("https://id.sk.ee/MIDInfoWS/")));
 		req.setRawHeader( "Content-Type", "text/xml" );
 		req.setRawHeader( "SOAPAction", QByteArray() );
 		req.setRawHeader( "Connection", "close" );
-		contentType = "text/xml";
 		break;
 	}
 	case EmailInfo:
-		label = tr("Loading Email info");
-		req = QNetworkRequest(
-			obj.value(QLatin1String("EMAIL-REDIRECT-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.naita_suunamised")));
-		contentType = "application/xml";
+		req.setUrl(obj.value(QLatin1String("EMAIL-REDIRECT-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.naita_suunamised")));
 		break;
 	case ActivateEmails:
-		label = tr("Loading Email info");
-		req = QNetworkRequest(
-			obj.value(QLatin1String("EMAIL-ACTIVATE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.lisa_suunamine?=%1")).arg(value));
-		contentType = "application/xml";
+		req.setUrl(obj.value(QLatin1String("EMAIL-ACTIVATE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.lisa_suunamine?=%1")).arg(value));
 		break;
 	case PictureInfo:
 		label = tr("Downloading picture");
-		req = QNetworkRequest(
-			obj.value(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
+		req.setUrl(obj.value(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
 		contentType = "image/jpeg";
 		break;
 	default: return QByteArray();
@@ -110,9 +106,6 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 	QFrame popup (qApp->activeWindow(), Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
 	showPopup(popup, label);
 
-	req.setSslConfiguration(d->ssl);
-	req.setRawHeader("User-Agent", QString(QStringLiteral("%1/%2 (%3)"))
-		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	QNetworkReply *reply = nullptr;
 	if (type == MobileInfo)
 	{
@@ -122,10 +115,7 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 		reply = post(req, s.document());
 	}
 	else
-	{
-		req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 		reply = get(req);
-	}
 
 	QEventLoop e;
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
@@ -147,12 +137,6 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 }
 
 QString SSLConnect::errorString() const { return d->errorString; }
-
-void SSLConnect::setToken(const QSslCertificate &cert, const QSslKey &key)
-{
-	d->ssl.setPrivateKey(key);
-	d->ssl.setLocalCertificate(cert);
-}
 
 void SSLConnect::showPopup( QFrame &popup, const QString &labelText )
 {

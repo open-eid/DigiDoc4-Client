@@ -44,6 +44,8 @@ class QWin;
 #include <QtNetwork/QSslKey>
 
 #include <openssl/obj_mac.h>
+#include <openssl/ecdsa.h>
+#include <openssl/rsa.h>
 
 Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 
@@ -54,6 +56,20 @@ constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
 	return t;
 }
 #endif
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
+{
+	if(!r || !s)
+		return 0;
+	BN_clear_free(sig->r);
+	BN_clear_free(sig->s);
+	sig->r = r;
+	sig->s = s;
+	return 1;
+}
+#endif
+
 
 bool isMatchingType(const SslCertificate &cert)
 {
@@ -67,22 +83,22 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 {
 	QCardInfo *ci = new QCardInfo;
 
-	ci->country = c.toString("C");
+	ci->country = c.toString(QStringLiteral("C"));
 	ci->id = c.personalCode();
-	ci->isEResident = c.subjectInfo("O").contains("E-RESIDENT");
+	ci->isEResident = c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT"));
 	ci->loading = false;
 	ci->type = c.type();
 	ci->valid = c.isValid();
 
 	if(c.type() & SslCertificate::TempelType)
 	{
-		ci->fullName = c.toString("CN");
-		ci->cardType = "e-Seal";
+		ci->fullName = c.toString(QStringLiteral("CN"));
+		ci->cardType = QStringLiteral("e-Seal");
 	}
 	else
 	{
-		ci->fullName = c.toString("GN SN");
-		ci->cardType = c.type() & SslCertificate::DigiIDType ? "Digi ID" : "ID Card";
+		ci->fullName = c.toString(QStringLiteral("GN SN"));
+		ci->cardType = c.type() & SslCertificate::DigiIDType ? QStringLiteral("Digi ID") : QStringLiteral("ID Card");
 	}
 
 	return ci;
@@ -98,7 +114,63 @@ public:
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
 	QMap<QString, QSharedPointer<QCardInfo>> cache;
+
+	static QByteArray signData(int type, const QByteArray &dgst, Private *d);
+	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
+		unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
+	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
+		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
+
+#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+	RSA_METHOD		rsamethod = *RSA_get_default_method();
+	ECDSA_METHOD	*ecmethod = ECDSA_METHOD_new(nullptr);
+#else
+	RSA_METHOD		*rsamethod = RSA_meth_dup(RSA_get_default_method());
+	EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(EC_KEY_get_default_method());
+#endif
 };
+
+QByteArray QSigner::Private::signData(int type, const QByteArray &digest, Private *d)
+{
+#ifdef Q_OS_WIN
+	if(d->win)
+		return d->win->sign(type, digest);
+#endif
+	return d->pkcs11->sign(type, digest);
+}
+
+int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_len,
+		unsigned char *sigret, unsigned int *siglen, const RSA *rsa)
+{
+	QByteArray result = signData(type, QByteArray::fromRawData((const char*)m, int(m_len)), (Private*)RSA_get_app_data(rsa));
+	if(result.isEmpty())
+		return 0;
+	*siglen = (unsigned int)result.size();
+	memcpy(sigret, result.constData(), size_t(result.size()));
+	return 1;
+}
+
+ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
+		const BIGNUM *, const BIGNUM *, EC_KEY *eckey)
+{
+#if OPENSSL_VERSION_NUMBER < 0x10010000L
+	Private *d = (Private*)ECDSA_get_ex_data(eckey, 0);
+#else
+	Private *d = (Private*)EC_KEY_get_ex_data(eckey, 0);
+#endif
+	QByteArray result = signData(0, QByteArray::fromRawData((const char*)dgst, dgst_len), d);
+	if(result.isEmpty())
+		return nullptr;
+	QByteArray r = result.left(result.size()/2);
+	QByteArray s = result.right(result.size()/2);
+	ECDSA_SIG *sig = ECDSA_SIG_new();
+	ECDSA_SIG_set0(sig,
+		BN_bin2bn((const unsigned char*)r.data(), int(r.size()), nullptr),
+		BN_bin2bn((const unsigned char*)s.data(), int(s.size()), nullptr));
+	return sig;
+}
+
+
 
 using namespace digidoc;
 
@@ -106,9 +178,27 @@ QSigner::QSigner( ApiType api, QObject *parent )
 	: QThread(parent)
 	, d(new Private)
 {
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
+	d->rsamethod.name = "QSmartCard";
+	d->rsamethod.rsa_sign = Private::rsa_sign;
+	ECDSA_METHOD_set_name(d->ecmethod, const_cast<char*>("QSmartCard"));
+	ECDSA_METHOD_set_sign(d->ecmethod, Private::ecdsa_do_sign);
+	ECDSA_METHOD_set_app_data(d->ecmethod, d);
+#else
+	RSA_meth_set1_name(d->rsamethod, "QSmartCard");
+	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
+	typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
+		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
+	typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+	EC_KEY_sign sign = nullptr;
+	EC_KEY_sign_setup sign_setup = nullptr;
+	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
+	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
+#endif
+
 	d->api = api;
-	d->auth.setCard( "loading" );
-	d->sign.setCard( "loading" );
+	d->auth.setCard(QStringLiteral("loading"));
+	d->sign.setCard(QStringLiteral("loading"));
 	d->smartcard = new QSmartCard(parent);
 	connect(this, &QSigner::error, qApp, [](const QString &msg) {
 		qApp->showWarning(msg);
@@ -121,6 +211,12 @@ QSigner::~QSigner()
 	requestInterruption();
 	wait();
 	delete d->smartcard;
+#if OPENSSL_VERSION_NUMBER >= 0x10010000L
+	RSA_meth_free(d->rsamethod);
+	EC_KEY_METHOD_free(d->ecmethod);
+#else
+	ECDSA_METHOD_free(d->ecmethod);
+#endif
 	delete d;
 }
 
@@ -229,6 +325,66 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 	return !out.isEmpty() ? DecryptOK : DecryptFailed;
 }
 
+QSslKey QSigner::key() const
+{
+	if(!QCardLock::instance().exclusiveTryLock())
+		return QSslKey();
+
+#ifdef Q_OS_WIN
+	if(d->win)
+		d->win->selectCert(d->auth.cert());
+	else
+#endif
+	{
+		switch(QPKCS11::PinStatus status = d->pkcs11->login(d->auth))
+		{
+		case QPKCS11::PinOK: break;
+		case QPKCS11::PinIncorrect:
+		case QPKCS11::PinLocked:
+		default:
+			QCardLock::instance().exclusiveUnlock();
+			return QSslKey();
+		}
+	}
+
+	QSslKey key = d->auth.cert().publicKey();
+	if(!key.handle())
+	{
+		QCardLock::instance().exclusiveUnlock();
+		return key;
+	}
+	if (key.algorithm() == QSsl::Ec)
+	{
+		EC_KEY *ec = (EC_KEY*)key.handle();
+#if OPENSSL_VERSION_NUMBER < 0x10010000L
+		ECDSA_set_ex_data(ec, 0, d);
+		ECDSA_set_method(ec, d->ecmethod);
+#else
+		EC_KEY_set_ex_data(ec, 0, d);
+		EC_KEY_set_method(ec, d->ecmethod);
+#endif
+	}
+	else
+	{
+		RSA *rsa = (RSA*)key.handle();
+#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+		RSA_set_method(rsa, &d->rsamethod);
+		rsa->flags |= RSA_FLAG_SIGN_VER;
+#else
+		RSA_set_method(rsa, d->rsamethod);
+#endif
+		RSA_set_app_data(rsa, d);
+	}
+	return key;
+}
+
+void QSigner::logout()
+{
+	if(d->pkcs11)
+		d->pkcs11->logout();
+	QCardLock::instance().exclusiveUnlock();
+}
+
 void QSigner::reloadauth() const
 {
 	QEventLoop e;
@@ -254,9 +410,9 @@ void QSigner::reloadsign() const
 void QSigner::run()
 {
 	d->auth.clear();
-	d->auth.setCard( "loading" );
+	d->auth.setCard(QStringLiteral("loading"));
 	d->sign.clear();
-	d->sign.setCard( "loading" );
+	d->sign.setCard(QStringLiteral("loading"));
 
 	switch( d->api )
 	{
@@ -419,13 +575,19 @@ void QSigner::selectCard(const QString &card)
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
 {
+	#define throwException(msg, code) { \
+		Exception e(__FILE__, __LINE__, msg.toStdString()); \
+		e.setCode(code); \
+		throw e; \
+	}
+
 	if(!QCardLock::instance().exclusiveTryLock())
-		throwException( tr("Signing/decrypting is already in progress another window."), Exception::General, __LINE__ );
+		throwException(tr("Signing/decrypting is already in progress another window."), Exception::General);
 
 	if( !d->sign.cards().contains( d->sign.card() ) || d->sign.cert().isNull() )
 	{
 		QCardLock::instance().exclusiveUnlock();
-		throwException( tr("Signing certificate is not selected."), Exception::General, __LINE__ );
+		throwException(tr("Signing certificate is not selected."), Exception::General);
 	}
 
 	int type = NID_sha256;
@@ -443,18 +605,18 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		case QPKCS11::PinOK: break;
 		case QPKCS11::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
-			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINCanceled, __LINE__ );
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINCanceled);
 		case QPKCS11::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINIncorrect, __LINE__ );
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINIncorrect);
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::PINLocked, __LINE__ );
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINLocked);
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			throwException( tr("Failed to login token") + " " + QPKCS11::errorString( status ), Exception::General, __LINE__ );
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::General);
 		}
 
 		sig = d->pkcs11->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
@@ -469,7 +631,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		{
 			QCardLock::instance().exclusiveUnlock();
 			smartcard()->reload(); // QSmartCard should also know that PIN2 is blocked.
-			throwException(tr("Failed to login token"), Exception::PINCanceled, __LINE__);
+			throwException(tr("Failed to login token"), Exception::PINCanceled);
 		}
 	}
 #endif
@@ -477,16 +639,8 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	QCardLock::instance().exclusiveUnlock();
 	reloadsign();
 	if( sig.isEmpty() )
-		throwException( tr("Failed to sign document"), Exception::General, __LINE__ );
+		throwException(tr("Failed to sign document"), Exception::General);
 	return std::vector<unsigned char>( sig.constBegin(), sig.constEnd() );
-}
-
-void QSigner::throwException( const QString &msg, Exception::ExceptionCode code, int line ) const
-{
-	QString t = msg;
-	Exception e( __FILE__, line, t.toUtf8().constData() );
-	e.setCode( code );
-	throw e;
 }
 
 QSmartCard * QSigner::smartcard() const { return d->smartcard; }

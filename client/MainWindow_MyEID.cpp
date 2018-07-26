@@ -195,14 +195,9 @@ void MainWindow::activateEmail ()
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
 {
-	if( !validateCardError( QSmartCardData::Pin1Type, type, qApp->smartcard()->login( QSmartCardData::Pin1Type, this ) ) )
-		return QByteArray();
-
-	SSLConnect ssl;
-	ssl.setToken( qApp->smartcard()->data().authCert(), qApp->smartcard()->key() );
+	SSLConnect ssl(qApp->signer()->tokenauth().cert(), qApp->signer()->key());
 	QByteArray buffer = ssl.getUrl( type, param );
-	qApp->smartcard()->logout();
-
+	qApp->signer()->logout();
 	if( !ssl.errorString().isEmpty() )
 	{
 		switch( type )

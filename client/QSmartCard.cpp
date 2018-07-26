@@ -33,7 +33,6 @@
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QApplication>
 
-#include <openssl/obj_mac.h>
 #include <thread>
 
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
@@ -54,19 +53,6 @@ const QHash<QByteArray,QSmartCardData::CardVersion> QSmartCardDataPrivate::atrLi
 	{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_5}, /*ESTEID_V35_WARM_ATR*/
 	{"3BFE1800008031FE45803180664090A5102E03830F9000EF", QSmartCardData::VER_3_5}, /*UPDATER_TEST_CARDS*/
 };
-
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
-static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
-{
-	if(!r || !s)
-		return 0;
-	BN_clear_free(sig->r);
-	BN_clear_free(sig->s);
-	sig->r = r;
-	sig->s = s;
-	return 1;
-}
-#endif
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;
@@ -166,64 +152,6 @@ QHash<quint8,QByteArray> QSmartCardPrivate::parseFCI(const QByteArray &data)
 	return result;
 }
 
-QByteArray QSmartCardPrivate::sign(const QByteArray &dgst, QSmartCardPrivate *d)
-{
-	if(!d ||
-		!d->reader ||
-		!d->reader->transfer(d->SECENV1) ||
-		!d->reader->transfer(APDU("002241B8 02 8300"))) //Key reference, 8303801100
-		return QByteArray();
-	QByteArray cmd = APDU("0088000000"); //calc signature
-	cmd[4] = char(dgst.size());
-	cmd += dgst;
-	QPCSCReader::Result result = d->reader->transfer(cmd);
-	if(!result)
-		return QByteArray();
-	return result.data;
-}
-
-int QSmartCardPrivate::rsa_sign(int type, const unsigned char *m, unsigned int m_len,
-		unsigned char *sigret, unsigned int *siglen, const RSA *rsa)
-{
-	QByteArray data;
-	switch(type)
-	{
-	case NID_sha1: data += QByteArray::fromHex("3021300906052b0e03021a05000414"); break;
-	case NID_sha224: data += QByteArray::fromHex("302d300d06096086480165030402040500041c"); break;
-	case NID_sha256: data += QByteArray::fromHex("3031300d060960864801650304020105000420"); break;
-	case NID_sha384: data += QByteArray::fromHex("3041300d060960864801650304020205000430"); break;
-	case NID_sha512: data += QByteArray::fromHex("3051300d060960864801650304020305000440"); break;
-	default: break;
-	}
-	data += QByteArray::fromRawData((const char*)m, int(m_len));
-	QByteArray result = sign(data, (QSmartCardPrivate*)RSA_get_app_data(rsa));
-	if(result.isEmpty())
-		return 0;
-	*siglen = (unsigned int)result.size();
-	memcpy(sigret, result.constData(), size_t(result.size()));
-	return 1;
-}
-
-ECDSA_SIG* QSmartCardPrivate::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-		const BIGNUM *, const BIGNUM *, EC_KEY *eckey)
-{
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
-	QSmartCardPrivate *d = (QSmartCardPrivate*)ECDSA_get_ex_data(eckey, 0);
-#else
-	QSmartCardPrivate *d = (QSmartCardPrivate*)EC_KEY_get_ex_data(eckey, 0);
-#endif
-	QByteArray result = sign(QByteArray::fromRawData((const char*)dgst, dgst_len), d);
-	if(result.isEmpty())
-		return nullptr;
-	QByteArray r = result.left(result.size()/2);
-	QByteArray s = result.right(result.size()/2);
-	ECDSA_SIG *sig = ECDSA_SIG_new();
-	ECDSA_SIG_set0(sig,
-		BN_bin2bn((const unsigned char*)r.data(), int(r.size()), nullptr),
-		BN_bin2bn((const unsigned char*)s.data(), int(s.size()), nullptr));
-	return sig;
-}
-
 bool QSmartCardPrivate::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d)
 {
 	if(!reader->transfer(MASTER_FILE) ||
@@ -282,35 +210,11 @@ QSmartCard::QSmartCard(QObject *parent)
 :	QObject(parent)
 ,	d(new QSmartCardPrivate)
 {
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
-	d->rsamethod.name = "QSmartCard";
-	d->rsamethod.rsa_sign = QSmartCardPrivate::rsa_sign;
-	ECDSA_METHOD_set_name(d->ecmethod, const_cast<char*>("QSmartCard"));
-	ECDSA_METHOD_set_sign(d->ecmethod, QSmartCardPrivate::ecdsa_do_sign);
-	ECDSA_METHOD_set_app_data(d->ecmethod, d);
-#else
-	RSA_meth_set1_name(d->rsamethod, "QSmartCard");
-	RSA_meth_set_sign(d->rsamethod, QSmartCardPrivate::rsa_sign);
-	typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
-		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
-	typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
-	EC_KEY_sign sign = nullptr;
-	EC_KEY_sign_setup sign_setup = nullptr;
-	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
-	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, QSmartCardPrivate::ecdsa_do_sign);
-#endif
-
 	d->t.d->card = QStringLiteral("loading");
 }
 
 QSmartCard::~QSmartCard()
 {
-#if OPENSSL_VERSION_NUMBER >= 0x10010000L
-	RSA_meth_free(d->rsamethod);
-	EC_KEY_METHOD_free(d->ecmethod);
-#else
-	ECDSA_METHOD_free(d->ecmethod);
-#endif
 	delete d;
 }
 
@@ -362,36 +266,6 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 
 QSmartCardData QSmartCard::data() const { return d->t; }
 
-QSslKey QSmartCard::key() const
-{
-	QSslKey key = d->t.authCert().publicKey();
-	if(!key.handle())
-		return key;
-	if (key.algorithm() == QSsl::Ec)
-	{
-		EC_KEY *ec = (EC_KEY*)key.handle();
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
-		ECDSA_set_ex_data(ec, 0, d);
-		ECDSA_set_method(ec, d->ecmethod);
-#else
-		EC_KEY_set_ex_data(ec, 0, d);
-		EC_KEY_set_method(ec, d->ecmethod);
-#endif
-	}
-	else
-	{
-		RSA *rsa = (RSA*)key.handle();
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
-		RSA_set_method(rsa, &d->rsamethod);
-		rsa->flags |= RSA_FLAG_SIGN_VER;
-#else
-		RSA_set_method(rsa, d->rsamethod);
-#endif
-		RSA_set_app_data(rsa, d);
-	}
-	return key;
-}
-
 QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidget* parent)
 {
 	QScopedPointer<PinUnblock> p;
@@ -441,70 +315,6 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 			tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 	}
 	return unblock(type, parent, newPin, puk, title, textBody);
-}
-
-QSmartCard::ErrorType QSmartCard::login(QSmartCardData::PinType type, QWidget* parent)
-{
-	PinDialog::PinFlags flags = PinDialog::Pin1Type;
-	QSslCertificate cert;
-	switch(type)
-	{
-	case QSmartCardData::Pin1Type: flags = PinDialog::Pin1Type; cert = d->t.authCert(); break;
-	case QSmartCardData::Pin2Type: flags = PinDialog::Pin2Type; cert = d->t.signCert(); break;
-	default: return UnknownError;
-	}
-
-	QScopedPointer<PinPopup> p;
-	QByteArray pin;
-	if(!d->t.isPinpad())
-	{
-		p.reset(new PinPopup(flags, cert, nullptr, parent));
-		if(!p->exec())
-			return CancelError;
-		pin = p->text().toUtf8();
-	}
-	else
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), cert, nullptr, parent));
-
-	QCardLock::instance().exclusiveLock();
-	d->reader = d->connect(d->t.reader());
-	if(!d->reader)
-	{
-		QCardLock::instance().exclusiveUnlock();
-		return UnknownError;
-	}
-	QByteArray cmd = d->VERIFY;
-	cmd[3] = type;
-	cmd[4] = char(pin.size());
-	QPCSCReader::Result result;
-	if(d->t.isPinpad())
-	{
-		std::thread([&]{
-			Q_EMIT p->startTimer();
-			result = d->reader->transferCTL(cmd, true, d->language());
-			Q_EMIT p->finished(0);
-		}).detach();
-		p->exec();
-	}
-	else
-		result = d->reader->transfer(cmd + pin);
-	QSmartCard::ErrorType err = d->handlePinResult(d->reader.data(), result, false);
-	if(!result)
-	{
-		d->updateCounters(d->reader.data(), d->t.d);
-		d->reader.clear();
-		QCardLock::instance().exclusiveUnlock();
-	}
-	return err;
-}
-
-void QSmartCard::logout()
-{
-	if(d->reader.isNull())
-		return;
-	d->updateCounters(d->reader.data(), d->t.d);
-	d->reader.clear();
-	QCardLock::instance().exclusiveUnlock();
 }
 
 void QSmartCard::reload() { selectCard(d->t.card());  }
