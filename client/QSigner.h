@@ -53,6 +53,8 @@ public:
 	digidoc::X509Cert cert() const override;
 	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);
+	QSslKey key() const;
+	void logout();
 	std::vector<unsigned char> sign( const std::string &method,
 		const std::vector<unsigned char> &digest ) const override;
 	QSmartCard * smartcard() const;
@@ -73,7 +75,6 @@ private:
 	void reloadauth() const;
 	void reloadsign() const;
 	void run() override;
-	void throwException( const QString &msg, digidoc::Exception::ExceptionCode code, int line ) const;
 
 	class Private;
 	Private *d;

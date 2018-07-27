@@ -601,7 +601,7 @@ void MainWindow::convertToBDoc()
 
 void MainWindow::convertToCDoc()
 {
-	QString filename = FileUtil::create(QFileInfo(digiDoc->fileName()), ".cdoc", tr("crypto container"));
+	QString filename = FileUtil::create(QFileInfo(digiDoc->fileName()), QStringLiteral(".cdoc"), tr("crypto container"));
 	if(filename.isNull())
 		return;
 
@@ -614,9 +614,9 @@ void MainWindow::convertToCDoc()
 	else
 		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
 
-	auto cardData = qApp->smartcard()->data();
-	if(!cardData.isNull())
-		cryptoContainer->addKey(CKey(cardData.authCert()));
+	auto cardData = qApp->signer()->tokenauth();
+	if(!cardData.cert().isNull())
+		cryptoContainer->addKey(CKey(cardData.cert()));
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
@@ -1208,12 +1208,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 	if( photo )
 		return savePhoto();
 
-	// No action if card data is not loaded yet
-	if(qApp->smartcard()->data().isNull())
-		return;
-
 	QByteArray buffer = sendRequest( SSLConnect::PictureInfo );
-
 	if( buffer.isEmpty() )
 		return;
 
@@ -1308,17 +1303,17 @@ void MainWindow::savePhoto()
 		return;
 
 	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-	fileName += "/" + qApp->smartcard()->data().card();
+	fileName += "/" + qApp->signer()->tokenauth().card();
 	fileName = QFileDialog::getSaveFileName(this,
 		tr("Save photo"), fileName,
 		tr("Photo (*.jpg *.jpeg);;All Files (*)"));
 
 	if(fileName.isEmpty())
 		return;
-	QStringList exts = QStringList() << "jpg" << "jpeg";
+	static const QStringList exts{QStringLiteral("jpg"), QStringLiteral("jpeg")};
 	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
-		fileName.append(".jpg");
-	QByteArray pix = ui->version->property("PICTURE").value<QByteArray>();
+		fileName.append(QStringLiteral(".jpg"));
+	QByteArray pix = ui->version->property("PICTURE").toByteArray();
 	QFile f(fileName);
 	if(!f.open(QFile::WriteOnly) || f.write(pix) != pix.size())
 		showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));

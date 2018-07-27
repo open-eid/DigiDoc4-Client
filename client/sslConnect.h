@@ -37,12 +37,11 @@ public:
 		PictureInfo
 	};
 
-	explicit SSLConnect(QObject *parent = nullptr);
+	explicit SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject *parent = nullptr);
 	~SSLConnect();
 
 	QString errorString() const;
 	QByteArray getUrl(RequestType type, const QString &value = QString());
-	void setToken(const QSslCertificate &cert, const QSslKey &key);
 	void showPopup(QFrame &popup, const QString &labelText);
 
 private:

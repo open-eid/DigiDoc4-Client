@@ -125,9 +125,6 @@ public:
 
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
-	QSslKey key() const;
-	ErrorType login( QSmartCardData::PinType type, QWidget* parent );
-	void logout();
 	void reload();
 	void reloadCard(const QString &card, bool isCardId);
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
