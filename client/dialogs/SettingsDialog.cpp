@@ -57,6 +57,7 @@
 
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
+#include <shellapi.h>
 #include <QProcess>
 #endif
 

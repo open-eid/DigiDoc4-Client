@@ -25,6 +25,7 @@
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
+#undef UNICODE
 #include <Windows.h>
 #include <Winldap.h>
 #include <Winber.h>
