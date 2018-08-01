@@ -153,6 +153,8 @@ void SettingsDialog::initUI()
 
 #ifdef Q_OS_WIN
 	ui->cmbGeneralCheckUpdatePeriod->setFont(regularFont);
+	ui->cmbGeneralCheckUpdatePeriod->addItem(QString());
+	ui->cmbGeneralCheckUpdatePeriod->removeItem(ui->cmbGeneralCheckUpdatePeriod->count() - 1);
 #else
 	ui->lblGeneralCheckUpdatePeriod->hide();
 	ui->cmbGeneralCheckUpdatePeriod->hide();
@@ -433,10 +435,10 @@ void SettingsDialog::initFunctionality()
 			};
 			switch(index)
 			{
-			case 1: return runPrivileged("id-updater", "-daily");
-			case 2: return runPrivileged("id-updater", "-weekly");
-			case 3: return runPrivileged("id-updater", "-monthly");
-			case 4: return runPrivileged("id-updater", "-remove");
+			case 0: return runPrivileged("id-updater", "-daily");
+			case 1: return runPrivileged("id-updater", "-weekly");
+			case 2: return runPrivileged("id-updater", "-monthly");
+			case 3: return runPrivileged("id-updater", "-remove");
 			default: break;
 			}
 		});
