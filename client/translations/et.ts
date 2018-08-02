@@ -2374,7 +2374,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Documents (%1)</source>
-        <translation>Documendid (%1)</translation>
+        <translation>Dokumendid (%1)</translation>
     </message>
     <message>
         <source>Save file</source>
