@@ -21,6 +21,8 @@ Depends:
  fonts-liberation,
  ${shlibs:Depends},
  ${misc:Depends}
+Recommends:
+ awp
 Conflicts:
  libdigidocpp0 (<<3.0)
 Replaces:

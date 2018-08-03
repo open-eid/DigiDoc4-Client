@@ -134,7 +134,7 @@ void VerifyCert::update(bool showWarning)
 				DateTime(c.expiryDate().toLocalTime()).formatDate(QStringLiteral("dd. MMMM yyyy")));
 		if(leftDays <= 105 && !c.isNull())
 			cert << "</span>";
-		if(!isTempelType)
+		if(!isTempelType && cardData.version() != QSmartCardData::VER_IDEMIA)
 			cert << "<br />" << tr("key has been used %1 times", pinType == QSmartCardData::Pin1Type ? "pin1" : "pin2").arg(cardData.usageCount(pinType));
 	}
 	switch( pinType )
@@ -143,7 +143,7 @@ void VerifyCert::update(bool showWarning)
 		name = tr("Authentication certificate");
 		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN1");
 		if(isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()) || !isValidCert)
-			forgotPinText = QString();
+			forgotPinText.clear();
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
 							.arg(QStringLiteral("<a href='#pin1-forgotten'><span style='color:#75787B;'>"))
@@ -158,7 +158,7 @@ void VerifyCert::update(bool showWarning)
 		name = tr("Signing certificate");
 		changeBtn = isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2");
 		if(isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()) || !isValidCert)
-			forgotPinText = QString();
+			forgotPinText.clear();
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
 							.arg(QStringLiteral("<a href='#pin1-forgotten'><span style='color:#75787B;'>"))

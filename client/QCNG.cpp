@@ -76,7 +76,7 @@ void QCNG::Private::enumKeys( QHash<SslCertificate,QCNGCache> &cache, LPCWSTR pr
 		keyname = nullptr;
 
 		SslCertificate cert( prop( key, NCRYPT_CERTIFICATE_PROPERTY ), QSsl::Der );
-		c.guid = prop( h, NCRYPT_SMARTCARD_GUID_PROPERTY );
+		c.guid = prop(h, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed();
 		cache[cert] = c;
 		NCryptFreeObject( key );
 	}

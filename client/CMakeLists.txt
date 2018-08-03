@@ -136,6 +136,15 @@ if( APPLE )
 		COMMAND install_name_tool -change /Library/EstonianIDCard/lib/libcrypto.1.0.0.dylib @loader_path/../../../libcrypto.1.0.0.dylib
 			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
 	)
+	if(AWP_MODULE)
+		get_filename_component(AWP_PATH ${AWP_MODULE} PATH)
+		get_filename_component(AWP_PATH ${AWP_PATH} PATH)
+		add_custom_command(TARGET macdeployqt POST_BUILD
+			COMMAND cp -a ${AWP_PATH}/lib/* $<TARGET_FILE_DIR:${PROGNAME}>
+			COMMAND cp -a ${AWP_PATH}/*.xml $<TARGET_FILE_DIR:${PROGNAME}>/../Resources
+		)
+	endif()
+
 	add_custom_target( codesign DEPENDS ${PROGNAME}
 		COMMAND codesign -f -s \"$$SIGNCERT\"
 			$<TARGET_FILE_DIR:${PROGNAME}>/*.*

@@ -22,7 +22,6 @@
 #include <QObject>
 #include <QSharedDataPointer>
 
-template<class Key, class T> class QHash;
 class SslCertificate;
 class QSmartCardDataPrivate;
 class QSslKey;
@@ -32,7 +31,7 @@ class QSmartCardData
 public:
 	enum PersonalDataType
 	{
-		SurName = 0,
+		SurName = 1,
 		FirstName1,
 		FirstName2,
 		Sex,
@@ -59,14 +58,11 @@ public:
 	enum CardVersion
 	{
 		VER_INVALID = -1,
-		VER_1_0 = 0,
-		VER_1_0_2007,
-		VER_1_1,
 		VER_3_0,
 		VER_3_4,
-		VER_3_0_UPPED_TO_3_4,
 		VER_3_5,
 		VER_USABLEUPDATER,
+		VER_IDEMIA,
 		VER_HASUPDATER = 128
 	};
 
@@ -103,8 +99,6 @@ private:
 	friend class QSmartCardPrivate;
 };
 
-
-class QSmartCardPrivate;
 class QSmartCard: public QObject
 {
 	Q_OBJECT
@@ -127,11 +121,13 @@ public:
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	void reload();
-	void reloadCard(const QString &card, bool isCardId);
+	void reloadCard(const QString &card);
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false, QWidget* parent = nullptr );
 	ErrorType pinChange( QSmartCardData::PinType type, QWidget* parent = nullptr );
+
+	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
 
 signals:
 	void dataChanged();
@@ -140,9 +136,8 @@ private Q_SLOTS:
 	void selectCard( const QString &card );
 
 private:
-	bool readCardData(const QString &selectedReader);
-	
-	QSmartCardPrivate *d;
+	class Private;
+	Private *d;
 
 	friend class MainWindow;
 };

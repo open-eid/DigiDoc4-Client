@@ -380,6 +380,7 @@ bool QPKCS11::reload()
 		{ "/Library/OpenSC/lib/opensc-pkcs11.so", "3B7B940000806212515646696E454944" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
+		{ qApp->applicationDirPath() + "/libOcsCryptoki.dylib", "3BDB960080B1FE451F830012233F536549440F9000F1" }
 #elif defined(Q_OS_WIN)
 		{ "opensc-pkcs11.dll", QByteArray() },
 		{ "OTLvP11.dll", "3BDD18008131FE45904C41545649412D65494490008C" },
@@ -392,6 +393,7 @@ bool QPKCS11::reload()
 		{ "/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000" },
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
+		{ "/usr/local/AWP/lib/libOcsCryptoki.so", "3BDB960080B1FE451F830012233F536549440F9000F1" }
 #endif
 	};
 #ifdef Q_OS_MAC
