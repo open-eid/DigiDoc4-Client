@@ -315,7 +315,7 @@ void SettingsDialog::checkConnection()
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	saveProxy();
 	CheckConnection connection;
-	if(!connection.check("http://ocsp.sk.ee"))
+	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
 		Application::restoreOverrideCursor();
 		FadeInNotification* notification = new FadeInNotification(this, 

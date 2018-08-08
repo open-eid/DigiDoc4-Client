@@ -112,10 +112,6 @@
         <translation>Kontrolli proxy kasutajanime ja parooli</translation>
     </message>
     <message>
-        <source>Check internet connection</source>
-        <translation>Kontrolli Interneti-ühendust</translation>
-    </message>
-    <message>
         <source>Cannot connect to certificate status service!</source>
         <translation>Kehtivuskinnitusteenus ei ole kättesaadav!</translation>
     </message>
@@ -2881,6 +2877,10 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>Redundant certificates have been successfully removed.</source>
         <translation>Üleliigsed sertifikaadid edukalt eemaldatud.</translation>
+    </message>
+    <message>
+        <source>Check internet connection</source>
+        <translation>Kontrolli internetiühendust</translation>
     </message>
 </context>
 
