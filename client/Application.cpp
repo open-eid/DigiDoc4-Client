@@ -905,6 +905,7 @@ void Application::showClient(const QStringList &params, bool crypto)
 		}
 
 		w = new MainWindow();
+#ifdef Q_OS_MAC
 		QWidgetList list = topLevelWidgets();
 		for(int i = list.size() - 1; i >= 0; --i)
 		{
@@ -912,6 +913,7 @@ void Application::showClient(const QStringList &params, bool crypto)
 			if(prev && prev != w && prev->isVisible())
 				w->move(prev->geometry().topLeft() + QPoint(20, 20));
 		}
+#endif
 	}
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod( w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto) );
