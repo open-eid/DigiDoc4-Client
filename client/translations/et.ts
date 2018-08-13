@@ -39,6 +39,24 @@
 
 
 <context>
+    <name>Accordion</name>
+
+    <message>
+        <source>PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL</translation>
+    </message>
+    <message>
+        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
+        <translation>EESTI.EE POSTI SUUNAMINE</translation>
+    </message>
+    <message>
+        <source>MY OTHER eID's</source>
+        <translation>MINU TEISED eID-D (DEMOVERSIOON)</translation>
+    </message>
+</context>
+
+
+<context>
     <name>AddRecipients</name>
 
     <message>
@@ -1032,24 +1050,6 @@ Rohkem infot leiate siit:</translation>
 
 
 <context>
-    <name>Accordion</name>
-
-    <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN/PUK KOODID JA SERTIFIKAATIDE KONTROLL</translation>
-    </message>
-    <message>
-        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>EESTI.EE POSTI SUUNAMINE</translation>
-    </message>
-    <message>
-        <source>MY OTHER eID's</source>
-        <translation>MINU TEISED eID-D (DEMOVERSIOON)</translation>
-    </message>
-</context>
-
-
-<context>
     <name>CardWidget</name>
 
     <message>
@@ -1760,6 +1760,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>Soovin allkirjastada Leedu, Läti ID-kaardiga</translation>
+    </message>
+    <message>
+        <source>Restart now</source>
+        <translation>Taaskäivita rakendus</translation>
     </message>
 
     <message>
