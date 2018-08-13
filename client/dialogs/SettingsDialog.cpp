@@ -160,6 +160,7 @@ void SettingsDialog::initUI()
 	ui->cmbGeneralCheckUpdatePeriod->hide();
 #endif
 	ui->chkGeneralTslRefresh->setFont(regularFont);
+	ui->tokenBackend->setFont(regularFont);
 
 	// pageSigning
 	ui->lblSigningFileType->setFont(headerFont);
