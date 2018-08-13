@@ -28,8 +28,8 @@
         <translation>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Update your signing software. Download and install new ID-software from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Update your signing software. Download and install new ID-software from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372)&#160;666&#160;8888.</translation>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
+        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372)&#160;666&#160;8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -353,16 +353,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>FileDialog</name>
-
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
-    </message>
-</context>
-
-
-<context>
     <name>PageIcon</name>
 
     <message>
@@ -498,6 +488,17 @@ The Information System Authority does not retain information regarding the files
         <translation>Expired</translation>
     </message>
 </context>
+
+
+<context>
+    <name>FileDialog</name>
+
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+    </message>
+</context>
+
 
 <context>
     <name>FileList</name>
