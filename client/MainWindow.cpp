@@ -481,13 +481,13 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 		if(create)
 		{
-			QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
-			QString defaultDir = Settings().value("Client/DefaultDir").toString();
-			QString filename = FileUtil::createNewFileName(files[0], QString(".%1").arg(ext), tr("signature container"), defaultDir);
+			QString ext = Settings(qApp->applicationName()).value(QStringLiteral("Client/Type"), "bdoc").toString();
+			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+			QString filename = FileUtil::createNewFileName(files[0], QStringLiteral(".%1").arg(ext), tr("signature container"), defaultDir);
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
-				for(auto file: files)
+				for(const auto &file: files)
 					signatureContainer->documentModel()->addFile(file);
 				navigate = true;
 			}
@@ -509,16 +509,13 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 		if(create)
 		{
-			QString defaultDir = Settings().value("Client/DefaultDir").toString();
-			QString filename = FileUtil::createNewFileName(files[0], ".cdoc", tr("crypto container"), defaultDir);
+			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+			QString filename = FileUtil::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
 			if(!filename.isNull())
 			{
 				cryptoContainer->clear(filename);
-				for(auto file: files)
+				for(const auto &file: files)
 					cryptoContainer->documentModel()->addFile(file);
-				auto authCert = qApp->signer()->tokenauth().cert();
-				if(!authCert.isNull())
-					cryptoContainer->addKey(CKey(authCert));
 				navigate = true;
 			}
 		}
@@ -1607,7 +1604,7 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 	}
 }
 
-void MainWindow::updateKeys(QList<CKey> keys)
+void MainWindow::updateKeys(const QList<CKey> &keys)
 {
 	if(!cryptoDoc)
 		return;
