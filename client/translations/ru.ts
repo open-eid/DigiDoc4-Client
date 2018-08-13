@@ -28,7 +28,7 @@
         <translation>Срок действительности справки доступа истекает %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Update your signing software. Download and install new ID-software from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 6773377.</source>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
         <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372)&#160;666&#160;8888.</translation>
     </message>
     <message>
@@ -353,16 +353,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>FileDialog</name>
-
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
-    </message>
-</context>
-
-
-<context>
     <name>PageIcon</name>
 
     <message>
@@ -496,6 +486,16 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Expired</source>
         <translation>Недействителен</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FileDialog</name>
+
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
     </message>
 </context>
 

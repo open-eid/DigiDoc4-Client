@@ -28,7 +28,7 @@
         <translation>Juurdepääsutõend aegub %1. Juurdepääsutõendi uuendamiseks pöörduge palun oma asutuse IT-meeskonna poole. Täiendav informatsioon: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Update your signing software. Download and install new ID-software from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
         <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372)&#160;666&#160;8888. </translation>
     </message>
     <message>
@@ -353,16 +353,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
-    <name>FileDialog</name>
-
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
-    </message>
-</context>
-
-
-<context>
     <name>PageIcon</name>
 
     <message>
@@ -496,6 +486,16 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Expired</source>
         <translation>Aegunud</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FileDialog</name>
+
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
     </message>
 </context>
 

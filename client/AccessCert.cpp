@@ -305,9 +305,9 @@ bool AccessCert::validate()
 	else if(!c.isValid() || c.expiryDate() < QDateTime::currentDateTime().addDays(8))
 	{
 		showWarning( tr(
-			"Update your signing software. Download and install new ID-software from "
-			"<a href=\"http://www.id.ee\">www.id.ee</a>. Additional info is available "
-			"ID-helpline (+372) 666 8888.") );
+			"Your signing software needs an upgrade. Please update your ID software, "
+			"which you can get from <a href=\"http://www.id.ee\">www.id.ee</a>. "
+			"Additional information is available at ID-helpline (+372) 666 8888.") );
 		return c.isValid();
 	}
 	else if(count(date) >= 50)
