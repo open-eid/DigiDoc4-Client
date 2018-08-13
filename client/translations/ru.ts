@@ -39,6 +39,68 @@
 
 
 <context>
+    <name>AddRecipients</name>
+
+    <message>
+        <source>Cancel</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>ПОДТВЕРДИТЬ</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>СЕРТИФИКАТ С КАРТЫ</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>СЕРТИФИКАТ ИЗ ФАЙЛА</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Не удалось прочитать сертификат</translation>
+    </message>
+    <message>
+        <source>This certificate cannot be used for encryption</source>
+        <translation>Данным сертификатом нельзя зашифровать</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid!</source>
+        <translation>Личный код недействителен!</translation>
+    </message>
+    <message>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
+        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи (+372)&#160;666&#160;8888.</translation>
+    </message>
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Сертификаты (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
+        <translation>Вы уверены, что хотите использовать для зашифровки сертификат, который просрочился %1?&lt;br /&gt;&lt;br /&gt;В случае, когда расшифровщик обновит сертификат, расшифровка будет невозможна.</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
+        <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
+    </message>
+</context>
+
+
+<context>
     <name>Application</name>
 
     <message>
@@ -314,68 +376,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>My eID</source>
         <translation>Мой eID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>AddRecipients</name>
-
-    <message>
-        <source>Cancel</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>ПОДТВЕРДИТЬ</translation>
-    </message>
-    <message>
-        <source>From card</source>
-        <translation>СЕРТИФИКАТ С КАРТЫ</translation>
-    </message>
-    <message>
-        <source>From file</source>
-        <translation>СЕРТИФИКАТ ИЗ ФАЙЛА</translation>
-    </message>
-    <message>
-        <source>From history</source>
-        <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Не удалось прочитать сертификат</translation>
-    </message>
-    <message>
-        <source>This certificate cannot be used for encryption</source>
-        <translation>Данным сертификатом нельзя зашифровать</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid!</source>
-        <translation>Личный код недействителен!</translation>
-    </message>
-    <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи (+372)&#160;666&#160;8888.</translation>
-    </message>
-    <message>
-        <source>Certificates (*.cer *.crt *.pem)</source>
-        <translation>Сертификаты (*.cer *.crt *.pem)</translation>
-    </message>
-    <message>
-        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
-        <translation>Вы уверены, что хотите использовать для зашифровки сертификат, который просрочился %1?&lt;br /&gt;&lt;br /&gt;В случае, когда расшифровщик обновит сертификат, расшифровка будет невозможна.</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
-        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
-        <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
     </message>
 </context>
 
@@ -1753,6 +1753,11 @@ Kонтрольный код: %1</translation>
         <source>Default file type</source>
         <translation>Формат файла по умолчанию</translation>
     </message>
+    <message>
+        <source>I would like to sign with Lithuanian, Latvian ID-card</source>
+        <translation>Желаю подписывать ИД-картами Латвии и Литвы</translation>
+    </message>
+
     <message>
         <source>ASiC-E – international digital signature format that will be used across European countries
 </source>

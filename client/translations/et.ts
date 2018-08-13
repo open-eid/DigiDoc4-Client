@@ -39,6 +39,68 @@
 
 
 <context>
+    <name>AddRecipients</name>
+
+    <message>
+        <source>Cancel</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>KINNITA</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>LISA SERTIFIKAAT KAARDILT</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>LISA SERTIFIKAAT FAILIST</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>VIIMATI LISATUD</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Sertifikaadi lugemine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>This certificate cannot be used for encryption</source>
+        <translation>Selle sertifikaadiga ei saa krüpteerida</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid!</source>
+        <translation>Isikukood pole korrektne!</translation>
+    </message>
+    <message>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista (+372)&#160;666&#160;8888.</translation>
+    </message>
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
+        <translation>Kas oled kindel, et soovid kasutada krüpteerimiseks sertifikaati, mis aegus %1?&lt;br /&gt;&lt;br /&gt;Juhul, kui dekrüpteerija on oma sertifikaate uuendanud, ei ole dekrüpteerimine võimalik.</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
+        <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
+    </message>
+</context>
+
+
+<context>
     <name>Application</name>
 
     <message>
@@ -314,68 +376,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>My eID</source>
         <translation>Minu eID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>AddRecipients</name>
-
-    <message>
-        <source>Cancel</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>KINNITA</translation>
-    </message>
-    <message>
-        <source>From card</source>
-        <translation>LISA SERTIFIKAAT KAARDILT</translation>
-    </message>
-    <message>
-        <source>From file</source>
-        <translation>LISA SERTIFIKAAT FAILIST</translation>
-    </message>
-    <message>
-        <source>From history</source>
-        <translation>VIIMATI LISATUD</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Sertifikaadi lugemine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>This certificate cannot be used for encryption</source>
-        <translation>Selle sertifikaadiga ei saa krüpteerida</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid!</source>
-        <translation>Isikukood pole korrektne!</translation>
-    </message>
-    <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista (+372)&#160;666&#160;8888.</translation>
-    </message>
-    <message>
-        <source>Certificates (*.cer *.crt *.pem)</source>
-        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
-    </message>
-    <message>
-        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
-        <translation>Kas oled kindel, et soovid kasutada krüpteerimiseks sertifikaati, mis aegus %1?&lt;br /&gt;&lt;br /&gt;Juhul, kui dekrüpteerija on oma sertifikaate uuendanud, ei ole dekrüpteerimine võimalik.</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
-        <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
     </message>
 </context>
 
@@ -1756,6 +1756,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>Select the default directory</source>
         <translation>Vali vaikimisi kataloog</translation>
+    </message>
+    <message>
+        <source>I would like to sign with Lithuanian, Latvian ID-card</source>
+        <translation>Soovin allkirjastada Leedu, Läti ID-kaardiga</translation>
     </message>
 
     <message>

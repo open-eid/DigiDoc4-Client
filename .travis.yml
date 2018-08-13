@@ -78,3 +78,4 @@ deploy:
   acl: public_read
   on:
     branch: master
+    condition: $TRAVIS_REPO_SLUG = "open-eid/DigiDoc4-Client"
