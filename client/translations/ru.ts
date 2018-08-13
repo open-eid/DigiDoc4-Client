@@ -39,6 +39,24 @@
 
 
 <context>
+    <name>Accordion</name>
+
+    <message>
+        <source>PIN/PUK CODES AND CERTIFICATES</source>
+        <translation>PIN/PUK И СЕРТИФИКАТЫ</translation>
+    </message>
+    <message>
+        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
+        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
+    </message>
+    <message>
+        <source>MY OTHER eID's</source>
+        <translation>МОИ ДРУГИЕ eID (ДЕМОНСТРАЦИЯ)</translation>
+    </message>
+</context>
+
+
+<context>
     <name>AddRecipients</name>
 
     <message>
@@ -1037,24 +1055,6 @@ Learn more info here:</source>
 
 
 <context>
-    <name>Accordion</name>
-
-    <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN/PUK И СЕРТИФИКАТЫ</translation>
-    </message>
-    <message>
-        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
-    </message>
-    <message>
-        <source>MY OTHER eID's</source>
-        <translation>МОИ ДРУГИЕ eID (ДЕМОНСТРАЦИЯ)</translation>
-    </message>
-</context>
-
-
-<context>
     <name>CardWidget</name>
 
     <message>
@@ -1756,6 +1756,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>Желаю подписывать ИД-картами Латвии и Литвы</translation>
+    </message>
+    <message>
+        <source>Restart now</source>
+        <translation>Начать заново</translation>
     </message>
 
     <message>
