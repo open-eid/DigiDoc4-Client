@@ -39,6 +39,68 @@
 
 
 <context>
+    <name>AddRecipients</name>
+
+    <message>
+        <source>Cancel</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>Confirm</source>
+        <translation>CONFIRM</translation>
+    </message>
+    <message>
+        <source>From card</source>
+        <translation>CERTIFICATE FROM CARD</translation>
+    </message>
+    <message>
+        <source>From file</source>
+        <translation>CERTIFICATE FROM FILE</translation>
+    </message>
+    <message>
+        <source>From history</source>
+        <translation>LATEST USED CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Failed to read certificate</translation>
+    </message>
+    <message>
+        <source>This certificate cannot be used for encryption</source>
+        <translation>This certificate cannot be used for encryption</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid!</source>
+        <translation>Personal code is not valid!</translation>
+    </message>
+    <message>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
+        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call (+372)&#160;666&#160;8888.</translation>
+    </message>
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
+        <translation>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
+    <message>
+        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
+        <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
+    </message>
+</context>
+
+
+<context>
     <name>Application</name>
 
     <message>
@@ -314,68 +376,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>My eID</source>
         <translation>My eID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>AddRecipients</name>
-
-    <message>
-        <source>Cancel</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation>CONFIRM</translation>
-    </message>
-    <message>
-        <source>From card</source>
-        <translation>CERTIFICATE FROM CARD</translation>
-    </message>
-    <message>
-        <source>From file</source>
-        <translation>CERTIFICATE FROM FILE</translation>
-    </message>
-    <message>
-        <source>From history</source>
-        <translation>LATEST USED CERTIFICATE</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Failed to read certificate</translation>
-    </message>
-    <message>
-        <source>This certificate cannot be used for encryption</source>
-        <translation>This certificate cannot be used for encryption</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid!</source>
-        <translation>Personal code is not valid!</translation>
-    </message>
-    <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call (+372)&#160;666&#160;8888.</translation>
-    </message>
-    <message>
-        <source>Certificates (*.cer *.crt *.pem)</source>
-        <translation>Certificates (*.cer *.crt *.pem)</translation>
-    </message>
-    <message>
-        <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
-        <translation>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>YES</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>NO</translation>
-    </message>
-    <message>
-        <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
-        <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
     </message>
 </context>
 
@@ -1748,6 +1748,10 @@ Control code: %1</translation>
     <message>
         <source>Select the default directory</source>
         <translation>Select the default directory</translation>
+    </message>
+    <message>
+        <source>I would like to sign with Lithuanian, Latvian ID-card</source>
+        <translation>I would like to sign with Lithuanian, Latvian ID-card</translation>
     </message>
 
     <message>
