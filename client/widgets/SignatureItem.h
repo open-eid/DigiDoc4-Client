@@ -20,16 +20,9 @@
 #pragma once
 
 #include "common_enums.h"
-#include "DigiDoc.h"
 #include "widgets/Item.h"
 
-#include <memory>
-
-namespace Ui {
-class SignatureItem;
-}
-
-class QFontMetrics;
+class DigiDocSignature;
 
 class SignatureItem : public Item
 {
@@ -37,7 +30,7 @@ class SignatureItem : public Item
 
 public:
 	explicit SignatureItem(const DigiDocSignature &s, ria::qdigidoc4::ContainerState state, bool isSupported, QWidget *parent = nullptr);
-	~SignatureItem();
+	~SignatureItem() override;
 
 	ria::qdigidoc4::WarningType getError() const;
 	QString id() const override;
@@ -48,27 +41,15 @@ public slots:
 	void details() override;
 
 protected:
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
 	void changeEvent(QEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	bool eventFilter(QObject *o, QEvent *e) override;
 
 private:
-	void changeNameHeight();
 	void init();
 	QString red(const QString &text);
 	void removeSignature();
-	void setIcon(const QString &icon, int width = 17, int height = 20);
 
-	Ui::SignatureItem *ui;
-	DigiDocSignature signature;
-
-	bool enlarged;
-	bool invalid;
-	int nameWidth;
-	int reservedWidth;
-	ria::qdigidoc4::WarningType error;
-	QString name;
-	QString serial;
-	QString statusHtml;
-	std::unique_ptr<QFontMetrics> nameMetrics;
+	class Private;
+	Private *ui;
 };
