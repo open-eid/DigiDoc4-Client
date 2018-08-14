@@ -988,9 +988,9 @@ void Application::waitForTSL( const QString &file )
 	p.open();
 	QTimer t;
 	connect( &t, &QTimer::timeout, [&](){
+		if(p.value() + 1 == p.maximum())
+			p.setValue(0);
 		p.setValue( p.value() + 1 );
-		if( p.value() == p.maximum() )
-			p.reset();
 		t.start( 100 );
 	});
 	t.start( 100 );
