@@ -181,6 +181,24 @@
 
 
 <context>
+    <name>CardWidget</name>
+
+    <message>
+        <source>ID card in reader</source>
+        <translation>Lugejas on ID-kaart</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>Lugejas on %1</translation>
+    </message>
+    <message>
+        <source>LOAD</source>
+        <translation>LAADI</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CheckConnection</name>
 
     <message>
@@ -1050,24 +1068,6 @@ Rohkem infot leiate siit:</translation>
 
 
 <context>
-    <name>CardWidget</name>
-
-    <message>
-        <source>ID card in reader</source>
-        <translation>Lugejas on ID-kaart</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>Lugejas on %1</translation>
-    </message>
-    <message>
-        <source>LOAD</source>
-        <translation>LAADI</translation>
-    </message>
-</context>
-
-
-<context>
     <name>FirstRun</name>
 
     <message>
@@ -1171,8 +1171,8 @@ Rohkem infot leiate siit:</translation>
         <translation>Lohista krüpteeritav fail oma arvutist DigiDoc rakendusse või vali fail kettalt. Võid lohistada või valida ka mitu faili korraga.</translation>
     </message>
     <message>
-        <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
-        <translation>Vali inimesed, kes saavad faili avada. Adressaa&#173;tide listi oled Sina juba lisatud, et saaksid ka ise oma krüpteeritud faili avada.</translation>
+        <source>Select people who can open the container.</source>
+        <translation>Vali inimesed, kes saavad faili avada.</translation>
     </message>
     <message>
         <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>

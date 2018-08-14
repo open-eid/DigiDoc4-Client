@@ -181,6 +181,24 @@
 
 
 <context>
+    <name>CardWidget</name>
+
+    <message>
+        <source>ID card in reader</source>
+        <translation>ID-card in card reader</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>%1 in card reader</translation>
+    </message>
+    <message>
+        <source>LOAD</source>
+        <translation>LOAD</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CheckConnection</name>
 
     <message>
@@ -1056,24 +1074,6 @@ Learn more info here:</translation>
 
 
 <context>
-    <name>CardWidget</name>
-
-    <message>
-        <source>ID card in reader</source>
-        <translation>ID-card in card reader</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>%1 in card reader</translation>
-    </message>
-    <message>
-        <source>LOAD</source>
-        <translation>LOAD</translation>
-    </message>
-</context>
-
-
-<context>
     <name>FirstRun</name>
 
     <message>
@@ -1177,8 +1177,8 @@ Learn more info here:</translation>
         <translation>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</translation>
     </message>
     <message>
-        <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
-        <translation>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</translation>
+        <source>Select people who can open the container.</source>
+        <translation>Select people who can open the container.</translation>
     </message>
     <message>
         <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>

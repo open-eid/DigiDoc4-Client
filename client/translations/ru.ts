@@ -181,6 +181,25 @@
 
 
 <context>
+    <name>CardWidget</name>
+
+    <message>
+        <source>ID card in reader</source>
+        <translation>В считывателе ID-карта</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>В считывателе %1</translation>
+    </message>
+    <message>
+        <source>LOAD</source>
+        <translation>ЗАГРУ
+ЗИТЬ</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CheckConnection</name>
 
     <message>
@@ -1055,25 +1074,6 @@ Learn more info here:</source>
 
 
 <context>
-    <name>CardWidget</name>
-
-    <message>
-        <source>ID card in reader</source>
-        <translation>В считывателе ID-карта</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>В считывателе %1</translation>
-    </message>
-    <message>
-        <source>LOAD</source>
-        <translation>ЗАГРУ
-ЗИТЬ</translation>
-    </message>
-</context>
-
-
-<context>
     <name>FirstRun</name>
 
     <message>
@@ -1177,8 +1177,8 @@ Learn more info here:</source>
         <translation>Для шифрования данных выберите получа&#173;теля. Перетащите файл, который нужно зашифровать, с вашего компьютера в приложение или выберите файл с диска. Одновременно можно выбирать несколько файлов.</translation>
     </message>
     <message>
-        <source>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</source>
-        <translation>Выберите людей, которые смогут открыть контейнер. Вы добавляетесь в список получателей по умолчанию, чтобы вы также могли открыть свой зашифрованный контейнер.</translation>
+        <source>Select people who can open the container.</source>
+        <translation>Выберите людей, которые смогут открыть контейнер.</translation>
     </message>
     <message>
         <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
