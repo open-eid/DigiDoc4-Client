@@ -1456,7 +1456,7 @@ color: #353739;
 line-height: 16px;</string>
      </property>
      <property name="text">
-      <string>Select people who can open the container. You have already been added to the address list by default so that you can also open your encrypted container.</string>
+      <string>Select people who can open the container.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
