@@ -201,7 +201,7 @@ void SettingsDialog::initUI()
 	ui->txtProxyPassword->setFont(regularFont);
 
 	// pageDiagnostics
-	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
+	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), ui->structureFunds);
 	structureFunds->resize(ui->structureFunds->width(), ui->structureFunds->height());
 	structureFunds->show();
 	ui->contact->setFont(regularFont);
@@ -242,7 +242,7 @@ void SettingsDialog::initUI()
 		package = "<br />" + tr("Base version:") + " " + packages.first();
 #endif
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
-		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
+		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE), package ) );
 
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
@@ -377,7 +377,7 @@ void SettingsDialog::retranslate(const QString& lang)
 		package = "<br />" + tr("Base version:") + " " + packages.first();
 #endif
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
-		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), BUILD_DATE, package ) );
+		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE), package ) );
 	updateCert();
 	updateDiagnostics();
 }
@@ -495,7 +495,7 @@ void SettingsDialog::initFunctionality()
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	switch(Settings(qApp->applicationName()).value("Client/proxyConfig", 0 ).toInt())
+	switch(Settings(qApp->applicationName()).value(QStringLiteral("Client/proxyConfig"), 0).toInt())
 	{
 	case 1:
 		ui->rdProxySystem->setChecked( true );
@@ -511,7 +511,7 @@ void SettingsDialog::initFunctionality()
 	updateProxy();
 	ui->chkIgnoreAccessCert->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
 
-	ui->chkShowPrintSummary->setChecked(Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool());
+	ui->chkShowPrintSummary->setChecked(Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), "false").toBool());
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
 
 	updateDiagnostics();
@@ -526,9 +526,9 @@ void SettingsDialog::updateCert()
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			QString(tr("Issued to: %1<br />Valid to: %2 %3"))
 				.arg(CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)))
-				.arg( c.expiryDate().toString("dd.MM.yyyy") )
+				.arg(c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")))
 				.arg( !SslCertificate(c).isValid() ? 
-					"<font color='red'>(" + tr("expired") + ")</font>" : "" ) );
+					"<font color='red'>(" + tr("expired") + ")</font>" : QString()));
 	}
 	else
 	{
@@ -543,9 +543,9 @@ void SettingsDialog::updateCert()
 
 void SettingsDialog::selectLanguage()
 {
-	if(Settings::language() == "en")
+	if(Settings::language() == QStringLiteral("en"))
 		ui->rdGeneralEnglish->setChecked(true);
-	else if(Settings::language() == "ru")
+	else if(Settings::language() == QStringLiteral("ru"))
 		ui->rdGeneralRussian->setChecked(true);
 	else
 		ui->rdGeneralEstonian->setChecked(true);
@@ -592,15 +592,15 @@ void SettingsDialog::saveProxy()
 {
 	if(ui->rdProxyNone->isChecked())
 	{
-		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 0);
+		Settings(qApp->applicationName()).setValue(QStringLiteral("Client/proxyConfig"), 0);
 	}
 	else if(ui->rdProxySystem->isChecked())
 	{
-		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 1);
+		Settings(qApp->applicationName()).setValue(QStringLiteral("Client/proxyConfig"), 1);
 	}
 	else if(ui->rdProxyManual->isChecked())
 	{
-		Settings(qApp->applicationName()).setValue("Client/proxyConfig", 2);
+		Settings(qApp->applicationName()).setValue(QStringLiteral("Client/proxyConfig"), 2);
 	}
 
 	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
@@ -637,13 +637,13 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 
 void SettingsDialog::openDirectory()
 {
-	QString dir = Settings().value( "Client/DefaultDir" ).toString();
+	QString dir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
 	dir = FileDialog::getExistingDirectory( this, tr("Select folder"), dir );
 
 	if(!dir.isEmpty())
 	{
 		ui->rdGeneralSpecifyDirectory->setChecked( true );
-		Settings().setValue( "Client/DefaultDir", dir );
+		Settings().setValue(QStringLiteral("Client/DefaultDir"), dir);
 		ui->txtGeneralDirectory->setText( dir );
 	}
 }
@@ -686,7 +686,7 @@ void SettingsDialog::updateDiagnostics()
 		QApplication::restoreOverrideCursor();
 	});
 	QThreadPool::globalInstance()->start( worker );
-	if(Settings(QSettings::SystemScope).value("disableSave", false).toBool())
+	if(Settings(QSettings::SystemScope).value(QStringLiteral("disableSave"), false).toBool())
 	{
 		ui->btnNavSaveReport->hide();
 	}
@@ -694,7 +694,7 @@ void SettingsDialog::updateDiagnostics()
 
 void SettingsDialog::installCert()
 {
-	QString certpath = "";
+	QString certpath;
 
 	QFile file( !certpath.isEmpty() ? certpath :
 		FileDialog::getOpenFileName( this, tr("Select server access certificate"),
@@ -777,12 +777,12 @@ int SettingsDialog::exec()
 
 void SettingsDialog::saveDiagnostics()
 {
-	QString filename = FileDialog::getSaveFileName( this, tr("Save as"), QString( "%1/%2_diagnostics.txt")
+	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_diagnostics.txt")
 		.arg( QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName() ),
 		tr("Text files (*.txt)") );
 	if( filename.isEmpty() )
 		return;
 	QFile f( filename );
-	if( !f.open( QIODevice::WriteOnly ) || !f.write( ui->txtDiagnostics->toPlainText().toUtf8() ) )
+	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(ui->txtDiagnostics->toPlainText().toUtf8()))
 		QMessageBox::warning( this, tr("Error occurred"), tr("Failed write to file!") );
 }
