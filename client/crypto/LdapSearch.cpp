@@ -104,8 +104,7 @@ void LdapSearch::setLastError( const QString &msg, int err )
 	{
 	case LDAP_UNAVAILABLE:
 	case LDAP_SERVER_DOWN:
-		res += QLatin1String("<br />");
-		res += tr("LDAP server is unavailable.");
+		res = tr("LDAP server is unavailable.");
 		break;
 	default:
 		details = tr( "Error Code: %1 (%2)" ).arg( err ).arg( ldap_err2string( err ) );
