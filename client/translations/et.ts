@@ -49,10 +49,6 @@
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>
         <translation>EESTI.EE POSTI SUUNAMINE</translation>
     </message>
-    <message>
-        <source>MY OTHER eID's</source>
-        <translation>MINU TEISED eID-D (DEMOVERSIOON)</translation>
-    </message>
 </context>
 
 
@@ -114,6 +110,47 @@
     <message>
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>AddressItem</name>
+    <message>
+        <source>Add</source>
+        <translation>LISA</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>LISATUD</translation>
+    </message>
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Sina ise)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Tundmatu ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
+    </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Aegub</translation>
     </message>
 </context>
 
@@ -671,73 +708,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Loading data</source>
         <translation>Loen andmeid</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>NoOtherId</name>
-
-    <message>
-        <source>Other ID</source>
-        <translation>Teised ID-d</translation>
-    </message>
-    <message>
-        <source>You do not have other eIDs.
-Learn more info here:</source>
-        <translation>Sul ei ole teisi eID-sid.
-Rohkem infot leiate siit:</translation>
-    </message>
-    <message>
-        <source>MOBILE-ID</source>
-        <translation>MOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
-    </message>
-    <message>
-        <source>SMART-ID</source>
-        <translation>SMART-ID</translation>
-    </message>
-</context>
-
-<context>
-    <name>OtherId</name>
-
-    <message>
-        <source>DOCUMENT</source>
-        <translation>DOKUMENT</translation>
-    </message>
-    <message>
-        <source>DOCUMENT IS VALID UNTIL</source>
-        <translation>DOKUMENT KEHTIB KUNI</translation>
-    </message>
-    <message>
-        <source>STATUS</source>
-        <translation>STAATUS</translation>
-    </message>
-    <message>
-        <source>CERTIFICATES</source>
-        <translation>SERTIFIKAADID</translation>
-    </message>
-    <message>
-        <source>Insert the card into the reader to manage the document</source>
-        <translation>Dokumendi haldamiseks sisesta kaart lugejasse</translation>
-    </message>
-
-
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Not implemented!</source>
-        <translation>Pole implementeeritud!</translation>
-    </message>
-    <message>
-        <source> and using Digi ID is </source>
-        <translation> ja Digi-ID kasutamine on </translation>
     </message>
 </context>
 
@@ -2240,47 +2210,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Details</source>
         <translation>Detailid</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>AddressItem</name>
-    <message>
-        <source>Add</source>
-        <translation>LISA</translation>
-    </message>
-    <message>
-        <source>Added</source>
-        <translation>LISATUD</translation>
-    </message>
-    <message>
-        <source> (Yourself)</source>
-        <translation> (Sina ise)</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>ID-card</source>
-        <translation>ID-kaart</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>Unknown ID</source>
-        <translation>Tundmatu ID</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>e-Tempel</translation>
-    </message>
-    <message>
-        <source>Expires on</source>
-        <translation>Aegub</translation>
     </message>
 </context>
 

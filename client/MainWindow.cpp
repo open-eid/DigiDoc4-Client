@@ -174,7 +174,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
 	connect(ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); });
-	connect(ui->accordion, &Accordion::checkOtherEID, this, &MainWindow::getOtherEID);
 
 	showCardStatus();
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);

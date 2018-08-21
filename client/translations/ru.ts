@@ -49,10 +49,6 @@
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>
         <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
     </message>
-    <message>
-        <source>MY OTHER eID's</source>
-        <translation>МОИ ДРУГИЕ eID (ДЕМОНСТРАЦИЯ)</translation>
-    </message>
 </context>
 
 
@@ -114,6 +110,49 @@
     <message>
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>AddressItem</name>
+
+    <message>
+        <source>Add</source>
+        <translation>ДОБАВИТЬ</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>Добавлен</translation>
+    </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Вы сами)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-карта</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Мobiil-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Неизвестный ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>э-Печать</translation>
+    </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Истекает</translation>
     </message>
 </context>
 
@@ -669,74 +708,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Loading data</source>
         <translation>Данные считываются</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>NoOtherId</name>
-
-    <message>
-        <source>Other ID</source>
-        <translation>Другие ID</translation>
-    </message>
-    <message>
-        <source>You do not have other eIDs.
-Learn more info here:</source>
-        <translation>У вас нет других eID.
-Подробнее читайте здесь:</translation>
-    </message>
-    <message>
-        <source>MOBILE-ID</source>
-        <translation>МOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
-    </message>
-    <message>
-        <source>SMART-ID</source>
-        <translation>SMART-ID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>OtherId</name>
-
-    <message>
-        <source>DOCUMENT</source>
-        <translation>ДОКУМЕНТ</translation>
-    </message>
-    <message>
-        <source>DOCUMENT IS VALID UNTIL</source>
-        <translation>ДОКУМЕНТ ГОДЕН ДО</translation>
-    </message>
-    <message>
-        <source>STATUS</source>
-        <translation>СТАТУС</translation>
-    </message>
-    <message>
-        <source>CERTIFICATES</source>
-        <translation>СЕРТИФИКАТЫ</translation>
-    </message>
-    <message>
-        <source>Insert the card into the reader to manage the document</source>
-        <translation>Вставьте карту в считывающее устройство для работы с документом</translation>
-    </message>
-
-
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Not implemented!</source>
-        <translation>Не реализована!</translation>
-    </message>
-    <message>
-        <source> and using Digi ID is </source>
-        <translation> и использование Digi-ID </translation>
     </message>
 </context>
 
@@ -2252,49 +2223,6 @@ Additional licenses and components</source>
     <message>
         <source>Details</source>
         <translation>Детали</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>AddressItem</name>
-
-    <message>
-        <source>Add</source>
-        <translation>ДОБАВИТЬ</translation>
-    </message>
-    <message>
-        <source>Added</source>
-        <translation>Добавлен</translation>
-    </message>
-
-    <message>
-        <source> (Yourself)</source>
-        <translation> (Вы сами)</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>ID-card</source>
-        <translation>ID-карта</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Мobiil-ID</translation>
-    </message>
-    <message>
-        <source>Unknown ID</source>
-        <translation>Неизвестный ID</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>э-Печать</translation>
-    </message>
-    <message>
-        <source>Expires on</source>
-        <translation>Истекает</translation>
     </message>
 </context>
 

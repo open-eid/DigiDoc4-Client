@@ -282,18 +282,6 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 	notification->start( msg, 750, displayTime, 600 );
 }
 
-void MainWindow::getOtherEID ()
-{
-	getDigiIdStatus ();
-}
-
-void MainWindow::getDigiIdStatus ()
-{
-	// TODO
-	ui->accordion->setProperty( "DIGI_ID_STATUS", QVariant() );
-	ui->accordion->updateDigiIdInfo();
-}
-
 void MainWindow::updateCertificate()
 {
 #ifdef Q_OS_WIN

@@ -67,7 +67,6 @@ private Q_SLOTS:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked();
 	void getEmailStatus();
-	void getOtherEID ();
 	void open(const QStringList &params, bool crypto);
 	void openFile(const QString &file);
 	void operation(int op, bool started);
@@ -105,7 +104,6 @@ private:
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt();
 	bool encrypt();
-	void getDigiIdStatus ();
 	void hideCardPopup();
 	void hideWarningArea();
 	bool isUpdateCertificateNeeded();

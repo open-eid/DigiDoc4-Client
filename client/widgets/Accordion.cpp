@@ -20,8 +20,6 @@
 #include "Accordion.h"
 #include "ui_Accordion.h"
 
-#include "XmlReader.h"
-#include <common/Settings.h>
 #include <common/SslCertificate.h>
 
 Accordion::Accordion( QWidget *parent ) :
@@ -49,21 +47,12 @@ void Accordion::init()
 	ui->titleVerifyCert->setClosable(true);
 	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), ui->contentOtherData);
 	ui->titleOtherData->setClosable(true);
-	ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
-	ui->titleOtherEID->setClosable(true);
-	if(Settings().value(QStringLiteral("showEID"), false).toBool())
-		ui->titleOtherEID->show();
-	else
-		ui->titleOtherEID->hide();
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, 
 		[this](){open(ui->titleOtherData);});
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherData, &AccordionTitle::closed, this,
-		[this](){open(ui->titleVerifyCert);});
-	connect(ui->titleOtherEID, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
-	connect(ui->titleOtherEID, &AccordionTitle::closed, this, 
 		[this](){open(ui->titleVerifyCert);});
 
 	connect(this, &Accordion::showCertWarnings, ui->authBox, &VerifyCert::showWarningIcon);
@@ -80,11 +69,6 @@ void Accordion::init()
 	ui->signBox->addBorders();
 
 	clearOtherEID();
-	
-	// top | right | bottom | left
-	QString otherIdStyle = QStringLiteral("background-color: #ffffff; border: solid #DFE5E9; border-width: 1px 0px 0px 0px;");
-	ui->digiID->setStyleSheet(otherIdStyle);
-	ui->otherID->setStyleSheet(otherIdStyle);
 }
 
 void Accordion::clear()
@@ -99,11 +83,9 @@ void Accordion::closeOtherSection(AccordionTitle* opened)
 {
 	openSection->closeSection();
 	openSection = opened;
-
-	idCheckOtherEIdNeeded( opened );
 }
 
-void Accordion::updateOtherData( bool activate, const QString &eMail, const quint8 &errorCode )
+void Accordion::updateOtherData(bool activate, const QString &eMail, quint8 errorCode)
 {
 	ui->contentOtherData->update( activate, eMail, errorCode );
 }
@@ -125,7 +107,7 @@ void Accordion::setFocusToEmail()
 	ui->contentOtherData->setFocusToEmail();
 }
 
-void Accordion::updateInfo(const QCardInfo &cardInfo, const SslCertificate &authCert, const SslCertificate &signCert)
+void Accordion::updateInfo(const QCardInfo &, const SslCertificate &authCert, const SslCertificate &signCert)
 {
 	ui->authBox->setVisible(!authCert.isNull());
 	if(!authCert.isNull())
@@ -136,7 +118,7 @@ void Accordion::updateInfo(const QCardInfo &cardInfo, const SslCertificate &auth
 		ui->signBox->update(QSmartCardData::Pin2Type, signCert);
 
 	ui->pukBox->hide();
-	ui->otherID->update(QStringLiteral("Other ID"));
+
 	ui->titleOtherData->hide();
 }
 
@@ -155,9 +137,8 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 	ui->pukBox->show();
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
 
-	ui->otherID->update(QStringLiteral("Other ID"));
-
-	ui->titleOtherData->setVisible( !( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) ) );
+	ui->titleOtherData->setHidden(t.version() == QSmartCardData::VER_USABLEUPDATER ||
+		t.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT")));
 }
 
 void Accordion::changeEvent(QEvent* event)
@@ -165,12 +146,8 @@ void Accordion::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
 		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"));
 		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"));
-		ui->titleOtherEID->setText(tr("MY OTHER eID's"));
-
-		ui->otherID->update(QStringLiteral("Other ID"));
 	}
 
 	QWidget::changeEvent(event);
@@ -187,22 +164,4 @@ void Accordion::clearOtherEID()
 	updateOtherData( false );	// E-mail
 	closeOtherSection( ui->titleVerifyCert );
 	ui->titleVerifyCert->openSection();
-
-	ui->digiID->hide();
-}
-
-void Accordion::updateDigiIdInfo()
-{
-	QVariant digiIdData = property("DIGI_ID_STATUS").value<QVariant>();
-
-	ui->digiID->updateDigiId(QString(), QString(), QString(), QString());
-
-	ui->digiID->show();
-}
-
-void Accordion::idCheckOtherEIdNeeded( AccordionTitle* opened )
-{
-	// If user has not validated (entering valid PIN1) the EID status yet.
-	if(opened == ui->titleOtherEID)
-		emit checkOtherEID();
 }
