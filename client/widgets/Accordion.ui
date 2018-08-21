@@ -202,12 +202,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="OtherId" name="mobID" native="true"/>
-         </item>
-         <item>
-          <widget class="OtherId" name="digiID" native="true">
-           <zorder>mobID</zorder>
-          </widget>
+          <widget class="OtherId" name="digiID" native="true"/>
          </item>
          <item>
           <widget class="NoOtherId" name="otherID" native="true">

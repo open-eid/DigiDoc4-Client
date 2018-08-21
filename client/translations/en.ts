@@ -726,39 +726,6 @@ Learn more info here:</translation>
         <translation>Insert the card into the reader to manage the document</translation>
     </message>
 
-    <message>
-        <source>Mobile ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>PHONE NUMBER</source>
-        <translation>PHONE NUMBER</translation>
-    </message>
-    <message>
-        <source>MOBILE OPERATOR</source>
-        <translation>MOBILE OPERATOR</translation>
-    </message>
-    <message>
-        <source>Certificates are </source>
-        <translation>certificates are </translation>
-    </message>
-    <message>
-        <source>activated</source>
-        <translation>activated</translation>
-    </message>
-    <message>
-        <source> and Mobile ID using is </source>
-        <translation>and Mobiil-ID using is </translation>
-    </message>
-    <message>
-        <source>possible</source>
-        <translation>possible</translation>
-    </message>
-    <message>
-        <source>Valid</source>
-        <translation>valid</translation>
-    </message>
-
 
     <message>
         <source>Digi-ID</source>
@@ -2797,10 +2764,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     <message>
         <source>Failed loading email settings.</source>
         <translation>Failed loading email settings.</translation>
-    </message>
-    <message>
-        <source>Failed loading Mobiil-ID settings.</source>
-        <translation>Failed loading Mobiil-ID settings.</translation>
     </message>
     <message>
         <source>Loading picture failed.</source>

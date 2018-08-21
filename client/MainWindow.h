@@ -106,7 +106,6 @@ private:
 	bool decrypt();
 	bool encrypt();
 	void getDigiIdStatus ();
-	void getMobileIdStatus ();
 	void hideCardPopup();
 	void hideWarningArea();
 	bool isUpdateCertificateNeeded();

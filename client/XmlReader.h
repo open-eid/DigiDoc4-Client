@@ -24,9 +24,8 @@
 template<class Key, class T> class QHash;
 template<class Key, class T> class QMultiHash;
 template<class A, class B> struct QPair;
-typedef QPair<QString,bool> Forward;
-typedef QMultiHash<QString,Forward> Emails;
-typedef QHash<QString,QString> MobileStatus;
+using Forward = QPair<QString,bool>;
+using Emails = QMultiHash<QString,Forward>;
 
 class XmlReader: public QXmlStreamReader
 {
@@ -34,11 +33,7 @@ public:
 	XmlReader( const QByteArray &data );
 
 	Emails readEmailStatus( QString &fault );
-	MobileStatus readMobileStatus( int &faultcode );
-
 	static QString emailErr( quint8 code );
-	static QString mobileErr( quint8 code );
-	static QString mobileStatus( const QString &status );
 
 private:
 	Emails readEmailAddresses();

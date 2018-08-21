@@ -45,36 +45,9 @@ QString XmlReader::emailErr( quint8 code )
 	};
 }
 
-QString XmlReader::mobileErr( quint8 code )
-{
-	switch( code )
-	{
-	// Notice
-	case 0: return QString();
-	case 1: return MainWindow::tr("User has no Mobiil-ID certificates.");
-	case 2: return MainWindow::tr("ID-card certificate is not valid.");
-	// error
-	case 3: return MainWindow::tr("Server could not read or validate ID card certificate!");
-	case 100: return MainWindow::tr("Service internal error!");
-	case 101: return MainWindow::tr("Mobile interface not ready!");
-	default: return QString();
-	};
-}
-
-QString XmlReader::mobileStatus( const QString &status )
-{
-	if( status == "Active" ) return MainWindow::tr("certificates are active and Mobiil-ID is usable.");
-	if( status == "Not Active" ) return MainWindow::tr("certificates are inactive, to use Mobiil-ID certificates must be activated.");
-	if( status == "Suspended" ) return MainWindow::tr("certificates are suspended. To use Mobiil-ID these must be active.");
-	if( status == "Revoked" ) return MainWindow::tr("certificates are revoked. To use Mobiil-ID, a new SIM card must be requested from service provider.");
-	if( status == "Unknown" ) return MainWindow::tr("certificates status is unknown");
-	if( status == "Expired" ) return MainWindow::tr("certificates are expired. New SIM card has to be requested from the Service provider.");
-	return QString();
-}
-
 Emails XmlReader::readEmailAddresses()
 {
-	Q_ASSERT( isStartElement() && name() == "ametlik_aadress" );
+	Q_ASSERT(isStartElement() && name() == QStringLiteral("ametlik_aadress"));
 
 	Emails emails;
 	QString email;
@@ -83,9 +56,9 @@ Emails XmlReader::readEmailAddresses()
 		readNext();
 		if( !isStartElement() )
 			continue;
-		if( name() == "epost" )
+		if(name() == QStringLiteral("epost"))
 			email = readElementText();
-		else if( name() == "suunamine" )
+		else if(name() == QStringLiteral("suunamine"))
 			emails.insertMulti( email, readForwards() );
 	}
 	return emails;
@@ -98,9 +71,9 @@ Emails XmlReader::readEmailStatus( QString &fault )
 		readNext();
 		if( !isStartElement() )
 			continue;
-		if( name() == "fault_code" )
+		if(name() == QStringLiteral("fault_code"))
 			fault = readElementText();
-		else if( name() == "ametlik_aadress" )
+		else if(name() == QStringLiteral("ametlik_aadress"))
 			return readEmailAddresses();
 	}
 	return Emails();
@@ -108,7 +81,7 @@ Emails XmlReader::readEmailStatus( QString &fault )
 
 Forward XmlReader::readForwards()
 {
-	Q_ASSERT( isStartElement() && name() == "suunamine" );
+	Q_ASSERT(isStartElement() && name() == QStringLiteral("suunamine"));
 
 	bool emailActive = false, forwardActive = false;
 	QString email;
@@ -122,26 +95,10 @@ Forward XmlReader::readForwards()
 			continue;
 		if( name() == "epost" )
 			email = readElementText();
-		else if( name() == "aktiivne" && readElementText() == "true" )
+		else if(name() == QStringLiteral("aktiivne") && readElementText() == QStringLiteral("true"))
 			emailActive = true;
-		else if( name() == "aktiiveeritud" && readElementText() == "true" )
+		else if(name() == QStringLiteral("aktiiveeritud") && readElementText() == QStringLiteral("true"))
 			forwardActive = true;
 	}
 	return Forward( email, emailActive && forwardActive );
-}
-
-MobileStatus XmlReader::readMobileStatus( int &faultcode )
-{
-	MobileStatus result;
-	while( !atEnd() )
-	{
-		readNext();
-		if( !isStartElement() )
-			continue;
-		if( name() == "ResponseStatus" )
-			faultcode = readElementText().toInt();
-		else if( name() == "MSISDN" || name() == "Operator" || name() == "Status" || name() == "URL" || name() == "MIDCertsValidTo" )
-			result[name().toString()] = readElementText();
-	}
-	return result;
 }

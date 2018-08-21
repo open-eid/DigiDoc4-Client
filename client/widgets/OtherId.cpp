@@ -28,7 +28,6 @@
 OtherId::OtherId(QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::OtherId)
-, isDigiId(false)
 {
 	ui->setupUi( this );
 
@@ -53,56 +52,8 @@ OtherId::~OtherId()
 	delete ui;
 }
 
-
-void OtherId::updateMobileId( const QString &telNumber, const QString &telOperator, const QString &status, const QString &validTill )
-{
-	this->isDigiId = false;
-	this->telNumber = telNumber;
-	this->telOperator = telOperator;
-	this->docNumber = "";
-	this->status = status;
-	this->validTill = validTill;
-
-	updateMobileId();
-}
-
-void OtherId::updateMobileId()
-{
-	isDigiId = false;
-
-	QString text;
-	QTextStream s( &text );
-
-	ui->lblDigiIdInfo->setText( "" );
-	ui->lblIdName->setText( tr( "Mobile ID" ) );
-	ui->lblLeftHdr->setText( tr( "PHONE NUMBER" ) );
-	ui->lblLeftText->setText( "+" + telNumber );
-	ui->lblRightHdr->setText( tr( "MOBILE OPERATOR" ) );
-	ui->lblRightText->setText( telOperator );
-	if( status == "Active" )
-	{
-		s << tr( "Certificates are " ) << "<span style='color: #8CC368'>"
-			<< tr( "activated" ) << "</span>"
-			<< tr( " and Mobile ID using is " ) << "<span style='color: #8CC368'>"
-			<< tr( "possible" ) << "</span>";
-
-		ui->lblStatusText->setText( text );
-		ui->lblCertText->setText( "<span style='color: #8CC368'>" + tr("Valid") + "</span> kuni " + validTill );
-	}
-	else
-	{
-		s << "<span style='color: #e80303'>"
-			<< XmlReader::mobileStatus( status ) << "</span>";
-		ui->lblStatusText->setText( text );
-		ui->lblCertText->setText( "" );
-	}
-}
-
 void OtherId::updateDigiId( const QString &docNumber, const QString &docValid, const QString &status, const QString &validTill )
 {
-	this->isDigiId = true;
-	this->telNumber = "";
-	this->telOperator = "";
 	this->docNumber = docNumber;
 	this->docValid = docValid;
 	this->status = status;
@@ -121,7 +72,7 @@ void OtherId::updateDigiId()
 	ui->lblIdName->setText( tr( "Digi-ID" ) );
 	ui->lblLeftText->setText( docNumber );
 	ui->lblRightText->setText( docValid );
-	if( status == "Active" )
+	if(status == QStringLiteral("Active"))
 	{
 		s << tr( "Certificates are " ) << "<span style='color: #8CC368'>"
 			<< tr( "activated" ) << "</span>"
@@ -136,7 +87,7 @@ void OtherId::updateDigiId()
 		s << "<span style='color: #e80303'>"
 			<< tr("Not implemented!") << "</span>";
 		ui->lblStatusText->setText( text );
-		ui->lblCertText->setText( "" );
+		ui->lblCertText->setText(QString());
 	}
 }
 
@@ -145,16 +96,7 @@ void OtherId::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
-		if(isDigiId)
-		{
-			updateDigiId();
-		}
-		else
-		{
-			updateMobileId();
-		}
-
+		updateDigiId();
 	}
 
 	QWidget::changeEvent(event);

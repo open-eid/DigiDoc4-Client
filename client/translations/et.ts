@@ -726,39 +726,6 @@ Rohkem infot leiate siit:</translation>
         <translation>Dokumendi haldamiseks sisesta kaart lugejasse</translation>
     </message>
 
-    <message>
-        <source>Mobile ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>PHONE NUMBER</source>
-        <translation>TELEFONI NUMBER</translation>
-    </message>
-    <message>
-        <source>MOBILE OPERATOR</source>
-        <translation>MOBIILI OPERAATOR</translation>
-    </message>
-    <message>
-        <source>Certificates are </source>
-        <translation>Sertifikaadid on </translation>
-    </message>
-    <message>
-        <source>activated</source>
-        <translation>aktiivsed</translation>
-    </message>
-    <message>
-        <source> and Mobile ID using is </source>
-        <translation> ja Mobiil-ID kasutamine on </translation>
-    </message>
-    <message>
-        <source>possible</source>
-        <translation>võimalik</translation>
-    </message>
-    <message>
-        <source>Valid</source>
-        <translation>Kehtivad</translation>
-    </message>
-
 
     <message>
         <source>Digi-ID</source>
@@ -2774,10 +2741,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>Failed loading email settings.</source>
         <translation>E-posti aadresside laadimine ebaõnnestus.</translation>
-    </message>
-    <message>
-        <source>Failed loading Mobiil-ID settings.</source>
-        <translation>Mobiil-ID seadete laadimine ebaõnnestus.</translation>
     </message>
     <message>
         <source>Loading picture failed.</source>
