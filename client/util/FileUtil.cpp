@@ -58,21 +58,19 @@ FileType FileUtil::detect( const QString &filename )
 		default:
 			return Other;
 	}
-
-	return Other;
 }
 
 ExtensionType FileUtil::extension(const QString &filename)
 {
-	static QStringList exts = QStringList() << "bdoc" << "ddoc" << "asice" << "sce" << "asics" << "scs" << "edoc" << "adoc";
+	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
 	const QFileInfo f( filename );
 	if( !f.isFile() ) return ExtOther;
 
 	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
 		return ExtSignature;
-	if(!QString::compare(f.suffix(), "cdoc", Qt::CaseInsensitive))
+	if(!QString::compare(f.suffix(), QStringLiteral("cdoc"), Qt::CaseInsensitive))
 		return ExtCrypto;
-	if(!QString::compare(f.suffix(), "pdf", Qt::CaseInsensitive))
+	if(!QString::compare(f.suffix(), QStringLiteral("pdf"), Qt::CaseInsensitive))
 		return ExtPDF;
 
 	return ExtOther;
@@ -90,7 +88,7 @@ QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, co
 		WaitDialogHider hider;
 		QString capitalized = type[0].toUpper() + type.mid(1);
 		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), qApp->tr("Create %1").arg(type), fileName,
-						QString("%1 (*%2)").arg(capitalized).arg(extension));
+			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 		if(!fileName.isEmpty())
 			QFile::remove( fileName );
 #ifndef Q_OS_OSX
@@ -112,7 +110,6 @@ QString FileUtil::createNewFileName(const QString &file, const QString &extensio
 {
 	const QFileInfo f( file );
 	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
-	QString filePath = dir + QDir::separator() + f.completeBaseName();
-
+	QString filePath = dir + QDir::separator() + f.fileName();
 	return create(QFileInfo(filePath), extension, type);
 }
