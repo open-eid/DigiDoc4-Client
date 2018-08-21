@@ -49,10 +49,6 @@
         <source>REDIRECTION OF EESTI.EE E-MAIL</source>
         <translation>REDIRECTION OF EESTI.EE E-MAIL</translation>
     </message>
-    <message>
-        <source>MY OTHER eID's</source>
-        <translation>MY OTHER eID's (DEMO VERSION)</translation>
-    </message>
 </context>
 
 
@@ -114,6 +110,49 @@
     <message>
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>AddressItem</name>
+
+    <message>
+        <source>Add</source>
+        <translation>ADD</translation>
+    </message>
+    <message>
+        <source>Added</source>
+        <translation>ADDED</translation>
+    </message>
+
+    <message>
+        <source> (Yourself)</source>
+        <translation> (Yourself)</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Unknown ID</source>
+        <translation>Unknown ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Seal</translation>
+    </message>
+    <message>
+        <source>Expires on</source>
+        <translation>Expires on</translation>
     </message>
 </context>
 
@@ -671,73 +710,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Loading data</source>
         <translation>Loading data</translation>
-    </message>
-</context>
-
-<context>
-    <name>NoOtherId</name>
-
-    <message>
-        <source>Other ID</source>
-        <translation>Other ID&apos;s</translation>
-    </message>
-    <message>
-        <source>You do not have other eIDs.
-Learn more info here:</source>
-        <translation>You do not have other eIDs.
-Learn more info here:</translation>
-    </message>
-    <message>
-        <source>MOBILE-ID</source>
-        <translation>MOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>DIGI-ID</source>
-        <translation>DIGI-ID</translation>
-    </message>
-    <message>
-        <source>SMART-ID</source>
-        <translation>SMART-ID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>OtherId</name>
-
-    <message>
-        <source>DOCUMENT</source>
-        <translation>DOCUMENT</translation>
-    </message>
-    <message>
-        <source>DOCUMENT IS VALID UNTIL</source>
-        <translation>DOCUMENT IS VALID UNTIL</translation>
-    </message>
-    <message>
-        <source>STATUS</source>
-        <translation>STATUS</translation>
-    </message>
-    <message>
-        <source>CERTIFICATES</source>
-        <translation>CERTIFICATES</translation>
-    </message>
-    <message>
-        <source>Insert the card into the reader to manage the document</source>
-        <translation>Insert the card into the reader to manage the document</translation>
-    </message>
-
-
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Not implemented!</source>
-        <translation>Not implemented!</translation>
-    </message>
-    <message>
-        <source> and using Digi ID is </source>
-        <translation> and using Digi-ID is </translation>
     </message>
 </context>
 
@@ -2240,49 +2212,6 @@ Additional licenses and components</translation>
     <message>
         <source>Details</source>
         <translation>Details</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>AddressItem</name>
-
-    <message>
-        <source>Add</source>
-        <translation>ADD</translation>
-    </message>
-    <message>
-        <source>Added</source>
-        <translation>ADDED</translation>
-    </message>
-
-    <message>
-        <source> (Yourself)</source>
-        <translation> (Yourself)</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>ID-card</source>
-        <translation>ID-card</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>Unknown ID</source>
-        <translation>Unknown ID</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>e-Seal</translation>
-    </message>
-    <message>
-        <source>Expires on</source>
-        <translation>Expires on</translation>
     </message>
 </context>
 

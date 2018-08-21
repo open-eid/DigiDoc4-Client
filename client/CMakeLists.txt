@@ -18,7 +18,7 @@ qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BIN
 qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateHistory.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/KeyDialog.ui dialogs/MobileDialog.ui dialogs/MobileProgress.ui 
 	dialogs/PinPopup.ui dialogs/PinUnblock.ui dialogs/SettingsDialog.ui dialogs/SignatureDialog.ui dialogs/Updater.ui dialogs/WaitDialog.ui dialogs/WarningDialog.ui 
 	widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui 
-	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/NoOtherId.ui widgets/OtherData.ui widgets/OtherId.ui 
+	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/OtherData.ui
 	widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui widgets/WarningItem.ui widgets/WarningRibbon.ui )
 
 if( APPLE )
@@ -104,8 +104,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/SignatureItem.cpp
 	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp
-	widgets/OtherId.cpp
-	widgets/NoOtherId.cpp
 	widgets/WarningItem.cpp
 	widgets/WarningRibbon.cpp
 	)

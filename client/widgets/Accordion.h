@@ -42,13 +42,11 @@ public:
 	void clearOtherEID();
 	void closeOtherSection( AccordionTitle* opened );
 	QString getEmail();
-	void idCheckOtherEIdNeeded( AccordionTitle* opened );
 	void open(AccordionTitle* opened);
 	void setFocusToEmail();
-	void updateDigiIdInfo();
 	void updateInfo(const QCardInfo &cardInfo, const SslCertificate &authCert, const SslCertificate &signCert);
 	void updateInfo( const QSmartCard *smartCard );
-	void updateOtherData( bool activate, const QString &eMail = "", const quint8 &errorCode = 0 );
+	void updateOtherData(bool activate, const QString &eMail = QString(), quint8 errorCode = 0);
 
 signals:
 	void showCertWarnings();
@@ -66,7 +64,6 @@ signals:
 	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePukClicked();
 	void certDetailsClicked( const QString &link );
-	void checkOtherEID();
 
 private:
 	Ui::Accordion *ui;
