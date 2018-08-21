@@ -46,13 +46,13 @@ enum Actions {
     ContainerConvert,
     ContainerEncrypt,
     ContainerEmail,
-	ContainerSummary,
+    ContainerSummary,
     ContainerLocation,
     ContainerNavigate,
     ContainerSave,
 
-	EncryptContainer,
-	DecryptContainer,
+    EncryptContainer,
+    DecryptContainer,
 
     FileAdd,
     FileRemove,
@@ -64,8 +64,8 @@ enum Actions {
     SignatureMobile,
     SignatureToken,
     SignatureRemove,
-	SignatureWarning,
-	ClearSignatureWarning
+    SignatureWarning,
+    ClearSignatureWarning
 };
 
 enum ExtensionType {
@@ -113,7 +113,6 @@ enum WarningType {
 
     EmailActivationWarning,
     EmailLoadingWarning,
-    MobileLoadingWarning,
     PictureLoadingWarning,
     SSLLoadingWarning
 };

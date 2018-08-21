@@ -724,38 +724,8 @@ Learn more info here:</source>
         <source>Insert the card into the reader to manage the document</source>
         <translation>Вставьте карту в считывающее устройство для работы с документом</translation>
     </message>
-    <message>
-        <source>Mobile ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>PHONE NUMBER</source>
-        <translation>НОМЕР ТЕЛЕФОНА</translation>
-    </message>
-    <message>
-        <source>MOBILE OPERATOR</source>
-        <translation>СОТОВЫЙ ОПЕРАТОР</translation>
-    </message>
-    <message>
-        <source>Certificates are </source>
-        <translation>Сертификаты </translation>
-    </message>
-    <message>
-        <source>activated</source>
-        <translation>активирована</translation>
-    </message>
-    <message>
-        <source> and Mobile ID using is </source>
-        <translation> и использование Mobiil-ID </translation>
-    </message>
-    <message>
-        <source>possible</source>
-        <translation>возможно</translation>
-    </message>
-    <message>
-        <source>Valid</source>
-        <translation>Действителен</translation>
-    </message>
+
+
     <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
@@ -2796,10 +2766,6 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>Failed loading email settings.</source>
         <translation>Загрузка настройки эл. почты неуспешна.</translation>
-    </message>
-    <message>
-        <source>Failed loading Mobiil-ID settings.</source>
-        <translation>Загрузка настройки Mobiil-ID неуспешна.</translation>
     </message>
     <message>
         <source>Loading picture failed.</source>

@@ -79,15 +79,6 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	switch(type)
 	{
-	case MobileInfo:
-	{
-		label = tr("Loading Mobile info");
-		req.setUrl(obj.value(QLatin1String("MID-URL")).toString(QStringLiteral("https://id.sk.ee/MIDInfoWS/")));
-		req.setRawHeader( "Content-Type", "text/xml" );
-		req.setRawHeader( "SOAPAction", QByteArray() );
-		req.setRawHeader( "Connection", "close" );
-		break;
-	}
 	case EmailInfo:
 		req.setUrl(obj.value(QLatin1String("EMAIL-REDIRECT-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.naita_suunamised")));
 		break;
@@ -106,18 +97,8 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 	QFrame popup (qApp->activeWindow(), Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
 	showPopup(popup, label);
 
-	QNetworkReply *reply = nullptr;
-	if (type == MobileInfo)
-	{
-		req.setHeader(QNetworkRequest::ContentTypeHeader, "text/xml");
-		SOAPDocument s("GetMIDTokens", "urn:GetMIDTokens");
-		s.writeEndDocument();
-		reply = post(req, s.document());
-	}
-	else
-		reply = get(req);
-
 	QEventLoop e;
+	QNetworkReply *reply = get(req);
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
 
@@ -141,10 +122,10 @@ QString SSLConnect::errorString() const { return d->errorString; }
 void SSLConnect::showPopup( QFrame &popup, const QString &labelText )
 {
 	popup.resize( 328, 179 );
-	popup.setStyleSheet( "background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px;" );
+	popup.setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px;"));
 
 	QLabel *lbl = new QLabel( &popup );
-	lbl->setStyleSheet( QString( "font-size: 24px; color: #53c964; border: none;" ) );
+	lbl->setStyleSheet(QStringLiteral("font-size: 24px; color: #53c964; border: none;"));
 	lbl->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
 	lbl->setText( labelText );
 	lbl->show();

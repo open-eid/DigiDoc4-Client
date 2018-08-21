@@ -204,7 +204,6 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 		{
 		case SSLConnect::ActivateEmails: showWarning(WarningText(WarningType::EmailActivationWarning, ssl.errorString())); break;
 		case SSLConnect::EmailInfo: showWarning(WarningText(WarningType::EmailLoadingWarning, ssl.errorString())); break;
-		case SSLConnect::MobileInfo: showWarning(WarningText(WarningType::MobileLoadingWarning, ssl.errorString())); break;
 		case SSLConnect::PictureInfo: showWarning(WarningText(WarningType::PictureLoadingWarning, ssl.errorString())); break;
 		default: showWarning(WarningText(WarningType::SSLLoadingWarning, ssl.errorString())); break;
 		}
@@ -264,7 +263,6 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		{
 		case SSLConnect::ActivateEmails: showNotification( tr("Failed activating email forwards.") ); break;
 		case SSLConnect::EmailInfo: showNotification( tr("Failed loading email settings.") ); break;
-		case SSLConnect::MobileInfo: showNotification( tr("Failed loading Mobiil-ID settings.") ); break;
 		case SSLConnect::PictureInfo: showNotification( tr("Loading picture failed.") ); break;
 		default:
 			showNotification( tr( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
@@ -286,29 +284,7 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 
 void MainWindow::getOtherEID ()
 {
-	getMobileIdStatus ();
 	getDigiIdStatus ();
-}
-
-void MainWindow::getMobileIdStatus ()
-{
-	if (qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
-		return;
-
-	QByteArray buffer = sendRequest( SSLConnect::MobileInfo );
-	if( buffer.isEmpty() )
-		return;
-
-	XmlReader xml( buffer );
-	int error = 0;
-	QVariant mobileData = QVariant::fromValue( xml.readMobileStatus( error ) );
-	if( error )
-	{
-		showWarning(WarningText(XmlReader::mobileErr(error)));
-		return;
-	}
-	ui->accordion->setProperty( "MOBILE_ID_STATUS", mobileData );
-	ui->accordion->updateMobileIdInfo();
 }
 
 void MainWindow::getDigiIdStatus ()

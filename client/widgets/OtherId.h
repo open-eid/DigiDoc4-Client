@@ -33,11 +33,9 @@ public:
 	explicit OtherId( QWidget *parent = nullptr );
 	~OtherId();
 
-	void updateMobileId( const QString &telNumber, const QString &telOperator, const QString &status, const QString &validTill );
 	void updateDigiId( const QString &docNumber, const QString &docValid, const QString &status, const QString &validTill );
 
 protected:
-	void updateMobileId();
 	void updateDigiId();
 
 	void changeEvent(QEvent* event) override;
@@ -45,9 +43,6 @@ protected:
 private:
 	Ui::OtherId *ui;
 
-	bool isDigiId;
-	QString telNumber;
-	QString telOperator;
 	QString docNumber;
 	QString docValid;
 	QString status;

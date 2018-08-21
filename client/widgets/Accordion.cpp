@@ -24,8 +24,6 @@
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
 
-Q_DECLARE_METATYPE(MobileStatus)
-
 Accordion::Accordion( QWidget *parent ) :
 	StyledWidget( parent ),
 	ui( new Ui::Accordion ),
@@ -53,7 +51,7 @@ void Accordion::init()
 	ui->titleOtherData->setClosable(true);
 	ui->titleOtherEID->init(false, tr("MY OTHER eID's"), ui->contentOtherEID);
 	ui->titleOtherEID->setClosable(true);
-	if(Settings().value("showEID", false).toBool())
+	if(Settings().value(QStringLiteral("showEID"), false).toBool())
 		ui->titleOtherEID->show();
 	else
 		ui->titleOtherEID->hide();
@@ -84,10 +82,9 @@ void Accordion::init()
 	clearOtherEID();
 	
 	// top | right | bottom | left
-	QString otherIdStyle = "background-color: #ffffff; border: solid #DFE5E9; border-width: 1px %1px 0px %1px;";
-	ui->mobID->setStyleSheet( otherIdStyle.arg("0") );
-	ui->digiID->setStyleSheet( otherIdStyle.arg("1") );
-	ui->otherID->setStyleSheet( otherIdStyle.arg("0") );
+	QString otherIdStyle = QStringLiteral("background-color: #ffffff; border: solid #DFE5E9; border-width: 1px 0px 0px 0px;");
+	ui->digiID->setStyleSheet(otherIdStyle);
+	ui->otherID->setStyleSheet(otherIdStyle);
 }
 
 void Accordion::clear()
@@ -139,7 +136,7 @@ void Accordion::updateInfo(const QCardInfo &cardInfo, const SslCertificate &auth
 		ui->signBox->update(QSmartCardData::Pin2Type, signCert);
 
 	ui->pukBox->hide();
-	ui->otherID->update("Other ID");
+	ui->otherID->update(QStringLiteral("Other ID"));
 	ui->titleOtherData->hide();
 }
 
@@ -158,7 +155,7 @@ void Accordion::updateInfo( const QSmartCard *smartCard )
 	ui->pukBox->show();
 	ui->pukBox->update( QSmartCardData::PukType, smartCard );
 
-	ui->otherID->update("Other ID");
+	ui->otherID->update(QStringLiteral("Other ID"));
 
 	ui->titleOtherData->setVisible( !( t.version() == QSmartCardData::VER_USABLEUPDATER || t.authCert().subjectInfo( "O" ).contains( "E-RESIDENT" ) ) );
 }
@@ -173,7 +170,7 @@ void Accordion::changeEvent(QEvent* event)
 		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"));
 		ui->titleOtherEID->setText(tr("MY OTHER eID's"));
 
-		ui->otherID->update("Other ID");
+		ui->otherID->update(QStringLiteral("Other ID"));
 	}
 
 	QWidget::changeEvent(event);
@@ -191,33 +188,14 @@ void Accordion::clearOtherEID()
 	closeOtherSection( ui->titleVerifyCert );
 	ui->titleVerifyCert->openSection();
 
-	ui->mobID->hide();
 	ui->digiID->hide();
-
-	setProperty( "MOBILE_ID_STATUS", QVariant() );
-}
-
-void Accordion::updateMobileIdInfo()
-{
-	MobileStatus mobile = property("MOBILE_ID_STATUS").value<MobileStatus>();
-	ui->mobID->updateMobileId(
-		mobile.value( "MSISDN" ),
-		mobile.value( "Operator" ),
-		mobile.value( "Status" ),
-		mobile.value( "MIDCertsValidTo" ) );
-
-	ui->mobID->show();
 }
 
 void Accordion::updateDigiIdInfo()
 {
 	QVariant digiIdData = property("DIGI_ID_STATUS").value<QVariant>();
 
-	ui->digiID->updateDigiId(
-		"",
-		"",
-		"",
-		"" );
+	ui->digiID->updateDigiId(QString(), QString(), QString(), QString());
 
 	ui->digiID->show();
 }
@@ -225,6 +203,6 @@ void Accordion::updateDigiIdInfo()
 void Accordion::idCheckOtherEIdNeeded( AccordionTitle* opened )
 {
 	// If user has not validated (entering valid PIN1) the EID status yet.
-	if ( property("MOBILE_ID_STATUS").isNull() && opened == ui->titleOtherEID )
-		emit checkOtherEID ();
+	if(opened == ui->titleOtherEID)
+		emit checkOtherEID();
 }
