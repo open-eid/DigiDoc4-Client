@@ -943,7 +943,6 @@ void MainWindow::selectPage(Pages page)
 
 void MainWindow::selectPageIcon( PageIcon* page )
 {
-	ui->rightShadow->raise();
 	for( auto pageIcon: { ui->signature, ui->crypto, ui->myEid } )
 	{
 		pageIcon->activate( pageIcon == page );
