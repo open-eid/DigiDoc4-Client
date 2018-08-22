@@ -239,6 +239,173 @@
 
 
 <context>
+    <name>CertificateDetails</name>
+
+    <message>
+        <source>Certificate information</source>
+        <translation>Информация о сертификате</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Сведения о сертификате</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>СОХРАНИТЬ</translation>
+    </message>
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>Этот сертификат предназначен для следующих целей:</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Выдан:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Выдано:</translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>Действителен:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>От</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>До</translation>
+    </message>
+    <message>
+        <source>Field</source>
+        <translation>Поле</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Версия</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Серийный номер</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Алгоритм подписи</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Выдавший</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>Действительно с</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Действительно до</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>Субъект</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Открытый ключ</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>Дополнительное использование ключа</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation>Правила сертификатов</translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Идентификатор личного ключа</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Идентификатор ключа заглавия</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Использование ключа</translation>
+    </message>
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Сертификаты (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Save certificate</source>
+        <translation>Сохранить сертификат</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Не удалось сохранить файл</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CertificateHistory</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>SELECT</source>
+        <translation>ВЫБРАТЬ</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>УДАЛИТЬ</translation>
+    </message>
+    <message>
+        <source>Owner</source>
+        <translation>Владелец</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Выдавший</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Дата окончания</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-карта</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>э-Печать</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Неопределен</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CheckConnection</name>
 
     <message>
@@ -442,55 +609,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>My eID</source>
         <translation>Мой eID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>SELECT</source>
-        <translation>ВЫБРАТЬ</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
-    </message>
-    <message>
-        <source>Owner</source>
-        <translation>Владелец</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation>Тип</translation>
-    </message>
-    <message>
-        <source>Issuer</source>
-        <translation>Выдавший</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Дата окончания</translation>
-    </message>
-    <message>
-        <source>ID-card</source>
-        <translation>ID-карта</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>э-Печать</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Неопределен</translation>
     </message>
 </context>
 
@@ -892,124 +1010,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>key has been used %1 times</source>
         <translation>Сертификат использован %1 раз</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>CertificateDetails</name>
-
-    <message>
-        <source>Certificate information</source>
-        <translation>Информация о сертификате</translation>
-    </message>
-    <message>
-        <source>Certificate details</source>
-        <translation>Сведения о сертификате</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>СОХРАНИТЬ</translation>
-    </message>
-    <message>
-        <source>This certificate is intended for following purpose(s):</source>
-        <translation>Этот сертификат предназначен для следующих целей:</translation>
-    </message>
-    <message>
-        <source>Issued to:</source>
-        <translation>Выдан:</translation>
-    </message>
-    <message>
-        <source>Issued by:</source>
-        <translation>Выдано:</translation>
-    </message>
-    <message>
-        <source>Valid:</source>
-        <translation>Действителен:</translation>
-    </message>
-    <message>
-        <source>From</source>
-        <translation>От</translation>
-    </message>
-    <message>
-        <source>To</source>
-        <translation>До</translation>
-    </message>
-    <message>
-        <source>Field</source>
-        <translation>Поле</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Значение</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Версия</translation>
-    </message>
-    <message>
-        <source>Serial number</source>
-        <translation>Серийный номер</translation>
-    </message>
-    <message>
-        <source>Signature algorithm</source>
-        <translation>Алгоритм подписи</translation>
-    </message>
-    <message>
-        <source>Issuer</source>
-        <translation>Выдавший</translation>
-    </message>
-    <message>
-        <source>Valid from</source>
-        <translation>Действительно с</translation>
-    </message>
-    <message>
-        <source>Valid to</source>
-        <translation>Действительно до</translation>
-    </message>
-    <message>
-        <source>Subject</source>
-        <translation>Субъект</translation>
-    </message>
-    <message>
-        <source>Public key</source>
-        <translation>Открытый ключ</translation>
-    </message>
-    <message>
-        <source>Enhanced key usage</source>
-        <translation>Дополнительное использование ключа</translation>
-    </message>
-    <message>
-        <source>Certificate policies</source>
-        <translation>Правила сертификатов</translation>
-    </message>
-    <message>
-        <source>Authority key identifier</source>
-        <translation>Идентификатор личного ключа</translation>
-    </message>
-    <message>
-        <source>Subject key identifier</source>
-        <translation>Идентификатор ключа заглавия</translation>
-    </message>
-    <message>
-        <source>Key usage</source>
-        <translation>Использование ключа</translation>
-    </message>
-    <message>
-        <source>Certificates (*.cer *.crt *.pem)</source>
-        <translation>Сертификаты (*.cer *.crt *.pem)</translation>
-    </message>
-    <message>
-        <source>Save certificate</source>
-        <translation>Сохранить сертификат</translation>
-    </message>
-    <message>
-        <source>Failed to save file</source>
-        <translation>Не удалось сохранить файл</translation>
     </message>
 </context>
 

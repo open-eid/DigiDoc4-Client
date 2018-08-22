@@ -236,6 +236,177 @@
 
 
 <context>
+    <name>CertificateDetails</name>
+
+    <message>
+        <source>Certificate information</source>
+        <translation>Sertifikaadi informatsioon</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Sertifikaadi detailid</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SALVESTA</translation>
+    </message>
+
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>Selle sertifikaadi otstarve on:</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Kellele väljastatud:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Väljastaja: </translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>Kehtiv:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Alates</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Kuni</translation>
+    </message>
+
+
+    <message>
+        <source>Field</source>
+        <translation>Väli</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Väärtus</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versioon</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Signatuuri algoritm</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>Kehtib alates</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Kehtib kuni</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>Subjekt</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Avalik võti</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>Täiendav võtme kasutusala</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation>Sertifikaadi reeglid</translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Väljastaja võtme identifikaator</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Subjekti võtmelühend</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Võtme kasutusala</translation>
+    </message>
+
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Save certificate</source>
+        <translation>Salvesta sertifikaat</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Faili salvestamine ebaõnnestus</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CertificateHistory</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>SELECT</source>
+        <translation>VALI</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>EEMALDA</translation>
+    </message>
+    <message>
+        <source>Owner</source>
+        <translation>Omanik</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tüüp</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Muu</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CheckConnection</name>
 
     <message>
@@ -439,55 +610,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>My eID</source>
         <translation>Minu eID</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>SELECT</source>
-        <translation>VALI</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
-    </message>
-    <message>
-        <source>Owner</source>
-        <translation>Omanik</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation>Tüüp</translation>
-    </message>
-    <message>
-        <source>Issuer</source>
-        <translation>Väljaandja</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Aegumiskuupäev</translation>
-    </message>
-    <message>
-        <source>ID-card</source>
-        <translation>ID-kaart</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>e-Tempel</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Muu</translation>
     </message>
 </context>
 
@@ -878,128 +1000,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>PIN can be changed only using eToken utility</source>
         <translation>PIN koodi saab muuta ainult e-Templi tarkvaraga</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>CertificateDetails</name>
-
-    <message>
-        <source>Certificate information</source>
-        <translation>Sertifikaadi informatsioon</translation>
-    </message>
-    <message>
-        <source>Certificate details</source>
-        <translation>Sertifikaadi detailid</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SALVESTA</translation>
-    </message>
-
-    <message>
-        <source>This certificate is intended for following purpose(s):</source>
-        <translation>Selle sertifikaadi otstarve on:</translation>
-    </message>
-    <message>
-        <source>Issued to:</source>
-        <translation>Kellele väljastatud:</translation>
-    </message>
-    <message>
-        <source>Issued by:</source>
-        <translation>Väljastaja: </translation>
-    </message>
-    <message>
-        <source>Valid:</source>
-        <translation>Kehtiv:</translation>
-    </message>
-    <message>
-        <source>From</source>
-        <translation>Alates</translation>
-    </message>
-    <message>
-        <source>To</source>
-        <translation>Kuni</translation>
-    </message>
-
-
-    <message>
-        <source>Field</source>
-        <translation>Väli</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Väärtus</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Versioon</translation>
-    </message>
-    <message>
-        <source>Serial number</source>
-        <translation>Seerianumber</translation>
-    </message>
-    <message>
-        <source>Signature algorithm</source>
-        <translation>Signatuuri algoritm</translation>
-    </message>
-    <message>
-        <source>Issuer</source>
-        <translation>Väljaandja</translation>
-    </message>
-    <message>
-        <source>Valid from</source>
-        <translation>Kehtib alates</translation>
-    </message>
-    <message>
-        <source>Valid to</source>
-        <translation>Kehtib kuni</translation>
-    </message>
-    <message>
-        <source>Subject</source>
-        <translation>Subjekt</translation>
-    </message>
-    <message>
-        <source>Public key</source>
-        <translation>Avalik võti</translation>
-    </message>
-    <message>
-        <source>Enhanced key usage</source>
-        <translation>Täiendav võtme kasutusala</translation>
-    </message>
-    <message>
-        <source>Certificate policies</source>
-        <translation>Sertifikaadi reeglid</translation>
-    </message>
-    <message>
-        <source>Authority key identifier</source>
-        <translation>Väljastaja võtme identifikaator</translation>
-    </message>
-    <message>
-        <source>Subject key identifier</source>
-        <translation>Subjekti võtmelühend</translation>
-    </message>
-    <message>
-        <source>Key usage</source>
-        <translation>Võtme kasutusala</translation>
-    </message>
-
-    <message>
-        <source>Certificates (*.cer *.crt *.pem)</source>
-        <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
-    </message>
-    <message>
-        <source>Save certificate</source>
-        <translation>Salvesta sertifikaat</translation>
-    </message>
-    <message>
-        <source>Failed to save file</source>
-        <translation>Faili salvestamine ebaõnnestus</translation>
     </message>
 </context>
 

@@ -238,6 +238,178 @@
 
 
 <context>
+    <name>CertificateDetails</name>
+
+    <message>
+        <source>Certificate information</source>
+        <translation>Certificate information</translation>
+    </message>
+    <message>
+        <source>Certificate details</source>
+        <translation>Certificate details</translation>
+    </message>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SAVE</translation>
+    </message>
+
+    <message>
+        <source>This certificate is intended for following purpose(s):</source>
+        <translation>This certificate is intended for following purpose(s):</translation>
+    </message>
+    <message>
+        <source>Issued to:</source>
+        <translation>Issued to:</translation>
+    </message>
+    <message>
+        <source>Issued by:</source>
+        <translation>Issued by:</translation>
+    </message>
+    <message>
+        <source>Valid:</source>
+        <translation>Valid:</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>From</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>To</translation>
+    </message>
+
+
+    <message>
+        <source>Field</source>
+        <translation>Field</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation>Value</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Version</translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation>Serial number</translation>
+    </message>
+    <message>
+        <source>Signature algorithm</source>
+        <translation>Signature algorithm</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation>Valid from</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Valid to</translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation>Subject</translation>
+    </message>
+    <message>
+        <source>Public key</source>
+        <translation>Public key</translation>
+    </message>
+    <message>
+        <source>Enhanced key usage</source>
+        <translation>Enhanced key usage</translation>
+    </message>
+    <message>
+        <source>Certificate policies</source>
+        <translation>Certificate policies</translation>
+    </message>
+    <message>
+        <source>Authority key identifier</source>
+        <translation>Authority key identifier</translation>
+    </message>
+    <message>
+        <source>Subject key identifier</source>
+        <translation>Subject key identifier</translation>
+    </message>
+    <message>
+        <source>Key usage</source>
+        <translation>Key usage</translation>
+    </message>
+
+    <message>
+        <source>Certificates (*.cer *.crt *.pem)</source>
+        <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Save certificate</source>
+        <translation>Save certificate</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Failed to save file</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>CertificateHistory</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>SELECT</source>
+        <translation>SELECT</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>REMOVE</translation>
+    </message>
+
+    <message>
+        <source>Owner</source>
+        <translation>Owner</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Seal</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Other</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CheckConnection</name>
 
     <message>
@@ -380,7 +552,7 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>KATKESTA</translation>
+        <translation>CANCEL</translation>
     </message>
     <message>
         <source>OK</source>
@@ -444,55 +616,6 @@ The Information System Authority does not retain information regarding the files
     </message>
 </context>
 
-
-<context>
-    <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>SELECT</source>
-        <translation>SELECT</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
-    </message>
-
-    <message>
-        <source>Owner</source>
-        <translation>Owner</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation>Type</translation>
-    </message>
-    <message>
-        <source>Issuer</source>
-        <translation>Issuer</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Expiry date</translation>
-    </message>
-    <message>
-        <source>ID-card</source>
-        <translation>ID-card</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>e-Seal</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Other</translation>
-    </message>
-</context>
 
 <context>
     <name>InfoStack</name>
@@ -886,128 +1009,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>PIN can be changed only using eToken utility</source>
         <translation>PIN can be changed only using eToken utility</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>CertificateDetails</name>
-
-    <message>
-        <source>Certificate information</source>
-        <translation>Certificate information</translation>
-    </message>
-    <message>
-        <source>Certificate details</source>
-        <translation>Certificate details</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SAVE</translation>
-    </message>
-
-    <message>
-        <source>This certificate is intended for following purpose(s):</source>
-        <translation>This certificate is intended for following purpose(s):</translation>
-    </message>
-    <message>
-        <source>Issued to:</source>
-        <translation>Issued to:</translation>
-    </message>
-    <message>
-        <source>Issued by:</source>
-        <translation>Issued by:</translation>
-    </message>
-    <message>
-        <source>Valid:</source>
-        <translation>Valid:</translation>
-    </message>
-    <message>
-        <source>From</source>
-        <translation>From</translation>
-    </message>
-    <message>
-        <source>To</source>
-        <translation>To</translation>
-    </message>
-
-
-    <message>
-        <source>Field</source>
-        <translation>Field</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation>Value</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Version</translation>
-    </message>
-    <message>
-        <source>Serial number</source>
-        <translation>Serial number</translation>
-    </message>
-    <message>
-        <source>Signature algorithm</source>
-        <translation>Signature algorithm</translation>
-    </message>
-    <message>
-        <source>Issuer</source>
-        <translation>Issuer</translation>
-    </message>
-    <message>
-        <source>Valid from</source>
-        <translation>Valid from</translation>
-    </message>
-    <message>
-        <source>Valid to</source>
-        <translation>Valid to</translation>
-    </message>
-    <message>
-        <source>Subject</source>
-        <translation>Subject</translation>
-    </message>
-    <message>
-        <source>Public key</source>
-        <translation>Public key</translation>
-    </message>
-    <message>
-        <source>Enhanced key usage</source>
-        <translation>Enhanced key usage</translation>
-    </message>
-    <message>
-        <source>Certificate policies</source>
-        <translation>Certificate policies</translation>
-    </message>
-    <message>
-        <source>Authority key identifier</source>
-        <translation>Authority key identifier</translation>
-    </message>
-    <message>
-        <source>Subject key identifier</source>
-        <translation>Subject key identifier</translation>
-    </message>
-    <message>
-        <source>Key usage</source>
-        <translation>Key usage</translation>
-    </message>
-
-    <message>
-        <source>Certificates (*.cer *.crt *.pem)</source>
-        <translation>Certificates (*.cer *.crt *.pem)</translation>
-    </message>
-    <message>
-        <source>Save certificate</source>
-        <translation>Save certificate</translation>
-    </message>
-    <message>
-        <source>Failed to save file</source>
-        <translation>Failed to save file</translation>
     </message>
 </context>
 
