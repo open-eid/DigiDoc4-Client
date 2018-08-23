@@ -838,36 +838,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>OtherData</name>
-
-    <message>
-        <source>@eesti.ee post</source>
-        <translation>@eesti.ee post</translation>
-    </message>
-    <message>
-        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
-        <translation>CHECK @EESTI.EE E-MAIL STATUS</translation>
-    </message>
-    <message>
-        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
-        <translation>No official email redirects found. To send email to @eesti.ee, please enter your email address:</translation>
-    </message>
-    <message>
-        <source>ACTIVATE REDIRECTION</source>
-        <translation>ACTIVATE REDIRECTION</translation>
-    </message>
-    <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Your @eesti.ee e-mail has been forwarded to </translation>
-    </message>
-</context>
-
-
-<context>
     <name>SignatureItem</name>
 
     <message>
@@ -1343,6 +1313,44 @@ Control code: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>OtherData</name>
+
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee post</translation>
+    </message>
+    <message>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
+        <translation>CHECK @EESTI.EE E-MAIL STATUS</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
+        <translation>No official email redirects found. To send email to @eesti.ee, please enter your email address:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>ACTIVATE REDIRECTION</translation>
+    </message>
+    <message>
+        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee e-mail has been forwarded to </source>
+        <translation>Your @eesti.ee e-mail has been forwarded to </translation>
+    </message>
+    <message>
+        <source>active</source>
+        <translation>active</translation>
+    </message>
+    <message>
+        <source>not active</source>
+        <translation>not active</translation>
     </message>
 </context>
 
@@ -2674,14 +2682,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     <message>
         <source>%1 changed!</source>
         <translation>%1 changed!</translation>
-    </message>
-    <message>
-        <source>active</source>
-        <translation>active</translation>
-    </message>
-    <message>
-        <source>not active</source>
-        <translation>not active</translation>
     </message>
     <message>
         <source>E-mail address missing or invalid!</source>

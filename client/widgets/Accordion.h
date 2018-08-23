@@ -46,16 +46,10 @@ public:
 	void setFocusToEmail();
 	void updateInfo(const QCardInfo &cardInfo, const SslCertificate &authCert, const SslCertificate &signCert);
 	void updateInfo( const QSmartCard *smartCard );
-	void updateOtherData(bool activate, const QString &eMail = QString(), quint8 errorCode = 0);
-
-signals:
-	void showCertWarnings();
+	void updateOtherData(const QByteArray &data);
 
 protected:
 	void changeEvent(QEvent* event) override;
-
-private Q_SLOTS:
-	void certDetails( const QString &link );
 
 signals:
 	void checkEMail();
@@ -64,6 +58,7 @@ signals:
 	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePukClicked();
 	void certDetailsClicked( const QString &link );
+	void showCertWarnings();
 
 private:
 	Ui::Accordion *ui;

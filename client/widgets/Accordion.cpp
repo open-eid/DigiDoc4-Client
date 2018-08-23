@@ -62,8 +62,8 @@ void Accordion::init()
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
 	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
 
-	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails);
-	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetails);
+	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetailsClicked);
+	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetailsClicked);
 
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
@@ -85,9 +85,9 @@ void Accordion::closeOtherSection(AccordionTitle* opened)
 	openSection = opened;
 }
 
-void Accordion::updateOtherData(bool activate, const QString &eMail, quint8 errorCode)
+void Accordion::updateOtherData(const QByteArray &data)
 {
-	ui->contentOtherData->update( activate, eMail, errorCode );
+	ui->contentOtherData->update(false, data);
 }
 
 QString Accordion::getEmail()
@@ -153,15 +153,10 @@ void Accordion::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void Accordion::certDetails( const QString &link )
-{
-	emit certDetailsClicked ( link );
-}
-
 void Accordion::clearOtherEID()
 {
 	// Set to default Certificate Info page
-	updateOtherData( false );	// E-mail
+	ui->contentOtherData->update(false, QByteArray());	// E-mail
 	closeOtherSection( ui->titleVerifyCert );
 	ui->titleVerifyCert->openSection();
 }
