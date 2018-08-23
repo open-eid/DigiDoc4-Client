@@ -25,10 +25,13 @@
 #include "effects/ButtonHoverFilter.h"
 #include "widgets/FileItem.h"
 
+#include <QDrag>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QMimeData>
+#include <QMouseEvent>
 
 using namespace ria::qdigidoc4;
 
@@ -47,6 +50,7 @@ FileList::FileList(QWidget *parent)
 void FileList::addFile( const QString& file )
 {
 	FileItem *item = new FileItem(file, state);
+	item->installEventFilter(this);
 	addWidget(item);
 
 	connect(item, &FileItem::open, this, &FileList::open);
@@ -66,6 +70,47 @@ void FileList::clear()
 {
 	ItemList::clear();
 	documentModel = nullptr;
+}
+
+bool FileList::eventFilter(QObject *obj, QEvent *event)
+{
+	switch(event->type())
+	{
+	case QEvent::MouseButtonPress:
+	{
+		QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+		if (mouse->button() == Qt::LeftButton)
+			obj->setProperty("dragStartPosition", mouse->pos());
+		break;
+	}
+	case QEvent::MouseMove:
+	{
+		QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+		if(!(mouse->buttons() & Qt::LeftButton))
+			break;
+		if((mouse->pos() - obj->property("dragStartPosition").toPoint()).manhattanLength()
+			 < QApplication::startDragDistance())
+			break;
+		FileItem *fileItem = qobject_cast<FileItem*>(obj);
+		if(!documentModel || !fileItem)
+			break;
+		int i = index(fileItem);
+		if(i == -1)
+			break;
+		QString path = FileDialog::tempPath(fileItem->getFile());
+		documentModel->save(i, path);
+		QMimeData *mimeData = new QMimeData;
+		mimeData->setText(QFileInfo(path).fileName());
+		mimeData->setUrls({ QUrl::fromLocalFile(path) });
+		QDrag *drag = new QDrag(this);
+		drag->setMimeData(mimeData);
+		drag->exec(Qt::CopyAction);
+		QFile::remove(path);
+		return true;
+	}
+	default: break;
+	}
+	return ItemList::eventFilter(obj, event);
 }
 
 void FileList::init(const QString &container, const QString &label)
