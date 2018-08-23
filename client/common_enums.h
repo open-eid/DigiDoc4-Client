@@ -50,6 +50,7 @@ enum Actions {
     ContainerLocation,
     ContainerNavigate,
     ContainerSave,
+    ContainerSaveAs,
 
     EncryptContainer,
     DecryptContainer,

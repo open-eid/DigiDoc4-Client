@@ -126,7 +126,7 @@ private:
 	bool removeFile(DocumentModel *model, int index);
 	void removeSignature(int index);
 	void removeSignatureFile(int index);
-	bool save();
+	bool save(bool saveAs = false);
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPage(ria::qdigidoc4::Pages page);
 	void selectPageIcon( PageIcon* page );

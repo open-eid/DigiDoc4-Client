@@ -428,6 +428,80 @@
 
 
 <context>
+    <name>ContainerPage</name>
+
+    <message>
+        <source>Envelope</source>
+        <translation>Kонтейнер:</translation>
+    </message>
+    <message>
+        <source>Container</source>
+        <translation>Kонтейнер:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>ПОМЕНЯТЬ</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>ОТПРАВИТЬ С Е-ПOЧТOЙ</translation>
+    </message>
+    <message>
+        <source>PRINT SUMMARY</source>
+        <translation>ПОДТВЕРЖДАЮЩИЙ ЛИСТ</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>ШИФРОВАТЬ</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ПОДПИСАТЬ</translation>
+    </message>
+    <message>
+        <source>SAVE AS</source>
+        <translation>CОХРАНИТЬ</translation>
+    </message>
+    <message>
+        <source>SAVE WITHOUT SIGNING</source>
+        <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB: Недействительная подпись</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Статус неизвестен</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Пробная подпись</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Подпись содержит предупреждения</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>← В НАЧАЛО</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you.</source>
+        <translation>Вы уже подписали этот документ.</translation>
+    </message>
+    <message>
+        <source>CONTINUE SIGNING</source>
+        <translation>ПОДПИСАТЬ</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CryptoDoc</name>
 
     <message>
@@ -591,24 +665,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>PageIcon</name>
-
-    <message>
-        <source>SIGNATURE</source>
-        <translation>ПОДПИСЬ</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>КРИПТО</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>Мой eID</translation>
     </message>
 </context>
 
@@ -1355,6 +1411,24 @@ Kонтрольный код: %1</translation>
 
 
 <context>
+    <name>PageIcon</name>
+
+    <message>
+        <source>SIGNATURE</source>
+        <translation>ПОДПИСЬ</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>КРИПТО</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>Мой eID</translation>
+    </message>
+</context>
+
+
+<context>
     <name>PinPopup</name>
 
     <message>
@@ -1859,84 +1933,6 @@ Additional licenses and components</source>
 Дополнительные лицензии и компоненты</translation>
     </message>
 
-</context>
-
-
-<context>
-    <name>ContainerPage</name>
-
-    <message>
-        <source>Envelope</source>
-        <translation>Kонтейнер:</translation>
-    </message>
-    <message>
-        <source>Container</source>
-        <translation>Kонтейнер:</translation>
-    </message>
-    <message>
-        <source>CHANGE</source>
-        <translation>ПОМЕНЯТЬ</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>ОТПРАВИТЬ С Е-ПOЧТOЙ</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>ПОДТВЕРЖДАЮЩИЙ ЛИСТ</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>ШИФРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>ПОДПИСАТЬ</translation>
-    </message>
-    <message>
-        <source>OPEN ENVELOPE LOCATION</source>
-        <translation>ПАПКА КОНТЕЙНЕРА</translation>
-    </message>
-    <message>
-        <source>OPEN CONTAINER LOCATION</source>
-        <translation>ПАПКА КОНТЕЙНЕРА</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB: Недействительная подпись</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Статус неизвестен</translation>
-    </message>
-    <message>
-        <source>NB! Test signature</source>
-        <translation>NB! Пробная подпись</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Подпись содержит предупреждения</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← В НАЧАЛО</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you.</source>
-        <translation>Вы уже подписали этот документ.</translation>
-    </message>
-    <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>ПОДПИСАТЬ</translation>
-    </message>
 </context>
 
 
