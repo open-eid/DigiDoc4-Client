@@ -835,36 +835,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
-    <name>OtherData</name>
-
-    <message>
-        <source>@eesti.ee post</source>
-        <translation>@eesti.ee post</translation>
-    </message>
-    <message>
-        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
-        <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
-    </message>
-    <message>
-        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
-        <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
-    </message>
-    <message>
-        <source>ACTIVATE REDIRECTION</source>
-        <translation>AKTIVEERI SUUNAMINE</translation>
-    </message>
-    <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Sinu @eesti.ee posti aadressid on suunatud e-postile </translation>
-    </message>
-</context>
-
-
-<context>
     <name>SignatureItem</name>
 
     <message>
@@ -1336,6 +1306,45 @@ Kontrollkood: %1</translation>
         <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
     </message>
 </context>
+
+
+<context>
+    <name>OtherData</name>
+
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee post</translation>
+    </message>
+    <message>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
+        <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
+        <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>AKTIVEERI SUUNAMINE</translation>
+    </message>
+    <message>
+        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee e-mail has been forwarded to </source>
+        <translation>Sinu @eesti.ee posti aadressid on suunatud e-postile </translation>
+    </message>
+    <message>
+        <source>active</source>
+        <translation>aktiivne</translation>
+    </message>
+    <message>
+        <source>not active</source>
+        <translation>mitteaktiivne</translation>
+    </message>
+</context>
+
 
 <context>
     <name>PinPopup</name>
@@ -2650,14 +2659,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>%1 changed!</source>
         <translation>%1 kood muudetud!</translation>
-    </message>
-    <message>
-        <source>active</source>
-        <translation>aktiivne</translation>
-    </message>
-    <message>
-        <source>not active</source>
-        <translation>mitteaktiivne</translation>
     </message>
     <message>
         <source>E-mail address missing or invalid!</source>

@@ -831,36 +831,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>OtherData</name>
-
-    <message>
-        <source>@eesti.ee post</source>
-        <translation>@eesti.ee почта</translation>
-    </message>
-    <message>
-        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
-        <translation>ПРОВЕРИТЬ СОСТОЯНИЕ @EESTI.EE E-ПОЧТЫ</translation>
-    </message>
-    <message>
-        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
-        <translation>Не найдено официальных переадресаций электронной почты. Чтобы отправить электронное письмо на адрес @eesti.ee, введите ваш адрес электронной почты:</translation>
-    </message>
-    <message>
-        <source>ACTIVATE REDIRECTION</source>
-        <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
-    </message>
-    <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Ваши почтовые адреса @ eesti.ee переадресованы по электронной почте </translation>
-    </message>
-</context>
-
-
-<context>
     <name>SignatureItem</name>
 
     <message>
@@ -1342,6 +1312,44 @@ Kонтрольный код: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>Не удалось создать SSL канал передачи данных. Проверьте настройки буферного сервера компьютера или обновления программного обеспечения.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>OtherData</name>
+
+    <message>
+        <source>@eesti.ee post</source>
+        <translation>@eesti.ee почта</translation>
+    </message>
+    <message>
+        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
+        <translation>ПРОВЕРИТЬ СОСТОЯНИЕ @EESTI.EE E-ПОЧТЫ</translation>
+    </message>
+    <message>
+        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
+        <translation>Не найдено официальных переадресаций электронной почты. Чтобы отправить электронное письмо на адрес @eesti.ee, введите ваш адрес электронной почты:</translation>
+    </message>
+    <message>
+        <source>ACTIVATE REDIRECTION</source>
+        <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
+    </message>
+    <message>
+        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Your @eesti.ee e-mail has been forwarded to </source>
+        <translation>Ваши почтовые адреса @ eesti.ee переадресованы по электронной почте </translation>
+    </message>
+    <message>
+        <source>active</source>
+        <translation>активно</translation>
+    </message>
+    <message>
+        <source>not active</source>
+        <translation>неактивно</translation>
     </message>
 </context>
 
@@ -2674,14 +2682,6 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>%1 changed!</source>
         <translation>%1 код изменён!</translation>
-    </message>
-    <message>
-        <source>active</source>
-        <translation>активно</translation>
-    </message>
-    <message>
-        <source>not active</source>
-        <translation>неактивно</translation>
     </message>
     <message>
         <source>E-mail address missing or invalid!</source>

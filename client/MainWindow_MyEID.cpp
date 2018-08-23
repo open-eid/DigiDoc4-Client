@@ -23,7 +23,6 @@
 #include "QCardInfo.h"
 #include "QCardLock.h"
 #include "QSigner.h"
-#include "XmlReader.h"
 #ifdef Q_OS_WIN
 #include "CertStore.h"
 #endif
@@ -144,34 +143,8 @@ void MainWindow::certDetailsClicked( const QString &link )
 void MainWindow::getEmailStatus ()
 {
 	QByteArray buffer = sendRequest( SSLConnect::EmailInfo );
-
-	if( buffer.isEmpty() )
-		return;
-
-	XmlReader xml( buffer );
-	QString error;
-	QMultiHash<QString,QPair<QString,bool> > emails = xml.readEmailStatus( error );
-	quint8 code = error.toUInt();
-	if( emails.isEmpty() || code > 0 )
-	{
-		code = code ? code : 20;
-		if( code == 20 )
-			ui->accordion->updateOtherData( true, XmlReader::emailErr( code ), code );
-		else
-			ui->accordion->updateOtherData( false, XmlReader::emailErr( code ), code );
-	}
-	else
-	{
-		QStringList text;
-		for( Emails::const_iterator i = emails.constBegin(); i != emails.constEnd(); ++i )
-		{
-			text << QString( "%1 - %2 (%3)" )
-				.arg( i.key() )
-				.arg( i.value().first )
-				.arg( i.value().second ? tr("active") : tr("not active") );
-		}
-		ui->accordion->updateOtherData( false, text.join("<br />") );
-	}
+	if(!buffer.isEmpty())
+		ui->accordion->updateOtherData(buffer);
 }
 
 void MainWindow::activateEmail ()
@@ -184,13 +157,8 @@ void MainWindow::activateEmail ()
 		return;
 	}
 	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
-	if( buffer.isEmpty() )
-		return;
-	XmlReader xml( buffer );
-	QString error;
-	xml.readEmailStatus( error );
-	ui->accordion->updateOtherData( false, XmlReader::emailErr( error.toUInt() ) );
-	return;
+	if(!buffer.isEmpty())
+		ui->accordion->updateOtherData(buffer);
 }
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )

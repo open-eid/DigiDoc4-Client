@@ -35,7 +35,7 @@ public:
 	explicit OtherData( QWidget *parent = nullptr );
 	~OtherData();
 
-	void update( bool activate, const QString &eMail = "", const quint8 &errorCode = 0 );
+	void update(bool activate, const QByteArray &data = QByteArray());
 	QString getEmail();
 	void setFocusToEmail();
 
@@ -44,14 +44,11 @@ signals:
 	void activateEMailClicked();
 
 protected:
-	void update();
-
-	void paintEvent( QPaintEvent * ) override;
-	void changeEvent(QEvent* event) override;
+	void paintEvent(QPaintEvent *event) override;
+	void changeEvent(QEvent *event) override;
 
 private:
 	Ui::OtherData *ui;
-	bool activate;
 	QString eMail;
-	quint8 errorCode;
+	uint errorCode = 0;
 };

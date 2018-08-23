@@ -20,12 +20,11 @@
 #include "OtherData.h"
 #include "ui_OtherData.h"
 #include "Styles.h"
+#include "XmlReader.h"
 
 OtherData::OtherData(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::OtherData)
-, activate(false)
-, errorCode(0)
 {
 	ui->setupUi(this);
 
@@ -44,13 +43,13 @@ OtherData::OtherData(QWidget *parent)
 	ui->labelEestiEe->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->activate->setFont( condensed );
 	ui->btnCheckEMail->setFont( condensed );
-	ui->activate->setStyleSheet(
+	ui->activate->setStyleSheet(QStringLiteral(
 			"padding: 6px 9px;"
 			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
 			"QPushButton:pressed { border: none; background-color: #006EB5;}"
 			"QPushButton:hover:!pressed { background-color: #008DCF;}"
 			"QPushButton:disabled { background-color: #BEDBED;};"
-			);
+			));
 }
 
 OtherData::~OtherData()
@@ -58,23 +57,40 @@ OtherData::~OtherData()
 	delete ui;
 }
 
-void OtherData::update( bool activate, const QString &eMail, const quint8 &errorCode )
+void OtherData::update(bool activate, const QByteArray &data)
 {
-	this->activate = activate;
-	this->eMail = eMail;
-	this->errorCode = errorCode;
+	setProperty("cache", data);
+	if(!data.isEmpty())
+	{
+		XmlReader xml(data);
+		QString error;
+		QMultiHash<QString,QPair<QString,bool> > emails = xml.readEmailStatus(error);
+		errorCode = error.toUInt();
+		if(emails.isEmpty() || errorCode > 0)
+		{
+			errorCode = errorCode ? errorCode : 20;
+			activate = errorCode == 20;
+			eMail = XmlReader::emailErr(errorCode);
+		}
+		else
+		{
+			activate = false;
+			QStringList text;
+			for( Emails::const_iterator i = emails.constBegin(); i != emails.constEnd(); ++i )
+			{
+				text << QStringLiteral("%1 - %2 (%3)")
+					.arg(i.key(), i.value().first, i.value().second ? tr("active") : tr("not active"));
+			}
+			eMail = text.join(QStringLiteral("<br />"));
+		}
+	}
 
-	update();
-}
-
-void OtherData::update()
-{
 	if( activate )
 	{
 		ui->btnCheckEMail->setVisible( false );
 		ui->activateEMail->setVisible( true );
 		if( !eMail.isEmpty() )
-			ui->lblEMail->setText( QString("<b>") + eMail + QString("</b>") );  // Show error text here
+			ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
 		else
 			ui->lblEMail->setVisible( false );
 
@@ -103,9 +119,9 @@ void OtherData::update()
 			ui->activateEMail->setVisible( false );
 
 			if( errorCode )
-				ui->lblEMail->setText( QString("<b>") + eMail + QString("</b>") );  // Show error text here
+				ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
 			else
-				ui->lblEMail->setText( QString(tr("Your @eesti.ee e-mail has been forwarded to ") + " <br/><b>" + eMail + QString("</b>") ) );
+				ui->lblEMail->setText(tr("Your @eesti.ee e-mail has been forwarded to ") + QStringLiteral(" <br/><b>%1</b>").arg(eMail));
 		}
 	}
 }
@@ -120,7 +136,7 @@ void OtherData::paintEvent(QPaintEvent *)
 
 QString OtherData::getEmail()
 {
-	return ( ui->inputEMail->text().isEmpty() || ui->inputEMail->text().indexOf( "@" ) == -1 ) ? "" : ui->inputEMail->text();
+	return ( ui->inputEMail->text().isEmpty() || ui->inputEMail->text().indexOf('@') == -1 ) ? QString() : ui->inputEMail->text();
 }
 
 void OtherData::setFocusToEmail()
@@ -133,8 +149,7 @@ void OtherData::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
-		update();
+		update(false, property("cache").toByteArray());
 	}
 
 	QWidget::changeEvent(event);
