@@ -10,6 +10,8 @@ matrix:
     env: TARGET=osx
     sudo: true
   - os: linux
+    env: TARGET=ubuntu:16.04
+  - os: linux
     env: TARGET=ubuntu:18.04
 env:
   global:
@@ -43,7 +45,7 @@ script: case ${TARGET} in
   *)
     docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v ${HOME}:${HOME} -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       apt-get update -qq; 
-      apt-get install -y apt-transport-https curl dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev git curl wget ruby;
+      apt-get install -y apt-transport-https dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev git curl wget ruby;
       curl https://installer.id.ee/media/install-scripts/ria-public.key | apt-key add -;
       curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | apt-key add -;
       echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list;
@@ -55,7 +57,7 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSION};
       dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      if [ "${IMAGE}" = "ubuntu:17.04" ]; then
+      if [ "${IMAGE}" = "ubuntu:18.04" ]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
