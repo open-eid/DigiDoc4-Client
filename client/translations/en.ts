@@ -432,6 +432,80 @@
 
 
 <context>
+    <name>ContainerPage</name>
+
+    <message>
+        <source>Envelope</source>
+        <translation>Container:</translation>
+    </message>
+    <message>
+        <source>Container</source>
+        <translation>Container:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>CHANGE</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← CANCEL</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>SEND WITH E-MAIL</translation>
+    </message>
+    <message>
+        <source>PRINT SUMMARY</source>
+        <translation>PRINT SUMMARY</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>ENCRYPT</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>SIGN</translation>
+    </message>
+    <message>
+        <source>SAVE AS</source>
+        <translation>SAVE AS</translation>
+    </message>
+    <message>
+        <source>SAVE WITHOUT SIGNING</source>
+        <translation>SAVE WITHOUT SIGNING</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB! Invalid signature</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Status unknown</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Test signature</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Signature contains warnings</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>← START</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you.</source>
+        <translation>The document has already been signed by you.</translation>
+    </message>
+    <message>
+        <source>CONTINUE SIGNING</source>
+        <translation>CONTINUE SIGNING</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CryptoDoc</name>
 
     <message>
@@ -595,24 +669,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Internal error</source>
         <translation>Internal error</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>PageIcon</name>
-
-    <message>
-        <source>SIGNATURE</source>
-        <translation>SIGNATURE</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>CRYPTO</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>My eID</translation>
     </message>
 </context>
 
@@ -1356,6 +1412,24 @@ Control code: %1</translation>
 
 
 <context>
+    <name>PageIcon</name>
+
+    <message>
+        <source>SIGNATURE</source>
+        <translation>SIGNATURE</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>CRYPTO</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>My eID</translation>
+    </message>
+</context>
+
+
+<context>
     <name>PinPopup</name>
 
     <message>
@@ -1862,85 +1936,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</translation>
-    </message>
-</context>
-
-
-
-<context>
-    <name>ContainerPage</name>
-
-    <message>
-        <source>Envelope</source>
-        <translation>Container:</translation>
-    </message>
-    <message>
-        <source>Container</source>
-        <translation>Container:</translation>
-    </message>
-    <message>
-        <source>CHANGE</source>
-        <translation>CHANGE</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← CANCEL</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>SEND WITH E-MAIL</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>PRINT SUMMARY</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>ENCRYPT</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>SIGN</translation>
-    </message>
-    <message>
-        <source>OPEN ENVELOPE LOCATION</source>
-        <translation>OPEN CONTAINER LOCATION</translation>
-    </message>
-    <message>
-        <source>OPEN CONTAINER LOCATION</source>
-        <translation>OPEN CONTAINER LOCATION</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>SAVE WITHOUT SIGNING</translation>
-    </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB! Invalid signature</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Status unknown</translation>
-    </message>
-    <message>
-        <source>NB! Test signature</source>
-        <translation>NB! Test signature</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Signature contains warnings</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← START</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you.</source>
-        <translation>The document has already been signed by you.</translation>
-    </message>
-    <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>CONTINUE SIGNING</translation>
     </message>
 </context>
 

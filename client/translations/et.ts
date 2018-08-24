@@ -429,6 +429,79 @@
 
 
 <context>
+    <name>ContainerPage</name>
+    <message>
+        <source>Envelope</source>
+        <translation>Ümbrik:</translation>
+    </message>
+    <message>
+        <source>Container</source>
+        <translation>Konteiner:</translation>
+    </message>
+    <message>
+        <source>CHANGE</source>
+        <translation>MUUDA</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>← KATKESTA</translation>
+    </message>
+    <message>
+        <source>SEND WITH E-MAIL</source>
+        <translation>EDASTA E-POSTIGA</translation>
+    </message>
+    <message>
+        <source>PRINT SUMMARY</source>
+        <translation>TRÜKI KINNITUSLEHT</translation>
+    </message>
+    <message>
+        <source>ENCRYPT</source>
+        <translation>KRÜPTEERI</translation>
+    </message>
+    <message>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTA</translation>
+    </message>
+    <message>
+        <source>SAVE AS</source>
+        <translation>SALVESTA</translation>
+    </message>
+    <message>
+        <source>SAVE WITHOUT SIGNING</source>
+        <translation>SALVESTA ALLKIRJASTAMATA</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB: Vigane allkiri</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Staatus teadmata</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Test allkiri</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Allkiri on hoiatusega</translation>
+    </message>
+    <message>
+        <source>STARTING</source>
+        <translation>← ALGUSESSE</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you.</source>
+        <translation>Dokument on Sinu poolt juba allkirjastatud.</translation>
+    </message>
+    <message>
+        <source>CONTINUE SIGNING</source>
+        <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
+    </message>
+</context>
+
+
+<context>
     <name>CryptoDoc</name>
 
     <message>
@@ -592,24 +665,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Internal error</source>
         <translation>Sisemine viga</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>PageIcon</name>
-
-    <message>
-        <source>SIGNATURE</source>
-        <translation>ALLKIRI</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>KRÜPTO</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>Minu eID</translation>
     </message>
 </context>
 
@@ -1347,6 +1402,24 @@ Kontrollkood: %1</translation>
 
 
 <context>
+    <name>PageIcon</name>
+
+    <message>
+        <source>SIGNATURE</source>
+        <translation>ALLKIRI</translation>
+    </message>
+    <message>
+        <source>CRYPTO</source>
+        <translation>KRÜPTO</translation>
+    </message>
+    <message>
+        <source>My eID</source>
+        <translation>Minu eID</translation>
+    </message>
+</context>
+
+
+<context>
     <name>PinPopup</name>
     <message>
         <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
@@ -1869,83 +1942,6 @@ Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;&l
 Täiendavad litsentsid ja komponendid</translation>
     </message>
 
-</context>
-
-
-<context>
-    <name>ContainerPage</name>
-    <message>
-        <source>Envelope</source>
-        <translation>Ümbrik:</translation>
-    </message>
-    <message>
-        <source>Container</source>
-        <translation>Konteiner:</translation>
-    </message>
-    <message>
-        <source>CHANGE</source>
-        <translation>MUUDA</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← KATKESTA</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>EDASTA E-POSTIGA</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>TRÜKI KINNITUSLEHT</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>KRÜPTEERI</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>ALLKIRJASTA</translation>
-    </message>
-    <message>
-        <source>OPEN ENVELOPE LOCATION</source>
-        <translation>AVA ÜMBRIKU ASUKOHT</translation>
-    </message>
-    <message>
-        <source>OPEN CONTAINER LOCATION</source>
-        <translation>AVA KONTEINERI ASUKOHT</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>SALVESTA ALLKIRJASTAMATA</translation>
-    </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB: Vigane allkiri</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Staatus teadmata</translation>
-    </message>
-    <message>
-        <source>NB! Test signature</source>
-        <translation>NB! Test allkiri</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Allkiri on hoiatusega</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← ALGUSESSE</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you.</source>
-        <translation>Dokument on Sinu poolt juba allkirjastatud.</translation>
-    </message>
-    <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
-    </message>
 </context>
 
 

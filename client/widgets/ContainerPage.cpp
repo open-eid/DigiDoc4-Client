@@ -50,11 +50,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 , cancelText("CANCEL")
 , changeLocationText("CHANGE")
 , convertText("ENCRYPT")
-, emailText("SEND WITH E-MAIL")
-, summaryText("PRINT SUMMARY")
 , envelope("Envelope")
-, navigateToContainerText("OPEN CONTAINER LOCATION")
-, saveText("SAVE WITHOUT SIGNING")
 , canDecrypt(false)
 , seal(false)
 {
@@ -82,11 +78,6 @@ void ContainerPage::addressSearch()
 		emit keysSelected(dlg.keys());
 }
 
-void ContainerPage::browseContainer(QString link)
-{
-	emit action(Actions::ContainerNavigate, link);
-}
-
 void ContainerPage::changeCard(const QString& idCode, bool seal)
 {
 	if(cardInReader != idCode)
@@ -108,7 +99,7 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 			[selectedCard, selectedMobile, code](Item* const item) -> bool
 			{
 				auto signatureItem = qobject_cast<SignatureItem* const>(item);
-				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureAdd) ? "" : selectedMobile);
+				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureAdd) ? QString() : selectedMobile);
 			}
 		))
 		{
@@ -163,16 +154,17 @@ void ContainerPage::init()
 	ui->container->setFont(containerFont);
 	ui->containerFile->setFont(containerFont);
 
-	ui->changeLocation->setIcons( "/images/icon_Edit.svg", "/images/icon_Edit_hover.svg", "/images/icon_Edit_pressed.svg", 4, 4, 18, 18 );
+	ui->changeLocation->setIcons(QStringLiteral("/images/icon_Edit.svg"),
+		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 4, 4, 18, 18);
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
 	ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
 	ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerConvert );
-	ui->navigateToContainer->init( LabelButton::BoxedDeepCerulean, tr("OPEN CONTAINER LOCATION"), Actions::ContainerNavigate );
+	ui->saveAs->init( LabelButton::BoxedDeepCerulean, tr("SAVE AS"), Actions::ContainerSaveAs );
 	ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
 	ui->summary->init( LabelButton::BoxedDeepCerulean, tr("PRINT SUMMARY"), Actions::ContainerSummary );
 	ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
 
-	mobileCode = Settings().value("Client/MobileCode").toString();
+	mobileCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
 	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal, const QByteArray& serialNumber)
@@ -190,14 +182,12 @@ void ContainerPage::init()
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->summary, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->navigateToContainer, &LabelButton::clicked, this, &ContainerPage::forward);
+	connect(ui->saveAs, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->containerFile, &QLabel::linkActivated, this, &ContainerPage::browseContainer );
+	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
+		{ emit action(Actions::ContainerNavigate, link); });
 
-	if( Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool() )
-		ui->summary->show();
-	else
-		ui->summary->hide();
+	ui->summary->setVisible(Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool());
 }
 
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
@@ -209,7 +199,7 @@ void ContainerPage::initContainer( const QString &file, const QString &suffix )
 	ui->containerFile->setText(fileName);
 }
 
-void ContainerPage::hideButtons( std::vector<QWidget*> buttons )
+void ContainerPage::hideButtons(const QVector<QWidget*> &buttons)
 {
 	for( auto *button: buttons ) button->hide();
 }
@@ -231,7 +221,7 @@ void ContainerPage::hideOtherAction()
 
 	otherAction->close();
 	otherAction.reset();
-	mainAction->setStyleSheet( "QPushButton { border-top-left-radius: 2px; }" );
+	mainAction->setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; }"));
 }
 
 void ContainerPage::hideRightPane()
@@ -243,7 +233,7 @@ void ContainerPage::mobileDialog()
 {
 	hideOtherAction();
 	MobileDialog dlg(qApp->activeWindow());
-	QString newCode = Settings().value("Client/MobileCode").toString();
+	QString newCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
 	if( dlg.exec() == QDialog::Accepted )
 	{
 		if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
@@ -293,7 +283,7 @@ void ContainerPage::setHeader(const QString &file)
 	elideFileName(true);
 }
 
-void ContainerPage::showButtons( std::vector<QWidget*> buttons )
+void ContainerPage::showButtons(const QVector<QWidget*> &buttons)
 {
 	for( auto *button: buttons ) button->show();
 }
@@ -311,8 +301,8 @@ void ContainerPage::showDropdown()
 		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
 
 		otherAction->show();
-		mainAction->setStyleSheet( "QPushButton { border-top-left-radius: 0px; }" );
-		otherAction->setStyleSheet( "QPushButton { border-top-left-radius: 2px; border-top-right-radius: 2px; }" );
+		mainAction->setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 0px; }"));
+		otherAction->setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; border-top-right-radius: 2px; }"));
 	}
 
 }
@@ -337,7 +327,7 @@ void ContainerPage::showMainAction(Actions action)
 		mainAction->show();
 	}
 
-	for(auto conn: actionConnections)
+	for(const auto &conn: actionConnections)
 		QObject::disconnect(conn);
 	actionConnections.clear();
 	if(action == SignatureMobile)
@@ -397,7 +387,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-		ui->rightPane->addHeader("Container's timestamps");
+		ui->rightPane->addHeader(QStringLiteral("Container's timestamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
@@ -459,48 +449,45 @@ void ContainerPage::updatePanes(ContainerState state)
 {
 	auto buttonWidth = ui->changeLocation->width();
 	bool resize = false;
-	bool showPrintSummary = Settings(qApp->applicationName()).value( "Client/ShowPrintSummary", "false" ).toBool();
+	bool showPrintSummary = Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool();
 
 	switch( state )
 	{
 	case UnsignedContainer:
 		cancelText = "CANCEL";
-		navigateToContainerText = "OPEN ENVELOPE LOCATION";
 
 		ui->changeLocation->show();
 		ui->rightPane->clear();
 		hideRightPane();
-		ui->leftPane->init(fileName, "Content of the envelope");
+		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
 		showSigningButton();
 		showButtons( { ui->cancel, ui->convert, ui->save } );
-		hideButtons( { ui->navigateToContainer, ui->email, ui->summary } );
+		hideButtons( { ui->saveAs, ui->email, ui->summary } );
 		break;
 	case UnsignedSavedContainer:
 		cancelText = "STARTING";
-		navigateToContainerText = "OPEN ENVELOPE LOCATION";
 
 		ui->changeLocation->show();
-		ui->leftPane->init(fileName, "Content of the envelope");
+		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
 		if( showPrintSummary )
-			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
+			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary } );
 		else
-			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
 		hideButtons( { ui->save } );
-		showRightPane( ItemSignature, "Container is not signed");
+		showRightPane( ItemSignature, QStringLiteral("Container is not signed"));
 		break;
 	case SignedContainer:
 		cancelText = "STARTING";
-		navigateToContainerText = "OPEN ENVELOPE LOCATION";
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Content of the envelope");
-		showRightPane( ItemSignature, "Container's signatures" );
+		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
+		showRightPane(ItemSignature, QStringLiteral("Container's signatures"));
 		hideButtons( { ui->save } );
 		if( showPrintSummary )
-			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email, ui->summary } );
+			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary } );
 		else
-			showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
 		break;
 	case UnencryptedContainer:
 		cancelText = "STARTING";
@@ -509,10 +496,10 @@ void ContainerPage::updatePanes(ContainerState state)
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		showRightPane( ItemAddress, "Recipients" );
+		showRightPane(ItemAddress, QStringLiteral("Recipients"));
 		showMainAction(EncryptContainer);
 		showButtons( { ui->cancel, ui->convert } );
-		hideButtons( { ui->save, ui->navigateToContainer, ui->email, ui->summary } );
+		hideButtons( { ui->save, ui->saveAs, ui->email, ui->summary } );
 		break;
 	case EncryptedContainer:
 		cancelText = "STARTING";
@@ -521,11 +508,11 @@ void ContainerPage::updatePanes(ContainerState state)
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Encrypted files");
-		showRightPane( ItemAddress, "Recipients" );
+		ui->leftPane->init(fileName, QStringLiteral("Encrypted files"));
+		showRightPane(ItemAddress, QStringLiteral("Recipients"));
 		updateDecryptionButton();
 		hideButtons( { ui->save, ui->summary } );
-		showButtons( { ui->cancel, ui->convert, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
 		break;
 	case DecryptedContainer:
 		cancelText = "STARTING";
@@ -533,11 +520,11 @@ void ContainerPage::updatePanes(ContainerState state)
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, "Decrypted files");
-		showRightPane( ItemAddress, "Recipients");
+		ui->leftPane->init(fileName, QStringLiteral("Decrypted files"));
+		showRightPane(ItemAddress, QStringLiteral("Recipients"));
 		hideMainAction();
 		hideButtons( { ui->convert, ui->save, ui->summary } );
-		showButtons( { ui->cancel, ui->navigateToContainer, ui->email } );
+		showButtons( { ui->cancel, ui->saveAs, ui->email } );
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
@@ -565,8 +552,8 @@ void ContainerPage::translateLabels()
 	ui->cancel->setText(tr(qPrintable(cancelText)));
 	ui->container->setText(tr(qPrintable(envelope)));
 	ui->convert->setText(tr(qPrintable(convertText)));
-	ui->navigateToContainer->setText(tr(qPrintable(navigateToContainerText)));
-	ui->email->setText(tr(qPrintable(emailText)));
-	ui->summary->setText(tr(qPrintable(summaryText)));
-	ui->save->setText(tr(qPrintable(saveText)));
+	ui->saveAs->setText(tr("SAVE AS"));
+	ui->email->setText(tr("SEND WITH E-MAIL"));
+	ui->summary->setText(tr("PRINT SUMMARY"));
+	ui->save->setText(tr("SAVE WITHOUT SIGNING"));
 }

@@ -566,6 +566,9 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		save();
 		ui->signContainerPage->transition(digiDoc);
 		break;
+	case ContainerSaveAs:
+		save(true);
+		break;
 	case ContainerEmail:
 		if(digiDoc)
 			containerToEmail(digiDoc->fileName());
@@ -879,26 +882,25 @@ void MainWindow::resizeEvent(QResizeEvent *)
 	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
 }
 
-bool MainWindow::save()
+bool MainWindow::save(bool saveAs)
 {
-	if(digiDoc)
-	{
-		if( !FileDialog::fileIsWritable(digiDoc->fileName()) &&
-			QMessageBox::Yes == QMessageBox::warning( this, tr("DigiDoc4 client"),
-				tr("Cannot alter container %1. Save different location?")
-					.arg(digiDoc->fileName().normalized(QString::NormalizationForm_C)),
-				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
-		{
-			QString file = selectFile(tr("Save file"), digiDoc->fileName(), true);
-			if( !file.isEmpty() )
-			{
-				return digiDoc->save(file);
-			}
-		}
-		return digiDoc->save();
-	}
+	if(!digiDoc)
+		return false;
 
-	return false;
+	QString target = digiDoc->fileName().normalized(QString::NormalizationForm_C);
+	if(saveAs)
+		target = selectFile(tr("Save file"), target, true);
+
+	if( !FileDialog::fileIsWritable(target) &&
+		QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
+			tr("Cannot alter container %1. Save different location?").arg(target),
+			QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+	{
+		QString file = selectFile(tr("Save file"), target, true);
+		if(!file.isEmpty())
+			return digiDoc->save(file);
+	}
+	return digiDoc->save(target);
 }
 
 QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )
