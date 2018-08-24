@@ -980,7 +980,7 @@ void MainWindow::showCardStatus()
 	TokenData at = qApp->signer()->tokenauth();
 	const TokenData &t = st.cert().isNull() ? at : st;
 
-	closeWarnings(-1);
+	closeWarnings(MyEid);
 
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
