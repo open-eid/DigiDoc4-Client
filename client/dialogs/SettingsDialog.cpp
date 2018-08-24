@@ -164,22 +164,12 @@ void SettingsDialog::initUI()
 
 	// pageSigning
 	ui->lblSigningFileType->setFont(headerFont);
-	ui->lblSigningRole->setFont(headerFont);
-	ui->lblSigningAddress->setFont(headerFont);
 	ui->chkShowPrintSummary->setFont(regularFont);
+	ui->chkRoleAddressInfo->setFont(regularFont);
 
 	ui->rdSigningAsice->setFont(regularFont);
 	ui->rdSigningBdoc->setFont(regularFont);
 	ui->lblSigningExplained->setFont(regularFont);
-	ui->lblSigningCity->setFont(regularFont);
-	ui->lblSigningCounty->setFont(regularFont);
-	ui->lblSigningCountry->setFont(regularFont);
-	ui->lblSigningZipCode->setFont(regularFont);
-	ui->txtSigningRole->setFont(regularFont);
-	ui->txtSigningCity->setFont(regularFont);
-	ui->txtSigningCounty->setFont(regularFont);
-	ui->txtSigningCountry->setFont(regularFont);
-	ui->txtSigningZipCode->setFont(regularFont);
 
 	// pageAccessSert
 	ui->txtAccessCert->setFont(regularFont);
@@ -237,7 +227,7 @@ void SettingsDialog::initUI()
 	QString package;
 #ifndef Q_OS_MAC
 	QStringList packages = Common::packages({
-		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "eID software"});
+		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "open-eid", "eID software"});
 	if( !packages.isEmpty() )
 		package = "<br />" + tr("Base version:") + " " + packages.first();
 #endif
@@ -272,27 +262,17 @@ void SettingsDialog::initUI()
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
 
 	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
-	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this,
-			 [this]()
-		{
-			CertUtil::showCertificate(SslCertificate(AccessCert::cert()), this);
-		}
-			);
-	connect(ui->btnFirstRun, &QPushButton::clicked, this,
-			 [this]()
-		{
-			FirstRun dlg(this);
-
-			connect(&dlg, &FirstRun::langChanged, this,
-					[this](const QString& lang )
-					{
-						retranslate(lang);
-						selectLanguage();
-					}
-			);
-			dlg.exec();
-		}
-			);
+	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this, [this] {
+		CertUtil::showCertificate(SslCertificate(AccessCert::cert()), this);
+	});
+	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
+		FirstRun dlg(this);
+		connect(&dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
+			retranslate(lang);
+			selectLanguage();
+		});
+		dlg.exec();
+	});
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
@@ -480,17 +460,6 @@ void SettingsDialog::initFunctionality()
 	ui->tokenBackend->hide();
 #endif
 
-
-	Settings s;
-	s.beginGroup("Client");
-	ui->txtSigningRole->setText(s.value("Role").toString());
-	ui->txtSigningCity->setText(s.value("City").toString());
-	ui->txtSigningCounty->setText(s.value("State").toString());
-	ui->txtSigningCountry->setText(s.value("Country").toString());
-	ui->txtSigningZipCode->setText(s.value("Zip").toString());
-
-//	d->signOverwrite->setChecked( s.value( "Overwrite", false ).toBool() );
-
 	setProxyEnabled();
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
@@ -513,6 +482,10 @@ void SettingsDialog::initFunctionality()
 
 	ui->chkShowPrintSummary->setChecked(Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), "false").toBool());
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
+	ui->chkRoleAddressInfo->setChecked(Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool());
+	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [&](bool checked){
+		Settings(qApp->applicationName()).setValue(QStringLiteral("Client/RoleAddressInfo"), checked);
+	});
 
 	updateDiagnostics();
 }
@@ -577,14 +550,6 @@ void SettingsDialog::save()
 
 	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
 	saveProxy();
-	saveSignatureInfo(
-		ui->txtSigningRole->text(),
-		ui->txtSigningCity->text(),
-		ui->txtSigningCounty->text(),
-		ui->txtSigningCountry->text(),
-		ui->txtSigningZipCode->text()
-		);
-
 	Settings(qApp->applicationName()).setValue("Client/ShowPrintSummary", ui->chkShowPrintSummary->isChecked() );
 }
 
@@ -646,23 +611,6 @@ void SettingsDialog::openDirectory()
 		Settings().setValue(QStringLiteral("Client/DefaultDir"), dir);
 		ui->txtGeneralDirectory->setText( dir );
 	}
-}
-
-
-void SettingsDialog::saveSignatureInfo(
-		const QString &role,
-		const QString &city,
-		const QString &state,
-		const QString &country,
-		const QString &zip)
-{
-	Settings s;
-	s.beginGroup("Client");
-	s.setValue("Role", role);
-	s.setValue("City", city);
-	s.setValue("State", state),
-	s.setValue("Country", country);
-	s.setValue("Zip", zip);
 }
 
 void SettingsDialog::updateDiagnostics()

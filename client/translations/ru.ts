@@ -1804,29 +1804,10 @@ Kонтрольный код: %1</translation>
         <translation>Показать подтверждающий лист</translation>
     </message>
     <message>
-        <source>Role</source>
-        <translation>Роль</translation>
+        <source>Ask role and address info on signing</source>
+        <translation>Просить роль и адрес при каждом подписании</translation>
     </message>
-    <message>
-        <source>Address</source>
-        <translation>Адрес</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Город</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Уезд</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Страна</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Индекс</translation>
-    </message>
+
     <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
@@ -3081,6 +3062,58 @@ ASiC-E – это разрабатываемый международный фо
 
 
 <context>
+    <name>QSmartCard</name>
+
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>Для изменения %1 кода с помощью PUK кода Вам необходимо&lt;br&gt;ввести один раз PUK код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>RoleAddressDialog</name>
+
+    <message>
+        <source>Role</source>
+        <translation>Роль</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Город</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Уезд</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Индекс</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MainAction</name>
 
     <message>
@@ -3176,24 +3209,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Less</source>
         <translation>Меньше</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSmartCard</name>
-
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>Для изменения %1 кода с помощью PUK кода Вам необходимо&lt;br&gt;ввести один раз PUK код и два раза новый %1 код с помощью PinPad.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
     </message>
 </context>
 

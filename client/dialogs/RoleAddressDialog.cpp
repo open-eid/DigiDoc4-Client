@@ -1,0 +1,106 @@
+/*
+ * QDigiDocClient
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
+#include "RoleAddressDialog.h"
+#include "ui_RoleAddressDialog.h"
+
+#include "effects/Overlay.h"
+#include "Settings.h"
+#include "Styles.h"
+
+#include <QtWidgets/QCompleter>
+#include <QtWidgets/QPushButton>
+
+class RoleAddressDialog::Private: public Ui::RoleAddressDialog
+{
+public:
+	Settings s;
+};
+
+RoleAddressDialog::RoleAddressDialog(QWidget *parent)
+	: QDialog(parent)
+	, d(new Private)
+{
+	const QFont regularFont = Styles::font(Styles::Regular, 14);
+	const QFont buttonFont = Styles::font(Styles::Condensed, 14);
+
+	d->s.beginGroup(QStringLiteral("Client"));
+	d->setupUi(this);
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	setWindowModality(Qt::ApplicationModal);
+	d->buttonBox->addButton(tr("Sign"), QDialogButtonBox::AcceptRole)->setFont(buttonFont);
+	d->buttonBox->button(QDialogButtonBox::Cancel)->setFont(buttonFont);
+
+	for(QLabel *label: findChildren<QLabel*>())
+		label->setFont(regularFont);
+	for(QLineEdit *line: findChildren<QLineEdit*>())
+	{
+		QCompleter *completer = new QCompleter(d->s.value(line->objectName()).toStringList(), line);
+		completer->setMaxVisibleItems(10);
+		completer->setCompletionMode(QCompleter::PopupCompletion);
+		completer->setCaseSensitivity(Qt::CaseInsensitive);
+		line->setText(d->s.value(line->objectName()).toStringList().at(0));
+		line->setCompleter(completer);
+		connect(line, &QLineEdit::editingFinished, this, [=] {
+			QStringList list = d->s.value(line->objectName()).toStringList();
+			list.removeAll(line->text());
+			list.insert(0, line->text());
+			if(list.size() > 10)
+				list.removeLast();
+			d->s.setValueEx(line->objectName(), list, QStringList());
+		});
+	}
+}
+
+RoleAddressDialog::~RoleAddressDialog()
+{
+	delete d;
+}
+
+QString RoleAddressDialog::city() const
+{
+	return d->City->text();
+}
+
+QString RoleAddressDialog::country() const
+{
+	return d->Country->text();
+}
+
+int RoleAddressDialog::exec()
+{
+	Overlay overlay(parentWidget());
+	overlay.show();
+	return QDialog::exec();
+}
+
+QString RoleAddressDialog::role() const
+{
+	return d->Role->text();
+}
+
+QString RoleAddressDialog::state() const
+{
+	return d->State->text();
+}
+
+QString RoleAddressDialog::zip() const
+{
+	return d->Zip->text();
+}

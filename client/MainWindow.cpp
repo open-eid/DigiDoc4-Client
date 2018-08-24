@@ -38,6 +38,7 @@
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
 #include "dialogs/MobileProgress.h"
+#include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
@@ -80,20 +81,20 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	Settings s(qApp->applicationName());
-	if(s.value("Client/Type") == "ddoc")
-		s.remove("Client/Type");
+	if(s.value(QStringLiteral("Client/Type")) == "ddoc")
+		s.remove(QStringLiteral("Client/Type"));
 
 	ui->setupUi(this);
 
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
-	ui->version->setText(QString("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
-		.arg(tr("Ver. ")).arg(qApp->applicationVersion()));
+	ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
+		.arg(tr("Ver. "), qApp->applicationVersion()));
 	connect(ui->version, &QLabel::linkActivated, this, 
 		[this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
-	coatOfArms->setStyleSheet("border: none;");
-	coatOfArms->load( QString( ":/images/Logo_small.svg" ) );
+	coatOfArms->setStyleSheet(QStringLiteral("border: none;"));
+	coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
 	coatOfArms->resize( 80, 32 );
 	coatOfArms->move( 15, 17 );
 	ui->signature->init( Pages::SignIntro, ui->signatureShadow, true );
@@ -107,13 +108,13 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::clearPopups);
 	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected);
 
-	selector = new DropdownButton(":/images/arrow_down.svg", ":/images/arrow_down_selected.svg", ui->selector);
+	selector = new DropdownButton(QStringLiteral(":/images/arrow_down.svg"), QStringLiteral(":/images/arrow_down_selected.svg"), ui->selector);
 	selector->hide();
 	selector->resize( 12, 6 );
 	selector->move( 9, 32 );
 	selector->setCursor( Qt::PointingHandCursor );
-	ui->help->installEventFilter( new ButtonHoverFilter( ":/images/icon_Abi.svg", ":/images/icon_Abi_hover.svg", this ) );
-	ui->settings->installEventFilter( new ButtonHoverFilter( ":/images/icon_Seaded.svg", ":/images/icon_Seaded_hover.svg", this ) );
+	ui->help->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
+	ui->settings->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Seaded.svg"), QStringLiteral(":/images/icon_Seaded_hover.svg"), this));
 	buttonGroup = new QButtonGroup( this );
 	buttonGroup->addButton( ui->help, HeadHelp );
 	buttonGroup->addButton( ui->settings, HeadSettings );
@@ -239,10 +240,10 @@ void MainWindow::adjustDrops()
 
 void MainWindow::browseOnDisk( const QString &fileName )
 {
-	if ( !QFileInfo( fileName ).exists() )
+	if(!QFileInfo::exists(fileName))
 		return;
 	QUrl url = QUrl::fromLocalFile( fileName );
-	url.setScheme( "browse" );
+	url.setScheme(QStringLiteral("browse"));
 	QDesktopServices::openUrl( url );
 }
 
@@ -277,8 +278,8 @@ void MainWindow::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 
-		ui->version->setText(QString("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
-			.arg(tr("Ver. ")).arg(qApp->applicationVersion()));
+		ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
+			.arg(tr("Ver. "), qApp->applicationVersion()));
 	}
 
 	QWidget::changeEvent(event);
@@ -304,7 +305,7 @@ void MainWindow::clearWarning(int warningType)
 	updateWarnings();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::closeEvent(QCloseEvent *)
 {
 	resetCryptoDoc();
 	resetDigiDoc();
@@ -401,9 +402,9 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 	if (mimeData->hasUrls())
 	{
-		for( auto url: mimeData->urls())
+		for(const auto &url: mimeData->urls())
 		{
-			if (url.scheme() == "file" )
+			if(url.scheme() == QStringLiteral("file"))
 			{
 				files << url.toLocalFile();
 			}
@@ -746,7 +747,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 			{
 				DocumentModel* model = (current == CryptoDetails) ?
 					cryptoDoc->documentModel() : digiDoc->documentModel();
-				for(auto file: content)
+				for(const auto &file: content)
 					model->addFile(file);
 				selectPage(page);
 				return;
@@ -796,7 +797,7 @@ void MainWindow::open(const QStringList &params, bool crypto)
 		navigateToPage(Pages::SignIntro);
 
 	QStringList files;
-	for(auto param: params)
+	for(const auto &param: params)
 	{
 		const QFileInfo f(param);
 		if(!f.isFile())
@@ -1099,15 +1100,21 @@ bool MainWindow::sign()
 	AccessCert access(this);
 	if( !access.validate() )
 		return false;
-	WaitDialogHolder waitDialog(this, tr("Signing"));
 
-	Settings s;
-	s.beginGroup(QStringLiteral("Client"));
-	QString role = s.value(QStringLiteral("Role")).toString();
-	QString city = s.value(QStringLiteral("City")).toString();
-	QString state = s.value(QStringLiteral("State")).toString();
-	QString country = s.value(QStringLiteral("Country")).toString();
-	QString zip = s.value(QStringLiteral("Zip")).toString();
+	QString role, city, state, country, zip;
+	if(Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool())
+	{
+		RoleAddressDialog dlg(this);
+		if(dlg.exec() == QDialog::Rejected)
+			return false;
+		role = dlg.role();
+		city = dlg.city();
+		state = dlg.state();
+		country = dlg.country();
+		zip = dlg.zip();
+	}
+
+	WaitDialogHolder waitDialog(this, tr("Signing"));
 	if(digiDoc->sign(city, state, zip, country, role, QString()))
 	{
 		access.increment();
@@ -1144,13 +1151,19 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	if( !access.validate() )
 		return false;
 
-	Settings s;
-	s.beginGroup(QStringLiteral("Client"));
-	QString role = s.value(QStringLiteral("Role")).toString();
-	QString city = s.value(QStringLiteral("City")).toString();
-	QString state = s.value(QStringLiteral("State")).toString();
-	QString country = s.value(QStringLiteral("Country")).toString();
-	QString zip = s.value(QStringLiteral("Zip")).toString();
+	QString role, city, state, country, zip;
+	if(Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool())
+	{
+		RoleAddressDialog dlg(this);
+		if(dlg.exec() == QDialog::Rejected)
+			return false;
+		role = dlg.role();
+		city = dlg.city();
+		state = dlg.state();
+		country = dlg.country();
+		zip = dlg.zip();
+	}
+
 	MobileProgress m(this);
 	m.setSignatureInfo(city, state, zip, country, role);
 	m.sign(digiDoc, idCode, phoneNumber);
@@ -1369,9 +1382,9 @@ void MainWindow::containerToEmail( const QString &fileName )
 
 	if(!QFileInfo::exists(fileName))
 		return;
-	q.addQueryItem( "subject", QFileInfo( fileName ).fileName() );
-	q.addQueryItem( "attachment", QFileInfo( fileName ).absoluteFilePath() );
-	url.setScheme( "mailto" );
+	q.addQueryItem(QStringLiteral("subject"), QFileInfo(fileName).fileName() );
+	q.addQueryItem(QStringLiteral("attachment"), QFileInfo(fileName).absoluteFilePath() );
+	url.setScheme(QStringLiteral("mailto"));
 	url.setQuery(q);
 	QDesktopServices::openUrl( url );
 }
@@ -1452,7 +1465,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 {
 	// Check that container is not dropped into itself
 	QFileInfo containerInfo(container);
-	for(auto file: files)
+	for(const auto &file: files)
 	{
 		if(containerInfo == QFileInfo(file))
 		{
@@ -1611,7 +1624,7 @@ void MainWindow::updateKeys(const QList<CKey> &keys)
 
 	for(int i = cryptoDoc->keys().size() - 1; i >= 0; i--)
 		cryptoDoc->removeKey(i);
-	for(auto key: keys)
+	for(const auto &key: keys)
 		cryptoDoc->addKey(key);
 	ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()), cryptoDoc);
 }
@@ -1630,7 +1643,7 @@ void MainWindow::containerSummary()
 	dialog->printer()->setPaperSize( QPrinter::A4 );
 	dialog->printer()->setOrientation( QPrinter::Portrait );
 	dialog->setMinimumHeight( 700 );
-	connect( dialog, &QPrintPreviewDialog::paintRequested, [=](QPrinter *printer){
+	connect(dialog, &QPrintPreviewDialog::paintRequested, this, [=](QPrinter *printer){
 		PrintSheet(digiDoc, printer);
 	});
 	dialog->exec();

@@ -71,13 +71,6 @@ private:
 	void updateDiagnostics();
 	void saveDiagnostics();
 	void saveProxy();
-	void saveSignatureInfo(
-			const QString &role,
-			const QString &city,
-			const QString &state,
-			const QString &country,
-			const QString &zip
-			);
 
 	void installCert();
 	void removeCert();
