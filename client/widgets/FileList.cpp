@@ -229,7 +229,7 @@ void FileList::updateDownload()
 {
 	if(ui->download->isHidden())
 	{
-		if(state & (UnsignedSavedContainer | SignedContainer | DecryptedContainer) && items.size() > 1)
+		if(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && items.size() > 1)
 		{
 			ui->download->show();
 			ui->count->show();
