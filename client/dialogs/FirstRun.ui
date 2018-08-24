@@ -306,34 +306,238 @@ text-align: center;</string>
    </widget>
    <widget class="QWidget" name="introPage">
     <property name="styleSheet">
-     <string notr="true">#introPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
+     <string notr="true">#introPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }
+QWidget { border: none; }</string>
     </property>
-    <widget class="QPushButton" name="viewSigning">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>460</y>
-       <width>298</width>
-       <height>34</height>
-      </rect>
+    <layout class="QGridLayout" name="introPageLayout">
+     <property name="leftMargin">
+      <number>20</number>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
+     <property name="topMargin">
+      <number>20</number>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
+     <property name="rightMargin">
+      <number>20</number>
      </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
+     <property name="bottomMargin">
+      <number>20</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+     <property name="horizontalSpacing">
+      <number>20</number>
+     </property>
+     <item row="0" column="0" colspan="3">
+      <widget class="QLabel" name="introTitle">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">text-align: center;
+color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>The DigiDoc application allows you to:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QSvgWidget" name="signWidget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>110</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>110</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSvgWidget" name="cryptoWidget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>106</width>
+         <height>117</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>106</width>
+         <height>117</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QSvgWidget" name="eidWidget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>138</width>
+         <height>97</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>138</width>
+         <height>97</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelSign">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Sign documents</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="labelCrypto">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Encrypt documents</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLabel" name="labelEid">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Manage your eID-s</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="signIntro">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;
+line-height: 16px;</string>
+       </property>
+       <property name="text">
+        <string>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="cryptoIntro">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;
+line-height: 16px;</string>
+       </property>
+       <property name="text">
+        <string>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QLabel" name="eidIntro">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;
+line-height: 16px;</string>
+       </property>
+       <property name="text">
+        <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="viewSigning">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px; 
 	border: none;
@@ -349,394 +553,160 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>VIEW INTRODUCTION</string>
-     </property>
-     <property name="autoDefault">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="viewEncryption">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>460</y>
-       <width>298</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       </property>
+       <property name="text">
+        <string>VIEW INTRODUCTION</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="viewEncryption">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
-	border-radius: 2px; 
+	border-radius: 2px;
 	border: none;
 	color: #ffffff;
 	background-color: #006EB5;
 }
 QPushButton:pressed {
-	background-color: #41B6E6;
+    background-color: #41B6E6;
 }
 QPushButton:hover:!pressed {
-	background-color: #008DCF;
+    background-color: #008DCF;
 }
 QPushButton:disabled {
-	background-color: #BEDBED;
+    background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>VIEW INTRODUCTION</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="viewEid">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>460</y>
-       <width>298</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       </property>
+       <property name="text">
+        <string>VIEW INTRODUCTION</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QPushButton" name="viewEid">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
-	border-radius: 2px; 
+	border-radius: 2px;
 	border: none;
 	color: #ffffff;
 	background-color: #006EB5;
 }
 QPushButton:pressed {
-	background-color: #41B6E6;
+    background-color: #41B6E6;
 }
 QPushButton:hover:!pressed {
-	background-color: #008DCF;
+    background-color: #008DCF;
 }
 QPushButton:disabled {
-	background-color: #BEDBED;
+    background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>VIEW INTRODUCTION</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelSign">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>299</y>
-       <width>298</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Sign documents</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelCrypto">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>299</y>
-       <width>298</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Encrypt documents</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelEid">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>299</y>
-       <width>298</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Manage your eID-s</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QWidget" name="signWidget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>104</x>
-       <y>155</y>
-       <width>150</width>
-       <height>110</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="cryptoWidget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>459</x>
-       <y>157</y>
-       <width>106</width>
-       <height>117</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border:none;</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="eidWidget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>776</x>
-       <y>167</y>
-       <width>138</width>
-       <height>97</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signIntro">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>340</y>
-       <width>298</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #353739;
-line-height: 16px;</string>
-     </property>
-     <property name="text">
-      <string>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoIntro">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>340</y>
-       <width>298</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #353739;
-line-height: 16px;</string>
-     </property>
-     <property name="text">
-      <string>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="eidIntro">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>340</y>
-       <width>298</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #353739;
-line-height: 16px;</string>
-     </property>
-     <property name="text">
-      <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="skip">
-     <property name="geometry">
-      <rect>
-       <x>436</x>
-       <y>525</y>
-       <width>151</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>151</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>151</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       </property>
+       <property name="text">
+        <string>VIEW INTRODUCTION</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QPushButton" name="skip">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
-	border-radius: 2px; 
+	border-radius: 2px;
 	border: none;
 	color: #006EB5;
 }
 QPushButton:pressed {
-	color: #FFFFFF;
+    color: #FFFFFF;
 	background-color: #006EB5;
 }
 QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
+    border: 1px solid #006EB5;
 	color: #006EB5;
 }
 QPushButton:disabled {
-	color: #75787B;
+    color: #75787B;
 	background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>Skip introductions</string>
-     </property>
-     <property name="autoDefault">
-      <bool>true</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="introTitle">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>50</y>
-       <width>500</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-text-align: center;
-color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>The DigiDoc application allows you to:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
+       </property>
+       <property name="text">
+        <string>Skip introductions</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Preferred</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
     <zorder>viewSigning</zorder>
     <zorder>viewEncryption</zorder>
     <zorder>viewEid</zorder>
@@ -1998,6 +1968,14 @@ border-radius: 3px;</string>
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QSvgWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
