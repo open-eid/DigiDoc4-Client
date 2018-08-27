@@ -1753,10 +1753,6 @@ Kонтрольный код: %1</translation>
         <translation>Язык</translation>
     </message>
     <message>
-        <source>Check for updates</source>
-        <translation>Проверить наличие обновлений</translation>
-    </message>
-    <message>
         <source>Online TSL digest check</source>
         <translation>Проверка обновлений TSL</translation>
     </message>
@@ -1869,22 +1865,7 @@ Kонтрольный код: %1</translation>
         <source>Please try again.</source>
         <translation>Пожалуйста, попробуйте еще раз.</translation>
     </message>
-    <message>
-        <source>Once a day</source>
-        <translation>Один раз в день</translation>
-    </message>
-    <message>
-        <source>Once a week</source>
-        <translation>Раз в неделю</translation>
-    </message>
-    <message>
-        <source>Once a month</source>
-        <translation>Раз в месяц</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>Никогда</translation>
-    </message>
+
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/rus/access&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2184,30 +2165,6 @@ Additional licenses and components</source>
     <message>
         <source>Failed to read certificate</source>
         <translation>Не удалось прочитать сертификат</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WaitDialog</name>
-
-    <message>
-        <source>Decrypting</source>
-        <translation>Расшифровка</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WarningDialog</name>
-
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Детали</translation>
     </message>
 </context>
 
@@ -3196,24 +3153,6 @@ ID-КАРТОЙ</translation>
 
 
 <context>
-    <name>WarningRibbon</name>
-
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n сообщение</numerusform>
-            <numerusform>%n сообщения</numerusform>
-            <numerusform>%n сообщения</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Less</source>
-        <translation>Меньше</translation>
-    </message>
-</context>
-
-
-<context>
     <name>LdapSearch</name>
 
     <message>
@@ -3235,6 +3174,30 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Код ошибки:%1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WaitDialog</name>
+
+    <message>
+        <source>Decrypting</source>
+        <translation>Расшифровка</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Детали</translation>
     </message>
 </context>
 
@@ -3293,6 +3256,24 @@ ID-КАРТОЙ</translation>
     <message>
         <source>More information</source>
         <translation>Дополнительная информация</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningRibbon</name>
+
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n сообщение</numerusform>
+            <numerusform>%n сообщения</numerusform>
+            <numerusform>%n сообщения</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Меньше</translation>
     </message>
 </context>
 </TS>

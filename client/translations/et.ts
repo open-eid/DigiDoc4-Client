@@ -1757,10 +1757,6 @@ Kontrollkood: %1</translation>
         <translation>Keel</translation>
     </message>
     <message>
-        <source>Check for updates</source>
-        <translation>Kontrolli uuendusi</translation>
-    </message>
-    <message>
         <source>Online TSL digest check</source>
         <translation>Kontrolli TSL värskendust</translation>
     </message>
@@ -1876,22 +1872,6 @@ Kontrollkood: %1</translation>
         <translation>Palun proovi uuesti.</translation>
     </message>
 
-    <message>
-        <source>Once a day</source>
-        <translation>Kord päevas</translation>
-    </message>
-    <message>
-        <source>Once a week</source>
-        <translation>Kord nädalas</translation>
-    </message>
-    <message>
-        <source>Once a month</source>
-        <translation>Kord kuus</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>Mitte kunagi</translation>
-    </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2172,28 +2152,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Failed to read certificate</source>
         <translation>Sertifikaadi laadimine ebaõnnestus</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WaitDialog</name>
-    <message>
-        <source>Decrypting</source>
-        <translation>Dekrüpteerin</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WarningDialog</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Detailid</translation>
     </message>
 </context>
 
@@ -3162,22 +3120,6 @@ ID-KAARDIGA</translation>
 
 
 <context>
-    <name>WarningRibbon</name>
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n teade</numerusform>
-            <numerusform>%n teadet</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Less</source>
-        <translation>Vähem</translation>
-    </message>
-</context>
-
-
-<context>
     <name>LdapSearch</name>
 
     <message>
@@ -3199,6 +3141,28 @@ ID-KAARDIGA</translation>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Veakood: %1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WaitDialog</name>
+    <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerin</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Detailid</translation>
     </message>
 </context>
 
@@ -3253,6 +3217,22 @@ ID-KAARDIGA</translation>
     <message>
         <source>More information</source>
         <translation>Rohkem infot</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningRibbon</name>
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n teade</numerusform>
+            <numerusform>%n teadet</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Vähem</translation>
     </message>
 </context>
 </TS>

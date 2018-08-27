@@ -1753,10 +1753,6 @@ Control code: %1</translation>
         <translation>Language</translation>
     </message>
     <message>
-        <source>Check for updates</source>
-        <translation>Check for updates</translation>
-    </message>
-    <message>
         <source>Online TSL digest check</source>
         <translation>Online TSL digest check</translation>
     </message>
@@ -1872,22 +1868,6 @@ Control code: %1</translation>
         <translation>Please try again.</translation>
     </message>
 
-    <message>
-        <source>Once a day</source>
-        <translation>Once a day</translation>
-    </message>
-    <message>
-        <source>Once a week</source>
-        <translation>Once a week</translation>
-    </message>
-    <message>
-        <source>Once a month</source>
-        <translation>Once a month</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>Never</translation>
-    </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/eng/access&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2171,30 +2151,6 @@ Additional licenses and components</translation>
     <message>
         <source>Failed to read certificate</source>
         <translation>Failed to read certificate</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WaitDialog</name>
-
-    <message>
-        <source>Decrypting</source>
-        <translation>Decrypting</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WarningDialog</name>
-
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Details</translation>
     </message>
 </context>
 
@@ -3192,23 +3148,6 @@ ID-CARD</translation>
 
 
 <context>
-    <name>WarningRibbon</name>
-
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n message</numerusform>
-            <numerusform>%n messages</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Less</source>
-        <translation>Less</translation>
-    </message>
-</context>
-
-
-<context>
     <name>LdapSearch</name>
 
     <message>
@@ -3230,6 +3169,30 @@ ID-CARD</translation>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Error Code: %1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WaitDialog</name>
+
+    <message>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningDialog</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation>Details</translation>
     </message>
 </context>
 
@@ -3284,6 +3247,23 @@ ID-CARD</translation>
     <message>
         <source>More information</source>
         <translation>More information</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningRibbon</name>
+
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n message</numerusform>
+            <numerusform>%n messages</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Less</translation>
     </message>
 </context>
 </TS>
