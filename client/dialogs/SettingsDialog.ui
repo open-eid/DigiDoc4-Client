@@ -403,185 +403,137 @@ QPushButton:!checked{
          <number>0</number>
         </property>
         <widget class="QWidget" name="pageGeneral">
-         <widget class="QLabel" name="lblGeneralLang">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>20</y>
-            <width>700</width>
-            <height>21</height>
-           </rect>
+         <layout class="QVBoxLayout" name="pageGeneralLayout">
+          <property name="spacing">
+           <number>20</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>700</width>
-            <height>21</height>
-           </size>
+          <property name="leftMargin">
+           <number>20</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>700</width>
-            <height>21</height>
-           </size>
+          <property name="topMargin">
+           <number>20</number>
           </property>
-          <property name="text">
-           <string>Language</string>
+          <property name="rightMargin">
+           <number>20</number>
           </property>
-         </widget>
-         <widget class="QLabel" name="lblDefaultDirectory">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>220</y>
-            <width>700</width>
-            <height>21</height>
-           </rect>
+          <property name="bottomMargin">
+           <number>20</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>700</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>700</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Container default location</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblGeneralCheckUpdatePeriod">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>100</y>
-            <width>700</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>700</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>700</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Check for updates</string>
-          </property>
-         </widget>
-         <widget class="QComboBox" name="cmbGeneralCheckUpdatePeriod">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>132</y>
-            <width>145</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>145</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>145</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QComboBox {
-    border: 1px solid #DEE4E9;
-    border-radius: 2px;
-    background-color: #FFFFFF;
-	color: #353739;
-}	
-
-/* list */
-QComboBox QAbstractItemView {
-    border: 1px solid #DEE4E9;
-    border-radius: 2px;
-	padding: 3px 3px 3px 3px;
-    background-color: #FFFFFF;
+          <item>
+           <widget class="QLabel" name="lblGeneralLang">
+            <property name="text">
+             <string>Language</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="languageBoxLayout">
+            <item>
+             <widget class="QRadioButton" name="rdGeneralEstonian">
+              <property name="accessibleDescription">
+               <string notr="true"/>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
 }
 
-/* rows */
-QComboBox:item {
-    background-color: #FFFFFF;
-	color: #353739;
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
 }
 
-/* selected row */
-QComboBox:item:selected {
-    background-color: #006EB5;
-    color: #FFFFFF;
-}
-
-/* drop-down button*/
-QComboBox::drop-down {
-    width: 28px;
-	border: none;
-}
-
-/* drop-down button image*/
-QComboBox::down-arrow {
-	image: url(:/images/arrow_down.svg);
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
 }</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>Once a day</string>
-           </property>
+              </property>
+              <property name="text">
+               <string>Eesti</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rdGeneralRussian">
+              <property name="accessibleDescription">
+               <string notr="true"/>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+              </property>
+              <property name="text">
+               <string>Русский</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rdGeneralEnglish">
+              <property name="accessibleDescription">
+               <string notr="true"/>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+              </property>
+              <property name="text">
+               <string>English</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="languageBoxSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>495</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
           <item>
-           <property name="text">
-            <string>Once a week</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Once a month</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Never</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QCheckBox" name="chkGeneralTslRefresh">
-          <property name="geometry">
-           <rect>
-            <x>24</x>
-            <y>178</y>
-            <width>700</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>700</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>700</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QCheckBox::indicator {
+           <widget class="QCheckBox" name="chkGeneralTslRefresh">
+            <property name="minimumSize">
+             <size>
+              <width>700</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>700</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
     width: 14px;
     height: 14px;
 }
@@ -594,67 +546,28 @@ QCheckBox::indicator:checked {
     image: url(:/images/icon_checkbox_check.png);
 }
 </string>
-          </property>
-          <property name="text">
-           <string>Online TSL digest check</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>53</y>
-            <width>400</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>400</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>400</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="title">
-           <string/>
-          </property>
-          <widget class="QRadioButton" name="rdGeneralEstonian">
-           <property name="geometry">
-            <rect>
-             <x>21</x>
-             <y>0</y>
-             <width>60</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="accessibleDescription">
-            <string notr="true"/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
+            </property>
+            <property name="text">
+             <string>Online TSL digest check</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblDefaultDirectory">
+            <property name="text">
+             <string>Container default location</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="locationBoxLayout">
+            <item row="0" column="0" colspan="3">
+             <widget class="QRadioButton" name="rdGeneralSameDirectory">
+              <property name="styleSheet">
+               <string notr="true">QRadioButton::indicator {
     width: 14px;
     height: 14px;
 }
@@ -666,40 +579,19 @@ QRadioButton::indicator::unchecked {
 QRadioButton::indicator::checked {
     image: url(:/images/icon_radio_checked.png);
 }</string>
-           </property>
-           <property name="text">
-            <string>Eesti</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="rdGeneralEnglish">
-           <property name="geometry">
-            <rect>
-             <x>180</x>
-             <y>0</y>
-             <width>75</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>75</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>75</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="accessibleDescription">
-            <string notr="true"/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
+              </property>
+              <property name="text">
+               <string>Same folder</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
+              <property name="styleSheet">
+               <string notr="true">QRadioButton::indicator {
     width: 14px;
     height: 14px;
 }
@@ -711,225 +603,71 @@ QRadioButton::indicator::unchecked {
 QRadioButton::indicator::checked {
     image: url(:/images/icon_radio_checked.png);
 }</string>
-           </property>
-           <property name="text">
-            <string>English</string>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="rdGeneralRussian">
-           <property name="geometry">
-            <rect>
-             <x>89</x>
-             <y>0</y>
-             <width>80</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="accessibleDescription">
-            <string notr="true"/>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-           </property>
-           <property name="text">
-            <string>Русский</string>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>241</y>
-            <width>781</width>
-            <height>71</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <widget class="QLineEdit" name="txtGeneralDirectory">
-           <property name="geometry">
-            <rect>
-             <x>293</x>
-             <y>40</y>
-             <width>471</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>471</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>471</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="rdGeneralSameDirectory">
-           <property name="geometry">
-            <rect>
-             <x>21</x>
-             <y>12</y>
-             <width>220</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>220</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>220</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-           </property>
-           <property name="text">
-            <string>Same folder</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
-           <property name="geometry">
-            <rect>
-             <x>21</x>
-             <y>47</y>
-             <width>228</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>228</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>220</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-           </property>
-           <property name="text">
-            <string>Select the default directory</string>
-           </property>
-          </widget>
-          <widget class="QToolButton" name="btGeneralChooseDirectory">
-           <property name="geometry">
-            <rect>
-             <x>255</x>
-             <y>40</y>
-             <width>37</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>37</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>37</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QToolButton
+              </property>
+              <property name="text">
+               <string>Select the default directory</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QToolButton" name="btGeneralChooseDirectory">
+              <property name="minimumSize">
+               <size>
+                <width>37</width>
+                <height>31</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>37</width>
+                <height>31</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QToolButton
 {
 	border: 1px solid #DEE4E9;
 	border-radius: 2px;
 	background-color: #F4F5F6;
 }</string>
-           </property>
-           <property name="text">
-            <string>...</string>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QWidget" name="layoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>340</y>
-            <width>751</width>
-            <height>32</height>
-           </rect>
-          </property>
-          <layout class="QHBoxLayout" name="tokenBackendLayout" stretch="1,0">
-           <item>
-            <widget class="QCheckBox" name="tokenBackend">
-             <property name="styleSheet">
-              <string notr="true">QCheckBox::indicator {
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLineEdit" name="txtGeneralDirectory">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>31</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>31</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit
+{
+border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;
+}</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="tokenBackendLayout" stretch="1,0">
+            <item>
+             <widget class="QCheckBox" name="tokenBackend">
+              <property name="styleSheet">
+               <string notr="true">QCheckBox::indicator {
     width: 14px;
     height: 14px;
 }
@@ -942,21 +680,35 @@ QCheckBox::indicator:checked {
     image: url(:/images/icon_checkbox_check.png);
 }
 </string>
-             </property>
-             <property name="text">
-              <string>I would like to sign with Lithuanian, Latvian ID-card</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="tokenRestart">
-             <property name="text">
-              <string>Restart now</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+              </property>
+              <property name="text">
+               <string>I would like to sign with Lithuanian, Latvian ID-card</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="tokenRestart">
+              <property name="text">
+               <string>Restart now</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="pageGeneralSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="pageSigning">
          <widget class="QLabel" name="lblSigningFileType">
@@ -1816,12 +1568,6 @@ Additional licenses and components</string>
    </item>
    <item>
     <widget class="QWidget" name="navigationArea" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -1840,33 +1586,17 @@ background-color: #f7f7f7;</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">
-       <number>0</number>
+       <number>10</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>10</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item>
        <widget class="QLabel" name="txtNavVersion">
         <property name="minimumSize">
@@ -2315,22 +2045,6 @@ QPushButton:disabled {
         </property>
        </widget>
       </item>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Minimum</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
@@ -2353,7 +2067,6 @@ QPushButton:disabled {
   <tabstop>rdGeneralEstonian</tabstop>
   <tabstop>rdGeneralRussian</tabstop>
   <tabstop>rdGeneralEnglish</tabstop>
-  <tabstop>cmbGeneralCheckUpdatePeriod</tabstop>
   <tabstop>chkGeneralTslRefresh</tabstop>
   <tabstop>rdGeneralSameDirectory</tabstop>
   <tabstop>rdGeneralSpecifyDirectory</tabstop>

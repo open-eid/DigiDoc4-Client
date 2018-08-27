@@ -55,12 +55,6 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 
-#ifdef Q_OS_WIN
-#include <qt_windows.h>
-#include <shellapi.h>
-#include <QProcess>
-#endif
-
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 : QDialog(parent)
 , ui(new Ui::SettingsDialog)
@@ -140,7 +134,6 @@ void SettingsDialog::initUI()
 	// pageGeneral
 	ui->lblGeneralLang->setFont(headerFont);
 	ui->lblDefaultDirectory->setFont(headerFont);
-	ui->lblGeneralCheckUpdatePeriod->setFont(headerFont);
 
 	ui->rdGeneralEstonian->setFont(regularFont);
 	ui->rdGeneralRussian->setFont(regularFont);
@@ -151,14 +144,6 @@ void SettingsDialog::initUI()
 	ui->btGeneralChooseDirectory->setFont(regularFont);
 	ui->txtGeneralDirectory->setFont(regularFont);
 
-#ifdef Q_OS_WIN
-	ui->cmbGeneralCheckUpdatePeriod->setFont(regularFont);
-	ui->cmbGeneralCheckUpdatePeriod->addItem(QString());
-	ui->cmbGeneralCheckUpdatePeriod->removeItem(ui->cmbGeneralCheckUpdatePeriod->count() - 1);
-#else
-	ui->lblGeneralCheckUpdatePeriod->hide();
-	ui->cmbGeneralCheckUpdatePeriod->hide();
-#endif
 	ui->chkGeneralTslRefresh->setFont(regularFont);
 	ui->tokenBackend->setFont(regularFont);
 
@@ -401,34 +386,6 @@ void SettingsDialog::initFunctionality()
 			{
 				ui->btGeneralChooseDirectory->setEnabled(true);
 		} } );
-#endif
-
-#ifdef Q_OS_WIN
-	if (QFile::exists(qApp->applicationDirPath() + "/id-updater.exe"))
-	{
-		int selected = QProcess::execute("id-updater", {"-status"});
-		ui->cmbGeneralCheckUpdatePeriod->setCurrentIndex(selected > 0 && selected < 4 ? selected : 2);
-		connect(ui->cmbGeneralCheckUpdatePeriod,
-			static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, [](int index)
-		{
-			auto runPrivileged = [](const QString &program, const QString &arguments) {
-				ShellExecuteW(nullptr, L"runas", PCWSTR(program.utf16()), PCWSTR(arguments.utf16()), nullptr, SW_HIDE);
-			};
-			switch(index)
-			{
-			case 0: return runPrivileged("id-updater", "-daily");
-			case 1: return runPrivileged("id-updater", "-weekly");
-			case 2: return runPrivileged("id-updater", "-monthly");
-			case 3: return runPrivileged("id-updater", "-remove");
-			default: break;
-			}
-		});
-	}
-	else
-	{
-		ui->cmbGeneralCheckUpdatePeriod->hide();
-		ui->lblGeneralCheckUpdatePeriod->hide();
-	}
 #endif
 
 	if(Settings(qApp->applicationName()).value( "Client/Type" ).toString() == "asice")
