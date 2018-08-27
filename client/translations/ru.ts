@@ -88,8 +88,8 @@
         <translation>Личный код недействителен!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;В случае проблем обращайтесь по адресу электронной почты &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; или звоните в пределах Эстонии на короткий номер ID-помощи (+372)&#160;666&#160;8888.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
+        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -1228,6 +1228,32 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Issuer</source>
         <translation>Выдавший</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>Инициализация LDAP неудалась</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>Инициализация поиска LDAP неуспешна</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Получение ответа неуспешно</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>Не могу подключиться к LDAP серверу.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Код ошибки:%1 (%2)</translation>
     </message>
 </context>
 
@@ -3148,32 +3174,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>Отсутствует контекст SSL</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>LdapSearch</name>
-
-    <message>
-        <source>Failed to init ldap</source>
-        <translation>Инициализация LDAP неудалась</translation>
-    </message>
-    <message>
-        <source>Failed to init ldap search</source>
-        <translation>Инициализация поиска LDAP неуспешна</translation>
-    </message>
-    <message>
-        <source>Failed to get result</source>
-        <translation>Получение ответа неуспешно</translation>
-    </message>
-    <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>Не могу подключиться к LDAP серверу.</translation>
-    </message>
-    <message>
-        <source>Error Code: %1 (%2)</source>
-        <translation>Код ошибки:%1 (%2)</translation>
     </message>
 </context>
 

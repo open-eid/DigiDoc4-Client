@@ -88,8 +88,8 @@
         <translation>Personal code is not valid!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call (+372)&#160;666&#160;8888.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
+        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -1227,6 +1227,32 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Issuer</source>
         <translation>Issuer</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>Failed to init ldap</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>Failed to init ldap search</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Failed to get result</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>LDAP server is unavailable.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Error Code: %1 (%2)</translation>
     </message>
 </context>
 
@@ -3143,32 +3169,6 @@ ID-CARD</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL context is missing</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>LdapSearch</name>
-
-    <message>
-        <source>Failed to init ldap</source>
-        <translation>Failed to init ldap</translation>
-    </message>
-    <message>
-        <source>Failed to init ldap search</source>
-        <translation>Failed to init ldap search</translation>
-    </message>
-    <message>
-        <source>Failed to get result</source>
-        <translation>Failed to get result</translation>
-    </message>
-    <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>LDAP server is unavailable.</translation>
-    </message>
-    <message>
-        <source>Error Code: %1 (%2)</source>
-        <translation>Error Code: %1 (%2)</translation>
     </message>
 </context>
 

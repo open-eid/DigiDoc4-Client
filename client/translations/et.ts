@@ -88,8 +88,8 @@
         <translation>Isikukood pole korrektne!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista (+372)&#160;666&#160;8888.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -1217,6 +1217,32 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Issuer</source>
         <translation>Väljaandja</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>LDAP initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>LDAP otsingu initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Ei saanud LDAP päringule vastust</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>Ei saa ühendust LDAP serveriga.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Veakood: %1 (%2)</translation>
     </message>
 </context>
 
@@ -3115,32 +3141,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL kontekst puudub</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>LdapSearch</name>
-
-    <message>
-        <source>Failed to init ldap</source>
-        <translation>LDAP initsialiseerimine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to init ldap search</source>
-        <translation>LDAP otsingu initsialiseerimine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to get result</source>
-        <translation>Ei saanud LDAP päringule vastust</translation>
-    </message>
-    <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>Ei saa ühendust LDAP serveriga.</translation>
-    </message>
-    <message>
-        <source>Error Code: %1 (%2)</source>
-        <translation>Veakood: %1 (%2)</translation>
     </message>
 </context>
 
