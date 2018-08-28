@@ -245,7 +245,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 		{
 			WarningDialog dlg(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
 					"When decrypter has updated certificates then decrypting is impossible.")
-					.arg(expiryDate.toString( "dd.MM.yyyy hh:mm:ss")), this);
+					.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
 			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
 			dlg.exec();
@@ -285,7 +285,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 		return;
 
 	HistoryCertData certData = selectedCertData.first();
-	QString term = (certData.type == "1" || certData.type == "3") ? certData.CN : certData.CN.split(',').value(2);
+	QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
 	ui->leftPane->setTerm(term);
 	search(term);
 	select = true;
@@ -362,7 +362,7 @@ void AddRecipients::rememberCerts(const QList<HistoryCertData>& selectedCertData
 	if(selectedCertData.isEmpty())
 		return;
 
-	for(auto certData: selectedCertData)
+	for(const auto &certData: selectedCertData)
 	{
 		if(!historyCertData.contains(certData))
 			historyCertData << certData;
@@ -414,14 +414,14 @@ void AddRecipients::saveHistory()
 	QXmlStreamWriter xml( &f );
 	xml.setAutoFormatting( true );
 	xml.writeStartDocument();
-	xml.writeStartElement( "History" );
+	xml.writeStartElement(QStringLiteral("History"));
 	for(const HistoryCertData& certData : historyCertData)
 	{
-		xml.writeStartElement( "item" );
-		xml.writeAttribute( "CN", certData.CN );
-		xml.writeAttribute( "type", certData.type );
-		xml.writeAttribute( "issuer", certData.issuer );
-		xml.writeAttribute( "expireDate", certData.expireDate );
+		xml.writeStartElement(QStringLiteral("item"));
+		xml.writeAttribute(QStringLiteral("CN"), certData.CN);
+		xml.writeAttribute(QStringLiteral("type"), certData.type);
+		xml.writeAttribute(QStringLiteral("issuer"), certData.issuer);
+		xml.writeAttribute(QStringLiteral("expireDate"), certData.expireDate);
 		xml.writeEndElement();
 	}
 	xml.writeEndDocument();
@@ -448,11 +448,11 @@ void AddRecipients::search(const QString &term)
 			}
 			personSearch = true;
 		}
-		ldap->search(QString("(serialNumber=%1)" ).arg(term));
+		ldap->search(QStringLiteral("(serialNumber=%1)" ).arg(term));
 	}
 	else
 	{
-		ldap->search(QString("(cn=*%1*)").arg(term));
+		ldap->search(QStringLiteral("(cn=*%1*)").arg(term));
 	}
 }
 
@@ -479,10 +479,9 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 	}
 	if(filter.isEmpty())
 	{
-		showError( tr("Person or company does not own a valid certificate.<br />"
+		showError(tr("Person or company does not own a valid certificate.<br />"
 			"It is necessary to have a valid certificate for encryption.<br />"
-			"Contact for assistance by email <a href=\"mailto:abi@id.ee\">abi@id.ee</a> "
-			"or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.") );
+			"In case of questions please contact our support via <a href=\"https://id.ee/?lang=en\">id.ee</a>."));
 	}
 	else
 	{
@@ -507,21 +506,21 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 HistoryCertData AddRecipients::toHistory(const QSslCertificate& c) const
 {
 	HistoryCertData hcd;
-	QString type = "3";
+	int type = 3;
 	SslCertificate cert(c);
 	auto certType = cert.type();
 
 	if(certType & SslCertificate::DigiIDType)
-		type = "2";
+		type = 2;
 	else if(certType & SslCertificate::TempelType)
-		type = "1";
+		type = 1;
 	else if(certType & SslCertificate::EstEidType)
-		type = "0";
+		type = 0;
 
 	hcd.CN = cert.subjectInfo("CN");
-	hcd.type = type;
+	hcd.type = QString::number(type);
 	hcd.issuer = cert.issuerInfo("CN");
-	hcd.expireDate = cert.expiryDate().toLocalTime().toString("dd.MM.yyyy");
+	hcd.expireDate = cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"));
 
 	return hcd;
 }
