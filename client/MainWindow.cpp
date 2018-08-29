@@ -697,7 +697,7 @@ void MainWindow::openFile(const QString &file)
 	QDesktopServices::openUrl(QUrl::fromLocalFile(file));
 }
 
-void MainWindow::openFiles(const QStringList &files, bool addFile)
+void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCreate)
 {
 /*
 	1. If containers are not open:
@@ -729,8 +729,9 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 			if(current == MyEid)
 				page = (fileType == CryptoDocument) ? CryptoDetails : SignDetails;
 
-			if( (fileType == CryptoDocument && page == CryptoDetails) ||
-				(fileType == SignatureDocument && page == SignDetails))
+			if(!forceCreate && (
+				(fileType == CryptoDocument && page == CryptoDetails) ||
+				(fileType == SignatureDocument && page == SignDetails)))
 			{
 				create = false;
 			}
@@ -789,9 +790,9 @@ void MainWindow::openFiles(const QStringList &files, bool addFile)
 	}
 }
 
-void MainWindow::open(const QStringList &params, bool crypto)
+void MainWindow::open(const QStringList &params, bool crypto, bool sign)
 {
-	if (crypto)
+	if (crypto && !sign)
 		navigateToPage(Pages::CryptoIntro);
 	else
 		navigateToPage(Pages::SignIntro);
@@ -799,14 +800,12 @@ void MainWindow::open(const QStringList &params, bool crypto)
 	QStringList files;
 	for(const auto &param: params)
 	{
-		const QFileInfo f(param);
-		if(!f.isFile())
-			continue;
-		files << param;
+		if(QFileInfo(param).isFile())
+			files << param;
 	}
 
 	if(!files.isEmpty())
-		openFiles(files);
+		openFiles(files, false, sign);
 }
 
 void MainWindow::openContainer()
@@ -917,24 +916,24 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	QString active;
 	if( fixedExt )
 	{
-		if( ext == "bdoc" ) exts << bdoc;
-		if( ext == "cdoc" ) exts << cdoc;
-		if( ext == "asice" || ext == "sce" ) exts << asic;
-		if( ext == "edoc" ) exts << edoc;
-		if( ext == "adoc" ) exts << adoc;
+		if(ext == QStringLiteral("bdoc")) exts << bdoc;
+		if(ext == QStringLiteral("cdoc")) exts << cdoc;
+		if(ext == QStringLiteral("asice") || ext == QStringLiteral("sce")) exts << asic;
+		if(ext == QStringLiteral("edoc")) exts << edoc;
+		if(ext == QStringLiteral("adoc")) exts << adoc;
 	}
 	else
 	{
-		exts << bdoc << asic << edoc << adoc;
-		if( ext == "bdoc" ) active = bdoc;
-		if( ext == "cdoc" ) active = cdoc;
-		if( ext == "asice" || ext == "sce" ) active = asic;
-		if( ext == "edoc" ) active = edoc;
-		if( ext == "adoc" ) active = adoc;
+		exts = QStringList({ bdoc, asic, edoc, adoc });
+		if(ext == QStringLiteral("bdoc")) active = bdoc;
+		if(ext == QStringLiteral("cdoc")) active = cdoc;
+		if(ext == QStringLiteral("asice") || ext == QStringLiteral("sce")) active = asic;
+		if(ext == QStringLiteral("edoc")) active = edoc;
+		if(ext == QStringLiteral("adoc")) active = adoc;
 	}
 
 	WaitDialogHider hider;
-	return FileDialog::getSaveFileName( this, title, filename, exts.join(";;"), &active );
+	return FileDialog::getSaveFileName( this, title, filename, exts.join(QStringLiteral(";;")), &active );
 }
 
 void MainWindow::selectPage(Pages page)

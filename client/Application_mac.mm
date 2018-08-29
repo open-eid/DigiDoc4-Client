@@ -44,6 +44,16 @@
 	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result) );
 }
 
+- (void)signClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
+{
+	Q_UNUSED(data)
+	Q_UNUSED(error)
+	QStringList result;
+	for(NSString *filename in [pboard propertyListForType:NSFilenamesPboardType])
+		result << QString::fromNSString(filename);
+	QMetaObject::invokeMethod(qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,false), Q_ARG(bool,true));
+}
+
 - (void)openCrypto:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
 {
 	Q_UNUSED(data)

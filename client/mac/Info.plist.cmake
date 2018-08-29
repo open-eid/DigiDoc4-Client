@@ -180,7 +180,7 @@
 				<string>Sign with DigiDoc4 Client</string>
 			</dict>
 			<key>NSMessage</key>
-			<string>openClient</string>
+			<string>signClient</string>
 			<key>NSPortName</key>
 			<string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
 			<key>NSRequiredContext</key>

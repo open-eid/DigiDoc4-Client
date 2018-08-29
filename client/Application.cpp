@@ -70,7 +70,7 @@ class MacMenuBar;
 #ifdef Q_OS_WIN32
 #include <QtCore/QLibrary>
 #include <qt_windows.h>
-#include <mapi.h>
+#include <MAPI.h>
 #endif
 
 class DigidocConf: public digidoc::XmlConfCurrent
@@ -177,7 +177,7 @@ public:
 		if(!obj.contains("SIVA-CERT"))
 			return digidoc::XmlConfCurrent::verifyServiceCert();
 		QByteArray cert = QByteArray::fromBase64(obj.value("SIVA-CERT").toString().toLatin1());
-		return digidoc::X509Cert((const unsigned char*)cert.constData(), cert.size());
+		return digidoc::X509Cert((const unsigned char*)cert.constData(), int(cert.size()));
 	}
 	std::string verifyServiceUri() const override { return value("SIVA-URL", digidoc::XmlConfCurrent::verifyServiceUri()); }
 	std::vector<digidoc::X509Cert> TSLCerts() const override
@@ -186,7 +186,7 @@ public:
 		for(const QJsonValue &val: obj.value("TSL-CERTS").toArray())
 		{
 			QByteArray cert = QByteArray::fromBase64(val.toString().toLatin1());
-			tslcerts.push_back(digidoc::X509Cert((const unsigned char*)cert.constData(), cert.size()));
+			tslcerts.push_back(digidoc::X509Cert((const unsigned char*)cert.constData(), int(cert.size())));
 		}
 		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
 	}
@@ -268,7 +268,7 @@ public:
 };
 
 Application::Application( int &argc, char **argv )
-	: Common( argc, argv, APP, ":/images/digidoc_icon_128x128.png" )
+	: Common(argc, argv, QStringLiteral(APP), QStringLiteral(":/images/digidoc_icon_128x128.png"))
 	, d( new ApplicationPrivate )
 {
 	QStringList args = arguments();
@@ -276,14 +276,14 @@ Application::Application( int &argc, char **argv )
 #ifndef Q_OS_MAC
 	if( isRunning() )
 	{
-		sendMessage( args.join( "\", \"" ) );
+		sendMessage(args.join(QStringLiteral("\", \"")));
 		return;
 	}
 	connect( this, SIGNAL(messageReceived(QString)), SLOT(parseArgs(QString)) );
 #endif
 
-	QDesktopServices::setUrlHandler( "browse", this, "browse" );
-	QDesktopServices::setUrlHandler( "mailto", this, "mailTo" );
+	QDesktopServices::setUrlHandler(QStringLiteral("browse"), this, "browse");
+	QDesktopServices::setUrlHandler(QStringLiteral("mailto"), this, "mailTo");
 
 	installTranslator( &d->appTranslator );
 	installTranslator( &d->commonTranslator );
@@ -293,10 +293,10 @@ Application::Application( int &argc, char **argv )
 	// Actions
 	d->closeAction = new QAction( tr("Close window"), this );
 	d->closeAction->setShortcut( Qt::CTRL + Qt::Key_W );
-	connect( d->closeAction, SIGNAL(triggered()), SLOT(closeWindow()) );
+	connect(d->closeAction, &QAction::triggered, this, &Application::closeWindow);
 	d->newClientAction = new QAction( tr("New Client window"), this );
 	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
-	connect( d->newClientAction, SIGNAL(triggered()), SLOT(showClient()) );
+	connect(d->newClientAction, &QAction::triggered, this, [&]{ showClient(); });
 
 	// This is needed to release application from memory (Windows)
 	setQuitOnLastWindowClosed( true ); 
@@ -347,7 +347,7 @@ Application::Application( int &argc, char **argv )
 		};
 		QString cache = confValue(TSLCache).toString();
 		QDir().mkpath( cache );
-		for(const QString &file: QDir(":/TSL/").entryList())
+		for(const QString &file: QDir(QStringLiteral(":/TSL/")).entryList())
 		{
 			const QString target = cache + "/" + file;
 			if(!QFile::exists(target) ||
@@ -360,8 +360,8 @@ Application::Application( int &argc, char **argv )
 		}
 
 		qRegisterMetaType<QEventLoop*>("QEventLoop*");
-		digidoc::initialize( QString( "%1/%2 (%3)" )
-			.arg( "qdigidocclient", applicationVersion(), applicationOs() ).toUtf8().constData(),
+		digidoc::initialize(QStringLiteral("%1/%2 (%3)")
+			.arg(QStringLiteral("qdigidocclient"), applicationVersion(), applicationOs() ).toUtf8().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
@@ -371,7 +371,7 @@ Application::Application( int &argc, char **argv )
 					digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 					DigiDoc::parseException(*ex, causes, code);
 					QMetaObject::invokeMethod( qApp, "showWarning",
-						Q_ARG(QString,tr("Failed to initalize.")), Q_ARG(QString,causes.join("\n")) );
+						Q_ARG(QString,tr("Failed to initalize.")), Q_ARG(QString,causes.join('\n')) );
 				}
 			}
 		);
@@ -449,13 +449,12 @@ void Application::addTempFile(const QString &file)
 void Application::browse( const QUrl &url )
 {
 	QUrl u = url;
-	u.setScheme( "file" );
+	u.setScheme(QStringLiteral("file"));
 #if defined(Q_OS_WIN)
-	if( QProcess::startDetached( "explorer", QStringList() << "/select," <<
-		QDir::toNativeSeparators( u.toLocalFile() ) ) )
+	if(QProcess::startDetached(QStringLiteral("explorer"), {QStringLiteral("/select,"), QDir::toNativeSeparators(u.toLocalFile())}))
 		return;
 #elif defined(Q_OS_MAC)
-	if( QProcess::startDetached( "open", QStringList() << "-R" << u.toLocalFile() ) )
+	if(QProcess::startDetached(QStringLiteral("open"), {QStringLiteral("-R"), u.toLocalFile()}))
 		return;
 #endif
 	QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( u.toLocalFile() ).absolutePath() ) );
@@ -510,23 +509,23 @@ void Application::closeWindow()
 
 QVariant Application::confValue( ConfParameter parameter, const QVariant &value )
 {
-	DigidocConf *i = 0;
+	DigidocConf *i = nullptr;
 	try { i = static_cast<DigidocConf*>(digidoc::Conf::instance()); }
 	catch( const digidoc::Exception & ) { return value; }
 
 	QByteArray r;
 	switch( parameter )
 	{
-	case LDAP_HOST: return i->obj.value("LDAP-HOST").toString("ldap.sk.ee:389");
-	case MobileID_URL: return i->obj.value("MID-SIGN-URL").toString("https://digidocservice.sk.ee");
-	case MobileID_TEST_URL: return i->obj.value("MID-SIGN-TEST-URL").toString("https://tsp.demo.sk.ee");
+	case LDAP_HOST: return i->obj.value(QStringLiteral("LDAP-HOST")).toString(QStringLiteral("ldap.sk.ee:389"));
+	case MobileID_URL: return i->obj.value(QStringLiteral("MID-SIGN-URL")).toString(QStringLiteral("https://digidocservice.sk.ee"));
+	case MobileID_TEST_URL: return i->obj.value(QStringLiteral("MID-SIGN-TEST-URL")).toString(QStringLiteral("https://tsp.demo.sk.ee"));
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
 	case PKCS11Module: r = i->PKCS11Driver().c_str(); break;
 	case ProxyHost: r = i->proxyHost().c_str(); break;
 	case ProxyPort: r = i->proxyPort().c_str(); break;
 	case ProxyUser: r = i->proxyUser().c_str(); break;
 	case ProxyPass: r = i->proxyPass().c_str(); break;
-	case ProxySSL: return i->proxyTunnelSSL(); break;
+	case ProxySSL: return i->proxyTunnelSSL();
 	case PKCS12Cert: r = i->PKCS12Cert().c_str(); break;
 	case PKCS12Pass: r = i->PKCS12Pass().c_str(); break;
 	case PKCS12Disable: return i->PKCS12Disable();
@@ -594,11 +593,11 @@ void Application::loadTranslation( const QString &lang )
 {
 	if( d->lang == lang )
 		return;
-	Settings().setValue( "Main/Language", d->lang = lang );
+	Settings().setValue(QStringLiteral("Main/Language"), d->lang = lang);
 
-	if( lang == "en" ) QLocale::setDefault( QLocale( QLocale::English, QLocale::UnitedKingdom ) );
-	else if( lang == "ru" ) QLocale::setDefault( QLocale( QLocale::Russian, QLocale::RussianFederation ) );
-	else QLocale::setDefault( QLocale( QLocale::Estonian, QLocale::Estonia ) );
+	if(lang == QStringLiteral("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
+	else if(lang == QStringLiteral("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
+	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
 
 	d->appTranslator.load( ":/translations/" + lang );
 	d->commonTranslator.load( ":/translations/common_" + lang );
@@ -620,11 +619,11 @@ void Application::mailTo( const QUrl &url )
 		QString filePath = QDir::toNativeSeparators( file );
 		QString fileName = QFileInfo( file ).fileName();
 		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
-		MapiFileDescW doc = { 0, 0, 0, 0, 0, 0 };
+		MapiFileDescW doc = { 0, 0, 0, nullptr, nullptr, nullptr };
 		doc.nPosition = -1;
 		doc.lpszPathName = PWSTR(filePath.utf16());
 		doc.lpszFileName = PWSTR(fileName.utf16());
-		MapiMessageW message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		MapiMessageW message = { 0, nullptr, nullptr, nullptr, nullptr, nullptr, 0, nullptr, 0, nullptr, 0, nullptr };
 		message.lpszSubject = PWSTR(subject.utf16());
 		message.lpszNoteText = L"";
 		message.nFileCount = 1;
@@ -643,11 +642,11 @@ void Application::mailTo( const QUrl &url )
 		QByteArray filePath = QDir::toNativeSeparators( file ).toLocal8Bit();
 		QByteArray fileName = QFileInfo( file ).fileName().toLocal8Bit();
 		QByteArray subject = q.queryItemValue( "subject", QUrl::FullyDecoded ).toLocal8Bit();
-		MapiFileDesc doc = { 0, 0, 0, 0, 0, 0 };
+		MapiFileDesc doc = { 0, 0, 0, nullptr, nullptr, nullptr };
 		doc.nPosition = -1;
 		doc.lpszPathName = LPSTR(filePath.constData());
 		doc.lpszFileName = LPSTR(fileName.constData());
-		MapiMessage message = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		MapiMessage message = { 0, nullptr, nullptr, nullptr, nullptr, nullptr, 0, nullptr, 0, nullptr, 0, nullptr };
 		message.lpszSubject = LPSTR(subject.constData());
 		message.lpszNoteText = "";
 		message.nFileCount = 1;
@@ -795,28 +794,28 @@ bool Application::notify( QObject *o, QEvent *e )
 void Application::parseArgs( const QString &msg )
 {
 	QStringList params;
-	for(const QString &param: msg.split("\", \"", QString::SkipEmptyParts))
+	for(const QString &param: msg.split(QStringLiteral("\", \""), QString::SkipEmptyParts))
 	{
 		QUrl url( param, QUrl::StrictMode );
-		params << (param != "-crypto" && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
+		params << (param != QStringLiteral("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
 	}
 	parseArgs( params );
 }
 
 void Application::parseArgs( const QStringList &args )
 {
-	bool crypto = args.contains("-crypto");
+	bool crypto = args.contains(QStringLiteral("-crypto"));
+	bool sign = args.contains(QStringLiteral("-sign"));
 	QStringList params = args;
-	params.removeAll("-crypto");
-	params.removeAll("-capi");
-	params.removeAll("-cng");
-	params.removeAll("-pkcs11");
-	params.removeAll("-noNativeFileDialog");
+	params.removeAll(QStringLiteral("-sign"));
+	params.removeAll(QStringLiteral("-crypto"));
+	params.removeAll(QStringLiteral("-capi"));
+	params.removeAll(QStringLiteral("-cng"));
+	params.removeAll(QStringLiteral("-pkcs11"));
+	params.removeAll(QStringLiteral("-noNativeFileDialog"));
 
-	QString suffix = QFileInfo(params.value(0)).suffix();
-	showClient(params, crypto || (params.size() == 1 && 
-								  (QString::compare("cdoc", suffix, Qt::CaseInsensitive) == 0) )
-								 );
+	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
+	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign);
 }
 
 int Application::run()
@@ -869,17 +868,22 @@ void Application::showAbout()
 	a->open();
 }
 
-void Application::showClient(const QStringList &params, bool crypto)
+void Application::showClient(const QStringList &params, bool crypto, bool sign)
 {
+	if(sign)
+	{
+		static const QStringList canAddSignature{QStringLiteral("asice"), QStringLiteral("ace"), QStringLiteral("bdoc"), QStringLiteral("edoc")};
+		sign = !(params.size() == 1 && canAddSignature.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive));
+	}
 	QWidget *w = nullptr;
 	if(params.isEmpty())
 	{
-	// If no files selected (e.g. restoring minimized window), select first
+		// If no files selected (e.g. restoring minimized window), select first
 		w = qobject_cast<MainWindow*>(qApp->mainWindow());
 	}
 	else
 	{
-	// else select first window with no open files
+		// else select first window with no open files
 		MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
 		if(main && main->digiDocPath().isEmpty() && main->cryptoPath().isEmpty())
 			w = main;
@@ -891,17 +895,12 @@ void Application::showClient(const QStringList &params, bool crypto)
 		if(!settings.contains("showIntro"))
 			migrateSettings();
 #endif // !Q_OS_MAC
-		if(settings.value("showIntro", true).toBool())
+		if(settings.value(QStringLiteral("showIntro"), true).toBool())
 		{
 			FirstRun dlg;
-			connect(&dlg, &FirstRun::langChanged, this,
-					[this](const QString& lang )
-					{
-						loadTranslation( lang );
-					}
-			);
+			connect(&dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
 			dlg.exec();
-			settings.setValue( "showIntro", false ); 
+			settings.setValue(QStringLiteral("showIntro"), false);
 		}
 
 		w = new MainWindow();
@@ -914,7 +913,7 @@ void Application::showClient(const QStringList &params, bool crypto)
 		}
 	}
 	if( !params.isEmpty() )
-		QMetaObject::invokeMethod( w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto) );
+		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
 	activate( w );
 }
 
@@ -933,7 +932,7 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 	QStringList causes;
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	WarningDialog d(msg, causes.join("\n"), qApp->mainWindow());
+	WarningDialog d(msg, causes.join('\n'), qApp->mainWindow());
 	d.exec();
 }
 
@@ -985,7 +984,7 @@ void Application::waitForTSL( const QString &file )
 	p.setRange( 0, 100 );
 	p.open();
 	QTimer t;
-	connect( &t, &QTimer::timeout, [&](){
+	connect(&t, &QTimer::timeout, &p, [&](){
 		if(p.value() + 1 == p.maximum())
 			p.setValue(0);
 		p.setValue( p.value() + 1 );
@@ -1000,7 +999,7 @@ void Application::waitForTSL( const QString &file )
 }
 
 DdCliApplication::DdCliApplication( int &argc, char **argv )
-	: CliApplication( argc, argv, APP )
+	: CliApplication( argc, argv, QStringLiteral(APP))
 {
 }
 
