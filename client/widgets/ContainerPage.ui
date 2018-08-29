@@ -43,12 +43,6 @@
    </property>
    <item>
     <widget class="QWidget" name="containerHeader" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>914</width>
@@ -67,58 +61,24 @@ border-width: 0px 0px 1px 0px;
 background-color: #F4F5F6;
 </string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="containerHeaderLayout" stretch="0,1,0">
       <property name="spacing">
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="topMargin">
        <number>3</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>14</number>
       </property>
       <property name="bottomMargin">
        <number>7</number>
       </property>
       <item>
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>8</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QLabel" name="container">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>45</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>77</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
@@ -138,18 +98,6 @@ border: none;</string>
       </item>
       <item>
        <widget class="QLabel" name="containerFile">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>640</width>
-          <height>22</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
@@ -171,30 +119,12 @@ border: none;</string>
          <number>5</number>
         </property>
         <property name="textInteractionFlags">
-         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+         <set>Qt::NoTextInteraction</set>
         </property>
        </widget>
       </item>
       <item>
        <widget class="LabelButton" name="changeLocation">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>72</width>
-          <height>26</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>85</width>
-          <height>26</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <family>Roboto Condensed</family>
@@ -214,41 +144,16 @@ border: none;</string>
         <property name="text">
          <string>CHANGE</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
         <property name="indent">
-         <number>26</number>
+         <number>22</number>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_6">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>14</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QWidget" name="containerLists" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>1</horstretch>
-       <verstretch>1</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>914</width>
@@ -277,12 +182,6 @@ background-color: #ffffff;</string>
       </property>
       <item>
        <widget class="FileList" name="leftPane" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="styleSheet">
          <string notr="true">border: solid #D9D9D8;
 border-width: 2px 2px 2px 0px; </string>
@@ -291,15 +190,6 @@ border-width: 2px 2px 2px 0px; </string>
       </item>
       <item>
        <widget class="ItemList" name="rightPane" native="true">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>
@@ -310,12 +200,6 @@ border-width: 2px 2px 2px 0px; </string>
    </item>
    <item>
     <widget class="QWidget" name="navigationArea" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>914</width>
@@ -333,35 +217,19 @@ border-width: 2px 2px 2px 0px; </string>
 border: solid #DEE4E9;
 border-width: 1px 0px 0px 0px; </string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <layout class="QHBoxLayout" name="navigationAreaLayout">
       <property name="leftMargin">
-       <number>0</number>
+       <number>6</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>7</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <spacer name="horizontalSpacer_9">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>6</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item>
        <widget class="LabelButton" name="cancel">
         <property name="sizePolicy">
@@ -372,13 +240,13 @@ border-width: 1px 0px 0px 0px; </string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>75</width>
+          <width>85</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>75</width>
+          <width>85</width>
           <height>25</height>
          </size>
         </property>
@@ -412,8 +280,8 @@ text-decoration: none solid rgb(197, 62, 62);</string>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </spacer>
@@ -617,22 +485,6 @@ border: none;</string>
         <property name="sizeHint" stdset="0">
          <size>
           <width>198</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_7">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>7</width>
           <height>20</height>
          </size>
         </property>
