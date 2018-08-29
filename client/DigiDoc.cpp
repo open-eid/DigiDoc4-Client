@@ -402,7 +402,7 @@ bool SDocumentModel::removeRows(int row, int count)
 
 int SDocumentModel::rowCount() const
 {
-	return doc->b->dataFiles().size();
+	return int(doc->b->dataFiles().size());
 }
 
 QString SDocumentModel::save(int row, const QString &path) const
@@ -542,24 +542,24 @@ bool DigiDoc::open( const QString &file )
 {
 	qApp->waitForTSL( file );
 	clear();
+	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf"))
+	{
+		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
+		if(parent == nullptr)
+			parent = qApp->activeWindow();
+		WarningDialog dlg(tr("The verification of digital signatures in PDF format is performed through an external service. "
+				"The file requiring verification will be forwarded to the service.\n"
+				"The Information System Authority does not retain information regarding the files and users of the service."), parent);
+		dlg.setCancelText(tr("CANCEL"));
+		dlg.addButton(tr("OK"), ContainerSave);
+		dlg.exec();
+		if(dlg.result() != ContainerSave)
+			return false;
+	}
 	try
 	{
 		b.reset(Container::open(to(file)));
-		if(isService())
-		{
-			QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
-			if(parent == nullptr)
-				parent = qApp->activeWindow();
-			WarningDialog dlg(tr("The verification of digital signatures in PDF format is performed through an external service. "
-					"The file requiring verification will be forwarded to the service.\n"
-					"The Information System Authority does not retain information regarding the files and users of the service."), parent);
-			dlg.setCancelText(tr("CANCEL"));
-			dlg.addButton(tr("OK"), ContainerSave);
-			dlg.exec();
-			if(dlg.result() != ContainerSave)
-				return false;
-		}
-		else if(isReadOnlyTS())
+		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
 			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc"))
