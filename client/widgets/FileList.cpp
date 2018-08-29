@@ -99,13 +99,13 @@ bool FileList::eventFilter(QObject *obj, QEvent *event)
 			break;
 		QString path = FileDialog::tempPath(fileItem->getFile());
 		documentModel->save(i, path);
+		documentModel->addTempReference(path);
 		QMimeData *mimeData = new QMimeData;
 		mimeData->setText(QFileInfo(path).fileName());
 		mimeData->setUrls({ QUrl::fromLocalFile(path) });
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 		drag->exec(Qt::CopyAction);
-		QFile::remove(path);
 		return true;
 	}
 	default: break;

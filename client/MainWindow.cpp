@@ -899,9 +899,9 @@ bool MainWindow::save(bool saveAs)
 	{
 		QString file = selectFile(tr("Save file"), target, true);
 		if(!file.isEmpty())
-			return digiDoc->save(file);
+			return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
 	}
-	return digiDoc->save(target);
+	return saveAs ? digiDoc->saveAs(target) : digiDoc->save(target);
 }
 
 QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )

@@ -46,7 +46,7 @@ using namespace ria::qdigidoc4;
 static std::string to( const QString &str ) { return std::string( str.toUtf8().constData() ); }
 static QString from( const std::string &str ) { return QString::fromUtf8( str.c_str() ).normalized( QString::NormalizationForm_C ); }
 static QByteArray fromVector( const std::vector<unsigned char> &d )
-{ return d.empty() ? QByteArray() : QByteArray( (const char *)d.data(), int(d.size()) ); }
+{ return QByteArray((const char *)d.data(), int(d.size())); }
 
 
 
@@ -56,11 +56,11 @@ public:
 	OpEmitter(DigiDoc *digiDoc, DigiDoc::Operation operation) : doc(digiDoc), op(operation) 
 	{
 		emit doc->operation(op, true);
-	};
+	}
 	~OpEmitter()
 	{
 		emit doc->operation(op, false);
-	};
+	}
 
 private:
 	DigiDoc *doc;
@@ -99,17 +99,17 @@ QString DigiDocSignature::lastError() const { return m_lastError; }
 QString DigiDocSignature::location() const
 {
 	QStringList l = locations();
-	l.removeAll( "" );
-	return l.join( ", " );
+	l.removeAll(QString());
+	return l.join(QStringLiteral(", "));
 }
 
 QStringList DigiDocSignature::locations() const
 {
-	return QStringList()
-		<< from( s->city() ).trimmed()
-		<< from( s->stateOrProvince() ).trimmed()
-		<< from( s->postalCode() ).trimmed()
-		<< from( s->countryName() ).trimmed();
+	return {
+		from( s->city() ).trimmed(),
+		from( s->stateOrProvince() ).trimmed(),
+		from( s->postalCode() ).trimmed(),
+		from( s->countryName() ).trimmed()};
 }
 
 QSslCertificate DigiDocSignature::ocspCert() const
@@ -173,8 +173,8 @@ QString DigiDocSignature::profile() const
 QString DigiDocSignature::role() const
 {
 	QStringList r = roles();
-	r.removeAll( "" );
-	return r.join( " / " );
+	r.removeAll(QString());
+	return r.join(QStringLiteral(" / "));
 }
 
 QStringList DigiDocSignature::roles() const
@@ -190,7 +190,7 @@ void DigiDocSignature::setLastError( const Exception &e ) const
 	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	m_lastError = causes.join( "\n" );
+	m_lastError = causes.join('\n');
 }
 
 QString DigiDocSignature::signatureMethod() const
@@ -216,7 +216,7 @@ QDateTime DigiDocSignature::toTime(const std::string &time) const
 	QDateTime date;
 	if(time.empty())
 		return date;
-	date = QDateTime::fromString(from(time), "yyyy-MM-dd'T'hh:mm:ss'Z'");
+	date = QDateTime::fromString(from(time), QStringLiteral("yyyy-MM-dd'T'hh:mm:ss'Z'"));
 	date.setTimeSpec(Qt::UTC);
 	return date;
 }
@@ -290,7 +290,7 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate(const std::string &
 
 int DigiDocSignature::warning() const
 {
-	return m_warning;
+	return int(m_warning);
 }
 
 
@@ -317,13 +317,9 @@ void SDocumentModel::addFile(const QString &file, const QString &mime)
 		emit added(file);
 }
 
-void SDocumentModel::addTempFiles(const QStringList &files)
+void SDocumentModel::addTempReference(const QString &file)
 {
-	for(auto file: files)
-	{
-		addFile(file);
-		doc->m_tempFiles << file;
-	}
+	doc->m_tempFiles << file;
 }
 
 QString SDocumentModel::data(int row) const
@@ -415,7 +411,7 @@ QString SDocumentModel::save(int row, const QString &path) const
 		return QString();
 
 	QFile::remove( path );
-	doc->b->dataFiles().at( row )->saveAs( path.toUtf8().constData() );
+	doc->b->dataFiles().at(row)->saveAs(path.toStdString());
 	return path;
 }
 
@@ -538,8 +534,8 @@ QString DigiDoc::newSignatureID() const
 	for(const Signature *s: b->signatures())
 		list << QString::fromUtf8(s->id().c_str());
 	unsigned int id = 0;
-	while(list.contains(QString("S%1").arg(id), Qt::CaseInsensitive)) ++id;
-	return QString("S%1").arg(id);
+	while(list.contains(QStringLiteral("S%1").arg(id), Qt::CaseInsensitive)) ++id;
+	return QStringLiteral("S%1").arg(id);
 }
 
 bool DigiDoc::open( const QString &file )
@@ -566,7 +562,7 @@ bool DigiDoc::open( const QString &file )
 		else if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
-			if(QFileInfo(from(f->fileName())).suffix().toLower() == "ddoc")
+			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc"))
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
@@ -592,7 +588,7 @@ bool DigiDoc::open( const QString &file )
 
 bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
 {
-	causes << QString( "%1:%2 %3").arg( QFileInfo(from(e.file())).fileName() ).arg( e.line() ).arg( from(e.msg()) );
+	causes << QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg()));
 	switch( e.code() )
 	{
 	case Exception::CertificateRevoked:
@@ -625,21 +621,25 @@ void DigiDoc::removeSignature( unsigned int num )
 
 bool DigiDoc::save( const QString &filename )
 {
-	OpEmitter op(this, Saving);
+	if(!filename.isEmpty())
+		m_fileName = filename;
+	if(!saveAs(m_fileName))
+		return false;
+	qApp->addRecent(m_fileName);
+	modified = false;
+	containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
+	return true;
+}
 
+bool DigiDoc::saveAs(const QString &filename)
+{
+	OpEmitter op(this, Saving);
 	try
 	{
-		if( !filename.isEmpty() )
-			m_fileName = filename;
-		b->save( to(m_fileName) );
-		qApp->addRecent( filename );
-		modified = false;
-		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
-
+		b->save(to(filename));
 		return true;
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed to save container"), e ); }
-
 	return false;
 }
 
@@ -651,24 +651,24 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	switch( code )
 	{
 	case Exception::CertificateRevoked:
-		qApp->showWarning(tr("Certificate status revoked"), causes.join("\n")); break;
+		qApp->showWarning(tr("Certificate status revoked"), causes.join('\n')); break;
 	case Exception::CertificateUnknown:
-		qApp->showWarning(tr("Certificate status unknown"), causes.join("\n")); break;
+		qApp->showWarning(tr("Certificate status unknown"), causes.join('\n')); break;
 	case Exception::OCSPTimeSlot:
-		qApp->showWarning(tr("Check your computer time"), causes.join("\n")); break;
+		qApp->showWarning(tr("Check your computer time"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
-			"Check the settings of your server access certificate."), causes.join("\n")); break;
+			"Check the settings of your server access certificate."), causes.join('\n')); break;
 	case Exception::PINCanceled:
 		break;
 	case Exception::PINFailed:
-		qApp->showWarning(tr("PIN Login failed"), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Login failed"), causes.join('\n')); break;
 	case Exception::PINIncorrect:
-		qApp->showWarning(tr("PIN Incorrect"), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Incorrect"), causes.join('\n')); break;
 	case Exception::PINLocked:
-		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
 	default:
-		qApp->showWarning(msg, causes.join("\n")); break;
+		qApp->showWarning(msg, causes.join('\n')); break;
 	}
 }
 
@@ -685,11 +685,11 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 			to(city), to(state), to(zip), to(country) );
 		std::vector<std::string> roles;
 		if(!role2.isEmpty())
-			roles.push_back(to((QStringList() << role << role2).join(" / ")));
+			roles.push_back(to(QStringList({role, role2}).join(QStringLiteral(" / "))));
 		else if(!role.isEmpty())
 			roles.push_back(to(role));
 		qApp->signer()->setSignerRoles( roles );
-		qApp->signer()->setProfile( signatureFormat() == "LT" ? "time-stamp" : "time-mark" );
+		qApp->signer()->setProfile(signatureFormat() == QStringLiteral("LT") ? "time-stamp" : "time-mark");
 		qApp->waitForTSL( fileName() );
 		b->sign( qApp->signer() );
 		modified = true;
@@ -714,16 +714,16 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 
 QString DigiDoc::signatureFormat() const
 {
-	if(m_fileName.endsWith("ddoc", Qt::CaseInsensitive))
-		return "LT_TM";
+	if(m_fileName.endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
+		return QStringLiteral("LT_TM");
 
-	QString def = QFileInfo(m_fileName).suffix().compare("bdoc", Qt::CaseInsensitive) == 0 ? "LT_TM" : "LT";
+	QString def = QFileInfo(m_fileName).suffix().compare(QStringLiteral("bdoc"), Qt::CaseInsensitive) == 0 ? QStringLiteral("LT_TM") : QStringLiteral("LT");
 	switch(b->signatures().size())
 	{
 	case 0:
 		return def;
 	case 1:
-		return b->signatures()[0]->profile().find("time-stamp") != std::string::npos ? "LT" : "LT_TM";
+		return b->signatures()[0]->profile().find("time-stamp") != std::string::npos ? QStringLiteral("LT") : QStringLiteral("LT_TM");
 	default: break;
 	}
 	Signature *sig = nullptr;
@@ -734,7 +734,7 @@ QString DigiDoc::signatureFormat() const
 		else if(sig->profile() != s->profile())
 			return def;
 	}
-	return sig->profile().find("time-stamp") != std::string::npos ? "LT" : "LT_TM";
+	return sig->profile().find("time-stamp") != std::string::npos ? QStringLiteral("LT") : QStringLiteral("LT_TM");
 }
 
 QList<DigiDocSignature> DigiDoc::signatures() const
