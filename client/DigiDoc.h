@@ -92,8 +92,8 @@ class SDocumentModel: public DocumentModel
 	Q_OBJECT
 
 public:
-	void addFile(const QString &file, const QString &mime = "application/octet-stream") override;
-	void addTempFiles(const QStringList &files) override;
+	void addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
+	void addTempReference(const QString &file) override;
 	QString data(int row) const override;
 	QString fileId(int row) const override;
 	QString fileSize(int row) const override;
@@ -149,6 +149,7 @@ public:
 	bool open( const QString &file );
 	void removeSignature( unsigned int num );
 	bool save( const QString &filename = QString() );
+	bool saveAs(const QString &filename);
 	bool sign(
 		const QString &city,
 		const QString &state,

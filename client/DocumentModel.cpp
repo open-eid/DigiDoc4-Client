@@ -26,7 +26,16 @@
 DocumentModel::DocumentModel(QObject *parent)
 : QObject(parent)
 {}
-DocumentModel::~DocumentModel() {}
+DocumentModel::~DocumentModel() = default;
+
+void DocumentModel::addTempFiles(const QStringList &files)
+{
+	for(const QString &file: files)
+	{
+		addFile(file);
+		addTempReference(file);
+	}
+}
 
 QStringList DocumentModel::tempFiles() const
 {

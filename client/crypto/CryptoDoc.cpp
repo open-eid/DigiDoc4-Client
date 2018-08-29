@@ -825,13 +825,9 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 	emit added(file);
 }
 
-void CDocumentModel::addTempFiles(const QStringList &files)
+void CDocumentModel::addTempReference(const QString &file)
 {
-	for(auto file: files)
-	{
-		addFile(file);
-		d->tempFiles << file;
-	}
+	d->tempFiles << file;
 }
 
 QString CDocumentModel::copy(int row, const QString &dst) const
