@@ -46,7 +46,7 @@ using namespace ria::qdigidoc4;
 static std::string to( const QString &str ) { return std::string( str.toUtf8().constData() ); }
 static QString from( const std::string &str ) { return QString::fromUtf8( str.c_str() ).normalized( QString::NormalizationForm_C ); }
 static QByteArray fromVector( const std::vector<unsigned char> &d )
-{ return d.empty() ? QByteArray() : QByteArray( (const char *)d.data(), int(d.size()) ); }
+{ return QByteArray((const char *)d.data(), int(d.size())); }
 
 
 
@@ -56,11 +56,11 @@ public:
 	OpEmitter(DigiDoc *digiDoc, DigiDoc::Operation operation) : doc(digiDoc), op(operation) 
 	{
 		emit doc->operation(op, true);
-	};
+	}
 	~OpEmitter()
 	{
 		emit doc->operation(op, false);
-	};
+	}
 
 private:
 	DigiDoc *doc;
@@ -99,17 +99,17 @@ QString DigiDocSignature::lastError() const { return m_lastError; }
 QString DigiDocSignature::location() const
 {
 	QStringList l = locations();
-	l.removeAll( "" );
-	return l.join( ", " );
+	l.removeAll(QString());
+	return l.join(QStringLiteral(", "));
 }
 
 QStringList DigiDocSignature::locations() const
 {
-	return QStringList()
-		<< from( s->city() ).trimmed()
-		<< from( s->stateOrProvince() ).trimmed()
-		<< from( s->postalCode() ).trimmed()
-		<< from( s->countryName() ).trimmed();
+	return {
+		from( s->city() ).trimmed(),
+		from( s->stateOrProvince() ).trimmed(),
+		from( s->postalCode() ).trimmed(),
+		from( s->countryName() ).trimmed()};
 }
 
 QSslCertificate DigiDocSignature::ocspCert() const
@@ -173,8 +173,8 @@ QString DigiDocSignature::profile() const
 QString DigiDocSignature::role() const
 {
 	QStringList r = roles();
-	r.removeAll( "" );
-	return r.join( " / " );
+	r.removeAll(QString());
+	return r.join(QStringLiteral(" / "));
 }
 
 QStringList DigiDocSignature::roles() const
@@ -190,7 +190,7 @@ void DigiDocSignature::setLastError( const Exception &e ) const
 	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	m_lastError = causes.join( "\n" );
+	m_lastError = causes.join('\n');
 }
 
 QString DigiDocSignature::signatureMethod() const
@@ -216,7 +216,7 @@ QDateTime DigiDocSignature::toTime(const std::string &time) const
 	QDateTime date;
 	if(time.empty())
 		return date;
-	date = QDateTime::fromString(from(time), "yyyy-MM-dd'T'hh:mm:ss'Z'");
+	date = QDateTime::fromString(from(time), QStringLiteral("yyyy-MM-dd'T'hh:mm:ss'Z'"));
 	date.setTimeSpec(Qt::UTC);
 	return date;
 }
@@ -290,7 +290,7 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate(const std::string &
 
 int DigiDocSignature::warning() const
 {
-	return m_warning;
+	return int(m_warning);
 }
 
 
@@ -406,7 +406,7 @@ bool SDocumentModel::removeRows(int row, int count)
 
 int SDocumentModel::rowCount() const
 {
-	return doc->b->dataFiles().size();
+	return int(doc->b->dataFiles().size());
 }
 
 QString SDocumentModel::save(int row, const QString &path) const
@@ -538,35 +538,35 @@ QString DigiDoc::newSignatureID() const
 	for(const Signature *s: b->signatures())
 		list << QString::fromUtf8(s->id().c_str());
 	unsigned int id = 0;
-	while(list.contains(QString("S%1").arg(id), Qt::CaseInsensitive)) ++id;
-	return QString("S%1").arg(id);
+	while(list.contains(QStringLiteral("S%1").arg(id), Qt::CaseInsensitive)) ++id;
+	return QStringLiteral("S%1").arg(id);
 }
 
 bool DigiDoc::open( const QString &file )
 {
 	qApp->waitForTSL( file );
 	clear();
+	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf"))
+	{
+		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
+		if(parent == nullptr)
+			parent = qApp->activeWindow();
+		WarningDialog dlg(tr("The verification of digital signatures in PDF format is performed through an external service. "
+				"The file requiring verification will be forwarded to the service.\n"
+				"The Information System Authority does not retain information regarding the files and users of the service."), parent);
+		dlg.setCancelText(tr("CANCEL"));
+		dlg.addButton(tr("OK"), ContainerSave);
+		dlg.exec();
+		if(dlg.result() != ContainerSave)
+			return false;
+	}
 	try
 	{
 		b.reset(Container::open(to(file)));
-		if(isService())
-		{
-			QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
-			if(parent == nullptr)
-				parent = qApp->activeWindow();
-			WarningDialog dlg(tr("The verification of digital signatures in PDF format is performed through an external service. "
-					"The file requiring verification will be forwarded to the service.\n"
-					"The Information System Authority does not retain information regarding the files and users of the service."), parent);
-			dlg.setCancelText(tr("CANCEL"));
-			dlg.addButton(tr("OK"), ContainerSave);
-			dlg.exec();
-			if(dlg.result() != ContainerSave)
-				return false;
-		}
-		else if(isReadOnlyTS())
+		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
-			if(QFileInfo(from(f->fileName())).suffix().toLower() == "ddoc")
+			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc"))
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
@@ -651,24 +651,24 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	switch( code )
 	{
 	case Exception::CertificateRevoked:
-		qApp->showWarning(tr("Certificate status revoked"), causes.join("\n")); break;
+		qApp->showWarning(tr("Certificate status revoked"), causes.join('\n')); break;
 	case Exception::CertificateUnknown:
-		qApp->showWarning(tr("Certificate status unknown"), causes.join("\n")); break;
+		qApp->showWarning(tr("Certificate status unknown"), causes.join('\n')); break;
 	case Exception::OCSPTimeSlot:
-		qApp->showWarning(tr("Check your computer time"), causes.join("\n")); break;
+		qApp->showWarning(tr("Check your computer time"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
-			"Check the settings of your server access certificate."), causes.join("\n")); break;
+			"Check the settings of your server access certificate."), causes.join('\n')); break;
 	case Exception::PINCanceled:
 		break;
 	case Exception::PINFailed:
-		qApp->showWarning(tr("PIN Login failed"), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Login failed"), causes.join('\n')); break;
 	case Exception::PINIncorrect:
-		qApp->showWarning(tr("PIN Incorrect"), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Incorrect"), causes.join('\n')); break;
 	case Exception::PINLocked:
-		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join("\n")); break;
+		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
 	default:
-		qApp->showWarning(msg, causes.join("\n")); break;
+		qApp->showWarning(msg, causes.join('\n')); break;
 	}
 }
 
