@@ -1007,11 +1007,11 @@ void MainWindow::showCardStatus()
 
 		// Card (e.g. e-Seal) can have only one cert
 		if(!signCert.isNull())
-			emit ui->signContainerPage->cardChanged(cardInfo->id, seal);
+			emit ui->signContainerPage->cardChanged(cardInfo->id, seal, !signCert.isValid());
 		else
 			emit ui->signContainerPage->cardChanged();
 		if(!authCert.isNull())
-			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, authCert.QSslCertificate::serialNumber());
+			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
 		else
 			emit ui->cryptoContainerPage->cardChanged();
 		if(cryptoDoc)

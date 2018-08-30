@@ -10,9 +10,6 @@
     <height>65</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">border-radius: 2px 0 0 0;
 background-color: #1a7dbc;
@@ -76,7 +73,9 @@ QPushButton:pressed {
 QPushButton:hover:!pressed {
 	background-color: #008DCF;
 }
-</string>
+QPushButton:disabled {
+	background-color: #D3D3D3;
+}</string>
      </property>
      <property name="text">
       <string>ALLKIRJASTA

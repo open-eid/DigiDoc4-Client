@@ -30,10 +30,10 @@ MainAction::MainAction(Actions action, QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->mainAction->setFont( Styles::font( Styles::Condensed, 16 ) );
-	
-	connect( ui->mainAction, &QPushButton::clicked, [this](){ emit this->action(this->actionType); });
+
+	connect( ui->mainAction, &QPushButton::clicked, this, [&]{ emit this->action(actionType); });
 	connect( ui->otherCards, &QToolButton::clicked, this, &MainAction::dropdown );
-	
+
 	update(action);
 }
 
@@ -45,13 +45,18 @@ MainAction::~MainAction()
 void MainAction::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
-		update();
-
+		update(actionType);
 	QWidget::changeEvent(event);
 }
 
-void MainAction::update()
+void MainAction::setButtonDisabled(bool disabled)
 {
+	ui->mainAction->setDisabled(disabled);
+}
+
+void MainAction::update(Actions action)
+{
+	actionType = action;
 	QString label;
 	switch(actionType)
 	{
@@ -74,15 +79,5 @@ void MainAction::update()
 
 	ui->mainAction->setText(label);
 	ui->mainAction->show();
-}
-
-void MainAction::update(Actions action)
-{
-	actionType = action;
-	update();
-
-	if (action == SignatureAdd || action == SignatureToken) 
-		ui->otherCards->show();
-	else
-		ui->otherCards->hide();
+	ui->otherCards->setVisible(action == SignatureAdd || action == SignatureToken);
 }

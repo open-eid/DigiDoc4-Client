@@ -51,8 +51,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 , changeLocationText("CHANGE")
 , convertText("ENCRYPT")
 , envelope("Envelope")
-, canDecrypt(false)
-, seal(false)
 {
 	ui->setupUi( this );
 	init();
@@ -78,12 +76,13 @@ void ContainerPage::addressSearch()
 		emit keysSelected(dlg.keys());
 }
 
-void ContainerPage::changeCard(const QString& idCode, bool seal)
+void ContainerPage::changeCard(const QString& idCode, bool isSeal, bool isExpired)
 {
 	if(cardInReader != idCode)
 	{
 		cardInReader = idCode;
-		this->seal = seal;
+		this->seal = isSeal;
+		this->isExpired = isExpired;
 		if(mainAction && (ui->leftPane->getState() & SignatureContainers))
 			showSigningButton();
 		else if(ui->leftPane->getState() & EncryptedContainer)
@@ -167,7 +166,7 @@ void ContainerPage::init()
 	mobileCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
-	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal, const QByteArray& serialNumber)
+	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal, bool isExpired, const QByteArray& serialNumber)
 		{ emit ui->rightPane->idChanged(idCode, mobileCode, serialNumber); });
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
@@ -243,7 +242,7 @@ void ContainerPage::mobileDialog()
 	if (newCode != mobileCode)
 	{
 		mobileCode = newCode;
-		emit cardChanged(cardInReader, seal);
+		emit cardChanged(cardInReader, seal, isExpired);
 	}
 }
 
@@ -318,7 +317,6 @@ void ContainerPage::showMainAction(Actions action)
 	if( mainAction )
 	{
 		mainAction->update(action);
-		mainAction->show();
 	}
 	else
 	{
@@ -326,6 +324,8 @@ void ContainerPage::showMainAction(Actions action)
 		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
 		mainAction->show();
 	}
+	mainAction->show();
+	mainAction->setButtonDisabled(isExpired);
 
 	for(const auto &conn: actionConnections)
 		QObject::disconnect(conn);
