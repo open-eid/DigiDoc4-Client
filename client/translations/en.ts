@@ -952,94 +952,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>VerifyCert</name>
-
-    <message>
-        <source>Certificate has expired!</source>
-        <translation>Certificate has expired!</translation>
-    </message>
-    <message>
-        <source>Certificate%1is valid%2 until %3</source>
-        <translation>Certificate%1is valid%2 until %3</translation>
-    </message>
-    <message>
-        <source>Certificate expires in %1 days</source>
-        <translation>Certificate expires in %1 days</translation>
-    </message>
-    <message>
-        <source>Authentication certificate</source>
-        <translation>Authentication certificate</translation>
-    </message>
-    <message>
-        <source>RENEW CERTIFICATE</source>
-        <translation>RENEW CERTIFICATE</translation>
-    </message>
-    <message>
-        <source>UNBLOCK</source>
-        <translation>UNBLOCK</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN1</source>
-        <translation>CHANGE PIN1</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN2</source>
-        <translation>CHANGE PIN2</translation>
-    </message>
-    <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Forgot PIN%2?%3</translation>
-    </message>
-    <message>
-        <source>Signing certificate</source>
-        <translation>Signing certificate</translation>
-    </message>
-    <message>
-        <source>%1Check the details of the certificate%2</source>
-        <translation>%1Check the details of the certificate%2</translation>
-    </message>
-    <message>
-        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 can not be used because the certificate has expired. You can find instructions on how to get a new document from &lt;a href=&quot;http://www.politsei.ee/en/teenused/isikut-toendavad-dokumendid/id-kaart/taiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</translation>
-    </message>
-    <message>
-        <source>PUK code</source>
-        <translation>PUK code</translation>
-    </message>
-    <message>
-        <source>The PUK code is located in your envelope</source>
-        <translation>The PUK code is located in your envelope</translation>
-    </message>
-    <message>
-        <source>CHANGE PUK</source>
-        <translation>CHANGE PUK</translation>
-    </message>
-    <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href='https://www.id.ee/index.php?id=31027'&gt;from PPA&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-            <comment>pin1</comment>
-        <translation>Authentication key has been used %1 times</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-            <comment>pin2</comment>
-        <translation>Signature key has been used %1 times</translation>
-    </message>
-    <message>
-        <source>PIN can be changed only using eToken utility</source>
-        <translation>PIN can be changed only using eToken utility</translation>
-    </message>
-</context>
-
-
-<context>
     <name>FirstRun</name>
 
     <message>
@@ -1247,8 +1159,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Failed to get result</translation>
     </message>
     <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>LDAP server is unavailable.</translation>
+        <source>Check your internet connection!\nLDAP server is unavailable.</source>
+        <translation>Check your internet connection!\nLDAP server is unavailable.</translation>
     </message>
     <message>
         <source>Error Code: %1 (%2)</source>
@@ -3169,6 +3081,94 @@ ID-CARD</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL context is missing</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>VerifyCert</name>
+
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Certificate has expired!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Certificate%1is valid%2 until %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Certificate expires in %1 days</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Authentication certificate</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>RENEW CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>UNBLOCK</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>CHANGE PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>CHANGE PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1Forgot PIN%2?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Signing certificate</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Check the details of the certificate%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 can not be used because the certificate has expired. You can find instructions on how to get a new document from &lt;a href=&quot;http://www.politsei.ee/en/teenused/isikut-toendavad-dokumendid/id-kaart/taiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK code</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>The PUK code is located in your envelope</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>CHANGE PUK</translation>
+    </message>
+    <message>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href='https://www.id.ee/index.php?id=31027'&gt;from PPA&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+            <comment>pin1</comment>
+        <translation>Authentication key has been used %1 times</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+            <comment>pin2</comment>
+        <translation>Signature key has been used %1 times</translation>
+    </message>
+    <message>
+        <source>PIN can be changed only using eToken utility</source>
+        <translation>PIN can be changed only using eToken utility</translation>
     </message>
 </context>
 

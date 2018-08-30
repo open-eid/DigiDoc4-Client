@@ -948,88 +948,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
-    <name>VerifyCert</name>
-
-    <message>
-        <source>Certificate has expired!</source>
-        <translation>Sertifikaat on aegunud!</translation>
-    </message>
-    <message>
-        <source>Certificate%1is valid%2 until %3</source>
-        <translation>Sertifikaat%1kehtib%2 kuni %3</translation>
-    </message>
-    <message>
-        <source>Certificate expires in %1 days</source>
-        <translation>Sertifikaat aegub %1 päeva pärast</translation>
-    </message>
-    <message>
-        <source>Authentication certificate</source>
-        <translation>Isikutuvastamise sertifikaat</translation>
-    </message>
-    <message>
-        <source>RENEW CERTIFICATE</source>
-        <translation>UUENDA SERTIFIKAAT</translation>
-    </message>
-    <message>
-        <source>UNBLOCK</source>
-        <translation>TÜHISTA BLOKEERING</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN1</source>
-        <translation>MUUDA PIN1</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN2</source>
-        <translation>MUUDA PIN2</translation>
-    </message>
-    <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Unustasid PIN%2 koodi?%3</translation>
-    </message>
-    <message>
-        <source>Signing certificate</source>
-        <translation>Allkirjastamise sertifikaat</translation>
-    </message>
-    <message>
-        <source>%1Check the details of the certificate%2</source>
-        <translation>%1Vaata sertifikaadi detaile%2</translation>
-    </message>
-    <message>
-        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 on blokeeritud, kuna PIN%1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN%1 taas kasutada.</translation>
-    </message>
-    <message>
-        <source>PUK code</source>
-        <translation>PUK kood</translation>
-    </message>
-    <message>
-        <source>The PUK code is located in your envelope</source>
-        <translation>PUK kood asub Sinu koodiümbrikus</translation>
-    </message>
-    <message>
-        <source>CHANGE PUK</source>
-        <translation>MUUDA PUK</translation>
-    </message>
-    <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href='https://www.id.ee/?lang=et&amp;id=30133'&gt;taotle PPA-st&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-        <translation>Sertifikaati on kasutatud %1 korda</translation>
-    </message>
-    <message>
-        <source>PIN can be changed only using eToken utility</source>
-        <translation>PIN koodi saab muuta ainult e-Templi tarkvaraga</translation>
-    </message>
-</context>
-
-
-<context>
     <name>FirstRun</name>
 
     <message>
@@ -1237,8 +1155,8 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Ei saanud LDAP päringule vastust</translation>
     </message>
     <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>Ei saa ühendust LDAP serveriga.</translation>
+        <source>Check your internet connection!\nLDAP server is unavailable.</source>
+        <translation>Kontrolli arvuti internetiühendust!\nLDAP serveriga ei saa ühendust.</translation>
     </message>
     <message>
         <source>Error Code: %1 (%2)</source>
@@ -3141,6 +3059,88 @@ ID-KAARDIGA</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL kontekst puudub</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>VerifyCert</name>
+
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Sertifikaat on aegunud!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Sertifikaat%1kehtib%2 kuni %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Sertifikaat aegub %1 päeva pärast</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Isikutuvastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>UUENDA SERTIFIKAAT</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>TÜHISTA BLOKEERING</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>MUUDA PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>MUUDA PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1Unustasid PIN%2 koodi?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Allkirjastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Vaata sertifikaadi detaile%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 on blokeeritud, kuna PIN%1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN%1 taas kasutada.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK kood</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>PUK kood asub Sinu koodiümbrikus</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>MUUDA PUK</translation>
+    </message>
+    <message>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href='https://www.id.ee/?lang=et&amp;id=30133'&gt;taotle PPA-st&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <translation>Sertifikaati on kasutatud %1 korda</translation>
+    </message>
+    <message>
+        <source>PIN can be changed only using eToken utility</source>
+        <translation>PIN koodi saab muuta ainult e-Templi tarkvaraga</translation>
     </message>
 </context>
 
