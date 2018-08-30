@@ -67,26 +67,23 @@ FirstRun::FirstRun(QWidget *parent) :
 	else
 		ui->lang->setCurrentIndex(0);
 
-	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
-		[this](int index)
+	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this](int index) {
+		switch(index)
 		{
-			switch(index)
-			{
-			case 1:
-				emit langChanged("en");
-				break;
-			case 2:
-				emit langChanged("ru");
-				break;
-			default:
-				emit langChanged("et");
-				break;
-			}
-
-			ui->retranslateUi(this);
-			loadImages();
+		case 1:
+			emit langChanged("en");
+			break;
+		case 2:
+			emit langChanged("ru");
+			break;
+		default:
+			emit langChanged("et");
+			break;
 		}
-		);
+
+		ui->retranslateUi(this);
+		loadImages();
+	});
 	ui->continueBtn->setFont(buttonFont);
 	connect(ui->continueBtn, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Intro);});
 
@@ -116,19 +113,12 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect(ui->viewEncryption, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
 	connect(ui->viewEid, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
 
-	QSvgWidget* signIcon = new QSvgWidget(":/images/icon_Allkiri_hover.svg", ui->signWidget);
-	signIcon->resize(150, 110);
-	signIcon->move(0, 0);
-	signIcon->show();
-	ui->signWidget->show();
-	QSvgWidget* cryptoIcon = new QSvgWidget(":/images/icon_Krypto_hover.svg", ui->cryptoWidget);
-	cryptoIcon->resize(106, 117);
-	cryptoIcon->move(0, 0);
-	cryptoIcon->show();
-	QSvgWidget* eidIcon = new QSvgWidget(":/images/icon_Minu_eID_hover.svg", ui->eidWidget);
-	eidIcon->resize(138, 97);
-	eidIcon->move(0, 0);
-	eidIcon->show();
+	ui->introPageLayout->itemAtPosition(1, 0)->setAlignment(Qt::AlignCenter);
+	ui->introPageLayout->itemAtPosition(1, 1)->setAlignment(Qt::AlignCenter);
+	ui->introPageLayout->itemAtPosition(1, 2)->setAlignment(Qt::AlignCenter);
+	ui->signWidget->load(QStringLiteral(":/images/icon_Allkiri_hover.svg"));
+	ui->cryptoWidget->load(QStringLiteral(":/images/icon_Krypto_hover.svg"));
+	ui->eidWidget->load(QStringLiteral(":/images/icon_Minu_eID_hover.svg"));
 
 	// Page 3: Signing
 	ui->signTitle->setFont(titleFont);

@@ -88,8 +88,8 @@
         <translation>Personal code is not valid!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call (+372)&#160;666&#160;8888.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
+        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -1232,6 +1232,32 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>Failed to init ldap</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>Failed to init ldap search</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Failed to get result</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>LDAP server is unavailable.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Error Code: %1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MobileDialog</name>
 
     <message>
@@ -1753,10 +1779,6 @@ Control code: %1</translation>
         <translation>Language</translation>
     </message>
     <message>
-        <source>Check for updates</source>
-        <translation>Check for updates</translation>
-    </message>
-    <message>
         <source>Online TSL digest check</source>
         <translation>Online TSL digest check</translation>
     </message>
@@ -1872,22 +1894,6 @@ Control code: %1</translation>
         <translation>Please try again.</translation>
     </message>
 
-    <message>
-        <source>Once a day</source>
-        <translation>Once a day</translation>
-    </message>
-    <message>
-        <source>Once a week</source>
-        <translation>Once a week</translation>
-    </message>
-    <message>
-        <source>Once a month</source>
-        <translation>Once a month</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>Never</translation>
-    </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/eng/access&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2171,30 +2177,6 @@ Additional licenses and components</translation>
     <message>
         <source>Failed to read certificate</source>
         <translation>Failed to read certificate</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WaitDialog</name>
-
-    <message>
-        <source>Decrypting</source>
-        <translation>Decrypting</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WarningDialog</name>
-
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Details</translation>
     </message>
 </context>
 
@@ -3192,44 +3174,25 @@ ID-CARD</translation>
 
 
 <context>
-    <name>WarningRibbon</name>
+    <name>WaitDialog</name>
 
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n message</numerusform>
-            <numerusform>%n messages</numerusform>
-        </translation>
-    </message>
     <message>
-        <source>Less</source>
-        <translation>Less</translation>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
     </message>
 </context>
 
 
 <context>
-    <name>LdapSearch</name>
+    <name>WarningDialog</name>
 
     <message>
-        <source>Failed to init ldap</source>
-        <translation>Failed to init ldap</translation>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
     </message>
     <message>
-        <source>Failed to init ldap search</source>
-        <translation>Failed to init ldap search</translation>
-    </message>
-    <message>
-        <source>Failed to get result</source>
-        <translation>Failed to get result</translation>
-    </message>
-    <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>LDAP server is unavailable.</translation>
-    </message>
-    <message>
-        <source>Error Code: %1 (%2)</source>
-        <translation>Error Code: %1 (%2)</translation>
+        <source>Details</source>
+        <translation>Details</translation>
     </message>
 </context>
 
@@ -3284,6 +3247,23 @@ ID-CARD</translation>
     <message>
         <source>More information</source>
         <translation>More information</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningRibbon</name>
+
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n message</numerusform>
+            <numerusform>%n messages</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Less</translation>
     </message>
 </context>
 </TS>

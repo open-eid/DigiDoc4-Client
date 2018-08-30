@@ -88,8 +88,8 @@
         <translation>Isikukood pole korrektne!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.</source>
-        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimustega pöördu ID-abiliini poole e-postiaadressil &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; või helista (+372)&#160;666&#160;8888.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -1222,6 +1222,32 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
+    <name>LdapSearch</name>
+
+    <message>
+        <source>Failed to init ldap</source>
+        <translation>LDAP initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to init ldap search</source>
+        <translation>LDAP otsingu initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to get result</source>
+        <translation>Ei saanud LDAP päringule vastust</translation>
+    </message>
+    <message>
+        <source>LDAP server is unavailable.</source>
+        <translation>Ei saa ühendust LDAP serveriga.</translation>
+    </message>
+    <message>
+        <source>Error Code: %1 (%2)</source>
+        <translation>Veakood: %1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MobileDialog</name>
 
     <message>
@@ -1757,10 +1783,6 @@ Kontrollkood: %1</translation>
         <translation>Keel</translation>
     </message>
     <message>
-        <source>Check for updates</source>
-        <translation>Kontrolli uuendusi</translation>
-    </message>
-    <message>
         <source>Online TSL digest check</source>
         <translation>Kontrolli TSL värskendust</translation>
     </message>
@@ -1876,22 +1898,6 @@ Kontrollkood: %1</translation>
         <translation>Palun proovi uuesti.</translation>
     </message>
 
-    <message>
-        <source>Once a day</source>
-        <translation>Kord päevas</translation>
-    </message>
-    <message>
-        <source>Once a week</source>
-        <translation>Kord nädalas</translation>
-    </message>
-    <message>
-        <source>Once a month</source>
-        <translation>Kord kuus</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>Mitte kunagi</translation>
-    </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2172,28 +2178,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Failed to read certificate</source>
         <translation>Sertifikaadi laadimine ebaõnnestus</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WaitDialog</name>
-    <message>
-        <source>Decrypting</source>
-        <translation>Dekrüpteerin</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>WarningDialog</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Detailid</translation>
     </message>
 </context>
 
@@ -3162,43 +3146,23 @@ ID-KAARDIGA</translation>
 
 
 <context>
-    <name>WarningRibbon</name>
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n teade</numerusform>
-            <numerusform>%n teadet</numerusform>
-        </translation>
-    </message>
+    <name>WaitDialog</name>
     <message>
-        <source>Less</source>
-        <translation>Vähem</translation>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerin</translation>
     </message>
 </context>
 
 
 <context>
-    <name>LdapSearch</name>
-
+    <name>WarningDialog</name>
     <message>
-        <source>Failed to init ldap</source>
-        <translation>LDAP initsialiseerimine ebaõnnestus</translation>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
     </message>
     <message>
-        <source>Failed to init ldap search</source>
-        <translation>LDAP otsingu initsialiseerimine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to get result</source>
-        <translation>Ei saanud LDAP päringule vastust</translation>
-    </message>
-    <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>Ei saa ühendust LDAP serveriga.</translation>
-    </message>
-    <message>
-        <source>Error Code: %1 (%2)</source>
-        <translation>Veakood: %1 (%2)</translation>
+        <source>Details</source>
+        <translation>Detailid</translation>
     </message>
 </context>
 
@@ -3253,6 +3217,22 @@ ID-KAARDIGA</translation>
     <message>
         <source>More information</source>
         <translation>Rohkem infot</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>WarningRibbon</name>
+    <message numerus="yes">
+        <source>%n message</source>
+        <translation>
+            <numerusform>%n teade</numerusform>
+            <numerusform>%n teadet</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Less</source>
+        <translation>Vähem</translation>
     </message>
 </context>
 </TS>
