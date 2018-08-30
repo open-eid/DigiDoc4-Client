@@ -123,10 +123,6 @@ void FileItem::stateChange(ContainerState state)
 		ui->download->hide();
 		ui->remove->hide();
 		break;
-	case DecryptedContainer:
-		ui->download->show();
-		ui->remove->hide();
-		break;
 	default:
 		ui->download->hide();
 		ui->remove->show();

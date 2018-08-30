@@ -514,18 +514,6 @@ void ContainerPage::updatePanes(ContainerState state)
 		hideButtons( { ui->save, ui->summary } );
 		showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
 		break;
-	case DecryptedContainer:
-		cancelText = "STARTING";
-		envelope = "Container";
-
-		resize = !ui->changeLocation->isHidden();
-		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, QStringLiteral("Decrypted files"));
-		showRightPane(ItemAddress, QStringLiteral("Recipients"));
-		hideMainAction();
-		hideButtons( { ui->convert, ui->save, ui->summary } );
-		showButtons( { ui->cancel, ui->saveAs, ui->email } );
-		break;
 	default:
 		// Uninitialized cannot be shown on container page
 		break;
