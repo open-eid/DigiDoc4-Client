@@ -963,84 +963,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>VerifyCert</name>
-
-    <message>
-        <source>Certificate has expired!</source>
-        <translation>Срок действия сертификата истек!</translation>
-    </message>
-    <message>
-        <source>Certificate%1is valid%2 until %3</source>
-        <translation>Сертификат%1действителен%2 до %3</translation>
-    </message>
-    <message>
-        <source>Certificate expires in %1 days</source>
-        <translation>Срок действия сертификата истекает через %1 день</translation>
-    </message>
-    <message>
-        <source>Authentication certificate</source>
-        <translation>Сертификат идентификации</translation>
-    </message>
-    <message>
-        <source>RENEW CERTIFICATE</source>
-        <translation>ОБНОВЛЕНИЕ СЕРТИФИКАТА</translation>
-    </message>
-    <message>
-        <source>UNBLOCK</source>
-        <translation>РАЗБЛОКИРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN1</source>
-        <translation>ИЗМЕНИТЬ PIN1</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN2</source>
-        <translation>ИЗМЕНИТЬ PIN2</translation>
-    </message>
-    <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Забыли PIN%2?%3</translation>
-    </message>
-    <message>
-        <source>Signing certificate</source>
-        <translation>Сертификат подписи</translation>
-    </message>
-    <message>
-        <source>%1Check the details of the certificate%2</source>
-        <translation>%1Проверьте сведения о сертификате%2</translation>
-    </message>
-    <message>
-        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Инструкции по ходатайству нового документа находятся &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 заблокирован, потому что PIN%1 код был введен неверно 3 раза. Разблокируйте его для повторного использования PIN%1.</translation>
-    </message>
-    <message>
-        <source>PUK code</source>
-        <translation>PUK код</translation>
-    </message>
-    <message>
-        <source>The PUK code is located in your envelope</source>
-        <translation>PUK код находится в конверте</translation>
-    </message>
-    <message>
-        <source>CHANGE PUK</source>
-        <translation>ИЗМЕНИТЬ PUK</translation>
-    </message>
-    <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Новый PUK получите в конверте с кодами &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=33922&quot;&gt;из PPA&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-        <translation>Сертификат использован %1 раз</translation>
-    </message>
-</context>
-
-
-<context>
     <name>FirstRun</name>
 
     <message>
@@ -1248,8 +1170,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Получение ответа неуспешно</translation>
     </message>
     <message>
-        <source>LDAP server is unavailable.</source>
-        <translation>Не могу подключиться к LDAP серверу.</translation>
+        <source>Check your internet connection!\nLDAP server is unavailable.</source>
+        <translation>Проверьте подключение к Интернету!\nLDAP сервер недоступен.</translation>
     </message>
     <message>
         <source>Error Code: %1 (%2)</source>
@@ -3174,6 +3096,84 @@ ID-КАРТОЙ</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>Отсутствует контекст SSL</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>VerifyCert</name>
+
+    <message>
+        <source>Certificate has expired!</source>
+        <translation>Срок действия сертификата истек!</translation>
+    </message>
+    <message>
+        <source>Certificate%1is valid%2 until %3</source>
+        <translation>Сертификат%1действителен%2 до %3</translation>
+    </message>
+    <message>
+        <source>Certificate expires in %1 days</source>
+        <translation>Срок действия сертификата истекает через %1 день</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Сертификат идентификации</translation>
+    </message>
+    <message>
+        <source>RENEW CERTIFICATE</source>
+        <translation>ОБНОВЛЕНИЕ СЕРТИФИКАТА</translation>
+    </message>
+    <message>
+        <source>UNBLOCK</source>
+        <translation>РАЗБЛОКИРОВАТЬ</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN1</source>
+        <translation>ИЗМЕНИТЬ PIN1</translation>
+    </message>
+    <message>
+        <source>CHANGE PIN2</source>
+        <translation>ИЗМЕНИТЬ PIN2</translation>
+    </message>
+    <message>
+        <source>%1Forgot PIN%2?%3</source>
+        <translation>%1Забыли PIN%2?%3</translation>
+    </message>
+    <message>
+        <source>Signing certificate</source>
+        <translation>Сертификат подписи</translation>
+    </message>
+    <message>
+        <source>%1Check the details of the certificate%2</source>
+        <translation>%1Проверьте сведения о сертификате%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
+        <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Инструкции по ходатайству нового документа находятся &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
+        <translation>PIN%1 заблокирован, потому что PIN%1 код был введен неверно 3 раза. Разблокируйте его для повторного использования PIN%1.</translation>
+    </message>
+    <message>
+        <source>PUK code</source>
+        <translation>PUK код</translation>
+    </message>
+    <message>
+        <source>The PUK code is located in your envelope</source>
+        <translation>PUK код находится в конверте</translation>
+    </message>
+    <message>
+        <source>CHANGE PUK</source>
+        <translation>ИЗМЕНИТЬ PUK</translation>
+    </message>
+    <message>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Новый PUK получите в конверте с кодами &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=33922&quot;&gt;из PPA&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <translation>Сертификат использован %1 раз</translation>
     </message>
 </context>
 
