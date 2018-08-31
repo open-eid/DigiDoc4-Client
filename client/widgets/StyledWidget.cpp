@@ -27,14 +27,17 @@ StyledWidget::StyledWidget(QWidget *parent) :
 {
 }
 
-StyledWidget::~StyledWidget() {}
+StyledWidget::~StyledWidget() = default;
 
 // Custom widget must override paintEvent in order to use stylesheets
 // See https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
-void StyledWidget::paintEvent(QPaintEvent *ev)
+void StyledWidget::paintEvent(QPaintEvent */*ev*/)
 {
 	QStyleOption opt;
 	opt.init(this);
 	QPainter p(this);
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
+void StyledWidget::stateChange(ria::qdigidoc4::ContainerState /*state*/)
+{}

@@ -177,6 +177,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); });
 
 	showCardStatus();
+	updateMyEid();
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
