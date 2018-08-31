@@ -63,7 +63,7 @@ background-color: #F4F5F6;
      </property>
      <layout class="QHBoxLayout" name="containerHeaderLayout" stretch="0,1,0">
       <property name="spacing">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>8</number>
@@ -104,6 +104,9 @@ border: none;</string>
           <underline>true</underline>
          </font>
         </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: #353739;
 text-decoration: underline solid;
@@ -115,11 +118,8 @@ border: none;</string>
         <property name="text">
          <string>C:\Downloads\Leping.bdoc</string>
         </property>
-        <property name="margin">
-         <number>5</number>
-        </property>
         <property name="textInteractionFlags">
-         <set>Qt::NoTextInteraction</set>
+         <set>Qt::LinksAccessibleByMouse</set>
         </property>
        </widget>
       </item>
