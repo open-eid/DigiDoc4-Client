@@ -37,7 +37,7 @@
 #define FONT_SIZE_DECREASE_SMALL 3 
 #define FONT_SIZE_DECREASE_LARGE 4
 #define FONT_DECREASE_CUTOFF 12
-#define MIN_FONT_SIZE 6
+#define MIN_FONT_SIZE 2
 
 struct FontSample {
 	int fontSize;
