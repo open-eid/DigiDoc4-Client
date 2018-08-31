@@ -55,7 +55,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		completer->setMaxVisibleItems(10);
 		completer->setCompletionMode(QCompleter::PopupCompletion);
 		completer->setCaseSensitivity(Qt::CaseInsensitive);
-		line->setText(d->s.value(line->objectName()).toStringList().at(0));
+		line->setText(d->s.value(line->objectName()).toStringList().value(0));
 		line->setCompleter(completer);
 		connect(line, &QLineEdit::editingFinished, this, [=] {
 			QStringList list = d->s.value(line->objectName()).toStringList();
@@ -63,6 +63,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 			list.insert(0, line->text());
 			if(list.size() > 10)
 				list.removeLast();
+			d->s.setValue(line->objectName(), QString()); // Uses on Windows MULTI_STRING registry
 			d->s.setValueEx(line->objectName(), list, QStringList());
 		});
 	}
