@@ -33,7 +33,7 @@ public:
 	explicit StyledWidget(QWidget *parent = nullptr);
 	~StyledWidget();
 
-	virtual void stateChange(ria::qdigidoc4::ContainerState state) {};
+	virtual void stateChange(ria::qdigidoc4::ContainerState state);
 
 protected:
 	void paintEvent(QPaintEvent *ev) override;

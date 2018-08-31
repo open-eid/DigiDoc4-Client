@@ -89,14 +89,14 @@ void InfoStack::clearAlternateIcon()
 void InfoStack::clearData()
 {
 	clearAlternateIcon();
-	ui->valueGivenNames->setText( "" );
-	ui->valueSurname->setText( "" );
-	ui->valuePersonalCode->setText( "" );
-	ui->valueCitizenship->setText( "" );
-	ui->valueSerialNumber->setText( "" );
-	ui->valueExpiryDate->setText( "" );
+	ui->valueGivenNames->clear();
+	ui->valueSurname->clear();
+	ui->valuePersonalCode->clear();
+	ui->valueCitizenship->clear();
+	ui->valueSerialNumber->clear();
+	ui->valueExpiryDate->clear();
 	pictureText = "DOWNLOAD";
-	ui->btnPicture->setText(tr(qPrintable(pictureText)));
+	ui->btnPicture->setText(tr(pictureText));
 	ui->btnPicture->show();
 }
 
@@ -141,7 +141,7 @@ void InfoStack::showPicture( const QPixmap &pixmap )
 	clearAlternateIcon();
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 	pictureText = "SAVE THE PICTURE";
-	ui->btnPicture->setText(tr(qPrintable(pictureText)));
+	ui->btnPicture->setText(tr(pictureText));
 	ui->btnPicture->hide();
 }
 
@@ -172,7 +172,7 @@ void InfoStack::update()
 	ui->valueCitizenship->setText(citizenshipText);
 	ui->valueExpiryDate->setText(text);
 	ui->valueSerialNumber->setText(serialNumberText);
-	ui->btnPicture->setText(tr(qPrintable(pictureText)));
+	ui->btnPicture->setText(tr(pictureText));
 	ui->btnPicture->hide();
 
 	if(!certIsResident)
@@ -190,10 +190,10 @@ void InfoStack::update()
 
 		clearPicture();
 		QSvgWidget *seal = new QSvgWidget(ui->photo);
-		seal->load(QString(":/images/icon_digitempel.svg"));
+		seal->load(QStringLiteral(":/images/icon_digitempel.svg"));
 		seal->resize(100, 100);
 		seal->move(10, 25);
-		seal->setStyleSheet("border: none;");
+		seal->setStyleSheet(QStringLiteral("border: none;"));
 		seal->show();
 		alternateIcon = seal;
 	}
@@ -206,8 +206,8 @@ void InfoStack::update()
 		ui->labelSerialNumber->setText(tr("Document"));
 		ui->valueSerialNumber->setMinimumWidth(100);
 		ui->valueSerialNumber->setMaximumWidth(100);
-        if(!alternateIcon)
-            ui->btnPicture->show();
+		if(!alternateIcon)
+			ui->btnPicture->show();
 	}
 
 }
@@ -230,30 +230,30 @@ void InfoStack::update(const QSmartCardData &t)
 	QStringList firstName = QStringList()
 		<< t.data( QSmartCardData::FirstName1 ).toString()
 		<< t.data( QSmartCardData::FirstName2 ).toString();
-	firstName.removeAll( "" );
+	firstName.removeAll(QString());
 
 	certType = t.authCert().type();
 	certIsValid = t.isValid();
-	certIsResident = t.authCert().subjectInfo("O").contains("E-RESIDENT");
+	certIsResident = t.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT"));
 	clearAlternateIcon();
 	if(certIsResident)
 	{
-		QSvgWidget *icon = new QSvgWidget(":/images/icon_person_blue.svg", ui->photo);
+		QSvgWidget *icon = new QSvgWidget(QStringLiteral(":/images/icon_person_blue.svg"), ui->photo);
 		icon->resize(109, 118);
-		icon->setStyleSheet("border: none;");
+		icon->setStyleSheet(QStringLiteral("border: none;"));
 		icon->move(10, 16);
 		icon->show();
 		alternateIcon = icon;
 		ui->btnPicture->hide();
 	}
-	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate( "dd.MM.yyyy" );
-	givenNamesText = firstName.join(" ");
+	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
+	givenNamesText = firstName.join(' ');
 	surnameText = t.data(QSmartCardData::SurName).toString();
 	personalCodeText = t.data(QSmartCardData::Id).toString();
 	citizenshipText = t.data(QSmartCardData::Citizen).toString();
 	serialNumberText = t.data(QSmartCardData::DocumentId).toString();
 	if(!serialNumberText.isEmpty())
-		serialNumberText += "  |" ;
+		serialNumberText += QStringLiteral("  |");
 
 	update();
 }
