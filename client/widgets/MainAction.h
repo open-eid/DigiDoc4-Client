@@ -35,6 +35,7 @@ public:
 	explicit MainAction(ria::qdigidoc4::Actions action, QWidget *parent);
 	~MainAction();
 
+	void setButtonDisabled(bool disabled);
 	void update(ria::qdigidoc4::Actions action);
 
 signals:
@@ -45,8 +46,6 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
-	void update();
-
 	Ui::MainAction *ui;
 	ria::qdigidoc4::Actions actionType;
 };
