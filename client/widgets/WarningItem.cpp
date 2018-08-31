@@ -153,7 +153,9 @@ void WarningItem::lookupWarning()
 		case ria::qdigidoc4::SSLLoadingWarning:
 			warnText.text = MainWindow::tr("Failed to load data");
 			break;
-
+		case ria::qdigidoc4::CheckConnectionWarning:
+			warnText.text = MainWindow::tr("Check internet connection");
+			break;
 		default:
 			break;
 	}

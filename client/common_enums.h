@@ -114,7 +114,8 @@ enum WarningType {
     EmailActivationWarning,
     EmailLoadingWarning,
     PictureLoadingWarning,
-    SSLLoadingWarning
+    SSLLoadingWarning,
+    CheckConnectionWarning,
 };
 
 }

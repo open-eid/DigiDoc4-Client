@@ -77,7 +77,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont regular14 = Styles::font( Styles::Regular, 14 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	Settings s(qApp->applicationName());
@@ -643,7 +642,7 @@ void MainWindow::moveSignatureContainer()
 		ui->signContainerPage->moved(to);
 }
 
-void MainWindow::onCryptoAction(int action, const QString &id, const QString &phone)
+void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString &/*phone*/)
 {
 	switch(action)
 	{
@@ -816,10 +815,11 @@ void MainWindow::openContainer()
 	auto filter = QString();
 
 	if(current == CryptoIntro)
-		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1)").arg( "*.cdoc");
+		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1)").arg(QStringLiteral("*.cdoc"));
 	else if(current == SignIntro)
-		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1%2)").arg( "*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc")
-				.arg(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? "" : " *.pdf");
+		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1%2)").arg(
+				QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc"),
+				qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QString() : QStringLiteral(" *.pdf"));
 
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), QString(), filter);
 	if(!files.isEmpty())
@@ -1077,13 +1077,10 @@ void MainWindow::showSettings(int page)
 	QString appletVersion = t.isNull() ? QString() : t.appletVersion();
 	SettingsDialog dlg(page, this, appletVersion);
 
-	connect(&dlg, &SettingsDialog::langChanged, this,
-			[this](const QString& lang )
-			{
-				qApp->loadTranslation( lang );
-				ui->retranslateUi(this);
-			}
-	);
+	connect(&dlg, &SettingsDialog::langChanged, this, [this](const QString& lang ) {
+		qApp->loadTranslation( lang );
+		ui->retranslateUi(this);
+	});
 	connect(&dlg, &SettingsDialog::removeOldCert, this,	&MainWindow::removeOldCert);
 	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
 	dlg.exec();
@@ -1094,7 +1091,7 @@ bool MainWindow::sign()
 	CheckConnection connection;
 	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		showWarning(WarningText(tr("Check internet connection")));
+		showWarning(WarningText(WarningType::CheckConnectionWarning));
 		return false;
 	}
 
@@ -1144,7 +1141,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	CheckConnection connection;
 	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		showWarning(WarningText(tr("Check internet connection")));
+		showWarning(WarningText(WarningType::CheckConnectionWarning));
 		return false;
 	}
 
@@ -1427,9 +1424,9 @@ void MainWindow::updateWarnings()
 	}
 
 	if(!count)
-		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;");
+		ui->topBarShadow->setStyleSheet(QStringLiteral("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;"));
 	else
-		ui->topBarShadow->setStyleSheet("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;");
+		ui->topBarShadow->setStyleSheet(QStringLiteral("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;"));
 
 	if(count < 2)
 	{
@@ -1482,22 +1479,22 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 
 void MainWindow::warningClicked(const QString &link)
 {
-	if(link == "#update-Certificate")
+	if(link == QStringLiteral("#update-Certificate"))
 		updateCertificate();
-	else if(link.startsWith("#invalid-signature-"))
+	else if(link.startsWith(QStringLiteral("#invalid-signature-")))
 		emit ui->signContainerPage->details(link.right(link.length()-19));
-	else if(link == "#unblock-PIN1")
+	else if(link == QStringLiteral("#unblock-PIN1"))
 		ui->accordion->changePin1Clicked (false, true);
-	else if(link == "#unblock-PIN2")
+	else if(link == QStringLiteral("#unblock-PIN2"))
 		ui->accordion->changePin2Clicked (false, true);
-	else if(link.startsWith("http"))
+	else if(link.startsWith(QStringLiteral("http")))
 		QDesktopServices::openUrl(QUrl(link));
 }
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
-	QString ext = Settings(qApp->applicationName()).value("Client/Type", "bdoc").toString();
-	QString filename = FileUtil::create(QFileInfo(wrappedFile), QString(".%1").arg(ext), tr("signature container"));
+	QString ext = Settings(qApp->applicationName()).value(QStringLiteral("Client/Type"), QStringLiteral("bdoc")).toString();
+	QString filename = FileUtil::create(QFileInfo(wrappedFile), QStringLiteral(".%1").arg(ext), tr("signature container"));
 	if(filename.isNull())
 		return false;
 
@@ -1644,7 +1641,7 @@ void MainWindow::containerSummary()
 	dialog->printer()->setPaperSize( QPrinter::A4 );
 	dialog->printer()->setOrientation( QPrinter::Portrait );
 	dialog->setMinimumHeight( 700 );
-	connect(dialog, &QPrintPreviewDialog::paintRequested, this, [=](QPrinter *printer){
+	connect(dialog, &QPrintPreviewDialog::paintRequested, digiDoc, [=](QPrinter *printer){
 		PrintSheet(digiDoc, printer);
 	});
 	dialog->exec();
