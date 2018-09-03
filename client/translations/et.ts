@@ -670,6 +670,54 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
+    <name>FileDialog</name>
+
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FileList</name>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Lisa faile</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
+    <message>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>SALVESTA TEISE NIMEGA</translation>
+    </message>
+    <message>
+        <source>REPLACE ALL</source>
+        <translation>KIRJUTA KÕIK ÜLE</translation>
+    </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>Vali kataloog kuhu failid salvestatakse</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
+    </message>
+</context>
+
+
+<context>
     <name>InfoStack</name>
 
     <message>
@@ -736,54 +784,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Expired</source>
         <translation>Aegunud</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FileDialog</name>
-
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
-    <message>
-        <source>Add files</source>
-        <translation>Lisa faile</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
-    <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>SALVESTA TEISE NIMEGA</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>KIRJUTA KÕIK ÜLE</translation>
-    </message>
-
-    <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Vali kataloog kuhu failid salvestatakse</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
     </message>
 </context>
 
@@ -3073,10 +3073,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Certificate%1is valid%2 until %3</source>
         <translation>Sertifikaat%1kehtib%2 kuni %3</translation>
-    </message>
-    <message>
-        <source>Certificate expires in %1 days</source>
-        <translation>Sertifikaat aegub %1 päeva pärast</translation>
     </message>
     <message>
         <source>Authentication certificate</source>

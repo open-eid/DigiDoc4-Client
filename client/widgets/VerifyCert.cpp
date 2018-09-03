@@ -42,23 +42,23 @@ VerifyCert::VerifyCert(QWidget *parent) :
 	connect( ui->forgotPinLink, &QLabel::linkActivated, this, &VerifyCert::processForgotPinLink );
 	connect( ui->details, &QLabel::linkActivated, this, &VerifyCert::processCertDetails );
 
-	greenIcon = new QSvgWidget( ":/images/icon_check.svg", ui->nameRight);
+	greenIcon = new QSvgWidget(QStringLiteral(":/images/icon_check.svg"), ui->nameRight);
 	greenIcon->resize(12, 13);
 	greenIcon->move(5, 5);
 	greenIcon->hide();
-	greenIcon->setStyleSheet("border: none;");
+	greenIcon->setStyleSheet(QStringLiteral("border: none;"));
 
-	orangeIcon = new QSvgWidget(":/images/icon_alert_orange.svg", ui->nameRight);
+	orangeIcon = new QSvgWidget(QStringLiteral(":/images/icon_alert_orange.svg"), ui->nameRight);
 	orangeIcon->resize(13, 13);
 	orangeIcon->move(5, 5);
 	orangeIcon->hide();
-	orangeIcon->setStyleSheet("border: none;");
+	orangeIcon->setStyleSheet(QStringLiteral("border: none;"));
 
-	redIcon = new QSvgWidget(":/images/icon_alert_red.svg", ui->nameRight);
+	redIcon = new QSvgWidget(QStringLiteral(":/images/icon_alert_red.svg"), ui->nameRight);
 	redIcon->resize(13, 13);
 	redIcon->move(5, 5);
 	redIcon->hide();
-	redIcon->setStyleSheet("border: none;");
+	redIcon->setStyleSheet(QStringLiteral("border: none;"));
 
 	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
@@ -69,7 +69,7 @@ VerifyCert::VerifyCert(QWidget *parent) :
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
 	ui->tempelText->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->tempelText->hide();
-	borders = " border: solid #DFE5E9; border-width: 1px 0px 0px 0px; ";
+	borders = QStringLiteral(" border: solid #DFE5E9; border-width: 1px 0px 0px 0px; ");
 }
 
 VerifyCert::~VerifyCert()
@@ -80,7 +80,7 @@ VerifyCert::~VerifyCert()
 void VerifyCert::addBorders()
 {
 	// Add top, right and left border shadows
-	borders = " border: solid #DFE5E9; border-width: 1px 1px 0px 1px; ";
+	borders = QStringLiteral(" border: solid #DFE5E9; border-width: 1px 1px 0px 1px; ");
 }
 
 void VerifyCert::clear()
@@ -97,7 +97,7 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	this->pinType = type;
 	this->cardData = pSmartCard->data();
 	c = (pinType == QSmartCardData::Pin1Type) ? cardData.authCert() : cardData.signCert();
-	isBlockedPin = (cardData.retryCount( pinType ) == 0) ? true : false;
+	isBlockedPin = cardData.retryCount( pinType ) == 0;
 	
 	update();
 }
@@ -133,16 +133,17 @@ void VerifyCert::update(bool showWarning)
 	}
 	else
 	{
-		cert << tr("Certificate%1is valid%2 until %3")
-				.arg(" <span style='color: #37a447'>")
-				.arg("</span> ")
-				.arg(DateTime(c.expiryDate().toLocalTime()).formatDate("dd. MMMM yyyy"));
+		qint64 leftDays = std::max<qint64>(0, QDateTime::currentDateTime().daysTo(c.expiryDate().toLocalTime()));
+		if(leftDays <= 105 && !c.isNull())
+			cert << "<span style='color: #F0BF72'>";
+		cert << tr("Certificate%1is valid%2 until %3").arg(
+				QStringLiteral(" <span style='color: #37a447'>"),
+				QStringLiteral("</span> "),
+				DateTime(c.expiryDate().toLocalTime()).formatDate(QStringLiteral("dd. MMMM yyyy")));
+		if(leftDays <= 105 && !c.isNull())
+			cert << "</span>";
 		if(!isTempelType)
 			cert << "<br />" << tr("key has been used %1 times", pinType == QSmartCardData::Pin1Type ? "pin1" : "pin2").arg(cardData.usageCount(pinType));
-
-		int leftDays = std::max<int>( 0, QDateTime::currentDateTime().daysTo( c.expiryDate().toLocalTime() ) );
-		if(leftDays <= 105 && !c.isNull() && !isBlockedPin)
-			cert << "<br /><span style='color: red'>" << tr("Certificate expires in %1 days").arg( leftDays ) << "</span>";
 	}
 	switch( pinType )
 	{
@@ -153,12 +154,12 @@ void VerifyCert::update(bool showWarning)
 			forgotPinText = QString();
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
-							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
-							.arg("1")
-							.arg("</span></a>");
-		detailsText = tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>");
-		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("1") :
-				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("1") :
+							.arg(QStringLiteral("<a href='#pin1-forgotten'><span style='color:#75787B;'>"))
+							.arg(1)
+							.arg(QStringLiteral("</span></a>"));
+		detailsText = tr("%1Check the details of the certificate%2").arg(QStringLiteral("<a href='#pin1-cert'><span style='color:#75787B;'>"), QStringLiteral("</span></a>"));
+		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(1) :
+				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(1) :
 				QString();
 		break;
 	case QSmartCardData::Pin2Type:
@@ -168,12 +169,12 @@ void VerifyCert::update(bool showWarning)
 			forgotPinText = QString();
 		else
 			forgotPinText = tr("%1Forgot PIN%2?%3")
-							.arg("<a href='#pin1-forgotten'><span style='color:#75787B;'>")
-							.arg("2")
-							.arg("</span></a>");
-		detailsText = tr("%1Check the details of the certificate%2").arg("<a href='#pin1-cert'><span style='color:#75787B;'>").arg("</span></a>");
-		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg("2") :
-				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg("2") :
+							.arg(QStringLiteral("<a href='#pin1-forgotten'><span style='color:#75787B;'>"))
+							.arg(2)
+							.arg(QStringLiteral("</span></a>"));
+		detailsText = tr("%1Check the details of the certificate%2").arg(QStringLiteral("<a href='#pin1-cert'><span style='color:#75787B;'>"), QStringLiteral("</span></a>"));
+		error = ( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(2) :
+				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(2) :
 				QString();
 		break;
 	case QSmartCardData::PukType:
@@ -245,7 +246,7 @@ void VerifyCert::update(bool showWarning)
 		int decrease = height() < 210 ? 15 : 0;
 		ui->verticalSpacerAboveBtn->changeSize(20, 29 - decrease);
 		ui->verticalSpacerBelowBtn->changeSize(20, 34 - decrease);
-		changePinStyle( "#FFFFFF" );
+		changePinStyle(QStringLiteral("#FFFFFF"));
 		ui->name->setText(name);
 		redIcon->hide();
 		orangeIcon->setVisible(showWarning && pinType != QSmartCardData::PukType);
@@ -288,30 +289,30 @@ void VerifyCert::update(bool showWarning)
 	ui->changePIN->setText(changeBtn);
 }
 
-void VerifyCert::enterEvent( QEvent * event )
+void VerifyCert::enterEvent(QEvent * /*event*/)
 {
 	if( !isValidCert && pinType != QSmartCardData::PukType )
-		this->setStyleSheet( "background-color: #f3d8d8;" + borders );
+		setStyleSheet("background-color: #f3d8d8;" + borders);
 	else if( isBlockedPin )
-		this->setStyleSheet( "background-color: #fbecd0;" + borders );
+		setStyleSheet("background-color: #fbecd0;" + borders);
 	else
 	{
-		this->setStyleSheet( "background-color: #f7f7f7;" + borders );
-		changePinStyle( "#f7f7f7" );  
-	}  
+		setStyleSheet("background-color: #f7f7f7;" + borders);
+		changePinStyle(QStringLiteral("#f7f7f7"));
+	}
 }
 
-void VerifyCert::leaveEvent( QEvent * event )
+void VerifyCert::leaveEvent(QEvent * /*event*/)
 {
 	if( !isValidCert && pinType != QSmartCardData::PukType )
-		this->setStyleSheet( "background-color: #F9EBEB;" + borders );
+		setStyleSheet("background-color: #F9EBEB;" + borders);
 	else if( isBlockedPin )
-		this->setStyleSheet( "background-color: #fcf5ea;" + borders );
+		setStyleSheet("background-color: #fcf5ea;" + borders);
 	else
 	{
-		this->setStyleSheet( "background-color: white;" + borders );
-		changePinStyle( "white" );  
-	}  
+		setStyleSheet( "background-color: white;" + borders);
+		changePinStyle(QStringLiteral("white"));
+	}
 }
 
 void VerifyCert::changeEvent(QEvent* event)
@@ -327,13 +328,13 @@ void VerifyCert::changeEvent(QEvent* event)
 
 
 void VerifyCert::changePinStyle( const QString &background )  
-{  
- 	ui->changePIN->setStyleSheet(  
- 		QString("QPushButton { border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: %1;}"  
- 		"QPushButton:pressed { border: none; background-color: #006EB5; color: %1;}"  
- 		"QPushButton:hover:!pressed { border-radius: 2px; border: 1px solid #008DCF; color: #008DCF;}"  
- 		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )  
- 		);  
+{
+	ui->changePIN->setStyleSheet(QStringLiteral(
+		"QPushButton { border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: %1;}"
+		"QPushButton:pressed { border: none; background-color: #006EB5; color: %1;}"
+		"QPushButton:hover:!pressed { border-radius: 2px; border: 1px solid #008DCF; color: #008DCF;}"
+		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )
+	);
 }
 
 void VerifyCert::processClickedBtn()
@@ -342,16 +343,16 @@ void VerifyCert::processClickedBtn()
 		emit changePinClicked( false, isBlockedPin );
 }
 
-void VerifyCert::processForgotPinLink( QString link )
+void VerifyCert::processForgotPinLink(const QString & /*link*/)
 {
 	if(!c.isNull())
 		emit changePinClicked( true, false );	// Change PIN with PUK code
 }
 
-void VerifyCert::processCertDetails( QString link )
+void VerifyCert::processCertDetails(const QString & /*link*/)
 {
 	if(!c.isNull())
-		emit certDetailsClicked( (pinType == QSmartCardData::Pin1Type) ? "PIN1" : "PIN2" );
+		emit certDetailsClicked(QStringLiteral("PIN%1").arg(pinType == QSmartCardData::Pin1Type ? 1 : 2));
 }
 
 void VerifyCert::showWarningIcon()
