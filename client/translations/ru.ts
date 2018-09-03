@@ -670,6 +670,54 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
+    <name>FileDialog</name>
+
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FileList</name>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Добавить файлы</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
+    <message>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>СОХРАНИТЬ ПОД ДРУГИМ ИМЕНЕМ</translation>
+    </message>
+    <message>
+        <source>REPLACE ALL</source>
+        <translation>ЗАМЕНИТЬ ВСЕ</translation>
+    </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>Выберите папку для сохранения файлов</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
+    </message>
+</context>
+
+
+<context>
     <name>InfoStack</name>
 
     <message>
@@ -736,54 +784,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Expired</source>
         <translation>Недействителен</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FileDialog</name>
-
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
-        <source>Add files</source>
-        <translation>Добавить файлы</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
-    </message>
-    <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>СОХРАНИТЬ ПОД ДРУГИМ ИМЕНЕМ</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>ЗАМЕНИТЬ ВСЕ</translation>
-    </message>
-
-    <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Выберите папку для сохранения файлов</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
     </message>
 </context>
 
@@ -3110,10 +3110,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Certificate%1is valid%2 until %3</source>
         <translation>Сертификат%1действителен%2 до %3</translation>
-    </message>
-    <message>
-        <source>Certificate expires in %1 days</source>
-        <translation>Срок действия сертификата истекает через %1 день</translation>
     </message>
     <message>
         <source>Authentication certificate</source>

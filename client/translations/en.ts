@@ -674,6 +674,54 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
+    <name>FileDialog</name>
+
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>FileList</name>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>Add files</source>
+        <translation>Add files</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
+    <message>
+        <source>SAVE WITH OTHER NAME</source>
+        <translation>SAVE WITH OTHER NAME</translation>
+    </message>
+    <message>
+        <source>REPLACE ALL</source>
+        <translation>REPLACE ALL</translation>
+    </message>
+
+    <message>
+        <source>Select folder where files will be stored</source>
+        <translation>Select folder where files will be stored</translation>
+    </message>
+    <message>
+        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
+        <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
+    </message>
+</context>
+
+
+<context>
     <name>InfoStack</name>
 
     <message>
@@ -740,54 +788,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Expired</source>
         <translation>Expired</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FileDialog</name>
-
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
-        <source>Add files</source>
-        <translation>Add files</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>NO</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>YES</translation>
-    </message>
-    <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>SAVE WITH OTHER NAME</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>REPLACE ALL</translation>
-    </message>
-
-    <message>
-        <source>Select folder where files will be stored</source>
-        <translation>Select folder where files will be stored</translation>
-    </message>
-    <message>
-        <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
-        <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
     </message>
 </context>
 
@@ -3095,10 +3095,6 @@ ID-CARD</translation>
     <message>
         <source>Certificate%1is valid%2 until %3</source>
         <translation>Certificate%1is valid%2 until %3</translation>
-    </message>
-    <message>
-        <source>Certificate expires in %1 days</source>
-        <translation>Certificate expires in %1 days</translation>
     </message>
     <message>
         <source>Authentication certificate</source>
