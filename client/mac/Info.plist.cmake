@@ -77,7 +77,7 @@
 				<string>ddoc</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>ddoc.icns</string>
+			<string>asic.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/x-ddoc</string>
@@ -234,11 +234,11 @@
 				<string>BDOC</string>
 				<key>public.filename-extension</key>
 				<array>
+					<string>asice</string>
+					<string>sce</string>
 					<string>adoc</string>
 					<string>bdoc</string>
 					<string>edoc</string>
-					<string>asice</string>
-					<string>sce</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>
