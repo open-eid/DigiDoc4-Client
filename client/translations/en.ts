@@ -3,8 +3,7 @@
 <TS version="2.1" language="en">
 
 <context>
-   <name>AccessCert</name>
-
+    <name>AccessCert</name>
     <message>
         <source>Failed to save server access certificate file to %1!
 %2</source>
@@ -233,6 +232,18 @@
     <message>
         <source>LOAD</source>
         <translation>LOAD</translation>
+    </message>
+    <message>
+        <source>ID Card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Digi ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Seal</translation>
     </message>
 </context>
 
@@ -722,6 +733,140 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
+    <name>FirstRun</name>
+
+    <message>
+        <source>Welcome to the Estonian eID application DigiDoc!</source>
+        <translation>Welcome to the Estonian eID application DigiDoc!</translation>
+    </message>
+    <message>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>CONTINUE</translation>
+    </message>
+    <message>
+        <source>VIEW NEXT INTRO</source>
+        <translation>VIEW NEXT INTRO</translation>
+    </message>
+    <message>
+        <source>Skip introductions</source>
+        <translation>Skip introductions →</translation>
+    </message>
+    <message>
+        <source>VIEW INTRODUCTION</source>
+        <translation>VIEW INTRODUCTION</translation>
+    </message>
+    <message>
+        <source>ENTER THE APPLICATION</source>
+        <translation>ENTER THE APPLICATION</translation>
+    </message>
+    <message>
+        <source>The DigiDoc application allows you to:</source>
+        <translation>The DigiDoc application allows you to:</translation>
+    </message>
+    <message>
+        <source>Sign documents</source>
+        <translation>Sign documents</translation>
+    </message>
+    <message>
+        <source>Encrypt documents</source>
+        <translation>Encrypt documents</translation>
+    </message>
+    <message>
+        <source>Manage your eID-s</source>
+        <translation>Manage your eID-s</translation>
+    </message>
+    <message>
+        <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
+        <translation>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</translation>
+    </message>
+    <message>
+        <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
+        <translation>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</translation>
+    </message>
+    <message>
+        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
+        <translation>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</translation>
+    </message>
+    <message>
+        <source>How to sign document digitally?</source>
+        <translation>How to sign document digitally?</translation>
+    </message>
+    <message>
+        <source>Select file</source>
+        <translation>Select file</translation>
+    </message>
+    <message>
+        <source>Choose the signing method</source>
+        <translation>Choose the signing method</translation>
+    </message>
+    <message>
+        <source>Enter PIN2</source>
+        <translation>Enter PIN2</translation>
+    </message>
+    <message>
+        <source>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</source>
+        <translation>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</translation>
+    </message>
+    <message>
+        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
+        <translation>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</translation>
+    </message>
+    <message>
+        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
+        <translation>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</translation>
+    </message>
+    <message>
+        <source>How to encrypt documents?</source>
+        <translation>How to encrypt documents?</translation>
+    </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Add recipients</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Encrypt</translation>
+    </message>
+    <message>
+        <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
+        <translation>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</translation>
+    </message>
+    <message>
+        <source>Select people who can open the container.</source>
+        <translation>Select people who can open the container.</translation>
+    </message>
+    <message>
+        <source>Click the &quot;Encrypt&quot; button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
+        <translation>Click the &quot;Encrypt&quot; button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</translation>
+    </message>
+    <message>
+        <source>How to manage your electronic identities?</source>
+        <translation>How to manage your electronic identities?</translation>
+    </message>
+    <message>
+        <source>Manage PIN and PUK codes</source>
+        <translation>Manage PIN and PUK codes</translation>
+    </message>
+    <message>
+        <source>Check personal data</source>
+        <translation>Check personal data</translation>
+    </message>
+    <message>
+        <source>Under &quot;My eID&quot;, you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
+        <translation>Under “My eID“, you will find the option to modify your PIN1, PIN2 and PUK, and you can see the details of the certificates. Here you can also unlock your blocked PIN codes with the PUK code.</translation>
+    </message>
+    <message>
+        <source>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
+        <translation>“My eID“ also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</translation>
+    </message>
+</context>
+
+
+<context>
     <name>InfoStack</name>
 
     <message>
@@ -858,7 +1003,7 @@ The Information System Authority does not retain information regarding the files
         <source>Decrypted files</source>
         <translation>Decrypted files</translation>
     </message>
-        <message>
+    <message>
         <source>RECIPIENT_MESSAGE</source>
         <translation>&lt;p align=center&gt;Who is recipient?&lt;/p&gt;
         &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;
@@ -947,140 +1092,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FirstRun</name>
-
-    <message>
-        <source>Welcome to the Estonian eID application DigiDoc!</source>
-        <translation>Welcome to the Estonian eID application DigiDoc!</translation>
-    </message>
-    <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
-        <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
-    </message>
-    <message>
-        <source>VIEW NEXT INTRO</source>
-        <translation>VIEW NEXT INTRO</translation>
-    </message>
-    <message>
-        <source>Skip introductions</source>
-        <translation>Skip introductions →</translation>
-    </message>
-    <message>
-        <source>VIEW INTRODUCTION</source>
-        <translation>VIEW INTRODUCTION</translation>
-    </message>
-    <message>
-        <source>ENTER THE APPLICATION</source>
-        <translation>ENTER THE APPLICATION</translation>
-    </message>
-    <message>
-        <source>The DigiDoc application allows you to:</source>
-        <translation>The DigiDoc application allows you to:</translation>
-    </message>
-    <message>
-        <source>Sign documents</source>
-        <translation>Sign documents</translation>
-    </message>
-     <message>
-        <source>Encrypt documents</source>
-        <translation>Encrypt documents</translation>
-    </message>
-   <message>
-        <source>Manage your eID-s</source>
-        <translation>Manage your eID-s</translation>
-    </message>
-    <message>
-        <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</translation>
-    </message>
-    <message>
-        <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
-        <translation>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</translation>
-    </message>
-    <message>
-        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
-        <translation>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</translation>
-    </message>
-    <message>
-        <source>How to sign document digitally?</source>
-        <translation>How to sign document digitally?</translation>
-    </message>
-    <message>
-        <source>Select file</source>
-        <translation>Select file</translation>
-    </message>
-    <message>
-        <source>Choose the signing method</source>
-        <translation>Choose the signing method</translation>
-    </message>
-    <message>
-        <source>Enter PIN2</source>
-        <translation>Enter PIN2</translation>
-    </message>
-    <message>
-        <source>To sign the file, drag it from your computer to the DigiDoc application or click the "... or load a file from disk" button. You can drag or select multiple files at a time.</source>
-        <translation>To sign the file, drag it from your computer to the DigiDoc application or click the "... or load a file from disk" button. You can drag or select multiple files at a time.</translation>
-    </message>
-    <message>
-        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</translation>
-    </message>
-    <message>
-        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</translation>
-    </message>
-    <message>
-        <source>How to encrypt documents?</source>
-        <translation>How to encrypt documents?</translation>
-    </message>
-    <message>
-        <source>Add recipients</source>
-        <translation>Add recipients</translation>
-    </message>
-    <message>
-        <source>Encrypt</source>
-        <translation>Encrypt</translation>
-    </message>
-    <message>
-        <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
-        <translation>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</translation>
-    </message>
-    <message>
-        <source>Select people who can open the container.</source>
-        <translation>Select people who can open the container.</translation>
-    </message>
-    <message>
-        <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
-        <translation>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</translation>
-    </message>
-    <message>
-        <source>How to manage your electronic identities?</source>
-        <translation>How to manage your electronic identities?</translation>
-    </message>
-    <message>
-        <source>Manage PIN and PUK codes</source>
-        <translation>Manage PIN and PUK codes</translation>
-    </message>
-    <message>
-        <source>Check personal data</source>
-        <translation>Check personal data</translation>
-    </message>
-    <message>
-        <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
-        <translation>Under “My eID“, you will find the option to modify your PIN1, PIN2 and PUK, and you can see the details of the certificates. Here you can also unlock your blocked PIN codes with the PUK code.</translation>
-    </message>
-    <message>
-        <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
-        <translation>“My eID“ also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</translation>
     </message>
 </context>
 
@@ -1539,7 +1550,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>PUK_BLOCKED_LINE2</source>
-        <translation>blocked, you have to visit the &lt;u&gt;service center&lt;/u&gt; to obtain</translation>
+        <translation>blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain</translation>
     </message>
     <message>
         <source>new codes.</source>
@@ -1720,7 +1731,7 @@ Control code: %1</translation>
         <translation>Default file type</translation>
     </message>
     <message>
-    <source>ASiC-E – international digital signature format that will be used across European countries
+        <source>ASiC-E – international digital signature format that will be used across European countries
 </source>
         <translation>ASiC-E – international digital signature format that will be used across European countries.
 </translation>
@@ -3034,24 +3045,6 @@ ID-CARD</translation>
 
 
 <context>
-    <name>CardWidget</name>
-
-    <message>
-        <source>ID Card</source>
-        <translation>ID-card</translation>
-    </message>
-    <message>
-        <source>Digi ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>e-Seal</translation>
-    </message>
-</context>
-
-
-<context>
     <name>SSLConnect</name>
 
     <message>
@@ -3154,12 +3147,12 @@ ID-CARD</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>
-            <comment>pin1</comment>
+        <comment>pin1</comment>
         <translation>Authentication key has been used %1 times</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>
-            <comment>pin2</comment>
+        <comment>pin2</comment>
         <translation>Signature key has been used %1 times</translation>
     </message>
     <message>

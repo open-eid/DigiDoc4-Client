@@ -232,6 +232,18 @@
         <source>LOAD</source>
         <translation>LAADI</translation>
     </message>
+    <message>
+        <source>ID Card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Digi ID</source>
+        <translation>Digi-ID</translation>
+    </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
+    </message>
 </context>
 
 
@@ -718,6 +730,140 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
+    <name>FirstRun</name>
+
+    <message>
+        <source>Welcome to the Estonian eID application DigiDoc!</source>
+        <translation>Tere tulemast Eesti eID rakenduse DigiDoc kasutajaks!</translation>
+    </message>
+    <message>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>JÄTKA</translation>
+    </message>
+    <message>
+        <source>VIEW NEXT INTRO</source>
+        <translation>VAATA JÄRGMIST TUTVUSTUST</translation>
+    </message>
+    <message>
+        <source>Skip introductions</source>
+        <translation>Jäta tutvustused vahele →</translation>
+    </message>
+    <message>
+        <source>VIEW INTRODUCTION</source>
+        <translation>VAATA TUTVUSTUST</translation>
+    </message>
+    <message>
+        <source>ENTER THE APPLICATION</source>
+        <translation>SISENE RAKENDUSSE</translation>
+    </message>
+    <message>
+        <source>The DigiDoc application allows you to:</source>
+        <translation>DigiDoc rakendus võimaldab Sinul:</translation>
+    </message>
+    <message>
+        <source>Sign documents</source>
+        <translation>Dokumente allkirjastada</translation>
+    </message>
+    <message>
+        <source>Encrypt documents</source>
+        <translation>Dokumente krüpteerida</translation>
+    </message>
+    <message>
+        <source>Manage your eID-s</source>
+        <translation>Oma eID-sid hallata</translation>
+    </message>
+    <message>
+        <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
+        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID-ga digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
+    </message>
+    <message>
+        <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
+        <translation>DigiDoc rakendusega saad ka andmeid salasta­da ja krüpteeritud andmeid muuta uuesti kõigile loetavaks. Salastatud konfidentsiaalseid doku­mente saavad lugeda ainult soovitud inimesed.</translation>
+    </message>
+    <message>
+        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
+        <translation>Halda oma ID-kaardi PIN ja PUK koode ning teosta sertifikaatide uuendusi.</translation>
+    </message>
+    <message>
+        <source>How to sign document digitally?</source>
+        <translation>Kuidas anda digitaalset allkirja?</translation>
+    </message>
+    <message>
+        <source>Select file</source>
+        <translation>Vali fail</translation>
+    </message>
+    <message>
+        <source>Choose the signing method</source>
+        <translation>Vali allkirjastamise viis</translation>
+    </message>
+    <message>
+        <source>Enter PIN2</source>
+        <translation>Sisesta PIN2</translation>
+    </message>
+    <message>
+        <source>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</source>
+        <translation>Faili allkirjastamiseks lohista fail oma arvutist DigiDoc rakendusse või vajuta nupul “… või vali fail kettalt”. Võid lohistada või valida ka mitu faili korraga.</translation>
+    </message>
+    <message>
+        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
+        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi või Mobiil-ID-ga. Võid salvestada ümbriku ka allkirjasta­mata.</translation>
+    </message>
+    <message>
+        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
+        <translation>Sisestades PIN2 koodi, annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja­ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
+    </message>
+    <message>
+        <source>How to encrypt documents?</source>
+        <translation>Kuidas krüpteerida?</translation>
+    </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Lisa adressaadid</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Krüpteeri</translation>
+    </message>
+    <message>
+        <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
+        <translation>Lohista krüpteeritav fail oma arvutist DigiDoc rakendusse või vali fail kettalt. Võid lohistada või valida ka mitu faili korraga.</translation>
+    </message>
+    <message>
+        <source>Select people who can open the container.</source>
+        <translation>Vali inimesed, kes saavad faili avada.</translation>
+    </message>
+    <message>
+        <source>Click the &quot;Encrypt&quot; button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
+        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri­tud. Sul on nüüd võimalik avada krüpteeritud faili asu­koht või edastada fail e-postiga.</translation>
+    </message>
+    <message>
+        <source>How to manage your electronic identities?</source>
+        <translation>Kuidas hallata oma eID-sid?</translation>
+    </message>
+    <message>
+        <source>Manage PIN and PUK codes</source>
+        <translation>Halda PIN ja PUK koode</translation>
+    </message>
+    <message>
+        <source>Check personal data</source>
+        <translation>Kontrolli isikuandmeid</translation>
+    </message>
+    <message>
+        <source>Under &quot;My eID&quot;, you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
+        <translation>“Minu eID” alt leiad oma PIN1, PIN2 ja PUK koodi muutmise võimaluse ning sertifikaatide detail­andmed. Siin saad ka oma blokeeritud PIN-e PUK koodi abil lukust lahti teha.</translation>
+    </message>
+    <message>
+        <source>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
+        <translation>“Minu eID” annab ka hea ülevaate oma kontaktandmetest ning pakub võimaluse oma @eesti.ee e-posti suunata.</translation>
+    </message>
+</context>
+
+
+<context>
     <name>InfoStack</name>
 
     <message>
@@ -943,140 +1089,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>FirstRun</name>
-
-    <message>
-        <source>Welcome to the Estonian eID application DigiDoc!</source>
-        <translation>Tere tulemast Eesti eID rakenduse DigiDoc kasutajaks!</translation>
-    </message>
-    <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
-        <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>JÄTKA</translation>
-    </message>
-    <message>
-        <source>VIEW NEXT INTRO</source>
-        <translation>VAATA JÄRGMIST TUTVUSTUST</translation>
-    </message>
-    <message>
-        <source>Skip introductions</source>
-        <translation>Jäta tutvustused vahele →</translation>
-    </message>
-    <message>
-        <source>VIEW INTRODUCTION</source>
-        <translation>VAATA TUTVUSTUST</translation>
-    </message>
-    <message>
-        <source>ENTER THE APPLICATION</source>
-        <translation>SISENE RAKENDUSSE</translation>
-    </message>
-    <message>
-        <source>The DigiDoc application allows you to:</source>
-        <translation>DigiDoc rakendus võimaldab Sinul:</translation>
-    </message>
-    <message>
-        <source>Sign documents</source>
-        <translation>Dokumente allkirjastada</translation>
-    </message>
-    <message>
-        <source>Encrypt documents</source>
-        <translation>Dokumente krüpteerida</translation>
-    </message>
-    <message>
-        <source>Manage your eID-s</source>
-        <translation>Oma eID-sid hallata</translation>
-    </message>
-    <message>
-        <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID-ga digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
-    </message>
-    <message>
-        <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
-        <translation>DigiDoc rakendusega saad ka andmeid salasta&#173;da ja krüpteeritud andmeid muuta uuesti kõigile loetavaks. Salastatud konfidentsiaalseid doku&#173;mente saavad lugeda ainult soovitud inimesed.</translation>
-    </message>
-    <message>
-        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
-        <translation>Halda oma ID-kaardi PIN ja PUK koode ning teosta sertifikaatide uuendusi.</translation>
-    </message>
-    <message>
-        <source>How to sign document digitally?</source>
-        <translation>Kuidas anda digitaalset allkirja?</translation>
-    </message>
-    <message>
-        <source>Select file</source>
-        <translation>Vali fail</translation>
-    </message>
-    <message>
-        <source>Choose the signing method</source>
-        <translation>Vali allkirjastamise viis</translation>
-    </message>
-    <message>
-        <source>Enter PIN2</source>
-        <translation>Sisesta PIN2</translation>
-    </message>
-    <message>
-        <source>To sign the file, drag it from your computer to the DigiDoc application or click the "... or load a file from disk" button. You can drag or select multiple files at a time.</source>
-        <translation>Faili allkirjastamiseks lohista fail oma arvutist DigiDoc rakendusse või vajuta nupul “… või vali fail kettalt”. Võid lohistada või valida ka mitu faili korraga.</translation>
-    </message>
-    <message>
-        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi või Mobiil-ID-ga. Võid salvestada ümbriku ka allkirjasta&#173;mata.</translation>
-    </message>
-    <message>
-        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>Sisestades PIN2 koodi, annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja&#173;ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
-    </message>
-    <message>
-        <source>How to encrypt documents?</source>
-        <translation>Kuidas krüpteerida?</translation>
-    </message>
-    <message>
-        <source>Add recipients</source>
-        <translation>Lisa adressaadid</translation>
-    </message>
-    <message>
-        <source>Encrypt</source>
-        <translation>Krüpteeri</translation>
-    </message>
-    <message>
-        <source>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</source>
-        <translation>Lohista krüpteeritav fail oma arvutist DigiDoc rakendusse või vali fail kettalt. Võid lohistada või valida ka mitu faili korraga.</translation>
-    </message>
-    <message>
-        <source>Select people who can open the container.</source>
-        <translation>Vali inimesed, kes saavad faili avada.</translation>
-    </message>
-    <message>
-        <source>Click the "Encrypt" button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</source>
-        <translation>Vajuta nupul “Krüpteeri” ning fail ongi krüpteeri&#173;tud. Sul on nüüd võimalik avada krüpteeritud faili asu&#173;koht või edastada fail e-postiga.</translation>
-    </message>
-    <message>
-        <source>How to manage your electronic identities?</source>
-        <translation>Kuidas hallata oma eID-sid?</translation>
-    </message>
-    <message>
-        <source>Manage PIN and PUK codes</source>
-        <translation>Halda PIN ja PUK koode</translation>
-    </message>
-    <message>
-        <source>Check personal data</source>
-        <translation>Kontrolli isikuandmeid</translation>
-    </message>
-    <message>
-        <source>Under "My eID", you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</source>
-        <translation>“Minu eID” alt leiad oma PIN1, PIN2 ja PUK koodi muutmise võimaluse ning sertifikaatide detail&#173;andmed. Siin saad ka oma blokeeritud PIN-e PUK koodi abil lukust lahti teha.</translation>
-    </message>
-    <message>
-        <source>"My eID" also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
-        <translation>“Minu eID” annab ka hea ülevaate oma kontaktandmetest ning pakub võimaluse oma @eesti.ee e-posti suunata.</translation>
     </message>
 </context>
 
@@ -1542,7 +1554,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>PUK_BLOCKED_LINE4</source>
-        <translation>saada on pöörduda &lt;u&gt;klienditeeninduspunkti&lt;/u&gt; poole.</translation>
+        <translation>saada on pöörduda &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;klienditeeninduspunkti&lt;/span&gt;&lt;/a&gt; poole.</translation>
     </message>
 
 
@@ -3009,23 +3021,6 @@ E-TEMPLIGA</translation>
         <source>DecryptContainer</source>
         <translation>DEKRÜPTEERI
 ID-KAARDIGA</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>CardWidget</name>
-    <message>
-        <source>ID Card</source>
-        <translation>ID-kaart</translation>
-    </message>
-    <message>
-        <source>Digi ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>e-Seal</source>
-        <translation>e-Tempel</translation>
     </message>
 </context>
 
