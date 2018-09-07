@@ -75,12 +75,12 @@ void MainWindow::changePukClicked()
 
 bool MainWindow::checkExpiration()
 {
-	int expiresIn = 106;
+	qint64 expiresIn = 106;
 	for(const SslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
 	{
 		if(!cert.isNull())
 		{
-			expiresIn = std::min<int>(expiresIn,
+			expiresIn = std::min<qint64>(expiresIn,
 				QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
 		}
 	}
@@ -135,9 +135,9 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 
 void MainWindow::certDetailsClicked( const QString &link )
 {
-	bool pin1 = link == "PIN1";
+	bool pin1 = link == QStringLiteral("PIN1");
 	CertUtil::showCertificate(pin1 ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this,
-		pin1 ? "-auth" : "-sign");
+		pin1 ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 }
 
 void MainWindow::getEmailStatus ()
@@ -163,17 +163,24 @@ void MainWindow::activateEmail ()
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
 {
-	SSLConnect ssl(qApp->signer()->tokenauth().cert(), qApp->signer()->key());
-	QByteArray buffer = ssl.getUrl( type, param );
-	qApp->signer()->logout();
-	if( !ssl.errorString().isEmpty() )
+	QSslKey key = qApp->signer()->key();
+	QString err;
+	QByteArray buffer;
+	if(!key.isNull())
+	{
+		SSLConnect ssl(qApp->signer()->tokenauth().cert(), key);
+		buffer = ssl.getUrl( type, param );
+		qApp->signer()->logout();
+		err = ssl.errorString();
+	}
+	if(!err.isEmpty() || key.isNull())
 	{
 		switch( type )
 		{
-		case SSLConnect::ActivateEmails: showWarning(WarningText(WarningType::EmailActivationWarning, ssl.errorString())); break;
-		case SSLConnect::EmailInfo: showWarning(WarningText(WarningType::EmailLoadingWarning, ssl.errorString())); break;
-		case SSLConnect::PictureInfo: showWarning(WarningText(WarningType::PictureLoadingWarning, ssl.errorString())); break;
-		default: showWarning(WarningText(WarningType::SSLLoadingWarning, ssl.errorString())); break;
+		case SSLConnect::ActivateEmails: showWarning(WarningText(WarningType::EmailActivationWarning, err)); break;
+		case SSLConnect::EmailInfo: showWarning(WarningText(WarningType::EmailLoadingWarning, err)); break;
+		case SSLConnect::PictureInfo: showWarning(WarningText(WarningType::PictureLoadingWarning, err)); break;
+		default: showWarning(WarningText(WarningType::SSLLoadingWarning, err)); break;
 		}
 		return QByteArray();
 	}
@@ -242,8 +249,8 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 
 void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
-	QString textColor = isSuccess ? "#ffffff" : "#353739";
-	QString bkColor = isSuccess ? "#8CC368" : "#F8DDA7";
+	QString textColor = isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739");
+	QString bkColor = isSuccess ? QStringLiteral("#8CC368") : QStringLiteral("#F8DDA7");
 	int displayTime = isSuccess ? 2000 : 6000;
 
 	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );

@@ -115,7 +115,7 @@ public:
 	TokenData		auth, sign;
 	QMap<QString, QSharedPointer<QCardInfo>> cache;
 
-	static QByteArray signData(int type, const QByteArray &dgst, Private *d);
+	static QByteArray signData(int type, const QByteArray &digest, Private *d);
 	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
 		unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
@@ -151,7 +151,7 @@ int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_
 }
 
 ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-		const BIGNUM *, const BIGNUM *, EC_KEY *eckey)
+		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 {
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
 	Private *d = (Private*)ECDSA_get_ex_data(eckey, 0);
@@ -222,7 +222,7 @@ QSigner::~QSigner()
 
 const QMap<QString, QSharedPointer<QCardInfo>> QSigner::cache() const { return d->cache; }
 
-void QSigner::cacheCardData(const QSet<QString> &cards)
+void QSigner::cacheCardData(const QSet<QString> & /*cards*/)
 {
 	QList<TokenData> tokens;
 #ifdef Q_OS_WIN
@@ -343,6 +343,7 @@ QSslKey QSigner::key() const
 		case QPKCS11::PinLocked:
 		default:
 			QCardLock::instance().exclusiveUnlock();
+			smartcard()->reload();
 			return QSslKey();
 		}
 	}
@@ -383,6 +384,7 @@ void QSigner::logout()
 	if(d->pkcs11)
 		d->pkcs11->logout();
 	QCardLock::instance().exclusiveUnlock();
+	d->smartcard->reload();
 }
 
 void QSigner::reloadauth() const
@@ -576,7 +578,7 @@ void QSigner::selectCard(const QString &card)
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
 {
 	#define throwException(msg, code) { \
-		Exception e(__FILE__, __LINE__, msg.toStdString()); \
+		Exception e(__FILE__, __LINE__, (msg).toStdString()); \
 		e.setCode(code); \
 		throw e; \
 	}
