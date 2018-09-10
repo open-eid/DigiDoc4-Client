@@ -1333,11 +1333,11 @@ ID-КАРТОЙ</translation>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <source>The validity of this document can be extended. The process takes about 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
         <translation>&lt;b&gt;Сертификаты Вашей ID-карты необходимо обновить.&lt;/b&gt; Обновление занимает около 2-10 минут и требует наличия интернет-соединения. Не извлекайте ID-карту из считывающего устройства до завершения процесса обновления.</translation>
     </message>
     <message>
-        <source>Update</source>
+        <source>Start</source>
         <translation>Обновить</translation>
     </message>
     <message>
@@ -1679,16 +1679,8 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Смена %1 кода прошла неудачно</translation>
     </message>
     <message>
-        <source>PUK length has to be between 8 and 12</source>
-        <translation>PUK length has to be between 8 and 12</translation>
-    </message>
-    <message>
-        <source>PIN1 length has to be between 4 and 12</source>
-        <translation>Длина PIN1 должна быть 4-12 номера</translation>
-    </message>
-    <message>
-        <source>PIN2 length has to be between 5 and 12</source>
-        <translation>Длина PIN2 должна быть 5-12 номера</translation>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>Длина %1 должна быть %2-12 номера</translation>
     </message>
     <message numerus="yes">
         <source>Wrong %1 code. You can try %n more time(s).</source>
@@ -1812,6 +1804,86 @@ ASiC-E – это разрабатываемый международный фо
         <source>Phone number is not entered</source>
         <translation>Номер телефона не указан</translation>
     </message>
+    <message>
+        <source>Signing in process</source>
+        <translation>Подписывание</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Запрос принят</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Время запроса истекло</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Пользователю отказано</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Подпись получена</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Запрос в ожидании</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobiil-ID не готов, попробуйте позже</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Нет телефона</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Ошибка запроса</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>Ошибка SIM карты</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Внутренняя ошибка услуги</translation>
+    </message>
+    <message>
+        <source>Signing with Mobile-ID</source>
+        <translation>Подписывается с Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>Пользователь не является клиентом Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>Личный код и номер телефона не совпадают</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
+        <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
+        <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Сертификаты Mobiil-ID признаны не действительными или их действие остановлено.</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Не активирована услуга Mobiil-ID.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Ошибка! Номер телефона должен содержать код страны.</translation>
+    </message>
 </context>
 
 
@@ -1913,6 +1985,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>Не удалось создать SSL канал передачи данных. Проверьте настройки буферного сервера компьютера или обновления программного обеспечения.</translation>
+    </message>
+    <message>
+        <source>%v sec</source>
+        <translation>%v сек</translation>
     </message>
 </context>
 
@@ -2666,173 +2742,6 @@ Additional licenses and components</source>
 
 
 <context>
-    <name>Updater</name>
-
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation>НАЧИНАТЬ</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>DETAILS</source>
-        <translation>ПОДРОБНОСТИ</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>ПРОДОЛЖИТЬ</translation>
-    </message>
-    <message>
-        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Производится обновление. Процесс может занять до 10 минут. Не удаляйте карту из считывателя!</translation>
-    </message>
-    <message>
-        <source>Certificate renewal</source>
-        <translation>Обновление сертификатов</translation>
-    </message>
-    <message>
-        <source>I agree to the terms of use of certificates.</source>
-        <translation>Я согласен с условиями использования сертификатов.</translation>
-    </message>
-    <message>
-        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>Подтверждаю что записал новые значения для PIN- и PUK-кодов.</translation>
-    </message>
-    <message>
-        <source>Enter PIN</source>
-        <translation>Введите PIN</translation>
-    </message>
-
-    <message>
-        <source>Request timed out</source>
-        <translation>Истекло время запроса</translation>
-    </message>
-    <message>
-        <source>Invalid content type</source>
-        <translation>Недопустимый тип содержимого</translation>
-    </message>
-    <message>
-        <source>Updating certificates has failed. Check your internet connection and try again.</source>
-        <translation>Не удалось обновить сертификаты. Проверьте подключение к Интернету и повторите попытку.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>Создание защищённого SSL канала не удалось. Просьба начать процесс обновления сначала.</translation>
-    </message>
-    <message>
-        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
-        <translation>Не удалось обновить сертификаты. Сервер перегружен, попробуйте обновить сертификаты позже.</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Не удалось прочитать сертификат</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MobileDialog</name>
-
-    <message>
-        <source>Signing in process</source>
-        <translation>Подписывание</translation>
-    </message>
-    <message>
-        <source>Request accepted</source>
-        <translation>Запрос принят</translation>
-    </message>
-    <message>
-        <source>Request timeout</source>
-        <translation>Время запроса истекло</translation>
-    </message>
-    <message>
-        <source>User denied or cancelled</source>
-        <translation>Пользователю отказано</translation>
-    </message>
-    <message>
-        <source>Got signature</source>
-        <translation>Подпись получена</translation>
-    </message>
-    <message>
-        <source>Request pending</source>
-        <translation>Запрос в ожидании</translation>
-    </message>
-    <message>
-        <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID не готов, попробуйте позже</translation>
-    </message>
-    <message>
-        <source>Phone absent</source>
-        <translation>Нет телефона</translation>
-    </message>
-    <message>
-        <source>Request sending error</source>
-        <translation>Ошибка запроса</translation>
-    </message>
-    <message>
-        <source>SIM error</source>
-        <translation>Ошибка SIM карты</translation>
-    </message>
-    <message>
-        <source>Service internal error</source>
-        <translation>Внутренняя ошибка услуги</translation>
-    </message>
-    <message>
-        <source>Signing with Mobile-ID</source>
-        <translation>Подписывается с Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>User is not a Mobile-ID client</source>
-        <translation>Пользователь не является клиентом Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>ID and phone number do not match</source>
-        <translation>Личный код и номер телефона не совпадают</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Подписать</translation>
-    </message>
-    <message>
-        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
-        <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
-    </message>
-    <message>
-        <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
-        <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
-    </message>
-    <message>
-        <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Сертификаты Mobiil-ID признаны не действительными или их действие остановлено.</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID service is not activated.</source>
-        <translation>Не активирована услуга Mobiil-ID.</translation>
-    </message>
-    <message>
-        <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Ошибка! Номер телефона должен содержать код страны.</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MobileProgress</name>
-
-    <message>
-        <source>%v sec</source>
-        <translation>%v сек</translation>
-    </message>
-</context>
-
-
-<context>
     <name>PrintSheet</name>
 
     <message>
@@ -3092,6 +3001,85 @@ Additional licenses and components</source>
     <message>
         <source>SSL context is missing</source>
         <translation>Отсутствует контекст SSL</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>Updater</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>ЗАКРЫТЬ</translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation>НАЧИНАТЬ</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>DETAILS</source>
+        <translation>ПОДРОБНОСТИ</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>ПРОДОЛЖИТЬ</translation>
+    </message>
+    <message>
+        <source>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Производится обновление. Процесс может занять до 10 минут. Не удаляйте карту из считывателя!</translation>
+    </message>
+    <message>
+        <source>Validity Extension</source>
+        <translation>Обновление сертификатов</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>Я согласен с условиями использования сертификатов.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>Подтверждаю что записал новые значения для PIN- и PUK-кодов.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Введите PIN</translation>
+    </message>
+    <message>
+        <source>PIN1 again</source>
+        <translation>PIN1 снова</translation>
+    </message>
+    <message>
+        <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
+        <translation>PIN1 заблокирован. Введите PUK (код), чтобы открыть его.</translation>
+    </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Истекло время запроса</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Недопустимый тип содержимого</translation>
+    </message>
+    <message>
+        <source>Validity extension has failed. Check your internet connection and try again.</source>
+        <translation>Не удалось обновить сертификаты. Проверьте подключение к Интернету и повторите попытку.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>Создание защищённого SSL канала не удалось. Просьба начать процесс обновления сначала.</translation>
+    </message>
+    <message>
+        <source>Validity extension has failed. The server is overloaded, try again later.</source>
+        <translation>Не удалось обновить сертификаты. Сервер перегружен, попробуйте обновить сертификаты позже.</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Не удалось прочитать сертификат</translation>
     </message>
 </context>
 

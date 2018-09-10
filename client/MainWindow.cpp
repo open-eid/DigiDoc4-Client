@@ -141,6 +141,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
+	connect(qApp->signer(), &QSigner::updateRequired, this, &MainWindow::showUpdateCertWarning);
 	// Refresh card info on "My EID" page
 	connect(qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
@@ -291,17 +292,13 @@ void MainWindow::clearOverlay()
 	overlay.reset( nullptr );
 }
 
-void MainWindow::clearWarning(int warningType)
+void MainWindow::clearWarning(const QList<int> &warningTypes)
 {
 	for(auto warning: warnings)
 	{
-		if(warning->warningType() == warningType)
-		{
+		if(warningTypes.contains(warning->warningType()))
 			closeWarning(warning, true);
-			break;
-		}
 	}
-
 	updateWarnings();
 }
 
@@ -1008,7 +1005,7 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
-			clearWarning(WarningType::UpdateCertWarning);
+			clearWarning({WarningType::UpdateCertWarning});
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
@@ -1043,6 +1040,8 @@ void MainWindow::showCardStatus()
 		emit ui->signContainerPage->cardChanged();
 		emit ui->cryptoContainerPage->cardChanged();
 
+		closeWarnings(MyEid);
+		clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( t.readers().isEmpty() )
@@ -1204,7 +1203,7 @@ void MainWindow::updateMyEid()
 	Application::restoreOverrideCursor();
 	QSmartCardData t = qApp->smartcard()->data();
 
-	if(!t.card().isEmpty() && !t.signCert().isNull())
+	if(!t.card().isEmpty() && (!t.authCert().isNull() || !t.signCert().isNull()))
 	{
 		ui->infoStack->update(t);
 		ui->accordion->updateInfo(qApp->smartcard());
@@ -1233,7 +1232,8 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->accordion->clearOtherEID();
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
-	clearWarning(WarningType::UpdateCertWarning);
+	closeWarnings(MyEid);
+	clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
 }
 
 // Loads picture
@@ -1353,16 +1353,10 @@ void MainWindow::savePhoto()
 		showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
-void MainWindow::showUpdateCertWarning()
+void MainWindow::showUpdateCertWarning(const QString &readerName)
 {
-	for(auto warning: warnings)
-	{
-		if(warning->warningType() == WarningType::UpdateCertWarning)
-			return;
-	}
-
 	emit ui->accordion->showCertWarnings();
-	showWarning(WarningText(WarningType::UpdateCertWarning));
+	showWarning(WarningText(WarningType::UpdateCertWarning, QString(), readerName));
 }
 
 void MainWindow::showWarning(const WarningText &warningText)
@@ -1490,10 +1484,10 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 
 void MainWindow::warningClicked(const QString &link)
 {
-	if(link == QStringLiteral("#update-Certificate"))
-		updateCertificate();
+	if(link.startsWith(QStringLiteral("#update-Certificate-")))
+		updateCertificate(link.mid(20));
 	else if(link.startsWith(QStringLiteral("#invalid-signature-")))
-		emit ui->signContainerPage->details(link.right(link.length()-19));
+		emit ui->signContainerPage->details(link.mid(19));
 	else if(link == QStringLiteral("#unblock-PIN1"))
 		ui->accordion->changePin1Clicked (false, true);
 	else if(link == QStringLiteral("#unblock-PIN2"))

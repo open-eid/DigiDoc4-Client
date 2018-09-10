@@ -216,9 +216,9 @@ void InfoStack::update(const QCardInfo &cardInfo)
 {
 	certType = cardInfo.type;
 	certIsValid = true;
-	expireDate = QString();
+	expireDate.clear();
 	givenNamesText = cardInfo.fullName;
-	surnameText = QString();
+	surnameText.clear();
 	personalCodeText = cardInfo.id;
 	citizenshipText = cardInfo.country;
 

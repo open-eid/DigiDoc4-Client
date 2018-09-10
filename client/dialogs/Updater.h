@@ -43,5 +43,6 @@ private:
 	void process(const QByteArray &data);
 	void run();
 
-	UpdaterPrivate *d;
+	class Private;
+	Private *d;
 };

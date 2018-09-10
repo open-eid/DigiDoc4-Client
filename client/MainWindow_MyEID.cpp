@@ -111,12 +111,12 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 
 		if (type == QSmartCardData::Pin1Type)
 		{
-			clearWarning(WarningType::UnblockPin1Warning);
+			clearWarning({WarningType::UnblockPin1Warning});
 			emit ui->cryptoContainerPage->cardChanged(card);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
-			clearWarning(WarningType::UnblockPin2Warning);
+			clearWarning({WarningType::UnblockPin2Warning});
 			emit ui->signContainerPage->cardChanged(card);
 		}
 	}
@@ -213,17 +213,13 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0 );
 		if(qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
-			clearWarning(WarningType::UpdateCertWarning);
+			clearWarning({WarningType::UpdateCertWarning});
 		break;
 	case QSmartCard::DifferentError:
-		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) ); break;
+		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) );
+		break;
 	case QSmartCard::LenghtError:
-		switch( type )
-		{
-		case QSmartCardData::Pin1Type: showNotification( tr("PIN1 length has to be between 4 and 12") ); break;
-		case QSmartCardData::Pin2Type: showNotification( tr("PIN2 length has to be between 5 and 12") ); break;
-		case QSmartCardData::PukType: showNotification( tr("PUK length has to be between 8 and 12") ); break;
-		}
+		showNotification(tr("%1 length has to be between %2 and 12").arg(QSmartCardData::typeString(type)).arg(QSmartCardData::minPinLen(type)));
 		break;
 	case QSmartCard::OldNewPinSameError:
 		showNotification( tr("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
@@ -231,7 +227,6 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 	case QSmartCard::ValidateError:
 		showNotification( tr("Wrong %1 code. You can try %n more time(s).", "",
 			qApp->smartcard()->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
-
 		break;
 	default:
 		switch( flags )
@@ -257,20 +252,21 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 	notification->start( msg, 750, displayTime, 600 );
 }
 
-void MainWindow::updateCertificate()
+void MainWindow::updateCertificate(const QString &readerName)
 {
 #ifdef Q_OS_WIN
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 	CertStore s;
 	for (const SslCertificate &c : s.list())
 	{
-		if (c.subjectInfo("O").contains("ESTEID"))
+		if (c.subjectInfo("O").contains(QStringLiteral("ESTEID")))
 			s.remove(c);
 	}
 #endif
 	{
 		QCardLocker locker;
-		Updater(qApp->smartcard()->data().reader(), this).execute();
+		Updater(readerName, this).execute();
+		clearWarning({WarningType::UpdateCertWarning});
 	}
 	qApp->smartcard()->reload();
 }
@@ -280,15 +276,18 @@ bool MainWindow::isUpdateCertificateNeeded()
 	QSmartCardData t = qApp->smartcard()->data();
 
 	return
-		Settings(qApp->applicationName()).value("updateButton", false).toBool() ||
-		Settings().value("testUpdater", false).toBool() ||							// TODO for testing. Remove it later !!!!!!
+		Settings(qApp->applicationName()).value(QStringLiteral("updateButton"), false).toBool() ||
 		(
 			t.version() >= QSmartCardData::VER_3_5 &&
 			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
 			t.isValid() &&
-			Configuration::instance().object().contains("EIDUPDATER-URL-TOECC") && (
-				t.authCert().publicKey().algorithm() == QSsl::Rsa ||
-				t.signCert().publicKey().algorithm() == QSsl::Rsa ||
+			t.authCert().publicKey().algorithm() == QSsl::Ec &&
+			Configuration::instance().object().contains(QStringLiteral("EIDUPDATER-URL-DIGIID")) && (
+				(t.authCert().effectiveDate() < QDateTime(QDate(2018, 9, 28)) &&
+				 t.authCert().expiryDate().addYears(-3) < QDateTime(QDate(2018, 5, 1)) && (
+					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID E-RESIDENT)") ||
+					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID)")
+				)) ||
 				t.version() & QSmartCardData::VER_HASUPDATER ||
 				t.version() == QSmartCardData::VER_USABLEUPDATER
 			)
@@ -303,7 +302,7 @@ void MainWindow::removeOldCert()
 	CertStore s;
 	for( const SslCertificate &c: s.list())
 	{
-		if( c.subjectInfo( "O" ).contains("ESTEID") )
+		if(c.subjectInfo("O").contains(QStringLiteral("ESTEID")))
 			s.remove( c );
 	}
 	QString personalCode = data.signCert().subjectInfo("serialNumber");
@@ -322,7 +321,7 @@ void MainWindow::updateCardWarnings()
 	if(isUpdateCertificateNeeded())
 	{
 		showWarning = true;
-		showUpdateCertWarning();
+		showUpdateCertWarning(qApp->smartcard()->data().reader());
 	}
 	if(checkExpiration())
 		showWarning = true;

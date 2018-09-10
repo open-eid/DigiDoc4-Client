@@ -51,6 +51,8 @@
 #include <memory>
 #include <thread>
 
+#define SCOPE(TYPE, VAR, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)> VAR(DATA, TYPE##_free)
+
 Q_LOGGING_CATEGORY(ULog,"qesteidutil.Updater")
 
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
@@ -66,7 +68,7 @@ static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 }
 #endif
 
-class UpdaterPrivate: public Ui::Updater
+class Updater::Private: public Ui::Updater
 {
 public:
 	QPCSCReader *reader = nullptr;
@@ -79,14 +81,16 @@ public:
 	EC_KEY_METHOD *ecmethod = EC_KEY_METHOD_new(nullptr);
 #endif
 	QSslCertificate cert;
+	quint8 retry = 0;
 	QString session;
 	QNetworkRequest request;
 	void setButtonPattern(QPushButton *button, const QString &color) const;
+	QPCSCReader::Result unblockPIN() const;
 	QPCSCReader::Result verifyPIN(const QString &title, int p1) const;
 	QtMessageHandler oldMsgHandler = nullptr;
 	QTimeLine *statusTimer = nullptr;
 
-	static QByteArray sign(const unsigned char *dgst, int digst_len, UpdaterPrivate *d)
+	static QByteArray sign(const unsigned char *dgst, int digst_len, Private *d)
 	{
 		if(!d || !d->reader || !d->reader->connect())
 			return QByteArray();
@@ -123,7 +127,7 @@ public:
 	{
 		if(type != NID_md5_sha1 || m_len != 36)
 			return 0;
-		QByteArray result = sign(m, int(m_len), (UpdaterPrivate*)RSA_get_app_data(rsa));
+		QByteArray result = sign(m, int(m_len), (Private*)RSA_get_app_data(rsa));
 		if(result.isEmpty())
 			return 0;
 		*siglen = (unsigned int)result.size();
@@ -132,12 +136,12 @@ public:
 	}
 
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-		const BIGNUM *, const BIGNUM *, EC_KEY *eckey)
+		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 	{
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
-		UpdaterPrivate *d = (UpdaterPrivate*)ECDSA_get_ex_data(eckey, 0);
+		Private *d = (Private*)ECDSA_get_ex_data(eckey, 0);
 #else
-		UpdaterPrivate *d = (UpdaterPrivate*)EC_KEY_get_ex_data(eckey, 0);
+		Private *d = (Private*)EC_KEY_get_ex_data(eckey, 0);
 #endif
 		QByteArray result = sign(dgst, dgst_len, d);
 		if(result.isEmpty())
@@ -146,13 +150,13 @@ public:
 		QByteArray s = result.right(result.size()/2);
 		ECDSA_SIG *sig = ECDSA_SIG_new();
 		ECDSA_SIG_set0(sig,
-			BN_bin2bn((const unsigned char*)r.data(), int(r.size()), 0),
-			BN_bin2bn((const unsigned char*)s.data(), int(s.size()), 0));
+			BN_bin2bn((const unsigned char*)r.data(), int(r.size()), nullptr),
+			BN_bin2bn((const unsigned char*)s.data(), int(s.size()), nullptr));
 		return sig;
 	}
 };
 
-void UpdaterPrivate::setButtonPattern(QPushButton *button, const QString &color) const
+void Updater::Private::setButtonPattern(QPushButton *button, const QString &color) const
 {
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	if( color != nullptr )
@@ -178,7 +182,115 @@ void UpdaterPrivate::setButtonPattern(QPushButton *button, const QString &color)
 	button->update();
 }
 
-QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) const
+QPCSCReader::Result Updater::Private::unblockPIN() const
+{
+	stackedWidget->setCurrentIndex(4);
+	QString text = "<b>" + tr("PIN1 is locked. To unlock please use PUK") + "</b><br />";
+	QRegExp pinregexp(QStringLiteral("\\d{4,12}"));
+	QRegExp pukregexp(QStringLiteral("\\d{8,12}"));
+	pukInput->setHidden(reader->isPinPad());
+	pin1Input->setHidden(reader->isPinPad());
+	pin2Input->setHidden(reader->isPinPad());
+	pukLabel->setHidden(reader->isPinPad());
+	pin1Label->setHidden(reader->isPinPad());
+	pin2Label->setHidden(reader->isPinPad());
+	QEventLoop l;
+	QPushButton *okButton = nullptr, *cancelButton = nullptr;
+	if(!reader->isPinPad())
+	{
+		okButton = buttonBox->addButton(::Updater::tr("CONTINUE"), QDialogButtonBox::AcceptRole);
+		cancelButton = buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
+		setButtonPattern(okButton,  nullptr);
+		setButtonPattern(cancelButton, QStringLiteral("Red"));
+		okButton->setDisabled(true);
+		pukInput->setValidator(new QRegExpValidator(pukregexp, pukInput));
+		pin1Input->setValidator(new QRegExpValidator(pinregexp, pin1Input));
+		pin2Input->setValidator(new QRegExpValidator(pinregexp, pin2Input));
+		auto validate = [&](const QString & /*text*/){
+			okButton->setEnabled(
+				pukregexp.exactMatch(pukInput->text()) &&
+				pinregexp.exactMatch(pin1Input->text()) &&
+				pinregexp.exactMatch(pin2Input->text()) &&
+				pin1Input->text() == pin2Input->text());
+		};
+		::Updater::connect(pin1Input, &QLineEdit::textEdited, okButton, validate);
+		::Updater::connect(pin1Input, &QLineEdit::textEdited, okButton, validate);
+		::Updater::connect(pin2Input, &QLineEdit::textEdited, okButton, validate);
+		::Updater::connect(okButton, &QPushButton::clicked, &l, [&]{ l.exit(1); });
+		::Updater::connect(cancelButton, &QPushButton::clicked, &l, [&]{ l.exit(0); });
+	}
+	else
+		text += "<b>" + tr("Please enter new PIN-s from PinPAD") + "</b><br />";
+	close->hide();
+	details->hide();
+
+	TokenData::TokenFlags token = nullptr;
+	Q_FOREVER
+	{
+		QString error;
+		if(token & TokenData::PinFinalTry)
+			error = "<br /><font color='red'><b>" + PinDialog::tr("PIN will be locked next failed attempt") + "</b></font>";
+		else if(token & TokenData::PinCountLow)
+			error = "<br /><font color='red'><b>" + PinDialog::tr("PIN has been entered incorrectly one time") + "</b></font>";
+		pukPageLabel->setText(text + error + "<br />");
+		Common::setAccessibleName(pukLabel);
+		Common::setAccessibleName(pin1Label);
+		Common::setAccessibleName(pin2Label);
+
+		QByteArray cmd = APDU("002C0001 00");
+		QPCSCReader::Result result;
+		if(reader->isPinPad())
+		{
+			std::thread([&]{
+				result = reader->transferCTL(cmd, false);
+				l.quit();
+			}).detach();
+			l.exec();
+		}
+		else
+		{
+			pukInput->clear();
+			pin1Input->clear();
+			pin2Input->clear();
+			pukInput->setFocus();
+			if(l.exec() == 1)
+			{
+				cmd[4] = char(pukInput->text().size() + pin1Input->text().size());
+				result = reader->transfer(cmd + pukInput->text().toUtf8() + pin1Input->text().toUtf8());
+			}
+		}
+		switch( (quint8(result.SW[0]) << 8) + quint8(result.SW[1]) )
+		{
+		case 0x63C1: token = TokenData::PinFinalTry; continue; // Validate error, 1 tries left
+		case 0x63C2: token = TokenData::PinCountLow; continue; // Validate error, 2 tries left
+		case 0x63C3: continue;
+		case 0x63C0: // Blocked
+		case 0x6400: // Timeout
+		case 0x6401: // Cancel
+		case 0x6402: // Mismatch
+		case 0x6403: // Lenght error
+		case 0x6983: // Blocked
+		case 0x9000: // No error
+		default:
+			stackedWidget->setCurrentIndex(0);
+			if(okButton)
+			{
+				buttonBox->removeButton(okButton);
+				okButton->deleteLater();
+			}
+			if(cancelButton)
+			{
+				buttonBox->removeButton(cancelButton);
+				cancelButton->deleteLater();
+			}
+			close->show();
+			details->show();
+			return result;
+		}
+	}
+}
+
+QPCSCReader::Result Updater::Private::verifyPIN(const QString &title, int p1) const
 {
 	stackedWidget->setCurrentIndex(3);
 	QRegExp regexp;
@@ -189,8 +301,8 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 		text += reader->isPinPad() ?
 			PinDialog::tr("For using sign certificate enter PIN2 at the reader") :
 			PinDialog::tr("For using sign certificate enter PIN2");
-		regexp.setPattern( "\\d{5,12}" );
-		pinType->setText("PIN2");
+		regexp.setPattern(QStringLiteral("\\d{5,12}"));
+		pinType->setText(QStringLiteral("PIN2"));
 	}
 	else
 	{
@@ -198,8 +310,8 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 		text += reader->isPinPad() ?
 			PinDialog::tr("For using authentication certificate enter PIN1 at the reader") :
 			PinDialog::tr("For using authentication certificate enter PIN1");
-		regexp.setPattern( "\\d{4,12}" );
-		pinType->setText("PIN1");
+		regexp.setPattern(QStringLiteral("\\d{4,12}"));
+		pinType->setText(QStringLiteral("PIN1"));
 	}
 	pinInput->setHidden(reader->isPinPad());
 	pinProgress->setVisible(reader->isPinPad());
@@ -210,7 +322,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 		okButton = buttonBox->addButton(::Updater::tr("CONTINUE"), QDialogButtonBox::AcceptRole);
 		cancelButton = buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
 		setButtonPattern( okButton,  nullptr );
-		setButtonPattern( cancelButton,  "Red" );
+		setButtonPattern(cancelButton, QStringLiteral("Red"));
 		okButton->setDisabled(true);
 		pinInput->setValidator(new QRegExpValidator(regexp, pinInput));
 		::Updater::connect(pinInput, &QLineEdit::textEdited, okButton, [&](const QString &text){
@@ -222,7 +334,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 	close->hide();
 	details->hide();
 
-	TokenData::TokenFlags token = 0;
+	TokenData::TokenFlags token = nullptr;
 	Q_FOREVER
 	{
 		QString error;
@@ -234,7 +346,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 		Common::setAccessibleName(pinLabel);
 
 		QByteArray verify = APDU("00200000 00");
-		verify[3] = p1;
+		verify[3] = char(p1);
 		QPCSCReader::Result result;
 		if(reader->isPinPad())
 		{
@@ -253,7 +365,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 			pinInput->setFocus();
 			if(l.exec() == 1)
 			{
-				verify[4] = pinInput->text().size();
+				verify[4] = char(pinInput->text().size());
 				result = reader->transfer(verify + pinInput->text().toUtf8());
 			}
 		}
@@ -292,7 +404,7 @@ QPCSCReader::Result UpdaterPrivate::verifyPIN(const QString &title, int p1) cons
 
 Updater::Updater(const QString &reader, QWidget *parent)
 	: QDialog(parent)
-	, d(new UpdaterPrivate)
+	, d(new Private)
 {
 	const_cast<QLoggingCategory&>(ULog()).setEnabled(QtDebugMsg, true);
 	d->setupUi(this);
@@ -308,14 +420,21 @@ Updater::Updater(const QString &reader, QWidget *parent)
 
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 	d->rsamethod.name = "Updater";
-	d->rsamethod.rsa_sign = UpdaterPrivate::rsa_sign;
+	d->rsamethod.rsa_sign = Private::rsa_sign;
 	ECDSA_METHOD_set_app_data(d->ecmethod, d);
 	ECDSA_METHOD_set_name(d->ecmethod, const_cast<char*>("QSmartCard"));
-	ECDSA_METHOD_set_sign(d->ecmethod, UpdaterPrivate::ecdsa_do_sign);
+	ECDSA_METHOD_set_sign(d->ecmethod, Private::ecdsa_do_sign);
+	ECDSA_METHOD_set_app_data(d->ecmethod, d);
 #else
 	RSA_meth_set1_name(d->rsamethod, "Updater");
-	RSA_meth_set_sign(d->rsamethod, UpdaterPrivate::rsa_sign);
-	EC_KEY_METHOD_set_sign(d->ecmethod, nullptr, nullptr, UpdaterPrivate::ecdsa_do_sign);
+	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
+	typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
+		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
+	typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+	EC_KEY_sign sign = nullptr;
+	EC_KEY_sign_setup sign_setup = nullptr;
+	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
+	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
 #endif
 
 	QFont regular = Styles::font( Styles::Regular, 13 );
@@ -333,16 +452,20 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	d->envelopeAgree->setFont( regular );
 	d->pinLabel->setFont( condensed14 );
 	d->pinType->setFont( condensed14 );
+	d->pukPageLabel->setFont(condensed14);
+	d->pukLabel->setFont(condensed14);
+	d->pin1Label->setFont(condensed14);
+	d->pin2Label->setFont(condensed14);
 	d->details = d->buttonBox->addButton(::Updater::tr("DETAILS"), QDialogButtonBox::ActionRole);
 	d->setButtonPattern( d->details,  nullptr );
 	d->details->hide();
 	d->close = d->buttonBox->button(QDialogButtonBox::Close);
 	d->close->setText(::Updater::tr("CLOSE"));
-	d->setButtonPattern( d->close,  "Red" );
+	d->setButtonPattern(d->close, QStringLiteral("Red"));
 	d->close->hide();
 	d->log->hide();
 	d->log->setFont( regular );
-	connect(d->details, &QPushButton::clicked, [=]{
+	connect(d->details, &QPushButton::clicked, d->log, [=]{
 		d->log->setVisible(!d->log->isVisible());
 		if(d->progressRunning)
 			d->progressRunning->setVisible(d->log->isHidden());
@@ -353,7 +476,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 	static Updater *instance = nullptr;
 	instance = this;
 	d->oldMsgHandler = qInstallMessageHandler([](QtMsgType, const QMessageLogContext &, const QString &msg){
-		if(!msg.contains("QObject")) //Silence Qt warnings
+		if(!msg.contains(QStringLiteral("QObject"))) //Silence Qt warnings
 			Q_EMIT instance->log(msg);
 	});
 }
@@ -382,13 +505,13 @@ void Updater::process(const QByteArray &data)
 	QJsonObject obj = QJsonDocument::fromJson(data).object();
 
 	if(d->session.isEmpty())
-		d->session = obj.value("session").toString();
-	QString cmd = obj.value("cmd").toString();
-	if(cmd == "CONNECT")
+		d->session = obj.value(QStringLiteral("session")).toString();
+	QString cmd = obj.value(QStringLiteral("cmd")).toString();
+	if(cmd == QStringLiteral("CONNECT"))
 	{
 		QPCSCReader::Mode mode = QPCSCReader::Mode(QPCSCReader::T0|QPCSCReader::T1);
-		if(obj.value("protocol").toString() == "T=0") mode = QPCSCReader::T0;
-		if(obj.value("protocol").toString() == "T=1") mode = QPCSCReader::T1;
+		if(obj.value(QStringLiteral("protocol")).toString() == QStringLiteral("T=0")) mode = QPCSCReader::T0;
+		if(obj.value(QStringLiteral("protocol")).toString() == QStringLiteral("T=1")) mode = QPCSCReader::T1;
 		quint32 err = 0;
 #ifdef Q_OS_WIN
 		err = d->reader->connectEx(QPCSCReader::Exclusive, mode);
@@ -405,50 +528,51 @@ void Updater::process(const QByteArray &data)
 			{"pinpad", d->reader->isPinPad()}
 		};
 		if(err)
-			ret["ERROR"] = QString::number(err, 16);
+			ret[QStringLiteral("ERROR")] = QString::number(err, 16);
 		Q_EMIT send(ret);
 	}
-	else if(cmd == "DISCONNECT")
+	else if(cmd == QStringLiteral("DISCONNECT"))
 	{
 		d->reader->endTransaction();
 		d->reader->disconnect([](const QString &action) {
-			if(action == "leave") return QPCSCReader::LeaveCard;
-			if(action == "eject") return QPCSCReader::EjectCard;
+			if(action == QStringLiteral("leave")) return QPCSCReader::LeaveCard;
+			if(action == QStringLiteral("eject")) return QPCSCReader::EjectCard;
 			return QPCSCReader::ResetCard;
-		}(obj.value("action").toString()));
+		}(obj.value(QStringLiteral("action")).toString()));
 		Q_EMIT send({{"DISCONNECT", "OK"}});
 	}
-	else if(cmd == "APDU")
+	else if(cmd == QStringLiteral("APDU"))
 	{
 		std::thread([=]{
-			QPCSCReader::Result result = d->reader->transfer(APDU(obj.value("bytes").toString().toLatin1()));
+			QPCSCReader::Result result = d->reader->transfer(APDU(obj.value(QStringLiteral("bytes")).toString().toLatin1()));
 			QVariantHash ret;
-			ret["APDU"] = result.err ? "NOK" : "OK";
-			ret["bytes"] = QByteArray(result.data + result.SW).toHex();
+			ret[QStringLiteral("APDU")] = result.err ? QStringLiteral("NOK") : QStringLiteral("OK");
+			ret[QStringLiteral("bytes")] = QByteArray(result.data + result.SW).toHex();
 			if(result.err)
-				ret["ERROR"] = QString::number(result.err, 16);
+				ret[QStringLiteral("ERROR")] = QString::number(result.err, 16);
 			Q_EMIT send(ret);
 		}).detach();
 	}
-	else if(cmd == "MESSAGE")
+	else if(cmd == QStringLiteral("MESSAGE"))
 	{
-		d->label->setText(obj.value("text").toString());
+		d->label->setText(obj.value(QStringLiteral("text")).toString());
 		Q_EMIT send({{"MESSAGE", "OK"}});
 	}
-	else if(cmd == "DIALOG")
+	else if(cmd == QStringLiteral("DIALOG"))
 	{
 		d->stackedWidget->setCurrentIndex(1);
-		d->message->setText(obj.value("text").toString());
+		d->message->setText(obj.value(QStringLiteral("text")).toString());
 		Common::setAccessibleName(d->message);
 		QPushButton *noButton = d->buttonBox->addButton(tr("CANCEL"), QDialogButtonBox::RejectRole);
 		QPushButton *yesButton = d->buttonBox->addButton(tr("START"), QDialogButtonBox::AcceptRole);
 		yesButton->setDisabled(true);
 		d->setButtonPattern( yesButton, nullptr );
-		d->setButtonPattern( noButton, "Red" );
+		d->setButtonPattern(noButton, QStringLiteral("Red"));
 		QEventLoop l;
+		d->messageAgree->setCheckState(Qt::Unchecked);
 		connect(d->messageAgree, &QCheckBox::toggled, yesButton, &QPushButton::setEnabled);
-		connect(yesButton, &QPushButton::clicked, [&]{ l.exit(1); });
-		connect(noButton, &QPushButton::clicked, [&]{ l.exit(0); reject(); });
+		connect(yesButton, &QPushButton::clicked, &l, [&]{ l.exit(1); });
+		connect(noButton, &QPushButton::clicked, &l, [&]{ l.exit(0); reject(); });
 		d->details->hide();
 		d->close->hide();
 		Q_EMIT send({{"DIALOG", "OK"}, {"button", l.exec() == 1 ? "green" : "red"}});
@@ -459,19 +583,36 @@ void Updater::process(const QByteArray &data)
 		d->stackedWidget->setCurrentIndex(0);
 		d->details->show();
 	}
-	else if(cmd == "VERIFY")
+	else if(cmd == QStringLiteral("VERIFY"))
 	{
-		QPCSCReader::Result result = d->verifyPIN(obj.value("text").toString(), obj.value("p2").toInt(1));
+		QPCSCReader::Result result = d->verifyPIN(obj.value(QStringLiteral("text")).toString(), obj.value(QStringLiteral("p2")).toInt(1));
 		Q_EMIT send({
 			{"VERIFY", result.resultOk() ? "OK" : "NOK"},
 			{"bytes", QByteArray(result.data + result.SW).toHex()}
 		});
 	}
-	else if(cmd == "DECRYPT")
+	else if(cmd == QStringLiteral("DECRYPT"))
 	{
-		QPCSCReader::Result result = d->reader->transfer(APDU(obj.value("bytes").toString().toLatin1()));
+		QPCSCReader::Result result = d->reader->transfer(APDU(obj.value(QStringLiteral("bytes")).toString().toLatin1()));
 		if(result.resultOk())
 		{
+			QByteArray display = result.data;
+			QByteArray content = QByteArray::fromHex(obj.value(QStringLiteral("content")).toString().toLatin1());
+			if(!content.isEmpty())
+			{
+				QByteArray iv = content.left(16);
+				QByteArray key = result.data.left(16);
+				content = content.mid(16);
+				SCOPE(EVP_CIPHER_CTX, ctx, EVP_CIPHER_CTX_new());
+				EVP_DecryptInit(ctx.get(), EVP_aes_128_cbc(), (const unsigned char*)key.constData(), (const unsigned char*)iv.constData());
+				display.resize(content.size() + EVP_CIPHER_CTX_block_size(ctx.get()));
+				unsigned char *resultPointer = (unsigned char *)display.data(); //Detach only once
+				int size = 0;
+				EVP_DecryptUpdate(ctx.get(), resultPointer, &size, (const unsigned char *)content.constData(), content.size());
+				int size2 = 0;
+				EVP_DecryptFinal(ctx.get(), resultPointer + size, &size2);
+				display.resize(size + size2);
+			}
 			QPixmap pinEnvelope(QSize(d->message->width(), 100));
 			QPainter p(&pinEnvelope);
 			p.setRenderHint(QPainter::TextAntialiasing);
@@ -480,19 +621,19 @@ void Updater::process(const QByteArray &data)
 			int pos = result.data.lastIndexOf('#');
 			if(pos != -1)
 				result.data = result.data.mid(0, pos - 2);
-			p.drawText(pinEnvelope.rect(), Qt::AlignCenter, QString::fromUtf8(result.data));
+			p.drawText(pinEnvelope.rect(), Qt::AlignCenter, QString::fromUtf8(display));
 			d->envelope->setPixmap(pinEnvelope);
-			d->envelopeLabel->setText(obj.value("text").toString());
+			d->envelopeLabel->setText(obj.value(QStringLiteral("text")).toString());
 			d->stackedWidget->setCurrentIndex(2);
 			QPushButton *yesButton = d->buttonBox->addButton(::Updater::tr("CONTINUE"), QDialogButtonBox::AcceptRole);
 			QPushButton *cancelButton = d->buttonBox->addButton(::Updater::tr("CANCEL"), QDialogButtonBox::RejectRole);
 			d->setButtonPattern( yesButton, nullptr );
-			d->setButtonPattern( cancelButton, "Red" );
+			d->setButtonPattern(cancelButton, QStringLiteral("Red"));
 			yesButton->setDisabled(true);
 			QEventLoop l;
 			connect(d->envelopeAgree, &QCheckBox::toggled, yesButton, &QPushButton::setEnabled);
-			connect(yesButton, &QPushButton::clicked, [&]{ l.exit(1); });
-			connect(cancelButton, &QPushButton::clicked, [&]{ l.exit(0); });
+			connect(yesButton, &QPushButton::clicked, &l, [&]{ l.exit(1); });
+			connect(cancelButton, &QPushButton::clicked, &l, [&]{ l.exit(0); });
 			d->details->hide();
 			d->close->hide();
 			Q_EMIT send({{"DECRYPT", "OK"}, {"button", l.exec() == 1 ? "green" : "red"}});
@@ -506,20 +647,20 @@ void Updater::process(const QByteArray &data)
 		else
 		{
 			QVariantHash ret;
-			ret["DECRYPT"] = "NOK";
-			ret["bytes"] = QByteArray(result.data + result.SW).toHex();
+			ret[QStringLiteral("DECRYPT")] = QStringLiteral("NOK");
+			ret[QStringLiteral("bytes")] = QByteArray(result.data + result.SW).toHex();
 			if(result.err)
-				ret["ERROR"] = QString::number(result.err, 16);
+				ret[QStringLiteral("ERROR")] = QString::number(result.err, 16);
 			Q_EMIT send(ret);
 		}
 	}
-	else if(cmd == "STOP")
+	else if(cmd == QStringLiteral("STOP"))
 	{
 		d->progressBar->hide();
 		d->progressRunning->deleteLater();
 		d->progressRunning = nullptr;
-		if(obj.contains("text"))
-			d->label->setText(obj.value("text").toString());
+		if(obj.contains(QStringLiteral("text")))
+			d->label->setText(obj.value(QStringLiteral("text")).toString());
 		d->close->show();
 	}
 	else
@@ -540,15 +681,20 @@ int Updater::exec()
 	}
 	d->reader->transfer(APDU("00A40000 00"));
 	d->reader->transfer(APDU("00A40100 02 EEEE"));
-	QPCSCReader::Result data = d->reader->transfer(APDU("00A40200 02 AACE"));
+
+	d->reader->transfer(APDU("00A4020C 02 0016"));
+	QPCSCReader::Result data = d->reader->transfer(APDU("00B20104 00"));
+	d->retry = quint8(data.data[5]);
+
+	data = d->reader->transfer(APDU("00A40200 02 AACE"));
 	QHash<quint8,QByteArray> fci = QSmartCardPrivate::parseFCI(data.data);
 	int size = fci.contains(0x85) ? fci[0x85][0] << 8 | fci[0x85][1] : 0x0600;
 	QByteArray certData;
 	while(certData.size() < size)
 	{
 		QByteArray apdu = APDU("00B00000 00");
-		apdu[2] = certData.size() >> 8;
-		apdu[3] = certData.size();
+		apdu[2] = char(certData.size() >> 8);
+		apdu[3] = char(certData.size());
 		QPCSCReader::Result result = d->reader->transfer(apdu);
 		if(!result.resultOk())
 		{
@@ -564,12 +710,12 @@ int Updater::exec()
 
 	// Associate certificate and key with operation.
 	d->cert = QSslCertificate(certData, QSsl::Der);
-	EVP_PKEY *key = nullptr;
-	if(!d->cert.isNull())
+	QSslKey key = d->cert.publicKey();
+	if(!key.isNull())
 	{
-		if (d->cert.publicKey().algorithm() == QSsl::Ec)
+		if (key.algorithm() == QSsl::Ec)
 		{
-			EC_KEY *ec = EC_KEY_dup((EC_KEY*)d->cert.publicKey().handle());
+			EC_KEY *ec = (EC_KEY*)key.handle();
 #if OPENSSL_VERSION_NUMBER < 0x10010000L
 			ECDSA_set_ex_data(ec, 0, d);
 			ECDSA_set_method(ec, d->ecmethod);
@@ -577,13 +723,10 @@ int Updater::exec()
 			EC_KEY_set_ex_data(ec, 0, d);
 			EC_KEY_set_method(ec, d->ecmethod);
 #endif
-			EVP_PKEY *key = EVP_PKEY_new();
-			EVP_PKEY_set1_EC_KEY(key, ec);
-			//EC_KEY_free(ec);
 		}
 		else
 		{
-			RSA *rsa = RSAPublicKey_dup((RSA*)d->cert.publicKey().handle());
+			RSA *rsa = (RSA*)key.handle();
 #if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
 			RSA_set_method(rsa, &d->rsamethod);
 			rsa->flags |= RSA_FLAG_SIGN_VER;
@@ -591,50 +734,47 @@ int Updater::exec()
 			RSA_set_method(rsa, d->rsamethod);
 #endif
 			RSA_set_app_data(rsa, d);
-			key = EVP_PKEY_new();
-			EVP_PKEY_set1_RSA(key, rsa);
-			//RSA_free(rsa);
 		}
 	}
 
 	// Do connection
 	QNetworkAccessManager *net = new QNetworkAccessManager(this);
 	d->request = QNetworkRequest(QUrl(
-		Configuration::instance().object().value("EIDUPDATER-URL-TOECC").toString()));
+		Configuration::instance().object().value(QStringLiteral("EIDUPDATER-URL-DIGIID")).toString()));
 	d->request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-	d->request.setRawHeader("User-Agent", QString("%1/%2 (%3)")
+	d->request.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	qCDebug(ULog) << "Connecting to" << d->request.url().toString();
 
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
 	QList<QSslCertificate> trusted;
-	for(const QJsonValue &cert: Configuration::instance().object().value("CERT-BUNDLE").toArray())
+	for(const QJsonValue &cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 	ssl.setCaCertificates(QList<QSslCertificate>());
 	ssl.setProtocol(QSsl::TlsV1_0);
-	if(key)
+	if(!key.isNull())
 	{
-		ssl.setPrivateKey(QSslKey(key));
+		ssl.setPrivateKey(key);
 		ssl.setLocalCertificate(d->cert);
 	}
 	d->request.setSslConfiguration(ssl);
 
 	// Get proxy settings
-	QNetworkProxy proxy = []() -> const QNetworkProxy {
+	QNetworkProxy proxy = [] {
 		for(const QNetworkProxy &proxy: QNetworkProxyFactory::systemProxyForQuery())
 			if(proxy.type() == QNetworkProxy::HttpProxy)
 				return proxy;
 		return QNetworkProxy();
 	}();
 	Settings s(qApp->applicationName());
-	QString proxyHost = s.value("PROXY-HOST").toString();
+	QString proxyHost = s.value(QStringLiteral("PROXY-HOST")).toString();
 	if(!proxyHost.isEmpty())
 	{
 		proxy.setHostName(proxyHost.split(':').at(0));
-		proxy.setPort(proxyHost.split(':').at(1).toUInt());
+		proxy.setPort(proxyHost.split(':').at(1).toUShort());
 	}
-	proxy.setUser(s.value("PROXY-USER", proxy.user()).toString());
-	proxy.setPassword(s.value("PROXY-PASS", proxy.password()).toString());
+	proxy.setUser(s.value(QStringLiteral("PROXY-USER"), proxy.user()).toString());
+	proxy.setPassword(s.value(QStringLiteral("PROXY-PASS"), proxy.password()).toString());
 	proxy.setType(QNetworkProxy::HttpProxy);
 	net->setProxy(proxy.hostName().isEmpty() ? QNetworkProxy() : proxy);
 	qCDebug(ULog) << "Proxy" << proxy.hostName() << ":" << proxy.port() << "User" << proxy.user();
@@ -658,7 +798,7 @@ int Updater::exec()
 	connect(this, &Updater::send, net, [=](const QVariantHash &response){
 		QJsonObject resp;
 		if(!d->session.isEmpty())
-			resp["session"] = d->session;
+			resp[QStringLiteral("session")] = d->session;
 		for(QVariantHash::const_iterator i = response.constBegin(); i != response.constEnd(); ++i)
 			resp[i.key()] = QJsonValue::fromVariant(i.value());
 		QByteArray data = QJsonDocument(resp).toJson(QJsonDocument::Compact);
@@ -698,7 +838,7 @@ int Updater::exec()
 		case QNetworkReply::TimeoutError:
 		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::UnknownNetworkError:
-			d->label->setText("<b><font color=\"red\">" + ::Updater::tr("Updating certificates has failed. Check your internet connection and try again.") + "</font></b>");
+			d->label->setText("<b><font color=\"red\">" + ::Updater::tr("Validity extension has failed. Check your internet connection and try again.") + "</font></b>");
 			d->progressRunning->clear();
 			d->close->show();
 			break;
@@ -712,7 +852,7 @@ int Updater::exec()
 			{
 			case 503:
 			case 509:
-				d->label->setText("<b>" + ::Updater::tr("Updating certificates has failed. The server is overloaded, try again later.") + "</b>");
+				d->label->setText("<b>" + ::Updater::tr("Validity extension has failed. The server is overloaded, try again later.") + "</b>");
 				break;
 			default:
 				d->label->setText("<b><font color=\"red\">" + reply->errorString() + "</font></b>");
@@ -736,10 +876,15 @@ void Updater::run()
 
 	if(!d->reader->connect())
 		return accept();
+
 #ifdef Q_OS_MAC
 	d->reader->beginTransaction();
 #endif
-	bool result = d->verifyPIN(c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ), 1).resultOk();
+	bool result = true;
+	if(d->retry == 0)
+		result = d->unblockPIN().resultOk();
+	if(result)
+		result = d->verifyPIN(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")), 1).resultOk();
 #ifdef Q_OS_MAC
 	d->reader->endTransaction();
 #endif
@@ -749,7 +894,7 @@ void Updater::run()
 
 	Q_EMIT send({
 		{"cmd", "START"},
-		{"lang", Settings().language()},
+		{"lang", Settings::language()},
 		{"platform", qApp->applicationOs()},
 		{"version", "3.12.10.1265"}
 	});

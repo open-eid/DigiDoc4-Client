@@ -50,8 +50,8 @@ class MainWindow : public QWidget
 	Q_OBJECT
 
 public:
-	explicit MainWindow( QWidget *parent = 0 );
-	~MainWindow();
+	explicit MainWindow(QWidget *parent = nullptr);
+	~MainWindow() final;
 
 	QString cryptoPath();
 	QString digiDocPath();
@@ -94,7 +94,7 @@ private:
 	void browseOnDisk(const QString &fileName);
 	QSet<QString> cards() const;
 	bool checkExpiration();
-	void clearWarning(int warningType);
+	void clearWarning(const QList<int> &warningType);
 	void clearOverlay();
 	bool closeWarning(WarningItem *warning, bool force = false);
 	void closeWarnings(int page);
@@ -140,12 +140,12 @@ private:
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
 	void updateCardWarnings();
-	void updateCertificate();
+	void updateCertificate(const QString &readerName);
 	void updateRibbon(int page, bool expanded);
 	void updateWarnings();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	bool validateFiles(const QString &container, const QStringList &files);
-	void showUpdateCertWarning();
+	void showUpdateCertWarning(const QString &readerName);
 	void showIdCardAlerts(const QSmartCardData& t);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(const QList<CKey> &keys);
