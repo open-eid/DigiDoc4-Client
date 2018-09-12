@@ -1014,28 +1014,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
-    <name>NoCardInfo</name>
-
-    <message>
-        <source>No card in reader</source>
-        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
-    </message>
-    <message>
-        <source>PCSC service is not running</source>
-        <translation>PCSC teenus ei tööta</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Loen andmeid</translation>
-    </message>
-</context>
-
-
-<context>
     <name>SignatureItem</name>
 
     <message>
@@ -1167,12 +1145,44 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Ei saanud LDAP päringule vastust</translation>
     </message>
     <message>
-        <source>Check your internet connection!\nLDAP server is unavailable.</source>
-        <translation>Kontrolli arvuti internetiühendust!\nLDAP serveriga ei saa ühendust.</translation>
+        <source>Check your internet connection!
+LDAP server is unavailable.</source>
+        <translation>Kontrolli arvuti internetiühendust!
+LDAP serveriga ei saa ühendust.</translation>
     </message>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Veakood: %1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MainAction</name>
+
+    <message>
+        <source>SignatureMobile</source>
+        <translation>ALLKIRJASTA
+MOBIIL-ID’GA</translation>
+    </message>
+    <message>
+        <source>SignatureAdd</source>
+        <translation>ALLKIRJASTA
+ID-KAARDIGA</translation>
+    </message>
+    <message>
+        <source>SignatureToken</source>
+        <translation>ALLKIRJASTA
+E-TEMPLIGA</translation>
+    </message>
+    <message>
+        <source>EncryptContainer</source>
+        <translation>KRÜPTEERI</translation>
+    </message>
+    <message>
+        <source>DecryptContainer</source>
+        <translation>DEKRÜPTEERI
+ID-KAARDIGA</translation>
     </message>
 </context>
 
@@ -1315,6 +1325,28 @@ Kontrollkood: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>NoCardInfo</name>
+
+    <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC teenus ei tööta</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loen andmeid</translation>
     </message>
 </context>
 
@@ -1960,7 +1992,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-		<translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
+        <translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -2992,35 +3024,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     <message>
         <source>Sign</source>
         <translation>Allkirjastan</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MainAction</name>
-    <message>
-        <source>SignatureMobile</source>
-        <translation>ALLKIRJASTA
-MOBIIL-ID’GA</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>ALLKIRJASTA
-ID-KAARDIGA</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>ALLKIRJASTA
-E-TEMPLIGA</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>KRÜPTEERI</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>DEKRÜPTEERI
-ID-KAARDIGA</translation>
     </message>
 </context>
 
