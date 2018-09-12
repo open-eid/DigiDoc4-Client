@@ -140,6 +140,20 @@ void ContainerPage::elideFileName(bool force)
 	}
 }
 
+bool ContainerPage::eventFilter(QObject *o, QEvent *e)
+{
+	switch(e->type())
+	{
+	case QEvent::Resize:
+	case QEvent::LanguageChange:
+		if(o == ui->containerFile)
+			elideFileName(true);
+		break;
+	default: break;
+	}
+	return QWidget::eventFilter(o, e);
+}
+
 void ContainerPage::forward(int code)
 {
 	if(checkAction(code, cardInReader, mobileCode))
@@ -156,6 +170,7 @@ void ContainerPage::init()
 	ui->changeLocation->setIcons(QStringLiteral("/images/icon_Edit.svg"),
 		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 4, 4, 18, 18);
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
+	ui->containerFile->installEventFilter(this);
 	ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
 	ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerConvert );
 	ui->saveAs->init( LabelButton::BoxedDeepCerulean, tr("SAVE AS"), Actions::ContainerSaveAs );
@@ -166,7 +181,7 @@ void ContainerPage::init()
 	mobileCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
-	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool seal, bool isExpired, const QByteArray& serialNumber)
+	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool /*seal*/, bool /*isExpired*/, const QByteArray& serialNumber)
 		{ emit ui->rightPane->idChanged(idCode, mobileCode, serialNumber); });
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
@@ -256,9 +271,6 @@ void ContainerPage::resizeEvent( QResizeEvent *event )
 	{
 		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
 	}
-
-	if(event->oldSize().width() != event->size().width())
-		elideFileName();
 }
 
 void ContainerPage::changeEvent(QEvent* event)
@@ -267,7 +279,6 @@ void ContainerPage::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 		translateLabels();
-		elideFileName(true);
 	}
 
 	QWidget::changeEvent(event);
@@ -536,10 +547,10 @@ void ContainerPage::togglePrinting(bool enable)
 
 void ContainerPage::translateLabels()
 {
-	ui->changeLocation->setText(tr(qPrintable(changeLocationText)));
-	ui->cancel->setText(tr(qPrintable(cancelText)));
-	ui->container->setText(tr(qPrintable(envelope)));
-	ui->convert->setText(tr(qPrintable(convertText)));
+	ui->changeLocation->setText(tr(changeLocationText));
+	ui->cancel->setText(tr(cancelText));
+	ui->container->setText(tr(envelope));
+	ui->convert->setText(tr(convertText));
 	ui->saveAs->setText(tr("SAVE AS"));
 	ui->email->setText(tr("SEND WITH E-MAIL"));
 	ui->summary->setText(tr("PRINT SUMMARY"));

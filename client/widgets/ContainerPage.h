@@ -81,6 +81,7 @@ private:
 	void changeCard(const QString& idCode, bool isSeal, bool isExpired);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName(bool force = false);
+	bool eventFilter(QObject *o, QEvent *e);
 	void forward(int code);
 	void hideButtons(const QVector<QWidget*> &buttons);
 	void hideMainAction();
@@ -110,10 +111,10 @@ private:
 	QFontMetrics fm;
 	QString mobileCode;
 
-	QString cancelText;
-	QString changeLocationText;
-	QString convertText;
-	QString envelope;
+	const char *cancelText;
+	const char *changeLocationText;
+	const char *convertText;
+	const char *envelope;
 	bool canDecrypt = false;
 	bool seal = false;
 	bool isExpired = false;
