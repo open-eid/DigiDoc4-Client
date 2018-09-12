@@ -1017,28 +1017,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>NoCardInfo</name>
-
-    <message>
-        <source>No card in reader</source>
-        <translation>No card in card reader; check if ID card is inserted correctly</translation>
-    </message>
-    <message>
-        <source>PCSC service is not running</source>
-        <translation>PCSC service is not running</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>No card readers found</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Loading data</translation>
-    </message>
-</context>
-
-
-<context>
     <name>SignatureItem</name>
 
     <message>
@@ -1170,12 +1148,44 @@ The Information System Authority does not retain information regarding the files
         <translation>Failed to get result</translation>
     </message>
     <message>
-        <source>Check your internet connection!\nLDAP server is unavailable.</source>
-        <translation>Check your internet connection!\nLDAP server is unavailable.</translation>
+        <source>Check your internet connection!
+LDAP server is unavailable.</source>
+        <translation>Check your internet connection!
+LDAP server is unavailable.</translation>
     </message>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Error Code: %1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MainAction</name>
+
+    <message>
+        <source>SignatureMobile</source>
+        <translation>SIGN WITH
+MOBIIL-ID</translation>
+    </message>
+    <message>
+        <source>SignatureAdd</source>
+        <translation>SIGN WITH
+ID-CARD</translation>
+    </message>
+    <message>
+        <source>SignatureToken</source>
+        <translation>SIGN WITH
+E-SEAL</translation>
+    </message>
+    <message>
+        <source>EncryptContainer</source>
+        <translation>ENCRYPT</translation>
+    </message>
+    <message>
+        <source>DecryptContainer</source>
+        <translation>DECRYPT WITH
+ID-CARD</translation>
     </message>
 </context>
 
@@ -1318,6 +1328,28 @@ Control code: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>NoCardInfo</name>
+
+    <message>
+        <source>No card in reader</source>
+        <translation>No card in card reader; check if ID card is inserted correctly</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>PCSC service is not running</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>No card readers found</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Loading data</translation>
     </message>
 </context>
 
@@ -3010,36 +3042,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     <message>
         <source>Sign</source>
         <translation>Sign</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MainAction</name>
-
-    <message>
-        <source>SignatureMobile</source>
-        <translation>SIGN WITH
-MOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>SIGN WITH
-ID-CARD</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>SIGN WITH
-E-SEAL</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>ENCRYPT</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>DECRYPT WITH
-ID-CARD</translation>
     </message>
 </context>
 

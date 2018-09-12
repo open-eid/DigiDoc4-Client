@@ -1011,28 +1011,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>NoCardInfo</name>
-
-    <message>
-        <source>No card in reader</source>
-        <translation>В считывателе нет карты; проверьте, введена ли карточка правильно</translation>
-    </message>
-    <message>
-        <source>PCSC service is not running</source>
-        <translation>Служба PCSC не работает</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Считывающее устройство не обнаружено</translation>
-    </message>
-    <message>
-        <source>Loading data</source>
-        <translation>Данные считываются</translation>
-    </message>
-</context>
-
-
-<context>
     <name>SignatureItem</name>
 
     <message>
@@ -1182,12 +1160,44 @@ The Information System Authority does not retain information regarding the files
         <translation>Получение ответа неуспешно</translation>
     </message>
     <message>
-        <source>Check your internet connection!\nLDAP server is unavailable.</source>
-        <translation>Проверьте подключение к Интернету!\nLDAP сервер недоступен.</translation>
+        <source>Check your internet connection!
+LDAP server is unavailable.</source>
+        <translation>Проверьте подключение к Интернету!
+LDAP сервер недоступен.</translation>
     </message>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Код ошибки:%1 (%2)</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>MainAction</name>
+
+    <message>
+        <source>SignatureMobile</source>
+        <translation>ПОДПИСАТЬ С
+MOBIIL-ID</translation>
+    </message>
+    <message>
+        <source>SignatureAdd</source>
+        <translation>ПОДПИСАТЬ С
+ID-КАРТОЙ</translation>
+    </message>
+    <message>
+        <source>SignatureToken</source>
+        <translation>ПОДПИСАТЬ С
+Э-ПЕЧАТЬЮ</translation>
+    </message>
+    <message>
+        <source>EncryptContainer</source>
+        <translation>ЗАШИФРОВАТЬ</translation>
+    </message>
+    <message>
+        <source>DecryptContainer</source>
+        <translation>РАСШИФРОВАТЬ
+С ID-КАРТОЙ</translation>
     </message>
 </context>
 
@@ -1328,6 +1338,28 @@ Kонтрольный код: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>Не удалось создать SSL канал передачи данных. Проверьте настройки буферного сервера компьютера или обновления программного обеспечения.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>NoCardInfo</name>
+
+    <message>
+        <source>No card in reader</source>
+        <translation>В считывателе нет карты; проверьте, введена ли карточка правильно</translation>
+    </message>
+    <message>
+        <source>PCSC service is not running</source>
+        <translation>Служба PCSC не работает</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Считывающее устройство не обнаружено</translation>
+    </message>
+    <message>
+        <source>Loading data</source>
+        <translation>Данные считываются</translation>
     </message>
 </context>
 
@@ -3026,36 +3058,6 @@ ASiC-E – это разрабатываемый международный фо
     <message>
         <source>Sign</source>
         <translation>Подписать</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MainAction</name>
-
-    <message>
-        <source>SignatureMobile</source>
-        <translation>ПОДПИСАТЬ С
-MOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>ПОДПИСАТЬ С
-ID-КАРТОЙ</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>ПОДПИСАТЬ С
-Э-ПЕЧАТЬЮ</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>ЗАШИФРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>РАСШИФРОВАТЬ
-С ID-КАРТОЙ</translation>
     </message>
 </context>
 
