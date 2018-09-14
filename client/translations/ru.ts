@@ -1203,6 +1203,581 @@ ID-КАРТОЙ</translation>
 
 
 <context>
+    <name>MainWindow</name>
+
+    <message>
+        <source>Help</source>
+        <translation>Помощь</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Перетащите файл сюда для подписи или проверки ...</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+    </message>
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+    </message>
+
+    <message>
+        <source>Unrecognized data</source>
+        <translation>Нераспознанные данные</translation>
+    </message>
+    <message>
+        <source>signature container</source>
+        <translation>контейнер подписи</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>криптоконтейнер</translation>
+    </message>
+    <message>
+        <source>Decryption succeeded</source>
+        <translation>Расшифровывание прошло успешно!</translation>
+    </message>
+    <message>
+        <source>Encryption succeeded</source>
+        <translation>Зашифровывание выполнено успешно!</translation>
+    </message>
+    <message>
+        <source>Select documents</source>
+        <translation>Добавить файлы</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Документы (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>The container has been successfully signed!</source>
+        <translation>Контейнер успешно подписан!</translation>
+    </message>
+    <message>
+        <source>Save photo</source>
+        <translation>Сохранить фото</translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg);;All Files (*)</source>
+        <translation>Фото (*.jpg);;Все файлы (*)</translation>
+    </message>
+
+
+    <message>
+        <source>Ver. </source>
+        <translation>Вер. </translation>
+    </message>
+    <message>
+        <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
+        <translation>Вы добавили файл(ы) в контейнер, но они еще не подписаны. Сохранить неподписанный контейнер или удалить?</translation>
+    </message>
+    <message>
+        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
+        <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Сохранить контейнер или закрыть без изменений?</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>УДАЛИТЬ</translation>
+    </message>
+    <message>
+        <source>KEEP</source>
+        <translation>ОСТАВИТЬ</translation>
+    </message>
+    <message>
+        <source>DO NOT SAVE</source>
+        <translation>НЕ СОХРАНЯЙ</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>СОХРАНИТЬ</translation>
+    </message>
+    <message>
+        <source>Converted to signed document!</source>
+        <translation>Переделан в контейнер для подписания!</translation>
+    </message>
+    <message>
+        <source>Converted to crypto container!</source>
+        <translation>Переделан в контейнер для зашифровывания!</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Переместить файл</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <translation>&lt;b&gt;Сертификаты Вашей ID-карты необходимо обновить.&lt;/b&gt; Обновление занимает около 2-10 минут и требует наличия интернет-соединения. Не извлекайте ID-карту из считывающего устройства до завершения процесса обновления.</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Обновить</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
+        <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>ВПЕРЕД</translation>
+    </message>
+    <message>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
+        <translation>С 01.07.2017 обновление сертификатов на этой карте больше невозможно. Документ действителен до истечения срока его действия, и его можно использовать для авторизации в дигитальных сервисах и создания дигитальной подписи. Если возникнут проблемы с использованием карты в дигитальных сервисах, обратитесь в службу поддержки ID-карты по телефону (+372) 677 3377 или посетите один из пунктов обслуживания Департамента полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30625&amp;read=38012&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate is not registered in the certificate store. Register now?</source>
+        <translation>Сертификат не зарегистрирован в хранилище сертификатов. Зарегистрируйтесь сейчас?</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+    <message>
+        <source>Add signature</source>
+        <translation>Добавить подпись</translation>
+    </message>
+    <message>
+        <source>Save container</source>
+        <translation>Сохранить контейнер</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Оставить</translation>
+    </message>
+    <message>
+        <source>Open container</source>
+        <translation>Открыть контейнер</translation>
+    </message>
+    <message>
+        <source>Container:</source>
+        <translation>Контейнер:</translation>
+    </message>
+    <message>
+        <source>This container is signed by you</source>
+        <translation>Данный контейнер подписан вами</translation>
+    </message>
+    <message>
+        <source>You have not signed this container</source>
+        <translation>Данный контейнер вами не подписан</translation>
+    </message>
+    <message>
+        <source>Container is unsigned</source>
+        <translation>Контейнер не подписан</translation>
+    </message>
+    <message>
+        <source>Use ID-card</source>
+        <translation>Использовать ID-карту</translation>
+    </message>
+    <message>
+        <source>Use Mobile ID</source>
+        <translation>Использовать Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Mobile number:</source>
+        <translation>Номер моб. телефона:</translation>
+    </message>
+    <message>
+        <source>Personal code:</source>
+        <translation>Личный код:</translation>
+    </message>
+    <message>
+        <source>I want to:</source>
+        <translation>Я желаю:</translation>
+    </message>
+    <message>
+        <source>Sign documents</source>
+        <translation>Подписать документы</translation>
+    </message>
+    <message>
+        <source>Open signed document</source>
+        <translation>Открыть подписанный документ</translation>
+    </message>
+    <message>
+        <source>Skip this intro</source>
+        <translation>Больше не показывать</translation>
+    </message>
+    <message>
+        <source>Container content:</source>
+        <translation>Содержание контейнера:</translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation>Роль</translation>
+    </message>
+    <message>
+        <source>Resolution</source>
+        <translation>Резолюция</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Город</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Уезд</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Индекс</translation>
+    </message>
+    <message>
+        <source>This container is </source>
+        <translation>Данный контейнер</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Неверный личный код</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Пробная подпись</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB: Ошибочная подпись</translation>
+    </message>
+    <message numerus="yes">
+        <source>Signature(s)</source>
+        <translation>
+            <numerusform>Подпись</numerusform>
+            <numerusform>Подписи</numerusform>
+            <numerusform>Подписи</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
+Should I keep the unsigned container or remove it?</source>
+        <translation>
+            <numerusform>В контейнер добавлен %n файл, но он не подписан.
+Оставить неподписанный контейнер или стереть?</numerusform>
+            <numerusform>В контейнер добавлено %n файла, но они не подписаны.
+Оставить неподписанный контейнер или стереть?</numerusform>
+            <numerusform>В контейнер добавлено %n файлов, но они не подписаны.
+Оставить неподписанный контейнер или стереть?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>You can not add files to signed document. Remove all signatures before adding files.</source>
+        <translation>К подписанному контейнеру нельзя добавить файлы. Прежде удалите с контейнера все подписи.</translation>
+    </message>
+    <message>
+        <source>Sign certificate is not valid</source>
+        <translation>Сертификат подписи недействителен</translation>
+    </message>
+    <message>
+        <source>Failed to start process &apos;%1&apos;</source>
+        <translation>Запуск процесса &apos;%1&apos; неудачен</translation>
+    </message>
+    <message>
+        <source>PIN is locked</source>
+        <translation>PIN заблокирован</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>Информация</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
+    </message>
+    <message>
+        <source>File does not exists
+%1</source>
+        <translation>Выбраный файл не существует
+%1</translation>
+    </message>
+    <message>
+        <source>Cannot add container to same container
+%1</source>
+        <translation>Невозможно добавить контейнер в тот же контейнер
+%1</translation>
+    </message>
+    <message>
+        <source>Signing in process</source>
+        <translation>Подписывание</translation>
+    </message>
+    <message>
+        <source>I agree</source>
+        <translation>Подтверждаю</translation>
+    </message>
+    <message>
+        <source>Empty container</source>
+        <translation>Пустой контейнер</translation>
+    </message>
+    <message>
+        <source>Cards</source>
+        <translation>Карточки</translation>
+    </message>
+    <message>
+        <source>Languages</source>
+        <translation>Языки</translation>
+    </message>
+    <message>
+        <source>Card info</source>
+        <translation>Инфо карточки</translation>
+    </message>
+    <message>
+        <source>All fields are optional</source>
+        <translation>Заполнение полей необязательно</translation>
+    </message>
+    <message>
+        <source>Add file</source>
+        <translation>Добавить файл</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <source>Save files to disk</source>
+        <translation>Сохранить файлы на жёсткий диск</translation>
+    </message>
+    <message>
+        <source>Send container to email</source>
+        <translation>Отослать контейнер по эл. почте</translation>
+    </message>
+    <message>
+        <source>Browse container location</source>
+        <translation>Открыть папку с контейнером</translation>
+    </message>
+    <message>
+        <source>Encrypt document</source>
+        <translation>Зашифровать документ</translation>
+    </message>
+    <message>
+        <source>No card in reader
+
+Check if the ID-card is inserted correctly to the reader.
+New ID-cards have chip on the back side of the card.</source>
+        <translation>Не найдена ID-карта
+
+Проверьте, правильно ли вставлена ID-карта в считыватель.
+У новых ID-карт чип находится на обратной стороне карты.</translation>
+    </message>
+    <message>
+        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
+        <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
+    </message>
+    <message>
+        <source>Signing not allowed.</source>
+        <translation>Подпись невозможна.</translation>
+    </message>
+    <message>
+        <source>Phone number with format 372XXXXXX</source>
+        <translation>Номер моб. телефона (3725xxxxx)</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Личный код</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Подпись содержит предупреждения</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Статус неизвестен</translation>
+    </message>
+    <message>
+        <source>Remember me</source>
+        <translation>Запомнить меня</translation>
+    </message>
+    <message>
+        <source>Documents (%1%2)</source>
+        <translation>Документы (%1%2)</translation>
+    </message>
+    <message>
+        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
+Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
+For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
+BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
+ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
+According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
+        <translation>Добро пожаловать в программу цифрового подписывания!&lt;br /&gt;&lt;br /&gt;
+Помните, что, согласно эстонскому законодательству, цифровая подпись равноценна собственноручной подписи. Чтобы поставить цифровую подпись, необходимо иметь eID документ (ID-карту, Mobiil-ID, digi-ID, карточку э-резидента, дигиштамп и т.д) с действительными сертификатами и интернет-соединение.&lt;br /&gt;
+Для идентификации используйте код PIN1, а для цифрового подписывания - код PIN2.&lt;br /&gt;&lt;br /&gt;
+BDOC – это используемый в Эстонии формат по умолчанию цифровой подписи. &lt;a href=&quot;https://www.ria.ee/ee/bdoc-ru.html&quot;&gt;Доп. инфо&lt;/a&gt;.&lt;br /&gt;
+DDOC – это ранее использовавшийся формат цифровой подписи. На сегодняшний день можно просматривать и проверять действительность подписей в формате DDOC, но нельзя создавать новые подписи в этом формате.&lt;br /&gt;
+ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
+Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты (+372)&#160;666&#160;8888.</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 код изменён и сертификат разблокирован!</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 код изменён!</translation>
+    </message>
+    <message>
+        <source>E-mail address missing or invalid!</source>
+        <translation>Введите адрес эл. почты!</translation>
+    </message>
+    <message>
+        <source>Failed activating email forwards.</source>
+        <translation>Активация перенаправления с эл. почты неуспешна.</translation>
+    </message>
+    <message>
+        <source>Failed loading email settings.</source>
+        <translation>Загрузка настройки эл. почты неуспешна.</translation>
+    </message>
+    <message>
+        <source>Loading picture failed.</source>
+        <translation>Загрузка картинки неуспешна.</translation>
+    </message>
+    <message>
+        <source>Failed to load data</source>
+        <translation>Не получилось загрузить данные</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation>Зашифровывание</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Смена %1 кода прошла неудачно</translation>
+    </message>
+    <message>
+        <source>PUK length has to be between 8 and 12</source>
+        <translation>PUK length has to be between 8 and 12</translation>
+    </message>
+    <message>
+        <source>PIN1 length has to be between 4 and 12</source>
+        <translation>Длина PIN1 должна быть 4-12 номера</translation>
+    </message>
+    <message>
+        <source>PIN2 length has to be between 5 and 12</source>
+        <translation>Длина PIN2 должна быть 5-12 номера</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 заблокирован</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Старый и новый %1 должны отличаться!</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Новые %1 коды не сходятся</translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>Время запроса %1 кода истекло</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation>Выполнение успешно</translation>
+    </message>
+    <message>
+        <source>ID-card has not been published by locally recognized verification provider.</source>
+        <translation>ID- карта не была выдана разрешённым сертифицирующим органом.</translation>
+    </message>
+    <message>
+        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
+        <translation>Ввели неверный PIN код, прервали введение PIN кода, возникли проблемы с сертификатами или отсутствует поддержка ID-карты в браузере.</translation>
+    </message>
+    <message>
+        <source>ID-card certificate is not valid.</source>
+        <translation>Сертификат ID-карты недействителен.</translation>
+    </message>
+    <message>
+        <source>Entrance is permitted only with Estonian personal code.</source>
+        <translation>Вход разрешён только с эстонским личным кодом.</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Неизвестная ошибка</translation>
+    </message>
+    <message>
+        <source>There was an error with request to KMA.</source>
+        <translation>В запросе КМА возникла ошибка.</translation>
+    </message>
+    <message>
+        <source>No official email forwarding addresses was found</source>
+        <translation>Не было найдено ни одной официальной пересылки эл. почты</translation>
+    </message>
+    <message>
+        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
+        <translation>Ваша учётная запись эл. почты закрыта. Для открытия пошлите письмо на toimetaja@eesti.ee или позвоните по телефону 663 0215.</translation>
+    </message>
+    <message>
+        <source>Invalid email address</source>
+        <translation>Неверный адрес эл. почты</translation>
+    </message>
+    <message>
+        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
+        <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
+    </message>
+    <message>
+        <source>Opening</source>
+        <translation>Открывается</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Подписывание</translation>
+    </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Лишние сертификаты успешно удалены.</translation>
+    </message>
+    <message>
+        <source>Check internet connection</source>
+        <translation>Проверьте подключение к Интернету</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MobileDialog</name>
 
     <message>
@@ -2162,581 +2737,6 @@ Additional licenses and components</source>
 
 
 <context>
-    <name>MainWindow</name>
-
-    <message>
-        <source>Help</source>
-        <translation>Помощь</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Drag file here for signing</source>
-        <translation>Перетащите файл сюда для подписи или проверки ...</translation>
-    </message>
-    <message>
-        <source>Open file for signing</source>
-        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
-    </message>
-    <message>
-        <source>Drag file here for encryption</source>
-        <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption</source>
-        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
-    </message>
-
-    <message>
-        <source>Unrecognized data</source>
-        <translation>Нераспознанные данные</translation>
-    </message>
-    <message>
-        <source>signature container</source>
-        <translation>контейнер подписи</translation>
-    </message>
-    <message>
-        <source>crypto container</source>
-        <translation>криптоконтейнер</translation>
-    </message>
-    <message>
-        <source>Decryption succeeded</source>
-        <translation>Расшифровывание прошло успешно!</translation>
-    </message>
-    <message>
-        <source>Encryption succeeded</source>
-        <translation>Зашифровывание выполнено успешно!</translation>
-    </message>
-    <message>
-        <source>Select documents</source>
-        <translation>Добавить файлы</translation>
-    </message>
-    <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
-    </message>
-    <message>
-        <source>Documents (%1)</source>
-        <translation>Документы (%1)</translation>
-    </message>
-    <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
-        <source>The container has been successfully signed!</source>
-        <translation>Контейнер успешно подписан!</translation>
-    </message>
-    <message>
-        <source>Save photo</source>
-        <translation>Сохранить фото</translation>
-    </message>
-    <message>
-        <source>Photo (*.jpg);;All Files (*)</source>
-        <translation>Фото (*.jpg);;Все файлы (*)</translation>
-    </message>
-
-
-    <message>
-        <source>Ver. </source>
-        <translation>Вер. </translation>
-    </message>
-    <message>
-        <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
-        <translation>Вы добавили файл(ы) в контейнер, но они еще не подписаны. Сохранить неподписанный контейнер или удалить?</translation>
-    </message>
-    <message>
-        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
-        <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Сохранить контейнер или закрыть без изменений?</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>ОСТАВИТЬ</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>НЕ СОХРАНЯЙ</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>СОХРАНИТЬ</translation>
-    </message>
-    <message>
-        <source>Converted to signed document!</source>
-        <translation>Переделан в контейнер для подписания!</translation>
-    </message>
-    <message>
-        <source>Converted to crypto container!</source>
-        <translation>Переделан в контейнер для зашифровывания!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Переместить файл</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>&lt;b&gt;Сертификаты Вашей ID-карты необходимо обновить.&lt;/b&gt; Обновление занимает около 2-10 минут и требует наличия интернет-соединения. Не извлекайте ID-карту из считывающего устройства до завершения процесса обновления.</translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation>Обновить</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
-        <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
-        <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>ВПЕРЕД</translation>
-    </message>
-    <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
-        <translation>С 01.07.2017 обновление сертификатов на этой карте больше невозможно. Документ действителен до истечения срока его действия, и его можно использовать для авторизации в дигитальных сервисах и создания дигитальной подписи. Если возникнут проблемы с использованием карты в дигитальных сервисах, обратитесь в службу поддержки ID-карты по телефону (+372) 677 3377 или посетите один из пунктов обслуживания Департамента полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30625&amp;read=38012&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Certificate is not registered in the certificate store. Register now?</source>
-        <translation>Сертификат не зарегистрирован в хранилище сертификатов. Зарегистрируйтесь сейчас?</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Подписать</translation>
-    </message>
-    <message>
-        <source>Add signature</source>
-        <translation>Добавить подпись</translation>
-    </message>
-    <message>
-        <source>Save container</source>
-        <translation>Сохранить контейнер</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>Keep</source>
-        <translation>Оставить</translation>
-    </message>
-    <message>
-        <source>Open container</source>
-        <translation>Открыть контейнер</translation>
-    </message>
-    <message>
-        <source>Container:</source>
-        <translation>Контейнер:</translation>
-    </message>
-    <message>
-        <source>This container is signed by you</source>
-        <translation>Данный контейнер подписан вами</translation>
-    </message>
-    <message>
-        <source>You have not signed this container</source>
-        <translation>Данный контейнер вами не подписан</translation>
-    </message>
-    <message>
-        <source>Container is unsigned</source>
-        <translation>Контейнер не подписан</translation>
-    </message>
-    <message>
-        <source>Use ID-card</source>
-        <translation>Использовать ID-карту</translation>
-    </message>
-    <message>
-        <source>Use Mobile ID</source>
-        <translation>Использовать Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>Mobile number:</source>
-        <translation>Номер моб. телефона:</translation>
-    </message>
-    <message>
-        <source>Personal code:</source>
-        <translation>Личный код:</translation>
-    </message>
-    <message>
-        <source>I want to:</source>
-        <translation>Я желаю:</translation>
-    </message>
-    <message>
-        <source>Sign documents</source>
-        <translation>Подписать документы</translation>
-    </message>
-    <message>
-        <source>Open signed document</source>
-        <translation>Открыть подписанный документ</translation>
-    </message>
-    <message>
-        <source>Skip this intro</source>
-        <translation>Больше не показывать</translation>
-    </message>
-    <message>
-        <source>Container content:</source>
-        <translation>Содержание контейнера:</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Роль</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation>Резолюция</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Город</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Уезд</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Страна</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Индекс</translation>
-    </message>
-    <message>
-        <source>This container is </source>
-        <translation>Данный контейнер</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Неверный личный код</translation>
-    </message>
-    <message>
-        <source>NB! Test signature</source>
-        <translation>NB! Пробная подпись</translation>
-    </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB: Ошибочная подпись</translation>
-    </message>
-    <message numerus="yes">
-        <source>Signature(s)</source>
-        <translation>
-            <numerusform>Подпись</numerusform>
-            <numerusform>Подписи</numerusform>
-            <numerusform>Подписи</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
-Should I keep the unsigned container or remove it?</source>
-        <translation>
-            <numerusform>В контейнер добавлен %n файл, но он не подписан.
-Оставить неподписанный контейнер или стереть?</numerusform>
-            <numerusform>В контейнер добавлено %n файла, но они не подписаны.
-Оставить неподписанный контейнер или стереть?</numerusform>
-            <numerusform>В контейнер добавлено %n файлов, но они не подписаны.
-Оставить неподписанный контейнер или стереть?</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>You can not add files to signed document. Remove all signatures before adding files.</source>
-        <translation>К подписанному контейнеру нельзя добавить файлы. Прежде удалите с контейнера все подписи.</translation>
-    </message>
-    <message>
-        <source>Sign certificate is not valid</source>
-        <translation>Сертификат подписи недействителен</translation>
-    </message>
-    <message>
-        <source>Failed to start process &apos;%1&apos;</source>
-        <translation>Запуск процесса &apos;%1&apos; неудачен</translation>
-    </message>
-    <message>
-        <source>PIN is locked</source>
-        <translation>PIN заблокирован</translation>
-    </message>
-    <message>
-        <source>About</source>
-        <translation>Информация</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
-    </message>
-    <message>
-        <source>File does not exists
-%1</source>
-        <translation>Выбраный файл не существует
-%1</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Невозможно добавить контейнер в тот же контейнер
-%1</translation>
-    </message>
-    <message>
-        <source>Signing in process</source>
-        <translation>Подписывание</translation>
-    </message>
-    <message>
-        <source>I agree</source>
-        <translation>Подтверждаю</translation>
-    </message>
-    <message>
-        <source>Empty container</source>
-        <translation>Пустой контейнер</translation>
-    </message>
-    <message>
-        <source>Cards</source>
-        <translation>Карточки</translation>
-    </message>
-    <message>
-        <source>Languages</source>
-        <translation>Языки</translation>
-    </message>
-    <message>
-        <source>Card info</source>
-        <translation>Инфо карточки</translation>
-    </message>
-    <message>
-        <source>All fields are optional</source>
-        <translation>Заполнение полей необязательно</translation>
-    </message>
-    <message>
-        <source>Add file</source>
-        <translation>Добавить файл</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Сохранить</translation>
-    </message>
-    <message>
-        <source>Save files to disk</source>
-        <translation>Сохранить файлы на жёсткий диск</translation>
-    </message>
-    <message>
-        <source>Send container to email</source>
-        <translation>Отослать контейнер по эл. почте</translation>
-    </message>
-    <message>
-        <source>Browse container location</source>
-        <translation>Открыть папку с контейнером</translation>
-    </message>
-    <message>
-        <source>Encrypt document</source>
-        <translation>Зашифровать документ</translation>
-    </message>
-    <message>
-        <source>No card in reader
-
-Check if the ID-card is inserted correctly to the reader.
-New ID-cards have chip on the back side of the card.</source>
-        <translation>Не найдена ID-карта
-
-Проверьте, правильно ли вставлена ID-карта в считыватель.
-У новых ID-карт чип находится на обратной стороне карты.</translation>
-    </message>
-    <message>
-        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
-        <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
-    </message>
-    <message>
-        <source>Signing not allowed.</source>
-        <translation>Подпись невозможна.</translation>
-    </message>
-    <message>
-        <source>Phone number with format 372XXXXXX</source>
-        <translation>Номер моб. телефона (3725xxxxx)</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Личный код</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Подпись содержит предупреждения</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Статус неизвестен</translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation>Запомнить меня</translation>
-    </message>
-    <message>
-        <source>Documents (%1%2)</source>
-        <translation>Документы (%1%2)</translation>
-    </message>
-    <message>
-        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation>Добро пожаловать в программу цифрового подписывания!&lt;br /&gt;&lt;br /&gt;
-Помните, что, согласно эстонскому законодательству, цифровая подпись равноценна собственноручной подписи. Чтобы поставить цифровую подпись, необходимо иметь eID документ (ID-карту, Mobiil-ID, digi-ID, карточку э-резидента, дигиштамп и т.д) с действительными сертификатами и интернет-соединение.&lt;br /&gt;
-Для идентификации используйте код PIN1, а для цифрового подписывания - код PIN2.&lt;br /&gt;&lt;br /&gt;
-BDOC – это используемый в Эстонии формат по умолчанию цифровой подписи. &lt;a href=&quot;https://www.ria.ee/ee/bdoc-ru.html&quot;&gt;Доп. инфо&lt;/a&gt;.&lt;br /&gt;
-DDOC – это ранее использовавшийся формат цифровой подписи. На сегодняшний день можно просматривать и проверять действительность подписей в формате DDOC, но нельзя создавать новые подписи в этом формате.&lt;br /&gt;
-ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
-Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты (+372)&#160;666&#160;8888.</translation>
-    </message>
-    <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1 код изменён и сертификат разблокирован!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1 код изменён!</translation>
-    </message>
-    <message>
-        <source>E-mail address missing or invalid!</source>
-        <translation>Введите адрес эл. почты!</translation>
-    </message>
-    <message>
-        <source>Failed activating email forwards.</source>
-        <translation>Активация перенаправления с эл. почты неуспешна.</translation>
-    </message>
-    <message>
-        <source>Failed loading email settings.</source>
-        <translation>Загрузка настройки эл. почты неуспешна.</translation>
-    </message>
-    <message>
-        <source>Loading picture failed.</source>
-        <translation>Загрузка картинки неуспешна.</translation>
-    </message>
-    <message>
-        <source>Failed to load data</source>
-        <translation>Не получилось загрузить данные</translation>
-    </message>
-    <message>
-        <source>Encrypting</source>
-        <translation>Зашифровывание</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>Смена %1 кода прошла неудачно</translation>
-    </message>
-    <message>
-        <source>PUK length has to be between 8 and 12</source>
-        <translation>PUK length has to be between 8 and 12</translation>
-    </message>
-    <message>
-        <source>PIN1 length has to be between 4 and 12</source>
-        <translation>Длина PIN1 должна быть 4-12 номера</translation>
-    </message>
-    <message>
-        <source>PIN2 length has to be between 5 and 12</source>
-        <translation>Длина PIN2 должна быть 5-12 номера</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
-            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
-            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1 заблокирован</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Старый и новый %1 должны отличаться!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>Новые %1 коды не сходятся</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>Время запроса %1 кода истекло</translation>
-    </message>
-    <message>
-        <source>Success</source>
-        <translation>Выполнение успешно</translation>
-    </message>
-    <message>
-        <source>ID-card has not been published by locally recognized verification provider.</source>
-        <translation>ID- карта не была выдана разрешённым сертифицирующим органом.</translation>
-    </message>
-    <message>
-        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Ввели неверный PIN код, прервали введение PIN кода, возникли проблемы с сертификатами или отсутствует поддержка ID-карты в браузере.</translation>
-    </message>
-    <message>
-        <source>ID-card certificate is not valid.</source>
-        <translation>Сертификат ID-карты недействителен.</translation>
-    </message>
-    <message>
-        <source>Entrance is permitted only with Estonian personal code.</source>
-        <translation>Вход разрешён только с эстонским личным кодом.</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>There was an error with request to KMA.</source>
-        <translation>В запросе КМА возникла ошибка.</translation>
-    </message>
-    <message>
-        <source>No official email forwarding addresses was found</source>
-        <translation>Не было найдено ни одной официальной пересылки эл. почты</translation>
-    </message>
-    <message>
-        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
-        <translation>Ваша учётная запись эл. почты закрыта. Для открытия пошлите письмо на toimetaja@eesti.ee или позвоните по телефону 663 0215.</translation>
-    </message>
-    <message>
-        <source>Invalid email address</source>
-        <translation>Неверный адрес эл. почты</translation>
-    </message>
-    <message>
-        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
-        <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
-    </message>
-    <message>
-        <source>Opening</source>
-        <translation>Открывается</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Подписывание</translation>
-    </message>
-    <message>
-        <source>Redundant certificates have been successfully removed.</source>
-        <translation>Лишние сертификаты успешно удалены.</translation>
-    </message>
-    <message>
-        <source>Check internet connection</source>
-        <translation>Проверьте подключение к Интернету</translation>
-    </message>
-</context>
-
-
-<context>
     <name>MobileDialog</name>
 
     <message>
@@ -3032,8 +3032,8 @@ ASiC-E – это разрабатываемый международный фо
     <name>RoleAddressDialog</name>
 
     <message>
-        <source>Role</source>
-        <translation>Роль</translation>
+        <source>Role / resolution</source>
+        <translation>Роль / pезолюция</translation>
     </message>
     <message>
         <source>Address</source>
