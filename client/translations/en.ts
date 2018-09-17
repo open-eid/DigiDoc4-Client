@@ -1191,6 +1191,590 @@ ID-CARD</translation>
 
 
 <context>
+    <name>MainWindow</name>
+
+    <message>
+        <source>Help</source>
+        <translation>Help</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Settings</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for signing</source>
+        <translation>Drag file here for signing or verification ...</translation>
+    </message>
+    <message>
+        <source>Open file for signing</source>
+        <translation>... OR LOAD FILE FROM DISK</translation>
+    </message>
+
+    <message>
+        <source>Drag file here for encryption</source>
+        <translation>Drag file here for encryption or decryption ...</translation>
+    </message>
+    <message>
+        <source>Open file for encryption</source>
+        <translation>... OR LOAD FILE FROM DISK</translation>
+    </message>
+
+    <message>
+        <source>Unrecognized data</source>
+        <translation>Unrecognized data</translation>
+    </message>
+    <message>
+        <source>signature container</source>
+        <translation>signature container</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>crypto container</translation>
+    </message>
+    <message>
+        <source>Decryption succeeded</source>
+        <translation>Decryption succeeded!</translation>
+    </message>
+    <message>
+        <source>Encryption succeeded</source>
+        <translation>Encryption succeeded!</translation>
+    </message>
+    <message>
+        <source>Select documents</source>
+        <translation>Select documents</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Cannot alter container %1. Save to different location?</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documents (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>The container has been successfully signed!</source>
+        <translation>The container has been successfully signed!</translation>
+    </message>
+    <message>
+        <source>Save photo</source>
+        <translation>Save photo</translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg);;All Files (*)</source>
+        <translation>Photo (*.jpg);;All Files (*)</translation>
+    </message>
+
+
+    <message>
+        <source>Ver. </source>
+        <translation>Ver. </translation>
+    </message>
+    <message>
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
+        <translation>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</translation>
+    </message>
+    <message>
+        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
+        <translation>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</translation>
+    </message>
+    <message>
+        <source>REMOVE</source>
+        <translation>REMOVE</translation>
+    </message>
+    <message>
+        <source>KEEP</source>
+        <translation>KEEP</translation>
+    </message>
+
+
+    <message>
+        <source>DO NOT SAVE</source>
+        <translation>DO NOT SAVE</translation>
+    </message>
+    <message>
+        <source>SAVE</source>
+        <translation>SAVE</translation>
+    </message>
+    <message>
+        <source>Converted to signed document!</source>
+        <translation>Converted to signed document!</translation>
+    </message>
+    <message>
+        <source>Converted to crypto container!</source>
+        <translation>Converted to crypto container!</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Move file</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+
+    <message>
+        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <translation>&lt;b&gt;Your ID card certificates need to be updated.&lt;/b&gt; Updating takes ca 2-10 minutes and requires an active internet connection. Do not remove the ID card from the smartcard reader until the update is complete.</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Update</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
+        <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>CONTINUE</translation>
+    </message>
+    <message>
+        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
+        <translation>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate is not registered in the certificate store. Register now?</source>
+        <translation>Certificate is not registered in the certificate store. Register now?</translation>
+    </message>
+    <message>
+        <source>Choose file to sign</source>
+        <translation>Choose file to signing or verification</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <source>Role</source>
+        <translation>Role</translation>
+    </message>
+    <message>
+        <source>Resolution</source>
+        <translation>Resolution</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>City</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>State</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Zip</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
+    </message>
+    <message>
+        <source>Add signature</source>
+        <translation>Add signature</translation>
+    </message>
+    <message>
+        <source>Save container</source>
+        <translation>Save container</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Keep</translation>
+    </message>
+    <message>
+        <source>Open container</source>
+        <translation>Open container</translation>
+    </message>
+    <message>
+        <source>This container is signed by you</source>
+        <translation>This container is signed by you</translation>
+    </message>
+    <message>
+        <source>You have not signed this container</source>
+        <translation>You have not signed this container</translation>
+    </message>
+    <message>
+        <source>Container is unsigned</source>
+        <translation>Container is unsigned</translation>
+    </message>
+    <message>
+        <source>Skip this intro</source>
+        <translation>Skip this intro</translation>
+    </message>
+    <message>
+        <source>I want to:</source>
+        <translation>I want to:</translation>
+    </message>
+    <message>
+        <source>Sign documents</source>
+        <translation>Sign documents</translation>
+    </message>
+    <message>
+        <source>Open signed document</source>
+        <translation>Open signed document</translation>
+    </message>
+    <message>
+        <source>Container content:</source>
+        <translation>Container content:</translation>
+    </message>
+    <message>
+        <source>Container:</source>
+        <translation>Container:</translation>
+    </message>
+    <message>
+        <source>Use Mobile ID</source>
+        <translation>Use Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Use ID-card</source>
+        <translation>Use ID-card</translation>
+    </message>
+    <message>
+        <source>This container is </source>
+        <translation>This container is </translation>
+    </message>
+    <message>
+        <source>Mobile number:</source>
+        <translation>Mobile number:</translation>
+    </message>
+    <message>
+        <source>Personal code:</source>
+        <translation>Personal code:</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Personal code is not valid</translation>
+    </message>
+    <message>
+        <source>NB! Test signature</source>
+        <translation>NB! Test signature</translation>
+    </message>
+    <message>
+        <source>NB! Invalid signature</source>
+        <translation>NB! Invalid signature</translation>
+    </message>
+    <message numerus="yes">
+        <source>Signature(s)</source>
+        <translation>
+            <numerusform>Signature</numerusform>
+            <numerusform>Signatures</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
+Should I keep the unsigned container or remove it?</source>
+        <translation>
+            <numerusform>You&apos;ve added %n file to container, but these are not signed yet.
+Should I keep the unsigned container or remove it?</numerusform>
+            <numerusform>You&apos;ve added %n files to container, but these are not signed yet.
+Should I keep the unsigned container or remove it?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>You can not add files to signed document. Remove all signatures before adding files.</source>
+        <translation>You can not add files to signed document. Remove all signatures before adding files.</translation>
+    </message>
+    <message>
+        <source>Sign certificate is not valid</source>
+        <translation>Sign certificate is not valid</translation>
+    </message>
+    <message>
+        <source>Failed to start process &apos;%1&apos;</source>
+        <translation>Failed to start process &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>PIN is locked</source>
+        <translation>PIN Locked</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>About</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
+        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+    </message>
+    <message>
+        <source>File does not exists
+%1</source>
+        <translation>File does not exists
+%1</translation>
+    </message>
+    <message>
+        <source>Cannot add container to same container
+%1</source>
+        <translation>Cannot add container to same container
+%1</translation>
+    </message>
+    <message>
+        <source>Signing in process</source>
+        <translation>Signing in process</translation>
+    </message>
+    <message>
+        <source>I agree</source>
+        <translation>I agree</translation>
+    </message>
+    <message>
+        <source>Empty container</source>
+        <translation>Empty container</translation>
+    </message>
+    <message>
+        <source>Cards</source>
+        <translation>Cards</translation>
+    </message>
+    <message>
+        <source>Languages</source>
+        <translation>Languages</translation>
+    </message>
+    <message>
+        <source>Card info</source>
+        <translation>Card info</translation>
+    </message>
+    <message>
+        <source>All fields are optional</source>
+        <translation>All fields are optional</translation>
+    </message>
+    <message>
+        <source>Add file</source>
+        <translation>Add file</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Save files to disk</source>
+        <translation>Save files to disk</translation>
+    </message>
+    <message>
+        <source>Send container to email</source>
+        <translation>Send container to email</translation>
+    </message>
+    <message>
+        <source>Browse container location</source>
+        <translation>Browse container location</translation>
+    </message>
+    <message>
+        <source>Encrypt document</source>
+        <translation>Encrypt document</translation>
+    </message>
+    <message>
+        <source>No card in reader
+
+Check if the ID-card is inserted correctly to the reader.
+New ID-cards have chip on the back side of the card.</source>
+        <translation>No card in card reader
+
+Check if the ID-card is inserted correctly to the card reader.
+New ID-cards have chip on the back side of the card.</translation>
+    </message>
+    <message>
+        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
+        <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
+    </message>
+    <message>
+        <source>Phone number with format 372XXXXXX</source>
+        <translation>Phone number with format 372XXXXXX</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Personal code</translation>
+    </message>
+    <message>
+        <source>Signing not allowed.</source>
+        <translation>Signing not allowed.</translation>
+    </message>
+    <message>
+        <source>NB! Signature contains warnings</source>
+        <translation>NB! Signature contains warnings</translation>
+    </message>
+    <message>
+        <source>NB! Status unknown</source>
+        <translation>NB! Status unknown</translation>
+    </message>
+    <message>
+        <source>Remember me</source>
+        <translation>Remember me</translation>
+    </message>
+    <message>
+        <source>Documents (%1%2)</source>
+        <translation>Documents (%1%2)</translation>
+    </message>
+    <message>
+        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
+Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
+For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
+BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
+ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
+According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
+        <translation>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
+Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
+For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
+BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
+ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
+According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline (+372)&#160;666&#160;8888.</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 has been changed and the certificate has been unblocked!</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 changed!</translation>
+    </message>
+    <message>
+        <source>E-mail address missing or invalid!</source>
+        <translation>E-mail address missing or invalid!</translation>
+    </message>
+    <message>
+        <source>Failed activating email forwards.</source>
+        <translation>Failed activating email forwards.</translation>
+    </message>
+    <message>
+        <source>Failed loading email settings.</source>
+        <translation>Failed loading email settings.</translation>
+    </message>
+    <message>
+        <source>Loading picture failed.</source>
+        <translation>Loading picture failed.</translation>
+    </message>
+    <message>
+        <source>Failed to load data</source>
+        <translation>Failed to load data</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation>Encrypting</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Changing %1 failed</translation>
+    </message>
+    <message>
+        <source>PUK length has to be between 8 and 12</source>
+        <translation>PUK length has to be between 8 and 12</translation>
+    </message>
+    <message>
+        <source>PIN1 length has to be between 4 and 12</source>
+        <translation>PIN1 length has to be between 4 and 12</translation>
+    </message>
+    <message>
+        <source>PIN2 length has to be between 5 and 12</source>
+        <translation>PIN2 length has to be between 5 and 12</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
+            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 blocked</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Old and new %1 has to be different!</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>New %1 codes don&apos;t match</translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 timeout</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation>Success</translation>
+    </message>
+    <message>
+        <source>ID-card has not been published by locally recognized verification provider.</source>
+        <translation>ID-card has not been published by locally recognized verification provider.</translation>
+    </message>
+    <message>
+        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
+        <translation>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</translation>
+    </message>
+    <message>
+        <source>ID-card certificate is not valid.</source>
+        <translation>ID-card certificate is not valid.</translation>
+    </message>
+    <message>
+        <source>Entrance is permitted only with Estonian personal code.</source>
+        <translation>Entrance is permitted only with Estonian personal code.</translation>
+    </message>
+    <message>
+        <source>Unknown error</source>
+        <translation>Unknown error</translation>
+    </message>
+    <message>
+        <source>There was an error with request to KMA.</source>
+        <translation>There was an error with request to KMA.</translation>
+    </message>
+    <message>
+        <source>No official email forwarding addresses was found</source>
+        <translation>No official email forwarding addresses was found</translation>
+    </message>
+    <message>
+        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
+        <translation>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</translation>
+    </message>
+    <message>
+        <source>Invalid email address</source>
+        <translation>Invalid email address</translation>
+    </message>
+    <message>
+        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
+        <translation>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</translation>
+    </message>
+    <message>
+        <source>Opening</source>
+        <translation>Opening</translation>
+    </message>
+    <message>
+        <source>Signing</source>
+        <translation>Signing</translation>
+    </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Redundant certificates have been successfully removed.</translation>
+    </message>
+    <message>
+        <source>Check internet connection</source>
+        <translation>Check internet connection</translation>
+    </message>
+</context>
+
+
+<context>
     <name>MobileDialog</name>
 
     <message>
@@ -2137,590 +2721,6 @@ Additional licenses and components</translation>
 
 
 <context>
-    <name>MainWindow</name>
-
-    <message>
-        <source>Help</source>
-        <translation>Help</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Settings</translation>
-    </message>
-
-    <message>
-        <source>Drag file here for signing</source>
-        <translation>Drag file here for signing or verification ...</translation>
-    </message>
-    <message>
-        <source>Open file for signing</source>
-        <translation>... OR LOAD FILE FROM DISK</translation>
-    </message>
-
-    <message>
-        <source>Drag file here for encryption</source>
-        <translation>Drag file here for encryption or decryption ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption</source>
-        <translation>... OR LOAD FILE FROM DISK</translation>
-    </message>
-
-    <message>
-        <source>Unrecognized data</source>
-        <translation>Unrecognized data</translation>
-    </message>
-    <message>
-        <source>signature container</source>
-        <translation>signature container</translation>
-    </message>
-    <message>
-        <source>crypto container</source>
-        <translation>crypto container</translation>
-    </message>
-    <message>
-        <source>Decryption succeeded</source>
-        <translation>Decryption succeeded!</translation>
-    </message>
-    <message>
-        <source>Encryption succeeded</source>
-        <translation>Encryption succeeded!</translation>
-    </message>
-    <message>
-        <source>Select documents</source>
-        <translation>Select documents</translation>
-    </message>
-    <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
-    </message>
-    <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Cannot alter container %1. Save to different location?</translation>
-    </message>
-    <message>
-        <source>Documents (%1)</source>
-        <translation>Documents (%1)</translation>
-    </message>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
-        <source>The container has been successfully signed!</source>
-        <translation>The container has been successfully signed!</translation>
-    </message>
-    <message>
-        <source>Save photo</source>
-        <translation>Save photo</translation>
-    </message>
-    <message>
-        <source>Photo (*.jpg);;All Files (*)</source>
-        <translation>Photo (*.jpg);;All Files (*)</translation>
-    </message>
-
-
-    <message>
-        <source>Ver. </source>
-        <translation>Ver. </translation>
-    </message>
-    <message>
-        <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
-        <translation>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</translation>
-    </message>
-    <message>
-        <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
-        <translation>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>KEEP</translation>
-    </message>
-
-
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>DO NOT SAVE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SAVE</translation>
-    </message>
-    <message>
-        <source>Converted to signed document!</source>
-        <translation>Converted to signed document!</translation>
-    </message>
-    <message>
-        <source>Converted to crypto container!</source>
-        <translation>Converted to crypto container!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Move file</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-
-    <message>
-        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
-        <translation>&lt;b&gt;Your ID card certificates need to be updated.&lt;/b&gt; Updating takes ca 2-10 minutes and requires an active internet connection. Do not remove the ID card from the smartcard reader until the update is complete.</translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation>Update</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
-        <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
-        <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
-    </message>
-    <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
-        <translation>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Certificate is not registered in the certificate store. Register now?</source>
-        <translation>Certificate is not registered in the certificate store. Register now?</translation>
-    </message>
-    <message>
-        <source>Choose file to sign</source>
-        <translation>Choose file to signing or verification</translation>
-    </message>
-    <message>
-        <source>Signature</source>
-        <translation>Signature</translation>
-    </message>
-    <message>
-        <source>Role</source>
-        <translation>Role</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation>Resolution</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>State</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Zip</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Add signature</source>
-        <translation>Add signature</translation>
-    </message>
-    <message>
-        <source>Save container</source>
-        <translation>Save container</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Remove</translation>
-    </message>
-    <message>
-        <source>Keep</source>
-        <translation>Keep</translation>
-    </message>
-    <message>
-        <source>Open container</source>
-        <translation>Open container</translation>
-    </message>
-    <message>
-        <source>This container is signed by you</source>
-        <translation>This container is signed by you</translation>
-    </message>
-    <message>
-        <source>You have not signed this container</source>
-        <translation>You have not signed this container</translation>
-    </message>
-    <message>
-        <source>Container is unsigned</source>
-        <translation>Container is unsigned</translation>
-    </message>
-    <message>
-        <source>Skip this intro</source>
-        <translation>Skip this intro</translation>
-    </message>
-    <message>
-        <source>I want to:</source>
-        <translation>I want to:</translation>
-    </message>
-    <message>
-        <source>Sign documents</source>
-        <translation>Sign documents</translation>
-    </message>
-    <message>
-        <source>Open signed document</source>
-        <translation>Open signed document</translation>
-    </message>
-    <message>
-        <source>Container content:</source>
-        <translation>Container content:</translation>
-    </message>
-    <message>
-        <source>Container:</source>
-        <translation>Container:</translation>
-    </message>
-    <message>
-        <source>Use Mobile ID</source>
-        <translation>Use Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>Use ID-card</source>
-        <translation>Use ID-card</translation>
-    </message>
-    <message>
-        <source>This container is </source>
-        <translation>This container is </translation>
-    </message>
-    <message>
-        <source>Mobile number:</source>
-        <translation>Mobile number:</translation>
-    </message>
-    <message>
-        <source>Personal code:</source>
-        <translation>Personal code:</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Personal code is not valid</translation>
-    </message>
-    <message>
-        <source>NB! Test signature</source>
-        <translation>NB! Test signature</translation>
-    </message>
-    <message>
-        <source>NB! Invalid signature</source>
-        <translation>NB! Invalid signature</translation>
-    </message>
-    <message numerus="yes">
-        <source>Signature(s)</source>
-        <translation>
-            <numerusform>Signature</numerusform>
-            <numerusform>Signatures</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
-Should I keep the unsigned container or remove it?</source>
-        <translation>
-            <numerusform>You&apos;ve added %n file to container, but these are not signed yet.
-Should I keep the unsigned container or remove it?</numerusform>
-            <numerusform>You&apos;ve added %n files to container, but these are not signed yet.
-Should I keep the unsigned container or remove it?</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>You can not add files to signed document. Remove all signatures before adding files.</source>
-        <translation>You can not add files to signed document. Remove all signatures before adding files.</translation>
-    </message>
-    <message>
-        <source>Sign certificate is not valid</source>
-        <translation>Sign certificate is not valid</translation>
-    </message>
-    <message>
-        <source>Failed to start process &apos;%1&apos;</source>
-        <translation>Failed to start process &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>PIN is locked</source>
-        <translation>PIN Locked</translation>
-    </message>
-    <message>
-        <source>About</source>
-        <translation>About</translation>
-    </message>
-    <message>
-        <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
-    </message>
-    <message>
-        <source>File does not exists
-%1</source>
-        <translation>File does not exists
-%1</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Cannot add container to same container
-%1</translation>
-    </message>
-    <message>
-        <source>Signing in process</source>
-        <translation>Signing in process</translation>
-    </message>
-    <message>
-        <source>I agree</source>
-        <translation>I agree</translation>
-    </message>
-    <message>
-        <source>Empty container</source>
-        <translation>Empty container</translation>
-    </message>
-    <message>
-        <source>Cards</source>
-        <translation>Cards</translation>
-    </message>
-    <message>
-        <source>Languages</source>
-        <translation>Languages</translation>
-    </message>
-    <message>
-        <source>Card info</source>
-        <translation>Card info</translation>
-    </message>
-    <message>
-        <source>All fields are optional</source>
-        <translation>All fields are optional</translation>
-    </message>
-    <message>
-        <source>Add file</source>
-        <translation>Add file</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Save</translation>
-    </message>
-    <message>
-        <source>Save files to disk</source>
-        <translation>Save files to disk</translation>
-    </message>
-    <message>
-        <source>Send container to email</source>
-        <translation>Send container to email</translation>
-    </message>
-    <message>
-        <source>Browse container location</source>
-        <translation>Browse container location</translation>
-    </message>
-    <message>
-        <source>Encrypt document</source>
-        <translation>Encrypt document</translation>
-    </message>
-    <message>
-        <source>No card in reader
-
-Check if the ID-card is inserted correctly to the reader.
-New ID-cards have chip on the back side of the card.</source>
-        <translation>No card in card reader
-
-Check if the ID-card is inserted correctly to the card reader.
-New ID-cards have chip on the back side of the card.</translation>
-    </message>
-    <message>
-        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
-        <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
-    </message>
-    <message>
-        <source>Phone number with format 372XXXXXX</source>
-        <translation>Phone number with format 372XXXXXX</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Personal code</translation>
-    </message>
-    <message>
-        <source>Signing not allowed.</source>
-        <translation>Signing not allowed.</translation>
-    </message>
-    <message>
-        <source>NB! Signature contains warnings</source>
-        <translation>NB! Signature contains warnings</translation>
-    </message>
-    <message>
-        <source>NB! Status unknown</source>
-        <translation>NB! Status unknown</translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation>Remember me</translation>
-    </message>
-    <message>
-        <source>Documents (%1%2)</source>
-        <translation>Documents (%1%2)</translation>
-    </message>
-    <message>
-        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline (+372)&#160;666&#160;8888.</translation>
-    </message>
-    <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1 has been changed and the certificate has been unblocked!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1 changed!</translation>
-    </message>
-    <message>
-        <source>E-mail address missing or invalid!</source>
-        <translation>E-mail address missing or invalid!</translation>
-    </message>
-    <message>
-        <source>Failed activating email forwards.</source>
-        <translation>Failed activating email forwards.</translation>
-    </message>
-    <message>
-        <source>Failed loading email settings.</source>
-        <translation>Failed loading email settings.</translation>
-    </message>
-    <message>
-        <source>Loading picture failed.</source>
-        <translation>Loading picture failed.</translation>
-    </message>
-    <message>
-        <source>Failed to load data</source>
-        <translation>Failed to load data</translation>
-    </message>
-    <message>
-        <source>Encrypting</source>
-        <translation>Encrypting</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>Changing %1 failed</translation>
-    </message>
-    <message>
-        <source>PUK length has to be between 8 and 12</source>
-        <translation>PUK length has to be between 8 and 12</translation>
-    </message>
-    <message>
-        <source>PIN1 length has to be between 4 and 12</source>
-        <translation>PIN1 length has to be between 4 and 12</translation>
-    </message>
-    <message>
-        <source>PIN2 length has to be between 5 and 12</source>
-        <translation>PIN2 length has to be between 5 and 12</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
-            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1 blocked</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Old and new %1 has to be different!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>New %1 codes don&apos;t match</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>%1 timeout</translation>
-    </message>
-    <message>
-        <source>Success</source>
-        <translation>Success</translation>
-    </message>
-    <message>
-        <source>ID-card has not been published by locally recognized verification provider.</source>
-        <translation>ID-card has not been published by locally recognized verification provider.</translation>
-    </message>
-    <message>
-        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</translation>
-    </message>
-    <message>
-        <source>ID-card certificate is not valid.</source>
-        <translation>ID-card certificate is not valid.</translation>
-    </message>
-    <message>
-        <source>Entrance is permitted only with Estonian personal code.</source>
-        <translation>Entrance is permitted only with Estonian personal code.</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Unknown error</translation>
-    </message>
-    <message>
-        <source>There was an error with request to KMA.</source>
-        <translation>There was an error with request to KMA.</translation>
-    </message>
-    <message>
-        <source>No official email forwarding addresses was found</source>
-        <translation>No official email forwarding addresses was found</translation>
-    </message>
-    <message>
-        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
-        <translation>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</translation>
-    </message>
-    <message>
-        <source>Invalid email address</source>
-        <translation>Invalid email address</translation>
-    </message>
-    <message>
-        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
-        <translation>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</translation>
-    </message>
-    <message>
-        <source>Opening</source>
-        <translation>Opening</translation>
-    </message>
-    <message>
-        <source>Signing</source>
-        <translation>Signing</translation>
-    </message>
-    <message>
-        <source>Redundant certificates have been successfully removed.</source>
-        <translation>Redundant certificates have been successfully removed.</translation>
-    </message>
-    <message>
-        <source>Check internet connection</source>
-        <translation>Check internet connection</translation>
-    </message>
-</context>
-
-
-<context>
     <name>MobileDialog</name>
 
     <message>
@@ -3016,8 +3016,8 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     <name>RoleAddressDialog</name>
 
     <message>
-        <source>Role</source>
-        <translation>Role</translation>
+        <source>Role / resolution</source>
+        <translation>Role / resolution</translation>
     </message>
     <message>
         <source>Address</source>

@@ -46,7 +46,7 @@ QLineEdit {
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="RoleLabel">
      <property name="text">
-      <string>Role</string>
+      <string>Role / resolution</string>
      </property>
     </widget>
    </item>
