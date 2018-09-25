@@ -425,12 +425,11 @@ void QSigner::run()
 	default: d->pkcs11 = new QPKCS11(this); break;
 	}
 
-	QString driver = qApp->confValue( Application::PKCS11Module ).toString();
 	while(!isInterruptionRequested())
 	{
-		if(d->pkcs11 && !d->pkcs11->reload(driver))
+		if(d->pkcs11 && !d->pkcs11->reload())
 		{
-			Q_EMIT error( tr("Failed to load PKCS#11 module") + "\n" + driver );
+			Q_EMIT error(tr("Failed to load PKCS#11 module"));
 			return;
 		}
 

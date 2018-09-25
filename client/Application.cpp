@@ -145,8 +145,6 @@ public:
 	{ return s.value( "ProxyTunnelSSL", digidoc::XmlConfCurrent::proxyTunnelSSL() ).toBool(); }
 	bool PKCS12Disable() const override
 	{ return s.value( "PKCS12Disable", digidoc::XmlConfCurrent::PKCS12Disable() ).toBool(); }
-	std::string PKCS11Driver() const override
-	{ return QString( qApp->applicationDirPath() + "/" + QFileInfo( PKCS11_MODULE ).fileName() ).toStdString(); }
 	std::string TSLCache() const override
 	{ return QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString(); }
 	bool TSLOnlineDigest() const override
@@ -485,8 +483,7 @@ void Application::clearConfValue( ConfParameter parameter )
 		case SiVaUrl:
 		case TSLCerts:
 		case TSLUrl:
-		case TSLCache:
-		case PKCS11Module: break;
+		case TSLCache: break;
 		}
 	}
 	catch( const digidoc::Exception &e )
@@ -521,7 +518,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	case MobileID_URL: return i->obj.value("MID-SIGN-URL").toString("https://digidocservice.sk.ee");
 	case MobileID_TEST_URL: return i->obj.value("MID-SIGN-TEST-URL").toString("https://tsp.demo.sk.ee");
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
-	case PKCS11Module: r = i->PKCS11Driver().c_str(); break;
 	case ProxyHost: r = i->proxyHost().c_str(); break;
 	case ProxyPort: r = i->proxyPort().c_str(); break;
 	case ProxyUser: r = i->proxyUser().c_str(); break;
@@ -852,8 +848,7 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case SiVaUrl:
 		case TSLCerts:
 		case TSLUrl:
-		case TSLCache:
-		case PKCS11Module: break;
+		case TSLCache: break;
 		}
 	}
 	catch( const digidoc::Exception &e )

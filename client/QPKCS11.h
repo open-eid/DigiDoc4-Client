@@ -52,7 +52,7 @@ public:
 	void unload();
 	PinStatus login( const TokenData &t );
 	void logout();
-	bool reload(const QString &driver);
+	bool reload();
 	QByteArray sign( int type, const QByteArray &digest ) const;
 	QList<TokenData> tokens() const;
 

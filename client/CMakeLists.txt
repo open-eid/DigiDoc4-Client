@@ -9,7 +9,6 @@ add_custom_command(
 	WORKING_DIRECTORY ${_qt5Core_install_prefix}/bin
 )
 
-add_definitions( -DPKCS11_MODULE="${PKCS11_MODULE}" )
 include_directories( ${CMAKE_SOURCE_DIR} )
 
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
