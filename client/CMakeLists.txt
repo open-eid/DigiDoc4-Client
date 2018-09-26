@@ -21,27 +21,6 @@ qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateH
 	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/OtherData.ui
 	widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui widgets/WarningItem.ui widgets/WarningRibbon.ui )
 
-if( APPLE )
-	set( LDAP_LIBRARIES "-framework LDAP" )
-	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-elseif( WIN32 )
-	set( LDAP_LIBRARIES Wldap32 )
-else()
-	find_package( Ldap REQUIRED )
-endif()
-
-if( APPLE )
-	list( APPEND SOURCES Application_mac.mm util/CertUtil_mac.mm )
-	set_source_files_properties( Application_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	set_source_files_properties( util/CertUtil_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	list( APPEND ADDITIONAL_LIBRARIES "-framework Security" "-framework Quartz" )
-elseif( WIN32 )
-	find_package( Qt5 COMPONENTS WinExtras )
-	list( APPEND SOURCES QCSP.cpp QCNG.cpp QWin.cpp )
-	list( APPEND ADDITIONAL_LIBRARIES Qt5::WinExtras NCrypt Crypt32 )
-	list( APPEND SOURCES CertStore.cpp )
-endif()
-
 add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${PROGNAME}.rc
 	${SOURCES}
@@ -115,12 +94,13 @@ target_link_libraries( ${PROGNAME}
 	Qt5::PrintSupport
 	Qt5::Svg
 	${LIBDIGIDOCPP_LIBRARY}
-	${ADDITIONAL_LIBRARIES}
-	${LDAP_LIBRARIES}
-	${CMAKE_THREAD_LIBS_INIT}
 )
 
 if( APPLE )
+	target_sources( ${PROGNAME} PRIVATE Application_mac.mm util/CertUtil_mac.mm )
+	set_source_files_properties( Application_mac.mm util/CertUtil_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
+	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework LDAP" )
 	set_target_properties( ${PROGNAME} PROPERTIES
 		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 	)
@@ -129,10 +109,7 @@ if( APPLE )
 		COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
 		COMMAND cp -a $<TARGET_FILE_DIR:DigiDocQL>/../../../DigiDocQL.qlgenerator
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook )
-	add_custom_command( TARGET ${PROGNAME} POST_BUILD
-		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}> )
 	get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
-	get_filename_component( LIBPATH ${OPENSSL_CRYPTO_LIBRARY} PATH )
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
 		COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/
 		COMMAND cp -a /Library/Frameworks/libdigidoc.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
@@ -185,6 +162,9 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
 	)
 elseif(WIN32)
+	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp )
+	find_package( Qt5 COMPONENTS WinExtras )
+	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Wldap32 )
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
@@ -290,9 +270,11 @@ elseif(WIN32)
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 else()
-	install( TARGETS ${PROGNAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
-	set_target_properties( ${PROGNAME} PROPERTIES COMPILE_DEFINITIONS "DATADIR=\"${CMAKE_INSTALL_FULL_DATADIR}\"" )
+	find_package( Threads REQUIRED )
+	find_package( Ldap REQUIRED )
+	target_link_libraries( ${PROGNAME} ${LDAP_LIBRARIES} Threads::Threads )
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
+	install( TARGETS ${PROGNAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
 	install( FILES qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
 	install( FILES qdigidoc4.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )

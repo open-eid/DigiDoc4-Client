@@ -1,7 +1,7 @@
 language: c++
 sudo: false
 dist: trusty
-osx_image: xcode9.4
+osx_image: xcode10
 services:
 - docker
 matrix:
@@ -21,12 +21,12 @@ env:
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     sudo easy_install pip;
-    brew update && brew install --force openssl;
+    brew install --force openssl;
     pip install --user awscli > /dev/null;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     curl -s --location "https://github.com/open-eid/libdigidocpp/releases/download/v3.13.6/libdigidocpp_3.13.6.1371.pkg" -o libdigidocpp.pkg;
     HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
-    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.17.0.7.pkg opensc.pkg --no-sign-request;
+    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.19.0.3.pkg opensc.pkg --no-sign-request;
     aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp.pkg -target /;
