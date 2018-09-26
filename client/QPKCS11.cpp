@@ -367,11 +367,11 @@ QList<TokenData> QPKCS11::tokens() const
 	return list;
 }
 
-bool QPKCS11::reload(const QString &defaultDriver)
+bool QPKCS11::reload()
 {
 	static QMultiHash<QString,QByteArray> drivers {
-		{ defaultDriver, QByteArray() },
 #ifdef Q_OS_MAC
+		{ qApp->applicationDirPath() + "/opensc-pkcs11.so", QByteArray() },
 		{ "/Library/latvia-eid/lib/otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3BF81300008131FE45536D617274417070F8" },
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000" },
@@ -381,10 +381,12 @@ bool QPKCS11::reload(const QString &defaultDriver)
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
 #elif defined(Q_OS_WIN)
+		{ "opensc-pkcs11.dll", QByteArray() },
 		{ "OTLvP11.dll", "3BDD18008131FE45904C41545649412D65494490008C" },
 		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3BF81300008131FE45536D617274417070F8" },
 		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3B7D94000080318065B08311C0A983009000" },
 #else
+		{ "opensc-pkcs11.so", QByteArray() },
 		{ "otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
 		{ "/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8" },
 		{ "/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000" },

@@ -46,7 +46,6 @@ public:
 		MobileID_URL,
 		MobileID_TEST_URL,
 		SiVaUrl,
-		PKCS11Module,
 		ProxyHost,
 		ProxyPort,
 		ProxyUser,
