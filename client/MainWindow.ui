@@ -615,9 +615,15 @@ border: none;</string>
         </property>
         <item>
          <widget class="QWidget" name="topBarShadow" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>914</width>
             <height>4</height>
            </size>
           </property>
@@ -1040,11 +1046,23 @@ color: #041E42;</string>
           </widget>
           <widget class="ContainerPage" name="cryptoContainerPage"/>
           <widget class="QWidget" name="eidPage">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>491</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">border: none;
 background-color: #F4F5F6;</string>
            </property>
-           <layout class="QVBoxLayout" name="eidPageLayout">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -1062,17 +1080,26 @@ background-color: #F4F5F6;</string>
             </property>
             <item>
              <widget class="InfoStack" name="infoStack" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>120</height>
+                <height>172</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>120</height>
+                <height>186</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: none;</string>
               </property>
              </widget>
             </item>
