@@ -67,7 +67,7 @@ private Q_SLOTS:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked();
 	void getEmailStatus();
-	void open(const QStringList &params, bool crypto);
+	void open(const QStringList &params, bool crypto, bool sign);
 	void openFile(const QString &file);
 	void operation(int op, bool started);
 	void pageSelected( PageIcon *const );
@@ -116,7 +116,7 @@ private:
 	void onCryptoAction(int code, const QString &id, const QString &phone);
 	void onSignAction(int code, const QString &info1, const QString &info2);
 	void openContainer();
-	void openFiles(const QStringList &files, bool addFile = false);
+	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
 	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
 	void pinPukChange( QSmartCardData::PinType type );
 	void resetCryptoDoc(CryptoDoc *doc = nullptr);
