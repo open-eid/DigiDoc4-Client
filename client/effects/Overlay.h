@@ -39,21 +39,21 @@ public:
 		}
 	}
 
-	~Overlay()
+	~Overlay() override
 	{
 		if(parentWidget())
 			parentWidget()->setGraphicsEffect(nullptr);
 	}
 
 protected:
-	void paintEvent(QPaintEvent *) override
+	void paintEvent(QPaintEvent * /*event*/) override
 	{
 		if(parentWidget())
 			setMinimumSize(parentWidget()->width(), parentWidget()->height());
 		QPainter painter( this );
 		painter.setRenderHint( QPainter::Antialiasing );
 		// Opacity 90%
-		painter.setBrush( QBrush( QColor( 0x04, 0x1E, 0x42, (int)((double)0xff * 0.9) ) ) );
+		painter.setBrush(QBrush(QColor(0x04, 0x1E, 0x42, int(double(0xff) * 0.9))));
 		painter.setPen( Qt::NoPen );
 		painter.drawRect( rect() );
 	}

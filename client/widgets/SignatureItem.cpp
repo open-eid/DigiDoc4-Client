@@ -213,8 +213,7 @@ void SignatureItem::changeNameHeight()
 
 void SignatureItem::details()
 {
-	SignatureDialog dlg(signature, this);
-	dlg.exec();
+	(new SignatureDialog(signature, this))->open();
 }
 
 ria::qdigidoc4::WarningType SignatureItem::getError() const

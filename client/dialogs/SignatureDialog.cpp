@@ -33,7 +33,7 @@
 #include <QTextStream>
 
 
-#define STYLE_TERMINATOR QString("</font>")
+#define STYLE_TERMINATOR QStringLiteral("</font>")
 
 
 SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *parent)
@@ -42,6 +42,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 ,	d( new Ui::SignatureDialog )
 {
 	d->setupUi( this );
+	setAttribute(Qt::WA_DeleteOnClose);
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
 	setWindowModality(Qt::WindowModal);
@@ -54,22 +55,26 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->showErrors->setClosable(true);
 	d->showErrors->hide();
 	d->error->hide();
-	
+
+	Overlay *overlay = new Overlay(parent->topLevelWidget());
+	overlay->show();
+	connect(this, &SignatureDialog::destroyed, overlay, &Overlay::deleteLater);
+
 	SslCertificate c = signature.cert();
-	QString style = "<font color=\"green\">";
+	QString style = QStringLiteral("<font color=\"green\">");
 	QString status = tr("Signature");
-	bool	isTS = (signature.profile() == "TimeStampToken") ? true : false;
+	bool isTS = signature.profile() == QStringLiteral("TimeStampToken");
 	if(isTS)
 		status = tr("Timestamp");
-	status += " ";
+	status += ' ';
 	switch( s.validate() )
 	{
 	case DigiDocSignature::Valid:
 		status += tr("is valid", isTS ? "Timestamp" : "Signature");
 		break;
 	case DigiDocSignature::Warning:
-		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Warnings"));
-		decorateNotice("gold");
+		status += QStringLiteral("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Warnings"));
+		decorateNotice(QStringLiteral("gold"));
 		if(!s.lastError().isEmpty())
 			d->error->setPlainText( s.lastError() );
 		if(s.warning() & DigiDocSignature::DigestWeak )
@@ -79,14 +84,14 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			d->info->setText(tr("SIGNATURE_WARNING"));
 		break;
 	case DigiDocSignature::NonQSCD:
-		status += QString("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Restrictions"));
-		decorateNotice("gold");
+		status += QStringLiteral("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Restrictions"));
+		decorateNotice(QStringLiteral("gold"));
 		d->info->setText( tr(
 			"This e-Signature is not equivalent with handwritten signature and therefore "
 			"can be used only in transactions where Qualified e-Signature is not required.") );
 		break;
 	case DigiDocSignature::Test:
-		status += QString("%1 (%2)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), tr("Test signature"));
+		status += QStringLiteral("%1 (%2)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), tr("Test signature"));
 		if( !s.lastError().isEmpty() )
 			d->error->setPlainText( s.lastError() );
 		d->info->setText( tr(
@@ -96,18 +101,18 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			"<a href='http://www.id.ee/index.php?id=30494'>Additional information</a>.") );
 		break;
 	case DigiDocSignature::Invalid:
-		style = "<font color=\"red\">";
+		style = QStringLiteral("<font color=\"red\">");
 		status += tr("is not valid", isTS ? "Timestamp" : "Signature");
 		d->error->setPlainText( s.lastError().isEmpty() ? tr("Unknown error") : s.lastError() );
-		decorateNotice("red");
+		decorateNotice(QStringLiteral("red"));
 		d->info->setText( tr(
 			"This is an invalid signature or malformed digitally signed file. The signature is not valid.") );
 		break;
 	case DigiDocSignature::Unknown:
-		style = "<font color=\"red\">";
+		style = QStringLiteral("<font color=\"red\">");
 		status += tr("is unknown", isTS ? "Timestamp" : "Signature");
 		d->error->setPlainText( s.lastError().isEmpty() ? tr("Unknown error") : s.lastError() );
-		decorateNotice("red");
+		decorateNotice(QStringLiteral("red"));
 		d->info->setText( tr(
 			"Signature status is displayed \"unknown\" if you don't have all validity confirmation "
 			"service certificates and/or certificate authority certificates installed into your computer "
@@ -126,8 +131,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->showErrors->borderless();
 	}
 
-	QString name = !c.isNull() ? c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) : s.signedBy();
-	d->title->setText(QString("%1 | %2%3%4").arg(name, style, status, STYLE_TERMINATOR));
+	QString name = !c.isNull() ? c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")) : s.signedBy();
+	d->title->setText(QStringLiteral("%1 | %2%3%4").arg(name, style, status, STYLE_TERMINATOR));
 	d->close->setFont(Styles::font(Styles::Condensed, 14));
 	connect(d->close, &QPushButton::clicked, this, &SignatureDialog::accept);
 
@@ -156,7 +161,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->signerZip->setText( l.value( 2 ) );
 	d->signerCountry->setText( l.value( 3 ) );
 
-	d->signerRoles->setText( s.roles().join(", "));
+	d->signerRoles->setText(s.roles().join(QStringLiteral(", ")));
 
 	// Certificate info
 	QTreeWidget *t = d->signatureView;
@@ -174,30 +179,30 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		addItem( t, tr("Signature format"), s.profile() );
 	if( !s.policy().isEmpty() )
 	{
-		#define toVer(X) (X)->toUInt() - 1
-		QStringList ver = s.policy().split( "." );
+		#define toVer(X) ((X)->toUInt() - 1)
+		QStringList ver = s.policy().split('.');
 		if( ver.size() >= 3 )
-			addItem( t, tr("Signature policy"), QString("%1.%2.%3").arg( toVer(ver.end()-3) ).arg( toVer(ver.end()-2) ).arg( toVer(ver.end()-1) ) );
+			addItem(t, tr("Signature policy"), QStringLiteral("%1.%2.%3").arg(toVer(ver.end()-3)).arg(toVer(ver.end()-2)).arg(toVer(ver.end()-1)));
 		else
 			addItem( t, tr("Signature policy"), s.policy() );
 	}
 	addItem( t, tr("Signed file count"), QString::number( s.parent()->documentModel()->rowCount() ) );
 	if( !s.spuri().isEmpty() )
-		addItem( t, "SPUri", QUrl( s.spuri() ) );
+		addItem(t, QStringLiteral("SPUri"), QUrl(s.spuri()));
 
 	if(!s.tsaTime().isNull())
 	{
 		SslCertificate tsa = s.tsaCert();
-		addItem( t, tr("Archive Timestamp"), DateTime( s.tsaTime().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ));
-		addItem( t, tr("Archive Timestamp") + " (UTC)", DateTime( s.tsaTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+		addItem(t, tr("Archive Timestamp"), DateTime( s.tsaTime().toLocalTime() ).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(t, tr("Archive Timestamp") + " (UTC)", DateTime( s.tsaTime() ).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		addItem( t, tr("Archive TS Certificate issuer"), tsa.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("Archive TS Certificate"), tsa );
 	}
 	if(!s.tsTime().isNull())
 	{
 		SslCertificate ts = s.tsCert();
-		addItem( t, tr("Signature Timestamp"), DateTime( s.tsTime().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ));
-		addItem( t, tr("Signature Timestamp") + " (UTC)", DateTime( s.tsTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+		addItem(t, tr("Signature Timestamp"), DateTime(s.tsTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(t, tr("Signature Timestamp") + " (UTC)", DateTime(s.tsTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		addItem( t, tr("TS Certificate issuer"), ts.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("TS Certificate"), ts );
 	}
@@ -207,10 +212,10 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		addItem( t, tr("OCSP Certificate issuer"), ocsp.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("OCSP Certificate"), ocsp );
 		addItem( t, tr("Hash value of signature"), SslCertificate::toHex( s.ocspNonce() ) );
-		addItem( t, tr("OCSP time"), DateTime( s.ocspTime().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
-		addItem( t, tr("OCSP time") + " (UTC)", DateTime( s.ocspTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+		addItem(t, tr("OCSP time"), DateTime(s.ocspTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(t, tr("OCSP time") + " (UTC)", DateTime(s.ocspTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	}
-	addItem( t, tr("Signer's computer time (UTC)"), DateTime( s.signTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+	addItem(t, tr("Signer's computer time (UTC)"), DateTime(s.signTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 
 #ifdef Q_OS_MAC
 	t->setFont(Styles::font(Styles::Regular, 13));
@@ -240,7 +245,7 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 #else
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
-	b->setStyleSheet("margin-left: 2px; border: none;");
+	b->setStyleSheet(QStringLiteral("margin-left: 2px; border: none;"));
 	connect(b, &QLabel::linkActivated, this, [=]{ CertUtil::showCertificate(c, this); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
@@ -256,34 +261,13 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 #else
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
-	b->setStyleSheet("margin-left: 2px; border: none;");
+	b->setStyleSheet(QStringLiteral("margin-left: 2px; border: none;"));
 	connect(b, &QLabel::linkActivated, [=]{ QDesktopServices::openUrl( value ); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
 }
 
-void SignatureDialog::decorateNotice(const QString color)
+void SignatureDialog::decorateNotice(const QString &color)
 {
-	d->lblNotice->setText(QString("<font color=\"%1\">%2</font>").arg(color, d->lblNotice->text()));
-}
-
-int SignatureDialog::exec()
-{
-	QWidget* win = qApp->activeWindow();
-	if (!win)
-	{
-		QWidget* root = parentWidget();
-		while(root)
-		{
-			win = root;
-			root = root->parentWidget();
-		}
-	}
-
-	Overlay overlay(win);
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
+	d->lblNotice->setText(QStringLiteral("<font color=\"%1\">%2</font>").arg(color, d->lblNotice->text()));
 }

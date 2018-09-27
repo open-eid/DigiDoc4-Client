@@ -37,15 +37,13 @@ class SignatureDialog : public QDialog
 
 public:
 	explicit SignatureDialog(const DigiDocSignature &signature, QWidget *parent = nullptr);
-	~SignatureDialog();
-
-	int exec() override;
+	~SignatureDialog() override;
 
 private:
 	void addItem( QTreeWidget *view, const QString &variable, const QString &value );
 	void addItem( QTreeWidget *view, const QString &variable, const QSslCertificate &cert );
 	void addItem( QTreeWidget *view, const QString &variable, const QUrl &url );
-	void decorateNotice(const QString color);
+	void decorateNotice(const QString &color);
 
 	DigiDocSignature s;
 	Ui::SignatureDialog *d;
