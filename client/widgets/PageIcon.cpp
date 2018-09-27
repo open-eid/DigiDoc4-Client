@@ -26,6 +26,9 @@
 
 using namespace ria::qdigidoc4;
 
+#define BOTTOM_BORDER "solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px"
+#define RIGHT_BORDER "solid #E7E7E7; border-width: 0px 1px 0px 0px"
+
 PageIcon::PageIcon(QWidget *parent)
 : StyledWidget(parent)
 , ui(new Ui::PageIcon)
@@ -39,29 +42,29 @@ PageIcon::PageIcon(QWidget *parent)
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
 
-	brightRedIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_filled_red.svg"), this));
+	brightRedIcon.reset( new QSvgWidget( ":/images/icon_alert_filled_red.svg", this ) );
 	brightRedIcon->resize( 13, 12 );
 	brightRedIcon->move( 84, 12 );
 	brightRedIcon->hide();
-	brightRedIcon->setStyleSheet(QStringLiteral("border: none;"));
+	brightRedIcon->setStyleSheet("border: none;");
 
-	redIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_red.svg"), this));
+	redIcon.reset( new QSvgWidget( ":/images/icon_alert_red.svg", this ) );
 	redIcon->resize( 13, 12 );
 	redIcon->move( 84, 12 );
 	redIcon->hide();
-	redIcon->setStyleSheet(QStringLiteral("border: none;"));
+	redIcon->setStyleSheet("border: none;");
 
-	filledOrangeIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_filled_orange.svg"), this));
+	filledOrangeIcon.reset( new QSvgWidget( ":/images/icon_alert_filled_orange.svg", this ) );
 	filledOrangeIcon->resize( 13, 12 );
 	filledOrangeIcon->move( 84, 12 );
 	filledOrangeIcon->hide();
-	filledOrangeIcon->setStyleSheet(QStringLiteral("border: none;"));
+	filledOrangeIcon->setStyleSheet("border: none;");
 
-	orangeIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_whitebg_orange.svg"), this));
+	orangeIcon.reset( new QSvgWidget( ":/images/icon_alert_whitebg_orange.svg", this ) );
 	orangeIcon->resize( 13, 12 );
 	orangeIcon->move( 84, 12 );
 	orangeIcon->hide();
-	orangeIcon->setStyleSheet(QStringLiteral("border: none;"));
+	orangeIcon->setStyleSheet("border: none;");
 }
 
 PageIcon::~PageIcon()
@@ -71,32 +74,29 @@ PageIcon::~PageIcon()
 
 void PageIcon::init( Pages type, QWidget *shadow, bool selected )
 {
-	static const QString BOTTOM_BORDER = QStringLiteral("solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px");
-	static const QString RIGHT_BORDER = QStringLiteral("solid #E7E7E7; border-width: 0px 1px 0px 0px");
-
 	QFont font = Styles::font( Styles::Condensed, 16 );
 	switch( type )
 	{
 	case CryptoIntro:
-		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::WHITE, colors::CLAY_CREEK, RIGHT_BORDER };
+		active = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Krypto_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
-		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE, BOTTOM_BORDER };
+		inactive = PageIcon::Style { font, "/images/icon_Krypto.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 34, 38 );
 		icon->move( 38, 26 );	
 		ui->label->setText( tr("CRYPTO") );
 		break;
 	case MyEid:
-		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, RIGHT_BORDER };
+		active = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Minu_eID_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
-		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE, BOTTOM_BORDER };
+		inactive = PageIcon::Style { font, "/images/icon_Minu_eID.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		icon->resize( 44, 31 );
 		icon->move( 33, 28 );	
 		ui->label->setText( tr("My eID") );
 		break;
 	default:
-		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, RIGHT_BORDER };
+		active = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::WHITE, colors::CLAY_CREEK, QString(RIGHT_BORDER) };
 		hover = PageIcon::Style { font, "/images/icon_Allkiri_hover.svg", colors::BAHAMA_BLUE, colors::WHITE, "none" };
-		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", colors::ASTRONAUT_BLUE, colors::WHITE, BOTTOM_BORDER };
+		inactive = PageIcon::Style { font, "/images/icon_Allkiri.svg", colors::ASTRONAUT_BLUE, colors::WHITE, QString( BOTTOM_BORDER ) };
 		ui->label->setText( tr("SIGNATURE") );
 		break;
 	}
@@ -136,7 +136,7 @@ void PageIcon::activate( bool selected )
 	updateSelection();
 }
 
-void PageIcon::enterEvent(QEvent *)
+void PageIcon::enterEvent( QEvent *ev )
 {
 	if( !selected )
 	{
@@ -155,7 +155,7 @@ void PageIcon::invalidIcon(bool show)
 	updateIcon();
 }
 
-void PageIcon::leaveEvent(QEvent *)
+void PageIcon::leaveEvent( QEvent *ev )
 {
 	if( !selected )
 	{
@@ -163,7 +163,7 @@ void PageIcon::leaveEvent(QEvent *)
 	}
 }
 
-void PageIcon::mouseReleaseEvent(QMouseEvent *)
+void PageIcon::mouseReleaseEvent(QMouseEvent *event)
 {
 	emit activated(this);
 }
@@ -179,17 +179,28 @@ void PageIcon::updateIcon()
 void PageIcon::updateSelection()
 {
 	const Style &style = selected ? active : inactive;
-	shadow->setVisible(selected);
+
+	if (selected)
+	{
+		shadow->show();
+		shadow->raise();
+		raise();
+	}
+	else
+	{
+		shadow->hide();
+	}
+
 	ui->label->setFont(style.font);
-	icon->load(QStringLiteral(":%1").arg(style.image));
+	icon->load( QString( ":%1" ).arg( style.image ) );
 	updateSelection(style);
 }
 
 void PageIcon::updateSelection(const Style &style)
 {
-	ui->label->setStyleSheet(QStringLiteral("background-color: %1; color: %2; border: none;").arg(style.backColor, style.foreColor));
-	icon->setStyleSheet(QStringLiteral("background-color: %1; border: none;").arg(style.backColor));
-	setStyleSheet(QStringLiteral("background-repeat: none; background-color: %1; border: %2;").arg(style.backColor, style.border));
+	ui->label->setStyleSheet( QString("background-color: %1; color: %2; border: none;").arg(style.backColor).arg(style.foreColor) );
+	icon->setStyleSheet(QString("background-color: %1; border: none;").arg(style.backColor));
+	setStyleSheet(QString("background-repeat: none; background-color: %1; border: %2;").arg(style.backColor).arg(style.border));
 }
 
 void PageIcon::warningIcon(bool show)
