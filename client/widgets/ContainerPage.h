@@ -48,7 +48,7 @@ class ContainerPage : public QWidget
 
 public:
 	explicit ContainerPage( QWidget *parent = nullptr );
-	~ContainerPage();
+	~ContainerPage() final;
 
 	void clear();
 	void setHeader(const QString &file);
@@ -81,7 +81,7 @@ private:
 	void changeCard(const QString& idCode, bool isSeal, bool isExpired);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName(bool force = false);
-	bool eventFilter(QObject *o, QEvent *e);
+	bool eventFilter(QObject *o, QEvent *e) override;
 	void forward(int code);
 	void hideButtons(const QVector<QWidget*> &buttons);
 	void hideMainAction();
@@ -105,10 +105,8 @@ private:
 	std::vector<QMetaObject::Connection> actionConnections;
 	QString cardInReader;
 	int containerFileWidth;
-	QFont containerFont;
 	bool elided;
 	QString fileName;
-	QFontMetrics fm;
 	QString mobileCode;
 
 	const char *cancelText;

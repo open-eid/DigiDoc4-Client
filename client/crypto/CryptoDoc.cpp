@@ -58,8 +58,8 @@
 
 using namespace ria::qdigidoc4;
 
-typedef uchar *puchar;
-typedef const uchar *pcuchar;
+using puchar = uchar *;
+using pcuchar = const uchar *;
 
 #define SCOPE(TYPE, VAR, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)> VAR(DATA, TYPE##_free)
 
@@ -91,7 +91,7 @@ public:
 	static bool opensslError(bool err);
 	QByteArray readCDoc(QIODevice *cdoc, bool data);
 	void readDDoc(QIODevice *ddoc);
-	void run();
+	void run() final;
 	void setLastError(const QString &err);
 	QString size(const QString &size)
 	{
@@ -497,7 +497,7 @@ QByteArray CryptoDocPrivate::readCDoc(QIODevice *cdoc, bool data)
 		}
 
 		// EncryptedData
-		else if( xml.name() == "EncryptedData")
+		if( xml.name() == "EncryptedData")
 			mime = xml.attributes().value(QStringLiteral("MimeType")).toString();
 		// EncryptedData/EncryptionProperties/EncryptionProperty
 		else if( xml.name() == "EncryptionProperty" )
@@ -601,7 +601,7 @@ void CryptoDocPrivate::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey
 	QList<File> reverse = files;
 	std::reverse(reverse.begin(), reverse.end());
 	for(const File &file: qAsConst(reverse))
-		props.insert("orig_file", QStringLiteral("%1|%2|%3|%4").arg(file.name).arg(file.data.size()).arg(file.mime).arg(file.id));
+		props.insert(QStringLiteral("orig_file"), QStringLiteral("%1|%2|%3|%4").arg(file.name).arg(file.data.size()).arg(file.mime).arg(file.id));
 
 	QXmlStreamWriter w(cdoc);
 	w.setAutoFormatting(true);
@@ -858,7 +858,7 @@ QString CDocumentModel::fileId(int row) const
 	return data(row);
 }
 
-QString CDocumentModel::fileSize(int) const
+QString CDocumentModel::fileSize(int /*row*/) const
 {
 	return QString();
 }
@@ -1065,7 +1065,7 @@ bool CryptoDoc::decrypt()
 	while( !decrypted )
 	{
 		switch(qApp->signer()->decrypt(isECDH ? key.publicKey : key.cipher, decryptedKey,
-			key.concatDigest, d->KWAES_SIZE[key.method], key.AlgorithmID, key.PartyUInfo, key.PartyVInfo))
+			key.concatDigest, int(d->KWAES_SIZE[key.method]), key.AlgorithmID, key.PartyUInfo, key.PartyVInfo))
 		{
 		case QSigner::DecryptOK: decrypted = true; break;
 		case QSigner::PinIncorrect: break;
@@ -1181,6 +1181,13 @@ void CryptoDoc::removeKey( int id )
 {
 	if( !d->isEncryptedWarning() )
 		d->keys.removeAt(id);
+}
+
+bool CryptoDoc::saveCopy(const QString &filename)
+{
+	if(QFile::exists(filename))
+		QFile::remove(filename);
+	return QFile::copy(d->fileName, filename);
 }
 
 bool CryptoDoc::saveDDoc( const QString &filename )

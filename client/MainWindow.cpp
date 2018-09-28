@@ -305,7 +305,7 @@ void MainWindow::clearWarning(int warningType)
 	updateWarnings();
 }
 
-void MainWindow::closeEvent(QCloseEvent *)
+void MainWindow::closeEvent(QCloseEvent * /*event*/)
 {
 	resetCryptoDoc();
 	resetDigiDoc();
@@ -340,10 +340,7 @@ void MainWindow::closeWarnings(int page)
 
 QString MainWindow::cryptoPath()
 {
-	if(cryptoDoc)
-		return cryptoDoc->fileName();
-
-	return QString();
+	return cryptoDoc ? cryptoDoc->fileName() : QString();
 }
 
 ContainerState MainWindow::currentState()
@@ -375,10 +372,7 @@ bool MainWindow::decrypt()
 
 QString MainWindow::digiDocPath()
 {
-	if(digiDoc)
-		return digiDoc->fileName();
-
-	return QString();
+	return digiDoc ? digiDoc->fileName() : QString();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -677,6 +671,23 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			notification->start( tr("Encryption succeeded"), 750, 3000, 1200 );
 		}
 		break;
+	case ContainerSaveAs:
+	{
+		if(!cryptoDoc)
+			break;
+		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
+		if( !FileDialog::fileIsWritable(target) &&
+			QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
+				tr("Cannot alter container %1. Save different location?").arg(target),
+				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+		{
+			QString file = selectFile(tr("Save file"), target, true);
+			if(!file.isEmpty())
+				cryptoDoc->saveCopy(file);
+		}
+		cryptoDoc->saveCopy(target);
+		break;
+	}
 	case ContainerEmail:
 		if( cryptoDoc )
 			containerToEmail( cryptoDoc->fileName() );
@@ -878,7 +889,7 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	}
 }
 
-void MainWindow::resizeEvent(QResizeEvent *)
+void MainWindow::resizeEvent(QResizeEvent * /*event*/)
 {
 	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
 }
@@ -1049,7 +1060,7 @@ void MainWindow::showCardStatus()
 		hideCardPopup();
 }
 
-void MainWindow::showEvent(QShowEvent *)
+void MainWindow::showEvent(QShowEvent * /*event*/)
 {
 	static int height = 94;
 	static int width = 166;
@@ -1563,10 +1574,7 @@ bool MainWindow::wrapContainer(bool signing)
 	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
 	dlg.exec();
-	if(dlg.result() == ContainerSave)
-		return true;
-
-	return false;
+	return dlg.result() == ContainerSave;
 }
 
 void MainWindow::showIdCardAlerts(const QSmartCardData& t)

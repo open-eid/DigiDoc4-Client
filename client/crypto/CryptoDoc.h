@@ -58,7 +58,7 @@ private:
 class CKey
 {
 public:
-	CKey() {}
+	CKey() = default;
 	CKey( const QSslCertificate &cert ) { setCert( cert ); }
 	void setCert( const QSslCertificate &cert );
 	bool operator==( const CKey &other ) const { return other.cert == cert; }
@@ -73,8 +73,8 @@ class CryptoDoc: public QObject
 {
 	Q_OBJECT
 public:
-	CryptoDoc( QObject *parent = 0 );
-	~CryptoDoc();
+	CryptoDoc(QObject *parent = nullptr);
+	~CryptoDoc() final;
 
 	bool addKey( const CKey &key );
 	bool canDecrypt(const QSslCertificate &cert);
@@ -91,6 +91,7 @@ public:
 	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeKey( int id );
+	bool saveCopy(const QString &filename);
 	bool saveDDoc( const QString &filename );
 	ria::qdigidoc4::ContainerState state() const;
 
