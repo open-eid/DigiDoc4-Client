@@ -45,8 +45,6 @@ using namespace ria::qdigidoc4;
 ContainerPage::ContainerPage(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::ContainerPage)
-, containerFont(Styles::font(Styles::Regular, 14))
-, fm(QFontMetrics(containerFont))
 , cancelText("CANCEL")
 , changeLocationText("CHANGE")
 , convertText("ENCRYPT")
@@ -131,7 +129,7 @@ void ContainerPage::elideFileName(bool force)
 	{
 		elided = true;
 		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
-			fm.elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
+			ui->containerFile->fontMetrics().elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
 	}
 	else if(elided || force)
 	{
@@ -164,8 +162,8 @@ void ContainerPage::init()
 {
 	ui->leftPane->init(fileName);
 
-	ui->container->setFont(containerFont);
-	ui->containerFile->setFont(containerFont);
+	ui->container->setFont(Styles::font(Styles::Regular, 14));
+	ui->containerFile->setFont(Styles::font(Styles::Regular, 14));
 
 	ui->changeLocation->setIcons(QStringLiteral("/images/icon_Edit.svg"),
 		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 4, 4, 18, 18);
@@ -261,7 +259,7 @@ void ContainerPage::mobileDialog()
 	}
 }
 
-void ContainerPage::resizeEvent( QResizeEvent *event )
+void ContainerPage::resizeEvent(QResizeEvent * /*event*/)
 {
 	if( mainAction )
 	{
@@ -289,7 +287,6 @@ void ContainerPage::setHeader(const QString &file)
 	fileName = QDir::toNativeSeparators (file);
 	window()->setWindowFilePath(fileName);
 	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 client") : QFileInfo(file).fileName());
-	containerFileWidth = fm.width(fileName);
 	elideFileName(true);
 }
 
