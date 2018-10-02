@@ -675,7 +675,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	{
 		if(!cryptoDoc)
 			break;
-		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
+		QString target = FileUtil::createNewFileName(cryptoDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), QString());
 		if( !FileDialog::fileIsWritable(target) &&
 			QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
 				tr("Cannot alter container %1. Save different location?").arg(target),
