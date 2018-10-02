@@ -93,6 +93,7 @@ public:
 	QString appletVersion() const;
 	CardVersion version() const;
 
+	static quint8 minPinLen(QSmartCardData::PinType type);
 	static QString typeString( PinType type );
 
 private:

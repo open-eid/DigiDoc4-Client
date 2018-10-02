@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "common_enums.h"
 #include "StyledWidget.h"
 
 namespace Ui {
@@ -29,15 +28,13 @@ class WarningItem;
 
 struct WarningText {
 
-	QString text;
-	int counter;
-	QString details;
-	bool external;
-	int page;
-	ria::qdigidoc4::WarningType warningType;
+	QString text, details, url;
+	int counter = 0, page = -1;
+	bool external = false;
+	ria::qdigidoc4::WarningType warningType = ria::qdigidoc4::NoWarning;
 
-	WarningText(const QString &text, const QString &details = QString(), int page = -1);
-	WarningText(ria::qdigidoc4::WarningType warningType, const QString &details = QString());
+	WarningText(QString text, QString details = QString(), int page = -1);
+	WarningText(ria::qdigidoc4::WarningType warningType, QString details = QString(), QString url = QString());
 	WarningText(ria::qdigidoc4::WarningType warningType, int counter);
 };
 
@@ -48,7 +45,7 @@ class WarningItem : public StyledWidget
 
 public:
 	WarningItem(const WarningText &warningText, QWidget *parent = nullptr);
-	~WarningItem();
+	~WarningItem() final;
 	
 	bool appearsOnPage(int page) const;
 	int page() const;

@@ -1326,12 +1326,12 @@ ID-CARD</translation>
     </message>
 
     <message>
-        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <source>The validity of this document can be extended. The process takes about 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
         <translation>&lt;b&gt;Your ID card certificates need to be updated.&lt;/b&gt; Updating takes ca 2-10 minutes and requires an active internet connection. Do not remove the ID card from the smartcard reader until the update is complete.</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Update</translation>
+        <source>Start</source>
+        <translation>Start</translation>
     </message>
     <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
@@ -1677,16 +1677,8 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Changing %1 failed</translation>
     </message>
     <message>
-        <source>PUK length has to be between 8 and 12</source>
-        <translation>PUK length has to be between 8 and 12</translation>
-    </message>
-    <message>
-        <source>PIN1 length has to be between 4 and 12</source>
-        <translation>PIN1 length has to be between 4 and 12</translation>
-    </message>
-    <message>
-        <source>PIN2 length has to be between 5 and 12</source>
-        <translation>PIN2 length has to be between 5 and 12</translation>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1 length has to be between %2 and 12</translation>
     </message>
     <message numerus="yes">
         <source>Wrong %1 code. You can try %n more time(s).</source>
@@ -1810,6 +1802,86 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>Phone number is not entered</source>
         <translation>Phone number is not entered</translation>
     </message>
+    <message>
+        <source>Signing in process</source>
+        <translation>Signing in process</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Request accepted</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Request timeout</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>User denied or cancelled</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Got signature</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Request pending</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobiil-ID not ready, try again later</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Phone absent</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Request sending error</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>SIM error</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Service internal error</translation>
+    </message>
+    <message>
+        <source>Signing with Mobile-ID</source>
+        <translation>Signing with Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>User is not a Mobiil-ID client</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>ID and phone number do not match</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
+        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
+        <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Your Mobiil-ID service is not activated.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Invalid phone number! Please include correct country code.</translation>
+    </message>
 </context>
 
 
@@ -1912,6 +1984,10 @@ Control code: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
+    </message>
+    <message>
+        <source>%v sec</source>
+        <translation>%v sec</translation>
     </message>
 </context>
 
@@ -2650,173 +2726,6 @@ Additional licenses and components</translation>
 
 
 <context>
-    <name>Updater</name>
-
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation>START</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>DETAILS</source>
-        <translation>DETAILS</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
-    </message>
-    <message>
-        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</translation>
-    </message>
-    <message>
-        <source>Certificate renewal</source>
-        <translation>Certificate renewal</translation>
-    </message>
-    <message>
-        <source>I agree to the terms of use of certificates.</source>
-        <translation>I agree to the terms of use of certificates.</translation>
-    </message>
-    <message>
-        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>I confirm I have saved new PIN1, PIN2 and PUK code.</translation>
-    </message>
-    <message>
-        <source>Enter PIN</source>
-        <translation>Enter PIN</translation>
-    </message>
-
-    <message>
-        <source>Request timed out</source>
-        <translation>Request timed out</translation>
-    </message>
-    <message>
-        <source>Invalid content type</source>
-        <translation>Invalid content type</translation>
-    </message>
-    <message>
-        <source>Updating certificates has failed. Check your internet connection and try again.</source>
-        <translation>Updating certificates has failed. Check your internet connection and try again.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>SSL handshake failed. Please restart the update process.</translation>
-    </message>
-    <message>
-        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
-        <translation>Updating certificates has failed. The server is overloaded, try again later.</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Failed to read certificate</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MobileDialog</name>
-
-    <message>
-        <source>Signing in process</source>
-        <translation>Signing in process</translation>
-    </message>
-    <message>
-        <source>Request accepted</source>
-        <translation>Request accepted</translation>
-    </message>
-    <message>
-        <source>Request timeout</source>
-        <translation>Request timeout</translation>
-    </message>
-    <message>
-        <source>User denied or cancelled</source>
-        <translation>User denied or cancelled</translation>
-    </message>
-    <message>
-        <source>Got signature</source>
-        <translation>Got signature</translation>
-    </message>
-    <message>
-        <source>Request pending</source>
-        <translation>Request pending</translation>
-    </message>
-    <message>
-        <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID not ready, try again later</translation>
-    </message>
-    <message>
-        <source>Phone absent</source>
-        <translation>Phone absent</translation>
-    </message>
-    <message>
-        <source>Request sending error</source>
-        <translation>Request sending error</translation>
-    </message>
-    <message>
-        <source>SIM error</source>
-        <translation>SIM error</translation>
-    </message>
-    <message>
-        <source>Service internal error</source>
-        <translation>Service internal error</translation>
-    </message>
-    <message>
-        <source>Signing with Mobile-ID</source>
-        <translation>Signing with Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>User is not a Mobile-ID client</source>
-        <translation>User is not a Mobiil-ID client</translation>
-    </message>
-    <message>
-        <source>ID and phone number do not match</source>
-        <translation>ID and phone number do not match</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
-        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
-    </message>
-    <message>
-        <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
-        <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
-    </message>
-    <message>
-        <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID service is not activated.</source>
-        <translation>Your Mobiil-ID service is not activated.</translation>
-    </message>
-    <message>
-        <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Invalid phone number! Please include correct country code.</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MobileProgress</name>
-
-    <message>
-        <source>%v sec</source>
-        <translation>%v sec</translation>
-    </message>
-</context>
-
-
-<context>
     <name>PrintSheet</name>
 
     <message>
@@ -3076,6 +2985,85 @@ Additional licenses and components</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL context is missing</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>Updater</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>CLOSE</translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation>START</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>DETAILS</source>
+        <translation>DETAILS</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>CONTINUE</translation>
+    </message>
+    <message>
+        <source>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</translation>
+    </message>
+    <message>
+        <source>Validity Extension</source>
+        <translation>Validity Extension</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>I agree to the terms of use of certificates.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>I confirm I have saved new PIN1, PIN2 and PUK code.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Enter PIN</translation>
+    </message>
+    <message>
+        <source>PIN1 again</source>
+        <translation>PIN1 again</translation>
+    </message>
+    <message>
+        <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
+        <translation>PIN1 is locked. Please use PUK to unlock PIN1.</translation>
+    </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Request timed out</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Invalid content type</translation>
+    </message>
+    <message>
+        <source>Validity extension has failed. Check your internet connection and try again.</source>
+        <translation>Validity extension has failed. Check your internet connection and try again.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>SSL handshake failed. Please restart the update process.</translation>
+    </message>
+    <message>
+        <source>Validity extension has failed. The server is overloaded, try again later.</source>
+        <translation>Validity extension has failed. The server is overloaded, try again later.</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Failed to read certificate</translation>
     </message>
 </context>
 

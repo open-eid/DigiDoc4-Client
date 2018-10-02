@@ -38,20 +38,9 @@
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
 const QHash<QByteArray,QSmartCardData::CardVersion> QSmartCardDataPrivate::atrList = {
-	{"3BFE9400FF80B1FA451F034573744549442076657220312E3043", QSmartCardData::VER_1_0}, /*ESTEID_V1_COLD_ATR*/
-	{"3B6E00FF4573744549442076657220312E30", QSmartCardData::VER_1_0}, /*ESTEID_V1_WARM_ATR*/
-	{"3BDE18FFC080B1FE451F034573744549442076657220312E302B", QSmartCardData::VER_1_0_2007}, /*ESTEID_V1_2007_COLD_ATR*/
-	{"3B5E11FF4573744549442076657220312E30", QSmartCardData::VER_1_0_2007}, /*ESTEID_V1_2007_WARM_ATR*/
-	{"3B6E00004573744549442076657220312E30", QSmartCardData::VER_1_1}, /*ESTEID_V1_1_COLD_ATR*/
-	{"3BFE1800008031FE454573744549442076657220312E30A8", QSmartCardData::VER_3_4}, /*ESTEID_V3_COLD_DEV1_ATR*/
-	{"3BFE1800008031FE45803180664090A4561B168301900086", QSmartCardData::VER_3_4}, /*ESTEID_V3_WARM_DEV1_ATR*/
-	{"3BFE1800008031FE45803180664090A4162A0083019000E1", QSmartCardData::VER_3_4}, /*ESTEID_V3_WARM_DEV2_ATR*/
-	{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_4}, /*ESTEID_V3_WARM_DEV3_ATR*/
-	{"3BF9180000C00A31FE4553462D3443432D303181", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_DEV1_ATR*/
-	{"3BF81300008131FE454A434F5076323431B7", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_DEV2_ATR*/
-	{"3BFA1800008031FE45FE654944202F20504B4903", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_DEV3_ATR*/
-	{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_5}, /*ESTEID_V35_WARM_ATR*/
-	{"3BFE1800008031FE45803180664090A5102E03830F9000EF", QSmartCardData::VER_3_5}, /*UPDATER_TEST_CARDS*/
+	{"3BFE1800008031FE454573744549442076657220312E30A8", QSmartCardData::VER_3_4}, /*ESTEID_V3_COLD_ATR*/
+	{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_4}, /*ESTEID_V3_WARM_ATR / ESTEID_V35_WARM_ATR*/
+	{"3BFA1800008031FE45FE654944202F20504B4903", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_ATR*/
 };
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
@@ -81,6 +70,17 @@ quint8 QSmartCardData::retryCount(PinType type) const { return d->retry.value(ty
 ulong QSmartCardData::usageCount(PinType type) const { return d->usage.value(type); }
 QString QSmartCardData::appletVersion() const { return d->appletVersion; }
 QSmartCardData::CardVersion QSmartCardData::version() const { return d->version; }
+
+quint8 QSmartCardData::minPinLen(QSmartCardData::PinType type)
+{
+	switch(type)
+	{
+	case QSmartCardData::Pin1Type: return 4;
+	case QSmartCardData::Pin2Type: return 5;
+	case QSmartCardData::PukType: return 8;
+	}
+	return 4;
+}
 
 QString QSmartCardData::typeString(QSmartCardData::PinType type)
 {
@@ -127,9 +127,9 @@ QSmartCard::ErrorType QSmartCardPrivate::handlePinResult(QPCSCReader *reader, co
 
 quint16 QSmartCardPrivate::language() const
 {
-	if(Settings().language() == QLatin1String("en")) return 0x0409;
-	if(Settings().language() == QLatin1String("et")) return 0x0425;
-	if(Settings().language() == QLatin1String("ru")) return 0x0419;
+	if(Settings::language() == QLatin1String("en")) return 0x0409;
+	if(Settings::language() == QLatin1String("et")) return 0x0425;
+	if(Settings::language() == QLatin1String("ru")) return 0x0419;
 	return 0x0000;
 }
 
@@ -241,19 +241,11 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 	}
 	if(d->t.isPinpad())
 	{
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, parent, bodyText));
+		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, nullptr, parent, bodyText));
 
 		std::thread([&]{
 			Q_EMIT p->startTimer();
-			result = reader->transferCTL(cmd, false, d->language(), [&]() -> quint8 {
-				switch(type)
-				{
-				default:
-				case QSmartCardData::Pin1Type: return 4;
-				case QSmartCardData::Pin2Type: return 5;
-				case QSmartCardData::PukType: return 8;
-				}
-			}());
+			result = reader->transferCTL(cmd, false, d->language(), QSmartCardData::minPinLen(type));
 			Q_EMIT p->finished(0);
 		}).detach();
 		p->exec();
@@ -284,7 +276,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidge
 	else
 	{
 		SslCertificate cert = d->t.authCert();
-		title = cert.toString( cert.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" );
+		title = cert.toString(cert.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber"));
 		textBody = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
 	}
 	return change(type, parent, newPin, oldPin, title, textBody);
@@ -308,7 +300,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	else
 	{
 		SslCertificate cert = d->t.authCert();
-		title = cert.toString( cert.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" );
+		title = cert.toString(cert.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber"));
 		textBody = (isForgotPin) ?  
 			tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type))
 			:
@@ -451,6 +443,8 @@ bool QSmartCard::readCardData(const QString &selectedReader)
 					t->version = QSmartCardData::VER_USABLEUPDATER;
 				}
 			}
+			else if(reader->transfer(d->AID35).resultOk())
+				t->version = QSmartCardData::VER_3_5;
 		}
 
 		tryAgain = !d->updateCounters(reader.data(), t);
@@ -509,12 +503,6 @@ bool QSmartCard::readCardData(const QString &selectedReader)
 		t->signCert = readCert(d->SIGNCERT);
 
 		QPCSCReader::Result data = reader->transfer(d->APPLETVER);
-		if (!data && data.SW.at(0) == 0x6C)
-		{
-			QByteArray cmd = d->APPLETVER;
-			cmd[4] = data.SW[1];
-			data = reader->transfer(cmd);
-		}
 		if (data.resultOk())
 		{
 			for(int i = 0; i < data.data.size(); ++i)
@@ -527,16 +515,6 @@ bool QSmartCard::readCardData(const QString &selectedReader)
 		}
 
 		t->data[QSmartCardData::Email] = t->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
-		if(t->authCert.type() & SslCertificate::DigiIDType)
-		{
-			t->data[QSmartCardData::SurName] = t->authCert.toString(QStringLiteral("SN"));
-			t->data[QSmartCardData::FirstName1] = t->authCert.toString(QStringLiteral("GN"));
-			t->data[QSmartCardData::FirstName2] = QString();
-			t->data[QSmartCardData::Id] = t->authCert.subjectInfo("serialNumber");
-			t->data[QSmartCardData::BirthDate] = IKValidator::birthDate(t->authCert.subjectInfo("serialNumber"));
-			t->data[QSmartCardData::IssueDate] = t->authCert.effectiveDate();
-			t->data[QSmartCardData::Expiry] = t->authCert.expiryDate();
-		}
 		if(!tryAgain)
 		{
 			d->t.d = t;
@@ -599,19 +577,11 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget*
 
 	if(d->t.isPinpad()) {
 
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, 0, parent, bodyText));
+		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, nullptr, parent, bodyText));
 
 		std::thread([&]{
 			Q_EMIT p->startTimer();
-			result = reader->transferCTL(cmd, false, d->language(), [&]() -> quint8 {
-				switch(type)
-				{
-				default:
-				case QSmartCardData::Pin1Type: return 4;
-				case QSmartCardData::Pin2Type: return 5;
-				case QSmartCardData::PukType: return 8; // User can not unblock PUK code with application!
-				}
-			}());
+			result = reader->transferCTL(cmd, false, d->language(), QSmartCardData::minPinLen(type));
 			Q_EMIT p->finished(0);
 		}).detach();
 		p->exec();

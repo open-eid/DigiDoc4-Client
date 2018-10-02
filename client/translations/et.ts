@@ -1317,11 +1317,11 @@ ID-KAARDIGA</translation>
     </message>
 
     <message>
-        <source>Card certificates need updating. Updating takes 2-10 minutes and requires a live internet connection. The card must not be removed from the reader before the end of the update.</source>
+        <source>The validity of this document can be extended. The process takes about 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
         <translation>&lt;b&gt;Kaardi sertifikaadid vajavad uuendamist.&lt;/b&gt; Uuendamise protseduur võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast välja võtta enne uuenduse lõppu.</translation>
     </message>
     <message>
-        <source>Update</source>
+        <source>Start</source>
         <translation>Uuenda</translation>
     </message>
     <message>
@@ -1653,16 +1653,8 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation>%1 muutmine ebaõnnestus</translation>
     </message>
     <message>
-        <source>PUK length has to be between 8 and 12</source>
-        <translation>PUK koodi pikkus peab olema 8-12 numbrit</translation>
-    </message>
-    <message>
-        <source>PIN1 length has to be between 4 and 12</source>
-        <translation>PIN1 pikkus peab olema 4-12 numbrit</translation>
-    </message>
-    <message>
-        <source>PIN2 length has to be between 5 and 12</source>
-        <translation>PIN2 pikkus peab olema 5-12 numbrit</translation>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1 koodi pikkus peab olema %2-12 numbrit</translation>
     </message>
     <message numerus="yes">
         <source>Wrong %1 code. You can try %n more time(s).</source>
@@ -1786,6 +1778,86 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>Phone number is not entered</source>
         <translation>Telefoninumber pole sisestatud</translation>
     </message>
+    <message>
+        <source>Signing in process</source>
+        <translation>Toimub allkirjastamine</translation>
+    </message>
+    <message>
+        <source>Request accepted</source>
+        <translation>Päring aktsepteeritud</translation>
+    </message>
+    <message>
+        <source>Request timeout</source>
+        <translation>Päringu kannatus katkes</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Kasutaja keeldus või katkestas</translation>
+    </message>
+    <message>
+        <source>Got signature</source>
+        <translation>Sain allkirja</translation>
+    </message>
+    <message>
+        <source>Request pending</source>
+        <translation>Päring ootel</translation>
+    </message>
+    <message>
+        <source>Mobile-ID not ready, try again later</source>
+        <translation>Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
+    </message>
+    <message>
+        <source>Phone absent</source>
+        <translation>Telefon ei ole levis</translation>
+    </message>
+    <message>
+        <source>Request sending error</source>
+        <translation>Päringu saatmise viga</translation>
+    </message>
+    <message>
+        <source>SIM error</source>
+        <translation>SIM kaardi viga</translation>
+    </message>
+    <message>
+        <source>Service internal error</source>
+        <translation>Teenuse sisemine viga</translation>
+    </message>
+    <message>
+        <source>Signing with Mobile-ID</source>
+        <translation>Allkirjastan Mobiil-ID -ga</translation>
+    </message>
+    <message>
+        <source>User is not a Mobile-ID client</source>
+        <translation>Kasutaja ei ole Mobiil-ID klient</translation>
+    </message>
+    <message>
+        <source>ID and phone number do not match</source>
+        <translation>Isikukood ja telefoni number ei klapi</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjastan</translation>
+    </message>
+    <message>
+        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
+        <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
+    </message>
+    <message>
+        <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
+        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID user certificates are revoked or suspended.</source>
+        <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID service is not activated.</source>
+        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
+    </message>
+    <message>
+        <source>Invalid phone number! Please include correct country code.</source>
+        <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
+    </message>
 </context>
 
 
@@ -1888,6 +1960,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
+    </message>
+    <message>
+        <source>%v sec</source>
+        <translation>%v sek</translation>
     </message>
 </context>
 
@@ -2637,172 +2713,6 @@ Täiendavad litsentsid ja komponendid</translation>
 
 
 <context>
-    <name>Updater</name>
-
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation>ALUSTA</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>DETAILS</source>
-        <translation>DETAILID</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>JÄTKA</translation>
-    </message>
-    <message>
-        <source>Update in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Toimub uuendamine. Uuendamise protsess kestab kuni 10 minutit. Ära eemalda kaarti lugejast!</translation>
-    </message>
-    <message>
-        <source>Certificate renewal</source>
-        <translation>Sertifikaatide uuendamine</translation>
-    </message>
-    <message>
-        <source>I agree to the terms of use of certificates.</source>
-        <translation>Nõustun sertifikaatide kasutustingimustega.</translation>
-    </message>
-    <message>
-        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>Kinnitan, et olen uued PIN- ja PUK-koodid üles kirjutanud.</translation>
-    </message>
-    <message>
-        <source>Enter PIN</source>
-        <translation>Sisesta PIN</translation>
-    </message>
-
-    <message>
-        <source>Request timed out</source>
-        <translation>Päring on aegunud</translation>
-    </message>
-    <message>
-        <source>Invalid content type</source>
-        <translation>Kehtetu sisutüüp</translation>
-    </message>
-    <message>
-        <source>Updating certificates has failed. Check your internet connection and try again.</source>
-        <translation>Uuendamine ebaõnnestus. Kontrolli arvuti internetiühendust ja proovi uuesti.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>SSL-turvakanali loomine ebaõnnestus. Palun alustage uuendamist uuesti.</translation>
-    </message>
-    <message>
-        <source>Updating certificates has failed. The server is overloaded, try again later.</source>
-        <translation>Sertifikaatide uuendamine ebaõnnestus. Server on ülekoormatud, proovi mõne aja pärast uuesti.</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Sertifikaadi laadimine ebaõnnestus</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MobileDialog</name>
-    <message>
-        <source>Signing in process</source>
-        <translation>Toimub allkirjastamine</translation>
-    </message>
-    <message>
-        <source>Request accepted</source>
-        <translation>Päring aktsepteeritud</translation>
-    </message>
-    <message>
-        <source>Request timeout</source>
-        <translation>Päringu kannatus katkes</translation>
-    </message>
-    <message>
-        <source>User denied or cancelled</source>
-        <translation>Kasutaja keeldus või katkestas</translation>
-    </message>
-    <message>
-        <source>Got signature</source>
-        <translation>Sain allkirja</translation>
-    </message>
-    <message>
-        <source>Request pending</source>
-        <translation>Päring ootel</translation>
-    </message>
-    <message>
-        <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
-    </message>
-    <message>
-        <source>Phone absent</source>
-        <translation>Telefon ei ole levis</translation>
-    </message>
-    <message>
-        <source>Request sending error</source>
-        <translation>Päringu saatmise viga</translation>
-    </message>
-    <message>
-        <source>SIM error</source>
-        <translation>SIM kaardi viga</translation>
-    </message>
-    <message>
-        <source>Service internal error</source>
-        <translation>Teenuse sisemine viga</translation>
-    </message>
-    <message>
-        <source>Signing with Mobile-ID</source>
-        <translation>Allkirjastan Mobiil-ID -ga</translation>
-    </message>
-    <message>
-        <source>User is not a Mobile-ID client</source>
-        <translation>Kasutaja ei ole Mobiil-ID klient</translation>
-    </message>
-    <message>
-        <source>ID and phone number do not match</source>
-        <translation>Isikukood ja telefoni number ei klapi</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Allkirjastan</translation>
-    </message>
-    <message>
-        <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
-        <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
-    </message>
-    <message>
-        <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
-        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
-    </message>
-    <message>
-        <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID service is not activated.</source>
-        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
-    </message>
-    <message>
-        <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>MobileProgress</name>
-
-    <message>
-        <source>%v sec</source>
-        <translation>%v sek</translation>
-    </message>
-</context>
-
-
-<context>
     <name>PrintSheet</name>
     <message>
         <source>SIGNED FILES</source>
@@ -3057,6 +2967,85 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>SSL context is missing</source>
         <translation>SSL kontekst puudub</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>Updater</name>
+
+    <message>
+        <source>CLOSE</source>
+        <translation>SULGE</translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation>ALUSTA</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>DETAILS</source>
+        <translation>DETAILID</translation>
+    </message>
+    <message>
+        <source>CONTINUE</source>
+        <translation>JÄTKA</translation>
+    </message>
+    <message>
+        <source>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
+        <translation>Toimub kehtivuse pikendamine. Uuendamise protsess kestab kuni 10 minutit. Ära eemalda kaarti lugejast!</translation>
+    </message>
+    <message>
+        <source>Validity Extension</source>
+        <translation>Kehtivuse pikendamine</translation>
+    </message>
+    <message>
+        <source>I agree to the terms of use of certificates.</source>
+        <translation>Nõustun sertifikaatide kasutustingimustega.</translation>
+    </message>
+    <message>
+        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
+        <translation>Kinnitan, et olen uued PIN- ja PUK-koodid üles kirjutanud.</translation>
+    </message>
+    <message>
+        <source>Enter PIN</source>
+        <translation>Sisesta PIN</translation>
+    </message>
+    <message>
+        <source>PIN1 again</source>
+        <translation>PIN1 uuesti</translation>
+    </message>
+    <message>
+        <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
+        <translation>PIN1 on lukus. Avamiseks sisetage PUK kood.</translation>
+    </message>
+
+    <message>
+        <source>Request timed out</source>
+        <translation>Päring on aegunud</translation>
+    </message>
+    <message>
+        <source>Invalid content type</source>
+        <translation>Kehtetu sisutüüp</translation>
+    </message>
+    <message>
+        <source>Validity extension has failed. Check your internet connection and try again.</source>
+        <translation>Kehtivuse pikendamine ebaõnnestus. Kontrolli arvuti internetiühendust ja proovi uuesti.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Please restart the update process.</source>
+        <translation>SSL-turvakanali loomine ebaõnnestus. Palun alustage protsessi uuesti.</translation>
+    </message>
+    <message>
+        <source>Validity extension has failed. The server is overloaded, try again later.</source>
+        <translation>Kehtivuse pikendamine ebaõnnestus. Server on ülekoormatud, proovi mõne aja pärast uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to read certificate</source>
+        <translation>Sertifikaadi laadimine ebaõnnestus</translation>
     </message>
 </context>
 
