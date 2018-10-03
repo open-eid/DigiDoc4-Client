@@ -3040,6 +3040,14 @@ Additional licenses and components</translation>
         <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
         <translation>PIN1 is locked. Please use PUK to unlock PIN1.</translation>
     </message>
+    <message>
+        <source>Please follow the instructions on your PIN pad.</source>
+        <translation>Please follow the instructions on your PIN pad.</translation>
+    </message>
+    <message>
+        <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
+        <translation>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</translation>
+    </message>
 
     <message>
         <source>Request timed out</source>

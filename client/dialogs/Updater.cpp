@@ -161,20 +161,20 @@ void Updater::Private::setButtonPattern(QPushButton *button, const QString &colo
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	if( color != nullptr )
 	{	// Red color styled button
-		button->setStyleSheet( 
-			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #981E32;}" 
-			"QPushButton:pressed { background-color: #F24A66;}" 
-			"QPushButton:hover:!pressed { background-color: #CD2541;}" 
-			); 
+		button->setStyleSheet(
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #981E32;}"
+			"QPushButton:pressed { background-color: #F24A66;}"
+			"QPushButton:hover:!pressed { background-color: #CD2541;}"
+			);
 	}
 	else
 	{	// Blue color styled button
-		button->setStyleSheet( 
-			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
-			"QPushButton:pressed { background-color: #41B6E6;}" 
-			"QPushButton:hover:!pressed { background-color: #008DCF;}" 
-			"QPushButton:disabled { background-color: #BEDBED;};" 
-			); 
+		button->setStyleSheet(
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
+			"QPushButton:pressed { background-color: #41B6E6;}"
+			"QPushButton:hover:!pressed { background-color: #008DCF;}"
+			"QPushButton:disabled { background-color: #BEDBED;};"
+			);
 	}
 	button->setMinimumHeight( 30 );
 	button->setMinimumWidth( 120 );
@@ -185,7 +185,7 @@ void Updater::Private::setButtonPattern(QPushButton *button, const QString &colo
 QPCSCReader::Result Updater::Private::unblockPIN() const
 {
 	stackedWidget->setCurrentIndex(4);
-	QString text = "<b>" + tr("PIN1 is locked. To unlock please use PUK") + "</b><br />";
+	QString text = "<b>" + tr("PIN1 is locked. Please use PUK to unlock PIN1.") + "</b><br />";
 	QRegExp pinregexp(QStringLiteral("\\d{4,12}"));
 	QRegExp pukregexp(QStringLiteral("\\d{8,12}"));
 	pukInput->setHidden(reader->isPinPad());
@@ -220,7 +220,8 @@ QPCSCReader::Result Updater::Private::unblockPIN() const
 		::Updater::connect(cancelButton, &QPushButton::clicked, &l, [&]{ l.exit(0); });
 	}
 	else
-		text += "<b>" + tr("Please enter new PIN-s from PinPAD") + "</b><br />";
+		text += "<br /><b>" + tr("Please follow the instructions on your PIN pad.") + "<br /><br />" +
+			tr("To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.") + "</b><br /><br />";
 	close->hide();
 	details->hide();
 
@@ -903,7 +904,7 @@ void Updater::run()
 }
 
 int Updater::execute()
-{ 
+{
 	Overlay overlay(parentWidget());
 	overlay.show();
 	auto rc = exec();
