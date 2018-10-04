@@ -29,37 +29,44 @@
 #include <common/SslCertificate.h>
 
 #include <QFontMetrics>
+#include <QPainter>
 #include <QResizeEvent>
 #include <QSvgWidget>
 #include <QtCore/QTextStream>
 
 using namespace ria::qdigidoc4;
 
-#define ICON_WIDTH 19
+class SignatureItem::Private: public Ui::SignatureItem
+{
+public:
+	Private(const DigiDocSignature &s): signature(s) {}
+	DigiDocSignature signature;
 
-#if defined(Q_OS_WIN)
-	#define ITEM_HEIGHT 46
-	#define LINE_HEIGHT 18
-#else
-	#define ITEM_HEIGHT 44
-	#define LINE_HEIGHT 16
-#endif
+	bool invalid;
+	ria::qdigidoc4::WarningType error;
+	QString nameText;
+	QString serial;
+	QString statusHtml;
+	QString roleElided;
+	std::unique_ptr<QFontMetrics> nameMetrics;
+};
 
-
-SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState state, bool isSupported, QWidget *parent)
+SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState /*state*/, bool isSupported, QWidget *parent)
 : Item(parent)
-, ui(new Ui::SignatureItem)
-, signature(s)
+, ui(new Private(s))
 {
 	ui->setupUi(this);
 
 	QFont nameFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
-	nameMetrics.reset(new QFontMetrics(nameFont));	
+	ui->nameMetrics.reset(new QFontMetrics(nameFont));
 
 	ui->name->setFont(nameFont);
 	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
-	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
-	ui->remove->init(LabelButton::White, "", 0);
+	ui->role->setFont(Styles::font(Styles::Regular, 11));
+	ui->role->installEventFilter(this);
+	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
+		QStringLiteral("/images/icon_remove_pressed.svg"), 1, 1, 17, 17);
+	ui->remove->init(LabelButton::White, QString(), 0);
 	ui->remove->setVisible(isSupported);
 	connect(ui->remove, &LabelButton::clicked, this, &SignatureItem::removeSignature);
 	init();
@@ -72,41 +79,41 @@ SignatureItem::~SignatureItem()
 
 void SignatureItem::init()
 {
-	const SslCertificate cert = signature.cert();
+	const SslCertificate cert = ui->signature.cert();
 
 	QString accessibility, signingInfo, status;
-	name = QString();
-	serial = QString();
-	statusHtml = QString();
-	error = ria::qdigidoc4::NoWarning;
+	ui->nameText.clear();
+	ui->serial.clear();
+	ui->statusHtml.clear();
+	ui->error = ria::qdigidoc4::NoWarning;
 
 	QTextStream sa(&accessibility);
-	QTextStream sc(&statusHtml);
+	QTextStream sc(&ui->statusHtml);
 	QTextStream si(&signingInfo);
 	
-	auto signatureValidity = signature.validate();
+	auto signatureValidity = ui->signature.validate();
 
-	invalid = signatureValidity >= DigiDocSignature::Invalid;
+	ui->invalid = signatureValidity >= DigiDocSignature::Invalid;
 	if(!cert.isNull())
-		name = cert.toString(cert.showCN() ? "CN" : "GN SN").toHtmlEscaped();
+		ui->nameText = cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")).toHtmlEscaped();
 	else
-		name = signature.signedBy().toHtmlEscaped();
+		ui->nameText = ui->signature.signedBy().toHtmlEscaped();
 
 	bool isSignature = true;
 	QString label = tr("Signature");
-	if(signature.profile() == "TimeStampToken")
+	if(ui->signature.profile() == QStringLiteral("TimeStampToken"))
 	{
 		isSignature = false;
 		label = tr("Timestamp");
-		setIcon(":/images/icon_ajatempel.svg");
+		ui->icon->setPixmap(QStringLiteral(":/images/icon_ajatempel.svg"));
 	}
 	else if(cert.type() & SslCertificate::TempelType)
 	{
-		setIcon(":/images/icon_digitempel.svg");
+		ui->icon->setPixmap(QStringLiteral(":/images/icon_digitempel.svg"));
 	}
 	else
 	{
-		setIcon(":/images/icon_Allkiri_small.svg", ICON_WIDTH, 20);
+		ui->icon->setPixmap(QStringLiteral(":/images/icon_Allkiri_small.svg"));
 	}
 	sa << label << " ";
 	sc << "<span style=\"font-weight:normal;\">";
@@ -130,52 +137,51 @@ void SignatureItem::init()
 		break;
 	case DigiDocSignature::Invalid:
 		if(isSignature)
-			error = ria::qdigidoc4::InvalidSignatureWarning;
+			ui->error = ria::qdigidoc4::InvalidSignatureWarning;
 		else
-			error = ria::qdigidoc4::InvalidTimestampWarning;
+			ui->error = ria::qdigidoc4::InvalidTimestampWarning;
 		sa << tr("is not valid", isSignature ? "Signature" : "Timestamp");
 		sc << "<font color=\"red\">" << label << " " << tr("is not valid", isSignature ? "Signature" : "Timestamp");
 		break;
 	case DigiDocSignature::Unknown:
 		if(isSignature)
-			error = ria::qdigidoc4::UnknownSignatureWarning;
+			ui->error = ria::qdigidoc4::UnknownSignatureWarning;
 		else
-			error = ria::qdigidoc4::UnknownTimestampWarning;
+			ui->error = ria::qdigidoc4::UnknownTimestampWarning;
 		sa << tr("is unknown", isSignature ? "Signature" : "Timestamp");
 		sc << "<font color=\"red\">" << label << " " << tr("is unknown", isSignature ? "Signature" : "Timestamp");
 		break;
 	}
 	sc << "</span>";
-	ui->name->setText((invalid ? red(name + " - ") : name + " - ") + statusHtml);
+	ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->statusHtml);
 	status = accessibility;
 
 	if(!cert.isNull())
 	{
-		serial = cert.toString("serialNumber").toHtmlEscaped();
-		sa << " " <<  serial << " - ";
-		si << serial << " - ";
+		ui->serial = cert.toString(QStringLiteral("serialNumber")).toHtmlEscaped();
+		sa << " " <<  ui->serial << " - ";
+		si << ui->serial << " - ";
 	}
-	DateTime date( signature.dateTime().toLocalTime() );
+	DateTime date(ui->signature.dateTime().toLocalTime());
 	if( !date.isNull() )
 	{
 		sa << " " << tr("Signed on") << " "
-			<< date.formatDate( "dd. MMMM yyyy" ) << " "
+			<< date.formatDate(QStringLiteral("dd. MMMM yyyy")) << " "
 			<< tr("time") << " "
-			<< date.toString( "hh:mm" );
+			<< date.toString(QStringLiteral("hh:mm"));
 		si << tr("Signed on") << " "
-			<< date.formatDate( "dd. MMMM yyyy" ) << " "
+			<< date.formatDate(QStringLiteral("dd. MMMM yyyy")) << " "
 			<< tr("time") << " "
-			<< date.toString( "hh:mm" );
+			<< date.toString(QStringLiteral("hh:mm"));
 	}
 	ui->idSignTime->setText(signingInfo);
+	const QString role = ui->signature.role();
+	ui->role->setHidden(role.isEmpty());
+	ui->role->setText(role.toHtmlEscaped());
+	ui->roleElided = ui->role->fontMetrics().elidedText(ui->role->text(), Qt::ElideRight, ui->role->geometry().width(), Qt::TextShowMnemonic);
 
-	setAccessibleName(label + " " + cert.toString(cert.showCN() ? "CN" : "GN SN"));
+	setAccessibleName(label + " " + cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")));
 	setAccessibleDescription( accessibility );
-
-	// Reserved width: signature icon (24px) + remove icon (19px) + 5px margin before remove
-	reservedWidth = ICON_WIDTH + 5 + (ui->remove->isHidden() ? 0 : ICON_WIDTH + 5);
-	nameWidth = nameMetrics->width(name  + " - " + status);
-	changeNameHeight();
 }
 
 void SignatureItem::changeEvent(QEvent* event)
@@ -189,57 +195,63 @@ void SignatureItem::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void SignatureItem::changeNameHeight()
-{
-	if((width() - reservedWidth) < nameWidth)
-	{
-		ui->name->setMinimumHeight(LINE_HEIGHT * 2);
-		ui->name->setMaximumHeight(LINE_HEIGHT * 2);
-		setMinimumHeight(ITEM_HEIGHT + LINE_HEIGHT);
-		setMaximumHeight(ITEM_HEIGHT + LINE_HEIGHT);
-		ui->name->setText((invalid ? red(name) : name) + "<br/>" + statusHtml);
-		enlarged = true;
-	}
-	else if(enlarged)
-	{
-		ui->name->setMinimumHeight(LINE_HEIGHT);
-		ui->name->setMaximumHeight(LINE_HEIGHT);
-		setMinimumHeight(ITEM_HEIGHT);
-		setMaximumHeight(ITEM_HEIGHT);
-		ui->name->setText((invalid ? red(name + " - ") : name + " - ") + statusHtml);
-		enlarged = false;
-	}
-}
-
 void SignatureItem::details()
 {
-	(new SignatureDialog(signature, this))->open();
+	(new SignatureDialog(ui->signature, this))->open();
+}
+
+bool SignatureItem::eventFilter(QObject *o, QEvent *e)
+{
+	switch(e->type())
+	{
+	case QEvent::Paint:
+		if(o == ui->role)
+		{
+			QPainter(qobject_cast<QLabel*>(o)).drawText(0, 0,
+				ui->role->geometry().width(),
+				ui->role->geometry().height(),
+				ui->role->alignment(),
+				ui->roleElided
+			);
+			return true;
+		}
+		break;
+	case QEvent::Resize:
+		if(QResizeEvent *r = static_cast<QResizeEvent*>(e))
+		{
+			if(o == ui->role)
+				ui->roleElided = ui->role->fontMetrics().elidedText(ui->role->text().replace('\n', ' '), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
+		}
+		break;
+	default: break;
+	}
+	return Item::eventFilter(o, e);
 }
 
 ria::qdigidoc4::WarningType SignatureItem::getError() const
 {
-	return error;
+	return ui->error;
 }
 
 QString SignatureItem::id() const
 {
-	return signature.id();
+	return ui->signature.id();
 }
 
 bool SignatureItem::isInvalid() const
 {
-	return invalid;
+	return ui->invalid;
 }
 
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
 {
-	if(serial.isEmpty())
+	if(ui->serial.isEmpty())
 		return false;
 
-	return serial == cardCode || serial == mobileCode;
+	return ui->serial == cardCode || ui->serial == mobileCode;
 }
 
-void SignatureItem::mouseReleaseEvent(QMouseEvent *event)
+void SignatureItem::mouseReleaseEvent(QMouseEvent *)
 {
 	details();
 }
@@ -251,9 +263,9 @@ QString SignatureItem::red(const QString &text)
 
 void SignatureItem::removeSignature()
 {
-	const SslCertificate c = signature.cert();
+	const SslCertificate c = ui->signature.cert();
 	QString msg = tr("Remove signature %1")
-		.arg( c.toString( c.showCN() ? "CN serialNumber" : "GN SN serialNumber" ) );
+		.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")));
 
 	WarningDialog dlg(msg, qApp->activeWindow());
 	dlg.setCancelText(tr("CANCEL"));
@@ -261,18 +273,4 @@ void SignatureItem::removeSignature()
 	dlg.exec();
 	if(dlg.result() == SignatureRemove)
 		emit remove(this);
-}
-
-void SignatureItem::resizeEvent(QResizeEvent *event)
-{
-	if(event->oldSize().width() != event->size().width())
-		changeNameHeight();
-}
-
-void SignatureItem::setIcon(const QString &icon, int width, int height)
-{
-	auto widget = new QSvgWidget(icon, ui->icon);
-	widget->resize(width, height);
-	widget->move(0, (this->height() - height) / 2);
-	widget->show();
 }

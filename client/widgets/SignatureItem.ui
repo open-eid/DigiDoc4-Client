@@ -7,42 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>465</width>
-    <height>44</height>
+    <height>60</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>44</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>44</height>
-   </size>
-  </property>
-  <property name="font">
-   <font>
-    <pointsize>14</pointsize>
-    <weight>50</weight>
-    <bold>false</bold>
-   </font>
   </property>
   <property name="cursor">
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">border: solid rgba(217, 217, 216, 0.45);
@@ -51,7 +23,7 @@ background-color: #ffffff;
 color: #000000; 
 text-decoration: none solid rgb(0, 0, 0);</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -68,13 +40,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
     <number>2</number>
    </property>
    <item>
-    <widget class="QWidget" name="icon" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QLabel" name="icon">
      <property name="minimumSize">
       <size>
        <width>25</width>
@@ -93,228 +59,89 @@ text-decoration: none solid rgb(0, 0, 0);</string>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>38</height>
-      </size>
+     <property name="leftMargin">
+      <number>0</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
+     <property name="topMargin">
+      <number>5</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>1</width>
-          <height>5</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QWidget" name="line1" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>36</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="name">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>MARI MAASIKAS MUSTIKAS - &lt;span style=&quot;color:#53c964&quot;&gt;Allkiri on kehtiv&lt;/span&gt;</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::NoTextInteraction</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>26</width>
-             <height>16</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="line2" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>11</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="idSignTime">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>1</width>
-          <height>5</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="name">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+       <property name="text">
+        <string>MARI MAASIKAS MUSTIKAS - &lt;span style=&quot;color:#53c964&quot;&gt;Allkiri on kehtiv&lt;/span&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="role">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+       <property name="text">
+        <string>Role / Resolution</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="idSignTime">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+       <property name="text">
+        <string>48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="LabelButton" name="remove">
@@ -330,20 +157,11 @@ text-decoration: none solid rgb(0, 0, 0);</string>
        <height>19</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>
