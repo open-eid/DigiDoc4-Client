@@ -3056,6 +3056,14 @@ Additional licenses and components</source>
         <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
         <translation>PIN1 заблокирован. Введите PUK (код), чтобы открыть его.</translation>
     </message>
+    <message>
+        <source>Please follow the instructions on your PIN pad.</source>
+        <translation>Пожалуйста, следуйте инструкциям на Пин-панель(PIN pad)</translation>
+    </message>
+    <message>
+        <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
+        <translation>Чтобы разблокировать код PIN1 на ваш считыватель PIN-код, сначала необходимо ввести PUK-код, а затем новый код PIN1 дважды.</translation>
+    </message>
 
     <message>
         <source>Request timed out</source>

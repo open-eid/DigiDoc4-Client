@@ -3020,7 +3020,15 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
-        <translation>PIN1 on lukus. Avamiseks sisetage PUK kood.</translation>
+        <translation>PIN1 on lukus. Avamiseks sisestage PUK kood.</translation>
+    </message>
+    <message>
+        <source>Please follow the instructions on your PIN pad.</source>
+        <translation>Palun järgi PIN padi juhiseid.</translation>
+    </message>
+    <message>
+        <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
+        <translation>PIN pad lugejaga PIN1 blokeeringu tühistamiseks tuleb kõigepealt sisestada PUK ning siis kaks korda uut PIN1 koodi.</translation>
     </message>
 
     <message>
