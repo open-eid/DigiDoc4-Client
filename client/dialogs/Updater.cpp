@@ -429,7 +429,6 @@ Updater::Updater(const QString &reader, QWidget *parent)
 #else
 	RSA_meth_set1_name(d->rsamethod, "Updater");
 	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
-	RSA_meth_set_flags(d->rsamethod, RSA_meth_get_flags(d->rsamethod) | RSA_FLAG_SIGN_VER);
 	typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
 		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
 	typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
@@ -731,10 +730,10 @@ int Updater::exec()
 			RSA *rsa = (RSA*)key.handle();
 #if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 			RSA_set_method(rsa, &d->rsamethod);
+			rsa->flags |= RSA_FLAG_SIGN_VER;
 #else
 			RSA_set_method(rsa, d->rsamethod);
 #endif
-			rsa->flags |= RSA_FLAG_SIGN_VER;
 			RSA_set_app_data(rsa, d);
 		}
 	}
