@@ -55,7 +55,7 @@
 
 Q_LOGGING_CATEGORY(ULog,"qesteidutil.Updater")
 
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 {
 	if(!r || !s)
@@ -73,7 +73,7 @@ class Updater::Private: public Ui::Updater
 public:
 	QPCSCReader *reader = nullptr;
 	QPushButton *close = nullptr, *details = nullptr;
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 	RSA_METHOD rsamethod = *RSA_get_default_method();
 	ECDSA_METHOD *ecmethod = ECDSA_METHOD_new(nullptr);
 #else
@@ -138,7 +138,7 @@ public:
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 	{
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 		Private *d = (Private*)ECDSA_get_ex_data(eckey, 0);
 #else
 		Private *d = (Private*)EC_KEY_get_ex_data(eckey, 0);
@@ -418,9 +418,10 @@ Updater::Updater(const QString &reader, QWidget *parent)
 
 	d->reader = new QPCSCReader(reader, &QPCSC::instance());
 
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 	d->rsamethod.name = "Updater";
 	d->rsamethod.rsa_sign = Private::rsa_sign;
+	d->rsamethod.flags |= RSA_FLAG_SIGN_VER;
 	ECDSA_METHOD_set_app_data(d->ecmethod, d);
 	ECDSA_METHOD_set_name(d->ecmethod, const_cast<char*>("QSmartCard"));
 	ECDSA_METHOD_set_sign(d->ecmethod, Private::ecdsa_do_sign);
@@ -428,6 +429,7 @@ Updater::Updater(const QString &reader, QWidget *parent)
 #else
 	RSA_meth_set1_name(d->rsamethod, "Updater");
 	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
+	RSA_meth_set_flags(d->rsamethod, RSA_meth_get_flags(d->rsamethod) | RSA_FLAG_SIGN_VER);
 	typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
 		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
 	typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
@@ -486,7 +488,7 @@ Updater::~Updater()
 	d->reader->endTransaction();
 	delete d->reader;
 	qInstallMessageHandler(d->oldMsgHandler);
-#if OPENSSL_VERSION_NUMBER >= 0x10010000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
 	RSA_meth_free(d->rsamethod);
 	EC_KEY_METHOD_free(d->ecmethod);
 #else
@@ -716,7 +718,7 @@ int Updater::exec()
 		if (key.algorithm() == QSsl::Ec)
 		{
 			EC_KEY *ec = (EC_KEY*)key.handle();
-#if OPENSSL_VERSION_NUMBER < 0x10010000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 			ECDSA_set_ex_data(ec, 0, d);
 			ECDSA_set_method(ec, d->ecmethod);
 #else
@@ -727,12 +729,12 @@ int Updater::exec()
 		else
 		{
 			RSA *rsa = (RSA*)key.handle();
-#if OPENSSL_VERSION_NUMBER < 0x10010000L || defined(LIBRESSL_VERSION_NUMBER)
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 			RSA_set_method(rsa, &d->rsamethod);
-			rsa->flags |= RSA_FLAG_SIGN_VER;
 #else
 			RSA_set_method(rsa, d->rsamethod);
 #endif
+			rsa->flags |= RSA_FLAG_SIGN_VER;
 			RSA_set_app_data(rsa, d);
 		}
 	}
