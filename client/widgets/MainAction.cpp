@@ -23,61 +23,113 @@
 
 using namespace ria::qdigidoc4;
 
+class MainAction::Private: public Ui::MainAction
+{
+public:
+	QList<ria::qdigidoc4::Actions> actions;
+	QList<QPushButton*> list;
+};
 
-MainAction::MainAction(Actions action, QWidget *parent)
-: QWidget(parent)
-, ui(new Ui::MainAction)
+MainAction::MainAction(QWidget *parent)
+	: QWidget(parent)
+	, ui(new Private)
 {
 	ui->setupUi(this);
-	ui->mainAction->setFont( Styles::font( Styles::Condensed, 16 ) );
+	ui->mainAction->setFont(Styles::font(Styles::Condensed, 16));
+	ui->otherCards->hide();
+	parent->installEventFilter(this);
+	move(parent->width() - width(), parent->height() - height());
 
-	connect( ui->mainAction, &QPushButton::clicked, this, [&]{ emit this->action(actionType); });
-	connect( ui->otherCards, &QToolButton::clicked, this, &MainAction::dropdown );
-
-	update(action);
+	connect(ui->mainAction, &QPushButton::clicked, this, [&]{ emit action(ui->actions.value(0)); });
+	connect(ui->mainAction, &QPushButton::clicked, this, &MainAction::hideDropdown);
+	connect(ui->otherCards, &QToolButton::clicked, this, &MainAction::showDropdown);
 }
 
 MainAction::~MainAction()
 {
+	hideDropdown();
 	delete ui;
 }
 
 void MainAction::changeEvent(QEvent* event)
 {
-	if (event->type() == QEvent::LanguageChange)
-		update(actionType);
+	if(event->type() == QEvent::LanguageChange)
+		update(ui->actions);
 	QWidget::changeEvent(event);
 }
 
-void MainAction::setButtonDisabled(bool disabled)
+void MainAction::hideDropdown()
 {
-	ui->mainAction->setDisabled(disabled);
+	for(QPushButton *other: ui->list)
+		other->deleteLater();
+	ui->list.clear();
+	setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; }"));
 }
 
-void MainAction::update(Actions action)
+bool MainAction::eventFilter(QObject *o, QEvent *e)
 {
-	actionType = action;
-	QString label;
-	switch(actionType)
+	switch(e->type())
 	{
-	case SignatureMobile:
-		label = tr("SignatureMobile");
+	case QEvent::Resize:
+		if(o == parentWidget())
+		{
+			move(parentWidget()->width() - width(), parentWidget()->height() - height());
+			int i = 1;
+			for(QPushButton *other: ui->list)
+				other->move(pos() + QPoint(0, (-height() - 1) * (i++)));
+		}
 		break;
-	case SignatureToken:
-		label = tr("SignatureToken");
-		break;
-	case EncryptContainer:
-		label = tr("EncryptContainer");
-		break;
-	case DecryptContainer:
-		label = tr("DecryptContainer");
-		break;
-	default:
-		label = tr("SignatureAdd");
-		break;
+	default: break;
 	}
+	return QWidget::eventFilter(o, e);
+}
 
-	ui->mainAction->setText(label);
-	ui->mainAction->show();
-	ui->otherCards->setVisible(action == SignatureAdd || action == SignatureToken);
+
+QString MainAction::label(Actions action) const
+{
+	switch(action)
+	{
+	case SignatureMobile: return tr("SignatureMobile");
+	case SignatureToken: return tr("SignatureToken");
+	case EncryptContainer: return tr("EncryptContainer");
+	case DecryptContainer: return tr("DecryptContainer");
+	default: return tr("SignatureAdd");
+	}
+}
+
+void MainAction::setButtonEnabled(bool enabled)
+{
+	ui->mainAction->setEnabled(enabled);
+}
+
+void MainAction::showDropdown()
+{
+	if(ui->actions.size() > 1 && ui->list.isEmpty())
+	{
+		for(QList<Actions>::const_iterator i = ui->actions.cbegin() + 1; i != ui->actions.cend(); ++i)
+		{
+			QPushButton *other = new QPushButton(label(*i), parentWidget());
+			other->resize(size());
+			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
+			other->show();
+			other->setStyleSheet(ui->mainAction->styleSheet() +
+				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
+			other->setFont(ui->mainAction->font());
+			connect(other, &QPushButton::clicked, this, &MainAction::hideDropdown);
+			connect(other, &QPushButton::clicked, this, [=]{ emit this->action(*i); });
+			ui->list.push_back(other);
+		}
+		setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 0px; }"));
+	}
+	else
+		hideDropdown();
+}
+
+void MainAction::update(const QList<Actions> &actions)
+{
+	hideDropdown();
+	ui->actions = actions;
+	ui->mainAction->setText(label(actions[0]));
+	ui->otherCards->setVisible(actions.size() > 1);
+	show();
 }
