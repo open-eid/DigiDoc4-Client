@@ -41,14 +41,15 @@ public slots:
 	void details() override;
 
 protected:
-	void changeEvent(QEvent* event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
+	bool event(QEvent *event) override;
 	bool eventFilter(QObject *o, QEvent *e) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
 	void init();
 	QString red(const QString &text);
 	void removeSignature();
+	void updateNameField();
 
 	class Private;
 	Private *ui;

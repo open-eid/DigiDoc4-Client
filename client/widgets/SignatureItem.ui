@@ -77,12 +77,6 @@ text-decoration: none solid rgb(0, 0, 0);</string>
      </property>
      <item>
       <widget class="QLabel" name="name">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <family>Roboto</family>
