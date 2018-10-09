@@ -1333,12 +1333,12 @@ ID-КАРТОЙ</translation>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>The validity of this document can be extended. The process takes about 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
-        <translation>&lt;b&gt;Сертификаты Вашей ID-карты необходимо обновить.&lt;/b&gt; Обновление занимает около 2-10 минут и требует наличия интернет-соединения. Не извлекайте ID-карту из считывающего устройства до завершения процесса обновления.</translation>
+        <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
+        <translation>Срок действия этого документа возможно продлить. Процесс занимает 2–10 минут и требует постоянной связи с интернетом. Карту нельзя вынимать из считывателя до окончания процесса.</translation>
     </message>
     <message>
-        <source>Start</source>
-        <translation>Обновить</translation>
+        <source>Begin</source>
+        <translation>Начать</translation>
     </message>
     <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
@@ -3033,12 +3033,12 @@ Additional licenses and components</source>
         <translation>Производится обновление. Процесс может занять до 10 минут. Не удаляйте карту из считывателя!</translation>
     </message>
     <message>
-        <source>Validity Extension</source>
-        <translation>Обновление сертификатов</translation>
+        <source>Validity extension of your document</source>
+        <translation>Продление срока действия документа</translation>
     </message>
     <message>
-        <source>I agree to the terms of use of certificates.</source>
-        <translation>Я согласен с условиями использования сертификатов.</translation>
+        <source>Proceed with the validity extension process.</source>
+        <translation>Продолжаю процесс продления срока действия документа.</translation>
     </message>
     <message>
         <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>

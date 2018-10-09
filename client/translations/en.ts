@@ -1326,12 +1326,12 @@ ID-CARD</translation>
     </message>
 
     <message>
-        <source>The validity of this document can be extended. The process takes about 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
-        <translation>&lt;b&gt;Your ID card certificates need to be updated.&lt;/b&gt; Updating takes ca 2-10 minutes and requires an active internet connection. Do not remove the ID card from the smartcard reader until the update is complete.</translation>
+        <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
+        <translation>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</translation>
     </message>
     <message>
-        <source>Start</source>
-        <translation>Start</translation>
+        <source>Begin</source>
+        <translation>Begin</translation>
     </message>
     <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
@@ -3017,12 +3017,12 @@ Additional licenses and components</translation>
         <translation>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</translation>
     </message>
     <message>
-        <source>Validity Extension</source>
-        <translation>Validity Extension</translation>
+        <source>Validity extension of your document</source>
+        <translation>Validity extension of your document</translation>
     </message>
     <message>
-        <source>I agree to the terms of use of certificates.</source>
-        <translation>I agree to the terms of use of certificates.</translation>
+        <source>Proceed with the validity extension process.</source>
+        <translation>Proceed with the validity extension process.</translation>
     </message>
     <message>
         <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>

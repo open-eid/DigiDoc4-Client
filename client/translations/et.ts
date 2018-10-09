@@ -1317,12 +1317,12 @@ ID-KAARDIGA</translation>
     </message>
 
     <message>
-        <source>The validity of this document can be extended. The process takes about 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
-        <translation>&lt;b&gt;Kaardi sertifikaadid vajavad uuendamist.&lt;/b&gt; Uuendamise protseduur võtab aega 2-10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast välja võtta enne uuenduse lõppu.</translation>
+        <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
+        <translation>Selle dokumendi kehtivust on võimalik pikendada. Protsess kestab 2–10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast välja võtta enne protsessi lõppu.</translation>
     </message>
     <message>
-        <source>Start</source>
-        <translation>Uuenda</translation>
+        <source>Begin</source>
+        <translation>Alusta</translation>
     </message>
     <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
@@ -2999,12 +2999,12 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Toimub kehtivuse pikendamine. Uuendamise protsess kestab kuni 10 minutit. Ära eemalda kaarti lugejast!</translation>
     </message>
     <message>
-        <source>Validity Extension</source>
-        <translation>Kehtivuse pikendamine</translation>
+        <source>Validity extension of your document</source>
+        <translation>Dokumendi kehtivuse pikendamine</translation>
     </message>
     <message>
-        <source>I agree to the terms of use of certificates.</source>
-        <translation>Nõustun sertifikaatide kasutustingimustega.</translation>
+        <source>Proceed with the validity extension process.</source>
+        <translation>Jätkan dokumendi kehtivuse pikendamise protsessiga.</translation>
     </message>
     <message>
         <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
