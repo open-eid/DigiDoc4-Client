@@ -146,7 +146,7 @@ font-weight: 700;
 </string>
          </property>
          <property name="text">
-          <string>Validity Extension</string>
+          <string>Validity extension of your document</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -166,7 +166,7 @@ font-weight: 700;
        <item>
         <widget class="QCheckBox" name="messageAgree">
          <property name="text">
-          <string>I agree to the terms of use of certificates.</string>
+          <string>Proceed with the validity extension process.</string>
          </property>
         </widget>
        </item>
