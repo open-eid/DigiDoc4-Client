@@ -39,7 +39,7 @@ using namespace ria::qdigidoc4;
 class SignatureItem::Private: public Ui::SignatureItem
 {
 public:
-	Private(const DigiDocSignature &s): signature(s) {}
+	Private(DigiDocSignature s): signature(std::move(s)) {}
 	DigiDocSignature signature;
 
 	bool invalid;
@@ -48,7 +48,7 @@ public:
 	QString serial;
 	QString statusHtml;
 	QString roleElided;
-	std::unique_ptr<QFontMetrics> nameMetrics;
+	QString status;
 };
 
 SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState /*state*/, bool isSupported, QWidget *parent)
@@ -56,12 +56,8 @@ SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState /*state*/
 , ui(new Private(s))
 {
 	ui->setupUi(this);
-
-	QFont nameFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
-	ui->nameMetrics.reset(new QFontMetrics(nameFont));
-
-	ui->name->setFont(nameFont);
-	ui->idSignTime->setFont( Styles::font(Styles::Regular, 11) );
+	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
+	ui->idSignTime->setFont(Styles::font(Styles::Regular, 11));
 	ui->role->setFont(Styles::font(Styles::Regular, 11));
 	ui->role->installEventFilter(this);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
@@ -81,10 +77,11 @@ void SignatureItem::init()
 {
 	const SslCertificate cert = ui->signature.cert();
 
-	QString accessibility, signingInfo, status;
+	QString accessibility, signingInfo;
 	ui->nameText.clear();
 	ui->serial.clear();
 	ui->statusHtml.clear();
+	ui->status.clear();
 	ui->error = ria::qdigidoc4::NoWarning;
 
 	QTextStream sa(&accessibility);
@@ -108,13 +105,9 @@ void SignatureItem::init()
 		ui->icon->setPixmap(QStringLiteral(":/images/icon_ajatempel.svg"));
 	}
 	else if(cert.type() & SslCertificate::TempelType)
-	{
 		ui->icon->setPixmap(QStringLiteral(":/images/icon_digitempel.svg"));
-	}
 	else
-	{
 		ui->icon->setPixmap(QStringLiteral(":/images/icon_Allkiri_small.svg"));
-	}
 	sa << label << " ";
 	sc << "<span style=\"font-weight:normal;\">";
 	switch( signatureValidity )
@@ -153,8 +146,8 @@ void SignatureItem::init()
 		break;
 	}
 	sc << "</span>";
-	ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->statusHtml);
-	status = accessibility;
+	updateNameField();
+	ui->status = accessibility;
 
 	if(!cert.isNull())
 	{
@@ -184,15 +177,20 @@ void SignatureItem::init()
 	setAccessibleDescription( accessibility );
 }
 
-void SignatureItem::changeEvent(QEvent* event)
+bool SignatureItem::event(QEvent *event)
 {
-	if (event->type() == QEvent::LanguageChange)
+	switch(event->type())
 	{
+	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 		init();
+		break;
+	case QEvent::Resize:
+		updateNameField();
+		break;
+	default: break;
 	}
-
-	QWidget::changeEvent(event);
+	return QWidget::event(event);
 }
 
 void SignatureItem::details()
@@ -245,13 +243,10 @@ bool SignatureItem::isInvalid() const
 
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
 {
-	if(ui->serial.isEmpty())
-		return false;
-
-	return ui->serial == cardCode || ui->serial == mobileCode;
+	return !ui->serial.isEmpty() && (ui->serial == cardCode || ui->serial == mobileCode);
 }
 
-void SignatureItem::mouseReleaseEvent(QMouseEvent *)
+void SignatureItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
 	details();
 }
@@ -270,7 +265,14 @@ void SignatureItem::removeSignature()
 	WarningDialog dlg(msg, qApp->activeWindow());
 	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton(tr("OK"), SignatureRemove);
-	dlg.exec();
-	if(dlg.result() == SignatureRemove)
+	if(dlg.exec() == SignatureRemove)
 		emit remove(this);
+}
+
+void SignatureItem::updateNameField()
+{
+	if(ui->name->fontMetrics().width(ui->nameText  + " - " + ui->status) < ui->name->width())
+		ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->statusHtml);
+	else
+		ui->name->setText((ui->invalid ? red(ui->nameText) : ui->nameText) + "<br/>" + ui->statusHtml);
 }
