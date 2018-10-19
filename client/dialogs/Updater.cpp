@@ -515,13 +515,9 @@ void Updater::process(const QByteArray &data)
 		if(obj.value(QStringLiteral("protocol")).toString() == QStringLiteral("T=0")) mode = QPCSCReader::T0;
 		if(obj.value(QStringLiteral("protocol")).toString() == QStringLiteral("T=1")) mode = QPCSCReader::T1;
 		quint32 err = 0;
-#ifdef Q_OS_WIN
-		err = d->reader->connectEx(QPCSCReader::Exclusive, mode);
-#else
 		if((err = d->reader->connectEx(QPCSCReader::Exclusive, mode)) == 0 ||
 			(err = d->reader->connectEx(QPCSCReader::Shared, mode)) == 0)
 			d->reader->beginTransaction();
-#endif
 		QVariantHash ret{
 			{"CONNECT", d->reader->isConnected() ? "OK" : "NOK"},
 			{"reader", d->reader->name()},
