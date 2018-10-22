@@ -292,7 +292,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	bool pin2 = SslCertificate( t.cert() ).keyUsage().keys().contains( SslCertificate::NonRepudiation );
 	if( token.flags & CKF_PROTECTED_AUTHENTICATION_PATH )
 	{
-		PinPopup p( pin2 ? PinDialog::Pin2PinpadType : PinDialog::Pin1PinpadType, t, rootWindow() );
+		PinPopup p(pin2 ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, t, rootWindow());
 		connect(d, &Private::started, &p, &PinPopup::startTimer);
 		p.open();
 
@@ -304,7 +304,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	}
 	else
 	{
-		PinPopup p( pin2 ? PinDialog::Pin2Type : PinDialog::Pin1Type, t, rootWindow() );
+		PinPopup p(pin2 ? PinPopup::Pin2Type : PinPopup::Pin1Type, t, rootWindow());
 		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;

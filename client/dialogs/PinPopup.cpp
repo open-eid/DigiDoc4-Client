@@ -27,21 +27,20 @@
 #include <common/SslCertificate.h>
 
 #include <QtCore/QTimeLine>
+#include <QtGui/QMovie>
 #include <QtGui/QRegExpValidator>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 
-PinPopup::PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent )
-: PinPopup(flags, t.cert(), t.flags(), parent)
+PinPopup::PinPopup(PinFlags flags, const TokenData &t, QWidget *parent)
+	: PinPopup(flags, t.cert(), t.flags(), parent)
 {
 }
 
-PinPopup::PinPopup( PinDialog::PinFlags flags, const SslCertificate &c, TokenData::TokenFlags token, QWidget *parent )
-: QDialog(parent)
-, ui(new Ui::PinPopup)
+PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenData::TokenFlags token, QWidget *parent)
+	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), token, parent)
 {
-	init( flags, c.toString( c.showCN() ? "<b>CN,</b> serialNumber" : "<b>GN SN,</b> serialNumber" ), token );
 	if(c.type() & SslCertificate::TempelType)
 	{
 		regexp.setPattern(".{4,}");
@@ -50,24 +49,17 @@ PinPopup::PinPopup( PinDialog::PinFlags flags, const SslCertificate &c, TokenDat
 	}
 }
 
-PinPopup::PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText )
-: QDialog(parent)
-, ui(new Ui::PinPopup)
-{
-	init(flags, title, token, bodyText);
-}
-
-PinPopup::~PinPopup()
-{
-	delete ui;
-}
-
-void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText )
+PinPopup::PinPopup(PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText)
+	: QDialog(parent)
+	, ui(new Ui::PinPopup)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
+	Overlay *overlay = new Overlay(parent->topLevelWidget());
+	overlay->show();
+	connect(this, &PinPopup::destroyed, overlay, &Overlay::deleteLater);
 
 	QFont regular = Styles::font( Styles::Regular, 13 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
@@ -84,39 +76,53 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 
 	QString text;
 	
-	if( !bodyText.isEmpty() ) 
+	if(!bodyText.isEmpty())
 	{
 		text = bodyText;
 	}
 	else
 	{
 		if( token & TokenData::PinFinalTry )
-			text += "<font color='red'><b>" + tr("PIN will be locked next failed attempt") + "</b></font><br />";
+			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN will be locked next failed attempt"));
 		else if( token & TokenData::PinCountLow )
-			text += "<font color='red'><b>" + tr("PIN has been entered incorrectly one time") + "</b></font><br />";
+			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN has been entered incorrectly one time"));
 
-		if( flags & PinDialog::Pin2Type )
+		if( flags & Pin2Type )
 		{
-			QString t = flags & PinDialog::PinpadFlag ?
+			QString t = flags & PinpadFlag ?
 				tr("For using sign certificate enter PIN2 at the reader") :
 				tr("For using sign certificate enter PIN2");
-			text += tr("Selected action requires sign certificate.") + "<br />" + t;
+			text += tr("Selected action requires sign certificate.") + QStringLiteral("<br />") + t;
 			setPinLen(5);
 		}
 		else
 		{
-			QString t = flags & PinDialog::PinpadFlag ?
+			QString t = flags & PinpadFlag ?
 				tr("For using authentication certificate enter PIN1 at the reader") :
 				tr("For using authentication certificate enter PIN1");
-			text += tr("Selected action requires authentication certificate.") + "<br />" + t;
+			text += tr("Selected action requires authentication certificate.") + QStringLiteral("<br />") + t;
 			setPinLen(4);
 		}
 	}
-	ui->labelNameId->setText( QString( "<b>%1</b>" ).arg( title ) );
+	ui->labelNameId->setText(QStringLiteral("<b>%1</b>").arg(title));
 	ui->label->setText( text );
 	Common::setAccessibleName( ui->label );
 
-	if( flags & PinDialog::PinpadFlag )
+	if(flags & PinpadChangeFlag)
+	{
+		ui->pin->hide();
+		ui->ok->hide();
+		ui->cancel->hide();
+		QLabel *movie = new QLabel(this);
+		movie->setAlignment(Qt::AlignCenter);
+		movie->setMovie(new QMovie(":/images/wait.gif", QByteArray(), movie));
+		movie->movie()->setScaledSize(QSize(movie->height(), movie->height()));
+		movie->move(ui->pin->pos());
+		movie->resize(ui->pin->size());
+		movie->show();
+		movie->movie()->start();
+	}
+	if( flags & PinpadFlag )
 	{
 		ui->pin->hide();
 		ui->ok->hide();
@@ -133,46 +139,28 @@ void PinPopup::init( PinDialog::PinFlags flags, const QString &title, TokenData:
 		connect( statusTimer, &QTimeLine::frameChanged, progress, &QProgressBar::setValue );
 		connect( this, &PinPopup::startTimer, statusTimer, &QTimeLine::start );
 	}
-	else if( !(flags & PinDialog::PinpadNoProgressFlag) )
+	else if( !(flags & PinpadNoProgressFlag) )
 	{
 		ui->pin->setFocus();
 		ui->pin->setValidator( new QRegExpValidator( regexp, ui->pin ) );
 		ui->pin->setMaxLength( 12 );
-		connect( ui->pin, &QLineEdit::textEdited, this, &PinPopup::textEdited );
+		connect(ui->pin, &QLineEdit::textEdited, this, [&](const QString &text) {
+			ui->ok->setEnabled(regexp.exactMatch(text));
+		});
 		ui->label->setBuddy( ui->pin );
-
-		textEdited( QString() );
+		ui->ok->setDisabled(true);
 	}
+}
+
+PinPopup::~PinPopup()
+{
+	delete ui;
 }
 
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
-	QString charPattern = regexp.pattern().startsWith(".") ? "." : "\\d";
-	regexp.setPattern(QString("%1{%2,%3}").arg(charPattern).arg(minLen).arg(maxLen));
+	QString charPattern = regexp.pattern().startsWith('.') ? QStringLiteral(".") : QStringLiteral("\\d");
+	regexp.setPattern(QStringLiteral("%1{%2,%3}").arg(charPattern).arg(minLen).arg(maxLen));
 }
 
 QString PinPopup::text() const { return ui->pin->text(); }
-
-void PinPopup::textEdited( const QString &text )
-{ 
-	ui->ok->setEnabled( regexp.exactMatch( text ) );
-}
-
-int PinPopup::exec()
-{
-	WaitDialogHider hider;
-	int rc = 0;
-	if (hider.hasOverlay())
-	{
-		rc = QDialog::exec();
-	}
-	else
-	{
-		Overlay overlay(parentWidget());
-		overlay.show();
-		rc = QDialog::exec();
-		overlay.close();
-	}
-
-	return rc;
-}
