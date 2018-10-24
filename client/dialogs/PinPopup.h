@@ -36,13 +36,22 @@ class PinPopup : public QDialog
 	Q_OBJECT
 
 public:
-	PinPopup( PinDialog::PinFlags flags, const TokenData &t, QWidget *parent = nullptr );
-	PinPopup( PinDialog::PinFlags flags, const SslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr );
-	PinPopup( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr, const QString &bodyText = "" );
+	enum PinFlags
+	{
+		Pin1Type = 0,
+		Pin2Type = 1,
+		PinpadFlag = 2,
+		PinpadNoProgressFlag = 4,
+		PinpadChangeFlag = 8,
+		Pin1PinpadType = Pin1Type|PinpadFlag,
+		Pin2PinpadType = Pin2Type|PinpadFlag
+	};
 
-	~PinPopup();
+	PinPopup(PinFlags flags, const TokenData &t, QWidget *parent = nullptr);
+	PinPopup(PinFlags flags, const SslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr);
+	PinPopup(PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr, const QString &bodyText = QString());
+	~PinPopup() final;
 
-	int exec() override;
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
 	QString text() const;
 
@@ -50,9 +59,6 @@ signals:
 	void startTimer();
 
 private:
-	void init( PinDialog::PinFlags flags, const QString &title, TokenData::TokenFlags token, const QString &bodyText=""  );
-	void textEdited( const QString &text );
-
 	Ui::PinPopup *ui;
 	QRegExp		regexp;
 };

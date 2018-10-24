@@ -220,7 +220,7 @@ QSmartCard::~QSmartCard()
 
 QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText)
 {
-	PinDialog::PinFlags flags;
+	PinPopup::PinFlags flags;
 	QCardLocker locker;
 	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
 	if(!reader)
@@ -234,14 +234,14 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 
 	switch(type)
 	{
-		case QSmartCardData::Pin1Type: flags = PinDialog::Pin1Type;	break;
-		case QSmartCardData::Pin2Type: flags = PinDialog::Pin2Type;	break;
-		case QSmartCardData::PukType: flags = PinDialog::PinpadFlag; break;
+		case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type;	break;
+		case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type;	break;
+		case QSmartCardData::PukType: flags = PinPopup::PinpadFlag; break;
 		default: return UnknownError;
 	}
 	if(d->t.isPinpad())
 	{
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, nullptr, parent, bodyText));
+		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, nullptr, parent, bodyText));
 
 		std::thread([&]{
 			Q_EMIT p->startTimer();
@@ -539,7 +539,7 @@ void QSmartCard::selectCard(const QString &card)
 
 QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)
 {
-	PinDialog::PinFlags flags;
+	PinPopup::PinFlags flags;
 	QCardLocker locker;
 	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
 	if(!reader)
@@ -560,8 +560,8 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget*
 	}
 	switch(type)
 	{
-		case QSmartCardData::Pin1Type: flags = PinDialog::Pin1Type;	break;
-		case QSmartCardData::Pin2Type: flags = PinDialog::Pin2Type;	break;
+		case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type;	break;
+		case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type;	break;
 		default: return UnknownError;
 	}
 	// Make sure pin is locked. ID card is designed so that only blocked PIN could be unblocked with PUK!
@@ -577,7 +577,7 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget*
 
 	if(d->t.isPinpad()) {
 
-		p.reset(new PinPopup(PinDialog::PinFlags(flags|PinDialog::PinpadFlag), title, nullptr, parent, bodyText));
+		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, nullptr, parent, bodyText));
 
 		std::thread([&]{
 			Q_EMIT p->startTimer();
