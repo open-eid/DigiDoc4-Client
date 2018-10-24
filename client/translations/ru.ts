@@ -1011,82 +1011,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>SignatureItem</name>
-
-    <message>
-        <source>Signature</source>
-        <translation>Подпись</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Временной штамп</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Предупреждения</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Ограничения</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Пробная подпись</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-		<comment>Signature</comment>
-        <translation>действительна</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-		<comment>Timestamp</comment>
-        <translation>действителен</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-		<comment>Signature</comment>
-        <translation>недействительна</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-		<comment>Timestamp</comment>
-        <translation>недействителен</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-		<comment>Signature</comment>
-        <translation>неизвестная</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-		<comment>Timestamp</comment>
-        <translation>неизвестный</translation>
-    </message>
-    <message>
-        <source>Signed on</source>
-        <translation>Подписано</translation>
-    </message>
-    <message>
-        <source>time</source>
-        <translation>время</translation>
-    </message>
-    <message>
-        <source>Remove signature %1</source>
-        <translation>Удалить подпись %1</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
     <name>KeyDialog</name>
 
     <message>
@@ -2598,12 +2522,12 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>is valid</source>
-		<comment>Signature</comment>
+        <comment>Signature</comment>
         <translation>действительна</translation>
     </message>
     <message>
         <source>is valid</source>
-		<comment>Timestamp</comment>
+        <comment>Timestamp</comment>
         <translation>действителен</translation>
     </message>
     <message>
@@ -2628,12 +2552,12 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>is unknown</source>
-		<comment>Signature</comment>
+        <comment>Signature</comment>
         <translation>неизвестная</translation>
     </message>
     <message>
         <source>is unknown</source>
-		<comment>Timestamp</comment>
+        <comment>Timestamp</comment>
         <translation>неизвестный</translation>
     </message>
     <message>
@@ -2642,12 +2566,12 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>is not valid</source>
-		<comment>Signature</comment>
+        <comment>Signature</comment>
         <translation>недействительна</translation>
     </message>
     <message>
         <source>is not valid</source>
-		<comment>Timestamp</comment>
+        <comment>Timestamp</comment>
         <translation>недействителен</translation>
     </message>
     <message>
@@ -2737,6 +2661,82 @@ Additional licenses and components</source>
     <message>
         <source>SIGNATURE_WARNING</source>
         <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href='https://www.id.ee/?lang=en&amp;id=38500'&gt;&lt;span style='color: #006EB5; text-decoration: underline; font-weight: 900;'&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SignatureItem</name>
+
+    <message>
+        <source>Signature</source>
+        <translation>Подпись</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Временной штамп</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Предупреждения</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Ограничения</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Пробная подпись</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Signature</comment>
+        <translation>действительна</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Timestamp</comment>
+        <translation>действителен</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Signature</comment>
+        <translation>недействительна</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Timestamp</comment>
+        <translation>недействителен</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Signature</comment>
+        <translation>неизвестная</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Timestamp</comment>
+        <translation>неизвестный</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Подписано</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>время</translation>
+    </message>
+    <message>
+        <source>Remove signature %1</source>
+        <translation>Удалить подпись %1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 
@@ -3156,7 +3156,7 @@ Additional licenses and components</source>
         <translation>ИЗМЕНИТЬ PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
         <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Новый PUK получите в конверте с кодами &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=33922&quot;&gt;из PPA&lt;/a&gt;.</translation>
     </message>
     <message>

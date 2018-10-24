@@ -1017,64 +1017,6 @@ The Information System Authority does not retain information regarding the files
 
 
 <context>
-    <name>SignatureItem</name>
-
-    <message>
-        <source>Signature</source>
-        <translation>Signature</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Timestamp</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Warnings</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Restrictions</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test signature</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <translation>is unknown</translation>
-    </message>
-    <message>
-        <source>Signed on</source>
-        <translation>Signed on</translation>
-    </message>
-    <message>
-        <source>time</source>
-        <translation>at</translation>
-    </message>
-    <message>
-        <source>Remove signature %1</source>
-        <translation>Remove signature %1</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
     <name>KeyDialog</name>
 
     <message>
@@ -2726,6 +2668,64 @@ Additional licenses and components</translation>
 
 
 <context>
+    <name>SignatureItem</name>
+
+    <message>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Timestamp</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Warnings</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Restrictions</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Test signature</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>is unknown</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Signed on</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>at</translation>
+    </message>
+    <message>
+        <source>Remove signature %1</source>
+        <translation>Remove signature %1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+</context>
+
+
+<context>
     <name>PrintSheet</name>
 
     <message>
@@ -3140,8 +3140,8 @@ Additional licenses and components</translation>
         <translation>CHANGE PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href='https://www.id.ee/index.php?id=31027'&gt;from PPA&lt;/a&gt;.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href='https://www.id.ee/index.php?id=31027'&gt;from PPA&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>

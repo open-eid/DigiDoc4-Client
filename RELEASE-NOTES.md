@@ -1,3 +1,12 @@
+DigiDoc4 version [4.1.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.1.0) release notes
+--------------------------------------
+- Update texts and translations
+- Fix HiDPI resolution issues
+- Add Digi-ID card updater frontend
+- Other usabilty and bug fixes
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.0.0...v4.1.0)
+
 DigiDoc4 version 4.0.0 release notes
 --------------------------------------
 

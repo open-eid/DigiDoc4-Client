@@ -64,16 +64,16 @@ private:
 
 	Ui::VerifyCert *ui;
 
-	bool isValidCert;
-	bool isBlockedPin;
-	bool isTempelType;
+	bool isValidCert = false;
+	bool isBlockedPin = false;
+	bool isTempelType = false;
 	QString borders;
 
 	QSvgWidget* greenIcon;
 	QSvgWidget* orangeIcon;
 	QSvgWidget* redIcon;
 
-	QSmartCardData::PinType pinType;
+	QSmartCardData::PinType pinType = QSmartCardData::Pin1Type;
 	QSmartCardData cardData;
 	SslCertificate c;
 };

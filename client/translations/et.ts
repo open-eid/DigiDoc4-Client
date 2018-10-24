@@ -1014,64 +1014,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
 
 
 <context>
-    <name>SignatureItem</name>
-
-    <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Ajatempel</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Hoiatused</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Piirangud</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Testallkiri</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <translation>on teadmata</translation>
-    </message>
-    <message>
-        <source>Signed on</source>
-        <translation>Allkirjastatud</translation>
-    </message>
-    <message>
-        <source>time</source>
-        <translation>kell</translation>
-    </message>
-    <message>
-        <source>Remove signature %1</source>
-        <translation>Eemalda allkiri %1</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
     <name>KeyDialog</name>
 
     <message>
@@ -1266,7 +1208,7 @@ ID-KAARDIGA</translation>
         <translation>Foto (*.jpg);;Kõik failid (*)</translation>
     </message>
 
-	
+
     <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
@@ -2713,6 +2655,64 @@ Täiendavad litsentsid ja komponendid</translation>
 
 
 <context>
+    <name>SignatureItem</name>
+
+    <message>
+        <source>Signature</source>
+        <translation>Allkiri</translation>
+    </message>
+    <message>
+        <source>Timestamp</source>
+        <translation>Ajatempel</translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation>Hoiatused</translation>
+    </message>
+    <message>
+        <source>Restrictions</source>
+        <translation>Piirangud</translation>
+    </message>
+    <message>
+        <source>Test signature</source>
+        <translation>Testallkiri</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <translation>on teadmata</translation>
+    </message>
+    <message>
+        <source>Signed on</source>
+        <translation>Allkirjastatud</translation>
+    </message>
+    <message>
+        <source>time</source>
+        <translation>kell</translation>
+    </message>
+    <message>
+        <source>Remove signature %1</source>
+        <translation>Eemalda allkiri %1</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+</context>
+
+
+<context>
     <name>PrintSheet</name>
     <message>
         <source>SIGNED FILES</source>
@@ -3122,7 +3122,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>MUUDA PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
         <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href='https://www.id.ee/?lang=et&amp;id=30133'&gt;taotle PPA-st&lt;/a&gt;.</translation>
     </message>
     <message>
