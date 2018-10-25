@@ -39,20 +39,15 @@ struct LineText
 {
 	bool replacePin;
 	bool showBullet;
-	const char *text;
+	QString text;
 };
 
 PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
-	const QDate &birthDate, const QString &personalCode)
-: QDialog(parent)
-, ui(new Ui::PinUnblock)
-, birthDate(birthDate)
-, personalCode(personalCode)
-, regexpFirstCode()
-, regexpNewCode()
-, isFirstCodeOk(false)
-, isNewCodeOk(false)
-, isRepeatCodeOk(false)
+	QDate birthDate, QString personalCode)
+	: QDialog(parent)
+	, ui(new Ui::PinUnblock)
+	, birthDate(birthDate)
+	, personalCode(std::move(personalCode))
 {
 	init( mode, type, leftAttempts );
 	adjustSize();
@@ -83,24 +78,24 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	if( mode == PinUnblock::ChangePinWithPuk )
 	{
 		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
-		regexpFirstCode.setPattern( "\\d{8,12}" );
-		regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" : "\\d{5,12}" );
+		regexpFirstCode.setPattern(QStringLiteral("\\d{8,12}"));
+		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") : QStringLiteral("\\d{5,12}"));
 		ui->unblock->setText( tr("CHANGE") );
 	}
 	if( mode == PinUnblock::UnBlockPinWithPuk )
 	{
 		ui->labelNameId->setText( tr("%1 unblocking").arg( QSmartCardData::typeString( type ) ) );
-		regexpFirstCode.setPattern( "\\d{8,12}" );
-		regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" : "\\d{5,12}" );
+		regexpFirstCode.setPattern(QStringLiteral("\\d{8,12}"));
+		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") : QStringLiteral("\\d{5,12}"));
 	}
 	else if( mode == PinUnblock::PinChange )
 	{
 		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
 		ui->labelPuk->setText( tr( "VALID %1 CODE").arg( QSmartCardData::typeString( type ) ) );
-		regexpFirstCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" :
-			(type == QSmartCardData::Pin2Type) ? "\\d{5,12}" : "\\d{8,12}" );
-		regexpNewCode.setPattern( (type == QSmartCardData::Pin1Type) ? "\\d{4,12}" :
-			(type == QSmartCardData::Pin2Type) ? "\\d{5,12}" : "\\d{8,12}" );
+		regexpFirstCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") :
+			(type == QSmartCardData::Pin2Type) ? QStringLiteral("\\d{5,12}") : QStringLiteral("\\d{8,12}"));
+		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") :
+			(type == QSmartCardData::Pin2Type) ? QStringLiteral("\\d{5,12}") : QStringLiteral("\\d{8,12}"));
 		ui->unblock->setText( tr("CHANGE") );
 	}
 	ui->labelPin->setText( tr( "NEW %1 CODE").arg( QSmartCardData::typeString( type ) ) );
@@ -137,7 +132,7 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	connect(ui->pin, &QLineEdit::textChanged, this,
 				[this, type, mode](const QString &text)
 				{
-					ui->labelPinValidation->setText("");
+					ui->labelPinValidation->setText(QString());
 					isNewCodeOk = regexpNewCode.exactMatch(text) && validatePin(text, type, mode);
 					isRepeatCodeOk = !text.isEmpty() && ui->pin->text() == ui->repeat->text();
 					setUnblockEnabled();
@@ -155,67 +150,67 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 {
 	QList<LineText> labels;
-	QString pin = type == QSmartCardData::Pin2Type ? "2" : "1";
+	int pin = type == QSmartCardData::Pin2Type ? 2 : 1;
 	QFont font = Styles::font(Styles::Regular, 14);
 
 	if(mode == PinUnblock::ChangePinWithPuk)
 	{
-		labels << LineText{true, true, "New PIN%1 must be different from current PIN%1."}
+		labels << LineText{true, true, tr("New PIN%1 must be different from current PIN%1.")}
 			<< (type == QSmartCardData::Pin2Type
-				? LineText{false, true, "PIN2 code is used to digitally sign documents."}
-				: LineText{false, true, "PIN1 code is used for confirming the identity of a person."}
+				? LineText{false, true, tr("PIN2 code is used to digitally sign documents.")}
+				: LineText{false, true, tr("PIN1 code is used for confirming the identity of a person.")}
 			)
-			<< LineText{true, true, "If you have forgotten PIN%1, but know PUK, then"}
-			<< LineText{true, false, "here you can enter new PIN%1."}
-			<< LineText{false, true, "PUK code is written in the envelope, that is given"}
-			<< LineText{false, false, "with the ID-card."};
+			<< LineText{true, true, tr("If you have forgotten PIN%1, but know PUK, then")}
+			<< LineText{true, false, tr("here you can enter new PIN%1.")}
+			<< LineText{false, true, tr("PUK code is written in the envelope, that is given")}
+			<< LineText{false, false, tr("with the ID-card.")};
 	}
 	else if(mode == PinUnblock::UnBlockPinWithPuk)
 	{
-		labels << LineText{false, true, "To unblock the certificate you have to enter the PUK"}
-			<< LineText{false, false, "code."}
-			<< LineText{false, true, "You can find your PUK code inside the ID-card codes"}
-			<< LineText{false, false, "envelope."}
-			<< LineText{false, false, "PUK_LINE3"}
-			<< LineText{true, true, "New PIN%1 must be different from current PIN%1."}
-			<< LineText{false, true, "If you have forgotten the PUK code for your ID card, please"}
-			<< LineText{false, false, "VISIT_SERVICE_CENTRE"}
-			<< LineText{false, false, "obtain new PIN codes."};
+		labels << LineText{false, true, tr("To unblock the certificate you have to enter the PUK")}
+			<< LineText{false, false, tr("code.")}
+			<< LineText{false, true, tr("You can find your PUK code inside the ID-card codes")}
+			<< LineText{false, false, tr("envelope.")}
+			<< LineText{false, false, tr("PUK_LINE3")}
+			<< LineText{true, true, tr("New PIN%1 must be different from current PIN%1.")}
+			<< LineText{false, true, tr("If you have forgotten the PUK code for your ID card, please")}
+			<< LineText{false, false, tr("VISIT_SERVICE_CENTRE")}
+			<< LineText{false, false, tr("obtain new PIN codes.")};
 	}
 	else if(mode == PinUnblock::PinChange)
 	{
 		if(type == QSmartCardData::Pin2Type ||  type == QSmartCardData::Pin1Type)
 		{
 			// ui->label->setText(tr("ConditionsChangePIN2"));
-			labels << LineText{true, true, "New PIN%1 must be different from current PIN%1."}
+			labels << LineText{true, true, tr("New PIN%1 must be different from current PIN%1.")}
 				<< (type == QSmartCardData::Pin2Type
-					? LineText{false, true, "PIN2 code is used to digitally sign documents."}
-					: LineText{false, true, "PIN1 code is used for confirming the identity of a person."}
+					? LineText{false, true, tr("PIN2 code is used to digitally sign documents.")}
+					: LineText{false, true, tr("PIN1 code is used for confirming the identity of a person.")}
 				)
 				<< (type == QSmartCardData::Pin2Type
-					? LineText{false, true, "If PIN2 is inserted incorrectly 3 times the signing"}
-					: LineText{false, true, "If PIN1 is inserted incorrectly 3 times the identification"}
+					? LineText{false, true, tr("If PIN2 is inserted incorrectly 3 times the signing")}
+					: LineText{false, true, tr("If PIN1 is inserted incorrectly 3 times the identification")}
 				)
 				<< (type == QSmartCardData::Pin2Type
-					? LineText{false, false, "signing certificate will be blocked and it will be impossible"}
-					: LineText{false, false, "auth certificate will be blocked and it will be impossible"}
+					? LineText{false, false, tr("signing certificate will be blocked and it will be impossible")}
+					: LineText{false, false, tr("auth certificate will be blocked and it will be impossible")}
 				)
 				<< (type == QSmartCardData::Pin2Type
-					? LineText{false, false, "to use ID-card to digital signing, until it is"}
-					: LineText{false, false, "to use ID-card to verify identification, until it is"}
+					? LineText{false, false, tr("to use ID-card to digital signing, until it is")}
+					: LineText{false, false, tr("to use ID-card to verify identification, until it is")}
 				)
-				<< LineText{false, false, "unblocked via the PUK code."};
+				<< LineText{false, false, tr("unblocked via the PUK code.")};
 		}
 		else if(type == QSmartCardData::PukType)
 		{
 			// ui->label->setText(tr("ConditionsChangePUK"));
-			labels << LineText{false, true, "PUK code is used for unblocking the certificates, when"}
-				<< LineText{false, false, "PIN1 or PIN2 has been entered 3 times incorrectly."}
-				<< LineText{false, false, "PUK_INFO_LINE3"}
-				<< LineText{false, true, "If you forget the PUK code or the certificates remain"}
-				<< LineText{false, false, "PUK_BLOCKED_LINE2"}
-				<< LineText{false, false, "new codes."}
-				<< LineText{false, false, "PUK_BLOCKED_LINE4"};
+			labels << LineText{false, true, tr("PUK code is used for unblocking the certificates, when")}
+				<< LineText{false, false, tr("PIN1 or PIN2 has been entered 3 times incorrectly.")}
+				<< LineText{false, false, tr("PUK_INFO_LINE3")}
+				<< LineText{false, true, tr("If you forget the PUK code or the certificates remain")}
+				<< LineText{false, false, tr("PUK_BLOCKED_LINE2")}
+				<< LineText{false, false, tr("new codes.")}
+				<< LineText{false, false, tr("PUK_BLOCKED_LINE4")};
 		}
 	}
 
@@ -228,24 +223,23 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 						{ ui->line7, ui->line7_bullet, ui->line7_text }, 
 						{ ui->line8, ui->line8_bullet, ui->line8_text }};
 
-    int lineOffset = 0;
-	for(int i = 0; i < labels.size(); i++)
+	int lineOffset = 0;
+	for(const LineText &lbl: labels)
 	{
-		auto lbl = labels.at(i);
-		auto text = lbl.replacePin ? tr(lbl.text).arg(pin) : tr(lbl.text);
+		auto text = lbl.replacePin ? QString(lbl.text).arg(pin) : lbl.text;
 
 		if(text.trimmed().isEmpty())
 			continue;
 
 		if(lbl.showBullet)
-			lines[lineOffset].bullet->setText("&bull;");
+			lines[lineOffset].bullet->setText(QStringLiteral("&bull;"));
 		else
-			lines[lineOffset].bullet->setText("");
+			lines[lineOffset].bullet->clear();
 		lines[lineOffset].bullet->setFont(font);
 		lines[lineOffset].text->setText(text);
 		lines[lineOffset].text->setFont(font);
-        
-        lineOffset++;
+
+		lineOffset++;
 	}
 
 	// hide empty rows
@@ -255,33 +249,9 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 
 void PinUnblock::setUnblockEnabled()
 {
-	if( isFirstCodeOk )
-	{
-		ui->iconLabelPuk->setStyleSheet("image: url(:/images/icon_check.svg);");
-	}
-	else
-	{
-		ui->iconLabelPuk->setStyleSheet("");
-	}
-
-	if( isNewCodeOk )
-	{
-		ui->iconLabelPin->setStyleSheet("image: url(:/images/icon_check.svg);");
-	}
-	else
-	{
-		ui->iconLabelPin->setStyleSheet("");
-	}
-
-	if( isRepeatCodeOk )
-	{
-		ui->iconLabelRepeat->setStyleSheet("image: url(:/images/icon_check.svg);");
-	}
-	else
-	{
-		ui->iconLabelRepeat->setStyleSheet("");
-	}
-
+	ui->iconLabelPuk->setStyleSheet(isFirstCodeOk ? QStringLiteral("image: url(:/images/icon_check.svg);") : QString());
+	ui->iconLabelPin->setStyleSheet(isNewCodeOk ? QStringLiteral("image: url(:/images/icon_check.svg);") : QString());
+	ui->iconLabelRepeat->setStyleSheet(isRepeatCodeOk ? QStringLiteral("image: url(:/images/icon_check.svg);") : QString());
 	ui->unblock->setEnabled( isFirstCodeOk && isNewCodeOk && isRepeatCodeOk );
 }
 
@@ -301,9 +271,9 @@ QString PinUnblock::newCodeText() const { return ui->pin->text(); }
 
 bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type, WorkMode mode)
 {
-	const static QString SEQUENCE_ASCENDING = "1234567890123456789012";
-	const static QString SEQUENCE_DESCENDING = "0987654321098765432109";
-	QString pinType = type == QSmartCardData::Pin1Type ? "PIN1" : (type == QSmartCardData::Pin2Type ? "PIN2" : "PUK");
+	const static QString SEQUENCE_ASCENDING = QStringLiteral("1234567890123456789012");
+	const static QString SEQUENCE_DESCENDING = QStringLiteral("0987654321098765432109");
+	QString pinType = type == QSmartCardData::Pin1Type ? QStringLiteral("PIN1") : (type == QSmartCardData::Pin2Type ? QStringLiteral("PIN2") : QStringLiteral("PUK"));
 
 	if(mode == PinUnblock::PinChange && pin == ui->puk->text())
 	{
@@ -330,8 +300,8 @@ bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type, W
 		ui->labelPinValidation->setText(tr("New %1 code can't be part of your personal code").arg(pinType));
 		return false;
 	}
-	if(pin == birthDate.toString("yyyy") || pin == birthDate.toString("ddMM") || pin == birthDate.toString("MMdd") ||
-		 pin == birthDate.toString("yyyyMMdd") || pin == birthDate.toString("ddMMyyyy"))
+	if(pin == birthDate.toString(QStringLiteral("yyyy")) || pin == birthDate.toString(QStringLiteral("ddMM")) || pin == birthDate.toString(QStringLiteral("MMdd")) ||
+		 pin == birthDate.toString(QStringLiteral("yyyyMMdd")) || pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
 	{
 		ui->labelPinValidation->setText(tr("New %1 code can't be your date of birth").arg(pinType));
 		return false;

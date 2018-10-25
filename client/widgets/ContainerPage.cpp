@@ -472,6 +472,9 @@ void ContainerPage::togglePrinting(bool enable)
 
 void ContainerPage::translateLabels()
 {
+	tr("Envelope");
+	tr("STARTING");
+	tr("SIGN");
 	ui->changeLocation->setText(tr(changeLocationText));
 	ui->cancel->setText(tr(cancelText));
 	ui->container->setText(tr(envelope));

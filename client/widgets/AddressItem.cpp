@@ -78,13 +78,13 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 
 	auto certType = SslCertificate(key.cert).type();
 	if(certType & SslCertificate::DigiIDType)
-		type = QStringLiteral("Digi-ID");
+		type = tr("Digi-ID");
 	else if(certType & SslCertificate::EstEidType)
-		type = QStringLiteral("ID-card");
+		type = tr("ID-card");
 	else if(certType & SslCertificate::TempelType)
-		type = QStringLiteral("e-Seal");
+		type = tr("e-Seal");
 	else if(certType & SslCertificate::MobileIDType)
-		type = QStringLiteral("Mobile-ID");
+		type = tr("Mobile-ID");
 
 	if(!showIcon)
 	{

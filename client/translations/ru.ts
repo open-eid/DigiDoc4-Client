@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Server access certificate</source>
-        <translation>Справка доступа</translation>
+        <translation type="vanished">Справка доступа</translation>
     </message>
     <message>
         <source>Failed to save server access certificate file to KeyChain!</source>
@@ -103,6 +103,14 @@
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
     </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Добавьте получателей</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Добавлен получатель</translation>
+    </message>
 </context>
 <context>
     <name>AddressItem</name>
@@ -132,7 +140,7 @@
     </message>
     <message>
         <source>Unknown ID</source>
-        <translation>Неизвестный ID</translation>
+        <translation type="vanished">Неизвестный ID</translation>
     </message>
     <message>
         <source>e-Seal</source>
@@ -147,7 +155,7 @@
     <name>Application</name>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 клиент</translation>
+        <translation type="vanished">DigiDoc4 клиент</translation>
     </message>
     <message>
         <source>Failed to initalize.</source>
@@ -187,19 +195,30 @@
     </message>
     <message>
         <source>ALLOW_ACCESS</source>
-        <translation>App Store приложения на macOS требуют, чтобы пользователь позволил доступ к файловой системе.&lt;br /&gt;Разрешите доступ к папке &apos;%1&apos; или укажите альтернативное место для сохранения конверта.</translation>
+        <translation type="vanished">App Store приложения на macOS требуют, чтобы пользователь позволил доступ к файловой системе.&lt;br /&gt;Разрешите доступ к папке &apos;%1&apos; или укажите альтернативное место для сохранения конверта.</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
+        <translation type="vanished">ОТМЕНА</translation>
     </message>
     <message>
         <source>ALLOW</source>
-        <translation>ПОЗВОЛИТЬ</translation>
+        <translation type="vanished">ПОЗВОЛИТЬ</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
+    </message>
+</context>
+<context>
+    <name>CDocumentModel</name>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
 </context>
 <context>
@@ -391,6 +410,10 @@
         <source>Other</source>
         <translation>Неопределен</translation>
     </message>
+    <message>
+        <source>Used certificates</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CheckConnection</name>
@@ -451,19 +474,19 @@
     </message>
     <message>
         <source>NB! Invalid signature</source>
-        <translation>NB: Недействительная подпись</translation>
+        <translation type="vanished">NB: Недействительная подпись</translation>
     </message>
     <message>
         <source>NB! Status unknown</source>
-        <translation>NB! Статус неизвестен</translation>
+        <translation type="vanished">NB! Статус неизвестен</translation>
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Пробная подпись</translation>
+        <translation type="vanished">NB! Пробная подпись</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
-        <translation>NB! Подпись содержит предупреждения</translation>
+        <translation type="vanished">NB! Подпись содержит предупреждения</translation>
     </message>
     <message>
         <source>STARTING</source>
@@ -476,6 +499,10 @@
     <message>
         <source>CONTINUE SIGNING</source>
         <translation>ПОДПИСАТЬ</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
 </context>
 <context>
@@ -510,7 +537,7 @@
     </message>
     <message>
         <source>Container is not encrypted</source>
-        <translation>Контейнер не зашифрован</translation>
+        <translation type="vanished">Контейнер не зашифрован</translation>
     </message>
     <message>
         <source>Error parsing document</source>
@@ -610,19 +637,19 @@ The Information System Authority does not retain information regarding the files
     <name>DocumentModel</name>
     <message>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="vanished">Сохранить</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Удалить</translation>
+        <translation type="vanished">Удалить</translation>
     </message>
     <message>
         <source>Failed remove document from container</source>
-        <translation>Не удается удалить файл из контейнера</translation>
+        <translation type="vanished">Не удается удалить файл из контейнера</translation>
     </message>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 клиент</translation>
+        <translation type="vanished">DigiDoc4 клиент</translation>
     </message>
     <message>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
@@ -905,11 +932,11 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>Add recipients</source>
-        <translation>Добавить получателей</translation>
+        <translation type="vanished">Добавить получателей</translation>
     </message>
     <message>
         <source>Added recipients</source>
-        <translation>Добавлен получатель</translation>
+        <translation type="vanished">Добавлен получатель</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -941,7 +968,7 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>Decrypted files</source>
-        <translation>Расшифрованные файлы</translation>
+        <translation type="vanished">Расшифрованные файлы</translation>
     </message>
     <message>
         <source>RECIPIENT_MESSAGE</source>
@@ -998,7 +1025,7 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="vanished">ID</translation>
     </message>
     <message>
         <source>Expires</source>
@@ -1032,6 +1059,14 @@ LDAP сервер недоступен.</translation>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Код ошибки:%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Failed to set ldap version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to start ssl</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1089,7 +1124,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Unrecognized data</source>
-        <translation>Нераспознанные данные</translation>
+        <translation type="vanished">Нераспознанные данные</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1137,7 +1172,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Photo (*.jpg);;All Files (*)</source>
-        <translation>Фото (*.jpg);;Все файлы (*)</translation>
+        <translation type="vanished">Фото (*.jpg);;Все файлы (*)</translation>
     </message>
     <message>
         <source>Ver. </source>
@@ -1217,127 +1252,127 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
-        <translation>Сертификат не зарегистрирован в хранилище сертификатов. Зарегистрируйтесь сейчас?</translation>
+        <translation type="vanished">Сертификат не зарегистрирован в хранилище сертификатов. Зарегистрируйтесь сейчас?</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Подписать</translation>
+        <translation type="vanished">Подписать</translation>
     </message>
     <message>
         <source>Add signature</source>
-        <translation>Добавить подпись</translation>
+        <translation type="vanished">Добавить подпись</translation>
     </message>
     <message>
         <source>Save container</source>
-        <translation>Сохранить контейнер</translation>
+        <translation type="vanished">Сохранить контейнер</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Удалить</translation>
+        <translation type="vanished">Удалить</translation>
     </message>
     <message>
         <source>Keep</source>
-        <translation>Оставить</translation>
+        <translation type="vanished">Оставить</translation>
     </message>
     <message>
         <source>Open container</source>
-        <translation>Открыть контейнер</translation>
+        <translation type="vanished">Открыть контейнер</translation>
     </message>
     <message>
         <source>Container:</source>
-        <translation>Контейнер:</translation>
+        <translation type="vanished">Контейнер:</translation>
     </message>
     <message>
         <source>This container is signed by you</source>
-        <translation>Данный контейнер подписан вами</translation>
+        <translation type="vanished">Данный контейнер подписан вами</translation>
     </message>
     <message>
         <source>You have not signed this container</source>
-        <translation>Данный контейнер вами не подписан</translation>
+        <translation type="vanished">Данный контейнер вами не подписан</translation>
     </message>
     <message>
         <source>Container is unsigned</source>
-        <translation>Контейнер не подписан</translation>
+        <translation type="vanished">Контейнер не подписан</translation>
     </message>
     <message>
         <source>Use ID-card</source>
-        <translation>Использовать ID-карту</translation>
+        <translation type="vanished">Использовать ID-карту</translation>
     </message>
     <message>
         <source>Use Mobile ID</source>
-        <translation>Использовать Mobiil-ID</translation>
+        <translation type="vanished">Использовать Mobiil-ID</translation>
     </message>
     <message>
         <source>Mobile number:</source>
-        <translation>Номер моб. телефона:</translation>
+        <translation type="vanished">Номер моб. телефона:</translation>
     </message>
     <message>
         <source>Personal code:</source>
-        <translation>Личный код:</translation>
+        <translation type="vanished">Личный код:</translation>
     </message>
     <message>
         <source>I want to:</source>
-        <translation>Я желаю:</translation>
+        <translation type="vanished">Я желаю:</translation>
     </message>
     <message>
         <source>Sign documents</source>
-        <translation>Подписать документы</translation>
+        <translation type="vanished">Подписать документы</translation>
     </message>
     <message>
         <source>Open signed document</source>
-        <translation>Открыть подписанный документ</translation>
+        <translation type="vanished">Открыть подписанный документ</translation>
     </message>
     <message>
         <source>Skip this intro</source>
-        <translation>Больше не показывать</translation>
+        <translation type="vanished">Больше не показывать</translation>
     </message>
     <message>
         <source>Container content:</source>
-        <translation>Содержание контейнера:</translation>
+        <translation type="vanished">Содержание контейнера:</translation>
     </message>
     <message>
         <source>Role</source>
-        <translation>Роль</translation>
+        <translation type="vanished">Роль</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation>Резолюция</translation>
+        <translation type="vanished">Резолюция</translation>
     </message>
     <message>
         <source>City</source>
-        <translation>Город</translation>
+        <translation type="vanished">Город</translation>
     </message>
     <message>
         <source>State</source>
-        <translation>Уезд</translation>
+        <translation type="vanished">Уезд</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation>Страна</translation>
+        <translation type="vanished">Страна</translation>
     </message>
     <message>
         <source>Zip</source>
-        <translation>Индекс</translation>
+        <translation type="vanished">Индекс</translation>
     </message>
     <message>
         <source>This container is </source>
-        <translation>Данный контейнер</translation>
+        <translation type="vanished">Данный контейнер</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>
-        <translation>Неверный личный код</translation>
+        <translation type="vanished">Неверный личный код</translation>
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Пробная подпись</translation>
+        <translation type="vanished">NB! Пробная подпись</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>
-        <translation>NB: Ошибочная подпись</translation>
+        <translation type="vanished">NB: Ошибочная подпись</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Подпись</numerusform>
             <numerusform>Подписи</numerusform>
             <numerusform>Подписи</numerusform>
@@ -1346,7 +1381,7 @@ ID-КАРТОЙ</translation>
     <message numerus="yes">
         <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
 Should I keep the unsigned container or remove it?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>В контейнер добавлен %n файл, но он не подписан.
 Оставить неподписанный контейнер или стереть?</numerusform>
             <numerusform>В контейнер добавлено %n файла, но они не подписаны.
@@ -1357,32 +1392,32 @@ Should I keep the unsigned container or remove it?</source>
     </message>
     <message>
         <source>You can not add files to signed document. Remove all signatures before adding files.</source>
-        <translation>К подписанному контейнеру нельзя добавить файлы. Прежде удалите с контейнера все подписи.</translation>
+        <translation type="vanished">К подписанному контейнеру нельзя добавить файлы. Прежде удалите с контейнера все подписи.</translation>
     </message>
     <message>
         <source>Sign certificate is not valid</source>
-        <translation>Сертификат подписи недействителен</translation>
+        <translation type="vanished">Сертификат подписи недействителен</translation>
     </message>
     <message>
         <source>Failed to start process &apos;%1&apos;</source>
-        <translation>Запуск процесса &apos;%1&apos; неудачен</translation>
+        <translation type="vanished">Запуск процесса &apos;%1&apos; неудачен</translation>
     </message>
     <message>
         <source>PIN is locked</source>
-        <translation>PIN заблокирован</translation>
+        <translation type="vanished">PIN заблокирован</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>Информация</translation>
+        <translation type="vanished">Информация</translation>
     </message>
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
+        <translation type="vanished">У Вас недостаточно прав для записи файла в каталог %1</translation>
     </message>
     <message>
         <source>File does not exists
 %1</source>
-        <translation>Выбраный файл не существует
+        <translation type="vanished">Выбраный файл не существует
 %1</translation>
     </message>
     <message>
@@ -1393,62 +1428,62 @@ Should I keep the unsigned container or remove it?</source>
     </message>
     <message>
         <source>Signing in process</source>
-        <translation>Подписывание</translation>
+        <translation type="vanished">Подписывание</translation>
     </message>
     <message>
         <source>I agree</source>
-        <translation>Подтверждаю</translation>
+        <translation type="vanished">Подтверждаю</translation>
     </message>
     <message>
         <source>Empty container</source>
-        <translation>Пустой контейнер</translation>
+        <translation type="vanished">Пустой контейнер</translation>
     </message>
     <message>
         <source>Cards</source>
-        <translation>Карточки</translation>
+        <translation type="vanished">Карточки</translation>
     </message>
     <message>
         <source>Languages</source>
-        <translation>Языки</translation>
+        <translation type="vanished">Языки</translation>
     </message>
     <message>
         <source>Card info</source>
-        <translation>Инфо карточки</translation>
+        <translation type="vanished">Инфо карточки</translation>
     </message>
     <message>
         <source>All fields are optional</source>
-        <translation>Заполнение полей необязательно</translation>
+        <translation type="vanished">Заполнение полей необязательно</translation>
     </message>
     <message>
         <source>Add file</source>
-        <translation>Добавить файл</translation>
+        <translation type="vanished">Добавить файл</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="vanished">Сохранить</translation>
     </message>
     <message>
         <source>Save files to disk</source>
-        <translation>Сохранить файлы на жёсткий диск</translation>
+        <translation type="vanished">Сохранить файлы на жёсткий диск</translation>
     </message>
     <message>
         <source>Send container to email</source>
-        <translation>Отослать контейнер по эл. почте</translation>
+        <translation type="vanished">Отослать контейнер по эл. почте</translation>
     </message>
     <message>
         <source>Browse container location</source>
-        <translation>Открыть папку с контейнером</translation>
+        <translation type="vanished">Открыть папку с контейнером</translation>
     </message>
     <message>
         <source>Encrypt document</source>
-        <translation>Зашифровать документ</translation>
+        <translation type="vanished">Зашифровать документ</translation>
     </message>
     <message>
         <source>No card in reader
 
 Check if the ID-card is inserted correctly to the reader.
 New ID-cards have chip on the back side of the card.</source>
-        <translation>Не найдена ID-карта
+        <translation type="vanished">Не найдена ID-карта
 
 Проверьте, правильно ли вставлена ID-карта в считыватель.
 У новых ID-карт чип находится на обратной стороне карты.</translation>
@@ -1463,27 +1498,27 @@ New ID-cards have chip on the back side of the card.</source>
     </message>
     <message>
         <source>Signing not allowed.</source>
-        <translation>Подпись невозможна.</translation>
+        <translation type="vanished">Подпись невозможна.</translation>
     </message>
     <message>
         <source>Phone number with format 372XXXXXX</source>
-        <translation>Номер моб. телефона (3725xxxxx)</translation>
+        <translation type="vanished">Номер моб. телефона (3725xxxxx)</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>Личный код</translation>
+        <translation type="vanished">Личный код</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
-        <translation>NB! Подпись содержит предупреждения</translation>
+        <translation type="vanished">NB! Подпись содержит предупреждения</translation>
     </message>
     <message>
         <source>NB! Status unknown</source>
-        <translation>NB! Статус неизвестен</translation>
+        <translation type="vanished">NB! Статус неизвестен</translation>
     </message>
     <message>
         <source>Remember me</source>
-        <translation>Запомнить меня</translation>
+        <translation type="vanished">Запомнить меня</translation>
     </message>
     <message>
         <source>Documents (%1%2)</source>
@@ -1497,7 +1532,7 @@ BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https:
 DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation>Добро пожаловать в программу цифрового подписывания!&lt;br /&gt;&lt;br /&gt;
+        <translation type="vanished">Добро пожаловать в программу цифрового подписывания!&lt;br /&gt;&lt;br /&gt;
 Помните, что, согласно эстонскому законодательству, цифровая подпись равноценна собственноручной подписи. Чтобы поставить цифровую подпись, необходимо иметь eID документ (ID-карту, Mobiil-ID, digi-ID, карточку э-резидента, дигиштамп и т.д) с действительными сертификатами и интернет-соединение.&lt;br /&gt;
 Для идентификации используйте код PIN1, а для цифрового подписывания - код PIN2.&lt;br /&gt;&lt;br /&gt;
 BDOC – это используемый в Эстонии формат по умолчанию цифровой подписи. &lt;a href=&quot;https://www.ria.ee/ee/bdoc-ru.html&quot;&gt;Доп. инфо&lt;/a&gt;.&lt;br /&gt;
@@ -1629,6 +1664,14 @@ ASiC-E – это разрабатываемый международный фо
         <source>Check internet connection</source>
         <translation>Проверьте подключение к Интернету</translation>
     </message>
+    <message>
+        <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
+        <translation>Фото (*.jpg);;Все файлы (*)</translation>
+    </message>
+    <message>
+        <source>There was an error with request to Äriregister.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1666,83 +1709,83 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Signing in process</source>
-        <translation>Подписывание</translation>
+        <translation type="vanished">Подписывание</translation>
     </message>
     <message>
         <source>Request accepted</source>
-        <translation>Запрос принят</translation>
+        <translation type="vanished">Запрос принят</translation>
     </message>
     <message>
         <source>Request timeout</source>
-        <translation>Время запроса истекло</translation>
+        <translation type="vanished">Время запроса истекло</translation>
     </message>
     <message>
         <source>User denied or cancelled</source>
-        <translation>Пользователю отказано</translation>
+        <translation type="vanished">Пользователю отказано</translation>
     </message>
     <message>
         <source>Got signature</source>
-        <translation>Подпись получена</translation>
+        <translation type="vanished">Подпись получена</translation>
     </message>
     <message>
         <source>Request pending</source>
-        <translation>Запрос в ожидании</translation>
+        <translation type="vanished">Запрос в ожидании</translation>
     </message>
     <message>
         <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID не готов, попробуйте позже</translation>
+        <translation type="vanished">Mobiil-ID не готов, попробуйте позже</translation>
     </message>
     <message>
         <source>Phone absent</source>
-        <translation>Нет телефона</translation>
+        <translation type="vanished">Нет телефона</translation>
     </message>
     <message>
         <source>Request sending error</source>
-        <translation>Ошибка запроса</translation>
+        <translation type="vanished">Ошибка запроса</translation>
     </message>
     <message>
         <source>SIM error</source>
-        <translation>Ошибка SIM карты</translation>
+        <translation type="vanished">Ошибка SIM карты</translation>
     </message>
     <message>
         <source>Service internal error</source>
-        <translation>Внутренняя ошибка услуги</translation>
+        <translation type="vanished">Внутренняя ошибка услуги</translation>
     </message>
     <message>
         <source>Signing with Mobile-ID</source>
-        <translation>Подписывается с Mobiil-ID</translation>
+        <translation type="vanished">Подписывается с Mobiil-ID</translation>
     </message>
     <message>
         <source>User is not a Mobile-ID client</source>
-        <translation>Пользователь не является клиентом Mobiil-ID</translation>
+        <translation type="vanished">Пользователь не является клиентом Mobiil-ID</translation>
     </message>
     <message>
         <source>ID and phone number do not match</source>
-        <translation>Личный код и номер телефона не совпадают</translation>
+        <translation type="vanished">Личный код и номер телефона не совпадают</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Подписать</translation>
+        <translation type="vanished">Подписать</translation>
     </message>
     <message>
         <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
-        <translation>Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
+        <translation type="vanished">Не разрешено использовать OCSP услугу!&lt;br/&gt;Пожалуйста проверьте действительность справки доступа.</translation>
     </message>
     <message>
         <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
-        <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
+        <translation type="vanished">Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
     </message>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Сертификаты Mobiil-ID признаны не действительными или их действие остановлено.</translation>
+        <translation type="vanished">Сертификаты Mobiil-ID признаны не действительными или их действие остановлено.</translation>
     </message>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
-        <translation>Не активирована услуга Mobiil-ID.</translation>
+        <translation type="vanished">Не активирована услуга Mobiil-ID.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Ошибка! Номер телефона должен содержать код страны.</translation>
+        <translation type="vanished">Ошибка! Номер телефона должен содержать код страны.</translation>
     </message>
 </context>
 <context>
@@ -1846,6 +1889,14 @@ Kонтрольный код: %1</translation>
     <message>
         <source>%v sec</source>
         <translation>%v сек</translation>
+    </message>
+    <message>
+        <source>Signing with Mobile-ID</source>
+        <translation>Подписывается с Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
     </message>
 </context>
 <context>
@@ -2259,6 +2310,13 @@ Kонтрольный код: %1</translation>
     </message>
 </context>
 <context>
+    <name>QFileDialog</name>
+    <message>
+        <source>All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QPKCS11</name>
     <message>
         <source>PIN Canceled</source>
@@ -2367,10 +2425,21 @@ Kонтрольный код: %1</translation>
     </message>
 </context>
 <context>
+    <name>SDocumentModel</name>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 клиент</translation>
+    </message>
+    <message>
+        <source>Failed remove document from container</source>
+        <translation>Не удается удалить файл из контейнера</translation>
+    </message>
+</context>
+<context>
     <name>SSLConnect</name>
     <message>
         <source>Certificate is empty</source>
-        <translation>Сертификат пустой</translation>
+        <translation type="vanished">Сертификат пустой</translation>
     </message>
     <message>
         <source>Downloading picture</source>
@@ -2378,11 +2447,11 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Отсутствует подключение к интернету!</translation>
+        <translation type="vanished">Отсутствует подключение к интернету!</translation>
     </message>
     <message>
         <source>Invalid response</source>
-        <translation>Неверный ответ</translation>
+        <translation type="vanished">Неверный ответ</translation>
     </message>
     <message>
         <source>Loading Email info</source>
@@ -2390,11 +2459,15 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Loading Mobile info</source>
-        <translation>Загрузка информации услуги Mobiil-ID</translation>
+        <translation type="vanished">Загрузка информации услуги Mobiil-ID</translation>
     </message>
     <message>
         <source>SSL context is missing</source>
-        <translation>Отсутствует контекст SSL</translation>
+        <translation type="vanished">Отсутствует контекст SSL</translation>
+    </message>
+    <message>
+        <source>Invalid Content-Type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2409,7 +2482,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>SIGNING</source>
-        <translation>ПОДПИСЬ</translation>
+        <translation type="vanished">ПОДПИСЬ</translation>
     </message>
     <message>
         <source>ACCESS CERTIFICATE</source>
@@ -2433,15 +2506,15 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>https://installer.id.ee/?lang=eng</source>
-        <translation>https://installer.id.ee/?lang=rus</translation>
+        <translation type="vanished">https://installer.id.ee/?lang=rus</translation>
     </message>
     <message>
         <source>https://installer.id.ee/?lang=eng&amp;os=linux</source>
-        <translation>https://installer.id.ee/?lang=rus&amp;os=linux</translation>
+        <translation type="vanished">https://installer.id.ee/?lang=rus&amp;os=linux</translation>
     </message>
     <message>
         <source>NEW VERSION AVAILABLE</source>
-        <translation>ДОСТУПНА НОВАЯ ВЕРСИЯ</translation>
+        <translation type="vanished">ДОСТУПНА НОВАЯ ВЕРСИЯ</translation>
     </message>
     <message>
         <source>FIRST RUN</source>
@@ -2497,7 +2570,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Default file type</source>
-        <translation>Формат файла по умолчанию</translation>
+        <translation type="vanished">Формат файла по умолчанию</translation>
     </message>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
@@ -2622,6 +2695,38 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
 Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
+    </message>
+    <message>
+        <source>Select folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server access certificate error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text files (*.txt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed write to file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 клиент</translation>
     </message>
 </context>
 <context>
@@ -2997,7 +3102,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>RENEW CERTIFICATE</source>
-        <translation>ОБНОВЛЕНИЕ СЕРТИФИКАТА</translation>
+        <translation type="vanished">ОБНОВЛЕНИЕ СЕРТИФИКАТА</translation>
     </message>
     <message>
         <source>UNBLOCK</source>
@@ -3053,6 +3158,20 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>key has been used %1 times</source>
+        <translation type="vanished">Сертификат использован %1 раз</translation>
+    </message>
+    <message>
+        <source>PIN can be changed only using eToken utility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <comment>pin1</comment>
+        <translation>Сертификат использован %1 раз</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <comment>pin2</comment>
         <translation>Сертификат использован %1 раз</translation>
     </message>
 </context>

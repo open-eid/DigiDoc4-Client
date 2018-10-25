@@ -110,39 +110,54 @@ void SignatureItem::init()
 		ui->icon->setPixmap(QStringLiteral(":/images/icon_Allkiri_small.svg"));
 	sa << label << " ";
 	sc << "<span style=\"font-weight:normal;\">";
+	auto isValid = [](bool isSignature) {
+		if(isSignature)
+			return tr("is valid", "Signature");
+		return tr("is valid", "Timestamp");
+	};
+	auto isNotValid = [](bool isSignature) {
+		if(isSignature)
+			return tr("is not valid", "Signature");
+		return tr("is not valid", "Timestamp");
+	};
+	auto isUnknown = [](bool isSignature) {
+		if(isSignature)
+			return tr("is unknown", "Signature");
+		return tr("is unknown", "Timestamp");
+	};
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
-		sa << tr("is valid", isSignature ? "Signature" : "Timestamp");
-		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font>";
+		sa << isValid(isSignature);
+		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font>";
 		break;
 	case DigiDocSignature::Warning:
-		sa << tr("is valid", isSignature ? "Signature" : "Timestamp") << " (" << tr("Warnings") << ")";
-		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
+		sa << isValid(isSignature) << " (" << tr("Warnings") << ")";
+		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
 		break;
 	case DigiDocSignature::NonQSCD:
-		sa << tr("is valid", isSignature ? "Signature" : "Timestamp") << " (" << tr("Restrictions") << ")";
-		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
+		sa << isValid(isSignature) << " (" << tr("Restrictions") << ")";
+		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
 		break;
 	case DigiDocSignature::Test:
-		sa << tr("is valid", isSignature ? "Signature" : "Timestamp") << " (" << tr("Test signature") << ")";
-		sc << "<font color=\"green\">" << label << " " << tr("is valid", isSignature ? "Signature" : "Timestamp") << "</font> <font>(" << tr("Test signature") << ")";
+		sa << isValid(isSignature) << " (" << tr("Test signature") << ")";
+		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font> <font>(" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
 		if(isSignature)
 			ui->error = ria::qdigidoc4::InvalidSignatureWarning;
 		else
 			ui->error = ria::qdigidoc4::InvalidTimestampWarning;
-		sa << tr("is not valid", isSignature ? "Signature" : "Timestamp");
-		sc << "<font color=\"red\">" << label << " " << tr("is not valid", isSignature ? "Signature" : "Timestamp");
+		sa << isNotValid(isSignature);
+		sc << "<font color=\"red\">" << label << " " << isNotValid(isSignature);
 		break;
 	case DigiDocSignature::Unknown:
 		if(isSignature)
 			ui->error = ria::qdigidoc4::UnknownSignatureWarning;
 		else
 			ui->error = ria::qdigidoc4::UnknownTimestampWarning;
-		sa << tr("is unknown", isSignature ? "Signature" : "Timestamp");
-		sc << "<font color=\"red\">" << label << " " << tr("is unknown", isSignature ? "Signature" : "Timestamp");
+		sa << isUnknown(isSignature);
+		sc << "<font color=\"red\">" << label << " " << isUnknown(isSignature);
 		break;
 	}
 	sc << "</span>";

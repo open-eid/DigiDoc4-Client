@@ -41,8 +41,8 @@ public:
 		PukChange = 8
 	};
 	PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
-		const QDate &birthDate, const QString &personalCode);
-	~PinUnblock();
+		QDate birthDate, QString personalCode);
+	~PinUnblock() final;
 
 	int exec() override;
 	QString firstCodeText() const;
@@ -59,7 +59,7 @@ private:
 	QString personalCode;
 	QRegExp regexpFirstCode;
 	QRegExp regexpNewCode;
-	bool isFirstCodeOk;
-	bool isNewCodeOk;
-	bool isRepeatCodeOk;
+	bool isFirstCodeOk = false;
+	bool isNewCodeOk = false;
+	bool isRepeatCodeOk = false;
 };

@@ -87,7 +87,7 @@ QString FileUtil::create(const QFileInfo &fileInfo, const QString &extension, co
 #endif
 		WaitDialogHider hider;
 		QString capitalized = type[0].toUpper() + type.mid(1);
-		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), qApp->tr("Create %1").arg(type), fileName,
+		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), Application::tr("Create %1").arg(type), fileName,
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 		if(!fileName.isEmpty())
 			QFile::remove( fileName );

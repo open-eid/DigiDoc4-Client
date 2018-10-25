@@ -139,7 +139,12 @@ void VerifyCert::update(bool showWarning)
 		if(leftDays <= 105 && !c.isNull())
 			cert << "</span>";
 		if(!isTempelType && cardData.version() != QSmartCardData::VER_IDEMIA)
-			cert << "<br />" << tr("key has been used %1 times", pinType == QSmartCardData::Pin1Type ? "pin1" : "pin2").arg(cardData.usageCount(pinType));
+		{
+			if(pinType == QSmartCardData::Pin1Type)
+				cert << "<br />" << tr("key has been used %1 times", "pin1").arg(cardData.usageCount(pinType));
+			else
+				cert << "<br />" << tr("key has been used %1 times", "pin2").arg(cardData.usageCount(pinType));
+		}
 	}
 	switch( pinType )
 	{
@@ -154,7 +159,7 @@ void VerifyCert::update(bool showWarning)
 							.arg(1)
 							.arg(QStringLiteral("</span></a>"));
 		detailsText = tr("%1Check the details of the certificate%2").arg(QStringLiteral("<a href='#pin1-cert'><span style='color:#75787B;'>"), QStringLiteral("</span></a>"));
-		error = ( isRevoked ) ? tr(R"(PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from <a href="https://www.politsei.ee/en/"><span style="color: #006EB5; text-decoration: none;">here</span></a>.)").arg(1) :
+		error = ( isRevoked ) ? tr("PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(1) :
 				( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(1) :
 				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(1) :
 				QString();
@@ -170,7 +175,7 @@ void VerifyCert::update(bool showWarning)
 							.arg(2)
 							.arg(QStringLiteral("</span></a>"));
 		detailsText = tr("%1Check the details of the certificate%2").arg(QStringLiteral("<a href='#pin1-cert'><span style='color:#75787B;'>"), QStringLiteral("</span></a>"));
-		error = ( isRevoked ) ? tr(R"(PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from <a href="https://www.politsei.ee/en/"><span style="color: #006EB5; text-decoration: none;">here</span></a>.)").arg(2) :
+		error = ( isRevoked ) ? tr("PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(2) :
 				( !isValidCert ) ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(2) :
 				( isBlockedPin ) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(2) :
 				QString();
