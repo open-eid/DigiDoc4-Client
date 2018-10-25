@@ -28,13 +28,7 @@
 #include <QtCore/QTextStream>
 #include <QSvgWidget>
 
-VerifyCert::VerifyCert(QWidget *parent) :
-	StyledWidget(parent),
-	ui(new Ui::VerifyCert),
-	isValidCert(false),
-	isBlockedPin(false),
-	isTempelType(false),
-	pinType(QSmartCardData::Pin1Type)
+VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::VerifyCert)
 {
 	ui->setupUi( this );
 
@@ -88,7 +82,6 @@ void VerifyCert::clear()
 	c = SslCertificate();
 	isBlockedPin = false;
 	cardData = QSmartCardData();
-	
 	update();
 }
 
@@ -98,7 +91,6 @@ void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartC
 	this->cardData = pSmartCard->data();
 	c = (pinType == QSmartCardData::Pin1Type) ? cardData.authCert() : cardData.signCert();
 	isBlockedPin = cardData.retryCount( pinType ) == 0;
-	
 	update();
 }
 
@@ -182,7 +174,7 @@ void VerifyCert::update(bool showWarning)
 		txt = tr("The PUK code is located in your envelope");
 		changeBtn = tr("CHANGE PUK");
 		error = ( isBlockedPin ) ?
-			tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. Unable to disable the PUK code itself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.")
+			tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.")
 			: QString();
 		ui->changePIN->setDisabled(cardData.version() == QSmartCardData::VER_USABLEUPDATER);
 		break;
@@ -352,7 +344,7 @@ void VerifyCert::processForgotPinLink(const QString & /*link*/)
 void VerifyCert::processCertDetails(const QString & /*link*/)
 {
 	if(!c.isNull())
-		emit certDetailsClicked(QStringLiteral("PIN%1").arg(pinType == QSmartCardData::Pin1Type ? 1 : 2));
+		emit certDetailsClicked(QSmartCardData::typeString(pinType));
 }
 
 void VerifyCert::showWarningIcon()
