@@ -56,16 +56,19 @@
 #include <QtNetwork/QSslCertificate>
 
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
-: QDialog(parent)
-, ui(new Ui::SettingsDialog)
-, appletVersion(appletVersion)
+	: QDialog(parent)
+	, ui(new Ui::SettingsDialog)
+	, appletVersion(std::move(appletVersion))
 {
+	Overlay *overlay = new Overlay(parent->topLevelWidget());
+	overlay->show();
+	connect(this, &SettingsDialog::destroyed, overlay, &Overlay::deleteLater);
 	initUI();
 	initFunctionality();
 }
 
 SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
-: SettingsDialog(parent, appletVersion)
+	: SettingsDialog(parent, std::move(appletVersion))
 {
 	ui->stackedWidget->setCurrentIndex(page);
 
@@ -74,9 +77,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
 		ui->btnMenuGeneral->setChecked(false);
 		switch(page)
 		{
-		case SigningSettings:
-			changePage(ui->btnMenuSigning);
-			break;
 		case AccessCertSettings:
 			changePage(ui->btnMenuCertificate);
 			break;
@@ -118,7 +118,6 @@ void SettingsDialog::initUI()
 	// Menu
 	ui->lblMenuSettings->setFont(headerFont);
 	ui->btnMenuGeneral->setFont(condensed12);
-	ui->btnMenuSigning->setFont(condensed12);
 	ui->btnMenuCertificate->setFont(condensed12);
 	ui->btnMenuCertificate->setText(tr("ACCESS CERTIFICATE",
 #ifdef Q_OS_WIN
@@ -147,14 +146,8 @@ void SettingsDialog::initUI()
 	ui->chkGeneralTslRefresh->setFont(regularFont);
 	ui->tokenBackend->setFont(regularFont);
 
-	// pageSigning
-	ui->lblSigningFileType->setFont(headerFont);
 	ui->chkShowPrintSummary->setFont(regularFont);
 	ui->chkRoleAddressInfo->setFont(regularFont);
-
-	ui->rdSigningAsice->setFont(regularFont);
-	ui->rdSigningBdoc->setFont(regularFont);
-	ui->lblSigningExplained->setFont(regularFont);
 
 	// pageAccessSert
 	ui->txtAccessCert->setFont(regularFont);
@@ -263,12 +256,11 @@ void SettingsDialog::initUI()
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
 	connect( ui->btnNavFromHistory, &QPushButton::clicked, this,  [this](){ emit removeOldCert(); } );
 
-	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(0); } );
-	connect( ui->btnMenuSigning, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuSigning); ui->stackedWidget->setCurrentIndex(1); } );
-	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(2); } );
-	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(3); } );
-	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(4); } );
-	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(5); } );
+	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(GeneralSettings); } );
+	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(AccessCertSettings); } );
+	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(NetworkSettings); } );
+	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(DiagnosticsSettings); } );
+	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(LicenseSettings); } );
 
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
 	connect( this, &SettingsDialog::finished, this, [](){ QApplication::restoreOverrideCursor(); } );
@@ -387,17 +379,6 @@ void SettingsDialog::initFunctionality()
 				ui->btGeneralChooseDirectory->setEnabled(true);
 		} } );
 #endif
-
-	if(Settings(qApp->applicationName()).value( "Client/Type" ).toString() == "asice")
-	{
-		ui->rdSigningAsice->setChecked(true);
-	}
-	else
-	{
-		ui->rdSigningBdoc->setChecked(true);
-	}
-	connect( ui->rdSigningBdoc, &QRadioButton::toggled, this, [](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "bdoc", "bdoc" ); } } );
-	connect( ui->rdSigningAsice, &QRadioButton::toggled, this, [](bool checked) { if(checked) { Settings(qApp->applicationName()).setValueEx( "Client/Type", "asice", "bdoc" ); } } );
 
 	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
 	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
@@ -647,7 +628,6 @@ void SettingsDialog::changePage(QPushButton* button)
 	if(button->isChecked())
 	{
 		ui->btnMenuGeneral->setChecked(false);
-		ui->btnMenuSigning->setChecked(false);
 		ui->btnMenuCertificate->setChecked(false);
 		ui->btnMenuProxy->setChecked(false);
 		ui->btnMenuDiagnostics->setChecked(false);
@@ -668,16 +648,6 @@ void SettingsDialog::changePage(QPushButton* button)
 #else
 	ui->btnNavFromHistory->setVisible(false);
 #endif
-}
-
-int SettingsDialog::exec()
-{
-	Overlay overlay( parentWidget() );
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
 }
 
 void SettingsDialog::saveDiagnostics()

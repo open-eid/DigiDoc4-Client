@@ -2240,6 +2240,270 @@ Kонтрольный код: %1</translation>
 
 
 <context>
+    <name>PrintSheet</name>
+
+    <message>
+        <source>SIGNED FILES</source>
+        <translation>ПОДПИСАННЫЕ ФАЙЛЫ</translation>
+    </message>
+    <message>
+        <source>FILE NAME</source>
+        <translation>ИМЯ ФАЙЛА</translation>
+    </message>
+    <message>
+        <source>FILE SIZE</source>
+        <translation>РАЗМЕР ФАЙЛА</translation>
+    </message>
+    <message>
+        <source>SIGNERS</source>
+        <translation>ПОДПИСАВШИЙСЯ</translation>
+    </message>
+    <message>
+        <source>NAME</source>
+        <translation>ИМЯ</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>ЛИЧНЫЙ КОД</translation>
+    </message>
+    <message>
+        <source>TIME</source>
+        <translation>ВРЕМЯ</translation>
+    </message>
+    <message>
+        <source>NOTES</source>
+        <translation>ЗАМЕЧАНИЯ</translation>
+    </message>
+    <message>
+        <source>VALIDITY CONFIRMATION SHEET</source>
+        <translation>ЛИСТ ПОДТВЕРЖДЕНИЯ ДИГИТАЛЬНЫХ ПОДПИСЕЙ</translation>
+    </message>
+    <message>
+        <source>NO.</source>
+        <translation>№.</translation>
+    </message>
+    <message>
+        <source>VALIDITY OF SIGNATURE</source>
+        <translation>ДЕЙСТВИТЕЛЬНОСТЬ ПОДПИСИ</translation>
+    </message>
+    <message>
+        <source>ROLE / RESOLUTION</source>
+        <translation>РОЛЬ / ЗАЯВЛЕНИЕ</translation>
+    </message>
+    <message>
+        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
+        <translation>МЕСТОПОЛОЖЕНИЕ ПОДПИСАВШЕГО (город, уезд, индекс, страна)</translation>
+    </message>
+    <message>
+        <source>ISSUER OF CERTIFICATE</source>
+        <translation>ИМЯ ВЫДАВШЕГО СЕРТИФИКАТ</translation>
+    </message>
+    <message>
+        <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
+        <translation>Неотъемлемой частью этого листа подтверждения подписей является распечатка файлов на бумаге из раздела &lt;b&gt;&quot;Подписанные файлы&quot;&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>COMPANY</source>
+        <translation>УЧЕРЕЖДЕНИЕ</translation>
+    </message>
+    <message>
+        <source>REGISTER CODE</source>
+        <translation>КОД РЕГИСТРА</translation>
+    </message>
+    <message>
+        <source>UNKNOWN</source>
+        <translation>НЕИЗВЕСТНО</translation>
+    </message>
+    <message>
+        <source>SERIAL NUMBER OF SIGNER CERTIFICATE</source>
+        <translation>СЕРИЙНЫЙ НОМЕР СЕРТИФИКАТА</translation>
+    </message>
+    <message>
+        <source>SIGNATURE IS VALID</source>
+        <translation>ПОДПИСЬ ДЕЙСТВИТЕЛЬНА</translation>
+    </message>
+    <message>
+        <source>SIGNATURE IS NOT VALID</source>
+        <translation>ПОДПИСЬ НЕДЕЙСТВИТЕЛЬНА</translation>
+    </message>
+    <message>
+        <source>HASH VALUE OF SIGNATURE</source>
+        <translation>ХЭШ ЗНАЧАНИЕ ПОДТВЕРЖДЕНИЯ ПОДЛИННОСТИ ПОДПИСИ</translation>
+    </message>
+    <message>
+        <source>AUTHORITY KEY IDENTIFIER</source>
+        <translation>ИДЕНТИФИКАТОР ЛИЧНОГО КЛЮЧА</translation>
+    </message>
+    <message>
+        <source>NB! TEST SIGNATURE</source>
+        <translation>NB! ПРОБНАЯ ПОДПИСЬ</translation>
+    </message>
+    <message>
+        <source>NB! WARNINGS</source>
+        <translation>NB! ПРЕДУПРЕЖДЕНИЯ</translation>
+    </message>
+    <message>
+        <source>NB! RESTRICTIONS</source>
+        <translation>NB! ОГРАНИЧЕНИЯ</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QPKCS11</name>
+
+    <message>
+        <source>PIN Canceled</source>
+        <translation>PIN-код отменен</translation>
+    </message>
+    <message>
+        <source>PIN locked</source>
+        <translation>PIN заблокирован</translation>
+    </message>
+    <message>
+        <source>PIN Incorrect</source>
+        <translation>Неверный PIN</translation>
+    </message>
+    <message>
+        <source>PKCS11 general error</source>
+        <translation>Ошибка PKCS11</translation>
+    </message>
+    <message>
+        <source>PKCS11 device error</source>
+        <translation>Ошибка PKCS11 устройства</translation>
+    </message>
+    <message>
+        <source>PKCS11 unknown error</source>
+        <translation>Неизвестная ошибка PKCS11</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QSigner</name>
+
+    <message>
+        <source>Failed to load PKCS#11 module</source>
+        <translation>Неудачная загрузка модуля PKCS#11</translation>
+    </message>
+    <message>
+        <source>Signing certificate is not selected.</source>
+        <translation>Сертификат подписи не выбран.</translation>
+    </message>
+    <message>
+        <source>Failed to login token</source>
+        <translation>PIN код не подтвежден</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Не удалось подписать документ</translation>
+    </message>
+    <message>
+        <source>Sign certificate is not selected</source>
+        <translation>Сертификат подписи не выбран</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress another window.</source>
+        <translation>Операция подписи/расшифровки уже выполняется в другом окне.></translation>
+    </message>
+    <message>
+        <source>Authentication certificate is not selected.</source>
+        <translation>Сертификат идентификации не выбран</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation>Не удалось расшифровать документ</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QSmartCard</name>
+
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>Для изменения %1 кода с помощью PUK кода Вам необходимо&lt;br&gt;ввести один раз PUK код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>RoleAddressDialog</name>
+
+    <message>
+        <source>Role / resolution</source>
+        <translation>Роль / pезолюция</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Город</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Уезд</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Индекс</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SSLConnect</name>
+
+    <message>
+        <source>Certificate is empty</source>
+        <translation>Сертификат пустой</translation>
+    </message>
+    <message>
+        <source>Downloading picture</source>
+        <translation>Загрузка картинки</translation>
+    </message>
+    <message>
+        <source>Failed to connect to host. Are you connected to the internet?</source>
+        <translation>Отсутствует подключение к интернету!</translation>
+    </message>
+    <message>
+        <source>Invalid response</source>
+        <translation>Неверный ответ</translation>
+    </message>
+    <message>
+        <source>Loading Email info</source>
+        <translation>Загрузка информации электронной почты</translation>
+    </message>
+    <message>
+        <source>Loading Mobile info</source>
+        <translation>Загрузка информации услуги Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>SSL context is missing</source>
+        <translation>Отсутствует контекст SSL</translation>
+    </message>
+</context>
+
+
+<context>
     <name>SettingsDialog</name>
 
     <message>
@@ -2346,21 +2610,6 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Restart now</source>
         <translation>Начать заново</translation>
-    </message>
-
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries
-</source>
-        <translation>ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет
-использоваться в европейских государствах.</translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC – формат цифровой подписи по умолчанию, используемой в Эстонии на данный момент.</translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>Если Вы желаете изменить формат цифровой подписи, это нужно сделать до того, как Вы добавите в контейнер подписываемый файл. В противном случае будет действовать формат подписи по умолчанию. Если документ уже подписан, то при добавлении к нему второй подписи формат подписи изменить невозможно.</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2737,270 +2986,6 @@ Additional licenses and components</source>
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>PrintSheet</name>
-
-    <message>
-        <source>SIGNED FILES</source>
-        <translation>ПОДПИСАННЫЕ ФАЙЛЫ</translation>
-    </message>
-    <message>
-        <source>FILE NAME</source>
-        <translation>ИМЯ ФАЙЛА</translation>
-    </message>
-    <message>
-        <source>FILE SIZE</source>
-        <translation>РАЗМЕР ФАЙЛА</translation>
-    </message>
-    <message>
-        <source>SIGNERS</source>
-        <translation>ПОДПИСАВШИЙСЯ</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>ИМЯ</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>ЛИЧНЫЙ КОД</translation>
-    </message>
-    <message>
-        <source>TIME</source>
-        <translation>ВРЕМЯ</translation>
-    </message>
-    <message>
-        <source>NOTES</source>
-        <translation>ЗАМЕЧАНИЯ</translation>
-    </message>
-    <message>
-        <source>VALIDITY CONFIRMATION SHEET</source>
-        <translation>ЛИСТ ПОДТВЕРЖДЕНИЯ ДИГИТАЛЬНЫХ ПОДПИСЕЙ</translation>
-    </message>
-    <message>
-        <source>NO.</source>
-        <translation>№.</translation>
-    </message>
-    <message>
-        <source>VALIDITY OF SIGNATURE</source>
-        <translation>ДЕЙСТВИТЕЛЬНОСТЬ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>ROLE / RESOLUTION</source>
-        <translation>РОЛЬ / ЗАЯВЛЕНИЕ</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>МЕСТОПОЛОЖЕНИЕ ПОДПИСАВШЕГО (город, уезд, индекс, страна)</translation>
-    </message>
-    <message>
-        <source>ISSUER OF CERTIFICATE</source>
-        <translation>ИМЯ ВЫДАВШЕГО СЕРТИФИКАТ</translation>
-    </message>
-    <message>
-        <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
-        <translation>Неотъемлемой частью этого листа подтверждения подписей является распечатка файлов на бумаге из раздела &lt;b&gt;&quot;Подписанные файлы&quot;&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <source>COMPANY</source>
-        <translation>УЧЕРЕЖДЕНИЕ</translation>
-    </message>
-    <message>
-        <source>REGISTER CODE</source>
-        <translation>КОД РЕГИСТРА</translation>
-    </message>
-    <message>
-        <source>UNKNOWN</source>
-        <translation>НЕИЗВЕСТНО</translation>
-    </message>
-    <message>
-        <source>SERIAL NUMBER OF SIGNER CERTIFICATE</source>
-        <translation>СЕРИЙНЫЙ НОМЕР СЕРТИФИКАТА</translation>
-    </message>
-    <message>
-        <source>SIGNATURE IS VALID</source>
-        <translation>ПОДПИСЬ ДЕЙСТВИТЕЛЬНА</translation>
-    </message>
-    <message>
-        <source>SIGNATURE IS NOT VALID</source>
-        <translation>ПОДПИСЬ НЕДЕЙСТВИТЕЛЬНА</translation>
-    </message>
-    <message>
-        <source>HASH VALUE OF SIGNATURE</source>
-        <translation>ХЭШ ЗНАЧАНИЕ ПОДТВЕРЖДЕНИЯ ПОДЛИННОСТИ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>AUTHORITY KEY IDENTIFIER</source>
-        <translation>ИДЕНТИФИКАТОР ЛИЧНОГО КЛЮЧА</translation>
-    </message>
-    <message>
-        <source>NB! TEST SIGNATURE</source>
-        <translation>NB! ПРОБНАЯ ПОДПИСЬ</translation>
-    </message>
-    <message>
-        <source>NB! WARNINGS</source>
-        <translation>NB! ПРЕДУПРЕЖДЕНИЯ</translation>
-    </message>
-    <message>
-        <source>NB! RESTRICTIONS</source>
-        <translation>NB! ОГРАНИЧЕНИЯ</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QPKCS11</name>
-
-    <message>
-        <source>PIN Canceled</source>
-        <translation>PIN-код отменен</translation>
-    </message>
-    <message>
-        <source>PIN locked</source>
-        <translation>PIN заблокирован</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>Неверный PIN</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation>Ошибка PKCS11</translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation>Ошибка PKCS11 устройства</translation>
-    </message>
-    <message>
-        <source>PKCS11 unknown error</source>
-        <translation>Неизвестная ошибка PKCS11</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSigner</name>
-
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>Неудачная загрузка модуля PKCS#11</translation>
-    </message>
-    <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Сертификат подписи не выбран.</translation>
-    </message>
-    <message>
-        <source>Failed to login token</source>
-        <translation>PIN код не подтвежден</translation>
-    </message>
-    <message>
-        <source>Failed to sign document</source>
-        <translation>Не удалось подписать документ</translation>
-    </message>
-    <message>
-        <source>Sign certificate is not selected</source>
-        <translation>Сертификат подписи не выбран</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Операция подписи/расшифровки уже выполняется в другом окне.></translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation>Сертификат идентификации не выбран</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation>Не удалось расшифровать документ</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSmartCard</name>
-
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>Для изменения %1 кода с помощью PUK кода Вам необходимо&lt;br&gt;ввести один раз PUK код и два раза новый %1 код с помощью PinPad.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>RoleAddressDialog</name>
-
-    <message>
-        <source>Role / resolution</source>
-        <translation>Роль / pезолюция</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Адрес</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Город</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Уезд</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Страна</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Индекс</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Подписать</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>SSLConnect</name>
-
-    <message>
-        <source>Certificate is empty</source>
-        <translation>Сертификат пустой</translation>
-    </message>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Загрузка картинки</translation>
-    </message>
-    <message>
-        <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Отсутствует подключение к интернету!</translation>
-    </message>
-    <message>
-        <source>Invalid response</source>
-        <translation>Неверный ответ</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Загрузка информации электронной почты</translation>
-    </message>
-    <message>
-        <source>Loading Mobile info</source>
-        <translation>Загрузка информации услуги Mobiil-ID</translation>
-    </message>
-    <message>
-        <source>SSL context is missing</source>
-        <translation>Отсутствует контекст SSL</translation>
     </message>
 </context>
 

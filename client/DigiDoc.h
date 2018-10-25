@@ -157,7 +157,6 @@ public:
 		const QString &country,
 		const QString &role,
 		const QString &role2 );
-	QString signatureFormat() const;
 	QList<DigiDocSignature> signatures() const;
 	ria::qdigidoc4::ContainerState state();
 	QList<DigiDocSignature> timestamps() const;
