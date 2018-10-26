@@ -9,32 +9,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1014</width>
-    <height>570</height>
+    <width>1013</width>
+    <height>528</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1014</width>
-    <height>516</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="SignatureDialogLayout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -52,22 +31,10 @@
    </property>
    <item>
     <widget class="QWidget" name="containerLists" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>1</horstretch>
-       <verstretch>1</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>880</width>
-       <height>399</height>
-      </size>
-     </property>
      <property name="styleSheet">
       <string notr="true">background-color: #ffffff;</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="containerListsLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -85,53 +52,74 @@
       </property>
       <item>
        <widget class="QWidget" name="leftPane" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>505</width>
           <height>0</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>505</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="styleSheet">
          <string notr="true">border-right: 1px solid #DEE4E9;</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="14" column="1">
-          <widget class="QLineEdit" name="signerState">
-           <property name="minimumSize">
-            <size>
-             <width>300</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>395</width>
-             <height>31</height>
-            </size>
+        <layout class="QFormLayout" name="leftPaneLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <property name="labelAlignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="lblSignerHeader">
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>18</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
+            <string notr="true">border: none;</string>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="text">
+            <string>Signer</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item row="11" column="0" colspan="2">
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblNotice">
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>Notice</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="info">
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
           <widget class="AccordionTitle" name="showErrors" native="true">
            <property name="minimumSize">
             <size>
@@ -153,253 +141,7 @@ background-color: #FFFFFF;</string>
            </property>
           </widget>
          </item>
-         <item row="18" column="0" colspan="2">
-          <widget class="QLineEdit" name="signerRoles">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>481</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>472</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="17" column="0" colspan="2">
-          <widget class="QLabel" name="lblRole">
-           <property name="minimumSize">
-            <size>
-             <width>140</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>140</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>Role / resolution</string>
-           </property>
-          </widget>
-         </item>
-         <item row="15" column="1">
-          <widget class="QLineEdit" name="signerCountry">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>300</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>395</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="16" column="1">
-          <widget class="QLineEdit" name="signerZip">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>300</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>395</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="16" column="0">
-          <widget class="QLabel" name="lblSigningZipCode">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>Zip</string>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="0">
-          <widget class="QLabel" name="lblSigningCity">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>City</string>
-           </property>
-          </widget>
-         </item>
-         <item row="14" column="0">
-          <widget class="QLabel" name="lblSigningCounty">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>State</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QLabel" name="lblSignerHeader">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>18</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>Signer</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="19" column="0" rowspan="2" colspan="2">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>400</width>
-             <height>12</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="12" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QTextEdit" name="error">
            <property name="styleSheet">
             <string notr="true">QTextEdit {
@@ -434,20 +176,8 @@ QScrollBar::sub-line:vertical {
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="lblNotice">
-           <property name="minimumSize">
-            <size>
-             <width>140</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>140</width>
-             <height>16</height>
-            </size>
-           </property>
+         <item row="5" column="0">
+          <widget class="QLabel" name="lblSigningCity">
            <property name="font">
             <font>
              <family>Roboto</family>
@@ -458,24 +188,64 @@ QScrollBar::sub-line:vertical {
             <string notr="true">border: none;</string>
            </property>
            <property name="text">
-            <string>Notice</string>
+            <string>City</string>
            </property>
           </widget>
          </item>
-         <item row="15" column="0">
-          <widget class="QLabel" name="lblSigningCountry">
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="signerCity">
            <property name="minimumSize">
             <size>
-             <width>120</width>
-             <height>16</height>
+             <width>0</width>
+             <height>31</height>
             </size>
            </property>
-           <property name="maximumSize">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="lblSigningCounty">
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>State</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="signerState">
+           <property name="minimumSize">
             <size>
-             <width>120</width>
-             <height>16</height>
+             <width>0</width>
+             <height>31</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="lblSigningCountry">
            <property name="font">
             <font>
              <family>Roboto</family>
@@ -490,17 +260,11 @@ QScrollBar::sub-line:vertical {
            </property>
           </widget>
          </item>
-         <item row="13" column="1">
-          <widget class="QLineEdit" name="signerCity">
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="signerCountry">
            <property name="minimumSize">
             <size>
-             <width>300</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>395</width>
+             <width>0</width>
              <height>31</height>
             </size>
            </property>
@@ -514,34 +278,108 @@ background-color: #FFFFFF;</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="0" colspan="2">
-          <widget class="QLabel" name="info">
+         <item row="8" column="0">
+          <widget class="QLabel" name="lblSigningZipCode">
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>Zip</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="signerZip">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="lblRole">
+           <property name="font">
+            <font>
+             <family>Roboto</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>Role / resolution</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0" colspan="2">
+          <widget class="QLabel" name="signerRoles">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>300</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 2px;
+background-color: #FFFFFF;</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
            </property>
-           <property name="openExternalLinks">
-            <bool>true</bool>
-           </property>
            <property name="textInteractionFlags">
-            <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
+         </item>
+         <item row="11" column="0" colspan="2">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>400</width>
+             <height>12</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
       </item>
       <item>
        <widget class="QWidget" name="rightPane" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+        <property name="minimumSize">
+         <size>
+          <width>505</width>
+          <height>0</height>
+         </size>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="rightPaneLayout">
          <property name="leftMargin">
           <number>9</number>
          </property>
@@ -553,24 +391,6 @@ background-color: #FFFFFF;</string>
          </property>
          <item>
           <widget class="QLabel" name="lblSignatureHeader">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>490</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>21</height>
-            </size>
-           </property>
            <property name="font">
             <font>
              <family>Roboto</family>
@@ -639,12 +459,6 @@ QHeaderView::section {
    </item>
    <item>
     <widget class="QWidget" name="navigationArea" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -661,90 +475,31 @@ QHeaderView::section {
       <string notr="true">border-top: 1px solid #DEE4E9;
 background-color: #f7f7f7;</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="navigationAreaLayout">
       <property name="spacing">
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>13</number>
       </property>
       <property name="topMargin">
        <number>1</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>30</number>
       </property>
       <property name="bottomMargin">
        <number>3</number>
       </property>
       <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Minimum</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>13</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QLabel" name="title">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>750</width>
-          <height>32</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>32</height>
-         </size>
-        </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::AutoText</enum>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QPushButton" name="close">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
@@ -779,22 +534,6 @@ QPushButton:disabled {
         </property>
        </widget>
       </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Preferred</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>30</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
@@ -814,7 +553,6 @@ QPushButton:disabled {
   <tabstop>signerState</tabstop>
   <tabstop>signerCountry</tabstop>
   <tabstop>signerZip</tabstop>
-  <tabstop>signerRoles</tabstop>
   <tabstop>signatureView</tabstop>
   <tabstop>close</tabstop>
  </tabstops>
