@@ -197,7 +197,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Encrypt with DigiDoc4 Crypto</string>
+				<string>Encrypt with DigiDoc4 Client</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openCrypto</string>
