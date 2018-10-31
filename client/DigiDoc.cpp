@@ -307,7 +307,7 @@ void SDocumentModel::addFile(const QString &file, const QString &mime)
 	QString fileName(QFileInfo(file).fileName());
 	for(int row = 0; row < rowCount(); row++)
 	{
-		if(fileName == from(doc->b->dataFiles().at(row)->fileName()))
+		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
 			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName), QString());
 			return;
@@ -327,7 +327,7 @@ QString SDocumentModel::data(int row) const
 	if(row >= rowCount())
 		return QString();
 
-	return from(doc->b->dataFiles().at(row)->fileName());
+	return from(doc->b->dataFiles().at(size_t(row))->fileName());
 }
 
 QString SDocumentModel::fileId(int row) const
@@ -335,7 +335,7 @@ QString SDocumentModel::fileId(int row) const
 	if(row >= rowCount())
 		return QString();
 
-	return QString::fromUtf8(doc->b->dataFiles().at(row)->fileName().c_str());
+	return QString::fromUtf8(doc->b->dataFiles().at(size_t(row))->fileName().c_str());
 }
 
 QString SDocumentModel::fileSize(int row) const
@@ -343,7 +343,7 @@ QString SDocumentModel::fileSize(int row) const
 	if(row >= rowCount())
 		return QString();
 
-	return FileDialog::fileSize( doc->b->dataFiles().at(row)->fileSize() );
+	return FileDialog::fileSize(doc->b->dataFiles().at(size_t(row))->fileSize());
 }
 
 QString SDocumentModel::mime(int row) const
@@ -351,7 +351,7 @@ QString SDocumentModel::mime(int row) const
 	if(row >= rowCount())
 		return QString();
 
-	return from(doc->b->dataFiles().at(row)->mediaType());
+	return from(doc->b->dataFiles().at(size_t(row))->mediaType());
 }
 
 void SDocumentModel::open(int row)
@@ -360,7 +360,7 @@ void SDocumentModel::open(int row)
 		return;
 
 	QFileInfo f(save(row, FileDialog::tempPath(
-		FileDialog::safeName(from(doc->b->dataFiles().at(row)->fileName()))
+		FileDialog::safeName(from(doc->b->dataFiles().at(size_t(row))->fileName()))
 	)));
 	if( !f.exists() )
 		return;
@@ -411,7 +411,7 @@ QString SDocumentModel::save(int row, const QString &path) const
 		return QString();
 
 	QFile::remove( path );
-	doc->b->dataFiles().at(row)->saveAs(path.toStdString());
+	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
 	return path;
 }
 
@@ -428,7 +428,7 @@ DigiDoc::~DigiDoc() { clear(); }
 
 bool DigiDoc::addFile(const QString &file, const QString &mime)
 {
-	if( !checkDoc( b->signatures().size() > 0, tr("Cannot add files to signed container") ) )
+	if(!checkDoc(!b->signatures().empty(), tr("Cannot add files to signed container")))
 		return false;
 	try {
 		b->addDataFile( to(file), to(mime));
@@ -441,7 +441,7 @@ bool DigiDoc::addFile(const QString &file, const QString &mime)
 
 bool DigiDoc::addSignature( const QByteArray &signature )
 {
-	if( !checkDoc( b->dataFiles().size() == 0, tr("Cannot add signature to empty container") ) )
+	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
 		return false;
 
 	try
@@ -567,10 +567,10 @@ bool DigiDoc::open( const QString &file )
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
 				QFileInfo f(tmppath);
-				if(f.exists(tmppath))
+				if(f.exists())
 				{
 					m_tempFiles << tmppath;
-					parentContainer.reset(b.release());
+					parentContainer = std::move(b);
 					b.reset(Container::open(to(tmppath)));
 				}
 			}
@@ -675,7 +675,7 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 bool DigiDoc::sign( const QString &city, const QString &state, const QString &zip,
 	const QString &country, const QString &role, const QString &role2 )
 {
-	if( !checkDoc( b->dataFiles().size() == 0, tr("Cannot add signature to empty container") ) )
+	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
 		return false;
 
 	OpEmitter op(this, Signing);
@@ -689,7 +689,7 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 		else if(!role.isEmpty())
 			roles.push_back(to(role));
 		qApp->signer()->setSignerRoles( roles );
-		qApp->signer()->setProfile(signatureFormat() == QStringLiteral("LT") ? "time-stamp" : "time-mark");
+		qApp->signer()->setProfile("time-stamp");
 		qApp->waitForTSL( fileName() );
 		b->sign( qApp->signer() );
 		modified = true;
@@ -710,31 +710,6 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 			setLastError( tr("Failed to sign container"), e );
 	}
 	return false;
-}
-
-QString DigiDoc::signatureFormat() const
-{
-	if(m_fileName.endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
-		return QStringLiteral("LT_TM");
-
-	QString def = QFileInfo(m_fileName).suffix().compare(QStringLiteral("bdoc"), Qt::CaseInsensitive) == 0 ? QStringLiteral("LT_TM") : QStringLiteral("LT");
-	switch(b->signatures().size())
-	{
-	case 0:
-		return def;
-	case 1:
-		return b->signatures()[0]->profile().find("time-stamp") != std::string::npos ? QStringLiteral("LT") : QStringLiteral("LT_TM");
-	default: break;
-	}
-	Signature *sig = nullptr;
-	for(Signature *s: b->signatures())
-	{
-		if(!sig)
-			sig = s;
-		else if(sig->profile() != s->profile())
-			return def;
-	}
-	return sig->profile().find("time-stamp") != std::string::npos ? QStringLiteral("LT") : QStringLiteral("LT_TM");
 }
 
 QList<DigiDocSignature> DigiDoc::signatures() const

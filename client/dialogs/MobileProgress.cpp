@@ -50,24 +50,24 @@ MobileProgress::MobileProgress( QWidget *parent )
 	: QDialog(parent)
 	, taskbar(nullptr)
 {
-	mobileResults["START"] = tr("Signing in process");
-	mobileResults["REQUEST_OK"] = tr("Request accepted");
-	mobileResults["EXPIRED_TRANSACTION"] = tr("Request timeout");
-	mobileResults["USER_CANCEL"] = tr("User denied or cancelled");
-	mobileResults["SIGNATURE"] = tr("Got signature");
-	mobileResults["OUTSTANDING_TRANSACTION"] = tr("Request pending");
-	mobileResults["MID_NOT_READY"] = tr("Mobile-ID not ready, try again later");
-	mobileResults["PHONE_ABSENT"] = tr("Phone absent");
-	mobileResults["SENDING_ERROR"] = tr("Request sending error");
-	mobileResults["SIM_ERROR"] = tr("SIM error");
-	mobileResults["INTERNAL_ERROR"] = tr("Service internal error");
-	mobileResults["OCSP_UNAUTHORIZED"] = tr("Not allowed to use OCSP service! Please check your server access certificate.");
-	mobileResults["HOSTNOTFOUND"] = tr("Connecting to SK server failed! Please check your internet connection.");
-	mobileResults["Invalid PhoneNo"] = tr("Invalid phone number! Please include correct country code.");
-	mobileResults["User is not a Mobile-ID client"] = tr("User is not a Mobile-ID client");
-	mobileResults["ID and phone number do not match"] = tr("ID and phone number do not match");
-	mobileResults["Certificate status unknown"] = tr("Your Mobile-ID service is not activated.");
-	mobileResults["Certificate is revoked"] = tr("Mobile-ID user certificates are revoked or suspended.");
+	mobileResults[QStringLiteral("START")] = tr("Signing in process");
+	mobileResults[QStringLiteral("REQUEST_OK")] = tr("Request accepted");
+	mobileResults[QStringLiteral("EXPIRED_TRANSACTION")] = tr("Request timeout");
+	mobileResults[QStringLiteral("USER_CANCEL")] = tr("User denied or cancelled");
+	mobileResults[QStringLiteral("SIGNATURE")] = tr("Got signature");
+	mobileResults[QStringLiteral("OUTSTANDING_TRANSACTION")] = tr("Request pending");
+	mobileResults[QStringLiteral("MID_NOT_READY")] = tr("Mobile-ID not ready, try again later");
+	mobileResults[QStringLiteral("PHONE_ABSENT")] = tr("Phone absent");
+	mobileResults[QStringLiteral("SENDING_ERROR")] = tr("Request sending error");
+	mobileResults[QStringLiteral("SIM_ERROR")] = tr("SIM error");
+	mobileResults[QStringLiteral("INTERNAL_ERROR")] = tr("Service internal error");
+	mobileResults[QStringLiteral("OCSP_UNAUTHORIZED")] = tr("Not allowed to use OCSP service! Please check your server access certificate.");
+	mobileResults[QStringLiteral("HOSTNOTFOUND")] = tr("Connecting to SK server failed! Please check your internet connection.");
+	mobileResults[QStringLiteral("Invalid PhoneNo")] = tr("Invalid phone number! Please include correct country code.");
+	mobileResults[QStringLiteral("User is not a Mobile-ID client")] = tr("User is not a Mobile-ID client");
+	mobileResults[QStringLiteral("ID and phone number do not match")] = tr("ID and phone number do not match");
+	mobileResults[QStringLiteral("Certificate status unknown")] = tr("Your Mobile-ID service is not activated.");
+	mobileResults[QStringLiteral("Certificate is revoked")] = tr("Mobile-ID user certificates are revoked or suspended.");
 
 	setupUi( this );
 	code->setBuddy( signProgressBar );
@@ -79,7 +79,7 @@ MobileProgress::MobileProgress( QWidget *parent )
 	statusTimer->setCurveShape( QTimeLine::LinearCurve );
 	statusTimer->setFrameRange( signProgressBar->minimum(), signProgressBar->maximum() );
 	connect(statusTimer, &QTimeLine::frameChanged, signProgressBar, &QProgressBar::setValue);
-	connect(statusTimer, &QTimeLine::finished, this, [this] { endProgress(mobileResults.value("EXPIRED_TRANSACTION")); });
+	connect(statusTimer, &QTimeLine::finished, this, [this] { endProgress(mobileResults.value(QStringLiteral("EXPIRED_TRANSACTION"))); });
 #ifdef Q_OS_WIN
 	taskbar = new QWinTaskbarButton(this);
 	taskbar->setWindow(parent->windowHandle());
@@ -111,8 +111,8 @@ MobileProgress::MobileProgress( QWidget *parent )
 	request.setSslConfiguration( ssl );
 
 	request.setHeader( QNetworkRequest::ContentTypeHeader, "text/xml" );
-	request.setRawHeader( "User-Agent", QString( "%1/%2 (%3)")
-		.arg( qApp->applicationName() ).arg( qApp->applicationVersion() ).arg( Common::applicationOs() ).toUtf8() );
+	request.setRawHeader( "User-Agent", QStringLiteral( "%1/%2 (%3)")
+		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8() );
 }
 
 void MobileProgress::endProgress(const QString &msg)
@@ -139,7 +139,7 @@ void MobileProgress::finished( QNetworkReply *reply )
 #endif
 		break;
 	case QNetworkReply::HostNotFoundError:
-		endProgress(mobileResults.value("HOSTNOTFOUND"));
+		endProgress(mobileResults.value(QStringLiteral("HOSTNOTFOUND")));
 		return;
 	case QNetworkReply::SslHandshakeFailedError:
 		signProgressBar->hide();
@@ -191,37 +191,38 @@ void MobileProgress::finished( QNetworkReply *reply )
 		return;
 
 	labelError->setText( mobileResults.value( status ) );
-	if( status == "OK" || status == "REQUEST_OK" || status == "OUTSTANDING_TRANSACTION" )
+	if(status == QStringLiteral("OK") || status == QStringLiteral("REQUEST_OK") || status == QStringLiteral("OUTSTANDING_TRANSACTION"))
 	{
 		QTimer::singleShot(5*1000, this, SLOT(sendStatusRequest()));
 		return;
 	}
 	stop();
-	if( status == "SIGNATURE" )
+	if(status == QStringLiteral("SIGNATURE"))
 		accept();
 }
 
 bool MobileProgress::isTest( const QString &ssid, const QString &cell )
 {
-	const static QStringList list = QStringList()
-		<< "14212128020" "37200002"
-		<< "14212128021" "37200003"
-		<< "14212128022" "37200004"
-		<< "14212128023" "37200005"
-		<< "14212128024" "37200006"
-		<< "14212128025" "37200007"
-		<< "14212128026" "37200008"
-		<< "14212128027" "37200009"
-		<< "38002240211" "37200001"
-		<< "14212128029" "37200001066";
+	const static QStringList list = {
+		"1421212802037200002",
+		"1421212802137200003",
+		"1421212802237200004",
+		"1421212802337200005",
+		"1421212802437200006",
+		"1421212802537200007",
+		"1421212802637200008",
+		"1421212802737200009",
+		"3800224021137200001",
+		"1421212802937200001066",
+	};
 	return list.contains( ssid + cell );
 }
 
 void MobileProgress::sendStatusRequest()
 {
-	SOAPDocument doc( "GetMobileCreateSignatureStatus", DIGIDOCSERVICE );
-	doc.writeParameter( "Sesscode", sessionCode.toInt() );
-	doc.writeParameter( "WaitSignature", false );
+	SOAPDocument doc(QStringLiteral("GetMobileCreateSignatureStatus"), DIGIDOCSERVICE);
+	doc.writeParameter(QStringLiteral("Sesscode"), sessionCode.toInt());
+	doc.writeParameter(QStringLiteral("WaitSignature"), false);
 	doc.writeEndDocument();
 	manager->post( request, doc.document() );
 }
@@ -229,61 +230,60 @@ void MobileProgress::sendStatusRequest()
 void MobileProgress::setSignatureInfo( const QString &city, const QString &state,
 	const QString &zip, const QString &country, const QString &role )
 {
-	location = QStringList() << city << state << zip << country << role;
+	location = QStringList({city, state, zip, country, role});
 }
 
 void MobileProgress::sign( const DigiDoc *doc, const QString &ssid, const QString &cell )
 {
-	labelError->setText( mobileResults.value( "START" ) );
+	labelError->setText(mobileResults.value(QStringLiteral("START")));
 
 	QHash<QString,QString> lang;
-	lang["et"] = "EST";
-	lang["en"] = "ENG";
-	lang["ru"] = "RUS";
+	lang[QStringLiteral("et")] = QStringLiteral("EST");
+	lang[QStringLiteral("en")] = QStringLiteral("ENG");
+	lang[QStringLiteral("ru")] = QStringLiteral("RUS");
 
-	SOAPDocument r( "MobileCreateSignature", DIGIDOCSERVICE );
-	r.writeParameter( "IDCode", ssid );
-	r.writeParameter( "PhoneNo", "+" + cell );
-	r.writeParameter( "Language", lang.value( Settings::language(), "EST" ) );
-	r.writeParameter( "ServiceName", "DigiDoc3" );
+	SOAPDocument r(QStringLiteral("MobileCreateSignature"), DIGIDOCSERVICE );
+	r.writeParameter(QStringLiteral("IDCode"), ssid );
+	r.writeParameter(QStringLiteral("PhoneNo"), "+" + cell );
+	r.writeParameter(QStringLiteral("Language"), lang.value(Settings::language(), QStringLiteral("EST")));
+	r.writeParameter(QStringLiteral("ServiceName"), QStringLiteral("DigiDoc3"));
 	QString title =  tr("Sign") + " " + QFileInfo( doc->fileName() ).fileName();
 	if( title.size() > 39 )
 	{
 		title.resize( 36 );
-		title += "...";
+		title += QStringLiteral("...");
 	}
-	r.writeParameter( "MessageToDisplay", title + "\n" );
-	r.writeParameter( "City", location.value(0) );
-	r.writeParameter( "StateOrProvince", location.value(1) );
-	r.writeParameter( "PostalCode", location.value(2) );
-	r.writeParameter( "CountryName", location.value(3) );
-	r.writeParameter( "Role", location.value(4) );
-	r.writeParameter( "SigningProfile", doc->signatureFormat() );
+	r.writeParameter(QStringLiteral("MessageToDisplay"), title + "\n");
+	r.writeParameter(QStringLiteral("City"), location.value(0));
+	r.writeParameter(QStringLiteral("StateOrProvince"), location.value(1));
+	r.writeParameter(QStringLiteral("PostalCode"), location.value(2));
+	r.writeParameter(QStringLiteral("CountryName"), location.value(3));
+	r.writeParameter(QStringLiteral("Role"), location.value(4));
+	r.writeParameter(QStringLiteral("SigningProfile"), QStringLiteral("LT"));
 
-	r.writeStartElement( "DataFiles" );
-	r.writeAttribute( XML_SCHEMA_INSTANCE, "type", "m:DataFileDigestList" );
+	r.writeStartElement(QStringLiteral("DataFiles"));
+	r.writeAttribute(XML_SCHEMA_INSTANCE, QStringLiteral("type"), QStringLiteral("m:DataFileDigestList"));
 	DocumentModel *m = doc->documentModel();
 	for( int i = 0; i < m->rowCount(); ++i )
 	{
-		r.writeStartElement( "DataFileDigest" );
-		r.writeAttribute( XML_SCHEMA_INSTANCE, "type", QString( "m:" ).append( "DataFileDigest" ) );
-		r.writeParameter( "Id", m->fileId(i) );
-		r.writeParameter( "DigestType", "sha256" );
-		r.writeParameter( "DigestValue", doc->getFileDigest( i ).toBase64() );
-		r.writeParameter( "MimeType", m->mime(i) );
+		r.writeStartElement(QStringLiteral("DataFileDigest"));
+		r.writeAttribute(XML_SCHEMA_INSTANCE, QStringLiteral("type"), QStringLiteral("m:DataFileDigest") );
+		r.writeParameter(QStringLiteral("Id"), m->fileId(i) );
+		r.writeParameter(QStringLiteral("DigestType"), "sha256");
+		r.writeParameter(QStringLiteral("DigestValue"), doc->getFileDigest(i).toBase64());
+		r.writeParameter(QStringLiteral("MimeType"), m->mime(i));
 		r.writeEndElement();
 	}
 	r.writeEndElement();
 
-	r.writeParameter( "Format", "BDOC" );
-	r.writeParameter( "Version", "2.1" );
-	r.writeParameter( "SignatureID", doc->newSignatureID() );
-	r.writeParameter( "MessagingMode", "asynchClientServer" );
-	r.writeParameter( "AsyncConfiguration", 0 );
+	r.writeParameter(QStringLiteral("Format"), QStringLiteral("BDOC"));
+	r.writeParameter(QStringLiteral("Version"), QStringLiteral("2.1"));
+	r.writeParameter(QStringLiteral("SignatureID"), doc->newSignatureID());
+	r.writeParameter(QStringLiteral("MessagingMode"), QStringLiteral("asynchClientServer"));
+	r.writeParameter(QStringLiteral("AsyncConfiguration"), 0);
 	r.writeEndDocument();
 
-	QString url = qApp->confValue(isTest( ssid, cell ) ? Application::MobileID_TEST_URL : Application::MobileID_URL).toString();
-	request.setUrl( Settings().value( "Client/bdocurl", url ).toUrl() );
+	request.setUrl(QUrl(qApp->confValue(isTest( ssid, cell ) ? Application::MobileID_TEST_URL : Application::MobileID_URL).toString()));
 	statusTimer->start();
 #ifdef Q_OS_WIN
 	taskbar->progress()->show();
@@ -294,7 +294,7 @@ void MobileProgress::sign( const DigiDoc *doc, const QString &ssid, const QStrin
 
 QByteArray MobileProgress::signature() const { return m_signature; }
 
-void MobileProgress::sslErrors( QNetworkReply *, const QList<QSslError> &err )
+void MobileProgress::sslErrors( QNetworkReply * /*reply*/, const QList<QSslError> &err )
 {
 	QStringList msg;
 	for( const QSslError &e: err )
@@ -305,7 +305,7 @@ void MobileProgress::sslErrors( QNetworkReply *, const QList<QSslError> &err )
 	if( !msg.empty() )
 	{
 		msg.prepend( tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades.") );
-		labelError->setText( msg.join( "<br />" ) );
+		labelError->setText(msg.join(QStringLiteral("<br />")));
 	}
 }
 

@@ -2257,6 +2257,270 @@ Control code: %1</translation>
 
 
 <context>
+    <name>PrintSheet</name>
+
+    <message>
+        <source>SIGNED FILES</source>
+        <translation>SIGNED FILES</translation>
+    </message>
+    <message>
+        <source>FILE NAME</source>
+        <translation>FILE NAME</translation>
+    </message>
+    <message>
+        <source>FILE SIZE</source>
+        <translation>FILE SIZE</translation>
+    </message>
+    <message>
+        <source>SIGNERS</source>
+        <translation>SIGNERS</translation>
+    </message>
+    <message>
+        <source>NAME</source>
+        <translation>NAME</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>PERSONAL CODE</translation>
+    </message>
+    <message>
+        <source>TIME</source>
+        <translation>TIME</translation>
+    </message>
+    <message>
+        <source>NOTES</source>
+        <translation>NOTES</translation>
+    </message>
+    <message>
+        <source>VALIDITY CONFIRMATION SHEET</source>
+        <translation>VALIDITY CONFIRMATION SHEET</translation>
+    </message>
+    <message>
+        <source>NO.</source>
+        <translation>NO.</translation>
+    </message>
+    <message>
+        <source>VALIDITY OF SIGNATURE</source>
+        <translation>VALIDITY OF SIGNATURE</translation>
+    </message>
+    <message>
+        <source>ROLE / RESOLUTION</source>
+        <translation>ROLE / RESOLUTION</translation>
+    </message>
+    <message>
+        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
+        <translation>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</translation>
+    </message>
+    <message>
+        <source>ISSUER OF CERTIFICATE</source>
+        <translation>ISSUER OF CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
+        <translation>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</translation>
+    </message>
+    <message>
+        <source>COMPANY</source>
+        <translation>COMPANY</translation>
+    </message>
+    <message>
+        <source>REGISTER CODE</source>
+        <translation>REGISTER CODE</translation>
+    </message>
+    <message>
+        <source>UNKNOWN</source>
+        <translation>UNKNOWN</translation>
+    </message>
+    <message>
+        <source>SERIAL NUMBER OF SIGNER CERTIFICATE</source>
+        <translation>SERIAL NUMBER OF SIGNER CERTIFICATE</translation>
+    </message>
+    <message>
+        <source>SIGNATURE IS VALID</source>
+        <translation>SIGNATURE IS VALID</translation>
+    </message>
+    <message>
+        <source>SIGNATURE IS NOT VALID</source>
+        <translation>SIGNATURE IS NOT VALID</translation>
+    </message>
+    <message>
+        <source>HASH VALUE OF SIGNATURE</source>
+        <translation>HASH VALUE OF SIGNATURE</translation>
+    </message>
+    <message>
+        <source>AUTHORITY KEY IDENTIFIER</source>
+        <translation>AUTHORITY KEY IDENTIFIER</translation>
+    </message>
+    <message>
+        <source>NB! TEST SIGNATURE</source>
+        <translation>NB! TEST SIGNATURE</translation>
+    </message>
+    <message>
+        <source>NB! WARNINGS</source>
+        <translation>NB! WARNINGS</translation>
+    </message>
+    <message>
+        <source>NB! RESTRICTIONS</source>
+        <translation>NB! RESTRICTIONS</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QPKCS11</name>
+
+    <message>
+        <source>PIN Canceled</source>
+        <translation>PIN Canceled</translation>
+    </message>
+    <message>
+        <source>PIN locked</source>
+        <translation>PIN locked</translation>
+    </message>
+    <message>
+        <source>PIN Incorrect</source>
+        <translation>PIN Incorrect</translation>
+    </message>
+    <message>
+        <source>PKCS11 general error</source>
+        <translation>PKCS11 general error</translation>
+    </message>
+    <message>
+        <source>PKCS11 device error</source>
+        <translation>PKCS11 device error</translation>
+    </message>
+    <message>
+        <source>PKCS11 unknown error</source>
+        <translation>PKCS11 unknown error</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QSigner</name>
+
+    <message>
+        <source>Failed to load PKCS#11 module</source>
+        <translation>Failed to load PKCS#11 module</translation>
+    </message>
+    <message>
+        <source>Signing certificate is not selected.</source>
+        <translation>Signing certificate is not selected.</translation>
+    </message>
+    <message>
+        <source>Failed to login token</source>
+        <translation>Failed to login token</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Failed to sign document</translation>
+    </message>
+    <message>
+        <source>Sign certificate is not selected</source>
+        <translation>Signing certificate is not selected</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress another window.</source>
+        <translation>Signing/decrypting is already in progress another window.</translation>
+    </message>
+    <message>
+        <source>Authentication certificate is not selected.</source>
+        <translation>Authentication certificate is not selected.</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation>Failed to decrypt document</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QSmartCard</name>
+
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>RoleAddressDialog</name>
+
+    <message>
+        <source>Role / resolution</source>
+        <translation>Role / resolution</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Address</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>City</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>State</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Zip</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SSLConnect</name>
+
+    <message>
+        <source>Certificate is empty</source>
+        <translation>Certificate is empty</translation>
+    </message>
+    <message>
+        <source>Downloading picture</source>
+        <translation>Downloading picture</translation>
+    </message>
+    <message>
+        <source>Failed to connect to host. Are you connected to the internet?</source>
+        <translation>Failed to connect to host. Are you connected to the internet?</translation>
+    </message>
+    <message>
+        <source>Invalid response</source>
+        <translation>Invalid response</translation>
+    </message>
+    <message>
+        <source>Loading Email info</source>
+        <translation>Loading Email info</translation>
+    </message>
+    <message>
+        <source>Loading Mobile info</source>
+        <translation>Loading Mobile info</translation>
+    </message>
+    <message>
+        <source>SSL context is missing</source>
+        <translation>SSL context is missing</translation>
+    </message>
+</context>
+
+
+<context>
     <name>SettingsDialog</name>
 
     <message>
@@ -2358,25 +2622,6 @@ Control code: %1</translation>
     <message>
         <source>Restart now</source>
         <translation>Restart now</translation>
-    </message>
-
-    <message>
-        <source>Default file type</source>
-        <translation>Default file type</translation>
-    </message>
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries
-</source>
-        <translation>ASiC-E – international digital signature format that will be used across European countries.
-</translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC – default digital signature format in Estonia.</translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2721,270 +2966,6 @@ Additional licenses and components</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>PrintSheet</name>
-
-    <message>
-        <source>SIGNED FILES</source>
-        <translation>SIGNED FILES</translation>
-    </message>
-    <message>
-        <source>FILE NAME</source>
-        <translation>FILE NAME</translation>
-    </message>
-    <message>
-        <source>FILE SIZE</source>
-        <translation>FILE SIZE</translation>
-    </message>
-    <message>
-        <source>SIGNERS</source>
-        <translation>SIGNERS</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>NAME</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>PERSONAL CODE</translation>
-    </message>
-    <message>
-        <source>TIME</source>
-        <translation>TIME</translation>
-    </message>
-    <message>
-        <source>NOTES</source>
-        <translation>NOTES</translation>
-    </message>
-    <message>
-        <source>VALIDITY CONFIRMATION SHEET</source>
-        <translation>VALIDITY CONFIRMATION SHEET</translation>
-    </message>
-    <message>
-        <source>NO.</source>
-        <translation>NO.</translation>
-    </message>
-    <message>
-        <source>VALIDITY OF SIGNATURE</source>
-        <translation>VALIDITY OF SIGNATURE</translation>
-    </message>
-    <message>
-        <source>ROLE / RESOLUTION</source>
-        <translation>ROLE / RESOLUTION</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</translation>
-    </message>
-    <message>
-        <source>ISSUER OF CERTIFICATE</source>
-        <translation>ISSUER OF CERTIFICATE</translation>
-    </message>
-    <message>
-        <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
-        <translation>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</translation>
-    </message>
-    <message>
-        <source>COMPANY</source>
-        <translation>COMPANY</translation>
-    </message>
-    <message>
-        <source>REGISTER CODE</source>
-        <translation>REGISTER CODE</translation>
-    </message>
-    <message>
-        <source>UNKNOWN</source>
-        <translation>UNKNOWN</translation>
-    </message>
-    <message>
-        <source>SERIAL NUMBER OF SIGNER CERTIFICATE</source>
-        <translation>SERIAL NUMBER OF SIGNER CERTIFICATE</translation>
-    </message>
-    <message>
-        <source>SIGNATURE IS VALID</source>
-        <translation>SIGNATURE IS VALID</translation>
-    </message>
-    <message>
-        <source>SIGNATURE IS NOT VALID</source>
-        <translation>SIGNATURE IS NOT VALID</translation>
-    </message>
-    <message>
-        <source>HASH VALUE OF SIGNATURE</source>
-        <translation>HASH VALUE OF SIGNATURE</translation>
-    </message>
-    <message>
-        <source>AUTHORITY KEY IDENTIFIER</source>
-        <translation>AUTHORITY KEY IDENTIFIER</translation>
-    </message>
-    <message>
-        <source>NB! TEST SIGNATURE</source>
-        <translation>NB! TEST SIGNATURE</translation>
-    </message>
-    <message>
-        <source>NB! WARNINGS</source>
-        <translation>NB! WARNINGS</translation>
-    </message>
-    <message>
-        <source>NB! RESTRICTIONS</source>
-        <translation>NB! RESTRICTIONS</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QPKCS11</name>
-
-    <message>
-        <source>PIN Canceled</source>
-        <translation>PIN Canceled</translation>
-    </message>
-    <message>
-        <source>PIN locked</source>
-        <translation>PIN locked</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>PIN Incorrect</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation>PKCS11 general error</translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation>PKCS11 device error</translation>
-    </message>
-    <message>
-        <source>PKCS11 unknown error</source>
-        <translation>PKCS11 unknown error</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSigner</name>
-
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>Failed to load PKCS#11 module</translation>
-    </message>
-    <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Signing certificate is not selected.</translation>
-    </message>
-    <message>
-        <source>Failed to login token</source>
-        <translation>Failed to login token</translation>
-    </message>
-    <message>
-        <source>Failed to sign document</source>
-        <translation>Failed to sign document</translation>
-    </message>
-    <message>
-        <source>Sign certificate is not selected</source>
-        <translation>Signing certificate is not selected</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Signing/decrypting is already in progress another window.</translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation>Authentication certificate is not selected.</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation>Failed to decrypt document</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSmartCard</name>
-
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>RoleAddressDialog</name>
-
-    <message>
-        <source>Role / resolution</source>
-        <translation>Role / resolution</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Address</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>City</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>State</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Zip</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>SSLConnect</name>
-
-    <message>
-        <source>Certificate is empty</source>
-        <translation>Certificate is empty</translation>
-    </message>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Downloading picture</translation>
-    </message>
-    <message>
-        <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Failed to connect to host. Are you connected to the internet?</translation>
-    </message>
-    <message>
-        <source>Invalid response</source>
-        <translation>Invalid response</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Loading Email info</translation>
-    </message>
-    <message>
-        <source>Loading Mobile info</source>
-        <translation>Loading Mobile info</translation>
-    </message>
-    <message>
-        <source>SSL context is missing</source>
-        <translation>SSL context is missing</translation>
     </message>
 </context>
 

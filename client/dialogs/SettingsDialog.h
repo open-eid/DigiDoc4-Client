@@ -35,18 +35,16 @@ class SettingsDialog : public QDialog
 public:
 	enum {
 		GeneralSettings,
-		SigningSettings,
 		AccessCertSettings,
 		NetworkSettings,
 		DiagnosticsSettings,
 		LicenseSettings
 	};
 
-	explicit SettingsDialog(QWidget *parent = nullptr, QString appletVersion = "");
-	explicit SettingsDialog(int page, QWidget *parent = nullptr, QString appletVersion = "");
-	~SettingsDialog();
+	explicit SettingsDialog(QWidget *parent = nullptr, QString appletVersion = QString());
+	explicit SettingsDialog(int page, QWidget *parent = nullptr, QString appletVersion = QString());
+	~SettingsDialog() final;
 
-	int exec() override;
 	static void loadProxy( const digidoc::Conf *conf );
 
 private Q_SLOTS:

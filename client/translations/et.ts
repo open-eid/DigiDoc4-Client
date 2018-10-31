@@ -2232,6 +2232,265 @@ Kontrollkood: %1</translation>
 
 
 <context>
+    <name>PrintSheet</name>
+    <message>
+        <source>SIGNED FILES</source>
+        <translation>ALLKIRJASTATUD FAILID</translation>
+    </message>
+    <message>
+        <source>FILE NAME</source>
+        <translation>FAILI NIMI</translation>
+    </message>
+    <message>
+        <source>FILE SIZE</source>
+        <translation>FAILI SUURUS</translation>
+    </message>
+    <message>
+        <source>SIGNERS</source>
+        <translation>ALLKIRJASTAJAD</translation>
+    </message>
+    <message>
+        <source>NAME</source>
+        <translation>NIMI</translation>
+    </message>
+    <message>
+        <source>PERSONAL CODE</source>
+        <translation>ISIKUKOOD</translation>
+    </message>
+    <message>
+        <source>TIME</source>
+        <translation>AEG</translation>
+    </message>
+    <message>
+        <source>NOTES</source>
+        <translation>MÄRKUSED</translation>
+    </message>
+    <message>
+        <source>VALIDITY CONFIRMATION SHEET</source>
+        <translation>DIGITAALALLKIRJADE KINNITUSLEHT</translation>
+    </message>
+    <message>
+        <source>NO.</source>
+        <translation>nr.</translation>
+    </message>
+    <message>
+        <source>VALIDITY OF SIGNATURE</source>
+        <translation>ALLKIRJA KEHTIVUS</translation>
+    </message>
+    <message>
+        <source>ROLE / RESOLUTION</source>
+        <translation>ROLL/RESOLUTSIOON</translation>
+    </message>
+    <message>
+        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
+        <translation>ALLKIRJASTAJA  ASUKOHT (LINN, MAAKOND, INDEKS, RIIK)</translation>
+    </message>
+    <message>
+        <source>ISSUER OF CERTIFICATE</source>
+        <translation>SERTIFIKAADI VÄLJAANDJA  NIMI</translation>
+    </message>
+    <message>
+        <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
+        <translation>Selle kinnituslehe lahutamatu osa on lõigus &lt;b&gt;&quot;Allkirjastatud failid&quot;&lt;/b&gt; nimetatud failide esitus paberil.</translation>
+    </message>
+    <message>
+        <source>COMPANY</source>
+        <translation>ASUTUS</translation>
+    </message>
+    <message>
+        <source>REGISTER CODE</source>
+        <translation>REGISTRIKOOD</translation>
+    </message>
+    <message>
+        <source>UNKNOWN</source>
+        <translation>TEADMATA</translation>
+    </message>
+    <message>
+        <source>SERIAL NUMBER OF SIGNER CERTIFICATE</source>
+        <translation>ALLKIRJASTAJA SERTIFIKAADI SEERIANUMBER</translation>
+    </message>
+    <message>
+        <source>SIGNATURE IS VALID</source>
+        <translation>ALLKIRI ON KEHTIV</translation>
+    </message>
+    <message>
+        <source>SIGNATURE IS NOT VALID</source>
+        <translation>ALLKIRI EI OLE KEHTIV</translation>
+    </message>
+    <message>
+        <source>HASH VALUE OF SIGNATURE</source>
+        <translation>ALLKIRJA SÕNUMILÜHEND</translation>
+    </message>
+    <message>
+        <source>AUTHORITY KEY IDENTIFIER</source>
+        <translation>VÄLJAANDJA VÕTME IDENTIFIKAATOR</translation>
+    </message>
+    <message>
+        <source>NB! TEST SIGNATURE</source>
+        <translation>NB! TESTALLKIRI</translation>
+    </message>
+    <message>
+        <source>NB! WARNINGS</source>
+        <translation>NB! HOIATUSEGA</translation>
+    </message>
+    <message>
+        <source>NB! RESTRICTIONS</source>
+        <translation>NB! PIIRANGUTEGA</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QPKCS11</name>
+    <message>
+        <source>PIN Canceled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PIN locked</source>
+        <translation>PIN on lukus</translation>
+    </message>
+    <message>
+        <source>PIN Incorrect</source>
+        <translation>PIN vigane</translation>
+    </message>
+    <message>
+        <source>PKCS11 general error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PKCS11 device error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PKCS11 unknown error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QSigner</name>
+    <message>
+        <source>Failed to load PKCS#11 module</source>
+        <translation>PKCS#11 mooduli laadimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Signing certificate is not selected.</source>
+        <translation>Allkirjastamise sertifikaat ei ole valitud.</translation>
+    </message>
+    <message>
+        <source>Failed to login token</source>
+        <translation>PIN koodi valideerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Sign certificate is not selected</source>
+        <translation>Allkirjastamise sertifikaat ei ole valitud</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress another window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication certificate is not selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+
+
+<context>
+    <name>QSmartCard</name>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
+    </message>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>RoleAddressDialog</name>
+
+    <message>
+        <source>Role / resolution</source>
+        <translation>Roll / resolutsioon</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Aadress</translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation>Linn</translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation>Maakond</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>Zip</source>
+        <translation>Postikood</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjastan</translation>
+    </message>
+</context>
+
+
+<context>
+    <name>SSLConnect</name>
+    <message>
+        <source>Certificate is empty</source>
+        <translation>Sertifikaat on tühi</translation>
+    </message>
+    <message>
+        <source>Downloading picture</source>
+        <translation>Laadin pilti</translation>
+    </message>
+    <message>
+        <source>Failed to connect to host. Are you connected to the internet?</source>
+        <translation>Puudub internetiühendus!</translation>
+    </message>
+    <message>
+        <source>Invalid response</source>
+        <translation>Kehtetu vastus</translation>
+    </message>
+    <message>
+        <source>Loading Email info</source>
+        <translation>Laadin e-posti seadeid</translation>
+    </message>
+    <message>
+        <source>Loading Mobile info</source>
+        <translation>Laadin Mobiil-ID seadeid</translation>
+    </message>
+    <message>
+        <source>SSL context is missing</source>
+        <translation>SSL kontekst puudub</translation>
+    </message>
+</context>
+
+
+<context>
     <name>SettingsDialog</name>
     <message>
         <source>Settings</source>
@@ -2348,25 +2607,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>Restart now</source>
         <translation>Taaskäivita rakendus</translation>
-    </message>
-
-    <message>
-        <source>Default file type</source>
-        <translation>Vaikimisi faili tüüp</translation>
-    </message>
-    <message>
-        <source>ASiC-E – international digital signature format that will be used across European countries
-</source>
-        <translation>ASiC-E - rahvusvahelisele, Euroopa-ülesele ühilduvusele suunatud tulevikuvorming.
-</translation>
-    </message>
-    <message>
-        <source>BDOC – default digital signature format in Estonia.</source>
-        <translation>BDOC - digiallkirja vaikimisi vorming Eestis.</translation>
-    </message>
-    <message>
-        <source>If you want to change the digital signature format then it should be done before adding signable files to the container. Otherwise the document will be created in the previous default format. When adding signatures, it is no longer possible to change the format of the document.</source>
-        <translation>Kui soovid vormingut muuta, siis tee seda enne, kui valid failid allkirjastamiseks. Vastasel juhul jääb kehtima varasem vaikevorming. Juba allkirjastatud dokumendile allkirja lisades dokumendi vormingut muuta ei saa, alati jääb kehtima algne vorming.</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2708,265 +2948,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>PrintSheet</name>
-    <message>
-        <source>SIGNED FILES</source>
-        <translation>ALLKIRJASTATUD FAILID</translation>
-    </message>
-    <message>
-        <source>FILE NAME</source>
-        <translation>FAILI NIMI</translation>
-    </message>
-    <message>
-        <source>FILE SIZE</source>
-        <translation>FAILI SUURUS</translation>
-    </message>
-    <message>
-        <source>SIGNERS</source>
-        <translation>ALLKIRJASTAJAD</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>NIMI</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>ISIKUKOOD</translation>
-    </message>
-    <message>
-        <source>TIME</source>
-        <translation>AEG</translation>
-    </message>
-    <message>
-        <source>NOTES</source>
-        <translation>MÄRKUSED</translation>
-    </message>
-    <message>
-        <source>VALIDITY CONFIRMATION SHEET</source>
-        <translation>DIGITAALALLKIRJADE KINNITUSLEHT</translation>
-    </message>
-    <message>
-        <source>NO.</source>
-        <translation>nr.</translation>
-    </message>
-    <message>
-        <source>VALIDITY OF SIGNATURE</source>
-        <translation>ALLKIRJA KEHTIVUS</translation>
-    </message>
-    <message>
-        <source>ROLE / RESOLUTION</source>
-        <translation>ROLL/RESOLUTSIOON</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>ALLKIRJASTAJA  ASUKOHT (LINN, MAAKOND, INDEKS, RIIK)</translation>
-    </message>
-    <message>
-        <source>ISSUER OF CERTIFICATE</source>
-        <translation>SERTIFIKAADI VÄLJAANDJA  NIMI</translation>
-    </message>
-    <message>
-        <source>The print out of files listed in the section &lt;b&gt;&quot;Signed Files&quot;&lt;/b&gt; are inseparable part of this Validity Confirmation Sheet.</source>
-        <translation>Selle kinnituslehe lahutamatu osa on lõigus &lt;b&gt;&quot;Allkirjastatud failid&quot;&lt;/b&gt; nimetatud failide esitus paberil.</translation>
-    </message>
-    <message>
-        <source>COMPANY</source>
-        <translation>ASUTUS</translation>
-    </message>
-    <message>
-        <source>REGISTER CODE</source>
-        <translation>REGISTRIKOOD</translation>
-    </message>
-    <message>
-        <source>UNKNOWN</source>
-        <translation>TEADMATA</translation>
-    </message>
-    <message>
-        <source>SERIAL NUMBER OF SIGNER CERTIFICATE</source>
-        <translation>ALLKIRJASTAJA SERTIFIKAADI SEERIANUMBER</translation>
-    </message>
-    <message>
-        <source>SIGNATURE IS VALID</source>
-        <translation>ALLKIRI ON KEHTIV</translation>
-    </message>
-    <message>
-        <source>SIGNATURE IS NOT VALID</source>
-        <translation>ALLKIRI EI OLE KEHTIV</translation>
-    </message>
-    <message>
-        <source>HASH VALUE OF SIGNATURE</source>
-        <translation>ALLKIRJA SÕNUMILÜHEND</translation>
-    </message>
-    <message>
-        <source>AUTHORITY KEY IDENTIFIER</source>
-        <translation>VÄLJAANDJA VÕTME IDENTIFIKAATOR</translation>
-    </message>
-    <message>
-        <source>NB! TEST SIGNATURE</source>
-        <translation>NB! TESTALLKIRI</translation>
-    </message>
-    <message>
-        <source>NB! WARNINGS</source>
-        <translation>NB! HOIATUSEGA</translation>
-    </message>
-    <message>
-        <source>NB! RESTRICTIONS</source>
-        <translation>NB! PIIRANGUTEGA</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QPKCS11</name>
-    <message>
-        <source>PIN Canceled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PIN locked</source>
-        <translation>PIN on lukus</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>PIN vigane</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PKCS11 unknown error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSigner</name>
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>PKCS#11 mooduli laadimine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Allkirjastamise sertifikaat ei ole valitud.</translation>
-    </message>
-    <message>
-        <source>Failed to login token</source>
-        <translation>PIN koodi valideerimine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to sign document</source>
-        <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Sign certificate is not selected</source>
-        <translation>Allkirjastamise sertifikaat ei ole valitud</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-
-
-<context>
-    <name>QSmartCard</name>
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>RoleAddressDialog</name>
-
-    <message>
-        <source>Role / resolution</source>
-        <translation>Roll / resolutsioon</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Aadress</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Linn</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Maakond</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Zip</source>
-        <translation>Postikood</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Allkirjastan</translation>
-    </message>
-</context>
-
-
-<context>
-    <name>SSLConnect</name>
-    <message>
-        <source>Certificate is empty</source>
-        <translation>Sertifikaat on tühi</translation>
-    </message>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Laadin pilti</translation>
-    </message>
-    <message>
-        <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Puudub internetiühendus!</translation>
-    </message>
-    <message>
-        <source>Invalid response</source>
-        <translation>Kehtetu vastus</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Laadin e-posti seadeid</translation>
-    </message>
-    <message>
-        <source>Loading Mobile info</source>
-        <translation>Laadin Mobiil-ID seadeid</translation>
-    </message>
-    <message>
-        <source>SSL context is missing</source>
-        <translation>SSL kontekst puudub</translation>
     </message>
 </context>
 

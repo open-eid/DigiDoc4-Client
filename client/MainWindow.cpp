@@ -79,9 +79,9 @@ MainWindow::MainWindow( QWidget *parent ) :
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
+	// Cleanup obsolete keys
 	Settings s(qApp->applicationName());
-	if(s.value(QStringLiteral("Client/Type")) == "ddoc")
-		s.remove(QStringLiteral("Client/Type"));
+	s.remove(QStringLiteral("Client/Type"));
 
 	ui->setupUi(this);
 
@@ -472,9 +472,8 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 		if(create)
 		{
-			QString ext = Settings(qApp->applicationName()).value(QStringLiteral("Client/Type"), "bdoc").toString();
 			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
-			QString filename = FileUtil::createNewFileName(files[0], QStringLiteral(".%1").arg(ext), tr("signature container"), defaultDir);
+			QString filename = FileUtil::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir);
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -1498,8 +1497,7 @@ void MainWindow::warningClicked(const QString &link)
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
-	QString ext = Settings(qApp->applicationName()).value(QStringLiteral("Client/Type"), QStringLiteral("bdoc")).toString();
-	QString filename = FileUtil::create(QFileInfo(wrappedFile), QStringLiteral(".%1").arg(ext), tr("signature container"));
+	QString filename = FileUtil::create(QFileInfo(wrappedFile), QStringLiteral(".asice"), tr("signature container"));
 	if(filename.isNull())
 		return false;
 
