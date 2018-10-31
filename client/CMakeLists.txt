@@ -172,13 +172,10 @@ elseif(WIN32)
 		set(PLATFORM x86)
 		set(SSL_PATH "C:/OpenSSL-Win32/bin")
 	endif()
-	if(DIGIDOC3)
-		set(DIGIDOC3_LOCATION "-ddigidoc3=${DIGIDOC3}")
-	endif()
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
 		-dssl_path="${SSL_PATH}" -dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf
-		-dschemasLocation=${LIBS_PATH}/schema ${DIGIDOC3_LOCATION} SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
+		-dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
