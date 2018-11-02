@@ -2636,6 +2636,10 @@ Control code: %1</translation>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Ignore server access certificate (IP based access)</translation>
     </message>
+    <message>
+        <source>Time Stamp server URL</source>
+        <translation>Time Stamp server URL</translation>
+    </message>
 
     <message>
         <source>No proxy</source>

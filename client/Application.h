@@ -54,6 +54,7 @@ public:
 		PKCS12Cert,
 		PKCS12Pass,
 		PKCS12Disable,
+		TSAUrl,
 		TSLUrl,
 		TSLCerts,
 		TSLCache,

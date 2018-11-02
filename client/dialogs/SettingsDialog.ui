@@ -76,12 +76,6 @@ background-color: #ffffff;
       </property>
       <item>
        <widget class="QWidget" name="leftPane" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>205</width>
@@ -97,7 +91,7 @@ background-color: #ffffff;
         <property name="styleSheet">
          <string notr="true">border-right: 1px solid #DEE4E9;</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="leftPaneLayout">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -164,8 +158,7 @@ background-color: #ffffff;
 QPushButton:!checked{
 	background-color: #ffffff;
 	color: #000000;
-}
-</string>
+}</string>
            </property>
            <property name="text">
             <string>GENERAL</string>
@@ -204,8 +197,7 @@ QPushButton:!checked{
 QPushButton:!checked{
 	background-color: #ffffff;
 	color: #000000;
-}
-</string>
+}</string>
            </property>
            <property name="text">
             <string>ACCESS CERTIFICATE</string>
@@ -244,8 +236,7 @@ QPushButton:!checked{
 QPushButton:!checked{
 	background-color: #ffffff;
 	color: #000000;
-}
-</string>
+}</string>
            </property>
            <property name="text">
             <string>PROXY</string>
@@ -281,8 +272,7 @@ QPushButton:!checked{
 QPushButton:!checked{
 	background-color: #ffffff;
 	color: #000000;
-}
-</string>
+}</string>
            </property>
            <property name="text">
             <string>DIAGNOSTICS</string>
@@ -318,8 +308,7 @@ QPushButton:!checked{
 QPushButton:!checked{
 	background-color: #ffffff;
 	color: #000000;
-}
-</string>
+}</string>
            </property>
            <property name="text">
             <string>INFO</string>
@@ -330,7 +319,7 @@ QPushButton:!checked{
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer">
+          <spacer name="leftPaneSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -716,69 +705,57 @@ QCheckBox::indicator:checked {
          </layout>
         </widget>
         <widget class="QWidget" name="pageAccessCert">
-         <widget class="QLabel" name="txtAccessCert">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>20</y>
-            <width>749</width>
-            <height>120</height>
-           </rect>
+         <layout class="QVBoxLayout" name="pageAccessCertLayout">
+          <property name="leftMargin">
+           <number>20</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>749</width>
-            <height>120</height>
-           </size>
+          <property name="topMargin">
+           <number>20</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>749</width>
-            <height>130</height>
-           </size>
+          <property name="rightMargin">
+           <number>20</number>
           </property>
-          <property name="text">
-           <string/>
+          <property name="bottomMargin">
+           <number>20</number>
           </property>
-          <property name="textFormat">
-           <enum>Qt::AutoText</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="openExternalLinks">
-           <bool>true</bool>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::TextBrowserInteraction</set>
-          </property>
-         </widget>
-         <widget class="QCheckBox" name="chkIgnoreAccessCert">
-          <property name="geometry">
-           <rect>
-            <x>21</x>
-            <y>160</y>
-            <width>700</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>700</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>700</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QCheckBox::indicator {
+          <item>
+           <widget class="QLabel" name="txtAccessCert">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>120</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::AutoText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::TextBrowserInteraction</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chkIgnoreAccessCert">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
     width: 14px;
     height: 14px;
 }
@@ -790,51 +767,71 @@ QCheckBox::indicator:unchecked {
 QCheckBox::indicator:checked {
     image: url(:/images/icon_checkbox_check.png);
 }</string>
-          </property>
-          <property name="text">
-           <string>Ignore server access certificate (IP based access)</string>
-          </property>
-         </widget>
+            </property>
+            <property name="text">
+             <string>Ignore server access certificate (IP based access)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblTimeStamp">
+            <property name="text">
+             <string>Time Stamp server URL</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="rdTimeStamp">
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="pageAccessCertSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="pageProxy">
-         <widget class="QGroupBox" name="groupBox_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>421</width>
-            <height>111</height>
-           </rect>
+         <layout class="QFormLayout" name="pageProxyLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
-          <property name="title">
-           <string/>
+          <property name="leftMargin">
+           <number>20</number>
           </property>
-          <widget class="QRadioButton" name="rdProxyNone">
-           <property name="geometry">
-            <rect>
-             <x>21</x>
-             <y>20</y>
-             <width>700</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>700</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="QRadioButton" name="rdProxyNone">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QRadioButton::indicator {
     width: 14px;
     height: 14px;
 }
@@ -846,37 +843,25 @@ QRadioButton::indicator::unchecked {
 QRadioButton::indicator::checked {
     image: url(:/images/icon_radio_checked.png);
 }</string>
-           </property>
-           <property name="text">
-            <string>No proxy</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="rdProxySystem">
-           <property name="geometry">
-            <rect>
-             <x>21</x>
-             <y>55</y>
-             <width>700</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>700</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
+            </property>
+            <property name="text">
+             <string>No proxy</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QRadioButton" name="rdProxySystem">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QRadioButton::indicator {
     width: 14px;
     height: 14px;
 }
@@ -888,34 +873,22 @@ QRadioButton::indicator::unchecked {
 QRadioButton::indicator::checked {
     image: url(:/images/icon_radio_checked.png);
 }</string>
-           </property>
-           <property name="text">
-            <string>Use system proxy settings</string>
-           </property>
-          </widget>
-          <widget class="QRadioButton" name="rdProxyManual">
-           <property name="geometry">
-            <rect>
-             <x>21</x>
-             <y>90</y>
-             <width>700</width>
-             <height>16</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>700</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>700</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QRadioButton::indicator {
+            </property>
+            <property name="text">
+             <string>Use system proxy settings</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QRadioButton" name="rdProxyManual">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QRadioButton::indicator {
     width: 14px;
     height: 14px;
 }
@@ -927,216 +900,103 @@ QRadioButton::indicator::unchecked {
 QRadioButton::indicator::checked {
     image: url(:/images/icon_radio_checked.png);
 }</string>
-           </property>
-           <property name="text">
-            <string>Manual proxy configuration</string>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QLineEdit" name="txtProxyHost">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>130</y>
-            <width>600</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtProxyPort">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>165</y>
-            <width>600</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtProxyUsername">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>200</y>
-            <width>600</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="txtProxyPassword">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>235</y>
-            <width>600</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>600</width>
-            <height>31</height>
-           </size>
-          </property>
-          <property name="echoMode">
-           <enum>QLineEdit::Password</enum>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblProxyHost">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>137</y>
-            <width>140</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Host</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblProxyPort">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>172</y>
-            <width>140</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Port</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblProxyUsername">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>207</y>
-            <width>140</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Username</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="lblProxyPassword">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>242</y>
-            <width>140</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Password</string>
-          </property>
-         </widget>
-         <widget class="QCheckBox" name="chkProxyEnableForSSL">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>277</y>
-            <width>751</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Enable proxy for SSL connections</string>
-          </property>
-         </widget>
+            </property>
+            <property name="text">
+             <string>Manual proxy configuration</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblProxyHost">
+            <property name="minimumSize">
+             <size>
+              <width>140</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Host</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="txtProxyHost">
+            <property name="minimumSize">
+             <size>
+              <width>600</width>
+              <height>31</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblProxyPort">
+            <property name="text">
+             <string>Port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="txtProxyPort">
+            <property name="minimumSize">
+             <size>
+              <width>600</width>
+              <height>31</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="lblProxyUsername">
+            <property name="text">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="txtProxyUsername">
+            <property name="minimumSize">
+             <size>
+              <width>600</width>
+              <height>31</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="lblProxyPassword">
+            <property name="text">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLineEdit" name="txtProxyPassword">
+            <property name="minimumSize">
+             <size>
+              <width>600</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="2">
+           <widget class="QCheckBox" name="chkProxyEnableForSSL">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Enable proxy for SSL connections</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="pageDiagnostics">
          <widget class="QTextEdit" name="txtDiagnostics">
@@ -1351,7 +1211,7 @@ Additional licenses and components</string>
       <string notr="true">border-top: 1px solid #DEE4E9;
 background-color: #f7f7f7;</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="navigationAreaLayout">
       <property name="leftMargin">
        <number>10</number>
       </property>
@@ -1387,7 +1247,7 @@ background-color: #f7f7f7;</string>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="navigationAreaSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -1659,12 +1519,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnNavInstallManually">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
@@ -1709,12 +1563,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnNavShowCertificate">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
@@ -1759,12 +1607,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btNavClose">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
@@ -1839,9 +1681,6 @@ QPushButton:disabled {
   <tabstop>btGeneralChooseDirectory</tabstop>
   <tabstop>txtGeneralDirectory</tabstop>
   <tabstop>chkIgnoreAccessCert</tabstop>
-  <tabstop>rdProxyNone</tabstop>
-  <tabstop>rdProxySystem</tabstop>
-  <tabstop>rdProxyManual</tabstop>
   <tabstop>txtProxyHost</tabstop>
   <tabstop>txtProxyPort</tabstop>
   <tabstop>txtProxyUsername</tabstop>
@@ -1853,7 +1692,7 @@ QPushButton:disabled {
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="langGroup"/>
   <buttongroup name="pathGroup"/>
+  <buttongroup name="langGroup"/>
  </buttongroups>
 </ui>

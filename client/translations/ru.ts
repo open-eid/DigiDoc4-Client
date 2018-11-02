@@ -2625,6 +2625,11 @@ Kонтрольный код: %1</translation>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
     </message>
     <message>
+        <source>Time Stamp server URL</source>
+        <translation>URL-адрес сервера отметки времени</translation>
+    </message>
+
+    <message>
         <source>No proxy</source>
         <translation>Прокси не используется</translation>
     </message>
