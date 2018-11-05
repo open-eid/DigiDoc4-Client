@@ -19,9 +19,13 @@
 
 #include "CertUtil.h"
 
+#include <common/SslCertificate.h>
+
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
 #include <QtWidgets/QWidget>
+
 #import <objc/runtime.h>
 #import <Quartz/Quartz.h>
 
@@ -52,7 +56,7 @@
 - (void)endPreviewPanelControl:(QLPreviewPanel *)panel
 {
 	Q_UNUSED(panel)
-    QFile::remove(QUrl::fromNSURL(self.certUrl).toLocalFile());
+	QFile::remove(QUrl::fromNSURL(self.certUrl).toLocalFile());
 	panel.dataSource = nil;
 	panel.delegate = nil;
 	self.certUrl = nil;
@@ -72,8 +76,17 @@
 @end
 
 
-void CertUtil::openPreview(const QString &path, const QWidget *parent)
+void CertUtil::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
 {
+	QString name = cert.subjectInfo("serialNumber");
+	if(name.isNull() || name.isEmpty())
+		name = QString::fromUtf8(cert.serialNumber());
+	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);
+	QFile f(path);
+	if(f.open(QIODevice::WriteOnly))
+		f.write(cert.toPem());
+	f.close();
+
 	static CertPreview *cp;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{

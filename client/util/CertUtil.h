@@ -28,9 +28,4 @@ class CertUtil
 {
 public:
 	static void showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix = QString());
-
-#ifndef Q_OS_LINUX
-private:
-	static void openPreview(const QString &path, const QWidget *parent);
-#endif
 };

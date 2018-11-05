@@ -18,41 +18,29 @@
 */
 
 #include "CertUtil.h"
-#ifdef Q_OS_WIN
-#include "Application.h"
-#endif
 #include "dialogs/CertificateDetails.h"
 
 #include <common/SslCertificate.h>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
 #ifdef Q_OS_WIN
-#include <QtCore/QUrl>
-#include <QtGui/QDesktopServices>
+#include <qt_windows.h>
+#include <cryptuiapi.h>
 #endif
 
-
+#ifndef Q_OS_MAC
 void CertUtil::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
 {
 #ifdef Q_OS_LINUX
 	CertificateDetails(cert, parent, true).exec();
 #else
-	QString name = cert.subjectInfo("serialNumber");
-	if(name.isNull() || name.isEmpty())
-    	name = QString("%1").arg(cert.serialNumber().constData());
-	QString path = QString("%1/%2%3.cer").arg(QDir::tempPath()).arg(name).arg(suffix);
-	QFile f(path);
-	if(f.open(QIODevice::WriteOnly))
-		f.write(cert.toPem());
-	openPreview(path, parent);
+	CRYPTUI_VIEWCERTIFICATE_STRUCT params = {};
+	params.dwSize = sizeof(CRYPTUI_VIEWCERTIFICATE_STRUCT);
+	params.hwndParent = HWND(parent->window()->winId());
+	params.dwFlags = CRYPTUI_HIDE_HIERARCHYPAGE|CRYPTUI_DISABLE_EDITPROPERTIES|CRYPTUI_DISABLE_ADDTOSTORE;
+	QByteArray der = cert.toDer();
+	params.pCertContext = CertCreateCertificateContext(X509_ASN_ENCODING, PBYTE(der.constData()), DWORD(der.size()));
+	BOOL propertiesChanged = FALSE;
+	CryptUIDlgViewCertificate(&params, &propertiesChanged);
+	CertFreeCertificateContext(params.pCertContext);
 #endif
 }
-
-#ifdef Q_OS_WIN
-void CertUtil::openPreview(const QString &path, const QWidget *parent)
-{
-	qApp->addTempFile(path);
-	QUrl url = QUrl::fromLocalFile(path);
-	QDesktopServices::openUrl(url);
-}
-#endif // Q_OS_WIN
+#endif
