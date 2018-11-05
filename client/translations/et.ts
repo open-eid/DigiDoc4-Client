@@ -29,7 +29,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372)&#160;666&#160;8888. </translation>
+        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888. </translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -200,7 +200,7 @@
     </message>
     <message>
         <source>ALLOW_ACCESS</source>
-        <translation>App Store rakenduste ligipääs failisüsteemile on piiratud ning kasutaja peab valima kataloogi millele rakendus ligi pääseb.&lt;br /&gt;Luba rakendusele kataloogile '%1' ligi pääseda või vali teine kataloog kuhu ümbrik salvestada.</translation>
+        <translation>App Store rakenduste ligipääs failisüsteemile on piiratud ning kasutaja peab valima kataloogi millele rakendus ligi pääseb.&lt;br /&gt;Luba rakendusele kataloogile &apos;%1&apos; ligi pääseda või vali teine kataloog kuhu ümbrik salvestada.</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -627,6 +627,10 @@
         <translation>Puudub IP-põhine ligipääs, kontrolli juurdepääsutõendi seadeid.</translation>
     </message>
     <message>
+        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+    </message>
+    <message>
         <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
 The Information System Authority does not retain information regarding the files and users of the service.</source>
         <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimine toimub läbi teenuse. Kontrollitav fail edastatakse teenusele.
@@ -667,8 +671,8 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada Sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
     </message>
     <message>
-        <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
-        <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud '%1' on juba ümbrikus olemas.</translation>
+        <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
+        <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud &apos;%1&apos; on juba ümbrikus olemas.</translation>
     </message>
     <message>
         <source>Failed to save file &apos;%1&apos;</source>
@@ -912,11 +916,11 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>SALVESTA PILT</translation>
     </message>
     <message>
-        <source>You're using Digital identity card</source>
+        <source>You&apos;re using Digital identity card</source>
         <translation>See on digitaalne isikutunnistus</translation>
     </message>
     <message>
-        <source>You're using e-Seal</source>
+        <source>You&apos;re using e-Seal</source>
         <translation>See on e-Tempel</translation>
     </message>
     <message>
@@ -977,15 +981,15 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Ümbriku sisu</translation>
     </message>
     <message>
-        <source>Container's files</source>
+        <source>Container&apos;s files</source>
         <translation>Konteineri failid</translation>
     </message>
     <message>
-        <source>Container's signatures</source>
+        <source>Container&apos;s signatures</source>
         <translation>Ümbriku allkirjad</translation>
     </message>
     <message>
-        <source>Container's timestamps</source>
+        <source>Container&apos;s timestamps</source>
         <translation>Ümbriku ajatemplid</translation>
     </message>
     <message>
@@ -1555,7 +1559,7 @@ Enda tuvastamiseks kasuta koodi PIN1 ja allkirjastamiseks PIN2.&lt;br /&gt;&lt;b
 BDOC – digitaalallkirja vaikimisi vorming Eestis. &lt;a href=&quot;https://www.ria.ee/ee/bdoc.html&quot;&gt;Lisainfo&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 DDOC – digitaalallkirja eelmine vorming. Täna saab DDOC allkirju vaadata ja kontrollida, kuid mitte enam juurde luua.&lt;br /&gt;&lt;br /&gt;
 ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvorming.&lt;br /&gt;&lt;br /&gt;
-Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil (+372)&#160;666&#160;8888.
+Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil (+372) 666 8888.
 </translation>
     </message>
     <message>
@@ -1952,8 +1956,8 @@ Kontrollkood: %1</translation>
         <translation>AKTIVEERI SUUNAMINE</translation>
     </message>
     <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
@@ -2205,23 +2209,23 @@ Kontrollkood: %1</translation>
     </message>
 
     <message>
-        <source>New %1 code can't be increasing sequence</source>
+        <source>New %1 code can&apos;t be increasing sequence</source>
         <translation>Uus %1 ei saa olla kasvavate numbrite jada</translation>
     </message>
     <message>
-        <source>New %1 code can't be decreasing sequence</source>
+        <source>New %1 code can&apos;t be decreasing sequence</source>
         <translation>Uus %1 ei saa olla kahanevate numbrite jada</translation>
     </message>
     <message>
-        <source>New %1 code can't be sequence of same numbers</source>
+        <source>New %1 code can&apos;t be sequence of same numbers</source>
         <translation>Uus %1 ei saa olla korduvate numbrite jada</translation>
     </message>
     <message>
-        <source>New %1 code can't be part of your personal code</source>
+        <source>New %1 code can&apos;t be part of your personal code</source>
         <translation>Uus %1 ei saa olla osa Sinu isikukoodist</translation>
     </message>
     <message>
-        <source>New %1 code can't be your date of birth</source>
+        <source>New %1 code can&apos;t be your date of birth</source>
         <translation>Uus %1 ei saa olla Sinu sünnikuupäev</translation>
     </message>
     <message>
@@ -2506,13 +2510,13 @@ Kontrollkood: %1</translation>
         <translation>ALLKIRJASTAMINE</translation>
     </message>
     <message>
-        <comment>not-win</comment>
         <source>ACCESS CERTIFICATE</source>
+        <comment>not-win</comment>
         <translation>JUURDEPÄÄSUTÕEND</translation>
     </message>
     <message>
-        <comment>win</comment>
         <source>ACCESS CERTIFICATE</source>
+        <comment>win</comment>
         <translation>JUURDEPÄÄSUTŌEND</translation>
     </message>
     <message>
@@ -2561,13 +2565,13 @@ Kontrollkood: %1</translation>
         <translation>SALVESTA DIAGNOSTIKA</translation>
     </message>
     <message>
-        <comment>not-win</comment>
         <source>SHOW CERTIFICATE</source>
+        <comment>not-win</comment>
         <translation>NÄITA TÕENDIT</translation>
     </message>
     <message>
-        <comment>win</comment>
         <source>SHOW CERTIFICATE</source>
+        <comment>win</comment>
         <translation>NÄITA TŌENDIT</translation>
     </message>
     <message>
@@ -2808,7 +2812,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>ei ole kehtiv</translation>
     </message>
     <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;http://www.id.ee/index.php?id=30379&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
     </message>
     <message>
@@ -2816,7 +2820,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>See allkiri või allkirjastatud fail on vigane. Allkiri ei ole kehtiv.</translation>
     </message>
     <message>
-        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
         <translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
@@ -2893,7 +2897,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href='https://www.id.ee/index.php?id=38498'&gt;&lt;span style='color: #006EB5; text-decoration: underline; font-weight: 900;'&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/index.php?id=38498&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
 </context>
 
@@ -3108,7 +3112,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href='https://www.id.ee/?lang=et&amp;id=30133'&gt;taotle PPA-st&lt;/a&gt;.</translation>
+        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href=&apos;https://www.id.ee/?lang=et&amp;id=30133&apos;&gt;taotle PPA-st&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>

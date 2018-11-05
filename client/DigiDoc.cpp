@@ -595,6 +595,7 @@ bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 	case Exception::CertificateUnknown:
 	case Exception::OCSPTimeSlot:
 	case Exception::OCSPRequestUnauthorized:
+	case Exception::TSTooManyRequests:
 	case Exception::PINCanceled:
 	case Exception::PINFailed:
 	case Exception::PINIncorrect:
@@ -659,6 +660,9 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
 			"Check the settings of your server access certificate."), causes.join('\n')); break;
+	case Exception::TSTooManyRequests:
+		qApp->showWarning(tr("The limit for digital signatures per month has been reached for this IP address. "
+			"<a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"), causes.join('\n')); break;
 	case Exception::PINCanceled:
 		break;
 	case Exception::PINFailed:
