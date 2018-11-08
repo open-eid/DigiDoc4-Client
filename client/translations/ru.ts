@@ -29,7 +29,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372)&#160;666&#160;8888.</translation>
+        <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372) 666 8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -202,7 +202,7 @@
     </message>
     <message>
         <source>ALLOW_ACCESS</source>
-        <translation>App Store приложения на macOS требуют, чтобы пользователь позволил доступ к файловой системе.&lt;br /&gt;Разрешите доступ к папке '%1' или укажите альтернативное место для сохранения конверта.</translation>
+        <translation>App Store приложения на macOS требуют, чтобы пользователь позволил доступ к файловой системе.&lt;br /&gt;Разрешите доступ к папке &apos;%1&apos; или укажите альтернативное место для сохранения конверта.</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -627,6 +627,10 @@
         <translation>Отсутствует IP-основанный доступ. Проверьте настройки справки доступа.</translation>
     </message>
     <message>
+        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+    </message>
+    <message>
         <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
 The Information System Authority does not retain information regarding the files and users of the service.</source>
         <translation>Контроль срока действия дигитальной подписи в формате PDF осуществляется через электронную услугу. Контролируемый файл передается э-услугe.
@@ -667,8 +671,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
     </message>
     <message>
-        <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
-        <translation>Невозможно добавить файл в контейнер. Файл '%1' уже в контейнере.</translation>
+        <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
+        <translation>Невозможно добавить файл в контейнер. Файл &apos;%1&apos; уже в контейнере.</translation>
     </message>
     <message>
         <source>Failed to save file &apos;%1&apos;</source>
@@ -912,11 +916,11 @@ The Information System Authority does not retain information regarding the files
         <translation>СОХРАНИТЬ ФОТО</translation>
     </message>
     <message>
-        <source>You're using Digital identity card</source>
+        <source>You&apos;re using Digital identity card</source>
         <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
     <message>
-        <source>You're using e-Seal</source>
+        <source>You&apos;re using e-Seal</source>
         <translation>Вы используете э-Печать</translation>
     </message>
     <message>
@@ -974,15 +978,15 @@ The Information System Authority does not retain information regarding the files
         <translation>Файлы контейнера</translation>
     </message>
     <message>
-        <source>Container's files</source>
+        <source>Container&apos;s files</source>
         <translation>Файлы контейнера</translation>
     </message>
     <message>
-        <source>Container's signatures</source>
+        <source>Container&apos;s signatures</source>
         <translation>Подписи контейнера</translation>
     </message>
     <message>
-        <source>Container's timestamps</source>
+        <source>Container&apos;s timestamps</source>
         <translation>Временные штампы контейнерa</translation>
     </message>
     <message>
@@ -1564,7 +1568,7 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
 BDOC – это используемый в Эстонии формат по умолчанию цифровой подписи. &lt;a href=&quot;https://www.ria.ee/ee/bdoc-ru.html&quot;&gt;Доп. инфо&lt;/a&gt;.&lt;br /&gt;
 DDOC – это ранее использовавшийся формат цифровой подписи. На сегодняшний день можно просматривать и проверять действительность подписей в формате DDOC, но нельзя создавать новые подписи в этом формате.&lt;br /&gt;
 ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
-Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты (+372)&#160;666&#160;8888.</translation>
+Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты (+372) 666 8888.</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
@@ -1959,8 +1963,8 @@ Kонтрольный код: %1</translation>
         <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
     </message>
     <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
@@ -2213,23 +2217,23 @@ Kонтрольный код: %1</translation>
     </message>
 
     <message>
-        <source>New %1 code can't be increasing sequence</source>
+        <source>New %1 code can&apos;t be increasing sequence</source>
         <translation>Новый %1 не может увеличиваться</translation>
     </message>
     <message>
-        <source>New %1 code can't be decreasing sequence</source>
+        <source>New %1 code can&apos;t be decreasing sequence</source>
         <translation>Новый %1 не может уменьшаться</translation>
     </message>
     <message>
-        <source>New %1 code can't be sequence of same numbers</source>
+        <source>New %1 code can&apos;t be sequence of same numbers</source>
         <translation>Новый %1 не может быть рядом одинаковых номеров</translation>
     </message>
     <message>
-        <source>New %1 code can't be part of your personal code</source>
+        <source>New %1 code can&apos;t be part of your personal code</source>
         <translation>Новый %1 не может быть частью вашего личного кода</translation>
     </message>
     <message>
-        <source>New %1 code can't be your date of birth</source>
+        <source>New %1 code can&apos;t be your date of birth</source>
         <translation>Новый %1 не может быть вашей датой рождения</translation>
     </message>
     <message>
@@ -2404,7 +2408,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Операция подписи/расшифровки уже выполняется в другом окне.></translation>
+        <translation>Операция подписи/расшифровки уже выполняется в другом окне.&gt;</translation>
     </message>
     <message>
         <source>Authentication certificate is not selected.</source>
@@ -2829,7 +2833,7 @@ Additional licenses and components</source>
         <translation>недействителен</translation>
     </message>
     <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Пробная подпись создается пробным сертификатом, который отличается от настоящего тем, что с пробным сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
@@ -2837,7 +2841,7 @@ Additional licenses and components</source>
         <translation>Повреждена подпись или подписанный файл. Данная подпись недействительна.</translation>
     </message>
     <message>
-        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
         <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;http://id.ee/?lang=ru&amp;id=34529&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
     </message>
     <message>
@@ -2914,7 +2918,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href='https://www.id.ee/?lang=en&amp;id=38500'&gt;&lt;span style='color: #006EB5; text-decoration: underline; font-weight: 900;'&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38500&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
 </context>
 

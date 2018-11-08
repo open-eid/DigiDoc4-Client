@@ -28,7 +28,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372)&#160;666&#160;8888.</translation>
+        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -201,7 +201,7 @@
     </message>
     <message>
         <source>ALLOW_ACCESS</source>
-        <translation>App Store applications on macOS require user to explicitly give access to the file system.&lt;br /&gt;Allow access to folder '%1' or specify alternative location where to save the envelope.</translation>
+        <translation>App Store applications on macOS require user to explicitly give access to the file system.&lt;br /&gt;Allow access to folder &apos;%1&apos; or specify alternative location where to save the envelope.</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -630,6 +630,10 @@
         <translation>You have not granted IP-based access. Check the settings of your server access certificate.</translation>
     </message>
     <message>
+        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
+    </message>
+    <message>
         <source>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
 The Information System Authority does not retain information regarding the files and users of the service.</source>
         <translation>The verification of digital signatures in PDF format is performed through an external service. The file requiring verification will be forwarded to the service.
@@ -670,8 +674,8 @@ The Information System Authority does not retain information regarding the files
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
     <message>
-        <source>Cannot add the file to the envelope. File '%1' is already in container.</source>
-        <translation>Cannot add the file to the envelope. File '%1' is already in container.</translation>
+        <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
+        <translation>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</translation>
     </message>
     <message>
         <source>Failed to save file &apos;%1&apos;</source>
@@ -915,16 +919,16 @@ The Information System Authority does not retain information regarding the files
         <translation>SAVE THE PICTURE</translation>
     </message>
     <message>
-        <source>You're using Digital identity card</source>
-        <translation>You're using Digital identity card</translation>
+        <source>You&apos;re using Digital identity card</source>
+        <translation>You&apos;re using Digital identity card</translation>
     </message>
     <message>
         <source>Valid</source>
         <translation>Valid</translation>
     </message>
     <message>
-        <source>You're using e-Seal</source>
-        <translation>You're using e-Seal</translation>
+        <source>You&apos;re using e-Seal</source>
+        <translation>You&apos;re using e-Seal</translation>
     </message>
     <message>
         <source>until</source>
@@ -973,22 +977,22 @@ The Information System Authority does not retain information regarding the files
 
     <message>
         <source>Container is not signed</source>
-        <translation>Container's signatures are missing</translation>
+        <translation>Container&apos;s signatures are missing</translation>
     </message>
     <message>
         <source>Content of the envelope</source>
         <translation>Container files</translation>
     </message>
     <message>
-        <source>Container's files</source>
+        <source>Container&apos;s files</source>
         <translation>Container files</translation>
     </message>
     <message>
-        <source>Container's signatures</source>
+        <source>Container&apos;s signatures</source>
         <translation>Container signatures</translation>
     </message>
     <message>
-        <source>Container's timestamps</source>
+        <source>Container&apos;s timestamps</source>
         <translation>Container timestamps</translation>
     </message>
     <message>
@@ -1580,7 +1584,7 @@ For digital authentication use your PIN1 code, and for digital signing - your PI
 BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline (+372)&#160;666&#160;8888.</translation>
+According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline (+372) 666 8888.</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
@@ -1976,8 +1980,8 @@ Control code: %1</translation>
         <translation>ACTIVATE REDIRECTION</translation>
     </message>
     <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
@@ -2230,24 +2234,24 @@ Control code: %1</translation>
     </message>
 
     <message>
-        <source>New %1 code can't be increasing sequence</source>
-        <translation>New %1 code can't be increasing sequence</translation>
+        <source>New %1 code can&apos;t be increasing sequence</source>
+        <translation>New %1 code can&apos;t be increasing sequence</translation>
     </message>
     <message>
-        <source>New %1 code can't be decreasing sequence</source>
-        <translation>New %1 code can't be decreasing sequence</translation>
+        <source>New %1 code can&apos;t be decreasing sequence</source>
+        <translation>New %1 code can&apos;t be decreasing sequence</translation>
     </message>
     <message>
-        <source>New %1 code can't be sequence of same numbers</source>
-        <translation>New %1 code can't be sequence of same numbers</translation>
+        <source>New %1 code can&apos;t be sequence of same numbers</source>
+        <translation>New %1 code can&apos;t be sequence of same numbers</translation>
     </message>
     <message>
-        <source>New %1 code can't be part of your personal code</source>
-        <translation>New %1 code can't be part of your personal code</translation>
+        <source>New %1 code can&apos;t be part of your personal code</source>
+        <translation>New %1 code can&apos;t be part of your personal code</translation>
     </message>
     <message>
-        <source>New %1 code can't be your date of birth</source>
-        <translation>New %1 code can't be your date of birth</translation>
+        <source>New %1 code can&apos;t be your date of birth</source>
+        <translation>New %1 code can&apos;t be your date of birth</translation>
     </message>
     <message>
         <source>Current %1 code and new %1 code must be different</source>
@@ -2826,16 +2830,16 @@ Additional licenses and components</translation>
         <translation>is not valid</translation>
     </message>
     <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href='http://www.id.ee/index.php?id=30494'&gt;Additional information&lt;/a&gt;.</translation>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
         <translation>This is an invalid signature or malformed digitally signed file. The signature is not valid.</translation>
     </message>
     <message>
-        <source>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</source>
-        <translation>Signature status is displayed "unknown" if you don't have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href='http://id.ee/?lang=en&amp;id=34317'&gt;additional information&lt;/a&gt;).</translation>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
+        <translation>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -2911,7 +2915,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href='https://www.id.ee/?lang=en&amp;id=38499'&gt;&lt;span style='color: #006EB5; text-decoration: underline; font-weight: 900;'&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
+        <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38499&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
     </message>
 </context>
 
@@ -3126,7 +3130,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href='https://www.id.ee/index.php?id=31027'&gt;from PPA&lt;/a&gt;.</translation>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href=&apos;https://www.id.ee/index.php?id=31027&apos;&gt;from PPA&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>
