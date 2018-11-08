@@ -2621,6 +2621,10 @@ Kontrollkood: %1</translation>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
     </message>
+    <message>
+        <source>Time Stamp server URL</source>
+        <translation>Ajatempli serveri URL</translation>
+    </message>
 
     <message>
         <source>No proxy</source>

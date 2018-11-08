@@ -76,9 +76,7 @@ class MacMenuBar;
 class DigidocConf: public digidoc::XmlConfCurrent
 {
 public:
-	DigidocConf()
-		: digidoc::XmlConfCurrent()
-		, s2(QCoreApplication::instance()->applicationName())
+	DigidocConf(): s2(QCoreApplication::instance()->applicationName())
 	{
 		reload();
 #ifdef Q_OS_MAC
@@ -86,7 +84,7 @@ public:
 		t->setSingleShot(true);
 		QTimer::connect(t, &QTimer::timeout, [=] {
 			t->deleteLater();
-			Configuration::instance().checkVersion("QDIGIDOC4");
+			Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4"));
 		});
 		t->start(0);
 #else
@@ -96,107 +94,110 @@ public:
 			if(changed)
 				reload();
 		});
-		s.beginGroup( "Client" );
+		s.beginGroup(QStringLiteral("Client"));
 		SettingsDialog::loadProxy(this);
 	}
 
 	std::string proxyHost() const override
 	{
-		switch(s2.value("Client/proxyConfig").toUInt())
+		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().hostName().toStdString();
-		default: return s.value( "ProxyHost", QString::fromStdString(digidoc::XmlConfCurrent::proxyHost()) ).toString().toStdString();
+		default: return s.value(QStringLiteral("ProxyHost"), QString::fromStdString(digidoc::XmlConfCurrent::proxyHost()) ).toString().toStdString();
 		}
 	}
 
 	std::string proxyPort() const override
 	{
-		switch(s2.value("Client/proxyConfig").toUInt())
+		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return QString::number(systemProxy().port()).toStdString();
-		default: return s.value( "ProxyPort", QString::fromStdString(digidoc::XmlConfCurrent::proxyPort()) ).toString().toStdString();
+		default: return s.value(QStringLiteral("ProxyPort"), QString::fromStdString(digidoc::XmlConfCurrent::proxyPort()) ).toString().toStdString();
 		}
 	}
 
 	std::string proxyUser() const override
 	{
-		switch(s2.value("Client/proxyConfig").toUInt())
+		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().user().toStdString();
-		default: return s.value( "ProxyUser", QString::fromStdString(digidoc::XmlConfCurrent::proxyUser()) ).toString().toStdString();
+		default: return s.value(QStringLiteral("ProxyUser"), QString::fromStdString(digidoc::XmlConfCurrent::proxyUser()) ).toString().toStdString();
 		}
 	}
 
 	std::string proxyPass() const override
 	{
-		switch(s2.value("Client/proxyConfig").toUInt())
+		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().password().toStdString();
-		default: return s.value( "ProxyPass", QString::fromStdString(digidoc::XmlConfCurrent::proxyPass()) ).toString().toStdString();
+		default: return s.value(QStringLiteral("ProxyPass"), QString::fromStdString(digidoc::XmlConfCurrent::proxyPass())).toString().toStdString();
 		}
 	}
 
 #ifdef Q_OS_MAC
 	bool proxyTunnelSSL() const override
-	{ return s.value( "ProxyTunnelSSL", digidoc::XmlConfCurrent::proxyTunnelSSL() ).toBool(); }
+	{ return s.value(QStringLiteral("ProxyTunnelSSL"), digidoc::XmlConfCurrent::proxyTunnelSSL()).toBool(); }
 	bool PKCS12Disable() const override
-	{ return s.value( "PKCS12Disable", digidoc::XmlConfCurrent::PKCS12Disable() ).toBool(); }
+	{ return s.value(QStringLiteral("PKCS12Disable"), digidoc::XmlConfCurrent::PKCS12Disable()).toBool(); }
 	std::string TSLCache() const override
 	{ return QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString(); }
 	bool TSLOnlineDigest() const override
-	{ return s2.value( "TSLOnlineDigest", digidoc::XmlConfCurrent::TSLOnlineDigest() ).toBool(); }
+	{ return s2.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 
 	void setProxyHost( const std::string &host ) override
-	{ s.setValueEx( "ProxyHost", QString::fromStdString( host ), QString() ); }
+	{ s.setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host ), QString()); }
 	void setProxyPort( const std::string &port ) override
-	{ s.setValueEx( "ProxyPort", QString::fromStdString( port ), QString() ); }
+	{ s.setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port ), QString()); }
 	void setProxyUser( const std::string &user ) override
-	{ s.setValueEx( "ProxyUser", QString::fromStdString( user ), QString() ); }
+	{ s.setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user ), QString()); }
 	void setProxyPass( const std::string &pass ) override
-	{ s.setValueEx( "ProxyPass", QString::fromStdString( pass ), QString() ); }
+	{ s.setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass ), QString()); }
 	void setProxyTunnelSSL( bool enable ) override
-	{ s.setValueEx( "ProxyTunnelSSL", enable, digidoc::XmlConfCurrent::proxyTunnelSSL() ); }
-	void setPKCS12Cert( const std::string & ) override {}
-	void setPKCS12Pass( const std::string & ) override {}
+	{ s.setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
+	void setPKCS12Cert( const std::string & /*cert*/) override {}
+	void setPKCS12Pass( const std::string & /*pass*/) override {}
 	void setPKCS12Disable( bool disable ) override
-	{ s.setValueEx( "PKCS12Disable", disable, digidoc::XmlConfCurrent::PKCS12Disable() ); }
+	{ s.setValueEx(QStringLiteral("PKCS12Disable"), disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
 	void setTSLOnlineDigest( bool enable ) override
-	{ s2.setValueEx( "TSLOnlineDigest", enable, digidoc::XmlConfCurrent::TSLOnlineDigest() ); }
+	{ s2.setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
 
-	std::string TSUrl() const override { return value("TSA-URL", digidoc::XmlConfCurrent::TSUrl()); }
-	std::string TSLUrl() const override { return value("TSL-URL", digidoc::XmlConfCurrent::TSLUrl()); }
+	std::string TSUrl() const override { return valueUserScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl()); }
+	void setTSUrl(const std::string &url) override
+	{ s2.setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url), QString()); }
+
+	std::string TSLUrl() const override { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	digidoc::X509Cert verifyServiceCert() const override
 	{
-		if(!obj.contains("SIVA-CERT"))
+		if(!obj.contains(QStringLiteral("SIVA-CERT")))
 			return digidoc::XmlConfCurrent::verifyServiceCert();
-		QByteArray cert = QByteArray::fromBase64(obj.value("SIVA-CERT").toString().toLatin1());
-		return digidoc::X509Cert((const unsigned char*)cert.constData(), int(cert.size()));
+		QByteArray cert = QByteArray::fromBase64(obj.value(QStringLiteral("SIVA-CERT")).toString().toLatin1());
+		return digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size()));
 	}
-	std::string verifyServiceUri() const override { return value("SIVA-URL", digidoc::XmlConfCurrent::verifyServiceUri()); }
+	std::string verifyServiceUri() const override { return valueSystemScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri()); }
 	std::vector<digidoc::X509Cert> TSLCerts() const override
 	{
 		std::vector<digidoc::X509Cert> tslcerts;
-		for(const QJsonValue &val: obj.value("TSL-CERTS").toArray())
+		for(const QJsonValue &val: obj.value(QStringLiteral("TSL-CERTS")).toArray())
 		{
 			QByteArray cert = QByteArray::fromBase64(val.toString().toLatin1());
-			tslcerts.push_back(digidoc::X509Cert((const unsigned char*)cert.constData(), int(cert.size())));
+			tslcerts.emplace_back(digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size())));
 		}
 		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
 	}
 	std::string ocsp(const std::string &issuer) const override
 	{
-		QJsonObject ocspissuer = obj.value("OCSP-URL-ISSUER").toObject();
+		QJsonObject ocspissuer = obj.value(QStringLiteral("OCSP-URL-ISSUER")).toObject();
 		for(QJsonObject::const_iterator i = ocspissuer.constBegin(); i != ocspissuer.constEnd(); ++i)
 		{
 			if(issuer == i.key().toStdString())
 				return i.value().toString().toStdString();
 		}
-		return obj.value("OCSP-URL").toString(QString::fromStdString(digidoc::XmlConfCurrent::ocsp(issuer))).toStdString();
+		return obj.value(QStringLiteral("OCSP-URL")).toString(QString::fromStdString(digidoc::XmlConfCurrent::ocsp(issuer))).toStdString();
 	}
 
 	bool TSLAllowExpired() const override
@@ -221,7 +222,7 @@ private:
 	{
 		obj = Configuration::instance().object();
 		QList<QSslCertificate> list;
-		for(const QJsonValue &cert: obj.value("CERT-BUNDLE").toArray())
+		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 		QSslSocket::setDefaultCaCertificates(list);
 	}
@@ -236,9 +237,14 @@ private:
 		return QNetworkProxy();
 	}
 
-	std::string value(const QString &key, const std::string &defaultValue) const
+	std::string valueSystemScope(const QString &key, const std::string &defaultValue) const
 	{
 		return obj.value(key).toString(QString::fromStdString(defaultValue)).toStdString();
+	}
+
+	std::string valueUserScope(const QString &key, const std::string &defaultValue) const
+	{
+		return s2.value(key, obj.value(key).toString(QString::fromStdString(defaultValue))).toString().toStdString();
 	}
 
 	Settings s;
@@ -480,6 +486,7 @@ void Application::clearConfValue( ConfParameter parameter )
 		case MobileID_URL:
 		case MobileID_TEST_URL:
 		case SiVaUrl:
+		case TSAUrl:
 		case TSLCerts:
 		case TSLUrl:
 		case TSLCache: break;
@@ -525,6 +532,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	case PKCS12Cert: r = i->PKCS12Cert().c_str(); break;
 	case PKCS12Pass: r = i->PKCS12Pass().c_str(); break;
 	case PKCS12Disable: return i->PKCS12Disable();
+	case TSAUrl: r = i->TSUrl().c_str(); break;
 	case TSLUrl: r = i->TSLUrl().c_str(); break;
 	case TSLCache: r = i->TSLCache().c_str(); break;
 	case TSLCerts:
@@ -838,6 +846,7 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case PKCS12Pass: i->setPKCS12Pass( v.isEmpty()? std::string() : v.constData() ); break;
 		case PKCS12Disable: i->setPKCS12Disable( value.toBool() ); break;
 		case TSLOnlineDigest: i->setTSLOnlineDigest( value.toBool() ); break;
+		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
 		case LDAP_HOST:
 		case MobileID_URL:
 		case MobileID_TEST_URL:

@@ -152,6 +152,8 @@ void SettingsDialog::initUI()
 	// pageAccessSert
 	ui->txtAccessCert->setFont(regularFont);
 	ui->chkIgnoreAccessCert->setFont(regularFont);
+	ui->lblTimeStamp->setFont(regularFont);
+	ui->rdTimeStamp->setFont(regularFont);
 
 	// pageProxy
 	ui->rdProxyNone->setFont(regularFont);
@@ -254,16 +256,16 @@ void SettingsDialog::initUI()
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
-	connect( ui->btnNavFromHistory, &QPushButton::clicked, this,  [this](){ emit removeOldCert(); } );
+	connect( ui->btnNavFromHistory, &QPushButton::clicked, this,  [this]{ emit removeOldCert(); } );
 
-	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(GeneralSettings); } );
-	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(AccessCertSettings); } );
-	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(NetworkSettings); } );
-	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(DiagnosticsSettings); } );
-	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this](){ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(LicenseSettings); } );
+	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(GeneralSettings); } );
+	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(AccessCertSettings); } );
+	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(NetworkSettings); } );
+	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(DiagnosticsSettings); } );
+	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(LicenseSettings); } );
 
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
-	connect( this, &SettingsDialog::finished, this, [](){ QApplication::restoreOverrideCursor(); } );
+	connect( this, &SettingsDialog::finished, this, []{ QApplication::restoreOverrideCursor(); } );
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 }
@@ -298,7 +300,7 @@ void SettingsDialog::checkConnection()
 bool SettingsDialog::hasNewerVersion()
 {
 	QStringList curList = qApp->applicationVersion().split('.');
-	QStringList avaList = Configuration::instance().object()["QDIGIDOC4-LATEST"].toString().split('.');
+	QStringList avaList = Configuration::instance().object()[QStringLiteral("QDIGIDOC4-LATEST")].toString().split('.');
 	for( int i = 0; i < std::max<int>(curList.size(), avaList.size()); ++i )
 	{
 		bool curconv = false, avaconv = false;
@@ -342,9 +344,9 @@ void SettingsDialog::retranslate(const QString& lang)
 void SettingsDialog::initFunctionality()
 {
 	selectLanguage();
-	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("et"); } );
-	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("en"); } );
-	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate("ru"); } );
+	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("et")); } );
+	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("en")); } );
+	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("ru")); } );
 
 	updateCert();
 #ifdef Q_OS_MAC
@@ -354,7 +356,7 @@ void SettingsDialog::initFunctionality()
 	ui->btGeneralChooseDirectory->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
-	ui->txtGeneralDirectory->setText( Settings().value( "Client/DefaultDir" ).toString() );
+	ui->txtGeneralDirectory->setText(Settings().value(QStringLiteral("Client/DefaultDir")).toString());
 	if(ui->txtGeneralDirectory->text().isEmpty())
 	{
 		ui->rdGeneralSameDirectory->setChecked( true );
@@ -417,11 +419,16 @@ void SettingsDialog::initFunctionality()
 
 	updateProxy();
 	ui->chkIgnoreAccessCert->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
+	ui->rdTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
+	ui->rdTimeStamp->setText(Application::confValue(Application::TSAUrl).toString());
+	connect(ui->rdTimeStamp, &QLineEdit::textEdited, this, [](const QString &url) {
+		qApp->setConfValue(Application::TSAUrl, url);
+	});
 
 	ui->chkShowPrintSummary->setChecked(Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), "false").toBool());
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
 	ui->chkRoleAddressInfo->setChecked(Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool());
-	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [&](bool checked){
+	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked){
 		Settings(qApp->applicationName()).setValue(QStringLiteral("Client/RoleAddressInfo"), checked);
 	});
 
@@ -435,11 +442,10 @@ void SettingsDialog::updateCert()
 	{
 		ui->txtAccessCert->setText(
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
-			QString(tr("Issued to: %1<br />Valid to: %2 %3"))
-				.arg(CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)))
-				.arg(c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")))
-				.arg( !SslCertificate(c).isValid() ? 
-					"<font color='red'>(" + tr("expired") + ")</font>" : QString()));
+			QString(tr("Issued to: %1<br />Valid to: %2 %3")).arg(
+				CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)),
+				c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
+				!SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : QString()));
 	}
 	else
 	{
@@ -488,7 +494,7 @@ void SettingsDialog::save()
 
 	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
 	saveProxy();
-	Settings(qApp->applicationName()).setValue("Client/ShowPrintSummary", ui->chkShowPrintSummary->isChecked() );
+	Settings(qApp->applicationName()).setValue(QStringLiteral("Client/ShowPrintSummary"), ui->chkShowPrintSummary->isChecked() );
 }
 
 void SettingsDialog::saveProxy()
@@ -517,7 +523,7 @@ void SettingsDialog::saveProxy()
 
 void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 {
-	switch(Settings(qApp->applicationName()).value("Client/proxyConfig", 0).toUInt())
+	switch(Settings(qApp->applicationName()).value(QStringLiteral("Client/proxyConfig"), 0).toUInt())
 	{
 	case 0:
 		QNetworkProxyFactory::setUseSystemConfiguration(false);
