@@ -576,7 +576,9 @@ void QSigner::run()
 			}
 			if(changed)
 				Q_EMIT dataChanged();
-			d->smartcard->reloadCard(st.card().isEmpty() ? at.card() : st.card(), d->api != QSigner::CAPI);
+			//  FIXME
+			//d->smartcard->reloadCard(st.card().isEmpty() ? at.card() : st.card(), d->api != QSigner::CAPI);
+			d->smartcard->reloadCard(st.card().isEmpty() ? at.card() : st.card());
 
 			QCardLock::instance().readUnlock();
 		}
