@@ -39,12 +39,14 @@ public:
 	enum PinFlags
 	{
 		Pin1Type = 0,
-		Pin2Type = 1,
-		PinpadFlag = 2,
-		PinpadNoProgressFlag = 4,
-		PinpadChangeFlag = 8,
+		Pin2Type = 1 << 0,
+		PukType = 1 << 1,
+		PinpadFlag = 1 << 2,
+		PinpadNoProgressFlag = 1 << 3,
+		PinpadChangeFlag = 1 << 4,
 		Pin1PinpadType = Pin1Type|PinpadFlag,
-		Pin2PinpadType = Pin2Type|PinpadFlag
+		Pin2PinpadType = Pin2Type|PinpadFlag,
+		PukPinpadType = PukType|PinpadFlag
 	};
 
 	PinPopup(PinFlags flags, const TokenData &t, QWidget *parent = nullptr);

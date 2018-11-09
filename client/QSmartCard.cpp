@@ -635,9 +635,9 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 	PinPopup::PinFlags flags;
 	switch(type)
 	{
-	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type;	break;
-	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type;	break;
-	case QSmartCardData::PukType: flags = PinPopup::PinpadFlag; break;
+	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
+	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type; break;
+	case QSmartCardData::PukType: flags = PinPopup::PukType; break;
 	default: return UnknownError;
 	}
 	QCardLocker locker;

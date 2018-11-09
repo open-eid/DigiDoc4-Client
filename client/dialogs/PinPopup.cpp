@@ -43,7 +43,7 @@ PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenData::TokenFlag
 {
 	if(c.type() & SslCertificate::TempelType)
 	{
-		regexp.setPattern(".{4,}");
+		regexp.setPattern(QStringLiteral(".{4,}"));
 		ui->pin->setValidator(new QRegExpValidator(regexp, ui->pin));
 		ui->pin->setMaxLength(32767);
 	}
@@ -115,7 +115,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenData::TokenFlags t
 		ui->cancel->hide();
 		QLabel *movie = new QLabel(this);
 		movie->setAlignment(Qt::AlignCenter);
-		movie->setMovie(new QMovie(":/images/wait.gif", QByteArray(), movie));
+		movie->setMovie(new QMovie(QStringLiteral(":/images/wait.gif"), QByteArray(), movie));
 		movie->movie()->setScaledSize(QSize(movie->height(), movie->height()));
 		movie->move(ui->pin->pos());
 		movie->resize(ui->pin->size());
