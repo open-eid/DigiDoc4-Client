@@ -482,7 +482,8 @@ void Application::clearConfValue( ConfParameter parameter )
 		case ProxySSL:
 		case PKCS12Disable:
 		case TSLOnlineDigest:
-		case LDAP_HOST:
+		case LDAP_PERSON_URL:
+		case LDAP_CORP_URL:
 		case MobileID_URL:
 		case MobileID_TEST_URL:
 		case SiVaUrl:
@@ -520,7 +521,8 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	QByteArray r;
 	switch( parameter )
 	{
-	case LDAP_HOST: return i->obj.value(QStringLiteral("LDAP-HOST")).toString(QStringLiteral("ldap.sk.ee:389"));
+	case LDAP_PERSON_URL: return i->obj.value(QStringLiteral("LDAP-PERSON-URL")).toString(QStringLiteral("ldaps://esteid.ldap.sk.ee"));
+	case LDAP_CORP_URL: return i->obj.value(QStringLiteral("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee"));
 	case MobileID_URL: return i->obj.value(QStringLiteral("MID-SIGN-URL")).toString(QStringLiteral("https://digidocservice.sk.ee"));
 	case MobileID_TEST_URL: return i->obj.value(QStringLiteral("MID-SIGN-TEST-URL")).toString(QStringLiteral("https://tsp.demo.sk.ee"));
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
@@ -847,7 +849,8 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case PKCS12Disable: i->setPKCS12Disable( value.toBool() ); break;
 		case TSLOnlineDigest: i->setTSLOnlineDigest( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
-		case LDAP_HOST:
+		case LDAP_PERSON_URL:
+		case LDAP_CORP_URL:
 		case MobileID_URL:
 		case MobileID_TEST_URL:
 		case SiVaUrl:

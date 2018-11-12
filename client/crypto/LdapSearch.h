@@ -22,15 +22,15 @@
 #include <QtCore/QObject>
 
 class QSslCertificate;
-class LdapSearchPrivate;
 class LdapSearch: public QObject
 {
 	Q_OBJECT
 
 public:
-	LdapSearch( QObject *parent = 0 );
-	~LdapSearch();
+	LdapSearch(QByteArray host, QObject *parent = nullptr);
+	~LdapSearch() final;
 
+	bool isSSL() const;
 	void search( const QString &search );
 
 Q_SIGNALS:
@@ -39,8 +39,9 @@ Q_SIGNALS:
 
 private:
 	bool init();
-	void timerEvent( QTimerEvent *e );
+	void timerEvent(QTimerEvent *e) final;
 	void setLastError( const QString &msg, int err );
 
-	LdapSearchPrivate *d;
+	class Private;
+	Private *d;
 };

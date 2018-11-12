@@ -19,9 +19,8 @@
 
 #include "LdapSearch.h"
 
-#include "Application.h"
-
 #include <QtCore/QTimerEvent>
+#include <QtCore/QUrl>
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
@@ -29,29 +28,29 @@
 #include <Windows.h>
 #include <Winldap.h>
 #include <Winber.h>
-#define lasterror LdapGetLastError()
 #else
 #define LDAP_DEPRECATED 1
-#include <errno.h>
 #include <sys/time.h>
 #include <ldap.h>
-#define lasterror errno
 #define ULONG int
 #define LDAP_TIMEVAL timeval
 #endif
 
 
-class LdapSearchPrivate
+class LdapSearch::Private
 {
 public:
 	LDAP *ldap = nullptr;
 	ULONG msg_id = 0;
+	QByteArray host;
 };
 
-LdapSearch::LdapSearch( QObject *parent )
+LdapSearch::LdapSearch(QByteArray host, QObject *parent)
 :	QObject( parent )
-,	d( new LdapSearchPrivate )
-{}
+,	d(new Private)
+{
+	d->host = std::move(host);
+}
 
 LdapSearch::~LdapSearch()
 {
@@ -62,23 +61,72 @@ LdapSearch::~LdapSearch()
 
 bool LdapSearch::init()
 {
-	if( d->ldap )
+	if(d->ldap)
 		return true;
 
-	QByteArray host = qApp->confValue(Application::LDAP_HOST).toByteArray();
-	if( !(d->ldap = ldap_init(const_cast<char*>(host.constData()), 389)) )
+#ifdef Q_OS_WIN
+	QUrl url(d->host);
+	int ssl = url.scheme() == QStringLiteral("ldaps") ? 1 : 0;
+	QString host = url.host();
+	ULONG port = ULONG(url.port(ssl ? LDAP_SSL_PORT : LDAP_PORT));
+	if(!(d->ldap = ldap_sslinit(const_cast<char*>(host.toLocal8Bit().constData()), port, ssl)))
 	{
-		setLastError(tr("Failed to init ldap"), lasterror);
+		setLastError(tr("Failed to init ldap"), int(LdapGetLastError()));
+		return false;
+	}
+	ULONG err = 0;
+#else
+	int err = ldap_initialize(&d->ldap, d->host.constData());
+	if(err)
+	{
+		setLastError(tr("Failed to init ldap"), err);
+		return false;
+	}
+#endif
+
+	int version = LDAP_VERSION3;
+	err = ldap_set_option(d->ldap, LDAP_OPT_PROTOCOL_VERSION, &version);
+	if(err)
+	{
+		setLastError(tr("Failed to set ldap version"), err);
 		return false;
 	}
 
-	int version = LDAP_VERSION3;
-	ldap_set_option( d->ldap, LDAP_OPT_PROTOCOL_VERSION, &version );
+#ifndef Q_OS_WIN
+#if 1
+	int cert_flag = LDAP_OPT_X_TLS_NEVER;
+	err = ldap_set_option(d->ldap, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_flag);
+	if(err)
+	{
+		setLastError(tr("Failed to start ssl"), err);
+		return false;
+	}
+#else
+	int err = ldap_set_option(d->ldap, LDAP_OPT_X_TLS_CACERTFILE, "");
+	if(err)
+	{
+		setLastError(tr("Failed to start ssl"), err);
+		return false;
+	}
 
-	int err = ldap_simple_bind_s(d->ldap, nullptr, nullptr);
-	if( err )
-		setLastError( tr("Failed to init ldap"), err );
+	err = ldap_start_tls_s(d->ldap, nullptr, nullptr);
+	if(err)
+	{
+		setLastError(tr("Failed to start ssl"), err);
+		return false;
+	}
+#endif
+#endif
+
+	err = ldap_simple_bind_s(d->ldap, nullptr, nullptr);
+	if(err)
+		setLastError(tr("Failed to init ldap"), err);
 	return !err;
+}
+
+bool LdapSearch::isSSL() const
+{
+	return QUrl(d->host).scheme() == QStringLiteral("ldaps");
 }
 
 void LdapSearch::search( const QString &search )
