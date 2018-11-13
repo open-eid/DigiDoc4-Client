@@ -1,3 +1,12 @@
+DigiDoc4 version [4.2.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.0) release notes
+--------------------------------------
+- Remove BDoc format selection option (#370)
+- IDEMIA card pport (#374)
+- Option to set TSA URL (#375)
+- Minor text, translation and usablity fixes
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.1.0...v4.2.0)
+
 DigiDoc4 version [4.1.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.1.0) release notes
 --------------------------------------
 - Update texts and translations
