@@ -2807,7 +2807,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Restrictions</source>
-        <translation>Piirangud</translation>
+        <translation>Restrictions</translation>
     </message>
     <message>
         <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
