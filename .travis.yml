@@ -45,19 +45,20 @@ script: case ${TARGET} in
     QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1);
     echo "Qt - ${QT_DIR}";
     mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
-    mkdir -p $BUILD_NUMBER;
-    make zipdebug macdeployqt zip && cp qdigidoc4*.zip ./$BUILD_NUMBER/ && cd ..;
+    make zipdebug macdeployqt zip;
+    cd .. && mkdir ../upload && cp build/qdigidoc4*.zip ../upload/;
     ;;
   *)
     docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v ${HOME}:${HOME} -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       apt-get update -qq; 
       apt-get install -y apt-transport-https dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev git curl wget ruby;
       dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb;
-      export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}").${BUILD_NUMBER}.$(lsb_release -rs);
+      export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}");
+      export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs);
       export DEBFULLNAME="Travis";
       export DEBEMAIL="travis-ci@travis";
-      dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSION};
-      dch --distribution $(lsb_release -cs) -v ${VERSION} "Release ${VERSION}.";
+      dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSIONEX};
+      dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}.";
       dpkg-buildpackage -rfakeroot -us -uc;
       if [ "${IMAGE}" = "ubuntu:18.04" ]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
@@ -67,18 +68,30 @@ script: case ${TARGET} in
         export COVERITY_SCAN_BUILD_COMMAND=make;
         wget -O - https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh | bash;
       fi;
-      mkdir -p build/$BUILD_NUMBER;
-      cp ../qdigidoc4_* build/$BUILD_NUMBER';
+      git clean -dxf;
+      cd ..;
+      mv DigiDoc4-Client qdigidoc4-${VERSION};
+      tar czf qdigidoc4-${VERSION}.tar.gz --exclude-vcs qdigidoc4-${VERSION};
+      mv qdigidoc4-${VERSION} DigiDoc4-Client;
+      mkdir upload;
+      cp qdigidoc4*.* upload';
   esac
 deploy:
-  provider: s3
+- provider: releases
+  api_key: ${GITHUB_ACCESS_TOKEN}
+  file: ../upload/qdigidoc4-${VERSION}.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "$TRAVIS_OS_NAME = linux"
+- provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: $AWS_DEFAULT_REGION
   bucket: open-eid
   skip_cleanup: true
-  local_dir: build/$BUILD_NUMBER
-  upload-dir: digidoc4-nightly/${TARGET}
+  local_dir: ../upload/
+  upload-dir: digidoc4-nightly/${BUILD_NUMBER}
   acl: public_read
   on:
     branch: master
