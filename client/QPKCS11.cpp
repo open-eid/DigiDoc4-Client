@@ -37,7 +37,7 @@
 
 #include <openssl/obj_mac.h>
 
-#define toQByteArray(X) QByteArray::fromRawData((const char*)X, sizeof(X)).toUpper()
+#define toQByteArray(X) QByteArray::fromRawData((const char*)(X), sizeof(X)).toUpper()
 
 QWidget* rootWindow()
 {
@@ -128,9 +128,9 @@ QVector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
 
 void QPKCS11::Private::updateTokenFlags(TokenData &t, CK_ULONG f) const
 {
-	t.setFlag( TokenData::PinCountLow, f & CKF_SO_PIN_COUNT_LOW || f & CKF_USER_PIN_COUNT_LOW );
-	t.setFlag( TokenData::PinFinalTry, f & CKF_SO_PIN_FINAL_TRY || f & CKF_USER_PIN_FINAL_TRY );
-	t.setFlag( TokenData::PinLocked, f & CKF_SO_PIN_LOCKED || f & CKF_USER_PIN_LOCKED );
+	t.setFlag( TokenData::PinCountLow, f & CKF_USER_PIN_COUNT_LOW );
+	t.setFlag( TokenData::PinFinalTry, f & CKF_USER_PIN_FINAL_TRY );
+	t.setFlag( TokenData::PinLocked, f & CKF_USER_PIN_LOCKED );
 }
 
 
@@ -243,10 +243,10 @@ bool QPKCS11::load( const QString &driver )
 	CK_INFO info;
 	d->f->C_GetInfo( &info );
 	qWarning()
-		<< QString("%1 (%2.%3)").arg( toQByteArray( info.manufacturerID ).constData() )
-			.arg( info.cryptokiVersion.major ).arg( info.cryptokiVersion.minor ) << endl
-		<< QString("%1 (%2.%3)").arg( toQByteArray( info.libraryDescription ).constData() )
-			.arg( info.libraryVersion.major ).arg( info.libraryVersion.minor ) << endl
+		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.manufacturerID).constData())
+			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << endl
+		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.libraryDescription).constData())
+			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << endl
 		<< "Flags:" << info.flags;
 	d->isFinDriver = toQByteArray(info.libraryDescription).contains("MPOLLUX");
 	return true;
@@ -398,7 +398,7 @@ bool QPKCS11::reload()
 	};
 #ifdef Q_OS_MAC
 	static const QVariantMap PKCS11 = []{
-		QVariantMap PKCS11 = Settings().value("PKCS11").toMap();
+		QVariantMap PKCS11 = Settings().value(QStringLiteral("PKCS11")).toMap();
 		for(auto it = PKCS11.cbegin(), end = PKCS11.cend(); it != end; ++it)
 			drivers.insert(it.value().toString(), it.key().toLocal8Bit());
 		return PKCS11;
