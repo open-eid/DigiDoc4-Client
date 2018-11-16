@@ -44,27 +44,11 @@
 #include <QMessageBox>
 #include <QtNetwork/QSslError>
 
-AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent) :
-QDialog(parent)
-, ui(new Ui::AddRecipients)
-, leftList()
-, rightList()
-, ldap(new LdapSearch(this))
-, personSearch(false)
-, select(false)
-, updated(false)
-{
-	init();
-	initAddressItems(itemList->items);
-}
-
-AddRecipients::~AddRecipients()
-{
-	QApplication::restoreOverrideCursor();
-	delete ui;
-}
-
-void AddRecipients::init()
+AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::AddRecipients)
+	, ldap_person(new LdapSearch(qApp->confValue(Application::LDAP_PERSON_URL).toByteArray(), this))
+	, ldap_corp(new LdapSearch(qApp->confValue(Application::LDAP_CORP_URL).toByteArray(), this))
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
@@ -82,12 +66,14 @@ void AddRecipients::init()
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	ui->confirm->setFont(Styles::font(Styles::Condensed, 14));
 
-	ui->confirm->setDisabled(!rightList.size());
+	ui->confirm->setDisabled(rightList.isEmpty());
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
 	connect(ui->leftPane, &ItemList::search, this, &AddRecipients::search);
-	connect(ldap, &LdapSearch::searchResult, this, &AddRecipients::showResult);
-	connect(ldap, &LdapSearch::error, this, &AddRecipients::showError);
+	connect(ldap_person, &LdapSearch::searchResult, this, &AddRecipients::showResult);
+	connect(ldap_corp, &LdapSearch::searchResult, this, &AddRecipients::showResult);
+	connect(ldap_person, &LdapSearch::error, this, &AddRecipients::showError);
+	connect(ldap_corp, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
 	connect(ui->leftPane, &ItemList::addAll, this, &AddRecipients::addAllRecipientToRightPane );
@@ -123,6 +109,13 @@ void AddRecipients::init()
 		xml.skipCurrentElement();
 	}
 
+	initAddressItems(itemList->items);
+}
+
+AddRecipients::~AddRecipients()
+{
+	QApplication::restoreOverrideCursor();
+	delete ui;
 }
 
 void AddRecipients::addAllRecipientToRightPane()
@@ -137,21 +130,14 @@ void AddRecipients::addAllRecipientToRightPane()
 			history << toHistory(it.value()->getKey().cert);
 		}
 	}
-	ui->confirm->setDisabled(!rightList.size());
+	ui->confirm->setDisabled(rightList.isEmpty());
 	rememberCerts(history);
 }
 
 void AddRecipients::addRecipientFromCard()
 {
-	QList<QSslCertificate> certs;
-
-	certs << qApp->signer()->tokenauth().cert();
-	for(QSslCertificate& cert : certs)
-	{
-		Item *item = addRecipientToLeftPane( cert );
-		if( item )
-			addRecipientToRightPane( item, true );
-	}
+	if(Item *item = addRecipientToLeftPane(qApp->signer()->tokenauth().cert()))
+		addRecipientToRightPane(item, true);
 }
 
 void AddRecipients::addRecipientFromFile()
@@ -203,37 +189,33 @@ void AddRecipients::addRecipientFromHistory()
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 {
 	QString friendlyName = SslCertificate(cert).friendlyName();
-	AddressItem *leftItem = nullptr;
+	if(leftList.contains(friendlyName))
+		return nullptr;
 
-	if(!leftList.contains(friendlyName) )
+	AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
+	leftList.insert(friendlyName, leftItem);
+	ui->leftPane->addWidget(leftItem);
+	if(rightList.contains(friendlyName))
 	{
-		leftItem = new AddressItem(CKey(cert), ui->leftPane);
-
-		leftList.insert(friendlyName, leftItem);
-		ui->leftPane->addWidget(leftItem);
-
-		if(rightList.contains(friendlyName))
-		{
-			leftItem->disable(true);
-			leftItem->showButton(AddressItem::Added);
-		}
-		else
-		{
-			leftItem->disable(false);
-			leftItem->showButton(AddressItem::Add);
-		}
-
-		connect(leftItem, &AddressItem::add, this, [this](Item *item) {
-			addRecipientToRightPane(item, true);
-		});
+		leftItem->disable(true);
+		leftItem->showButton(AddressItem::Added);
 	}
+	else
+	{
+		leftItem->disable(false);
+		leftItem->showButton(AddressItem::Add);
+	}
+
+	connect(leftItem, &AddressItem::add, this, [this](Item *item) {
+		addRecipientToRightPane(item, true);
+	});
 
 	return leftItem;
 }
 
 void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 {
-	AddressItem *leftItem = static_cast<AddressItem *>(toAdd);
+	AddressItem *leftItem = qobject_cast<AddressItem *>(toAdd);
 
 	if (rightList.contains(SslCertificate(leftItem->getKey().cert).friendlyName()))
 		return;
@@ -275,7 +257,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
 	leftItem->disable(true);
 	leftItem->showButton(AddressItem::Added);
-	ui->confirm->setDisabled(!rightList.size());
+	ui->confirm->setDisabled(rightList.isEmpty());
 	rememberCerts({toHistory(leftItem->getKey().cert)});
 }
 
@@ -334,15 +316,11 @@ bool AddRecipients::isUpdated()
 QList<CKey> AddRecipients::keys()
 {
 	QList<CKey> recipients;
-	AddressItem *address;
-
 	for(auto item: ui->rightPane->items)
 	{
-		address = qobject_cast<AddressItem *>(item);
-		if(address)
+		if(AddressItem *address = qobject_cast<AddressItem *>(item))
 			recipients << address->getKey();
 	}
-
 	return recipients;
 }
 
@@ -384,7 +362,7 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	}
 	rightList.removeAll(friendlyName);
 	updated = true;
-	ui->confirm->setDisabled(!rightList.size());
+	ui->confirm->setDisabled(rightList.isEmpty());
 }
 
 void AddRecipients::removeSelectedCerts(const QList<HistoryCertData>& removeCertData)
@@ -447,12 +425,14 @@ void AddRecipients::search(const QString &term)
 				return;
 			}
 			personSearch = true;
+			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), term));
 		}
-		ldap->search(QStringLiteral("(serialNumber=%1)" ).arg(term));
+		else
+			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(term));
 	}
 	else
 	{
-		ldap->search(QStringLiteral("(cn=*%1*)").arg(term));
+		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(term));
 	}
 }
 

@@ -39,16 +39,14 @@ class AddRecipients : public QDialog
 	Q_OBJECT
 
 public:
-	explicit AddRecipients(ItemList* itemList, QWidget *parent = 0);
-	~AddRecipients();
+	explicit AddRecipients(ItemList* itemList, QWidget *parent = nullptr);
+	~AddRecipients() final;
 
 	int exec() override;
 	QList<CKey> keys();
 	bool isUpdated();
 
 private:
-	void init();
-
 	void addAllRecipientToRightPane();
 	void addRecipientFromCard();
 	void addRecipientFromFile();
@@ -75,10 +73,10 @@ private:
 	Ui::AddRecipients *ui;
 	QMap<QString, AddressItem *> leftList;
 	QStringList rightList;
-	LdapSearch* ldap;
-	bool personSearch;
-	bool select;
-	bool updated;
+	LdapSearch *ldap_person, *ldap_corp;
+	bool personSearch = false;
+	bool select = false;
+	bool updated = false;
 
 	QList<HistoryCertData> historyCertData;
 };

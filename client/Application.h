@@ -42,7 +42,8 @@ class Application: public Common
 public:
 	enum ConfParameter
 	{
-		LDAP_HOST,
+		LDAP_PERSON_URL,
+		LDAP_CORP_URL,
 		MobileID_URL,
 		MobileID_TEST_URL,
 		SiVaUrl,
@@ -62,7 +63,7 @@ public:
 	};
 
 	explicit Application( int &argc, char **argv );
-	~Application();
+	~Application() final;
 
 #ifdef Q_OS_WIN
 	void addTempFile(const QString &file);
