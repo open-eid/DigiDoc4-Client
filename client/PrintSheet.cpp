@@ -46,7 +46,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 #endif
 
 	QFont text = font();
-	text.setFamily( "Arial, Liberation Sans, Helvetica, sans-serif" );
+	text.setFamily(QStringLiteral("Arial, Liberation Sans, Helvetica, sans-serif"));
 	text.setPixelSize( 12 );
 
 	QFont head = text;
@@ -113,22 +113,22 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		top += 5;
 
 		int nameHeight = drawTextRect( QRect( left+40, top, right - left - 340, 20 ),
-			cert.toString( cert.showCN() ? "CN" : "GN SN" ) );
+			cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")));
 		drawTextRect( QRect( left, top, 40, nameHeight ),
 			QString::number( i++ ) );
 		drawTextRect( QRect( right-300, top, 130, nameHeight ),
-			cert.subjectInfo( "serialNumber" ) );
+			cert.personalCode());
 		drawTextRect( QRect( right-170, top, 170, nameHeight ),
-			DateTime( sig.dateTime().toLocalTime() ).toStringZ( "dd.MM.yyyy hh:mm:ss" ) );
+			DateTime(sig.dateTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		top += 20 + nameHeight;
 
 		QString valid;
 		switch( sig.validate() )
 		{
 		case DigiDocSignature::Valid: valid = tr("SIGNATURE IS VALID"); break;
-		case DigiDocSignature::Warning:valid = QString("%1 (%2)").arg( tr("SIGNATURE IS VALID"), tr("NB! WARNINGS") ); break;
-		case DigiDocSignature::NonQSCD:valid = QString("%1 (%2)").arg( tr("SIGNATURE IS VALID"), tr("NB! RESTRICTIONS") ); break;
-		case DigiDocSignature::Test: valid = QString("%1 (%2)").arg( tr("SIGNATURE IS VALID"), tr("NB! TEST SIGNATURE") ); break;
+		case DigiDocSignature::Warning:valid = QStringLiteral("%1 (%2)").arg(tr("SIGNATURE IS VALID"), tr("NB! WARNINGS")); break;
+		case DigiDocSignature::NonQSCD:valid = QStringLiteral("%1 (%2)").arg(tr("SIGNATURE IS VALID"), tr("NB! RESTRICTIONS")); break;
+		case DigiDocSignature::Test: valid = QStringLiteral("%1 (%2)").arg(tr("SIGNATURE IS VALID"), tr("NB! TEST SIGNATURE")); break;
 		case DigiDocSignature::Invalid: valid = tr("SIGNATURE IS NOT VALID") ; break;
 		case DigiDocSignature::Unknown: valid = tr("UNKNOWN"); break;
 		}
@@ -144,10 +144,10 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		int issuerHeight = drawTextRect( QRect( left, top, 200, 20 ),
 			cert.issuerInfo( QSslCertificate::CommonName ) );
 		drawTextRect( QRect( left+200, top, right - left - 200, issuerHeight ),
-			cert.toHex( cert.authorityKeyIdentifier() ) );
+			SslCertificate::toHex(cert.authorityKeyIdentifier()));
 		top += 20 + issuerHeight;
 
-		customText( tr("HASH VALUE OF SIGNATURE"), cert.toHex( sig.ocspNonce() ) );
+		customText(tr("HASH VALUE OF SIGNATURE"), SslCertificate::toHex(sig.ocspNonce()));
 		top += 15;
 	}
 	save();
@@ -185,7 +185,7 @@ void PrintSheet::customText( const QString &title, const QString &text )
 	top += 20 + rect.height();
 }
 
-int PrintSheet::drawTextRect( const QRect &rect, const QString &text )
+int PrintSheet::drawTextRect(QRect rect, const QString &text)
 {
 	QRect result = rect.adjusted( 5, 0, -5, 0 );
 	result.setHeight( std::max( rect.height(),
