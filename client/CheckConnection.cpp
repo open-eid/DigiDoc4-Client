@@ -53,9 +53,9 @@ QString CheckConnection::errorString() const
 	case QNetworkReply::ProxyConnectionClosedError:
 	case QNetworkReply::ProxyNotFoundError:
 	case QNetworkReply::ProxyTimeoutError:
-		return tr("%1, cannot connect to certificate status service!").arg(tr("Check proxy settings"));
+		return tr("Check proxy settings");
 	case QNetworkReply::ProxyAuthenticationRequiredError:
-		return tr("%1, cannot connect to certificate status service!").arg(tr("Check proxy username and password"));
+		return tr("Check proxy username and password");
 	default:
 		return tr("Cannot connect to certificate status service!");
 	}

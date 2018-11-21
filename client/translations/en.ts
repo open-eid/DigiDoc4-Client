@@ -435,10 +435,6 @@
         <source>Cannot connect to certificate status service!</source>
         <translation>Cannot connect to certificate status service!</translation>
     </message>
-    <message>
-        <source>%1, cannot connect to certificate status service!</source>
-        <translation>%1, cannot connect to certificate status service!</translation>
-    </message>
 </context>
 
 

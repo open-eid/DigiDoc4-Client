@@ -433,10 +433,6 @@
         <source>Cannot connect to certificate status service!</source>
         <translation>Kehtivuskinnitusteenus ei ole kättesaadav!</translation>
     </message>
-    <message>
-        <source>%1, cannot connect to certificate status service!</source>
-        <translation>%1, kehtivuskinnitusteenus ei ole kättesaadav!</translation>
-    </message>
 </context>
 
 
