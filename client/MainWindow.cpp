@@ -395,16 +395,12 @@ void MainWindow::dropEvent(QDropEvent *event)
 	{
 		for(const auto &url: mimeData->urls())
 		{
-			if(url.scheme() == QStringLiteral("file"))
-			{
+			if(url.scheme() == QStringLiteral("file") && QFileInfo(url.toLocalFile()).isFile())
 				files << url.toLocalFile();
-			}
 		}
 	}
-	else
-	{
+	if(files.isEmpty())
 		showNotification( tr("Unrecognized data") );
-	}
 	event->acceptProposedAction();
 	clearOverlay();
 
