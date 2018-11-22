@@ -31,19 +31,9 @@
 #include <QtCore/QTextStream>
 
 InfoStack::InfoStack( QWidget *parent )
-: StyledWidget( parent )
-, ui( new Ui::InfoStack )
-, alternateIcon( nullptr )
-, certType(0)
-, certIsValid(false)
-, certIsResident(false)
-, citizenshipText()
-, expireDate()
-, givenNamesText()
-, personalCodeText()
-, serialNumberText()
-, surnameText()
-, pictureText("DOWNLOAD")
+	: StyledWidget( parent )
+	, ui( new Ui::InfoStack )
+	, pictureText("DOWNLOAD")
 {
 	ui->setupUi( this );
 
@@ -170,6 +160,8 @@ void InfoStack::update()
 	ui->valueSurname->setText(surnameText);
 	ui->valuePersonalCode->setText(personalCodeText);
 	ui->valueCitizenship->setText(citizenshipText);
+	ui->valueCitizenship->setHidden(citizenshipText.isEmpty());
+	ui->labelCitizenship->setHidden(citizenshipText.isEmpty());
 	ui->valueExpiryDate->setText(text);
 	ui->valueSerialNumber->setText(serialNumberText);
 	ui->btnPicture->setText(tr(pictureText));
