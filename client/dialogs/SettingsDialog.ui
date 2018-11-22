@@ -391,7 +391,7 @@ QRadioButton::indicator::checked {
 }</string>
               </property>
               <property name="text">
-               <string>Eesti</string>
+               <string notr="true">Eesti</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -421,7 +421,7 @@ QRadioButton::indicator::checked {
 }</string>
               </property>
               <property name="text">
-               <string>Русский</string>
+               <string notr="true">Русский</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">langGroup</string>
@@ -448,7 +448,7 @@ QRadioButton::indicator::checked {
 }</string>
               </property>
               <property name="text">
-               <string>English</string>
+               <string notr="true">English</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">langGroup</string>
@@ -626,7 +626,7 @@ QRadioButton::indicator::checked {
 }</string>
               </property>
               <property name="text">
-               <string>...</string>
+               <string notr="true">...</string>
               </property>
              </widget>
             </item>
@@ -725,9 +725,6 @@ QCheckBox::indicator:checked {
               <width>0</width>
               <height>120</height>
              </size>
-            </property>
-            <property name="text">
-             <string/>
             </property>
             <property name="textFormat">
              <enum>Qt::AutoText</enum>
@@ -1050,13 +1047,6 @@ QScrollBar::sub-line:vertical {
           <property name="readOnly">
            <bool>true</bool>
           </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="pageInfo">
@@ -1117,7 +1107,7 @@ QScrollBar::sub-line:vertical {
            <bool>true</bool>
           </property>
           <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+           <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Roboto'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1242,7 +1232,7 @@ background-color: #f7f7f7;</string>
          <string notr="true">border: none;</string>
         </property>
         <property name="text">
-         <string>&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
+         <string notr="true">&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
         </property>
        </widget>
       </item>
