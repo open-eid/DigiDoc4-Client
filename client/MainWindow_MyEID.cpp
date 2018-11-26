@@ -29,7 +29,7 @@
 #include "dialogs/Updater.h"
 #include "effects/FadeInNotification.h"
 #include "util/CertUtil.h"
-#include "widgets/WarningItem.h"
+#include "widgets/WarningList.h"
 
 #include <common/Configuration.h>
 #include <common/Settings.h>
@@ -86,9 +86,9 @@ bool MainWindow::checkExpiration()
 	}
 
 	if(expiresIn <= 0)
-		showWarning(WarningText(WarningType::CertExpiredWarning));
+		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
 	else if(expiresIn <= 105)
-		showWarning(WarningText(WarningType::CertExpiryWarning));
+		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
 
 	return (expiresIn <= 105);
 }
@@ -111,12 +111,12 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 
 		if (type == QSmartCardData::Pin1Type)
 		{
-			clearWarning({WarningType::UnblockPin1Warning});
+			warnings->clearWarning({WarningType::UnblockPin1Warning});
 			emit ui->cryptoContainerPage->cardChanged(card);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
-			clearWarning({WarningType::UnblockPin2Warning});
+			warnings->clearWarning({WarningType::UnblockPin2Warning});
 			emit ui->signContainerPage->cardChanged(card);
 		}
 	}
@@ -177,10 +177,10 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	{
 		switch( type )
 		{
-		case SSLConnect::ActivateEmails: showWarning(WarningText(WarningType::EmailActivationWarning, err)); break;
-		case SSLConnect::EmailInfo: showWarning(WarningText(WarningType::EmailLoadingWarning, err)); break;
-		case SSLConnect::PictureInfo: showWarning(WarningText(WarningType::PictureLoadingWarning, err)); break;
-		default: showWarning(WarningText(WarningType::SSLLoadingWarning, err)); break;
+		case SSLConnect::ActivateEmails: warnings->showWarning(WarningText(WarningType::EmailActivationWarning, err)); break;
+		case SSLConnect::EmailInfo: warnings->showWarning(WarningText(WarningType::EmailLoadingWarning, err)); break;
+		case SSLConnect::PictureInfo: warnings->showWarning(WarningText(WarningType::PictureLoadingWarning, err)); break;
+		default: warnings->showWarning(WarningText(WarningType::SSLLoadingWarning, err)); break;
 		}
 		return QByteArray();
 	}
@@ -213,7 +213,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0 );
 		if(qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
-			clearWarning({WarningType::UpdateCertWarning});
+			warnings->clearWarning({WarningType::UpdateCertWarning});
 		break;
 	case QSmartCard::DifferentError:
 		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) );
@@ -266,7 +266,7 @@ void MainWindow::updateCertificate(const QString &readerName)
 	{
 		QCardLocker locker;
 		Updater(readerName, this).execute();
-		clearWarning({WarningType::UpdateCertWarning});
+		warnings->clearWarning({WarningType::UpdateCertWarning});
 	}
 	qApp->smartcard()->reload();
 }

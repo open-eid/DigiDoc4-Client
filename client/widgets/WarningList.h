@@ -19,24 +19,36 @@
 
 #pragma once
 
-#include "StyledWidget.h"
+#include <QWidget>
 
-class WarningRibbon : public StyledWidget
+namespace Ui {
+class MainWindow;
+}
+
+class WarningItem;
+struct WarningText;
+class WarningRibbon;
+
+class WarningList: public QObject
 {
 	Q_OBJECT
-
 public:
-	WarningRibbon(int count, QWidget *parent = nullptr);
-	~WarningRibbon() final;
+	explicit WarningList(Ui::MainWindow *main, QWidget *parent = nullptr);
 
-	void flip();
-	bool isExpanded() const;
-	void setCount(int count);
+	void clearWarning(const QList<int> &warningType);
+	void closeWarning(WarningItem *warning, bool force = false);
+	void closeWarnings(int page);
+	void showWarning(const WarningText &warningText);
+	void updateWarnings();
 
-protected:
-	void changeEvent(QEvent* event) final;
+signals:
+	void warningClicked(const QString &link);
 
 private:
-	class Private;
-	Private *ui;
+	bool eventFilter(QObject *object, QEvent *event) final;
+	void updateRibbon(int page, bool expanded);
+
+	WarningRibbon *ribbon = nullptr;
+	QList<WarningItem*> warnings;
+	Ui::MainWindow *ui;
 };

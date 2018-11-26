@@ -42,13 +42,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="topBar">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QWidget" name="topBar" native="true">
      <property name="minimumSize">
       <size>
        <width>1024</width>
@@ -86,13 +80,7 @@ height: 14px;
 min-width: 0px;
 }</string>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="topBarLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -147,12 +135,6 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
       </item>
       <item>
        <widget class="QWidget" name="fixed_idSelector" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>790</width>
@@ -268,19 +250,6 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
         <property name="spacing">
          <number>0</number>
         </property>
-        <item>
-         <spacer name="tbExpandingSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item>
          <widget class="QWidget" name="tbButtonWidget" native="true">
           <property name="sizePolicy">
@@ -403,22 +372,6 @@ QToolButton:hover {
            </property>
           </widget>
          </widget>
-        </item>
-        <item>
-         <spacer name="tbRightSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>7</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>

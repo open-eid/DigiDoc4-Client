@@ -43,8 +43,7 @@
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "util/FileUtil.h"
-#include "widgets/WarningItem.h"
-#include "widgets/WarningRibbon.h"
+#include "widgets/WarningList.h"
 #include "widgets/VerifyCert.h"
 
 #include <common/DateTime.h>
@@ -69,9 +68,10 @@ using namespace ria::qdigidoc4::colors;
 
 Q_LOGGING_CATEGORY(MLog, "qdigidoc4.MainWindow")
 
-MainWindow::MainWindow( QWidget *parent ) :
-	QWidget( parent ),
-	ui( new Ui::MainWindow )
+MainWindow::MainWindow( QWidget *parent )
+	: QWidget( parent )
+	, ui( new Ui::MainWindow )
+	, warnings(new WarningList(ui, this))
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 
@@ -84,6 +84,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	s.remove(QStringLiteral("Client/Type"));
 
 	ui->setupUi(this);
+	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
 	ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
@@ -160,7 +161,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
 	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](const WarningText &warningText) {
-		showWarning(warningText);
+		warnings->showWarning(warningText);
 		ui->signature->warningIcon(true);
 	});
 
@@ -292,47 +293,11 @@ void MainWindow::clearOverlay()
 	overlay.reset( nullptr );
 }
 
-void MainWindow::clearWarning(const QList<int> &warningTypes)
-{
-	for(auto warning: warnings)
-	{
-		if(warningTypes.contains(warning->warningType()))
-			closeWarning(warning, true);
-	}
-	updateWarnings();
-}
-
 void MainWindow::closeEvent(QCloseEvent * /*event*/)
 {
 	resetCryptoDoc();
 	resetDigiDoc();
 	ui->startScreen->setCurrentIndex(SignIntro);
-}
-
-bool MainWindow::closeWarning(WarningItem *warning, bool force)
-{
-	if(force || warning->warningType() != WarningType::UpdateCertWarning)
-	{
-		warnings.removeOne(warning);
-		warning->close();
-		warning->deleteLater();
-		updateWarnings();
-
-		return true;
-	}
-
-	return false;
-}
-
-void MainWindow::closeWarnings(int page)
-{
-	for(auto warning: warnings)
-	{
-		if(warning->page() == page || page == -1)
-			closeWarning(warning);
-	}
-
-	updateWarnings();
 }
 
 QString MainWindow::cryptoPath()
@@ -426,26 +391,6 @@ void MainWindow::hideCardPopup()
 {
 	selector->init();
 	showCardMenu( false );
-}
-
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-	for(auto warning: warnings)
-	{
-		if(warning->underMouse())
-		{
-			closeWarning(warning);
-			break;
-		}
-	}
-
-	if(ribbon && ribbon->underMouse())
-	{
-		ribbon->flip();
-		updateRibbon(ui->startScreen->currentIndex(), ribbon->isExpanded());
-	}
-
-	QWidget::mousePressEvent(event);
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -543,7 +488,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case ClearSignatureWarning:
 		ui->signature->warningIcon(false);
-		closeWarnings(SignDetails);
+		warnings->closeWarnings(SignDetails);
 		break;
 	case ContainerCancel:
 		resetDigiDoc();
@@ -876,7 +821,7 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 
 	ui->signContainerPage->clear();
 	delete digiDoc;
-	closeWarnings(SignDetails);
+	warnings->closeWarnings(SignDetails);
 	digiDoc = doc;
 	if(digiDoc)
 	{
@@ -947,7 +892,7 @@ void MainWindow::selectPage(Pages page)
 {
 	selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
 	ui->startScreen->setCurrentIndex(page);
-	updateWarnings();
+	warnings->updateWarnings();
 	adjustDrops();
 }
 
@@ -988,7 +933,7 @@ void MainWindow::showCardStatus()
 	TokenData at = qApp->signer()->tokenauth();
 	const TokenData &t = st.cert().isNull() ? at : st;
 
-	closeWarnings(MyEid);
+	warnings->closeWarnings(MyEid);
 
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
@@ -1004,7 +949,7 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
-			clearWarning({WarningType::UpdateCertWarning});
+			warnings->clearWarning({WarningType::UpdateCertWarning});
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
@@ -1039,8 +984,8 @@ void MainWindow::showCardStatus()
 		emit ui->signContainerPage->cardChanged();
 		emit ui->cryptoContainerPage->cardChanged();
 
-		closeWarnings(MyEid);
-		clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
+		warnings->closeWarnings(MyEid);
+		warnings->clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( t.readers().isEmpty() )
@@ -1100,7 +1045,7 @@ bool MainWindow::sign()
 	CheckConnection connection;
 	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		showWarning(WarningText(WarningType::CheckConnectionWarning));
+		warnings->showWarning(WarningText(WarningType::CheckConnectionWarning));
 		return false;
 	}
 
@@ -1150,7 +1095,7 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	CheckConnection connection;
 	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		showWarning(WarningText(WarningType::CheckConnectionWarning));
+		warnings->showWarning(WarningText(WarningType::CheckConnectionWarning));
 		return false;
 	}
 
@@ -1231,8 +1176,8 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->accordion->clearOtherEID();
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
-	closeWarnings(MyEid);
-	clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
+	warnings->closeWarnings(MyEid);
+	warnings->clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
 }
 
 // Loads picture
@@ -1252,7 +1197,7 @@ void MainWindow::photoClicked( const QPixmap *photo )
 		QString error;
 		xml.readEmailStatus( error );
 		if( !error.isEmpty() )
-			showWarning(WarningText(XmlReader::emailErr(error.toUInt())));
+			warnings->showWarning(WarningText(XmlReader::emailErr(error.toUInt())));
 		return;
 	}
 
@@ -1349,32 +1294,13 @@ void MainWindow::savePhoto()
 	QByteArray pix = ui->version->property("PICTURE").toByteArray();
 	QFile f(fileName);
 	if(!f.open(QFile::WriteOnly) || f.write(pix) != pix.size())
-		showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
+		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
 void MainWindow::showUpdateCertWarning(const QString &readerName)
 {
 	emit ui->accordion->showCertWarnings();
-	showWarning(WarningText(WarningType::UpdateCertWarning, QString(), readerName));
-}
-
-void MainWindow::showWarning(const WarningText &warningText)
-{
-	if(warningText.warningType)
-	{
-		for(auto warning: warnings)
-		{
-			if(warning->warningType() == warningText.warningType)
-				return;
-		}
-	}
-	WarningItem *warning = new WarningItem(warningText, ui->page);
-	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
-	warnings << warning;
-	connect(warning, &WarningItem::linkActivated, this, &MainWindow::warningClicked);
-	layout->insertWidget(warnings.size(), warning);
-
-	updateWarnings();
+	warnings->showWarning(WarningText(WarningType::UpdateCertWarning, QString(), readerName));
 }
 
 void MainWindow::containerToEmail( const QString &fileName )
@@ -1389,78 +1315,6 @@ void MainWindow::containerToEmail( const QString &fileName )
 	url.setScheme(QStringLiteral("mailto"));
 	url.setQuery(q);
 	QDesktopServices::openUrl( url );
-}
-
-void MainWindow::updateRibbon(int page, bool expanded)
-{
-	short count = 0;
-	for(auto warning: warnings)
-	{
-		if(warning->appearsOnPage(page))
-		{
-			warning->setVisible(expanded || !count);
-			count++;
-		}
-	}
-	if (count > 1)
-	{
-		QSize	sizeBeforeAdjust = size();
-
-		adjustSize();
-
-		QSize	sizeAfterAdjust = size();
-		// keep the size set-up by user, if possible
-		resize(sizeBeforeAdjust.width(), sizeBeforeAdjust.height() > sizeAfterAdjust.height() ? sizeBeforeAdjust.height() : sizeAfterAdjust.height());
-	}
-}
-
-void MainWindow::updateWarnings()
-{
-	int page = ui->startScreen->currentIndex();
-	int count = 0;
-	bool expanded = true;
-	for(auto warning: warnings)
-	{
-		if(warning->appearsOnPage(page))
-			count++;
-		else
-			warning->hide();
-	}
-
-	if(!count)
-		ui->topBarShadow->setStyleSheet(QStringLiteral("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;"));
-	else
-		ui->topBarShadow->setStyleSheet(QStringLiteral("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;"));
-
-	if(count < 2)
-	{
-		if(ribbon)
-		{
-			ribbon->close();
-			delete ribbon;
-			ribbon = nullptr;
-			for(auto warning: warnings)
-			{
-				if(warning->appearsOnPage(page))
-					warning->show();
-			}
-		}
-	}
-	else if(ribbon)
-	{
-		ribbon->setCount(count - 1);
-		expanded = ribbon->isExpanded();
-	}
-	else
-	{
-		ribbon = new WarningRibbon(count - 1, ui->page);
-		auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
-		layout->insertWidget(warnings.size() + 1, ribbon);
-		ribbon->show();
-		expanded = ribbon->isExpanded();
-	}
-
-	updateRibbon(page, expanded);
 }
 
 bool MainWindow::validateFiles(const QString &container, const QStringList &files)
@@ -1605,12 +1459,12 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 
 	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin2Type ) == 0 )
 	{
-		showWarning(WarningText(WarningType::UnblockPin2Warning));
+		warnings->showWarning(WarningText(WarningType::UnblockPin2Warning));
 		emit ui->signContainerPage->cardChanged(); // hide Sign button
 	}
 	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin1Type ) == 0 )
 	{
-		showWarning(WarningText(WarningType::UnblockPin1Warning));
+		warnings->showWarning(WarningText(WarningType::UnblockPin1Warning));
 		emit ui->cryptoContainerPage->cardChanged(); // hide Decrypt button
 	}
 }
