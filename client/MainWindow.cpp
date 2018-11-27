@@ -1578,25 +1578,6 @@ void MainWindow::showIdCardAlerts(const QSmartCardData& t)
 		qApp->showWarning( tr("Your ID-card certificates cannot be renewed starting from 01.07.2017."));
 	}
 	qApp->smartcard()->setProperty("lastcard", t.card());
-
-#ifdef Q_OS_WIN
-	CertStore store;
-	if( !Settings().value( "Utility/showRegCert", false ).toBool() ||
-		(!store.find( t.authCert() ) || !store.find( t.signCert() )) &&
-		QMessageBox::question( this, tr( "Certificate store" ),
-			tr( "Certificate is not registered in the certificate store. Register now?" ),
-			QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
-	{
-		QString personalCode = t.authCert().subjectInfo( "serialNumber" );
-		for( const SslCertificate &c: store.list())
-		{
-			if( c.subjectInfo( "serialNumber" ) == personalCode )
-				store.remove( c );
-		}
-		store.add( t.authCert(), t.card() );
-		store.add( t.signCert(), t.card() );
-	}
-#endif
 }
 
 void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
