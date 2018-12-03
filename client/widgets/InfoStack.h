@@ -36,7 +36,7 @@ class InfoStack : public StyledWidget, public PictureInterface
 
 public:
 	explicit InfoStack( QWidget *parent = nullptr );
-	~InfoStack();
+	~InfoStack() final;
 
 	void clearData();
 	void clearPicture() override;
@@ -56,11 +56,11 @@ private:
 	void update();
 
 	Ui::InfoStack *ui;
-	QWidget* alternateIcon;
+	QWidget *alternateIcon = nullptr;
 
-	int certType;
-	bool certIsValid;
-	bool certIsResident;
+	int certType = 0;
+	bool certIsValid = false;
+	bool certIsResident = false;
 	QString citizenshipText;
 	QString expireDate;
 	QString givenNamesText;
