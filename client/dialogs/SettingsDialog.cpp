@@ -442,7 +442,7 @@ void SettingsDialog::updateCert()
 	{
 		ui->txtAccessCert->setText(
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
-			QString(tr("Issued to: %1<br />Valid to: %2 %3")).arg(
+			tr("Issued to: %1<br />Valid to: %2 %3").arg(
 				CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)),
 				c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
 				!SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : QString()));
@@ -453,7 +453,6 @@ void SettingsDialog::updateCert()
 			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
 	}
-	ui->txtAccessCert->adjustSize();
 	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
 	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
 }
