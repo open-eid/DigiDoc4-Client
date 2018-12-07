@@ -60,9 +60,9 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSIONEX};
       dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      if [ "${IMAGE}" = "ubuntu:18.04" ]; then
+      if [ "${IMAGE}" = "ubuntu:16.04" ]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
-        export COVERITY_SCAN_NOTIFICATION_EMAIL="toomas.uudisaru@gmail.com";
+        export COVERITY_SCAN_NOTIFICATION_EMAIL="eid-teenusehaldus@ria.ee";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
         export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake .";
         export COVERITY_SCAN_BUILD_COMMAND=make;
@@ -79,7 +79,7 @@ script: case ${TARGET} in
 deploy:
 - provider: releases
   api_key: ${GITHUB_ACCESS_TOKEN}
-  file: ../upload/qdigidoc4-${VERSION}.tar.gz
+  file: ../upload/qdigidoc4-${TRAVIS_TAG:1}.tar.gz
   skip_cleanup: true
   on:
     tags: true
