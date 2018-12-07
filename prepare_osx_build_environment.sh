@@ -2,7 +2,7 @@
 # Requires xcode and cmake, also OpenSSL has to be installed via homebrew.
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.9.1"
+QT_VER="5.9.7"
 CMAKE_OSX_DEPLOYMENT_TARGET="10.10.5"
 #########
 
@@ -84,14 +84,7 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
     tar xf qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
     cd qtbase-${QT_SRCSPEC}-src-${QT_VER}
-    CLANG_MAJOR_VER=$(clang --version | grep LLVM | egrep -o "version ([0-9]{1}\.)" | cut -d ' ' -f 2)
-    if [[ "$QT_VER" = "5.9.1" && "$CLANG_MAJOR_VER" = "9." ]] ; then
-        patch -Np1 -i $SCRIPT_PATH/patches/qt-5.9.1-xcode-9.patch
-    fi
-    if [[ "$CLANG_MAJOR_VER" = "9." ]] ; then
-        patch -Np1 -i $SCRIPT_PATH/patches/qt-5.9.5.patch
-    fi
-    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license -I /usr/local/opt/openssl/include -L /usr/local/opt/openssl/lib
+    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH}
     make
     make install
     rm -rf ${BUILD_PATH}/qtbase-${QT_SRCSPEC}-src-${QT_VER}

@@ -11,13 +11,13 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/github/open-eid/DigiDoc4-Client?branch=master&svg=true)](https://ci.appveyor.com/project/uudisaru/digidoc4-client/branch/master)
 * [Ubuntu](#ubuntu)
 * [macOS](#macos)
+* [Windows](#windows)
 
 ### Ubuntu
 
 1. Install dependencies (libdigidocpp-dev must be installed from RIA repository)
    * Add custom RIA repository to APT repository list
 
-         curl https://installer.id.ee/media/install-scripts/ria-public.key | sudo apt-key add -
          curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | sudo apt-key add -
          sudo echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list
          sudo apt-get update
@@ -86,3 +86,35 @@
 
         open /usr/local/bin/qdigidoc4.app
 
+
+### Windows
+
+1. Install dependencies from
+    * [Visual Studio Community 2015](https://www.visualstudio.com/downloads/)
+    * [http://www.cmake.org](http://www.cmake.org)
+    * [http://qt-project.org](http://qt-project.org)
+    * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
+2. Fetch the source
+
+        git clone --recursive https://github.com/open-eid/DigiDoc4-Client
+        cd DigiDoc4-Client
+
+3. Configure
+
+        mkdir build
+        cd build
+        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.9\msvc2015\lib\cmake\Qt5" ..
+
+4. Build
+
+        nmake
+
+6. Execute
+
+        client\qdigidoc4.exe
+
+
+## Support
+Official builds are provided through official distribution point [installer.id.ee](https://installer.id.ee). If you want support, you need to be using official builds. Contact for assistance by email [abi@id.ee](mailto:abi@id.ee) or [www.id.ee](http://www.id.ee).
+
+Source code is provided on "as is" terms with no warranty (see license for more information). Do not file Github issues with generic support requests.
