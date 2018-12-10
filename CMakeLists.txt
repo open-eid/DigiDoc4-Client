@@ -15,7 +15,7 @@ include( GNUInstallDirs )
 include( VersionInfo )
 
 find_package( PKCS11 )
-find_package( LibDigiDocpp REQUIRED )
+find_package( LibDigiDocpp 3.13.8 REQUIRED)
 find_package( Qt5 COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools REQUIRED )
 find_library( AWP_MODULE NAMES libOcsCryptoki.dylib PATHS /Library/AWP/lib /usr/local/AWP/lib )
 include_directories( ${LIBDIGIDOCPP_INCLUDE_DIR} )
