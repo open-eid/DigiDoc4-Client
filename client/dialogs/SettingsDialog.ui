@@ -726,9 +726,6 @@ QCheckBox::indicator:checked {
               <height>120</height>
              </size>
             </property>
-            <property name="textFormat">
-             <enum>Qt::AutoText</enum>
-            </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
@@ -920,7 +917,7 @@ QRadioButton::indicator::checked {
            <widget class="QLineEdit" name="txtProxyHost">
             <property name="minimumSize">
              <size>
-              <width>600</width>
+              <width>0</width>
               <height>31</height>
              </size>
             </property>
@@ -937,7 +934,7 @@ QRadioButton::indicator::checked {
            <widget class="QLineEdit" name="txtProxyPort">
             <property name="minimumSize">
              <size>
-              <width>600</width>
+              <width>0</width>
               <height>31</height>
              </size>
             </property>
@@ -954,7 +951,7 @@ QRadioButton::indicator::checked {
            <widget class="QLineEdit" name="txtProxyUsername">
             <property name="minimumSize">
              <size>
-              <width>600</width>
+              <width>0</width>
               <height>31</height>
              </size>
             </property>
@@ -971,7 +968,7 @@ QRadioButton::indicator::checked {
            <widget class="QLineEdit" name="txtProxyPassword">
             <property name="minimumSize">
              <size>
-              <width>600</width>
+              <width>0</width>
               <height>31</height>
              </size>
             </property>
@@ -996,29 +993,23 @@ QRadioButton::indicator::checked {
          </layout>
         </widget>
         <widget class="QWidget" name="pageDiagnostics">
-         <widget class="QTextEdit" name="txtDiagnostics">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>771</width>
-            <height>511</height>
-           </rect>
+         <layout class="QVBoxLayout" name="pageDiagnosticsLayout">
+          <property name="leftMargin">
+           <number>10</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>771</width>
-            <height>511</height>
-           </size>
+          <property name="topMargin">
+           <number>10</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>771</width>
-            <height>511</height>
-           </size>
+          <property name="rightMargin">
+           <number>10</number>
           </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QTextEdit" name="txtDiagnostics">
+            <property name="styleSheet">
+             <string notr="true">QTextEdit {
 	color: #363739;
 }
 QScrollBar {
@@ -1043,42 +1034,72 @@ QScrollBar::sub-line:vertical {
       background: none;
 }
 </string>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="pageInfo">
-         <widget class="QTextBrowser" name="txtInfo">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>186</y>
-            <width>771</width>
-            <height>335</height>
-           </rect>
+         <layout class="QVBoxLayout" name="pageInfoLayout">
+          <property name="leftMargin">
+           <number>10</number>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>771</width>
-            <height>335</height>
-           </size>
+          <property name="topMargin">
+           <number>20</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>771</width>
-            <height>335</height>
-           </size>
+          <property name="rightMargin">
+           <number>10</number>
           </property>
-          <property name="font">
-           <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
-           </font>
+          <property name="bottomMargin">
+           <number>10</number>
           </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
+          <item>
+           <widget class="QSvgWidget" name="structureFunds" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>111</width>
+              <height>61</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>111</width>
+              <height>61</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="contact">
+            <property name="text">
+             <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
+Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+Additional licenses and components</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="txtInfo">
+            <property name="font">
+             <font>
+              <family>Roboto</family>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QTextEdit {
 	color: #363739;
 }
 QScrollBar{
@@ -1102,12 +1123,12 @@ QScrollBar::sub-line:vertical {
       border: none;
       background: none;
 }</string>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="html">
-           <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Roboto'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1123,60 +1144,16 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Apache XML Security for C++&lt;/span&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;XSD: XML Data Binding for C++&lt;/span&gt;&lt;br /&gt;GNU General Public License (GPL), version 2&lt;br /&gt;Free/Libre and Open Source Software (FLOSS) exception&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/products/xsd/license.xhtml&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/products/xsd/license.xhtml&lt;/span&gt;&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/projects/xsd/FLOSSE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/projects/xsd/FLOSSE&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Roboto: Google’s signature family of fonts&lt;/span&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;https://github.com/google/roboto/blob/master/LICENSE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;https://github.com/google/roboto/blob/master/LICENSE&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::TextBrowserInteraction</set>
-          </property>
-          <property name="openExternalLinks">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QWidget" name="structureFunds" native="true">
-          <property name="geometry">
-           <rect>
-            <x>339</x>
-            <y>31</y>
-            <width>111</width>
-            <height>61</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>111</width>
-            <height>61</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>111</width>
-            <height>61</height>
-           </size>
-          </property>
-         </widget>
-         <widget class="QLabel" name="contact">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>100</y>
-            <width>771</width>
-            <height>86</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
-Additional licenses and components</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="openExternalLinks">
-           <bool>true</bool>
-          </property>
-         </widget>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::TextBrowserInteraction</set>
+            </property>
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -1198,8 +1175,30 @@ Additional licenses and components</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border-top: 1px solid #DEE4E9;
-background-color: #f7f7f7;</string>
+      <string notr="true">QWidget {
+	border-top: 1px solid #DEE4E9;
+	background-color: #f7f7f7;
+}
+QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+}</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout">
       <property name="leftMargin">
@@ -1216,18 +1215,6 @@ background-color: #f7f7f7;</string>
       </property>
       <item>
        <widget class="QLabel" name="txtNavVersion">
-        <property name="minimumSize">
-         <size>
-          <width>119</width>
-          <height>14</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>350</width>
-          <height>14</height>
-         </size>
-        </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>
@@ -1263,30 +1250,27 @@ background-color: #f7f7f7;</string>
           <height>25</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
-        </property>
         <property name="text">
          <string>FIRST RUN</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnRefreshConfig">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>REFRESH CONFIGURATION</string>
         </property>
        </widget>
       </item>
@@ -1303,28 +1287,6 @@ QPushButton:disabled {
           <width>210</width>
           <height>25</height>
          </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
         </property>
         <property name="text">
          <string>CHECK CONNECTIONS</string>
@@ -1344,28 +1306,6 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
         </property>
         <property name="text">
          <string>NEW VERSION AVAILABLE</string>
@@ -1389,28 +1329,6 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
-        </property>
         <property name="text">
          <string>SAVE DIAGNOSTICS REPORT TO DISK</string>
         </property>
@@ -1432,28 +1350,6 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
         </property>
         <property name="text">
          <string>REMOVE OLD CERTIFICATES</string>
@@ -1477,28 +1373,6 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
-        </property>
         <property name="text">
          <string>USE DEFAULT</string>
         </property>
@@ -1521,28 +1395,6 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
-        </property>
         <property name="text">
          <string>INSTALL MANUALLY</string>
         </property>
@@ -1564,28 +1416,6 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
         </property>
         <property name="text">
          <string>SHOW CERTIFICATE</string>
@@ -1649,6 +1479,14 @@ QPushButton:disabled {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QSvgWidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>btnMenuGeneral</tabstop>
   <tabstop>btnMenuCertificate</tabstop>
@@ -1682,7 +1520,7 @@ QPushButton:disabled {
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="pathGroup"/>
   <buttongroup name="langGroup"/>
+  <buttongroup name="pathGroup"/>
  </buttongroups>
 </ui>

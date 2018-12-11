@@ -2578,6 +2578,10 @@ Kontrollkood: %1</translation>
         <source>CHECK CONNECTIONS</source>
         <translation>KONTROLLI INTERNETIÜHENDUST</translation>
     </message>
+    <message>
+        <source>REFRESH CONFIGURATION</source>
+        <translation>KONTROLLI VÄRSKENDUSI</translation>
+    </message>
 
 
     <message>
