@@ -1141,22 +1141,6 @@ void MainWindow::updateCardData()
 		cardPopup->update(qApp->signer()->cache());
 }
 
-void MainWindow::updateMyEid()
-{
-	Application::restoreOverrideCursor();
-	QSmartCardData t = qApp->smartcard()->data();
-
-	if(!t.card().isEmpty() && (!t.authCert().isNull() || !t.signCert().isNull()))
-	{
-		ui->infoStack->update(t);
-		ui->accordion->updateInfo(qApp->smartcard());
-		ui->myEid->invalidIcon(!t.authCert().isValid() || !t.authCert().isValid());
-		updateCardWarnings();
-		showIdCardAlerts(t);
-		showPinBlockedWarning(t);
-	}
-}
-
 void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 {
 	qCDebug(MLog) << "noReader_NoCard_Loading_Event" << status;
@@ -1420,17 +1404,6 @@ bool MainWindow::wrapContainer(bool signing)
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
 	dlg.exec();
 	return dlg.result() == ContainerSave;
-}
-
-void MainWindow::showIdCardAlerts(const QSmartCardData& t)
-{
-	if(qApp->smartcard()->property( "lastcard" ).toString() != t.card() &&
-		t.version() == QSmartCardData::VER_3_4 &&
-		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
-	{
-		qApp->showWarning( tr("Your ID-card certificates cannot be renewed starting from 01.07.2017."));
-	}
-	qApp->smartcard()->setProperty("lastcard", t.card());
 }
 
 void MainWindow::showPinBlockedWarning(const QSmartCardData& t)

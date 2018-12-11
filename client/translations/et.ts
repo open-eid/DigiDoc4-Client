@@ -1279,8 +1279,12 @@ ID-KAARDIGA</translation>
         <translation>EDASI</translation>
     </message>
     <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
-        <translation>Sinu ID-kaardi sertifikaate ei ole võimalik alates 01.07.2017 uuendada. Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril 1777 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
+        <source>Your ID-card certificates cannot be renewed starting from %1.</source>
+        <translation>Sinu ID-kaardi sertifikaate ei ole võimalik alates %1 uuendada.</translation>
+    </message>
+    <message>
+        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril 1777 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
@@ -3165,6 +3169,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Sertifikaadid aeguvad varsti!</translation>
+    </message>
+    <message>
+        <source>Certificates are revoked!</source>
+        <translation>Sertifikaadid on tühistatud!</translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
