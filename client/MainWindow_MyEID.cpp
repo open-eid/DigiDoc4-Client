@@ -76,7 +76,7 @@ void MainWindow::changePukClicked()
 bool MainWindow::checkExpiration()
 {
 	qint64 expiresIn = 106;
-	for(const SslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
+	for(const QSslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
 	{
 		if(!cert.isNull())
 		{
@@ -197,7 +197,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 	case QSmartCard::CancelError:
 #ifdef Q_OS_WIN
 		if( !td.isNull() && td.isPinpad() )
-		if( td.authCert().subjectInfo( "C" ) == "EE" )	// only for Estonian ID card
+		if(td.authCert().subjectInfo(QSslCertificate::CountryName) == QStringLiteral("EE"))	// only for Estonian ID card
 		{
 			showNotification( tr("%1 timeout").arg( QSmartCardData::typeString( type ) ) );
 		}
@@ -258,9 +258,9 @@ void MainWindow::updateCertificate(const QString &readerName)
 #ifdef Q_OS_WIN
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 	CertStore s;
-	for (const SslCertificate &c : s.list())
+	for(const QSslCertificate &c: s.list())
 	{
-		if (c.subjectInfo("O").contains(QStringLiteral("ESTEID")))
+		if (c.subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive))
 			s.remove(c);
 	}
 #endif
@@ -306,16 +306,13 @@ void MainWindow::removeOldCert()
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 	QSmartCardData data = qApp->smartcard()->data();
 	CertStore s;
-	for( const SslCertificate &c: s.list())
+	for(const QSslCertificate &c: s.list())
 	{
-		if(c.subjectInfo("O").contains(QStringLiteral("ESTEID")))
+		if(c == data.authCert() || c == data.signCert())
+			continue;
+		if(c.subjectInfo(QSslCertificate::Organization).join("").contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
+			c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
 			s.remove( c );
-	}
-	QString personalCode = data.signCert().subjectInfo("serialNumber");
-
-	if( !personalCode.isEmpty() ) {
-		s.add( data.authCert(), data.card() );
-		s.add( data.signCert(), data.card() );
 	}
 	qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
 #endif

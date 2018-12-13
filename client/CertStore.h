@@ -19,7 +19,6 @@
 
 #pragma once
 
-class CertStorePrivate;
 class QSslCertificate;
 class QString;
 template <class T> class QList;
@@ -30,11 +29,11 @@ public:
 	CertStore();
 	~CertStore();
 
-	bool add( const QSslCertificate &cert, const QString &card );
 	bool find( const QSslCertificate &cert ) const;
 	QList<QSslCertificate> list() const;
 	bool remove( const QSslCertificate &cert );
 
 private:
-	CertStorePrivate *d;
+	class Private;
+	Private *d;
 };
