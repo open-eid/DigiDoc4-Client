@@ -25,7 +25,7 @@
 #include <QtCore/QDebug>
 #include <QtWidgets/QApplication>
 
-#include <WinCrypt.h>
+#include <wincrypt.h>
 
 #include <openssl/obj_mac.h>
 
@@ -84,7 +84,7 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 		result = data;
 		std::reverse(result.begin(), result.end());
 		if(!CryptDecrypt(key, 0, true, 0, LPBYTE(result.data()), &size))
-			err = GetLastError();
+			err = SECURITY_STATUS(GetLastError());
 		if(freeKey)
 			CryptReleaseContext(key, 0);
 		break;
@@ -100,7 +100,7 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 	switch(err)
 	{
 	case ERROR_SUCCESS:
-		result.resize(size);
+		result.resize(int(size));
 		return result;
 	case SCARD_W_CANCELLED_BY_USER:
 	case ERROR_CANCELLED:
@@ -123,15 +123,7 @@ QByteArray QCSP::deriveConcatKDF(const QByteArray &publicKey, const QString &dig
 	qDebug() << "Key spec" << spec;
 	if(!key)
 		return derived;
-	NCRYPT_PROV_HANDLE prov = 0;
-	DWORD size = 0;
-	if(NCryptGetProperty(key, NCRYPT_PROVIDER_HANDLE_PROPERTY, PBYTE(&prov), sizeof(prov), &size, 0))
-	{
-		if(freeKey)
-			NCryptFreeObject(key);
-		return derived;
-	}
-	int err = derive(prov, key, publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo, derived);
+	int err = derive(keyProvider(key), key, publicKey, digest, keySize, algorithmID, partyUInfo, partyVInfo, derived);
 	if(freeKey)
 		NCryptFreeObject(key);
 	switch(err)
@@ -155,7 +147,7 @@ QList<TokenData> QCSP::tokens() const
 	PCCERT_CONTEXT find = nullptr;
 	HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
 		X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_READONLY_FLAG, L"MY");
-	while(find = CertFindCertificateInStore(s, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, 0, CERT_FIND_ANY, nullptr, find))
+	while((find = CertFindCertificateInStore(s, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, 0, CERT_FIND_ANY, nullptr, find)))
 	{
 		DWORD flags = CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG|CRYPT_ACQUIRE_SILENT_FLAG;
 		HCRYPTPROV_OR_NCRYPT_KEY_HANDLE key = 0;
@@ -166,18 +158,44 @@ QList<TokenData> QCSP::tokens() const
 		qDebug() << cert.subjectInfo("CN") << "has key" << key;
 		if(!key)
 			continue;
-		if(freeKey)
-		{
-			switch(spec)
-			{
-			case CERT_NCRYPT_KEY_SPEC: NCryptFreeObject(key); break;
-			case AT_SIGNATURE:
-			case AT_KEYEXCHANGE:
-			default: CryptReleaseContext(key, 0); break;
-			}
-		}
 		TokenData t;
-		t.setCard(cert.subjectInfo("CN"));
+		switch(spec)
+		{
+		case CERT_NCRYPT_KEY_SPEC:
+		{
+			if(NCRYPT_HANDLE prov = keyProvider(key))
+			{
+				t.setReaders({prop(prov, NCRYPT_READER_PROPERTY)});
+				t.setCard(prop(prov, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed());
+				NCryptFreeObject(prov);
+			}
+			if(freeKey)
+				NCryptFreeObject(key);
+			break;
+		}
+		case AT_SIGNATURE:
+		case AT_KEYEXCHANGE:
+		default:
+		{
+			auto cryptProp = [](HCRYPTPROV hkey, DWORD param){
+				DWORD size = 0;
+				QByteArray result;
+				if(!CryptGetProvParam(hkey, param, nullptr, &size, 0))
+					return result;
+				result.resize(int(size));
+				if(!CryptGetProvParam(hkey, param, PBYTE(result.data()), &size, 0))
+					result.clear();
+				return result;
+			};
+			t.setReaders({cryptProp(key, PP_SMARTCARD_READER)});
+			t.setCard(cryptProp(key, PP_SMARTCARD_GUID));
+			if(freeKey)
+				CryptReleaseContext(key, 0);
+			break;
+		}
+		}
+		if(t.card().isEmpty())
+			t.setCard(cert.subjectInfo("CN"));
 		t.setCert(cert);
 		certs << t;
 	}
@@ -255,9 +273,9 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 	{
 		DWORD size = 0;
 		QString algo(5, 0);
-		err = NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), (algo.size() + 1) * 2, &size, 0);
+		err = NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
 		algo.resize(size/2 - 1);
-		bool isRSA = algo == "RSA";
+		bool isRSA = algo == QStringLiteral("RSA");
 
 		err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
 			nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
@@ -301,10 +319,10 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 		}
 		DWORD size = 0;
 		if(!CryptSignHashW(hash, spec, nullptr, 0, nullptr, &size))
-			err = GetLastError();
+			err = SECURITY_STATUS(GetLastError());
 		result.resize(int(size));
 		if(!CryptSignHashW(hash, spec, nullptr, 0, LPBYTE(result.data()), &size))
-			err = GetLastError();
+			err = SECURITY_STATUS(GetLastError());
 		std::reverse(result.begin(), result.end());
 
 		if(freeKey)
