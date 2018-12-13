@@ -254,6 +254,7 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 
 void MainWindow::updateCertificate(const QString &readerName)
 {
+#ifdef CONFIG_URL
 #ifdef Q_OS_WIN
 	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 	CertStore s;
@@ -269,10 +270,12 @@ void MainWindow::updateCertificate(const QString &readerName)
 		warnings->clearWarning({WarningType::UpdateCertWarning});
 	}
 	qApp->smartcard()->reload();
+#endif
 }
 
 bool MainWindow::isUpdateCertificateNeeded()
 {
+#ifdef CONFIG_URL
 	QSmartCardData t = qApp->smartcard()->data();
 
 	return
@@ -292,6 +295,9 @@ bool MainWindow::isUpdateCertificateNeeded()
 				t.version() == QSmartCardData::VER_USABLEUPDATER
 			)
 		);
+#else
+	return false;
+#endif
 }
 
 void MainWindow::removeOldCert()
