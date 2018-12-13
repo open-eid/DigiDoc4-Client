@@ -39,7 +39,7 @@ public:
 	};
 
 	explicit QPKCS11(QObject *parent = nullptr);
-	~QPKCS11();
+	~QPKCS11() final;
 
 	QByteArray decrypt( const QByteArray &data ) const;
 	QByteArray derive(const QByteArray &publicKey) const;

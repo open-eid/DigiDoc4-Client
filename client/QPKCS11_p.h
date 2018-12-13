@@ -26,13 +26,15 @@
 #include <QtCore/QLibrary>
 #include <QtCore/QThread>
 
+#include <vector>
+
 class QPKCS11::Private: public QThread
 {
 	Q_OBJECT
 public:
 	QByteArray attribute( CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type ) const;
-	QVector<CK_OBJECT_HANDLE> findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id = QByteArray()) const;
-	QVector<CK_SLOT_ID> slotIds( bool token_present ) const;
+	std::vector<CK_OBJECT_HANDLE> findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id = QByteArray()) const;
+	std::vector<CK_SLOT_ID> slotIds( bool token_present ) const;
 	void updateTokenFlags( TokenData &t, CK_ULONG f ) const;
 
 	QLibrary		lib;

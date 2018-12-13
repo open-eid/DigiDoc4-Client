@@ -80,25 +80,25 @@ QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HAND
 	return data;
 }
 
-QVector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
+std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
 {
-	QVector<CK_OBJECT_HANDLE> result;
+	std::vector<CK_OBJECT_HANDLE> result;
 	if(!f)
 		return result;
 	CK_BBOOL _true = CK_TRUE;
-	QVector<CK_ATTRIBUTE> attr{
+	std::vector<CK_ATTRIBUTE> attr{
 		{ CKA_CLASS, &cls, sizeof(cls) },
 		{ CKA_TOKEN, &_true, sizeof(_true) }
 	};
 	if(!id.isEmpty())
-		attr.append({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
+		attr.push_back({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
 	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
 		return result;
 
 	CK_ULONG count = 32;
-	result.resize(int(count));
-	if(f->C_FindObjects(session, result.data(), CK_ULONG(result.count()), &count) == CKR_OK)
-		result.resize(int(count));
+	result.resize(size_t(count));
+	if(f->C_FindObjects(session, result.data(), CK_ULONG(result.size()), &count) == CKR_OK)
+		result.resize(size_t(count));
 	else
 		result.clear();
 	f->C_FindObjectsFinal( session );
@@ -110,17 +110,17 @@ void QPKCS11::Private::run()
 	result = f->C_Login(session, CKU_USER, nullptr, 0);
 }
 
-QVector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
+std::vector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
 {
-	QVector<CK_SLOT_ID> result;
+	std::vector<CK_SLOT_ID> result;
 	if(!f)
 		return result;
 	CK_ULONG size = 0;
 	if(f->C_GetSlotList(token_present, nullptr, &size) != CKR_OK)
 		return result;
-	result.resize(int(size));
+	result.resize(size_t(size));
 	if( f->C_GetSlotList( token_present, result.data(), &size ) == CKR_OK )
-		result.resize(int(size));
+		result.resize(size_t(size));
 	else
 		result.clear();
 	return result;
@@ -163,7 +163,7 @@ QString QPKCS11::errorString( PinStatus error )
 
 QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 {
-	QVector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1)
 		return QByteArray();
 
@@ -172,7 +172,7 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	CK_BBOOL _false = FALSE;
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
-	QVector<CK_ATTRIBUTE> newkey_template{
+	std::vector<CK_ATTRIBUTE> newkey_template{
 		{CKA_TOKEN, &_false, sizeof(_false)},
 		{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
 		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
@@ -195,7 +195,7 @@ QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, const QString &
 QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 {
 	QByteArray result;
-	QVector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1)
 		return result;
 
@@ -294,12 +294,9 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	{
 		PinPopup p(pin2 ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, t, rootWindow());
 		connect(d, &Private::started, &p, &PinPopup::startTimer);
-		p.open();
-
-		QEventLoop e;
-		connect(d, &Private::finished, &e, &QEventLoop::quit);
+		connect(d, &Private::finished, &p, &PinPopup::accept);
 		d->start();
-		e.exec();
+		p.exec();
 		err = d->result;
 	}
 	else
@@ -321,7 +318,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	case CKR_USER_ALREADY_LOGGED_IN: return PinOK;
 	case CKR_CANCEL:
 	case CKR_FUNCTION_CANCELED: return PinCanceled;
-	case CKR_PIN_INCORRECT: return t.flags() & TokenData::PinLocked ? PinLocked : PinIncorrect;
+	case CKR_PIN_INCORRECT: return (t.flags() & TokenData::PinLocked) ? PinLocked : PinIncorrect;
 	case CKR_PIN_LOCKED: return PinLocked;
 	case CKR_DEVICE_ERROR: return DeviceError;
 	case CKR_GENERAL_ERROR: return GeneralError;
@@ -396,24 +393,12 @@ bool QPKCS11::reload()
 		{ "/usr/local/AWP/lib/libOcsCryptoki.so", "3BDB960080B1FE451F830012233F536549440F9000F1" }
 #endif
 	};
-#ifdef Q_OS_MAC
-	static const QVariantMap PKCS11 = []{
-		QVariantMap PKCS11 = Settings().value(QStringLiteral("PKCS11")).toMap();
-		for(auto it = PKCS11.cbegin(), end = PKCS11.cend(); it != end; ++it)
-			drivers.insert(it.value().toString(), it.key().toLocal8Bit());
-		return PKCS11;
-	}();
-#endif
-	QList<QByteArray> atrs;
 	for(const QString &reader: QPCSC::instance().readers())
 	{
 		QPCSCReader r(reader, &QPCSC::instance());
-		if(r.isPresent())
-			atrs << r.atr();
-	}
-	for(const QByteArray &atr: atrs)
-	{
-		QString driver = drivers.key(atr);
+		if(!r.isPresent())
+			continue;
+		QString driver = drivers.key(r.atr());
 		if(!driver.isEmpty() && load(driver))
 			return true;
 	}
@@ -423,7 +408,7 @@ bool QPKCS11::reload()
 QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
 {
 	QByteArray sig;
-	QVector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1)
 		return sig;
 
