@@ -10,12 +10,6 @@
     <height>26</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="minimumSize">
    <size>
     <width>914</width>
@@ -28,52 +22,30 @@
     <height>45</height>
    </size>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
-   <string notr="true">padding: 0px 0px 0px 6px;
-border: solid #B5AA92;
+   <string notr="true">border: solid #B5AA92;
 border-width: 0px 0px 1px 0px;
 background-color: #F8DDA7;
 color: #353739;</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
    <property name="spacing">
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="topMargin">
-    <number>3</number>
-   </property>
-   <property name="rightMargin">
     <number>0</number>
    </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
    <property name="bottomMargin">
-    <number>6</number>
+    <number>1</number>
    </property>
    <item>
     <widget class="QLabel" name="warningText">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>510</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>34</height>
-      </size>
-     </property>
      <property name="font">
       <font>
        <family>Roboto</family>
@@ -95,24 +67,6 @@ color: #353739;</string>
    </item>
    <item>
     <widget class="QLabel" name="warningAction">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="font">
       <font>
        <family>Roboto</family>
@@ -146,22 +100,6 @@ background-color: #F8DDA7;</string>
       <set>Qt::TextBrowserInteraction</set>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>10</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

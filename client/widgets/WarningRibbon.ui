@@ -22,9 +22,6 @@
     <height>21</height>
    </size>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">padding: 0px 0px 0px 6px;
 border: solid #B5AA92;
@@ -49,7 +46,7 @@ color: #353739;</string>
     <number>1</number>
    </property>
    <item>
-    <spacer name="horizontalSpacer">
+    <spacer name="leftSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -64,12 +61,6 @@ color: #353739;</string>
    <item>
     <widget class="QWidget" name="leftImage" native="true">
      <property name="minimumSize">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="maximumSize">
       <size>
        <width>20</width>
        <height>20</height>
@@ -91,13 +82,13 @@ color: #353739;</string>
      <property name="minimumSize">
       <size>
        <width>50</width>
-       <height>16</height>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>100</width>
-       <height>16</height>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
@@ -136,7 +127,7 @@ color: #353739;</string>
     </widget>
    </item>
    <item>
-    <spacer name="horizontalSpacer_2">
+    <spacer name="rightSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

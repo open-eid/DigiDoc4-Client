@@ -84,6 +84,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp
 	widgets/WarningItem.cpp
+	widgets/WarningList.cpp
 	widgets/WarningRibbon.cpp
 	)
 add_manifest( ${PROGNAME} )

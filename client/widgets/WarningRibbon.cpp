@@ -22,15 +22,19 @@
 
 #include "Styles.h"
 
+class WarningRibbon::Private: public Ui::WarningRibbon
+{
+public:
+	int count = 0;
+	bool expanded = false;
+};
+
 WarningRibbon::WarningRibbon(int count, QWidget *parent)
-: StyledWidget(parent)
-, ui(new Ui::WarningRibbon)
-, expanded(false)
+	: StyledWidget(parent)
+	, ui(new Private)
 {
 	ui->setupUi(this);
 	ui->details->setFont(Styles::font(Styles::Regular, 12, QFont::DemiBold));
-	ui->details->setText(tr("%n message", "", 1));
-
 	setCount(count);
 }
 
@@ -41,30 +45,29 @@ WarningRibbon::~WarningRibbon()
 
 void WarningRibbon::flip()
 {
-	expanded = !expanded;
-	if(expanded)
+	ui->expanded = !ui->expanded;
+	if(ui->expanded)
 	{
-		ui->leftImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_up.svg);");
-		ui->rightImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_up.svg);");
+		ui->leftImage->setStyleSheet(QStringLiteral("border: none; background-image: url(:/images/icon_ribbon_up.svg);"));
+		ui->rightImage->setStyleSheet(QStringLiteral("border: none; background-image: url(:/images/icon_ribbon_up.svg);"));
 	}
 	else
 	{
-		ui->leftImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_down.svg);");
-		ui->rightImage->setStyleSheet("border: none; background-image: url(:/images/icon_ribbon_down.svg);");
+		ui->leftImage->setStyleSheet(QStringLiteral("border: none; background-image: url(:/images/icon_ribbon_down.svg);"));
+		ui->rightImage->setStyleSheet(QStringLiteral("border: none; background-image: url(:/images/icon_ribbon_down.svg);"));
 	}
-
-	setCount(count);
+	setCount(ui->count);
 }
 
 bool WarningRibbon::isExpanded() const
 {
-	return expanded;
+	return ui->expanded;
 }
 
 void WarningRibbon::setCount(int count)
 {
-	this->count = count;
-	if(expanded)
+	ui->count = count;
+	if(ui->expanded)
 		ui->details->setText(tr("Less"));
 	else
 		ui->details->setText(tr("%n message", "", count));
@@ -75,11 +78,7 @@ void WarningRibbon::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
-		if(expanded)
-			ui->details->setText(tr("Less"));
-		else
-			ui->details->setText(tr("%n message", "", count));
+		setCount(ui->count);
 	}
 	QWidget::changeEvent(event);
 }

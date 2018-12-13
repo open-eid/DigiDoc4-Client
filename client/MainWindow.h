@@ -41,9 +41,7 @@ class CKey;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
-class WarningItem;
-class WarningRibbon;
-struct WarningText;
+class WarningList;
 
 class MainWindow : public QWidget
 {
@@ -84,7 +82,6 @@ protected:
 	void dragEnterEvent( QDragEnterEvent *event ) override;
 	void dragLeaveEvent( QDragLeaveEvent *event ) override;
 	void dropEvent( QDropEvent *event ) override;
-	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void resizeEvent( QResizeEvent *event ) override;
 	void showEvent(QShowEvent *event) override;
@@ -94,10 +91,7 @@ private:
 	void browseOnDisk(const QString &fileName);
 	QSet<QString> cards() const;
 	bool checkExpiration();
-	void clearWarning(const QList<int> &warningType);
 	void clearOverlay();
-	bool closeWarning(WarningItem *warning, bool force = false);
-	void closeWarnings(int page);
 	void containerToEmail(const QString &fileName);
 	void convertToBDoc();
 	void convertToCDoc();
@@ -105,9 +99,7 @@ private:
 	bool decrypt();
 	bool encrypt();
 	void hideCardPopup();
-	void hideWarningArea();
 	bool isUpdateCertificateNeeded();
-	bool isWarningExpanded();
 	void loadPicture();
 	void moveCryptoContainer();
 	void moveSignatureContainer();
@@ -135,14 +127,11 @@ private:
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void showSettings(int page);
-	void showWarning(const WarningText &warningText);
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardData();
 	void updateCardWarnings();
 	void updateCertificate(const QString &readerName);
-	void updateRibbon(int page, bool expanded);
-	void updateWarnings();
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showUpdateCertWarning(const QString &readerName);
@@ -163,7 +152,6 @@ private:
 	QButtonGroup *buttonGroup = nullptr;
 	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
-	WarningRibbon *ribbon = nullptr;
 	DropdownButton *selector = nullptr;
-	QList<WarningItem*> warnings;
+	WarningList *warnings;
 };
