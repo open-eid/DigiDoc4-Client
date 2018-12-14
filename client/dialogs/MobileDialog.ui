@@ -10,9 +10,6 @@
     <height>282</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">QDialog
 {
@@ -132,14 +129,11 @@ border-radius: 2px;
 }
 </string>
    </property>
-   <property name="text">
-    <string/>
-   </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
    </property>
    <property name="placeholderText">
-    <string>37254321</string>
+    <string notr="true">37254321</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelPhone">
@@ -247,14 +241,11 @@ border: 1px solid #DEE4E9;
 border-radius: 2px;
 }</string>
    </property>
-   <property name="text">
-    <string/>
-   </property>
    <property name="echoMode">
     <enum>QLineEdit::Normal</enum>
    </property>
    <property name="placeholderText">
-    <string>47101010033</string>
+    <string notr="true">47101010033</string>
    </property>
   </widget>
  </widget>
