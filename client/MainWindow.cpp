@@ -613,6 +613,8 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(!cryptoDoc)
 			break;
 		QString target = FileUtil::createNewFileName(cryptoDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), QString());
+		if(target.isEmpty())
+			break;
 		if( !FileDialog::fileIsWritable(target) &&
 			QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
 				tr("Cannot alter container %1. Save different location?").arg(target),
@@ -839,6 +841,8 @@ bool MainWindow::save(bool saveAs)
 	QString target = digiDoc->fileName().normalized(QString::NormalizationForm_C);
 	if(saveAs)
 		target = selectFile(tr("Save file"), target, true);
+	if(target.isEmpty())
+		return false;
 
 	if( !FileDialog::fileIsWritable(target) &&
 		QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
@@ -1001,18 +1005,16 @@ void MainWindow::showCardStatus()
 
 void MainWindow::showEvent(QShowEvent * /*event*/)
 {
-	static int height = 94;
-	static int width = 166;
-
-	if(!qApp->initialized())
-	{
-		FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
-			QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
-		QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
-		structureFunds->resize(width, height);
-		structureFunds->show();
-		notification->start(QString(), 400, 4000, 1100);
-	}
+	if(qApp->initialized())
+		return;
+	static const int height = 94;
+	static const int width = 166;
+	FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
+		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
+	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
+	structureFunds->resize(width, height);
+	structureFunds->show();
+	notification->start(QString(), 400, 4000, 1100);
 }
 
 void MainWindow::showOverlay( QWidget *parent )
