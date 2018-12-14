@@ -76,8 +76,9 @@ class MacMenuBar;
 class DigidocConf: public digidoc::XmlConfCurrent
 {
 public:
-	DigidocConf(): s2(QCoreApplication::instance()->applicationName())
+	DigidocConf()
 	{
+#ifdef CONFIG_URL
 		reload();
 #ifdef Q_OS_MAC
 		QTimer *t = new QTimer();
@@ -94,6 +95,7 @@ public:
 			if(changed)
 				reload();
 		});
+#endif
 		s.beginGroup(QStringLiteral("Client"));
 		SettingsDialog::loadProxy(this);
 	}
@@ -218,6 +220,7 @@ public:
 	}
 
 private:
+#ifdef CONFIG_URL
 	void reload()
 	{
 		obj = Configuration::instance().object();
@@ -226,6 +229,7 @@ private:
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 		QSslSocket::setDefaultCaCertificates(list);
 	}
+#endif
 
 	QNetworkProxy systemProxy() const
 	{
@@ -248,7 +252,7 @@ private:
 	}
 
 	Settings s;
-	Settings s2;
+	Settings s2 = { qApp->applicationName() };
 public:
 	QJsonObject obj;
 };

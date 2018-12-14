@@ -51,6 +51,8 @@
 #include <memory>
 #include <thread>
 
+#ifdef CONFIG_URL
+
 #define SCOPE(TYPE, VAR, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)> VAR(DATA, TYPE##_free)
 
 Q_LOGGING_CATEGORY(ULog,"qesteidutil.Updater")
@@ -916,3 +918,5 @@ void Updater::reject()
 {
 	//skip reject/ESC operation
 }
+
+#endif

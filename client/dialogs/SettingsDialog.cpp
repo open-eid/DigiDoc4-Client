@@ -214,6 +214,7 @@ void SettingsDialog::initUI()
 	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
 		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE), package ) );
 
+#ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
 		{
@@ -227,6 +228,7 @@ void SettingsDialog::initUI()
 		b.setDetailedText(error);
 		b.exec();
 	});
+#endif
 	connect(ui->btAppStore, &QPushButton::clicked, []{
 #if defined(Q_OS_WIN)
 		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng")));
@@ -299,6 +301,7 @@ void SettingsDialog::checkConnection()
 
 bool SettingsDialog::hasNewerVersion()
 {
+#ifdef CONFIG_URL
 	QStringList curList = qApp->applicationVersion().split('.');
 	QStringList avaList = Configuration::instance().object()[QStringLiteral("QDIGIDOC4-LATEST")].toString().split('.');
 	for( int i = 0; i < std::max<int>(curList.size(), avaList.size()); ++i )
@@ -318,6 +321,7 @@ bool SettingsDialog::hasNewerVersion()
 				return status < 0;
 		}
 	}
+#endif
 	return false;
 }
 
@@ -419,7 +423,9 @@ void SettingsDialog::initFunctionality()
 
 	updateProxy();
 	ui->chkIgnoreAccessCert->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
+#ifdef CONFIG_URL
 	ui->rdTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
+#endif
 	ui->rdTimeStamp->setText(Application::confValue(Application::TSAUrl).toString());
 	connect(ui->rdTimeStamp, &QLineEdit::textEdited, this, [](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);

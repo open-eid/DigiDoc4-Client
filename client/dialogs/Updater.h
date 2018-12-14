@@ -21,18 +21,16 @@
 
 #include <QtWidgets/QDialog>
 
-class QEventLoop;
-class QWidget;
-class UpdaterPrivate;
+#ifdef CONFIG_URL
 class Updater: public QDialog
 {
 	Q_OBJECT
 public:
-	explicit Updater(const QString &reader, QWidget *parent = 0);
-	~Updater();
-	int exec() override;
+	explicit Updater(const QString &reader, QWidget *parent = nullptr);
+	~Updater() final;
+	int exec() final;
 	int execute();
-	void reject() override;
+	void reject() final;
 
 Q_SIGNALS:
 	void log(const QString &msg);
@@ -46,3 +44,4 @@ private:
 	class Private;
 	Private *d;
 };
+#endif
