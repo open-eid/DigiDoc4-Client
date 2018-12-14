@@ -219,7 +219,7 @@ bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 		{
 			if(o == ui->role)
 				ui->roleElided = ui->role->fontMetrics().elidedText(
-					ui->role->text().replace(QLatin1String("\r\n"), QLatin1String(" ")).replace('\n', ' '), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
+					ui->role->text().simplified(), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
 		}
 		break;
 	default: break;
