@@ -34,7 +34,6 @@ class Card
 public:
 	virtual ~Card() = default;
 	virtual QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const = 0;
-	quint16 language() const;
 	virtual bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const = 0;
 	virtual QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const = 0;
 	virtual QByteArray sign(QPCSCReader *reader, const QByteArray &dgst) const = 0;

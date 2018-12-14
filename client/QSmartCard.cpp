@@ -97,23 +97,19 @@ const QByteArray Card::READRECORD = APDU("00B20004 00");
 const QByteArray Card::REPLACE = APDU("002C0000 00");
 const QByteArray Card::VERIFY = APDU("00200000 00");
 
-quint16 Card::language() const
-{
-	if(Settings::language() == QLatin1String("en")) return 0x0409;
-	if(Settings::language() == QLatin1String("et")) return 0x0425;
-	if(Settings::language() == QLatin1String("ru")) return 0x0419;
-	return 0x0000;
-}
-
 QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByteArray &apdu,
 	QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN) const
 {
 	if(!reader->isPinPad())
 		return reader->transfer(apdu);
+	quint16 language = 0x0000;
+	if(Settings::language() == QLatin1String("en")) language = 0x0409;
+	else if(Settings::language() == QLatin1String("et")) language = 0x0425;
+	else if(Settings::language() == QLatin1String("ru")) language = 0x0419;
 	QPCSCReader::Result result;
 	QEventLoop l;
 	std::thread([&]{
-		result = reader->transferCTL(apdu, verify, language(), QSmartCardData::minPinLen(type), newPINOffset, requestCurrentPIN);
+		result = reader->transferCTL(apdu, verify, language, QSmartCardData::minPinLen(type), newPINOffset, requestCurrentPIN);
 		l.quit();
 	}).detach();
 	l.exec();
@@ -736,7 +732,7 @@ void QSmartCard::reloadCard(const QString &card)
 
 	qCDebug(CLog) << "Poll" << card;
 	// Check available cards
-	QString selectedReader;
+	QScopedPointer<QPCSCReader> selectedReader;
 	const QStringList readers = QPCSC::instance().readers();
 	if(![&] {
 		for(const QString &name: readers)
@@ -753,13 +749,19 @@ void QSmartCard::reloadCard(const QString &card)
 					break;
 			default: return false;
 			}
-			QString nr = IDEMIACard::isSupported(reader->atr()) != QSmartCardData::VER_INVALID ? IDEMIACard::cardNR(reader.data()) : EstEIDCard::cardNR(reader.data());
+			QString nr;
+			if(IDEMIACard::isSupported(reader->atr()) != QSmartCardData::VER_INVALID)
+				nr = IDEMIACard::cardNR(reader.data());
+			else if(EstEIDCard::isSupported(reader->atr()) != QSmartCardData::VER_INVALID)
+				nr = EstEIDCard::cardNR(reader.data());
+			else
+				continue;
 			if(nr.isEmpty())
 				return false;
 			qCDebug(CLog) << "Card id:" << nr;
 			if(!nr.isEmpty() && nr == card)
 			{
-				selectedReader = name;
+				selectedReader.swap(reader);
 				return true;
 			}
 		}
@@ -785,27 +787,20 @@ void QSmartCard::reloadCard(const QString &card)
 		d->t.d = t;
 	}
 
-	if(selectedReader.isEmpty() || !d->t.isNull())
+	if(!selectedReader || !d->t.isNull())
 		return;
 
 	qCDebug(CLog) << "Read card" << card << "info";
-	QSharedPointer<QPCSCReader> reader(d->connect(selectedReader));
-	if(reader.isNull())
-	{
-		qDebug() << "Failed to connect card, try again next round";
-		return;
-	}
-
 	QSharedDataPointer<QSmartCardDataPrivate> t;
 	t = d->t.d;
-	t->reader = reader->name();
-	t->pinpad = reader->isPinPad();
+	t->reader = selectedReader->name();
+	t->pinpad = selectedReader->isPinPad();
 	delete d->card;
-	if(IDEMIACard::isSupported(reader->atr()) == QSmartCardData::VER_IDEMIA)
+	if(IDEMIACard::isSupported(selectedReader->atr()) == QSmartCardData::VER_IDEMIA)
 		d->card = new IDEMIACard();
 	else
 		d->card = new EstEIDCard();
-	if(d->card->loadPerso(reader.data(), t))
+	if(d->card->loadPerso(selectedReader.data(), t))
 	{
 		d->t.d = t;
 		emit dataChanged();
