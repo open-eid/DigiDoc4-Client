@@ -2571,8 +2571,8 @@ Kонтрольный код: %1</translation>
         <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
     </message>
     <message>
-        <source>USE DEFAULT</source>
-        <translation>ИСПОЛЬЗОВАТЬ ПО УМОЛЧАНИЮ</translation>
+        <source>USE DEFAULT SETTINGS</source>
+        <translation>ИСПОЛЬЗОВАТЬ НАСТРОЙКИ ПО УМОЛЧАНИЮ</translation>
     </message>
     <message>
         <source>CHECK CONNECTIONS</source>

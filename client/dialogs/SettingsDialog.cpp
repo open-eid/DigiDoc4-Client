@@ -228,7 +228,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 		}
 	});
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
-	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
+	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
 	connect( ui->btnNavFromHistory, &QPushButton::clicked, this,  [this]{ emit removeOldCert(); } );
 
@@ -435,7 +435,7 @@ void SettingsDialog::initFunctionality()
 	ui->rdTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
 #endif
 	ui->rdTimeStamp->setText(Application::confValue(Application::TSAUrl).toString());
-	connect(ui->rdTimeStamp, &QLineEdit::textEdited, this, [](const QString &url) {
+	connect(ui->rdTimeStamp, &QLineEdit::textChanged, this, [](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
 	});
 
@@ -634,10 +634,11 @@ void SettingsDialog::installCert()
 	updateCert();
 }
 
-void SettingsDialog::removeCert()
+void SettingsDialog::useDefaultSettings()
 {
 	AccessCert().remove();
 	updateCert();
+	ui->rdTimeStamp->clear();
 }
 
 void SettingsDialog::changePage(QPushButton* button)

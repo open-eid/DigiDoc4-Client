@@ -89,7 +89,21 @@ background-color: #ffffff;
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border-right: 1px solid #DEE4E9;</string>
+         <string notr="true">QWidget {
+	border-right: 1px solid #DEE4E9;
+}
+QPushButton {
+	border: none;
+	background-color: #F4F5F6;
+	color: #006EB5;
+	text-align:left;
+	padding-left: 21;
+}
+
+QPushButton:!checked{
+	background-color: #ffffff;
+	color: #000000;
+}</string>
         </property>
         <layout class="QVBoxLayout" name="leftPaneLayout">
          <property name="spacing">
@@ -146,20 +160,6 @@ background-color: #ffffff;
              <height>35</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
-	text-align:left;
-	padding-left: 21;
-}
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
-}</string>
-           </property>
            <property name="text">
             <string>GENERAL</string>
            </property>
@@ -185,27 +185,10 @@ QPushButton:!checked{
              <height>35</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
-	text-align:left;
-	padding-left: 21;
-}
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
-}</string>
-           </property>
            <property name="text">
             <string>ACCESS CERTIFICATE</string>
            </property>
            <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="flat">
             <bool>true</bool>
            </property>
           </widget>
@@ -223,20 +206,6 @@ QPushButton:!checked{
              <width>16777215</width>
              <height>35</height>
             </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
-	text-align:left;
-	padding-left: 21;
-}
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
-}</string>
            </property>
            <property name="text">
             <string>PROXY</string>
@@ -260,20 +229,6 @@ QPushButton:!checked{
              <height>35</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
-	text-align:left;
-	padding-left: 21;
-}
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
-}</string>
-           </property>
            <property name="text">
             <string>DIAGNOSTICS</string>
            </property>
@@ -295,20 +250,6 @@ QPushButton:!checked{
              <width>16777215</width>
              <height>35</height>
             </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
-	text-align:left;
-	padding-left: 21;
-}
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
-}</string>
            </property>
            <property name="text">
             <string>INFO</string>
@@ -1374,7 +1315,7 @@ QPushButton:disabled {
          </size>
         </property>
         <property name="text">
-         <string>USE DEFAULT</string>
+         <string>USE DEFAULT SETTINGS</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>

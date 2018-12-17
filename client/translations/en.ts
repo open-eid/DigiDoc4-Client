@@ -2586,8 +2586,8 @@ Control code: %1</translation>
         <translation>SHOW CERTIFICATE</translation>
     </message>
     <message>
-        <source>USE DEFAULT</source>
-        <translation>USE DEFAULT</translation>
+        <source>USE DEFAULT SETTINGS</source>
+        <translation>USE DEFAULT SETTINGS</translation>
     </message>
     <message>
         <source>CHECK CONNECTIONS</source>

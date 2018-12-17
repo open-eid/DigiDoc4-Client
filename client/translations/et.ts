@@ -2571,8 +2571,8 @@ Kontrollkood: %1</translation>
         <translation>NÄITA TŌENDIT</translation>
     </message>
     <message>
-        <source>USE DEFAULT</source>
-        <translation>KASUTA VAIKIMISI</translation>
+        <source>USE DEFAULT SETTINGS</source>
+        <translation>TAASTA ALGSEADED</translation>
     </message>
     <message>
         <source>CHECK CONNECTIONS</source>
