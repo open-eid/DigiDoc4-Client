@@ -25,36 +25,6 @@
 #include <QtCore/QStringList>
 #include <QtNetwork/QSslCertificate>
 
-class CryptoDocPrivate;
-
-class CDocumentModel: public DocumentModel
-{
-	Q_OBJECT
-public:
-	void addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
-	void addTempReference(const QString &file) override;
-	QString data(int row) const override;
-	QString fileId(int row) const override;
- 	QString fileSize(int row) const override;
-	QString mime(int row) const override;
-	bool removeRows(int row, int count) override;
-	int rowCount() const override;
-	QString save(int row, const QString &path) const override;
-
-public slots:
-	void open(int row) override;
-
-private:
-	CDocumentModel( CryptoDocPrivate *doc );
-	Q_DISABLE_COPY(CDocumentModel)
-
-	QString copy(int row, const QString &dst) const;
-
-	CryptoDocPrivate *d;
-
-	friend class CryptoDoc;
-};
-
 class CKey
 {
 public:
@@ -99,8 +69,37 @@ public:
 		quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);
 
 private:
-	CryptoDocPrivate *d;
+	class Private;
+	Private *d;
 	ria::qdigidoc4::ContainerState containerState;
 
 	friend class CDocumentModel;
+};
+
+class CDocumentModel: public DocumentModel
+{
+	Q_OBJECT
+public:
+	void addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
+	void addTempReference(const QString &file) override;
+	QString data(int row) const override;
+	QString fileId(int row) const override;
+	QString fileSize(int row) const override;
+	QString mime(int row) const override;
+	bool removeRows(int row, int count) override;
+	int rowCount() const override;
+	QString save(int row, const QString &path) const override;
+
+public slots:
+	void open(int row) override;
+
+private:
+	CDocumentModel(CryptoDoc::Private *doc);
+	Q_DISABLE_COPY(CDocumentModel)
+
+	QString copy(int row, const QString &dst) const;
+
+	CryptoDoc::Private *d;
+
+	friend class CryptoDoc;
 };

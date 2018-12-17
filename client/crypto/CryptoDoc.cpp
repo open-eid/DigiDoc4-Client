@@ -73,7 +73,7 @@ constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
 }
 #endif
 
-class CryptoDocPrivate: public QThread
+class CryptoDoc::Private: public QThread
 {
 	Q_OBJECT
 public:
@@ -102,7 +102,7 @@ public:
 	inline void waitForFinished()
 	{
 		QEventLoop e;
-		connect(this, &CryptoDocPrivate::finished, &e, &QEventLoop::quit);
+		connect(this, &Private::finished, &e, &QEventLoop::quit);
 		start();
 		e.exec();
 	}
@@ -160,41 +160,41 @@ public:
 	QStringList		tempFiles;
 };
 
-const QString CryptoDocPrivate::MIME_XML = QStringLiteral("text/xml");
-const QString CryptoDocPrivate::MIME_ZLIB = QStringLiteral("http://www.isi.edu/in-noes/iana/assignments/media-types/application/zip");
-const QString CryptoDocPrivate::MIME_DDOC = QStringLiteral("http://www.sk.ee/DigiDoc/v1.3.0/digidoc.xsd");
-const QString CryptoDocPrivate::MIME_DDOC_OLD = QStringLiteral("http://www.sk.ee/DigiDoc/1.3.0/digidoc.xsd");
-const QString CryptoDocPrivate::DS = QStringLiteral("http://www.w3.org/2000/09/xmldsig#");
-const QString CryptoDocPrivate::DENC = QStringLiteral("http://www.w3.org/2001/04/xmlenc#");
-const QString CryptoDocPrivate::DSIG11 = QStringLiteral("http://www.w3.org/2009/xmldsig11#");
-const QString CryptoDocPrivate::XENC11 = QStringLiteral("http://www.w3.org/2009/xmlenc11#");
+const QString CryptoDoc::Private::MIME_XML = QStringLiteral("text/xml");
+const QString CryptoDoc::Private::MIME_ZLIB = QStringLiteral("http://www.isi.edu/in-noes/iana/assignments/media-types/application/zip");
+const QString CryptoDoc::Private::MIME_DDOC = QStringLiteral("http://www.sk.ee/DigiDoc/v1.3.0/digidoc.xsd");
+const QString CryptoDoc::Private::MIME_DDOC_OLD = QStringLiteral("http://www.sk.ee/DigiDoc/1.3.0/digidoc.xsd");
+const QString CryptoDoc::Private::DS = QStringLiteral("http://www.w3.org/2000/09/xmldsig#");
+const QString CryptoDoc::Private::DENC = QStringLiteral("http://www.w3.org/2001/04/xmlenc#");
+const QString CryptoDoc::Private::DSIG11 = QStringLiteral("http://www.w3.org/2009/xmldsig11#");
+const QString CryptoDoc::Private::XENC11 = QStringLiteral("http://www.w3.org/2009/xmlenc11#");
 
-const QString CryptoDocPrivate::AES128CBC_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
-const QString CryptoDocPrivate::AES192CBC_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#aes192-cbc");
-const QString CryptoDocPrivate::AES256CBC_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
-const QString CryptoDocPrivate::AES128GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes128-gcm");
-const QString CryptoDocPrivate::AES192GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes192-gcm");
-const QString CryptoDocPrivate::AES256GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes256-gcm");
-const QString CryptoDocPrivate::RSA_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
-const QString CryptoDocPrivate::KWAES128_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes128");
-const QString CryptoDocPrivate::KWAES192_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes192");
-const QString CryptoDocPrivate::KWAES256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes256");
-const QString CryptoDocPrivate::CONCATKDF_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#ConcatKDF");
-const QString CryptoDocPrivate::AGREEMENT_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#ECDH-ES");
-const QString CryptoDocPrivate::SHA256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha256");
-const QString CryptoDocPrivate::SHA384_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha384");
-const QString CryptoDocPrivate::SHA512_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha512");
+const QString CryptoDoc::Private::AES128CBC_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+const QString CryptoDoc::Private::AES192CBC_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#aes192-cbc");
+const QString CryptoDoc::Private::AES256CBC_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
+const QString CryptoDoc::Private::AES128GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes128-gcm");
+const QString CryptoDoc::Private::AES192GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes192-gcm");
+const QString CryptoDoc::Private::AES256GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes256-gcm");
+const QString CryptoDoc::Private::RSA_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
+const QString CryptoDoc::Private::KWAES128_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes128");
+const QString CryptoDoc::Private::KWAES192_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes192");
+const QString CryptoDoc::Private::KWAES256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes256");
+const QString CryptoDoc::Private::CONCATKDF_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#ConcatKDF");
+const QString CryptoDoc::Private::AGREEMENT_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#ECDH-ES");
+const QString CryptoDoc::Private::SHA256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha256");
+const QString CryptoDoc::Private::SHA384_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha384");
+const QString CryptoDoc::Private::SHA512_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha512");
 
-const QHash<QString, const EVP_CIPHER*> CryptoDocPrivate::ENC_MTH{
+const QHash<QString, const EVP_CIPHER*> CryptoDoc::Private::ENC_MTH{
 	{AES128CBC_MTH, EVP_aes_128_cbc()}, {AES192CBC_MTH, EVP_aes_192_cbc()}, {AES256CBC_MTH, EVP_aes_256_cbc()},
 	{AES128GCM_MTH, EVP_aes_128_gcm()}, {AES192GCM_MTH, EVP_aes_192_gcm()}, {AES256GCM_MTH, EVP_aes_256_gcm()},
 };
-const QHash<QString, QCryptographicHash::Algorithm> CryptoDocPrivate::SHA_MTH{
+const QHash<QString, QCryptographicHash::Algorithm> CryptoDoc::Private::SHA_MTH{
 	{SHA256_MTH, QCryptographicHash::Sha256}, {SHA384_MTH, QCryptographicHash::Sha384}, {SHA512_MTH, QCryptographicHash::Sha512}
 };
-const QHash<QString, quint32> CryptoDocPrivate::KWAES_SIZE{{KWAES128_MTH, 16}, {KWAES192_MTH, 24}, {KWAES256_MTH, 32}};
+const QHash<QString, quint32> CryptoDoc::Private::KWAES_SIZE{{KWAES128_MTH, 16}, {KWAES192_MTH, 24}, {KWAES256_MTH, 32}};
 
-QByteArray CryptoDocPrivate::AES_wrap(const QByteArray &key, const QByteArray &data, bool encrypt)
+QByteArray CryptoDoc::Private::AES_wrap(const QByteArray &key, const QByteArray &data, bool encrypt)
 {
 	QByteArray result;
 	AES_KEY aes;
@@ -213,7 +213,7 @@ QByteArray CryptoDocPrivate::AES_wrap(const QByteArray &key, const QByteArray &d
 	return result;
 }
 
-QByteArray CryptoDocPrivate::crypto(const EVP_CIPHER *cipher, const QByteArray &data, bool encrypt)
+QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray &data, bool encrypt)
 {
 	QByteArray iv, _data, tag;
 	if(encrypt)
@@ -271,16 +271,16 @@ QByteArray CryptoDocPrivate::crypto(const EVP_CIPHER *cipher, const QByteArray &
 	return result;
 }
 
-QByteArray CryptoDocPrivate::fromBase64( const QStringRef &data )
+QByteArray CryptoDoc::Private::fromBase64( const QStringRef &data )
 {
 	unsigned int buf = 0;
 	int nbits = 0;
 	QByteArray result((data.size() * 3) / 4, Qt::Uninitialized);
 
 	int offset = 0;
-	for( int i = 0; i < data.size(); ++i )
+	for(const QChar &i: data)
 	{
-		int ch = data.at(i).toLatin1();
+		int ch = i.toLatin1();
 		int d;
 
 		if (ch >= 'A' && ch <= 'Z')
@@ -310,7 +310,7 @@ QByteArray CryptoDocPrivate::fromBase64( const QStringRef &data )
 	return result;
 }
 
-bool CryptoDocPrivate::isEncryptedWarning()
+bool CryptoDoc::Private::isEncryptedWarning()
 {
 	if( fileName.isEmpty() )
 		setLastError( CryptoDoc::tr("Container is not open") );
@@ -319,7 +319,7 @@ bool CryptoDocPrivate::isEncryptedWarning()
 	return fileName.isEmpty() || encrypted;
 }
 
-bool CryptoDocPrivate::opensslError(bool err)
+bool CryptoDoc::Private::opensslError(bool err)
 {
 	if(err)
 	{
@@ -330,7 +330,7 @@ bool CryptoDocPrivate::opensslError(bool err)
 	return err;
 }
 
-void CryptoDocPrivate::run()
+void CryptoDoc::Private::run()
 {
 	if( !encrypted )
 	{
@@ -418,7 +418,7 @@ void CryptoDocPrivate::run()
 		if(mime == MIME_DDOC || mime == MIME_DDOC_OLD)
 		{
 			qCDebug(CRYPTO) << "Contains DDoc content" << mime;
-			ddoc = new QTemporaryFile( QDir().tempPath() + "/XXXXXX" );
+			ddoc = new QTemporaryFile(QDir::tempPath() + "/XXXXXX");
 			if( !ddoc->open() )
 			{
 				lastError = CryptoDoc::tr("Failed to create temporary files<br />%1").arg( ddoc->errorString() );
@@ -450,12 +450,12 @@ void CryptoDocPrivate::run()
 	encrypted = !encrypted;
 }
 
-void CryptoDocPrivate::setLastError( const QString &err )
+void CryptoDoc::Private::setLastError( const QString &err )
 {
 	qApp->showWarning(err);
 }
 
-QByteArray CryptoDocPrivate::readCDoc(QIODevice *cdoc, bool data)
+QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 {
 	qCDebug(CRYPTO) << "Parsing CDOC file, reading data only" << data;
 	QXmlStreamReader xml(cdoc);
@@ -586,7 +586,7 @@ QByteArray CryptoDocPrivate::readCDoc(QIODevice *cdoc, bool data)
 	return QByteArray();
 }
 
-void CryptoDocPrivate::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey,
+void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey,
 	const QByteArray &encryptedData, const QString &file, const QString &ver, const QString &mime)
 {
 #ifndef NDEBUG
@@ -730,7 +730,7 @@ void CryptoDocPrivate::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey
 	w.writeEndDocument();
 }
 
-void CryptoDocPrivate::readDDoc(QIODevice *ddoc)
+void CryptoDoc::Private::readDDoc(QIODevice *ddoc)
 {
 	qCDebug(CRYPTO) << "Parsing DDOC container";
 	files.clear();
@@ -766,7 +766,7 @@ void CryptoDocPrivate::readDDoc(QIODevice *ddoc)
 	qCDebug(CRYPTO) << "Container contains signature" << hasSignature;
 }
 
-void CryptoDocPrivate::writeDDoc(QIODevice *ddoc)
+void CryptoDoc::Private::writeDDoc(QIODevice *ddoc)
 {
 	qCDebug(CRYPTO) << "Creating DDOC container";
 	QXmlStreamWriter x(ddoc);
@@ -790,7 +790,7 @@ void CryptoDocPrivate::writeDDoc(QIODevice *ddoc)
 }
 
 
-CDocumentModel::CDocumentModel( CryptoDocPrivate *doc )
+CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
 : d( doc )
 {
 	const_cast<QLoggingCategory&>(CRYPTO()).setEnabled( QtDebugMsg,
@@ -815,7 +815,7 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 
 	QFile data(file);
 	data.open(QFile::ReadOnly);
-	CryptoDocPrivate::File f;
+	CryptoDoc::Private::File f;
 	f.id = QStringLiteral("D%1").arg(d->files.size());
 	f.mime = mime;
 	f.name = QFileInfo(file).fileName();
@@ -832,7 +832,7 @@ void CDocumentModel::addTempReference(const QString &file)
 
 QString CDocumentModel::copy(int row, const QString &dst) const
 {
-	const CryptoDocPrivate::File &file = d->files.at(row);
+	const CryptoDoc::Private::File &file = d->files.at(row);
 	if( QFile::exists( dst ) )
 		QFile::remove( dst );
 
@@ -847,10 +847,7 @@ QString CDocumentModel::copy(int row, const QString &dst) const
 
 QString CDocumentModel::data(int row) const
 {
-	const CryptoDocPrivate::File &f = d->files.at(row);
-	if( f.name.isEmpty() )
-		return QString();
-	return f.name;
+	return d->files.at(row).name.normalized(QString::NormalizationForm_C);
 }
 
 QString CDocumentModel::fileId(int row) const
@@ -865,10 +862,7 @@ QString CDocumentModel::fileSize(int /*row*/) const
 
 QString CDocumentModel::mime(int row) const
 {
-	const CryptoDocPrivate::File &f = d->files.at(row);
-	if( f.mime.isEmpty() )
-		return QString();
-	return f.mime;
+	return d->files.at(row).mime;
 }
 
 void CDocumentModel::open(int row)
@@ -943,9 +937,9 @@ void CKey::setCert( const QSslCertificate &c )
 
 
 CryptoDoc::CryptoDoc( QObject *parent )
-:	QObject( parent )
-,	d( new CryptoDocPrivate )
-,	containerState(UnencryptedContainer)
+	: QObject(parent)
+	, d(new Private)
+	, containerState(UnencryptedContainer)
 {
 	d->documents = new CDocumentModel( d );
 }
@@ -969,18 +963,18 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 {
 	for(const CKey &k: qAsConst(d->keys))
 	{
-		if(!d->ENC_MTH.contains(d->method) || k.cert != cert)
+		if(!Private::ENC_MTH.contains(d->method) || k.cert != cert)
 			continue;
 		if(cert.publicKey().algorithm() == QSsl::Rsa &&
 				!k.cipher.isEmpty() &&
-				k.method == CryptoDocPrivate::RSA_MTH)
+				k.method == Private::RSA_MTH)
 			return true;
 		if(cert.publicKey().algorithm() == QSsl::Ec &&
 				!k.publicKey.isEmpty() &&
 				!k.cipher.isEmpty() &&
-				d->KWAES_SIZE.contains(k.method) &&
-				k.derive == CryptoDocPrivate::CONCATKDF_MTH &&
-				k.agreement == CryptoDocPrivate::AGREEMENT_MTH)
+				Private::KWAES_SIZE.contains(k.method) &&
+				k.derive ==  Private::CONCATKDF_MTH &&
+				k.agreement ==  Private::AGREEMENT_MTH)
 			return true;
 	}
 	return false;
@@ -988,7 +982,7 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 
 QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
 {
-	QCryptographicHash::Algorithm hashAlg = CryptoDocPrivate::SHA_MTH[digestMethod];
+	QCryptographicHash::Algorithm hashAlg =  Private::SHA_MTH[digestMethod];
 	quint32 hashLen = 0;
 	switch(hashAlg)
 	{
@@ -1065,7 +1059,7 @@ bool CryptoDoc::decrypt()
 	while( !decrypted )
 	{
 		switch(qApp->signer()->decrypt(isECDH ? key.publicKey : key.cipher, decryptedKey,
-			key.concatDigest, int(d->KWAES_SIZE[key.method]), key.AlgorithmID, key.PartyUInfo, key.PartyVInfo))
+			key.concatDigest, int(Private::KWAES_SIZE[key.method]), key.AlgorithmID, key.PartyUInfo, key.PartyVInfo))
 		{
 		case QSigner::DecryptOK: decrypted = true; break;
 		case QSigner::PinIncorrect: break;
@@ -1138,7 +1132,7 @@ QList<CKey> CryptoDoc::keys()
 QList<QString> CryptoDoc::files()
 {
 	QList<QString> fileList;
-	for(const CryptoDocPrivate::File &f: d->files)
+	for(const Private::File &f: d->files)
 		fileList << f.name;
 	return fileList;
 }
@@ -1164,9 +1158,9 @@ bool CryptoDoc::open( const QString &file )
 
 	if(d->files.isEmpty() && d->properties.contains(QStringLiteral("Filename")))
 	{
-		CryptoDocPrivate::File f;
+		Private::File f;
 		f.name = d->properties[QStringLiteral("Filename")];
-		f.mime = d->mime == CryptoDocPrivate::MIME_ZLIB ? d->properties[QStringLiteral("OriginalMimeType")] : d->mime;
+		f.mime = d->mime == Private::MIME_ZLIB ? d->properties[QStringLiteral("OriginalMimeType")] : d->mime;
 		f.size = d->size(d->properties[QStringLiteral("OriginalSize")]);
 		d->files << f;
 	}
