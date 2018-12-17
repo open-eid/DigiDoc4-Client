@@ -208,6 +208,11 @@ void ContainerPage::forward(int code)
 		}
 		break;
 	}
+	case ContainerCancel:
+		window()->setWindowFilePath(QString());
+		window()->setWindowTitle(tr("DigiDoc4 client"));
+		emit action(code);
+		break;
 	default:
 		if(checkAction(code, cardInReader, mobileCode))
 			emit action(code);
