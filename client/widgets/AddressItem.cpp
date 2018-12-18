@@ -34,25 +34,19 @@ using namespace ria::qdigidoc4;
 
 #define ADD_WIDTH 32
 #define ADDED_WIDTH 51
-#define ADDRESS_ITEM "%1 <span style=\"font-weight:normal;\">%2</span>"
 #define ICON_WIDTH 19
 #define ITEM_HEIGHT 44
 #define LINE_HEIGHT 16
 
-AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
-: Item(parent)
-, ui(new Ui::AddressItem)
-, enlarged(false)
-, key(k)
-, nameWidth(0)
-, reservedWidth(false)
-, yourself(false)
-
+AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
+	: Item(parent)
+	, ui(new Ui::AddressItem)
+	, key(std::move(k))
 {
 	ui->setupUi(this);
 	if(showIcon)
 	{
-		auto icon = new QSvgWidget(":/images/icon_Krypto_small.svg", ui->icon);
+		auto icon = new QSvgWidget(QStringLiteral(":/images/icon_Krypto_small.svg"), ui->icon);
 		icon->resize(17, 19);
 		icon->move(0, (this->height() - 19) / 2);
 		icon->show();
@@ -63,10 +57,11 @@ AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
 	nameMetrics.reset(new QFontMetrics(nameFont));
 	ui->idType->setFont( Styles::font( Styles::Regular, 11 ) );
 
-	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
-	ui->remove->init(LabelButton::White, "", 0);
-	connect(ui->add, &QToolButton::clicked, [this](){ emit add(this);});
-	connect(ui->remove, &LabelButton::clicked, [this](){ emit remove(this);});
+	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
+		QStringLiteral("/images/icon_remove_pressed.svg"), 1, 1, 17, 17);
+	ui->remove->init(LabelButton::White, QString(), 0);
+	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
+	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	ui->added->setFont(Styles::font(Styles::Condensed, 12));
@@ -76,31 +71,29 @@ AddressItem::AddressItem(const CKey &k, QWidget *parent, bool showIcon)
 	ui->added->setDisabled(true);
 
 	QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
-			key.cert.subjectInfo("GN").value(0) + " " + key.cert.subjectInfo("SN").value(0) :
-			key.cert.subjectInfo("CN").value(0);
+			key.cert.subjectInfo("GN").join(' ') + " " + key.cert.subjectInfo("SN").join(' ') :
+			key.cert.subjectInfo("CN").join(' ');
 
 	QString type, strDate;
 
 	auto certType = SslCertificate(key.cert).type();
 	if(certType & SslCertificate::DigiIDType)
-		type = "Digi-ID";
+		type = QStringLiteral("Digi-ID");
 	else if(certType & SslCertificate::EstEidType)
-		type = "ID-card";
+		type = QStringLiteral("ID-card");
 	else if(certType & SslCertificate::TempelType)
-		type = "e-Seal";
+		type = QStringLiteral("e-Seal");
 	else if(certType & SslCertificate::MobileIDType)
-		type = "Mobile-ID";
+		type = QStringLiteral("Mobile-ID");
 
 	if(!showIcon)
 	{
 		DateTime date(key.cert.expiryDate().toLocalTime());
 		if(!date.isNull())
-		{
-			strDate = date.formatDate("dd. MMMM yyyy");
-		}
+			strDate = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
 	}
 
-	update(name, key.cert.subjectInfo("serialNumber").value(0), type, strDate, AddressItem::Remove);
+	update(name, SslCertificate(key.cert).personalCode(), type, strDate, AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()
@@ -146,9 +139,9 @@ void AddressItem::changeNameHeight()
 
 void AddressItem::disable(bool disable)
 {
-	setStyleSheet(QString("border: solid rgba(217, 217, 216, 0.45); border-width: 0px 0px 1px 0px;"
+	setStyleSheet(QStringLiteral("border: solid rgba(217, 217, 216, 0.45); border-width: 0px 0px 1px 0px;"
 		"background-color: %1; color: #000000; text-decoration: none solid rgb(0, 0, 0);")
-		.arg(disable ? "#F0F0F0" : "#FFFFFF"));
+		.arg(disable ? QStringLiteral("#F0F0F0") : QStringLiteral("#FFFFFF")));
 }
 
 const CKey& AddressItem::getKey() const
@@ -156,14 +149,14 @@ const CKey& AddressItem::getKey() const
 	return key;
 }
 
-void AddressItem::idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber)
+void AddressItem::idChanged(const QString& cardCode, const QString& /*mobileCode*/, const QByteArray& serialNumber)
 {
 	yourself = (!code.isEmpty() && code == cardCode) && (serialNumber == key.cert.serialNumber());
 
 	setName();
 }
 
-void AddressItem::mouseReleaseEvent(QMouseEvent *event)
+void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
 	KeyDialog dlg(key, this);
 	dlg.exec();
@@ -197,49 +190,20 @@ void AddressItem::resizeEvent(QResizeEvent *event)
 
 void AddressItem::setName()
 {
-	if(yourself)
-		ui->name->setText(QString(ADDRESS_ITEM).arg(name, code + tr(" (Yourself)")));
-	else
-		ui->name->setText(QString(ADDRESS_ITEM).arg(name, code));
+	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>").arg(name, yourself ? code + tr(" (Yourself)") : code));
 }
 
 void AddressItem::showButton(ShowToolButton show)
 {
-	switch (show) {
-	case Remove:
-		ui->remove->show();
-		ui->add->hide();
-		ui->added->hide();
-		break;
-	case Add:
-		ui->remove->hide();
-		ui->add->show();
-		ui->added->hide();
-		break;
-	case Added:
-		ui->remove->hide();
-		ui->add->hide();
-		ui->added->show();
-		break;
-	default:
-		ui->remove->hide();
-		ui->add->hide();
-		ui->added->hide();
-		break;
-	}
-	recalculate();	
+	ui->remove->setVisible(show == Remove);
+	ui->add->setVisible(show == Add);
+	ui->added->setVisible(show == Added);
+	recalculate();
 }
 
 void AddressItem::stateChange(ContainerState state)
 {
-	if( state == UnencryptedContainer )
-	{
-		ui->remove->show();
-	}
-	else
-	{
-		ui->remove->hide();
-	}
+	ui->remove->setVisible(state == UnencryptedContainer);
 }
 
 void AddressItem::update(const QString& cardName, const QString& cardCode, const QString& type, const QString& strDate, ShowToolButton show)

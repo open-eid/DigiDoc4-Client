@@ -44,8 +44,8 @@ public:
 		Added
 	};
 
-	explicit AddressItem(const CKey &k, QWidget *parent = nullptr, bool showIcon = false);
-	~AddressItem();
+	explicit AddressItem(CKey k, QWidget *parent = nullptr, bool showIcon = false);
+	~AddressItem() final;
 
 	void disable(bool disable);
 	const CKey& getKey() const;
@@ -68,13 +68,13 @@ private:
 	Ui::AddressItem *ui;
 
 	QString code;
-	bool enlarged;
+	bool enlarged = false;
 	CKey key;
 	QString name;
 	std::unique_ptr<QFontMetrics> nameMetrics;
-	int nameWidth;
-	int reservedWidth;
+	int nameWidth = 0;
+	int reservedWidth = false;
 	QString typeText;
 	QString expireDateText;
-	bool yourself;
+	bool yourself = false;
 };
