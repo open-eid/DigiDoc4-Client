@@ -364,11 +364,13 @@ void MainWindow::dropEvent(QDropEvent *event)
 				files << url.toLocalFile();
 		}
 	}
-	if(files.isEmpty())
-		showNotification( tr("Unrecognized data") );
-	event->acceptProposedAction();
 	clearOverlay();
-
+	if(files.isEmpty())
+	{
+		event->ignore();
+		return;
+	}
+	event->acceptProposedAction();
 	if(!files.isEmpty())
 		openFiles(files, true);
 }
