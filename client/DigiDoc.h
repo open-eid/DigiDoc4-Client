@@ -55,8 +55,8 @@ public:
 	QString		lastError() const;
 	QString		location() const;
 	QStringList	locations() const;
+	QByteArray	messageImprint() const;
 	QSslCertificate ocspCert() const;
-	QByteArray	ocspNonce() const;
 	QDateTime	ocspTime() const;
 	const DigiDoc *parent() const;
 	QString		policy() const;

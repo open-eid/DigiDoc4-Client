@@ -147,7 +147,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 			SslCertificate::toHex(cert.authorityKeyIdentifier()));
 		top += 20 + issuerHeight;
 
-		customText(tr("HASH VALUE OF SIGNATURE"), SslCertificate::toHex(sig.ocspNonce()));
+		customText(tr("HASH VALUE OF SIGNATURE"), SslCertificate::toHex(sig.messageImprint()));
 		top += 15;
 	}
 	save();

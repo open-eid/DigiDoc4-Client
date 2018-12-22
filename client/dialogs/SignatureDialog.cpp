@@ -203,6 +203,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		SslCertificate ts = s.tsCert();
 		addItem(t, tr("Signature Timestamp"), DateTime(s.tsTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		addItem(t, tr("Signature Timestamp") + " (UTC)", DateTime(s.tsTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
 		addItem( t, tr("TS Certificate issuer"), ts.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("TS Certificate"), ts );
 	}
@@ -211,7 +212,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		SslCertificate ocsp = s.ocspCert();
 		addItem( t, tr("OCSP Certificate issuer"), ocsp.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("OCSP Certificate"), ocsp );
-		addItem( t, tr("Hash value of signature"), SslCertificate::toHex( s.ocspNonce() ) );
+		if(s.tsTime().isNull())
+			addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
 		addItem(t, tr("OCSP time"), DateTime(s.ocspTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		addItem(t, tr("OCSP time") + " (UTC)", DateTime(s.ocspTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	}

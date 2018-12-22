@@ -112,15 +112,15 @@ QStringList DigiDocSignature::locations() const
 		from( s->countryName() ).trimmed()};
 }
 
+QByteArray DigiDocSignature::messageImprint() const
+{
+	return fromVector(s->messageImprint());
+}
+
 QSslCertificate DigiDocSignature::ocspCert() const
 {
 	return QSslCertificate(
 		fromVector(s->OCSPCertificate()), QSsl::Der );
-}
-
-QByteArray DigiDocSignature::ocspNonce() const
-{
-	return fromVector(s->OCSPNonce());
 }
 
 QDateTime DigiDocSignature::ocspTime() const
