@@ -39,11 +39,11 @@ using namespace ria::qdigidoc4;
 class SignatureItem::Private: public Ui::SignatureItem
 {
 public:
-	Private(DigiDocSignature s): signature(std::move(s)) {}
+	explicit Private(DigiDocSignature s): signature(std::move(s)) {}
 	DigiDocSignature signature;
 
-	bool invalid;
-	ria::qdigidoc4::WarningType error;
+	bool invalid = true;
+	ria::qdigidoc4::WarningType error = ria::qdigidoc4::NoWarning;
 	QString nameText;
 	QString serial;
 	QString statusHtml;
@@ -51,9 +51,9 @@ public:
 	QString status;
 };
 
-SignatureItem::SignatureItem(const DigiDocSignature &s, ContainerState /*state*/, bool isSupported, QWidget *parent)
+SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, bool isSupported, QWidget *parent)
 : Item(parent)
-, ui(new Private(s))
+, ui(new Private(std::move(s)))
 {
 	ui->setupUi(this);
 	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
@@ -218,7 +218,8 @@ bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 		if(QResizeEvent *r = static_cast<QResizeEvent*>(e))
 		{
 			if(o == ui->role)
-				ui->roleElided = ui->role->fontMetrics().elidedText(ui->role->text().replace('\n', ' '), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
+				ui->roleElided = ui->role->fontMetrics().elidedText(
+					ui->role->text().simplified(), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
 		}
 		break;
 	default: break;
