@@ -236,7 +236,6 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROGNAME}> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/qt.conf appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/878252.p12 appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/798.p12 appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libeay32.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/ssleay32.dll appx

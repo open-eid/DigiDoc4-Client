@@ -26,7 +26,7 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?endif ?>
 
-<?if $(env.VCINSTALLDIR) = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\" ?>
+<?if $(env.VisualStudioVersion) = "14.0" ?>
 <?define VCVER = "140" ?>
 <?define VCRT = "vcruntime" ?>
 <?else?>
@@ -136,11 +136,10 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
             <File Source="$(var.libs_path)\XalanMessages_1_11.dll"/>
             <File Source="$(var.libs_path)\Xalan-C_1_11.dll"/>
 <?endif?>
-            <File Source="$(var.libs_path)\xsec_1_7.dll"/>
+            <File Source="$(var.libs_path)\xsec_2_0.dll"/>
             <File Source="$(var.libs_path)\digidocpp.dll"/>
             <File Source="$(var.libs_path)\digidoc-tool.exe"/>
             <File Source="$(var.libs_path)\digidocpp.conf"/>
-            <File Source="$(var.libs_path)\878252.p12"/>
             <File Source="$(var.libs_path)\798.p12"/>
 <?ifdef var.certsLocation ?>
             <File Source="$(var.libs_path)\libxml2.dll"/>
