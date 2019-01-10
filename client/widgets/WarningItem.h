@@ -44,7 +44,7 @@ class WarningItem : public StyledWidget
 	Q_OBJECT
 
 public:
-	WarningItem(const WarningText &warningText, QWidget *parent = nullptr);
+	WarningItem(WarningText warningText, QWidget *parent = nullptr);
 	~WarningItem() final;
 	
 	bool appearsOnPage(int page) const;
@@ -61,6 +61,5 @@ private:
 	void lookupWarning();
 
 	Ui::WarningItem *ui;
-	int context;
 	WarningText warnText;
 };

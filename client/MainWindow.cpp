@@ -951,7 +951,8 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
-			warnings->clearWarning({WarningType::UpdateCertWarning});
+			warnings->closeWarnings(MyEid);
+			warnings->clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
