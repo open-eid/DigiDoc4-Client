@@ -243,7 +243,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/xerces-c_3_2.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/XalanMessages_1_11.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/Xalan-C_1_11.dll appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/xsec_1_7.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/xsec_2_0.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidocpp.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidocpp.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Assets appx/Assets
