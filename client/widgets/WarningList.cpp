@@ -6,6 +6,7 @@
 
 #include "ui_MainWindow.h"
 
+#include <QtCore/QTimer>
 #include <QtWidgets/QBoxLayout>
 
 using namespace ria::qdigidoc4;
@@ -90,7 +91,11 @@ void WarningList::showWarning(const WarningText &warningText)
 		for(auto warning: warnings)
 		{
 			if(warning->warningType() == warningText.warningType)
-				return;
+				QTimer::singleShot(5 * 1000, warning, [&, warning] {
+					warnings.removeAll(warning);
+					warning->deleteLater();
+					updateWarnings();
+				});
 		}
 	}
 	WarningItem *warning = new WarningItem(warningText, ui->page);
