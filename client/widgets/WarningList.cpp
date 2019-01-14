@@ -8,6 +8,8 @@
 
 #include <QtWidgets/QBoxLayout>
 
+using namespace ria::qdigidoc4;
+
 WarningList::WarningList(Ui::MainWindow *main, QWidget *parent)
 	: QObject(parent)
 	, ui(main)
@@ -15,32 +17,46 @@ WarningList::WarningList(Ui::MainWindow *main, QWidget *parent)
 	parent->installEventFilter(this);
 }
 
-void WarningList::clearWarning(const QList<int> &warningTypes)
+bool WarningList::appearsOnPage(WarningItem *warning, int page) const
+{
+	return warning->page() == page || warning->page() == -1;
+}
+
+void WarningList::clearMyEIDWarnings()
+{
+	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning, PictureLoadingWarning};
+	for(auto warning: warnings)
+	{
+		if(warningTypes.contains(warning->warningType()) || warning->page() == MyEid)
+			closeWarning(warning);
+	}
+	updateWarnings();
+}
+
+void WarningList::closeWarning(int warningType)
 {
 	for(auto warning: warnings)
 	{
-		if(warningTypes.contains(warning->warningType()))
-			closeWarning(warning, true);
+		if(warningType == warning->warningType())
+			closeWarning(warning);
 	}
+	updateWarnings();
 }
 
-void WarningList::closeWarning(WarningItem *warning, bool force)
+void WarningList::closeWarning(WarningItem *warning)
 {
-	if(force || warning->warningType() != ria::qdigidoc4::WarningType::UpdateCertWarning)
-	{
-		warnings.removeOne(warning);
-		warning->deleteLater();
-		updateWarnings();
-	}
+	warnings.removeOne(warning);
+	warning->deleteLater();
 }
 
 void WarningList::closeWarnings(int page)
 {
 	for(auto warning: warnings)
 	{
-		if(warning->page() == page || page == -1)
+		if(warning->page() == page)
 			closeWarning(warning);
 	}
+	updateWarnings();
 }
 
 bool WarningList::eventFilter(QObject *object, QEvent *event)
@@ -50,7 +66,7 @@ bool WarningList::eventFilter(QObject *object, QEvent *event)
 
 	for(auto warning: warnings)
 	{
-		if(warning->underMouse())
+		if(warning->underMouse() && warning->warningType() != WarningType::UpdateCertWarning)
 		{
 			closeWarning(warning);
 			break;
@@ -63,6 +79,7 @@ bool WarningList::eventFilter(QObject *object, QEvent *event)
 		updateRibbon(ui->startScreen->currentIndex(), ribbon->isExpanded());
 	}
 
+	updateWarnings();
 	return QObject::eventFilter(object, event);
 }
 
@@ -81,7 +98,6 @@ void WarningList::showWarning(const WarningText &warningText)
 	warnings << warning;
 	connect(warning, &WarningItem::linkActivated, this, &WarningList::warningClicked);
 	layout->insertWidget(warnings.size(), warning);
-
 	updateWarnings();
 }
 
@@ -90,7 +106,7 @@ void WarningList::updateRibbon(int page, bool expanded)
 	short count = 0;
 	for(auto warning: warnings)
 	{
-		if(warning->appearsOnPage(page))
+		if(appearsOnPage(warning, page))
 		{
 			warning->setVisible(expanded || count < 3);
 			count++;
@@ -113,7 +129,7 @@ void WarningList::updateWarnings()
 	int count = 0;
 	for(auto warning: warnings)
 	{
-		if(warning->appearsOnPage(page))
+		if(appearsOnPage(warning, page))
 			count++;
 		else
 			warning->hide();
@@ -132,7 +148,7 @@ void WarningList::updateWarnings()
 			ribbon = nullptr;
 			for(auto warning: warnings)
 			{
-				if(warning->appearsOnPage(page))
+				if(appearsOnPage(warning, page))
 					warning->show();
 			}
 		}

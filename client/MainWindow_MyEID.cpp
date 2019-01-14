@@ -111,12 +111,12 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 
 		if (type == QSmartCardData::Pin1Type)
 		{
-			warnings->clearWarning({WarningType::UnblockPin1Warning});
+			warnings->closeWarning(WarningType::UnblockPin1Warning);
 			emit ui->cryptoContainerPage->cardChanged(card);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
-			warnings->clearWarning({WarningType::UnblockPin2Warning});
+			warnings->closeWarning(WarningType::UnblockPin2Warning);
 			emit ui->signContainerPage->cardChanged(card);
 		}
 	}
@@ -179,7 +179,13 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 		{
 		case SSLConnect::ActivateEmails: warnings->showWarning(WarningText(WarningType::EmailActivationWarning, err)); break;
 		case SSLConnect::EmailInfo: warnings->showWarning(WarningText(WarningType::EmailLoadingWarning, err)); break;
-		case SSLConnect::PictureInfo: warnings->showWarning(WarningText(WarningType::PictureLoadingWarning, err)); break;
+		case SSLConnect::PictureInfo:
+		{
+			WarningText text(WarningType::PictureLoadingWarning, err);
+			text.page = ui->startScreen->currentIndex();
+			warnings->showWarning(text);
+			break;
+		}
 		default: warnings->showWarning(WarningText(WarningType::SSLLoadingWarning, err)); break;
 		}
 		return QByteArray();
@@ -213,7 +219,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0 );
 		if(qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
-			warnings->clearWarning({WarningType::UpdateCertWarning});
+			warnings->closeWarning(WarningType::UpdateCertWarning);
 		break;
 	case QSmartCard::DifferentError:
 		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) );
@@ -225,7 +231,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 		showNotification( tr("Old and new %1 has to be different!").arg( QSmartCardData::typeString( type ) ) );
 		break;
 	case QSmartCard::ValidateError:
-		showNotification( tr("Wrong %1 code. You can try %n more time(s).", "",
+		showNotification( tr("Wrong %1 code. You can try %n more time(s).", nullptr,
 			qApp->smartcard()->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
 		break;
 	default:
@@ -267,7 +273,7 @@ void MainWindow::updateCertificate(const QString &readerName)
 	{
 		QCardLocker locker;
 		Updater(readerName, this).execute();
-		warnings->clearWarning({WarningType::UpdateCertWarning});
+		warnings->closeWarning(WarningType::UpdateCertWarning);
 	}
 	qApp->smartcard()->reload();
 #endif

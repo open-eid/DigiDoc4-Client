@@ -935,7 +935,7 @@ void MainWindow::showCardStatus()
 	TokenData at = qApp->signer()->tokenauth();
 	const TokenData &t = st.cert().isNull() ? at : st;
 
-	warnings->closeWarnings(MyEid);
+	warnings->clearMyEIDWarnings();
 
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
@@ -951,8 +951,7 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
-			warnings->closeWarnings(MyEid);
-			warnings->clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
+			warnings->clearMyEIDWarnings();
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
@@ -987,8 +986,7 @@ void MainWindow::showCardStatus()
 		emit ui->signContainerPage->cardChanged();
 		emit ui->cryptoContainerPage->cardChanged();
 
-		warnings->closeWarnings(MyEid);
-		warnings->clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
+		warnings->clearMyEIDWarnings();
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( t.readers().isEmpty() )
@@ -1177,8 +1175,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->accordion->clearOtherEID();
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
-	warnings->closeWarnings(MyEid);
-	warnings->clearWarning({CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning});
+	warnings->clearMyEIDWarnings();
 }
 
 // Loads picture
@@ -1306,13 +1303,12 @@ void MainWindow::showUpdateCertWarning(const QString &readerName)
 
 void MainWindow::containerToEmail( const QString &fileName )
 {
-	QUrlQuery q;
-	QUrl url;
-
 	if(!QFileInfo::exists(fileName))
 		return;
+	QUrlQuery q;
 	q.addQueryItem(QStringLiteral("subject"), QFileInfo(fileName).fileName() );
 	q.addQueryItem(QStringLiteral("attachment"), QFileInfo(fileName).absoluteFilePath() );
+	QUrl url;
 	url.setScheme(QStringLiteral("mailto"));
 	url.setQuery(q);
 	QDesktopServices::openUrl( url );

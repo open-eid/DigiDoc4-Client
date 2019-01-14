@@ -62,11 +62,6 @@ WarningItem::~WarningItem()
 	delete ui;
 }
 
-bool WarningItem::appearsOnPage(int page) const
-{
-	return page == warnText.page || warnText.page == -1;
-}
-
 int WarningItem::page() const
 {
 	return warnText.page;
@@ -106,25 +101,25 @@ void WarningItem::lookupWarning()
 		break;
 	// SignDetails
 	case ria::qdigidoc4::InvalidSignatureWarning:
-		warnText.text = tr("%n signatures are not valid", "", warnText.counter);
+		warnText.text = tr("%n signatures are not valid", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::InvalidTimestampWarning:
-		warnText.text = tr("%n timestamps are not valid", "", warnText.counter);
+		warnText.text = tr("%n timestamps are not valid", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::UnknownSignatureWarning:
-		warnText.text = tr("%n signatures are unknown", "", warnText.counter);
+		warnText.text = tr("%n signatures are unknown", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::UnknownTimestampWarning:
-		warnText.text = tr("%n timestamps are unknown", "", warnText.counter);
+		warnText.text = tr("%n timestamps are unknown", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
@@ -144,7 +139,7 @@ void WarningItem::lookupWarning()
 		break;
 	case ria::qdigidoc4::PictureLoadingWarning:
 		warnText.text = MainWindow::tr("Loading picture failed.");
-		warnText.page = ria::qdigidoc4::MyEid;
+		//warnText.page = ria::qdigidoc4::MyEid; // Can be loaded multiple pages
 		break;
 	case ria::qdigidoc4::SSLLoadingWarning:
 		warnText.text = MainWindow::tr("Failed to load data");

@@ -21,9 +21,7 @@
 
 #include "StyledWidget.h"
 
-namespace Ui {
-class WarningItem;
-}
+namespace Ui { class WarningItem; }
 
 
 struct WarningText {
@@ -47,7 +45,6 @@ public:
 	WarningItem(WarningText warningText, QWidget *parent = nullptr);
 	~WarningItem() final;
 	
-	bool appearsOnPage(int page) const;
 	int page() const;
 	ria::qdigidoc4::WarningType warningType() const;
 

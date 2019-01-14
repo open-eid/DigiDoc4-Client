@@ -21,10 +21,7 @@
 
 #include <QWidget>
 
-namespace Ui {
-class MainWindow;
-}
-
+namespace Ui { class MainWindow; }
 class WarningItem;
 struct WarningText;
 class WarningRibbon;
@@ -35,8 +32,8 @@ class WarningList: public QObject
 public:
 	explicit WarningList(Ui::MainWindow *main, QWidget *parent = nullptr);
 
-	void clearWarning(const QList<int> &warningType);
-	void closeWarning(WarningItem *warning, bool force = false);
+	void clearMyEIDWarnings();
+	void closeWarning(int warningType);
 	void closeWarnings(int page);
 	void showWarning(const WarningText &warningText);
 	void updateWarnings();
@@ -45,6 +42,8 @@ signals:
 	void warningClicked(const QString &link);
 
 private:
+	bool appearsOnPage(WarningItem *warning, int page) const;
+	void closeWarning(WarningItem *warning);
 	bool eventFilter(QObject *object, QEvent *event) final;
 	void updateRibbon(int page, bool expanded);
 
