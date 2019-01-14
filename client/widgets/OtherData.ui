@@ -10,9 +10,6 @@
     <height>304</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">background-color: white;
 border: solid #DFE5E9;
@@ -83,7 +80,7 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 color: #353739;</string>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
     </widget>
    </item>
