@@ -24,8 +24,11 @@
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
 
-#include <QtGui/QTextDocument>
+#include <QtGui/QStaticText>
 #include <QtPrintSupport/QPrinter>
+#ifdef Q_OS_WIN32
+#include <QtCore/qt_windows.h>
+#endif
 
 PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 :	QPainter( printer )
@@ -43,6 +46,16 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 	scale( 0.8, 0.8 );
 	right /= 0.8;
 	bottom /= 0.8;
+#elif defined(Q_OS_WIN32)
+	SetProcessDPIAware();
+	HDC screen = GetDC(0);
+	qreal dpix = GetDeviceCaps(screen, LOGPIXELSX);
+	qreal dpiy = GetDeviceCaps(screen, LOGPIXELSY);
+	qreal scaleFactor = dpiy / qreal(96);
+	scale(scaleFactor, scaleFactor);
+	right /= scaleFactor;
+	bottom /= scaleFactor;
+	ReleaseDC(NULL, screen);
 #endif
 
 	QFont text = font();
@@ -100,7 +113,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 	setPen( oPen );
 
 	int i = 1;
-	Q_FOREACH( const DigiDocSignature &sig, doc->signatures() )
+	for(const DigiDocSignature &sig: doc->signatures())
 	{
 		const SslCertificate cert = sig.cert();
 		bool tempel = cert.type() & SslCertificate::TempelType;
@@ -152,12 +165,13 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 	}
 	save();
 	newPage( 50 );
-	QTextDocument textDoc;
+	QStaticText textDoc;
+	textDoc.setTextFormat(Qt::RichText);
 	textDoc.setTextWidth( right - margin );
-	textDoc.setHtml( tr("The print out of files listed in the section <b>\"Signed Files\"</b> "
-						"are inseparable part of this Validity Confirmation Sheet.") );
+	textDoc.setText(tr("The print out of files listed in the section <b>\"Signed Files\"</b> "
+						"are inseparable part of this Validity Confirmation Sheet."));
 	translate( QPoint( left, top - 30) );
-	textDoc.drawContents( this , QRectF( 0, 0, right - margin, 40) );
+	drawStaticText(0, 0, textDoc);
 	top += 30;
 	restore();
 
