@@ -142,7 +142,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 
 	// navigationArea
 	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
-	ui->btAppStore->setFont(condensed12);
 	ui->btnNavFromHistory->setFont(condensed12);
 
 	ui->btnNavUseByDefault->setFont(condensed12);
@@ -176,11 +175,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 
 #ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
-		if(error.isEmpty())
-		{
-			ui->btAppStore->setVisible(ui->stackedWidget->currentIndex() == GeneralSettings && hasNewerVersion());
-			return;
-		}
 		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
 			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
 			QMessageBox::Ok, this);
@@ -189,16 +183,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 		b.exec();
 	});
 #endif
-	connect(ui->btAppStore, &QPushButton::clicked, []{
-#if defined(Q_OS_WIN)
-		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng")));
-#elif defined(Q_OS_MAC)
-		QDesktopServices::openUrl(QUrl(QStringLiteral("https://itunes.apple.com/us/app/digidoc4-client/id1370791134?ls=1&mt=12")));
-#else
-		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng&os=linux")));
-#endif
-	});
-
 
 	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
@@ -305,32 +289,6 @@ void SettingsDialog::checkConnection()
 			ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 0, 120);
 		notification->start(tr("The connection to certificate status service is successful!"), 750, 3000, 1200);
 	}
-}
-
-bool SettingsDialog::hasNewerVersion()
-{
-#ifdef CONFIG_URL
-	QStringList curList = qApp->applicationVersion().split('.');
-	QStringList avaList = Configuration::instance().object()[QStringLiteral("QDIGIDOC4-LATEST")].toString().split('.');
-	for( int i = 0; i < std::max<int>(curList.size(), avaList.size()); ++i )
-	{
-		bool curconv = false, avaconv = false;
-		unsigned int cur = curList.value(i).toUInt( &curconv );
-		unsigned int ava = avaList.value(i).toUInt( &avaconv );
-		if( curconv && avaconv )
-		{
-			if( cur != ava )
-				return cur < ava;
-		}
-		else
-		{
-			int status = QString::localeAwareCompare( curList.value(i), avaList.value(i) );
-			if( status != 0 )
-				return status < 0;
-		}
-	}
-#endif
-	return false;
 }
 
 void SettingsDialog::retranslate(const QString& lang)
@@ -657,7 +615,6 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavInstallManually->setVisible(button == ui->btnMenuCertificate);
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
-	ui->btAppStore->setVisible(button == ui->btnMenuGeneral && hasNewerVersion());
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
