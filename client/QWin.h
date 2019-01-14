@@ -40,7 +40,7 @@ public:
 	};
 
 	explicit QWin(QObject *parent = nullptr): QObject(parent) {}
-	virtual ~QWin() = default;
+	~QWin() override = default;
 
 	virtual QList<TokenData> tokens() const = 0;
 	virtual QByteArray decrypt( const QByteArray &data ) = 0;
@@ -53,4 +53,7 @@ public:
 protected:
 	int derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo, QByteArray &derived) const;
+
+	NCRYPT_HANDLE keyProvider(NCRYPT_HANDLE key) const;
+	static QByteArray prop(NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags = 0);
 };

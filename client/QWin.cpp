@@ -28,6 +28,8 @@
 int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo, QByteArray &derived) const
 {
+	if(!prov)
+		return NTE_INVALID_HANDLE;
 	BCRYPT_ECCKEY_BLOB oh = { BCRYPT_ECDH_PUBLIC_P384_MAGIC, ULONG((publicKey.size() - 1) / 2) };
 	switch ((publicKey.size() - 1) * 4)
 	{
@@ -57,11 +59,11 @@ int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArra
 		{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
 		{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
 	};
-	if(digest == "http://www.w3.org/2001/04/xmlenc#sha256")
+	if(digest == QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha256"))
 		paramValues.push_back({ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)});
-	if(digest == "http://www.w3.org/2001/04/xmlenc#sha384")
+	if(digest == QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha384"))
 		paramValues.push_back({ULONG(sizeof(BCRYPT_SHA384_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA384_ALGORITHM)});
-	if(digest == "http://www.w3.org/2001/04/xmlenc#sha512")
+	if(digest == QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha512"))
 		paramValues.push_back({ULONG(sizeof(BCRYPT_SHA512_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA512_ALGORITHM)});
 	BCryptBufferDesc params;
 	params.ulVersion = BCRYPTBUFFER_VERSION;
@@ -82,4 +84,26 @@ int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArra
 	NCryptFreeObject(sharedSecret);
 	NCryptFreeObject(prov);
 	return err;
+}
+
+NCRYPT_HANDLE QWin::keyProvider(NCRYPT_HANDLE key) const
+{
+	NCRYPT_PROV_HANDLE provider = 0;
+	DWORD size = 0;
+	NCryptGetProperty(key, NCRYPT_PROVIDER_HANDLE_PROPERTY, PBYTE(&provider), sizeof(provider), &size, 0);
+	return provider;
+}
+
+QByteArray QWin::prop(NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags)
+{
+	QByteArray data;
+	if(!handle)
+		return data;
+	DWORD size = 0;
+	if(NCryptGetProperty(handle, param, nullptr, 0, &size, flags))
+		return data;
+	data.resize(int(size));
+	if(NCryptGetProperty(handle, param, PBYTE(data.data()), size, &size, flags))
+		data.clear();
+	return data;
 }
