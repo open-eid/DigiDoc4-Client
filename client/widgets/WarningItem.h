@@ -28,12 +28,10 @@ struct WarningText {
 
 	QString text, details, url;
 	int counter = 0, page = -1;
-	bool external = false;
 	ria::qdigidoc4::WarningType warningType = ria::qdigidoc4::NoWarning;
 
 	WarningText(QString text, QString details = QString(), int page = -1);
-	WarningText(ria::qdigidoc4::WarningType warningType, QString details = QString(), QString url = QString());
-	WarningText(ria::qdigidoc4::WarningType warningType, int counter);
+	WarningText(ria::qdigidoc4::WarningType warningType, int counter = 0);
 };
 
 

@@ -1298,7 +1298,9 @@ void MainWindow::savePhoto()
 void MainWindow::showUpdateCertWarning(const QString &readerName)
 {
 	emit ui->accordion->showCertWarnings();
-	warnings->showWarning(WarningText(WarningType::UpdateCertWarning, QString(), readerName));
+	WarningText text(WarningType::UpdateCertWarning);
+	text.url = readerName;
+	warnings->showWarning(text);
 }
 
 void MainWindow::containerToEmail( const QString &fileName )

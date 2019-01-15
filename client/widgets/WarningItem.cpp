@@ -31,16 +31,8 @@ WarningText::WarningText(QString text, QString details, int page)
 	, page(page)
 {}
 
-WarningText::WarningText(ria::qdigidoc4::WarningType warningType, QString details, QString url)
-	: details(std::move(details))
-	, url(std::move(url))
-	, warningType(warningType)
-{}
-
 WarningText::WarningText(ria::qdigidoc4::WarningType warningType, int counter)
 	: counter(counter)
-	, page(ria::qdigidoc4::SignDetails)
-	, external(true)
 	, warningType(warningType)
 {}
 
@@ -52,7 +44,6 @@ WarningItem::WarningItem(WarningText warningText, QWidget *parent)
 	ui->setupUi(this);
 	ui->warningText->setFont(Styles::font(Styles::Regular, 14));
 	ui->warningAction->setFont(Styles::font(Styles::Regular, 14, QFont::Bold));
-	ui->warningAction->setOpenExternalLinks(warnText.external);
 	lookupWarning();
 	connect(ui->warningAction, &QLabel::linkActivated, this, &WarningItem::linkActivated);
 }
@@ -105,28 +96,33 @@ void WarningItem::lookupWarning()
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
+		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::InvalidTimestampWarning:
 		warnText.text = tr("%n timestamps are not valid", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
+		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::UnknownSignatureWarning:
 		warnText.text = tr("%n signatures are unknown", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
+		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::UnknownTimestampWarning:
 		warnText.text = tr("%n timestamps are unknown", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
+		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::CheckConnectionWarning:
 		warnText.text = MainWindow::tr("Check internet connection");
 		warnText.page = ria::qdigidoc4::SignDetails;
+		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	// MyEid
 	case ria::qdigidoc4::EmailActivationWarning:

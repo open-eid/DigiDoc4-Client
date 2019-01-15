@@ -177,16 +177,16 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	{
 		switch( type )
 		{
-		case SSLConnect::ActivateEmails: warnings->showWarning(WarningText(WarningType::EmailActivationWarning, err)); break;
-		case SSLConnect::EmailInfo: warnings->showWarning(WarningText(WarningType::EmailLoadingWarning, err)); break;
+		case SSLConnect::ActivateEmails: warnings->showWarning(WarningText(WarningType::EmailActivationWarning)); break;
+		case SSLConnect::EmailInfo: warnings->showWarning(WarningText(WarningType::EmailLoadingWarning)); break;
 		case SSLConnect::PictureInfo:
 		{
-			WarningText text(WarningType::PictureLoadingWarning, err);
+			WarningText text(WarningType::PictureLoadingWarning);
 			text.page = ui->startScreen->currentIndex();
 			warnings->showWarning(text);
 			break;
 		}
-		default: warnings->showWarning(WarningText(WarningType::SSLLoadingWarning, err)); break;
+		default: warnings->showWarning(WarningText(WarningType::SSLLoadingWarning)); break;
 		}
 		return QByteArray();
 	}
