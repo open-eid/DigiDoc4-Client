@@ -45,7 +45,6 @@
 #include <QInputDialog>
 #include <QIODevice>
 #include <QStandardPaths>
-#include <QSvgWidget>
 #include <QSysInfo>
 #include <QTextBrowser>
 #include <QThread>
@@ -63,45 +62,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	Overlay *overlay = new Overlay(parent->topLevelWidget());
 	overlay->show();
 	connect(this, &SettingsDialog::destroyed, overlay, &Overlay::deleteLater);
-	initUI();
-	initFunctionality();
-}
 
-SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
-	: SettingsDialog(parent, std::move(appletVersion))
-{
-	ui->stackedWidget->setCurrentIndex(page);
-
-	if(page != GeneralSettings)
-	{
-		ui->btnMenuGeneral->setChecked(false);
-		switch(page)
-		{
-		case AccessCertSettings:
-			changePage(ui->btnMenuCertificate);
-			break;
-		case NetworkSettings:
-			changePage(ui->btnMenuProxy);
-			break;
-		case DiagnosticsSettings:
-			changePage(ui->btnMenuDiagnostics);
-			break;
-		case LicenseSettings:
-			changePage(ui->btnMenuInfo);
-			break;
-		}
-	}
-}
-
-
-SettingsDialog::~SettingsDialog()
-{
-	QApplication::restoreOverrideCursor();
-	delete ui;
-}
-
-void SettingsDialog::initUI()
-{
 	ui->setupUi(this);
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint);
@@ -109,7 +70,7 @@ void SettingsDialog::initUI()
 #else
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	setWindowModality(Qt::ApplicationModal);
-#endif 
+#endif
 
 	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
@@ -171,11 +132,9 @@ void SettingsDialog::initUI()
 	ui->txtProxyPassword->setFont(regularFont);
 
 	// pageDiagnostics
-	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), ui->structureFunds);
-	structureFunds->resize(ui->structureFunds->width(), ui->structureFunds->height());
-	structureFunds->show();
+	ui->structureFunds->load(QStringLiteral(":/images/Struktuurifondid.svg"));
+	ui->pageInfoLayout->setAlignment(ui->structureFunds, Qt::AlignCenter);
 	ui->contact->setFont(regularFont);
-
 	ui->txtDiagnostics->setFont(regularFont);
 
 	// pageInfo
@@ -197,6 +156,7 @@ void SettingsDialog::initUI()
 #endif
 	));
 	ui->btnFirstRun->setFont(condensed12);
+	ui->btnRefreshConfig->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
 	ui->btnCheckConnection->setFont(condensed12);
 
@@ -233,7 +193,7 @@ void SettingsDialog::initUI()
 #if defined(Q_OS_WIN)
 		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng")));
 #elif defined(Q_OS_MAC)
-		QDesktopServices::openUrl(QUrl("https://itunes.apple.com/us/app/digidoc4-client/id1370791134?ls=1&mt=12"));
+		QDesktopServices::openUrl(QUrl(QStringLiteral("https://itunes.apple.com/us/app/digidoc4-client/id1370791134?ls=1&mt=12")));
 #else
 		QDesktopServices::openUrl(QUrl(tr("https://installer.id.ee/?lang=eng&os=linux")));
 #endif
@@ -255,6 +215,18 @@ void SettingsDialog::initUI()
 		});
 		dlg.exec();
 	});
+	connect(ui->btnRefreshConfig, &QPushButton::clicked, this, [] {
+		Configuration::instance().update(true);
+		QString cache = qApp->confValue(Application::TSLCache).toString();
+		for(const QString &file: QDir(QStringLiteral(":/TSL/")).entryList())
+		{
+			const QString target = cache + "/" + file;
+			for(const QString &rm: QDir(cache, file + QStringLiteral("*")).entryList())
+				QFile::remove(cache + "/" + rm);
+			QFile::copy(":/TSL/" + file, target);
+			QFile::setPermissions(target, QFile::Permissions(0x6444));
+		}
+	});
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::removeCert );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
@@ -270,6 +242,42 @@ void SettingsDialog::initUI()
 	connect( this, &SettingsDialog::finished, this, []{ QApplication::restoreOverrideCursor(); } );
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
+
+	initFunctionality();
+	updateDiagnostics();
+}
+
+SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
+	: SettingsDialog(parent, std::move(appletVersion))
+{
+	ui->stackedWidget->setCurrentIndex(page);
+
+	if(page != GeneralSettings)
+	{
+		ui->btnMenuGeneral->setChecked(false);
+		switch(page)
+		{
+		case AccessCertSettings:
+			changePage(ui->btnMenuCertificate);
+			break;
+		case NetworkSettings:
+			changePage(ui->btnMenuProxy);
+			break;
+		case DiagnosticsSettings:
+			changePage(ui->btnMenuDiagnostics);
+			break;
+		case LicenseSettings:
+			changePage(ui->btnMenuInfo);
+			break;
+		}
+	}
+}
+
+
+SettingsDialog::~SettingsDialog()
+{
+	QApplication::restoreOverrideCursor();
+	delete ui;
 }
 
 void SettingsDialog::checkConnection()
@@ -437,8 +445,6 @@ void SettingsDialog::initFunctionality()
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked){
 		Settings(qApp->applicationName()).setValue(QStringLiteral("Client/RoleAddressInfo"), checked);
 	});
-
-	updateDiagnostics();
 }
 
 void SettingsDialog::updateCert()
@@ -652,6 +658,7 @@ void SettingsDialog::changePage(QPushButton* button)
 	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
 	ui->btAppStore->setVisible(button == ui->btnMenuGeneral && hasNewerVersion());
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
+	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);
 #ifdef Q_OS_WIN

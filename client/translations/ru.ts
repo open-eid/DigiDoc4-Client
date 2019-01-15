@@ -2578,6 +2578,11 @@ Kонтрольный код: %1</translation>
         <source>CHECK CONNECTIONS</source>
         <translation>ПРОВЕРЬТЕ НАСТРОЙКИ ИНТЕРНЕТА</translation>
     </message>
+    <message>
+        <source>REFRESH CONFIGURATION</source>
+        <translation>ПРОВЕРЬТЕ ОБНОВЛЕНИЯ</translation>
+    </message>
+
 
     <message>
         <source>Language</source>

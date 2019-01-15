@@ -2593,6 +2593,10 @@ Control code: %1</translation>
         <source>CHECK CONNECTIONS</source>
         <translation>CHECK CONNECTIONS</translation>
     </message>
+    <message>
+        <source>REFRESH CONFIGURATION</source>
+        <translation>REFRESH CONFIGURATION</translation>
+    </message>
 
 
     <message>

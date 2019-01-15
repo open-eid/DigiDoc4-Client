@@ -58,7 +58,6 @@ signals:
 private:
 	void checkConnection();
 	bool hasNewerVersion();
-	void initUI();
 	void retranslate(const QString& lang);
 	void initFunctionality();
 	void updateCert();
