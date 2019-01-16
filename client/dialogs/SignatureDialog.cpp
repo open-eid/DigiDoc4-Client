@@ -32,10 +32,6 @@
 #include <QDesktopServices>
 #include <QTextStream>
 
-
-#define STYLE_TERMINATOR QStringLiteral("</font>")
-
-
 SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *parent)
 :	QDialog( parent )
 ,	s( signature )
@@ -73,7 +69,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		status += tr("is valid", isTS ? "Timestamp" : "Signature");
 		break;
 	case DigiDocSignature::Warning:
-		status += QStringLiteral("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Warnings"));
+		status += QStringLiteral("%1</font> <font color=\"gold\">(%2)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), tr("Warnings"));
 		decorateNotice(QStringLiteral("gold"));
 		if(!s.lastError().isEmpty())
 			d->error->setPlainText( s.lastError() );
@@ -84,7 +80,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			d->info->setText(tr("SIGNATURE_WARNING"));
 		break;
 	case DigiDocSignature::NonQSCD:
-		status += QStringLiteral("%1%2 <font color=\"gold\">(%3)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), STYLE_TERMINATOR, tr("Restrictions"));
+		status += QStringLiteral("%1</font> <font color=\"gold\">(%2)").arg(tr("is valid", isTS ? "Timestamp" : "Signature"), tr("Restrictions"));
 		decorateNotice(QStringLiteral("gold"));
 		d->info->setText( tr(
 			"This e-Signature is not equivalent with handwritten signature and therefore "
@@ -132,7 +128,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	}
 
 	QString name = !c.isNull() ? c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")) : s.signedBy();
-	d->title->setText(QStringLiteral("%1 | %2%3%4").arg(name, style, status, STYLE_TERMINATOR));
+	d->title->setText(QStringLiteral("%1 | %2%3</font>").arg(name, style, status));
 	d->close->setFont(Styles::font(Styles::Condensed, 14));
 	connect(d->close, &QPushButton::clicked, this, &SignatureDialog::accept);
 
@@ -144,6 +140,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->lblNotice->setFont(Styles::font(Styles::Regular, 15));
 
 	d->title->setFont(regular);
+	d->info->setFont(regular);
+	d->signatureView->header()->setFont(regular);
 	d->lblRole->setFont(regular);
 	d->lblSigningCity->setFont(regular);
 	d->lblSigningCountry->setFont(regular);
