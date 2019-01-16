@@ -429,7 +429,7 @@ text-align: center;
 border: none;</string>
         </property>
         <property name="text">
-         <string>SUMMARY</string>
+         <string>PRINT SUMMARY</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

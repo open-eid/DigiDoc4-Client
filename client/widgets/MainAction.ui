@@ -12,8 +12,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">border-radius: 2px 0 0 0;
-background-color: #1a7dbc;
-</string>
+background-color: #1a7dbc;</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -33,12 +32,6 @@ background-color: #1a7dbc;
    </property>
    <item>
     <widget class="QPushButton" name="mainAction">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>166</width>
@@ -113,9 +106,6 @@ QToolButton:hover:!pressed {
 	background-color: #008DCF;
 }
 </string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
      <property name="icon">
       <iconset>

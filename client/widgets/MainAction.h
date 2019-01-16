@@ -23,29 +23,27 @@
 
 #include <QWidget>
 
-namespace Ui {
-class MainAction;
-}
-
 class MainAction : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit MainAction(ria::qdigidoc4::Actions action, QWidget *parent);
-	~MainAction();
+	explicit MainAction(QWidget *parent);
+	~MainAction() final;
 
-	void setButtonDisabled(bool disabled);
-	void update(ria::qdigidoc4::Actions action);
+	void hideDropdown();
+	void setButtonEnabled(bool enabled);
+	void showDropdown();
+	void update(const QList<ria::qdigidoc4::Actions> &actions);
 
 signals:
-	void action( int action );
-	void dropdown();
-
-protected:
-	void changeEvent(QEvent* event) override;
+	void action(ria::qdigidoc4::Actions action);
 
 private:
-	Ui::MainAction *ui;
-	ria::qdigidoc4::Actions actionType;
+	void changeEvent(QEvent* event) override;
+	bool eventFilter(QObject *o, QEvent *e) override;
+	QString label(ria::qdigidoc4::Actions action) const;
+
+	class Private;
+	Private *ui;
 };

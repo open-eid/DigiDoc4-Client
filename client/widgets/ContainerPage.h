@@ -72,7 +72,6 @@ public slots:
 	void togglePrinting(bool enable);
 
 protected:
-	void resizeEvent( QResizeEvent *event ) override;
 	void changeEvent(QEvent* event) override;
 
 private:
@@ -83,16 +82,11 @@ private:
 	void elideFileName(bool force = false);
 	bool eventFilter(QObject *o, QEvent *e) override;
 	void forward(int code);
-	void hideButtons(const QVector<QWidget*> &buttons);
 	void hideMainAction();
-	void hideOtherAction();
 	void hideRightPane();
-	void init();
 	void initContainer( const QString &file, const QString &suffix );
-	void mobileDialog();
-	void showButtons(const QVector<QWidget*> &buttons);
 	void showDropdown();
-	void showMainAction(ria::qdigidoc4::Actions action);
+	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void showSigningButton();
 	void updateDecryptionButton();
@@ -101,8 +95,6 @@ private:
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
-	std::unique_ptr<MainAction> otherAction;
-	std::vector<QMetaObject::Connection> actionConnections;
 	QString cardInReader;
 	int containerFileWidth;
 	bool elided;

@@ -37,11 +37,6 @@
 
 using namespace ria::qdigidoc4;
 
-
-#define ACTION_WIDTH 200
-#define ACTION_HEIGHT 65
-
-
 ContainerPage::ContainerPage(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::ContainerPage)
@@ -51,115 +46,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 , envelope("Envelope")
 {
 	ui->setupUi( this );
-	init();
-}
-
-ContainerPage::~ContainerPage()
-{
-	delete ui;
-}
-
-void ContainerPage::addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors)
-{
-	auto counter = errors.value(item->getError());
-	counter++;
-	errors[item->getError()] = counter;
-}
-
-void ContainerPage::addressSearch()
-{
-	AddRecipients dlg(ui->rightPane, qApp->activeWindow());
-	auto rc = dlg.exec();
-	if(rc && dlg.isUpdated())
-		emit keysSelected(dlg.keys());
-}
-
-void ContainerPage::changeCard(const QString& idCode, bool isSeal, bool isExpired)
-{
-	if(cardInReader != idCode)
-	{
-		cardInReader = idCode;
-		this->seal = isSeal;
-		this->isExpired = isExpired;
-		if(mainAction && (ui->leftPane->getState() & SignatureContainers))
-			showSigningButton();
-		else if(ui->leftPane->getState() & EncryptedContainer)
-			updateDecryptionButton();
-	}
-}
-
-bool ContainerPage::checkAction(int code, const QString& selectedCard, const QString& selectedMobile)
-{
-	if(code == SignatureAdd || code == SignatureToken || code == SignatureMobile)
-	{
-		if(ui->rightPane->hasItem(
-			[selectedCard, selectedMobile, code](Item* const item) -> bool
-			{
-				auto signatureItem = qobject_cast<SignatureItem* const>(item);
-				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureAdd) ? QString() : selectedMobile);
-			}
-		))
-		{
-			WarningDialog dlg(tr("The document has already been signed by you."), this);
-			dlg.addButton(tr("CONTINUE SIGNING"), SignatureAdd);
-			dlg.exec();
-			if(dlg.result() != SignatureAdd)
-				return false;
-		}
-	}
-
-	return true;
-}
-
-void ContainerPage::clear()
-{
-	ui->leftPane->clear();
-	ui->rightPane->clear();
-	canDecrypt = false;
-}
-
-void ContainerPage::clearPopups()
-{
-	hideOtherAction();
-}
-
-void ContainerPage::elideFileName(bool force)
-{
-	if(ui->containerFile->width() < containerFileWidth)
-	{
-		elided = true;
-		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
-			ui->containerFile->fontMetrics().elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
-	}
-	else if(elided || force)
-	{
-		elided = false;
-		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName + "</span></a>");
-	}
-}
-
-bool ContainerPage::eventFilter(QObject *o, QEvent *e)
-{
-	switch(e->type())
-	{
-	case QEvent::Resize:
-	case QEvent::LanguageChange:
-		if(o == ui->containerFile)
-			elideFileName(true);
-		break;
-	default: break;
-	}
-	return QWidget::eventFilter(o, e);
-}
-
-void ContainerPage::forward(int code)
-{
-	if(checkAction(code, cardInReader, mobileCode))
-		emit action(code);
-}
-
-void ContainerPage::init()
-{
 	ui->leftPane->init(fileName);
 
 	ui->container->setFont(Styles::font(Styles::Regular, 14));
@@ -202,6 +88,133 @@ void ContainerPage::init()
 	ui->summary->setVisible(Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool());
 }
 
+ContainerPage::~ContainerPage()
+{
+	delete ui;
+}
+
+void ContainerPage::addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors)
+{
+	auto counter = errors.value(item->getError());
+	counter++;
+	errors[item->getError()] = counter;
+}
+
+void ContainerPage::addressSearch()
+{
+	AddRecipients dlg(ui->rightPane, qApp->activeWindow());
+	if(dlg.exec() && dlg.isUpdated())
+		emit keysSelected(dlg.keys());
+}
+
+void ContainerPage::changeCard(const QString& idCode, bool isSeal, bool isExpired)
+{
+	if(cardInReader == idCode)
+		return;
+
+	cardInReader = idCode;
+	this->seal = isSeal;
+	this->isExpired = isExpired;
+	if(mainAction && (ui->leftPane->getState() & SignatureContainers))
+		showSigningButton();
+	else if(ui->leftPane->getState() & EncryptedContainer)
+		updateDecryptionButton();
+}
+
+bool ContainerPage::checkAction(int code, const QString& selectedCard, const QString& selectedMobile)
+{
+	switch(code)
+	{
+	case SignatureAdd:
+	case SignatureToken:
+	case SignatureMobile:
+		if(ui->rightPane->hasItem(
+			[selectedCard, selectedMobile, code](Item* const item) -> bool
+			{
+				auto signatureItem = qobject_cast<SignatureItem* const>(item);
+				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureAdd) ? QString() : selectedMobile);
+			}
+		))
+		{
+			WarningDialog dlg(tr("The document has already been signed by you."), this);
+			dlg.addButton(tr("CONTINUE SIGNING"), SignatureAdd);
+			return dlg.exec() == SignatureAdd;
+		}
+		break;
+	default: break;
+	}
+	return true;
+}
+
+void ContainerPage::clear()
+{
+	ui->leftPane->clear();
+	ui->rightPane->clear();
+	canDecrypt = false;
+}
+
+void ContainerPage::clearPopups()
+{
+	if(mainAction) mainAction->hideDropdown();
+}
+
+void ContainerPage::elideFileName(bool force)
+{
+	if(ui->containerFile->width() < containerFileWidth)
+	{
+		elided = true;
+		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
+			ui->containerFile->fontMetrics().elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
+	}
+	else if(elided || force)
+	{
+		elided = false;
+		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName + "</span></a>");
+	}
+}
+
+bool ContainerPage::eventFilter(QObject *o, QEvent *e)
+{
+	switch(e->type())
+	{
+	case QEvent::Resize:
+	case QEvent::LanguageChange:
+		if(o == ui->containerFile)
+			elideFileName(true);
+		break;
+	default: break;
+	}
+	return QWidget::eventFilter(o, e);
+}
+
+void ContainerPage::forward(int code)
+{
+	switch (code)
+	{
+	case SignatureMobile:
+	{
+		MobileDialog dlg(qApp->activeWindow());
+		QString newCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
+		if(dlg.exec() == QDialog::Accepted)
+		{
+			if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
+				emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
+		}
+
+		if (newCode != mobileCode)
+		{
+			mobileCode = newCode;
+			emit cardChanged(cardInReader, seal, isExpired);
+		}
+		break;
+	}
+	default:
+		if(checkAction(code, cardInReader, mobileCode))
+			emit action(code);
+		break;
+	}
+}
+
 void ContainerPage::initContainer( const QString &file, const QString &suffix )
 {
 	const QFileInfo f( file );
@@ -211,64 +224,17 @@ void ContainerPage::initContainer( const QString &file, const QString &suffix )
 	ui->containerFile->setText(fileName);
 }
 
-void ContainerPage::hideButtons(const QVector<QWidget*> &buttons)
-{
-	for( auto *button: buttons ) button->hide();
-}
-
 void ContainerPage::hideMainAction()
 {
-	if( mainAction )
-	{
+	if(mainAction)
 		mainAction->hide();
-	}
 	ui->mainActionSpacer->changeSize( 1, 20, QSizePolicy::Fixed );
 	ui->navigationArea->layout()->invalidate();
-}
-
-void ContainerPage::hideOtherAction()
-{
-	if(!otherAction)
-		return;
-
-	otherAction->close();
-	otherAction.reset();
-	mainAction->setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; }"));
 }
 
 void ContainerPage::hideRightPane()
 {
 	ui->rightPane->hide();
-}
-
-void ContainerPage::mobileDialog()
-{
-	hideOtherAction();
-	MobileDialog dlg(qApp->activeWindow());
-	QString newCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
-	if( dlg.exec() == QDialog::Accepted )
-	{
-		if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
-			emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
-	}
-
-	if (newCode != mobileCode)
-	{
-		mobileCode = newCode;
-		emit cardChanged(cardInReader, seal, isExpired);
-	}
-}
-
-void ContainerPage::resizeEvent(QResizeEvent * /*event*/)
-{
-	if( mainAction )
-	{
-		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
-	}
-	if( otherAction )
-	{
-		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
-	}
 }
 
 void ContainerPage::changeEvent(QEvent* event)
@@ -290,78 +256,33 @@ void ContainerPage::setHeader(const QString &file)
 	elideFileName(true);
 }
 
-void ContainerPage::showButtons(const QVector<QWidget*> &buttons)
-{
-	for( auto *button: buttons ) button->show();
-}
-
-void ContainerPage::showDropdown()
-{
-	if( otherAction )
-	{
-		hideOtherAction();
-	}
-	else
-	{
-		otherAction.reset( new MainAction( SignatureMobile, this ) );
-		otherAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT * 2 - 1 );
-		connect( otherAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog );
-
-		otherAction->show();
-		mainAction->setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 0px; }"));
-		otherAction->setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; border-top-right-radius: 2px; }"));
-	}
-
-}
-
 void ContainerPage::showRightPane(ItemType itemType, const QString &header)
 {
 	ui->rightPane->init(itemType, header);
 	ui->rightPane->show();
 }
 
-void ContainerPage::showMainAction(Actions action)
+void ContainerPage::showMainAction(const QList<Actions> &actions)
 {
-	if( mainAction )
+	if(!mainAction)
 	{
-		mainAction->update(action);
+		mainAction.reset(new MainAction(this));
+		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
 	}
-	else
-	{
-		mainAction.reset(new MainAction(action, this));
-		mainAction->move( this->width() - ACTION_WIDTH, this->height() - ACTION_HEIGHT );
-		mainAction->show();
-	}
-	mainAction->show();
-	mainAction->setButtonDisabled(isExpired);
-
-	for(const auto &conn: actionConnections)
-		QObject::disconnect(conn);
-	actionConnections.clear();
-	if(action == SignatureMobile)
-	{
-		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::mobileDialog));
-	}
-	else
-	{
-		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward));
-		actionConnections.push_back(connect(mainAction.get(), &MainAction::action, this, &ContainerPage::hideOtherAction));
-		actionConnections.push_back(connect(mainAction.get(), &MainAction::dropdown, this, &ContainerPage::showDropdown));
-	}
-
+	mainAction->update(actions);
+	mainAction->setButtonEnabled(!isExpired || actions.contains(DecryptContainer) || actions.contains(EncryptContainer));
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
 	ui->navigationArea->layout()->invalidate();
 }
 
 void ContainerPage::showSigningButton()
 {
-	hideOtherAction();
 	if(cardInReader.isNull())
-		showMainAction(SignatureMobile);
+		showMainAction({ SignatureMobile });
 	else if(seal)
-		showMainAction(SignatureToken);
+		showMainAction({ SignatureToken, SignatureMobile });
 	else
-		showMainAction(SignatureAdd);
+		showMainAction({ SignatureAdd, SignatureMobile });
 }
 
 void ContainerPage::transition(CryptoDoc* container, bool canDecrypt)
@@ -450,7 +371,7 @@ void ContainerPage::updateDecryptionButton()
 	if(!canDecrypt || cardInReader.isNull())
 		hideMainAction();
 	else
-		showMainAction(DecryptContainer);
+		showMainAction({ DecryptContainer });
 }
 
 void ContainerPage::updatePanes(ContainerState state)
@@ -458,6 +379,9 @@ void ContainerPage::updatePanes(ContainerState state)
 	auto buttonWidth = ui->changeLocation->width();
 	bool resize = false;
 	bool showPrintSummary = Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool();
+	auto setButtonsVisible = [](const QVector<QWidget*> &buttons, bool visible) {
+		for(QWidget *button: buttons) button->setVisible(visible);
+	};
 
 	switch( state )
 	{
@@ -469,8 +393,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		hideRightPane();
 		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
 		showSigningButton();
-		showButtons( { ui->cancel, ui->convert, ui->save } );
-		hideButtons( { ui->saveAs, ui->email, ui->summary } );
+		setButtonsVisible({ ui->cancel, ui->convert, ui->save }, true);
+		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
 		break;
 	case UnsignedSavedContainer:
 		cancelText = "STARTING";
@@ -478,10 +402,10 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
 		if( showPrintSummary )
-			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary } );
+			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
-			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
-		hideButtons( { ui->save } );
+			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
+		setButtonsVisible({ ui->save }, false);
 		showRightPane( ItemSignature, QStringLiteral("Container is not signed"));
 		break;
 	case SignedContainer:
@@ -491,11 +415,11 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
 		showRightPane(ItemSignature, QStringLiteral("Container's signatures"));
-		hideButtons( { ui->save } );
 		if( showPrintSummary )
-			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary } );
+			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
-			showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
+			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
+		setButtonsVisible({ ui->save }, false);
 		break;
 	case UnencryptedContainer:
 		cancelText = "STARTING";
@@ -505,9 +429,9 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
 		showRightPane(ItemAddress, QStringLiteral("Recipients"));
-		showMainAction(EncryptContainer);
-		showButtons( { ui->cancel, ui->convert } );
-		hideButtons( { ui->save, ui->saveAs, ui->email, ui->summary } );
+		showMainAction({ EncryptContainer });
+		setButtonsVisible({ ui->cancel, ui->convert }, true);
+		setButtonsVisible({ ui->save, ui->saveAs, ui->email, ui->summary }, false);
 		break;
 	case EncryptedContainer:
 		cancelText = "STARTING";
@@ -519,8 +443,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, QStringLiteral("Encrypted files"));
 		showRightPane(ItemAddress, QStringLiteral("Recipients"));
 		updateDecryptionButton();
-		hideButtons( { ui->save, ui->summary } );
-		showButtons( { ui->cancel, ui->convert, ui->saveAs, ui->email } );
+		setButtonsVisible({ ui->save, ui->summary }, false);
+		setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
@@ -530,8 +454,7 @@ void ContainerPage::updatePanes(ContainerState state)
 	if(resize)
 	{
 		// Forcibly resize the filename widget after hiding button
-		ui->containerFile->resize(ui->containerFile->width() + buttonWidth,
-		ui->containerFile->height());
+		ui->containerFile->resize(ui->containerFile->width() + buttonWidth, ui->containerFile->height());
 	}
 
 	translateLabels();
@@ -548,8 +471,4 @@ void ContainerPage::translateLabels()
 	ui->cancel->setText(tr(cancelText));
 	ui->container->setText(tr(envelope));
 	ui->convert->setText(tr(convertText));
-	ui->saveAs->setText(tr("SAVE AS"));
-	ui->email->setText(tr("SEND WITH E-MAIL"));
-	ui->summary->setText(tr("PRINT SUMMARY"));
-	ui->save->setText(tr("SAVE WITHOUT SIGNING"));
 }
