@@ -44,12 +44,13 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	QFont header = Styles::font( Styles::Regular, 14 );
+	QFont regularFont = Styles::font(Styles::Regular, 14);
 	header.setWeight( QFont::DemiBold );
 	ui->labelNameId->setFont( header );
 	ui->labelPhone->setFont( condensed12 );
 	ui->labelIdCode->setFont( condensed12 );
-	ui->phoneNo->setFont(condensed12);
-	ui->idCode->setFont(condensed12);
+	ui->phoneNo->setFont(regularFont);
+	ui->idCode->setFont(regularFont);
 	ui->cbRemember->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->sign->setFont( condensed14 );
 	ui->cancel->setFont( condensed14 );

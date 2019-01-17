@@ -2420,8 +2420,8 @@ Kонтрольный код: %1</translation>
         <translation>Индекс</translation>
     </message>
     <message>
-        <source>Sign</source>
-        <translation>Подписать</translation>
+        <source>SIGN</source>
+        <translation>ПОДПИСАТЬ</translation>
     </message>
 </context>
 <context>
