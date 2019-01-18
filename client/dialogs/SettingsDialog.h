@@ -70,7 +70,7 @@ private:
 	void saveProxy();
 
 	void installCert();
-	void removeCert();
+	void useDefaultSettings();
 	void changePage(QPushButton* button);
 
 	Ui::SettingsDialog *ui;
