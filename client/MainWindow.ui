@@ -10,12 +10,6 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="minimumSize">
    <size>
     <width>1024</width>
@@ -696,46 +690,31 @@ background-color: #ffffff;</string>
 background-repeat: repeat-x;
 background-position: bottom; }</string>
            </property>
-           <layout class="QGridLayout" name="gridLayout_3">
-            <item row="2" column="2">
-             <spacer name="horizontalSpacer_6">
+           <layout class="QVBoxLayout" name="signPageLayout">
+            <item>
+             <spacer name="signPageLeftTopSpacer">
               <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+               <enum>Qt::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>155</width>
-                <height>20</height>
+                <width>20</width>
+                <height>60</height>
                </size>
               </property>
              </spacer>
             </item>
-            <item row="2" column="1">
+            <item>
              <widget class="QWidget" name="signIntroCentral" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
               <property name="minimumSize">
                <size>
-                <width>520</width>
+                <width>0</width>
                 <height>128</height>
                </size>
               </property>
-              <property name="styleSheet">
-               <string notr="true">border: none;</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_2">
+              <layout class="QGridLayout" name="signIntroCentralLayout">
                <item row="0" column="0" colspan="3">
                 <widget class="QLabel" name="signIntroLabel">
-                 <property name="minimumSize">
-                  <size>
-                   <width>542</width>
-                   <height>0</height>
-                  </size>
-                 </property>
                  <property name="font">
                   <font>
                    <pointsize>20</pointsize>
@@ -757,19 +736,6 @@ color: #041E42;</string>
                   <set>Qt::AlignCenter</set>
                  </property>
                 </widget>
-               </item>
-               <item row="1" column="0">
-                <spacer name="horizontalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>109</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
                <item row="1" column="1">
                 <widget class="QPushButton" name="signIntroButton">
@@ -820,24 +786,11 @@ QPushButton:disabled {
                  </property>
                 </widget>
                </item>
-               <item row="1" column="2">
-                <spacer name="horizontalSpacer_4">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>118</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
               </layout>
              </widget>
             </item>
-            <item row="3" column="1">
-             <spacer name="verticalSpacer_2">
+            <item>
+             <spacer name="signPageLeftBottomSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -849,42 +802,9 @@ QPushButton:disabled {
               </property>
              </spacer>
             </item>
-            <item row="2" column="0">
-             <spacer name="horizontalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>155</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="1">
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>60</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </widget>
-          <widget class="ContainerPage" name="signContainerPage">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
+          <widget class="ContainerPage" name="signContainerPage"/>
           <widget class="QWidget" name="cryptoPage">
            <property name="styleSheet">
             <string notr="true">QWidget#cryptoPage {
@@ -893,9 +813,9 @@ background-repeat: repeat-x;
 background-position: bottom;
 }</string>
            </property>
-           <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="1">
-             <spacer name="verticalSpacer_3">
+           <layout class="QVBoxLayout" name="cryptoPageLayout">
+            <item>
+             <spacer name="cryptoPageTopSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -907,50 +827,15 @@ background-position: bottom;
               </property>
              </spacer>
             </item>
-            <item row="1" column="0">
-             <spacer name="horizontalSpacer_9">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>155</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="1">
+            <item>
              <widget class="QWidget" name="cryptoIntroCentral" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
               <property name="minimumSize">
                <size>
-                <width>566</width>
+                <width>0</width>
                 <height>128</height>
                </size>
               </property>
-              <property name="styleSheet">
-               <string notr="true">border: none;</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_4">
-               <item row="1" column="2">
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>118</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
+              <layout class="QGridLayout" name="cryptoIntroCentralLayout">
                <item row="1" column="1">
                 <widget class="QPushButton" name="cryptoIntroButton">
                  <property name="minimumSize">
@@ -961,8 +846,8 @@ background-position: bottom;
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>228</width>
-                   <height>16777215</height>
+                   <width>240</width>
+                   <height>45</height>
                   </size>
                  </property>
                  <property name="font">
@@ -994,27 +879,8 @@ QPushButton:disabled {
                  </property>
                 </widget>
                </item>
-               <item row="1" column="0">
-                <spacer name="horizontalSpacer_8">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>109</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
                <item row="0" column="0" colspan="3">
                 <widget class="QLabel" name="cryptoIntroLabel">
-                 <property name="minimumSize">
-                  <size>
-                   <width>542</width>
-                   <height>0</height>
-                  </size>
-                 </property>
                  <property name="font">
                   <font>
                    <pointsize>20</pointsize>
@@ -1040,21 +906,8 @@ color: #041E42;</string>
               </layout>
              </widget>
             </item>
-            <item row="1" column="2">
-             <spacer name="horizontalSpacer_10">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>155</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="2" column="1">
-             <spacer name="verticalSpacer_4">
+            <item>
+             <spacer name="cryptoPageBottomSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -1070,23 +923,7 @@ color: #041E42;</string>
           </widget>
           <widget class="ContainerPage" name="cryptoContainerPage"/>
           <widget class="QWidget" name="eidPage">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>491</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;
-background-color: #F4F5F6;</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <layout class="QVBoxLayout" name="eidPageLayout">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -1104,12 +941,6 @@ background-color: #F4F5F6;</string>
             </property>
             <item>
              <widget class="InfoStack" name="infoStack" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -1129,6 +960,99 @@ background-color: #F4F5F6;</string>
             </item>
             <item>
              <widget class="Accordion" name="accordion" native="true"/>
+            </item>
+            <item>
+             <widget class="QWidget" name="noReaderInfo" native="true">
+              <property name="styleSheet">
+               <string notr="true">QWidget#noReaderInfo {
+background-image: url(:/images/bg_lovid.svg);
+background-repeat: repeat-x;
+background-position: bottom;
+}</string>
+              </property>
+              <layout class="QVBoxLayout" name="noReaderInfoLayout">
+               <item>
+                <spacer name="noReaderInfoTopSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>52</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QWidget" name="noReaderInfoCentral" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>128</height>
+                  </size>
+                 </property>
+                 <layout class="QVBoxLayout" name="noReaderInfoCentralLayout">
+                  <item>
+                   <widget class="QLabel" name="noReaderInfoText">
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>45</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>20</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">color: #041E42;</string>
+                    </property>
+                    <property name="text">
+                     <string>Connect the card reader to your computer and insert your ID card into the reader</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>240</width>
+                      <height>45</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>240</width>
+                      <height>45</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="noReaderInfoSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>230</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
             </item>
            </layout>
           </widget>
