@@ -19,6 +19,8 @@
  
 #include "sslConnect.h"
 
+#include "MainWindow.h"
+
 #include <common/Common.h>
 #include <common/Configuration.h>
 #include <common/SOAPDocument.h>
@@ -96,9 +98,22 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 	default: return QByteArray();
 	}
 
-//	Does not align it to center on Unix
-	QFrame popup (qApp->activeWindow(), Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
-	showPopup(popup, label);
+	QWidget *active = qApp->activeWindow();
+	for(QWidget *w: qApp->topLevelWidgets())
+	{
+		if(MainWindow *main = qobject_cast<MainWindow*>(w))
+		{
+			active = main;
+			break;
+		}
+	}
+	QLabel popup(active, Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
+	popup.resize(328, 179);
+	popup.move(active->geometry().center() - popup.geometry().bottomRight() / 2);
+	popup.setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px; font-size: 24px; color: #53c964;"));
+	popup.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	popup.setText(label);
+	popup.show();
 
 	QEventLoop e;
 	QNetworkReply *reply = get(req);
@@ -121,21 +136,3 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 }
 
 QString SSLConnect::errorString() const { return d->errorString; }
-
-void SSLConnect::showPopup( QFrame &popup, const QString &labelText )
-{
-	popup.resize( 328, 179 );
-	popup.setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px;"));
-
-	QLabel *lbl = new QLabel( &popup );
-	lbl->setStyleSheet(QStringLiteral("font-size: 24px; color: #53c964; border: none;"));
-	lbl->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
-	lbl->setText( labelText );
-	lbl->show();
-
-	QHBoxLayout* layout=new QHBoxLayout ( &popup );
-	layout->addWidget( lbl );
-	popup.setLayout( layout );
-
-	popup.show();
-}
