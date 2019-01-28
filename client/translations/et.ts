@@ -2626,6 +2626,10 @@ Kontrollkood: %1</translation>
         <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
     </message>
     <message>
+        <source>Enter server access certificate password.</source>
+        <translation>Sisesta juurdepääsutõendi parool.</translation>
+    </message>
+    <message>
         <source>Time Stamp server URL</source>
         <translation>Ajatempli serveri URL</translation>
     </message>

@@ -2641,6 +2641,10 @@ Control code: %1</translation>
         <translation>Ignore server access certificate (IP based access)</translation>
     </message>
     <message>
+        <source>Enter server access certificate password.</source>
+        <translation>Enter server access certificate password.</translation>
+    </message>
+    <message>
         <source>Time Stamp server URL</source>
         <translation>Time Stamp server URL</translation>
     </message>
