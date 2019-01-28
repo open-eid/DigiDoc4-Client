@@ -2624,6 +2624,10 @@ Kонтрольный код: %1</translation>
         <source>Ask role and address info on signing</source>
         <translation>Просить роль и адрес при каждом подписании</translation>
     </message>
+    <message>
+        <source>Digidoc4 client configuration and TSL update was successful.</source>
+        <translation>Обновление конфигурации программы DigiDoc4 и TSL удачно завершено.</translation>
+    </message>
 
     <message>
         <source>Ignore server access certificate (IP based access)</source>

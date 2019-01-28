@@ -2635,6 +2635,10 @@ Control code: %1</translation>
         <source>Ask role and address info on signing</source>
         <translation>Ask role and address info on signing</translation>
     </message>
+    <message>
+        <source>Digidoc4 client configuration and TSL update was successful.</source>
+        <translation>Digidoc4 client configuration and TSL update was successful.</translation>
+    </message>
 
     <message>
         <source>Ignore server access certificate (IP based access)</source>
