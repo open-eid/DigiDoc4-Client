@@ -28,9 +28,9 @@ OtherData::OtherData(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	connect( ui->inputEMail, &QLineEdit::textChanged, this, [this](){ update(true); } );
-	connect( ui->btnCheckEMail, &QPushButton::clicked, this, [this](){ emit checkEMailClicked(); } );
-	connect( ui->activate, &QPushButton::clicked, this, [this](){ emit activateEMailClicked(); } );
+	connect(ui->inputEMail, &QLineEdit::textChanged, this, [this]{ update(true); });
+	connect(ui->btnCheckEMail, &QPushButton::clicked, this, &OtherData::checkEMailClicked);
+	connect(ui->activate, &QPushButton::clicked, this, &OtherData::activateEMailClicked);
 
 	QFont font = Styles::font( Styles::Regular, 13 );
 	QFont condensed = Styles::font( Styles::Condensed, 14 );
@@ -60,6 +60,8 @@ OtherData::~OtherData()
 void OtherData::update(bool activate, const QByteArray &data)
 {
 	setProperty("cache", data);
+	QString eMail;
+	quint8 errorCode = 0;
 	if(!data.isEmpty())
 	{
 		XmlReader xml(data);
@@ -85,48 +87,27 @@ void OtherData::update(bool activate, const QByteArray &data)
 		}
 	}
 
+	ui->activateEMail->setVisible(activate);
+	ui->btnCheckEMail->setHidden(activate || !eMail.isEmpty());
 	if( activate )
 	{
-		ui->btnCheckEMail->setVisible( false );
-		ui->activateEMail->setVisible( true );
-		if( !eMail.isEmpty() )
-			ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
-		else
-			ui->lblEMail->setVisible( false );
-
-		if( ui->inputEMail->text().isEmpty() )
-		{
-			ui->activate->setDisabled( true );
-			ui->activate->setCursor( Qt::ArrowCursor );
-		}
-		else
-		{
-			ui->activate->setDisabled( false );
-			ui->activate->setCursor( Qt::PointingHandCursor );
-		}
+		ui->lblEMail->setVisible(eMail.isEmpty());
+		ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
+		ui->activate->setDisabled(ui->inputEMail->text().isEmpty());
+		ui->activate->setCursor(ui->inputEMail->text().isEmpty() ? Qt::ArrowCursor : Qt::PointingHandCursor );
 		ui->inputEMail->setFocus();
 	}
 	else
 	{
-		ui->btnCheckEMail->setVisible( true );
-		ui->lblEMail->setVisible( false );
-		ui->activateEMail->setVisible( false );
-
-		if( !eMail.isEmpty() )
-		{
-			ui->btnCheckEMail->setVisible( false );
-			ui->lblEMail->setVisible( true );
-			ui->activateEMail->setVisible( false );
-
-			if( errorCode )
-				ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
-			else
-				ui->lblEMail->setText(tr("Your @eesti.ee e-mail has been forwarded to ") + QStringLiteral(" <br/><b>%1</b>").arg(eMail));
-		}
+		ui->lblEMail->setHidden(eMail.isEmpty());
+		if( errorCode )
+			ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
+		else
+			ui->lblEMail->setText(tr("Your @eesti.ee e-mail has been forwarded to ") + QStringLiteral(" <br/><b>%1</b>").arg(eMail));
 	}
 }
 
-void OtherData::paintEvent(QPaintEvent *)
+void OtherData::paintEvent(QPaintEvent * /*event*/)
 {
 	QStyleOption opt;
 	opt.init(this);

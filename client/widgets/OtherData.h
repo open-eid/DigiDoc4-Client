@@ -33,7 +33,7 @@ class OtherData : public QWidget
 
 public:
 	explicit OtherData( QWidget *parent = nullptr );
-	~OtherData();
+	~OtherData() final;
 
 	void update(bool activate, const QByteArray &data = QByteArray());
 	QString getEmail();
@@ -44,11 +44,9 @@ signals:
 	void activateEMailClicked();
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
-	void changeEvent(QEvent *event) override;
+	void paintEvent(QPaintEvent *event) final;
+	void changeEvent(QEvent *event) final;
 
 private:
 	Ui::OtherData *ui;
-	QString eMail;
-	uint errorCode = 0;
 };
