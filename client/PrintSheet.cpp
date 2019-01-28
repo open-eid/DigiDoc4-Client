@@ -180,6 +180,12 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 	top += 10;
 	drawRect( left, top, right - margin, 80 );
 
+	top += 95;
+	drawText(QRect(left + 5, top + 5,  right - margin -5, 45), Qt::TextWordWrap,
+		tr("Presented print summary is informative to confirm existence of signed file with given hash value. "
+		"The print summary itself does not have independent verification value. Declaration of signers’ "
+		"signature can be verified only through digitally signed file."));
+
 	end();
 }
 

@@ -2308,6 +2308,10 @@ Kонтрольный код: %1</translation>
         <source>NB! RESTRICTIONS</source>
         <translation>NB! ОГРАНИЧЕНИЯ</translation>
     </message>
+    <message>
+        <source>Presented print summary is informative to confirm existence of signed file with given hash value. The print summary itself does not have independent verification value. Declaration of signers’ signature can be verified only through digitally signed file.</source>
+        <translation>Этот лист подтверждения является информативным, информация в котором только подтверждает, что файл, подписанный этим хешем, существует. Лист подтверждения не имеет независимого значения проверки. Только файл с цифровой подписью может подтвердить действительность заявления о намерениях сторон.</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>
