@@ -2630,6 +2630,10 @@ Kонтрольный код: %1</translation>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
     </message>
     <message>
+        <source>Enter server access certificate password.</source>
+        <translation>Введите пароль для сертификата доступа.</translation>
+    </message>
+    <message>
         <source>Time Stamp server URL</source>
         <translation>URL-адрес сервера отметки времени</translation>
     </message>
