@@ -2500,8 +2500,8 @@ Control code: %1</translation>
         <translation type="vanished">SIGNING</translation>
     </message>
     <message>
-        <source>ACCESS CERTIFICATE</source>
-        <translation>ACCESS CERTIFICATE</translation>
+        <source>SERVICES</source>
+        <translation>SERVICES</translation>
     </message>
     <message>
         <source>PROXY</source>
@@ -2600,6 +2600,18 @@ Control code: %1</translation>
         <translation>Digidoc4 client configuration and TSL update was successful.</translation>
     </message>
     <message>
+        <source>Access to validity confirmation service</source>
+        <translation>Access to validity confirmation service</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39245</source>
+        <translation>https://www.id.ee/index.php?id=39245</translation>
+    </message>
+    <message>
+        <source>Server access certificate</source>
+        <translation>Server access certificate</translation>
+    </message>
+    <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Ignore server access certificate (IP based access)</translation>
     </message>
@@ -2616,8 +2628,12 @@ Control code: %1</translation>
         <translation>Invalid password</translation>
     </message>
     <message>
-        <source>Time Stamp server URL</source>
-        <translation>Time Stamp server URL</translation>
+        <source>Access to Time-Stamping service</source>
+        <translation>Access to Time-Stamping service</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39076</source>
+        <translation>https://www.id.ee/index.php?id=39076</translation>
     </message>
     <message>
         <source>No proxy</source>
@@ -2674,10 +2690,6 @@ Control code: %1</translation>
     <message>
         <source>Please try again.</source>
         <translation>Please try again.</translation>
-    </message>
-    <message>
-        <source>FREE_CERT_EXCEEDED</source>
-        <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/eng/access&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>

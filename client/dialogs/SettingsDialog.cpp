@@ -29,6 +29,7 @@
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
+#include "effects/ButtonHoverFilter.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
 #include "util/CertUtil.h"
@@ -80,7 +81,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->lblMenuSettings->setFont(headerFont);
 	ui->btnMenuGeneral->setFont(condensed12);
 	ui->btnMenuCertificate->setFont(condensed12);
-	ui->btnMenuCertificate->setText(tr("ACCESS CERTIFICATE"));
 	ui->btnMenuProxy->setFont(condensed12);
 	ui->btnMenuDiagnostics->setFont(condensed12);
 	ui->btnMenuInfo->setFont(condensed12);
@@ -105,10 +105,14 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->chkRoleAddressInfo->setFont(regularFont);
 
 	// pageAccessSert
+	ui->lblRevocation->setFont(headerFont);
+	ui->lblAccessCert->setFont(regularFont);
 	ui->txtAccessCert->setFont(regularFont);
 	ui->chkIgnoreAccessCert->setFont(regularFont);
-	ui->lblTimeStamp->setFont(regularFont);
+	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStamp->setFont(regularFont);
+	ui->helpRevocation->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
+	ui->helpTimeStamp->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 
 	// pageProxy
 	ui->rdProxyNone->setFont(regularFont);
@@ -141,7 +145,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->btnNavUseByDefault->setFont(condensed12);
 	ui->btnNavInstallManually->setFont(condensed12);
 	ui->btnNavShowCertificate->setFont(condensed12);
-	ui->btnNavShowCertificate->setText(tr("SHOW CERTIFICATE"));
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnRefreshConfig->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
@@ -211,7 +214,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
-	connect( ui->btnNavFromHistory, &QPushButton::clicked, this,  [this]{ emit removeOldCert(); } );
+	connect(ui->btnNavFromHistory, &QPushButton::clicked, this,  &SettingsDialog::removeOldCert);
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(GeneralSettings); } );
 	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(AccessCertSettings); } );
@@ -223,6 +226,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect( this, &SettingsDialog::finished, this, []{ QApplication::restoreOverrideCursor(); } );
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
+	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39245"));
+	});
+	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39076"));
+	});
 
 	initFunctionality();
 	updateDiagnostics();
@@ -408,7 +417,6 @@ void SettingsDialog::updateCert()
 	if( !c.isNull() )
 	{
 		ui->txtAccessCert->setText(
-			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			tr("Issued to: %1<br />Valid to: %2 %3").arg(
 				CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)),
 				c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
@@ -417,7 +425,6 @@ void SettingsDialog::updateCert()
 	else
 	{
 		ui->txtAccessCert->setText( 
-			tr("FREE_CERT_EXCEEDED") + "<br /><br />" +
 			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
 	}
 	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
@@ -610,8 +617,6 @@ void SettingsDialog::changePage(QPushButton* button)
 	button->setChecked(true);
 
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
-	ui->btnNavInstallManually->setVisible(button == ui->btnMenuCertificate);
-	ui->btnNavShowCertificate->setVisible(button == ui->btnMenuCertificate);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);

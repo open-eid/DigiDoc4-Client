@@ -2489,8 +2489,8 @@ Kонтрольный код: %1</translation>
         <translation type="vanished">ПОДПИСЬ</translation>
     </message>
     <message>
-        <source>ACCESS CERTIFICATE</source>
-        <translation>СЕРТИФИКАТ ДОСТУПA</translation>
+        <source>SERVICES</source>
+        <translation>СЛУЖБЫ</translation>
     </message>
     <message>
         <source>PROXY</source>
@@ -2597,6 +2597,18 @@ Kонтрольный код: %1</translation>
         <translation>Обновление конфигурации программы DigiDoc4 и TSL удачно завершено.</translation>
     </message>
     <message>
+        <source>Access to validity confirmation service</source>
+        <translation>Доступ к услуге подтверждения действительности</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39245</source>
+        <translation>https://www.id.ee/index.php?id=39246</translation>
+    </message>
+    <message>
+        <source>Server access certificate</source>
+        <translation>Сертификат доступa</translation>
+    </message>
+    <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
     </message>
@@ -2613,8 +2625,12 @@ Kонтрольный код: %1</translation>
         <translation>Неверный пароль</translation>
     </message>
     <message>
-        <source>Time Stamp server URL</source>
-        <translation>URL-адрес сервера отметки времени</translation>
+        <source>Access to Time-Stamping service</source>
+        <translation>Доступ к услугам отметки времени</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39076</source>
+        <translation>https://www.id.ee/index.php?id=39077</translation>
     </message>
     <message>
         <source>No proxy</source>
@@ -2671,10 +2687,6 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Please try again.</source>
         <translation>Пожалуйста, попробуйте еще раз.</translation>
-    </message>
-    <message>
-        <source>FREE_CERT_EXCEEDED</source>
-        <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/rus/access&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>
