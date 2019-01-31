@@ -2620,6 +2620,10 @@ Kontrollkood: %1</translation>
         <source>Ask role and address info on signing</source>
         <translation>Küsi rolli ja aadressi igal allkirjastamisel</translation>
     </message>
+    <message>
+        <source>Digidoc4 client configuration and TSL update was successful.</source>
+        <translation>Digidoc4 kliendi konfiguratsiooni ja TSL värskendamine õnnestus.</translation>
+    </message>
 
     <message>
         <source>Ignore server access certificate (IP based access)</source>

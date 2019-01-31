@@ -175,6 +175,11 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 
 #ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+		if(error.isEmpty())
+		{
+			QMessageBox::information(this, tr("DigiDoc4 Client"), tr("Digidoc4 client configuration and TSL update was successful."));
+			return;
+		}
 		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
 			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
 			QMessageBox::Ok, this);
@@ -202,10 +207,12 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect(ui->btnRefreshConfig, &QPushButton::clicked, this, [] {
 		Configuration::instance().update(true);
 		QString cache = qApp->confValue(Application::TSLCache).toString();
-		for(const QString &file: QDir(QStringLiteral(":/TSL/")).entryList())
+		const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
+		for(const QString &file: tsllist)
 		{
 			const QString target = cache + "/" + file;
-			for(const QString &rm: QDir(cache, file + QStringLiteral("*")).entryList())
+			const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
+			for(const QString &rm: cleanup)
 				QFile::remove(cache + "/" + rm);
 			QFile::copy(":/TSL/" + file, target);
 			QFile::setPermissions(target, QFile::Permissions(0x6444));
@@ -505,7 +512,7 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 		QNetworkProxyFactory::setUseSystemConfiguration(false);
 		QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy,
 			QString::fromStdString(conf->proxyHost()),
-			QString::fromStdString(conf->proxyPort()).toUInt(),
+			QString::fromStdString(conf->proxyPort()).toUShort(),
 			QString::fromStdString(conf->proxyUser()),
 			QString::fromStdString(conf->proxyPass())));
 		break;
