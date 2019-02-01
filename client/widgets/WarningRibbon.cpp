@@ -70,7 +70,7 @@ void WarningRibbon::setCount(int count)
 	if(ui->expanded)
 		ui->details->setText(tr("Less"));
 	else
-		ui->details->setText(tr("%n message", "", count));
+		ui->details->setText(tr("%n message", nullptr, count));
 }
 
 void WarningRibbon::changeEvent(QEvent* event)
