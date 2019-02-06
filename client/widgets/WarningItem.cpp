@@ -78,6 +78,9 @@ void WarningItem::lookupWarning()
 	case ria::qdigidoc4::CertExpiryWarning:
 		warnText.text = tr("Certificates expire soon!");
 		break;
+	case ria::qdigidoc4::CertRevokedWarning:
+		warnText.text = tr("Certificates are revoked!");
+		break;
 	case ria::qdigidoc4::UnblockPin1Warning:
 		warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(1);
 		warnText.details = QStringLiteral("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));

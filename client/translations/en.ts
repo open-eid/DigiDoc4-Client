@@ -1288,8 +1288,12 @@ ID-CARD</translation>
         <translation>CONTINUE</translation>
     </message>
     <message>
-        <source>Your ID-card certificates cannot be renewed starting from 01.07.2017.</source>
-        <translation>Your ID-card certificates cannot be renewed starting from 01.07.2017. Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
+        <source>Your ID-card certificates cannot be renewed starting from %1.</source>
+        <translation>Your ID-card certificates cannot be renewed starting from %1.</translation>
+    </message>
+    <message>
+        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
@@ -3191,6 +3195,10 @@ Additional licenses and components</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Certificates will expire soon!</translation>
+    </message>
+    <message>
+        <source>Certificates are revoked!</source>
+        <translation>Certificates are revoked!</translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>

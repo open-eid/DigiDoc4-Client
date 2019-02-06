@@ -102,6 +102,7 @@ enum WarningType {
 
     CertExpiredWarning,
     CertExpiryWarning,
+    CertRevokedWarning,
     UnblockPin1Warning,
     UnblockPin2Warning,
     UpdateCertWarning,

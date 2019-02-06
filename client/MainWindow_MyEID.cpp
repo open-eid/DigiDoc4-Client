@@ -87,6 +87,13 @@ bool MainWindow::checkExpiration()
 
 	if(expiresIn <= 0)
 		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
+	else if(qApp->smartcard()->data().version() >= QSmartCardData::VER_3_5 &&
+		qApp->smartcard()->data().version() < QSmartCardData::VER_IDEMIA &&
+		qApp->smartcard()->data().authCert().publicKey().algorithm() == QSsl::Rsa)
+	{
+		warnings->showWarning(WarningText(WarningType::CertRevokedWarning));
+		return true;
+	}
 	else if(expiresIn <= 105)
 		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
 
@@ -248,6 +255,24 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 	return false;
 }
 
+void MainWindow::showIdCardAlerts(const QSmartCardData& t)
+{
+	if(qApp->smartcard()->property("lastcard").toString() == t.card())
+		return;
+	qApp->smartcard()->setProperty("lastcard", t.card());
+	if(!t.authCert().isValid() || !t.signCert().isValid())
+		return;
+	if(t.version() == QSmartCardData::VER_3_4 &&
+		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
+		qApp->showWarning(tr("Your ID-card certificates cannot be renewed starting from %1.").arg(QStringLiteral("01.07.2017")) + " " +
+			tr("Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. "
+				"If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit "
+				"Police and Border Guard Board service point.<br /><br /><a href=\"http://id.ee/?id=30519&read=38011\">More info</a>"));
+	if(t.version() == QSmartCardData::VER_3_5 &&
+		t.authCert().publicKey().algorithm() == QSsl::Rsa)
+		qApp->showWarning(tr("Your ID-card certificates cannot be renewed starting from %1.").arg(QStringLiteral("01.04.2018")));
+}
+
 void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
 	QString textColor = isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739");
@@ -327,17 +352,33 @@ void MainWindow::removeOldCert()
 void MainWindow::updateCardWarnings()
 {
 	bool showWarning = false;
-	if(isUpdateCertificateNeeded())
+	if(checkExpiration())
+		showWarning = true;
+	else if(isUpdateCertificateNeeded())
 	{
 		showWarning = true;
 		showUpdateCertWarning(qApp->smartcard()->data().reader());
 	}
-	if(checkExpiration())
-		showWarning = true;
 
 	if(!showWarning && !qApp->smartcard()->data().isNull())
 		showWarning = qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 			qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 			qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0;
 	ui->myEid->warningIcon(showWarning);
+}
+
+void MainWindow::updateMyEid()
+{
+	Application::restoreOverrideCursor();
+	QSmartCardData t = qApp->smartcard()->data();
+
+	if(!t.card().isEmpty() && (!t.authCert().isNull() || !t.signCert().isNull()))
+	{
+		ui->infoStack->update(t);
+		ui->accordion->updateInfo(qApp->smartcard());
+		ui->myEid->invalidIcon(!t.authCert().isValid() || !t.authCert().isValid());
+		updateCardWarnings();
+		showIdCardAlerts(t);
+		showPinBlockedWarning(t);
+	}
 }

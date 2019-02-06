@@ -24,7 +24,7 @@ bool WarningList::appearsOnPage(WarningItem *warning, int page) const
 
 void WarningList::clearMyEIDWarnings()
 {
-	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning, PictureLoadingWarning};
+	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, CertRevokedWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning, PictureLoadingWarning};
 	for(auto warning: warnings)
 	{
 		if(warningTypes.contains(warning->warningType()) || warning->page() == MyEid)
