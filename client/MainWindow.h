@@ -90,7 +90,6 @@ private:
 	void adjustDrops();
 	void browseOnDisk(const QString &fileName);
 	QSet<QString> cards() const;
-	bool checkExpiration();
 	void clearOverlay();
 	void containerToEmail(const QString &fileName);
 	void convertToBDoc();
@@ -99,7 +98,6 @@ private:
 	bool decrypt();
 	bool encrypt();
 	void hideCardPopup();
-	bool isUpdateCertificateNeeded();
 	void loadPicture();
 	void moveCryptoContainer();
 	void moveSignatureContainer();
@@ -129,13 +127,11 @@ private:
 	void showSettings(int page);
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
-	void updateCardData();
 	void updateCardWarnings();
 	void updateCertificate(const QString &readerName);
 	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showUpdateCertWarning(const QString &readerName);
-	void showIdCardAlerts(const QSmartCardData& t);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(const QList<CKey> &keys);
 	bool wrap(const QString& wrappedFile, bool enclose);

@@ -3085,6 +3085,10 @@ Additional licenses and components</translation>
         <translation>Certificate has expired!</translation>
     </message>
     <message>
+        <source>Certificate is revoked!</source>
+        <translation>Certificate is revoked!</translation>
+    </message>
+    <message>
         <source>Certificate%1is valid%2 until %3</source>
         <translation>Certificate%1is valid%2 until %3</translation>
     </message>
@@ -3119,6 +3123,10 @@ Additional licenses and components</translation>
     <message>
         <source>%1Check the details of the certificate%2</source>
         <translation>%1Check the details of the certificate%2</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
+        <translation>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
