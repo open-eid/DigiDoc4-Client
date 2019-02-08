@@ -1082,6 +1082,11 @@ E-TEMPLIGA</translation>
         <translation>DEKRÜPTEERI
 ID-KAARDIGA</translation>
     </message>
+    <message>
+        <source>DecryptToken</source>
+        <translation>DEKRÜPTEERI
+E-TEMPLIGA</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

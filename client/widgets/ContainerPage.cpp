@@ -275,7 +275,7 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
 	}
 	mainAction->update(actions);
-	mainAction->setButtonEnabled(!isExpired || actions.contains(DecryptContainer) || actions.contains(EncryptContainer));
+	mainAction->setButtonEnabled(!isExpired || actions.contains(DecryptContainer) || actions.contains(DecryptToken) ||actions.contains(EncryptContainer));
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
 	ui->navigationArea->layout()->invalidate();
 }
@@ -375,6 +375,8 @@ void ContainerPage::updateDecryptionButton()
 {
 	if(!canDecrypt || cardInReader.isNull())
 		hideMainAction();
+	else if(seal)
+		showMainAction({ DecryptToken });
 	else
 		showMainAction({ DecryptContainer });
 }

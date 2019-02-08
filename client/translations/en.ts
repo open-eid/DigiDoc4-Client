@@ -1082,6 +1082,11 @@ E-SEAL</translation>
         <translation>DECRYPT WITH
 ID-CARD</translation>
     </message>
+    <message>
+        <source>DecryptToken</source>
+        <translation>DECRYPT WITH
+E-SEAL</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

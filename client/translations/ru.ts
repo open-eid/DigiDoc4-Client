@@ -1083,6 +1083,11 @@ ID-КАРТОЙ</translation>
         <translation>РАСШИФРОВАТЬ
 С ID-КАРТОЙ</translation>
     </message>
+    <message>
+        <source>DecryptToken</source>
+        <translation>РАСШИФРОВАТЬ
+Э-ПЕЧАТЬЮ</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -2543,10 +2548,6 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Select the default directory</source>
         <translation>Выберите каталог</translation>
-    </message>
-    <message>
-        <source>Default file type</source>
-        <translation type="vanished">Формат файла по умолчанию</translation>
     </message>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>

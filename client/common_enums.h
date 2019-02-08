@@ -53,6 +53,7 @@ enum Actions {
 
     EncryptContainer,
     DecryptContainer,
+    DecryptToken,
 
     FileAdd,
     FileRemove,

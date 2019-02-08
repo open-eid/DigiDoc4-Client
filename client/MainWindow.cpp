@@ -587,6 +587,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			convertToBDoc();
 		break;
 	case DecryptContainer:
+	case DecryptToken:
 		if(decrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, false);
