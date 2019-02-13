@@ -234,10 +234,7 @@ void MainWindow::pageSelected( PageIcon *const page )
 
 void MainWindow::adjustDrops()
 {
-	if(currentState() == SignedContainer)
-		setAcceptDrops(false);
-	else
-		setAcceptDrops(true);
+	setAcceptDrops(currentState() != SignedContainer);
 }
 
 void MainWindow::browseOnDisk( const QString &fileName )
@@ -254,15 +251,11 @@ void MainWindow::buttonClicked( int button )
 	switch( button )
 	{
 	case HeadHelp:
-	{
 		QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
 		break;
-	}
 	case HeadSettings:
-	{
 		showSettings(SettingsDialog::GeneralSettings);
 		break;
-	}
 	default:
 		break;
 	}
@@ -976,8 +969,6 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->update(*cardInfo);
 			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
-			ui->myEid->invalidIcon((!authCert.isNull() && !authCert.isValid()) || 
-				(!signCert.isNull() && !signCert.isValid()));
 			updateCardWarnings();
  		}
 	}
@@ -1135,12 +1126,6 @@ bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
 	return false;
 }
 
-void MainWindow::updateCardData()
-{
-	if(cardPopup)
-		cardPopup->update(qApp->signer()->cache());
-}
-
 void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 {
 	qCDebug(MLog) << "noReader_NoCard_Loading_Event" << status;
@@ -1277,14 +1262,6 @@ void MainWindow::savePhoto()
 	QFile f(fileName);
 	if(!f.open(QFile::WriteOnly) || f.write(pix) != pix.size())
 		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
-}
-
-void MainWindow::showUpdateCertWarning(const QString &readerName)
-{
-	emit ui->accordion->showCertWarnings();
-	WarningText text(WarningType::UpdateCertWarning);
-	text.url = readerName;
-	warnings->showWarning(text);
 }
 
 void MainWindow::containerToEmail( const QString &fileName )

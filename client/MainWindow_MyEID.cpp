@@ -73,33 +73,6 @@ void MainWindow::changePukClicked()
 	pinPukChange(QSmartCardData::PukType);
 }
 
-bool MainWindow::checkExpiration()
-{
-	qint64 expiresIn = 106;
-	for(const QSslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
-	{
-		if(!cert.isNull())
-		{
-			expiresIn = std::min<qint64>(expiresIn,
-				QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
-		}
-	}
-
-	if(expiresIn <= 0)
-		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
-	else if(qApp->smartcard()->data().version() >= QSmartCardData::VER_3_5 &&
-		qApp->smartcard()->data().version() < QSmartCardData::VER_IDEMIA &&
-		qApp->smartcard()->data().authCert().publicKey().algorithm() == QSsl::Rsa)
-	{
-		warnings->showWarning(WarningText(WarningType::CertRevokedWarning));
-		return true;
-	}
-	else if(expiresIn <= 105)
-		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
-
-	return (expiresIn <= 105);
-}
-
 void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 {
 	QString text = tr("%1 has been changed and the certificate has been unblocked!")
@@ -200,6 +173,14 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	return buffer;
 }
 
+void MainWindow::showUpdateCertWarning(const QString &readerName)
+{
+	emit ui->accordion->showCertWarnings();
+	WarningText text(WarningType::UpdateCertWarning);
+	text.url = readerName;
+	warnings->showWarning(text);
+}
+
 bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )
 {
 	QSmartCardData::PinType t = flags == 1025 ? QSmartCardData::PukType : type;
@@ -255,24 +236,6 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 	return false;
 }
 
-void MainWindow::showIdCardAlerts(const QSmartCardData& t)
-{
-	if(qApp->smartcard()->property("lastcard").toString() == t.card())
-		return;
-	qApp->smartcard()->setProperty("lastcard", t.card());
-	if(!t.authCert().isValid() || !t.signCert().isValid())
-		return;
-	if(t.version() == QSmartCardData::VER_3_4 &&
-		(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
-		qApp->showWarning(tr("Your ID-card certificates cannot be renewed starting from %1.").arg(QStringLiteral("01.07.2017")) + " " +
-			tr("Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. "
-				"If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit "
-				"Police and Border Guard Board service point.<br /><br /><a href=\"http://id.ee/?id=30519&read=38011\">More info</a>"));
-	if(t.version() == QSmartCardData::VER_3_5 &&
-		t.authCert().publicKey().algorithm() == QSsl::Rsa)
-		qApp->showWarning(tr("Your ID-card certificates cannot be renewed starting from %1.").arg(QStringLiteral("01.04.2018")));
-}
-
 void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
 	QString textColor = isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739");
@@ -304,33 +267,6 @@ void MainWindow::updateCertificate(const QString &readerName)
 #endif
 }
 
-bool MainWindow::isUpdateCertificateNeeded()
-{
-#ifdef CONFIG_URL
-	QSmartCardData t = qApp->smartcard()->data();
-
-	return
-		Settings(qApp->applicationName()).value(QStringLiteral("updateButton"), false).toBool() ||
-		(
-			t.version() >= QSmartCardData::VER_3_5 &&
-			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
-			t.isValid() &&
-			t.authCert().publicKey().algorithm() == QSsl::Ec &&
-			Configuration::instance().object().contains(QStringLiteral("EIDUPDATER-URL-DIGIID")) && (
-				(t.authCert().effectiveDate() < QDateTime(QDate(2018, 9, 28)) &&
-				 t.authCert().expiryDate().addYears(-3) < QDateTime(QDate(2018, 5, 1)) && (
-					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID E-RESIDENT)") ||
-					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID)")
-				)) ||
-				t.version() & QSmartCardData::VER_HASUPDATER ||
-				t.version() == QSmartCardData::VER_USABLEUPDATER
-			)
-		);
-#else
-	return false;
-#endif
-}
-
 void MainWindow::removeOldCert()
 {
 #ifdef Q_OS_WIN
@@ -351,20 +287,60 @@ void MainWindow::removeOldCert()
 
 void MainWindow::updateCardWarnings()
 {
-	bool showWarning = false;
-	if(checkExpiration())
-		showWarning = true;
-	else if(isUpdateCertificateNeeded())
+	QSmartCardData t = qApp->smartcard()->data();
+	qint64 expiresIn = 106;
+	for(const QSslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
 	{
-		showWarning = true;
-		showUpdateCertWarning(qApp->smartcard()->data().reader());
+		if(!cert.isNull())
+		{
+			expiresIn = std::min<qint64>(expiresIn,
+				QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
+		}
 	}
 
-	if(!showWarning && !qApp->smartcard()->data().isNull())
-		showWarning = qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
-			qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
-			qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0;
-	ui->myEid->warningIcon(showWarning);
+	if(!t.isNull())
+		ui->myEid->warningIcon(
+			t.retryCount( QSmartCardData::Pin1Type ) == 0 ||
+			t.retryCount( QSmartCardData::Pin2Type ) == 0 ||
+			t.retryCount( QSmartCardData::PukType ) == 0);
+	if(expiresIn <= 0)
+	{
+		ui->myEid->invalidIcon(true);
+		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
+	}
+	else if(t.version() >= QSmartCardData::VER_3_5 && t.version() < QSmartCardData::VER_IDEMIA &&
+		t.authCert().publicKey().algorithm() == QSsl::Rsa)
+	{
+		ui->myEid->invalidIcon(true);
+		warnings->showWarning(WarningText(WarningType::CertRevokedWarning));
+	}
+	else if(expiresIn <= 105)
+	{
+		ui->myEid->warningIcon(true);
+		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
+	}
+#ifdef CONFIG_URL
+	else if(Settings(qApp->applicationName()).value(QStringLiteral("updateButton"), false).toBool() ||
+		(
+			t.version() >= QSmartCardData::VER_3_5 &&
+			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
+			t.isValid() &&
+			t.authCert().publicKey().algorithm() == QSsl::Ec &&
+			Configuration::instance().object().contains(QStringLiteral("EIDUPDATER-URL-DIGIID")) && (
+				(t.authCert().effectiveDate() < QDateTime(QDate(2018, 9, 28)) &&
+				 t.authCert().expiryDate().addYears(-3) < QDateTime(QDate(2018, 5, 1)) && (
+					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID E-RESIDENT)") ||
+					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID)")
+				)) ||
+				t.version() & QSmartCardData::VER_HASUPDATER ||
+				t.version() == QSmartCardData::VER_USABLEUPDATER
+			)
+		))
+	{
+		ui->myEid->warningIcon(true);
+		showUpdateCertWarning(qApp->smartcard()->data().reader());
+	}
+#endif
 }
 
 void MainWindow::updateMyEid()
@@ -376,9 +352,16 @@ void MainWindow::updateMyEid()
 	{
 		ui->infoStack->update(t);
 		ui->accordion->updateInfo(qApp->smartcard());
-		ui->myEid->invalidIcon(!t.authCert().isValid() || !t.authCert().isValid());
 		updateCardWarnings();
-		showIdCardAlerts(t);
 		showPinBlockedWarning(t);
+		if(t.version() == QSmartCardData::VER_3_4 &&
+			t.authCert().isValid() && t.signCert().isValid() &&
+			(!t.authCert().validateEncoding() || !t.signCert().validateEncoding()))
+		{
+			qApp->showWarning(tr("Your ID-card certificates cannot be renewed starting from %1.").arg(QStringLiteral("01.07.2017")) + " " +
+				tr("Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. "
+					"If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit "
+					"Police and Border Guard Board service point.<br /><br /><a href=\"http://id.ee/?id=30519&read=38011\">More info</a>"));
+		}
 	}
 }
