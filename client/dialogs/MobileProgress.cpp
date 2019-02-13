@@ -246,7 +246,7 @@ void MobileProgress::sign( const DigiDoc *doc, const QString &ssid, const QStrin
 	r.writeParameter(QStringLiteral("IDCode"), ssid );
 	r.writeParameter(QStringLiteral("PhoneNo"), "+" + cell );
 	r.writeParameter(QStringLiteral("Language"), lang.value(Settings::language(), QStringLiteral("EST")));
-	r.writeParameter(QStringLiteral("ServiceName"), QStringLiteral("DigiDoc3"));
+	r.writeParameter(QStringLiteral("ServiceName"), QStringLiteral("DigiDoc4"));
 	QString title =  tr("Sign") + " " + QFileInfo( doc->fileName() ).fileName();
 	if( title.size() > 39 )
 	{
