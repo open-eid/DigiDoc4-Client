@@ -37,11 +37,10 @@ public:
 	};
 
 	explicit SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject *parent = nullptr);
-	~SSLConnect();
+	~SSLConnect() final;
 
 	QString errorString() const;
 	QByteArray getUrl(RequestType type, const QString &value = QString());
-	void showPopup(QFrame &popup, const QString &labelText);
 
 private:
 	class Private;
