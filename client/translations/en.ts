@@ -2653,6 +2653,14 @@ Control code: %1</translation>
         <translation>Enter server access certificate password.</translation>
     </message>
     <message>
+        <source>Select server access certificate</source>
+        <translation>Select server access certificate</translation>
+    </message>
+    <message>
+        <source>Invalid password</source>
+        <translation>Invalid password</translation>
+    </message>
+    <message>
         <source>Time Stamp server URL</source>
         <translation>Time Stamp server URL</translation>
     </message>

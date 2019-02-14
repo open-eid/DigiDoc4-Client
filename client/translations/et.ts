@@ -2638,6 +2638,14 @@ Kontrollkood: %1</translation>
         <translation>Sisesta juurdepääsutõendi parool.</translation>
     </message>
     <message>
+        <source>Select server access certificate</source>
+        <translation>Vali juurdepääsutõend</translation>
+    </message>
+    <message>
+        <source>Invalid password</source>
+        <translation>Vale parool</translation>
+    </message>
+    <message>
         <source>Time Stamp server URL</source>
         <translation>Ajatempli serveri URL</translation>
     </message>

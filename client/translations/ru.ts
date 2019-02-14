@@ -2642,6 +2642,14 @@ Kонтрольный код: %1</translation>
         <translation>Введите пароль для сертификата доступа.</translation>
     </message>
     <message>
+        <source>Select server access certificate</source>
+        <translation>Выберите сертификат доступа</translation>
+    </message>
+    <message>
+        <source>Invalid password</source>
+        <translation>Неверный пароль</translation>
+    </message>
+    <message>
         <source>Time Stamp server URL</source>
         <translation>URL-адрес сервера отметки времени</translation>
     </message>
