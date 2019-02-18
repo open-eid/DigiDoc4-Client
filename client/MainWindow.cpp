@@ -944,6 +944,7 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
+			ui->cardInfo->clearPicture();
 			warnings->clearMyEIDWarnings();
 		}
 
