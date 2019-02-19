@@ -53,6 +53,7 @@ public:
 
 	QString cryptoPath();
 	QString digiDocPath();
+	void showSettings(int page);
 
 signals:
 	void clearPopups();
@@ -124,7 +125,6 @@ private:
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
-	void showSettings(int page);
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardWarnings();
