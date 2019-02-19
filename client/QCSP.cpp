@@ -19,7 +19,6 @@
 
 #include "QCSP.h"
 
-#include <common/PinDialog.h>
 #include <common/TokenData.h>
 
 #include <QtCore/QDebug>

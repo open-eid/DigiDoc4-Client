@@ -21,7 +21,6 @@
 #include "ui_VerifyCert.h"
 #include "Styles.h"
 
-#include <common/PinDialog.h>
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
 

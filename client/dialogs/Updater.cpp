@@ -21,12 +21,12 @@
 #include "ui_Updater.h"
 #include "QSmartCard.h"
 #include "Styles.h"
+#include "dialogs/PinPopup.h"
 #include "effects/Overlay.h"
 
 #include "common/Common.h"
 #include "common/Configuration.h"
 #include "common/QPCSC.h"
-#include "common/PinDialog.h"
 #include "common/Settings.h"
 #include "common/SslCertificate.h"
 
@@ -234,9 +234,9 @@ QPCSCReader::Result Updater::Private::unblockPIN() const
 	{
 		QString error;
 		if(token & TokenData::PinFinalTry)
-			error = "<br /><font color='red'><b>" + PinDialog::tr("PIN will be locked next failed attempt") + "</b></font>";
+			error = "<br /><font color='red'><b>" + PinPopup::tr("PIN will be locked next failed attempt") + "</b></font>";
 		else if(token & TokenData::PinCountLow)
-			error = "<br /><font color='red'><b>" + PinDialog::tr("PIN has been entered incorrectly one time") + "</b></font>";
+			error = "<br /><font color='red'><b>" + PinPopup::tr("PIN has been entered incorrectly one time") + "</b></font>";
 		pukPageLabel->setText(text + error + "<br />");
 		Common::setAccessibleName(pukLabel);
 		Common::setAccessibleName(pin1Label);
@@ -302,19 +302,19 @@ QPCSCReader::Result Updater::Private::verifyPIN(const QString &title, int p1) co
 	QString text = "<b>" + title + "</b><br />";
 	if(p1 == 2)
 	{
-		text += PinDialog::tr("Selected action requires sign certificate.") + "<br />";
+		text += PinPopup::tr("Selected action requires sign certificate.") + "<br />";
 		text += reader->isPinPad() ?
-			PinDialog::tr("For using sign certificate enter PIN2 at the reader") :
-			PinDialog::tr("For using sign certificate enter PIN2");
+			PinPopup::tr("For using sign certificate enter PIN2 at the reader") :
+			PinPopup::tr("For using sign certificate enter PIN2");
 		regexp.setPattern(QStringLiteral("\\d{5,12}"));
 		pinType->setText(QStringLiteral("PIN2"));
 	}
 	else
 	{
-		text += PinDialog::tr("Selected action requires authentication certificate.") + "<br />";
+		text += PinPopup::tr("Selected action requires authentication certificate.") + "<br />";
 		text += reader->isPinPad() ?
-			PinDialog::tr("For using authentication certificate enter PIN1 at the reader") :
-			PinDialog::tr("For using authentication certificate enter PIN1");
+			PinPopup::tr("For using authentication certificate enter PIN1 at the reader") :
+			PinPopup::tr("For using authentication certificate enter PIN1");
 		regexp.setPattern(QStringLiteral("\\d{4,12}"));
 		pinType->setText(QStringLiteral("PIN1"));
 	}
@@ -344,9 +344,9 @@ QPCSCReader::Result Updater::Private::verifyPIN(const QString &title, int p1) co
 	{
 		QString error;
 		if(token & TokenData::PinFinalTry)
-			error = "<br /><font color='red'><b>" + PinDialog::tr("PIN will be locked next failed attempt") + "</b></font>";
+			error = "<br /><font color='red'><b>" + PinPopup::tr("PIN will be locked next failed attempt") + "</b></font>";
 		else if(token & TokenData::PinCountLow)
-			error = "<br /><font color='red'><b>" + PinDialog::tr("PIN has been entered incorrectly one time") + "</b></font>";
+			error = "<br /><font color='red'><b>" + PinPopup::tr("PIN has been entered incorrectly one time") + "</b></font>";
 		pinLabel->setText(text + error + "<br />");
 		Common::setAccessibleName(pinLabel);
 
