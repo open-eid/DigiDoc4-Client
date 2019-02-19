@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-Depends package: Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi
-msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR=C:\target
+Depends package: libdigidocpp-3.13.8.1379.msi
+msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 
-"%WIX%\bin\heat.exe dir "C:\target\Estonian ID Card Development\libdigidocpp\certs"
+"%WIX%\bin\heat.exe dir "C:\target\libdigidocpp\certs"
  -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
 
-"%WIX%\bin\candle.exe" qdigidoc.wxs CertsFragment.wxs -dMSI_VERSION=3.9.5
- -dlibs_path="C:\target\Estonian ID Card Development\libdigidocpp\x86"
- -dcertsLocation="C:\target\Estonian ID Card Development\libdigidocpp\certs"
- -dqt_path=C:\Qt\5.3\msvc2013
+"%WIX%\bin\candle.exe" qdigidoc4.wxs CertsFragment.wxs -dMSI_VERSION=4.2.1
+ -dlibs_path="C:\target\libdigidocpp\x86"
+ -dcertsLocation="C:\target\libdigidocpp\certs"
+ -dqt_path=C:\Qt\5.9\msvc2015
  -dclient_path=client\qdigidoc4.exe
 
-"%WIX%\bin\light.exe" -out qdigidoc.msi qdigidoc.wixobj CertsFragment.wixobj -v -ext WixUIExtension
+"%WIX%\bin\light.exe" -out qdigidoc4.msi qdigidoc4.wixobj CertsFragment.wixobj -v -ext WixUIExtension
 -->
 
 <?ifndef Platform ?>
@@ -26,12 +26,15 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?endif ?>
 
-<?if $(env.VisualStudioVersion) = "14.0" ?>
-<?define VCVER = "140" ?>
-<?define VCRT = "vcruntime" ?>
+<?if $(env.VisualStudioVersion) = "15.0" ?>
+  <?define VCRT = "$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC141.CRT\vcruntime140.dll"?>
+  <?define VCP = "$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC141.CRT\msvcp140.dll"?>
+<?elseif $(env.VisualStudioVersion) = "14.0" ?>
+  <?define VCRT = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC140.CRT\vcruntime140.dll" ?>
+  <?define VCP = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC140.CRT\msvcp140.dll"?>
 <?else?>
-<?define VCVER = "120" ?>
-<?define VCRT = "msvcr" ?>
+  <?define VCRT = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC120.CRT\msvcr120.dll" ?>
+  <?define VCP = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC120.CRT\msvcp120.dll"?>
 <?endif?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -150,8 +153,8 @@ msiexec /a Eesti_ID_kaart-CPP-teek-arendajale-3.10.0.3672.BETA.msi /qn TARGETDIR
               Name="digidoc.ini" Key="CA_CERT_PATH" Value="[APPLICATIONFOLDER]certs"/>
 <?endif?>
 <?ifdef var.qt_path ?>
-            <File Source="$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp$(var.VCVER).dll"/>
-            <File Source="$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\$(var.VCRT)$(var.VCVER).dll"/>
+            <File Source="$(var.VCP)"/>
+            <File Source="$(var.VCRT)"/>
             <File Source="$(var.ssl_path)\libeay32.dll"/>
             <File Source="$(var.ssl_path)\ssleay32.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
