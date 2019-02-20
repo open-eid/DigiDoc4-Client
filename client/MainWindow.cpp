@@ -132,7 +132,7 @@ MainWindow::MainWindow( QWidget *parent )
 	QWidget *separator = new QWidget(this);
 	separator->setFixedHeight(1);
 	separator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	separator->setStyleSheet(QString("background-color: #D9D9D9;"));
+	separator->setStyleSheet(QStringLiteral("background-color: #D9D9D9;"));
 	separator->resize(8000, 1);
 	separator->move(110, 0);
 	separator->show();
@@ -272,11 +272,10 @@ void MainWindow::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
 		ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
 			.arg(tr("Ver. "), qApp->applicationVersion()));
+		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
 	}
-
 	QWidget::changeEvent(event);
 }
 
@@ -351,7 +350,8 @@ void MainWindow::dropEvent(QDropEvent *event)
 
 	if (mimeData->hasUrls())
 	{
-		for(const auto &url: mimeData->urls())
+		const QList<QUrl> urls = mimeData->urls();
+		for(const QUrl &url: urls)
 		{
 			if(url.scheme() == QStringLiteral("file") && QFileInfo(url.toLocalFile()).isFile())
 				files << url.toLocalFile();
@@ -558,14 +558,14 @@ void MainWindow::moveCryptoContainer()
 {
 	QString to = selectFile(tr("Move file"),cryptoDoc->fileName(), true);
 	if(!to.isNull() && cryptoDoc->move(to))
-		ui->cryptoContainerPage->moved(to);
+		emit ui->cryptoContainerPage->moved(to);
 }
 
 void MainWindow::moveSignatureContainer()
 {
 	QString to = selectFile(tr("Move file"),digiDoc->fileName(), true);
 	if(!to.isNull() && digiDoc->move(to))
-		ui->signContainerPage->moved(to);
+		emit ui->signContainerPage->moved(to);
 }
 
 void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString &/*phone*/)
