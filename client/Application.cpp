@@ -30,7 +30,6 @@
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <common/AboutDialog.h>
 #include <common/Configuration.h>
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
@@ -871,9 +870,8 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 
 void Application::showAbout()
 {
-	AboutDialog *a = new AboutDialog( qApp->mainWindow() );
-	a->addAction( d->closeAction );
-	a->open();
+	if(MainWindow *w = qobject_cast<MainWindow*>(qApp->mainWindow()))
+		w->showSettings(SettingsDialog::LicenseSettings);
 }
 
 void Application::showClient(const QStringList &params, bool crypto, bool sign)
