@@ -1539,6 +1539,10 @@ Check if the ID-card is inserted correctly to the card reader.
 New ID-cards have chip on the back side of the card.</translation>
     </message>
     <message>
+        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
+        <translation>Connect the card reader to your computer and insert your ID card into the reader</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>

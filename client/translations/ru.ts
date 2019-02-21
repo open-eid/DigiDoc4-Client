@@ -1523,6 +1523,10 @@ New ID-cards have chip on the back side of the card.</source>
 У новых ID-карт чип находится на обратной стороне карты.</translation>
     </message>
     <message>
+        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
+        <translation>Подключите устройство чтения карт к компьютеру и вставьте ID-карту в устройство чтения</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>

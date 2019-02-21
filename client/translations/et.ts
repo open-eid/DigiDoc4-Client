@@ -1522,6 +1522,10 @@ Kontrolli, kas ID-kaart on õiget pidi lugejas.
 Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
     </message>
     <message>
+        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
+        <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>

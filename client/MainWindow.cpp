@@ -123,6 +123,8 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->signIntroButton->setFont( condensed14 );
 	ui->cryptoIntroLabel->setFont( regular20 );
 	ui->cryptoIntroButton->setFont( condensed14 );
+	ui->noCardInfo->setFont(condensed14);
+	ui->noReaderInfoText->setFont(regular20);
 
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
@@ -936,6 +938,7 @@ void MainWindow::showCardStatus()
 		ui->infoStack->show();
 		ui->accordion->show();
 		ui->noCardInfo->hide();
+		ui->noReaderInfo->hide();
 
 		qCDebug(MLog) << "Select card" << t.card();
 		auto cardInfo = qApp->signer()->cache()[t.card()];
@@ -1142,6 +1145,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->infoStack->hide();
 	ui->accordion->hide();
 	ui->accordion->clearOtherEID();
+	ui->noReaderInfo->setVisible(true);
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
 	warnings->clearMyEIDWarnings();
