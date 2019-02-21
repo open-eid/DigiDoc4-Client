@@ -22,8 +22,6 @@
 #include "dialogs/PinPopup.h"
 #include "dialogs/PinUnblock.h"
 
-#include <common/IKValidator.h>
-#include <common/PinDialog.h>
 #include <common/Settings.h>
 
 #include <QtCore/QDateTime>

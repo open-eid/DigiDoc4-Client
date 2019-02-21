@@ -23,7 +23,6 @@
 
 #include <common/Common.h>
 #include <common/Configuration.h>
-#include <common/SOAPDocument.h>
 #include <common/Settings.h>
 
 #include <QtCore/QJsonObject>
