@@ -205,7 +205,9 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 		dlg.exec();
 	});
 	connect(ui->btnRefreshConfig, &QPushButton::clicked, this, [] {
+#ifdef CONFIG_URL
 		Configuration::instance().update(true);
+#endif
 		QString cache = qApp->confValue(Application::TSLCache).toString();
 		const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
 		for(const QString &file: tsllist)
