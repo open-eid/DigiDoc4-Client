@@ -24,12 +24,15 @@
 #include "DigiDoc.h"
 #include "Styles.h"
 
+#include <common/Configuration.h>
 #include <common/Settings.h>
 #include <common/SOAPDocument.h>
 #include <common/SslCertificate.h>
 
-#include <QPushButton>
 #include <QtCore/QDir>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 #include <QtCore/QTimeLine>
 #include <QtCore/QTimer>
 #include <QtCore/QXmlStreamReader>
@@ -48,7 +51,6 @@ using namespace digidoc;
 
 MobileProgress::MobileProgress( QWidget *parent )
 	: QDialog(parent)
-	, taskbar(nullptr)
 {
 	mobileResults[QStringLiteral("START")] = tr("Signing in process");
 	mobileResults[QStringLiteral("REQUEST_OK")] = tr("Request accepted");
@@ -103,6 +105,11 @@ MobileProgress::MobileProgress( QWidget *parent )
 	connect(manager, &QNetworkAccessManager::sslErrors, this, &MobileProgress::sslErrors);
 
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+#ifdef CONFIG_URL
+	for(const QJsonValue &cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
+	ssl.setCaCertificates(QList<QSslCertificate>());
+#endif
 	if( !Application::confValue( Application::PKCS12Disable ).toBool() )
 	{
 		ssl.setPrivateKey( AccessCert::key() );
@@ -193,7 +200,7 @@ void MobileProgress::finished( QNetworkReply *reply )
 	labelError->setText( mobileResults.value( status ) );
 	if(status == QStringLiteral("OK") || status == QStringLiteral("REQUEST_OK") || status == QStringLiteral("OUTSTANDING_TRANSACTION"))
 	{
-		QTimer::singleShot(5*1000, this, SLOT(sendStatusRequest()));
+		QTimer::singleShot(5*1000, this, &MobileProgress::sendStatusRequest);
 		return;
 	}
 	stop();
@@ -294,14 +301,27 @@ void MobileProgress::sign( const DigiDoc *doc, const QString &ssid, const QStrin
 
 QByteArray MobileProgress::signature() const { return m_signature; }
 
-void MobileProgress::sslErrors( QNetworkReply * /*reply*/, const QList<QSslError> &err )
+void MobileProgress::sslErrors(QNetworkReply *reply, const QList<QSslError> &err)
 {
 	QStringList msg;
-	for( const QSslError &e: err )
+	QList<QSslError> ignore;
+	for(const QSslError &e: err)
 	{
-		qWarning() << tr("SSL Error:") << e.error() << e.certificate().subjectInfo( "CN" );
-		msg << e.errorString();
+		switch(e.error())
+		{
+		case QSslError::UnableToGetLocalIssuerCertificate:
+		case QSslError::CertificateUntrusted:
+			if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
+				ignore << e;
+				break;
+			}
+		default:
+			qWarning() << tr("SSL Error:") << e.error() << e.certificate().subjectInfo( "CN" );
+			msg << e.errorString();
+			break;
+		}
 	}
+	reply->ignoreSslErrors(ignore);
 	if( !msg.empty() )
 	{
 		msg.prepend( tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades.") );
