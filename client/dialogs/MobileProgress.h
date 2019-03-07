@@ -36,7 +36,7 @@ class MobileProgress : public QDialog, private Ui::MobileProgress
 	Q_OBJECT
 
 public:
-	explicit MobileProgress( QWidget *parent = 0 );
+	explicit MobileProgress(QWidget *parent = nullptr);
 
 	void setSignatureInfo( const QString &city, const QString &state,
 		const QString &zip, const QString &country, const QString &role );
@@ -44,21 +44,20 @@ public:
 	QByteArray signature() const;
 	void stop();
 
-private Q_SLOTS:
+private:
+	void endProgress(const QString &msg);
 	void finished( QNetworkReply *reply );
 	void sendStatusRequest();
 	void sslErrors( QNetworkReply *reply, const QList<QSslError> &errors );
-
-private:
-	void endProgress(const QString &msg);
 	static bool isTest( const QString &ssid, const QString &cell );
 
-	QTimeLine *statusTimer;
-	QNetworkAccessManager *manager;
+	QTimeLine *statusTimer = nullptr;
+	QNetworkAccessManager *manager = nullptr;
 	QNetworkRequest request;
 	QStringList location;
 	QByteArray m_signature;
 	QString sessionCode;
 	QHash<QString,QString> mobileResults;
-	QWinTaskbarButton *taskbar;
+	QWinTaskbarButton *taskbar = nullptr;
+	QList<QSslCertificate> trusted;
 };
