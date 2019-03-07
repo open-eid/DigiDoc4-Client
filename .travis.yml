@@ -44,7 +44,7 @@ script: case ${TARGET} in
   *osx*)
     QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1);
     echo "Qt - ${QT_DIR}";
-    mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
+    mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DLDAP_ROOT=/tmp/OpenLDAP -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
     make zipdebug macdeployqt zip;
     cd .. && mkdir ../upload && cp build/qdigidoc4*.zip ../upload/;
     ;;

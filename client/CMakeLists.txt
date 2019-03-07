@@ -94,13 +94,14 @@ target_link_libraries( ${PROGNAME}
 	Qt5::PrintSupport
 	Qt5::Svg
 	${LIBDIGIDOCPP_LIBRARY}
+	${LDAP_LIBRARIES}
 )
 
 if( APPLE )
 	target_sources( ${PROGNAME} PRIVATE Application_mac.mm util/CertUtil_mac.mm )
 	set_source_files_properties( Application_mac.mm util/CertUtil_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework LDAP" )
+	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" )
 	set_target_properties( ${PROGNAME} PROPERTIES
 		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 	)
@@ -173,7 +174,7 @@ if( APPLE )
 elseif(WIN32)
 	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp )
 	find_package( Qt5 COMPONENTS WinExtras )
-	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Wldap32 Cryptui )
+	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Cryptui )
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
@@ -276,8 +277,7 @@ elseif(WIN32)
 	)
 else()
 	find_package( Threads REQUIRED )
-	find_package( Ldap REQUIRED )
-	target_link_libraries( ${PROGNAME} ${LDAP_LIBRARIES} Threads::Threads )
+	target_link_libraries( ${PROGNAME} Threads::Threads )
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
 	install( TARGETS ${PROGNAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
