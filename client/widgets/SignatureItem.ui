@@ -111,6 +111,9 @@ text-decoration: none solid rgb(0, 0, 0);</string>
        <property name="text">
         <string notr="true">Role / Resolution</string>
        </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
        <property name="wordWrap">
         <bool>true</bool>
        </property>
