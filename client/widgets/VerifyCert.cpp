@@ -185,7 +185,9 @@ void VerifyCert::update(bool showWarning)
 		txt = tr("The PUK code is located in your envelope");
 		changeBtn = tr("CHANGE PUK");
 		error = ( isBlockedPin ) ?
-			tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.")
+			tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
+				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "
+				"Please visit the service center to obtain new codes. <a href=\"http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/\">Additional information</a>.")
 			: QString();
 		ui->changePIN->setDisabled(cardData.version() == QSmartCardData::VER_USABLEUPDATER);
 		break;
