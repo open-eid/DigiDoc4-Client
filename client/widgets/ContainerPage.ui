@@ -22,9 +22,6 @@
     <height>334</height>
    </size>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -116,7 +113,7 @@ border: none;</string>
          <number>0</number>
         </property>
         <property name="text">
-         <string>C:\Downloads\Leping.bdoc</string>
+         <string notr="true">C:\Downloads\Leping.bdoc</string>
         </property>
         <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse</set>

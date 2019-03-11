@@ -10,12 +10,6 @@
     <height>474</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="minimumSize">
    <size>
     <width>460</width>
@@ -143,7 +137,7 @@ line-height: 24px;
 text-align: center;</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string notr="true">TextLabel</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -246,9 +240,6 @@ font-weight: 400;
 line-height: 14px;
 }</string>
    </property>
-   <property name="text">
-    <string/>
-   </property>
    <property name="echoMode">
     <enum>QLineEdit::Password</enum>
    </property>
@@ -293,7 +284,7 @@ line-height: 14px;
        <string notr="true">color: #353739;</string>
       </property>
       <property name="text">
-       <string>pin</string>
+       <string notr="true">pin</string>
       </property>
      </widget>
     </item>
@@ -394,7 +385,7 @@ line-height: 14px;
        <string notr="true">color: #353739;</string>
       </property>
       <property name="text">
-       <string>repeat</string>
+       <string notr="true">repeat</string>
       </property>
      </widget>
     </item>
@@ -473,7 +464,7 @@ font-weight: 400;
 text-align: cente</string>
    </property>
    <property name="text">
-    <string>Katseid jäänud:</string>
+    <string notr="true">Katseid jäänud:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -577,7 +568,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -604,7 +595,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -677,7 +668,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -704,7 +695,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -777,7 +768,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -804,7 +795,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -877,7 +868,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -904,7 +895,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -977,7 +968,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1004,7 +995,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1077,7 +1068,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1104,7 +1095,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1177,7 +1168,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1204,7 +1195,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1277,7 +1268,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>&amp;bull;</string>
+          <string notr="true">&amp;bull;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1304,7 +1295,7 @@ line-height: 16px;
 text-align: left;</string>
          </property>
          <property name="text">
-          <string>line1</string>
+          <string notr="true">line1</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1351,9 +1342,6 @@ font-size: 13px;
 color: #c53e3e;
 font-weight: 400;
 text-align: cente</string>
-   </property>
-   <property name="text">
-    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

@@ -10,12 +10,6 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <widget class="QStackedWidget" name="stack">
    <property name="geometry">
     <rect>
@@ -190,7 +184,7 @@ QPushButton:disabled {
       </font>
      </property>
      <property name="text">
-      <string>DIGIDOC</string>
+      <string notr="true">DIGIDOC</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -275,7 +269,7 @@ color: #353739;
 text-align: center;</string>
      </property>
      <property name="text">
-      <string>Vali suhtluskeel / Выберите язык / Select language:</string>
+      <string notr="true">Vali suhtluskeel / Выберите язык / Select language:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

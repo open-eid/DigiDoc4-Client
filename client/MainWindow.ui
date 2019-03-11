@@ -592,7 +592,7 @@ background-color: #023664;
          <string notr="true">color: #006EB5;</string>
         </property>
         <property name="text">
-         <string>version</string>
+         <string notr="true">version</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
