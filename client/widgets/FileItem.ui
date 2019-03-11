@@ -28,9 +28,6 @@
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">border: solid rgba(217, 217, 216, 0.45);
 border-width: 0px 0px 1px 0px; 
@@ -85,7 +82,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Dokument 1.pdf</string>
+      <string notr="true">Dokument 1.pdf</string>
      </property>
     </widget>
    </item>

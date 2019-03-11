@@ -22,9 +22,6 @@
     <height>250</height>
    </size>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">background-color: #ffffff;
 border: 1px solid #D9D9D8;
@@ -248,7 +245,7 @@ border: none;</string>
                <number>0</number>
               </property>
               <property name="text">
-               <string>Konteineri failid</string>
+               <string notr="true">Konteineri failid</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -358,7 +355,7 @@ QToolTip {
                   <string notr="true">border: none; color: #006EB5;</string>
                  </property>
                  <property name="text">
-                  <string>1</string>
+                  <string notr="true">1</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -525,7 +522,7 @@ QPushButton:disabled {
             <number>0</number>
            </property>
            <property name="text">
-            <string>+ LISA VEEL FAILE</string>
+            <string notr="true">+ LISA VEEL FAILE</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

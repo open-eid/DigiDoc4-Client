@@ -35,9 +35,6 @@
   <property name="focusPolicy">
    <enum>Qt::StrongFocus</enum>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">border: solid rgba(217, 217, 216, 0.45);
 border-width: 0px 0px 1px 0px;
@@ -202,7 +199,7 @@ text-decoration: none solid rgb(0, 0, 0);
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
+            <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -272,7 +269,7 @@ text-decoration: none solid rgb(0, 0, 0);
             <string notr="true">color: #75787B;</string>
            </property>
            <property name="text">
-            <string>ID-kaart</string>
+            <string notr="true">ID-kaart</string>
            </property>
           </widget>
          </item>

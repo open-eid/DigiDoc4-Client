@@ -103,7 +103,7 @@ color: #353739;</string>
       <string notr="true">color:#353739; border: none; background-color: #F0BF72;</string>
      </property>
      <property name="text">
-      <string>%n message</string>
+      <string notr="true">%n message</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

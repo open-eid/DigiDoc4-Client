@@ -16,9 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Certificate update</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">QDialog
 {

@@ -191,7 +191,7 @@ border-radius: 3px;
          <string notr="true">color: #041E42; background: none;</string>
         </property>
         <property name="text">
-         <string>MARI MAASIKAS MUSTIKAS</string>
+         <string notr="true">MARI MAASIKAS MUSTIKAS</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -254,7 +254,7 @@ border-radius: 3px;
           <string notr="true">color: #75787B; background: none;</string>
          </property>
          <property name="text">
-          <string>48405050123 |</string>
+          <string notr="true">48405050123 |</string>
          </property>
         </widget>
        </widget>

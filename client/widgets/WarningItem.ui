@@ -58,7 +58,7 @@ color: #353739;</string>
       <string notr="true">color:#353739; border: none; background-color: #F8DDA7;</string>
      </property>
      <property name="text">
-      <string>One signature is invalid</string>
+      <string notr="true">One signature is invalid</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -85,7 +85,7 @@ border: none;
 background-color: #F8DDA7;</string>
      </property>
      <property name="text">
-      <string>Click to resolve problem</string>
+      <string notr="true">Click to resolve problem</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>

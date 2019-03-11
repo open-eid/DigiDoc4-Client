@@ -87,7 +87,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         <string notr="true">border: none;</string>
        </property>
        <property name="text">
-        <string>MARI MAASIKAS MUSTIKAS - &lt;span style=&quot;color:#53c964&quot;&gt;Allkiri on kehtiv&lt;/span&gt;</string>
+        <string notr="true">MARI MAASIKAS MUSTIKAS - &lt;span style=&quot;color:#53c964&quot;&gt;Allkiri on kehtiv&lt;/span&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -109,7 +109,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         <string notr="true">border: none;</string>
        </property>
        <property name="text">
-        <string>Role / Resolution</string>
+        <string notr="true">Role / Resolution</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -131,7 +131,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         <string notr="true">border: none;</string>
        </property>
        <property name="text">
-        <string>48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
+        <string notr="true">48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
        </property>
       </widget>
      </item>

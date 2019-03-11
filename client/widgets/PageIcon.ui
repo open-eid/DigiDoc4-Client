@@ -22,9 +22,6 @@
     <height>110</height>
    </size>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
@@ -53,7 +50,7 @@
 border: none;</string>
    </property>
    <property name="text">
-    <string>PAGE</string>
+    <string notr="true">PAGE</string>
    </property>
    <property name="textFormat">
     <enum>Qt::AutoText</enum>

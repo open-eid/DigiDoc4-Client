@@ -71,7 +71,7 @@ QPushButton:disabled {
 }</string>
      </property>
      <property name="text">
-      <string>ALLKIRJASTA
+      <string notr="true">ALLKIRJASTA
 ID-KAARDIGA</string>
      </property>
     </widget>

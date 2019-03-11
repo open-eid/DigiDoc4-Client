@@ -31,9 +31,6 @@
     <height>300</height>
    </size>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
   <property name="styleSheet">
    <string notr="true">QDialog
 {
@@ -59,7 +56,7 @@ background-color: #FFFFFF;
     <string notr="true">color: #000000; border: none;</string>
    </property>
    <property name="text">
-    <string>&lt;b&gt;Mari Maasikas,&lt;/b&gt; 48405050123</string>
+    <string notr="true">&lt;b&gt;Mari Maasikas,&lt;/b&gt; 48405050123</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

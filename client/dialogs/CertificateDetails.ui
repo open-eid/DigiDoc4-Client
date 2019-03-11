@@ -167,9 +167,6 @@ span {
          <property name="readOnly">
           <bool>true</bool>
          </property>
-         <property name="text" stdset="0">
-          <string>&lt;b&gt;Selle sertifikaadi otstarve on:&lt;/b&gt;</string>
-         </property>
         </widget>
        </widget>
       </item>
