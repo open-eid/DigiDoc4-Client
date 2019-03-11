@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
-
 <context>
     <name>AccessCert</name>
     <message>
@@ -35,11 +34,8 @@
         <translation>You have reached the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
     </message>
 </context>
-
-
 <context>
     <name>Accordion</name>
-
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
         <translation>PIN/PUK CODES AND CERTIFICATES</translation>
@@ -49,11 +45,8 @@
         <translation>REDIRECTION OF EESTI.EE E-MAIL</translation>
     </message>
 </context>
-
-
 <context>
     <name>AddRecipients</name>
-
     <message>
         <source>Cancel</source>
         <translation>CANCEL</translation>
@@ -111,11 +104,8 @@
         <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
     </message>
 </context>
-
-
 <context>
     <name>AddressItem</name>
-
     <message>
         <source>Add</source>
         <translation>ADD</translation>
@@ -124,7 +114,6 @@
         <source>Added</source>
         <translation>ADDED</translation>
     </message>
-
     <message>
         <source> (Yourself)</source>
         <translation> (Yourself)</translation>
@@ -154,11 +143,8 @@
         <translation>Expires on</translation>
     </message>
 </context>
-
-
 <context>
     <name>Application</name>
-
     <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 client</translation>
@@ -216,11 +202,8 @@
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
     </message>
 </context>
-
-
 <context>
     <name>CardWidget</name>
-
     <message>
         <source>ID card in reader</source>
         <translation>ID-card in card reader</translation>
@@ -246,11 +229,8 @@
         <translation>e-Seal</translation>
     </message>
 </context>
-
-
 <context>
     <name>CertificateDetails</name>
-
     <message>
         <source>Certificate information</source>
         <translation>Certificate information</translation>
@@ -267,7 +247,6 @@
         <source>SAVE</source>
         <translation>SAVE</translation>
     </message>
-
     <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>This certificate is intended for following purpose(s):</translation>
@@ -292,8 +271,6 @@
         <source>To</source>
         <translation>To</translation>
     </message>
-
-
     <message>
         <source>Field</source>
         <translation>Field</translation>
@@ -354,7 +331,6 @@
         <source>Key usage</source>
         <translation>Key usage</translation>
     </message>
-
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
         <translation>Certificates (*.cer *.crt *.pem)</translation>
@@ -368,8 +344,6 @@
         <translation>Failed to save file</translation>
     </message>
 </context>
-
-
 <context>
     <name>CertificateHistory</name>
     <message>
@@ -384,7 +358,6 @@
         <source>REMOVE</source>
         <translation>REMOVE</translation>
     </message>
-
     <message>
         <source>Owner</source>
         <translation>Owner</translation>
@@ -418,11 +391,8 @@
         <translation>Other</translation>
     </message>
 </context>
-
-
 <context>
     <name>CheckConnection</name>
-
     <message>
         <source>Check proxy settings</source>
         <translation>Check proxy settings</translation>
@@ -436,11 +406,8 @@
         <translation>Cannot connect to certificate status service!</translation>
     </message>
 </context>
-
-
 <context>
     <name>ContainerPage</name>
-
     <message>
         <source>Envelope</source>
         <translation>Container:</translation>
@@ -510,11 +477,8 @@
         <translation>CONTINUE SIGNING</translation>
     </message>
 </context>
-
-
 <context>
     <name>CryptoDoc</name>
-
     <message>
         <source>Container is encrypted</source>
         <translation>Container is encrypted</translation>
@@ -556,11 +520,8 @@
         <translation>No recipients specified</translation>
     </message>
 </context>
-
-
 <context>
     <name>DigiDoc</name>
-
     <message>
         <source>Container is not open</source>
         <translation>Container is not open</translation>
@@ -644,11 +605,8 @@ The Information System Authority does not retain information regarding the files
         <translation>OK</translation>
     </message>
 </context>
-
-
 <context>
     <name>DocumentModel</name>
-
     <message>
         <source>Save</source>
         <translation>Save</translation>
@@ -682,18 +640,13 @@ The Information System Authority does not retain information regarding the files
         <translation>Internal error</translation>
     </message>
 </context>
-
-
 <context>
     <name>FileDialog</name>
-
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
     </message>
 </context>
-
-
 <context>
     <name>FileList</name>
     <message>
@@ -720,7 +673,6 @@ The Information System Authority does not retain information regarding the files
         <source>REPLACE ALL</source>
         <translation>REPLACE ALL</translation>
     </message>
-
     <message>
         <source>Select folder where files will be stored</source>
         <translation>Select folder where files will be stored</translation>
@@ -730,11 +682,8 @@ The Information System Authority does not retain information regarding the files
         <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
     </message>
 </context>
-
-
 <context>
     <name>FirstRun</name>
-
     <message>
         <source>Welcome to the Estonian eID application DigiDoc!</source>
         <translation>Welcome to the Estonian eID application DigiDoc!</translation>
@@ -864,11 +813,8 @@ The Information System Authority does not retain information regarding the files
         <translation>“My eID“ also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</translation>
     </message>
 </context>
-
-
 <context>
     <name>InfoStack</name>
-
     <message>
         <source>DOWNLOAD</source>
         <translation>LOAD PICTURE</translation>
@@ -909,7 +855,6 @@ The Information System Authority does not retain information regarding the files
         <source>DEVICE</source>
         <translation>DEVICE</translation>
     </message>
-
     <message>
         <source>SAVE THE PICTURE</source>
         <translation>SAVE THE PICTURE</translation>
@@ -935,16 +880,12 @@ The Information System Authority does not retain information regarding the files
         <translation>Expired</translation>
     </message>
 </context>
-
-
 <context>
     <name>ItemList</name>
-
     <message>
         <source>Search</source>
         <translation>SEARCH</translation>
     </message>
-
     <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Enter the personal code, institution or registry code</translation>
@@ -961,7 +902,6 @@ The Information System Authority does not retain information regarding the files
         <source>Add all</source>
         <translation>ADD ALL</translation>
     </message>
-
     <message>
         <source>Add recipients</source>
         <translation>Add recipients</translation>
@@ -970,7 +910,6 @@ The Information System Authority does not retain information regarding the files
         <source>Added recipients</source>
         <translation>Added recipients</translation>
     </message>
-
     <message>
         <source>Container is not signed</source>
         <translation>Container&apos;s signatures are missing</translation>
@@ -1014,11 +953,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Enter personal code, company or registry code</translation>
     </message>
 </context>
-
-
 <context>
     <name>KeyDialog</name>
-
     <message>
         <source>Encrypt for</source>
         <translation>Encrypt for</translation>
@@ -1072,11 +1008,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Issuer</translation>
     </message>
 </context>
-
-
 <context>
     <name>LdapSearch</name>
-
     <message>
         <source>Failed to init ldap</source>
         <translation>Failed to init ldap</translation>
@@ -1100,11 +1033,8 @@ LDAP server is unavailable.</translation>
         <translation>Error Code: %1 (%2)</translation>
     </message>
 </context>
-
-
 <context>
     <name>MainAction</name>
-
     <message>
         <source>SignatureMobile</source>
         <translation>SIGN WITH
@@ -1130,11 +1060,8 @@ E-SEAL</translation>
 ID-CARD</translation>
     </message>
 </context>
-
-
 <context>
     <name>MainWindow</name>
-
     <message>
         <source>Help</source>
         <translation>Help</translation>
@@ -1143,7 +1070,6 @@ ID-CARD</translation>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
-
     <message>
         <source>Drag file here for signing</source>
         <translation>Drag file here for signing or verification ...</translation>
@@ -1152,7 +1078,6 @@ ID-CARD</translation>
         <source>Open file for signing</source>
         <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
-
     <message>
         <source>Drag file here for encryption</source>
         <translation>Drag file here for encryption or decryption ...</translation>
@@ -1161,7 +1086,6 @@ ID-CARD</translation>
         <source>Open file for encryption</source>
         <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
-
     <message>
         <source>Unrecognized data</source>
         <translation>Unrecognized data</translation>
@@ -1214,8 +1138,6 @@ ID-CARD</translation>
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Photo (*.jpg);;All Files (*)</translation>
     </message>
-
-
     <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
@@ -1236,8 +1158,6 @@ ID-CARD</translation>
         <source>KEEP</source>
         <translation>KEEP</translation>
     </message>
-
-
     <message>
         <source>DO NOT SAVE</source>
         <translation>DO NOT SAVE</translation>
@@ -1266,7 +1186,6 @@ ID-CARD</translation>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
     </message>
-
     <message>
         <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
         <translation>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</translation>
@@ -1714,11 +1633,8 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Check internet connection</translation>
     </message>
 </context>
-
-
 <context>
     <name>MobileDialog</name>
-
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobiil-ID&lt;/b&gt;</translation>
@@ -1743,7 +1659,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>SIGN</source>
         <translation>SIGN</translation>
     </message>
-
     <message>
         <source>Personal code is not valid</source>
         <translation>Personal code is not valid</translation>
@@ -1833,16 +1748,12 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Invalid phone number! Please include correct country code.</translation>
     </message>
 </context>
-
-
 <context>
     <name>MobileProgress</name>
-
     <message>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
     </message>
-
     <message>
         <source>Signing in process</source>
         <translation>Signing in process</translation>
@@ -1940,11 +1851,8 @@ Control code: %1</translation>
         <translation>%v sec</translation>
     </message>
 </context>
-
-
 <context>
     <name>NoCardInfo</name>
-
     <message>
         <source>No card in reader</source>
         <translation>No card in card reader; check if ID card is inserted correctly</translation>
@@ -1962,11 +1870,8 @@ Control code: %1</translation>
         <translation>Loading data</translation>
     </message>
 </context>
-
-
 <context>
     <name>OtherData</name>
-
     <message>
         <source>@eesti.ee post</source>
         <translation>@eesti.ee post</translation>
@@ -2000,11 +1905,8 @@ Control code: %1</translation>
         <translation>not active</translation>
     </message>
 </context>
-
-
 <context>
     <name>PageIcon</name>
-
     <message>
         <source>SIGNATURE</source>
         <translation>SIGNATURE</translation>
@@ -2018,11 +1920,8 @@ Control code: %1</translation>
         <translation>My eID</translation>
     </message>
 </context>
-
-
 <context>
     <name>PinPopup</name>
-
     <message>
         <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
         <translation>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</translation>
@@ -2068,11 +1967,8 @@ Control code: %1</translation>
         <translation>Selected action requires authentication certificate.</translation>
     </message>
 </context>
-
-
 <context>
     <name>PinUnblock</name>
-
     <message>
         <source>VALID PUK CODE</source>
         <translation>CURRENT PUK CODE</translation>
@@ -2085,7 +1981,6 @@ Control code: %1</translation>
         <source>UNBLOCK</source>
         <translation>UNBLOCK</translation>
     </message>
-
     <message>
         <source>New PIN%1 must be different from current PIN%1.</source>
         <translation>New PIN%1 must be different from current PIN%1.</translation>
@@ -2202,8 +2097,6 @@ Control code: %1</translation>
         <source>PUK_BLOCKED_LINE4</source>
         <translation> </translation>
     </message>
-
-
     <message>
         <source>%1 unblocking</source>
         <translation>%1 unblocking</translation>
@@ -2236,7 +2129,6 @@ Control code: %1</translation>
         <source>Remaining attempts: %1</source>
         <translation>Remaining attempts:%1</translation>
     </message>
-
     <message>
         <source>New %1 code can&apos;t be increasing sequence</source>
         <translation>New %1 code can&apos;t be increasing sequence</translation>
@@ -2262,11 +2154,8 @@ Control code: %1</translation>
         <translation>Current %1 code and new %1 code must be different</translation>
     </message>
 </context>
-
-
 <context>
     <name>PrintSheet</name>
-
     <message>
         <source>SIGNED FILES</source>
         <translation>SIGNED FILES</translation>
@@ -2372,11 +2261,8 @@ Control code: %1</translation>
         <translation>NB! RESTRICTIONS</translation>
     </message>
 </context>
-
-
 <context>
     <name>QPKCS11</name>
-
     <message>
         <source>PIN Canceled</source>
         <translation>PIN Canceled</translation>
@@ -2402,11 +2288,8 @@ Control code: %1</translation>
         <translation>PKCS11 unknown error</translation>
     </message>
 </context>
-
-
 <context>
     <name>QSigner</name>
-
     <message>
         <source>Failed to load PKCS#11 module</source>
         <translation>Failed to load PKCS#11 module</translation>
@@ -2440,11 +2323,8 @@ Control code: %1</translation>
         <translation>Failed to decrypt document</translation>
     </message>
 </context>
-
-
 <context>
     <name>QSmartCard</name>
-
     <message>
         <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
         <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
@@ -2458,11 +2338,8 @@ Control code: %1</translation>
         <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
     </message>
 </context>
-
-
 <context>
     <name>RoleAddressDialog</name>
-
     <message>
         <source>Role / resolution</source>
         <translation>Role / resolution</translation>
@@ -2492,11 +2369,8 @@ Control code: %1</translation>
         <translation>Sign</translation>
     </message>
 </context>
-
-
 <context>
     <name>SSLConnect</name>
-
     <message>
         <source>Certificate is empty</source>
         <translation>Certificate is empty</translation>
@@ -2526,16 +2400,12 @@ Control code: %1</translation>
         <translation>SSL context is missing</translation>
     </message>
 </context>
-
-
 <context>
     <name>SettingsDialog</name>
-
     <message>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
-
     <message>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
@@ -2560,7 +2430,6 @@ Control code: %1</translation>
         <source>INFO</source>
         <translation>INFO</translation>
     </message>
-
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -2605,8 +2474,6 @@ Control code: %1</translation>
         <source>REFRESH CONFIGURATION</source>
         <translation>REFRESH CONFIGURATION</translation>
     </message>
-
-
     <message>
         <source>Language</source>
         <translation>Language</translation>
@@ -2647,7 +2514,6 @@ Control code: %1</translation>
         <source>Digidoc4 client configuration and TSL update was successful.</source>
         <translation>Digidoc4 client configuration and TSL update was successful.</translation>
     </message>
-
     <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Ignore server access certificate (IP based access)</translation>
@@ -2668,7 +2534,6 @@ Control code: %1</translation>
         <source>Time Stamp server URL</source>
         <translation>Time Stamp server URL</translation>
     </message>
-
     <message>
         <source>No proxy</source>
         <translation>No proxy</translation>
@@ -2705,7 +2570,6 @@ Control code: %1</translation>
         <source>The connection to certificate status service is successful!</source>
         <translation>Network settings are correct, certificate status service is accessible!</translation>
     </message>
-
     <message>
         <source>Base version:</source>
         <translation>Base version:</translation>
@@ -2718,7 +2582,6 @@ Control code: %1</translation>
         <source>%1 version %2, released %3%4</source>
         <translation>%1 version %2, released %3%4</translation>
     </message>
-
     <message>
         <source>Checking updates has failed.</source>
         <translation>Checking updates has failed.</translation>
@@ -2727,7 +2590,6 @@ Control code: %1</translation>
         <source>Please try again.</source>
         <translation>Please try again.</translation>
     </message>
-
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. Additional information is available from &lt;a href=&quot;http://www.id.ee/eng/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/eng/access&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2757,11 +2619,8 @@ In case of questions please contact our support via &lt;a href=&quot;https://id.
 Additional licenses and components</translation>
     </message>
 </context>
-
-
 <context>
     <name>SignatureDialog</name>
-
     <message>
         <source>Notice</source>
         <translation>Notice</translation>
@@ -2798,7 +2657,6 @@ Additional licenses and components</translation>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
     </message>
-
     <message>
         <source>Attribute</source>
         <translation>Attribute</translation>
@@ -2807,8 +2665,6 @@ Additional licenses and components</translation>
         <source>Value</source>
         <translation>Value</translation>
     </message>
-
-
     <message>
         <source>TECHNICAL INFORMATION</source>
         <translation>TECHNICAL INFORMATION</translation>
@@ -2942,11 +2798,8 @@ Additional licenses and components</translation>
         <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38499&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
     </message>
 </context>
-
-
 <context>
     <name>SignatureItem</name>
-
     <message>
         <source>Signature</source>
         <translation>Signature</translation>
@@ -3000,11 +2853,8 @@ Additional licenses and components</translation>
         <translation>OK</translation>
     </message>
 </context>
-
-
 <context>
     <name>Updater</name>
-
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -3061,7 +2911,6 @@ Additional licenses and components</translation>
         <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
         <translation>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</translation>
     </message>
-
     <message>
         <source>Request timed out</source>
         <translation>Request timed out</translation>
@@ -3087,11 +2936,8 @@ Additional licenses and components</translation>
         <translation>Failed to read certificate</translation>
     </message>
 </context>
-
-
 <context>
     <name>VerifyCert</name>
-
     <message>
         <source>Certificate has expired!</source>
         <translation>Certificate has expired!</translation>
@@ -3179,21 +3025,15 @@ Additional licenses and components</translation>
         <translation>PIN can be changed only using eToken utility</translation>
     </message>
 </context>
-
-
 <context>
     <name>WaitDialog</name>
-
     <message>
         <source>Decrypting</source>
         <translation>Decrypting</translation>
     </message>
 </context>
-
-
 <context>
     <name>WarningDialog</name>
-
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
@@ -3203,11 +3043,8 @@ Additional licenses and components</translation>
         <translation>Details</translation>
     </message>
 </context>
-
-
 <context>
     <name>WarningItem</name>
-
     <message>
         <source>Certificates have expired!</source>
         <translation>Certificates have expired!</translation>
@@ -3261,11 +3098,8 @@ Additional licenses and components</translation>
         <translation>More information</translation>
     </message>
 </context>
-
-
 <context>
     <name>WarningRibbon</name>
-
     <message numerus="yes">
         <source>%n message</source>
         <translation>
