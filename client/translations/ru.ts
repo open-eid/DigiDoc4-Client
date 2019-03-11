@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
-
 <context>
     <name>AccessCert</name>
-
     <message>
         <source>Failed to save server access certificate file to %1!
 %2</source>
@@ -36,11 +34,8 @@
         <translation>Вы использовали 10 бесплатных подписей. Согласно условиям использования услуги подтверждения действительности Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;услуги&lt;/a&gt;. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
     </message>
 </context>
-
-
 <context>
     <name>Accordion</name>
-
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
         <translation>PIN/PUK И СЕРТИФИКАТЫ</translation>
@@ -50,11 +45,8 @@
         <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
     </message>
 </context>
-
-
 <context>
     <name>AddRecipients</name>
-
     <message>
         <source>Cancel</source>
         <translation>ОТМЕНА</translation>
@@ -112,11 +104,8 @@
         <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
     </message>
 </context>
-
-
 <context>
     <name>AddressItem</name>
-
     <message>
         <source>Add</source>
         <translation>ДОБАВИТЬ</translation>
@@ -125,7 +114,6 @@
         <source>Added</source>
         <translation>Добавлен</translation>
     </message>
-
     <message>
         <source> (Yourself)</source>
         <translation> (Вы сами)</translation>
@@ -155,11 +143,8 @@
         <translation>Истекает</translation>
     </message>
 </context>
-
-
 <context>
     <name>Application</name>
-
     <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 клиент</translation>
@@ -217,11 +202,8 @@
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
     </message>
 </context>
-
-
 <context>
     <name>CardWidget</name>
-
     <message>
         <source>ID card in reader</source>
         <translation>В считывателе ID-карта</translation>
@@ -248,11 +230,8 @@
         <translation>э-Печать</translation>
     </message>
 </context>
-
-
 <context>
     <name>CertificateDetails</name>
-
     <message>
         <source>Certificate information</source>
         <translation>Информация о сертификате</translation>
@@ -366,8 +345,6 @@
         <translation>Не удалось сохранить файл</translation>
     </message>
 </context>
-
-
 <context>
     <name>CertificateHistory</name>
     <message>
@@ -415,11 +392,8 @@
         <translation>Неопределен</translation>
     </message>
 </context>
-
-
 <context>
     <name>CheckConnection</name>
-
     <message>
         <source>Check proxy settings</source>
         <translation>Проверте настройки прокси</translation>
@@ -433,11 +407,8 @@
         <translation>Услуга подтверждения действительности не доступна!</translation>
     </message>
 </context>
-
-
 <context>
     <name>ContainerPage</name>
-
     <message>
         <source>Envelope</source>
         <translation>Kонтейнер:</translation>
@@ -507,11 +478,8 @@
         <translation>ПОДПИСАТЬ</translation>
     </message>
 </context>
-
-
 <context>
     <name>CryptoDoc</name>
-
     <message>
         <source>Container is encrypted</source>
         <translation>Контейнер зашифрован</translation>
@@ -553,11 +521,8 @@
         <translation>Не выбрано ни одного получателя</translation>
     </message>
 </context>
-
-
 <context>
     <name>DigiDoc</name>
-
     <message>
         <source>Container is not open</source>
         <translation>Контейнер не открыт</translation>
@@ -641,11 +606,8 @@ The Information System Authority does not retain information regarding the files
         <translation>OK</translation>
     </message>
 </context>
-
-
 <context>
     <name>DocumentModel</name>
-
     <message>
         <source>Save</source>
         <translation>Сохранить</translation>
@@ -679,18 +641,13 @@ The Information System Authority does not retain information regarding the files
         <translation>Внутренняя ошибка</translation>
     </message>
 </context>
-
-
 <context>
     <name>FileDialog</name>
-
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
     </message>
 </context>
-
-
 <context>
     <name>FileList</name>
     <message>
@@ -717,7 +674,6 @@ The Information System Authority does not retain information regarding the files
         <source>REPLACE ALL</source>
         <translation>ЗАМЕНИТЬ ВСЕ</translation>
     </message>
-
     <message>
         <source>Select folder where files will be stored</source>
         <translation>Выберите папку для сохранения файлов</translation>
@@ -727,11 +683,8 @@ The Information System Authority does not retain information regarding the files
         <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
     </message>
 </context>
-
-
 <context>
     <name>FirstRun</name>
-
     <message>
         <source>Welcome to the Estonian eID application DigiDoc!</source>
         <translation>Добро пожаловать в Эстонское приложение eID DigiDoc!</translation>
@@ -861,11 +814,8 @@ The Information System Authority does not retain information regarding the files
         <translation>«Мой eID» дает хороший обзор вашей контактной информации и возможность переадресации электронной почты @eesti.ee на Ваш электронный адрес.</translation>
     </message>
 </context>
-
-
 <context>
     <name>InfoStack</name>
-
     <message>
         <source>DOWNLOAD</source>
         <translation>ЗАГРУЗИТЬ ФОТО</translation>
@@ -906,7 +856,6 @@ The Information System Authority does not retain information regarding the files
         <source>DEVICE</source>
         <translation>УСТРОЙСТВО</translation>
     </message>
-
     <message>
         <source>SAVE THE PICTURE</source>
         <translation>СОХРАНИТЬ ФОТО</translation>
@@ -932,11 +881,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Недействителен</translation>
     </message>
 </context>
-
-
 <context>
     <name>ItemList</name>
-
     <message>
         <source>Search</source>
         <translation>НАЙТИ</translation>
@@ -1008,11 +954,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Введите личный код, учреждение или код регистра</translation>
     </message>
 </context>
-
-
 <context>
     <name>KeyDialog</name>
-
     <message>
         <source>Encrypt for</source>
         <translation>Зашифровать получателю</translation>
@@ -1066,11 +1009,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Выдавший</translation>
     </message>
 </context>
-
-
 <context>
     <name>LdapSearch</name>
-
     <message>
         <source>Failed to init ldap</source>
         <translation>Инициализация LDAP неудалась</translation>
@@ -1094,11 +1034,8 @@ LDAP сервер недоступен.</translation>
         <translation>Код ошибки:%1 (%2)</translation>
     </message>
 </context>
-
-
 <context>
     <name>MainAction</name>
-
     <message>
         <source>SignatureMobile</source>
         <translation>ПОДПИСАТЬ С
@@ -1124,11 +1061,8 @@ ID-КАРТОЙ</translation>
 С ID-КАРТОЙ</translation>
     </message>
 </context>
-
-
 <context>
     <name>MainWindow</name>
-
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -1153,7 +1087,6 @@ ID-КАРТОЙ</translation>
         <source>Open file for encryption</source>
         <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
-
     <message>
         <source>Unrecognized data</source>
         <translation>Нераспознанные данные</translation>
@@ -1206,8 +1139,6 @@ ID-КАРТОЙ</translation>
         <source>Photo (*.jpg);;All Files (*)</source>
         <translation>Фото (*.jpg);;Все файлы (*)</translation>
     </message>
-
-
     <message>
         <source>Ver. </source>
         <translation>Вер. </translation>
@@ -1699,11 +1630,8 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Проверьте подключение к Интернету</translation>
     </message>
 </context>
-
-
 <context>
     <name>MobileDialog</name>
-
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Введите свой номер телефона для&lt;br/&gt;подписи с Mobiil-ID &lt;/b&gt;</translation>
@@ -1817,11 +1745,8 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Ошибка! Номер телефона должен содержать код страны.</translation>
     </message>
 </context>
-
-
 <context>
     <name>MobileProgress</name>
-
     <message>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
@@ -1923,11 +1848,8 @@ Kонтрольный код: %1</translation>
         <translation>%v сек</translation>
     </message>
 </context>
-
-
 <context>
     <name>NoCardInfo</name>
-
     <message>
         <source>No card in reader</source>
         <translation>В считывателе нет карты; проверьте, введена ли карточка правильно</translation>
@@ -1945,11 +1867,8 @@ Kонтрольный код: %1</translation>
         <translation>Данные считываются</translation>
     </message>
 </context>
-
-
 <context>
     <name>OtherData</name>
-
     <message>
         <source>@eesti.ee post</source>
         <translation>@eesti.ee почта</translation>
@@ -1983,11 +1902,8 @@ Kонтрольный код: %1</translation>
         <translation>неактивно</translation>
     </message>
 </context>
-
-
 <context>
     <name>PageIcon</name>
-
     <message>
         <source>SIGNATURE</source>
         <translation>ПОДПИСЬ</translation>
@@ -2001,11 +1917,8 @@ Kонтрольный код: %1</translation>
         <translation>Мой eID</translation>
     </message>
 </context>
-
-
 <context>
     <name>PinPopup</name>
-
     <message>
         <source>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</source>
         <translation>Для выбранного действия необходима идентификация личности.&lt;br/&gt;Для использования сертификата идентификации введите PIN1</translation>
@@ -2051,11 +1964,8 @@ Kонтрольный код: %1</translation>
         <translation>Данная операция требует сертификат идентификации.</translation>
     </message>
 </context>
-
-
 <context>
     <name>PinUnblock</name>
-
     <message>
         <source>VALID PUK CODE</source>
         <translation>ДЕЙСТВУЮЩИЙ PUK КОД</translation>
@@ -2068,7 +1978,6 @@ Kонтрольный код: %1</translation>
         <source>UNBLOCK</source>
         <translation>РАЗБЛОКИРОВАТЬ</translation>
     </message>
-
     <message>
         <source>New PIN%1 must be different from current PIN%1.</source>
         <translation>Новый PIN%1 должен отличаться от старого.</translation>
@@ -2157,7 +2066,6 @@ Kонтрольный код: %1</translation>
         <source>unblocked via the PUK code.</source>
         <translation>пока блокировка не снята PUK кодом.</translation>
     </message>
-
     <message>
         <source>PUK code is used for unblocking the certificates, when</source>
         <translation>PUK код - это код, разблокирующий заблокированные</translation>
@@ -2186,7 +2094,6 @@ Kонтрольный код: %1</translation>
         <source>PUK_BLOCKED_LINE4</source>
         <translation>ID-карты, это обратиться в &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро обслуживания&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
-
     <message>
         <source>%1 unblocking</source>
         <translation>%1 разблокирование</translation>
@@ -2219,7 +2126,6 @@ Kонтрольный код: %1</translation>
         <source>Remaining attempts: %1</source>
         <translation>Оставшиеся попытки: %1</translation>
     </message>
-
     <message>
         <source>New %1 code can&apos;t be increasing sequence</source>
         <translation>Новый %1 не может увеличиваться</translation>
@@ -2245,11 +2151,8 @@ Kонтрольный код: %1</translation>
         <translation>Новый %1 должен отличаться от старого %1</translation>
     </message>
 </context>
-
-
 <context>
     <name>PrintSheet</name>
-
     <message>
         <source>SIGNED FILES</source>
         <translation>ПОДПИСАННЫЕ ФАЙЛЫ</translation>
@@ -2355,11 +2258,8 @@ Kонтрольный код: %1</translation>
         <translation>NB! ОГРАНИЧЕНИЯ</translation>
     </message>
 </context>
-
-
 <context>
     <name>QPKCS11</name>
-
     <message>
         <source>PIN Canceled</source>
         <translation>PIN-код отменен</translation>
@@ -2385,11 +2285,8 @@ Kонтрольный код: %1</translation>
         <translation>Неизвестная ошибка PKCS11</translation>
     </message>
 </context>
-
-
 <context>
     <name>QSigner</name>
-
     <message>
         <source>Failed to load PKCS#11 module</source>
         <translation>Неудачная загрузка модуля PKCS#11</translation>
@@ -2423,11 +2320,8 @@ Kонтрольный код: %1</translation>
         <translation>Не удалось расшифровать документ</translation>
     </message>
 </context>
-
-
 <context>
     <name>QSmartCard</name>
-
     <message>
         <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
         <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
@@ -2441,11 +2335,8 @@ Kонтрольный код: %1</translation>
         <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
     </message>
 </context>
-
-
 <context>
     <name>RoleAddressDialog</name>
-
     <message>
         <source>Role / resolution</source>
         <translation>Роль / pезолюция</translation>
@@ -2475,11 +2366,8 @@ Kонтрольный код: %1</translation>
         <translation>Подписать</translation>
     </message>
 </context>
-
-
 <context>
     <name>SSLConnect</name>
-
     <message>
         <source>Certificate is empty</source>
         <translation>Сертификат пустой</translation>
@@ -2509,11 +2397,8 @@ Kонтрольный код: %1</translation>
         <translation>Отсутствует контекст SSL</translation>
     </message>
 </context>
-
-
 <context>
     <name>SettingsDialog</name>
-
     <message>
         <source>Settings</source>
         <translation>Настройки</translation>
@@ -2590,8 +2475,6 @@ Kонтрольный код: %1</translation>
         <source>REFRESH CONFIGURATION</source>
         <translation>ПРОВЕРЬТЕ ОБНОВЛЕНИЯ</translation>
     </message>
-
-
     <message>
         <source>Language</source>
         <translation>Язык</translation>
@@ -2636,7 +2519,6 @@ Kонтрольный код: %1</translation>
         <source>Digidoc4 client configuration and TSL update was successful.</source>
         <translation>Обновление конфигурации программы DigiDoc4 и TSL удачно завершено.</translation>
     </message>
-
     <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Игнорировать справку доступа (доступ по IP)</translation>
@@ -2657,7 +2539,6 @@ Kонтрольный код: %1</translation>
         <source>Time Stamp server URL</source>
         <translation>URL-адрес сервера отметки времени</translation>
     </message>
-
     <message>
         <source>No proxy</source>
         <translation>Прокси не используется</translation>
@@ -2694,7 +2575,6 @@ Kонтрольный код: %1</translation>
         <source>The connection to certificate status service is successful!</source>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>
-
     <message>
         <source>Base version:</source>
         <translation>Базовая версия:</translation>
@@ -2715,7 +2595,6 @@ Kонтрольный код: %1</translation>
         <source>Please try again.</source>
         <translation>Пожалуйста, попробуйте еще раз.</translation>
     </message>
-
     <message>
         <source>FREE_CERT_EXCEEDED</source>
         <translation>Согласно условиям пользования услугой подтверждения действительности Вы можете пользоваться услугой в объеме не более 10 цифровых подписей в месяц. За дополнительной информацией обращайтесь по адресу &lt;a href=&quot;http://www.id.ee/rus/access&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/rus/access&lt;/span&gt;&lt;/a&gt;</translation>
@@ -2744,13 +2623,9 @@ Additional licenses and components</source>
 Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
     </message>
-
 </context>
-
-
 <context>
     <name>SignatureDialog</name>
-
     <message>
         <source>Notice</source>
         <translation>Предупреждение</translation>
@@ -2946,11 +2821,8 @@ Additional licenses and components</source>
         <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38500&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
 </context>
-
-
 <context>
     <name>SignatureItem</name>
-
     <message>
         <source>Signature</source>
         <translation>Подпись</translation>
@@ -3022,11 +2894,8 @@ Additional licenses and components</source>
         <translation>OK</translation>
     </message>
 </context>
-
-
 <context>
     <name>Updater</name>
-
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
@@ -3083,7 +2952,6 @@ Additional licenses and components</source>
         <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
         <translation>Чтобы разблокировать код PIN1 на ваш считыватель PIN-код, сначала необходимо ввести PUK-код, а затем новый код PIN1 дважды.</translation>
     </message>
-
     <message>
         <source>Request timed out</source>
         <translation>Истекло время запроса</translation>
@@ -3109,11 +2977,8 @@ Additional licenses and components</source>
         <translation>Не удалось прочитать сертификат</translation>
     </message>
 </context>
-
-
 <context>
     <name>VerifyCert</name>
-
     <message>
         <source>Certificate has expired!</source>
         <translation>Срок действия сертификата истек!</translation>
@@ -3191,21 +3056,15 @@ Additional licenses and components</source>
         <translation>Сертификат использован %1 раз</translation>
     </message>
 </context>
-
-
 <context>
     <name>WaitDialog</name>
-
     <message>
         <source>Decrypting</source>
         <translation>Расшифровка</translation>
     </message>
 </context>
-
-
 <context>
     <name>WarningDialog</name>
-
     <message>
         <source>CLOSE</source>
         <translation>ЗАКРЫТЬ</translation>
@@ -3215,11 +3074,8 @@ Additional licenses and components</source>
         <translation>Детали</translation>
     </message>
 </context>
-
-
 <context>
     <name>WarningItem</name>
-
     <message>
         <source>Certificates have expired!</source>
         <translation>Срок действия сертификатов истек!</translation>
@@ -3277,11 +3133,8 @@ Additional licenses and components</source>
         <translation>Дополнительная информация</translation>
     </message>
 </context>
-
-
 <context>
     <name>WarningRibbon</name>
-
     <message numerus="yes">
         <source>%n message</source>
         <translation>
