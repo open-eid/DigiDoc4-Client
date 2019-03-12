@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Server access certificate</source>
-        <translation>Juurdepääsutõend</translation>
+        <translation type="vanished">Juurdepääsutõend</translation>
     </message>
     <message>
         <source>Failed to save server access certificate file to KeyChain!</source>
@@ -103,6 +103,14 @@
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
     </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Lisa adressaadid</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Lisatud adressaadid</translation>
+    </message>
 </context>
 <context>
     <name>AddressItem</name>
@@ -132,7 +140,7 @@
     </message>
     <message>
         <source>Unknown ID</source>
-        <translation>Tundmatu ID</translation>
+        <translation type="vanished">Tundmatu ID</translation>
     </message>
     <message>
         <source>e-Seal</source>
@@ -147,7 +155,7 @@
     <name>Application</name>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 klient</translation>
+        <translation type="vanished">DigiDoc4 klient</translation>
     </message>
     <message>
         <source>Failed to initalize.</source>
@@ -187,19 +195,30 @@
     </message>
     <message>
         <source>ALLOW_ACCESS</source>
-        <translation>App Store rakenduste ligipääs failisüsteemile on piiratud ning kasutaja peab valima kataloogi millele rakendus ligi pääseb.&lt;br /&gt;Luba rakendusele kataloogile &apos;%1&apos; ligi pääseda või vali teine kataloog kuhu ümbrik salvestada.</translation>
+        <translation type="vanished">App Store rakenduste ligipääs failisüsteemile on piiratud ning kasutaja peab valima kataloogi millele rakendus ligi pääseb.&lt;br /&gt;Luba rakendusele kataloogile &apos;%1&apos; ligi pääseda või vali teine kataloog kuhu ümbrik salvestada.</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>KATKESTA</translation>
+        <translation type="vanished">KATKESTA</translation>
     </message>
     <message>
         <source>ALLOW</source>
-        <translation>LUBA</translation>
+        <translation type="vanished">LUBA</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
+    </message>
+</context>
+<context>
+    <name>CDocumentModel</name>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Faili &apos;%1&apos; salvestamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 klient</translation>
     </message>
 </context>
 <context>
@@ -390,6 +409,10 @@
         <source>Other</source>
         <translation>Muu</translation>
     </message>
+    <message>
+        <source>Used certificates</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CheckConnection</name>
@@ -450,19 +473,19 @@
     </message>
     <message>
         <source>NB! Invalid signature</source>
-        <translation>NB: Vigane allkiri</translation>
+        <translation type="vanished">NB: Vigane allkiri</translation>
     </message>
     <message>
         <source>NB! Status unknown</source>
-        <translation>NB! Staatus teadmata</translation>
+        <translation type="vanished">NB! Staatus teadmata</translation>
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Test allkiri</translation>
+        <translation type="vanished">NB! Test allkiri</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
-        <translation>NB! Allkiri on hoiatusega</translation>
+        <translation type="vanished">NB! Allkiri on hoiatusega</translation>
     </message>
     <message>
         <source>STARTING</source>
@@ -475,6 +498,10 @@
     <message>
         <source>CONTINUE SIGNING</source>
         <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 klient</translation>
     </message>
 </context>
 <context>
@@ -509,7 +536,7 @@
     </message>
     <message>
         <source>Container is not encrypted</source>
-        <translation>Turvaümbrik ei ole krüpteeritud</translation>
+        <translation type="vanished">Turvaümbrik ei ole krüpteeritud</translation>
     </message>
     <message>
         <source>Error parsing document</source>
@@ -609,19 +636,19 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <name>DocumentModel</name>
     <message>
         <source>Save</source>
-        <translation>Salvesta</translation>
+        <translation type="vanished">Salvesta</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Eemalda</translation>
+        <translation type="vanished">Eemalda</translation>
     </message>
     <message>
         <source>Failed remove document from container</source>
-        <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
+        <translation type="vanished">Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 klient</translation>
+        <translation type="vanished">DigiDoc4 klient</translation>
     </message>
     <message>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
@@ -904,11 +931,11 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     </message>
     <message>
         <source>Add recipients</source>
-        <translation>Adressaatide lisamine</translation>
+        <translation type="vanished">Adressaatide lisamine</translation>
     </message>
     <message>
         <source>Added recipients</source>
-        <translation>Lisatud adressaadid</translation>
+        <translation type="vanished">Lisatud adressaadid</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -940,7 +967,7 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     </message>
     <message>
         <source>Decrypted files</source>
-        <translation>Dekrüpteeritud failid</translation>
+        <translation type="vanished">Dekrüpteeritud failid</translation>
     </message>
     <message>
         <source>RECIPIENT_MESSAGE</source>
@@ -997,7 +1024,7 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="vanished">ID</translation>
     </message>
     <message>
         <source>Expires</source>
@@ -1031,6 +1058,14 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Veakood: %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Failed to set ldap version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to start ssl</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1123,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Unrecognized data</source>
-        <translation>Tundmatuid andmeid</translation>
+        <translation type="vanished">Tundmatuid andmeid</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1136,7 +1171,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Photo (*.jpg);;All Files (*)</source>
-        <translation>Foto (*.jpg);;Kõik failid (*)</translation>
+        <translation type="vanished">Foto (*.jpg);;Kõik failid (*)</translation>
     </message>
     <message>
         <source>Ver. </source>
@@ -1216,127 +1251,127 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
-        <translation>Sertifikaat ei ole sertifikaadipoes registreeritud. Registreeri kohe?</translation>
+        <translation type="vanished">Sertifikaat ei ole sertifikaadipoes registreeritud. Registreeri kohe?</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation>Allkiri</translation>
+        <translation type="vanished">Allkiri</translation>
     </message>
     <message>
         <source>Role</source>
-        <translation>Roll</translation>
+        <translation type="vanished">Roll</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation>Resolutsioon</translation>
+        <translation type="vanished">Resolutsioon</translation>
     </message>
     <message>
         <source>City</source>
-        <translation>Linn</translation>
+        <translation type="vanished">Linn</translation>
     </message>
     <message>
         <source>State</source>
-        <translation>Maakond</translation>
+        <translation type="vanished">Maakond</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation>Riik</translation>
+        <translation type="vanished">Riik</translation>
     </message>
     <message>
         <source>Zip</source>
-        <translation>Indeks</translation>
+        <translation type="vanished">Indeks</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Allkirjastan</translation>
+        <translation type="vanished">Allkirjastan</translation>
     </message>
     <message>
         <source>Add signature</source>
-        <translation>Lisa allkiri</translation>
+        <translation type="vanished">Lisa allkiri</translation>
     </message>
     <message>
         <source>Save container</source>
-        <translation>Salvesta ümbrik</translation>
+        <translation type="vanished">Salvesta ümbrik</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Eemalda</translation>
+        <translation type="vanished">Eemalda</translation>
     </message>
     <message>
         <source>Keep</source>
-        <translation>Jätan alles</translation>
+        <translation type="vanished">Jätan alles</translation>
     </message>
     <message>
         <source>Open container</source>
-        <translation>Ava ümbrik</translation>
+        <translation type="vanished">Ava ümbrik</translation>
     </message>
     <message>
         <source>This container is signed by you</source>
-        <translation>See ümbrik on Sinu poolt allkirjastatud</translation>
+        <translation type="vanished">See ümbrik on Sinu poolt allkirjastatud</translation>
     </message>
     <message>
         <source>You have not signed this container</source>
-        <translation>Sina pole seda ümbrikut allkirjastanud</translation>
+        <translation type="vanished">Sina pole seda ümbrikut allkirjastanud</translation>
     </message>
     <message>
         <source>Container is unsigned</source>
-        <translation>Ümbrik ei ole allkirjastatud</translation>
+        <translation type="vanished">Ümbrik ei ole allkirjastatud</translation>
     </message>
     <message>
         <source>Skip this intro</source>
-        <translation>Ära rohkem mulle seda sissejuhatust näita</translation>
+        <translation type="vanished">Ära rohkem mulle seda sissejuhatust näita</translation>
     </message>
     <message>
         <source>I want to:</source>
-        <translation>Ma tahan:</translation>
+        <translation type="vanished">Ma tahan:</translation>
     </message>
     <message>
         <source>Sign documents</source>
-        <translation>Allkirjastada dokumenti</translation>
+        <translation type="vanished">Allkirjastada dokumenti</translation>
     </message>
     <message>
         <source>Open signed document</source>
-        <translation>Vaadata allkirjastatud dokumenti</translation>
+        <translation type="vanished">Vaadata allkirjastatud dokumenti</translation>
     </message>
     <message>
         <source>Container content:</source>
-        <translation>Ümbriku sisu:</translation>
+        <translation type="vanished">Ümbriku sisu:</translation>
     </message>
     <message>
         <source>Container:</source>
-        <translation>Ümbrik:</translation>
+        <translation type="vanished">Ümbrik:</translation>
     </message>
     <message>
         <source>Use Mobile ID</source>
-        <translation>Kasuta Mobiil-ID</translation>
+        <translation type="vanished">Kasuta Mobiil-ID</translation>
     </message>
     <message>
         <source>Use ID-card</source>
-        <translation>Kasuta ID-kaarti</translation>
+        <translation type="vanished">Kasuta ID-kaarti</translation>
     </message>
     <message>
         <source>This container is </source>
-        <translation>See ümbrik on</translation>
+        <translation type="vanished">See ümbrik on</translation>
     </message>
     <message>
         <source>Mobile number:</source>
-        <translation>Telefoninumber:</translation>
+        <translation type="vanished">Telefoninumber:</translation>
     </message>
     <message>
         <source>Personal code:</source>
-        <translation>Isikukood:</translation>
+        <translation type="vanished">Isikukood:</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>
-        <translation>Isikukood on vigane</translation>
+        <translation type="vanished">Isikukood on vigane</translation>
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Test allkiri</translation>
+        <translation type="vanished">NB! Test allkiri</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Allkiri</numerusform>
             <numerusform>Allkirjad</numerusform>
         </translation>
@@ -1344,7 +1379,7 @@ ID-KAARDIGA</translation>
     <message numerus="yes">
         <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
 Should I keep the unsigned container or remove it?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Oled lisanud ümbrikusse %n faili, kuid pole neid allkirjastanud.
 Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
             <numerusform>Oled lisanud ümbrikusse %n faili, kuid pole neid allkirjastanud.
@@ -1353,32 +1388,32 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
     </message>
     <message>
         <source>You can not add files to signed document. Remove all signatures before adding files.</source>
-        <translation>Allkirjastatud ümbrikule ei saa lisada faile. Eemalda kõigepealt ümbrikult allkirjad.</translation>
+        <translation type="vanished">Allkirjastatud ümbrikule ei saa lisada faile. Eemalda kõigepealt ümbrikult allkirjad.</translation>
     </message>
     <message>
         <source>Sign certificate is not valid</source>
-        <translation>Allkirjastamise sertifikaat ei ole kehtiv</translation>
+        <translation type="vanished">Allkirjastamise sertifikaat ei ole kehtiv</translation>
     </message>
     <message>
         <source>Failed to start process &apos;%1&apos;</source>
-        <translation>Protsessi &apos;%1&apos; käivitamine ebaõnnestus</translation>
+        <translation type="vanished">Protsessi &apos;%1&apos; käivitamine ebaõnnestus</translation>
     </message>
     <message>
         <source>PIN is locked</source>
-        <translation>PIN on lukus</translation>
+        <translation type="vanished">PIN on lukus</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>Info</translation>
+        <translation type="vanished">Info</translation>
     </message>
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
+        <translation type="vanished">Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
     </message>
     <message>
         <source>File does not exists
 %1</source>
-        <translation>Valitud faili ei eksisteeri
+        <translation type="vanished">Valitud faili ei eksisteeri
 %1</translation>
     </message>
     <message>
@@ -1389,62 +1424,62 @@ Kas jätan allkirjastamata ümbriku alles või eemaldan selle?</numerusform>
     </message>
     <message>
         <source>Signing in process</source>
-        <translation>Toimub allkirjastamine</translation>
+        <translation type="vanished">Toimub allkirjastamine</translation>
     </message>
     <message>
         <source>I agree</source>
-        <translation>Nõustun</translation>
+        <translation type="vanished">Nõustun</translation>
     </message>
     <message>
         <source>Empty container</source>
-        <translation>Tühi ümbrik</translation>
+        <translation type="vanished">Tühi ümbrik</translation>
     </message>
     <message>
         <source>Cards</source>
-        <translation>Kaardid</translation>
+        <translation type="vanished">Kaardid</translation>
     </message>
     <message>
         <source>Languages</source>
-        <translation>Keeled</translation>
+        <translation type="vanished">Keeled</translation>
     </message>
     <message>
         <source>Card info</source>
-        <translation>Kaardi info</translation>
+        <translation type="vanished">Kaardi info</translation>
     </message>
     <message>
         <source>All fields are optional</source>
-        <translation>Väljade täitmine ei ole kohustuslik</translation>
+        <translation type="vanished">Väljade täitmine ei ole kohustuslik</translation>
     </message>
     <message>
         <source>Add file</source>
-        <translation>Lisa fail</translation>
+        <translation type="vanished">Lisa fail</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Salvesta</translation>
+        <translation type="vanished">Salvesta</translation>
     </message>
     <message>
         <source>Save files to disk</source>
-        <translation>Salvesta failid kettale</translation>
+        <translation type="vanished">Salvesta failid kettale</translation>
     </message>
     <message>
         <source>Send container to email</source>
-        <translation>Saada ümbrik e-postiga</translation>
+        <translation type="vanished">Saada ümbrik e-postiga</translation>
     </message>
     <message>
         <source>Browse container location</source>
-        <translation>Näita ümbriku asukohta kettal</translation>
+        <translation type="vanished">Näita ümbriku asukohta kettal</translation>
     </message>
     <message>
         <source>Encrypt document</source>
-        <translation>Krüpteeri dokument</translation>
+        <translation type="vanished">Krüpteeri dokument</translation>
     </message>
     <message>
         <source>No card in reader
 
 Check if the ID-card is inserted correctly to the reader.
 New ID-cards have chip on the back side of the card.</source>
-        <translation>Ei leitud ühtegi ID-kaarti
+        <translation type="vanished">Ei leitud ühtegi ID-kaarti
 
 Kontrolli, kas ID-kaart on õiget pidi lugejas.
 Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
@@ -1459,19 +1494,19 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
     </message>
     <message>
         <source>Signing not allowed.</source>
-        <translation>Allkirja andmine ei ole lubatud.</translation>
+        <translation type="vanished">Allkirja andmine ei ole lubatud.</translation>
     </message>
     <message>
         <source>Phone number with format 372XXXXXX</source>
-        <translation>Mobiiltelefoni number formaadis 3725xxxxx</translation>
+        <translation type="vanished">Mobiiltelefoni number formaadis 3725xxxxx</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>Isikukood</translation>
+        <translation type="vanished">Isikukood</translation>
     </message>
     <message>
         <source>Remember me</source>
-        <translation>Pea mind meeles</translation>
+        <translation type="vanished">Pea mind meeles</translation>
     </message>
     <message>
         <source>Documents (%1%2)</source>
@@ -1485,7 +1520,7 @@ BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https:
 DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation>Tere tulemast kasutama digitaalallkirjastamise tarkvara.&lt;br /&gt;&lt;br /&gt;
+        <translation type="vanished">Tere tulemast kasutama digitaalallkirjastamise tarkvara.&lt;br /&gt;&lt;br /&gt;
 Pea meeles, et digitaalne allkiri on Eesti seaduste kohaselt võrdne omakäelise allkirjaga. Digitaalseks allkirjastamiseks vajad kehtivate sertifikaatidega eID dokumenti (ID-kaart, Mobiil-ID, digi-ID, e-Residendi digi-ID, digitempel vms) ja toimivat internetiühendust.&lt;br /&gt;&lt;br /&gt;
 Enda tuvastamiseks kasuta koodi PIN1 ja allkirjastamiseks PIN2.&lt;br /&gt;&lt;br /&gt;
 BDOC – digitaalallkirja vaikimisi vorming Eestis. &lt;a href=&quot;https://www.ria.ee/ee/bdoc.html&quot;&gt;Lisainfo&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
@@ -1617,6 +1652,14 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <source>Check internet connection</source>
         <translation>Kontrolli internetiühendust</translation>
     </message>
+    <message>
+        <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
+        <translation>Foto (*.jpg);;Kõik failid (*)</translation>
+    </message>
+    <message>
+        <source>There was an error with request to Äriregister.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1654,83 +1697,83 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     </message>
     <message>
         <source>Signing in process</source>
-        <translation>Toimub allkirjastamine</translation>
+        <translation type="vanished">Toimub allkirjastamine</translation>
     </message>
     <message>
         <source>Request accepted</source>
-        <translation>Päring aktsepteeritud</translation>
+        <translation type="vanished">Päring aktsepteeritud</translation>
     </message>
     <message>
         <source>Request timeout</source>
-        <translation>Päringu kannatus katkes</translation>
+        <translation type="vanished">Päringu kannatus katkes</translation>
     </message>
     <message>
         <source>User denied or cancelled</source>
-        <translation>Kasutaja keeldus või katkestas</translation>
+        <translation type="vanished">Kasutaja keeldus või katkestas</translation>
     </message>
     <message>
         <source>Got signature</source>
-        <translation>Sain allkirja</translation>
+        <translation type="vanished">Sain allkirja</translation>
     </message>
     <message>
         <source>Request pending</source>
-        <translation>Päring ootel</translation>
+        <translation type="vanished">Päring ootel</translation>
     </message>
     <message>
         <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
+        <translation type="vanished">Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
     </message>
     <message>
         <source>Phone absent</source>
-        <translation>Telefon ei ole levis</translation>
+        <translation type="vanished">Telefon ei ole levis</translation>
     </message>
     <message>
         <source>Request sending error</source>
-        <translation>Päringu saatmise viga</translation>
+        <translation type="vanished">Päringu saatmise viga</translation>
     </message>
     <message>
         <source>SIM error</source>
-        <translation>SIM kaardi viga</translation>
+        <translation type="vanished">SIM kaardi viga</translation>
     </message>
     <message>
         <source>Service internal error</source>
-        <translation>Teenuse sisemine viga</translation>
+        <translation type="vanished">Teenuse sisemine viga</translation>
     </message>
     <message>
         <source>Signing with Mobile-ID</source>
-        <translation>Allkirjastan Mobiil-ID -ga</translation>
+        <translation type="vanished">Allkirjastan Mobiil-ID -ga</translation>
     </message>
     <message>
         <source>User is not a Mobile-ID client</source>
-        <translation>Kasutaja ei ole Mobiil-ID klient</translation>
+        <translation type="vanished">Kasutaja ei ole Mobiil-ID klient</translation>
     </message>
     <message>
         <source>ID and phone number do not match</source>
-        <translation>Isikukood ja telefoni number ei klapi</translation>
+        <translation type="vanished">Isikukood ja telefoni number ei klapi</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Allkirjastan</translation>
+        <translation type="vanished">Allkirjastan</translation>
     </message>
     <message>
         <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
-        <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
+        <translation type="vanished">Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
     </message>
     <message>
         <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
-        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
+        <translation type="vanished">Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
     </message>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
+        <translation type="vanished">Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
     </message>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
-        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
+        <translation type="vanished">Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
+        <translation type="vanished">Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
     </message>
 </context>
 <context>
@@ -1834,6 +1877,14 @@ Kontrollkood: %1</translation>
     <message>
         <source>%v sec</source>
         <translation>%v sek</translation>
+    </message>
+    <message>
+        <source>Signing with Mobile-ID</source>
+        <translation>Allkirjastan Mobiil-ID -ga</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjastan</translation>
     </message>
 </context>
 <context>
@@ -2247,6 +2298,13 @@ Kontrollkood: %1</translation>
     </message>
 </context>
 <context>
+    <name>QFileDialog</name>
+    <message>
+        <source>All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QPKCS11</name>
     <message>
         <source>PIN Canceled</source>
@@ -2355,10 +2413,21 @@ Kontrollkood: %1</translation>
     </message>
 </context>
 <context>
+    <name>SDocumentModel</name>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 klient</translation>
+    </message>
+    <message>
+        <source>Failed remove document from container</source>
+        <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
+    </message>
+</context>
+<context>
     <name>SSLConnect</name>
     <message>
         <source>Certificate is empty</source>
-        <translation>Sertifikaat on tühi</translation>
+        <translation type="vanished">Sertifikaat on tühi</translation>
     </message>
     <message>
         <source>Downloading picture</source>
@@ -2366,11 +2435,11 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Puudub internetiühendus!</translation>
+        <translation type="vanished">Puudub internetiühendus!</translation>
     </message>
     <message>
         <source>Invalid response</source>
-        <translation>Kehtetu vastus</translation>
+        <translation type="vanished">Kehtetu vastus</translation>
     </message>
     <message>
         <source>Loading Email info</source>
@@ -2378,11 +2447,15 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>Loading Mobile info</source>
-        <translation>Laadin Mobiil-ID seadeid</translation>
+        <translation type="vanished">Laadin Mobiil-ID seadeid</translation>
     </message>
     <message>
         <source>SSL context is missing</source>
-        <translation>SSL kontekst puudub</translation>
+        <translation type="vanished">SSL kontekst puudub</translation>
+    </message>
+    <message>
+        <source>Invalid Content-Type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2397,17 +2470,11 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>SIGNING</source>
-        <translation>ALLKIRJASTAMINE</translation>
+        <translation type="vanished">ALLKIRJASTAMINE</translation>
     </message>
     <message>
         <source>ACCESS CERTIFICATE</source>
-        <comment>not-win</comment>
         <translation>JUURDEPÄÄSUTÕEND</translation>
-    </message>
-    <message>
-        <source>ACCESS CERTIFICATE</source>
-        <comment>win</comment>
-        <translation>JUURDEPÄÄSUTŌEND</translation>
     </message>
     <message>
         <source>PROXY</source>
@@ -2427,15 +2494,15 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>https://installer.id.ee/?lang=eng</source>
-        <translation>https://installer.id.ee/?lang=est</translation>
+        <translation type="vanished">https://installer.id.ee/?lang=est</translation>
     </message>
     <message>
         <source>https://installer.id.ee/?lang=eng&amp;os=linux</source>
-        <translation>https://installer.id.ee/?lang=est&amp;os=linux</translation>
+        <translation type="vanished">https://installer.id.ee/?lang=est&amp;os=linux</translation>
     </message>
     <message>
         <source>NEW VERSION AVAILABLE</source>
-        <translation>UUS VERSIOON SAADAVAL</translation>
+        <translation type="vanished">UUS VERSIOON SAADAVAL</translation>
     </message>
     <message>
         <source>FIRST RUN</source>
@@ -2455,13 +2522,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
-        <comment>not-win</comment>
         <translation>NÄITA TÕENDIT</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <comment>win</comment>
-        <translation>NÄITA TŌENDIT</translation>
     </message>
     <message>
         <source>USE DEFAULT SETTINGS</source>
@@ -2619,6 +2680,38 @@ Additional licenses and components</source>
 Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
     </message>
+    <message>
+        <source>Select folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server access certificate error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text files (*.txt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed write to file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 klient</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
@@ -2676,7 +2769,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>is valid</source>
-        <translation>on kehtiv</translation>
+        <translation type="vanished">on kehtiv</translation>
     </message>
     <message>
         <source>Warnings</source>
@@ -2700,7 +2793,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>on teadmata</translation>
+        <translation type="vanished">on teadmata</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -2708,7 +2801,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>is not valid</source>
-        <translation>ei ole kehtiv</translation>
+        <translation type="vanished">ei ole kehtiv</translation>
     </message>
     <message>
         <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
@@ -2798,6 +2891,36 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>SIGNATURE_WARNING</source>
         <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/index.php?id=38498&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>is valid</source>
+        <comment>Timestamp</comment>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Signature</comment>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Timestamp</comment>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Signature</comment>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Timestamp</comment>
+        <translation>on teadmata</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Signature</comment>
+        <translation>on teadmata</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>
@@ -2823,15 +2946,15 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>is valid</source>
-        <translation>on kehtiv</translation>
+        <translation type="vanished">on kehtiv</translation>
     </message>
     <message>
         <source>is not valid</source>
-        <translation>ei ole kehtiv</translation>
+        <translation type="vanished">ei ole kehtiv</translation>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>on teadmata</translation>
+        <translation type="vanished">on teadmata</translation>
     </message>
     <message>
         <source>Signed on</source>
@@ -2852,6 +2975,36 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Signature</comment>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Timestamp</comment>
+        <translation>on kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Signature</comment>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Timestamp</comment>
+        <translation>ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Signature</comment>
+        <translation>on teadmata</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Timestamp</comment>
+        <translation>on teadmata</translation>
     </message>
 </context>
 <context>
@@ -2957,7 +3110,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>RENEW CERTIFICATE</source>
-        <translation>UUENDA SERTIFIKAAT</translation>
+        <translation type="vanished">UUENDA SERTIFIKAAT</translation>
     </message>
     <message>
         <source>UNBLOCK</source>
@@ -3013,11 +3166,21 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>
-        <translation>Sertifikaati on kasutatud %1 korda</translation>
+        <translation type="vanished">Sertifikaati on kasutatud %1 korda</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>
         <translation>PIN koodi saab muuta ainult e-Templi tarkvaraga</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <comment>pin1</comment>
+        <translation>Sertifikaati on kasutatud %1 korda</translation>
+    </message>
+    <message>
+        <source>key has been used %1 times</source>
+        <comment>pin2</comment>
+        <translation>Sertifikaati on kasutatud %1 korda</translation>
     </message>
 </context>
 <context>

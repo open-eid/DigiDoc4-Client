@@ -73,6 +73,13 @@ void ItemList::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
 	{
+		tr("Recipients");
+		tr("Encrypted files");
+		tr("Container is not signed");
+		tr("Content of the envelope");
+		tr("Container's signatures");
+		tr("Container's timestamps");
+		tr("Container's files");
 		ui->retranslateUi(this);
 
 		ui->listHeader->setText(tr(qPrintable(listText)));

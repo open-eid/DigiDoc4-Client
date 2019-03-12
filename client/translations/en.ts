@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Server access certificate</source>
-        <translation>Server access certificate</translation>
+        <translation type="vanished">Server access certificate</translation>
     </message>
     <message>
         <source>Failed to save server access certificate file to KeyChain!</source>
@@ -103,6 +103,14 @@
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
     </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Add recipients</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Added recipients</translation>
+    </message>
 </context>
 <context>
     <name>AddressItem</name>
@@ -132,7 +140,7 @@
     </message>
     <message>
         <source>Unknown ID</source>
-        <translation>Unknown ID</translation>
+        <translation type="vanished">Unknown ID</translation>
     </message>
     <message>
         <source>e-Seal</source>
@@ -147,7 +155,7 @@
     <name>Application</name>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <translation type="vanished">DigiDoc4 client</translation>
     </message>
     <message>
         <source>Failed to initalize.</source>
@@ -187,19 +195,30 @@
     </message>
     <message>
         <source>ALLOW_ACCESS</source>
-        <translation>App Store applications on macOS require user to explicitly give access to the file system.&lt;br /&gt;Allow access to folder &apos;%1&apos; or specify alternative location where to save the envelope.</translation>
+        <translation type="vanished">App Store applications on macOS require user to explicitly give access to the file system.&lt;br /&gt;Allow access to folder &apos;%1&apos; or specify alternative location where to save the envelope.</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>CANCEL</translation>
+        <translation type="vanished">CANCEL</translation>
     </message>
     <message>
         <source>ALLOW</source>
-        <translation>ALLOW</translation>
+        <translation type="vanished">ALLOW</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
+    </message>
+</context>
+<context>
+    <name>CDocumentModel</name>
+    <message>
+        <source>Failed to save file &apos;%1&apos;</source>
+        <translation>Failed to save file &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
     </message>
 </context>
 <context>
@@ -390,6 +409,10 @@
         <source>Other</source>
         <translation>Other</translation>
     </message>
+    <message>
+        <source>Used certificates</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CheckConnection</name>
@@ -450,19 +473,19 @@
     </message>
     <message>
         <source>NB! Invalid signature</source>
-        <translation>NB! Invalid signature</translation>
+        <translation type="vanished">NB! Invalid signature</translation>
     </message>
     <message>
         <source>NB! Status unknown</source>
-        <translation>NB! Status unknown</translation>
+        <translation type="vanished">NB! Status unknown</translation>
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Test signature</translation>
+        <translation type="vanished">NB! Test signature</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
-        <translation>NB! Signature contains warnings</translation>
+        <translation type="vanished">NB! Signature contains warnings</translation>
     </message>
     <message>
         <source>STARTING</source>
@@ -475,6 +498,10 @@
     <message>
         <source>CONTINUE SIGNING</source>
         <translation>CONTINUE SIGNING</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
     </message>
 </context>
 <context>
@@ -509,7 +536,7 @@
     </message>
     <message>
         <source>Container is not encrypted</source>
-        <translation>Container is not encrypted</translation>
+        <translation type="vanished">Container is not encrypted</translation>
     </message>
     <message>
         <source>Error parsing document</source>
@@ -609,19 +636,19 @@ The Information System Authority does not retain information regarding the files
     <name>DocumentModel</name>
     <message>
         <source>Save</source>
-        <translation>Save</translation>
+        <translation type="vanished">Save</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Remove</translation>
+        <translation type="vanished">Remove</translation>
     </message>
     <message>
         <source>Failed remove document from container</source>
-        <translation>Failed remove document from container</translation>
+        <translation type="vanished">Failed remove document from container</translation>
     </message>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <translation type="vanished">DigiDoc4 client</translation>
     </message>
     <message>
         <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
@@ -904,11 +931,11 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>Add recipients</source>
-        <translation>Add recipients</translation>
+        <translation type="vanished">Add recipients</translation>
     </message>
     <message>
         <source>Added recipients</source>
-        <translation>Added recipients</translation>
+        <translation type="vanished">Added recipients</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -940,7 +967,7 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>Decrypted files</source>
-        <translation>Decrypted files</translation>
+        <translation type="vanished">Decrypted files</translation>
     </message>
     <message>
         <source>RECIPIENT_MESSAGE</source>
@@ -997,7 +1024,7 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="vanished">ID</translation>
     </message>
     <message>
         <source>Expires</source>
@@ -1031,6 +1058,14 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Error Code: %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Failed to set ldap version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to start ssl</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1123,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>Unrecognized data</source>
-        <translation>Unrecognized data</translation>
+        <translation type="vanished">Unrecognized data</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1136,7 +1171,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>Photo (*.jpg);;All Files (*)</source>
-        <translation>Photo (*.jpg);;All Files (*)</translation>
+        <translation type="vanished">Photo (*.jpg);;All Files (*)</translation>
     </message>
     <message>
         <source>Ver. </source>
@@ -1144,7 +1179,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
-        <translation>You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</translation>
+        <translation type="vanished">You&apos;ve added %n file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</translation>
     </message>
     <message>
         <source>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</source>
@@ -1216,135 +1251,135 @@ ID-CARD</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
-        <translation>Certificate is not registered in the certificate store. Register now?</translation>
+        <translation type="vanished">Certificate is not registered in the certificate store. Register now?</translation>
     </message>
     <message>
         <source>Choose file to sign</source>
-        <translation>Choose file to signing or verification</translation>
+        <translation type="vanished">Choose file to signing or verification</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation>Signature</translation>
+        <translation type="vanished">Signature</translation>
     </message>
     <message>
         <source>Role</source>
-        <translation>Role</translation>
+        <translation type="vanished">Role</translation>
     </message>
     <message>
         <source>Resolution</source>
-        <translation>Resolution</translation>
+        <translation type="vanished">Resolution</translation>
     </message>
     <message>
         <source>City</source>
-        <translation>City</translation>
+        <translation type="vanished">City</translation>
     </message>
     <message>
         <source>State</source>
-        <translation>State</translation>
+        <translation type="vanished">State</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation>Country</translation>
+        <translation type="vanished">Country</translation>
     </message>
     <message>
         <source>Zip</source>
-        <translation>Zip</translation>
+        <translation type="vanished">Zip</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Sign</translation>
+        <translation type="vanished">Sign</translation>
     </message>
     <message>
         <source>Add signature</source>
-        <translation>Add signature</translation>
+        <translation type="vanished">Add signature</translation>
     </message>
     <message>
         <source>Save container</source>
-        <translation>Save container</translation>
+        <translation type="vanished">Save container</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Remove</translation>
+        <translation type="vanished">Remove</translation>
     </message>
     <message>
         <source>Keep</source>
-        <translation>Keep</translation>
+        <translation type="vanished">Keep</translation>
     </message>
     <message>
         <source>Open container</source>
-        <translation>Open container</translation>
+        <translation type="vanished">Open container</translation>
     </message>
     <message>
         <source>This container is signed by you</source>
-        <translation>This container is signed by you</translation>
+        <translation type="vanished">This container is signed by you</translation>
     </message>
     <message>
         <source>You have not signed this container</source>
-        <translation>You have not signed this container</translation>
+        <translation type="vanished">You have not signed this container</translation>
     </message>
     <message>
         <source>Container is unsigned</source>
-        <translation>Container is unsigned</translation>
+        <translation type="vanished">Container is unsigned</translation>
     </message>
     <message>
         <source>Skip this intro</source>
-        <translation>Skip this intro</translation>
+        <translation type="vanished">Skip this intro</translation>
     </message>
     <message>
         <source>I want to:</source>
-        <translation>I want to:</translation>
+        <translation type="vanished">I want to:</translation>
     </message>
     <message>
         <source>Sign documents</source>
-        <translation>Sign documents</translation>
+        <translation type="vanished">Sign documents</translation>
     </message>
     <message>
         <source>Open signed document</source>
-        <translation>Open signed document</translation>
+        <translation type="vanished">Open signed document</translation>
     </message>
     <message>
         <source>Container content:</source>
-        <translation>Container content:</translation>
+        <translation type="vanished">Container content:</translation>
     </message>
     <message>
         <source>Container:</source>
-        <translation>Container:</translation>
+        <translation type="vanished">Container:</translation>
     </message>
     <message>
         <source>Use Mobile ID</source>
-        <translation>Use Mobiil-ID</translation>
+        <translation type="vanished">Use Mobiil-ID</translation>
     </message>
     <message>
         <source>Use ID-card</source>
-        <translation>Use ID-card</translation>
+        <translation type="vanished">Use ID-card</translation>
     </message>
     <message>
         <source>This container is </source>
-        <translation>This container is </translation>
+        <translation type="vanished">This container is </translation>
     </message>
     <message>
         <source>Mobile number:</source>
-        <translation>Mobile number:</translation>
+        <translation type="vanished">Mobile number:</translation>
     </message>
     <message>
         <source>Personal code:</source>
-        <translation>Personal code:</translation>
+        <translation type="vanished">Personal code:</translation>
     </message>
     <message>
         <source>Personal code is not valid</source>
-        <translation>Personal code is not valid</translation>
+        <translation type="vanished">Personal code is not valid</translation>
     </message>
     <message>
         <source>NB! Test signature</source>
-        <translation>NB! Test signature</translation>
+        <translation type="vanished">NB! Test signature</translation>
     </message>
     <message>
         <source>NB! Invalid signature</source>
-        <translation>NB! Invalid signature</translation>
+        <translation type="vanished">NB! Invalid signature</translation>
     </message>
     <message numerus="yes">
         <source>Signature(s)</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Signature</numerusform>
             <numerusform>Signatures</numerusform>
         </translation>
@@ -1352,7 +1387,7 @@ ID-CARD</translation>
     <message numerus="yes">
         <source>You&apos;ve added %n file(s) to container, but these are not signed yet.
 Should I keep the unsigned container or remove it?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>You&apos;ve added %n file to container, but these are not signed yet.
 Should I keep the unsigned container or remove it?</numerusform>
             <numerusform>You&apos;ve added %n files to container, but these are not signed yet.
@@ -1361,32 +1396,32 @@ Should I keep the unsigned container or remove it?</numerusform>
     </message>
     <message>
         <source>You can not add files to signed document. Remove all signatures before adding files.</source>
-        <translation>You can not add files to signed document. Remove all signatures before adding files.</translation>
+        <translation type="vanished">You can not add files to signed document. Remove all signatures before adding files.</translation>
     </message>
     <message>
         <source>Sign certificate is not valid</source>
-        <translation>Sign certificate is not valid</translation>
+        <translation type="vanished">Sign certificate is not valid</translation>
     </message>
     <message>
         <source>Failed to start process &apos;%1&apos;</source>
-        <translation>Failed to start process &apos;%1&apos;</translation>
+        <translation type="vanished">Failed to start process &apos;%1&apos;</translation>
     </message>
     <message>
         <source>PIN is locked</source>
-        <translation>PIN Locked</translation>
+        <translation type="vanished">PIN Locked</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>About</translation>
+        <translation type="vanished">About</translation>
     </message>
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
-        <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+        <translation type="vanished">You don&apos;t have sufficient privileges to write this file into folder %1</translation>
     </message>
     <message>
         <source>File does not exists
 %1</source>
-        <translation>File does not exists
+        <translation type="vanished">File does not exists
 %1</translation>
     </message>
     <message>
@@ -1397,62 +1432,62 @@ Should I keep the unsigned container or remove it?</numerusform>
     </message>
     <message>
         <source>Signing in process</source>
-        <translation>Signing in process</translation>
+        <translation type="vanished">Signing in process</translation>
     </message>
     <message>
         <source>I agree</source>
-        <translation>I agree</translation>
+        <translation type="vanished">I agree</translation>
     </message>
     <message>
         <source>Empty container</source>
-        <translation>Empty container</translation>
+        <translation type="vanished">Empty container</translation>
     </message>
     <message>
         <source>Cards</source>
-        <translation>Cards</translation>
+        <translation type="vanished">Cards</translation>
     </message>
     <message>
         <source>Languages</source>
-        <translation>Languages</translation>
+        <translation type="vanished">Languages</translation>
     </message>
     <message>
         <source>Card info</source>
-        <translation>Card info</translation>
+        <translation type="vanished">Card info</translation>
     </message>
     <message>
         <source>All fields are optional</source>
-        <translation>All fields are optional</translation>
+        <translation type="vanished">All fields are optional</translation>
     </message>
     <message>
         <source>Add file</source>
-        <translation>Add file</translation>
+        <translation type="vanished">Add file</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Save</translation>
+        <translation type="vanished">Save</translation>
     </message>
     <message>
         <source>Save files to disk</source>
-        <translation>Save files to disk</translation>
+        <translation type="vanished">Save files to disk</translation>
     </message>
     <message>
         <source>Send container to email</source>
-        <translation>Send container to email</translation>
+        <translation type="vanished">Send container to email</translation>
     </message>
     <message>
         <source>Browse container location</source>
-        <translation>Browse container location</translation>
+        <translation type="vanished">Browse container location</translation>
     </message>
     <message>
         <source>Encrypt document</source>
-        <translation>Encrypt document</translation>
+        <translation type="vanished">Encrypt document</translation>
     </message>
     <message>
         <source>No card in reader
 
 Check if the ID-card is inserted correctly to the reader.
 New ID-cards have chip on the back side of the card.</source>
-        <translation>No card in card reader
+        <translation type="vanished">No card in card reader
 
 Check if the ID-card is inserted correctly to the card reader.
 New ID-cards have chip on the back side of the card.</translation>
@@ -1467,27 +1502,27 @@ New ID-cards have chip on the back side of the card.</translation>
     </message>
     <message>
         <source>Phone number with format 372XXXXXX</source>
-        <translation>Phone number with format 372XXXXXX</translation>
+        <translation type="vanished">Phone number with format 372XXXXXX</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation>Personal code</translation>
+        <translation type="vanished">Personal code</translation>
     </message>
     <message>
         <source>Signing not allowed.</source>
-        <translation>Signing not allowed.</translation>
+        <translation type="vanished">Signing not allowed.</translation>
     </message>
     <message>
         <source>NB! Signature contains warnings</source>
-        <translation>NB! Signature contains warnings</translation>
+        <translation type="vanished">NB! Signature contains warnings</translation>
     </message>
     <message>
         <source>NB! Status unknown</source>
-        <translation>NB! Status unknown</translation>
+        <translation type="vanished">NB! Status unknown</translation>
     </message>
     <message>
         <source>Remember me</source>
-        <translation>Remember me</translation>
+        <translation type="vanished">Remember me</translation>
     </message>
     <message>
         <source>Documents (%1%2)</source>
@@ -1501,7 +1536,7 @@ BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https:
 DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
 ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
 According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
+        <translation type="vanished">Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
 Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
 For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
 BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
@@ -1632,6 +1667,22 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <source>Check internet connection</source>
         <translation>Check internet connection</translation>
     </message>
+    <message>
+        <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
+        <translation>Photo (*.jpg);;All Files (*)</translation>
+    </message>
+    <message>
+        <source>Certificate store</source>
+        <translation type="vanished">Certificate store</translation>
+    </message>
+    <message>
+        <source>There was an error with request to Äriregister.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1669,83 +1720,83 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>Signing in process</source>
-        <translation>Signing in process</translation>
+        <translation type="vanished">Signing in process</translation>
     </message>
     <message>
         <source>Request accepted</source>
-        <translation>Request accepted</translation>
+        <translation type="vanished">Request accepted</translation>
     </message>
     <message>
         <source>Request timeout</source>
-        <translation>Request timeout</translation>
+        <translation type="vanished">Request timeout</translation>
     </message>
     <message>
         <source>User denied or cancelled</source>
-        <translation>User denied or cancelled</translation>
+        <translation type="vanished">User denied or cancelled</translation>
     </message>
     <message>
         <source>Got signature</source>
-        <translation>Got signature</translation>
+        <translation type="vanished">Got signature</translation>
     </message>
     <message>
         <source>Request pending</source>
-        <translation>Request pending</translation>
+        <translation type="vanished">Request pending</translation>
     </message>
     <message>
         <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID not ready, try again later</translation>
+        <translation type="vanished">Mobiil-ID not ready, try again later</translation>
     </message>
     <message>
         <source>Phone absent</source>
-        <translation>Phone absent</translation>
+        <translation type="vanished">Phone absent</translation>
     </message>
     <message>
         <source>Request sending error</source>
-        <translation>Request sending error</translation>
+        <translation type="vanished">Request sending error</translation>
     </message>
     <message>
         <source>SIM error</source>
-        <translation>SIM error</translation>
+        <translation type="vanished">SIM error</translation>
     </message>
     <message>
         <source>Service internal error</source>
-        <translation>Service internal error</translation>
+        <translation type="vanished">Service internal error</translation>
     </message>
     <message>
         <source>Signing with Mobile-ID</source>
-        <translation>Signing with Mobiil-ID</translation>
+        <translation type="vanished">Signing with Mobiil-ID</translation>
     </message>
     <message>
         <source>User is not a Mobile-ID client</source>
-        <translation>User is not a Mobiil-ID client</translation>
+        <translation type="vanished">User is not a Mobiil-ID client</translation>
     </message>
     <message>
         <source>ID and phone number do not match</source>
-        <translation>ID and phone number do not match</translation>
+        <translation type="vanished">ID and phone number do not match</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Sign</translation>
+        <translation type="vanished">Sign</translation>
     </message>
     <message>
         <source>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</source>
-        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
+        <translation type="vanished">Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
     </message>
     <message>
         <source>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</source>
-        <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
+        <translation type="vanished">Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
     </message>
     <message>
         <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
+        <translation type="vanished">Mobiil-ID user certificates are revoked or suspended.</translation>
     </message>
     <message>
         <source>Your Mobile-ID service is not activated.</source>
-        <translation>Your Mobiil-ID service is not activated.</translation>
+        <translation type="vanished">Your Mobiil-ID service is not activated.</translation>
     </message>
     <message>
         <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Invalid phone number! Please include correct country code.</translation>
+        <translation type="vanished">Invalid phone number! Please include correct country code.</translation>
     </message>
 </context>
 <context>
@@ -1849,6 +1900,14 @@ Control code: %1</translation>
     <message>
         <source>%v sec</source>
         <translation>%v sec</translation>
+    </message>
+    <message>
+        <source>Signing with Mobile-ID</source>
+        <translation>Signing with Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
     </message>
 </context>
 <context>
@@ -2262,6 +2321,13 @@ Control code: %1</translation>
     </message>
 </context>
 <context>
+    <name>QFileDialog</name>
+    <message>
+        <source>All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QPKCS11</name>
     <message>
         <source>PIN Canceled</source>
@@ -2370,10 +2436,21 @@ Control code: %1</translation>
     </message>
 </context>
 <context>
+    <name>SDocumentModel</name>
+    <message>
+        <source>DigiDoc4 client</source>
+        <translation>DigiDoc4 client</translation>
+    </message>
+    <message>
+        <source>Failed remove document from container</source>
+        <translation>Failed remove document from container</translation>
+    </message>
+</context>
+<context>
     <name>SSLConnect</name>
     <message>
         <source>Certificate is empty</source>
-        <translation>Certificate is empty</translation>
+        <translation type="vanished">Certificate is empty</translation>
     </message>
     <message>
         <source>Downloading picture</source>
@@ -2381,11 +2458,11 @@ Control code: %1</translation>
     </message>
     <message>
         <source>Failed to connect to host. Are you connected to the internet?</source>
-        <translation>Failed to connect to host. Are you connected to the internet?</translation>
+        <translation type="vanished">Failed to connect to host. Are you connected to the internet?</translation>
     </message>
     <message>
         <source>Invalid response</source>
-        <translation>Invalid response</translation>
+        <translation type="vanished">Invalid response</translation>
     </message>
     <message>
         <source>Loading Email info</source>
@@ -2393,11 +2470,15 @@ Control code: %1</translation>
     </message>
     <message>
         <source>Loading Mobile info</source>
-        <translation>Loading Mobile info</translation>
+        <translation type="vanished">Loading Mobile info</translation>
     </message>
     <message>
         <source>SSL context is missing</source>
-        <translation>SSL context is missing</translation>
+        <translation type="vanished">SSL context is missing</translation>
+    </message>
+    <message>
+        <source>Invalid Content-Type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2412,7 +2493,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>SIGNING</source>
-        <translation>SIGNING</translation>
+        <translation type="vanished">SIGNING</translation>
     </message>
     <message>
         <source>ACCESS CERTIFICATE</source>
@@ -2436,15 +2517,15 @@ Control code: %1</translation>
     </message>
     <message>
         <source>https://installer.id.ee/?lang=eng</source>
-        <translation>https://installer.id.ee/?lang=eng</translation>
+        <translation type="vanished">https://installer.id.ee/?lang=eng</translation>
     </message>
     <message>
         <source>https://installer.id.ee/?lang=eng&amp;os=linux</source>
-        <translation>https://installer.id.ee/?lang=eng&amp;os=linux</translation>
+        <translation type="vanished">https://installer.id.ee/?lang=eng&amp;os=linux</translation>
     </message>
     <message>
         <source>NEW VERSION AVAILABLE</source>
-        <translation>NEW VERSION AVAILABLE</translation>
+        <translation type="vanished">NEW VERSION AVAILABLE</translation>
     </message>
     <message>
         <source>REMOVE OLD CERTIFICATES</source>
@@ -2618,6 +2699,42 @@ Additional licenses and components</source>
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</translation>
     </message>
+    <message>
+        <source>FIRST RUN</source>
+        <translation>FIRST RUN</translation>
+    </message>
+    <message>
+        <source>Select folder</source>
+        <translation>Select folder</translation>
+    </message>
+    <message>
+        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
+        <translation>Server access certificates (*.p12 *.p12d *.pfx)</translation>
+    </message>
+    <message>
+        <source>Server access certificate error: %1</source>
+        <translation>Server access certificate error: %1</translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation>Save as</translation>
+    </message>
+    <message>
+        <source>Text files (*.txt)</source>
+        <translation>Text files (*.txt)</translation>
+    </message>
+    <message>
+        <source>Error occurred</source>
+        <translation>Error occurred</translation>
+    </message>
+    <message>
+        <source>Failed write to file!</source>
+        <translation>Failed write to file!</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 client</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
@@ -2675,7 +2792,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>is valid</source>
-        <translation>is valid</translation>
+        <translation type="vanished">is valid</translation>
     </message>
     <message>
         <source>Warnings</source>
@@ -2699,7 +2816,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>is unknown</translation>
+        <translation type="vanished">is unknown</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -2707,7 +2824,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>is not valid</source>
-        <translation>is not valid</translation>
+        <translation type="vanished">is not valid</translation>
     </message>
     <message>
         <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
@@ -2797,6 +2914,36 @@ Additional licenses and components</translation>
         <source>SIGNATURE_WARNING</source>
         <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38499&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
     </message>
+    <message>
+        <source>is valid</source>
+        <comment>Timestamp</comment>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Signature</comment>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Timestamp</comment>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Signature</comment>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Timestamp</comment>
+        <translation>is unknown</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Signature</comment>
+        <translation>is unknown</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>
@@ -2822,15 +2969,15 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>is valid</source>
-        <translation>is valid</translation>
+        <translation type="vanished">is valid</translation>
     </message>
     <message>
         <source>is not valid</source>
-        <translation>is not valid</translation>
+        <translation type="vanished">is not valid</translation>
     </message>
     <message>
         <source>is unknown</source>
-        <translation>is unknown</translation>
+        <translation type="vanished">is unknown</translation>
     </message>
     <message>
         <source>Signed on</source>
@@ -2851,6 +2998,36 @@ Additional licenses and components</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Signature</comment>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>is valid</source>
+        <comment>Timestamp</comment>
+        <translation>is valid</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Signature</comment>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>is not valid</source>
+        <comment>Timestamp</comment>
+        <translation>is not valid</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Signature</comment>
+        <translation>is unknown</translation>
+    </message>
+    <message>
+        <source>is unknown</source>
+        <comment>Timestamp</comment>
+        <translation>is unknown</translation>
     </message>
 </context>
 <context>
@@ -2956,7 +3133,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>RENEW CERTIFICATE</source>
-        <translation>RENEW CERTIFICATE</translation>
+        <translation type="vanished">RENEW CERTIFICATE</translation>
     </message>
     <message>
         <source>UNBLOCK</source>

@@ -30,6 +30,7 @@
 class QWin;
 #endif
 #include "QPKCS11.h"
+#include "widgets/CardWidget.h"
 #include <common/QPCSC.h>
 #include <common/SslCertificate.h>
 #include <common/TokenData.h>
@@ -93,12 +94,12 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 	if(c.type() & SslCertificate::TempelType)
 	{
 		ci->fullName = c.toString(QStringLiteral("CN"));
-		ci->cardType = QStringLiteral("e-Seal");
+		ci->cardType = CardWidget::tr("e-Seal");
 	}
 	else
 	{
 		ci->fullName = c.toString(QStringLiteral("GN SN"));
-		ci->cardType = c.type() & SslCertificate::DigiIDType ? QStringLiteral("Digi ID") : QStringLiteral("ID Card");
+		ci->cardType = c.type() & SslCertificate::DigiIDType ? CardWidget::tr("Digi ID") : CardWidget::tr("ID Card");
 	}
 
 	return ci;

@@ -80,13 +80,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->lblMenuSettings->setFont(headerFont);
 	ui->btnMenuGeneral->setFont(condensed12);
 	ui->btnMenuCertificate->setFont(condensed12);
-	ui->btnMenuCertificate->setText(tr("ACCESS CERTIFICATE",
-#ifdef Q_OS_WIN
-		"win"
-#else
-		"not-win"
-#endif
-	));
+	ui->btnMenuCertificate->setText(tr("ACCESS CERTIFICATE"));
 	ui->btnMenuProxy->setFont(condensed12);
 	ui->btnMenuDiagnostics->setFont(condensed12);
 	ui->btnMenuInfo->setFont(condensed12);
@@ -147,13 +141,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->btnNavUseByDefault->setFont(condensed12);
 	ui->btnNavInstallManually->setFont(condensed12);
 	ui->btnNavShowCertificate->setFont(condensed12);
-	ui->btnNavShowCertificate->setText(tr("SHOW CERTIFICATE",
-#ifdef Q_OS_WIN
-		"win"
-#else
-		"not-win"
-#endif
-	));
+	ui->btnNavShowCertificate->setText(tr("SHOW CERTIFICATE"));
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnRefreshConfig->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
