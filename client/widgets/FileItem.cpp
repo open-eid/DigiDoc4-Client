@@ -35,15 +35,15 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->fileName->setFont(fileFont);
-	ui->download->setIcons("/images/icon_download.svg", "/images/icon_download_hover.svg",  "/images/icon_download_pressed.svg", 1, 1, 17, 17);
-	ui->download->init(LabelButton::White, "", 0);
-	ui->remove->setIcons("/images/icon_remove.svg", "/images/icon_remove_hover.svg", "/images/icon_remove_pressed.svg", 1, 1, 17, 17);
-	ui->remove->init(LabelButton::White, "", 0);
+	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"), QStringLiteral("/images/icon_download_pressed.svg"), 1, 1, 17, 17);
+	ui->download->init(LabelButton::White, QString(), 0);
+	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"), QStringLiteral("/images/icon_remove_pressed.svg"), 1, 1, 17, 17);
+	ui->remove->init(LabelButton::White, QString(), 0);
 
 	stateChange(state);
 
-	connect(ui->download, &LabelButton::clicked, [this](){ emit download(this);});
-	connect(ui->remove, &LabelButton::clicked, [this](){ emit remove(this);});
+	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this);});
+	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 }
 
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
@@ -62,11 +62,10 @@ FileItem::~FileItem()
 	delete ui;
 }
 
-void FileItem::enterEvent(QEvent *event)
+void FileItem::enterEvent(QEvent * /*event*/)
 {
-	Q_UNUSED (event);
 	if(isEnabled())
-		ui->fileName->setStyleSheet("color: #363739; border: none; text-decoration: underline;");
+		ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-decoration: underline;"));
 }
 
 QString FileItem::getFile()
@@ -74,19 +73,18 @@ QString FileItem::getFile()
 	return fileName;
 }
 
-void FileItem::leaveEvent(QEvent *event)
+void FileItem::leaveEvent(QEvent * /*event*/)
 {
-	Q_UNUSED (event);
-	ui->fileName->setStyleSheet("color: #363739; border: none;");
+	ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none;"));
 }
 
-void FileItem::mouseReleaseEvent(QMouseEvent *event)
+void FileItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
 	if(isEnabled())
 		emit open(this);
 }
 
-void FileItem::resizeEvent(QResizeEvent *event)
+void FileItem::resizeEvent(QResizeEvent * /*event*/)
 {
 	setFileName(false);
 }
@@ -96,12 +94,12 @@ void FileItem::setFileName(bool force)
 	if(ui->fileName->width() < width)
 	{
 		elided = true;
-		ui->fileName->setText(fm.elidedText(fileName, Qt::ElideMiddle, ui->fileName->width()));
+		ui->fileName->setText(fm.elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->fileName->width()));
 	}
 	else if(elided || force)
 	{
 		elided = false;
-		ui->fileName->setText(fileName);
+		ui->fileName->setText(fileName.toHtmlEscaped());
 	}
 }
 

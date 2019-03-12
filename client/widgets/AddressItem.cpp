@@ -93,7 +93,7 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 			strDate = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
 	}
 
-	update(name, SslCertificate(key.cert).personalCode(), type, strDate, AddressItem::Remove);
+	update(name.toHtmlEscaped(), SslCertificate(key.cert).personalCode(), type, strDate, AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()
