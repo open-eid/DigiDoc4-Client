@@ -1569,10 +1569,6 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
         <translation>Loading picture failed.</translation>
     </message>
     <message>
-        <source>Failed to load data</source>
-        <translation>Failed to load data</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>

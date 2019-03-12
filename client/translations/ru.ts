@@ -1565,10 +1565,6 @@ ASiC-E – это разрабатываемый международный фо
         <translation>Загрузка картинки неуспешна.</translation>
     </message>
     <message>
-        <source>Failed to load data</source>
-        <translation>Не получилось загрузить данные</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Зашифровывание</translation>
     </message>

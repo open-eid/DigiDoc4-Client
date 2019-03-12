@@ -1554,10 +1554,6 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
         <translation>Pildi laadimine ebaõnnestus.</translation>
     </message>
     <message>
-        <source>Failed to load data</source>
-        <translation>Andmete laadimine ebaõnnestus</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>
