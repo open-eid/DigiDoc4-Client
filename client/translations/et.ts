@@ -2296,6 +2296,10 @@ Kontrollkood: %1</translation>
         <source>NB! RESTRICTIONS</source>
         <translation>NB! PIIRANGUTEGA</translation>
     </message>
+    <message>
+        <source>Presented print summary is informative to confirm existence of signed file with given hash value. The print summary itself does not have independent verification value. Declaration of signers’ signature can be verified only through digitally signed file.</source>
+        <translation>Käesolev kinnitusleht on informatiivne, milles olev teave kinnitab vaid, et selle äratoodud räsiga allkirjastatud fail eksisteerib. Kinnitusleht ei oma iseseisvat tõendusväärtust. Osapoolte tahteavalduse kehtivust saab kontrollida ainult digitaalselt allkirjastatud failist.</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>

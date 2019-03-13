@@ -2319,6 +2319,10 @@ Control code: %1</translation>
         <source>NB! RESTRICTIONS</source>
         <translation>NB! RESTRICTIONS</translation>
     </message>
+    <message>
+        <source>Presented print summary is informative to confirm existence of signed file with given hash value. The print summary itself does not have independent verification value. Declaration of signers’ signature can be verified only through digitally signed file.</source>
+        <translation>Presented print summary is informative to confirm existence of signed file with given hash value. The print summary itself does not have independent verification value. Declaration of signers’ signature can be verified only through digitally signed file.</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>
