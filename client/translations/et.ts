@@ -2412,8 +2412,8 @@ Kontrollkood: %1</translation>
         <translation>Postikood</translation>
     </message>
     <message>
-        <source>Sign</source>
-        <translation>Allkirjastan</translation>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTAN</translation>
     </message>
 </context>
 <context>

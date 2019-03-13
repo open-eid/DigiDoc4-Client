@@ -2435,8 +2435,8 @@ Control code: %1</translation>
         <translation>Zip</translation>
     </message>
     <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
+        <source>SIGN</source>
+        <translation>SIGN</translation>
     </message>
 </context>
 <context>

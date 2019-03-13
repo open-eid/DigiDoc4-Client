@@ -283,6 +283,37 @@ QPushButton:!checked{
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    border: 1px solid #DEE4E9;
+    border-radius: 2px;
+    background-color: #FFFFFF;
+}
+QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/images/icon_checkbox.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/images/icon_checkbox_check.png);
+}
+QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/images/icon_radio.png);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/images/icon_radio_checked.png);
+}</string>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
@@ -314,23 +345,6 @@ QPushButton:!checked{
            <layout class="QHBoxLayout" name="languageBoxLayout">
             <item>
              <widget class="QRadioButton" name="rdGeneralEstonian">
-              <property name="accessibleDescription">
-               <string notr="true"/>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-              </property>
               <property name="text">
                <string notr="true">Eesti</string>
               </property>
@@ -344,23 +358,6 @@ QRadioButton::indicator::checked {
             </item>
             <item>
              <widget class="QRadioButton" name="rdGeneralRussian">
-              <property name="accessibleDescription">
-               <string notr="true"/>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-              </property>
               <property name="text">
                <string notr="true">Русский</string>
               </property>
@@ -371,23 +368,6 @@ QRadioButton::indicator::checked {
             </item>
             <item>
              <widget class="QRadioButton" name="rdGeneralEnglish">
-              <property name="accessibleDescription">
-               <string notr="true"/>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-              </property>
               <property name="text">
                <string notr="true">English</string>
               </property>
@@ -413,21 +393,6 @@ QRadioButton::indicator::checked {
           </item>
           <item>
            <widget class="QCheckBox" name="chkGeneralTslRefresh">
-            <property name="styleSheet">
-             <string notr="true">QCheckBox::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(:/images/icon_checkbox.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(:/images/icon_checkbox_check.png);
-}
-</string>
-            </property>
             <property name="text">
              <string>Online TSL digest check</string>
             </property>
@@ -438,20 +403,6 @@ QCheckBox::indicator:checked {
           </item>
           <item>
            <widget class="QCheckBox" name="chkShowPrintSummary">
-            <property name="styleSheet">
-             <string notr="true">QCheckBox::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(:/images/icon_checkbox.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(:/images/icon_checkbox_check.png);
-}</string>
-            </property>
             <property name="text">
              <string>Show print summary</string>
             </property>
@@ -459,20 +410,6 @@ QCheckBox::indicator:checked {
           </item>
           <item>
            <widget class="QCheckBox" name="chkRoleAddressInfo">
-            <property name="styleSheet">
-             <string notr="true">QCheckBox::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(:/images/icon_checkbox.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(:/images/icon_checkbox_check.png);
-}</string>
-            </property>
             <property name="text">
              <string>Ask role and address info on signing</string>
             </property>
@@ -495,20 +432,6 @@ QCheckBox::indicator:checked {
             </property>
             <item row="0" column="0">
              <widget class="QRadioButton" name="rdGeneralSameDirectory">
-              <property name="styleSheet">
-               <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-              </property>
               <property name="text">
                <string>Same folder</string>
               </property>
@@ -522,20 +445,6 @@ QRadioButton::indicator::checked {
             </item>
             <item row="1" column="0">
              <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
-              <property name="styleSheet">
-               <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-              </property>
               <property name="text">
                <string>Select the default directory</string>
               </property>
@@ -585,14 +494,6 @@ QRadioButton::indicator::checked {
                 <height>31</height>
                </size>
               </property>
-              <property name="styleSheet">
-               <string notr="true">QLineEdit
-{
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-background-color: #FFFFFF;
-}</string>
-              </property>
              </widget>
             </item>
            </layout>
@@ -601,21 +502,6 @@ background-color: #FFFFFF;
            <layout class="QHBoxLayout" name="tokenBackendLayout" stretch="1,0">
             <item>
              <widget class="QCheckBox" name="tokenBackend">
-              <property name="styleSheet">
-               <string notr="true">QCheckBox::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(:/images/icon_checkbox.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(:/images/icon_checkbox_check.png);
-}
-</string>
-              </property>
               <property name="text">
                <string>I would like to sign with Lithuanian, Latvian ID-card</string>
               </property>
@@ -689,20 +575,6 @@ QCheckBox::indicator:checked {
               <height>31</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">QCheckBox::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(:/images/icon_checkbox.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(:/images/icon_checkbox_check.png);
-}</string>
-            </property>
             <property name="text">
              <string>Ignore server access certificate (IP based access)</string>
             </property>
@@ -717,6 +589,12 @@ QCheckBox::indicator:checked {
           </item>
           <item>
            <widget class="QLineEdit" name="rdTimeStamp">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>31</height>
+             </size>
+            </property>
             <property name="clearButtonEnabled">
              <bool>true</bool>
             </property>
@@ -765,20 +643,6 @@ QCheckBox::indicator:checked {
               <height>31</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-            </property>
             <property name="text">
              <string>No proxy</string>
             </property>
@@ -795,20 +659,6 @@ QRadioButton::indicator::checked {
               <height>31</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
-            </property>
             <property name="text">
              <string>Use system proxy settings</string>
             </property>
@@ -821,20 +671,6 @@ QRadioButton::indicator::checked {
               <width>0</width>
               <height>31</height>
              </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/icon_radio.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/icon_radio_checked.png);
-}</string>
             </property>
             <property name="text">
              <string>Manual proxy configuration</string>
@@ -1071,20 +907,20 @@ QScrollBar::sub-line:vertical {
             <property name="html">
              <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Roboto'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qt cross-platform application and UI framework&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 3&lt;br /&gt;&lt;a href=&quot;http://doc.qt.io/qt-5/licensing.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://doc.qt.io/qt-5/licensing.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;The OpenSSL project&lt;/span&gt;&lt;br /&gt;This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)&lt;br /&gt;&lt;a href=&quot;http://www.openssl.org/source/license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.openssl.org/source/license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;OpenLDAP community developed LDAP software&lt;/span&gt;&lt;br /&gt;The OpenLDAP Public License&lt;br /&gt;&lt;a href=&quot;http://www.openldap.org/software/release/license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.openldap.org/software/release/license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;libdigidoc&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;libdigidocpp&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;qdigidoc&lt;/span&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;libxml The XML C parser and toolkit of Gnome&lt;/span&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;http://www.opensource.org/licenses/mit-license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.opensource.org/licenses/mit-license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;zlib A Massively Spiffy Yet Delicately Unobtrusive Compression Library&lt;/span&gt;&lt;br /&gt;&lt;a href=&quot;http://zlib.net/zlib_license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://zlib.net/zlib_license.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Xerces-C++ is a validating XML parser written in a portable subset of C++&lt;/span&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Apache XML Security for C++&lt;/span&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;XSD: XML Data Binding for C++&lt;/span&gt;&lt;br /&gt;GNU General Public License (GPL), version 2&lt;br /&gt;Free/Libre and Open Source Software (FLOSS) exception&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/products/xsd/license.xhtml&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/products/xsd/license.xhtml&lt;/span&gt;&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/projects/xsd/FLOSSE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/projects/xsd/FLOSSE&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Roboto: Google’s signature family of fonts&lt;/span&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;https://github.com/google/roboto/blob/master/LICENSE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;https://github.com/google/roboto/blob/master/LICENSE&lt;/span&gt;&lt;/a&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; }
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;Qt cross-platform application and UI framework&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 3&lt;br /&gt;&lt;a href=&quot;http://doc.qt.io/qt-5/licensing.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://doc.qt.io/qt-5/licensing.html&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;The OpenSSL project&lt;/b&gt;&lt;br /&gt;This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)&lt;br /&gt;&lt;a href=&quot;http://www.openssl.org/source/license.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.openssl.org/source/license.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;OpenLDAP community developed LDAP software&lt;/b&gt;&lt;br /&gt;The OpenLDAP Public License&lt;br /&gt;&lt;a href=&quot;http://www.openldap.org/software/release/license.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.openldap.org/software/release/license.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;libdigidoc&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;libdigidocpp&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;DigiDoc4 Client&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;libxml The XML C parser and toolkit of Gnome&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;http://www.opensource.org/licenses/mit-license.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.opensource.org/licenses/mit-license.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;zlib A Massively Spiffy Yet Delicately Unobtrusive Compression Library&lt;/b&gt;&lt;br /&gt;&lt;a href=&quot;http://zlib.net/zlib_license.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://zlib.net/zlib_license.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;Xerces-C++ is a validating XML parser written in a portable subset of C++&lt;/b&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;Apache XML Security for C++&lt;/b&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/a&gt; &lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;XSD: XML Data Binding for C++&lt;/b&gt;&lt;br /&gt;GNU General Public License (GPL), version 2&lt;br /&gt;Free/Libre and Open Source Software (FLOSS) exception&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/products/xsd/license.xhtml&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/products/xsd/license.xhtml&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/projects/xsd/FLOSSE&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/projects/xsd/FLOSSE&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;b&gt;Roboto: Google’s signature family of fonts&lt;/b&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;https://github.com/google/roboto/blob/master/LICENSE&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;https://github.com/google/roboto/blob/master/LICENSE&lt;/a&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="textInteractionFlags">
              <set>Qt::TextBrowserInteraction</set>

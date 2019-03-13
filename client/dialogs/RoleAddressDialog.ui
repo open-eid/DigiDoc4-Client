@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>346</height>
    </rect>
   </property>
   <property name="styleSheet">
@@ -21,7 +21,7 @@ QPushButton {
 	border: none;
 	color: #ffffff;
 	background-color: #006EB5;
-	height: 25px;
+	height: 34px;
 	width: 120px;
 }
 QPushButton:pressed {
@@ -43,6 +43,9 @@ QLineEdit {
    <property name="fieldGrowthPolicy">
     <enum>QFormLayout::ExpandingFieldsGrow</enum>
    </property>
+   <property name="labelAlignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="RoleLabel">
      <property name="text">
@@ -52,8 +55,11 @@ QLineEdit {
    </item>
    <item row="1" column="0" colspan="2">
     <widget class="QLineEdit" name="Role">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
      </property>
     </widget>
    </item>
@@ -66,6 +72,12 @@ QLineEdit {
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="CityLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
       <string>City</string>
      </property>
@@ -76,13 +88,22 @@ QLineEdit {
    </item>
    <item row="3" column="1">
     <widget class="QLineEdit" name="City">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
      </property>
     </widget>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="StateLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
       <string>State</string>
      </property>
@@ -93,13 +114,22 @@ QLineEdit {
    </item>
    <item row="4" column="1">
     <widget class="QLineEdit" name="State">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
      </property>
     </widget>
    </item>
    <item row="5" column="0">
     <widget class="QLabel" name="CountryLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
       <string>Country</string>
      </property>
@@ -110,13 +140,22 @@ QLineEdit {
    </item>
    <item row="5" column="1">
     <widget class="QLineEdit" name="Country">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
      </property>
     </widget>
    </item>
    <item row="6" column="0">
     <widget class="QLabel" name="ZipLabel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
       <string>Zip</string>
      </property>
@@ -127,8 +166,11 @@ QLineEdit {
    </item>
    <item row="6" column="1">
     <widget class="QLineEdit" name="Zip">
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
      </property>
     </widget>
    </item>
@@ -149,6 +191,9 @@ QLineEdit {
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
