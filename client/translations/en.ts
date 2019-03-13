@@ -1869,6 +1869,14 @@ Control code: %1</translation>
         <source>Sign</source>
         <translation>Sign</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Failed to sign container</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID certificates are not activated</source>
+        <translation>Your Mobile-ID certificates are not activated</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

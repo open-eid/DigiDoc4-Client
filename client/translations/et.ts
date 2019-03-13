@@ -1849,6 +1849,14 @@ Kontrollkood: %1</translation>
         <source>Sign</source>
         <translation>Allkirjastan</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID certificates are not activated</source>
+        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

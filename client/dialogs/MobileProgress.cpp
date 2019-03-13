@@ -65,11 +65,13 @@ MobileProgress::MobileProgress( QWidget *parent )
 	mobileResults[QStringLiteral("INTERNAL_ERROR")] = tr("Service internal error");
 	mobileResults[QStringLiteral("OCSP_UNAUTHORIZED")] = tr("Not allowed to use OCSP service! Please check your server access certificate.");
 	mobileResults[QStringLiteral("HOSTNOTFOUND")] = tr("Connecting to SK server failed! Please check your internet connection.");
+	mobileResults[QStringLiteral("NOT_VALID")] = tr("Failed to sign container");
 	mobileResults[QStringLiteral("Invalid PhoneNo")] = tr("Invalid phone number! Please include correct country code.");
 	mobileResults[QStringLiteral("User is not a Mobile-ID client")] = tr("User is not a Mobile-ID client");
 	mobileResults[QStringLiteral("ID and phone number do not match")] = tr("ID and phone number do not match");
 	mobileResults[QStringLiteral("Certificate status unknown")] = tr("Your Mobile-ID service is not activated.");
 	mobileResults[QStringLiteral("Certificate is revoked")] = tr("Mobile-ID user certificates are revoked or suspended.");
+	mobileResults[QStringLiteral("Certificate isn't active")] = tr("Your Mobile-ID certificates are not activated");
 
 	setupUi( this );
 	code->setBuddy( signProgressBar );
@@ -211,16 +213,24 @@ void MobileProgress::finished( QNetworkReply *reply )
 bool MobileProgress::isTest( const QString &ssid, const QString &cell )
 {
 	const static QStringList list = {
-		"1421212802037200002",
-		"1421212802137200003",
-		"1421212802237200004",
-		"1421212802337200005",
-		"1421212802437200006",
-		"1421212802537200007",
-		"1421212802637200008",
-		"1421212802737200009",
-		"3800224021137200001",
-		"1421212802937200001066",
+		"14212128020" "37200002",
+		"14212128021" "37200003",
+		"14212128022" "37200004",
+		"14212128023" "37200005",
+		"14212128024" "37200006",
+		"14212128025" "37200007",
+		"14212128026" "37200008",
+		"14212128027" "37200009",
+		"38002240211" "37200001",
+		"14212128029" "37200001066",
+		"60001019906" "37200000766",
+		"60001019928" "37200000366",
+		"60001019939" "37200000266",
+		"60001019947" "37207110066",
+		"60001019950" "37201100266",
+		"60001019961" "37200000666",
+		"60001019972" "37201200266",
+		"60001019983" "37213100266",
 	};
 	return list.contains( ssid + cell );
 }
