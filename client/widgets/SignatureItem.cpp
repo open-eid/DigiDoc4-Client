@@ -185,7 +185,7 @@ void SignatureItem::init()
 	ui->idSignTime->setText(signingInfo);
 	const QString role = ui->signature.role();
 	ui->role->setHidden(role.isEmpty());
-	ui->role->setText(role.toHtmlEscaped());
+	ui->role->setText(role);
 	ui->roleElided = ui->role->fontMetrics().elidedText(ui->role->text(), Qt::ElideRight, ui->role->geometry().width(), Qt::TextShowMnemonic);
 
 	setAccessibleName(label + " " + cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")));
