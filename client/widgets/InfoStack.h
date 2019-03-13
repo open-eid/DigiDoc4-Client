@@ -23,12 +23,15 @@
 #include <common/DateTime.h>
 #include "widgets/StyledWidget.h"
 
+#include <QPointer>
+
 namespace Ui {
 class InfoStack;
 }
 
 struct QCardInfo;
 class QSmartCardData;
+class QSvgWidget;
 
 class InfoStack : public StyledWidget, public PictureInterface
 {
@@ -51,12 +54,11 @@ protected:
 	void changeEvent(QEvent* event) override;
 
 private:
-	void clearAlternateIcon();
 	void focusEvent(int eventType);
 	void update();
 
 	Ui::InfoStack *ui;
-	QWidget *alternateIcon = nullptr;
+	QPointer<QSvgWidget> alternateIcon;
 
 	int certType = 0;
 	bool certIsValid = false;

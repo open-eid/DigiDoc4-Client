@@ -38,7 +38,7 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->setupUi( this );
 
 	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
-	connect( ui->btnPicture, &QPushButton::clicked, this, [this]() { emit photoClicked( ui->photo->pixmap() ); } );
+	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked( ui->photo->pixmap() ); } );
 	
 	QFont labelFont = Styles::font(Styles::Condensed, 11);
 	ui->labelGivenNames->setFont(labelFont);
@@ -65,20 +65,9 @@ InfoStack::~InfoStack()
 	delete ui;
 }
 
-void InfoStack::clearAlternateIcon()
-{
-	if(!alternateIcon)
-		return;
-
-	alternateIcon->hide();
-	alternateIcon->close();
-	delete alternateIcon;
-	alternateIcon = nullptr;
-}
-
 void InfoStack::clearData()
 {
-	clearAlternateIcon();
+	alternateIcon.clear();
 	ui->valueGivenNames->clear();
 	ui->valueSurname->clear();
 	ui->valuePersonalCode->clear();
@@ -88,6 +77,7 @@ void InfoStack::clearData()
 	pictureText = "DOWNLOAD";
 	ui->btnPicture->setText(tr(pictureText));
 	ui->btnPicture->show();
+	clearPicture();
 }
 
 void InfoStack::clearPicture()
@@ -128,7 +118,7 @@ void InfoStack::focusEvent(int eventType)
 
 void InfoStack::showPicture( const QPixmap &pixmap )
 {
-	clearAlternateIcon();
+	alternateIcon.clear();
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
 	pictureText = "SAVE THE PICTURE";
 	tr("SAVE THE PICTURE");
@@ -149,13 +139,9 @@ void InfoStack::update()
 			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
 	}
 	else if(certType & SslCertificate::TempelType)
-	{
 		serialNumberText = tr("You're using e-Seal");
-	}
 	else
-	{
 		st << tr("You're using Digital identity card");
-	}
 
 	ui->valueGivenNames->setText(givenNamesText);
 	ui->valueSurname->setText(surnameText);
@@ -169,7 +155,7 @@ void InfoStack::update()
 	ui->btnPicture->hide();
 
 	if(!certIsResident)
-		clearAlternateIcon();
+		alternateIcon.clear();
 
 	if(certType & SslCertificate::TempelType)
 	{
@@ -182,13 +168,12 @@ void InfoStack::update()
 		ui->valueSerialNumber->setMaximumWidth(300);
 
 		clearPicture();
-		QSvgWidget *seal = new QSvgWidget(ui->photo);
-		seal->load(QStringLiteral(":/images/icon_digitempel.svg"));
-		seal->resize(100, 100);
-		seal->move(10, 25);
-		seal->setStyleSheet(QStringLiteral("border: none;"));
-		seal->show();
-		alternateIcon = seal;
+		alternateIcon = new QSvgWidget(ui->photo);
+		alternateIcon->load(QStringLiteral(":/images/icon_digitempel.svg"));
+		alternateIcon->resize(100, 100);
+		alternateIcon->move(10, 25);
+		alternateIcon->setStyleSheet(QStringLiteral("border: none;"));
+		alternateIcon->show();
 	}
 	else
 	{
@@ -220,23 +205,23 @@ void InfoStack::update(const QCardInfo &cardInfo)
 
 void InfoStack::update(const QSmartCardData &t)
 {
-	QStringList firstName = QStringList()
-		<< t.data( QSmartCardData::FirstName1 ).toString()
-		<< t.data( QSmartCardData::FirstName2 ).toString();
+	QStringList firstName {
+		t.data( QSmartCardData::FirstName1 ).toString(),
+		t.data( QSmartCardData::FirstName2 ).toString()
+	};
 	firstName.removeAll(QString());
 
 	certType = t.authCert().type();
 	certIsValid = t.isValid();
 	certIsResident = t.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT"));
-	clearAlternateIcon();
+	alternateIcon.clear();
 	if(certIsResident)
 	{
-		QSvgWidget *icon = new QSvgWidget(QStringLiteral(":/images/icon_person_blue.svg"), ui->photo);
-		icon->resize(109, 118);
-		icon->setStyleSheet(QStringLiteral("border: none;"));
-		icon->move(10, 16);
-		icon->show();
-		alternateIcon = icon;
+		alternateIcon = new QSvgWidget(QStringLiteral(":/images/icon_person_blue.svg"), ui->photo);
+		alternateIcon->resize(109, 118);
+		alternateIcon->setStyleSheet(QStringLiteral("border: none;"));
+		alternateIcon->move(10, 16);
+		alternateIcon->show();
 		ui->btnPicture->hide();
 	}
 	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
