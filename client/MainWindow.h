@@ -97,6 +97,7 @@ private:
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt();
+	QStringList dropEventFiles(QDropEvent *event) const;
 	bool encrypt();
 	void hideCardPopup();
 	void loadPicture();

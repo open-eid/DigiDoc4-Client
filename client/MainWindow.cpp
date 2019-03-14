@@ -333,41 +333,45 @@ QString MainWindow::digiDocPath()
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-	event->acceptProposedAction();
-
-	showOverlay(this);
+	if(!dropEventFiles(event).isEmpty())
+	{
+		event->acceptProposedAction();
+		showOverlay(this);
+	}
+	else
+		event->ignore();
 }
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
 	event->accept();
-
 	clearOverlay();
 }
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
-	const QMimeData *mimeData = event->mimeData();
-	QStringList files;
-
-	if (mimeData->hasUrls())
-	{
-		const QList<QUrl> urls = mimeData->urls();
-		for(const QUrl &url: urls)
-		{
-			if(url.scheme() == QStringLiteral("file") && QFileInfo(url.toLocalFile()).isFile())
-				files << url.toLocalFile();
-		}
-	}
 	clearOverlay();
-	if(files.isEmpty())
-	{
-		event->ignore();
-		return;
-	}
-	event->acceptProposedAction();
+	QStringList files = dropEventFiles(event);
 	if(!files.isEmpty())
-		openFiles(files, true);
+	{
+		event->acceptProposedAction();
+		if(!files.isEmpty())
+			openFiles(files, true);
+	}
+	else
+		event->ignore();
+}
+
+QStringList MainWindow::dropEventFiles(QDropEvent *event) const
+{
+	QStringList files;
+	const QList<QUrl> urls = event->mimeData()->urls();
+	for(const auto &url: urls)
+	{
+		if(url.scheme() == QStringLiteral("file") && QFileInfo(url.toLocalFile()).isFile())
+			files << url.toLocalFile();
+	}
+	return files;
 }
 
 bool MainWindow::encrypt()
