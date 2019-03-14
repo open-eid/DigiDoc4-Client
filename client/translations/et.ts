@@ -2477,8 +2477,8 @@ Kontrollkood: %1</translation>
         <translation type="vanished">ALLKIRJASTAMINE</translation>
     </message>
     <message>
-        <source>ACCESS CERTIFICATE</source>
-        <translation>JUURDEPÄÄSUTÕEND</translation>
+        <source>SERVICES</source>
+        <translation>TEENUSED</translation>
     </message>
     <message>
         <source>PROXY</source>
@@ -2526,7 +2526,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
-        <translation>NÄITA TÕENDIT</translation>
+        <translation>NÄITA TŌENDIT</translation>
     </message>
     <message>
         <source>USE DEFAULT SETTINGS</source>
@@ -2581,6 +2581,18 @@ Kontrollkood: %1</translation>
         <translation>Digidoc4 kliendi konfiguratsiooni ja TSL värskendamine õnnestus.</translation>
     </message>
     <message>
+        <source>Access to validity confirmation service</source>
+        <translation>Ligipääs kehtivuskinnitusteenusele</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39245</source>
+        <translation>https://www.id.ee/index.php?id=39244</translation>
+    </message>
+    <message>
+        <source>Server access certificate</source>
+        <translation>Juurdepääsutõend</translation>
+    </message>
+    <message>
         <source>Ignore server access certificate (IP based access)</source>
         <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
     </message>
@@ -2597,8 +2609,12 @@ Kontrollkood: %1</translation>
         <translation>Vale parool</translation>
     </message>
     <message>
-        <source>Time Stamp server URL</source>
-        <translation>Ajatempli serveri URL</translation>
+        <source>Access to Time-Stamping service</source>
+        <translation>Ligipääs ajatempliteenusele</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39076</source>
+        <translation>https://www.id.ee/index.php?id=39062</translation>
     </message>
     <message>
         <source>No proxy</source>
@@ -2655,10 +2671,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>Please try again.</source>
         <translation>Palun proovi uuesti.</translation>
-    </message>
-    <message>
-        <source>FREE_CERT_EXCEEDED</source>
-        <translation>Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Täiendav informatsioon &lt;a href=&quot;http://www.id.ee/kehtivuskinnitus&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.id.ee/kehtivuskinnitus&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Server access certificate is not installed.</source>
