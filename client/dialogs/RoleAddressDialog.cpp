@@ -58,6 +58,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		completer->setCompletionMode(QCompleter::PopupCompletion);
 		completer->setCaseSensitivity(Qt::CaseInsensitive);
 		line->setText(d->s.value(line->objectName()).toStringList().value(0));
+		line->setFont(regularFont);
 		line->setCompleter(completer);
 		connect(line, &QLineEdit::editingFinished, this, [=] {
 			QStringList list = d->s.value(line->objectName()).toStringList();
