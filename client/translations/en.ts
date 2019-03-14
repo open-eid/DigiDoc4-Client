@@ -194,18 +194,6 @@
         <translation>Create %1</translation>
     </message>
     <message>
-        <source>ALLOW_ACCESS</source>
-        <translation type="vanished">App Store applications on macOS require user to explicitly give access to the file system.&lt;br /&gt;Allow access to folder &apos;%1&apos; or specify alternative location where to save the envelope.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation type="vanished">CANCEL</translation>
-    </message>
-    <message>
-        <source>ALLOW</source>
-        <translation type="vanished">ALLOW</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
     </message>
@@ -411,7 +399,7 @@
     </message>
     <message>
         <source>Used certificates</source>
-        <translation type="unfinished"></translation>
+        <translation>Used certificates</translation>
     </message>
 </context>
 <context>
@@ -1061,11 +1049,11 @@ LDAP server is unavailable.</translation>
     </message>
     <message>
         <source>Failed to set ldap version</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to set ldap version</translation>
     </message>
     <message>
         <source>Failed to start ssl</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to start ssl</translation>
     </message>
 </context>
 <context>
@@ -1170,10 +1158,6 @@ ID-CARD</translation>
         <translation>Save photo</translation>
     </message>
     <message>
-        <source>Photo (*.jpg);;All Files (*)</source>
-        <translation type="vanished">Photo (*.jpg);;All Files (*)</translation>
-    </message>
-    <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
     </message>
@@ -1246,8 +1230,8 @@ ID-CARD</translation>
         <translation>Your ID-card certificates cannot be renewed starting from %1.</translation>
     </message>
     <message>
-        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
-        <translation>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
+        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 666 8888 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 666 8888 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
@@ -1529,22 +1513,6 @@ New ID-cards have chip on the back side of the card.</translation>
         <translation>Documents (%1%2)</translation>
     </message>
     <message>
-        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation type="vanished">Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline (+372) 666 8888.</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1 has been changed and the certificate has been unblocked!</translation>
     </message>
@@ -1669,19 +1637,15 @@ According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-ser
     </message>
     <message>
         <source>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</source>
-        <translation type="unfinished"></translation>
+        <translation>You&apos;ve added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?</translation>
     </message>
     <message>
         <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
-        <translation>Photo (*.jpg);;All Files (*)</translation>
-    </message>
-    <message>
-        <source>Certificate store</source>
-        <translation type="vanished">Certificate store</translation>
+        <translation>Photo (*.jpg *.jpeg);;All Files (*)</translation>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
-        <translation type="unfinished"></translation>
+        <translation>There was an error with request to Äriregister.</translation>
     </message>
 </context>
 <context>
@@ -1903,7 +1867,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>Signing with Mobile-ID</source>
-        <translation>Signing with Mobiil-ID</translation>
+        <translation>Signing with Mobile-ID</translation>
     </message>
     <message>
         <source>Sign</source>
@@ -1914,7 +1878,7 @@ Control code: %1</translation>
     <name>NoCardInfo</name>
     <message>
         <source>No card in reader</source>
-        <translation>No card in card reader; check if ID card is inserted correctly</translation>
+        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
     </message>
     <message>
         <source>PCSC service is not running</source>
@@ -2328,7 +2292,7 @@ Control code: %1</translation>
     <name>QFileDialog</name>
     <message>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>All Files (*)</translation>
     </message>
 </context>
 <context>
@@ -2482,7 +2446,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>Invalid Content-Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid content type</translation>
     </message>
 </context>
 <context>
@@ -2709,7 +2673,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -3200,8 +3164,8 @@ Additional licenses and components</translation>
         <translation>CHANGE PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;You can only use the new PUK code with the new code envelope that you can use &lt;a href=&apos;https://www.id.ee/index.php?id=31027&apos;&gt;from PPA&lt;/a&gt;.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/en/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>

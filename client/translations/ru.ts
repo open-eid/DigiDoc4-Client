@@ -194,18 +194,6 @@
         <translation>Создайте %1</translation>
     </message>
     <message>
-        <source>ALLOW_ACCESS</source>
-        <translation type="vanished">App Store приложения на macOS требуют, чтобы пользователь позволил доступ к файловой системе.&lt;br /&gt;Разрешите доступ к папке &apos;%1&apos; или укажите альтернативное место для сохранения конверта.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation type="vanished">ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>ALLOW</source>
-        <translation type="vanished">ПОЗВОЛИТЬ</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
     </message>
@@ -1171,10 +1159,6 @@ ID-КАРТОЙ</translation>
         <translation>Сохранить фото</translation>
     </message>
     <message>
-        <source>Photo (*.jpg);;All Files (*)</source>
-        <translation type="vanished">Фото (*.jpg);;Все файлы (*)</translation>
-    </message>
-    <message>
         <source>Ver. </source>
         <translation>Вер. </translation>
     </message>
@@ -1247,8 +1231,8 @@ ID-КАРТОЙ</translation>
         <translation>С %1 обновление сертификатов на этой карте больше невозможно.</translation>
     </message>
     <message>
-        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
-        <translation>Документ действителен до истечения срока его действия, и его можно использовать для авторизации в дигитальных сервисах и создания дигитальной подписи. Если возникнут проблемы с использованием карты в дигитальных сервисах, обратитесь в службу поддержки ID-карты по телефону (+372) 677 3377 или посетите один из пунктов обслуживания Департамента полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30625&amp;read=38012&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 666 8888 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Документ действителен до истечения срока его действия, и его можно использовать для авторизации в дигитальных сервисах и создания дигитальной подписи. Если возникнут проблемы с использованием карты в дигитальных сервисах, обратитесь в службу поддержки ID-карты по телефону (+372) 666 8888 или посетите один из пунктов обслуживания Департамента полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30625&amp;read=38012&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
@@ -1525,22 +1509,6 @@ New ID-cards have chip on the back side of the card.</source>
         <translation>Документы (%1%2)</translation>
     </message>
     <message>
-        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation type="vanished">Добро пожаловать в программу цифрового подписывания!&lt;br /&gt;&lt;br /&gt;
-Помните, что, согласно эстонскому законодательству, цифровая подпись равноценна собственноручной подписи. Чтобы поставить цифровую подпись, необходимо иметь eID документ (ID-карту, Mobiil-ID, digi-ID, карточку э-резидента, дигиштамп и т.д) с действительными сертификатами и интернет-соединение.&lt;br /&gt;
-Для идентификации используйте код PIN1, а для цифрового подписывания - код PIN2.&lt;br /&gt;&lt;br /&gt;
-BDOC – это используемый в Эстонии формат по умолчанию цифровой подписи. &lt;a href=&quot;https://www.ria.ee/ee/bdoc-ru.html&quot;&gt;Доп. инфо&lt;/a&gt;.&lt;br /&gt;
-DDOC – это ранее использовавшийся формат цифровой подписи. На сегодняшний день можно просматривать и проверять действительность подписей в формате DDOC, но нельзя создавать новые подписи в этом формате.&lt;br /&gt;
-ASiC-E – это разрабатываемый международный формат цифровой подписи, который будет использоваться в европейских государствах.&lt;br /&gt;&lt;br /&gt;
-Согласно &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services/standard-conditions-of-validation-certification-service/&quot;&gt;условиям использования услуги подтверждения действительности&lt;/a&gt; Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование услуги. Дополнительная информация: &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt; или телефон линии помощи ID-карты (+372) 666 8888.</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1 код изменён и сертификат разблокирован!</translation>
     </message>
@@ -1666,7 +1634,7 @@ ASiC-E – это разрабатываемый международный фо
     </message>
     <message>
         <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
-        <translation>Фото (*.jpg);;Все файлы (*)</translation>
+        <translation>Фото (*.jpg *.jpeg);;Все файлы (*)</translation>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
@@ -2471,7 +2439,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Invalid Content-Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый тип содержимого</translation>
     </message>
 </context>
 <context>
@@ -2706,7 +2674,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
 Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -3169,8 +3137,8 @@ Additional licenses and components</source>
         <translation>ИЗМЕНИТЬ PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Новый PUK получите в конверте с кодами &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=33922&quot;&gt;из PPA&lt;/a&gt;.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Для получения нового PUK кода для своей ID-карты, посетите центр обслуживания, где вы сможете получить конверт с кодами. &lt;a href=&quot;http://politsei.ee/ru/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad.dot&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>

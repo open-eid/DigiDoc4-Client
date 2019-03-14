@@ -945,7 +945,7 @@ QScrollBar::sub-line:vertical {
           <widget class="QLabel" name="contact">
            <property name="text">
             <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</string>
            </property>
            <property name="alignment">

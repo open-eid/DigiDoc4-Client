@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Failed to save server access certificate file to KeyChain!</source>
-        <translation type="unfinished"></translation>
+        <translation>Viga juurdepääsutõendi salvestamisel võtmehoidjasse!</translation>
     </message>
     <message>
         <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
@@ -194,18 +194,6 @@
         <translation>Loo %1</translation>
     </message>
     <message>
-        <source>ALLOW_ACCESS</source>
-        <translation type="vanished">App Store rakenduste ligipääs failisüsteemile on piiratud ning kasutaja peab valima kataloogi millele rakendus ligi pääseb.&lt;br /&gt;Luba rakendusele kataloogile &apos;%1&apos; ligi pääseda või vali teine kataloog kuhu ümbrik salvestada.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation type="vanished">KATKESTA</translation>
-    </message>
-    <message>
-        <source>ALLOW</source>
-        <translation type="vanished">LUBA</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
     </message>
@@ -276,7 +264,7 @@
     </message>
     <message>
         <source>Issued by:</source>
-        <translation>Väljastaja: </translation>
+        <translation>Väljastaja:</translation>
     </message>
     <message>
         <source>Valid:</source>
@@ -418,11 +406,11 @@
     <name>CheckConnection</name>
     <message>
         <source>Check proxy settings</source>
-        <translation>Kontrolli proxy seadeid</translation>
+        <translation>Kontrolli proksi seadeid</translation>
     </message>
     <message>
         <source>Check proxy username and password</source>
-        <translation>Kontrolli proxy kasutajanime ja parooli</translation>
+        <translation>Kontrolli proksi kasutajanime ja parooli</translation>
     </message>
     <message>
         <source>Cannot connect to certificate status service!</source>
@@ -437,7 +425,7 @@
     </message>
     <message>
         <source>Container</source>
-        <translation>Konteiner:</translation>
+        <translation>Ümbrik:</translation>
     </message>
     <message>
         <source>CHANGE</source>
@@ -1131,7 +1119,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>crypto container</source>
-        <translation>krüpto konteiner</translation>
+        <translation>krüpto ümbrik</translation>
     </message>
     <message>
         <source>Decryption succeeded</source>
@@ -1168,10 +1156,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Save photo</source>
         <translation>Salvesta foto</translation>
-    </message>
-    <message>
-        <source>Photo (*.jpg);;All Files (*)</source>
-        <translation type="vanished">Foto (*.jpg);;Kõik failid (*)</translation>
     </message>
     <message>
         <source>Ver. </source>
@@ -1246,8 +1230,8 @@ ID-KAARDIGA</translation>
         <translation>Sinu ID-kaardi sertifikaate ei ole võimalik alates %1 uuendada.</translation>
     </message>
     <message>
-        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
-        <translation>Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril 1777 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
+        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 666 8888 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
+        <translation>Dokument kehtib oma kehtivusaja lõpuni ning sellega saab endiselt e-teenustesse sisse logida ning digiallkirja anda. Kui e-teenuste kasutamisel tekib tõrkeid, helistage ID-kaardi infotelefonile numbril (+372) 666 8888 või pöörduge Politsei- ja Piirivalveameti teeninduspunkti.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30007&amp;read=38010&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificate is not registered in the certificate store. Register now?</source>
@@ -1513,23 +1497,6 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
         <translation>Dokumendid (%1%2)</translation>
     </message>
     <message>
-        <source>Welcome to use digital signature software!&lt;br /&gt;&lt;br /&gt;
-Note that, according to Estonian legislation, digital signatures are equivalent to handwritten signatures. To digitally sign a document, you need to have an eID document (ID-card, Mobile-ID, digi-ID, e-Resident digi-ID, digital stamp etc.) with valid certificates and connection to the internet.&lt;br /&gt;&lt;br /&gt;
-For digital authentication use your PIN1 code, and for digital signing - your PIN2 code.&lt;br /&gt;&lt;br /&gt;
-BDOC is the default digital signature format in Estonia. &lt;a href=&quot;https://www.ria.ee/en/bdoc-en.html&quot;&gt;Additional information&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC is the old digital signature format. Nowadays you can view and verify documents signed in the DDOC format, however, you cannot create new signatures in this format.&lt;br /&gt;&lt;br /&gt;
-ASiC-E is an international digital signature format that will be used across European countries.&lt;br /&gt;&lt;br /&gt;
-According to &lt;a href=&quot;http://sk.ee/en/services/validity-confirmation-services&quot;&gt;validity confirmation service standard conditions&lt;/a&gt; the digital signing service is free for 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the service. Additional information is available &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt; or ID-helpline 1777 (only from Estonia), (+372) 6773377.</source>
-        <translation type="vanished">Tere tulemast kasutama digitaalallkirjastamise tarkvara.&lt;br /&gt;&lt;br /&gt;
-Pea meeles, et digitaalne allkiri on Eesti seaduste kohaselt võrdne omakäelise allkirjaga. Digitaalseks allkirjastamiseks vajad kehtivate sertifikaatidega eID dokumenti (ID-kaart, Mobiil-ID, digi-ID, e-Residendi digi-ID, digitempel vms) ja toimivat internetiühendust.&lt;br /&gt;&lt;br /&gt;
-Enda tuvastamiseks kasuta koodi PIN1 ja allkirjastamiseks PIN2.&lt;br /&gt;&lt;br /&gt;
-BDOC – digitaalallkirja vaikimisi vorming Eestis. &lt;a href=&quot;https://www.ria.ee/ee/bdoc.html&quot;&gt;Lisainfo&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
-DDOC – digitaalallkirja eelmine vorming. Täna saab DDOC allkirju vaadata ja kontrollida, kuid mitte enam juurde luua.&lt;br /&gt;&lt;br /&gt;
-ASiC-E – rahvusvahelisele, Euroopa ülesele ühilduvusele suunatud tulevikuvorming.&lt;br /&gt;&lt;br /&gt;
-Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehtivuskinnituse-teenuse-kasutamise-tavatingimused/&quot;&gt;kehtivuskinnitusteenuse kasutamise tavatingimustele&lt;/a&gt; on lubatud allkirjastamise teenust tasuta kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks leping. Lisainfo: &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt; või ID-abiliini telefonil (+372) 666 8888.
-</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1 kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
     </message>
@@ -1654,7 +1621,7 @@ Vastavalt &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus/kehti
     </message>
     <message>
         <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
-        <translation>Foto (*.jpg);;Kõik failid (*)</translation>
+        <translation>Foto (*.jpg *.jpeg);;Kõik failid (*)</translation>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
@@ -2459,7 +2426,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>Invalid Content-Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Kehtetu sisutüüp</translation>
     </message>
 </context>
 <context>
@@ -2690,7 +2657,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-Contact for assistance by email &lt;a href=&quot;mailto:abi@id.ee&quot;&gt;abi@id.ee&lt;/a&gt; or call 1777 (only from Estonia), (+372) 677 3377 when calling from abroad.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
 Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -2793,7 +2760,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Praegune BDOC-konteiner kasutab nõrgemat krüpteerimismeetodit kui Eestis on ametlikult aktsepteeritud.</translation>
+        <translation>Praegune BDOC-ümbrik kasutab nõrgemat krüpteerimismeetodit kui Eestis on ametlikult aktsepteeritud.</translation>
     </message>
     <message>
         <source>Restrictions</source>
@@ -2849,7 +2816,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signature format</source>
-        <translation>Allkirja vorming</translation>
+        <translation>Allkirja formaat</translation>
     </message>
     <message>
         <source>Signature policy</source>
@@ -3177,8 +3144,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>MUUDA PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. You can only use the new PUK code with the new code envelope that you can use from PPA.</source>
-        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saad vaid uue koodiümbrikuga, mida &lt;a href=&apos;https://www.id.ee/?lang=et&amp;id=30133&apos;&gt;taotle PPA-st&lt;/a&gt;.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saamiseks külasta klienditeeninduspunkti, kust saad koodiümbriku uute koodidega. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>

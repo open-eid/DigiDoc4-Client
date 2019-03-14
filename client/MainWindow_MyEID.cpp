@@ -360,7 +360,7 @@ void MainWindow::updateMyEid()
 		{
 			qApp->showWarning(tr("Your ID-card certificates cannot be renewed starting from %1.").arg(QStringLiteral("01.07.2017")) + " " +
 				tr("Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. "
-					"If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 677 3377 or visit "
+					"If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 666 8888 or visit "
 					"Police and Border Guard Board service point.<br /><br /><a href=\"http://id.ee/?id=30519&read=38011\">More info</a>"));
 		}
 	}
