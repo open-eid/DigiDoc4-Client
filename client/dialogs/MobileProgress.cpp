@@ -311,6 +311,7 @@ void MobileProgress::sslErrors(QNetworkReply *reply, const QList<QSslError> &err
 		{
 		case QSslError::UnableToGetLocalIssuerCertificate:
 		case QSslError::CertificateUntrusted:
+		case QSslError::SelfSignedCertificateInChain:
 			if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
 				ignore << e;
 				break;
