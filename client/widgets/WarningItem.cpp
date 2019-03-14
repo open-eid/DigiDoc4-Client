@@ -84,14 +84,17 @@ void WarningItem::lookupWarning()
 	case ria::qdigidoc4::UnblockPin1Warning:
 		warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(1);
 		warnText.details = QStringLiteral("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
+		ui->warningAction->setOpenExternalLinks(false);
 		break;
 	case ria::qdigidoc4::UnblockPin2Warning:
 		warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(2);
 		warnText.details = QStringLiteral("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
+		ui->warningAction->setOpenExternalLinks(false);
 		break;
 	case ria::qdigidoc4::UpdateCertWarning:
 		warnText.text = MainWindow::tr("The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.");
 		warnText.details = QStringLiteral("<a href='#update-Certificate-%1'><span style='color:rgb(53, 55, 57)'>%2</span></a>").arg(warnText.url, MainWindow::tr("Begin"));
+		ui->warningAction->setOpenExternalLinks(false);
 		break;
 	// SignDetails
 	case ria::qdigidoc4::InvalidSignatureWarning:
@@ -99,50 +102,28 @@ void WarningItem::lookupWarning()
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
-		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::InvalidTimestampWarning:
 		warnText.text = tr("%n timestamps are not valid", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/index.php?id=30591"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
-		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::UnknownSignatureWarning:
 		warnText.text = tr("%n signatures are unknown", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
-		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::UnknownTimestampWarning:
 		warnText.text = tr("%n timestamps are unknown", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
-		ui->warningAction->setOpenExternalLinks(true);
 		break;
 	case ria::qdigidoc4::CheckConnectionWarning:
 		warnText.text = MainWindow::tr("Check internet connection");
 		warnText.page = ria::qdigidoc4::SignDetails;
-		ui->warningAction->setOpenExternalLinks(true);
-		break;
-	// MyEid
-	case ria::qdigidoc4::EmailActivationWarning:
-		warnText.text = MainWindow::tr("Failed activating email forwards.");
-		warnText.page = ria::qdigidoc4::MyEid;
-		break;
-	case ria::qdigidoc4::EmailLoadingWarning:
-		warnText.text = MainWindow::tr("Failed loading email settings.");
-		warnText.page = ria::qdigidoc4::MyEid;
-		break;
-	case ria::qdigidoc4::PictureLoadingWarning:
-		warnText.text = MainWindow::tr("Loading picture failed.");
-		//warnText.page = ria::qdigidoc4::MyEid; // Can be loaded multiple pages
-		break;
-	case ria::qdigidoc4::SSLLoadingWarning:
-		warnText.text = MainWindow::tr("Failed to load data");
-		warnText.page = ria::qdigidoc4::MyEid;
 		break;
 	default:
 		break;

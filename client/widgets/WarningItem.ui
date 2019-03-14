@@ -55,7 +55,7 @@ color: #353739;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color:#353739; border: none; background-color: #F8DDA7;</string>
+      <string notr="true">border: none;</string>
      </property>
      <property name="text">
       <string notr="true">One signature is invalid</string>
@@ -78,11 +78,8 @@ color: #353739;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #353739;
-font-weight: bold;
-text-decoration: none solid rgb(53, 55, 57);
-border: none;
-background-color: #F8DDA7;</string>
+      <string notr="true">text-decoration: none solid rgb(53, 55, 57);
+border: none;</string>
      </property>
      <property name="text">
       <string notr="true">Click to resolve problem</string>

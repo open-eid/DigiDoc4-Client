@@ -1537,10 +1537,6 @@ New ID-cards have chip on the back side of the card.</translation>
         <translation>Loading picture failed.</translation>
     </message>
     <message>
-        <source>Failed to load data</source>
-        <translation>Failed to load data</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>

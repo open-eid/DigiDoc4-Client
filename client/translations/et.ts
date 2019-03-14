@@ -1521,10 +1521,6 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
         <translation>Pildi laadimine ebaõnnestus.</translation>
     </message>
     <message>
-        <source>Failed to load data</source>
-        <translation>Andmete laadimine ebaõnnestus</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>

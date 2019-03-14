@@ -107,16 +107,11 @@ enum WarningType {
     UnblockPin2Warning,
     UpdateCertWarning,
 
+    CheckConnectionWarning,
     InvalidSignatureWarning,
     InvalidTimestampWarning,
     UnknownSignatureWarning,
     UnknownTimestampWarning,
-
-    EmailActivationWarning,
-    EmailLoadingWarning,
-    PictureLoadingWarning,
-    SSLLoadingWarning,
-    CheckConnectionWarning,
 };
 
 }
