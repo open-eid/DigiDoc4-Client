@@ -51,6 +51,9 @@ QLineEdit {
      <property name="text">
       <string>Role / resolution</string>
      </property>
+     <property name="buddy">
+      <cstring>Role</cstring>
+     </property>
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
