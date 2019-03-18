@@ -93,6 +93,7 @@ QString MainAction::label(Actions action) const
 	case SignatureToken: return tr("SignatureToken");
 	case EncryptContainer: return tr("EncryptContainer");
 	case DecryptContainer: return tr("DecryptContainer");
+	case DecryptToken: return tr("DecryptToken");
 	default: return tr("SignatureAdd");
 	}
 }

@@ -184,7 +184,7 @@ QList<TokenData> QCNG::tokens() const
 		TokenData t;
 		t.setReaders({i.value().reader});
 		t.setCard(i.key().type() & SslCertificate::EstEidType || i.key().type() & SslCertificate::DigiIDType ?
-			i.value().guid : i.key().subjectInfo(QSslCertificate::CommonName));
+			i.value().guid : i.key().subjectInfo(QSslCertificate::CommonName) + "-" + i.key().serialNumber());
 		t.setCert(i.key());
 		result << t;
 	}
