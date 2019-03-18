@@ -164,12 +164,12 @@ void ContainerPage::elideFileName(bool force)
 	{
 		elided = true;
 		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
-			ui->containerFile->fontMetrics().elidedText(fileName, Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
+			ui->containerFile->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
 	}
 	else if(elided || force)
 	{
 		elided = false;
-		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName + "</span></a>");
+		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName.toHtmlEscaped() + "</span></a>");
 	}
 }
 
@@ -225,8 +225,8 @@ void ContainerPage::initContainer( const QString &file, const QString &suffix )
 	const QFileInfo f( file );
 	if( !f.isFile() ) return;
 
-	fileName = f.dir().path() + QDir::separator() + f.completeBaseName() + suffix;
-	ui->containerFile->setText(fileName);
+	fileName = (f.dir().path() + QDir::separator() + f.completeBaseName() + suffix);
+	ui->containerFile->setText(fileName.toHtmlEscaped());
 }
 
 void ContainerPage::hideMainAction()

@@ -35,7 +35,7 @@ class FileItem : public Item
 public:
 	explicit FileItem( ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
 	explicit FileItem( const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr );
-	~FileItem();
+	~FileItem() final;
 
 	QString getFile();
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
