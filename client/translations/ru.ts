@@ -1862,6 +1862,14 @@ Kонтрольный код: %1</translation>
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Не удается подписать контейнер</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID certificates are not activated</source>
+        <translation>Сертификаты Mobiil-ID не активированы</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
