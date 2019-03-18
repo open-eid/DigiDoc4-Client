@@ -19,28 +19,31 @@
 
 #include "ButtonHoverFilter.h"
 
-ButtonHoverFilter::ButtonHoverFilter( const QString &icon, const QString &hoverIcon, QObject *parent )
-: QObject(parent)
-, icon( QIcon(icon) )
-, hoverIcon( QIcon(hoverIcon) )
-{}
+#include <QtCore/QEvent>
+#include <QtWidgets/QAbstractButton>
+
+ButtonHoverFilter::ButtonHoverFilter(QString icon, QString hoverIcon, QAbstractButton *button)
+	: QObject(button)
+	, m_icon(std::move(icon))
+	, m_hoverIcon(std::move(hoverIcon))
+{
+	button->setIcon(QPixmap(m_icon).scaled(button->width(), button->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	button->installEventFilter(this);
+}
 
 bool ButtonHoverFilter::eventFilter(QObject *watched, QEvent *event)
 {
-	QAbstractButton * button = qobject_cast<QAbstractButton*>( watched );
-	if ( !button ) {
+	QAbstractButton *button = qobject_cast<QAbstractButton*>(watched);
+	if(!button)
 		return false;
-	}
-
-	if (event->type() == QEvent::Enter) {
-		button->setIcon( hoverIcon );
+	switch(event->type())
+	{
+	case QEvent::Enter:
+		button->setIcon(QPixmap(m_hoverIcon).scaled(button->width(), button->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		return true;
-	}
-
-	if (event->type() == QEvent::Leave){
-		button->setIcon( icon );
+	case QEvent::Leave:
+		button->setIcon(QPixmap(m_icon).scaled(button->width(), button->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		return true;
+	default: return false;
 	}
-
-	return false;
 }

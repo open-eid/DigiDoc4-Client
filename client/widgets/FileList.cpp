@@ -182,13 +182,13 @@ void FileList::saveAll()
 
 			if( b == QMessageBox::Cancel )
 			{
-					break;
+				break;
 			}
-			else if( b == QMessageBox::No )
+			if( b == QMessageBox::No )
 			{
-					dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
-					if( dest.isEmpty() )
-							continue;
+				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
+				if( dest.isEmpty() )
+					continue;
 			}
 			else
 			{
@@ -233,7 +233,6 @@ void FileList::updateDownload()
 		{
 			ui->download->show();
 			ui->count->show();
-			ui->download->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_download.svg"), QStringLiteral(":/images/icon_download_hover.svg"), this));
 		}
 	}
 	else if(items.size() <= 1)

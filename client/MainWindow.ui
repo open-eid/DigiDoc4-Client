@@ -50,28 +50,15 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QWidget
-{
+      <string notr="true">QWidget {
 background-color: #ffffff;
 }
-QPushButton:hover, QPushButton:focus
-{
+QPushButton:hover, QPushButton:focus {
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F1C157, stop:0.28 #FADF91, stop:1 #EBA927);
 color: #00355F;
 }
-
-QPushButton:disabled
-{ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A3AFC0, stop: 0.75 #80909D); }
-
-#settings, #help
-{
-background-color: transparent;
-color: #000000;
-font-size: 13px;
-font-weight: 400;
-width: 49px;
-height: 14px;
-min-width: 0px;
+QPushButton:disabled {
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A3AFC0, stop: 0.75 #80909D);
 }</string>
      </property>
      <layout class="QHBoxLayout" name="topBarLayout">
@@ -240,51 +227,15 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="tbRightExpandingHLayout">
-        <property name="spacing">
-         <number>0</number>
+       <widget class="QWidget" name="tbButtonWidget" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>112</width>
+          <height>0</height>
+         </size>
         </property>
-        <item>
-         <widget class="QWidget" name="tbButtonWidget" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>112</width>
-            <height>50</height>
-           </size>
-          </property>
-          <widget class="QToolButton" name="help">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>4</y>
-             <width>54</width>
-             <height>41</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>49</width>
-             <height>41</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>-1</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QToolButton {
+        <property name="styleSheet">
+         <string notr="true">QToolButton {
   border: none;
   color: #75787B;
   font-size: 11px;
@@ -292,6 +243,35 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
 QToolButton:hover {
   color: #006EB5;
 }</string>
+        </property>
+        <layout class="QHBoxLayout" name="tbButtonWidgetLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="help">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>41</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>-1</pointsize>
+            </font>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="text">
             <string>Help</string>
@@ -312,40 +292,22 @@ QToolButton:hover {
             <enum>Qt::ToolButtonTextUnderIcon</enum>
            </property>
           </widget>
+         </item>
+         <item>
           <widget class="QToolButton" name="settings">
-           <property name="geometry">
-            <rect>
-             <x>54</x>
-             <y>4</y>
-             <width>58</width>
-             <height>41</height>
-            </rect>
-           </property>
            <property name="minimumSize">
             <size>
-             <width>49</width>
+             <width>0</width>
              <height>41</height>
             </size>
            </property>
            <property name="font">
             <font>
              <pointsize>-1</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
             </font>
            </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QToolButton {
-  border: none;
-  color: #75787B;
-  font-size: 11px;
-}
-QToolButton:hover {
-  color: #006EB5;
-}</string>
            </property>
            <property name="text">
             <string>Settings</string>
@@ -365,9 +327,9 @@ QToolButton:hover {
             <enum>Qt::ToolButtonTextUnderIcon</enum>
            </property>
           </widget>
-         </widget>
-        </item>
-       </layout>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -19,10 +19,9 @@
 
 #pragma once
 
-#include <QEvent>
-#include <QIcon>
-#include <QObject>
-#include <QAbstractButton>
+#include <QtCore/QObject>
+
+class QAbstractButton;
 
 // Qt work-around to enable changing icon when hovering over the button
 class ButtonHoverFilter : public QObject
@@ -30,12 +29,11 @@ class ButtonHoverFilter : public QObject
 	Q_OBJECT
 
 public:
-	explicit ButtonHoverFilter( const QString &icon, const QString &hoverIcon, QObject *parent = nullptr );
+	explicit ButtonHoverFilter(QString icon, QString hoverIcon, QAbstractButton *button);
 
 protected:
-	virtual bool eventFilter( QObject *watched, QEvent *event ) override;
+	bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
-	QIcon icon;
-	QIcon hoverIcon;
+	QString m_icon, m_hoverIcon;
 };
