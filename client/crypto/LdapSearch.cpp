@@ -95,21 +95,14 @@ bool LdapSearch::init()
 #ifndef Q_OS_WIN
 #if 1
 	int cert_flag = LDAP_OPT_X_TLS_NEVER;
-	err = ldap_set_option(d->ldap, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_flag);
+	err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_flag);
 	if(err)
 	{
 		setLastError(tr("Failed to start ssl"), err);
 		return false;
 	}
 #else
-	int err = ldap_set_option(d->ldap, LDAP_OPT_X_TLS_CACERTFILE, "");
-	if(err)
-	{
-		setLastError(tr("Failed to start ssl"), err);
-		return false;
-	}
-
-	err = ldap_start_tls_s(d->ldap, nullptr, nullptr);
+	err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_CACERTFILE, "");
 	if(err)
 	{
 		setLastError(tr("Failed to start ssl"), err);
@@ -131,8 +124,13 @@ bool LdapSearch::isSSL() const
 
 void LdapSearch::search( const QString &search )
 {
-	if( !init() )
+	if(!init())
+	{
+		if(d->ldap)
+			ldap_unbind_s(d->ldap);
+		d->ldap = nullptr;
 		return;
+	}
 
 	char *attrs[] = { const_cast<char*>("userCertificate;binary"), nullptr };
 

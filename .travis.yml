@@ -20,7 +20,7 @@ env:
   - AWS_DEFAULT_REGION=eu-west-1
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-    HASH=($(shasum prepare_osx_build_environment.sh | cut -d ' ' -f 1));
+    HASH=($(shasum prepare_osx_build_environment.sh));
     sudo easy_install pip;
     brew install --force openssl;
     pip install --user awscli > /dev/null;

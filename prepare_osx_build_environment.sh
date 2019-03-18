@@ -110,7 +110,9 @@ if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
     curl -O -L http://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
     tar xf openldap-${OPENLDAP_VER}.tgz
     cd openldap-${OPENLDAP_VER}
-    LDFLAGS="-L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure -prefix ${OPENLDAP_PATH} --disable-shared --disable-slapd --with-tls=openssl --without-cyrus-sasl
+    LDFLAGS="-L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure -prefix ${OPENLDAP_PATH} \
+        --enable-static --disable-shared --disable-syslog --disable-proctitle --disable-local --disable-slapd \
+        --without-threads --without-cyrus-sasl --with-tls=openssl
     make
     make install
 else
