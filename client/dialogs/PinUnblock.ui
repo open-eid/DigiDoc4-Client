@@ -185,17 +185,20 @@ text-align: center;</string>
       <property name="text">
        <string>VALID PUK CODE</string>
       </property>
+      <property name="buddy">
+       <cstring>puk</cstring>
+      </property>
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="iconLabelPuk" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+     <widget class="QSvgWidget" name="iconLabelPuk" native="true">
       <property name="minimumSize">
+       <size>
+        <width>15</width>
+        <height>15</height>
+       </size>
+      </property>
+      <property name="maximumSize">
        <size>
         <width>15</width>
         <height>15</height>
@@ -286,17 +289,20 @@ line-height: 14px;
       <property name="text">
        <string notr="true">pin</string>
       </property>
+      <property name="buddy">
+       <cstring>pin</cstring>
+      </property>
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="iconLabelPin" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+     <widget class="QSvgWidget" name="iconLabelPin" native="true">
       <property name="minimumSize">
+       <size>
+        <width>15</width>
+        <height>15</height>
+       </size>
+      </property>
+      <property name="maximumSize">
        <size>
         <width>15</width>
         <height>15</height>
@@ -387,17 +393,20 @@ line-height: 14px;
       <property name="text">
        <string notr="true">repeat</string>
       </property>
+      <property name="buddy">
+       <cstring>repeat</cstring>
+      </property>
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="iconLabelRepeat" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+     <widget class="QSvgWidget" name="iconLabelRepeat" native="true">
       <property name="minimumSize">
+       <size>
+        <width>15</width>
+        <height>15</height>
+       </size>
+      </property>
+      <property name="maximumSize">
        <size>
         <width>15</width>
         <height>15</height>
@@ -1348,6 +1357,14 @@ text-align: cente</string>
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>puk</tabstop>
   <tabstop>pin</tabstop>

@@ -249,9 +249,9 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 
 void PinUnblock::setUnblockEnabled()
 {
-	ui->iconLabelPuk->setStyleSheet(isFirstCodeOk ? QStringLiteral("image: url(:/images/icon_check.svg);") : QString());
-	ui->iconLabelPin->setStyleSheet(isNewCodeOk ? QStringLiteral("image: url(:/images/icon_check.svg);") : QString());
-	ui->iconLabelRepeat->setStyleSheet(isRepeatCodeOk ? QStringLiteral("image: url(:/images/icon_check.svg);") : QString());
+	ui->iconLabelPuk->load(isFirstCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
+	ui->iconLabelPin->load(isNewCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
+	ui->iconLabelRepeat->load(isRepeatCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
 	ui->unblock->setEnabled( isFirstCodeOk && isNewCodeOk && isRepeatCodeOk );
 }
 
