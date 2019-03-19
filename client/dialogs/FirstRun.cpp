@@ -56,13 +56,13 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->lang->setCursor(Qt::PointingHandCursor);
 
 	ui->lang->setFont(Styles::font(Styles::Regular, 18));
-	ui->lang->addItem("Eesti keel");
-	ui->lang->addItem("English");
-	ui->lang->addItem("Русский язык");
+	ui->lang->addItem(QStringLiteral("Eesti keel"));
+	ui->lang->addItem(QStringLiteral("English"));
+	ui->lang->addItem(QStringLiteral("Русский язык"));
 
-	if(Settings::language() == "en")
+	if(Settings::language() == QStringLiteral("en"))
 		ui->lang->setCurrentIndex(1);
-	else if(Settings::language() == "ru")
+	else if(Settings::language() == QStringLiteral("ru"))
 		ui->lang->setCurrentIndex(2);
 	else
 		ui->lang->setCurrentIndex(0);
@@ -70,28 +70,22 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this](int index) {
 		switch(index)
 		{
-		case 1:
-			emit langChanged("en");
-			break;
-		case 2:
-			emit langChanged("ru");
-			break;
-		default:
-			emit langChanged("et");
-			break;
+		case 1: emit langChanged(QStringLiteral("en")); break;
+		case 2: emit langChanged(QStringLiteral("ru")); break;
+		default: emit langChanged(QStringLiteral("et")); break;
 		}
 
 		ui->retranslateUi(this);
 		loadImages();
 	});
 	ui->continueBtn->setFont(buttonFont);
-	connect(ui->continueBtn, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Intro);});
+	connect(ui->continueBtn, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Intro);});
 
-	QSvgWidget* coatOfArs = new QSvgWidget(":/images/Logo_Suur.svg", ui->coatOfArms);
+	QSvgWidget* coatOfArs = new QSvgWidget(QStringLiteral(":/images/Logo_Suur.svg"), ui->coatOfArms);
 	coatOfArs->show();
-	QSvgWidget* leaves = new QSvgWidget(":/images/vapilehed.svg", ui->leaves);
+	QSvgWidget* leaves = new QSvgWidget(QStringLiteral(":/images/vapilehed.svg"), ui->leaves);
 	leaves->show();
-	QSvgWidget* structureFunds = new QSvgWidget(":/images/Struktuurifondid.svg", ui->structureFunds);
+	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), ui->structureFunds);
 	structureFunds->resize(ui->structureFunds->width(), ui->structureFunds->height());
 	structureFunds->show();
 
@@ -104,14 +98,14 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->cryptoIntro->setFont(regular14);
 	ui->eidIntro->setFont(regular14);
 	ui->skip->setFont(regular12);
-	connect(ui->skip, &QPushButton::clicked, this, [this](){ emit close(); });
+	connect(ui->skip, &QPushButton::clicked, this, &FirstRun::close);
 
 	ui->viewSigning->setFont(buttonFont);
 	ui->viewEncryption->setFont(buttonFont);
 	ui->viewEid->setFont(buttonFont);
-	connect(ui->viewSigning, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
-	connect(ui->viewEncryption, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->viewEid, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
+	connect(ui->viewSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
+	connect(ui->viewEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->viewEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	ui->introPageLayout->itemAtPosition(1, 0)->setAlignment(Qt::AlignCenter);
 	ui->introPageLayout->itemAtPosition(1, 1)->setAlignment(Qt::AlignCenter);
@@ -129,19 +123,19 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->textSign2->setFont(regular14);
 	ui->textSign3->setFont(regular14);
 	ui->skip_2->setFont(regular12);
-	connect(ui->skip_2, &QPushButton::clicked, this, [this](){ emit close(); });
+	connect(ui->skip_2, &QPushButton::clicked, this, [this]{ emit close(); });
 
 	ui->next->setFont(buttonFont);
-	connect(ui->next, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->next, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
 
-	QPixmap one = QPixmap(":/images/intro_one.svg");
-	QPixmap two = QPixmap(":/images/intro_two.svg");
-	QPixmap three = QPixmap(":/images/intro_three.svg");
-	ui->signOne->setPixmap(one.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->signTwo->setPixmap(two.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->signThree->setPixmap(three.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	connect(ui->gotoEncryption, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->gotoEid, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
+	QPixmap one = QPixmap(QStringLiteral(":/images/intro_one.svg"));
+	QPixmap two = QPixmap(QStringLiteral(":/images/intro_two.svg"));
+	QPixmap three = QPixmap(QStringLiteral(":/images/intro_three.svg"));
+	ui->signOne->setPixmap(one.scaled(ui->signOne->width(), ui->signOne->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->signTwo->setPixmap(two.scaled(ui->signTwo->width(), ui->signTwo->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->signThree->setPixmap(three.scaled(ui->signThree->width(), ui->signThree->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	connect(ui->gotoEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->gotoEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 4: Crypto
 	ui->cryptoTitle->setFont(titleFont);
@@ -152,16 +146,16 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->textCrypto2->setFont(regular14);
 	ui->textCrypto3->setFont(regular14);
 	ui->skip_3->setFont(regular12);
-	connect(ui->skip_3, &QPushButton::clicked, this, [this](){ emit close(); });
+	connect(ui->skip_3, &QPushButton::clicked, this, &FirstRun::close);
 
 	ui->next_2->setFont(buttonFont);
-	connect(ui->next_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
+	connect(ui->next_2, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
-	ui->cryptoOne->setPixmap(one.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->cryptoTwo->setPixmap(two.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->cryptoThree->setPixmap(three.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	connect(ui->gotoSigning_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
-	connect(ui->gotoEid_2, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(MyEid);});
+	ui->cryptoOne->setPixmap(one.scaled(ui->cryptoOne->width(), ui->cryptoOne->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->cryptoTwo->setPixmap(two.scaled(ui->cryptoTwo->width(), ui->cryptoTwo->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	ui->cryptoThree->setPixmap(three.scaled(ui->cryptoThree->width(), ui->cryptoThree->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	connect(ui->gotoSigning_2, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
+	connect(ui->gotoEid_2, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 5: My eID
 	ui->eidTitle->setFont(titleFont);
@@ -171,10 +165,10 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->textEid3->setFont(regular14);
 
 	ui->enter->setFont(buttonFont);
-	connect(ui->enter, &QPushButton::clicked, this, [this](){ emit close(); });
+	connect(ui->enter, &QPushButton::clicked, this, &FirstRun::close);
 
-	connect(ui->gotoSigning_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Signing);});
-	connect(ui->gotoEncryption_3, &QPushButton::clicked, this, [this](){ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->gotoSigning_3, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
+	connect(ui->gotoEncryption_3, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
 
 	loadImages();
 }
@@ -224,7 +218,7 @@ void FirstRun::mousePressEvent(QMouseEvent *event)
 	lastPos = event->globalPos();
 }
 
-void FirstRun::mouseReleaseEvent(QMouseEvent *event)
+void FirstRun::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
 	setCursor(Qt::OpenHandCursor);
 	dragged = false;
@@ -243,12 +237,12 @@ void FirstRun::loadImages()
 {
 	QString lang = Settings::language();
 
-	loadPixmap("intro_sign-select", lang, ui->signImage1);
-	loadPixmap("intro_sign-sign", lang, ui->signImage2);
-	loadPixmap("intro_sign-pin", lang, ui->signImage3);
-	loadPixmap("intro_crypto-select", lang, ui->cryptoImage1);
-	loadPixmap("intro_crypto-recipient", lang, ui->cryptoImage2);
-	loadPixmap("intro_crypto-encrypt", lang, ui->cryptoImage3);
-	loadPixmap("intro_eid-manage", lang, ui->eidImage1);
-	loadPixmap("intro_eid-info", lang, ui->eidImage3);
+	loadPixmap(QStringLiteral("intro_sign-select"), lang, ui->signImage1);
+	loadPixmap(QStringLiteral("intro_sign-sign"), lang, ui->signImage2);
+	loadPixmap(QStringLiteral("intro_sign-pin"), lang, ui->signImage3);
+	loadPixmap(QStringLiteral("intro_crypto-select"), lang, ui->cryptoImage1);
+	loadPixmap(QStringLiteral("intro_crypto-recipient"), lang, ui->cryptoImage2);
+	loadPixmap(QStringLiteral("intro_crypto-encrypt"), lang, ui->cryptoImage3);
+	loadPixmap(QStringLiteral("intro_eid-manage"), lang, ui->eidImage1);
+	loadPixmap(QStringLiteral("intro_eid-info"), lang, ui->eidImage3);
 }
