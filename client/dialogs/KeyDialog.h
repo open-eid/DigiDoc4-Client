@@ -30,17 +30,10 @@ class KeyDialog: public QDialog
 	Q_OBJECT
 
 public:
-	KeyDialog( const CKey &key, QWidget *parent = 0 );
-	~KeyDialog();
-
-	int exec() override;
-
-private Q_SLOTS:
-	void showCertificate();
+	KeyDialog(const CKey &key, QWidget *parent = nullptr);
+	~KeyDialog() final;
 
 private:
-	void addItem( const QString &parameter, const QString &value );
-
 	CKey k;
 	Ui::KeyDialog *d;
 };
