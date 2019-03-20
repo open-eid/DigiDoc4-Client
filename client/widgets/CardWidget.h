@@ -19,15 +19,14 @@
 
 #pragma once
 
-#include "QCardInfo.h"
 #include "Styles.h"
 #include "widgets/StyledWidget.h"
 
-#include <QFont>
 #include <QScopedPointer>
 #include <QSharedPointer>
-#include <QSvgWidget>
 
+struct QCardInfo;
+class QSvgWidget;
 namespace Ui {
 class CardWidget;
 }
@@ -38,8 +37,8 @@ class CardWidget : public StyledWidget, public PictureInterface
 
 public:
 	explicit CardWidget( QWidget *parent = nullptr );
-	explicit CardWidget( const QString &id, QWidget *parent = nullptr );
-	~CardWidget();
+	explicit CardWidget(QString id, QWidget *parent = nullptr);
+	~CardWidget() final;
 
 	void clearPicture() override;
 	QString id() const;
@@ -62,5 +61,5 @@ private:
 	QString card;
 	QScopedPointer<QSvgWidget> cardIcon;
 	QSharedPointer<const QCardInfo> cardInfo;
-	QWidget *sealWidget;
+	QSvgWidget *seal = nullptr;
 };

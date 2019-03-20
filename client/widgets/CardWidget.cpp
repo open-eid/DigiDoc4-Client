@@ -20,6 +20,7 @@
 #include "CardWidget.h"
 #include "ui_CardWidget.h"
 
+#include "QCardInfo.h"
 #include "common_enums.h"
 #include "Styles.h"
 #include "widgets/LabelButton.h"
@@ -31,13 +32,12 @@
 using namespace ria::qdigidoc4;
 
 CardWidget::CardWidget( QWidget *parent )
-: CardWidget( QString(), parent ) { }
+	: CardWidget( QString(), parent ) { }
 
-CardWidget::CardWidget( const QString &id, QWidget *parent )
-: StyledWidget( parent )
-, ui( new Ui::CardWidget )
-, card( id )
-, sealWidget(nullptr)
+CardWidget::CardWidget(QString id, QWidget *parent)
+	: StyledWidget(parent)
+	, ui(new Ui::CardWidget)
+	, card(std::move(id))
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
@@ -45,21 +45,27 @@ CardWidget::CardWidget( const QString &id, QWidget *parent )
 	ui->cardName->setFont( Styles::font( Styles::Condensed, 20, QFont::DemiBold ) );
 	ui->cardCode->setFont( font );
 	ui->cardStatus->setFont( font );
-	ui->cardPhoto->init( LabelButton::None, "", CardPhoto );
+	ui->cardPhoto->init(LabelButton::None, QString(), CardPhoto);
 	ui->load->setFont(Styles::font(Styles::Condensed, 9));
 	ui->load->hide();
 
-	cardIcon.reset( new QSvgWidget( ":/images/icon_IDkaart_green.svg", this ) );
-	cardIcon->setStyleSheet("background: none;");
+	cardIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_IDkaart_green.svg"), this));
+	cardIcon->setStyleSheet(QStringLiteral("background: none;"));
 	cardIcon->resize( 17, 12 );
 	cardIcon->move( 169, 42 );
 
-	connect(ui->cardPhoto, &LabelButton::clicked, this, [this]() { emit photoClicked(ui->cardPhoto->pixmap()); });
-	connect(ui->cardPhoto, &LabelButton::entered, this, [this]() { 
-		if(!ui->cardPhoto->pixmap())
+	connect(ui->cardPhoto, &LabelButton::clicked, this, [this] {
+		if(!seal)
+			emit photoClicked(ui->cardPhoto->pixmap());
+	});
+	connect(ui->cardPhoto, &LabelButton::entered, this, [this] {
+		if(!ui->cardPhoto->pixmap() && !seal)
 			ui->load->show(); 
-		});
-	connect(ui->cardPhoto, &LabelButton::left, this, [this]() { ui->load->hide(); });
+	});
+	connect(ui->cardPhoto, &LabelButton::left, ui->load, &QLabel::hide);
+	tr("e-Seal");
+	tr("Digi ID");
+	tr("ID Card");
 }
 
 CardWidget::~CardWidget()
@@ -75,13 +81,10 @@ void CardWidget::clearPicture()
 
 void CardWidget::clearSeal()
 {
-	if(sealWidget)
-	{
-		sealWidget->hide();
-		sealWidget->close();
-		delete sealWidget;
-		sealWidget = nullptr;
-	}
+	if(seal)
+		seal->deleteLater();
+	seal = nullptr;
+	ui->cardPhoto->setCursor(QCursor(Qt::PointingHandCursor));
 }
 
 QString CardWidget::id() const
@@ -121,15 +124,15 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	ui->load->setText(tr("LOAD"));
 	if(cardInfo->loading)
 	{
-		ui->cardStatus->setText(QString());
-		cardIcon->load(QString(":/images/icon_IDkaart_disabled.svg"));
+		ui->cardStatus->clear();
+		cardIcon->load(QStringLiteral(":/images/icon_IDkaart_disabled.svg"));
 	}
 	else
 	{
-		ui->cardStatus->setText(tr("%1 in reader").arg(tr(cardInfo->cardType.toLatin1())));
-		cardIcon->load(QString(":/images/icon_IDkaart_green.svg"));
+		ui->cardStatus->setText(tr("%1 in reader").arg(tr(cardInfo->cardType)));
+		cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 	}
-	
+
 	if(ci->isEResident)
 	{
 		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
@@ -147,13 +150,13 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	if(cardInfo->type & SslCertificate::TempelType)
 	{
 		ui->cardPhoto->clear();
-		QSvgWidget* seal = new QSvgWidget(ui->cardPhoto);
-		seal->load(QString(":/images/icon_digitempel.svg"));
+		seal = new QSvgWidget(ui->cardPhoto);
+		seal->load(QStringLiteral(":/images/icon_digitempel.svg"));
 		seal->resize(32, 32);
 		seal->move(1, 6);
 		seal->show();
-		seal->setStyleSheet("border: none;");
-		sealWidget = seal;
+		seal->setStyleSheet(QStringLiteral("border: none;"));
+		ui->cardPhoto->unsetCursor();
 	}
 
 	setAccessibleDescription(cardInfo->fullName);
@@ -162,5 +165,5 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 void CardWidget::showPicture( const QPixmap &pix )
 {
 	clearSeal();
-	ui->cardPhoto->setPixmap( pix.scaled( 34, 44, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
+	ui->cardPhoto->setPixmap(pix.scaled(ui->cardPhoto->width(), ui->cardPhoto->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }

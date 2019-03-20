@@ -25,7 +25,7 @@ struct QCardInfo
 {
 	QString id;
 	QString fullName;
-	QString cardType;
+	const char *cardType;
 	QString country;
 	int type;
 	bool loading;

@@ -94,12 +94,12 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 	if(c.type() & SslCertificate::TempelType)
 	{
 		ci->fullName = c.toString(QStringLiteral("CN"));
-		ci->cardType = CardWidget::tr("e-Seal");
+		ci->cardType = "e-Seal";
 	}
 	else
 	{
 		ci->fullName = c.toString(QStringLiteral("GN SN"));
-		ci->cardType = c.type() & SslCertificate::DigiIDType ? CardWidget::tr("Digi ID") : CardWidget::tr("ID Card");
+		ci->cardType = c.type() & SslCertificate::DigiIDType ? "Digi ID" : "ID Card";
 	}
 
 	return ci;
