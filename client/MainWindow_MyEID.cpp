@@ -27,8 +27,8 @@
 #include "CertStore.h"
 #endif
 #include "dialogs/Updater.h"
+#include "dialogs/CertificateDetails.h"
 #include "effects/FadeInNotification.h"
-#include "util/CertUtil.h"
 #include "widgets/WarningList.h"
 
 #include <common/Configuration.h>
@@ -116,7 +116,7 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 void MainWindow::certDetailsClicked( const QString &link )
 {
 	bool pin1 = link == QStringLiteral("PIN1");
-	CertUtil::showCertificate(pin1 ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this,
+	CertificateDetails::showCertificate(pin1 ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this,
 		pin1 ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 }
 

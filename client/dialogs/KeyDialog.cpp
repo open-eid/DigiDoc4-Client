@@ -22,7 +22,7 @@
 
 #include "Styles.h"
 #include "effects/Overlay.h"
-#include "util/CertUtil.h"
+#include "dialogs/CertificateDetails.h"
 
 #include <common/SslCertificate.h>
 
@@ -81,7 +81,7 @@ void KeyDialog::addItem( const QString &parameter, const QString &value )
 
 void KeyDialog::showCertificate()
 {
-	CertUtil::showCertificate(SslCertificate(k.cert), this);
+	CertificateDetails::showCertificate(SslCertificate(k.cert), this);
 }
 
 int KeyDialog::exec()

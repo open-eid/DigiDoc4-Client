@@ -17,7 +17,7 @@
  *
  */
 
-#include "CertUtil.h"
+#include "CertificateDetails.h"
 
 #include <common/SslCertificate.h>
 
@@ -76,7 +76,7 @@
 @end
 
 
-void CertUtil::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
+void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
 {
 	QString name = cert.subjectInfo("serialNumber");
 	if(name.isNull() || name.isEmpty())

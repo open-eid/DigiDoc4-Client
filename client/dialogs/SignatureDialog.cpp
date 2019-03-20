@@ -24,7 +24,6 @@
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
-#include "util/CertUtil.h"
 
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
@@ -257,7 +256,7 @@ void SignatureDialog::addItem( QTreeWidget *view, const QString &variable, const
 	b->setFont(Styles::font(Styles::Regular, 14));
 #endif
 	b->setStyleSheet(QStringLiteral("margin-left: 2px; border: none;"));
-	connect(b, &QLabel::linkActivated, this, [=]{ CertUtil::showCertificate(c, this); });
+	connect(b, &QLabel::linkActivated, this, [=]{ CertificateDetails::showCertificate(c, this); });
 	view->setItemWidget( i, 1, b );
 	view->addTopLevelItem( i );
 }

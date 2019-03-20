@@ -17,37 +17,25 @@
  *
  */
 
-
 #pragma once
 
 #include <QDialog>
 
-#include <common/SslCertificate.h>
-
-
-namespace Ui {
-class CertificateDetails;
-}
-
-class QSslCertificate;
-class CertificateDetailsPrivate;
-
+class SslCertificate;
 class CertificateDetails : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit CertificateDetails(const QSslCertificate &c, QWidget *parent = 0, bool showSheet = false);
-	~CertificateDetails();
+	explicit CertificateDetails(const SslCertificate &c, QWidget *parent = nullptr);
+	~CertificateDetails() final;
 
-	void saveCert();
 	static QString decodeCN(const QString &cn);
-	int exec() override;
-
-public slots:
-	void on_tblDetails_itemSelectionChanged();
+	static void showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix = QString());
 
 private:
-	CertificateDetailsPrivate *ui;
-	SslCertificate cert;
+	void saveCert();
+
+	class Private;
+	Private *ui;
 };
