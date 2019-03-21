@@ -918,14 +918,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>LISA KÕIK</translation>
     </message>
     <message>
-        <source>Add recipients</source>
-        <translation type="vanished">Adressaatide lisamine</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation type="vanished">Lisatud adressaadid</translation>
-    </message>
-    <message>
         <source>Container is not signed</source>
         <translation>Ümbriku allkirjad puuduvad</translation>
     </message>
@@ -954,14 +946,9 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Krüpteeritud failid</translation>
     </message>
     <message>
-        <source>Decrypted files</source>
-        <translation type="vanished">Dekrüpteeritud failid</translation>
-    </message>
-    <message>
         <source>RECIPIENT_MESSAGE</source>
         <translation>&lt;p align=center&gt;Kes on adressaat?&lt;/p&gt;
-        &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;
-        &lt;p align=center&gt;Lisasime Sind automaatselt adressaatide hulka, et saaksid vajadusel hiljem krüpteeritud dokumendi dekrüpteerida.&lt;/p&gt;</translation>
+        &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Enter personal code, company or registry code</source>

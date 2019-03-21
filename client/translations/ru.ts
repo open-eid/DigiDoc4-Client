@@ -919,14 +919,6 @@ The Information System Authority does not retain information regarding the files
         <translation>ДОБАВИТЬ ВСЕ</translation>
     </message>
     <message>
-        <source>Add recipients</source>
-        <translation type="vanished">Добавить получателей</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation type="vanished">Добавлен получатель</translation>
-    </message>
-    <message>
         <source>Container is not signed</source>
         <translation>Файлы контейнера</translation>
     </message>
@@ -955,14 +947,9 @@ The Information System Authority does not retain information regarding the files
         <translation>Зашифрованные файлы</translation>
     </message>
     <message>
-        <source>Decrypted files</source>
-        <translation type="vanished">Расшифрованные файлы</translation>
-    </message>
-    <message>
         <source>RECIPIENT_MESSAGE</source>
         <translation>&lt;p align=center&gt;Кто является получателем?&lt;/p&gt;
-        &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;
-        &lt;p align=center&gt;Мы автоматически добавили вас в список получателей, чтобы при необходимости расшифровать зашифрованный документ.&lt;/p&gt;</translation>
+        &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Enter personal code, company or registry code</source>

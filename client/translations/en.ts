@@ -918,14 +918,6 @@ The Information System Authority does not retain information regarding the files
         <translation>ADD ALL</translation>
     </message>
     <message>
-        <source>Add recipients</source>
-        <translation type="vanished">Add recipients</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation type="vanished">Added recipients</translation>
-    </message>
-    <message>
         <source>Container is not signed</source>
         <translation>Container&apos;s signatures are missing</translation>
     </message>
@@ -954,14 +946,9 @@ The Information System Authority does not retain information regarding the files
         <translation>Encrypted files</translation>
     </message>
     <message>
-        <source>Decrypted files</source>
-        <translation type="vanished">Decrypted files</translation>
-    </message>
-    <message>
         <source>RECIPIENT_MESSAGE</source>
         <translation>&lt;p align=center&gt;Who is recipient?&lt;/p&gt;
-        &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;
-        &lt;p align=center&gt;We automatically added you to the list of recipients, so you can decrypt the encrypted document if necessary.&lt;/p&gt;</translation>
+        &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Enter personal code, company or registry code</source>
