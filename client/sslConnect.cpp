@@ -72,7 +72,7 @@ SSLConnect::~SSLConnect()
 QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 {
 	QJsonObject obj;
-#ifdef CONFING_URL
+#ifdef CONFIG_URL
 	obj = Configuration::instance().object();
 #endif
 	QString label = tr("Loading Email info");
