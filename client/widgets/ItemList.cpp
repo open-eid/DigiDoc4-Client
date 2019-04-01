@@ -38,7 +38,7 @@ ItemList::ItemList(QWidget *parent)
 	ui->download->hide();
 	ui->count->setFont(Styles::font(Styles::Condensed, 12));
 	ui->count->hide();
-	connect(this, &ItemList::idChanged, [this](const QString &code, const QString &mobile, const QByteArray& serial)
+	connect(this, &ItemList::idChanged, this, [this](const QString &code, const QString &mobile, const QByteArray& serial)
 		{idCode = code; mobileCode = mobile; serialNumber = serial;});
 }
 
@@ -57,8 +57,8 @@ void ItemList::addHeader(const QString &label)
 	header->resize(415, 64);
 	header->setFixedHeight(64);
 	header->setFont( Styles::font(Styles::Regular, 20));
-	header->setStyleSheet("border: solid rgba(217, 217, 216, 0.45);"
-			"border-width: 0px 0px 1px 0px;");
+	header->setStyleSheet(QStringLiteral("border: solid rgba(217, 217, 216, 0.45);"
+			"border-width: 0px 0px 1px 0px;"));
 	ui->itemLayout->insertWidget(0, header);
 	headerItems++;
 }
@@ -73,6 +73,8 @@ void ItemList::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
 	{
+		tr("Add recipients");
+		tr("Added recipients");
 		tr("Recipients");
 		tr("Encrypted files");
 		tr("Container is not signed");
@@ -85,7 +87,7 @@ void ItemList::changeEvent(QEvent* event)
 		ui->listHeader->setText(tr(qPrintable(listText)));
 		ui->txtFind->setPlaceholderText(tr("Enter the personal code, institution or registry code"));
 
-		if(header != nullptr)
+		if(header)
 			header->setText(tr(qPrintable(headerText)));
 
 		ui->add->setText(addLabel());
@@ -201,8 +203,8 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->findGroup->show();
 		ui->txtFind->setPlaceholderText(tr("Enter personal code, company or registry code"));
-		connect(ui->txtFind, &QLineEdit::returnPressed, [this](){ emit search(ui->txtFind->text()); });
-		connect(ui->btnFind, &QPushButton::clicked, [this](){ emit search(ui->txtFind->text()); });
+		connect(ui->txtFind, &QLineEdit::returnPressed, [this]{ emit search(ui->txtFind->text()); });
+		connect(ui->btnFind, &QPushButton::clicked, [this]{ emit search(ui->txtFind->text()); });
 		ui->btnFind->setDisabled(ui->txtFind->text().isEmpty());
 		connect(ui->txtFind, &QLineEdit::textChanged, [=](const QString &text){
 			ui->btnFind->setDisabled(text.isEmpty());

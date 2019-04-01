@@ -76,16 +76,6 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 
 	QString type, strDate;
 
-	auto certType = SslCertificate(key.cert).type();
-	if(certType & SslCertificate::DigiIDType)
-		type = tr("Digi-ID");
-	else if(certType & SslCertificate::EstEidType)
-		type = tr("ID-card");
-	else if(certType & SslCertificate::TempelType)
-		type = tr("e-Seal");
-	else if(certType & SslCertificate::MobileIDType)
-		type = tr("Mobile-ID");
-
 	if(!showIcon)
 	{
 		DateTime date(key.cert.expiryDate().toLocalTime());
@@ -93,7 +83,7 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 			strDate = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
 	}
 
-	update(name.toHtmlEscaped(), SslCertificate(key.cert).personalCode(), type, strDate, AddressItem::Remove);
+	update(name.toHtmlEscaped(), SslCertificate(key.cert).personalCode(), SslCertificate(key.cert).type(), strDate, AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()
@@ -206,9 +196,9 @@ void AddressItem::stateChange(ContainerState state)
 	ui->remove->setVisible(state == UnencryptedContainer);
 }
 
-void AddressItem::update(const QString& cardName, const QString& cardCode, const QString& type, const QString& strDate, ShowToolButton show)
+void AddressItem::update(const QString& cardName, const QString& cardCode, SslCertificate::CertType type, const QString& strDate, ShowToolButton show)
 {
-	typeText = type;
+	m_type = type;
 	expireDateText = strDate;
 	code = cardCode;
 	name = cardName;
@@ -222,7 +212,16 @@ void AddressItem::setIdType()
 {
 	QString str;
 	QTextStream st(&str);
-	st << tr(qPrintable(typeText));
+	QString typeText;
+	if(m_type & SslCertificate::DigiIDType)
+		typeText = tr("Digi-ID");
+	else if(m_type & SslCertificate::EstEidType)
+		typeText = tr("ID-card");
+	else if(m_type & SslCertificate::TempelType)
+		typeText = tr("e-Seal");
+	else if(m_type & SslCertificate::MobileIDType)
+		typeText = tr("Mobile-ID");
+	st << typeText;
 
 	if(!expireDateText.isEmpty())
 	{
