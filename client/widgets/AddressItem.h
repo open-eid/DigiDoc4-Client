@@ -22,6 +22,8 @@
 #include "crypto/CryptoDoc.h"
 #include "widgets/Item.h"
 
+#include <common/SslCertificate.h>
+
 #include <memory>
 
 namespace Ui {
@@ -52,7 +54,7 @@ public:
 	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) override;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
-	void update(const QString& name, const QString& code, const QString &type, const QString& strDate, ShowToolButton show);
+	void update(const QString& name, const QString& code, SslCertificate::CertType type, const QString& strDate, ShowToolButton show);
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -74,7 +76,7 @@ private:
 	std::unique_ptr<QFontMetrics> nameMetrics;
 	int nameWidth = 0;
 	int reservedWidth = false;
-	QString typeText;
+	SslCertificate::CertType m_type;
 	QString expireDateText;
 	bool yourself = false;
 };

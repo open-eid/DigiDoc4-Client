@@ -103,14 +103,6 @@
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
     </message>
-    <message>
-        <source>Add recipients</source>
-        <translation>Добавьте получателей</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Добавлен получатель</translation>
-    </message>
 </context>
 <context>
     <name>AddressItem</name>
@@ -954,6 +946,14 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Enter personal code, company or registry code</source>
         <translation>Введите личный код, учреждение или код регистра</translation>
+    </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Добавьте получателей</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Добавлен получатель</translation>
     </message>
 </context>
 <context>

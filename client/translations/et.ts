@@ -103,14 +103,6 @@
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
     </message>
-    <message>
-        <source>Add recipients</source>
-        <translation>Lisa adressaadid</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Lisatud adressaadid</translation>
-    </message>
 </context>
 <context>
     <name>AddressItem</name>
@@ -953,6 +945,14 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Enter personal code, company or registry code</source>
         <translation>Sisesta isikukood, asutus või registrikood</translation>
+    </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Lisa adressaadid</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Lisatud adressaadid</translation>
     </message>
 </context>
 <context>

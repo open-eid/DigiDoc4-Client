@@ -103,14 +103,6 @@
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</translation>
     </message>
-    <message>
-        <source>Add recipients</source>
-        <translation>Add recipients</translation>
-    </message>
-    <message>
-        <source>Added recipients</source>
-        <translation>Added recipients</translation>
-    </message>
 </context>
 <context>
     <name>AddressItem</name>
@@ -953,6 +945,14 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Enter personal code, company or registry code</source>
         <translation>Enter personal code, company or registry code</translation>
+    </message>
+    <message>
+        <source>Add recipients</source>
+        <translation>Add recipients</translation>
+    </message>
+    <message>
+        <source>Added recipients</source>
+        <translation>Added recipients</translation>
     </message>
 </context>
 <context>

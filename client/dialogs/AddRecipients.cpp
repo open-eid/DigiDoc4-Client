@@ -54,9 +54,9 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 
-	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, tr("Add recipients"));
+	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, QStringLiteral("Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
-	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, tr("Added recipients"));
+	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, QStringLiteral("Added recipients"));
 	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
