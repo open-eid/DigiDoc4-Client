@@ -345,7 +345,7 @@ background-color: #023664;
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="PageIcon" name="signature" native="true">
+       <widget class="PageIcon" name="signature">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -354,12 +354,6 @@ background-color: #023664;
           <height>110</height>
          </rect>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>110</width>
@@ -369,14 +363,14 @@ background-color: #023664;
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select signature page</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>
        </widget>
-       <widget class="PageIcon" name="crypto" native="true">
+       <widget class="PageIcon" name="crypto">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -385,12 +379,6 @@ background-color: #023664;
           <height>110</height>
          </rect>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>110</width>
@@ -400,14 +388,14 @@ background-color: #023664;
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select crypto page</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>
        </widget>
-       <widget class="PageIcon" name="myEid" native="true">
+       <widget class="PageIcon" name="myEid">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -416,12 +404,6 @@ background-color: #023664;
           <height>110</height>
          </rect>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>110</width>
@@ -431,12 +413,11 @@ background-color: #023664;
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select my EID page</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: none;
-</string>
+         <string notr="true">border: none;</string>
         </property>
        </widget>
        <widget class="QWidget" name="rightShadow" native="true">
@@ -673,7 +654,7 @@ color: #041E42;</string>
                   <number>0</number>
                  </property>
                  <property name="text">
-                  <string>Drag file here for signing</string>
+                  <string>Drag file here for signing ...</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -702,8 +683,8 @@ color: #041E42;</string>
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
-                 <property name="autoFillBackground">
-                  <bool>false</bool>
+                 <property name="accessibleName">
+                  <string comment="accessible">Open file for signing or verifying</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QPushButton {
@@ -725,7 +706,7 @@ QPushButton:disabled {
 }</string>
                  </property>
                  <property name="text">
-                  <string>Open file for signing</string>
+                  <string>Open file for signing or verifying</string>
                  </property>
                 </widget>
                </item>
@@ -798,6 +779,9 @@ background-position: bottom;
                    <pointsize>14</pointsize>
                   </font>
                  </property>
+                 <property name="accessibleName">
+                  <string comment="accessible">Open file for encryption or decryption</string>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QPushButton {
 	padding: 6px 10px;
@@ -818,7 +802,7 @@ QPushButton:disabled {
 }</string>
                  </property>
                  <property name="text">
-                  <string>Open file for encryption</string>
+                  <string>Open file for encryption or decryption</string>
                  </property>
                 </widget>
                </item>
@@ -839,7 +823,7 @@ color: #041E42;</string>
                   <number>0</number>
                  </property>
                  <property name="text">
-                  <string>Drag file here for encryption</string>
+                  <string>Drag file here for encryption ...</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -1017,7 +1001,7 @@ background-position: bottom;
   </customwidget>
   <customwidget>
    <class>PageIcon</class>
-   <extends>QWidget</extends>
+   <extends>QPushButton</extends>
    <header>widgets/PageIcon.h</header>
    <container>1</container>
   </customwidget>

@@ -69,7 +69,7 @@ private Q_SLOTS:
 	void open(const QStringList &params, bool crypto, bool sign);
 	void openFile(const QString &file);
 	void operation(int op, bool started);
-	void pageSelected( PageIcon *const );
+	void pageSelected(PageIcon *page);
 	void photoClicked( const QPixmap *photo );
 	void savePhoto();
 	void showCardStatus();

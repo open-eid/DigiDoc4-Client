@@ -31,7 +31,7 @@ class StyledWidget : public QWidget
 
 public:
 	explicit StyledWidget(QWidget *parent = nullptr);
-	~StyledWidget();
+	~StyledWidget() override;
 
 	virtual void stateChange(ria::qdigidoc4::ContainerState state);
 

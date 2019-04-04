@@ -157,6 +157,9 @@ border-radius: 2px;
    <property name="text">
     <string>COUNTRY CODE AND PHONE NUMBER</string>
    </property>
+   <property name="buddy">
+    <cstring>phoneNo</cstring>
+   </property>
   </widget>
   <widget class="QLabel" name="labelNameId">
    <property name="geometry">
@@ -222,6 +225,9 @@ QCheckBox::indicator {
    </property>
    <property name="text">
     <string>PERSONAL CODE</string>
+   </property>
+   <property name="buddy">
+    <cstring>idCode</cstring>
    </property>
   </widget>
   <widget class="QLineEdit" name="idCode">

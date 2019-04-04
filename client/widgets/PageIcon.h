@@ -20,8 +20,8 @@
 #pragma once
 
 #include "common_enums.h"
-#include "widgets/StyledWidget.h"
 
+#include <QtWidgets/QPushButton>
 #include <QFont>
 #include <QPaintEvent>
 #include <QString>
@@ -35,27 +35,26 @@ namespace Ui {
 class PageIcon;
 }
 
-class PageIcon : public StyledWidget
+class PageIcon : public QPushButton
 {
 	Q_OBJECT
 
 public:
 	explicit PageIcon( QWidget *parent = nullptr );
-	~PageIcon();
+	~PageIcon() final;
 
 	void init( ria::qdigidoc4::Pages page, QWidget *shadow, bool selected );
 	void activate( bool selected );
 	ria::qdigidoc4::Pages getType();
 	void invalidIcon( bool show );
 	void warningIcon( bool show );
-	
+
 signals:
-	void activated( PageIcon *const );
+	void activated( PageIcon *icon );
 
 protected:
 	void enterEvent( QEvent *ev ) override;
 	void leaveEvent( QEvent *ev ) override;
-	void mouseReleaseEvent( QMouseEvent *event ) override;
 	void changeEvent(QEvent* event) override;
 
 private:
@@ -81,11 +80,11 @@ private:
 	std::unique_ptr<QSvgWidget> orangeIcon;
 
 	Style active;
-	IconType iconType;
+	IconType iconType = IconType::None;
 	Style inactive;
 	Style hover;
-	bool selected;
-	ria::qdigidoc4::Pages type;
+	bool selected = false;
+	ria::qdigidoc4::Pages type = ria::qdigidoc4::Pages::SignIntro;
 
 	void updateSelection();
 	void updateSelection(const Style &style);
