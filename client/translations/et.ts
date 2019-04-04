@@ -1086,24 +1086,20 @@ E-TEMPLIGA</translation>
         <translation>Seaded</translation>
     </message>
     <message>
-        <source>Drag file here for signing</source>
+        <source>Drag file here for signing ...</source>
         <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia ...</translation>
     </message>
     <message>
-        <source>Open file for signing</source>
+        <source>Open file for signing or verifying</source>
         <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
     <message>
-        <source>Drag file here for encryption</source>
+        <source>Drag file here for encryption ...</source>
         <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
     </message>
     <message>
-        <source>Open file for encryption</source>
+        <source>Open file for encryption or decryption</source>
         <translation>... VÕI VALI FAIL KETTALT</translation>
-    </message>
-    <message>
-        <source>Unrecognized data</source>
-        <translation type="vanished">Tundmatuid andmeid</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1613,6 +1609,31 @@ Uutel ID-kaartidel on kiip kaardi tagumisel küljel.</translation>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file for signing or verifying</source>
+        <comment>accessible</comment>
+        <translation>Allkirjastamiseks või kontrollimiseks vali fail kettalt</translation>
+    </message>
+    <message>
+        <source>Open file for encryption or decryption</source>
+        <comment>accessible</comment>
+        <translation>Krüpteerimiseks või dekrüpteerimiseks vali fail kettalt</translation>
+    </message>
+    <message>
+        <source>Select signature page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select crypto page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select my EID page</source>
+        <extracomment>accessible</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1086,24 +1086,20 @@ E-SEAL</translation>
         <translation>Settings</translation>
     </message>
     <message>
-        <source>Drag file here for signing</source>
+        <source>Drag file here for signing ...</source>
         <translation>Drag file here for signing or verification ...</translation>
     </message>
     <message>
-        <source>Open file for signing</source>
+        <source>Open file for signing or verifying</source>
         <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
     <message>
-        <source>Drag file here for encryption</source>
+        <source>Drag file here for encryption ...</source>
         <translation>Drag file here for encryption or decryption ...</translation>
     </message>
     <message>
-        <source>Open file for encryption</source>
+        <source>Open file for encryption or decryption</source>
         <translation>... OR LOAD FILE FROM DISK</translation>
-    </message>
-    <message>
-        <source>Unrecognized data</source>
-        <translation type="vanished">Unrecognized data</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1634,6 +1630,31 @@ New ID-cards have chip on the back side of the card.</translation>
     <message>
         <source>There was an error with request to Äriregister.</source>
         <translation>There was an error with request to Äriregister.</translation>
+    </message>
+    <message>
+        <source>Open file for signing or verifying</source>
+        <comment>accessible</comment>
+        <translation>Open file for signing or verifying</translation>
+    </message>
+    <message>
+        <source>Open file for encryption or decryption</source>
+        <comment>accessible</comment>
+        <translation>Open file for encryption or decryption</translation>
+    </message>
+    <message>
+        <source>Select signature page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select crypto page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select my EID page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

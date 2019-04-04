@@ -190,6 +190,9 @@ QScrollBar::sub-line:vertical {
            <property name="text">
             <string>City</string>
            </property>
+           <property name="buddy">
+            <cstring>signerCity</cstring>
+           </property>
           </widget>
          </item>
          <item row="5" column="1">
@@ -223,6 +226,9 @@ background-color: #FFFFFF;</string>
            </property>
            <property name="text">
             <string>State</string>
+           </property>
+           <property name="buddy">
+            <cstring>signerState</cstring>
            </property>
           </widget>
          </item>
@@ -258,6 +264,9 @@ background-color: #FFFFFF;</string>
            <property name="text">
             <string>Country</string>
            </property>
+           <property name="buddy">
+            <cstring>signerCountry</cstring>
+           </property>
           </widget>
          </item>
          <item row="7" column="1">
@@ -291,6 +300,9 @@ background-color: #FFFFFF;</string>
            </property>
            <property name="text">
             <string>Zip</string>
+           </property>
+           <property name="buddy">
+            <cstring>signerZip</cstring>
            </property>
           </widget>
          </item>

@@ -192,7 +192,7 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::pageSelected( PageIcon *const page )
+void MainWindow::pageSelected(PageIcon *page)
 {
 	// Stay in current view if same page icon clicked
 	auto current = ui->startScreen->currentIndex();
@@ -276,6 +276,8 @@ void MainWindow::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 		ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
 			.arg(tr("Ver. "), qApp->applicationVersion()));
+		ui->version->setAccessibleName(QStringLiteral("%1 %2")
+			.arg(tr("DigiDoc4 client"), qApp->applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
 	}
 	QWidget::changeEvent(event);

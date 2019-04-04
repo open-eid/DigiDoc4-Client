@@ -1087,24 +1087,20 @@ ID-КАРТОЙ</translation>
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>Drag file here for signing</source>
+        <source>Drag file here for signing ...</source>
         <translation>Перетащите файл сюда для подписи или проверки ...</translation>
     </message>
     <message>
-        <source>Open file for signing</source>
+        <source>Open file for signing or verifying</source>
         <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
     <message>
-        <source>Drag file here for encryption</source>
+        <source>Drag file here for encryption ...</source>
         <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
     </message>
     <message>
-        <source>Open file for encryption</source>
+        <source>Open file for encryption or decryption</source>
         <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
-    </message>
-    <message>
-        <source>Unrecognized data</source>
-        <translation type="vanished">Нераспознанные данные</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1626,6 +1622,31 @@ New ID-cards have chip on the back side of the card.</source>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file for signing or verifying</source>
+        <comment>accessible</comment>
+        <translation type="unfinished">... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+    </message>
+    <message>
+        <source>Open file for encryption or decryption</source>
+        <comment>accessible</comment>
+        <translation type="unfinished">... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+    </message>
+    <message>
+        <source>Select signature page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select crypto page</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select my EID page</source>
+        <extracomment>accessible</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
