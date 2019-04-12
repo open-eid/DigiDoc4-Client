@@ -28,13 +28,16 @@
 
 
 KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
-:	QDialog( parent )
-,	k( key )
-,	d(new Ui::KeyDialog)
+	: QDialog( parent )
+	, k( key )
+	, d(new Ui::KeyDialog)
 {
 	d->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
+	Overlay *overlay = new Overlay(parent->topLevelWidget());
+	overlay->show();
+	connect(this, &KeyDialog::destroyed, overlay, &Overlay::deleteLater);
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
 	d->close->setFont(condensed);
@@ -46,12 +49,22 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 
 
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d->showCert, &QPushButton::clicked, this, &KeyDialog::showCertificate);
+	connect(d->showCert, &QPushButton::clicked, this, [&] {
+		CertificateDetails::showCertificate(SslCertificate(k.cert), this);
+	});
 
 	d->title->setText( k.recipient );
 
+	auto addItem = [&](const QString &parameter, const QString &value) {
+		QTreeWidgetItem *i = new QTreeWidgetItem(d->view);
+		i->setText(0, parameter);
+		i->setText(1, value);
+		d->view->addTopLevelItem(i);
+	};
+
 	addItem( tr("Key"), k.recipient );
-	addItem( tr("Crypto method"), k.method );
+	if(!k.method.isEmpty())
+		addItem(tr("Crypto method"), k.method);
 	if(!k.agreement.isEmpty())
 		addItem(tr("Agreement method"), k.agreement);
 	if(!k.derive.isEmpty())
@@ -59,7 +72,7 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 	if(!k.concatDigest.isEmpty())
 		addItem(tr("ConcatKDF digest method"), k.concatDigest);
 	//addItem( tr("ID"), k.id );
-	addItem( tr("Expires"), key.cert.expiryDate().toLocalTime().toString("dd.MM.yyyy hh:mm:ss") );
+	addItem(tr("Expires"), key.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	addItem( tr("Issuer"), SslCertificate(key.cert).issuerInfo( QSslCertificate::CommonName ) );
 	d->view->resizeColumnToContents( 0 );
 	if(!k.agreement.isEmpty())
@@ -69,27 +82,4 @@ KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 KeyDialog::~KeyDialog()
 {
 	delete d;
-}
-
-void KeyDialog::addItem( const QString &parameter, const QString &value )
-{
-	QTreeWidgetItem *i = new QTreeWidgetItem( d->view );
-	i->setText( 0, parameter );
-	i->setText( 1, value );
-	d->view->addTopLevelItem( i );
-}
-
-void KeyDialog::showCertificate()
-{
-	CertificateDetails::showCertificate(SslCertificate(k.cert), this);
-}
-
-int KeyDialog::exec()
-{
-	Overlay overlay(parentWidget());
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
 }
