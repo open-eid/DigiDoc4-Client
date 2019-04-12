@@ -21,80 +21,42 @@
 #include "CertificateDetails.h"
 #include "ui_CertificateDetails.h"
 
+#include "Application.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 
 #include <common/DateTime.h>
+#include <common/SslCertificate.h>
 
-#include <QDir>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QStandardPaths>
-#include <QTextStream>
+#include <QtCore/QDir>
+#include <QtCore/QStandardPaths>
+#include <QtCore/QTextStream>
+#include <QtGui/QDesktopServices>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
-
-bool isDoubleEncodedUtf8(const QString &cn)
-{
-	// Detect double-encoded UTF-8 strings.
-	// E.g. 'Infosüsteemi' encoded to UTF-8, and then decoded to Latin1 is
-	// displayed as 'InfosÃ¼steemi'; In python3:
-	// > 'Infosüsteemi'.encode('utf-8').decode('latin1').encode('utf-8')
-	// > b'Infos\xc3\x83\xc2\xbcsteemi'
-	// > # Reverse
-	// b'Infos\xc3\x83\xc2\xbcsteemi'.decode('utf-8').encode('latin1').decode('utf-8')
-	// See "double" encoded UTF-8 sequence within Latin-1 Supplement:
-	// http://blogs.perl.org/users/chansen/2010/10/coping-with-double-encoded-utf-8.html
-	QByteArray str = cn.toUtf8();
-	for(int i = 0; i < str.length() - 3; ++i)
-	{
-		if(str[i] == '\xc3' && str[i+2] == '\xc2')
-		{
-			if( (str[i+1] >= '\x82' && str[i+1] <= '\x84') &&
-				(str[i+3] >= '\x80' && str[i+3] <= '\xBF'))
-				return true;
-			i += 3;
-		}
-	}
-
-	return false;
-}
-
-class CertificateDetailsPrivate: public Ui::CertificateDetails
+class CertificateDetails::Private: public Ui::CertificateDetails
 {
 public:
-	void addItem( const QString &variable, const QString &value, const QVariant &valueext = QVariant() )
-	{
-		int row = tblDetails->model()->rowCount();
-		tblDetails->setRowCount(row + 1);
-		QTableWidgetItem *item = new QTableWidgetItem(value);
-		item->setData(Qt::UserRole, valueext);
-		tblDetails->setItem(row, 0, new QTableWidgetItem(variable));
-		tblDetails->setItem(row, 1, item);
-	}
+	SslCertificate cert;
 };
 
-
-
-CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget *parent, bool showSheet) :
-	QDialog(parent),
-	ui(new CertificateDetailsPrivate),
-	cert(qSslCert)
+CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *parent)
+	: QDialog(parent)
+	, ui(new Private)
 {
 	ui->setupUi(this);
-	bool sheet = false;
+	ui->cert = cert;
 #ifdef Q_OS_MAC
-	sheet = showSheet;
-#endif	
-	if (sheet)
-	{
-		setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
-		setWindowModality(Qt::WindowModal);
-	}
-	else
-	{
-		setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-		setWindowModality( Qt::ApplicationModal );
-	}
+	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
+	setWindowModality(Qt::WindowModal);
+#else
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	setWindowModality(Qt::ApplicationModal);
+#endif
+	Overlay *overlay = new Overlay(parent->topLevelWidget());
+	overlay->show();
+	connect(this, &CertificateDetails::destroyed, overlay, &Overlay::deleteLater);
 
 	QFont headerFont = Styles::font( Styles::Regular, 18 );
 	QFont regularFont = Styles::font( Styles::Regular, 14 );
@@ -126,24 +88,41 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 	s << "<b>" << tr("Issued by:") << "</b><br />" << decodeCN(cert.issuerInfo(QSslCertificate::CommonName));
 	s << "<br /><br />";
 	s << "<b>" << tr("Valid:") << "</b><br />";
-	s << "<b>" << tr("From") << "</b> " << cert.effectiveDate().toLocalTime().toString( "dd.MM.yyyy" ) << "<br />";
-	s << "<b>" << tr("To") << "</b> " << cert.expiryDate().toLocalTime().toString( "dd.MM.yyyy" );
+	s << "<b>" << tr("From") << "</b> " << cert.effectiveDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy")) << "<br />";
+	s << "<b>" << tr("To") << "</b> " << cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"));
 	ui->lblCertInfo->setHtml( i );
 
 
 	connect( ui->save, &QPushButton::clicked, this, &CertificateDetails::saveCert );
 	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
+	connect(ui->tblDetails, &QTableWidget::itemSelectionChanged, this, [this] {
+		const QList<QTableWidgetItem*> &list = ui->tblDetails->selectedItems();
+		if( !list.isEmpty() )
+		{
+			auto contentItem = list.last();
+			auto userData = contentItem->data(Qt::UserRole);
+			ui->detailedValue->setPlainText(userData.isNull() ?
+				contentItem->data(Qt::DisplayRole).toString() : decodeCN(userData.toString()));
+		}
+	});
 
-	QStringList horzHeaders;
-	horzHeaders << tr("Field") << tr("Value");
+	QStringList horzHeaders { tr("Field"), tr("Value") };
 	ui->tblDetails->setHorizontalHeaderLabels(horzHeaders);
 
-	ui->addItem(tr("Version"), QString("V" + cert.version()));
-	ui->addItem(tr("Serial number"), QString( "%1 (0x%2)" )
-		.arg( cert.serialNumber().constData() )
-		.arg( cert.serialNumber( true ).constData() ));
-	ui->addItem(tr("Signature algorithm"), cert.signatureAlgorithm());
+	auto addItem = [this](const QString &variable, const QString &value, const QVariant &valueext = QVariant()) {
+		int row = ui->tblDetails->model()->rowCount();
+		ui->tblDetails->setRowCount(row + 1);
+		QTableWidgetItem *item = new QTableWidgetItem(value);
+		item->setData(Qt::UserRole, valueext);
+		ui->tblDetails->setItem(row, 0, new QTableWidgetItem(variable));
+		ui->tblDetails->setItem(row, 1, item);
+	};
+
+	addItem(tr("Version"), QString("V" + cert.version()));
+	addItem(tr("Serial number"), QStringLiteral("%1 (0x%2)")
+		.arg(cert.serialNumber().constData(), cert.serialNumber( true ).constData()));
+	addItem(tr("Signature algorithm"), cert.signatureAlgorithm());
 
 	QStringList text, textExt;
 	static const QByteArray ORGID_OID = QByteArrayLiteral("2.5.4.97");
@@ -154,13 +133,12 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 			continue;
 		text << decodeCN(data);
 		// organizationIdentifier OID might not be known by SSL backend
-		textExt << QString( "%1 = %2" ).arg(
-				obj.constData() == ORGID_OID ? "organizationIdentifier" : obj.constData()
-			).arg( data );
+		textExt << QStringLiteral("%1 = %2").arg(
+			obj.constData() == ORGID_OID ? "organizationIdentifier" : obj.constData(), data);
 	}
-	ui->addItem(tr("Issuer"), text.join(", "), textExt.join("\n"));
-	ui->addItem(tr("Valid from"), DateTime( cert.effectiveDate().toLocalTime() ).toStringZ("dd.MM.yyyy hh:mm:ss"));
-	ui->addItem(tr("Valid to"), DateTime( cert.expiryDate().toLocalTime() ).toStringZ("dd.MM.yyyy hh:mm:ss"));
+	addItem(tr("Issuer"), text.join(QStringLiteral(", ")), textExt.join('\n'));
+	addItem(tr("Valid from"), DateTime(cert.effectiveDate().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+	addItem(tr("Valid to"), DateTime(cert.expiryDate().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 
 	text.clear();
 	textExt.clear();
@@ -170,21 +148,21 @@ CertificateDetails::CertificateDetails(const QSslCertificate &qSslCert, QWidget 
 		if( data.isEmpty() )
 			continue;
 		text << decodeCN(data);
-		textExt << QString( "%1 = %2" ).arg( obj.constData() ).arg( data );
+		textExt << QStringLiteral("%1 = %2").arg(obj.constData(), data);
 	}
-	ui->addItem(tr("Subject"), text.join(", "), textExt.join("\n"));
-	ui->addItem(tr("Public key"), cert.keyName(), cert.publicKeyHex());
+	addItem(tr("Subject"), text.join(QStringLiteral(", ")), textExt.join('\n'));
+	addItem(tr("Public key"), cert.keyName(), cert.publicKeyHex());
 	QStringList enhancedKeyUsage = cert.enhancedKeyUsage().values();
 	if( !enhancedKeyUsage.isEmpty() )
-		ui->addItem(tr("Enhanced key usage"), enhancedKeyUsage.join( ", " ), enhancedKeyUsage.join( "\n" ) );
+		addItem(tr("Enhanced key usage"), enhancedKeyUsage.join(QStringLiteral(", ")), enhancedKeyUsage.join('\n'));
 	QStringList policies = cert.policies();
 	if( !policies.isEmpty() )
-		ui->addItem( tr("Certificate policies"), policies.join( ", " ) );
-	ui->addItem( tr("Authority key identifier"), cert.toHex( cert.authorityKeyIdentifier() ) );
-	ui->addItem( tr("Subject key identifier"), cert.toHex( cert.subjectKeyIdentifier() ) );
+		addItem(tr("Certificate policies"), policies.join(QStringLiteral(", ")));
+	addItem(tr("Authority key identifier"), cert.toHex(cert.authorityKeyIdentifier()));
+	addItem(tr("Subject key identifier"), cert.toHex(cert.subjectKeyIdentifier()));
 	QStringList keyUsage = cert.keyUsage().values();
 	if( !keyUsage.isEmpty() )
-		ui->addItem( tr("Key usage"), keyUsage.join( ", " ), keyUsage.join( "\n" ) );
+		addItem(tr("Key usage"), keyUsage.join(QStringLiteral(", ")), keyUsage.join('\n'));
 
 	// Disable resizing
 	ui->tblDetails->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -197,47 +175,67 @@ CertificateDetails::~CertificateDetails()
 
 void CertificateDetails::saveCert()
 {
-	QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QString("%1%2%3.cer")
+	QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QStringLiteral("%1%2%3.cer")
 			.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
 			.arg(QDir::separator())
-			.arg(cert.subjectInfo("serialNumber")),
+			.arg(ui->cert.subjectInfo("serialNumber")),
 		tr("Certificates (*.cer *.crt *.pem)"));
 	if( file.isEmpty() )
 		return;
 
 	QFile f( file );
 	if( f.open( QIODevice::WriteOnly ) )
-		f.write( cert.toPem() );
+		f.write(ui->cert.toPem());
 	else
 		QMessageBox::warning( this, tr("Save certificate"), tr("Failed to save file") );
 }
 
 QString CertificateDetails::decodeCN(const QString &cn)
 {
-	if(isDoubleEncodedUtf8(cn))
-		return QString(cn.toUtf8()).toLatin1();
-
-	return cn;
-}
-
-int CertificateDetails::exec()
-{
-	Overlay overlay( parentWidget() );
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
-}
-
-void CertificateDetails::on_tblDetails_itemSelectionChanged()
-{
-	const QList<QTableWidgetItem*> &list = ui->tblDetails->selectedItems();
-	if( !list.isEmpty() )
+	// Detect double-encoded UTF-8 strings.
+	// E.g. 'Infosüsteemi' encoded to UTF-8, and then decoded to Latin1 is
+	// displayed as 'InfosÃ¼steemi'; In python3:
+	// > 'Infosüsteemi'.encode('utf-8').decode('latin1').encode('utf-8')
+	// > b'Infos\xc3\x83\xc2\xbcsteemi'
+	// > # Reverse
+	// b'Infos\xc3\x83\xc2\xbcsteemi'.decode('utf-8').encode('latin1').decode('utf-8')
+	// See "double" encoded UTF-8 sequence within Latin-1 Supplement:
+	// http://blogs.perl.org/users/chansen/2010/10/coping-with-double-encoded-utf-8.html
+	QByteArray str = cn.toUtf8();
+	bool isDoubleEncodedUtf8 = false;
+	for(int i = 0; i < str.length() - 3; ++i)
 	{
-		auto contentItem = list.last();
-		auto userData = contentItem->data(Qt::UserRole);
-		ui->detailedValue->setPlainText(userData.isNull() ?
-			contentItem->data(Qt::DisplayRole).toString() : decodeCN(userData.toString()));
+		if(str[i] == '\xc3' && str[i+2] == '\xc2')
+		{
+			if( (str[i+1] >= '\x82' && str[i+1] <= '\x84') &&
+				(str[i+3] >= '\x80' && str[i+3] <= '\xBF'))
+			{
+				isDoubleEncodedUtf8 = true;
+				break;
+			}
+			i += 3;
+		}
 	}
+	return isDoubleEncodedUtf8 ? QString(str).toLatin1() : cn;
 }
+
+#ifndef Q_OS_MAC
+void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
+{
+#ifdef Q_OS_LINUX
+	CertificateDetails(cert, parent).exec();
+#else
+	Q_UNUSED(parent);
+	QString name = cert.subjectInfo("serialNumber");
+	if(name.isNull() || name.isEmpty())
+		name = QStringLiteral("%1").arg(cert.serialNumber().constData());
+	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);
+	QFile f(path);
+	if(f.open(QIODevice::WriteOnly))
+		f.write(cert.toPem());
+	f.close();
+	qApp->addTempFile(path);
+	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+#endif
+}
+#endif

@@ -32,7 +32,6 @@
 #include "effects/ButtonHoverFilter.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
-#include "util/CertUtil.h"
 
 #include "common/Configuration.h"
 #include "common/Diagnostics.h"
@@ -185,7 +184,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 
 	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
 	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this, [this] {
-		CertUtil::showCertificate(SslCertificate(AccessCert::cert()), this);
+		CertificateDetails::showCertificate(SslCertificate(AccessCert::cert()), this);
 	});
 	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
 		FirstRun dlg(this);

@@ -61,7 +61,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
 	effects/HoverFilter.cpp
-	util/CertUtil.cpp
 	util/FileUtil.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
@@ -98,8 +97,8 @@ target_link_libraries( ${PROGNAME}
 )
 
 if( APPLE )
-	target_sources( ${PROGNAME} PRIVATE Application_mac.mm util/CertUtil_mac.mm )
-	set_source_files_properties( Application_mac.mm util/CertUtil_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
+	target_sources( ${PROGNAME} PRIVATE Application_mac.mm dialogs/CertificateDetails_mac.mm )
+	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" )
 	set_target_properties( ${PROGNAME} PROPERTIES
