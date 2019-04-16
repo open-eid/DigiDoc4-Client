@@ -1470,7 +1470,7 @@ New ID-cards have chip on the back side of the card.</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
-        <translation>Connect the card reader to your computer and insert your ID card into the reader</translation>
+        <translation>Connect the card reader to your computer and insert your ID-card into the reader</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -2050,7 +2050,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>If you have forgotten the PUK code for your ID card, please</source>
-        <translation>If you have forgotten the PUK code for your ID card, please</translation>
+        <translation>If you have forgotten the PUK code for your ID-card, please</translation>
     </message>
     <message>
         <source>VISIT_SERVICE_CENTRE</source>
