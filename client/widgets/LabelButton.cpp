@@ -81,7 +81,8 @@ void LabelButton::init( Style style, const QString &label, int code )
 	css[ Normal ].background = bgColor;
 	css[ Hover ].background = bgColor;
 	setText( label );
-	setAccessibleName(label.toLower());
+	if(!label.isEmpty())
+		setAccessibleName(label.toLower());
 	setFont( Styles::font( Styles::Condensed, 12 ) );
 	normal();
 }

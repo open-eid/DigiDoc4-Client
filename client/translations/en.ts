@@ -718,6 +718,24 @@ The Information System Authority does not retain information regarding the files
     </message>
 </context>
 <context>
+    <name>FileItem</name>
+    <message>
+        <source>Remove file</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download file</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To open file press space or enter</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FileList</name>
     <message>
         <source>Save file</source>
@@ -1198,6 +1216,11 @@ ID-CARD</translation>
         <translation>DECRYPT WITH
 E-SEAL</translation>
     </message>
+    <message>
+        <source>Token selection</source>
+        <comment>accessible</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -1521,14 +1544,6 @@ E-SEAL</translation>
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobiil-ID&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>COUNTRY CODE AND PHONE NUMBER</source>
-        <translation>COUNTRY CODE AND PHONE NUMBER</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>PERSONAL CODE</translation>
     </message>
     <message>
         <source>Remember me</source>
@@ -2867,6 +2882,16 @@ Additional licenses and components</translation>
         <source>is unknown</source>
         <comment>Timestamp</comment>
         <translation>is unknown</translation>
+    </message>
+    <message>
+        <source>Remove signature</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To view signature details press enter or space</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

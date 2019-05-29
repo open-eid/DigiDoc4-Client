@@ -29,57 +29,44 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: solid rgba(217, 217, 216, 0.45);
+   <string notr="true">#FileItem { 
+border: solid rgba(217, 217, 216, 0.45);
 border-width: 0px 0px 1px 0px; 
-background-color: #ffffff; 
-color: #000000; 
-text-decoration: none solid rgb(0, 0, 0);</string>
+background-color: #ffffff;
+}</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="FileItemLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>1</number>
    </property>
    <item>
     <widget class="QLabel" name="fileName">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>30</height>
-      </size>
-     </property>
      <property name="font">
       <font>
        <family>Roboto</family>
        <pointsize>14</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="accessibleDescription">
+      <string extracomment="accessible">To open file press space or enter</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">color: #363739;
-border: none;</string>
+      <string notr="true">color: #363739;</string>
      </property>
      <property name="text">
       <string notr="true">Dokument 1.pdf</string>
@@ -103,29 +90,13 @@ border: none;</string>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
+     <property name="accessibleName">
+      <string extracomment="accessible">Remove file</string>
      </property>
      <property name="text">
       <string/>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>2</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="LabelButton" name="download">
@@ -144,8 +115,8 @@ border: none;</string>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
+     <property name="accessibleName">
+      <string extracomment="accessible">Download file</string>
      </property>
      <property name="text">
       <string/>

@@ -23,7 +23,6 @@
 #include "QCardInfo.h"
 #include "common_enums.h"
 #include "Styles.h"
-#include "widgets/LabelButton.h"
 
 #include <common/SslCertificate.h>
 
@@ -120,7 +119,9 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	cardInfo = ci;
 	card = cardId;
 	ui->cardName->setText(cardInfo->fullName);
+	ui->cardName->setAccessibleName(cardInfo->fullName.toLower());
 	ui->cardCode->setText(cardInfo->id + "   |");
+	ui->cardCode->setAccessibleName(cardInfo->id);
 	ui->load->setText(tr("LOAD"));
 	if(cardInfo->loading)
 	{
@@ -158,8 +159,6 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 		seal->setStyleSheet(QStringLiteral("border: none;"));
 		ui->cardPhoto->unsetCursor();
 	}
-
-	setAccessibleDescription(cardInfo->fullName);
 }
 
 void CardWidget::showPicture( const QPixmap &pix )

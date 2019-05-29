@@ -41,12 +41,6 @@ background-color: #FFFFFF;</string>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="code">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="font">
       <font>
        <pointsize>14</pointsize>
@@ -54,11 +48,11 @@ background-color: #FFFFFF;</string>
        <bold>true</bold>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: #041E42; border: none;</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -67,12 +61,6 @@ background-color: #FFFFFF;</string>
    </item>
    <item>
     <widget class="QLabel" name="labelError">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>426</width>
@@ -85,13 +73,13 @@ background-color: #FFFFFF;</string>
        <height>16777215</height>
       </size>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: #353739;
 line-height: 15px;
 border: none;</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -113,19 +101,6 @@ border: none;</string>
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item>
        <widget class="QProgressBar" name="signProgressBar">
         <property name="minimumSize">
@@ -156,19 +131,6 @@ border: none;</string>
          <string>%v sec</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>

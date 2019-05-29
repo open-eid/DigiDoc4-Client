@@ -28,20 +28,6 @@
 #include <QtGui/QRegExpValidator>
 
 
-struct InfoLine
-{
-	QWidget *line;
-	QLabel *bullet;
-	QLabel *text;
-};
-
-struct LineText
-{
-	bool replacePin;
-	bool showBullet;
-	QString text;
-};
-
 PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
 	QDate birthDate, QString personalCode)
 	: QDialog(parent)
@@ -98,8 +84,13 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 			(type == QSmartCardData::Pin2Type) ? QStringLiteral("\\d{5,12}") : QStringLiteral("\\d{8,12}"));
 		ui->unblock->setText( tr("CHANGE") );
 	}
+	setWindowTitle(ui->labelNameId->text());
 	ui->labelPin->setText( tr( "NEW %1 CODE").arg( QSmartCardData::typeString( type ) ) );
 	ui->labelRepeat->setText( tr( "NEW %1 CODE AGAIN").arg( QSmartCardData::typeString( type ) ) );
+	ui->pin->setAccessibleName(ui->labelPin->text().toLower());
+	ui->repeat->setAccessibleName(ui->labelRepeat->text().toLower());
+	ui->puk->setAccessibleName(ui->labelPuk->text().toLower());
+	ui->unblock->setAccessibleName(ui->unblock->text().toLower());
 
 	ui->puk->setValidator( new QRegExpValidator( regexpFirstCode, ui->puk ) );
 	ui->pin->setValidator( new QRegExpValidator( regexpFirstCode, ui->pin ) );
@@ -149,6 +140,12 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 
 void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 {
+	struct LineText
+	{
+		bool replacePin;
+		bool showBullet;
+		QString text;
+	};
 	QList<LineText> labels;
 	int pin = type == QSmartCardData::Pin2Type ? 2 : 1;
 	QFont font = Styles::font(Styles::Regular, 14);
@@ -214,14 +211,19 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 		}
 	}
 
-	InfoLine lines[] = {{ ui->line1, ui->line1_bullet, ui->line1_text }, 
-						{ ui->line2, ui->line2_bullet, ui->line2_text }, 
-						{ ui->line3, ui->line3_bullet, ui->line3_text }, 
-						{ ui->line4, ui->line4_bullet, ui->line4_text }, 
-						{ ui->line5, ui->line5_bullet, ui->line5_text }, 
-						{ ui->line6, ui->line6_bullet, ui->line6_text }, 
-						{ ui->line7, ui->line7_bullet, ui->line7_text }, 
-						{ ui->line8, ui->line8_bullet, ui->line8_text }};
+	struct InfoLine
+	{
+		QWidget *line;
+		QLabel *bullet;
+		QLabel *text;
+	} lines[] = {{ ui->line1, ui->line1_bullet, ui->line1_text },
+				{ ui->line2, ui->line2_bullet, ui->line2_text },
+				{ ui->line3, ui->line3_bullet, ui->line3_text },
+				{ ui->line4, ui->line4_bullet, ui->line4_text },
+				{ ui->line5, ui->line5_bullet, ui->line5_text },
+				{ ui->line6, ui->line6_bullet, ui->line6_text },
+				{ ui->line7, ui->line7_bullet, ui->line7_text },
+				{ ui->line8, ui->line8_bullet, ui->line8_text }};
 
 	int lineOffset = 0;
 	for(const LineText &lbl: labels)

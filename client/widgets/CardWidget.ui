@@ -169,12 +169,6 @@ border-radius: 3px;
       </property>
       <item>
        <widget class="QLabel" name="cardName">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>273</width>
@@ -192,6 +186,9 @@ border-radius: 3px;
           <weight>50</weight>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">color: #041E42; background: none;</string>
@@ -235,6 +232,9 @@ border-radius: 3px;
            <pointsize>16</pointsize>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">color: #75787B; background: none;</string>
          </property>
@@ -255,6 +255,9 @@ border-radius: 3px;
           <font>
            <pointsize>16</pointsize>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">color: #75787B; background: none;</string>

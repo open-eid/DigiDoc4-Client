@@ -606,6 +606,9 @@ text-align: left;</string>
            <bold>false</bold>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">border: none;
 color: #353739;
@@ -705,6 +708,9 @@ text-align: left;</string>
            <weight>50</weight>
            <bold>false</bold>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">border: none;
@@ -806,6 +812,9 @@ text-align: left;</string>
            <bold>false</bold>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">border: none;
 color: #353739;
@@ -905,6 +914,9 @@ text-align: left;</string>
            <weight>50</weight>
            <bold>false</bold>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">border: none;
@@ -1006,6 +1018,9 @@ text-align: left;</string>
            <bold>false</bold>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">border: none;
 color: #353739;
@@ -1105,6 +1120,9 @@ text-align: left;</string>
            <weight>50</weight>
            <bold>false</bold>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">border: none;
@@ -1206,6 +1224,9 @@ text-align: left;</string>
            <bold>false</bold>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="styleSheet">
           <string notr="true">border: none;
 color: #353739;
@@ -1305,6 +1326,9 @@ text-align: left;</string>
            <weight>50</weight>
            <bold>false</bold>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="styleSheet">
           <string notr="true">border: none;

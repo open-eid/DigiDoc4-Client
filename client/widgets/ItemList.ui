@@ -237,6 +237,9 @@ color: #041E42;</string>
                 <pointsize>20</pointsize>
                </font>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::TabFocus</enum>
+              </property>
               <property name="styleSheet">
                <string notr="true">color: #041E42;
 border: none;</string>

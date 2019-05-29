@@ -189,6 +189,7 @@ void ItemList::init(ItemType item, const QString &header)
 {
 	itemType = item;
 	ui->listHeader->setText(tr(qPrintable(header)));
+	ui->listHeader->setAccessibleName(tr(qPrintable(header)));
 	listText = header;
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 
