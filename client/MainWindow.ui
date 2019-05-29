@@ -935,6 +935,9 @@ background-position: bottom;
                       <bold>true</bold>
                      </font>
                     </property>
+                    <property name="focusPolicy">
+                     <enum>Qt::TabFocus</enum>
+                    </property>
                     <property name="styleSheet">
                      <string notr="true">color: #041E42;</string>
                     </property>
@@ -950,13 +953,13 @@ background-position: bottom;
                    <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
                     <property name="minimumSize">
                      <size>
-                      <width>240</width>
+                      <width>0</width>
                       <height>45</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>240</width>
+                      <width>16777215</width>
                       <height>45</height>
                      </size>
                     </property>

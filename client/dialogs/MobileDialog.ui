@@ -154,14 +154,11 @@ border-radius: 2px;
      <pointsize>12</pointsize>
     </font>
    </property>
-   <property name="accessibleName">
-    <string>Country code and phone number</string>
-   </property>
    <property name="styleSheet">
     <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
-    <string>COUNTRY CODE AND PHONE NUMBER</string>
+    <string>Country code and phone number</string>
    </property>
    <property name="buddy">
     <cstring>phoneNo</cstring>
@@ -226,14 +223,11 @@ QCheckBox::indicator {
      <pointsize>12</pointsize>
     </font>
    </property>
-   <property name="accessibleName">
-    <string>Personal code</string>
-   </property>
    <property name="styleSheet">
     <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
-    <string>PERSONAL CODE</string>
+    <string>Personal code</string>
    </property>
    <property name="buddy">
     <cstring>idCode</cstring>

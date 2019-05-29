@@ -145,6 +145,9 @@ QPushButton:hover:!pressed {
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Given names</string>
         </property>
@@ -164,6 +167,9 @@ QPushButton:hover:!pressed {
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Surname</string>
         </property>
@@ -182,6 +188,9 @@ QPushButton:hover:!pressed {
           <family>Roboto</family>
           <pointsize>16</pointsize>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">color: #041E42;</string>
@@ -205,6 +214,9 @@ QPushButton:hover:!pressed {
           <pointsize>16</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: #041E42;</string>
         </property>
@@ -223,6 +235,9 @@ QPushButton:hover:!pressed {
           <family>Roboto</family>
           <pointsize>12</pointsize>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Personal code</string>
@@ -243,6 +258,9 @@ QPushButton:hover:!pressed {
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Citizenship</string>
         </property>
@@ -261,6 +279,9 @@ QPushButton:hover:!pressed {
           <family>Roboto</family>
           <pointsize>16</pointsize>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">color: #041E42;</string>
@@ -281,6 +302,9 @@ QPushButton:hover:!pressed {
           <pointsize>16</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: #041E42;</string>
         </property>
@@ -299,6 +323,9 @@ QPushButton:hover:!pressed {
           <family>Roboto</family>
           <pointsize>12</pointsize>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Document</string>
@@ -321,6 +348,9 @@ QPushButton:hover:!pressed {
             <pointsize>16</pointsize>
            </font>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
           <property name="styleSheet">
            <string notr="true">color: #041E42;</string>
           </property>
@@ -339,6 +369,9 @@ QPushButton:hover:!pressed {
             <family>Roboto</family>
             <pointsize>16</pointsize>
            </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
           </property>
           <property name="styleSheet">
            <string notr="true">color: #041E42;</string>

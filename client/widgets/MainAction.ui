@@ -93,6 +93,9 @@ ID-KAARDIGA</string>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="accessibleName">
+      <string comment="accessible">Token selection</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QToolButton {
 	border: solid #1a7dbc;

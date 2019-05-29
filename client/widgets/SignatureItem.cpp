@@ -28,11 +28,12 @@
 #include <common/DateTime.h>
 #include <common/SslCertificate.h>
 
-#include <QFontMetrics>
-#include <QPainter>
-#include <QResizeEvent>
-#include <QSvgWidget>
 #include <QtCore/QTextStream>
+#include <QtGui/QFontMetrics>
+#include <QtGui/QPainter>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QTextDocument>
+#include <QtSvg/QSvgWidget>
 
 using namespace ria::qdigidoc4;
 
@@ -57,7 +58,9 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, bool 
 {
 	ui->setupUi(this);
 	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
+	ui->name->installEventFilter(this);
 	ui->idSignTime->setFont(Styles::font(Styles::Regular, 11));
+	ui->idSignTime->installEventFilter(this);
 	ui->role->setFont(Styles::font(Styles::Regular, 11));
 	ui->role->installEventFilter(this);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
@@ -76,25 +79,22 @@ SignatureItem::~SignatureItem()
 void SignatureItem::init()
 {
 	const SslCertificate cert = ui->signature.cert();
+	DigiDocSignature::SignatureStatus signatureValidity = ui->signature.validate();
 
-	QString accessibility, signingInfo;
-	ui->nameText.clear();
 	ui->serial.clear();
 	ui->statusHtml.clear();
 	ui->status.clear();
 	ui->error = ria::qdigidoc4::NoWarning;
-
-	QTextStream sa(&accessibility);
-	QTextStream sc(&ui->statusHtml);
-	QTextStream si(&signingInfo);
-	
-	auto signatureValidity = ui->signature.validate();
-
 	ui->invalid = signatureValidity >= DigiDocSignature::Invalid;
 	if(!cert.isNull())
 		ui->nameText = cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")).toHtmlEscaped();
 	else
 		ui->nameText = ui->signature.signedBy().toHtmlEscaped();
+
+	QString accessibility, signingInfo;
+	QTextStream sa(&accessibility);
+	QTextStream sc(&ui->statusHtml);
+	QTextStream si(&signingInfo);
 
 	bool isSignature = true;
 	QString label = tr("Signature");
@@ -110,54 +110,42 @@ void SignatureItem::init()
 		ui->icon->setPixmap(QStringLiteral(":/images/icon_Allkiri_small.svg"));
 	sa << label << " ";
 	sc << "<span style=\"font-weight:normal;\">";
-	auto isValid = [](bool isSignature) {
-		if(isSignature)
-			return tr("is valid", "Signature");
-		return tr("is valid", "Timestamp");
+	auto isValid = [&isSignature]() {
+		return isSignature ? tr("is valid", "Signature") : tr("is valid", "Timestamp");
 	};
-	auto isNotValid = [](bool isSignature) {
-		if(isSignature)
-			return tr("is not valid", "Signature");
-		return tr("is not valid", "Timestamp");
+	auto isNotValid = [&isSignature]() {
+		return isSignature ? tr("is not valid", "Signature") : tr("is not valid", "Timestamp");
 	};
-	auto isUnknown = [](bool isSignature) {
-		if(isSignature)
-			return tr("is unknown", "Signature");
-		return tr("is unknown", "Timestamp");
+	auto isUnknown = [&isSignature]() {
+		return isSignature ? tr("is unknown", "Signature") : tr("is unknown", "Timestamp");
 	};
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
-		sa << isValid(isSignature);
-		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font>";
+		sa << isValid();
+		sc << "<font color=\"green\">" << label << " " << isValid() << "</font>";
 		break;
 	case DigiDocSignature::Warning:
-		sa << isValid(isSignature) << " (" << tr("Warnings") << ")";
-		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
+		sa << isValid() << " (" << tr("Warnings") << ")";
+		sc << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
 		break;
 	case DigiDocSignature::NonQSCD:
-		sa << isValid(isSignature) << " (" << tr("Restrictions") << ")";
-		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
+		sa << isValid() << " (" << tr("Restrictions") << ")";
+		sc << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
 		break;
 	case DigiDocSignature::Test:
-		sa << isValid(isSignature) << " (" << tr("Test signature") << ")";
-		sc << "<font color=\"green\">" << label << " " << isValid(isSignature) << "</font> <font>(" << tr("Test signature") << ")";
+		sa << isValid() << " (" << tr("Test signature") << ")";
+		sc << "<font color=\"green\">" << label << " " << isValid() << "</font> <font>(" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
-		if(isSignature)
-			ui->error = ria::qdigidoc4::InvalidSignatureWarning;
-		else
-			ui->error = ria::qdigidoc4::InvalidTimestampWarning;
-		sa << isNotValid(isSignature);
-		sc << "<font color=\"red\">" << label << " " << isNotValid(isSignature);
+		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureWarning : ria::qdigidoc4::InvalidTimestampWarning;
+		sa << isNotValid();
+		sc << "<font color=\"red\">" << label << " " << isNotValid();
 		break;
 	case DigiDocSignature::Unknown:
-		if(isSignature)
-			ui->error = ria::qdigidoc4::UnknownSignatureWarning;
-		else
-			ui->error = ria::qdigidoc4::UnknownTimestampWarning;
-		sa << isUnknown(isSignature);
-		sc << "<font color=\"red\">" << label << " " << isUnknown(isSignature);
+		ui->error = isSignature ? ria::qdigidoc4::UnknownSignatureWarning : ria::qdigidoc4::UnknownTimestampWarning;
+		sa << isUnknown();
+		sc << "<font color=\"red\">" << label << " " << isUnknown();
 		break;
 	}
 	sc << "</span>";
@@ -203,9 +191,19 @@ bool SignatureItem::event(QEvent *event)
 	case QEvent::Resize:
 		updateNameField();
 		break;
+	case QEvent::MouseButtonRelease:
+		details();
+		break;
+	case QEvent::KeyRelease:
+		if(QKeyEvent *ke = static_cast<QKeyEvent*>(event))
+		{
+			if(isEnabled() && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
+				details();
+		}
+		break;
 	default: break;
 	}
-	return QWidget::event(event);
+	return Item::event(event);
 }
 
 void SignatureItem::details()
@@ -237,6 +235,16 @@ bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 					ui->role->text().simplified(), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
 		}
 		break;
+	case QEvent::MouseButtonRelease:
+		details();
+		return true;
+	case QEvent::KeyRelease:
+		if(QKeyEvent *ke = static_cast<QKeyEvent*>(e))
+		{
+			if(isEnabled() && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
+				details();
+		}
+		break;
 	default: break;
 	}
 	return Item::eventFilter(o, e);
@@ -260,11 +268,6 @@ bool SignatureItem::isInvalid() const
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
 {
 	return !ui->serial.isEmpty() && (ui->serial == cardCode || ui->serial == mobileCode);
-}
-
-void SignatureItem::mouseReleaseEvent(QMouseEvent * /*event*/)
-{
-	details();
 }
 
 QString SignatureItem::red(const QString &text)
@@ -291,4 +294,7 @@ void SignatureItem::updateNameField()
 		ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->statusHtml);
 	else
 		ui->name->setText((ui->invalid ? red(ui->nameText) : ui->nameText) + "<br/>" + ui->statusHtml);
+	QTextDocument doc;
+	doc.setHtml(ui->name->text());
+	ui->name->setAccessibleName(doc.toPlainText());
 }

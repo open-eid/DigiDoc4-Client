@@ -718,6 +718,24 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     </message>
 </context>
 <context>
+    <name>FileItem</name>
+    <message>
+        <source>Remove file</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download file</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To open file press space or enter</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FileList</name>
     <message>
         <source>Save file</source>
@@ -1198,6 +1216,11 @@ ID-KAARDIGA</translation>
         <translation>DEKRÜPTEERI
 E-TEMPLIGA</translation>
     </message>
+    <message>
+        <source>Token selection</source>
+        <comment>accessible</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -1521,14 +1544,6 @@ E-TEMPLIGA</translation>
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
         <translation>&lt;b&gt;Sisesta oma telefoninumber Mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>COUNTRY CODE AND PHONE NUMBER</source>
-        <translation>RIIGI KOOD JA TELEFONINUMBER</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>ISIKUKOOD</translation>
     </message>
     <message>
         <source>Remember me</source>
@@ -2867,6 +2882,16 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>is unknown</source>
         <comment>Timestamp</comment>
         <translation>on teadmata</translation>
+    </message>
+    <message>
+        <source>Remove signature</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To view signature details press enter or space</source>
+        <extracomment>accessible</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

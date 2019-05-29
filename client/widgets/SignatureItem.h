@@ -43,7 +43,6 @@ public slots:
 protected:
 	bool event(QEvent *event) override;
 	bool eventFilter(QObject *o, QEvent *e) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
 	void init();

@@ -54,6 +54,9 @@ color: #353739;</string>
        <strikeout>false</strikeout>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: none;</string>
      </property>
