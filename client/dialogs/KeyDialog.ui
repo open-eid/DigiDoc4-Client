@@ -81,9 +81,6 @@ QHeaderView::section {
      </item>
      <item>
       <widget class="QPushButton" name="close">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
        <property name="minimumSize">
         <size>
          <width>150</width>
@@ -94,6 +91,9 @@ QHeaderView::section {
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Close</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -122,9 +122,6 @@ QPushButton:disabled {
      </item>
      <item>
       <widget class="QPushButton" name="showCert">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
        <property name="minimumSize">
         <size>
          <width>150</width>
@@ -135,6 +132,9 @@ QPushButton:disabled {
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Show certificate</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {

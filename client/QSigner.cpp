@@ -99,7 +99,7 @@ QCardInfo *toCardInfo(const SslCertificate &c)
 	else
 	{
 		ci->fullName = c.toString(QStringLiteral("GN SN"));
-		ci->cardType = c.type() & SslCertificate::DigiIDType ? "Digi ID" : "ID Card";
+		ci->cardType = c.type() & SslCertificate::DigiIDType ? "Digi-ID" : "ID-card";
 	}
 
 	return ci;

@@ -54,7 +54,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 		ui->showDetails->borderless();
 		ui->showDetails->setClosable(true);
 		ui->showDetails->show();
-		ui->showDetails->init(false, tr("Details"), ui->details);
+		ui->showDetails->init(false, tr("Details"), tr("Details"), ui->details);
 		connect(ui->showDetails, &AccordionTitle::closed, this, &WarningDialog::adjustSize);
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}
@@ -74,6 +74,7 @@ WarningDialog::~WarningDialog()
 void WarningDialog::setCancelText(const QString& label)
 {
 	ui->cancel->setText(label);
+	ui->cancel->setAccessibleName(label.toLower());
 }
 
 void WarningDialog::addButton(const QString& label, int ret)
@@ -85,6 +86,7 @@ void WarningDialog::addButton(const QString& label, int ret)
 	QFontMetrics fm(font);
 
 	QPushButton *button = new QPushButton(label, this);
+	button->setAccessibleName(label.toLower());
 	button->setCursor(Qt::PointingHandCursor);
 	button->setFont(font);
 
@@ -93,8 +95,11 @@ void WarningDialog::addButton(const QString& label, int ret)
 	if(textWidth > (buttonWidth - 5))
 		width = textWidth + 16;
 	button->setMinimumSize(width, 34);
-	button->setStyleSheet("QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\nQPushButton:pressed {background-color: #41B6E6;} "
-		"QPushButton:hover:!pressed {background-color: #008DCF;}\nQPushButton:disabled {background-color: #BEDBED;}");
+	button->setStyleSheet(QStringLiteral(
+		"QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\n"
+		"QPushButton:pressed {background-color: #41B6E6;}\n"
+		"QPushButton:hover:!pressed {background-color: #008DCF;}\n"
+		"QPushButton:disabled {background-color: #BEDBED;}"));
 
 	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
 	layout->insertWidget(buttonOffset++, button);

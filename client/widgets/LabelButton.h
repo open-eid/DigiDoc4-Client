@@ -71,8 +71,8 @@ private:
 	void hover();
 	void pressed();
 
-	int code;
-	int style;
+	int code = 0;
+	int style = Style::None;
 	Css css[3];
 	QString normalStyle;
 	QString normalLink;
@@ -81,8 +81,4 @@ private:
 	QString hoverLink;
 	QString hoverIcon;
 	std::unique_ptr<QSvgWidget> icon;
-
-	static const QString borderRadius;
-	static const QString styleTemplate;
-	static const QString linkTemplate;
 };

@@ -144,9 +144,6 @@ text-align: center;
    </property>
   </widget>
   <widget class="QPushButton" name="cancel">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
    <property name="geometry">
     <rect>
      <x>126</x>
@@ -168,6 +165,9 @@ text-align: center;
    </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="accessibleName">
+    <string extracomment="accessible">Cancel</string>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {

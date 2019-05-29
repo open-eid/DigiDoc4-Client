@@ -203,9 +203,6 @@ border: none;</string>
       </item>
       <item>
        <widget class="QPushButton" name="cancel">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
         <property name="minimumSize">
          <size>
           <width>120</width>
@@ -225,6 +222,9 @@ border: none;</string>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Cancel</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {

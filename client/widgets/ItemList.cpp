@@ -103,9 +103,9 @@ QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile: return tr("Add more files");
-	case ItemAddress: return tr("Add addressee");
-	case ToAddAdresses: return tr("Add all");
+	case ItemFile: return tr("+ ADD MORE FILES");
+	case ItemAddress: return tr("+ ADD RECIPIENT");
+	case ToAddAdresses: return tr("ADD ALL");
 	default: return QString();
 	}
 }

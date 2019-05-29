@@ -120,6 +120,9 @@ QComboBox::down-arrow {
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Continue</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	image: none;
@@ -530,6 +533,9 @@ line-height: 16px;</string>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">View introduction</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	image: none;
@@ -573,6 +579,9 @@ QPushButton:disabled {
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">View introduction</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	image: none;
@@ -612,6 +621,9 @@ QPushButton:disabled {
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">View introduction</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -812,6 +824,9 @@ border-radius: 3px;</string>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">View next intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
@@ -1560,6 +1575,9 @@ QPushButton:disabled {
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">View next intro</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	image: none;
@@ -1881,6 +1899,9 @@ line-height: 16px;</string>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Enter the application</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {

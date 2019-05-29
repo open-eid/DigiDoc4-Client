@@ -127,6 +127,9 @@ QHeaderView::section {
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Close</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
 	border-radius: 2px;
@@ -168,6 +171,9 @@ QPushButton:disabled {
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
 	border-radius: 2px;
@@ -205,6 +211,9 @@ QPushButton:disabled {
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Remove</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {

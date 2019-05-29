@@ -47,6 +47,9 @@
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="accessibleName">
+    <string extracomment="accessible">Cancel</string>
+   </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -85,6 +88,9 @@ QPushButton:hover:!pressed {
    </property>
    <property name="cursor">
     <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="accessibleName">
+    <string extracomment="accessible">Unblock</string>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton {
@@ -178,6 +184,9 @@ text-align: center;</string>
         <family>Roboto Condensed</family>
         <pointsize>12</pointsize>
        </font>
+      </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Valid puk code</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: #353739;</string>

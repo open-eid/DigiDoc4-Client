@@ -56,6 +56,9 @@ color: #353739;</string>
        <pointsize>14</pointsize>
       </font>
      </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Check @eesti.ee e-mail status</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
 QPushButton:pressed {  border: none; background-color: #006EB5; color: #FFFFFF;}
@@ -170,6 +173,9 @@ text-decoration: underline;
           <family>Roboto Condensed</family>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Activate redirection</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}

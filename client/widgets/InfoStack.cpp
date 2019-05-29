@@ -160,7 +160,7 @@ void InfoStack::update()
 	if(certType & SslCertificate::TempelType)
 	{
 		ui->labelGivenNames->setText(tr("NAME"));
-		ui->labelSurname->setText(QString());
+		ui->labelSurname->clear();
 		ui->labelPersonalCode->setText(tr("SERIAL"));
 		ui->labelCitizenship->setText(tr("COUNTRY"));
 		ui->labelSerialNumber->setText(tr("DEVICE"));
@@ -177,11 +177,11 @@ void InfoStack::update()
 	}
 	else
 	{
-		ui->labelGivenNames->setText(tr("Given names"));
-		ui->labelSurname->setText(tr("Surname"));
-		ui->labelPersonalCode->setText(tr("Personal code"));
-		ui->labelCitizenship->setText(tr("Citizenship"));
-		ui->labelSerialNumber->setText(tr("Document"));
+		ui->labelGivenNames->setText(tr("GIVEN NAMES"));
+		ui->labelSurname->setText(tr("SURNAME"));
+		ui->labelPersonalCode->setText(tr("PERSONAL CODE"));
+		ui->labelCitizenship->setText(tr("CITIZENSHIP"));
+		ui->labelSerialNumber->setText(tr("DOCUMENT"));
 		ui->valueSerialNumber->setMinimumWidth(100);
 		ui->valueSerialNumber->setMaximumWidth(100);
 		if(!alternateIcon)

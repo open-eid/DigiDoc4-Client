@@ -138,6 +138,9 @@ QPushButton:!checked{
             <height>35</height>
            </size>
           </property>
+          <property name="accessibleName">
+           <string extracomment="accessible">General</string>
+          </property>
           <property name="text">
            <string>GENERAL</string>
           </property>
@@ -157,6 +160,9 @@ QPushButton:!checked{
             <height>35</height>
            </size>
           </property>
+          <property name="accessibleName">
+           <string extracomment="accessible">Services</string>
+          </property>
           <property name="text">
            <string>SERVICES</string>
           </property>
@@ -172,6 +178,9 @@ QPushButton:!checked{
             <width>0</width>
             <height>35</height>
            </size>
+          </property>
+          <property name="accessibleName">
+           <string extracomment="accessible">Proxy</string>
           </property>
           <property name="text">
            <string>PROXY</string>
@@ -189,6 +198,9 @@ QPushButton:!checked{
             <height>35</height>
            </size>
           </property>
+          <property name="accessibleName">
+           <string extracomment="accessible">Diagnostics</string>
+          </property>
           <property name="text">
            <string>DIAGNOSTICS</string>
           </property>
@@ -204,6 +216,9 @@ QPushButton:!checked{
             <width>0</width>
             <height>35</height>
            </size>
+          </property>
+          <property name="accessibleName">
+           <string extracomment="accessible">Info</string>
           </property>
           <property name="text">
            <string>INFO</string>
@@ -1130,6 +1145,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">First run</string>
+        </property>
         <property name="text">
          <string>FIRST RUN</string>
         </property>
@@ -1148,6 +1166,9 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Refresh configuration</string>
         </property>
         <property name="text">
          <string>REFRESH CONFIGURATION</string>
@@ -1168,6 +1189,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Check connection</string>
+        </property>
         <property name="text">
          <string>CHECK CONNECTIONS</string>
         </property>
@@ -1186,6 +1210,9 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Save diagnostics report</string>
         </property>
         <property name="text">
          <string>SAVE DIAGNOSTICS REPORT TO DISK</string>
@@ -1209,6 +1236,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Remove old certificates</string>
+        </property>
         <property name="text">
          <string>REMOVE OLD CERTIFICATES</string>
         </property>
@@ -1230,6 +1260,9 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Use default settings</string>
         </property>
         <property name="text">
          <string>USE DEFAULT SETTINGS</string>
@@ -1257,6 +1290,9 @@ QPushButton:disabled {
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Close</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {

@@ -70,6 +70,9 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Load picture</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">border: 1px solid #B1B3B3;
 background-color: #FFFFFF;
@@ -93,6 +96,9 @@ border-radius: 3px;
        <font>
         <pointsize>9</pointsize>
        </font>
+      </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Load</string>
       </property>
       <property name="styleSheet">
        <string notr="true">border: none; color: #006EB5;</string>
