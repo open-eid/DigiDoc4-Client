@@ -104,7 +104,6 @@ private:
 	const char *cancelText;
 	const char *changeLocationText;
 	const char *convertText;
-	const char *envelope;
 	bool canDecrypt = false;
 	bool seal = false;
 	bool isExpired = false;

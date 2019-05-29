@@ -32,7 +32,7 @@ AccordionTitle::AccordionTitle(QWidget *parent) :
 {
 	ui->setupUi(this);
 	icon.reset( new QSvgWidget( this ) );
-	icon->setStyleSheet( "border: none;" );
+	icon->setStyleSheet(QStringLiteral("border: none;"));
 	icon->resize( 12, 6 );
 	icon->move( 15, 17 );
 	ui->label->setFont( Styles::font( Styles::Condensed, 16 ) );
@@ -45,21 +45,22 @@ AccordionTitle::~AccordionTitle()
 
 void AccordionTitle::borderless()
 {
-	setStyleSheet("background-color: #FFFFFF; border: none;");
+	setStyleSheet(QStringLiteral("background-color: #FFFFFF; border: none;"));
 }
 
 void AccordionTitle::closeSection()
 {
 	content->setVisible(false);
-	ui->label->setStyleSheet("border: none; color: #353739;");
+	ui->label->setStyleSheet(QStringLiteral("border: none; color: #353739;"));
 	icon->resize( 6, 12 );
 	icon->move( 18, 14 );
-	icon->load( QString( ":/images/accordion_arrow_right.svg" ) );	
+	icon->load(QStringLiteral(":/images/accordion_arrow_right.svg"));
 }
 
-void AccordionTitle::init(bool open, const QString& caption, QWidget* content)
+void AccordionTitle::init(bool open, const QString &caption, const QString &accessible, QWidget *content)
 {
 	ui->label->setText(caption);
+	ui->label->setAccessibleName(accessible);
 	this->content = content;
 	if(open)
 		openSection();
@@ -67,7 +68,7 @@ void AccordionTitle::init(bool open, const QString& caption, QWidget* content)
 		closeSection();
 }
 
-void AccordionTitle::mouseReleaseEvent(QMouseEvent *event)
+void AccordionTitle::mouseReleaseEvent(QMouseEvent * /* event */)
 {
 	if(!content->isVisible())
 	{
@@ -86,10 +87,10 @@ void AccordionTitle::mouseReleaseEvent(QMouseEvent *event)
 void AccordionTitle::openSection()
 {
 	content->setVisible(true);
-	ui->label->setStyleSheet("border: none; color: #006EB5;");
+	ui->label->setStyleSheet(QStringLiteral("border: none; color: #006EB5;"));
 	icon->resize( 12, 6 );
 	icon->move( 15, 17 );
-	icon->load( QString( ":/images/accordion_arrow_down.svg" ) );
+	icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
 }
 
 void AccordionTitle::setClosable(bool closable)

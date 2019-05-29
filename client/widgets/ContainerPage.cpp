@@ -43,7 +43,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 , cancelText("CANCEL")
 , changeLocationText("CHANGE")
 , convertText("ENCRYPT")
-, envelope("Envelope")
 {
 	ui->setupUi( this );
 	ui->leftPane->init(fileName);
@@ -431,7 +430,6 @@ void ContainerPage::updatePanes(ContainerState state)
 	case UnencryptedContainer:
 		cancelText = "STARTING";
 		convertText = "SIGN";
-		envelope = "Container";
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
@@ -443,7 +441,6 @@ void ContainerPage::updatePanes(ContainerState state)
 	case EncryptedContainer:
 		cancelText = "STARTING";
 		convertText = "SIGN";
-		envelope = "Container";
 
 		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
@@ -474,11 +471,12 @@ void ContainerPage::togglePrinting(bool enable)
 
 void ContainerPage::translateLabels()
 {
-	tr("Envelope");
 	tr("STARTING");
 	tr("SIGN");
 	ui->changeLocation->setText(tr(changeLocationText));
+	ui->changeLocation->setAccessibleName(tr(changeLocationText).toLower());
 	ui->cancel->setText(tr(cancelText));
-	ui->container->setText(tr(envelope));
+	ui->cancel->setAccessibleName(tr(cancelText).toLower());
 	ui->convert->setText(tr(convertText));
+	ui->convert->setAccessibleName(tr(convertText).toLower());
 }

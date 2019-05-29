@@ -132,6 +132,9 @@ border: none;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Change</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>
@@ -256,6 +259,9 @@ border-width: 1px 0px 0px 0px; </string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Cancel</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">border: none;
 border-radius: 3px;
@@ -308,6 +314,9 @@ text-decoration: none solid rgb(197, 62, 62);</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Encrypt</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
 color: #006eb5;
@@ -344,6 +353,9 @@ border: none;</string>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Save as</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
@@ -382,6 +394,9 @@ border: none;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Send with e-mail</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
 color: #006eb5;
@@ -417,6 +432,9 @@ border: none;</string>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Print summary</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;
@@ -455,6 +473,9 @@ border: none;</string>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Save without signing</string>
         </property>
         <property name="styleSheet">
          <string notr="true">border-radius: 3px;

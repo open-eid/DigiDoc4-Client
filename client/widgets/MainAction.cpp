@@ -110,6 +110,7 @@ void MainAction::showDropdown()
 		for(QList<Actions>::const_iterator i = ui->actions.cbegin() + 1; i != ui->actions.cend(); ++i)
 		{
 			QPushButton *other = new QPushButton(label(*i), parentWidget());
+			other->setAccessibleName(label(*i).toLower());
 			other->resize(size());
 			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
 			other->show();
@@ -131,6 +132,7 @@ void MainAction::update(const QList<Actions> &actions)
 	hideDropdown();
 	ui->actions = actions;
 	ui->mainAction->setText(label(actions[0]));
+	ui->mainAction->setAccessibleName(label(actions[0]).toLower());
 	ui->otherCards->setVisible(actions.size() > 1);
 	show();
 }

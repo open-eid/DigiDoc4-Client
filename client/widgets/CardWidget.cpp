@@ -64,8 +64,8 @@ CardWidget::CardWidget(QString id, QWidget *parent)
 	});
 	connect(ui->cardPhoto, &LabelButton::left, ui->load, &QLabel::hide);
 	tr("e-Seal");
-	tr("Digi ID");
-	tr("ID Card");
+	tr("Digi-ID");
+	tr("ID-card");
 }
 
 CardWidget::~CardWidget()

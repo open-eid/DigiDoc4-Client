@@ -461,6 +461,9 @@ background-color: #FFFFFF;
                 <height>34</height>
                </size>
               </property>
+              <property name="accessibleName">
+               <string extracomment="accessible">Search</string>
+              </property>
               <property name="styleSheet">
                <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -479,7 +482,7 @@ QPushButton:disabled {
 }</string>
               </property>
               <property name="text">
-               <string>Search</string>
+               <string>SEARCH</string>
               </property>
              </widget>
             </item>
@@ -488,12 +491,6 @@ QPushButton:disabled {
          </item>
          <item>
           <widget class="LabelButton" name="add">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -522,7 +519,7 @@ QPushButton:disabled {
             <number>0</number>
            </property>
            <property name="text">
-            <string notr="true">+ LISA VEEL FAILE</string>
+            <string>+ ADD MORE FILES</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

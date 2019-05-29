@@ -292,6 +292,7 @@ void VerifyCert::update(bool showWarning)
 	if(isTempelType)
 		ui->changePIN->hide();
 	ui->changePIN->setText(changeBtn);
+	ui->changePIN->setAccessibleName(changeBtn.toLower());
 }
 
 void VerifyCert::enterEvent(QEvent * /*event*/)

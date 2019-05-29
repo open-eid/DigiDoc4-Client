@@ -368,6 +368,9 @@ background-color: #f7f7f7;</string>
         <height>20</height>
        </size>
       </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Close</string>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -415,6 +418,9 @@ QPushButton:disabled {
         <width>120</width>
         <height>25</height>
        </size>
+      </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Save</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {

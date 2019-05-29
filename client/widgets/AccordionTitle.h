@@ -40,10 +40,10 @@ class AccordionTitle : public StyledWidget
 
 public:
 	explicit AccordionTitle(QWidget *parent = nullptr);
-	~AccordionTitle();
+	~AccordionTitle() final;
 
 	void borderless();
-	void init(bool open, const QString& caption, QWidget* content);
+	void init(bool open, const QString &caption, const QString &accessible, QWidget *content);
 	void setClosable(bool closable);
 	void setText(const QString& caption);
 	void openSection();
