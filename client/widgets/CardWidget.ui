@@ -49,12 +49,6 @@
    </property>
    <item>
     <widget class="LabelButton" name="cardPhoto">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>34</width>
@@ -79,9 +73,6 @@ background-color: #FFFFFF;
 opacity: 0.5;
 border-radius: 3px;
 </string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
      <widget class="QLabel" name="load">
       <property name="geometry">
@@ -276,7 +267,7 @@ border-radius: 3px;
  <customwidgets>
   <customwidget>
    <class>LabelButton</class>
-   <extends>QLabel</extends>
+   <extends>QToolButton</extends>
    <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>

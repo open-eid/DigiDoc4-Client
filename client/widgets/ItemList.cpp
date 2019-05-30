@@ -157,6 +157,7 @@ void ItemList::details(const QString &id)
 			emit item->details();
 	}
 }
+
 void ItemList::focusEvent(int eventType)
 {
 	infoIcon->setHidden(eventType == QEvent::Enter);
@@ -242,11 +243,11 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->infoIcon->installEventFilter(filter);
 		setRecipientTooltip();
 
-		connect(ui->add, &LabelButton::clicked, this, &ItemList::addressSearch);
+		connect(ui->add, &QToolButton::clicked, this, &ItemList::addressSearch);
 	}
 	else if(itemType == ToAddAdresses)
 	{
-		connect(ui->add, &LabelButton::clicked, this, &ItemList::addAll);
+		connect(ui->add, &QToolButton::clicked, this, &ItemList::addAll);
 	}
 }
 

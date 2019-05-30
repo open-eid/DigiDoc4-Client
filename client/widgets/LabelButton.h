@@ -19,15 +19,11 @@
 
 #pragma once
 
-#include <QLabel>
-#include <QSvgWidget>
-
-#include <memory>
-
+#include <QtWidgets/QToolButton>
 
 // A label with pre-defined styles that acts as a button.
 // LabelButton changes style (colors) on hover and when pressed.
-class LabelButton : public QLabel
+class LabelButton : public QToolButton
 {
 	Q_OBJECT
 
@@ -44,41 +40,17 @@ public:
 	explicit LabelButton(QWidget *parent = nullptr);
 
 	void init( Style style, const QString &label, int code );
-	void setIcons( const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int x, int y, int w, int h );
+	void setIcons(const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int w, int h);
+	void clear();
+	const QPixmap pixmap();
+	void setPixmap(const QPixmap &pixmap);
 
 signals:
 	void clicked(int code);
-	void entered();
-	void left();
-
-protected:
-	void enterEvent( QEvent *ev ) override;
-	void leaveEvent( QEvent *ev ) override;
-	bool event( QEvent *ev ) override;
 
 private:
-	struct Css {
-		QString style;
-		QString background;
-		QString icon;
-	};
-	enum State {
-		Normal,
-		Hover,
-		Pressed
-	};
-	void normal();
-	void hover();
-	void pressed();
+	bool event(QEvent *e) override;
 
-	int code = 0;
-	int style = Style::None;
-	Css css[3];
-	QString normalStyle;
-	QString normalLink;
-	QString normalIcon;
-	QString hoverStyle;
-	QString hoverLink;
-	QString hoverIcon;
-	std::unique_ptr<QSvgWidget> icon;
+	QString normal, hover, pressed;
+	QMetaObject::Connection connection;
 };

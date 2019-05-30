@@ -41,7 +41,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::ContainerPage)
 , cancelText("CANCEL")
-, changeLocationText("CHANGE")
 , convertText("ENCRYPT")
 {
 	ui->setupUi( this );
@@ -51,7 +50,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	ui->containerFile->setFont(Styles::font(Styles::Regular, 14));
 
 	ui->changeLocation->setIcons(QStringLiteral("/images/icon_Edit.svg"),
-		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 4, 4, 18, 18);
+		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 18, 18);
 	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
 	ui->containerFile->installEventFilter(this);
 	ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
@@ -382,8 +381,6 @@ void ContainerPage::updateDecryptionButton()
 
 void ContainerPage::updatePanes(ContainerState state)
 {
-	auto buttonWidth = ui->changeLocation->width();
-	bool resize = false;
 	bool showPrintSummary = Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool();
 	auto setButtonsVisible = [](const QVector<QWidget*> &buttons, bool visible) {
 		for(QWidget *button: buttons) button->setVisible(visible);
@@ -417,7 +414,6 @@ void ContainerPage::updatePanes(ContainerState state)
 	case SignedContainer:
 		cancelText = "STARTING";
 
-		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
 		showRightPane(ItemSignature, QStringLiteral("Container's signatures"));
@@ -442,7 +438,6 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = "STARTING";
 		convertText = "SIGN";
 
-		resize = !ui->changeLocation->isHidden();
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, QStringLiteral("Encrypted files"));
 		showRightPane(ItemAddress, QStringLiteral("Recipients"));
@@ -453,12 +448,6 @@ void ContainerPage::updatePanes(ContainerState state)
 	default:
 		// Uninitialized cannot be shown on container page
 		break;
-	}
-
-	if(resize)
-	{
-		// Forcibly resize the filename widget after hiding button
-		ui->containerFile->resize(ui->containerFile->width() + buttonWidth, ui->containerFile->height());
 	}
 
 	translateLabels();
@@ -473,8 +462,8 @@ void ContainerPage::translateLabels()
 {
 	tr("STARTING");
 	tr("SIGN");
-	ui->changeLocation->setText(tr(changeLocationText));
-	ui->changeLocation->setAccessibleName(tr(changeLocationText).toLower());
+	ui->changeLocation->setText(tr("CHANGE"));
+	ui->changeLocation->setAccessibleName(ui->changeLocation->text().toLower());
 	ui->cancel->setText(tr(cancelText));
 	ui->cancel->setAccessibleName(tr(cancelText).toLower());
 	ui->convert->setText(tr(convertText));

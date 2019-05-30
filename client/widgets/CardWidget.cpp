@@ -45,6 +45,7 @@ CardWidget::CardWidget(QString id, QWidget *parent)
 	ui->cardCode->setFont( font );
 	ui->cardStatus->setFont( font );
 	ui->cardPhoto->init(LabelButton::None, QString(), CardPhoto);
+	ui->cardPhoto->installEventFilter(this);
 	ui->load->setFont(Styles::font(Styles::Condensed, 9));
 	ui->load->hide();
 
@@ -57,11 +58,6 @@ CardWidget::CardWidget(QString id, QWidget *parent)
 		if(!seal)
 			emit photoClicked(ui->cardPhoto->pixmap());
 	});
-	connect(ui->cardPhoto, &LabelButton::entered, this, [this] {
-		if(!ui->cardPhoto->pixmap() && !seal)
-			ui->load->show(); 
-	});
-	connect(ui->cardPhoto, &LabelButton::left, ui->load, &QLabel::hide);
 	tr("e-Seal");
 	tr("Digi-ID");
 	tr("ID-card");
@@ -99,6 +95,24 @@ bool CardWidget::event( QEvent *ev )
 		return true;
 	}
 	return QWidget::event( ev );
+}
+
+bool CardWidget::eventFilter(QObject *o, QEvent *e)
+{
+	if(o != ui->cardPhoto)
+		return StyledWidget::eventFilter(o, e);
+	switch(e->type())
+	{
+	case QEvent::HoverEnter:
+		if(!ui->cardPhoto->pixmap() && !seal)
+			ui->load->show();
+		break;
+	case QEvent::HoverLeave:
+		ui->load->hide();
+		break;
+	default: break;
+	}
+	return StyledWidget::eventFilter(o, e);
 }
 
 void CardWidget::changeEvent(QEvent* event)

@@ -38,7 +38,7 @@ class ItemList : public QWidget
 
 public:
 	explicit ItemList(QWidget *parent = nullptr);
-	virtual ~ItemList();
+	~ItemList() override;
 
 	void init(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void addHeader(const QString &label);
@@ -67,14 +67,12 @@ protected slots:
 	virtual void remove(Item *item);
 	
 protected:
+	void changeEvent(QEvent* event) override;
 	int index(Item *item) const;
 
 	Ui::ItemList* ui;
 	std::vector<Item*> items;
 	ria::qdigidoc4::ContainerState state = ria::qdigidoc4::UnsignedContainer;
-
-protected:
-	void changeEvent(QEvent* event) override;
 
 private:
 	QString addLabel();
