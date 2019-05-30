@@ -1160,9 +1160,9 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 }
 
 // Loads picture
-void MainWindow::photoClicked( const QPixmap *photo )
+void MainWindow::photoClicked(const QPixmap &photo)
 {
-	if( photo )
+	if(!photo.isNull())
 		return savePhoto();
 
 	QByteArray buffer = sendRequest( SSLConnect::PictureInfo );

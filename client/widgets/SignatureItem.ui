@@ -164,7 +164,7 @@ background-color: #ffffff;
  <customwidgets>
   <customwidget>
    <class>LabelButton</class>
-   <extends>QLabel</extends>
+   <extends>QToolButton</extends>
    <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>

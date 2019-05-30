@@ -38,7 +38,7 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->setupUi( this );
 
 	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
-	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked( ui->photo->pixmap() ); } );
+	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked(ui->photo->pixmap() ? *ui->photo->pixmap() : QPixmap()); } );
 	
 	QFont labelFont = Styles::font(Styles::Condensed, 11);
 	ui->labelGivenNames->setFont(labelFont);

@@ -70,7 +70,7 @@ private Q_SLOTS:
 	void openFile(const QString &file);
 	void operation(int op, bool started);
 	void pageSelected(PageIcon *page);
-	void photoClicked( const QPixmap *photo );
+	void photoClicked(const QPixmap &photo);
 	void savePhoto();
 	void showCardStatus();
 	void updateMyEid();

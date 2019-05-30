@@ -40,7 +40,7 @@ FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
 	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"),
-		QStringLiteral("/images/icon_download_pressed.svg"), 1, 1, 17, 17);
+		QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
 	ui->download->init(LabelButton::White, QString(), 0);
 
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);

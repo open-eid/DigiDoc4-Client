@@ -64,7 +64,7 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, bool 
 	ui->role->setFont(Styles::font(Styles::Regular, 11));
 	ui->role->installEventFilter(this);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
-		QStringLiteral("/images/icon_remove_pressed.svg"), 1, 1, 17, 17);
+		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
 	ui->remove->init(LabelButton::White, QString(), 0);
 	ui->remove->setVisible(isSupported);
 	connect(ui->remove, &LabelButton::clicked, this, &SignatureItem::removeSignature);

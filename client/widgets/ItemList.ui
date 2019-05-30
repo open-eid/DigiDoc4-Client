@@ -248,7 +248,7 @@ border: none;</string>
                <number>0</number>
               </property>
               <property name="text">
-               <string notr="true">Konteineri failid</string>
+               <string notr="true">Konteineri failid</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -494,6 +494,12 @@ QPushButton:disabled {
          </item>
          <item>
           <widget class="LabelButton" name="add">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -515,20 +521,8 @@ QPushButton:disabled {
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
-           <property name="styleSheet">
-            <string notr="true">text-align: center;</string>
-           </property>
-           <property name="lineWidth">
-            <number>0</number>
-           </property>
            <property name="text">
             <string>+ ADD MORE FILES</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="margin">
-            <number>0</number>
            </property>
           </widget>
          </item>
@@ -558,16 +552,10 @@ background-position: left bottom; }</string>
  <customwidgets>
   <customwidget>
    <class>LabelButton</class>
-   <extends>QLabel</extends>
+   <extends>QToolButton</extends>
    <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>scrollArea</tabstop>
-  <tabstop>download</tabstop>
-  <tabstop>txtFind</tabstop>
-  <tabstop>btnFind</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

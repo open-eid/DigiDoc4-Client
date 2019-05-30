@@ -48,7 +48,7 @@ public:
 	void showPicture(const QPixmap &pixmap) override;
 
 signals:
-	void photoClicked( const QPixmap *pixmap );
+	void photoClicked(const QPixmap &pixmap);
 
 protected:
 	void changeEvent(QEvent* event) override;

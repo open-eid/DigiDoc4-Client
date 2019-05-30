@@ -102,7 +102,6 @@ private:
 	QString mobileCode;
 
 	const char *cancelText;
-	const char *changeLocationText;
 	const char *convertText;
 	bool canDecrypt = false;
 	bool seal = false;
