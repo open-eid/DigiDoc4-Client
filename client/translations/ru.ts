@@ -43,12 +43,12 @@
     <message>
         <source>PIN/PUK codes and certificates</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>PIN/PUK и сертификаты</translation>
     </message>
     <message>
         <source>Redirection of eesti.ee e-mail</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Перенаправление eesti.ee почты</translation>
     </message>
 </context>
 <context>
@@ -112,27 +112,27 @@
     <message>
         <source>Certificate from card</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Сертификат с карты</translation>
     </message>
     <message>
         <source>Certificate from file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Сертификат из файла</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Последний сертификат</translation>
     </message>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Confirm</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердить</translation>
     </message>
 </context>
 <context>
@@ -172,12 +172,12 @@
     <message>
         <source>Added</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Добавлен</translation>
     </message>
     <message>
         <source>Add</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
 </context>
 <context>
@@ -264,12 +264,13 @@
     <message>
         <source>Load picture</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить фото</translation>
     </message>
     <message>
         <source>Load</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Загру
+Зить</translation>
     </message>
 </context>
 <context>
@@ -389,12 +390,12 @@
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <source>Save</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить</translation>
     </message>
 </context>
 <context>
@@ -445,22 +446,22 @@
     </message>
     <message>
         <source>Used certificates</source>
-        <translation type="unfinished"></translation>
+        <translation>Использованные сертификаты</translation>
     </message>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <source>Select</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать</translation>
     </message>
     <message>
         <source>Remove</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
@@ -535,37 +536,37 @@
     <message>
         <source>Change</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Поменять</translation>
     </message>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Encrypt</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Зашифровать</translation>
+        <translation>Зашифровать</translation>
     </message>
     <message>
         <source>Save as</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cохранить</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отправить с е-пoчтoй</translation>
     </message>
     <message>
         <source>Print summary</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Подтверждающий лист</translation>
     </message>
     <message>
         <source>Save without signing</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить без подписи</translation>
     </message>
 </context>
 <context>
@@ -723,17 +724,17 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Remove file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Удалить файл</translation>
     </message>
     <message>
         <source>Download file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Скачать файл</translation>
     </message>
     <message>
         <source>To open file press space or enter</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Для открытия файла нажмите пробел или enter</translation>
     </message>
 </context>
 <context>
@@ -904,22 +905,22 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Continue</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Продолжить</translation>
     </message>
     <message>
         <source>View introduction</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Посмотреть введение</translation>
     </message>
     <message>
         <source>View next intro</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Посмотреть следующий</translation>
     </message>
     <message>
         <source>Enter the application</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Войти в программу</translation>
     </message>
 </context>
 <context>
@@ -991,32 +992,32 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Download picture</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить фото</translation>
     </message>
     <message>
         <source>Given names</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Имена</translation>
     </message>
     <message>
         <source>Surname</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Фамилия</translation>
     </message>
     <message>
         <source>Personal code</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Личный код</translation>
     </message>
     <message>
         <source>Citizenship</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Гражданство</translation>
     </message>
     <message>
         <source>Document</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Документ</translation>
     </message>
 </context>
 <context>
@@ -1089,7 +1090,7 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Search</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Найти</translation>
     </message>
 </context>
 <context>
@@ -1145,12 +1146,12 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Показать сертификат</translation>
     </message>
 </context>
 <context>
@@ -1179,11 +1180,11 @@ LDAP сервер недоступен.</translation>
     </message>
     <message>
         <source>Failed to set ldap version</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось настроить версию LDAP</translation>
     </message>
     <message>
         <source>Failed to start ssl</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось запустить SSL</translation>
     </message>
 </context>
 <context>
@@ -1220,7 +1221,7 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Token selection</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать средство</translation>
     </message>
 </context>
 <context>
@@ -1243,7 +1244,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
-        <translation>Перетащите фаgйл сюда для (рас/за)шифровывания ...</translation>
+        <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
@@ -1513,32 +1514,32 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
-        <translation type="unfinished"></translation>
+        <translation>Возникла ошибка при осуществлении запроса в Коммерческий регистр.</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
         <comment>accessible</comment>
-        <translation type="unfinished">... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+        <translation>Выберите на диске файл для подписания или проверки</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
         <comment>accessible</comment>
-        <translation type="unfinished">... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+        <translation>Выберите на диске файл для шифрования или расшифровки</translation>
     </message>
     <message>
         <source>Select signature page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать раздел Подпись</translation>
     </message>
     <message>
         <source>Select crypto page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать раздел Крипто</translation>
     </message>
     <message>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать раздел Мой eID</translation>
     </message>
 </context>
 <context>
@@ -1570,20 +1571,20 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Sign</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Подписать</translation>
+        <translation>Подписать</translation>
     </message>
     <message>
         <source>Country code and phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Код страны и телефонный номер</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation type="unfinished"></translation>
+        <translation>Личный код</translation>
     </message>
 </context>
 <context>
@@ -1707,7 +1708,7 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1766,12 +1767,12 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Check @eesti.ee e-mail status</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Проверить состояние @eesti.ee e-почты</translation>
     </message>
     <message>
         <source>Activate redirection</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Активировать переадресацию</translation>
     </message>
 </context>
 <context>
@@ -1838,7 +1839,7 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -2030,17 +2031,17 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Unblock</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Разблокировать</translation>
     </message>
     <message>
         <source>Valid puk code</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Действующий puk код</translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2159,7 @@ Kонтрольный код: %1</translation>
     <name>QFileDialog</name>
     <message>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Все файлы (*)</translation>
     </message>
 </context>
 <context>
@@ -2212,11 +2213,11 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Операция подписи/расшифровки уже выполняется в другом окне.&gt;</translation>
+        <translation>Операция подписи/расшифровки уже выполняется в другом окне.</translation>
     </message>
     <message>
         <source>Authentication certificate is not selected.</source>
-        <translation>Сертификат идентификации не выбран</translation>
+        <translation>Сертификат идентификации не выбран.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
@@ -2515,31 +2516,31 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Select folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать каталог</translation>
     </message>
     <message>
         <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Справки доступа (*.p12 *.p12d *.pfx)</translation>
     </message>
     <message>
         <source>Server access certificate error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка справки доступа: %1</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Cохранить</translation>
     </message>
     <message>
         <source>Text files (*.txt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Текстовые файлы (*.txt)</translation>
     </message>
     <message>
         <source>Error occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Возникла ошибка</translation>
     </message>
     <message>
         <source>Failed write to file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось записать файл!</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
@@ -2548,62 +2549,62 @@ Additional licenses and components</source>
     <message>
         <source>General</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <source>Services</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Службы</translation>
     </message>
     <message>
         <source>Proxy</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Прокси</translation>
     </message>
     <message>
         <source>Diagnostics</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Диагностика</translation>
     </message>
     <message>
         <source>Info</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Инфо</translation>
     </message>
     <message>
         <source>First run</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Первый запуск</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Проверьте обновления</translation>
     </message>
     <message>
         <source>Check connection</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Проверьте настройки интернета</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить диагностику</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Удалить старые сертификаты</translation>
     </message>
     <message>
         <source>Use default settings</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Использовать настройки по умолчанию</translation>
     </message>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -2803,14 +2804,14 @@ Additional licenses and components</source>
         <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38500&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Technical information</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Техническая информация</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <extracomment>accessible</extracomment>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -2888,12 +2889,12 @@ Additional licenses and components</source>
     <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Удалить подпись</translation>
     </message>
     <message>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Для просмотра деталей подписи нажмите пробел или enter</translation>
     </message>
 </context>
 <context>
@@ -2948,7 +2949,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Please follow the instructions on your PIN pad.</source>
-        <translation>Пожалуйста, следуйте инструкциям на Пин-панель(PIN pad)</translation>
+        <translation>Пожалуйста, следуйте инструкциям на Пин-панель(PIN pad).</translation>
     </message>
     <message>
         <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
@@ -3051,7 +3052,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN-код можно сменить только при помощи программного обеспечения e-Tempel</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>
@@ -3084,7 +3085,7 @@ Additional licenses and components</source>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>

@@ -43,12 +43,12 @@
     <message>
         <source>PIN/PUK codes and certificates</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>PIN/PUK codes and certificates</translation>
     </message>
     <message>
         <source>Redirection of eesti.ee e-mail</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Redirection of eesti.ee e-mail</translation>
     </message>
 </context>
 <context>
@@ -112,27 +112,27 @@
     <message>
         <source>Certificate from card</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Certificate from card</translation>
     </message>
     <message>
         <source>Certificate from file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Certificate from file</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Latest used certificate</translation>
     </message>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Confirm</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Confirm</translation>
     </message>
 </context>
 <context>
@@ -172,12 +172,12 @@
     <message>
         <source>Added</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Added</translation>
     </message>
     <message>
         <source>Add</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Add</translation>
     </message>
 </context>
 <context>
@@ -263,12 +263,12 @@
     <message>
         <source>Load picture</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Load picture</translation>
     </message>
     <message>
         <source>Load</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Load</translation>
     </message>
 </context>
 <context>
@@ -388,12 +388,12 @@
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
     </message>
     <message>
         <source>Save</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Save</translation>
     </message>
 </context>
 <context>
@@ -449,17 +449,17 @@
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
     </message>
     <message>
         <source>Select</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Select</translation>
     </message>
     <message>
         <source>Remove</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Remove</translation>
     </message>
 </context>
 <context>
@@ -534,37 +534,37 @@
     <message>
         <source>Change</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Change</translation>
     </message>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Encrypt</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Encrypt</translation>
+        <translation>Encrypt</translation>
     </message>
     <message>
         <source>Save as</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Save as</translation>
+        <translation>Save as</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Send with e-mail</translation>
     </message>
     <message>
         <source>Print summary</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Print summary</translation>
     </message>
     <message>
         <source>Save without signing</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Save without signing</translation>
     </message>
 </context>
 <context>
@@ -722,17 +722,17 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Remove file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Remove file</translation>
     </message>
     <message>
         <source>Download file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Download file</translation>
     </message>
     <message>
         <source>To open file press space or enter</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>To open file press space or enter</translation>
     </message>
 </context>
 <context>
@@ -903,22 +903,22 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Continue</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Continue</translation>
     </message>
     <message>
         <source>View introduction</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>View introduction</translation>
     </message>
     <message>
         <source>View next intro</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>View next intro</translation>
     </message>
     <message>
         <source>Enter the application</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Enter the application</translation>
     </message>
 </context>
 <context>
@@ -990,32 +990,32 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Download picture</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Download picture</translation>
     </message>
     <message>
         <source>Given names</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Given names</translation>
     </message>
     <message>
         <source>Surname</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Surname</translation>
     </message>
     <message>
         <source>Personal code</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Personal code</translation>
     </message>
     <message>
         <source>Citizenship</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Citizenship</translation>
     </message>
     <message>
         <source>Document</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Document</translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1088,7 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Search</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
 </context>
 <context>
@@ -1144,12 +1144,12 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
     </message>
     <message>
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Show certificate</translation>
     </message>
 </context>
 <context>
@@ -1219,7 +1219,7 @@ E-SEAL</translation>
     <message>
         <source>Token selection</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Token selection</translation>
     </message>
 </context>
 <context>
@@ -1526,17 +1526,17 @@ E-SEAL</translation>
     <message>
         <source>Select signature page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Select signature page</translation>
     </message>
     <message>
         <source>Select crypto page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Select crypto page</translation>
     </message>
     <message>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Select my EID page</translation>
     </message>
 </context>
 <context>
@@ -1568,20 +1568,20 @@ E-SEAL</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Sign</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Sign</translation>
+        <translation>Sign</translation>
     </message>
     <message>
         <source>Country code and phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Country code and phone number</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation type="unfinished"></translation>
+        <translation>Personal code</translation>
     </message>
 </context>
 <context>
@@ -1705,7 +1705,7 @@ Control code: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -1764,12 +1764,12 @@ Control code: %1</translation>
     <message>
         <source>Check @eesti.ee e-mail status</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Check @eesti.ee e-mail status</translation>
     </message>
     <message>
         <source>Activate redirection</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Activate redirection</translation>
     </message>
 </context>
 <context>
@@ -1836,7 +1836,7 @@ Control code: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -2028,17 +2028,17 @@ Control code: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Unblock</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Unblock</translation>
     </message>
     <message>
         <source>Valid puk code</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Valid puk code</translation>
     </message>
 </context>
 <context>
@@ -2546,62 +2546,62 @@ Additional licenses and components</translation>
     <message>
         <source>General</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Services</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Services</translation>
     </message>
     <message>
         <source>Proxy</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>Diagnostics</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Diagnostics</translation>
     </message>
     <message>
         <source>Info</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <source>First run</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>First run</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Refresh configuration</translation>
     </message>
     <message>
         <source>Check connection</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Check connection</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Save diagnostics report</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Remove old certificates</translation>
     </message>
     <message>
         <source>Use default settings</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Use default settings</translation>
     </message>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
@@ -2801,14 +2801,14 @@ Additional licenses and components</translation>
         <translation>is unknown</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Technical information</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Technical information</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <extracomment>accessible</extracomment>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
@@ -2886,12 +2886,12 @@ Additional licenses and components</translation>
     <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Remove signature</translation>
     </message>
     <message>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>To view signature details press enter or space</translation>
     </message>
 </context>
 <context>
@@ -3082,7 +3082,7 @@ Additional licenses and components</translation>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
