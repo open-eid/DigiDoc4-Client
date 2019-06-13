@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888. </translation>
+        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -43,12 +43,12 @@
     <message>
         <source>PIN/PUK codes and certificates</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>PIN/PUK koodid ja sertifikaatide kontroll</translation>
     </message>
     <message>
         <source>Redirection of eesti.ee e-mail</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Eesti.ee posti suunamine</translation>
     </message>
 </context>
 <context>
@@ -112,27 +112,27 @@
     <message>
         <source>Certificate from card</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lisa sertifikaat kaardilt</translation>
     </message>
     <message>
         <source>Certificate from file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lisa sertifikaat failist</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Viimati lisatud</translation>
     </message>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <source>Confirm</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita</translation>
     </message>
 </context>
 <context>
@@ -172,12 +172,12 @@
     <message>
         <source>Added</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lisatud</translation>
     </message>
     <message>
         <source>Add</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lisa</translation>
     </message>
 </context>
 <context>
@@ -192,7 +192,7 @@
     </message>
     <message>
         <source>Caught exception!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekkis viga!</translation>
     </message>
     <message>
         <source>New Client window</source>
@@ -263,12 +263,12 @@
     <message>
         <source>Load picture</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Laadi pilt</translation>
     </message>
     <message>
         <source>Load</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Laadi</translation>
     </message>
 </context>
 <context>
@@ -388,12 +388,12 @@
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
     <message>
         <source>Save</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Salvesta</translation>
     </message>
 </context>
 <context>
@@ -444,22 +444,22 @@
     </message>
     <message>
         <source>Used certificates</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutatud sertifikaadid</translation>
     </message>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
     <message>
         <source>Select</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vali</translation>
     </message>
     <message>
         <source>Remove</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda</translation>
     </message>
 </context>
 <context>
@@ -534,37 +534,37 @@
     <message>
         <source>Change</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <source>Encrypt</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Krüpteeri</translation>
+        <translation>Krüpteeri</translation>
     </message>
     <message>
         <source>Save as</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Salvesta</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Edasta e-postiga</translation>
     </message>
     <message>
         <source>Print summary</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Trüki kinnitusleht</translation>
     </message>
     <message>
         <source>Save without signing</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Salvesta allkirjastamata</translation>
     </message>
 </context>
 <context>
@@ -722,17 +722,17 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Remove file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda fail</translation>
     </message>
     <message>
         <source>Download file</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Lae fail alla</translation>
     </message>
     <message>
         <source>To open file press space or enter</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Faili avamiseks vajuta space või enter</translation>
     </message>
 </context>
 <context>
@@ -903,22 +903,22 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Continue</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Edasi</translation>
     </message>
     <message>
         <source>View introduction</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vaata tutvustust</translation>
     </message>
     <message>
         <source>View next intro</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vaata järgmist tutvustust</translation>
     </message>
     <message>
         <source>Enter the application</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sisene rakendusse</translation>
     </message>
 </context>
 <context>
@@ -990,32 +990,32 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Download picture</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Laadi pilt</translation>
     </message>
     <message>
         <source>Given names</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Eesnimed</translation>
     </message>
     <message>
         <source>Surname</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Perekonnanimi</translation>
     </message>
     <message>
         <source>Personal code</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Isikukood</translation>
     </message>
     <message>
         <source>Citizenship</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Kodakondsus</translation>
     </message>
     <message>
         <source>Document</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Dokument</translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1088,7 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Search</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Otsi</translation>
     </message>
 </context>
 <context>
@@ -1144,12 +1144,12 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
     <message>
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Näita sertifikaati</translation>
     </message>
 </context>
 <context>
@@ -1178,11 +1178,11 @@ LDAP serveriga ei saa ühendust.</translation>
     </message>
     <message>
         <source>Failed to set ldap version</source>
-        <translation type="unfinished"></translation>
+        <translation>Ldap versiooni seadistamine ebaõnnestus</translation>
     </message>
     <message>
         <source>Failed to start ssl</source>
-        <translation type="unfinished"></translation>
+        <translation>Ssl käivitamine ebaõnnestus</translation>
     </message>
 </context>
 <context>
@@ -1219,7 +1219,7 @@ E-TEMPLIGA</translation>
     <message>
         <source>Token selection</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vali vahend</translation>
     </message>
 </context>
 <context>
@@ -1511,7 +1511,7 @@ E-TEMPLIGA</translation>
     </message>
     <message>
         <source>There was an error with request to Äriregister.</source>
-        <translation type="unfinished"></translation>
+        <translation>Äriregistri päringu tegemisel tekkis viga.</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
@@ -1526,17 +1526,17 @@ E-TEMPLIGA</translation>
     <message>
         <source>Select signature page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vali leht allkiri</translation>
     </message>
     <message>
         <source>Select crypto page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vali leht krüpto</translation>
     </message>
     <message>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Vali leht minu eID</translation>
     </message>
 </context>
 <context>
@@ -1568,20 +1568,20 @@ E-TEMPLIGA</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <source>Sign</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished">Allkirjastan</translation>
+        <translation>Allkirjastan</translation>
     </message>
     <message>
         <source>Country code and phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Riigi kood ja telefoninumber</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <translation type="unfinished"></translation>
+        <translation>Isikukood</translation>
     </message>
 </context>
 <context>
@@ -1705,7 +1705,7 @@ Kontrollkood: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -1764,12 +1764,12 @@ Kontrollkood: %1</translation>
     <message>
         <source>Check @eesti.ee e-mail status</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolli @eesti.ee e-posti staatust</translation>
     </message>
     <message>
         <source>Activate redirection</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Aktiveeri suunamine</translation>
     </message>
 </context>
 <context>
@@ -1836,7 +1836,7 @@ Kontrollkood: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -2028,17 +2028,17 @@ Kontrollkood: %1</translation>
     <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <source>Unblock</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Blokeeri lahti</translation>
     </message>
     <message>
         <source>Valid puk code</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Kehtiv puk kood</translation>
     </message>
 </context>
 <context>
@@ -2156,14 +2156,14 @@ Kontrollkood: %1</translation>
     <name>QFileDialog</name>
     <message>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik failid (*)</translation>
     </message>
 </context>
 <context>
     <name>QPKCS11</name>
     <message>
         <source>PIN Canceled</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN katkestatud</translation>
     </message>
     <message>
         <source>PIN locked</source>
@@ -2175,15 +2175,15 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
-        <translation type="unfinished"></translation>
+        <translation>PKCS11 üldine viga</translation>
     </message>
     <message>
         <source>PKCS11 device error</source>
-        <translation type="unfinished"></translation>
+        <translation>PKCS11 seadme viga</translation>
     </message>
     <message>
         <source>PKCS11 unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>PKCS11 tundmatu viga</translation>
     </message>
 </context>
 <context>
@@ -2210,15 +2210,15 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
     </message>
     <message>
         <source>Authentication certificate is not selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Isikutuvastamise sertifikaat ei ole valitud.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumendi dekrüpteerimine ebaõnnestus</translation>
     </message>
 </context>
 <context>
@@ -2513,31 +2513,31 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Select folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali kataloog</translation>
     </message>
     <message>
         <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Juurdepääsutõendid (*.p12 *.p12d *.pfx)</translation>
     </message>
     <message>
         <source>Server access certificate error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Juurdepääsutõendi viga: %1</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvesta</translation>
     </message>
     <message>
         <source>Text files (*.txt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstifailid (*.txt)</translation>
     </message>
     <message>
         <source>Error occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekkis viga</translation>
     </message>
     <message>
         <source>Failed write to file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Faili kirjutamine ebaõnnestus!</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
@@ -2546,62 +2546,62 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>General</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Üldine</translation>
     </message>
     <message>
         <source>Services</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Teenused</translation>
     </message>
     <message>
         <source>Proxy</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Proksi</translation>
     </message>
     <message>
         <source>Diagnostics</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Diagnostika</translation>
     </message>
     <message>
         <source>Info</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <source>First run</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Esmane tutvustus</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolli värskendusi</translation>
     </message>
     <message>
         <source>Check connection</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolli internetiühendust</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Salvesta diagnostika</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda üleliigsed sertifikaadid</translation>
     </message>
     <message>
         <source>Use default settings</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Taasta algseaded</translation>
     </message>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -2801,14 +2801,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>on teadmata</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Technical information</source>
         <comment>accessible</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tehniline informatsioon</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <extracomment>accessible</extracomment>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -2886,12 +2886,12 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda allkiri</translation>
     </message>
     <message>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Allkirja detailide vaatamiseks vajuta space või enter</translation>
     </message>
 </context>
 <context>
@@ -3082,7 +3082,7 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
