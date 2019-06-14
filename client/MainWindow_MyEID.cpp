@@ -231,12 +231,10 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 
 void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
-	QString textColor = isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739");
-	QString bkColor = isSuccess ? QStringLiteral("#8CC368") : QStringLiteral("#F8DDA7");
-	int displayTime = isSuccess ? 2000 : 6000;
-
-	FadeInNotification* notification = new FadeInNotification( this, textColor, bkColor, 110 );
-	notification->start( msg, 750, displayTime, 600 );
+	FadeInNotification* notification = new FadeInNotification(this,
+		isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739"),
+		isSuccess ? QStringLiteral("#8CC368") : QStringLiteral("#F8DDA7"), 110);
+	notification->start(msg, 750, 15000, 600);
 }
 
 void MainWindow::updateCertificate(const QString &readerName)
