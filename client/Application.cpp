@@ -336,29 +336,13 @@ Application::Application( int &argc, char **argv )
 	{
 		digidoc::Conf::init( new DigidocConf );
 		d->signer = new QSigner(api, this);
-
-		auto readVersion = [](const QString &path) -> uint {
-			QFile f(path);
-			if(!f.open(QFile::ReadOnly))
-				return 0;
-			QXmlStreamReader r(&f);
-			while(!r.atEnd())
-			{
-				if(r.readNextStartElement() && r.name() == "TSLSequenceNumber")
-				{
-					r.readNext();
-					return r.text().toUInt();
-				}
-			}
-			return 0;
-		};
 		QString cache = confValue(TSLCache).toString();
 		QDir().mkpath( cache );
 		for(const QString &file: QDir(QStringLiteral(":/TSL/")).entryList())
 		{
 			const QString target = cache + "/" + file;
 			if(!QFile::exists(target) ||
-				readVersion(":/TSL/" + file) > readVersion(target))
+				readTSLVersion(":/TSL/" + file) > readTSLVersion(target))
 			{
 				QFile::remove(target);
 				QFile::copy(":/TSL/" + file, target);
@@ -558,7 +542,10 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 
 void Application::diagnostics(QTextStream &s)
 {
-	s << "<br />TSL_URL: " << confValue(TSLUrl).toString()
+	QString cache = confValue(TSLCache).toString();
+	QString file = QFileInfo(confValue(TSLUrl).toString()).fileName();
+	s << "<br />TSL_URL: " << confValue(TSLUrl).toString() << " (" << readTSLVersion(cache + "/" + file) << ")"
+		<< "<br />TSA_URL: " << confValue(TSAUrl).toString()
 		<< "<br />SIVA_URL: " << confValue(SiVaUrl).toString()
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: confValue(TSLCerts).value<QList<QSslCertificate>>())
@@ -823,6 +810,23 @@ void Application::parseArgs( const QStringList &args )
 	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
 	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign);
 }
+
+uint Application::readTSLVersion(const QString &path) const
+{
+	QFile f(path);
+	if(!f.open(QFile::ReadOnly))
+		return 0;
+	QXmlStreamReader r(&f);
+	while(!r.atEnd())
+	{
+		if(r.readNextStartElement() && r.name() == "TSLSequenceNumber")
+		{
+			r.readNext();
+			return r.text().toUInt();
+		}
+	}
+	return 0;
+};
 
 int Application::run()
 {

@@ -105,6 +105,7 @@ private:
 #ifndef Q_OS_MAC
 	void migrateSettings();
 #endif
+	uint readTSLVersion(const QString &path) const;
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
 	QWidget* uniqueRoot();
 
