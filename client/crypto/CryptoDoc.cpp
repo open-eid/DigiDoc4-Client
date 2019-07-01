@@ -802,7 +802,15 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 	if( d->isEncryptedWarning() )
 		return;
 
-	QString fileName(QFileInfo(file).fileName());
+	QFileInfo info(file);
+	if(info.size() == 0)
+	{
+		if(QMessageBox::No == QMessageBox::warning(qApp->activeWindow(), tr("Add file"),
+			tr("File you want to add is empty. Do you want to continue?"), QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
+			return;
+	}
+
+	QString fileName(info.fileName());
 	for(const auto &containerFile: d->files)
 	{
 		qDebug() << containerFile.name << " vs " << file;
