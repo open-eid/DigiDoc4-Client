@@ -26,13 +26,12 @@
 using namespace ria::qdigidoc4::colors;
 
 LabelButton::LabelButton( QWidget *parent ): QToolButton(parent)
-{
-	setFont(Styles::font(Styles::Condensed, 12));
-}
+{}
 
 void LabelButton::init( Style style, const QString &label, int code )
 {
 	setText(label);
+	setFont(Styles::font(Styles::Condensed, 12));
 	if(!label.isEmpty())
 		setAccessibleName(label.toLower());
 	disconnect(connection);
