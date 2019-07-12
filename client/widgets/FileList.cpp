@@ -74,6 +74,8 @@ void FileList::clear()
 
 bool FileList::eventFilter(QObject *obj, QEvent *event)
 {
+	if(!qobject_cast<FileItem*>(obj))
+		return ItemList::eventFilter(obj, event);
 	switch(event->type())
 	{
 	case QEvent::MouseButtonPress:

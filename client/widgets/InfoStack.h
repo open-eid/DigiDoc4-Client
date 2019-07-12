@@ -42,19 +42,19 @@ public:
 	~InfoStack() final;
 
 	void clearData();
-	void clearPicture() override;
+	void clearPicture() final;
 	void update(const QCardInfo &cardInfo);
 	void update(const QSmartCardData &t);
-	void showPicture(const QPixmap &pixmap) override;
+	void showPicture(const QPixmap &pixmap) final;
 
 signals:
 	void photoClicked(const QPixmap &pixmap);
 
 protected:
-	void changeEvent(QEvent* event) override;
+	void changeEvent(QEvent* event) final;
+	bool eventFilter(QObject *o, QEvent *e) final;
 
 private:
-	void focusEvent(int eventType);
 	void update();
 
 	Ui::InfoStack *ui;

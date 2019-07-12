@@ -21,7 +21,6 @@
 #include "ui_ItemList.h"
 
 #include "Styles.h"
-#include "effects/HoverFilter.h"
 
 #include <QLabel>
 #include <QSvgWidget>
@@ -158,10 +157,19 @@ void ItemList::details(const QString &id)
 	}
 }
 
-void ItemList::focusEvent(int eventType)
+bool ItemList::eventFilter(QObject *o, QEvent *e)
 {
-	infoIcon->setHidden(eventType == QEvent::Enter);
-	infoHoverIcon->setVisible(eventType == QEvent::Enter);
+	if(o != ui->infoIcon)
+		return QWidget::eventFilter(o, e);
+	switch(e->type())
+	{
+	case QEvent::Enter:
+	case QEvent::Leave:
+		infoIcon->setHidden(e->type() == QEvent::Enter);
+		infoHoverIcon->setVisible(e->type() == QEvent::Enter);
+		return true;
+	default: return QWidget::eventFilter(o, e);
+	}
 }
 
 ContainerState ItemList::getState() const { return state; }
@@ -239,8 +247,7 @@ void ItemList::init(ItemType item, const QString &header)
 		infoHoverIcon->load(QStringLiteral(":/images/icon_info_hover.svg"));
 		infoHoverIcon->resize(15, 15);
 		infoHoverIcon->move(1, 1);
-		HoverFilter *filter = new HoverFilter(ui->infoIcon, [this](int eventType){ focusEvent(eventType); }, this);
-		ui->infoIcon->installEventFilter(filter);
+		ui->infoIcon->installEventFilter(this);
 		setRecipientTooltip();
 
 		connect(ui->add, &QToolButton::clicked, this, &ItemList::addressSearch);
