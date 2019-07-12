@@ -26,7 +26,7 @@ namespace Ui { class WarningItem; }
 
 struct WarningText {
 
-	QString text, details, url;
+	QString text, details;
 	int counter = 0, page = -1;
 	ria::qdigidoc4::WarningType warningType = ria::qdigidoc4::NoWarning;
 

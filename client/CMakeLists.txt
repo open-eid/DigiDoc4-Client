@@ -52,7 +52,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/MobileProgress.cpp
 	dialogs/PinPopup.cpp
 	dialogs/RoleAddressDialog.cpp
-	dialogs/Updater.cpp
 	dialogs/PinUnblock.cpp
 	dialogs/SettingsDialog.cpp
 	dialogs/SignatureDialog.cpp

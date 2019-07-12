@@ -1341,14 +1341,6 @@ E-SEAL</translation>
         <translation>CANCEL</translation>
     </message>
     <message>
-        <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
-        <translation>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</translation>
-    </message>
-    <message>
-        <source>Begin</source>
-        <translation>Begin</translation>
-    </message>
-    <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
         <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
     </message>
@@ -2892,89 +2884,6 @@ Additional licenses and components</translation>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>To view signature details press enter or space</translation>
-    </message>
-</context>
-<context>
-    <name>Updater</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation>START</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>DETAILS</source>
-        <translation>DETAILS</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
-    </message>
-    <message>
-        <source>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</translation>
-    </message>
-    <message>
-        <source>Validity extension of your document</source>
-        <translation>Validity extension of your document</translation>
-    </message>
-    <message>
-        <source>Proceed with the validity extension process.</source>
-        <translation>Proceed with the validity extension process.</translation>
-    </message>
-    <message>
-        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>I confirm I have saved new PIN1, PIN2 and PUK code.</translation>
-    </message>
-    <message>
-        <source>Enter PIN</source>
-        <translation>Enter PIN</translation>
-    </message>
-    <message>
-        <source>PIN1 again</source>
-        <translation>PIN1 again</translation>
-    </message>
-    <message>
-        <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
-        <translation>PIN1 is locked. Please use PUK to unlock PIN1.</translation>
-    </message>
-    <message>
-        <source>Please follow the instructions on your PIN pad.</source>
-        <translation>Please follow the instructions on your PIN pad.</translation>
-    </message>
-    <message>
-        <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
-        <translation>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</translation>
-    </message>
-    <message>
-        <source>Request timed out</source>
-        <translation>Request timed out</translation>
-    </message>
-    <message>
-        <source>Invalid content type</source>
-        <translation>Invalid content type</translation>
-    </message>
-    <message>
-        <source>Validity extension has failed. Check your internet connection and try again.</source>
-        <translation>Validity extension has failed. Check your internet connection and try again.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>SSL handshake failed. Please restart the update process.</translation>
-    </message>
-    <message>
-        <source>Validity extension has failed. The server is overloaded, try again later.</source>
-        <translation>Validity extension has failed. The server is overloaded, try again later.</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Failed to read certificate</translation>
     </message>
 </context>
 <context>

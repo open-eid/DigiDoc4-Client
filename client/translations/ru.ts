@@ -1343,14 +1343,6 @@ ID-КАРТОЙ</translation>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
-        <translation>Срок действия этого документа возможно продлить. Процесс занимает 2–10 минут и требует постоянной связи с интернетом. Карту нельзя вынимать из считывателя до окончания процесса.</translation>
-    </message>
-    <message>
-        <source>Begin</source>
-        <translation>Начать</translation>
-    </message>
-    <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
         <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
     </message>
@@ -2895,89 +2887,6 @@ Additional licenses and components</source>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>Для просмотра деталей подписи нажмите пробел или enter</translation>
-    </message>
-</context>
-<context>
-    <name>Updater</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation>НАЧИНАТЬ</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>DETAILS</source>
-        <translation>ПОДРОБНОСТИ</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>ПРОДОЛЖИТЬ</translation>
-    </message>
-    <message>
-        <source>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Производится обновление. Процесс может занять до 10 минут. Не удаляйте карту из считывателя!</translation>
-    </message>
-    <message>
-        <source>Validity extension of your document</source>
-        <translation>Продление срока действия документа</translation>
-    </message>
-    <message>
-        <source>Proceed with the validity extension process.</source>
-        <translation>Продолжаю процесс продления срока действия документа.</translation>
-    </message>
-    <message>
-        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>Подтверждаю что записал новые значения для PIN- и PUK-кодов.</translation>
-    </message>
-    <message>
-        <source>Enter PIN</source>
-        <translation>Введите PIN</translation>
-    </message>
-    <message>
-        <source>PIN1 again</source>
-        <translation>PIN1 снова</translation>
-    </message>
-    <message>
-        <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
-        <translation>PIN1 заблокирован. Введите PUK (код), чтобы открыть его.</translation>
-    </message>
-    <message>
-        <source>Please follow the instructions on your PIN pad.</source>
-        <translation>Пожалуйста, следуйте инструкциям на Пин-панель(PIN pad).</translation>
-    </message>
-    <message>
-        <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
-        <translation>Чтобы разблокировать код PIN1 на ваш считыватель PIN-код, сначала необходимо ввести PUK-код, а затем новый код PIN1 дважды.</translation>
-    </message>
-    <message>
-        <source>Request timed out</source>
-        <translation>Истекло время запроса</translation>
-    </message>
-    <message>
-        <source>Invalid content type</source>
-        <translation>Недопустимый тип содержимого</translation>
-    </message>
-    <message>
-        <source>Validity extension has failed. Check your internet connection and try again.</source>
-        <translation>Не удалось обновить сертификаты. Проверьте подключение к Интернету и повторите попытку.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>Создание защищённого SSL канала не удалось. Просьба начать процесс обновления сначала.</translation>
-    </message>
-    <message>
-        <source>Validity extension has failed. The server is overloaded, try again later.</source>
-        <translation>Не удалось обновить сертификаты. Сервер перегружен, попробуйте обновить сертификаты позже.</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Не удалось прочитать сертификат</translation>
     </message>
 </context>
 <context>

@@ -24,7 +24,7 @@ bool WarningList::appearsOnPage(WarningItem *warning, int page) const
 
 void WarningList::clearMyEIDWarnings()
 {
-	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, CertRevokedWarning, UnblockPin1Warning, UnblockPin2Warning, UpdateCertWarning};
+	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, CertRevokedWarning, UnblockPin1Warning, UnblockPin2Warning};
 	for(auto warning: warnings)
 	{
 		if(warningTypes.contains(warning->warningType()) || warning->page() == MyEid)
@@ -66,7 +66,7 @@ bool WarningList::eventFilter(QObject *object, QEvent *event)
 
 	for(auto warning: warnings)
 	{
-		if(warning->underMouse() && warning->warningType() != WarningType::UpdateCertWarning)
+		if(warning->underMouse())
 		{
 			closeWarning(warning);
 			break;

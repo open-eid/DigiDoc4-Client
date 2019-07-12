@@ -431,31 +431,6 @@ void QSigner::run()
 	{
 		if(QCardLock::instance().readTryLock())
 		{
-			static const QByteArray AID34 = QByteArray::fromHex("00A40400 0E F04573744549442076657220312E");
-			static const QByteArray AID35 = QByteArray::fromHex("00A40400 0F D23300000045737445494420763335");
-			static const QByteArray UPDATER_AID = QByteArray::fromHex("00A40400 0A D2330000005550443101");
-			static const QByteArray MASTER_FILE = QByteArray::fromHex("00A4000C");
-			static const QStringList atrs {
-				"3BFE1800008031FE45803180664090A4162A00830F9000EF", /*ESTEID_V3_WARM_ATR / ESTEID_V35_WARM_ATR*/
-				"3BFA1800008031FE45FE654944202F20504B4903", /*ESTEID_V35_COLD_ATR*/
-			};
-			for(const QString &readerName: QPCSC::instance().readers())
-			{
-				QPCSCReader reader(readerName, &QPCSC::instance());
-				if(!atrs.contains(reader.atr()) || !reader.connect())
-					continue;
-				if((reader.transfer(AID34).resultOk() && reader.transfer(MASTER_FILE).resultOk()) ||
-					(reader.transfer(AID35).resultOk() && reader.transfer(MASTER_FILE).resultOk()))
-					continue;
-				if(!reader.transfer(UPDATER_AID))
-				{
-					reader.transfer(AID35); // No updater found, activate AID35
-					continue;
-				}
-				reader.disconnect();
-				Q_EMIT updateRequired(readerName);
-			}
-
 			if(d->pkcs11 && !d->pkcs11->reload())
 			{
 				Q_EMIT error(tr("Failed to load PKCS#11 module"));

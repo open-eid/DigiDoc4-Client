@@ -66,7 +66,6 @@ Q_SIGNALS:
 	void dataChanged();
 	void signDataChanged( const TokenData &token );
 	void error( const QString &msg );
-	void updateRequired(const QString &readerName);
 
 private Q_SLOTS:
 	void cacheCardData(const QSet<QString> &cards);

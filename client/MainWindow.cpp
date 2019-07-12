@@ -144,7 +144,6 @@ MainWindow::MainWindow( QWidget *parent )
 
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
-	connect(qApp->signer(), &QSigner::updateRequired, this, &MainWindow::showUpdateCertWarning);
 	// Refresh card info on "My EID" page
 	connect(qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
@@ -1309,9 +1308,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 
 void MainWindow::warningClicked(const QString &link)
 {
-	if(link.startsWith(QStringLiteral("#update-Certificate-")))
-		updateCertificate(link.mid(20));
-	else if(link.startsWith(QStringLiteral("#invalid-signature-")))
+	if(link.startsWith(QStringLiteral("#invalid-signature-")))
 		emit ui->signContainerPage->details(link.mid(19));
 	else if(link == QStringLiteral("#unblock-PIN1"))
 		ui->accordion->changePin1Clicked (false, true);

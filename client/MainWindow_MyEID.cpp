@@ -26,12 +26,10 @@
 #ifdef Q_OS_WIN
 #include "CertStore.h"
 #endif
-#include "dialogs/Updater.h"
 #include "dialogs/CertificateDetails.h"
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningList.h"
 
-#include <common/Configuration.h>
 #include <common/Settings.h>
 #include <common/SslCertificate.h>
 #include <common/TokenData.h>
@@ -166,14 +164,6 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	return buffer;
 }
 
-void MainWindow::showUpdateCertWarning(const QString &readerName)
-{
-	emit ui->accordion->showCertWarnings();
-	WarningText text(WarningType::UpdateCertWarning);
-	text.url = readerName;
-	warnings->showWarning(text);
-}
-
 bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )
 {
 	QSmartCardData::PinType t = flags == 1025 ? QSmartCardData::PukType : type;
@@ -199,8 +189,6 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 				qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0 || 
 				qApp->smartcard()->data().retryCount( QSmartCardData::Pin2Type ) == 0 || 
 				qApp->smartcard()->data().retryCount( QSmartCardData::PukType ) == 0 );
-		if(qApp->smartcard()->data().retryCount( QSmartCardData::Pin1Type ) == 0)
-			warnings->closeWarning(WarningType::UpdateCertWarning);
 		break;
 	case QSmartCard::DifferentError:
 		showNotification( tr("New %1 codes doesn't match").arg( QSmartCardData::typeString( type ) ) );
@@ -235,27 +223,6 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 		isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739"),
 		isSuccess ? QStringLiteral("#8CC368") : QStringLiteral("#F8DDA7"), 110);
 	notification->start(msg, 750, 15000, 600);
-}
-
-void MainWindow::updateCertificate(const QString &readerName)
-{
-#ifdef CONFIG_URL
-#ifdef Q_OS_WIN
-	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
-	CertStore s;
-	for(const QSslCertificate &c: s.list())
-	{
-		if (c.subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive))
-			s.remove(c);
-	}
-#endif
-	{
-		QCardLocker locker;
-		Updater(readerName, this).execute();
-		warnings->closeWarning(WarningType::UpdateCertWarning);
-	}
-	qApp->smartcard()->reload();
-#endif
 }
 
 void MainWindow::removeOldCert()
@@ -310,28 +277,6 @@ void MainWindow::updateCardWarnings()
 		ui->myEid->warningIcon(true);
 		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
 	}
-#ifdef CONFIG_URL
-	else if(Settings(qApp->applicationName()).value(QStringLiteral("updateButton"), false).toBool() ||
-		(
-			t.version() >= QSmartCardData::VER_3_5 &&
-			t.retryCount( QSmartCardData::Pin1Type ) > 0 &&
-			t.isValid() &&
-			t.authCert().publicKey().algorithm() == QSsl::Ec &&
-			Configuration::instance().object().contains(QStringLiteral("EIDUPDATER-URL-DIGIID")) && (
-				(t.authCert().effectiveDate() < QDateTime(QDate(2018, 9, 28)) &&
-				 t.authCert().expiryDate().addYears(-3) < QDateTime(QDate(2018, 5, 1)) && (
-					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID E-RESIDENT)") ||
-					t.authCert().subjectInfo("O") == QStringLiteral("ESTEID (DIGI-ID)")
-				)) ||
-				t.version() & QSmartCardData::VER_HASUPDATER ||
-				t.version() == QSmartCardData::VER_USABLEUPDATER
-			)
-		))
-	{
-		ui->myEid->warningIcon(true);
-		showUpdateCertWarning(qApp->smartcard()->data().reader());
-	}
-#endif
 }
 
 void MainWindow::updateMyEid()

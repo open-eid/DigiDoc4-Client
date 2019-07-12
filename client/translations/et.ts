@@ -1341,14 +1341,6 @@ E-TEMPLIGA</translation>
         <translation>KATKESTA</translation>
     </message>
     <message>
-        <source>The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.</source>
-        <translation>Selle dokumendi kehtivust on võimalik pikendada. Protsess kestab 2–10 minutit ning eeldab toimivat internetiühendust. Kaarti ei tohi lugejast välja võtta enne protsessi lõppu.</translation>
-    </message>
-    <message>
-        <source>Begin</source>
-        <translation>Alusta</translation>
-    </message>
-    <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
         <translation>Allkirjastatud ümbrikusse ei saa faile lisada. Süsteem loob uue ümbriku, kuhu lisatakse allkirjastatud dokument ja Sinu valitud failid.</translation>
     </message>
@@ -2892,89 +2884,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>Allkirja detailide vaatamiseks vajuta space või enter</translation>
-    </message>
-</context>
-<context>
-    <name>Updater</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation>ALUSTA</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>DETAILS</source>
-        <translation>DETAILID</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>JÄTKA</translation>
-    </message>
-    <message>
-        <source>Validity extension in progress. The process may take up to 10 minutes. Do not remove the card from reader!</source>
-        <translation>Toimub kehtivuse pikendamine. Uuendamise protsess kestab kuni 10 minutit. Ära eemalda kaarti lugejast!</translation>
-    </message>
-    <message>
-        <source>Validity extension of your document</source>
-        <translation>Dokumendi kehtivuse pikendamine</translation>
-    </message>
-    <message>
-        <source>Proceed with the validity extension process.</source>
-        <translation>Jätkan dokumendi kehtivuse pikendamise protsessiga.</translation>
-    </message>
-    <message>
-        <source>I confirm I have saved new PIN1, PIN2 and PUK code.</source>
-        <translation>Kinnitan, et olen uued PIN- ja PUK-koodid üles kirjutanud.</translation>
-    </message>
-    <message>
-        <source>Enter PIN</source>
-        <translation>Sisesta PIN</translation>
-    </message>
-    <message>
-        <source>PIN1 again</source>
-        <translation>PIN1 uuesti</translation>
-    </message>
-    <message>
-        <source>PIN1 is locked. Please use PUK to unlock PIN1.</source>
-        <translation>PIN1 on lukus. Avamiseks sisestage PUK kood.</translation>
-    </message>
-    <message>
-        <source>Please follow the instructions on your PIN pad.</source>
-        <translation>Palun järgi PIN padi juhiseid.</translation>
-    </message>
-    <message>
-        <source>To unblock PIN1 code on your PIN pad reader the PUK code has to be entered first and then a new PIN1 code twice.</source>
-        <translation>PIN pad lugejaga PIN1 blokeeringu tühistamiseks tuleb kõigepealt sisestada PUK ning siis kaks korda uut PIN1 koodi.</translation>
-    </message>
-    <message>
-        <source>Request timed out</source>
-        <translation>Päring on aegunud</translation>
-    </message>
-    <message>
-        <source>Invalid content type</source>
-        <translation>Kehtetu sisutüüp</translation>
-    </message>
-    <message>
-        <source>Validity extension has failed. Check your internet connection and try again.</source>
-        <translation>Kehtivuse pikendamine ebaõnnestus. Kontrolli arvuti internetiühendust ja proovi uuesti.</translation>
-    </message>
-    <message>
-        <source>SSL handshake failed. Please restart the update process.</source>
-        <translation>SSL-turvakanali loomine ebaõnnestus. Palun alustage protsessi uuesti.</translation>
-    </message>
-    <message>
-        <source>Validity extension has failed. The server is overloaded, try again later.</source>
-        <translation>Kehtivuse pikendamine ebaõnnestus. Server on ülekoormatud, proovi mõne aja pärast uuesti.</translation>
-    </message>
-    <message>
-        <source>Failed to read certificate</source>
-        <translation>Sertifikaadi laadimine ebaõnnestus</translation>
     </message>
 </context>
 <context>
