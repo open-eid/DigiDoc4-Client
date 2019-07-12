@@ -1711,6 +1711,10 @@ Control code: %1</translation>
         <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
     </message>
+    <message>
+        <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
+        <translation>Mobile-ID service has encountered technical errors. Please try again later.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

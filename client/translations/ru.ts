@@ -1714,6 +1714,10 @@ Kонтрольный код: %1</translation>
         <extracomment>accessible</extracomment>
         <translation>Отмена</translation>
     </message>
+    <message>
+        <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
+        <translation>Технический сбой услуги Mobiil-ID. Пожалуйста, попробуйте позже.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
