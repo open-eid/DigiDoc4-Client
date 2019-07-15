@@ -21,12 +21,6 @@
 		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
 		<glob pattern="*.ddoc"/>
 	</mime-type>
-	<mime-type type="application/x-p12d">
-		<comment>DigiDoc PKCS#12 certificate</comment>
-		<comment xml:lang="et">DigiDoc PKCS#12 ligipääsutõend</comment>
-		<comment xml:lang="ru">Справка допуска DigiDoc PKCS#12</comment>
-		<glob pattern="*.p12d"/>
-	</mime-type>
 	<mime-type type="application/vnd.etsi.asic-s+zip">
 		<comment>DigiDoc timestamped document</comment>
 		<comment xml:lang="et">DigiDoc ajatembeldatud dokument</comment>

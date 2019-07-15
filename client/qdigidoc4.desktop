@@ -13,4 +13,4 @@ Keywords=ID-card;Utility;
 Keywords[et_EE]=ID-kaart;Haldusvahend;
 
 Categories=Qt;Office;
-MimeType=application/vnd.etsi.asic-e+zip;application/vnd.etsi.asic-s+zip;application/x-ddoc;application/vnd.lt.archyvai.adoc-2008;application/x-p12d;application/x-cdoc;
+MimeType=application/vnd.etsi.asic-e+zip;application/vnd.etsi.asic-s+zip;application/x-ddoc;application/vnd.lt.archyvai.adoc-2008;application/x-cdoc;
