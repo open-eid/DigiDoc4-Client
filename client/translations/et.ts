@@ -641,10 +641,6 @@
         <translation>Sertifikaadi staatus on teadmata</translation>
     </message>
     <message>
-        <source>Check your computer time</source>
-        <translation>Kontrollige oma arvuti kella</translation>
-    </message>
-    <message>
         <source>PIN Locked. Unblock to reuse PIN.</source>
         <translation>PIN on lukus. Tühista blokeering, et PIN-i taas kasutada.</translation>
     </message>
@@ -689,6 +685,10 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Palun kontrollige oma arvuti kellaaega. &lt;a href=&apos;https://id.ee/index.php?id=39512&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

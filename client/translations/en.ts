@@ -641,10 +641,6 @@
         <translation>Certificate status unknown</translation>
     </message>
     <message>
-        <source>Check your computer time</source>
-        <translation>Check your computer time</translation>
-    </message>
-    <message>
         <source>PIN Locked. Unblock to reuse PIN.</source>
         <translation>PIN Locked. Unblock to reuse PIN.</translation>
     </message>
@@ -689,6 +685,10 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
