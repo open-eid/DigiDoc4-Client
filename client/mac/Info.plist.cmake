@@ -169,6 +169,8 @@
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 		</dict>
 	</array>
 	<key>NSServices</key>
@@ -266,9 +268,7 @@
 				<key>public.filename-extension</key>
 				<string>ddoc</string>
 				<key>public.mime-type</key>
-				<array>
-					<string>application/x-ddoc</string>
-				</array>
+				<string>application/x-ddoc</string>
 			</dict>
 		</dict>
 		<dict>
@@ -285,13 +285,9 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<array>
-					<string>p12d</string>
-				</array>
+				<string>p12d</string>
 				<key>public.mime-type</key>
-				<array>
-					<string>application/x-pkcs12</string>
-				</array>
+				<string>application/x-pkcs12</string>
 			</dict>
 		</dict>
 		<dict>
@@ -313,9 +309,7 @@
 				<key>public.filename-extension</key>
 				<string>cdoc</string>
 				<key>public.mime-type</key>
-				<array>
-					<string>application/x-cdoc</string>
-				</array>
+				<string>application/x-cdoc</string>
 			</dict>
 		</dict>
 		<dict>
@@ -340,9 +334,7 @@
 					<string>scs</string>
 				</array>
 				<key>public.mime-type</key>
-				<array>
-					<string>application/vnd.etsi.asic-s+zip</string>
-				</array>
+				<string>application/vnd.etsi.asic-s+zip</string>
 			</dict>
 		</dict>
 	</array>
