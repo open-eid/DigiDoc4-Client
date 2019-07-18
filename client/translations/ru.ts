@@ -179,6 +179,10 @@
         <extracomment>accessible</extracomment>
         <translation>Добавить</translation>
     </message>
+    <message>
+        <source>Remove</source>
+        <translation>Удалить</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>
@@ -3019,8 +3023,8 @@ Additional licenses and components</source>
         <translation>ИЗМЕНИТЬ PIN2</translation>
     </message>
     <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Забыли PIN%2?%3</translation>
+        <source>Forgot PIN%1?</source>
+        <translation>Забыли PIN%1?</translation>
     </message>
     <message>
         <source>Signing certificate</source>

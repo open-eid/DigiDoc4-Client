@@ -179,6 +179,10 @@
         <extracomment>accessible</extracomment>
         <translation>Lisa</translation>
     </message>
+    <message>
+        <source>Remove</source>
+        <translation>Eemalda</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>
@@ -3016,8 +3020,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>MUUDA PIN2</translation>
     </message>
     <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Unustasid PIN%2 koodi?%3</translation>
+        <source>Forgot PIN%1?</source>
+        <translation>Unustasid PIN%1 koodi?</translation>
     </message>
     <message>
         <source>Signing certificate</source>

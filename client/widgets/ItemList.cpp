@@ -30,8 +30,8 @@ using namespace ria::qdigidoc4;
 
 
 ItemList::ItemList(QWidget *parent)
-: QWidget(parent)
-, ui(new Ui::ItemList)
+	: QScrollArea(parent)
+	, ui(new Ui::ItemList)
 {
 	ui->setupUi(this);
 	ui->findGroup->hide();
@@ -86,6 +86,7 @@ void ItemList::changeEvent(QEvent* event)
 
 		ui->listHeader->setText(tr(qPrintable(listText)));
 		ui->txtFind->setPlaceholderText(tr("Enter the personal code, institution or registry code"));
+		ui->txtFind->setAccessibleName(ui->txtFind->placeholderText());
 
 		if(header)
 			header->setText(tr(qPrintable(headerText)));
