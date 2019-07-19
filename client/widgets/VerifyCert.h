@@ -36,7 +36,7 @@ class VerifyCert : public StyledWidget
 
 public:
 	explicit VerifyCert( QWidget *parent = nullptr );
-	~VerifyCert() override;
+	~VerifyCert() final;
 
 	void addBorders();
 	void clear();
@@ -52,12 +52,9 @@ public slots:
 	void showWarningIcon();
 
 protected:
-	void enterEvent( QEvent * event ) override;
-	void leaveEvent( QEvent * event ) override;
-	void changeEvent(QEvent* event) override;
-	void processClickedBtn();
-	void processForgotPinLink(const QString &link);
-	void processCertDetails(const QString &link);
+	void enterEvent( QEvent * event ) final;
+	void leaveEvent( QEvent * event ) final;
+	void changeEvent(QEvent* event) final;
 
 private:
 	void changePinStyle( const QString &background ); 
@@ -66,7 +63,6 @@ private:
 
 	bool isValidCert = false;
 	bool isBlockedPin = false;
-	bool isTempelType = false;
 	QString borders;
 
 	QSvgWidget* greenIcon;

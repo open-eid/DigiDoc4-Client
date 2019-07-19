@@ -2996,8 +2996,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sertifikaat on tühistatud!</translation>
     </message>
     <message>
-        <source>Certificate%1is valid%2 until %3</source>
-        <translation>Sertifikaat%1kehtib%2 kuni %3</translation>
+        <source>Certificate %1is valid%2 until %3</source>
+        <translation>Sertifikaat %1kehtib%2 kuni %3</translation>
     </message>
     <message>
         <source>Authentication certificate</source>
@@ -3016,16 +3016,16 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>MUUDA PIN2</translation>
     </message>
     <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Unustasid PIN%2 koodi?%3</translation>
+        <source>Forgot PIN%1?</source>
+        <translation>Unustasid PIN%1 koodi?</translation>
     </message>
     <message>
         <source>Signing certificate</source>
         <translation>Allkirjastamise sertifikaat</translation>
     </message>
     <message>
-        <source>%1Check the details of the certificate%2</source>
-        <translation>%1Vaata sertifikaadi detaile%2</translation>
+        <source>Check the details of the certificate</source>
+        <translation>Vaata sertifikaadi detaile</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>

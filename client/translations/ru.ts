@@ -2999,8 +2999,8 @@ Additional licenses and components</source>
         <translation>Сертификат отозван!</translation>
     </message>
     <message>
-        <source>Certificate%1is valid%2 until %3</source>
-        <translation>Сертификат%1действителен%2 до %3</translation>
+        <source>Certificate %1is valid%2 until %3</source>
+        <translation>Сертификат %1действителен%2 до %3</translation>
     </message>
     <message>
         <source>Authentication certificate</source>
@@ -3019,16 +3019,16 @@ Additional licenses and components</source>
         <translation>ИЗМЕНИТЬ PIN2</translation>
     </message>
     <message>
-        <source>%1Forgot PIN%2?%3</source>
-        <translation>%1Забыли PIN%2?%3</translation>
+        <source>Forgot PIN%1?</source>
+        <translation>Забыли PIN%1?</translation>
     </message>
     <message>
         <source>Signing certificate</source>
         <translation>Сертификат подписи</translation>
     </message>
     <message>
-        <source>%1Check the details of the certificate%2</source>
-        <translation>%1Проверьте сведения о сертификате%2</translation>
+        <source>Check the details of the certificate</source>
+        <translation>Проверьте сведения о сертификате</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
