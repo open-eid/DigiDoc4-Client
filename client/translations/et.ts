@@ -1090,6 +1090,10 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <extracomment>accessible</extracomment>
         <translation>Otsi</translation>
     </message>
+    <message>
+        <source>Download all files</source>
+        <translation>Lae kõik failid alla</translation>
+    </message>
 </context>
 <context>
     <name>KeyDialog</name>

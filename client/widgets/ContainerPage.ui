@@ -75,6 +75,9 @@ background-color: #F4F5F6;
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: #75787B;
 border: none;</string>
@@ -94,6 +97,9 @@ border: none;</string>
           <pointsize>14</pointsize>
           <underline>true</underline>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
