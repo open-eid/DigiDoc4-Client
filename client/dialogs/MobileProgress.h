@@ -19,45 +19,26 @@
 
 #pragma once
 
-#include "ui_MobileProgress.h"
+#include <digidocpp/crypto/Signer.h>
 
-#include <QtCore/QHash>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QSslError>
+#include <QCoreApplication>
 
-class DigiDoc;
-class QNetworkAccessManager;
-class QNetworkReply;
-class QTimeLine;
-class QWinTaskbarButton;
+class QWidget;
 
-class MobileProgress : public QDialog, private Ui::MobileProgress
+class MobileProgress: public digidoc::Signer
 {
-	Q_OBJECT
-
+	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
 public:
 	explicit MobileProgress(QWidget *parent = nullptr);
+	~MobileProgress() final;
 
-	void setSignatureInfo( const QString &city, const QString &state,
-		const QString &zip, const QString &country, const QString &role );
-	void sign( const DigiDoc *doc, const QString &ssid, const QString &cell );
-	QByteArray signature() const;
-	void stop();
+	bool init(const QString &ssid, const QString &cell);
+	digidoc::X509Cert cert() const final;
+	std::vector<unsigned char> sign(const std::string &method, const std::vector<unsigned char> &digest) const final;
 
 private:
-	void endProgress(const QString &msg);
-	void finished( QNetworkReply *reply );
-	void sendStatusRequest();
-	void sslErrors( QNetworkReply *reply, const QList<QSslError> &errors );
-	static bool isTest( const QString &ssid, const QString &cell );
+	void stop();
 
-	QTimeLine *statusTimer = nullptr;
-	QNetworkAccessManager *manager = nullptr;
-	QNetworkRequest request;
-	QStringList location;
-	QByteArray m_signature;
-	QString sessionCode;
-	QHash<QString,QString> mobileResults;
-	QWinTaskbarButton *taskbar = nullptr;
-	QList<QSslCertificate> trusted;
+	class Private;
+	Private *d;
 };

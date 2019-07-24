@@ -22,6 +22,7 @@ include_directories( ${LIBDIGIDOCPP_INCLUDE_DIR} )
 
 set_env( TSL_URL "https://ec.europa.eu/tools/lotl/eu-lotl.xml" CACHE STRING "TSL trust list primary URL" )
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )
+set_env( MOBILEID_URL "https://tsp.demo.sk.ee/mid-api" CACHE STRING "URL for Mobile-ID" )
 
 if(APPLE)
         set(BUNDLE_NAME qdigidoc4) 

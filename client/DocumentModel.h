@@ -26,13 +26,12 @@ class DocumentModel: public QObject
 	Q_OBJECT
 public:
 	DocumentModel(QObject *parent = nullptr);
-	virtual ~DocumentModel();
+	~DocumentModel() override;
 
 	virtual bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) = 0;
 	virtual void addTempFiles(const QStringList &files);
 	virtual void addTempReference(const QString &file) = 0;
 	virtual QString data(int row) const = 0;
-	virtual QString fileId(int row) const = 0;
 	virtual QString fileSize(int row) const = 0;
 	virtual QString mime(int row) const = 0;
 	virtual bool removeRows(int row, int count) = 0;

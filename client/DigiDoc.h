@@ -95,7 +95,6 @@ public:
 	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
 	void addTempReference(const QString &file) override;
 	QString data(int row) const override;
-	QString fileId(int row) const override;
 	QString fileSize(int row) const override;
 	QString mime(int row) const override;
 	bool removeRows(int row, int count) override;
@@ -133,7 +132,6 @@ public:
 	~DigiDoc();
 
 	bool addFile( const QString &file, const QString &mime );
-	bool addSignature( const QByteArray &signature );
 	void create( const QString &file );
 	void clear();
 	DocumentModel *documentModel() const;
@@ -150,18 +148,16 @@ public:
 	void removeSignature( unsigned int num );
 	bool save( const QString &filename = QString() );
 	bool saveAs(const QString &filename);
-	bool sign(
-		const QString &city,
+	bool sign(const QString &city,
 		const QString &state,
 		const QString &zip,
 		const QString &country,
 		const QString &role,
-		const QString &role2 );
+		digidoc::Signer *signer);
 	QList<DigiDocSignature> signatures() const;
 	ria::qdigidoc4::ContainerState state();
 	QList<DigiDocSignature> timestamps() const;
 	DocumentType documentType() const;
-	QByteArray getFileDigest( unsigned int i ) const;
 
 	static bool parseException( const digidoc::Exception &e, QStringList &causes,
 		digidoc::Exception::ExceptionCode &code);

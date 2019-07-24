@@ -26,15 +26,8 @@ class RoleAddressDialog : public QDialog
 	Q_OBJECT
 public:
 	explicit RoleAddressDialog(QWidget *parent = nullptr);
-	~RoleAddressDialog();
-
-	QString city() const;
-	QString country() const;
-	QString state() const;
-	QString role() const;
-	QString zip() const;
-
-	int exec() final;
+	~RoleAddressDialog() final;
+	int get(QString &city, QString &country, QString &state, QString &zip, QString &role);
 
 private:
 	class Private;

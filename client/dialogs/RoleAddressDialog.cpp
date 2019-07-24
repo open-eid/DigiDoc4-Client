@@ -77,34 +77,19 @@ RoleAddressDialog::~RoleAddressDialog()
 	delete d;
 }
 
-QString RoleAddressDialog::city() const
+int RoleAddressDialog::get(QString &city, QString &country, QString &state, QString &zip, QString &role)
 {
-	return d->City->text();
-}
-
-QString RoleAddressDialog::country() const
-{
-	return d->Country->text();
-}
-
-int RoleAddressDialog::exec()
-{
+	if(!Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool())
+		return QDialog::Accepted;
 	Overlay overlay(parentWidget());
 	overlay.show();
-	return QDialog::exec();
-}
-
-QString RoleAddressDialog::role() const
-{
-	return d->Role->text();
-}
-
-QString RoleAddressDialog::state() const
-{
-	return d->State->text();
-}
-
-QString RoleAddressDialog::zip() const
-{
-	return d->Zip->text();
+	int result = QDialog::exec();
+	if(result == QDialog::Rejected)
+		return result;
+	role = d->Role->text();
+	city = d->City->text();
+	state = d->State->text();
+	country = d->Country->text();
+	zip = d->Zip->text();
+	return result;
 }

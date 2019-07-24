@@ -342,14 +342,6 @@ QString SDocumentModel::data(int row) const
 	return from(doc->b->dataFiles().at(size_t(row))->fileName());
 }
 
-QString SDocumentModel::fileId(int row) const
-{
-	if(row >= rowCount())
-		return QString();
-
-	return QString::fromUtf8(doc->b->dataFiles().at(size_t(row))->fileName().c_str());
-}
-
 QString SDocumentModel::fileSize(int row) const
 {
 	if(row >= rowCount())
@@ -448,21 +440,6 @@ bool DigiDoc::addFile(const QString &file, const QString &mime)
 		return true;
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed add file to container"), e ); }
-	return false;
-}
-
-bool DigiDoc::addSignature( const QByteArray &signature )
-{
-	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
-		return false;
-
-	try
-	{
-		b->addAdESSignature( std::vector<unsigned char>( signature.constData(), signature.constData() + signature.size() ) );
-		modified = true;
-		return true;
-	}
-	catch( const Exception &e ) { setLastError( tr("Failed to sign container"), e ); }
 	return false;
 }
 
@@ -687,8 +664,8 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	}
 }
 
-bool DigiDoc::sign( const QString &city, const QString &state, const QString &zip,
-	const QString &country, const QString &role, const QString &role2 )
+bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip,
+	const QString &country, const QString &role, Signer *signer)
 {
 	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
 		return false;
@@ -696,17 +673,14 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 	OpEmitter op(this, Signing);
 	try
 	{
-		qApp->signer()->setSignatureProductionPlace(
-			to(city), to(state), to(zip), to(country) );
+		signer->setSignatureProductionPlace(to(city), to(state), to(zip), to(country));
 		std::vector<std::string> roles;
-		if(!role2.isEmpty())
-			roles.push_back(to(QStringList({role, role2}).join(QStringLiteral(" / "))));
-		else if(!role.isEmpty())
+		if(!role.isEmpty())
 			roles.push_back(to(role));
-		qApp->signer()->setSignerRoles( roles );
-		qApp->signer()->setProfile("time-stamp");
+		signer->setSignerRoles(roles);
+		signer->setProfile("time-stamp");
 		qApp->waitForTSL( fileName() );
-		b->sign( qApp->signer() );
+		b->sign(signer);
 		modified = true;
 		return true;
 	}
@@ -719,7 +693,7 @@ bool DigiDoc::sign( const QString &city, const QString &state, const QString &zi
 		{
 			qApp->showWarning( tr("PIN Incorrect") );
 			if( !(qApp->signer()->tokensign().flags() & TokenData::PinLocked) )
-				return sign( city, state, zip, country, role, role2 );
+				return sign(city, state, zip, country, role, signer);
 		}
 		else
 			setLastError( tr("Failed to sign container"), e );
@@ -755,19 +729,4 @@ QList<DigiDocSignature> DigiDoc::timestamps() const
 DigiDoc::DocumentType DigiDoc::documentType() const
 {
 	return checkDoc() && b->mediaType() == "application/vnd.etsi.asic-e+zip" ? BDoc2Type : DDocType;
-}
-
-QByteArray DigiDoc::getFileDigest( unsigned int i ) const
-{
-	if( !checkDoc() || i >= b->dataFiles().size() )
-		return QByteArray();
-
-	try
-	{
-		const DataFile *file = b->dataFiles().at( i );
-		return fromVector(file->calcDigest("http://www.w3.org/2001/04/xmlenc#sha256"));
-	}
-	catch( const Exception & ) {}
-
-	return QByteArray();
 }
