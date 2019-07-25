@@ -20,8 +20,8 @@
 #include "CryptoDoc.h"
 
 #include "client/Application.h"
-#include "client/FileDialog.h"
 #include "client/QSigner.h"
+#include "client/dialogs/FileDialog.h"
 
 #include <common/Settings.h>
 #include <common/SslCertificate.h>

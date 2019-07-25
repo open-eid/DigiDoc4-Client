@@ -19,6 +19,9 @@
 
 #include "FileDialog.h"
 
+#include "Application.h"
+#include "dialogs/WaitDialog.h"
+
 #include <common/Settings.h>
 
 #include <QtCore/QCoreApplication>
@@ -30,6 +33,8 @@
 #include <Shlguid.h>
 #endif
 
+using namespace ria::qdigidoc4;
+
 FileDialog::FileDialog( QWidget *parent )
 :	QFileDialog( parent )
 {
@@ -37,9 +42,82 @@ FileDialog::FileDialog( QWidget *parent )
 
 FileDialog::Options FileDialog::addOptions()
 {
-	if( qApp->arguments().contains( "-noNativeFileDialog" ) )
+	if(qApp->arguments().contains(QStringLiteral("-noNativeFileDialog")))
 		return DontUseNativeDialog;
-	return 0;
+	return nullptr;
+}
+
+QString FileDialog::create(const QFileInfo &fileInfo, const QString &extension, const QString &type)
+{
+	QString fileName = QDir::toNativeSeparators(fileInfo.dir().path() + QDir::separator() + fileInfo.completeBaseName() + extension);
+#ifndef Q_OS_OSX
+	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
+	// app sandbox; user must explicitly give permission to write data to the specific folders.
+	if(QFile::exists(fileName))
+	{
+#endif
+		WaitDialogHider hider;
+		QString capitalized = type[0].toUpper() + type.mid(1);
+		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), Application::tr("Create %1").arg(type), fileName,
+			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
+		if(!fileName.isEmpty())
+			QFile::remove(fileName);
+#ifndef Q_OS_OSX
+	}
+#endif
+
+	return fileName;
+}
+
+QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir)
+{
+	const QFileInfo f(file);
+	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
+	QString filePath = dir + QDir::separator() + f.fileName();
+	return create(QFileInfo(filePath), extension, type);
+}
+
+FileType FileDialog::detect( const QString &filename )
+{
+	ExtensionType ext = extension(filename);
+
+	switch(ext)
+	{
+	case ExtSignature:
+		return SignatureDocument;
+	case ExtCrypto:
+		return CryptoDocument;
+	case ExtPDF:
+	{
+		QFile file(filename);
+		if(!file.open(QIODevice::ReadOnly))
+			return Other;
+		QByteArray blob = file.readAll();
+		for(auto token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
+		{
+			if(blob.indexOf(QByteArray(token)) > 0)
+				return SignatureDocument;
+		}
+		return Other;
+	}
+	default:
+		return Other;
+	}
+}
+
+ExtensionType FileDialog::extension(const QString &filename)
+{
+	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
+	const QFileInfo f( filename );
+	if(!f.isFile())
+		return ExtOther;
+	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
+		return ExtSignature;
+	if(!QString::compare(f.suffix(), QStringLiteral("cdoc"), Qt::CaseInsensitive))
+		return ExtCrypto;
+	if(!QString::compare(f.suffix(), QStringLiteral("pdf"), Qt::CaseInsensitive))
+		return ExtPDF;
+	return ExtOther;
 }
 
 bool FileDialog::fileIsWritable( const QString &filename )
@@ -59,22 +137,22 @@ QString FileDialog::fileSize( quint64 bytes )
 	const quint64 gb = 1024 * mb;
 	const quint64 tb = 1024 * gb;
 	if( bytes >= tb )
-		return QString( "%1 TB" ).arg( qreal(bytes) / tb, 0, 'f', 3 );
+		return QStringLiteral("%1 TB").arg(qreal(bytes) / tb, 0, 'f', 3);
 	if( bytes >= gb )
-		return QString( "%1 GB" ).arg( qreal(bytes) / gb, 0, 'f', 2 );
+		return QStringLiteral("%1 GB").arg(qreal(bytes) / gb, 0, 'f', 2);
 	if( bytes >= mb )
-		return QString( "%1 MB" ).arg( qreal(bytes) / mb, 0, 'f', 1 );
+		return QStringLiteral("%1 MB").arg(qreal(bytes) / mb, 0, 'f', 1);
 	if( bytes >= kb )
-		return QString( "%1 KB" ).arg( bytes / kb );
-	return QString( "%1 B" ).arg( bytes );
+		return QStringLiteral("%1 KB").arg(bytes / kb);
+	return QStringLiteral("%1 B").arg(bytes);
 }
 
 QString FileDialog::getDir( const QString &dir )
 {
 #ifdef Q_OS_OSX
 	Q_UNUSED(dir);
-	QString path = Settings(qApp->applicationName()).value("NSNavLastRootDirectory").toString();
-	path.replace("~", QDir::homePath());
+	QString path = Settings(qApp->applicationName()).value(QStringLiteral("NSNavLastRootDirectory")).toString();
+	path.replace('~', QDir::homePath());
 	return path;
 #else
 	return !dir.isEmpty() ? dir : Settings(qApp->applicationName()).value("lastPath",
@@ -200,7 +278,7 @@ QString FileDialog::result( const QString &str )
 	if(!str.isEmpty())
 		Settings(qApp->applicationName()).setValue("lastPath", QFileInfo(str).absolutePath());
 #else
-	Settings(qApp->applicationName()).remove("lastPath");
+	Settings(qApp->applicationName()).remove(QStringLiteral("lastPath"));
 #endif
 	return str;
 }
@@ -220,20 +298,20 @@ QString FileDialog::tempPath(const QString &file)
 		return tmp.path() + "/" + file;
 	QFileInfo info(file);
 	int i = 0;
-	while(tmp.exists(QString("%1_%2.%3").arg(info.baseName()).arg(i).arg(info.suffix())))
+	while(tmp.exists(QStringLiteral("%1_%2.%3").arg(info.baseName()).arg(i).arg(info.suffix())))
 		++i;
-	return QString("%1/%2_%3.%4").arg(tmp.path()).arg(info.baseName()).arg(i).arg(info.suffix());
+	return QStringLiteral("%1/%2_%3.%4").arg(tmp.path()).arg(info.baseName()).arg(i).arg(info.suffix());
 }
 
 QString FileDialog::safeName(const QString &file)
 {
 	QString filename = file;
 #if defined(Q_OS_WIN)
-	filename.replace( QRegExp( "[\\\\/*:?\"<>|]" ), "_" );
+	filename.replace(QRegExp(QStringLiteral("[\\\\/*:?\"<>|]")), QStringLiteral("_"));
 #elif defined(Q_OS_MAC)
-	filename.replace( QRegExp( "[\\\\/:]"), "_" );
+	filename.replace(QRegExp(QStringLiteral("[\\\\/:]")), QStringLiteral("_"));
 #else
-	filename.replace( QRegExp( "[\\\\/]"), "_" );
+	filename.replace(QRegExp(QStringLiteral("[\\\\/]")), QStringLiteral("_"));
 #endif
 	return filename;
 }

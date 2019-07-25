@@ -26,7 +26,6 @@
 #include "Colors.h"
 #include "DigiDoc.h"
 #include "PrintSheet.h"
-#include "FileDialog.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
@@ -37,12 +36,12 @@
 #include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
+#include "dialogs/FileDialog.h"
 #include "dialogs/MobileProgress.h"
 #include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "util/FileUtil.h"
 #include "widgets/WarningList.h"
 #include "widgets/VerifyCert.h"
 
@@ -416,7 +415,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(create)
 		{
 			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
-			QString filename = FileUtil::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir);
+			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir);
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -443,7 +442,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(create)
 		{
 			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
-			QString filename = FileUtil::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
+			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
 			if(!filename.isNull())
 			{
 				cryptoContainer->clear(filename);
@@ -535,7 +534,7 @@ void MainWindow::convertToBDoc()
 
 void MainWindow::convertToCDoc()
 {
-	QString filename = FileUtil::create(QFileInfo(digiDoc->fileName()), QStringLiteral(".cdoc"), tr("crypto container"));
+	QString filename = FileDialog::create(QFileInfo(digiDoc->fileName()), QStringLiteral(".cdoc"), tr("crypto container"));
 	if(filename.isNull())
 		return;
 
@@ -615,7 +614,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	{
 		if(!cryptoDoc)
 			break;
-		QString target = FileUtil::createNewFileName(cryptoDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), QString());
+		QString target = FileDialog::createNewFileName(cryptoDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), QString());
 		if(target.isEmpty())
 			break;
 		if( !FileDialog::fileIsWritable(target) &&
@@ -678,7 +677,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 	// Case 1.
 		if(content.size() == 1)
 		{
-			auto fileType = FileUtil::detect(content[0]);
+			auto fileType = FileDialog::detect(content[0]);
 			if(current == MyEid)
 				page = (fileType == CryptoDocument) ? CryptoDetails : SignDetails;
 
@@ -1320,7 +1319,7 @@ void MainWindow::warningClicked(const QString &link)
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
-	QString filename = FileUtil::create(QFileInfo(wrappedFile), QStringLiteral(".asice"), tr("signature container"));
+	QString filename = FileDialog::create(QFileInfo(wrappedFile), QStringLiteral(".asice"), tr("signature container"));
 	if(filename.isNull())
 		return false;
 

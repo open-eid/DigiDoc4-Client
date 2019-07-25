@@ -30,7 +30,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	CheckConnection.cpp
 	DigiDoc.cpp
 	DocumentModel.cpp
-	FileDialog.cpp
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
 	QCardLock.cpp
@@ -46,6 +45,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.cpp
 	dialogs/CertificateHistory.cpp
+	dialogs/FileDialog.cpp
 	dialogs/FirstRun.cpp
 	dialogs/KeyDialog.cpp
 	dialogs/MobileDialog.cpp
@@ -59,7 +59,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/WarningDialog.cpp
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
-	util/FileUtil.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
 	widgets/AddressItem.cpp
