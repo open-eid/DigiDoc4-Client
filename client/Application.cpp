@@ -22,7 +22,6 @@
 #include "Application.h"
 
 #include "MainWindow.h"
-#include "QCardInfo.h"
 #include "QSigner.h"
 #include "DigiDoc.h"
 #include "dialogs/FirstRun.h"

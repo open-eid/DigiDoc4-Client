@@ -27,7 +27,6 @@ class Accordion;
 }
 
 class AccordionTitle;
-struct QCardInfo;
 
 class Accordion : public StyledWidget
 {
@@ -35,7 +34,7 @@ class Accordion : public StyledWidget
 
 public:
 	explicit Accordion( QWidget *parent = nullptr );
-	~Accordion();
+	~Accordion() final;
 
 	void init();
 	void clear();
@@ -44,7 +43,7 @@ public:
 	QString getEmail();
 	void open(AccordionTitle* opened);
 	void setFocusToEmail();
-	void updateInfo(const QCardInfo &cardInfo, const SslCertificate &authCert, const SslCertificate &signCert);
+	void updateInfo(const SslCertificate &authCert, const SslCertificate &signCert);
 	void updateInfo( const QSmartCard *smartCard );
 	void updateOtherData(const QByteArray &data);
 

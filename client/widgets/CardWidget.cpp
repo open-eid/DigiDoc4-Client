@@ -58,9 +58,6 @@ CardWidget::CardWidget(QString id, QWidget *parent)
 		if(!seal)
 			emit photoClicked(ui->cardPhoto->pixmap());
 	});
-	tr("e-Seal");
-	tr("Digi-ID");
-	tr("ID-card");
 }
 
 CardWidget::~CardWidget()
@@ -132,8 +129,11 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 {
 	cardInfo = ci;
 	card = cardId;
-	ui->cardName->setText(cardInfo->fullName);
-	ui->cardName->setAccessibleName(cardInfo->fullName.toLower());
+	if(ci->type & SslCertificate::TempelType)
+		ui->cardName->setText(ci->c.toString(QStringLiteral("CN")));
+	else
+		ui->cardName->setText(ci->c.toString(QStringLiteral("GN SN")));
+	ui->cardName->setAccessibleName(ui->cardName->text().toLower());
 	ui->cardCode->setText(cardInfo->id + "   |");
 	ui->cardCode->setAccessibleName(cardInfo->id);
 	ui->load->setText(tr("LOAD"));
@@ -144,11 +144,20 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	}
 	else
 	{
-		ui->cardStatus->setText(tr("%1 in reader").arg(tr(cardInfo->cardType)));
+		QString type = tr("ID-card");
+		if(ci->type & SslCertificate::TempelType && (
+			ci->c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+			ci->c.keyUsage().contains(SslCertificate::KeyAgreement)))
+			type = tr("Certificate for Encryption");
+		else if(ci->type & SslCertificate::TempelType)
+			type = tr("e-Seal");
+		else if(ci->type & SslCertificate::DigiIDType)
+			type = tr("Digi-ID");
+		ui->cardStatus->setText(tr("%1 in reader").arg(type));
 		cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 	}
 
-	if(ci->isEResident)
+	if(ci->c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT")))
 	{
 		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
 		ui->cardPhoto->hide();

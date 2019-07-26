@@ -979,7 +979,7 @@ void MainWindow::showCardStatus()
 		if(cardInfo->type & SslCertificate::TempelType)
 		{
 			ui->infoStack->update(*cardInfo);
-			ui->accordion->updateInfo(*cardInfo, authCert, signCert);
+			ui->accordion->updateInfo(authCert, signCert);
 			updateCardWarnings();
  		}
 	}

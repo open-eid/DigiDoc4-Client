@@ -19,16 +19,12 @@
 
 #pragma once
 
-#include <QString>
+#include "common/SslCertificate.h"
 
 struct QCardInfo
 {
 	QString id;
-	QString fullName;
-	const char *cardType;
-	QString country;
 	int type;
 	bool loading;
-	bool isEResident;
-	bool valid;
+	SslCertificate c;
 };
