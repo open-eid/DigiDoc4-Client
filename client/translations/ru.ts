@@ -272,6 +272,10 @@
         <translation>Загру
 Зить</translation>
     </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Сертификат шифрования</translation>
+    </message>
 </context>
 <context>
     <name>CertificateDetails</name>

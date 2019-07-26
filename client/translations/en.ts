@@ -270,6 +270,10 @@
         <extracomment>accessible</extracomment>
         <translation>Load</translation>
     </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Certificate for Encryption</translation>
+    </message>
 </context>
 <context>
     <name>CertificateDetails</name>

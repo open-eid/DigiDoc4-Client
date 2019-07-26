@@ -20,7 +20,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
-#include "QCardInfo.h"
 #include "QCardLock.h"
 #include "QSigner.h"
 #ifdef Q_OS_WIN

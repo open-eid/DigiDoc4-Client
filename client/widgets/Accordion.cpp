@@ -107,7 +107,7 @@ void Accordion::setFocusToEmail()
 	ui->contentOtherData->setFocusToEmail();
 }
 
-void Accordion::updateInfo(const QCardInfo & /*cardInfo*/, const SslCertificate &authCert, const SslCertificate &signCert)
+void Accordion::updateInfo(const SslCertificate &authCert, const SslCertificate &signCert)
 {
 	ui->authBox->setVisible(!authCert.isNull());
 	if(!authCert.isNull())

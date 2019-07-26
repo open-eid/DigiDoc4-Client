@@ -270,6 +270,10 @@
         <extracomment>accessible</extracomment>
         <translation>Laadi</translation>
     </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Krüpteerimissertifikaat</translation>
+    </message>
 </context>
 <context>
     <name>CertificateDetails</name>

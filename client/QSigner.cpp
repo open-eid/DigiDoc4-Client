@@ -72,7 +72,7 @@ static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 #endif
 
 
-bool isMatchingType(const SslCertificate &cert)
+static bool isMatchingType(const SslCertificate &cert)
 {
 	// Check if cert is signing or authentication cert
 	return cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
@@ -80,28 +80,13 @@ bool isMatchingType(const SslCertificate &cert)
 		   cert.keyUsage().contains(SslCertificate::NonRepudiation);
 }
 
-QCardInfo *toCardInfo(const SslCertificate &c)
+static QCardInfo *toCardInfo(const SslCertificate &c)
 {
 	QCardInfo *ci = new QCardInfo;
-
-	ci->country = c.toString(QStringLiteral("C"));
 	ci->id = c.personalCode();
-	ci->isEResident = c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT"));
 	ci->loading = false;
 	ci->type = c.type();
-	ci->valid = c.isValid();
-
-	if(c.type() & SslCertificate::TempelType)
-	{
-		ci->fullName = c.toString(QStringLiteral("CN"));
-		ci->cardType = "e-Seal";
-	}
-	else
-	{
-		ci->fullName = c.toString(QStringLiteral("GN SN"));
-		ci->cardType = c.type() & SslCertificate::DigiIDType ? "Digi-ID" : "ID-card";
-	}
-
+	ci->c = c;
 	return ci;
 }
 
@@ -235,7 +220,7 @@ void QSigner::cacheCardData(const QSet<QString> & /*cards*/)
 		tokens = d->pkcs11->tokens();
 	for(const TokenData &i: qAsConst(tokens))
 	{
-		if(!d->cache.contains(i.card()) || !d->cache[i.card()]->valid)
+		if(!d->cache.contains(i.card()) || !d->cache[i.card()]->c.isValid())
 		{
 			auto sslCert = SslCertificate(i.cert());
 			if(isMatchingType(sslCert))
