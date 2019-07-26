@@ -129,10 +129,10 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 {
 	cardInfo = ci;
 	card = cardId;
-	if(ci->type & SslCertificate::TempelType)
-		ui->cardName->setText(ci->c.toString(QStringLiteral("CN")));
-	else
+	if(!ci->c.subjectInfo("GN").isEmpty() || !ci->c.subjectInfo("SN").isEmpty())
 		ui->cardName->setText(ci->c.toString(QStringLiteral("GN SN")));
+	else
+		ui->cardName->setText(ci->c.toString(QStringLiteral("CN")));
 	ui->cardName->setAccessibleName(ui->cardName->text().toLower());
 	ui->cardCode->setText(cardInfo->id + "   |");
 	ui->cardCode->setAccessibleName(cardInfo->id);
