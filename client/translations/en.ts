@@ -1090,6 +1090,10 @@ The Information System Authority does not retain information regarding the files
         <extracomment>accessible</extracomment>
         <translation>Search</translation>
     </message>
+    <message>
+        <source>Download all files</source>
+        <translation>Download all files</translation>
+    </message>
 </context>
 <context>
     <name>KeyDialog</name>

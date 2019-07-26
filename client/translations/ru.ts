@@ -1092,6 +1092,10 @@ The Information System Authority does not retain information regarding the files
         <extracomment>accessible</extracomment>
         <translation>Найти</translation>
     </message>
+    <message>
+        <source>Download all files</source>
+        <translation>Скачайте все файлы</translation>
+    </message>
 </context>
 <context>
     <name>KeyDialog</name>

@@ -25,9 +25,6 @@
   <property name="cursor">
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
-  <property name="focusPolicy">
-   <enum>Qt::StrongFocus</enum>
-  </property>
   <property name="styleSheet">
    <string notr="true">#FileItem { 
 border: solid rgba(217, 217, 216, 0.45);
