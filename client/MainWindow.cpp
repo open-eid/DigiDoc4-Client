@@ -40,6 +40,7 @@
 #include "dialogs/MobileProgress.h"
 #include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
+#include "dialogs/SmartIDProgress.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/WarningList.h"
@@ -496,6 +497,14 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 			if(!m.init(info1, info2))
 				return false;
 			return digiDoc->sign(city, state, zip, country, role, &m);
+		});
+		break;
+	case SignatureSmartID:
+		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+			SmartIDProgress s(this);
+			if(!s.init(info1, info2))
+				return false;
+			return digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
 	case ClearSignatureWarning:

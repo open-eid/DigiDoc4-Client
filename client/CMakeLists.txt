@@ -28,6 +28,7 @@ qt5_wrap_ui( SOURCES
 	dialogs/RoleAddressDialog.ui
 	dialogs/SettingsDialog.ui
 	dialogs/SignatureDialog.ui
+	dialogs/SmartIDDialog.ui
 	dialogs/WaitDialog.ui
 	dialogs/WarningDialog.ui
 	widgets/Accordion.ui
@@ -86,6 +87,8 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/PinUnblock.cpp
 	dialogs/RoleAddressDialog.cpp
 	dialogs/SettingsDialog.cpp
+	dialogs/SmartIDDialog.cpp
+	dialogs/SmartIDProgress.cpp
 	dialogs/SignatureDialog.cpp
 	dialogs/WaitDialog.cpp
 	dialogs/WarningDialog.cpp
@@ -125,7 +128,7 @@ target_link_libraries( ${PROGNAME}
 	${LDAP_LIBRARIES}
 )
 
-target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}")
+target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SMARTID_URL="${SMARTID_URL}" )
 
 if( APPLE )
 	target_sources( ${PROGNAME} PRIVATE Application_mac.mm dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)

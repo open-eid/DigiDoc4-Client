@@ -551,6 +551,9 @@ void Application::diagnostics(QTextStream &s)
 #ifdef MOBILEID_URL
 		<< "<br />MOBILEID_URL: " << MOBILEID_URL
 #endif
+#ifdef SMARTID_URL
+		<< "<br />SMARTID_URL: " << SMARTID_URL
+#endif
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: confValue(TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
@@ -1029,6 +1032,9 @@ void DdCliApplication::diagnostics(QTextStream &s) const
 
 #ifdef MOBILEID_URL
 	s << "<br />MOBILEID_URL: " << MOBILEID_URL;
+#endif
+#ifdef SMARTID_URL
+	s << "<br />SMARTID_URL: " << SMARTID_URL;
 #endif
 	s << "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString();
 	s << "<br /><br /><b>" << "TSL signing certs:</b>";

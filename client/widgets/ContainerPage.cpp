@@ -26,6 +26,7 @@
 #include "crypto/CryptoDoc.h"
 #include "dialogs/AddRecipients.h"
 #include "dialogs/MobileDialog.h"
+#include "dialogs/SmartIDDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
 #include "widgets/SignatureItem.h"
@@ -126,6 +127,7 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 	case SignatureAdd:
 	case SignatureToken:
 	case SignatureMobile:
+	case SignatureSmartID:
 		if(ui->rightPane->hasItem(
 			[selectedCard, selectedMobile, code](Item* const item) -> bool
 			{
@@ -211,6 +213,16 @@ void ContainerPage::forward(int code)
 		window()->setWindowTitle(tr("DigiDoc4 client"));
 		emit action(code);
 		break;
+	case SignatureSmartID:
+	{
+		SmartIDDialog dlg(qApp->activeWindow());
+		if(dlg.exec() == QDialog::Accepted)
+		{
+			if(checkAction(SignatureMobile, dlg.idCode(), QString()))
+				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
+		}
+		break;
+	}
 	default:
 		if(checkAction(code, cardInReader, mobileCode))
 			emit action(code);
@@ -281,11 +293,11 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 void ContainerPage::showSigningButton()
 {
 	if(cardInReader.isNull())
-		showMainAction({ SignatureMobile });
+		showMainAction({ SignatureMobile, SignatureSmartID });
 	else if(seal)
-		showMainAction({ SignatureToken, SignatureMobile });
+		showMainAction({ SignatureToken, SignatureMobile, SignatureSmartID });
 	else
-		showMainAction({ SignatureAdd, SignatureMobile });
+		showMainAction({ SignatureAdd, SignatureMobile, SignatureSmartID });
 }
 
 void ContainerPage::transition(CryptoDoc* container, bool canDecrypt)
