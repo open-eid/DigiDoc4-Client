@@ -3011,12 +3011,8 @@ Additional licenses and components</source>
         <translation>РАЗБЛОКИРОВАТЬ</translation>
     </message>
     <message>
-        <source>CHANGE PIN1</source>
-        <translation>ИЗМЕНИТЬ PIN1</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN2</source>
-        <translation>ИЗМЕНИТЬ PIN2</translation>
+        <source>CHANGE PIN%1</source>
+        <translation>ИЗМЕНИТЬ PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>

@@ -3008,12 +3008,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>TÜHISTA BLOKEERING</translation>
     </message>
     <message>
-        <source>CHANGE PIN1</source>
-        <translation>MUUDA PIN1</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN2</source>
-        <translation>MUUDA PIN2</translation>
+        <source>CHANGE PIN%1</source>
+        <translation>MUUDA PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>

@@ -33,16 +33,13 @@ VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::Verify
 	ui->setupUi( this );
 
 	connect(ui->changePIN, &QPushButton::clicked, [=] {
-		if(!c.isNull())
-			emit changePinClicked( false, isBlockedPin );
+		emit changePinClicked( false, isBlockedPin );
 	});
 	connect(ui->forgotPinLink, &QLabel::linkActivated, [=](const QString & /*link*/) {
-		if(!c.isNull())
-			emit changePinClicked( true, false );	// Change PIN with PUK code
+		emit changePinClicked( true, false );	// Change PIN with PUK code
 	});
 	connect(ui->details, &QLabel::linkActivated, [=](const QString & /*link*/) {
-		if(!c.isNull())
-			emit certDetailsClicked(QSmartCardData::typeString(pinType));
+		emit certDetailsClicked(QSmartCardData::typeString(pinType));
 	});
 
 	greenIcon = new QSvgWidget(QStringLiteral(":/images/icon_check.svg"), ui->nameRight);
@@ -148,37 +145,22 @@ void VerifyCert::update(bool showWarning)
 				cert << "<br />" << tr("key has been used %1 times", "pin2").arg(cardData.usageCount(pinType));
 		}
 	}
-	switch( pinType )
+	switch(pinType)
 	{
 	case QSmartCardData::Pin1Type:
-		ui->name->setText(tr("Authentication certificate"));
-		ui->validUntil->setText(txt);
-		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN1"));
-		ui->changePIN->setHidden(isBlockedPin || isTempelType || !isValidCert);
-		ui->forgotPinLink->setText(QStringLiteral("<a href='#pin1-forgotten'><span style='color:#75787B;'>%1</span></a>").arg(tr("Forgot PIN%1?").arg(1)));
-		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()) || !isValidCert);
-		ui->details->setText(QStringLiteral("<a href='#pin1-cert'><span style='color:#75787B;'>%1</span></a>").arg(tr("Check the details of the certificate")));
-		ui->error->setText(
-			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
-				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(1) :
-			!isValidCert ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(1) :
-			isBlockedPin ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(1) :
-			QString()
-		);
-		break;
 	case QSmartCardData::Pin2Type:
-		ui->name->setText(tr("Signing certificate"));
+		ui->name->setText(pinType == QSmartCardData::Pin1Type ? tr("Authentication certificate") : tr("Signing certificate"));
 		ui->validUntil->setText(txt);
-		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN2"));
-		ui->changePIN->setHidden(isBlockedPin || isTempelType || !isValidCert);
-		ui->forgotPinLink->setText(QStringLiteral("<a href='#pin2-forgotten'><span style='color:#75787B;'>%1</span></a>").arg(tr("Forgot PIN%1?").arg(2)));
-		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()) || !isValidCert);
-		ui->details->setText(QStringLiteral("<a href='#pin2-cert'><span style='color:#75787B;'>%1</span></a>").arg(tr("Check the details of the certificate")));
+		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN%1").arg(pinType));
+		ui->changePIN->setHidden(isBlockedPin || isTempelType);
+		ui->forgotPinLink->setText(QStringLiteral("<a href='#pin%1-forgotten'><span style='color:#75787B;'>%2</span></a>").arg(pinType).arg(tr("Forgot PIN%1?").arg(pinType)));
+		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()));
+		ui->details->setText(QStringLiteral("<a href='#pin%1-cert'><span style='color:#75787B;'>%2</span></a>").arg(pinType).arg(tr("Check the details of the certificate")));
 		ui->error->setText(
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
-				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(2) :
-			!isValidCert ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(2) :
-			isBlockedPin ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(2) :
+				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
+			!isValidCert ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(pinType) :
+			isBlockedPin ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(pinType) :
 			QString()
 		);
 		break;
