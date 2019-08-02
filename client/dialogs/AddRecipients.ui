@@ -13,23 +13,25 @@
     <height>480</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="minimumSize">
    <size>
     <width>880</width>
     <height>480</height>
    </size>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
+  <property name="styleSheet">
+   <string notr="true">#leftPane, #rightPane {
+background-color: #ffffff;
+}
+#leftPane {
+border: solid #D9D9D8;
+border-width: 0px 1px 0px 0px;
+}
+#navigationArea {
+background-color: #f7f7f7;
+border: 1px solid #c8c8c8;
+border-width: 1px 0px 0px 0px;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="AddRecipientsLayout">
    <property name="spacing">
@@ -48,56 +50,17 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="containerLists" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>880</width>
-       <height>399</height>
-      </size>
+    <layout class="QHBoxLayout" name="containerListsLayout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QWidget#containerLists
-{
-border: 1px solid #c8c8c8;
-background-color: #ffffff;
-}</string>
-     </property>
-     <layout class="QHBoxLayout" name="containerListsLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="ItemList" name="leftPane" native="true">
-        <property name="styleSheet">
-         <string notr="true">border: solid #D9D9D8;
-border-width: 2px 2px 2px 2px; </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="ItemList" name="rightPane" native="true">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+     <item>
+      <widget class="ItemList" name="leftPane"/>
+     </item>
+     <item>
+      <widget class="ItemList" name="rightPane"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QWidget" name="navigationArea" native="true">
@@ -114,7 +77,22 @@ border-width: 2px 2px 2px 2px; </string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #f7f7f7;</string>
+      <string notr="true">QPushButton {
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+}</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout" stretch="0,0,0,1,0">
       <property name="spacing">
@@ -143,24 +121,6 @@ border-width: 2px 2px 2px 2px; </string>
         <property name="accessibleName">
          <string extracomment="accessible">Certificate from card</string>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
-        </property>
         <property name="text">
          <string>CERTIFICATE FROM CARD</string>
         </property>
@@ -180,24 +140,6 @@ QPushButton:disabled {
         <property name="accessibleName">
          <string extracomment="accessible">Certificate from file</string>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
-        </property>
         <property name="text">
          <string>CERTIFICATE FROM FILE</string>
         </property>
@@ -216,24 +158,6 @@ QPushButton:disabled {
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Latest used certificate</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-}</string>
         </property>
         <property name="text">
          <string>LATEST USED CERTIFICATE</string>
@@ -257,7 +181,7 @@ QPushButton:disabled {
        </spacer>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="actionLayout">
         <property name="spacing">
          <number>2</number>
         </property>
@@ -340,7 +264,7 @@ QPushButton:disabled {
  <customwidgets>
   <customwidget>
    <class>ItemList</class>
-   <extends>QWidget</extends>
+   <extends>QScrollArea</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
   </customwidget>

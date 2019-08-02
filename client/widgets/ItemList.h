@@ -23,7 +23,7 @@
 #include "widgets/Item.h"
 
 #include <functional>
-#include <QWidget>
+#include <QScrollArea>
 
 namespace Ui {
 class ItemList;
@@ -32,7 +32,7 @@ class ItemList;
 class QLabel;
 class QSvgWidget;
 
-class ItemList : public QWidget
+class ItemList : public QScrollArea
 {
 	Q_OBJECT
 

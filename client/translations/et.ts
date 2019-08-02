@@ -179,6 +179,10 @@
         <extracomment>accessible</extracomment>
         <translation>Lisa</translation>
     </message>
+    <message>
+        <source>Remove</source>
+        <translation>Eemalda</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

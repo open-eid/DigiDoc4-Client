@@ -179,6 +179,10 @@
         <extracomment>accessible</extracomment>
         <translation>Add</translation>
     </message>
+    <message>
+        <source>Remove</source>
+        <translation>Remove</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>
