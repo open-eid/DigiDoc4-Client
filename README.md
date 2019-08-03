@@ -54,7 +54,7 @@
 ### macOS
 
 1. Install dependencies from
-   * [XCode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12)
+   * [XCode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
    * [http://www.cmake.org](http://www.cmake.org)
    * [http://qt-project.org](http://qt-project.org)
        Since Qt 5.6 default SSL backend is SecureTransport and this project depends on openssl.
