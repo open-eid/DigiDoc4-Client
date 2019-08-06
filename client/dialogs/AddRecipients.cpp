@@ -195,20 +195,16 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
 	leftList.insert(friendlyName, leftItem);
 	ui->leftPane->addWidget(leftItem);
-	if(rightList.contains(friendlyName))
-	{
-		leftItem->disable(true);
-		leftItem->showButton(AddressItem::Added);
-	}
-	else
-	{
-		leftItem->disable(false);
-		leftItem->showButton(AddressItem::Add);
-	}
+	bool contains = rightList.contains(friendlyName);
+	leftItem->disable(contains);
+	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
 
 	connect(leftItem, &AddressItem::add, this, [this](Item *item) {
 		addRecipientToRightPane(item, true);
 	});
+
+	if(QWidget *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
+		add->setVisible(true);
 
 	return leftItem;
 }
