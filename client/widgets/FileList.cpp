@@ -42,7 +42,8 @@ FileList::FileList(QWidget *parent)
 	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"),
 		QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
 	ui->download->init(LabelButton::White, QString(), 0);
-
+	ui->download->installEventFilter(
+		new ButtonHoverFilter(QStringLiteral(":/images/icon_download.svg"), QStringLiteral(":/images/icon_download_hover.svg"), this));
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
 	connect(ui->download, &LabelButton::clicked, this, &FileList::saveAll);
 }
@@ -183,9 +184,7 @@ void FileList::saveAll()
 			b = dlg.exec();
 
 			if( b == QMessageBox::Cancel )
-			{
 					break;
-			}
 			if( b == QMessageBox::No )
 			{
 					dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
@@ -193,9 +192,7 @@ void FileList::saveAll()
 							continue;
 			}
 			else
-			{
 				QFile::remove( dest );
-			}
 		}
 		documentModel->save( i, dest );
 	}	
@@ -229,20 +226,7 @@ void FileList::setModel(DocumentModel *documentModel)
 
 void FileList::updateDownload()
 {
-	if(ui->download->isHidden())
-	{
-		if(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && items.size() > 1)
-		{
-			ui->download->show();
-			ui->count->show();
-			ui->download->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_download.svg"), QStringLiteral(":/images/icon_download_hover.svg"), this));
-		}
-	}
-	else if(items.size() <= 1)
-	{
-		ui->download->hide();
-		ui->count->hide();
-	}
-
+	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && !items.empty());
+	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && !items.empty());
 	ui->count->setText(QString::number(items.size()));
 }
