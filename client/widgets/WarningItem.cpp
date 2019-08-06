@@ -91,11 +91,6 @@ void WarningItem::lookupWarning()
 		warnText.details = QStringLiteral("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
 		ui->warningAction->setOpenExternalLinks(false);
 		break;
-	case ria::qdigidoc4::UpdateCertWarning:
-		warnText.text = MainWindow::tr("The validity of this document can be extended. The process takes 2−10 minutes and requires an active internet connection. Do not remove the card from the smart card reader until the process is complete.");
-		warnText.details = QStringLiteral("<a href='#update-Certificate-%1'><span style='color:rgb(53, 55, 57)'>%2</span></a>").arg(warnText.url, MainWindow::tr("Begin"));
-		ui->warningAction->setOpenExternalLinks(false);
-		break;
 	// SignDetails
 	case ria::qdigidoc4::InvalidSignatureWarning:
 		warnText.text = tr("%n signatures are not valid", nullptr, warnText.counter);

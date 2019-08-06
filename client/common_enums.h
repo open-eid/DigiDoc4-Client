@@ -106,7 +106,6 @@ enum WarningType {
     CertRevokedWarning,
     UnblockPin1Warning,
     UnblockPin2Warning,
-    UpdateCertWarning,
 
     CheckConnectionWarning,
     InvalidSignatureWarning,
