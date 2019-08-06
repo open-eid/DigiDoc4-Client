@@ -1753,8 +1753,8 @@ Kонтрольный код: %1</translation>
         <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
     </message>
     <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
+        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee/ru/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>

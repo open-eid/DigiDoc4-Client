@@ -218,7 +218,7 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 color: #75787B;</string>
      </property>
      <property name="text">
-      <string>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</string>
+      <string>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee/en/'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</string>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>
