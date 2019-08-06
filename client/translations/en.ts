@@ -1542,6 +1542,10 @@ E-SEAL</translation>
         <extracomment>accessible</extracomment>
         <translation>Select my EID page</translation>
     </message>
+    <message>
+        <source>Succeeded activating email forwards.</source>
+        <translation>Succeeded activating email forwards.</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>

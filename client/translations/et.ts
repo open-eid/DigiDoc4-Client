@@ -1542,6 +1542,10 @@ E-TEMPLIGA</translation>
         <extracomment>accessible</extracomment>
         <translation>Vali leht minu eID</translation>
     </message>
+    <message>
+        <source>Succeeded activating email forwards.</source>
+        <translation>E-posti suunamise aktiveerimine õnnestus.</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>

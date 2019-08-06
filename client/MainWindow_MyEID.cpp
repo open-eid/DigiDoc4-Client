@@ -117,14 +117,14 @@ void MainWindow::certDetailsClicked( const QString &link )
 		pin1 ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 }
 
-void MainWindow::getEmailStatus ()
+void MainWindow::getEmailStatus()
 {
 	QByteArray buffer = sendRequest( SSLConnect::EmailInfo );
 	if(!buffer.isEmpty())
 		ui->accordion->updateOtherData(buffer);
 }
 
-void MainWindow::activateEmail ()
+void MainWindow::activateEmail()
 {
 	QString eMail = ui->accordion->getEmail();
 	if( eMail.isEmpty() )
@@ -134,8 +134,10 @@ void MainWindow::activateEmail ()
 		return;
 	}
 	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
-	if(!buffer.isEmpty())
-		ui->accordion->updateOtherData(buffer);
+	if(buffer.isEmpty())
+		return;
+	ui->accordion->updateOtherData(buffer);
+	showNotification(tr("Succeeded activating email forwards."), true);
 }
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
