@@ -231,6 +231,7 @@ bool MobileProgress::isTest( const QString &ssid, const QString &cell )
 		"60001019961" "37200000666",
 		"60001019972" "37201200266",
 		"60001019983" "37213100266",
+		"60001018800" "37200000566",
 	};
 	return list.contains( ssid + cell );
 }
