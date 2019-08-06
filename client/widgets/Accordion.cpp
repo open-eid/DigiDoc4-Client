@@ -40,8 +40,8 @@ void Accordion::init()
 	// Initialize accordion.
 	openSection = ui->titleVerifyCert;
 
-	connect( ui->contentOtherData, &OtherData::checkEMailClicked, this, [this](){ emit checkEMail(); } );
-	connect( ui->contentOtherData, &OtherData::activateEMailClicked, this, [this](){ emit activateEMail(); } );
+	connect(ui->contentOtherData, &OtherData::checkEMailClicked, this, &Accordion::checkEMail);
+	connect(ui->contentOtherData, &OtherData::activateEMailClicked, this, &Accordion::activateEMail);
 
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"), ui->contentVerifyCert);
 	ui->titleVerifyCert->setClosable(true);

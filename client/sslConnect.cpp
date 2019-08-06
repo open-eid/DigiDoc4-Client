@@ -111,6 +111,7 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 	popup.move(active->geometry().center() - popup.geometry().bottomRight() / 2);
 	popup.setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px; font-size: 24px; color: #53c964;"));
 	popup.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	popup.setWordWrap(true);
 	popup.setText(label);
 	popup.show();
 
