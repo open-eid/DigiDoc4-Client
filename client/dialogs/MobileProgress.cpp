@@ -143,9 +143,8 @@ void MobileProgress::finished( QNetworkReply *reply )
 			return;
 		}
 	case QNetworkReply::UnknownContentError:
-#if QT_VERSION >= QT_VERSION_CHECK(5,3,0)
+		break;
 	case QNetworkReply::InternalServerError:
-#endif
 		break;
 	case QNetworkReply::HostNotFoundError:
 		endProgress(mobileResults.value(QStringLiteral("HOSTNOTFOUND")));
@@ -153,6 +152,9 @@ void MobileProgress::finished( QNetworkReply *reply )
 	case QNetworkReply::SslHandshakeFailedError:
 		signProgressBar->hide();
 		stop();
+		return;
+	case QNetworkReply::ConnectionRefusedError:
+		endProgress(tr("Mobile-ID service has encountered technical errors. Please try again later."));
 		return;
 	default:
 		endProgress(reply->errorString());

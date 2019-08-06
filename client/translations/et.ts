@@ -1711,6 +1711,10 @@ Kontrollkood: %1</translation>
         <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
     </message>
+    <message>
+        <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
+        <translation>Mobiil-ID teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
