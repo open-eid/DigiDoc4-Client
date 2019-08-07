@@ -532,6 +532,7 @@ void SettingsDialog::openDirectory()
 void SettingsDialog::updateDiagnostics()
 {
 	ui->txtDiagnostics->setEnabled(false);
+	ui->txtDiagnostics->clear();
 
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	Diagnostics *worker = new Diagnostics();
