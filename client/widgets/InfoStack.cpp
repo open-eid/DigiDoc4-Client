@@ -23,7 +23,6 @@
 #include "QCardInfo.h"
 #include "QSmartCard.h"
 #include "Styles.h"
-#include "effects/HoverFilter.h"
 
 #include <common/SslCertificate.h>
 
@@ -56,8 +55,7 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->valueSerialNumber->setFont(font);
 	ui->valueExpiryDate->setFont( Styles::font( Styles::Regular, 16 ) );
 
-	HoverFilter *filter = new HoverFilter(ui->photo, [this](int eventType){ focusEvent(eventType); }, this);
-	ui->photo->installEventFilter(filter);
+	ui->photo->installEventFilter(this);
 }
 
 InfoStack::~InfoStack()
@@ -97,22 +95,19 @@ void InfoStack::changeEvent(QEvent* event)
 }
 
 
-void InfoStack::focusEvent(int eventType)
+bool InfoStack::eventFilter(QObject *o, QEvent *e)
 {
-	if(alternateIcon || !ui->photo->pixmap())
-		return;
-
-	if(eventType == QEvent::Enter)
+	if(ui->photo != o || alternateIcon || !ui->photo->pixmap())
+		return StyledWidget::eventFilter(o, e);
+	switch(e->type())
 	{
+	case QEvent::Enter:
 		ui->btnPicture->show();
-	}
-	else
-	{
-		// Ignore multiple enter-leave events sent when moving over button
-		auto boundingRect = QRect(ui->photo->mapToGlobal(ui->photo->geometry().topLeft()),
-								  ui->photo->mapToGlobal(ui->photo->geometry().bottomRight()));
-		if(!boundingRect.contains(QCursor::pos()))
-			ui->btnPicture->hide();
+		return true;
+	case QEvent::Leave:
+		ui->btnPicture->hide();
+		return true;
+	default: return StyledWidget::eventFilter(o, e);
 	}
 }
 

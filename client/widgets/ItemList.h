@@ -68,6 +68,7 @@ protected slots:
 	
 protected:
 	void changeEvent(QEvent* event) override;
+	bool eventFilter(QObject *o, QEvent *e) override;
 	int index(Item *item) const;
 
 	Ui::ItemList* ui;
@@ -77,7 +78,6 @@ protected:
 private:
 	QString addLabel();
 	void addWidget(Item *widget, int index);
-	void focusEvent(int eventType);
 	void setRecipientTooltip();
 
 	QLabel *header = nullptr;

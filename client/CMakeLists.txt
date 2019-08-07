@@ -59,7 +59,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/WarningDialog.cpp
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
-	effects/HoverFilter.cpp
 	util/FileUtil.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
