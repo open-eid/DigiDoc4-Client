@@ -1,7 +1,7 @@
 language: c++
 sudo: false
 dist: trusty
-osx_image: xcode10.1
+osx_image: xcode11
 services:
 - docker
 matrix:
@@ -12,7 +12,7 @@ matrix:
   - os: linux
     env: TARGET=ubuntu:16.04
   - os: linux
-    env: TARGET=ubuntu:18.10
+    env: TARGET=ubuntu:19.04
 env:
   global:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
@@ -22,12 +22,11 @@ before_install:
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     HASH=($(shasum prepare_osx_build_environment.sh));
     sudo easy_install pip;
-    brew install --force openssl;
     pip install --user awscli > /dev/null;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     build=$(aws s3 ls s3://open-eid/libdigidocpp-nightly/ --no-sign-request |grep PRE|sed 's/.*PRE \(.*\)\/.*/\1/'|sort -n|tail -n1);
     aws s3 sync --exclude=* --include=*pkg s3://open-eid/libdigidocpp-nightly/${build} libdigidocpp-pkg --no-sign-request;
-    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.19.0.3.pkg opensc.pkg --no-sign-request;
+    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.19.0.7.pkg opensc.pkg --no-sign-request;
     aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /;
@@ -51,6 +50,7 @@ script: case ${TARGET} in
   *)
     docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v ${HOME}:${HOME} -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       apt-get update -qq; 
+      export DEBIAN_FRONTEND=noninteractive;
       apt-get install -y apt-transport-https dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev git curl wget ruby;
       dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb;
       export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}");
