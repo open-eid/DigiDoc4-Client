@@ -160,9 +160,9 @@ void FileList::save(FileItem *item)
 void FileList::saveAll()
 {
 	QString dir = FileDialog::getExistingDirectory( this,
-			tr("Select folder where files will be stored") );
+		tr("Select folder where files will be stored") );
 	if( dir.isEmpty() )
-			return;
+		return;
 	int b = QMessageBox::No;	// default
 	for( int i = 0; i < documentModel->rowCount(); ++i )
 	{
@@ -183,19 +183,19 @@ void FileList::saveAll()
 			dlg.addButton(tr("REPLACE ALL"), QMessageBox::YesToAll);
 			b = dlg.exec();
 
-			if( b == QMessageBox::Cancel )
-					break;
+			if(b == QDialog::Rejected)
+				break;
 			if( b == QMessageBox::No )
 			{
-					dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
-					if( dest.isEmpty() )
-							continue;
+				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
+				if( dest.isEmpty() )
+					continue;
 			}
 			else
 				QFile::remove( dest );
 		}
 		documentModel->save( i, dest );
-	}	
+	}
 }
 
 void FileList::selectFile()
