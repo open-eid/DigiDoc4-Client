@@ -5,7 +5,7 @@ endif()
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
-project(qdigidoc4 VERSION 4.2.2)
+project(qdigidoc4 VERSION 4.2.3)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
