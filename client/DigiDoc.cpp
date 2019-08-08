@@ -20,8 +20,8 @@
 #include "DigiDoc.h"
 
 #include "Application.h"
-#include "FileDialog.h"
 #include "QSigner.h"
+#include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/Settings.h>

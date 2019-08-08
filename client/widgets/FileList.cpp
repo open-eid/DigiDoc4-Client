@@ -20,7 +20,7 @@
 #include "FileList.h"
 #include "ui_ItemList.h"
 
-#include "FileDialog.h"
+#include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/ButtonHoverFilter.h"
 #include "widgets/FileItem.h"
@@ -186,7 +186,7 @@ void FileList::saveAll()
 			{
 					break;
 			}
-			else if( b == QMessageBox::No )
+			if( b == QMessageBox::No )
 			{
 					dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
 					if( dest.isEmpty() )

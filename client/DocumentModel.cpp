@@ -19,7 +19,7 @@
 
 #include "DocumentModel.h"
 
-#include "FileDialog.h"
+#include "dialogs/FileDialog.h"
 
 #include <QFileInfo>
 
