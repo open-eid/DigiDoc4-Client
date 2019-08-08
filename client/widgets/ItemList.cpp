@@ -255,6 +255,7 @@ void ItemList::init(ItemType item, const QString &header)
 	}
 	else if(itemType == ToAddAdresses)
 	{
+		ui->add->hide();
 		connect(ui->add, &QToolButton::clicked, this, &ItemList::addAll);
 	}
 }
