@@ -939,14 +939,14 @@ void MainWindow::showCardStatus()
 
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
-		ui->idSelector->show();
-		ui->infoStack->show();
-		ui->accordion->show();
-		ui->noCardInfo->hide();
-		ui->noReaderInfo->hide();
-
 		qCDebug(MLog) << "Select card" << t.card();
 		auto cardInfo = qApp->signer()->cache()[t.card()];
+
+		ui->idSelector->show();
+		ui->noCardInfo->hide();
+		ui->infoStack->setVisible(cardInfo->type != SslCertificate::UnknownType);
+		ui->accordion->setVisible(cardInfo->type != SslCertificate::UnknownType);
+		ui->noReaderInfo->setVisible(cardInfo->type == SslCertificate::UnknownType);
 
 		if(ui->cardInfo->id() != t.card())
 		{
@@ -957,36 +957,38 @@ void MainWindow::showCardStatus()
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
-
-		const SslCertificate &authCert = at.cert();
-		const SslCertificate &signCert = st.cert();
-		bool seal = cardInfo->type & SslCertificate::TempelType;
-
-		// Card (e.g. e-Seal) can have only one cert
-		if(!signCert.isNull())
-			emit ui->signContainerPage->cardChanged(cardInfo->id, seal, !signCert.isValid());
-		else
-			emit ui->signContainerPage->cardChanged();
-		if(!authCert.isNull())
-			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
-		else
-			emit ui->cryptoContainerPage->cardChanged();
-		if(cryptoDoc)
-			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
-
-		if(cardInfo->type & SslCertificate::TempelType)
+		if(cardInfo->type != SslCertificate::UnknownType)
 		{
-			ui->infoStack->update(*cardInfo);
-			ui->accordion->updateInfo(authCert, signCert);
-			updateCardWarnings();
- 		}
+			const SslCertificate &authCert = at.cert();
+			const SslCertificate &signCert = st.cert();
+			bool seal = cardInfo->type & SslCertificate::TempelType;
+
+			// Card (e.g. e-Seal) can have only one cert
+			if(!signCert.isNull())
+				emit ui->signContainerPage->cardChanged(cardInfo->id, seal, !signCert.isValid());
+			else
+				emit ui->signContainerPage->cardChanged();
+			if(!authCert.isNull())
+				emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
+			else
+				emit ui->cryptoContainerPage->cardChanged();
+			if(cryptoDoc)
+				ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
+
+			if(cardInfo->type & SslCertificate::TempelType)
+			{
+				ui->infoStack->update(*cardInfo);
+				ui->accordion->updateInfo(authCert, signCert);
+				updateCardWarnings();
+			}
+		}
+		else
+			ui->noReaderInfoText->setText(tr("Unsupported token"));
 	}
 	else
 	{
 		emit ui->signContainerPage->cardChanged();
 		emit ui->cryptoContainerPage->cardChanged();
-
-		warnings->clearMyEIDWarnings();
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( t.readers().isEmpty() )
@@ -1154,6 +1156,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->noReaderInfo->setVisible(true);
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
+	ui->noReaderInfoText->setText(tr("Connect the card reader to your computer and insert your ID card into the reader"));
 	warnings->clearMyEIDWarnings();
 }
 

@@ -1554,6 +1554,10 @@ E-TEMPLIGA</translation>
         <source>Succeeded activating email forwards.</source>
         <translation>E-posti suunamise aktiveerimine õnnestus.</translation>
     </message>
+    <message>
+        <source>Unsupported token</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>

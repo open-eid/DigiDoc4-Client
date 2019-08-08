@@ -19,12 +19,7 @@
 
 #pragma once
 
-#include <QFont>
-#include <QSvgWidget>
 #include <QWidget>
-
-#include <memory>
-
 
 namespace Ui {
 class NoCardInfo;
@@ -43,7 +38,7 @@ public:
 	};
 
 	explicit NoCardInfo( QWidget *parent = nullptr );
-	~NoCardInfo();
+	~NoCardInfo() final;
 
 	void update(Status s);
 
@@ -52,6 +47,5 @@ protected:
 
 private:
 	Ui::NoCardInfo *ui;
-	std::unique_ptr<QSvgWidget> cardIcon;
 	Status status;
 };

@@ -22,17 +22,13 @@
 #include "Styles.h"
 
 NoCardInfo::NoCardInfo( QWidget *parent )
-: QWidget( parent )
-, ui( new Ui::NoCardInfo )
-, cardIcon( new QSvgWidget( this ) )
-, status(Loading)
+	: QWidget(parent)
+	, ui(new Ui::NoCardInfo)
+	, status(Loading)
 {
 	ui->setupUi( this );
-
 	ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
-	cardIcon->resize( 34, 24 );
-	cardIcon->move( 14, 18 );
-	cardIcon->load( QString(":/images/icon_IDkaart_red.svg") );
+	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_red.svg"));
 }
 
 NoCardInfo::~NoCardInfo()
@@ -42,27 +38,23 @@ NoCardInfo::~NoCardInfo()
 
 void NoCardInfo::update(Status s)
 {
-	QString text;
 	status = s;
-
 	switch(status)
 	{
 	case NoPCSC:
-		text = tr("PCSC service is not running");
+		ui->cardStatus->setText(tr("PCSC service is not running"));
 		break;
 	case NoReader:
-		text = tr("No readers found");
+		ui->cardStatus->setText(tr("No readers found"));
 		break;
 	case Loading:
-		text = tr("Loading data");
+		ui->cardStatus->setText(tr("Loading data"));
 		break;
 	default:
-		text = tr("No card in reader");
+		ui->cardStatus->setText(tr("No card in reader"));
 		break;
 	}
-
-	ui->cardStatus->setText(text);
-	setAccessibleDescription(text);
+	setAccessibleDescription(ui->cardStatus->text());
 }
 
 void NoCardInfo::changeEvent(QEvent* event)

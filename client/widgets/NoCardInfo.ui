@@ -37,7 +37,25 @@
     <string>No card in reader</string>
    </property>
   </widget>
+  <widget class="QSvgWidget" name="cardIcon" native="true">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>18</y>
+     <width>34</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
