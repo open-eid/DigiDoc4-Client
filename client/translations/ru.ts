@@ -1545,6 +1545,10 @@ ID-КАРТОЙ</translation>
         <extracomment>accessible</extracomment>
         <translation>Выбрать раздел Мой eID</translation>
     </message>
+    <message>
+        <source>Succeeded activating email forwards.</source>
+        <translation>Перенаправление электронной почты успешно активировано.</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
