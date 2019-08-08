@@ -2925,12 +2925,8 @@ Additional licenses and components</translation>
         <translation>UNBLOCK</translation>
     </message>
     <message>
-        <source>CHANGE PIN1</source>
-        <translation>CHANGE PIN1</translation>
-    </message>
-    <message>
-        <source>CHANGE PIN2</source>
-        <translation>CHANGE PIN2</translation>
+        <source>CHANGE PIN%1</source>
+        <translation>CHANGE PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
