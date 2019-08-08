@@ -22,10 +22,9 @@
 
 #include <common/SslCertificate.h>
 
-Accordion::Accordion( QWidget *parent ) :
-	StyledWidget( parent ),
-	ui( new Ui::Accordion ),
-	openSection( nullptr )
+Accordion::Accordion(QWidget *parent)
+	: StyledWidget(parent)
+	, ui(new Ui::Accordion)
 {
 	ui->setupUi( this );
 }
@@ -49,11 +48,9 @@ void Accordion::init()
 	ui->titleOtherData->setClosable(true);
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
-	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, 
-		[this](){open(ui->titleOtherData);});
+	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] {open(ui->titleOtherData);});
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
-	connect(ui->titleOtherData, &AccordionTitle::closed, this,
-		[this](){open(ui->titleVerifyCert);});
+	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] {open(ui->titleVerifyCert);});
 
 	connect(this, &Accordion::showCertWarnings, ui->authBox, &VerifyCert::showWarningIcon);
 	connect(this, &Accordion::showCertWarnings, ui->signBox, &VerifyCert::showWarningIcon);
@@ -68,7 +65,7 @@ void Accordion::init()
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
 
-	clearOtherEID();
+	clear();
 }
 
 void Accordion::clear()
@@ -76,12 +73,15 @@ void Accordion::clear()
 	ui->authBox->clear();
 	ui->signBox->clear();
 	ui->pukBox->clear();
-	clearOtherEID();
+	// Set to default Certificate Info page
+	ui->contentOtherData->update(false, QByteArray());
+	closeOtherSection(ui->titleVerifyCert);
+	ui->titleVerifyCert->setSectionOpen(true);
 }
 
 void Accordion::closeOtherSection(AccordionTitle* opened)
 {
-	openSection->closeSection();
+	openSection->setSectionOpen(false);
 	openSection = opened;
 }
 
@@ -99,7 +99,7 @@ void Accordion::open(AccordionTitle* opened)
 {
 	if (opened->isVisible ())
 		openSection = opened;
-	openSection->openSection();
+	openSection->setSectionOpen(true);
 }
 
 void Accordion::setFocusToEmail()
@@ -118,7 +118,6 @@ void Accordion::updateInfo(const SslCertificate &authCert, const SslCertificate 
 		ui->signBox->update(QSmartCardData::Pin2Type, signCert);
 
 	ui->pukBox->hide();
-
 	ui->titleOtherData->hide();
 }
 
@@ -151,14 +150,5 @@ void Accordion::changeEvent(QEvent* event)
 		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"));
 		ui->titleOtherData->setAccessibleName(tr("Redirection of eesti.ee e-mail", "accessible"));
 	}
-
 	QWidget::changeEvent(event);
-}
-
-void Accordion::clearOtherEID()
-{
-	// Set to default Certificate Info page
-	ui->contentOtherData->update(false, QByteArray());	// E-mail
-	closeOtherSection( ui->titleVerifyCert );
-	ui->titleVerifyCert->openSection();
 }

@@ -10,12 +10,6 @@
     <height>40</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
@@ -31,7 +25,7 @@
   <property name="styleSheet">
    <string notr="true">background-color: #FFFFFF;
 border: solid #DFE5E9;
-border-width: 1px 0px 0px 0px; </string>
+border-width: 1px 0px 0px 0px;</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -41,12 +35,6 @@ border-width: 1px 0px 0px 0px; </string>
      <width>390</width>
      <height>19</height>
     </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
    </property>
    <property name="minimumSize">
     <size>
@@ -66,6 +54,9 @@ border-width: 1px 0px 0px 0px; </string>
      <pointsize>16</pointsize>
     </font>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">border: none;
 color: #353739;</string>
@@ -77,7 +68,28 @@ color: #353739;</string>
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
+  <widget class="QSvgWidget" name="icon" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>12</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: none</string>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

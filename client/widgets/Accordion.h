@@ -38,7 +38,6 @@ public:
 
 	void init();
 	void clear();
-	void clearOtherEID();
 	void closeOtherSection( AccordionTitle* opened );
 	QString getEmail();
 	void open(AccordionTitle* opened);
@@ -61,5 +60,5 @@ signals:
 
 private:
 	Ui::Accordion *ui;
-	AccordionTitle* openSection;
+	AccordionTitle* openSection = nullptr;
 };
