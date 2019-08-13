@@ -237,6 +237,14 @@
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 client</translation>
     </message>
+    <message>
+        <source>Add file</source>
+        <translation>Add file</translation>
+    </message>
+    <message>
+        <source>File you want to add is empty. Do you want to continue?</source>
+        <translation>File you want to add is empty. Do you want to continue?</translation>
+    </message>
 </context>
 <context>
     <name>CardWidget</name>
@@ -2288,6 +2296,14 @@ Control code: %1</translation>
     <message>
         <source>Failed remove document from container</source>
         <translation>Failed remove document from container</translation>
+    </message>
+    <message>
+        <source>Add file</source>
+        <translation>Add file</translation>
+    </message>
+    <message>
+        <source>File you want to add is empty. Do you want to continue?</source>
+        <translation>File you want to add is empty. Do you want to continue?</translation>
     </message>
 </context>
 <context>

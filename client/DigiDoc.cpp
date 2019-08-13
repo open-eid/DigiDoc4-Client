@@ -304,7 +304,14 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 
 void SDocumentModel::addFile(const QString &file, const QString &mime)
 {
-	QString fileName(QFileInfo(file).fileName());
+	QFileInfo info(file);
+	if(info.size() == 0)
+	{
+		if(QMessageBox::No == QMessageBox::warning(qApp->activeWindow(), tr("Add file"),
+			tr("File you want to add is empty. Do you want to continue?"), QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
+			return;
+	}
+	QString fileName(info.fileName());
 	for(int row = 0; row < rowCount(); row++)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))

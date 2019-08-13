@@ -237,6 +237,14 @@
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 klient</translation>
     </message>
+    <message>
+        <source>Add file</source>
+        <translation>Lisa fail</translation>
+    </message>
+    <message>
+        <source>File you want to add is empty. Do you want to continue?</source>
+        <translation>Fail mida soovid lisada on tühi. Kas soovid jätkata?</translation>
+    </message>
 </context>
 <context>
     <name>CardWidget</name>
@@ -2288,6 +2296,14 @@ Kontrollkood: %1</translation>
     <message>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Add file</source>
+        <translation>Lisa fail</translation>
+    </message>
+    <message>
+        <source>File you want to add is empty. Do you want to continue?</source>
+        <translation>Fail mida soovid lisada on tühi. Kas soovid jätkata?</translation>
     </message>
 </context>
 <context>
