@@ -1554,6 +1554,10 @@ E-SEAL</translation>
         <source>Succeeded activating email forwards.</source>
         <translation>Succeeded activating email forwards.</translation>
     </message>
+    <message>
+        <source>Unsupported token</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
