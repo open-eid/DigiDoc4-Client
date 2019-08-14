@@ -20,7 +20,7 @@ find_package( LDAP REQUIRED )
 find_package( Qt5 COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools REQUIRED )
 include_directories( ${LIBDIGIDOCPP_INCLUDE_DIR} )
 
-set_env( TSL_URL "https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml" CACHE STRING "TSL trust list primary URL" )
+set_env( TSL_URL "https://ec.europa.eu/tools/lotl/eu-lotl.xml" CACHE STRING "TSL trust list primary URL" )
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )
 
 if(APPLE)
