@@ -96,28 +96,6 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>p12d</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>p12d.icns</string>
-			<key>CFBundleTypeMIMETypes</key>
-			<array>
-				<string>application/x-pkcs12</string>
-			</array>
-			<key>CFBundleTypeName</key>
-			<string>DigiDoc PKCS#12 certificate</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Default</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>ee.ria.p12d</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
 				<string>cdoc</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
@@ -269,25 +247,6 @@
 				<string>ddoc</string>
 				<key>public.mime-type</key>
 				<string>application/x-ddoc</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.data</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>DigiDoc PKCS#12 certificate</string>
-			<key>UTTypeIconFile</key>
-			<string>p12d.icns</string>
-			<key>UTTypeIdentifier</key>
-			<string>ee.ria.p12d</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<string>p12d</string>
-				<key>public.mime-type</key>
-				<string>application/x-pkcs12</string>
 			</dict>
 		</dict>
 		<dict>

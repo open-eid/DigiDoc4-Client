@@ -111,11 +111,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
                 <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
               </Extension>
             </ProgId>
-            <ProgId Id="qdigidoc4.p12d" Description="DigiDoc PKCS#12 certificate" Icon="qdigidoc4.exe" IconIndex="1">
-              <Extension Id="p12d" ContentType="application/x-p12d">
-                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
-              </Extension>
-            </ProgId>
             <ProgId Id="qdigidoc4.cdoc" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="3">
               <Extension Id="cdoc" ContentType="application/x-cdoc">
                 <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='-crypto "%1"' />
