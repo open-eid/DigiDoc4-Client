@@ -128,6 +128,7 @@ void MobileProgress::endProgress(const QString &msg)
 {
 	labelError->setText(msg);
 	signProgressBar->hide();
+	code->hide();
 	stop();
 }
 
@@ -142,8 +143,8 @@ void MobileProgress::finished( QNetworkReply *reply )
 			endProgress(tr("Invalid content"));
 			return;
 		}
-	case QNetworkReply::UnknownContentError:
 		break;
+	case QNetworkReply::UnknownContentError:
 	case QNetworkReply::InternalServerError:
 		break;
 	case QNetworkReply::HostNotFoundError:
@@ -329,6 +330,7 @@ void MobileProgress::sslErrors(QNetworkReply *reply, const QList<QSslError> &err
 				ignore << e;
 				break;
 			}
+			Q_FALLTHROUGH();
 		default:
 			qWarning() << tr("SSL Error:") << e.error() << e.certificate().subjectInfo( "CN" );
 			msg << e.errorString();
