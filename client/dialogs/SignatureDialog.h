@@ -27,9 +27,9 @@ namespace Ui {
 	class SignatureDialog;
 }
 
-class QAbstractButton;
+class QDateTime;
+class QLabel;
 class QTreeWidget;
-class SslCertificate;
 
 class SignatureDialog : public QDialog
 {
@@ -37,12 +37,16 @@ class SignatureDialog : public QDialog
 
 public:
 	explicit SignatureDialog(const DigiDocSignature &signature, QWidget *parent = nullptr);
-	~SignatureDialog() override;
+	~SignatureDialog() final;
 
 private:
-	void addItem( QTreeWidget *view, const QString &variable, const QString &value );
-	void addItem( QTreeWidget *view, const QString &variable, const QSslCertificate &cert );
-	void addItem( QTreeWidget *view, const QString &variable, const QUrl &url );
+	QPushButton *itemButton(const QString &text, QTreeWidget *view);
+	QLabel *itemLabel(const QString &text, QTreeWidget *view);
+	void addItem(QTreeWidget *view, const QString &variable, QWidget *value);
+	void addItem(QTreeWidget *view, const QString &variable, const QString &value);
+	void addItem(QTreeWidget *view, const QString &variable, const QDateTime &value);
+	void addItem(QTreeWidget *view, const QString &variable, const QSslCertificate &cert);
+	void addItem(QTreeWidget *view, const QString &variable, const QUrl &url);
 	void decorateNotice(const QString &color);
 
 	DigiDocSignature s;
