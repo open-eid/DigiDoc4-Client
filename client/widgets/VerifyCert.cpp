@@ -35,10 +35,10 @@ VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::Verify
 	connect(ui->changePIN, &QPushButton::clicked, [=] {
 		emit changePinClicked( false, isBlockedPin );
 	});
-	connect(ui->forgotPinLink, &QLabel::linkActivated, [=](const QString & /*link*/) {
+	connect(ui->forgotPinLink, &QPushButton::clicked, [=] {
 		emit changePinClicked( true, false );	// Change PIN with PUK code
 	});
-	connect(ui->details, &QLabel::linkActivated, [=](const QString & /*link*/) {
+	connect(ui->details, &QPushButton::clicked, [=] {
 		emit certDetailsClicked(QSmartCardData::typeString(pinType));
 	});
 
@@ -153,9 +153,9 @@ void VerifyCert::update(bool showWarning)
 		ui->validUntil->setText(txt);
 		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN%1").arg(pinType));
 		ui->changePIN->setHidden(isBlockedPin || isTempelType);
-		ui->forgotPinLink->setText(QStringLiteral("<a href='#pin%1-forgotten'><span style='color:#75787B;'>%2</span></a>").arg(pinType).arg(tr("Forgot PIN%1?").arg(pinType)));
+		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
 		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()));
-		ui->details->setText(QStringLiteral("<a href='#pin%1-cert'><span style='color:#75787B;'>%2</span></a>").arg(pinType).arg(tr("Check the details of the certificate")));
+		ui->details->setText(tr("Check the details of the certificate"));
 		ui->error->setText(
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
 				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
