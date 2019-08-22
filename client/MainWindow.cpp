@@ -86,10 +86,8 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
 	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
-	ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
-		.arg(tr("Ver. "), qApp->applicationVersion()));
-	connect(ui->version, &QLabel::linkActivated, this, 
-		[this] {showSettings(SettingsDialog::DiagnosticsSettings);});
+	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
+	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
 	coatOfArms->setStyleSheet(QStringLiteral("border: none;"));
@@ -272,10 +270,7 @@ void MainWindow::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		ui->version->setText(QStringLiteral("%1<a href='#show-diagnostics'><span style='color:#006EB5;'>%2</span></a>")
-			.arg(tr("Ver. "), qApp->applicationVersion()));
-		ui->version->setAccessibleName(QStringLiteral("%1 %2")
-			.arg(tr("DigiDoc4 client"), qApp->applicationVersion()));
+		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
 	}
 	QWidget::changeEvent(event);
