@@ -777,11 +777,6 @@ void MainWindow::openContainer()
 		openFiles(files);
 }
 
-void MainWindow::operation(int op, bool started)
-{
-	qCDebug(MLog) << "Op " << op << (started ? " started" : " ended");
-}
-
 void MainWindow::resetCryptoDoc(CryptoDoc *doc)
 {
 	ui->cryptoContainerPage->clear();
@@ -825,7 +820,9 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	digiDoc = doc;
 	if(digiDoc)
 	{
-		connect(digiDoc, &DigiDoc::operation, this, &MainWindow::operation);
+		connect(digiDoc, &DigiDoc::operation, this, [] (int op, bool started) {
+			qCDebug(MLog) << "Op " << op << (started ? " started" : " ended");
+		});
 		connect(digiDoc->documentModel(), &DocumentModel::openFile, this, &MainWindow::openFile);
 	}
 }
@@ -1152,7 +1149,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->version->setProperty("PICTURE", QVariant());
 	ui->infoStack->hide();
 	ui->accordion->hide();
-	ui->accordion->clearOtherEID();
+	ui->accordion->clear();
 	ui->noReaderInfo->setVisible(true);
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
