@@ -60,7 +60,6 @@ private:
 
 	Ui::CardWidget *ui;
 	QString card;
-	QScopedPointer<QSvgWidget> cardIcon;
 	QSharedPointer<const QCardInfo> cardInfo;
 	QSvgWidget *seal = nullptr;
 };

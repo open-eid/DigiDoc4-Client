@@ -10,43 +10,45 @@
     <height>65</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <widget class="QLabel" name="cardStatus">
-   <property name="geometry">
-    <rect>
-     <x>55</x>
-     <y>20</y>
-     <width>500</width>
-     <height>21</height>
-    </rect>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>7</number>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
+   <property name="leftMargin">
+    <number>14</number>
    </property>
-   <property name="focusPolicy">
-    <enum>Qt::TabFocus</enum>
-   </property>
-   <property name="text">
-    <string>No card in reader</string>
-   </property>
-  </widget>
-  <widget class="QSvgWidget" name="cardIcon" native="true">
-   <property name="geometry">
-    <rect>
-     <x>14</x>
-     <y>18</y>
-     <width>34</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
+   <item>
+    <widget class="QSvgWidget" name="cardIcon" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>34</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>34</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="cardStatus">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string>No card in reader</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

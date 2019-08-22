@@ -48,11 +48,8 @@ CardWidget::CardWidget(QString id, QWidget *parent)
 	ui->cardPhoto->installEventFilter(this);
 	ui->load->setFont(Styles::font(Styles::Condensed, 9));
 	ui->load->hide();
-
-	cardIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_IDkaart_green.svg"), this));
-	cardIcon->setStyleSheet(QStringLiteral("background: none;"));
-	cardIcon->resize( 17, 12 );
-	cardIcon->move( 169, 42 );
+	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
+	ui->contentLayout->setAlignment(ui->cardIcon, Qt::AlignBaseline);
 
 	connect(ui->cardPhoto, &LabelButton::clicked, this, [this] {
 		if(!seal)
@@ -140,7 +137,7 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	if(cardInfo->loading)
 	{
 		ui->cardStatus->clear();
-		cardIcon->load(QStringLiteral(":/images/icon_IDkaart_disabled.svg"));
+		ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_disabled.svg"));
 	}
 	else
 	{
@@ -154,20 +151,18 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 		else if(ci->type & SslCertificate::DigiIDType)
 			type = tr("Digi-ID");
 		ui->cardStatus->setText(tr("%1 in reader").arg(type));
-		cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
+		ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 	}
 
 	if(ci->c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT")))
 	{
 		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
 		ui->cardPhoto->hide();
-		cardIcon->move(169 - 27, 42);
 	}
 	else
 	{
 		ui->horizontalSpacer->changeSize(10, 20, QSizePolicy::Fixed);
 		ui->cardPhoto->show();
-		cardIcon->move(169, 42);
 	}
 
 	clearSeal();

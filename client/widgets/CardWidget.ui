@@ -10,28 +10,11 @@
     <height>65</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>355</width>
-    <height>65</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>65</height>
-   </size>
-  </property>
   <property name="styleSheet">
-   <string notr="true">QWidget:!hover { border:none; } QWidget:hover { border:none; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5));}</string>
+   <string notr="true">QWidget:!hover { border:none; }
+QWidget:hover { border:none; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5)); }</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="CardWidgetLayout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -71,8 +54,7 @@
       <string notr="true">border: 1px solid #B1B3B3;
 background-color: #FFFFFF;
 opacity: 0.5;
-border-radius: 3px;
-</string>
+border-radius: 3px;</string>
      </property>
      <widget class="QLabel" name="load">
       <property name="geometry">
@@ -120,32 +102,11 @@ border-radius: 3px;
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>301</width>
-       <height>51</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>51</height>
-      </size>
-     </property>
+    <widget class="QWidget" name="content" native="true">
      <property name="styleSheet">
       <string notr="true">background: none;</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
+     <layout class="QGridLayout" name="contentLayout" rowstretch="1,0" columnstretch="0,0,1">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -158,20 +119,11 @@ border-radius: 3px;
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
+      <property name="horizontalSpacing">
+       <number>5</number>
+      </property>
+      <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="cardName">
-        <property name="minimumSize">
-         <size>
-          <width>273</width>
-          <height>31</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>31</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <weight>50</weight>
@@ -182,7 +134,7 @@ border-radius: 3px;
          <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #041E42; background: none;</string>
+         <string notr="true">color: #041E42;</string>
         </property>
         <property name="text">
          <string notr="true">MARI MAASIKAS MUSTIKAS</string>
@@ -192,71 +144,56 @@ border-radius: 3px;
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QWidget" name="widget" native="true">
+      <item row="1" column="0">
+       <widget class="QLabel" name="cardCode">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #75787B;</string>
+        </property>
+        <property name="text">
+         <string notr="true">48405050123 |</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSvgWidget" name="cardIcon" native="true">
         <property name="minimumSize">
          <size>
-          <width>301</width>
-          <height>19</height>
+          <width>17</width>
+          <height>12</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>301</width>
-          <height>19</height>
+          <width>17</width>
+          <height>12</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background: none;</string>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="cardStatus">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+         </font>
         </property>
-        <widget class="QLabel" name="cardStatus">
-         <property name="geometry">
-          <rect>
-           <x>138</x>
-           <y>0</y>
-           <width>160</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #75787B; background: none;</string>
-         </property>
-         <property name="text">
-          <string>ID card in reader</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="cardCode">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>116</width>
-           <height>19</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #75787B; background: none;</string>
-         </property>
-         <property name="text">
-          <string notr="true">48405050123 |</string>
-         </property>
-        </widget>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #75787B;</string>
+        </property>
+        <property name="text">
+         <string>ID card in reader</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -269,6 +206,12 @@ border-radius: 3px;
    <class>LabelButton</class>
    <extends>QToolButton</extends>
    <header>widgets/LabelButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
