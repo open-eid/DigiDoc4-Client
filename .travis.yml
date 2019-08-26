@@ -1,6 +1,6 @@
 language: c++
 sudo: false
-dist: trusty
+dist: bionic
 osx_image: xcode11
 services:
 - docker
@@ -22,6 +22,7 @@ before_install:
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     HASH=($(shasum prepare_osx_build_environment.sh));
     sudo easy_install pip;
+    brew install openssl\@1.1;
     pip install --user awscli > /dev/null;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     build=$(aws s3 ls s3://open-eid/libdigidocpp-nightly/ --no-sign-request |grep PRE|sed 's/.*PRE \(.*\)\/.*/\1/'|sort -n|tail -n1);
@@ -43,7 +44,7 @@ script: case ${TARGET} in
   *osx*)
     QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1);
     echo "Qt - ${QT_DIR}";
-    mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DLDAP_ROOT=/tmp/OpenLDAP -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
+    mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl\@1.1 -DLDAP_ROOT=/tmp/OpenLDAP -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..;
     make zipdebug macdeployqt zip;
     cd .. && mkdir ../upload && cp build/qdigidoc4*.zip ../upload/;
     ;;

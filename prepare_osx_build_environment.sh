@@ -4,10 +4,11 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.9.7"
-OPENLDAP_VER="2.4.47"
+QT_VER="5.9.8"
+OPENLDAP_VER="2.4.48"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
+SCRIPT_PATH=$(cd "$(dirname "$0")"; pwd -P)
 OPENSSL_PATH="/usr/local/opt/openssl"
 : ${MACOSX_DEPLOYMENT_TARGET:="10.11"}
 export MACOSX_DEPLOYMENT_TARGET
@@ -80,7 +81,8 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
     tar xf qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
     cd qtbase-${QT_SRCSPEC}-src-${QT_VER}
-    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH}
+    patch -Np1 -i $SCRIPT_PATH/Qt-5.9.8-OpenSSL-1.1.patch
+    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH}
     make
     make install
     rm -rf ${BUILD_PATH}/qtbase-${QT_SRCSPEC}-src-${QT_VER}

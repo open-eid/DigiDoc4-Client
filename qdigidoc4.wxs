@@ -22,8 +22,10 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 
 <?if $(var.Platform) = x64 ?>
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+  <?define OpenSSLSuffix = "-x64" ?>
 <?else ?>
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+  <?define OpenSSLSuffix = "" ?>
 <?endif ?>
 
 <?if $(env.VisualStudioVersion) = "15.0" ?>
@@ -150,8 +152,8 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?ifdef var.qt_path ?>
             <File Source="$(var.VCP)"/>
             <File Source="$(var.VCRT)"/>
-            <File Source="$(var.ssl_path)\libeay32.dll"/>
-            <File Source="$(var.ssl_path)\ssleay32.dll"/>
+            <File Source="$(var.ssl_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
+            <File Source="$(var.ssl_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Network.dll"/>

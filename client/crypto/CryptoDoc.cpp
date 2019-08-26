@@ -219,7 +219,11 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 	if(encrypt)
 	{
 #ifdef WIN32
+#if OPENSSL_VERSION_NUMBER >= 0x10101000L 
+		RAND_poll();
+#else
 		RAND_screen();
+#endif
 #else
 		RAND_load_file("/dev/urandom", 1024);
 #endif
