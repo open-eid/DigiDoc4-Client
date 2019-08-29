@@ -14,11 +14,39 @@ include_directories( ${CMAKE_SOURCE_DIR} )
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES MainWindow.ui dialogs/AddRecipients.ui dialogs/CertificateHistory.ui dialogs/CertificateDetails.ui dialogs/FirstRun.ui dialogs/KeyDialog.ui dialogs/MobileDialog.ui dialogs/MobileProgress.ui 
-	dialogs/PinPopup.ui dialogs/PinUnblock.ui dialogs/RoleAddressDialog.ui dialogs/SettingsDialog.ui dialogs/SignatureDialog.ui dialogs/WaitDialog.ui dialogs/WarningDialog.ui
-	widgets/Accordion.ui widgets/AccordionTitle.ui widgets/AddressItem.ui widgets/CardWidget.ui widgets/ContainerPage.ui widgets/FileItem.ui 
-	widgets/InfoStack.ui widgets/ItemList.ui widgets/MainAction.ui widgets/NoCardInfo.ui widgets/OtherData.ui
-	widgets/PageIcon.ui widgets/SignatureItem.ui widgets/VerifyCert.ui widgets/WarningItem.ui widgets/WarningRibbon.ui )
+qt5_wrap_ui( SOURCES
+	MainWindow.ui
+	dialogs/AddRecipients.ui
+	dialogs/CertificateDetails.ui
+	dialogs/CertificateHistory.ui
+	dialogs/FirstRun.ui
+	dialogs/KeyDialog.ui
+	dialogs/MobileDialog.ui
+	dialogs/MobileProgress.ui
+	dialogs/PinPopup.ui
+	dialogs/PinUnblock.ui
+	dialogs/RoleAddressDialog.ui
+	dialogs/SettingsDialog.ui
+	dialogs/SignatureDialog.ui
+	dialogs/WaitDialog.ui
+	dialogs/WarningDialog.ui
+	widgets/Accordion.ui
+	widgets/AccordionTitle.ui
+	widgets/AddressItem.ui
+	widgets/CardWidget.ui
+	widgets/ContainerPage.ui
+	widgets/FileItem.ui
+	widgets/InfoStack.ui
+	widgets/ItemList.ui
+	widgets/MainAction.ui
+	widgets/NoCardInfo.ui
+	widgets/OtherData.ui
+	widgets/PageIcon.ui
+	widgets/SignatureItem.ui
+	widgets/VerifyCert.ui
+	widgets/WarningItem.ui
+	widgets/WarningRibbon.ui
+)
 
 add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${PROGNAME}.rc
@@ -51,8 +79,8 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/MobileDialog.cpp
 	dialogs/MobileProgress.cpp
 	dialogs/PinPopup.cpp
-	dialogs/RoleAddressDialog.cpp
 	dialogs/PinUnblock.cpp
+	dialogs/RoleAddressDialog.cpp
 	dialogs/SettingsDialog.cpp
 	dialogs/SignatureDialog.cpp
 	dialogs/WaitDialog.cpp
@@ -82,7 +110,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/WarningItem.cpp
 	widgets/WarningList.cpp
 	widgets/WarningRibbon.cpp
-	)
+)
 add_manifest( ${PROGNAME} )
 
 target_link_libraries( ${PROGNAME}
@@ -167,9 +195,14 @@ elseif(WIN32)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
 		set(SSL_PATH "C:/OpenSSL-Win64/bin")
+		set(OPENSSL_SUFFIX "-x64")
 	else()
 		set(PLATFORM x86)
 		set(SSL_PATH "C:/OpenSSL-Win32/bin")
+		set(OPENSSL_SUFFIX "")
+	endif()
+	if(OPENSSL_ROOT_DIR)
+		set(SSL_PATH "${OPENSSL_ROOT_DIR}/bin")
 	endif()
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
@@ -226,8 +259,8 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROGNAME}> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/qt.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/798.p12 appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libeay32.dll appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/ssleay32.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-1_1${OPENSSL_SUFFIX}.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-1_1${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib1.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/xerces-c_3_2.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/XalanMessages_1_11.dll appx
