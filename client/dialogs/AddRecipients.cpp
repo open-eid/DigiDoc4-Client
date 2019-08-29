@@ -123,7 +123,7 @@ void AddRecipients::addAllRecipientToRightPane()
 
 	for(auto it = leftList.begin(); it != leftList.end(); ++it)
 	{
-		if(!rightList.contains(it.key()))
+		if(!rightList.contains(it.value()->getKey().cert))
 		{
 			addRecipientToRightPane(it.value());
 			history << toHistory(it.value()->getKey().cert);
@@ -187,14 +187,13 @@ void AddRecipients::addRecipientFromHistory()
 
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 {
-	QString friendlyName = SslCertificate(cert).friendlyName();
-	if(leftList.contains(friendlyName))
+	if(leftList.contains(cert))
 		return nullptr;
 
 	AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
-	leftList.insert(friendlyName, leftItem);
+	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
-	bool contains = rightList.contains(friendlyName);
+	bool contains = rightList.contains(cert);
 	leftItem->disable(contains);
 	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
 
@@ -212,7 +211,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 {
 	AddressItem *leftItem = qobject_cast<AddressItem *>(toAdd);
 
-	if (rightList.contains(SslCertificate(leftItem->getKey().cert).friendlyName()))
+	if (rightList.contains(leftItem->getKey().cert))
 		return;
 
 	if(update)
@@ -229,7 +228,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 			if(dlg.result() != QMessageBox::Yes)
 				return;
 		}
-		QList<QSslError> errors = QSslCertificate::verify(QList<QSslCertificate>() << leftItem->getKey().cert);
+		QList<QSslError> errors = QSslCertificate::verify({ leftItem->getKey().cert });
 		errors.removeAll(QSslError(QSslError::CertificateExpired, leftItem->getKey().cert));
 		if(!errors.isEmpty())
 		{
@@ -243,7 +242,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 	}
 	updated = update;
 
-	rightList.append(SslCertificate(leftItem->getKey().cert).friendlyName());
+	rightList.append(leftItem->getKey().cert);
 
 	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
 	ui->rightPane->addWidget(rightItem);
@@ -288,10 +287,9 @@ void AddRecipients::initAddressItems(const std::vector<Item *> &items)
 	for(Item *item: items)
 	{
 		AddressItem *leftItem = new AddressItem((qobject_cast<AddressItem *>(item))->getKey(), ui->leftPane);
-		QString friendlyName = SslCertificate(leftItem->getKey().cert).friendlyName();
 
 		// Add to left pane
-		leftList.insert(friendlyName, leftItem);
+		leftList.insert(leftItem->getKey().cert, leftItem);
 		ui->leftPane->addWidget(leftItem);
 
 		leftItem->disable(true);
@@ -347,15 +345,13 @@ void AddRecipients::rememberCerts(const QList<HistoryCertData>& selectedCertData
 void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 {
 	AddressItem *rightItem = static_cast<AddressItem *>(toRemove);
-	QString friendlyName = SslCertificate(rightItem->getKey().cert).friendlyName();
-
-	auto it = leftList.find(friendlyName);
+	auto it = leftList.find(rightItem->getKey().cert);
 	if(it != leftList.end())
 	{
 		it.value()->disable(false);
 		it.value()->showButton(AddressItem::Add);
 	}
-	rightList.removeAll(friendlyName);
+	rightList.removeAll(rightItem->getKey().cert);
 	updated = true;
 	ui->confirm->setDisabled(rightList.isEmpty());
 }
@@ -444,7 +440,6 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 	for(const QSslCertificate &k: result)
 	{
 		SslCertificate c(k);
-		
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
 			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
