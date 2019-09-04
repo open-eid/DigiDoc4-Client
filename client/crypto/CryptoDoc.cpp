@@ -21,11 +21,11 @@
 
 #include "client/Application.h"
 #include "client/QSigner.h"
+#include "client/SslCertificate.h"
 #include "client/dialogs/FileDialog.h"
 #include "client/dialogs/WarningDialog.h"
 
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
 #include <QDebug>

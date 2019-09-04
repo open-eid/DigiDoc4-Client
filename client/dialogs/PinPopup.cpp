@@ -20,11 +20,11 @@
 #include "PinPopup.h"
 #include "ui_PinPopup.h"
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "effects/Overlay.h"
 #include "dialogs/WaitDialog.h"
 
 #include <common/Common.h>
-#include <common/SslCertificate.h>
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QMovie>

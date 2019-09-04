@@ -22,7 +22,7 @@
 #include "crypto/CryptoDoc.h"
 #include "widgets/Item.h"
 
-#include <common/SslCertificate.h>
+#include "SslCertificate.h"
 
 #include <memory>
 

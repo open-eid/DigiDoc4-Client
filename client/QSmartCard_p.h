@@ -19,8 +19,9 @@
 
 #include "QSmartCard.h"
 
+#include "SslCertificate.h"
+
 #include <common/QPCSC.h>
-#include <common/SslCertificate.h>
 
 #include <QtCore/QStringList>
 #include <QtCore/QTextCodec>

@@ -22,8 +22,6 @@
 
 #include "QCardInfo.h"
 
-#include <common/SslCertificate.h>
-
 Accordion::Accordion(QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::Accordion)

@@ -32,7 +32,6 @@ class QWin;
 #include "QPKCS11.h"
 #include "widgets/CardWidget.h"
 #include <common/QPCSC.h>
-#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
 #include <digidocpp/crypto/X509Cert.h>

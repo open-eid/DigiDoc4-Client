@@ -21,9 +21,9 @@
 
 #include "Application.h"
 #include "QSigner.h"
+#include "SslCertificate.h"
 
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
 #include <QtCore/QDateTime>

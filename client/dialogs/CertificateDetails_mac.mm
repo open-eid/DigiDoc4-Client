@@ -19,7 +19,7 @@
 
 #include "CertificateDetails.h"
 
-#include <common/SslCertificate.h>
+#include "SslCertificate.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>

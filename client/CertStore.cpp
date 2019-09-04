@@ -19,8 +19,7 @@
 
 #include "CertStore.h"
 
-#include <common/SslCertificate.h>
-
+#include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslKey>
 
 #include <qt_windows.h>

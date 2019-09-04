@@ -22,11 +22,11 @@
 
 #include "Application.h"
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "dialogs/SignatureDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/DateTime.h>
-#include <common/SslCertificate.h>
 
 #include <QtCore/QTextStream>
 #include <QtGui/QFontMetrics>

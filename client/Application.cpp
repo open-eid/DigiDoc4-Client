@@ -31,7 +31,6 @@
 
 #include <common/Configuration.h>
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 
 #include <digidocpp/Container.h>
 #include <digidocpp/XmlConf.h>

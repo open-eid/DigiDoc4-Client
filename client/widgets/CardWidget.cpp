@@ -24,8 +24,6 @@
 #include "common_enums.h"
 #include "Styles.h"
 
-#include <common/SslCertificate.h>
-
 #include <QSvgWidget>
 
 using namespace ria::qdigidoc4;

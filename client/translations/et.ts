@@ -1546,8 +1546,8 @@ ID-KAARDIGA</translation>
         <translation>E-posti suunamise aktiveerimine õnnestus.</translation>
     </message>
     <message>
-        <source>Unsupported token</source>
-        <translation type="unfinished"></translation>
+        <source>The card in the card reader is not an Estonian ID-card</source>
+        <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
     </message>
 </context>
 <context>
@@ -2919,6 +2919,81 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>Allkirja detailide vaatamiseks vajuta space või enter</translation>
+    </message>
+</context>
+<context>
+    <name>SslCertificate</name>
+    <message>
+        <source>All application policies</source>
+        <translation>Kõik kasutusalad</translation>
+    </message>
+    <message>
+        <source>Proves your identity to a remote computer</source>
+        <translation>Tuvastab isikut serverarvutile</translation>
+    </message>
+    <message>
+        <source>Protects email messages</source>
+        <translation>Kaitseb e-posti sõnumeid</translation>
+    </message>
+    <message>
+        <source>OCSP signing</source>
+        <translation>OCSP allkirjastamine</translation>
+    </message>
+    <message>
+        <source>Digital signature</source>
+        <translation>Digitaalne allkiri</translation>
+    </message>
+    <message>
+        <source>Non repudiation</source>
+        <translation>Salgamise vääramine</translation>
+    </message>
+    <message>
+        <source>Key encipherment</source>
+        <translation>Võtme krüptimine</translation>
+    </message>
+    <message>
+        <source>Data encipherment</source>
+        <translation>Andmete krüptimine</translation>
+    </message>
+    <message>
+        <source>Key agreement</source>
+        <translation>Aktsepteeritud võti</translation>
+    </message>
+    <message>
+        <source>Key certificate sign</source>
+        <translation>Võtme sertifikaadi allkiri</translation>
+    </message>
+    <message>
+        <source>CRL sign</source>
+        <translation>CRL allkiri</translation>
+    </message>
+    <message>
+        <source>Encipher only</source>
+        <translation>Ainult krüptimine</translation>
+    </message>
+    <message>
+        <source>Decipher only</source>
+        <translation>Ainult dekrüptimine</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-KAART</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Stamping</source>
+        <translation>Ajatempel</translation>
+    </message>
+    <message>
+        <source>Ensures the identity of a remote computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 <context>

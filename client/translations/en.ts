@@ -1546,8 +1546,8 @@ ID-CARD</translation>
         <translation>Succeeded activating email forwards.</translation>
     </message>
     <message>
-        <source>Unsupported token</source>
-        <translation type="unfinished"></translation>
+        <source>The card in the card reader is not an Estonian ID-card</source>
+        <translation>The card in the card reader is not an Estonian ID-card</translation>
     </message>
 </context>
 <context>
@@ -2919,6 +2919,81 @@ Additional licenses and components</translation>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>To view signature details press enter or space</translation>
+    </message>
+</context>
+<context>
+    <name>SslCertificate</name>
+    <message>
+        <source>All application policies</source>
+        <translation>All application policies</translation>
+    </message>
+    <message>
+        <source>Proves your identity to a remote computer</source>
+        <translation>Proves your identity to a remote computer</translation>
+    </message>
+    <message>
+        <source>Protects email messages</source>
+        <translation>Protects email messages</translation>
+    </message>
+    <message>
+        <source>OCSP signing</source>
+        <translation>OCSP signing</translation>
+    </message>
+    <message>
+        <source>Digital signature</source>
+        <translation>Digital signature</translation>
+    </message>
+    <message>
+        <source>Non repudiation</source>
+        <translation>Non repudiation</translation>
+    </message>
+    <message>
+        <source>Key encipherment</source>
+        <translation>Key encipherment</translation>
+    </message>
+    <message>
+        <source>Data encipherment</source>
+        <translation>Data encipherment</translation>
+    </message>
+    <message>
+        <source>Key agreement</source>
+        <translation>Key agreement</translation>
+    </message>
+    <message>
+        <source>Key certificate sign</source>
+        <translation>Key certificate signature</translation>
+    </message>
+    <message>
+        <source>CRL sign</source>
+        <translation>CRL signature</translation>
+    </message>
+    <message>
+        <source>Encipher only</source>
+        <translation>Encipher only</translation>
+    </message>
+    <message>
+        <source>Decipher only</source>
+        <translation>Decipher only</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-CARD</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Unknown</translation>
+    </message>
+    <message>
+        <source>Time Stamping</source>
+        <translation>Time Stamping</translation>
+    </message>
+    <message>
+        <source>Ensures the identity of a remote computer</source>
+        <translation>Ensures the identity of a remote computer</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
     </message>
 </context>
 <context>

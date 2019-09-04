@@ -31,7 +31,6 @@
 #include "effects/Overlay.h"
 
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 #include <common/IKValidator.h>
 

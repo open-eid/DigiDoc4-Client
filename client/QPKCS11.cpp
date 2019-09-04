@@ -19,10 +19,10 @@
 
 #include "QPKCS11_p.h"
 
+#include "SslCertificate.h"
 #include "dialogs/PinPopup.h"
 #include <common/QPCSC.h>
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 #ifndef NO_PKCS11_CRYPTO
 #include <crypto/CryptoDoc.h>
 #endif

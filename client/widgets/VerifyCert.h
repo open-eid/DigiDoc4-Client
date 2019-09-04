@@ -22,7 +22,7 @@
 #include "widgets/StyledWidget.h"
 
 #include "QSmartCard.h"
-#include <common/SslCertificate.h>
+#include "SslCertificate.h"
 
 namespace Ui {
 class VerifyCert;
