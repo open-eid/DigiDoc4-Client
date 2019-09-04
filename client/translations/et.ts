@@ -2307,7 +2307,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Fail mida soovid lisada on tühi. Kas soovid jätkata?</translation>
+        <translation>Fail, mida soovid lisada, on tühi. Kas soovid jätkata?</translation>
     </message>
 </context>
 <context>
