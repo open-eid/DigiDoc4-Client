@@ -85,7 +85,9 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->setupUi(this);
 	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
-	ui->version->setFont( Styles::font( Styles::Regular, 12 ) );
+	QFont version = Styles::font(Styles::Regular, 12);
+	version.setUnderline(true);
+	ui->version->setFont(version);
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 

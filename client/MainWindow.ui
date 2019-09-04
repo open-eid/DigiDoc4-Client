@@ -465,7 +465,11 @@ background-color: #023664;
          <font>
           <family>Roboto</family>
           <pointsize>12</pointsize>
+          <underline>true</underline>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
