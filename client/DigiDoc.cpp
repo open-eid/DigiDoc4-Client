@@ -663,7 +663,7 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	case Exception::CertificateUnknown:
 		qApp->showWarning(tr("Certificate status unknown"), causes.join('\n')); break;
 	case Exception::OCSPTimeSlot:
-		qApp->showWarning(tr("Check your computer time"), causes.join('\n')); break;
+		qApp->showWarning(tr("Please check your computer time. <a href='https://id.ee/index.php?id=39513'>Additional information</a>"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
 			"Check the settings of your server access certificate."), causes.join('\n')); break;
