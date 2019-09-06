@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
+        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -743,7 +743,7 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     <message>
         <source>Download file</source>
         <extracomment>accessible</extracomment>
-        <translation>Lae fail alla</translation>
+        <translation>Laadi fail alla</translation>
     </message>
     <message>
         <source>To open file press space or enter</source>
@@ -1108,7 +1108,7 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     </message>
     <message>
         <source>Download all files</source>
-        <translation>Lae kõik failid alla</translation>
+        <translation>Laadi kõik failid alla</translation>
     </message>
 </context>
 <context>
@@ -1262,7 +1262,7 @@ E-TEMPLIGA</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
-        <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
+        <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
