@@ -35,8 +35,6 @@ public:
 	explicit CardPopup(const QSet<QString> &cards, const QString &selectedCard,
 		const QMap<QString, QSharedPointer<QCardInfo>> &cache, QWidget *parent = nullptr);
 
-	void update(const QMap<QString, QSharedPointer<QCardInfo>> &cache);
-
 signals:
 	void activated( const QString &card );
 

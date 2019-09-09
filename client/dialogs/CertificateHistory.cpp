@@ -39,7 +39,7 @@ QString HistoryCertData::typeName() const
 	case CertificateHistory::DigiID:
 		return CertificateHistory::tr("Digi-ID");
 	case CertificateHistory::TEMPEL:
-		return CertificateHistory::tr("e-Seal");
+		return CertificateHistory::tr("Certificate for Encryption");
 	case CertificateHistory::IDCard:
 		return CertificateHistory::tr("ID-card");
 	default:
