@@ -184,7 +184,7 @@ void FileList::saveAll()
 			b = dlg.exec();
 
 			if(b == QDialog::Rejected)
-				break;
+				continue;
 			if( b == QMessageBox::No )
 			{
 				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
