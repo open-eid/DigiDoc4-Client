@@ -238,12 +238,16 @@
         <translation>DigiDoc4 client</translation>
     </message>
     <message>
-        <source>Add file</source>
-        <translation>Add file</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>File you want to add is empty. Do you want to continue?</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
     </message>
 </context>
 <context>
@@ -2302,12 +2306,16 @@ Control code: %1</translation>
         <translation>Failed remove document from container</translation>
     </message>
     <message>
-        <source>Add file</source>
-        <translation>Add file</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>File you want to add is empty. Do you want to continue?</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
     </message>
 </context>
 <context>

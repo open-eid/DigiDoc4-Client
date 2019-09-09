@@ -238,12 +238,16 @@
         <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
-        <source>Add file</source>
-        <translation>Добавить файлы</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
     </message>
 </context>
 <context>
@@ -2305,12 +2309,16 @@ Kонтрольный код: %1</translation>
         <translation>Не удается удалить файл из контейнера</translation>
     </message>
     <message>
-        <source>Add file</source>
-        <translation>Добавить файлы</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
     </message>
 </context>
 <context>
