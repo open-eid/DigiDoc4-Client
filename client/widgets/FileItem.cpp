@@ -48,9 +48,7 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
 	: FileItem(state, parent)
 {
-	const QFileInfo f(file);
-	fileName = f.fileName();
-
+	fileName = QFileInfo(file).fileName();
 	setMouseTracking(true);
 	width = ui->fileName->fontMetrics().width(fileName);
 	setFileName(true);
@@ -94,6 +92,14 @@ bool FileItem::event(QEvent *event)
 QString FileItem::getFile()
 {
 	return fileName;
+}
+
+QWidget* FileItem::initTabOrder(QWidget *item)
+{
+	setTabOrder(item, ui->fileName);
+	setTabOrder(ui->fileName, ui->download);
+	setTabOrder(ui->download, ui->remove);
+	return ui->remove;
 }
 
 void FileItem::setFileName(bool force)

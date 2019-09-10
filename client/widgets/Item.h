@@ -27,9 +27,9 @@ class Item : public StyledWidget
 
 public:
 	explicit Item(QWidget *parent = nullptr);
-	virtual ~Item();
 
 	virtual QString id() const;
+	virtual QWidget* initTabOrder(QWidget *item);
 
 public slots:
 	virtual void details();

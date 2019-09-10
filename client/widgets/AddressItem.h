@@ -52,6 +52,7 @@ public:
 	void disable(bool disable);
 	const CKey& getKey() const;
 	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) override;
+	QWidget* initTabOrder(QWidget *item) override;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
 	void update(const QString& name, const QString& code, SslCertificate::CertType type, const QString& strDate, ShowToolButton show);

@@ -391,6 +391,20 @@ QPushButton:hover:!pressed {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>btnPicture</tabstop>
+  <tabstop>labelGivenNames</tabstop>
+  <tabstop>valueGivenNames</tabstop>
+  <tabstop>labelSurname</tabstop>
+  <tabstop>valueSurname</tabstop>
+  <tabstop>labelPersonalCode</tabstop>
+  <tabstop>valuePersonalCode</tabstop>
+  <tabstop>labelCitizenship</tabstop>
+  <tabstop>valueCitizenship</tabstop>
+  <tabstop>labelSerialNumber</tabstop>
+  <tabstop>valueSerialNumber</tabstop>
+  <tabstop>valueExpiryDate</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

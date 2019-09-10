@@ -34,6 +34,7 @@ public:
 
 	ria::qdigidoc4::WarningType getError() const;
 	QString id() const override;
+	QWidget* initTabOrder(QWidget *item) override;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
 

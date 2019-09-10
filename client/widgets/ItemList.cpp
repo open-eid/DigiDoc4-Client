@@ -37,6 +37,8 @@ ItemList::ItemList(QWidget *parent)
 	ui->download->hide();
 	ui->count->setFont(Styles::font(Styles::Condensed, 12));
 	ui->count->hide();
+	tabIndex = ui->btnFind;
+
 	connect(this, &ItemList::idChanged, this, [this](const QString &code, const QString &mobile, const QByteArray& serial)
 		{idCode = code; mobileCode = mobile; serialNumber = serial;});
 }
@@ -119,6 +121,7 @@ void ItemList::addWidget(Item *widget, int index)
 	widget->idChanged(idCode, mobileCode, serialNumber);
 	widget->show();
 	items.push_back(widget);
+	tabIndex = widget->initTabOrder(tabIndex);
 }
 
 void ItemList::addWidget(Item *widget)
@@ -130,6 +133,7 @@ void ItemList::clear()
 {
 	ui->download->hide();
 	ui->count->hide();
+	tabIndex = ui->btnFind;
 
 	if(header)
 	{

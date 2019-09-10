@@ -146,6 +146,16 @@ void AddressItem::idChanged(const QString& cardCode, const QString& /*mobileCode
 	setName();
 }
 
+QWidget* AddressItem::initTabOrder(QWidget *item)
+{
+	setTabOrder(item, ui->name);
+	setTabOrder(ui->name, ui->idType);
+	setTabOrder(ui->idType, ui->remove);
+	setTabOrder(ui->remove, ui->added);
+	setTabOrder(ui->added, ui->add);
+	return ui->add;
+}
+
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
 	KeyDialog dlg(key, this);

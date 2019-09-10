@@ -22,12 +22,9 @@
 
 Item::Item(QWidget *parent)
 : StyledWidget(parent)
-{
+{}
 
-}
-
-Item::~Item() {}
-
-QString Item::id() const { return ""; }
-void Item::idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) {}
+QString Item::id() const { return QString(); }
+void Item::idChanged(const QString & /* cardCode */, const QString & /* mobileCode */, const QByteArray & /* serialNumber */) {}
+QWidget* Item::initTabOrder(QWidget * /* item */) { return this; }
 void Item::details() {}

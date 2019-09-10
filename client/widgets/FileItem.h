@@ -38,6 +38,7 @@ public:
 	~FileItem() final;
 
 	QString getFile();
+	QWidget* initTabOrder(QWidget *item) final;
 	void stateChange(ria::qdigidoc4::ContainerState state) override;
 
 signals:
