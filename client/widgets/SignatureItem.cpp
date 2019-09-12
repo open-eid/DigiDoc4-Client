@@ -110,13 +110,13 @@ void SignatureItem::init()
 		ui->icon->setPixmap(QStringLiteral(":/images/icon_Allkiri_small.svg"));
 	sa << label << " ";
 	sc << "<span style=\"font-weight:normal;\">";
-	auto isValid = [&isSignature]() {
+	auto isValid = [&isSignature] {
 		return isSignature ? tr("is valid", "Signature") : tr("is valid", "Timestamp");
 	};
-	auto isNotValid = [&isSignature]() {
+	auto isNotValid = [&isSignature] {
 		return isSignature ? tr("is not valid", "Signature") : tr("is not valid", "Timestamp");
 	};
-	auto isUnknown = [&isSignature]() {
+	auto isUnknown = [&isSignature] {
 		return isSignature ? tr("is unknown", "Signature") : tr("is unknown", "Timestamp");
 	};
 	switch( signatureValidity )
