@@ -330,7 +330,6 @@ void MobileProgress::sslErrors(QNetworkReply *reply, const QList<QSslError> &err
 				ignore << e;
 				break;
 			}
-			Q_FALLTHROUGH();
 		default:
 			qWarning() << tr("SSL Error:") << e.error() << e.certificate().subjectInfo( "CN" );
 			msg << e.errorString();
@@ -339,7 +338,10 @@ void MobileProgress::sslErrors(QNetworkReply *reply, const QList<QSslError> &err
 	}
 	reply->ignoreSslErrors(ignore);
 	if( !msg.empty() )
+	{
 		labelError->setText(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
+		code->hide();
+	}
 }
 
 void MobileProgress::stop()
