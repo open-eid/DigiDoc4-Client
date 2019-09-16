@@ -90,6 +90,7 @@ private:
 	QString headerText;
 	QString listText;
 	QByteArray serialNumber;
+	QWidget *tabIndex;
 
 	friend class AddRecipients;
 };

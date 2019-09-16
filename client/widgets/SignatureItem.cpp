@@ -260,6 +260,15 @@ QString SignatureItem::id() const
 	return ui->signature.id();
 }
 
+QWidget* SignatureItem::initTabOrder(QWidget *item)
+{
+	setTabOrder(item, ui->name);
+	setTabOrder(ui->name, ui->role);
+	setTabOrder(ui->role, ui->idSignTime);
+	setTabOrder(ui->idSignTime, ui->remove);
+	return  ui->remove;
+}
+
 bool SignatureItem::isInvalid() const
 {
 	return ui->invalid;
