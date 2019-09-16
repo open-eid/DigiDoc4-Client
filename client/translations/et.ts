@@ -234,10 +234,6 @@
         <translation>Faili &apos;%1&apos; salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>Fail mida soovid lisada on tühi. Kas soovid jätkata?</translation>
     </message>
@@ -289,6 +285,10 @@
     <message>
         <source>Certificate for Encryption</source>
         <translation>Krüpteerimissertifikaat</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Isikutuvastamise sertifikaat</translation>
     </message>
 </context>
 <context>
@@ -980,20 +980,12 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>RIIK</translation>
     </message>
     <message>
-        <source>DEVICE</source>
-        <translation>SEADE</translation>
-    </message>
-    <message>
         <source>SAVE THE PICTURE</source>
         <translation>SALVESTA PILT</translation>
     </message>
     <message>
         <source>You&apos;re using Digital identity card</source>
         <translation>See on digitaalne isikutunnistus</translation>
-    </message>
-    <message>
-        <source>You&apos;re using e-Seal</source>
-        <translation>See on e-Tempel</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -1236,9 +1228,8 @@ E-TEMPLIGA</translation>
 ID-KAARDIGA</translation>
     </message>
     <message>
-        <source>DecryptToken</source>
-        <translation>DEKRÜPTEERI
-E-TEMPLIGA</translation>
+        <source>DECRYPT</source>
+        <translation>DEKRÜPTEERI</translation>
     </message>
     <message>
         <source>Token selection</source>
@@ -1512,10 +1503,6 @@ E-TEMPLIGA</translation>
     <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
-    </message>
-    <message>
-        <source>Redundant certificates have been successfully removed.</source>
-        <translation>Üleliigsed sertifikaadid edukalt eemaldatud.</translation>
     </message>
     <message>
         <source>Check internet connection</source>
@@ -2298,10 +2285,6 @@ Kontrollkood: %1</translation>
 <context>
     <name>SDocumentModel</name>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
@@ -2642,6 +2625,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Üleliigsed sertifikaadid edukalt eemaldatud.</translation>
     </message>
 </context>
 <context>
@@ -3013,6 +3000,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>key has been used %1 times</source>
         <comment>pin2</comment>
         <translation>Sertifikaati on kasutatud %1 korda</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Krüpteerimissertifikaat</translation>
     </message>
 </context>
 <context>

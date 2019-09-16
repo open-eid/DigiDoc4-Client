@@ -22,9 +22,6 @@
 #include "Application.h"
 #include "QCardLock.h"
 #include "QSigner.h"
-#ifdef Q_OS_WIN
-#include "CertStore.h"
-#endif
 #include "dialogs/CertificateDetails.h"
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningList.h"
@@ -44,11 +41,8 @@ using namespace ria::qdigidoc4;
 void MainWindow::changePin1Clicked( bool isForgotPin, bool isBlockedPin )
 {
 	QSmartCardData::PinType type = QSmartCardData::Pin1Type;
-
-	if( isForgotPin )
-		pinUnblock( type, isForgotPin );
-	else if( isBlockedPin )
-		pinUnblock( type );
+	if(isForgotPin || isBlockedPin)
+		pinUnblock(type, isForgotPin);
 	else
 		pinPukChange( type );
 }
@@ -56,11 +50,8 @@ void MainWindow::changePin1Clicked( bool isForgotPin, bool isBlockedPin )
 void MainWindow::changePin2Clicked( bool isForgotPin, bool isBlockedPin )
 {
 	QSmartCardData::PinType type = QSmartCardData::Pin2Type;
-
-	if( isForgotPin )
-		pinUnblock( type, isForgotPin );
-	else if( isBlockedPin )
-		pinUnblock( type );
+	if(isForgotPin || isBlockedPin)
+		pinUnblock(type, isForgotPin);
 	else
 		pinPukChange( type );
 }
@@ -75,8 +66,8 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 	QString text = tr("%1 has been changed and the certificate has been unblocked!")
 			.arg( QSmartCardData::typeString( type ) );
 
-	if( validateCardError( type, 1025,
-		qApp->smartcard()->pinUnblock( type, isForgotPin, this ) ) )
+	if(validateCardError(type, QSmartCardData::PukType,
+		qApp->smartcard()->pinUnblock(type, isForgotPin, this)))
 	{
 		if( isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
@@ -101,8 +92,8 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 
 void MainWindow::pinPukChange( QSmartCardData::PinType type )
 {
-	if( validateCardError( type, 1024,
-		qApp->smartcard()->pinChange( type, this ) ) )
+	if(validateCardError(type, type,
+		qApp->smartcard()->pinChange(type, this)))
 	{
 		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
@@ -165,9 +156,8 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 	return buffer;
 }
 
-bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err )
+bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err)
 {
-	QSmartCardData::PinType t = flags == 1025 ? QSmartCardData::PukType : type;
 	QSmartCardData td = qApp->smartcard()->data();
 	switch( err )
 	{
@@ -205,14 +195,7 @@ bool MainWindow::validateCardError( QSmartCardData::PinType type, int flags, QSm
 			qApp->smartcard()->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
 		break;
 	default:
-		switch( flags )
-		{
-		case SSLConnect::ActivateEmails: showNotification( tr("Failed activating email forwards.") ); break;
-		case SSLConnect::EmailInfo: showNotification( tr("Failed loading email settings.") ); break;
-		case SSLConnect::PictureInfo: showNotification( tr("Loading picture failed.") ); break;
-		default:
-			showNotification( tr( "Changing %1 failed" ).arg( QSmartCardData::typeString( type ) ) ); break;
-		}
+		showNotification(tr("Changing %1 failed").arg(QSmartCardData::typeString(type))); break;
 		break;
 	}
 	return false;
@@ -224,24 +207,6 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 		isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739"),
 		isSuccess ? QStringLiteral("#8CC368") : QStringLiteral("#F8DDA7"), 110);
 	notification->start(msg, 750, 15000, 600);
-}
-
-void MainWindow::removeOldCert()
-{
-#ifdef Q_OS_WIN
-	// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
-	QSmartCardData data = qApp->smartcard()->data();
-	CertStore s;
-	for(const QSslCertificate &c: s.list())
-	{
-		if(c == data.authCert() || c == data.signCert())
-			continue;
-		if(c.subjectInfo(QSslCertificate::Organization).join("").contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
-			c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
-			s.remove( c );
-	}
-	qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
-#endif
 }
 
 void MainWindow::updateCardWarnings()

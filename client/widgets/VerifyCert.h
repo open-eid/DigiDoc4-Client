@@ -28,8 +28,6 @@ namespace Ui {
 class VerifyCert;
 }
 
-class QSvgWidget;
-
 class VerifyCert : public StyledWidget
 {
 	Q_OBJECT
@@ -42,14 +40,11 @@ public:
 	void clear();
 	void update(QSmartCardData::PinType type, const QSmartCard *smartCard);
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
-	void update(bool warning = false);
+	void update();
 
 signals:
 	void changePinClicked( bool isForgotPin, bool isBlockedPin );
 	void certDetailsClicked( QString link );
-
-public slots:
-	void showWarningIcon();
 
 protected:
 	void enterEvent( QEvent * event ) final;
@@ -64,10 +59,6 @@ private:
 	bool isValidCert = false;
 	bool isBlockedPin = false;
 	QString borders;
-
-	QSvgWidget* greenIcon;
-	QSvgWidget* orangeIcon;
-	QSvgWidget* redIcon;
 
 	QSmartCardData::PinType pinType = QSmartCardData::Pin1Type;
 	QSmartCardData cardData;

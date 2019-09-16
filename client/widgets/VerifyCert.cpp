@@ -28,7 +28,10 @@
 #include <QtNetwork/QSslKey>
 #include <QSvgWidget>
 
-VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::VerifyCert)
+VerifyCert::VerifyCert(QWidget *parent)
+	: StyledWidget(parent)
+	, ui(new Ui::VerifyCert)
+	, borders(QStringLiteral(" border: solid #DFE5E9; border-width: 1px 0px 0px 0px; "))
 {
 	ui->setupUi( this );
 
@@ -42,23 +45,12 @@ VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::Verify
 		emit certDetailsClicked(QSmartCardData::typeString(pinType));
 	});
 
-	greenIcon = new QSvgWidget(QStringLiteral(":/images/icon_check.svg"), ui->nameRight);
-	greenIcon->resize(12, 13);
-	greenIcon->move(5, 5);
-	greenIcon->hide();
-	greenIcon->setStyleSheet(QStringLiteral("border: none;"));
-
-	orangeIcon = new QSvgWidget(QStringLiteral(":/images/icon_alert_orange.svg"), ui->nameRight);
-	orangeIcon->resize(13, 13);
-	orangeIcon->move(5, 5);
-	orangeIcon->hide();
-	orangeIcon->setStyleSheet(QStringLiteral("border: none;"));
-
-	redIcon = new QSvgWidget(QStringLiteral(":/images/icon_alert_red.svg"), ui->nameRight);
-	redIcon->resize(13, 13);
-	redIcon->move(5, 5);
-	redIcon->hide();
-	redIcon->setStyleSheet(QStringLiteral("border: none;"));
+	ui->greenIcon->load(QStringLiteral(":/images/icon_check.svg"));
+	ui->orangeIcon->load(QStringLiteral(":/images/icon_alert_orange.svg"));
+	ui->redIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
+	ui->greenIcon->hide();
+	ui->orangeIcon->hide();
+	ui->redIcon->hide();
 
 	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
@@ -66,11 +58,14 @@ VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::Verify
 	QFont regular12 = Styles::font( Styles::Regular, 12 );
 	regular12.setUnderline(true);
 	ui->forgotPinLink->setFont( regular12 );
+	ui->forgotPinLink->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	ui->widgetLayout->setAlignment(ui->forgotPinLink, Qt::AlignCenter);
 	ui->details->setFont( regular12 );
+	ui->details->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	ui->widgetLayout->setAlignment(ui->details, Qt::AlignCenter);
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
 	ui->tempelText->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->tempelText->hide();
-	borders = QStringLiteral(" border: solid #DFE5E9; border-width: 1px 0px 0px 0px; ");
 }
 
 VerifyCert::~VerifyCert()
@@ -110,7 +105,7 @@ void VerifyCert::update(QSmartCardData::PinType type, const SslCertificate &cert
 	update();
 }
 
-void VerifyCert::update(bool showWarning)
+void VerifyCert::update()
 {
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount( QSmartCardData::PukType ) == 0;
 	bool isTempelType = c.type() & SslCertificate::TempelType;
@@ -150,13 +145,17 @@ void VerifyCert::update(bool showWarning)
 	{
 	case QSmartCardData::Pin1Type:
 	case QSmartCardData::Pin2Type:
-		ui->name->setText(pinType == QSmartCardData::Pin1Type ? tr("Authentication certificate") : tr("Signing certificate"));
+		if(pinType == QSmartCardData::Pin2Type)
+			ui->name->setText(tr("Signing certificate"));
+		else if(c.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+			ui->name->setText(tr("Authentication certificate"));
+		else
+			ui->name->setText(tr("Certificate for Encryption"));
 		ui->validUntil->setText(txt);
 		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN%1").arg(pinType));
 		ui->changePIN->setHidden(isBlockedPin || isTempelType);
 		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
 		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()));
-		ui->details->setText(tr("Check the details of the certificate"));
 		ui->error->setText(
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
 				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
@@ -201,9 +200,9 @@ void VerifyCert::update(bool showWarning)
 					"background-color: #e09797;"
 					"color: #5c1c1c;"
 					);
-		greenIcon->hide();
-		orangeIcon->hide();
-		redIcon->show();
+		ui->greenIcon->hide();
+		ui->orangeIcon->hide();
+		ui->redIcon->show();
 	}
 	else if( isBlockedPin )
 	{
@@ -223,9 +222,9 @@ void VerifyCert::update(bool showWarning)
 					"border-radius: 2px;"
 					"background-color: #F8DDA7;"
 					);
-		greenIcon->hide();
-		redIcon->hide();
-		orangeIcon->show();
+		ui->greenIcon->hide();
+		ui->redIcon->hide();
+		ui->orangeIcon->show();
 	}
 	else
 	{
@@ -235,9 +234,8 @@ void VerifyCert::update(bool showWarning)
 		ui->verticalSpacerAboveBtn->changeSize(20, 29 - decrease);
 		ui->verticalSpacerBelowBtn->changeSize(20, 34 - decrease);
 		changePinStyle(QStringLiteral("#FFFFFF"));
-		redIcon->hide();
-		orangeIcon->setVisible(showWarning && pinType != QSmartCardData::PukType);
-		greenIcon->setVisible(!showWarning && pinType != QSmartCardData::PukType);
+		ui->redIcon->hide();
+		ui->greenIcon->setVisible(pinType != QSmartCardData::PukType);
 	}
 	ui->error->setHidden(ui->error->text().isEmpty());
 	ui->tempelText->setVisible(isTempelType);
@@ -275,7 +273,7 @@ void VerifyCert::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		update(orangeIcon->isVisible());
+		update();
 	}
 
 	QWidget::changeEvent(event);
@@ -290,14 +288,4 @@ void VerifyCert::changePinStyle( const QString &background )
 		"QPushButton:hover:!pressed { border-radius: 2px; border: 1px solid #008DCF; color: #008DCF;}"
 		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )
 	);
-}
-
-void VerifyCert::showWarningIcon()
-{
-	if(redIcon->isVisible())
-		return;
-
-	greenIcon->hide();
-	orangeIcon->show();
-	redIcon->hide();
 }

@@ -74,7 +74,6 @@ private Q_SLOTS:
 	void showCardStatus();
 	void updateMyEid();
 	void warningClicked(const QString &link);
-	void removeOldCert();
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -108,7 +107,7 @@ private:
 	void onSignAction(int code, const QString &info1, const QString &info2);
 	void openContainer();
 	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
-	void pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false );
+	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
 	void pinPukChange( QSmartCardData::PinType type );
 	void resetCryptoDoc(CryptoDoc *doc = nullptr);
 	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
@@ -128,7 +127,7 @@ private:
 	bool sign();
 	bool signMobile(const QString &idCode, const QString &phoneNumber);
 	void updateCardWarnings();
-	bool validateCardError( QSmartCardData::PinType type, int flags, QSmartCard::ErrorType err );
+	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(const QList<CKey> &keys);

@@ -175,7 +175,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail);   // To activate e-mail
 	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
-	connect(ui->cardInfo, &CardWidget::selected, this, [this]() { if( selector ) selector->press(); });
+	connect(ui->cardInfo, &CardWidget::selected, this, [this] { if( selector ) selector->press(); });
 
 	showCardStatus();
 	updateMyEid();
@@ -946,8 +946,8 @@ void MainWindow::showCardStatus()
 
 		ui->idSelector->show();
 		ui->noCardInfo->hide();
-		ui->infoStack->setVisible(cardInfo->type != SslCertificate::UnknownType);
-		ui->accordion->setVisible(cardInfo->type != SslCertificate::UnknownType);
+		ui->infoStack->setHidden(cardInfo->type == SslCertificate::UnknownType);
+		ui->accordion->setHidden(cardInfo->type == SslCertificate::UnknownType);
 		ui->noReaderInfo->setVisible(cardInfo->type == SslCertificate::UnknownType);
 
 		if(ui->cardInfo->id() != t.card())
@@ -980,7 +980,7 @@ void MainWindow::showCardStatus()
 			if(cardInfo->type & SslCertificate::TempelType)
 			{
 				ui->infoStack->update(*cardInfo);
-				ui->accordion->updateInfo(authCert, signCert);
+				ui->accordion->updateInfo(*cardInfo);
 				updateCardWarnings();
 			}
 		}
@@ -1038,7 +1038,6 @@ void MainWindow::showSettings(int page)
 		qApp->loadTranslation( lang );
 		ui->retranslateUi(this);
 	});
-	connect(&dlg, &SettingsDialog::removeOldCert, this,	&MainWindow::removeOldCert);
 	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
 	dlg.exec();
 }

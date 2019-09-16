@@ -142,7 +142,10 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	else
 	{
 		QString type = tr("ID-card");
-		if(ci->type & SslCertificate::TempelType && (
+		if(ci->type & SslCertificate::TempelType &&
+			ci->c.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+			type = tr("Authentication certificate");
+		else if(ci->type & SslCertificate::TempelType && (
 			ci->c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			ci->c.keyUsage().contains(SslCertificate::KeyAgreement)))
 			type = tr("Certificate for Encryption");

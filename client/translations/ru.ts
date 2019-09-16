@@ -234,10 +234,6 @@
         <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
     </message>
@@ -291,6 +287,10 @@
     <message>
         <source>Certificate for Encryption</source>
         <translation>Сертификат шифрования</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Сертификат идентификации</translation>
     </message>
 </context>
 <context>
@@ -982,20 +982,12 @@ The Information System Authority does not retain information regarding the files
         <translation>КОД СТРАНЫ</translation>
     </message>
     <message>
-        <source>DEVICE</source>
-        <translation>УСТРОЙСТВО</translation>
-    </message>
-    <message>
         <source>SAVE THE PICTURE</source>
         <translation>СОХРАНИТЬ ФОТО</translation>
     </message>
     <message>
         <source>You&apos;re using Digital identity card</source>
         <translation>Вы используете дигитальное удостоверение личности</translation>
-    </message>
-    <message>
-        <source>You&apos;re using e-Seal</source>
-        <translation>Вы используете э-Печать</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -1238,9 +1230,8 @@ ID-КАРТОЙ</translation>
 С ID-КАРТОЙ</translation>
     </message>
     <message>
-        <source>DecryptToken</source>
-        <translation>РАСШИФРОВАТЬ
-Э-ПЕЧАТЬЮ</translation>
+        <source>DECRYPT</source>
+        <translation>РАСШИФРОВАТЬ</translation>
     </message>
     <message>
         <source>Token selection</source>
@@ -1515,10 +1506,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Signing</source>
         <translation>Подписывание</translation>
-    </message>
-    <message>
-        <source>Redundant certificates have been successfully removed.</source>
-        <translation>Лишние сертификаты успешно удалены.</translation>
     </message>
     <message>
         <source>Check internet connection</source>
@@ -2301,10 +2288,6 @@ Kонтрольный код: %1</translation>
 <context>
     <name>SDocumentModel</name>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>Failed remove document from container</source>
         <translation>Не удается удалить файл из контейнера</translation>
     </message>
@@ -2645,6 +2628,10 @@ Additional licenses and components</source>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Лишние сертификаты успешно удалены.</translation>
     </message>
 </context>
 <context>
@@ -3016,6 +3003,10 @@ Additional licenses and components</source>
         <source>key has been used %1 times</source>
         <comment>pin2</comment>
         <translation>Сертификат использован %1 раз</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Сертификат шифрования</translation>
     </message>
 </context>
 <context>

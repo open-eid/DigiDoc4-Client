@@ -23,9 +23,13 @@
 
 #include "Application.h"
 #include "AccessCert.h"
+#ifdef Q_OS_WIN
+#include "CertStore.h"
+#endif
 #include "CheckConnection.h"
 #include "Colors.h"
 #include "FileDialog.h"
+#include "QSmartCard.h"
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
@@ -213,7 +217,22 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
-	connect(ui->btnNavFromHistory, &QPushButton::clicked, this,  &SettingsDialog::removeOldCert);
+	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
+#ifdef Q_OS_WIN
+		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
+		QSmartCardData data = qApp->smartcard()->data();
+		CertStore s;
+		for(const QSslCertificate &c: s.list())
+		{
+			if(c == data.authCert() || c == data.signCert())
+				continue;
+			if(c.subjectInfo(QSslCertificate::Organization).join("").contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
+				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
+				s.remove( c );
+		}
+		qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
+#endif
+	});
 
 	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(GeneralSettings); } );
 	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(AccessCertSettings); } );

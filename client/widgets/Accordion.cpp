@@ -20,6 +20,8 @@
 #include "Accordion.h"
 #include "ui_Accordion.h"
 
+#include "QCardInfo.h"
+
 #include <common/SslCertificate.h>
 
 Accordion::Accordion(QWidget *parent)
@@ -51,9 +53,6 @@ void Accordion::init()
 	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] {open(ui->titleOtherData);});
 	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
 	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] {open(ui->titleVerifyCert);});
-
-	connect(this, &Accordion::showCertWarnings, ui->authBox, &VerifyCert::showWarningIcon);
-	connect(this, &Accordion::showCertWarnings, ui->signBox, &VerifyCert::showWarningIcon);
 
 	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
@@ -107,15 +106,15 @@ void Accordion::setFocusToEmail()
 	ui->contentOtherData->setFocusToEmail();
 }
 
-void Accordion::updateInfo(const SslCertificate &authCert, const SslCertificate &signCert)
+void Accordion::updateInfo(const QCardInfo &info)
 {
-	ui->authBox->setVisible(!authCert.isNull());
-	if(!authCert.isNull())
-		ui->authBox->update(QSmartCardData::Pin1Type, authCert);
-
-	ui->signBox->setVisible(!signCert.isNull());
-	if (!signCert.isNull())
-		ui->signBox->update(QSmartCardData::Pin2Type, signCert);
+	bool isSign = info.c.keyUsage().contains(SslCertificate::NonRepudiation);
+	ui->authBox->setHidden(isSign);
+	ui->signBox->setVisible(isSign);
+	if(isSign)
+		ui->signBox->update(QSmartCardData::Pin2Type, info.c);
+	else
+		ui->authBox->update(QSmartCardData::Pin1Type, info.c);
 
 	ui->pukBox->hide();
 	ui->titleOtherData->hide();
