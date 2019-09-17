@@ -302,14 +302,14 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 	
 }
 
-void SDocumentModel::addFile(const QString &file, const QString &mime)
+bool SDocumentModel::addFile(const QString &file, const QString &mime)
 {
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
 		if(QMessageBox::No == QMessageBox::warning(qApp->activeWindow(), tr("Add file"),
 			tr("File you want to add is empty. Do you want to continue?"), QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
-			return;
+			return false;
 	}
 	QString fileName(info.fileName());
 	for(int row = 0; row < rowCount(); row++)
@@ -317,11 +317,15 @@ void SDocumentModel::addFile(const QString &file, const QString &mime)
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
 			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName), QString());
-			return;
+			return false;
 		}
 	}
 	if(doc->addFile(file, mime))
+	{
 		emit added(file);
+		return true;
+	}
+	return false;
 }
 
 void SDocumentModel::addTempReference(const QString &file)
