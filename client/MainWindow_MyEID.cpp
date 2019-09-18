@@ -25,7 +25,6 @@
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningList.h"
 
-#include <common/Settings.h>
 #include <common/TokenData.h>
 
 #include <QtCore/QJsonObject>

@@ -25,7 +25,6 @@
 #include "client/dialogs/FileDialog.h"
 #include "client/dialogs/WarningDialog.h"
 
-#include <common/Settings.h>
 #include <common/TokenData.h>
 
 #include <QDebug>
@@ -41,6 +40,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
+#include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 
@@ -342,7 +342,7 @@ void CryptoDoc::Private::run()
 		data.open(QBuffer::WriteOnly);
 
 		QString mime, name;
-		if(files.size() > 1 || Settings(qApp->applicationName()).value(QStringLiteral("cdocwithddoc"), false).toBool())
+		if(files.size() > 1 || QSettings().value(QStringLiteral("cdocwithddoc"), false).toBool())
 		{
 			qCDebug(CRYPTO) << "Creating DDoc container";
 			writeDDoc(&data);
@@ -358,7 +358,7 @@ void CryptoDoc::Private::run()
 		}
 // TODO? new check box "I would like to encrypt for recipients who are using an older DigiDoc3 Crypto\nsoftware (version 3.8 and earlier)." 
 // to SettingsDialog (like in qdigidoc3).
-		if(Settings(qApp->applicationName()).value(QStringLiteral("cdocwithddoc"), false).toBool())
+		if(QSettings().value(QStringLiteral("cdocwithddoc"), false).toBool())
 			method = AES128CBC_MTH;
 		else
 			method = AES256GCM_MTH;

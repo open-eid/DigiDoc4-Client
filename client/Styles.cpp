@@ -18,7 +18,6 @@
  */
 
 #include "Styles.h"
-#include "Settings.h"
 
 #include <QFontDatabase>
 #ifndef Q_OS_MAC

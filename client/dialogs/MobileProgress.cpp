@@ -24,7 +24,6 @@
 
 #include <common/Common.h>
 #include <common/Configuration.h>
-#include <common/Settings.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -35,6 +34,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QTimeLine>
 #include <QtCore/QUuid>
+#include <QtCore/QSettings>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -64,11 +64,11 @@ public:
 	QString PROXYURL = Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL));
 	QString SKURL = Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL));
 #else
-	QString PROXYURL = Settings(qApp->applicationName()).value(QStringLiteral("MID-PROXY-URL"), QStringLiteral(MOBILEID_URL)).toString();
-	QString SKURL = Settings(qApp->applicationName()).value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
+	QString PROXYURL = QSettings().value(QStringLiteral("MID-PROXY-URL"), QStringLiteral(MOBILEID_URL)).toString();
+	QString SKURL = QSettings().value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
 #endif
-	QString NAME = Settings(qApp->applicationName()).value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	QUuid UUID = Settings(qApp->applicationName()).value(QStringLiteral("MIDUUID")).toUuid();
+	QString NAME = QSettings().value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
+	QUuid UUID = QSettings().value(QStringLiteral("MIDUUID")).toUuid();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
@@ -301,7 +301,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		{"phoneNumber", d->cell},
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
-		{"language", lang.value(Settings::language(), QStringLiteral("EST"))},
+		{"language", lang.value(Common::language(), QStringLiteral("EST"))},
 		{"displayText", "Sign document"},
 		{"displayTextFormat", "GSM-7"}
 	})).toJson();

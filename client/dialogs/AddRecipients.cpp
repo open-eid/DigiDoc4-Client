@@ -30,7 +30,6 @@
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 
-#include <common/Settings.h>
 #include <common/TokenData.h>
 #include <common/IKValidator.h>
 
@@ -40,6 +39,7 @@
 #include <QStandardPaths>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
+#include <QtCore/QSettings>
 #include <QMessageBox>
 #include <QtNetwork/QSslError>
 

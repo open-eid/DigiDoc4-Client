@@ -22,11 +22,10 @@
 #include "Application.h"
 #include "dialogs/WaitDialog.h"
 
-#include <common/Settings.h>
-
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTemporaryFile>
+#include <QtCore/QSettings>
 #include <QtWidgets/QMessageBox>
 #ifdef Q_OS_WIN
 #include <Shobjidl.h>
@@ -151,11 +150,11 @@ QString FileDialog::getDir( const QString &dir )
 {
 #ifdef Q_OS_OSX
 	Q_UNUSED(dir);
-	QString path = Settings(qApp->applicationName()).value(QStringLiteral("NSNavLastRootDirectory")).toString();
+	QString path = QSettings().value(QStringLiteral("NSNavLastRootDirectory")).toString();
 	path.replace('~', QDir::homePath());
 	return path;
 #else
-	return !dir.isEmpty() ? dir : Settings(qApp->applicationName()).value("lastPath",
+	return !dir.isEmpty() ? dir : QSettings().value("lastPath",
 		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
 #endif
 }
@@ -276,9 +275,9 @@ QString FileDialog::result( const QString &str )
 {
 #ifndef Q_OS_OSX
 	if(!str.isEmpty())
-		Settings(qApp->applicationName()).setValue("lastPath", QFileInfo(str).absolutePath());
+		QSettings().setValue("lastPath", QFileInfo(str).absolutePath());
 #else
-	Settings(qApp->applicationName()).remove(QStringLiteral("lastPath"));
+	QSettings().remove(QStringLiteral("lastPath"));
 #endif
 	return str;
 }

@@ -21,7 +21,7 @@
 #include "ui_FirstRun.h"
 #include "Styles.h"
 
-#include <common/Settings.h>
+#include <common/Common.h>
 
 #include <QKeyEvent>
 #include <QPixmap>
@@ -57,9 +57,9 @@ FirstRun::FirstRun(QWidget *parent) :
 	ui->lang->addItem(QStringLiteral("English"));
 	ui->lang->addItem(QStringLiteral("Русский язык"));
 
-	if(Settings::language() == QStringLiteral("en"))
+	if(Common::language() == QStringLiteral("en"))
 		ui->lang->setCurrentIndex(1);
-	else if(Settings::language() == QStringLiteral("ru"))
+	else if(Common::language() == QStringLiteral("ru"))
 		ui->lang->setCurrentIndex(2);
 	else
 		ui->lang->setCurrentIndex(0);
@@ -236,7 +236,7 @@ void FirstRun::loadPixmap(const QString &base, const QString &lang, QLabel *pare
 
 void FirstRun::loadImages()
 {
-	QString lang = Settings::language();
+	QString lang = Common::language();
 
 	loadPixmap(QStringLiteral("intro_sign-select"), lang, ui->signImage1);
 	loadPixmap(QStringLiteral("intro_sign-sign"), lang, ui->signImage2);
