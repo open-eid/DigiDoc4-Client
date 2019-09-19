@@ -88,9 +88,6 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
       <string notr="true">border: none;
 color: #353739;</string>
      </property>
-     <property name="text">
-      <string notr="true">TextLabel</string>
-     </property>
     </widget>
    </item>
    <item>
