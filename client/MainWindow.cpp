@@ -1322,7 +1322,8 @@ void MainWindow::warningClicked(const QString &link)
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
-	QString filename = FileDialog::create(QFileInfo(wrappedFile), QStringLiteral(".asice"), tr("signature container"));
+	QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+    QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir);
 	if(filename.isNull())
 		return false;
 
