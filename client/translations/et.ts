@@ -1066,7 +1066,7 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
     </message>
     <message>
         <source>Container&apos;s files</source>
-        <translation>Konteineri failid</translation>
+        <translation>Ümbriku failid</translation>
     </message>
     <message>
         <source>Container&apos;s signatures</source>
