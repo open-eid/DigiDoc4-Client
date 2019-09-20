@@ -2978,7 +2978,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
@@ -2997,8 +2997,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>MUUDA PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saamiseks külasta klienditeeninduspunkti, kust saad koodiümbriku uute koodidega. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>PUK kood on blokeeritud, kuna PUK koodi on sisestatud 3 korda valesti. PUK koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK koodi saamiseks külasta klienditeeninduspunkti, kust saad koodiümbriku uute koodidega. &lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/id-kaardi-kasutaja-meelespea/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>

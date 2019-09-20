@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
+        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372)&#xa0;666&#xa0;8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -2978,7 +2978,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 can not be used because the certificate has expired. You can find instructions on how to get a new document from &lt;a href=&quot;http://www.politsei.ee/en/teenused/isikut-toendavad-dokumendid/id-kaart/taiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>PIN%1 can not be used because the certificate has expired. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
@@ -2997,8 +2997,8 @@ Additional licenses and components</translation>
         <translation>CHANGE PUK</translation>
     </message>
     <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;Please visit the service center to obtain new codes. &lt;a href=&quot;http://www.politsei.ee/en/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/&quot;&gt;Additional information&lt;/a&gt;.</translation>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>key has been used %1 times</source>
