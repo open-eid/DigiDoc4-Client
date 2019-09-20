@@ -38,7 +38,6 @@
 #include <QtCore/QStringList>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
-#include <QtWidgets/QMessageBox>
 
 using namespace digidoc;
 using namespace ria::qdigidoc4;
@@ -307,8 +306,11 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		if(QMessageBox::No == QMessageBox::warning(qApp->activeWindow(), tr("Add file"),
-			tr("File you want to add is empty. Do you want to continue?"), QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
+		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->activeWindow());
+		dlg.setCancelText(tr("NO"));
+		dlg.addButton(tr("YES"), 1);
+		dlg.exec();
+		if(dlg.result() != 1)
 			return false;
 	}
 	QString fileName(info.fileName());
@@ -379,12 +381,13 @@ void SDocumentModel::open(int row)
 #if defined(Q_OS_WIN)
 	QStringList exts = QProcessEnvironment::systemEnvironment().value( "PATHEXT" ).split( ';' );
 	exts << ".PIF" << ".SCR";
-	if( exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) &&
-		QMessageBox::warning( qApp->activeWindow(), tr("DigiDoc4 client"),
-			DocumentModel::tr("This is an executable file! "
-				"Executable files may contain viruses or other malicious code that could harm your computer. "
-				"Are you sure you want to launch this file?"),
-			QMessageBox::Yes|QMessageBox::No, QMessageBox::No ) == QMessageBox::No )
+	WarningDialog dlg(DocumentModel::tr("This is an executable file! "
+		"Executable files may contain viruses or other malicious code that could harm your computer. "
+		"Are you sure you want to launch this file?"), qApp->activeWindow());
+	dlg.setCancelText(tr("NO"));
+	dlg.addButton(tr("YES"), 1);
+	dlg.exec();
+	if(exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) && dlg.result() != 1)
 		return;
 #else
 	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );

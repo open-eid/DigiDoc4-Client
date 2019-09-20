@@ -238,12 +238,16 @@
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
-        <source>Add file</source>
-        <translation>Lisa fail</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>Fail mida soovid lisada on tühi. Kas soovid jätkata?</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
     </message>
 </context>
 <context>
@@ -2302,12 +2306,16 @@ Kontrollkood: %1</translation>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
     <message>
-        <source>Add file</source>
-        <translation>Lisa fail</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>Fail, mida soovid lisada, on tühi. Kas soovid jätkata?</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
     </message>
 </context>
 <context>
