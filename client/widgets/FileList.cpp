@@ -175,7 +175,7 @@ void FileList::saveAll()
 					documentModel->save( i, dest );
 					continue;
 			}
-			WarningDialog dlg(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), qApp->activeWindow());
+			WarningDialog dlg(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), this);
 			dlg.setButtonSize(60, 5);
 			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
