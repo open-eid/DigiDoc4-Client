@@ -801,17 +801,17 @@ CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
 		QFile::exists(QStringLiteral("%1/%2.log").arg( QDir::tempPath(), qApp->applicationName())));
 }
 
-void CDocumentModel::addFile(const QString &file, const QString &mime)
+bool CDocumentModel::addFile(const QString &file, const QString &mime)
 {
 	if( d->isEncryptedWarning() )
-		return;
+		return false;
 
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
 		if(QMessageBox::No == QMessageBox::warning(qApp->activeWindow(), tr("Add file"),
 			tr("File you want to add is empty. Do you want to continue?"), QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
-			return;
+			return false;
 	}
 
 	QString fileName(info.fileName());
@@ -821,7 +821,7 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 		if(containerFile.name == fileName)
 		{
 			d->setLastError(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
-			return;
+			return false;
 		}
 	}
 
@@ -835,6 +835,7 @@ void CDocumentModel::addFile(const QString &file, const QString &mime)
 	f.size = FileDialog::fileSize(quint64(f.data.size()));
 	d->files << f;
 	emit added(file);
+	return true;
 }
 
 void CDocumentModel::addTempReference(const QString &file)

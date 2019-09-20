@@ -414,9 +414,13 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
+				bool filesAdded = false;
 				for(const auto &file: files)
-					signatureContainer->documentModel()->addFile(file);
-				navigate = true;
+				{
+					if(signatureContainer->documentModel()->addFile(file))
+						filesAdded = true;
+				}
+				navigate = filesAdded;
 			}
 		}
 		else if(signatureContainer->open(files[0]))
@@ -441,9 +445,13 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			if(!filename.isNull())
 			{
 				cryptoContainer->clear(filename);
+				bool filesAdded = false;
 				for(const auto &file: files)
-					cryptoContainer->documentModel()->addFile(file);
-				navigate = true;
+				{
+					if(cryptoContainer->documentModel()->addFile(file))
+						filesAdded = true;
+				}
+				navigate = filesAdded;
 			}
 		}
 		else if(cryptoContainer->open(files[0]))
