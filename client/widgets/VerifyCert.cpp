@@ -64,6 +64,7 @@ VerifyCert::VerifyCert(QWidget *parent): StyledWidget(parent), ui(new Ui::Verify
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->error->setFont( Styles::font( Styles::Regular, 12, QFont::DemiBold ) );
 	QFont regular12 = Styles::font( Styles::Regular, 12 );
+	regular12.setUnderline(true);
 	ui->forgotPinLink->setFont( regular12 );
 	ui->details->setFont( regular12 );
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );

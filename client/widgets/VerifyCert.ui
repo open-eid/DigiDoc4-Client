@@ -325,7 +325,11 @@ background-color: #F8DDA7;</string>
          <font>
           <family>Roboto</family>
           <pointsize>12</pointsize>
+          <underline>true</underline>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
@@ -359,7 +363,11 @@ border: none;</string>
          <font>
           <family>Roboto</family>
           <pointsize>12</pointsize>
+          <underline>true</underline>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="contextMenuPolicy">
          <enum>Qt::NoContextMenu</enum>
