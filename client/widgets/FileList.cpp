@@ -181,10 +181,13 @@ void FileList::saveAll()
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
 			dlg.addButton(tr("SAVE WITH OTHER NAME"), QMessageBox::No);
 			dlg.addButton(tr("REPLACE ALL"), QMessageBox::YesToAll);
+			dlg.addButton(tr("CANCEL"), QMessageBox::NoToAll);
 			b = dlg.exec();
 
 			if(b == QDialog::Rejected)
 				continue;
+			if(b == QMessageBox::NoToAll)
+				break;
 			if( b == QMessageBox::No )
 			{
 				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );

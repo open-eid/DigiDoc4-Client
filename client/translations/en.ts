@@ -789,6 +789,10 @@ The Information System Authority does not retain information regarding the files
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
     </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
 </context>
 <context>
     <name>FirstRun</name>
