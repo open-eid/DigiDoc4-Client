@@ -309,8 +309,7 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->activeWindow());
 		dlg.setCancelText(tr("NO"));
 		dlg.addButton(tr("YES"), 1);
-		dlg.exec();
-		if(dlg.result() != 1)
+		if(dlg.exec() != 1)
 			return false;
 	}
 	QString fileName(info.fileName());
@@ -386,8 +385,7 @@ void SDocumentModel::open(int row)
 		"Are you sure you want to launch this file?"), qApp->activeWindow());
 	dlg.setCancelText(tr("NO"));
 	dlg.addButton(tr("YES"), 1);
-	dlg.exec();
-	if(exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) && dlg.result() != 1)
+	if(exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) && dlg.exec() != 1)
 		return;
 #else
 	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );
@@ -566,8 +564,7 @@ bool DigiDoc::open( const QString &file )
 				"The Information System Authority does not retain information regarding the files and users of the service."), parent);
 		dlg.setCancelText(tr("CANCEL"));
 		dlg.addButton(tr("OK"), ContainerSave);
-		dlg.exec();
-		if(dlg.result() != ContainerSave)
+		if(dlg.exec() != ContainerSave)
 			return false;
 	}
 	try

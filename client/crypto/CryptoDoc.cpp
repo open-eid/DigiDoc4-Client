@@ -896,8 +896,7 @@ void CDocumentModel::open(int row)
 		"Are you sure you want to launch this file?"), qApp->activeWindow());
 	dlg.setCancelText(tr("NO"));
 	dlg.addButton(tr("YES"), 1);
-	dlg.exec();
-	if(exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) && dlg.result() != 1)
+	if(exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) && dlg.exec() != 1)
 		return;
 #else
 	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );
