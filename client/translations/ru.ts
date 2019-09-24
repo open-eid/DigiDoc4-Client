@@ -3050,10 +3050,6 @@ Additional licenses and components</source>
         <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Инструкции по ходатайству нового документа находятся &lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 заблокирован, потому что PIN%1 код был введен неверно 3 раза. Разблокируйте его для повторного использования PIN%1.</translation>
-    </message>
-    <message>
         <source>PUK code</source>
         <translation>PUK код</translation>
     </message>
@@ -3086,6 +3082,14 @@ Additional licenses and components</source>
     <message>
         <source>Certificate for Encryption</source>
         <translation>Сертификат шифрования</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
+        <translation>PIN%1 заблокирован, потому что PIN%1 код был введен неверно 3 раза.</translation>
+    </message>
+    <message>
+        <source>Unblock to reuse PIN%1.</source>
+        <translation>Разблокируйте его для повторного использования PIN%1.</translation>
     </message>
 </context>
 <context>

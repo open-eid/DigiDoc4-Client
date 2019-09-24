@@ -3047,10 +3047,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 on blokeeritud, kuna PIN%1 koodi on sisestatud 3 korda valesti. Tühista blokeering, et PIN%1 taas kasutada.</translation>
-    </message>
-    <message>
         <source>PUK code</source>
         <translation>PUK kood</translation>
     </message>
@@ -3083,6 +3079,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Certificate for Encryption</source>
         <translation>Krüpteerimissertifikaat</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
+        <translation>PIN%1 on blokeeritud, kuna PIN%1 koodi on sisestatud 3 korda valesti.</translation>
+    </message>
+    <message>
+        <source>Unblock to reuse PIN%1.</source>
+        <translation>Tühista blokeering, et PIN%1 taas kasutada.</translation>
     </message>
 </context>
 <context>

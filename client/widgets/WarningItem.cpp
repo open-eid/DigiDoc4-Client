@@ -82,12 +82,12 @@ void WarningItem::lookupWarning()
 		warnText.text = tr("Certificates are revoked!");
 		break;
 	case ria::qdigidoc4::UnblockPin1Warning:
-		warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(1);
+		warnText.text = QStringLiteral("%1 %2").arg(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1), VerifyCert::tr("Unblock to reuse PIN%1.").arg(1));
 		warnText.details = QStringLiteral("<a href='#unblock-PIN1'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
 		ui->warningAction->setOpenExternalLinks(false);
 		break;
 	case ria::qdigidoc4::UnblockPin2Warning:
-		warnText.text = VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(2);
+		warnText.text = QStringLiteral("%1 %2").arg(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2), VerifyCert::tr("Unblock to reuse PIN%1.").arg(2));
 		warnText.details = QStringLiteral("<a href='#unblock-PIN2'><span style='color:rgb(53, 55, 57)'>%1</span></a>").arg(VerifyCert::tr("UNBLOCK"));
 		ui->warningAction->setOpenExternalLinks(false);
 		break;

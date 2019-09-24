@@ -159,7 +159,8 @@ void VerifyCert::update()
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
 				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
 			!isValidCert ? tr("PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.").arg(pinType) :
-			isBlockedPin ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.").arg(pinType) :
+			(isBlockedPin && isBlockedPuk) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType) :
+			isBlockedPin ? QStringLiteral("%1 %2").arg(tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType), tr("Unblock to reuse PIN%1.").arg(pinType)) :
 			QString()
 		);
 		break;
