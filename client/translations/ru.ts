@@ -1837,8 +1837,8 @@ Kонтрольный код: %1</translation>
         <translation>PIN будет заблокирован при следующей неудачной попытке</translation>
     </message>
     <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN был введен неправильно один раз</translation>
+        <source>PIN has been entered incorrectly at least once</source>
+        <translation>По меньшей мере один раз был введен неправильный PIN</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
@@ -1850,7 +1850,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Selected action requires sign certificate.</source>
-        <translation>Данная операция требует сертификат цифровой подписи.</translation>
+        <translation>Данная операция требует наличия сертификата цифровой подписи</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1 at the reader</source>

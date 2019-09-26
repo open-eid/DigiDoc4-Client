@@ -646,7 +646,7 @@
     </message>
     <message>
         <source>PIN Incorrect</source>
-        <translation>PIN vigane</translation>
+        <translation>Vale PIN</translation>
     </message>
     <message>
         <source>PIN Login failed</source>
@@ -1831,11 +1831,11 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>PIN will be locked next failed attempt</source>
-        <translation>Järgmise vale sisestusega lukustub PIN</translation>
+        <translation>Vale koodi sisestamisel PIN lukustub</translation>
     </message>
     <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN-i on sisestatud vigaselt üks kord</translation>
+        <source>PIN has been entered incorrectly at least once</source>
+        <translation>PIN on vähemalt ühe korra valesti sisestatud</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
@@ -2199,7 +2199,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>PIN Incorrect</source>
-        <translation>PIN vigane</translation>
+        <translation>Vale PIN</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
