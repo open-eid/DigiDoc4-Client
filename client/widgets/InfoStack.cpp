@@ -133,9 +133,7 @@ void InfoStack::update()
 		else
 			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
 	}
-	else if(certType & SslCertificate::TempelType)
-		serialNumberText = tr("You're using e-Seal");
-	else
+	else if(certType & SslCertificate::DigiIDType)
 		st << tr("You're using Digital identity card");
 
 	ui->valueGivenNames->setText(givenNamesText);
@@ -158,9 +156,8 @@ void InfoStack::update()
 		ui->labelSurname->clear();
 		ui->labelPersonalCode->setText(tr("SERIAL"));
 		ui->labelCitizenship->setText(tr("COUNTRY"));
-		ui->labelSerialNumber->setText(tr("DEVICE"));
-		ui->valueSerialNumber->setMinimumWidth(300);
-		ui->valueSerialNumber->setMaximumWidth(300);
+		ui->labelSerialNumber->hide();
+		ui->valueSerialNumber->hide();
 
 		clearPicture();
 		alternateIcon = new QSvgWidget(ui->photo);
@@ -177,8 +174,6 @@ void InfoStack::update()
 		ui->labelPersonalCode->setText(tr("PERSONAL CODE"));
 		ui->labelCitizenship->setText(tr("CITIZENSHIP"));
 		ui->labelSerialNumber->setText(tr("DOCUMENT"));
-		ui->valueSerialNumber->setMinimumWidth(100);
-		ui->valueSerialNumber->setMaximumWidth(100);
 		if(!alternateIcon)
 			ui->btnPicture->show();
 	}

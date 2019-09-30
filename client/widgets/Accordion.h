@@ -27,6 +27,7 @@ class Accordion;
 }
 
 class AccordionTitle;
+struct QCardInfo;
 
 class Accordion : public StyledWidget
 {
@@ -42,7 +43,7 @@ public:
 	QString getEmail();
 	void open(AccordionTitle* opened);
 	void setFocusToEmail();
-	void updateInfo(const SslCertificate &authCert, const SslCertificate &signCert);
+	void updateInfo(const QCardInfo &info);
 	void updateInfo( const QSmartCard *smartCard );
 	void updateOtherData(const QByteArray &data);
 
@@ -56,7 +57,6 @@ signals:
 	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePukClicked();
 	void certDetailsClicked( const QString &link );
-	void showCertWarnings();
 
 private:
 	Ui::Accordion *ui;

@@ -234,10 +234,6 @@
         <translation>Failed to save file &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
-    </message>
-    <message>
         <source>File you want to add is empty. Do you want to continue?</source>
         <translation>File you want to add is empty. Do you want to continue?</translation>
     </message>
@@ -289,6 +285,10 @@
     <message>
         <source>Certificate for Encryption</source>
         <translation>Certificate for Encryption</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Authentication certificate</translation>
     </message>
 </context>
 <context>
@@ -980,10 +980,6 @@ The Information System Authority does not retain information regarding the files
         <translation>COUNTRY</translation>
     </message>
     <message>
-        <source>DEVICE</source>
-        <translation>DEVICE</translation>
-    </message>
-    <message>
         <source>SAVE THE PICTURE</source>
         <translation>SAVE THE PICTURE</translation>
     </message>
@@ -994,10 +990,6 @@ The Information System Authority does not retain information regarding the files
     <message>
         <source>Valid</source>
         <translation>Valid</translation>
-    </message>
-    <message>
-        <source>You&apos;re using e-Seal</source>
-        <translation>You&apos;re using e-Seal</translation>
     </message>
     <message>
         <source>until</source>
@@ -1236,9 +1228,8 @@ E-SEAL</translation>
 ID-CARD</translation>
     </message>
     <message>
-        <source>DecryptToken</source>
-        <translation>DECRYPT WITH
-E-SEAL</translation>
+        <source>DECRYPT</source>
+        <translation>DECRYPT</translation>
     </message>
     <message>
         <source>Token selection</source>
@@ -1512,10 +1503,6 @@ E-SEAL</translation>
     <message>
         <source>Signing</source>
         <translation>Signing</translation>
-    </message>
-    <message>
-        <source>Redundant certificates have been successfully removed.</source>
-        <translation>Redundant certificates have been successfully removed.</translation>
     </message>
     <message>
         <source>Check internet connection</source>
@@ -2298,10 +2285,6 @@ Control code: %1</translation>
 <context>
     <name>SDocumentModel</name>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
-    </message>
-    <message>
         <source>Failed remove document from container</source>
         <translation>Failed remove document from container</translation>
     </message>
@@ -2642,6 +2625,10 @@ Additional licenses and components</translation>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Close</translation>
+    </message>
+    <message>
+        <source>Redundant certificates have been successfully removed.</source>
+        <translation>Redundant certificates have been successfully removed.</translation>
     </message>
 </context>
 <context>
@@ -3013,6 +3000,10 @@ Additional licenses and components</translation>
     <message>
         <source>PIN can be changed only using eToken utility</source>
         <translation>PIN can be changed only using eToken utility</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Certificate for Encryption</translation>
     </message>
 </context>
 <context>

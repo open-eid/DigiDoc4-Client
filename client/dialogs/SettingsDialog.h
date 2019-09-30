@@ -52,7 +52,6 @@ private Q_SLOTS:
 
 signals:
 	void langChanged(const QString& lang);
-	void removeOldCert();
 	void togglePrinting(bool enable);
 
 private:
