@@ -28,17 +28,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
   <?define OpenSSLSuffix = "" ?>
 <?endif ?>
 
-<?if $(env.VisualStudioVersion) = "15.0" ?>
-  <?define VCRT = "$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC141.CRT\vcruntime140.dll"?>
-  <?define VCP = "$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC141.CRT\msvcp140.dll"?>
-<?elseif $(env.VisualStudioVersion) = "14.0" ?>
-  <?define VCRT = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC140.CRT\vcruntime140.dll" ?>
-  <?define VCP = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC140.CRT\msvcp140.dll"?>
-<?else?>
-  <?define VCRT = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC120.CRT\msvcr120.dll" ?>
-  <?define VCP = "$(env.VCINSTALLDIR)\redist\$(var.Platform)\Microsoft.VC120.CRT\msvcp120.dll"?>
-<?endif?>
-
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
@@ -150,8 +139,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
               Name="digidoc.ini" Key="CA_CERT_PATH" Value="[APPLICATIONFOLDER]certs"/>
 <?endif?>
 <?ifdef var.qt_path ?>
-            <File Source="$(var.VCP)"/>
-            <File Source="$(var.VCRT)"/>
             <File Source="$(var.ssl_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.ssl_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
@@ -179,6 +166,11 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
           <Directory Id="platforms" Name="platforms" FileSource="$(var.qt_path)\plugins\platforms">
             <Component Id="qwindows.dll">
               <File Name="qwindows.dll"/>
+            </Component>
+          </Directory>
+          <Directory Id="styles" Name="styles" FileSource="$(var.qt_path)\plugins\styles">
+            <Component Id="qwindowsvistastyle.dll">
+              <File Name="qwindowsvistastyle.dll"/>
             </Component>
           </Directory>
           <Directory Id="printsupport" Name="printsupport" FileSource="$(var.qt_path)\plugins\printsupport">
@@ -210,6 +202,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?endif?>
 <?ifdef var.qt_path ?>
       <ComponentRef Id="qwindows.dll" />
+      <ComponentRef Id="qwindowsvistastyle.dll" />
       <ComponentRef Id="windowsprintersupport.dll" />
       <ComponentRef Id="imageformats.dll" />
 <?endif?>
