@@ -19,54 +19,39 @@
 
 #include "CardPopup.h"
 
-
-#define BORDER_WIDTH 2
-#define ROW_HEIGHT 66
-#define WIDTH 365
-#define X_POSITION 110
+#include <QtWidgets/QVBoxLayout>
 
 CardPopup::CardPopup(const QSet<QString> &cards, const QString &selectedCard, 
 	const QMap<QString, QSharedPointer<QCardInfo>> &cache, QWidget *parent)
 : StyledWidget(parent)
 {
-	resize( WIDTH, (cards.size() - 1) * ROW_HEIGHT + ( (cards.size() > 1) ? BORDER_WIDTH : 0 ) );
-	move( X_POSITION, ROW_HEIGHT );
-	setStyleSheet( "border: solid rgba(217, 217, 216, 0.45); border-width: 0px 2px 2px 1px; background-color: rgba(255, 255, 255, 0.95);" );
+	if(CardWidget *cardInfo = parent->findChild<CardWidget*>(QStringLiteral("cardInfo")))
+	{
+		move(cardInfo->mapTo(parent, cardInfo->rect().bottomLeft()) + QPoint(0, 2));
+		setMinimumWidth(cardInfo->width());
+	}
+	setStyleSheet(QStringLiteral(
+		"border: solid rgba(217, 217, 216, 0.45); "
+		"border-width: 0px 2px 2px 1px; "
+		"background-color: rgba(255, 255, 255, 0.95);"));
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setContentsMargins(1, 0, 2, 2);
 
-	int i = 0;
-	for( auto card: cards )
+	for(const QString &card: cards)
 	{
 		if( card == selectedCard )
 			continue;
-		auto item = new QWidget( this );
-		item->resize( WIDTH - 2, ROW_HEIGHT - 1);
-		item->move( 0, 1 + i * ROW_HEIGHT );
-		item->setStyleSheet( "QWidget:!hover { border:none; } QWidget:hover { border:none; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5));}" );
-		
-		auto cardWidget = new CardWidget( card, item );
+		auto cardWidget = new CardWidget(card, this);
 		auto cardData = cache[card];
 		if( cardData.isNull() )
 		{
 			cardData.reset(new QCardInfo);
 			cardData->id = card;
 		}
-		cardWidget->move(0, 0);
 		cardWidget->update(cardData, card);
 		connect(cardWidget, &CardWidget::selected, this, &CardPopup::activated);
-
+		layout->addWidget(cardWidget);
 		cardWidgets << cardWidget;
-		item->show();
-		cardWidget->show();
-		i++;
 	}
-}
-
-void CardPopup::update(const QMap<QString, QSharedPointer<QCardInfo>> &cache)
-{
-	for( auto cardWidget: cardWidgets )
-	{
-		auto cardData = cache[cardWidget->id()];
-		if( cardWidget->isLoading() && !cardData.isNull() )
-			cardWidget->update(cardData, cardWidget->id());
-	}
+	adjustSize();
 }

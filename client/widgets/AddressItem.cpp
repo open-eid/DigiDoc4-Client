@@ -228,7 +228,7 @@ void AddressItem::setIdType()
 	else if(m_type & SslCertificate::EstEidType)
 		typeText = tr("ID-card");
 	else if(m_type & SslCertificate::TempelType)
-		typeText = tr("e-Seal");
+		typeText = tr("Certificate for Encryption");
 	else if(m_type & SslCertificate::MobileIDType)
 		typeText = tr("Mobile-ID");
 	st << typeText;

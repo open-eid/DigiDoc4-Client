@@ -162,10 +162,6 @@
         <translation>Mobiil-ID</translation>
     </message>
     <message>
-        <source>e-Seal</source>
-        <translation>e-Tempel</translation>
-    </message>
-    <message>
         <source>Expires on</source>
         <translation>Aegub</translation>
     </message>
@@ -182,6 +178,10 @@
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Krüpteerimissertifikaat</translation>
     </message>
 </context>
 <context>
@@ -451,10 +451,6 @@
         <translation>ID-kaart</translation>
     </message>
     <message>
-        <source>e-Seal</source>
-        <translation>e-Tempel</translation>
-    </message>
-    <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
@@ -480,6 +476,10 @@
         <source>Remove</source>
         <extracomment>accessible</extracomment>
         <translation>Eemalda</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Krüpteerimissertifikaat</translation>
     </message>
 </context>
 <context>

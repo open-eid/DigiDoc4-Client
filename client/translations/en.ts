@@ -162,10 +162,6 @@
         <translation>Mobiil-ID</translation>
     </message>
     <message>
-        <source>e-Seal</source>
-        <translation>e-Seal</translation>
-    </message>
-    <message>
         <source>Expires on</source>
         <translation>Expires on</translation>
     </message>
@@ -182,6 +178,10 @@
     <message>
         <source>Remove</source>
         <translation>Remove</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Certificate for Encryption</translation>
     </message>
 </context>
 <context>
@@ -451,10 +451,6 @@
         <translation>ID-card</translation>
     </message>
     <message>
-        <source>e-Seal</source>
-        <translation>e-Seal</translation>
-    </message>
-    <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
@@ -480,6 +476,10 @@
         <source>Remove</source>
         <extracomment>accessible</extracomment>
         <translation>Remove</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Certificate for Encryption</translation>
     </message>
 </context>
 <context>

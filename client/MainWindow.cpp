@@ -274,6 +274,7 @@ void MainWindow::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
+		hideCardPopup();
 	}
 	QWidget::changeEvent(event);
 }

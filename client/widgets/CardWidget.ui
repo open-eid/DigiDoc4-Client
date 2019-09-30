@@ -25,7 +25,7 @@ QWidget:hover { border:none; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2
     <number>7</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="bottomMargin">
     <number>7</number>

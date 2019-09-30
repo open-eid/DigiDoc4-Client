@@ -162,10 +162,6 @@
         <translation>Мobiil-ID</translation>
     </message>
     <message>
-        <source>e-Seal</source>
-        <translation>э-Печать</translation>
-    </message>
-    <message>
         <source>Expires on</source>
         <translation>Истекает</translation>
     </message>
@@ -182,6 +178,10 @@
     <message>
         <source>Remove</source>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Сертификат шифрования</translation>
     </message>
 </context>
 <context>
@@ -453,10 +453,6 @@
         <translation>ID-карта</translation>
     </message>
     <message>
-        <source>e-Seal</source>
-        <translation>э-Печать</translation>
-    </message>
-    <message>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
@@ -482,6 +478,10 @@
         <source>Remove</source>
         <extracomment>accessible</extracomment>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Certificate for Encryption</source>
+        <translation>Сертификат шифрования</translation>
     </message>
 </context>
 <context>
