@@ -20,8 +20,8 @@
 #pragma once
 
 #include "widgets/StyledWidget.h"
-#include "QSmartCard.h"
 
+#include "QSmartCard.h"
 #include <common/SslCertificate.h>
 
 namespace Ui {
@@ -40,19 +40,15 @@ public:
 	void clear();
 	void update(QSmartCardData::PinType type, const QSmartCard *smartCard);
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
-	void update();
 
 signals:
 	void changePinClicked( bool isForgotPin, bool isBlockedPin );
 	void certDetailsClicked( QString link );
 
-protected:
-	void enterEvent( QEvent * event ) final;
-	void leaveEvent( QEvent * event ) final;
-	void changeEvent(QEvent* event) final;
-
 private:
 	void changePinStyle( const QString &background ); 
+	bool event(QEvent *event) final;
+	void update();
 
 	Ui::VerifyCert *ui;
 
