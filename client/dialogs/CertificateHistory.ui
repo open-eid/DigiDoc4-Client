@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CertificateHistory</class>
- <widget class="QWidget" name="CertificateHistory">
+ <widget class="QDialog" name="CertificateHistory">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -23,7 +23,10 @@
    <string>Used certificates</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#CertificateHistory{ border-radius: 2px; background-color: #FFFFFF; border: none;}</string>
+   <string notr="true">QDialog#CertificateHistory{ border-radius: 2px; background-color: #FFFFFF; border: none;}</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="CertificateHistoryLayout">
    <item>
