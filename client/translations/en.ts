@@ -226,6 +226,18 @@
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
     </message>
+    <message>
+        <source>Ignore forever</source>
+        <translation>Ignore forever</translation>
+    </message>
+    <message>
+        <source>Remind later</source>
+        <translation>Remind later</translation>
+    </message>
+    <message>
+        <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CDocumentModel</name>

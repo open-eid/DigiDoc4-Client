@@ -75,6 +75,11 @@ class DigidocConf: public digidoc::XmlConfCurrent
 public:
 	DigidocConf()
 	{
+		Configuration::connect(&Configuration::instance(), &Configuration::updateReminder, [&](bool expired, const QString &title, const QString &message){
+			WarningDialog dlg(message, qApp->activeWindow());
+			dlg.exec();
+		});
+
 #ifdef CONFIG_URL
 		reload();
 #ifdef Q_OS_MAC
@@ -917,6 +922,23 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign)
 #ifndef Q_OS_MAC
 		if(!settings.contains("showIntro"))
 			migrateSettings();
+#else
+		if(QSettings().value(QStringLiteral("plugins")).isNull())
+		{
+			QTimer *timer = new QTimer(this);
+			timer->setSingleShot(true);
+			connect(timer, &QTimer::timeout, this, [=]{
+				timer->deleteLater();
+				WarningDialog dlg(tr("In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.<br/>Instructions on how to enable token plugin can be found <a href=\"http://id.ee/?lang=en&id=36639\">here</a>."), qApp->activeWindow());
+				dlg.setCancelText(tr("Ignore forever").toUpper());
+				dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Yes);
+				dlg.exec();
+
+				if(dlg.result() != QMessageBox::Yes)
+					QSettings().setValue(QStringLiteral("plugins"), "ignore");
+			});
+			timer->start(1000);
+		}
 #endif // !Q_OS_MAC
 		if(settings.value(QStringLiteral("showIntro"), true).toBool())
 		{

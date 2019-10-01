@@ -22,6 +22,12 @@
     <height>179</height>
    </size>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog
+{
+background-color: #ECECEC;
+}</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
