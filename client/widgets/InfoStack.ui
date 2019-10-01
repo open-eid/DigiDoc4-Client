@@ -64,6 +64,19 @@ opacity: 0.5;
 border-radius: 2px;
 background-color: #F9FAFA;</string>
      </property>
+     <widget class="QSvgWidget" name="alternateIcon" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>100</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none</string>
+      </property>
+     </widget>
      <widget class="QPushButton" name="btnPicture">
       <property name="geometry">
        <rect>
@@ -391,6 +404,14 @@ QPushButton:hover:!pressed {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>btnPicture</tabstop>
   <tabstop>labelGivenNames</tabstop>

@@ -194,7 +194,7 @@ bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData:
 			qApp->smartcard()->data().retryCount( t ) ).arg( QSmartCardData::typeString( t ) ) );
 		break;
 	default:
-		showNotification(tr("Changing %1 failed").arg(QSmartCardData::typeString(type))); break;
+		showNotification(tr("Changing %1 failed").arg(QSmartCardData::typeString(type)));
 		break;
 	}
 	return false;

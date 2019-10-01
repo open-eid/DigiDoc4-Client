@@ -20,10 +20,7 @@
 #pragma once
 
 #include "Styles.h"
-#include <common/DateTime.h>
 #include "widgets/StyledWidget.h"
-
-#include <QPointer>
 
 namespace Ui {
 class InfoStack;
@@ -31,7 +28,6 @@ class InfoStack;
 
 struct QCardInfo;
 class QSmartCardData;
-class QSvgWidget;
 
 class InfoStack : public StyledWidget, public PictureInterface
 {
@@ -58,7 +54,6 @@ private:
 	void update();
 
 	Ui::InfoStack *ui;
-	QPointer<QSvgWidget> alternateIcon;
 
 	int certType = 0;
 	bool certIsValid = false;
