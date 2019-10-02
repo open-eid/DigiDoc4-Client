@@ -21,12 +21,11 @@
 
 #include <QObject>
 
-#include <common/SslCertificate.h>
-
 #include <qt_windows.h>
 #include <ncrypt.h>
 
 class TokenData;
+class SslCertificate;
 
 class QWin: public QObject
 {

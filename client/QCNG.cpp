@@ -19,6 +19,8 @@
 
 #include "QCNG.h"
 
+#include "SslCertificate.h"
+
 #include <common/QPCSC.h>
 #include <common/TokenData.h>
 

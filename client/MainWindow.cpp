@@ -47,7 +47,6 @@
 
 #include <common/DateTime.h>
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
 #include <QDebug>
@@ -124,6 +123,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->cryptoIntroButton->setFont( condensed14 );
 	ui->noCardInfo->setFont(condensed14);
 	ui->noReaderInfoText->setFont(regular20);
+	ui->noReaderInfoText->setProperty("currenttext", ui->noReaderInfoText->text());
 
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
@@ -272,6 +272,7 @@ void MainWindow::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
 		hideCardPopup();
@@ -937,56 +938,51 @@ void MainWindow::showCardStatus()
 	TokenData st = qApp->signer()->tokensign();
 	TokenData at = qApp->signer()->tokenauth();
 	const TokenData &t = st.cert().isNull() ? at : st;
-
 	warnings->clearMyEIDWarnings();
 
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
 		qCDebug(MLog) << "Select card" << t.card();
 		auto cardInfo = qApp->signer()->cache()[t.card()];
+		const SslCertificate &authCert = at.cert();
+		const SslCertificate &signCert = st.cert();
+		bool seal = cardInfo->type & SslCertificate::TempelType;
 
 		ui->idSelector->show();
 		ui->noCardInfo->hide();
-		ui->infoStack->setHidden(cardInfo->type == SslCertificate::UnknownType);
-		ui->accordion->setHidden(cardInfo->type == SslCertificate::UnknownType);
-		ui->noReaderInfo->setVisible(cardInfo->type == SslCertificate::UnknownType);
+		ui->infoStack->setHidden(cardInfo->type == SslCertificate::UnknownType || cardInfo->type == SslCertificate::EidType);
+		ui->accordion->setHidden(cardInfo->type == SslCertificate::UnknownType || cardInfo->type == SslCertificate::EidType);
+		ui->noReaderInfo->setVisible(cardInfo->type == SslCertificate::UnknownType || cardInfo->type == SslCertificate::EidType);
+		ui->noReaderInfoText->setProperty("currenttext", "The card in the card reader is not an Estonian ID-card");
+		ui->noReaderInfoText->setText(tr("The card in the card reader is not an Estonian ID-card"));
 
 		if(ui->cardInfo->id() != t.card())
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
 			ui->cardInfo->clearPicture();
-			warnings->clearMyEIDWarnings();
 		}
 
 		ui->cardInfo->update(cardInfo, t.card());
-		if(cardInfo->type != SslCertificate::UnknownType)
-		{
-			const SslCertificate &authCert = at.cert();
-			const SslCertificate &signCert = st.cert();
-			bool seal = cardInfo->type & SslCertificate::TempelType;
 
-			// Card (e.g. e-Seal) can have only one cert
-			if(!signCert.isNull())
-				emit ui->signContainerPage->cardChanged(cardInfo->id, seal, !signCert.isValid());
-			else
-				emit ui->signContainerPage->cardChanged();
-			if(!authCert.isNull())
-				emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
-			else
-				emit ui->cryptoContainerPage->cardChanged();
-			if(cryptoDoc)
-				ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
-
-			if(cardInfo->type & SslCertificate::TempelType)
-			{
-				ui->infoStack->update(*cardInfo);
-				ui->accordion->updateInfo(*cardInfo);
-				updateCardWarnings();
-			}
-		}
+		// Card (e.g. e-Seal) can have only one cert
+		if(!signCert.isNull())
+			emit ui->signContainerPage->cardChanged(cardInfo->id, seal, !signCert.isValid());
 		else
-			ui->noReaderInfoText->setText(tr("Unsupported token"));
+			emit ui->signContainerPage->cardChanged();
+		if(!authCert.isNull())
+			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
+		else
+			emit ui->cryptoContainerPage->cardChanged();
+		if(cryptoDoc)
+			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
+
+		if(seal)
+		{
+			ui->infoStack->update(*cardInfo);
+			ui->accordion->updateInfo(*cardInfo);
+			updateCardWarnings();
+		}
 	}
 	else
 	{
@@ -1158,6 +1154,7 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->noReaderInfo->setVisible(true);
 	ui->myEid->invalidIcon( false );
 	ui->myEid->warningIcon( false );
+	ui->noReaderInfoText->setProperty("currenttext", "Connect the card reader to your computer and insert your ID card into the reader");
 	ui->noReaderInfoText->setText(tr("Connect the card reader to your computer and insert your ID card into the reader"));
 	warnings->clearMyEIDWarnings();
 }

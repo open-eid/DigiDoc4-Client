@@ -20,9 +20,9 @@
 #include "PrintSheet.h"
 
 #include "DigiDoc.h"
+#include "SslCertificate.h"
 
 #include <common/DateTime.h>
-#include <common/SslCertificate.h>
 
 #include <QtGui/QStaticText>
 #include <QtPrintSupport/QPrinter>

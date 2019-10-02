@@ -31,6 +31,7 @@
 #include "FileDialog.h"
 #include "QSmartCard.h"
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
 #include "effects/ButtonHoverFilter.h"
@@ -40,7 +41,6 @@
 #include "common/Configuration.h"
 #include "common/Diagnostics.h"
 #include "common/Settings.h"
-#include "common/SslCertificate.h"
 
 #include <digidocpp/Conf.h>
 

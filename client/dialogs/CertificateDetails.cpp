@@ -23,10 +23,10 @@
 
 #include "Application.h"
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "effects/Overlay.h"
 
 #include <common/DateTime.h>
-#include <common/SslCertificate.h>
 
 #include <QtCore/QDir>
 #include <QtCore/QStandardPaths>

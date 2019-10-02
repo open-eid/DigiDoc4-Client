@@ -27,7 +27,6 @@
 #include "widgets/WarningList.h"
 
 #include <common/Settings.h>
-#include <common/SslCertificate.h>
 #include <common/TokenData.h>
 
 #include <QtCore/QJsonObject>

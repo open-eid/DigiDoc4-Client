@@ -24,7 +24,6 @@
 #include "dialogs/KeyDialog.h"
 
 #include <common/DateTime.h>
-#include <common/SslCertificate.h>
 
 #include <QResizeEvent>
 #include <QSvgWidget>

@@ -24,8 +24,6 @@
 #include "QSmartCard.h"
 #include "Styles.h"
 
-#include <common/SslCertificate.h>
-
 #include <QSvgWidget>
 #include <QtCore/QTextStream>
 

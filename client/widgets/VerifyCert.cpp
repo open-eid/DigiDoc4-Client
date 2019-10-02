@@ -22,7 +22,6 @@
 #include "Styles.h"
 
 #include <common/DateTime.h>
-#include <common/SslCertificate.h>
 
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslKey>

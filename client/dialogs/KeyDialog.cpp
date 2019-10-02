@@ -21,11 +21,9 @@
 #include "ui_KeyDialog.h"
 
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "effects/Overlay.h"
 #include "dialogs/CertificateDetails.h"
-
-#include <common/SslCertificate.h>
-
 
 KeyDialog::KeyDialog( const CKey &key, QWidget *parent )
 	: QDialog( parent )
