@@ -153,9 +153,9 @@ void VerifyCert::update()
 			ui->name->setText(tr("Certificate for Encryption"));
 		ui->validUntil->setText(txt);
 		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN%1").arg(pinType));
-		ui->changePIN->setHidden(isBlockedPin || isTempelType);
+		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
 		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
-		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()));
+		ui->forgotPinLink->setHidden((isBlockedPin && isBlockedPuk) || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()));
 		ui->error->setText(
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
 				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
@@ -242,43 +242,40 @@ void VerifyCert::update()
 	ui->changePIN->setAccessibleName(ui->changePIN->text().toLower());
 }
 
-void VerifyCert::enterEvent(QEvent * /*event*/)
+bool VerifyCert::event(QEvent *event)
 {
-	if( !isValidCert && pinType != QSmartCardData::PukType )
-		setStyleSheet("background-color: #f3d8d8;" + borders);
-	else if( isBlockedPin )
-		setStyleSheet("background-color: #fbecd0;" + borders);
-	else
+	switch(event->type())
 	{
-		setStyleSheet("background-color: #f7f7f7;" + borders);
-		changePinStyle(QStringLiteral("#f7f7f7"));
-	}
-}
-
-void VerifyCert::leaveEvent(QEvent * /*event*/)
-{
-	if( !isValidCert && pinType != QSmartCardData::PukType )
-		setStyleSheet("background-color: #F9EBEB;" + borders);
-	else if( isBlockedPin )
-		setStyleSheet("background-color: #fcf5ea;" + borders);
-	else
-	{
-		setStyleSheet( "background-color: white;" + borders);
-		changePinStyle(QStringLiteral("white"));
-	}
-}
-
-void VerifyCert::changeEvent(QEvent* event)
-{
-	if (event->type() == QEvent::LanguageChange)
-	{
+	case QEvent::Enter:
+		if( !isValidCert && pinType != QSmartCardData::PukType )
+			setStyleSheet("background-color: #f3d8d8;" + borders);
+		else if( isBlockedPin )
+			setStyleSheet("background-color: #fbecd0;" + borders);
+		else
+		{
+			setStyleSheet("background-color: #f7f7f7;" + borders);
+			changePinStyle(QStringLiteral("#f7f7f7"));
+		}
+		break;
+	case QEvent::Leave:
+		if( !isValidCert && pinType != QSmartCardData::PukType )
+			setStyleSheet("background-color: #F9EBEB;" + borders);
+		else if( isBlockedPin )
+			setStyleSheet("background-color: #fcf5ea;" + borders);
+		else
+		{
+			setStyleSheet( "background-color: white;" + borders);
+			changePinStyle(QStringLiteral("white"));
+		}
+		break;
+	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 		update();
+		break;
+	default: break;
 	}
-
-	QWidget::changeEvent(event);
+	return StyledWidget::event(event);
 }
-
 
 void VerifyCert::changePinStyle( const QString &background )  
 {
