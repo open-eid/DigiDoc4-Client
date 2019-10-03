@@ -520,6 +520,9 @@ background-color: #f7f7f7;</string>
       </property>
       <item>
        <widget class="QLabel" name="title">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>

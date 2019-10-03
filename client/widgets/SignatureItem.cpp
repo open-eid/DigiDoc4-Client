@@ -57,6 +57,7 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, bool 
 , ui(new Private(std::move(s)))
 {
 	ui->setupUi(this);
+	ui->icon->installEventFilter(this);
 	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
 	ui->name->installEventFilter(this);
 	ui->idSignTime->setFont(Styles::font(Styles::Regular, 11));
@@ -191,16 +192,7 @@ bool SignatureItem::event(QEvent *event)
 	case QEvent::Resize:
 		updateNameField();
 		break;
-	case QEvent::MouseButtonRelease:
-		details();
-		break;
-	case QEvent::KeyRelease:
-		if(QKeyEvent *ke = static_cast<QKeyEvent*>(event))
-		{
-			if(isEnabled() && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
-				details();
-		}
-		break;
+
 	default: break;
 	}
 	return Item::event(event);
