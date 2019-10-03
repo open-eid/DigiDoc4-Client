@@ -1214,7 +1214,6 @@ void MainWindow::removeCryptoFile(int index)
 
 bool MainWindow::removeFile(DocumentModel *model, int index)
 {
-	bool rc = false;
 	auto count = model->rowCount();
 	if(count != 1)
 	{
@@ -1226,10 +1225,15 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 		dlg.setCancelText(tr("CANCEL"));
 		dlg.addButton(tr("REMOVE"), ContainerSave);
 		dlg.exec();
-		rc = (dlg.result() == ContainerSave);
+
+		if (dlg.result() == ContainerSave) {
+			window()->setWindowFilePath(QString());
+			window()->setWindowTitle(tr("DigiDoc4 client"));
+			return true;
+		} 
 	}
 
-	return rc;
+	return false;
 }
 
 void MainWindow::removeSignature(int index)
