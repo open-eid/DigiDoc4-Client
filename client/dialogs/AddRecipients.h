@@ -24,7 +24,7 @@
 #include "widgets/ItemList.h"
 
 #include <QDialog>
-#include <QMap>
+#include <QHash>
 
 
 namespace Ui {
@@ -71,8 +71,8 @@ private:
 	HistoryCertData toHistory(const QSslCertificate& cert) const;
 
 	Ui::AddRecipients *ui;
-	QMap<QString, AddressItem *> leftList;
-	QStringList rightList;
+	QHash<QSslCertificate, AddressItem *> leftList;
+	QList<QSslCertificate> rightList;
 	LdapSearch *ldap_person, *ldap_corp;
 	bool personSearch = false;
 	bool select = false;
