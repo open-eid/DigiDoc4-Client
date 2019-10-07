@@ -19,8 +19,6 @@
 
 #include "SslCertificate.h"
 
-#include "qasn1element_p.h"
-
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDataStream>
@@ -460,87 +458,6 @@ SslCertificate::CertType SslCertificate::type() const
 		}
 	}
 	return UnknownType;
-}
-
-bool SslCertificate::validateEncoding() const
-{
-	QAsn1Element root;
-	QDataStream dataStream(toDer());
-	if (!root.read(dataStream) || root.type() != QAsn1Element::SequenceType)
-		return false;
-
-	QDataStream rootStream(root.value());
-	QAsn1Element cert;
-	if (!cert.read(rootStream) || cert.type() != QAsn1Element::SequenceType)
-		return false;
-
-	// version or serial number
-	QAsn1Element elem;
-	QDataStream certStream(cert.value());
-	if (!elem.read(certStream))
-		return false;
-	if (elem.type() == QAsn1Element::Context0Type) {
-		if (!elem.read(certStream))
-			return false;
-	}
-	// serial number
-	if (elem.type() != QAsn1Element::IntegerType)
-		return false;
-	// algorithm ID
-	if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-	// issuer info
-	if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-	// validity period
-	if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-	// subject name
-	if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-	// public key
-	if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-
-	QDataStream keyStream(elem.value());
-	// Key algo OID
-	if (!elem.read(keyStream) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-
-	QAsn1Element oidElem;
-	if (!oidElem.read(elem.value()) || oidElem.type() != QAsn1Element::ObjectIdentifierType)
-		return false;
-	if (oidElem.toObjectId() == EC_ENCRYPTION_OID)
-		return true;
-
-	// Key data
-	if (!elem.read(keyStream) || elem.type() != QAsn1Element::BitStringType)
-		return false;
-
-	// RSA key
-	if (!elem.read(elem.value().mid(1)) || elem.type() != QAsn1Element::SequenceType)
-		return false;
-
-	// Key elements
-	QDataStream keyElements(elem.value());
-	if (!elem.read(keyElements) || elem.type() != QAsn1Element::IntegerType)
-		return false;
-	QByteArray modulus = elem.value();
-	if (!elem.read(keyElements) || elem.type() != QAsn1Element::IntegerType)
-		return false;
-	QByteArray exponent = elem.value();
-
-	// Verify Key elements
-	if(quint8(modulus[0]) >= 0x80) // Missing padding
-		return false;
-	if(quint8(modulus[0]) == 0x00 && quint8(modulus[1]) < 0x80) // Exessive padding
-		return false;
-	if(quint8(exponent[0]) >= 0x80) // Missing padding
-		return false;
-	if(quint8(exponent[0]) == 0x00 && quint8(exponent[1]) < 0x80) // Exessive padding
-		return false;
-
-	return true;
 }
 
 

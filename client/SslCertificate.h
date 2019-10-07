@@ -102,7 +102,6 @@ public:
 	static QByteArray	toHex( const QByteArray &in, QChar separator = ' ' );
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
-	bool		validateEncoding() const;
 
 	static QSslCertificate fromX509( Qt::HANDLE x509 );
 	static QSslKey keyFromEVP( Qt::HANDLE evp );
