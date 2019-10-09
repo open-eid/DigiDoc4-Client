@@ -154,7 +154,7 @@ void VerifyCert::update()
 		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN%1").arg(pinType));
 		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
 		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
-		ui->forgotPinLink->setHidden((isBlockedPin && isBlockedPuk) || isTempelType || (!cardData.isNull() && cardData.isSecurePinpad()));
+		ui->forgotPinLink->setHidden(isBlockedPin || isTempelType);
 		ui->error->setText(
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
 				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
