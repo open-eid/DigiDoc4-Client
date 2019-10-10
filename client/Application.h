@@ -76,6 +76,7 @@ public:
 	int run();
 	void waitForTSL( const QString &file );
 
+	static uint readTSLVersion(const QString &path);
 	static void addRecent( const QString &file );
 	static QVariant confValue( ConfParameter parameter, const QVariant &value = QVariant() );
 	static void clearConfValue( ConfParameter parameter );
@@ -105,7 +106,6 @@ private:
 #ifndef Q_OS_MAC
 	void migrateSettings();
 #endif
-	uint readTSLVersion(const QString &path) const;
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
 	QWidget* uniqueRoot();
 

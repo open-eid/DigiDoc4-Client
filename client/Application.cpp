@@ -809,7 +809,7 @@ void Application::parseArgs( const QStringList &args )
 	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign);
 }
 
-uint Application::readTSLVersion(const QString &path) const
+uint Application::readTSLVersion(const QString &path)
 {
 	QFile f(path);
 	if(!f.open(QFile::ReadOnly))
