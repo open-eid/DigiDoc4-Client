@@ -1,3 +1,12 @@
+DigiDoc4 version [4.2.3](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.3) release notes
+--------------------------------------
+- Improve accessibility
+- Code cleanup and bugfixes
+- Use Qt 5.12 and OpenSSL 1.1.1
+- Token usage improvements
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.2.2...v4.2.3)
+
 DigiDoc4 version [4.2.2](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.2) release notes
 --------------------------------------
 - Improve accessibility

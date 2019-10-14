@@ -17,15 +17,11 @@ Homepage: https://github.com/open-eid/DigiDoc4-Client
 Package: qdigidoc4
 Architecture: any
 Depends:
- opensc,
+ opensc-pkcs11,
  fonts-liberation,
  python-nautilus,
  ${shlibs:Depends},
  ${misc:Depends}
-Recommends:
- awp
-Conflicts:
- libdigidocpp0 (<<3.0)
 Replaces:
  qdigidoc (<< 3.14)
 Description: Estonian digital signature application
