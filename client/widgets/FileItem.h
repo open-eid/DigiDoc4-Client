@@ -39,7 +39,7 @@ public:
 
 	QString getFile();
 	QWidget* initTabOrder(QWidget *item) final;
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
 signals:
 	void open(FileItem* item);
@@ -53,4 +53,5 @@ private:
 	bool elided = false;
 	QString fileName;
 	int width = 0;
+	bool isEnabled = true;
 };

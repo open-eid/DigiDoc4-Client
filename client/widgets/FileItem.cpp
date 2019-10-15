@@ -64,14 +64,14 @@ bool FileItem::event(QEvent *event)
 	switch(event->type())
 	{
 	case QEvent::Enter:
-		if(isEnabled())
+		if(isEnabled)
 			ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-decoration: underline;"));
 		break;
 	case QEvent::Leave:
 		ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none;"));
 		break;
 	case QEvent::MouseButtonRelease:
-		if(isEnabled())
+		if(isEnabled)
 			emit open(this);
 		break;
 	case QEvent::Resize:
@@ -80,7 +80,7 @@ bool FileItem::event(QEvent *event)
 	case QEvent::KeyRelease:
 		if(QKeyEvent *ke = static_cast<QKeyEvent*>(event))
 		{
-			if(isEnabled() && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
+			if(isEnabled && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
 				emit open(this);
 		}
 		break;
@@ -118,25 +118,8 @@ void FileItem::setFileName(bool force)
 
 void FileItem::stateChange(ContainerState state)
 {
-	setEnabled(state != EncryptedContainer);
-
-	switch(state)
-	{
-	case UnsignedSavedContainer:
-		ui->download->show();
-		ui->remove->show();
-		break;
-	case SignedContainer:
-		ui->download->show();
-		ui->remove->hide();
-		break;
-	case EncryptedContainer:
-		ui->download->hide();
-		ui->remove->hide();
-		break;
-	default:
-		ui->download->hide();
-		ui->remove->show();
-		break;
-	}
+	isEnabled = state != EncryptedContainer;
+	ui->fileName->setAccessibleDescription(isEnabled ? tr("To open file press space or enter") : QString());
+	ui->download->setVisible(state == UnsignedSavedContainer || state == SignedContainer);
+	ui->remove->setHidden(state == SignedContainer || state == EncryptedContainer);
 }
