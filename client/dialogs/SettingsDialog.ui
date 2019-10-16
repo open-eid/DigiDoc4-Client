@@ -119,8 +119,8 @@ QPushButton:!checked{
             <height>55</height>
            </size>
           </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
           </property>
           <property name="text">
            <string>Settings</string>
@@ -300,6 +300,9 @@ QRadioButton::indicator::checked {
          </property>
          <item>
           <widget class="QLabel" name="lblGeneralLang">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
            <property name="text">
             <string>Language</string>
            </property>
@@ -381,6 +384,9 @@ QRadioButton::indicator::checked {
          </item>
          <item>
           <widget class="QLabel" name="lblDefaultDirectory">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
            <property name="text">
             <string>Container default location</string>
            </property>
@@ -505,6 +511,9 @@ QRadioButton::indicator::checked {
           <layout class="QHBoxLayout" name="accessCertLayout">
            <item>
             <widget class="QLabel" name="lblRevocation">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
              <property name="text">
               <string>Access to validity confirmation service</string>
              </property>
@@ -517,6 +526,9 @@ QRadioButton::indicator::checked {
              </property>
              <property name="styleSheet">
               <string notr="true">QToolButton { border: none; }</string>
+             </property>
+             <property name="text">
+              <string>Help</string>
              </property>
              <property name="icon">
               <iconset>
@@ -549,6 +561,9 @@ QRadioButton::indicator::checked {
          </item>
          <item>
           <widget class="QLabel" name="lblAccessCert">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
            <property name="text">
             <string>Server access certificate</string>
            </property>
@@ -556,6 +571,9 @@ QRadioButton::indicator::checked {
          </item>
          <item>
           <widget class="QLabel" name="txtAccessCert">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
            </property>
@@ -652,8 +670,14 @@ QRadioButton::indicator::checked {
           <layout class="QHBoxLayout" name="timeStampLayout">
            <item>
             <widget class="QLabel" name="lblTimeStamp">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
              <property name="text">
               <string>Access to Time-Stamping service</string>
+             </property>
+             <property name="buddy">
+              <cstring>rdTimeStamp</cstring>
              </property>
             </widget>
            </item>
@@ -664,6 +688,9 @@ QRadioButton::indicator::checked {
              </property>
              <property name="styleSheet">
               <string notr="true">QToolButton { border: none; }</string>
+             </property>
+             <property name="text">
+              <string>Help</string>
              </property>
              <property name="icon">
               <iconset>
@@ -970,6 +997,9 @@ QScrollBar::sub-line:vertical {
          </item>
          <item>
           <widget class="QLabel" name="contact">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
            <property name="text">
             <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -1110,8 +1140,8 @@ QPushButton:disabled {
       </property>
       <item>
        <widget class="QLabel" name="txtNavVersion">
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
         <property name="text">
          <string notr="true">&lt;b&gt;DigiDoc4&lt;/b&gt; klient 4.0.1.0</string>
@@ -1333,37 +1363,10 @@ QPushButton:disabled {
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QSvgWidget</header>
+   <header location="global">QtSvg/QSvgWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>btnMenuGeneral</tabstop>
-  <tabstop>btnMenuCertificate</tabstop>
-  <tabstop>btnMenuProxy</tabstop>
-  <tabstop>btnMenuDiagnostics</tabstop>
-  <tabstop>btnMenuInfo</tabstop>
-  <tabstop>btnNavSaveReport</tabstop>
-  <tabstop>btnNavFromHistory</tabstop>
-  <tabstop>btnNavUseByDefault</tabstop>
-  <tabstop>btNavClose</tabstop>
-  <tabstop>rdGeneralEstonian</tabstop>
-  <tabstop>rdGeneralRussian</tabstop>
-  <tabstop>rdGeneralEnglish</tabstop>
-  <tabstop>chkGeneralTslRefresh</tabstop>
-  <tabstop>rdGeneralSameDirectory</tabstop>
-  <tabstop>rdGeneralSpecifyDirectory</tabstop>
-  <tabstop>btGeneralChooseDirectory</tabstop>
-  <tabstop>txtGeneralDirectory</tabstop>
-  <tabstop>chkIgnoreAccessCert</tabstop>
-  <tabstop>txtProxyHost</tabstop>
-  <tabstop>txtProxyPort</tabstop>
-  <tabstop>txtProxyUsername</tabstop>
-  <tabstop>txtProxyPassword</tabstop>
-  <tabstop>chkProxyEnableForSSL</tabstop>
-  <tabstop>txtDiagnostics</tabstop>
-  <tabstop>txtInfo</tabstop>
- </tabstops>
  <resources/>
  <connections/>
  <buttongroups>

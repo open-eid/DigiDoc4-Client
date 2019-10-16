@@ -2630,6 +2630,10 @@ Additional licenses and components</translation>
         <source>Redundant certificates have been successfully removed.</source>
         <translation>Redundant certificates have been successfully removed.</translation>
     </message>
+    <message>
+        <source>Help</source>
+        <translation>Help</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

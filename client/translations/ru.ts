@@ -2633,6 +2633,10 @@ Additional licenses and components</source>
         <source>Redundant certificates have been successfully removed.</source>
         <translation>Лишние сертификаты успешно удалены.</translation>
     </message>
+    <message>
+        <source>Help</source>
+        <translation>Помощь</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

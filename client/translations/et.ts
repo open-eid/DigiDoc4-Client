@@ -2630,6 +2630,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Redundant certificates have been successfully removed.</source>
         <translation>Üleliigsed sertifikaadid edukalt eemaldatud.</translation>
     </message>
+    <message>
+        <source>Help</source>
+        <translation>Abi</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
