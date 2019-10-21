@@ -199,9 +199,6 @@ void VerifyCert::update()
 					"background-color: #e09797;"
 					"color: #5c1c1c;"
 					);
-		ui->greenIcon->hide();
-		ui->orangeIcon->hide();
-		ui->redIcon->show();
 	}
 	else if( isBlockedPin )
 	{
@@ -221,9 +218,6 @@ void VerifyCert::update()
 					"border-radius: 2px;"
 					"background-color: #F8DDA7;"
 					);
-		ui->greenIcon->hide();
-		ui->redIcon->hide();
-		ui->orangeIcon->show();
 	}
 	else
 	{
@@ -233,9 +227,10 @@ void VerifyCert::update()
 		ui->verticalSpacerAboveBtn->changeSize(20, 29 - decrease);
 		ui->verticalSpacerBelowBtn->changeSize(20, 34 - decrease);
 		changePinStyle(QStringLiteral("#FFFFFF"));
-		ui->redIcon->hide();
-		ui->greenIcon->setVisible(pinType != QSmartCardData::PukType);
 	}
+	ui->redIcon->setVisible(!isValidCert && pinType != QSmartCardData::PukType);
+	ui->orangeIcon->setVisible(ui->redIcon->isHidden() && isBlockedPin);
+	ui->greenIcon->setVisible(ui->redIcon->isHidden() && ui->orangeIcon->isHidden() && pinType != QSmartCardData::PukType);
 	ui->error->setHidden(ui->error->text().isEmpty());
 	ui->tempelText->setVisible(isTempelType);
 	ui->changePIN->setAccessibleName(ui->changePIN->text().toLower());
