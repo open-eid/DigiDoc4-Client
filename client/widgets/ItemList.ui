@@ -147,7 +147,7 @@ border-width: 0px 0px 1px 0px;
           <number>0</number>
          </property>
          <property name="text">
-          <string notr="true">Konteineri failid</string>
+          <string>Container's files</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
