@@ -22,10 +22,7 @@
     <height>570</height>
    </size>
   </property>
-  <layout class="QVBoxLayout" name="SettingsDialogLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="SettingsDialogLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -38,39 +35,25 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <layout class="QHBoxLayout" name="containerListsLayout">
-     <property name="spacing">
-      <number>0</number>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QWidget" name="leftPane" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>205</width>
+       <height>0</height>
+      </size>
      </property>
-     <property name="leftMargin">
-      <number>0</number>
+     <property name="maximumSize">
+      <size>
+       <width>205</width>
+       <height>16777215</height>
+      </size>
      </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QWidget" name="leftPane" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>205</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>205</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#leftPane {
+     <property name="styleSheet">
+      <string notr="true">#leftPane {
 	background-color: #ffffff;
 }
 QWidget {
@@ -88,172 +71,172 @@ QPushButton:!checked{
 	background-color: #ffffff;
 	color: #000000;
 }</string>
-       </property>
-       <layout class="QVBoxLayout" name="leftPaneLayout">
-        <property name="spacing">
-         <number>0</number>
+     </property>
+     <layout class="QVBoxLayout" name="leftPaneLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblMenuSettings">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>55</height>
+         </size>
         </property>
-        <property name="leftMargin">
-         <number>2</number>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>55</height>
+         </size>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
-        <property name="rightMargin">
-         <number>1</number>
+        <property name="text">
+         <string>Settings</string>
         </property>
-        <property name="bottomMargin">
-         <number>0</number>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
-        <item>
-         <widget class="QLabel" name="lblMenuSettings">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>55</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>55</height>
-           </size>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Settings</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnMenuGeneral">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">General</string>
-          </property>
-          <property name="text">
-           <string>GENERAL</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnMenuCertificate">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">Services</string>
-          </property>
-          <property name="text">
-           <string>SERVICES</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnMenuProxy">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">Proxy</string>
-          </property>
-          <property name="text">
-           <string>PROXY</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnMenuDiagnostics">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">Diagnostics</string>
-          </property>
-          <property name="text">
-           <string>DIAGNOSTICS</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnMenuInfo">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>35</height>
-           </size>
-          </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">Info</string>
-          </property>
-          <property name="text">
-           <string>INFO</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="leftPaneSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QStackedWidget" name="stackedWidget">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#pageGeneral, #pageAccessCert, #pageProxy, #pageDiagnostics, #pageInfo {
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnMenuGeneral">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">General</string>
+        </property>
+        <property name="text">
+         <string>GENERAL</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnMenuCertificate">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Services</string>
+        </property>
+        <property name="text">
+         <string>SERVICES</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnMenuProxy">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Proxy</string>
+        </property>
+        <property name="text">
+         <string>PROXY</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnMenuDiagnostics">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Diagnostics</string>
+        </property>
+        <property name="text">
+         <string>DIAGNOSTICS</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnMenuInfo">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Info</string>
+        </property>
+        <property name="text">
+         <string>INFO</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="leftPaneSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#pageGeneral, #pageServices, #pageProxy, #pageDiagnostics, #pageInfo {
 	background-color: #ffffff;
 }
 QLineEdit {
@@ -277,662 +260,724 @@ QRadioButton::indicator::unchecked {
 QRadioButton::indicator::checked {
     image: url(:/images/icon_radio_checked.png);
 }</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="pageGeneral">
+      <layout class="QVBoxLayout" name="pageGeneralLayout">
+       <property name="spacing">
+        <number>20</number>
        </property>
-       <property name="currentIndex">
-        <number>0</number>
+       <property name="leftMargin">
+        <number>20</number>
        </property>
-       <widget class="QWidget" name="pageGeneral">
-        <layout class="QVBoxLayout" name="pageGeneralLayout">
-         <property name="spacing">
-          <number>20</number>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lblGeneralLang">
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
-         <property name="leftMargin">
-          <number>20</number>
+         <property name="text">
+          <string>Language</string>
          </property>
-         <property name="topMargin">
-          <number>20</number>
-         </property>
-         <property name="rightMargin">
-          <number>20</number>
-         </property>
-         <property name="bottomMargin">
-          <number>20</number>
-         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="languageBoxLayout">
          <item>
-          <widget class="QLabel" name="lblGeneralLang">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
+          <widget class="QRadioButton" name="rdGeneralEstonian">
            <property name="text">
-            <string>Language</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="languageBoxLayout">
-           <item>
-            <widget class="QRadioButton" name="rdGeneralEstonian">
-             <property name="text">
-              <string notr="true">Eesti</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-             <attribute name="buttonGroup">
-              <string notr="true">langGroup</string>
-             </attribute>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="rdGeneralRussian">
-             <property name="text">
-              <string notr="true">Русский</string>
-             </property>
-             <attribute name="buttonGroup">
-              <string notr="true">langGroup</string>
-             </attribute>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="rdGeneralEnglish">
-             <property name="text">
-              <string notr="true">English</string>
-             </property>
-             <attribute name="buttonGroup">
-              <string notr="true">langGroup</string>
-             </attribute>
-            </widget>
-           </item>
-           <item>
-            <spacer name="languageBoxSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>495</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="chkGeneralTslRefresh">
-           <property name="text">
-            <string>Online TSL digest check</string>
+            <string notr="true">Eesti</string>
            </property>
            <property name="checked">
             <bool>true</bool>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">langGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="chkShowPrintSummary">
+          <widget class="QRadioButton" name="rdGeneralRussian">
            <property name="text">
-            <string>Show print summary</string>
+            <string notr="true">Русский</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">langGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="chkRoleAddressInfo">
+          <widget class="QRadioButton" name="rdGeneralEnglish">
            <property name="text">
-            <string>Ask role and address info on signing</string>
+            <string notr="true">English</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">langGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="lblDefaultDirectory">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="text">
-            <string>Container default location</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="locationBoxLayout" columnminimumwidth="220,0,0">
-           <property name="horizontalSpacing">
-            <number>2</number>
-           </property>
-           <property name="verticalSpacing">
-            <number>4</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QRadioButton" name="rdGeneralSameDirectory">
-             <property name="text">
-              <string>Same folder</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-             <attribute name="buttonGroup">
-              <string notr="true">pathGroup</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
-             <property name="text">
-              <string>Select the default directory</string>
-             </property>
-             <attribute name="buttonGroup">
-              <string notr="true">pathGroup</string>
-             </attribute>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QToolButton" name="btGeneralChooseDirectory">
-             <property name="minimumSize">
-              <size>
-               <width>37</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>37</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="text">
-              <string notr="true">...</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLineEdit" name="txtGeneralDirectory">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>31</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="tokenBackendLayout" stretch="1,0">
-           <item>
-            <widget class="QCheckBox" name="tokenBackend">
-             <property name="text">
-              <string>I would like to sign with Lithuanian, Latvian ID-card</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="tokenRestart">
-             <property name="text">
-              <string>Restart now</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <spacer name="pageGeneralSpacer">
+          <spacer name="languageBoxSpacer">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="pageAccessCert">
-        <layout class="QVBoxLayout" name="pageAccessCertLayout">
-         <property name="leftMargin">
-          <number>20</number>
-         </property>
-         <property name="topMargin">
-          <number>20</number>
-         </property>
-         <property name="rightMargin">
-          <number>20</number>
-         </property>
-         <property name="bottomMargin">
-          <number>20</number>
-         </property>
-         <item>
-          <layout class="QHBoxLayout" name="accessCertLayout">
-           <item>
-            <widget class="QLabel" name="lblRevocation">
-             <property name="focusPolicy">
-              <enum>Qt::TabFocus</enum>
-             </property>
-             <property name="text">
-              <string>Access to validity confirmation service</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="helpRevocation">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QToolButton { border: none; }</string>
-             </property>
-             <property name="text">
-              <string>Help</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normalon>:/images/icon_Abi.svg</normalon>
-               <selectedon>:/images/icon_Abi_hover.svg</selectedon>
-              </iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="helpRevocationSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="lblAccessCert">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="text">
-            <string>Server access certificate</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="txtAccessCert">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-           <property name="openExternalLinks">
-            <bool>true</bool>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::TextBrowserInteraction</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="accessCertButtonsLayout">
-           <item>
-            <widget class="QPushButton" name="btnNavInstallManually">
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>INSTALL MANUALLY</string>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnNavShowCertificate">
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>SHOW CERTIFICATE</string>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="accessCertButtonSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="chkIgnoreAccessCert">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Ignore server access certificate (IP based access)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="pageAccessCertSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Preferred</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
+             <width>495</width>
              <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
-         <item>
-          <layout class="QHBoxLayout" name="timeStampLayout">
-           <item>
-            <widget class="QLabel" name="lblTimeStamp">
-             <property name="focusPolicy">
-              <enum>Qt::TabFocus</enum>
-             </property>
-             <property name="text">
-              <string>Access to Time-Stamping service</string>
-             </property>
-             <property name="buddy">
-              <cstring>rdTimeStamp</cstring>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="helpTimeStamp">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QToolButton { border: none; }</string>
-             </property>
-             <property name="text">
-              <string>Help</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normalon>:/images/icon_Abi.svg</normalon>
-               <selectedon>:/images/icon_Abi_hover.svg</selectedon>
-              </iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="helpTimeStampSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
+        </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkGeneralTslRefresh">
+         <property name="text">
+          <string>Online TSL digest check</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkShowPrintSummary">
+         <property name="text">
+          <string>Show print summary</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkRoleAddressInfo">
+         <property name="text">
+          <string>Ask role and address info on signing</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblDefaultDirectory">
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="text">
+          <string>Container default location</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="locationBoxLayout" columnminimumwidth="220,0,0">
+         <property name="horizontalSpacing">
+          <number>2</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>4</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="rdGeneralSameDirectory">
+           <property name="text">
+            <string>Same folder</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">pathGroup</string>
+           </attribute>
+          </widget>
          </item>
-         <item>
-          <widget class="QLineEdit" name="rdTimeStamp">
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
+           <property name="text">
+            <string>Select the default directory</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">pathGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QToolButton" name="btGeneralChooseDirectory">
+           <property name="minimumSize">
+            <size>
+             <width>37</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>37</width>
+             <height>31</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true">...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="txtGeneralDirectory">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>31</height>
             </size>
            </property>
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>31</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="tokenBackendLayout" stretch="1,0">
+         <item>
+          <widget class="QCheckBox" name="tokenBackend">
+           <property name="text">
+            <string>I would like to sign with Lithuanian, Latvian ID-card</string>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="pageAccessCertBottomSpacer">
+          <widget class="QPushButton" name="tokenRestart">
+           <property name="text">
+            <string>Restart now</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="pageGeneralSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageServices">
+      <property name="styleSheet">
+       <string notr="true">QToolButton { border: none; }</string>
+      </property>
+      <layout class="QVBoxLayout" name="pageServicesLayout">
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="accessCertLayout">
+         <item>
+          <widget class="QLabel" name="lblRevocation">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
+           <property name="text">
+            <string>Access to validity confirmation service</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="helpRevocation">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Help</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/images/icon_Abi.svg</normalon>
+             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="helpRevocationSpacer">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
-             <height>40</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
         </layout>
-       </widget>
-       <widget class="QWidget" name="pageProxy">
-        <layout class="QFormLayout" name="pageProxyLayout">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblAccessCert">
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
-         <property name="labelAlignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <property name="text">
+          <string>Server access certificate</string>
          </property>
-         <property name="leftMargin">
-          <number>20</number>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="txtAccessCert">
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
-         <property name="topMargin">
-          <number>20</number>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
-         <property name="rightMargin">
-          <number>20</number>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
-         <property name="bottomMargin">
-          <number>20</number>
+         <property name="openExternalLinks">
+          <bool>true</bool>
          </property>
-         <item row="0" column="0" colspan="2">
-          <widget class="QRadioButton" name="rdProxyNone">
+         <property name="textInteractionFlags">
+          <set>Qt::TextBrowserInteraction</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="accessCertButtonsLayout">
+         <item>
+          <widget class="QPushButton" name="btnNavInstallManually">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>150</width>
              <height>31</height>
             </size>
            </property>
            <property name="text">
-            <string>No proxy</string>
+            <string>INSTALL MANUALLY</string>
            </property>
-           <property name="checked">
-            <bool>true</bool>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QRadioButton" name="rdProxySystem">
+         <item>
+          <widget class="QPushButton" name="btnNavShowCertificate">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>150</width>
              <height>31</height>
             </size>
            </property>
            <property name="text">
-            <string>Use system proxy settings</string>
+            <string>SHOW CERTIFICATE</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2">
-          <widget class="QRadioButton" name="rdProxyManual">
-           <property name="minimumSize">
+         <item>
+          <spacer name="accessCertButtonSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>0</width>
-             <height>31</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
-           <property name="text">
-            <string>Manual proxy configuration</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="lblProxyHost">
-           <property name="minimumSize">
-            <size>
-             <width>140</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Host</string>
-           </property>
-           <property name="buddy">
-            <cstring>txtProxyHost</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="txtProxyHost">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="lblProxyPort">
-           <property name="text">
-            <string>Port</string>
-           </property>
-           <property name="buddy">
-            <cstring>txtProxyPort</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="txtProxyPort">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="lblProxyUsername">
-           <property name="text">
-            <string>Username</string>
-           </property>
-           <property name="buddy">
-            <cstring>txtProxyUsername</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLineEdit" name="txtProxyUsername">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="lblProxyPassword">
-           <property name="text">
-            <string>Password</string>
-           </property>
-           <property name="buddy">
-            <cstring>txtProxyPassword</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="txtProxyPassword">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0" colspan="2">
-          <widget class="QCheckBox" name="chkProxyEnableForSSL">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Enable proxy for SSL connections</string>
-           </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
-       </widget>
-       <widget class="QWidget" name="pageDiagnostics">
-        <layout class="QVBoxLayout" name="pageDiagnosticsLayout">
-         <property name="leftMargin">
-          <number>10</number>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkIgnoreAccessCert">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
          </property>
-         <property name="topMargin">
-          <number>10</number>
+         <property name="text">
+          <string>Ignore server access certificate (IP based access)</string>
          </property>
-         <property name="rightMargin">
-          <number>10</number>
+        </widget>
+       </item>
+       <item>
+        <spacer name="pageServicesSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="bottomMargin">
-          <number>10</number>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
          </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="timeStampLayout">
          <item>
-          <widget class="QTextEdit" name="txtDiagnostics">
-           <property name="styleSheet">
-            <string notr="true">QTextEdit {
+          <widget class="QLabel" name="lblTimeStamp">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
+           <property name="text">
+            <string>Access to Time-Stamping service</string>
+           </property>
+           <property name="buddy">
+            <cstring>rdTimeStamp</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="helpTimeStamp">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Help</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/images/icon_Abi.svg</normalon>
+             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="helpTimeStampSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="rdTimeStamp">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="midLayout">
+         <item>
+          <widget class="QLabel" name="lblMID">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
+           <property name="text">
+            <string>Access to Mobile-ID and Smart-ID service</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="helpMID">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Help</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/images/icon_Abi.svg</normalon>
+             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="helpMIDSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="rdMIDUUID">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="placeholderText">
+          <string notr="true">00000000-0000-0000-0000-000000000000</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="pageServicesBottomSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageProxy">
+      <layout class="QFormLayout" name="pageProxyLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item row="0" column="0" colspan="2">
+        <widget class="QRadioButton" name="rdProxyNone">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>No proxy</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QRadioButton" name="rdProxySystem">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Use system proxy settings</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QRadioButton" name="rdProxyManual">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Manual proxy configuration</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="lblProxyHost">
+         <property name="minimumSize">
+          <size>
+           <width>140</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Host</string>
+         </property>
+         <property name="buddy">
+          <cstring>txtProxyHost</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="txtProxyHost">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="lblProxyPort">
+         <property name="text">
+          <string>Port</string>
+         </property>
+         <property name="buddy">
+          <cstring>txtProxyPort</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="txtProxyPort">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lblProxyUsername">
+         <property name="text">
+          <string>Username</string>
+         </property>
+         <property name="buddy">
+          <cstring>txtProxyUsername</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="txtProxyUsername">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="lblProxyPassword">
+         <property name="text">
+          <string>Password</string>
+         </property>
+         <property name="buddy">
+          <cstring>txtProxyPassword</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="txtProxyPassword">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="QCheckBox" name="chkProxyEnableForSSL">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>31</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Enable proxy for SSL connections</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageDiagnostics">
+      <layout class="QVBoxLayout" name="pageDiagnosticsLayout">
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
+       </property>
+       <item>
+        <widget class="QTextEdit" name="txtDiagnostics">
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
 	color: #363739;
 }
 QScrollBar {
@@ -957,75 +1002,75 @@ QScrollBar::sub-line:vertical {
       background: none;
 }
 </string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="pageInfo">
-        <layout class="QVBoxLayout" name="pageInfoLayout">
-         <property name="leftMargin">
-          <number>10</number>
          </property>
-         <property name="topMargin">
-          <number>20</number>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
-         <property name="rightMargin">
-          <number>10</number>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageInfo">
+      <layout class="QVBoxLayout" name="pageInfoLayout">
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
+       </property>
+       <item>
+        <widget class="QSvgWidget" name="structureFunds" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>111</width>
+           <height>61</height>
+          </size>
          </property>
-         <property name="bottomMargin">
-          <number>10</number>
+         <property name="maximumSize">
+          <size>
+           <width>111</width>
+           <height>61</height>
+          </size>
          </property>
-         <item>
-          <widget class="QSvgWidget" name="structureFunds" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>111</width>
-             <height>61</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>111</width>
-             <height>61</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="contact">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="text">
-            <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="contact">
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="text">
+          <string>&lt;p&gt;Estonian ID-software is released by Information Systems's Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-           <property name="openExternalLinks">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextBrowser" name="txtInfo">
-           <property name="font">
-            <font>
-             <family>Roboto</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QTextEdit {
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="txtInfo">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
 	color: #363739;
 }
 QScrollBar{
@@ -1049,12 +1094,12 @@ QScrollBar::sub-line:vertical {
       border: none;
       background: none;
 }</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-           <property name="html">
-            <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; }
 &lt;/style&gt;&lt;/head&gt;&lt;body&gt;
@@ -1070,22 +1115,20 @@ p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:
 &lt;p align=&quot;center&quot;&gt;&lt;b&gt;Apache XML Security for C++&lt;/b&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;http://www.apache.org/licenses/LICENSE-2.0.html&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.apache.org/licenses/LICENSE-2.0.html&lt;/a&gt; &lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;b&gt;XSD: XML Data Binding for C++&lt;/b&gt;&lt;br /&gt;GNU General Public License (GPL), version 2&lt;br /&gt;Free/Libre and Open Source Software (FLOSS) exception&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/products/xsd/license.xhtml&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/products/xsd/license.xhtml&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.codesynthesis.com/projects/xsd/FLOSSE&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;http://www.codesynthesis.com/projects/xsd/FLOSSE&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;b&gt;Roboto: Google’s signature family of fonts&lt;/b&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;https://github.com/google/roboto/blob/master/LICENSE&quot; style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;https://github.com/google/roboto/blob/master/LICENSE&lt;/a&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::TextBrowserInteraction</set>
-           </property>
-           <property name="openExternalLinks">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-    </layout>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::TextBrowserInteraction</set>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
-   <item>
+   <item row="1" column="0" colspan="2">
     <widget class="QWidget" name="navigationArea" native="true">
      <property name="minimumSize">
       <size>
@@ -1247,9 +1290,6 @@ QPushButton:disabled {
         <property name="text">
          <string>SAVE DIAGNOSTICS REPORT TO DISK</string>
         </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
       <item>
@@ -1272,9 +1312,6 @@ QPushButton:disabled {
         <property name="text">
          <string>REMOVE OLD CERTIFICATES</string>
         </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
       <item>
@@ -1296,9 +1333,6 @@ QPushButton:disabled {
         </property>
         <property name="text">
          <string>USE DEFAULT SETTINGS</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -1345,12 +1379,6 @@ QPushButton:disabled {
         </property>
         <property name="text">
          <string>CLOSE</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-        <property name="default">
-         <bool>true</bool>
         </property>
        </widget>
       </item>

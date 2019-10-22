@@ -108,15 +108,17 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->chkShowPrintSummary->setFont(regularFont);
 	ui->chkRoleAddressInfo->setFont(regularFont);
 
-	// pageAccessSert
+	// pageServices
 	ui->lblRevocation->setFont(headerFont);
 	ui->lblAccessCert->setFont(regularFont);
 	ui->txtAccessCert->setFont(regularFont);
 	ui->chkIgnoreAccessCert->setFont(regularFont);
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStamp->setFont(regularFont);
+	ui->lblMID->setFont(headerFont);
 	ui->helpRevocation->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpTimeStamp->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
+	ui->helpMID->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 
 	// pageProxy
 	ui->rdProxyNone->setFont(regularFont);
@@ -241,6 +243,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(DiagnosticsSettings); } );
 	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(LicenseSettings); } );
 
+	Settings s(qApp->applicationName());
+	ui->rdMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
+	connect(ui->rdMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
+		Settings(qApp->applicationName()).setValueEx(QStringLiteral("MIDUUID"), text, QString());
+		Settings(qApp->applicationName()).setValueEx(QStringLiteral("SIDUUID"), text, QString());
+	});
+
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
 	connect( this, &SettingsDialog::finished, this, []{ QApplication::restoreOverrideCursor(); } );
 
@@ -362,19 +371,17 @@ void SettingsDialog::initFunctionality()
 		ui->rdGeneralSpecifyDirectory->setChecked( true );
 		ui->btGeneralChooseDirectory->setEnabled(true);
 	}
-	connect( ui->rdGeneralSameDirectory, &QRadioButton::toggled, this, [this](bool checked)
+	connect(ui->rdGeneralSameDirectory, &QRadioButton::toggled, this, [this](bool checked) {
+		if(checked)
 		{
-			if(checked)
-			{
-				ui->btGeneralChooseDirectory->setEnabled(false);
-				ui->txtGeneralDirectory->setText( QString() );
-		} } );
-	connect( ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool checked)
-		{
-			if(checked)
-			{
-				ui->btGeneralChooseDirectory->setEnabled(true);
-		} } );
+			ui->btGeneralChooseDirectory->setEnabled(false);
+			ui->txtGeneralDirectory->clear();
+		}
+	});
+	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool checked) {
+		if(checked)
+			ui->btGeneralChooseDirectory->setEnabled(true);
+	});
 #endif
 
 	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
@@ -622,6 +629,7 @@ void SettingsDialog::useDefaultSettings()
 	AccessCert().remove();
 	updateCert();
 	ui->rdTimeStamp->clear();
+	ui->rdMIDUUID->clear();
 }
 
 void SettingsDialog::changePage(QPushButton* button)
