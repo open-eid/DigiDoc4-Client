@@ -174,7 +174,7 @@ void VerifyCert::update()
 		ui->error->setText(
 			isBlockedPin ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
 				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "
-				"Please visit the service center to obtain new codes. <a href=\"http://www.politsei.ee/et/nouanded/id-kaart-ja-pass/kui-id-kaardi-koodid-kaovad/\">Additional information</a>.") :
+				"Please visit the service center to obtain new codes. <a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/\">Additional information</a>.") :
 			QString()
 		);
 		break;
