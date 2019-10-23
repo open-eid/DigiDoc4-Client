@@ -1825,8 +1825,8 @@ Control code: %1</translation>
         <translation>PIN will be locked next failed attempt</translation>
     </message>
     <message>
-        <source>PIN has been entered incorrectly one time</source>
-        <translation>PIN has been entered incorrectly one time</translation>
+        <source>PIN has been entered incorrectly at least once</source>
+        <translation>PIN has been entered incorrectly at least once</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
