@@ -312,6 +312,7 @@ Application::Application( int &argc, char **argv )
 #if defined(Q_OS_MAC)
 	d->bar = new MacMenuBar;
 	d->bar->addAction( MacMenuBar::AboutAction, this, SLOT(showAbout()) );
+	d->bar->addAction( MacMenuBar::PreferencesAction, this, SLOT(showSettings()) );
 	d->bar->fileMenu()->addAction( d->newClientAction );
 	d->bar->fileMenu()->addAction( d->newCryptoAction );
 	d->bar->fileMenu()->addAction( d->closeAction );
@@ -874,6 +875,12 @@ void Application::showAbout()
 {
 	if(MainWindow *w = qobject_cast<MainWindow*>(qApp->mainWindow()))
 		w->showSettings(SettingsDialog::LicenseSettings);
+}
+
+void Application::showSettings()
+{
+	if(MainWindow *w = qobject_cast<MainWindow*>(qApp->mainWindow()))
+		w->showSettings(SettingsDialog::GeneralSettings);
 }
 
 void Application::showClient(const QStringList &params, bool crypto, bool sign)
