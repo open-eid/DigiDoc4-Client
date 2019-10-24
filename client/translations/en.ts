@@ -3047,10 +3047,6 @@ Additional licenses and components</translation>
         <translation>PIN%1 can not be used because the certificate has expired. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</source>
-        <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times. Unblock to reuse PIN%1.</translation>
-    </message>
-    <message>
         <source>PUK code</source>
         <translation>PUK code</translation>
     </message>
@@ -3083,6 +3079,14 @@ Additional licenses and components</translation>
     <message>
         <source>Certificate for Encryption</source>
         <translation>Certificate for Encryption</translation>
+    </message>
+    <message>
+        <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
+        <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</translation>
+    </message>
+    <message>
+        <source>Unblock to reuse PIN%1.</source>
+        <translation>Unblock to reuse PIN%1.</translation>
     </message>
 </context>
 <context>
