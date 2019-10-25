@@ -997,6 +997,8 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 
 QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
 {
+	if(z.isEmpty())
+		return z;
 	QCryptographicHash::Algorithm hashAlg =  Private::SHA_MTH[digestMethod];
 	quint32 hashLen = 0;
 	switch(hashAlg)
