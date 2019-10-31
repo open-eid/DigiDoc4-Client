@@ -221,6 +221,8 @@ private:
 	void reload()
 	{
 		obj = Configuration::instance().object();
+		if(s2.value(QStringLiteral("TSA-URL")) == obj.value(QStringLiteral("TSA-URL")))
+			s2.remove(QStringLiteral("TSA-URL"));
 		QList<QSslCertificate> list;
 		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
@@ -254,7 +256,7 @@ public:
 	QJsonObject obj;
 };
 
-class ApplicationPrivate
+class Application::Private
 {
 public:
 	QAction		*closeAction = nullptr, *newClientAction = nullptr, *newCryptoAction = nullptr;
@@ -274,7 +276,7 @@ public:
 
 Application::Application( int &argc, char **argv )
 	: Common(argc, argv, QStringLiteral(APP), QStringLiteral(":/images/digidoc_icon_128x128.png"))
-	, d( new ApplicationPrivate )
+	, d(new Private)
 {
 	QStringList args = arguments();
 	args.removeFirst();

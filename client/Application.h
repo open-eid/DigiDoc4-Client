@@ -34,7 +34,6 @@ namespace digidoc { class Exception; }
 class QAction;
 class QSmartCard;
 class QSigner;
-class ApplicationPrivate;
 class Application: public Common
 {
 	Q_OBJECT
@@ -115,7 +114,8 @@ private:
 	void deinitMacEvents();
 #endif
 
-	ApplicationPrivate *d;
+	class Private;
+	Private *d;
 };
 
 class REOpenEvent: public QEvent

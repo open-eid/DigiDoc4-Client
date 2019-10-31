@@ -416,7 +416,8 @@ void SettingsDialog::initFunctionality()
 #ifdef CONFIG_URL
 	ui->rdTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
 #endif
-	ui->rdTimeStamp->setText(Application::confValue(Application::TSAUrl).toString());
+	QString TSA_URL = qApp->confValue(Application::TSAUrl).toString();
+	ui->rdTimeStamp->setText(ui->rdTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
 	connect(ui->rdTimeStamp, &QLineEdit::textChanged, this, [](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
 	});
