@@ -1885,110 +1885,6 @@ Control code: %1</translation>
         <translation>PIN1 code is used for confirming the identity of a person.</translation>
     </message>
     <message>
-        <source>If you have forgotten PIN%1, but know PUK, then</source>
-        <translation>If you have forgotten PIN%1, but know PUK, then</translation>
-    </message>
-    <message>
-        <source>here you can enter new PIN%1.</source>
-        <translation>here you can enter new PIN%1.</translation>
-    </message>
-    <message>
-        <source>PUK code is written in the envelope, that is given</source>
-        <translation>PUK code is written in the envelope, that is given</translation>
-    </message>
-    <message>
-        <source>with the ID-card.</source>
-        <translation>with the ID-card.</translation>
-    </message>
-    <message>
-        <source>To unblock the certificate you have to enter the PUK</source>
-        <translation>To unblock the certificate you have to enter the PUK</translation>
-    </message>
-    <message>
-        <source>code.</source>
-        <translation>code.</translation>
-    </message>
-    <message>
-        <source>You can find your PUK code inside the ID-card codes</source>
-        <translation>You can find your PUK code inside the ID-card codes</translation>
-    </message>
-    <message>
-        <source>envelope.</source>
-        <translation>envelope.</translation>
-    </message>
-    <message>
-        <source>PUK_LINE3</source>
-        <translation> </translation>
-    </message>
-    <message>
-        <source>If you have forgotten the PUK code for your ID card, please</source>
-        <translation>If you have forgotten the PUK code for your ID-card, please</translation>
-    </message>
-    <message>
-        <source>VISIT_SERVICE_CENTRE</source>
-        <translation>visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to</translation>
-    </message>
-    <message>
-        <source>obtain new PIN codes.</source>
-        <translation>obtain new PIN codes.</translation>
-    </message>
-    <message>
-        <source>If PIN2 is inserted incorrectly 3 times the signing</source>
-        <translation>If PIN2 is inserted incorrectly 3 times the signing</translation>
-    </message>
-    <message>
-        <source>If PIN1 is inserted incorrectly 3 times the identification</source>
-        <translation>If PIN1 is inserted incorrectly 3 times the identification</translation>
-    </message>
-    <message>
-        <source>auth certificate will be blocked and it will be impossible</source>
-        <translation>certificate will be blocked and it will be impossible</translation>
-    </message>
-    <message>
-        <source>signing certificate will be blocked and it will be impossible</source>
-        <translation>certificate will be blocked and it will be impossible</translation>
-    </message>
-    <message>
-        <source>to use ID-card to digital signing, until it is</source>
-        <translation>to use ID-card to digital signing, until it is</translation>
-    </message>
-    <message>
-        <source>to use ID-card to verify identification, until it is</source>
-        <translation>to use ID-card to verify identification, until it is</translation>
-    </message>
-    <message>
-        <source>unblocked via the PUK code.</source>
-        <translation>unblocked via the PUK code.</translation>
-    </message>
-    <message>
-        <source>PUK code is used for unblocking the certificates, when</source>
-        <translation>PUK code is used for unblocking the certificates, when</translation>
-    </message>
-    <message>
-        <source>PIN1 or PIN2 has been entered 3 times incorrectly.</source>
-        <translation>PIN1 or PIN2 has been entered 3 times incorrectly.</translation>
-    </message>
-    <message>
-        <source>PUK_INFO_LINE3</source>
-        <translation> </translation>
-    </message>
-    <message>
-        <source>If you forget the PUK code or the certificates remain</source>
-        <translation>If you forget the PUK code or the certificates remain</translation>
-    </message>
-    <message>
-        <source>PUK_BLOCKED_LINE2</source>
-        <translation>blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain</translation>
-    </message>
-    <message>
-        <source>new codes.</source>
-        <translation>new codes.</translation>
-    </message>
-    <message>
-        <source>PUK_BLOCKED_LINE4</source>
-        <translation> </translation>
-    </message>
-    <message>
         <source>%1 unblocking</source>
         <translation>%1 unblocking</translation>
     </message>
@@ -2058,6 +1954,54 @@ Control code: %1</translation>
         <source>Valid puk code</source>
         <extracomment>accessible</extracomment>
         <translation>Valid puk code</translation>
+    </message>
+    <message>
+        <source>PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly.</source>
+        <translation>PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly.</translation>
+    </message>
+    <message>
+        <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</source>
+        <translation>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</translation>
+    </message>
+    <message>
+        <source>To unblock the certificate you have to enter the PUK code.</source>
+        <translation>To unblock the certificate you have to enter the PUK code.</translation>
+    </message>
+    <message>
+        <source>You can find your PUK code inside the ID-card codes envelope.</source>
+        <translation>You can find your PUK code inside the ID-card codes envelope.</translation>
+    </message>
+    <message>
+        <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</source>
+        <translation>If you have forgotten the PUK code for your ID-card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</translation>
+    </message>
+    <message>
+        <source>PUK code is written in the envelope, that is given with the ID-card.</source>
+        <translation>PUK code is written in the envelope, that is given with the ID-card.</translation>
+    </message>
+    <message>
+        <source>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
+        <translation>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</translation>
+    </message>
+    <message>
+        <source>signing</source>
+        <translation>signing</translation>
+    </message>
+    <message>
+        <source>identification</source>
+        <translation>identification</translation>
+    </message>
+    <message>
+        <source>digital signing</source>
+        <translation>digital signing</translation>
+    </message>
+    <message>
+        <source>verify identification</source>
+        <translation>verify identification</translation>
+    </message>
+    <message>
+        <source>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</source>
+        <translation>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</translation>
     </message>
 </context>
 <context>

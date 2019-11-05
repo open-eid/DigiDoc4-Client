@@ -1888,110 +1888,6 @@ Kонтрольный код: %1</translation>
         <translation>PIN1 код используется для идентификации личности.</translation>
     </message>
     <message>
-        <source>If you have forgotten PIN%1, but know PUK, then</source>
-        <translation>Если вы забыли PIN%1 код, но знаете PUK код,</translation>
-    </message>
-    <message>
-        <source>here you can enter new PIN%1.</source>
-        <translation>тогда здесь вы можете ввести новый PIN%1 код.</translation>
-    </message>
-    <message>
-        <source>PUK code is written in the envelope, that is given</source>
-        <translation>Ваш PUK код находится в конверте с кодами.</translation>
-    </message>
-    <message>
-        <source>with the ID-card.</source>
-        <translation> </translation>
-    </message>
-    <message>
-        <source>To unblock the certificate you have to enter the PUK</source>
-        <translation>Для разблокировки сертификата введите PUK код.</translation>
-    </message>
-    <message>
-        <source>code.</source>
-        <translation> </translation>
-    </message>
-    <message>
-        <source>You can find your PUK code inside the ID-card codes</source>
-        <translation>PUK код находится в конверте с кодами, который</translation>
-    </message>
-    <message>
-        <source>envelope.</source>
-        <translation>выдаётся при получении ID-карты или смене</translation>
-    </message>
-    <message>
-        <source>PUK_LINE3</source>
-        <translation>сертификатов.</translation>
-    </message>
-    <message>
-        <source>If you have forgotten the PUK code for your ID card, please</source>
-        <translation>Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>VISIT_SERVICE_CENTRE</source>
-        <translation>&lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;обслуживания Департамента полиции и пограничной&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>obtain new PIN codes.</source>
-        <translation>&lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.</translation>
-    </message>
-    <message>
-        <source>If PIN2 is inserted incorrectly 3 times the signing</source>
-        <translation>Если PIN2 введён 3 раза неверно, тогда блокируется</translation>
-    </message>
-    <message>
-        <source>If PIN1 is inserted incorrectly 3 times the identification</source>
-        <translation>Если PIN1 введён 3 раза неверно, тогда блокируется</translation>
-    </message>
-    <message>
-        <source>auth certificate will be blocked and it will be impossible</source>
-        <translation>идентификационный сертификат и использовать</translation>
-    </message>
-    <message>
-        <source>signing certificate will be blocked and it will be impossible</source>
-        <translation>сертификат цифровой подписи и использовать</translation>
-    </message>
-    <message>
-        <source>to use ID-card to digital signing, until it is</source>
-        <translation>ID-карту для цифровой подписи невозможно,</translation>
-    </message>
-    <message>
-        <source>to use ID-card to verify identification, until it is</source>
-        <translation>ID-карту для идентификации личности невозможно,</translation>
-    </message>
-    <message>
-        <source>unblocked via the PUK code.</source>
-        <translation>пока блокировка не снята PUK кодом.</translation>
-    </message>
-    <message>
-        <source>PUK code is used for unblocking the certificates, when</source>
-        <translation>PUK код - это код, разблокирующий заблокированные</translation>
-    </message>
-    <message>
-        <source>PIN1 or PIN2 has been entered 3 times incorrectly.</source>
-        <translation>сертификаты, если код PIN1 или PIN2 был введён</translation>
-    </message>
-    <message>
-        <source>PUK_INFO_LINE3</source>
-        <translation>неверно 3 раза подряд.</translation>
-    </message>
-    <message>
-        <source>If you forget the PUK code or the certificates remain</source>
-        <translation>Если PUK код забыт и сетрификат блокируется из-за</translation>
-    </message>
-    <message>
-        <source>PUK_BLOCKED_LINE2</source>
-        <translation>неверно введённых PIN1 или PIN2, то единственной</translation>
-    </message>
-    <message>
-        <source>new codes.</source>
-        <translation>возможностью восстановить работоспособность</translation>
-    </message>
-    <message>
-        <source>PUK_BLOCKED_LINE4</source>
-        <translation>ID-карты, это обратиться в &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро обслуживания&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>%1 unblocking</source>
         <translation>%1 разблокирование</translation>
     </message>
@@ -2061,6 +1957,54 @@ Kонтрольный код: %1</translation>
         <source>Valid puk code</source>
         <extracomment>accessible</extracomment>
         <translation>Действующий puk код</translation>
+    </message>
+    <message>
+        <source>PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly.</source>
+        <translation>PUK код - это код, разблокирующий заблокированные сертификаты, если код PIN1 или PIN2 был введён неверно 3 раза подряд.</translation>
+    </message>
+    <message>
+        <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</source>
+        <translation>Если PUK код забыт и сетрификат блокируется из-за неверно введённых PIN1 или PIN2, то единственной возможностью восстановить работоспособность ID-карты, это обратиться в &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро обслуживания&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>To unblock the certificate you have to enter the PUK code.</source>
+        <translation>Для разблокировки сертификата введите PUK код.</translation>
+    </message>
+    <message>
+        <source>You can find your PUK code inside the ID-card codes envelope.</source>
+        <translation>PUK код находится в конверте с кодами, который выдаётся при получении ID-карты или смене сертификатов.</translation>
+    </message>
+    <message>
+        <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</source>
+        <translation>Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро&lt;/span&gt;&lt;/a&gt; &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;обслуживания Департамента полиции и пограничной&lt;/span&gt;&lt;/a&gt; &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.</translation>
+    </message>
+    <message>
+        <source>PUK code is written in the envelope, that is given with the ID-card.</source>
+        <translation>Ваш PUK код находится в конверте с кодами.</translation>
+    </message>
+    <message>
+        <source>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
+        <translation>Если PIN%1 введён 3 раза неверно, тогда блокируется %2 и использовать ID-карту для %3 невозможно, пока блокировка не снята PUK кодом.</translation>
+    </message>
+    <message>
+        <source>signing</source>
+        <translation>сертификат цифровой подписи</translation>
+    </message>
+    <message>
+        <source>identification</source>
+        <translation>идентификационный сертификат</translation>
+    </message>
+    <message>
+        <source>digital signing</source>
+        <translation>цифровой подписи</translation>
+    </message>
+    <message>
+        <source>verify identification</source>
+        <translation>идентификации личности</translation>
+    </message>
+    <message>
+        <source>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</source>
+        <translation>Если вы забыли PIN%1 код, но знаете PUK код, тогда здесь вы можете ввести новый PIN%1 код.</translation>
     </message>
 </context>
 <context>
