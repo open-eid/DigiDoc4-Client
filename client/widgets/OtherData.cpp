@@ -39,8 +39,6 @@ OtherData::OtherData(QWidget *parent)
 	ui->lblEMail->setFont( font );
 	ui->lblNoForwarding->setFont( font );
 	ui->labelEestiEe->setFont(Styles::font(Styles::Regular, 12));
-	ui->labelEestiEe->setOpenExternalLinks(true);
-	ui->labelEestiEe->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->activate->setFont( condensed );
 	ui->btnCheckEMail->setFont( condensed );
 	ui->activate->setStyleSheet(QStringLiteral(
@@ -64,14 +62,13 @@ void OtherData::update(bool activate, const QByteArray &data)
 	quint8 errorCode = 0;
 	if(!data.isEmpty())
 	{
-		XmlReader xml(data);
 		QString error;
-		QMultiHash<QString,QPair<QString,bool> > emails = xml.readEmailStatus(error);
+		Emails emails = XmlReader(data).readEmailStatus(error);
 		errorCode = error.toUInt();
 		if(emails.isEmpty() || errorCode > 0)
 		{
 			errorCode = errorCode ? errorCode : 20;
-			activate = errorCode == 20;
+			activate = errorCode == 20 || errorCode == 22;
 			eMail = XmlReader::emailErr(errorCode);
 		}
 		else
@@ -89,22 +86,16 @@ void OtherData::update(bool activate, const QByteArray &data)
 
 	ui->activateEMail->setVisible(activate);
 	ui->btnCheckEMail->setHidden(activate || !eMail.isEmpty());
+	ui->lblEMail->setHidden(eMail.isEmpty());
+	ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));
 	if( activate )
 	{
-		ui->lblEMail->setVisible(eMail.isEmpty());
-		ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
 		ui->activate->setDisabled(ui->inputEMail->text().isEmpty());
 		ui->activate->setCursor(ui->inputEMail->text().isEmpty() ? Qt::ArrowCursor : Qt::PointingHandCursor );
 		ui->inputEMail->setFocus();
 	}
-	else
-	{
-		ui->lblEMail->setHidden(eMail.isEmpty());
-		if( errorCode )
-			ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));  // Show error text here
-		else
-			ui->lblEMail->setText(tr("Your @eesti.ee e-mail has been forwarded to ") + QStringLiteral(" <br/><b>%1</b>").arg(eMail));
-	}
+	else if(!errorCode)
+		ui->lblEMail->setText(tr("Your @eesti.ee e-mail has been forwarded to ") + QStringLiteral(" <br/><b>%1</b>").arg(eMail));
 }
 
 void OtherData::paintEvent(QPaintEvent * /*event*/)
