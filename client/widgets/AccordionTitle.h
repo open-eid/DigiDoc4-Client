@@ -36,7 +36,7 @@ public:
 	void borderless();
 	void init(bool open, const QString &caption, const QString &accessible, QWidget *content);
 	void setClosable(bool closable);
-	void setText(const QString& caption);
+	void setText(const QString &caption, const QString &accessible);
 	void setSectionOpen(bool open);
 
 signals:

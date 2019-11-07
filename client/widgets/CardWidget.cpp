@@ -81,10 +81,17 @@ QString CardWidget::id() const
 
 bool CardWidget::event( QEvent *ev )
 {
-	if(ev->type() == QEvent::MouseButtonRelease)
+	switch(ev->type())
 	{
+	case QEvent::MouseButtonRelease:
 		emit selected( card );
 		return true;
+	case QEvent::LanguageChange:
+		ui->retranslateUi(this);
+		if(cardInfo)
+			update(cardInfo, card);
+		break;
+	default: break;
 	}
 	return QWidget::event( ev );
 }
@@ -105,14 +112,6 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 	default: break;
 	}
 	return StyledWidget::eventFilter(o, e);
-}
-
-void CardWidget::changeEvent(QEvent* event)
-{
-	if (event->type() == QEvent::LanguageChange && cardInfo)
-		update(cardInfo, card);
-
-	QWidget::changeEvent(event);
 }
 
 bool CardWidget::isLoading() const

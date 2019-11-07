@@ -142,10 +142,8 @@ void Accordion::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"));
-		ui->titleVerifyCert->setAccessibleName(tr("PIN/PUK codes and certificates", "accessible"));
-		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"));
-		ui->titleOtherData->setAccessibleName(tr("Redirection of eesti.ee e-mail", "accessible"));
+		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"));
+		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"), tr("Redirection of eesti.ee e-mail", "accessible"));
 	}
 	QWidget::changeEvent(event);
 }
