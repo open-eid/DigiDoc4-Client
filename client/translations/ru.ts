@@ -1374,14 +1374,6 @@ ID-КАРТОЙ</translation>
         <translation>ВПЕРЕД</translation>
     </message>
     <message>
-        <source>Your ID-card certificates cannot be renewed starting from %1.</source>
-        <translation>С %1 обновление сертификатов на этой карте больше невозможно.</translation>
-    </message>
-    <message>
-        <source>Your document is still valid until its expiring date and it can be used to login to e-services and give digital signatures. If there are problems using Your ID-card in e-services please contact ID-card helpdesk by phone (+372) 666 8888 or visit Police and Border Guard Board service point.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30519&amp;read=38011&quot;&gt;More info&lt;/a&gt;</source>
-        <translation>Документ действителен до истечения срока его действия, и его можно использовать для авторизации в дигитальных сервисах и создания дигитальной подписи. Если возникнут проблемы с использованием карты в дигитальных сервисах, обратитесь в службу поддержки ID-карты по телефону (+372) 666 8888 или посетите один из пунктов обслуживания Департамента полиции и пограничной охраны.&lt;br /&gt;&lt;br /&gt;&lt;a href=&quot;http://id.ee/?id=30625&amp;read=38012&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
-    </message>
-    <message>
         <source>Cannot add container to same container
 %1</source>
         <translation>Невозможно добавить контейнер в тот же контейнер
