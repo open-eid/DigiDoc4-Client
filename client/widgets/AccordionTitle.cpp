@@ -78,8 +78,7 @@ bool AccordionTitle::event(QEvent *e)
 
 void AccordionTitle::init(bool open, const QString &caption, const QString &accessible, QWidget *content)
 {
-	ui->label->setText(caption);
-	ui->label->setAccessibleName(accessible);
+	setText(caption, accessible);
 	this->content = content;
 	setSectionOpen(open);
 }
@@ -108,7 +107,8 @@ void AccordionTitle::setClosable(bool closable)
 	this->closable = closable;
 }
 
-void AccordionTitle::setText(const QString& caption)
+void AccordionTitle::setText(const QString &caption, const QString &accessible)
 {
 	ui->label->setText(caption);
+	ui->label->setAccessibleName(accessible);
 }

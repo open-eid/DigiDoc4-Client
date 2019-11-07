@@ -50,12 +50,9 @@ signals:
 	void photoClicked( const QPixmap &pixmap );
 	void selected( const QString &card );
 
-protected:
-	bool event( QEvent *ev ) override;
-	bool eventFilter(QObject *o, QEvent *e) override;
-	void changeEvent(QEvent* event) override;
-
 private:
+	bool event(QEvent *ev) override;
+	bool eventFilter(QObject *o, QEvent *e) override;
 	void clearSeal();
 
 	Ui::CardWidget *ui;
