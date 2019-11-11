@@ -20,6 +20,7 @@
 #include "VerifyCert.h"
 #include "ui_VerifyCert.h"
 #include "Styles.h"
+#include "dialogs/CertificateDetails.h"
 
 #include <common/DateTime.h>
 
@@ -41,7 +42,8 @@ VerifyCert::VerifyCert(QWidget *parent)
 		emit changePinClicked( true, false );	// Change PIN with PUK code
 	});
 	connect(ui->details, &QPushButton::clicked, [=] {
-		emit certDetailsClicked(QSmartCardData::typeString(pinType));
+		CertificateDetails::showCertificate(c, this,
+			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
 
 	ui->greenIcon->load(QStringLiteral(":/images/icon_check.svg"));

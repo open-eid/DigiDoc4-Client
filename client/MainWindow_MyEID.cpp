@@ -22,7 +22,6 @@
 #include "Application.h"
 #include "QCardLock.h"
 #include "QSigner.h"
-#include "dialogs/CertificateDetails.h"
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningList.h"
 
@@ -100,13 +99,6 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 	}
 }
 
-void MainWindow::certDetailsClicked( const QString &link )
-{
-	bool pin1 = link == QStringLiteral("PIN1");
-	CertificateDetails::showCertificate(pin1 ? qApp->signer()->tokenauth().cert() : qApp->signer()->tokensign().cert(), this,
-		pin1 ? QStringLiteral("-auth") : QStringLiteral("-sign"));
-}
-
 void MainWindow::getEmailStatus()
 {
 	QByteArray buffer = sendRequest( SSLConnect::EmailInfo );
@@ -126,8 +118,8 @@ void MainWindow::activateEmail()
 	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
 	if(buffer.isEmpty())
 		return;
-	ui->accordion->updateOtherData(buffer);
-	showNotification(tr("Succeeded activating email forwards."), true);
+	if(ui->accordion->updateOtherData(buffer))
+		showNotification(tr("Succeeded activating email forwards."), true);
 }
 
 QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )

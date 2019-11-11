@@ -61,7 +61,6 @@ signals:
 private Q_SLOTS:
 	void activateEmail ();
 	void buttonClicked( int button );
-	void certDetailsClicked( const QString &link );
 	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked();

@@ -35,7 +35,7 @@ public:
 	explicit OtherData( QWidget *parent = nullptr );
 	~OtherData() final;
 
-	void update(bool activate, const QByteArray &data = QByteArray());
+	bool update(bool activate, const QByteArray &data = QByteArray());
 	QString getEmail();
 	void setFocusToEmail();
 

@@ -45,7 +45,7 @@ public:
 	void setFocusToEmail();
 	void updateInfo(const QCardInfo &info);
 	void updateInfo( const QSmartCard *smartCard );
-	void updateOtherData(const QByteArray &data);
+	bool updateOtherData(const QByteArray &data);
 
 protected:
 	void changeEvent(QEvent* event) override;
@@ -56,7 +56,6 @@ signals:
 	void changePin1Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePukClicked();
-	void certDetailsClicked( const QString &link );
 
 private:
 	Ui::Accordion *ui;

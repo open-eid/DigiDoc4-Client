@@ -43,7 +43,6 @@ public:
 
 signals:
 	void changePinClicked( bool isForgotPin, bool isBlockedPin );
-	void certDetailsClicked( QString link );
 
 private:
 	void changePinStyle( const QString &background ); 
