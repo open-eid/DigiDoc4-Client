@@ -182,7 +182,6 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
-	connect(ui->accordion, &Accordion::certDetailsClicked, this, &MainWindow::certDetailsClicked);
 }
 
 MainWindow::~MainWindow()

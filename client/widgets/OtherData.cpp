@@ -55,7 +55,7 @@ OtherData::~OtherData()
 	delete ui;
 }
 
-void OtherData::update(bool activate, const QByteArray &data)
+bool OtherData::update(bool activate, const QByteArray &data)
 {
 	setProperty("cache", data);
 	QString eMail;
@@ -96,6 +96,7 @@ void OtherData::update(bool activate, const QByteArray &data)
 	}
 	else if(!errorCode)
 		ui->lblEMail->setText(tr("Your @eesti.ee e-mail has been forwarded to ") + QStringLiteral(" <br/><b>%1</b>").arg(eMail));
+	return errorCode == 0;
 }
 
 void OtherData::paintEvent(QPaintEvent * /*event*/)

@@ -56,9 +56,6 @@ void Accordion::init()
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
 	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
 
-	connect(ui->authBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetailsClicked);
-	connect(ui->signBox, &VerifyCert::certDetailsClicked, this, &Accordion::certDetailsClicked);
-
 	// Initialize PIN/PUK content widgets.
 	ui->signBox->addBorders();
 
@@ -82,9 +79,9 @@ void Accordion::closeOtherSection(AccordionTitle* opened)
 	openSection = opened;
 }
 
-void Accordion::updateOtherData(const QByteArray &data)
+bool Accordion::updateOtherData(const QByteArray &data)
 {
-	ui->contentOtherData->update(false, data);
+	return ui->contentOtherData->update(false, data);
 }
 
 QString Accordion::getEmail()
