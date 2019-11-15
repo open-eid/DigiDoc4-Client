@@ -135,29 +135,26 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 	switch(mode)
 	{
 	case PinUnblock::ChangePinWithPuk:
-		ui->line1_text->setText(tr("New PIN%1 must be different from current PIN%1.").arg(type));
-		ui->line2_text->setText(type == QSmartCardData::Pin2Type
+		ui->line1_text->setText(type == QSmartCardData::Pin2Type
 				? tr("PIN2 code is used to digitally sign documents.")
 				: tr("PIN1 code is used for confirming the identity of a person."));
-		ui->line3_text->setText(tr("If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.").arg(type));
-		ui->line4_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
+		ui->line2_text->setText(tr("If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.").arg(type));
+		ui->line3_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
 		break;
 	case PinUnblock::UnBlockPinWithPuk:
 		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
 		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
-		ui->line3_text->setText(tr("New PIN%1 must be different from current PIN%1.").arg(type));
-		ui->line4_text->setText(tr("If you have forgotten the PUK code for your ID card, please visit "
+		ui->line3_text->setText(tr("If you have forgotten the PUK code for your ID card, please visit "
 				"<a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">"
 				"the Police and Border Guard Board service center</span></a> to obtain new PIN codes."));
 		break;
 	default:
 		if(type == QSmartCardData::Pin2Type ||  type == QSmartCardData::Pin1Type)
 		{
-			ui->line1_text->setText(tr("New PIN%1 must be different from current PIN%1.").arg(type));
-			ui->line2_text->setText(type == QSmartCardData::Pin2Type ?
+			ui->line1_text->setText(type == QSmartCardData::Pin2Type ?
 					tr("PIN2 code is used to digitally sign documents.") :
 					tr("PIN1 code is used for confirming the identity of a person."));
-			ui->line3_text->setText(
+			ui->line2_text->setText(
 				tr("If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.")
 					.arg(type)
 					.arg(type == QSmartCardData::Pin2Type ? tr("signing") : tr("identification"))
