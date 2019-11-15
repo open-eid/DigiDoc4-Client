@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <common/CliApplication.h>
+#include "CliApplication.h"
 #include <common/Common.h>
 
 #include <QtCore/QStringList>

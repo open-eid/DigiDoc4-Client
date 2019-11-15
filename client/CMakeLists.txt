@@ -56,7 +56,10 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	AccessCert.cpp
 	Application.cpp
 	CheckConnection.cpp
+	CliApplication.cpp
 	DigiDoc.cpp
+	Diagnostics.cpp
+	DiagnosticsTask.cpp
 	DocumentModel.cpp
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
@@ -123,7 +126,7 @@ target_link_libraries( ${PROGNAME}
 )
 
 if( APPLE )
-	target_sources( ${PROGNAME} PRIVATE Application_mac.mm dialogs/CertificateDetails_mac.mm )
+	target_sources( ${PROGNAME} PRIVATE Application_mac.mm dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" )
@@ -189,7 +192,7 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp )
+	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp Diagnostics_win.cpp)
 	find_package( Qt5 COMPONENTS WinExtras )
 	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Cryptui )
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
@@ -299,6 +302,7 @@ elseif(WIN32)
 	)
 else()
 	find_package( Threads REQUIRED )
+	target_sources( ${PROGNAME} PRIVATE Diagnostics_unix.cpp)
 	target_link_libraries( ${PROGNAME} Threads::Threads )
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
 	install( TARGETS ${PROGNAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )

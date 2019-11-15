@@ -32,6 +32,7 @@
 #include "QSmartCard.h"
 #include "Styles.h"
 #include "SslCertificate.h"
+#include "Diagnostics.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
 #include "effects/ButtonHoverFilter.h"
@@ -39,7 +40,6 @@
 #include "effects/FadeInNotification.h"
 
 #include "common/Configuration.h"
-#include "common/Diagnostics.h"
 #include "common/Settings.h"
 
 #include <digidocpp/Conf.h>
