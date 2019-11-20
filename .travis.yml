@@ -1,7 +1,7 @@
 language: c++
 sudo: false
 dist: bionic
-osx_image: xcode11
+osx_image: xcode11.2
 services:
 - docker
 matrix:
@@ -12,18 +12,15 @@ matrix:
   - os: linux
     env: TARGET=ubuntu:16.04
   - os: linux
-    env: TARGET=ubuntu:19.04
+    env: TARGET=ubuntu:19.10
 env:
   global:
   - BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}
-  - PATH=${PATH}:$HOME/.local/bin:$HOME/Library/Python/2.7/bin;
   - AWS_DEFAULT_REGION=eu-west-1
 before_install: 
 - git submodule update --init --recursive && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     HASH=($(shasum prepare_osx_build_environment.sh));
-    sudo easy_install pip;
-    brew install openssl\@1.1;
-    pip install --user awscli > /dev/null;
+    brew install openssl\@1.1 awscli;
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     build=$(aws s3 ls s3://open-eid/libdigidocpp-nightly/ --no-sign-request |grep PRE|sed 's/.*PRE \(.*\)\/.*/\1/'|sort -n|tail -n1);
     aws s3 sync --exclude=* --include=*pkg s3://open-eid/libdigidocpp-nightly/${build} libdigidocpp-pkg --no-sign-request;
@@ -35,7 +32,7 @@ before_install:
     unzip -qq -d /tmp ${HASH}.zip;
     rm -rf ${HASH}.zip opensc.pkg libdigidocpp.pkg libdigidoc.pkg;
   else
-    pip install --user awscli > /dev/null;
+    sudo apt install awscli;
     build=$(aws s3 ls s3://open-eid/libdigidocpp-nightly/ --no-sign-request |grep PRE|sed 's/.*PRE \(.*\)\/.*/\1/'|sort -n|tail -n1);
     aws s3 sync --exclude=* --include=*deb s3://open-eid/libdigidocpp-nightly/${build} libdigidocpp-pkg --no-sign-request;
     find libdigidocpp-pkg -name "*i386*" -delete;
