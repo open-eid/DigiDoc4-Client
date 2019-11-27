@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>DigiDoc4 client</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">outline: none;</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -107,9 +110,6 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
       </item>
       <item>
        <widget class="QWidget" name="idSelector" native="true">
-        <property name="styleSheet">
-         <string notr="true">background-color: #FFFFFF;</string>
-        </property>
         <layout class="QHBoxLayout" name="idSelectorLayout" stretch="0,0">
          <property name="spacing">
           <number>0</number>
@@ -180,10 +180,7 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QWidget {
-  background-color: #FFFFFF;
-}
-QToolButton {
+         <string notr="true">QToolButton {
   border: none;
   color: #75787B;
   font-size: 11px;
