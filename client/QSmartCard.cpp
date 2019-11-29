@@ -269,21 +269,10 @@ QPCSCReader::Result EstEIDCard::replace(QPCSCReader *reader, QSmartCardData::Pin
 			return result;
 	}
 
-	// Make sure pin is locked. ID card is designed so that only blocked PIN could be unblocked with PUK!
+	// Replace PIN with PUK
 	QByteArray pin = pin_.toUtf8();
-	QByteArray cmd = Card::VERIFY;
-	cmd[3] = type;
-	cmd[4] = char(QSmartCardData::minPinLen(type) + 1);
-	for(quint8 i = 3, count = 0; i > count; i = quint8(result.SW.at(1) - 0xC0))
-	{
-		result = reader->transfer(cmd + QByteArray(QSmartCardData::minPinLen(type), '0') + QByteArray::number(i));
-		if(result.SW.at(0) != 0x63)
-			break;
-	}
-
-	//Replace PIN with PUK
 	QByteArray puk = puk_.toUtf8();
-	cmd = Card::REPLACE;
+	QByteArray cmd = Card::REPLACE;
 	cmd[3] = type;
 	cmd[4] = char(puk.size() + pin.size());
 	return transfer(reader, false, cmd + puk + pin, type, 0, true);
