@@ -865,11 +865,6 @@ QString CDocumentModel::data(int row) const
 	return d->files.at(row).name.normalized(QString::NormalizationForm_C);
 }
 
-QString CDocumentModel::fileId(int row) const
-{
-	return data(row);
-}
-
 QString CDocumentModel::fileSize(int /*row*/) const
 {
 	return QString();

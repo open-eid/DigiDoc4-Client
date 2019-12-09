@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372)&#xa0;666&#xa0;8888.</translation>
+        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
     </message>
     <message>
         <source>FREE_CERT_EXCEEDED</source>
@@ -627,6 +627,105 @@
     </message>
 </context>
 <context>
+    <name>Diagnostics</name>
+    <message>
+        <source>Arguments:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library paths:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Central Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart Card service status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart Card readers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart Card reader drivers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locale:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base version:</source>
+        <translation type="unfinished">Base version:</translation>
+    </message>
+    <message>
+        <source>Application version:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CPU:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kernel:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browsers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USB info:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown - error %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User rights: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ATRfiltr service status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Certificate Propagation service status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DigiDoc</name>
     <message>
         <source>Container is not open</source>
@@ -943,6 +1042,18 @@ The Information System Authority does not retain information regarding the files
         <source>Enter the application</source>
         <extracomment>accessible</extracomment>
         <translation>Enter the application</translation>
+    </message>
+    <message>
+        <source>Go to signing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to EID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to encryption</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1602,30 +1713,6 @@ ID-CARD</translation>
         <translation>Signing in process</translation>
     </message>
     <message>
-        <source>Request accepted</source>
-        <translation>Request accepted</translation>
-    </message>
-    <message>
-        <source>Request timeout</source>
-        <translation>Request timeout</translation>
-    </message>
-    <message>
-        <source>User denied or cancelled</source>
-        <translation>User denied or cancelled</translation>
-    </message>
-    <message>
-        <source>Got signature</source>
-        <translation>Got signature</translation>
-    </message>
-    <message>
-        <source>Request pending</source>
-        <translation>Request pending</translation>
-    </message>
-    <message>
-        <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID not ready, try again later</translation>
-    </message>
-    <message>
         <source>Phone absent</source>
         <translation>Phone absent</translation>
     </message>
@@ -1638,40 +1725,12 @@ ID-CARD</translation>
         <translation>SIM error</translation>
     </message>
     <message>
-        <source>Service internal error</source>
-        <translation>Service internal error</translation>
-    </message>
-    <message>
-        <source>Not allowed to use OCSP service! Please check your server access certificate.</source>
-        <translation>Not allowed to use OCSP service!&lt;br/&gt;Please check your server access certificate.</translation>
-    </message>
-    <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
     </message>
     <message>
-        <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Invalid phone number! Please include correct country code.</translation>
-    </message>
-    <message>
         <source>User is not a Mobile-ID client</source>
         <translation>User is not a Mobiil-ID client</translation>
-    </message>
-    <message>
-        <source>ID and phone number do not match</source>
-        <translation>ID and phone number do not match</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID service is not activated.</source>
-        <translation>Your Mobiil-ID service is not activated.</translation>
-    </message>
-    <message>
-        <source>Invalid content</source>
-        <translation>Invalid content</translation>
-    </message>
-    <message>
-        <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Mobiil-ID user certificates are revoked or suspended.</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
@@ -1680,10 +1739,6 @@ Control code: %1</source>
         <translation>Make sure control code matches with one in phone screen
 and enter Mobiil-ID PIN2-code.
 Control code: %1</translation>
-    </message>
-    <message>
-        <source>SSL Error:</source>
-        <translation>SSL Error:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1698,18 +1753,6 @@ Control code: %1</translation>
         <translation>Signing with Mobile-ID</translation>
     </message>
     <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Failed to sign container</source>
-        <translation>Failed to sign container</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID certificates are not activated</source>
-        <translation>Your Mobile-ID certificates are not activated</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
@@ -1717,6 +1760,38 @@ Control code: %1</translation>
     <message>
         <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
         <translation>Mobile-ID service has encountered technical errors. Please try again later.</translation>
+    </message>
+    <message>
+        <source>Failed to send request </source>
+        <translation>Failed to send request </translation>
+    </message>
+    <message>
+        <source>Invalid content type header </source>
+        <translation>Invalid content type header </translation>
+    </message>
+    <message>
+        <source>Failed to parse JSON content</source>
+        <translation>Failed to parse JSON content</translation>
+    </message>
+    <message>
+        <source>Failed to parse certificate: </source>
+        <translation>Failed to parse certificate: </translation>
+    </message>
+    <message>
+        <source>Service result:</source>
+        <translation>Service result:</translation>
+    </message>
+    <message>
+        <source>Account not found</source>
+        <translation>Account not found</translation>
+    </message>
+    <message>
+        <source>Session not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1863,10 +1938,6 @@ Control code: %1</translation>
     <message>
         <source>UNBLOCK</source>
         <translation>UNBLOCK</translation>
-    </message>
-    <message>
-        <source>New PIN%1 must be different from current PIN%1.</source>
-        <translation>New PIN%1 must be different from current PIN%1.</translation>
     </message>
     <message>
         <source>PIN2 code is used to digitally sign documents.</source>

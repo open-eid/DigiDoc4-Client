@@ -11,10 +11,14 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog
-{
+   <string notr="true">QDialog {
 border-radius: 2px;
 background-color: #FFFFFF;
+}
+QLineEdit {
+padding: 0px 10px;
+border: 1px solid #DEE4E9;
+border-radius: 2px;
 }</string>
   </property>
   <widget class="QPushButton" name="cancel">
@@ -123,18 +127,6 @@ QPushButton:disabled {
      <height>34</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">QLineEdit
-{
-padding: 0px 10px;
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-}
-</string>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::Normal</enum>
-   </property>
    <property name="placeholderText">
     <string notr="true">37254321</string>
    </property>
@@ -179,7 +171,7 @@ border-radius: 2px;
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #041E42; border: none;</string>
+    <string notr="true">color: #041E42;</string>
    </property>
    <property name="text">
     <string>Enter your phone number to sign with Mobile ID</string>
@@ -198,11 +190,7 @@ border-radius: 2px;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #353739;
-QCheckBox::indicator {
-    width: 6px;
-    height: 6px;
-}</string>
+    <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
     <string>Remember me</string>
@@ -241,17 +229,6 @@ QCheckBox::indicator {
      <width>280</width>
      <height>34</height>
     </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLineEdit
-{
-padding: 0px 10px;
-border: 1px solid #DEE4E9;
-border-radius: 2px;
-}</string>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::Normal</enum>
    </property>
    <property name="placeholderText">
     <string notr="true">47101010033</string>

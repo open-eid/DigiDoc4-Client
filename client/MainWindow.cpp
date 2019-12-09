@@ -61,6 +61,8 @@
 #include <QtPrintSupport/QPrinterInfo>
 #include <QtPrintSupport/QPrintPreviewDialog>
 
+#include <functional>
+
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
 
@@ -478,16 +480,23 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	{
 	case SignatureAdd:
 	case SignatureToken:
-		if(digiDoc->isService())
-			wrapAndSign();
-		else
-			sign();
+		sign([this](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+			if(!digiDoc->sign(city, state, zip, country, role, qApp->signer()))
+			{
+				qApp->smartcard()->reload();
+				showPinBlockedWarning(qApp->smartcard()->data());
+				return false;
+			}
+			return true;
+		});
 		break;
 	case SignatureMobile:
-		if(digiDoc->isService())
-			wrapAndMobileSign(info1, info2);
-		else
-			signMobile(info1, info2);
+		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+			MobileProgress m(this);
+			if(!m.init(info1, info2))
+				return false;
+			return digiDoc->sign(city, state, zip, country, role, &m);
+		});
 		break;
 	case ClearSignatureWarning:
 		ui->signature->warningIcon(false);
@@ -1038,100 +1047,49 @@ void MainWindow::showSettings(int page)
 	dlg.exec();
 }
 
-bool MainWindow::sign()
+void MainWindow::sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign)
 {
-	CheckConnection connection;
-	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
+	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
 		warnings->showWarning(WarningText(WarningType::CheckConnectionWarning));
-		return false;
+		return;
 	}
 
 	AccessCert access(this);
-	if( !access.validate() )
-		return false;
+	if(!access.validate())
+		return;
 
 	QString role, city, state, country, zip;
-	if(Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool())
-	{
-		RoleAddressDialog dlg(this);
-		if(dlg.exec() == QDialog::Rejected)
-			return false;
-		role = dlg.role();
-		city = dlg.city();
-		state = dlg.state();
-		country = dlg.country();
-		zip = dlg.zip();
-	}
+	if(RoleAddressDialog(this).get(city, country, state, zip, role) == QDialog::Rejected)
+		return;
 
 	WaitDialogHolder waitDialog(this, tr("Signing"));
-	if(digiDoc->sign(city, state, zip, country, role, QString()))
+	if(digiDoc->isService())
 	{
-		access.increment();
-		if(save())
-		{
-			ui->signContainerPage->transition(digiDoc);
-			waitDialog.close();
+		QString wrappedFile = digiDoc->fileName();
+		if(!wrap(wrappedFile, true))
+			return;
 
-			FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
-			notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
-			adjustDrops();
-			return true;
+		if(!sign(city, state, zip, country, role))
+		{
+			resetDigiDoc(nullptr, false);
+			navigateToPage(SignDetails, {wrappedFile}, false);
+			return;
 		}
 	}
-	else if((qApp->signer()->tokensign().flags() & TokenData::PinLocked))
-	{
-		qApp->smartcard()->reload();
-		showPinBlockedWarning(qApp->smartcard()->data());
-	}
-
-	return false;
-}
-
-bool MainWindow::signMobile(const QString &idCode, const QString &phoneNumber)
-{
-	CheckConnection connection;
-	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
-	{
-		warnings->showWarning(WarningText(WarningType::CheckConnectionWarning));
-		return false;
-	}
-
-	AccessCert access(this);
-	if( !access.validate() )
-		return false;
-
-	QString role, city, state, country, zip;
-	if(Settings(qApp->applicationName()).value(QStringLiteral("Client/RoleAddressInfo"), false).toBool())
-	{
-		RoleAddressDialog dlg(this);
-		if(dlg.exec() == QDialog::Rejected)
-			return false;
-		role = dlg.role();
-		city = dlg.city();
-		state = dlg.state();
-		country = dlg.country();
-		zip = dlg.zip();
-	}
-
-	MobileProgress m(this);
-	m.setSignatureInfo(city, state, zip, country, role);
-	m.sign(digiDoc, idCode, phoneNumber);
-	if( !m.exec() || !digiDoc->addSignature( m.signature() ) )
-		return false;
+	else if(!sign(city, state, zip, country, role))
+		return;
 
 	access.increment();
-	if(save())
-	{
-		ui->signContainerPage->transition(digiDoc);
+	if(!save())
+		return;
 
-		FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
-		notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
-		adjustDrops();
-		return true;
-	}
+	ui->signContainerPage->transition(digiDoc);
+	waitDialog.close();
 
-	return false;
+	FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+	notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+	adjustDrops();
 }
 
 void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
@@ -1325,7 +1283,7 @@ void MainWindow::warningClicked(const QString &link)
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
 	QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
-    QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir);
+	QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir);
 	if(filename.isNull())
 		return false;
 
@@ -1345,44 +1303,6 @@ bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 	selectPage(SignDetails);
 
 	return true;
-}
-
-void MainWindow::wrapAndSign()
-{
-	showOverlay(this);
-	QString wrappedFile = digiDoc->fileName();
-	if(!wrap(wrappedFile, true))
-	{
-		clearOverlay();
-		return;
-	}
-
-	if(!sign())
-	{
-		resetDigiDoc(nullptr, false);
-		navigateToPage(SignDetails, {wrappedFile}, false);
-	}
-
-	clearOverlay();
-}
-
-void MainWindow::wrapAndMobileSign(const QString &idCode, const QString &phoneNumber)
-{
-	showOverlay(this);
-	QString wrappedFile = digiDoc->fileName();
-	if(!wrap(wrappedFile, true))
-	{
-		clearOverlay();
-		return;
-	}
-
-	if(!signMobile(idCode, phoneNumber))
-	{
-		resetDigiDoc(nullptr, false);
-		navigateToPage(SignDetails, {wrappedFile}, false);
-	}
-
-	clearOverlay();
 }
 
 bool MainWindow::wrapContainer(bool signing)

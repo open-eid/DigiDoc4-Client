@@ -627,6 +627,105 @@
     </message>
 </context>
 <context>
+    <name>Diagnostics</name>
+    <message>
+        <source>Arguments:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library paths:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Central Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart Card service status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart Card readers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smart Card reader drivers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locale:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base version:</source>
+        <translation type="unfinished">Baasversioon:</translation>
+    </message>
+    <message>
+        <source>Application version:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OS:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CPU:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kernel:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browsers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USB info:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown - error %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User rights: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ATRfiltr service status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Certificate Propagation service status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DigiDoc</name>
     <message>
         <source>Container is not open</source>
@@ -943,6 +1042,18 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <source>Enter the application</source>
         <extracomment>accessible</extracomment>
         <translation>Sisene rakendusse</translation>
+    </message>
+    <message>
+        <source>Go to signing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to EID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to encryption</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1602,30 +1713,6 @@ ID-KAARDIGA</translation>
         <translation>Toimub allkirjastamine</translation>
     </message>
     <message>
-        <source>Request accepted</source>
-        <translation>Päring aktsepteeritud</translation>
-    </message>
-    <message>
-        <source>Request timeout</source>
-        <translation>Päringu kannatus katkes</translation>
-    </message>
-    <message>
-        <source>User denied or cancelled</source>
-        <translation>Kasutaja keeldus või katkestas</translation>
-    </message>
-    <message>
-        <source>Got signature</source>
-        <translation>Sain allkirja</translation>
-    </message>
-    <message>
-        <source>Request pending</source>
-        <translation>Päring ootel</translation>
-    </message>
-    <message>
-        <source>Mobile-ID not ready, try again later</source>
-        <translation>Mobiil-ID pole valmis, proovi hiljem uuesti</translation>
-    </message>
-    <message>
         <source>Phone absent</source>
         <translation>Telefon ei ole levis</translation>
     </message>
@@ -1638,40 +1725,12 @@ ID-KAARDIGA</translation>
         <translation>SIM kaardi viga</translation>
     </message>
     <message>
-        <source>Service internal error</source>
-        <translation>Teenuse sisemine viga</translation>
-    </message>
-    <message>
-        <source>Not allowed to use OCSP service! Please check your server access certificate.</source>
-        <translation>Puudub juurdepääs OCSP teenusele!&lt;br/&gt;Palun kontrollige juurdepääsutõendi olemasolu.</translation>
-    </message>
-    <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrollige internetiühendust.</translation>
     </message>
     <message>
-        <source>Invalid phone number! Please include correct country code.</source>
-        <translation>Viga! Telefoninumber peab sisaldama riigikoodi.</translation>
-    </message>
-    <message>
         <source>User is not a Mobile-ID client</source>
         <translation>Kasutaja ei ole Mobiil-ID klient</translation>
-    </message>
-    <message>
-        <source>ID and phone number do not match</source>
-        <translation>Isikukood ja telefoni number ei klapi</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID service is not activated.</source>
-        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud.</translation>
-    </message>
-    <message>
-        <source>Mobile-ID user certificates are revoked or suspended.</source>
-        <translation>Kasutaja Mobiil-ID sertifikaadid on tühistatud või peatatud.</translation>
-    </message>
-    <message>
-        <source>Invalid content</source>
-        <translation>Kehtetu sisu</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
@@ -1680,10 +1739,6 @@ Control code: %1</source>
         <translation>Veendu kontrollkoodi õigsuses
 ja sisesta telefonil Mobiil-ID PIN2-kood.
 Kontrollkood: %1</translation>
-    </message>
-    <message>
-        <source>SSL Error:</source>
-        <translation>SSL Viga:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1698,18 +1753,6 @@ Kontrollkood: %1</translation>
         <translation>Allkirjastan Mobiil-ID -ga</translation>
     </message>
     <message>
-        <source>Sign</source>
-        <translation>Allkirjastan</translation>
-    </message>
-    <message>
-        <source>Failed to sign container</source>
-        <translation>Ümbriku allkirjastamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Your Mobile-ID certificates are not activated</source>
-        <translation>Mobiil-ID sertifikaadid ei ole aktiveeritud</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
@@ -1717,6 +1760,38 @@ Kontrollkood: %1</translation>
     <message>
         <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
         <translation>Mobiil-ID teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to send request </source>
+        <translation>Päringu saatmine ebaõnnestus </translation>
+    </message>
+    <message>
+        <source>Invalid content type header </source>
+        <translation>Vale sisutüübi päis </translation>
+    </message>
+    <message>
+        <source>Failed to parse JSON content</source>
+        <translation>JSON-i sisu lugemine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to parse certificate: </source>
+        <translation>Sertifikaadi sisu lugemine ebaõnnestus: </translation>
+    </message>
+    <message>
+        <source>Service result:</source>
+        <translation>Teenuse vastus/tulemus:</translation>
+    </message>
+    <message>
+        <source>Account not found</source>
+        <translation>Kontot ei leitud</translation>
+    </message>
+    <message>
+        <source>Session not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1863,10 +1938,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>UNBLOCK</source>
         <translation>BLOKEERI LAHTI</translation>
-    </message>
-    <message>
-        <source>New PIN%1 must be different from current PIN%1.</source>
-        <translation>Uus PIN%1 peab olema erinev eelmisest.</translation>
     </message>
     <message>
         <source>PIN2 code is used to digitally sign documents.</source>
@@ -2925,7 +2996,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Teadmata</translation>
     </message>
     <message>
         <source>Time Stamping</source>
@@ -2933,7 +3004,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Ensures the identity of a remote computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagab serverarvuti identiteedi</translation>
     </message>
     <message>
         <source>Digi-ID</source>

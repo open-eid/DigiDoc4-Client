@@ -37,15 +37,15 @@
 #include <Security/SecItem.h>
 #endif
 
-class AccessCertPrivate
+class AccessCert::Private
 {
 public:
 	QString cert, pass;
 };
 
 AccessCert::AccessCert( QWidget *parent )
-:	WarningDialog( "", parent )
-,	d( new AccessCertPrivate )
+	: WarningDialog(QString(), parent)
+	, d(new Private)
 {
 	setCancelText(::WarningDialog::tr("CLOSE"));
 #ifndef Q_OS_MAC
@@ -66,9 +66,9 @@ AccessCert::~AccessCert()
 QSslCertificate AccessCert::cert()
 {
 #ifdef Q_OS_MAC
-	if( SecIdentityRef identity = SecIdentityCopyPreferred( CFSTR("ocsp.sk.ee"), 0, 0 ) )
+	if(SecIdentityRef identity = SecIdentityCopyPreferred(CFSTR("ocsp.sk.ee"), nullptr, nullptr))
 	{
-		SecCertificateRef certref = 0;
+		SecCertificateRef certref = nullptr;
 		SecIdentityCopyCertificate( identity, &certref );
 		CFRelease( identity );
 		if( !certref )
@@ -80,7 +80,7 @@ QSslCertificate AccessCert::cert()
 			return QSslCertificate();
 
 		QSslCertificate cert(
-			QByteArray( (const char*)CFDataGetBytePtr( certdata ), CFDataGetLength( certdata ) ), QSsl::Der );
+			QByteArray::fromRawData((const char*)CFDataGetBytePtr(certdata), CFDataGetLength(certdata)), QSsl::Der);
 		CFRelease( certdata );
 		return cert;
 	}
@@ -99,7 +99,7 @@ void AccessCert::increment()
 {
 	if(isDefaultCert(cert()))
 	{
-		QString date = "AccessCertUsage" + QDate::currentDate().toString("yyyyMM");
+		QString date = "AccessCertUsage" + QDate::currentDate().toString(QStringLiteral("yyyyMM"));
 		Settings(qApp->applicationName()).setValue(date, QString::fromUtf8(QByteArray::number(count(date) + 1).toBase64()));
 	}
 }
@@ -140,13 +140,13 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 	CFTypeRef keyUsage[] = { kSecAttrCanDecrypt, kSecAttrCanUnwrap, kSecAttrCanDerive };
 	params.keyUsage = CFArrayCreate(nullptr,
 		(const void **)keyUsage, sizeof(keyUsage) / sizeof(keyUsage[0]), nullptr);
-	params.passphrase = CFStringCreateWithCharacters( 0,
+	params.passphrase = CFStringCreateWithCharacters(nullptr,
 		reinterpret_cast<const UniChar *>(password.unicode()), password.length() );
 
 	SecKeychainRef keychain;
 	SecKeychainCopyDefault( &keychain );
-	CFArrayRef items = 0;
-	OSStatus err = SecItemImport( pkcs12data, 0, &format, &type, 0, &params, keychain, &items );
+	CFArrayRef items = nullptr;
+	OSStatus err = SecItemImport(pkcs12data, nullptr, &format, &type, 0, &params, keychain, &items);
 	CFRelease( pkcs12data );
 	CFRelease( params.passphrase );
 	CFRelease( params.keyUsage );
@@ -158,7 +158,7 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 		return false;
 	}
 
-	SecIdentityRef identity = 0;
+	SecIdentityRef identity = nullptr;
 	for( CFIndex i = 0; i < CFArrayGetCount( items ); ++i )
 	{
 		CFTypeRef item = CFTypeRef(CFArrayGetValueAtIndex( items, i ));
@@ -166,7 +166,7 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 			identity = SecIdentityRef(item);
 	}
 
-	err = SecIdentitySetPreferred( identity, CFSTR("ocsp.sk.ee"), 0 );
+	err = SecIdentitySetPreferred(identity, CFSTR("ocsp.sk.ee"), nullptr);
 	CFRelease( items );
 	if( err != errSecSuccess )
 	{
@@ -196,49 +196,15 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 	return true;
 }
 
-QSslKey AccessCert::key()
-{
-#ifdef Q_OS_MAC
-	if( SecIdentityRef identity = SecIdentityCopyPreferred( CFSTR("ocsp.sk.ee"), 0, 0 ) )
-	{
-		SecKeyRef keyref = 0;
-		OSStatus err = SecIdentityCopyPrivateKey( identity, &keyref );
-		CFRelease( identity );
-		if( !keyref )
-			return QSslKey();
-
-		CFDataRef keydata = 0;
-		SecItemImportExportKeyParameters params;
-		memset( &params, 0, sizeof(params) );
-		params.version = SEC_KEY_IMPORT_EXPORT_PARAMS_VERSION;
-		params.passphrase = CFSTR("pass");
-		err = SecItemExport( keyref, kSecFormatPEMSequence, 0, &params, &keydata );
-		CFRelease( keyref );
-
-		if( !keydata )
-			return QSslKey();
-
-		QSslKey key( QByteArray( (const char*)CFDataGetBytePtr(keydata), CFDataGetLength(keydata) ),
-			QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey, "pass" );
-		CFRelease( keydata );
-
-		return key;
-	}
-#endif
-	return PKCS12Certificate::fromPath(
-		Application::confValue( Application::PKCS12Cert ).toString(),
-		Application::confValue( Application::PKCS12Pass ).toString() ).key();
-}
-
 void AccessCert::remove()
 {
 #ifdef Q_OS_MAC
-	SecIdentityRef identity = SecIdentityCopyPreferred( CFSTR("ocsp.sk.ee"), 0, 0 );
+	SecIdentityRef identity = SecIdentityCopyPreferred(CFSTR("ocsp.sk.ee"), nullptr, nullptr);
 	if( !identity )
 		return;
 
-	SecCertificateRef certref = 0;
-	SecKeyRef keyref = 0;
+	SecCertificateRef certref = nullptr;
+	SecKeyRef keyref = nullptr;
 	OSStatus err = 0;
 	err = SecIdentityCopyCertificate( identity, &certref );
 	err = SecIdentityCopyPrivateKey( identity, &keyref );
@@ -263,12 +229,12 @@ void AccessCert::showWarning( const QString &msg )
 
 bool AccessCert::validate()
 {
-	QString date = "AccessCertUsage" + QDate::currentDate().toString("yyyyMM");
+	QString date = "AccessCertUsage" + QDate::currentDate().toString(QStringLiteral("yyyyMM"));
 	Settings s(qApp->applicationName());
 	if(s.value(date).isNull())
 	{
 		for(const QString &key: s.allKeys())
-			if(key.startsWith("AccessCertUsage"))
+			if(key.startsWith(QStringLiteral("AccessCertUsage")))
 				s.remove(key);
 	}
 
@@ -290,7 +256,7 @@ bool AccessCert::validate()
 				"Server access certificate expired on %1. To renew the certificate please "
 				"contact IT support team of your company. Additional information is available "
 				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
-				.arg(c.expiryDate().toLocalTime().toString("dd.MM.yyyy")) );
+				.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
 			return false;
 		}
 		else if(c.expiryDate() < QDateTime::currentDateTime().addDays(8))
@@ -299,7 +265,7 @@ bool AccessCert::validate()
 				"Server access certificate is about to expire on %1. To renew the certificate "
 				"please contact IT support team of your company. Additional information is available "
 				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
-				.arg(c.expiryDate().toLocalTime().toString("dd.MM.yyyy")) );
+				.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
 		}
 	}
 	else if(!c.isValid() || c.expiryDate() < QDateTime::currentDateTime().addDays(8))

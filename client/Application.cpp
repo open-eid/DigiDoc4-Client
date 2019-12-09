@@ -548,6 +548,9 @@ void Application::diagnostics(QTextStream &s)
 	s << "<br />TSL_URL: " << confValue(TSLUrl).toString() << " (" << readTSLVersion(cache + "/" + file) << ")"
 		<< "<br />TSA_URL: " << confValue(TSAUrl).toString()
 		<< "<br />SIVA_URL: " << confValue(SiVaUrl).toString()
+#ifdef MOBILEID_URL
+		<< "<br />MOBILEID_URL: " << MOBILEID_URL
+#endif
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: confValue(TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
@@ -1024,6 +1027,9 @@ void DdCliApplication::diagnostics(QTextStream &s) const
 {
 	digidoc::Conf::init( new DigidocConf );
 
+#ifdef MOBILEID_URL
+	s << "<br />MOBILEID_URL: " << MOBILEID_URL;
+#endif
 	s << "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString();
 	s << "<br /><br /><b>" << "TSL signing certs:</b>";
 	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())

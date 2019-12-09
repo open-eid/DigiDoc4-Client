@@ -44,19 +44,20 @@
 
 #include <digidocpp/Conf.h>
 
-#include <QFile>
-#include <QDesktopServices>
-#include <QInputDialog>
-#include <QIODevice>
-#include <QStandardPaths>
-#include <QSysInfo>
-#include <QTextBrowser>
-#include <QThread>
-#include <QThreadPool>
-#include <QUrl>
+#include <QtCore/QFile>
+#include <QtCore/QIODevice>
 #include <QtCore/QJsonObject>
+#include <QtCore/QStandardPaths>
+#include <QtCore/QSysInfo>
+#include <QtCore/QThread>
+#include <QtCore/QThreadPool>
+#include <QtCore/QUrl>
+#include <QtGui/QDesktopServices>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QTextBrowser>
 
 SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	: QDialog(parent)

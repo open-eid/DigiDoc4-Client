@@ -21,23 +21,18 @@
 
 #include "dialogs/WarningDialog.h"
 
-#include <QtWidgets/QMessageBox>
-
 class QSslCertificate;
-class QSslKey;
-class AccessCertPrivate;
 class AccessCert: public WarningDialog
 {
 	Q_OBJECT
 
 public:
-	explicit AccessCert( QWidget *parent = 0 );
-	~AccessCert();
+	explicit AccessCert(QWidget *parent = nullptr);
+	~AccessCert() final;
 
 	bool validate();
 
 	static QSslCertificate cert();
-	static QSslKey key();
 	void increment();
 	bool installCert( const QByteArray &data, const QString &password );
 	void remove();
@@ -47,5 +42,6 @@ private:
 	bool isDefaultCert( const QSslCertificate &cert ) const;
 	void showWarning( const QString &msg );
 
-	AccessCertPrivate *d;
+	class Private;
+	Private *d;
 };

@@ -18,336 +18,317 @@
  */
 
 #include "MobileProgress.h"
+#include "ui_MobileProgress.h"
 
-#include "AccessCert.h"
-#include "Application.h"
-#include "DigiDoc.h"
 #include "Styles.h"
 
+#include <common/Common.h>
 #include <common/Configuration.h>
 #include <common/Settings.h>
-#include <common/SOAPDocument.h>
 
-#include <QtCore/QDir>
+#include <digidocpp/crypto/X509Cert.h>
+
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QTimeLine>
-#include <QtCore/QTimer>
-#include <QtCore/QXmlStreamReader>
+#include <QtCore/QUuid>
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QSslKey>
-#include <QtNetwork/QSslConfiguration>
 #ifdef Q_OS_WIN
 #include <QtWinExtras/QWinTaskbarButton>
 #include <QtWinExtras/QWinTaskbarProgress>
 #endif
 
+Q_LOGGING_CATEGORY(MIDLog,"RIA.MID")
+
 using namespace digidoc;
 
-MobileProgress::MobileProgress( QWidget *parent )
-	: QDialog(parent)
+class MobileProgress::Private: public QDialog, public Ui::MobileProgress
 {
-	mobileResults[QStringLiteral("START")] = tr("Signing in process");
-	mobileResults[QStringLiteral("REQUEST_OK")] = tr("Request accepted");
-	mobileResults[QStringLiteral("EXPIRED_TRANSACTION")] = tr("Request timeout");
-	mobileResults[QStringLiteral("USER_CANCEL")] = tr("User denied or cancelled");
-	mobileResults[QStringLiteral("SIGNATURE")] = tr("Got signature");
-	mobileResults[QStringLiteral("OUTSTANDING_TRANSACTION")] = tr("Request pending");
-	mobileResults[QStringLiteral("MID_NOT_READY")] = tr("Mobile-ID not ready, try again later");
-	mobileResults[QStringLiteral("PHONE_ABSENT")] = tr("Phone absent");
-	mobileResults[QStringLiteral("SENDING_ERROR")] = tr("Request sending error");
-	mobileResults[QStringLiteral("SIM_ERROR")] = tr("SIM error");
-	mobileResults[QStringLiteral("INTERNAL_ERROR")] = tr("Service internal error");
-	mobileResults[QStringLiteral("OCSP_UNAUTHORIZED")] = tr("Not allowed to use OCSP service! Please check your server access certificate.");
-	mobileResults[QStringLiteral("HOSTNOTFOUND")] = tr("Connecting to SK server failed! Please check your internet connection.");
-	mobileResults[QStringLiteral("NOT_VALID")] = tr("Failed to sign container");
-	mobileResults[QStringLiteral("Invalid PhoneNo")] = tr("Invalid phone number! Please include correct country code.");
-	mobileResults[QStringLiteral("User is not a Mobile-ID client")] = tr("User is not a Mobile-ID client");
-	mobileResults[QStringLiteral("ID and phone number do not match")] = tr("ID and phone number do not match");
-	mobileResults[QStringLiteral("Certificate status unknown")] = tr("Your Mobile-ID service is not activated.");
-	mobileResults[QStringLiteral("Certificate is revoked")] = tr("Mobile-ID user certificates are revoked or suspended.");
-	mobileResults[QStringLiteral("Certificate isn't active")] = tr("Your Mobile-ID certificates are not activated");
-
-	setupUi( this );
-	code->setBuddy( signProgressBar );
-
-	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-	setWindowModality( Qt::ApplicationModal );
-
-	statusTimer = new QTimeLine( signProgressBar->maximum() * 1000, this );
-	statusTimer->setCurveShape( QTimeLine::LinearCurve );
-	statusTimer->setFrameRange( signProgressBar->minimum(), signProgressBar->maximum() );
-	connect(statusTimer, &QTimeLine::frameChanged, signProgressBar, &QProgressBar::setValue);
-	connect(statusTimer, &QTimeLine::finished, this, [this] { endProgress(mobileResults.value(QStringLiteral("EXPIRED_TRANSACTION"))); });
-#ifdef Q_OS_WIN
-	taskbar = new QWinTaskbarButton(this);
-	taskbar->setWindow(parent->windowHandle());
-	taskbar->progress()->setRange(signProgressBar->minimum(), signProgressBar->maximum());
-	connect(statusTimer, &QTimeLine::frameChanged, taskbar->progress(), &QWinTaskbarProgress::setValue);
-	connect(cancel, &QPushButton::clicked, this, &MobileProgress::stop);
+	Q_OBJECT
+public:
+	QString URL() { return UUID.isNull() ? PROXYURL : SKURL; }
+	using QDialog::QDialog;
+	QTimeLine *statusTimer = nullptr;
+	QNetworkAccessManager *manager = nullptr;
+	QNetworkRequest req;
+	QString ssid, cell, sessionID;
+	std::vector<unsigned char> signature;
+	X509Cert cert;
+	QEventLoop l;
+#ifdef CONFIG_URL
+	QString PROXYURL = Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL));
+	QString SKURL = Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL));
+#else
+	QString PROXYURL = Settings(qApp->applicationName()).value(QStringLiteral("MID-PROXY-URL"), QStringLiteral(MOBILEID_URL)).toString();
+	QString SKURL = Settings(qApp->applicationName()).value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
 #endif
+	QString NAME = Settings(qApp->applicationName()).value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
+	QUuid UUID = Settings(qApp->applicationName()).value(QStringLiteral("MIDUUID")).toUuid();
+#ifdef Q_OS_WIN
+	QWinTaskbarButton *taskbar = nullptr;
+#endif
+};
 
-	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont regular14 = Styles::font( Styles::Regular, 14 );
-	QFont header = Styles::font( Styles::Regular, 20, QFont::DemiBold );
-	code->setFont( header );
-	labelError->setFont( regular14 );
-	signProgressBar->setFont( regular14 );
+MobileProgress::MobileProgress(QWidget *parent)
+	: d(new Private(parent))
+{
+	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	d->setupUi(d);
+	d->code->setBuddy(d->signProgressBar);
+	d->code->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	d->labelError->setFont(Styles::font(Styles::Regular, 14));
+	d->signProgressBar->setFont(d->labelError->font());
+	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
+	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
+	QObject::connect(d->cancel, &QPushButton::clicked,  [=] { d->l.exit(QDialog::Rejected); });
 
-	cancel->setFont( condensed14 );
-	connect(cancel, &QPushButton::clicked, this, &MobileProgress::reject);
-
-	manager = new QNetworkAccessManager( this );
-	connect(manager, &QNetworkAccessManager::finished, this, &MobileProgress::finished);
-	connect(manager, &QNetworkAccessManager::sslErrors, this, &MobileProgress::sslErrors);
+	d->statusTimer = new QTimeLine(d->signProgressBar->maximum() * 1000, d);
+	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);
+	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
+	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
+	QObject::connect(d->statusTimer, &QTimeLine::finished, d, &QDialog::reject);
+#ifdef Q_OS_WIN
+	d->taskbar = new QWinTaskbarButton(d);
+	d->taskbar->setWindow(parent->windowHandle());
+	d->taskbar->progress()->setRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
+	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->taskbar->progress(), &QWinTaskbarProgress::setValue);
+#endif
 
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
-	for(const QJsonValue &cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+	ssl.setCaCertificates({});
+	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
-	ssl.setCaCertificates(QList<QSslCertificate>());
 #endif
-	if( !Application::confValue( Application::PKCS12Disable ).toBool() )
-	{
-		ssl.setPrivateKey( AccessCert::key() );
-		ssl.setLocalCertificate( AccessCert::cert() );
-	}
-	request.setSslConfiguration( ssl );
-
-	request.setHeader( QNetworkRequest::ContentTypeHeader, "text/xml" );
-	request.setRawHeader( "User-Agent", QStringLiteral( "%1/%2 (%3)")
-		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8() );
-}
-
-void MobileProgress::endProgress(const QString &msg)
-{
-	labelError->setText(msg);
-	signProgressBar->hide();
-	code->hide();
-	stop();
-}
-
-void MobileProgress::finished( QNetworkReply *reply )
-{
-	QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> d(reply);
-	switch( reply->error() )
-	{
-	case QNetworkReply::NoError:
-		if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains("text/xml"))
+	d->req.setSslConfiguration(ssl);
+	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
+		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
+	d->manager = new QNetworkAccessManager(d);
+	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, [=](QNetworkReply *reply, const QList<QSslError> &err) {
+		QList<QSslError> ignore;
+		for(const QSslError &e: err)
 		{
-			endProgress(tr("Invalid content"));
+			switch(e.error())
+			{
+			case QSslError::UnableToGetLocalIssuerCertificate:
+			case QSslError::CertificateUntrusted:
+			case QSslError::SelfSignedCertificateInChain:
+				if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
+					ignore << e;
+					break;
+				}
+			default:
+				qCWarning(MIDLog) << "SSL Error:" << e.error() << e.certificate().subjectInfo(QSslCertificate::CommonName);
+				break;
+			}
+		}
+		reply->ignoreSslErrors(ignore);
+	});
+	QObject::connect(d->manager, &QNetworkAccessManager::finished, [=](QNetworkReply *reply) {
+		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
+		auto returnError = [=](const QString &err) {
+			qCWarning(MIDLog) << err;
+			d->labelError->setText(err);
+			d->code->hide();
+			d->signProgressBar->hide();
+			d->show();
+			stop();
+		};
+
+		switch(reply->error())
+		{
+		case QNetworkReply::NoError:
+			break;
+		case QNetworkReply::ContentNotFoundError:
+			returnError(d->sessionID.isEmpty() ? tr("Account not found") : tr("Session not found"));
+			return;
+		case QNetworkReply::HostNotFoundError:
+			returnError(tr("Connecting to SK server failed! Please check your internet connection."));
+			return;
+		case QNetworkReply::ConnectionRefusedError:
+			returnError(tr("Mobile-ID service has encountered technical errors. Please try again later."));
+			return;
+		case QNetworkReply::SslHandshakeFailedError:
+			returnError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
+			return;
+		default:
+			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
+			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
+				returnError(tr("The limit for digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"));
+			else
+				returnError(tr("Failed to send request ") + reply->errorString());
 			return;
 		}
-		break;
-	case QNetworkReply::UnknownContentError:
-	case QNetworkReply::InternalServerError:
-		break;
-	case QNetworkReply::HostNotFoundError:
-		endProgress(mobileResults.value(QStringLiteral("HOSTNOTFOUND")));
-		return;
-	case QNetworkReply::SslHandshakeFailedError:
-		signProgressBar->hide();
-		stop();
-		return;
-	case QNetworkReply::ConnectionRefusedError:
-		endProgress(tr("Mobile-ID service has encountered technical errors. Please try again later."));
-		return;
-	default:
-		endProgress(reply->errorString());
-		return;
-	}
-
-	QXmlStreamReader xml( reply );
-	QString fault, message, status;
-	while( xml.readNext() != QXmlStreamReader::Invalid )
-	{
-		if( !xml.isStartElement() )
-			continue;
-		if( xml.name() == "faultstring" )
-			fault = xml.readElementText();
-		else if( xml.name() == "message" )
-			message = xml.readElementText();
-		else if( xml.name() == "ChallengeID" )
+		static const QStringList contentType{"application/json", "application/json;charset=UTF-8"};
+		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
 		{
-			code->setText( tr("Make sure control code matches with one in phone screen\n"
-				"and enter Mobile-ID PIN2-code.\nControl code: %1").arg( xml.readElementText() ) );
-			code->setAccessibleName( code->text() );
-			adjustSize();
+			returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
+			return;
 		}
-		else if( xml.name() == "Sesscode" )
-			sessionCode = xml.readElementText();
-		else if( xml.name() == "Status" )
-			status = xml.readElementText();
-		else if( xml.name() == "Signature" )
-			m_signature = xml.readElementText().toUtf8();
-	}
 
-	if( !fault.isEmpty() )
-	{
-		endProgress(mobileResults.value(message, message));
-		return;
-	}
+		QByteArray data = reply->readAll();
+		qCDebug(MIDLog).noquote() << data;
+		QJsonObject result = QJsonDocument::fromJson(data, nullptr).object();
+		if(result.isEmpty())
+		{
+			returnError(tr("Failed to parse JSON content"));
+			return;
+		}
 
-	if( sessionCode.isEmpty() )
-	{
-		endProgress(mobileResults.value(message));
-		return;
-	}
-
-	if( statusTimer->state() == QTimeLine::NotRunning )
-		return;
-
-	labelError->setText( mobileResults.value( status ) );
-	if(status == QStringLiteral("OK") || status == QStringLiteral("REQUEST_OK") || status == QStringLiteral("OUTSTANDING_TRANSACTION"))
-	{
-		QTimer::singleShot(5*1000, this, &MobileProgress::sendStatusRequest);
-		return;
-	}
-	stop();
-	if(status == QStringLiteral("SIGNATURE"))
-		accept();
+		if(result.contains(QStringLiteral("cert")))
+		{
+			try {
+				QByteArray b64 = QByteArray::fromBase64(result.value(QStringLiteral("cert")).toString().toUtf8());
+				d->cert = X509Cert((const unsigned char*)b64.constData(), size_t(b64.size()), X509Cert::Der);
+				d->l.exit(QDialog::Accepted);
+			} catch(const Exception &e) {
+				returnError(tr("Failed to parse certificate: ") + QString::fromStdString(e.msg()));
+			}
+			return;
+		}
+		if(result.contains(QStringLiteral("sessionID")))
+			d->sessionID = result.value(QStringLiteral("sessionID")).toString();
+		else if(result.value(QStringLiteral("state")).toString() != QStringLiteral("RUNNING"))
+		{
+			QString endResult = result.value(QStringLiteral("result")).toString();
+			if(endResult == QStringLiteral("OK"))
+			{
+				QByteArray b64 = QByteArray::fromBase64(
+					result.value(QStringLiteral("signature")).toObject().value(QStringLiteral("value")).toString().toUtf8());
+				d->signature.assign(b64.cbegin(), b64.cend());
+				d->l.exit(QDialog::Accepted);
+			}
+			else if(endResult == QStringLiteral("USER_CANCELLED") || endResult == QStringLiteral("TIMEOUT"))
+				d->l.exit(QDialog::Rejected);
+			else if(endResult == QStringLiteral("NOT_MID_CLIENT") || endResult == QStringLiteral("NOT_FOUND") || endResult == QStringLiteral("NOT_ACTIVE"))
+				returnError(tr("User is not a Mobile-ID client"));
+			else if(endResult == QStringLiteral("PHONE_ABSENT"))
+				returnError(tr("Phone absent"));
+			else if(endResult == QStringLiteral("DELIVERY_ERROR"))
+				returnError(tr("Request sending error"));
+			else if(endResult == QStringLiteral("SIM_ERROR"))
+				returnError(tr("SIM error"));
+			else
+				returnError(tr("Service result:") + endResult);
+			return;
+		}
+		d->req.setUrl(QUrl(QStringLiteral("%1/signature/session/%2?timeoutMs=10000").arg(d->URL(), d->sessionID)));
+		qCDebug(MIDLog).noquote() << d->req.url();
+		d->manager->get(d->req);
+	});
 }
 
-bool MobileProgress::isTest( const QString &ssid, const QString &cell )
+MobileProgress::~MobileProgress()
 {
-	const static QStringList list = {
-		"14212128020" "37200002",
-		"14212128021" "37200003",
-		"14212128022" "37200004",
-		"14212128023" "37200005",
-		"14212128024" "37200006",
-		"14212128025" "37200007",
-		"14212128026" "37200008",
-		"14212128027" "37200009",
-		"38002240211" "37200001",
-		"14212128029" "37200001066",
-		"60001019906" "37200000766",
-		"60001019928" "37200000366",
-		"60001019939" "37200000266",
-		"60001019947" "37207110066",
-		"60001019950" "37201100266",
-		"60001019961" "37200000666",
-		"60001019972" "37201200266",
-		"60001019983" "37213100266",
-		"60001018800" "37200000566",
-	};
-	return list.contains( ssid + cell );
+	d->deleteLater();
 }
 
-void MobileProgress::sendStatusRequest()
+X509Cert MobileProgress::cert() const
 {
-	SOAPDocument doc(QStringLiteral("GetMobileCreateSignatureStatus"), DIGIDOCSERVICE);
-	doc.writeParameter(QStringLiteral("Sesscode"), sessionCode.toInt());
-	doc.writeParameter(QStringLiteral("WaitSignature"), false);
-	doc.writeEndDocument();
-	manager->post( request, doc.document() );
+	return d->cert;
 }
 
-void MobileProgress::setSignatureInfo( const QString &city, const QString &state,
-	const QString &zip, const QString &country, const QString &role )
+bool MobileProgress::init(const QString &ssid, const QString &cell)
 {
-	location = QStringList({city, state, zip, country, role});
+	d->ssid = ssid;
+	d->cell = '+' + cell;
+	d->labelError->setText(tr("Signing in process"));
+	d->sessionID.clear();
+	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
+		{"relyingPartyUUID", d->UUID
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+			.toString(QUuid::WithoutBraces)
+#else
+			.toString().remove('{').remove('}')
+#endif
+		},
+		{"relyingPartyName", d->NAME},
+		{"nationalIdentityNumber", d->ssid},
+		{"phoneNumber", d->cell},
+	})).toJson();
+	d->req.setUrl(QUrl(QStringLiteral("%1/certificate").arg(d->URL())));
+	qCDebug(MIDLog).noquote() << d->req.url() << data;
+	d->manager->post(d->req, data);
+	return d->l.exec() == QDialog::Accepted;
 }
 
-void MobileProgress::sign( const DigiDoc *doc, const QString &ssid, const QString &cell )
+std::vector<unsigned char> MobileProgress::sign(const std::string &method, const std::vector<unsigned char> &digest) const
 {
-	labelError->setText(mobileResults.value(QStringLiteral("START")));
+	d->statusTimer->stop();
+	d->sessionID.clear();
+
+	QString digestMethod;
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256")
+		digestMethod = QStringLiteral("SHA256");
+	else if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ||
+			method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384")
+		digestMethod = QStringLiteral("SHA384");
+	else if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ||
+			method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512")
+		digestMethod = QStringLiteral("SHA512");
+	else
+		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
+
+	d->code->setText(tr("Make sure control code matches with one in phone screen\n"
+		"and enter Mobile-ID PIN2-code.\nControl code: %1")
+		.arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
 
 	QHash<QString,QString> lang;
 	lang[QStringLiteral("et")] = QStringLiteral("EST");
 	lang[QStringLiteral("en")] = QStringLiteral("ENG");
 	lang[QStringLiteral("ru")] = QStringLiteral("RUS");
 
-	SOAPDocument r(QStringLiteral("MobileCreateSignature"), DIGIDOCSERVICE );
-	r.writeParameter(QStringLiteral("IDCode"), ssid );
-	r.writeParameter(QStringLiteral("PhoneNo"), "+" + cell );
-	r.writeParameter(QStringLiteral("Language"), lang.value(Settings::language(), QStringLiteral("EST")));
-	r.writeParameter(QStringLiteral("ServiceName"), QStringLiteral("DigiDoc4"));
-	QString title =  tr("Sign") + " " + QFileInfo( doc->fileName() ).fileName();
-	if( title.size() > 39 )
-	{
-		title.resize( 36 );
-		title += QStringLiteral("...");
-	}
-	r.writeParameter(QStringLiteral("MessageToDisplay"), title + "\n");
-	r.writeParameter(QStringLiteral("City"), location.value(0));
-	r.writeParameter(QStringLiteral("StateOrProvince"), location.value(1));
-	r.writeParameter(QStringLiteral("PostalCode"), location.value(2));
-	r.writeParameter(QStringLiteral("CountryName"), location.value(3));
-	r.writeParameter(QStringLiteral("Role"), location.value(4));
-	r.writeParameter(QStringLiteral("SigningProfile"), QStringLiteral("LT"));
-
-	r.writeStartElement(QStringLiteral("DataFiles"));
-	r.writeAttribute(XML_SCHEMA_INSTANCE, QStringLiteral("type"), QStringLiteral("m:DataFileDigestList"));
-	DocumentModel *m = doc->documentModel();
-	for( int i = 0; i < m->rowCount(); ++i )
-	{
-		r.writeStartElement(QStringLiteral("DataFileDigest"));
-		r.writeAttribute(XML_SCHEMA_INSTANCE, QStringLiteral("type"), QStringLiteral("m:DataFileDigest") );
-		r.writeParameter(QStringLiteral("Id"), m->fileId(i) );
-		r.writeParameter(QStringLiteral("DigestType"), "sha256");
-		r.writeParameter(QStringLiteral("DigestValue"), doc->getFileDigest(i).toBase64());
-		r.writeParameter(QStringLiteral("MimeType"), m->mime(i));
-		r.writeEndElement();
-	}
-	r.writeEndElement();
-
-	r.writeParameter(QStringLiteral("Format"), QStringLiteral("BDOC"));
-	r.writeParameter(QStringLiteral("Version"), QStringLiteral("2.1"));
-	r.writeParameter(QStringLiteral("SignatureID"), doc->newSignatureID());
-	r.writeParameter(QStringLiteral("MessagingMode"), QStringLiteral("asynchClientServer"));
-	r.writeParameter(QStringLiteral("AsyncConfiguration"), 0);
-	r.writeEndDocument();
-
-	request.setUrl(QUrl(qApp->confValue(isTest( ssid, cell ) ? Application::MobileID_TEST_URL : Application::MobileID_URL).toString()));
-	statusTimer->start();
-#ifdef Q_OS_WIN
-	taskbar->progress()->show();
-	taskbar->progress()->resume();
+	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
+		{"relyingPartyUUID", d->UUID
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+			.toString(QUuid::WithoutBraces)
+#else
+			.toString().remove('{').remove('}')
 #endif
-	manager->post( request, r.document() );
-}
-
-QByteArray MobileProgress::signature() const { return m_signature; }
-
-void MobileProgress::sslErrors(QNetworkReply *reply, const QList<QSslError> &err)
-{
-	QStringList msg;
-	QList<QSslError> ignore;
-	for(const QSslError &e: err)
+		},
+		{"relyingPartyName", d->NAME},
+		{"nationalIdentityNumber", d->ssid},
+		{"phoneNumber", d->cell},
+		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
+		{"hashType", digestMethod},
+		{"language", lang.value(Settings::language(), QStringLiteral("EST"))},
+		{"displayText", "Sign document"},
+		{"displayTextFormat", "GSM-7"}
+	})).toJson();
+	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL())));
+	qCDebug(MIDLog).noquote() << d->req.url() << data;
+	d->manager->post(d->req, data);
+	d->statusTimer->start();
+	d->adjustSize();
+	d->show();
+	switch(d->l.exec())
 	{
-		switch(e.error())
-		{
-		case QSslError::UnableToGetLocalIssuerCertificate:
-		case QSslError::CertificateUntrusted:
-		case QSslError::SelfSignedCertificateInChain:
-			if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
-				ignore << e;
-				break;
-			}
-		default:
-			qWarning() << tr("SSL Error:") << e.error() << e.certificate().subjectInfo( "CN" );
-			msg << e.errorString();
-			break;
-		}
+	case QDialog::Accepted: return d->signature;
+	case QDialog::Rejected:
+	{
+		Exception e(__FILE__, __LINE__, "Signing canceled");
+		e.setCode(Exception::PINCanceled);
+		throw e;
 	}
-	reply->ignoreSslErrors(ignore);
-	if( !msg.empty() )
-	{
-		labelError->setText(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
-		code->hide();
+	default:
+		throw Exception(__FILE__, __LINE__, "Failed to sign container");
 	}
 }
 
 void MobileProgress::stop()
 {
-	statusTimer->stop();
+	d->statusTimer->stop();
 #ifdef Q_OS_WIN
-	taskbar->progress()->stop();
-	taskbar->progress()->hide();
+	d->taskbar->progress()->stop();
+	d->taskbar->progress()->hide();
 #endif
 }
+
+#include "MobileProgress.moc"

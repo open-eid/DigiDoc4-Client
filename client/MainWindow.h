@@ -123,16 +123,13 @@ private:
 	void showCardMenu( bool show );
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
-	bool sign();
-	bool signMobile(const QString &idCode, const QString &phoneNumber);
+	void sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign);
 	void updateCardWarnings();
 	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(const QList<CKey> &keys);
 	bool wrap(const QString& wrappedFile, bool enclose);
-	void wrapAndSign();
-	void wrapAndMobileSign(const QString &idCode, const QString &phoneNumber);
 	bool wrapContainer(bool signing);
 	void containerSummary();
 	
