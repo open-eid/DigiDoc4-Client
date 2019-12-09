@@ -1326,6 +1326,11 @@ LDAP сервер недоступен.</translation>
 MOBIIL-ID</translation>
     </message>
     <message>
+        <source>SignatureSmartID</source>
+        <translation>ПОДПИСАТЬ С
+SMART-ID</translation>
+    </message>
+    <message>
         <source>SignatureAdd</source>
         <translation>ПОДПИСАТЬ С
 ID-КАРТОЙ</translation>
@@ -1752,17 +1757,13 @@ Kонтрольный код: %1</translation>
         <translation>%v сек</translation>
     </message>
     <message>
-        <source>Signing with Mobile-ID</source>
-        <translation>Подписывается с Mobiil-ID</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
         <translation>Отмена</translation>
     </message>
     <message>
-        <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
-        <translation>Технический сбой услуги Mobiil-ID. Пожалуйста, попробуйте позже.</translation>
+        <source>%1 service has encountered technical errors. Please try again later.</source>
+        <translation>Технический сбой услуги %1. Пожалуйста, попробуйте позже.</translation>
     </message>
     <message>
         <source>Failed to send request </source>
@@ -1790,7 +1791,47 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Session not found</source>
-        <translation>Session not found</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Service result: </source>
+        <translation>Ответ/результат услуги: </translation>
+    </message>
+    <message>
+        <source>Make sure control code matches with one in phone screen
+and enter Smart-ID PIN2-code.
+Control code: %1</source>
+        <translation>Убедитесь в правильности контрольного кодa
+и введите PIN2-код для Smart-ID.
+Kонтрольный код: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Не удалось подписать контейнер. Проверьте настройки доступа услуги %1 &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Person should view app or self-service portal now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372) 666 8888.</translation>
+    </message>
+    <message>
+        <source>Open the Smart-ID application on your smart device and confirm device for signing.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -2937,6 +2978,49 @@ Additional licenses and components</source>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>Для просмотра деталей подписи нажмите пробел или enter</translation>
+    </message>
+</context>
+<context>
+    <name>SmartIDDialog</name>
+    <message>
+        <source>SIGN</source>
+        <translation>ПОДПИСАТЬ</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Личный код</translation>
+    </message>
+    <message>
+        <source>Enter your personal code to sign with Smart-ID</source>
+        <translation>Введите свой личный код для подписи с Smart-ID</translation>
+    </message>
+    <message>
+        <source>Remember me</source>
+        <translation>Запомнить меня</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Личный код недействителен</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
+    </message>
+    <message>
+        <source>Estonia</source>
+        <translation>Эстония</translation>
+    </message>
+    <message>
+        <source>Lithuania</source>
+        <translation>Литва</translation>
+    </message>
+    <message>
+        <source>Latvia</source>
+        <translation>Латвия</translation>
     </message>
 </context>
 <context>

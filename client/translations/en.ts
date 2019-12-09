@@ -1324,6 +1324,11 @@ LDAP server is unavailable.</translation>
 MOBIIL-ID</translation>
     </message>
     <message>
+        <source>SignatureSmartID</source>
+        <translation>SIGN WITH
+SMART-ID</translation>
+    </message>
+    <message>
         <source>SignatureAdd</source>
         <translation>SIGN WITH
 ID-CARD</translation>
@@ -1749,17 +1754,13 @@ Control code: %1</translation>
         <translation>%v sec</translation>
     </message>
     <message>
-        <source>Signing with Mobile-ID</source>
-        <translation>Signing with Mobile-ID</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
     </message>
     <message>
-        <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
-        <translation>Mobile-ID service has encountered technical errors. Please try again later.</translation>
+        <source>%1 service has encountered technical errors. Please try again later.</source>
+        <translation>%1 service has encountered technical errors. Please try again later.</translation>
     </message>
     <message>
         <source>Failed to send request </source>
@@ -1787,7 +1788,47 @@ Control code: %1</translation>
     </message>
     <message>
         <source>Session not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Session not found</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Service result: </source>
+        <translation>Service result: </translation>
+    </message>
+    <message>
+        <source>Make sure control code matches with one in phone screen
+and enter Smart-ID PIN2-code.
+Control code: %1</source>
+        <translation>Make sure control code matches with one in phone screen
+and enter Smart-ID PIN2-code.
+Control code: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
+        <translation>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</translation>
+    </message>
+    <message>
+        <source>Person should view app or self-service portal now.</source>
+        <translation>Person should view app or self-service portal now.</translation>
+    </message>
+    <message>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
+    </message>
+    <message>
+        <source>Open the Smart-ID application on your smart device and confirm device for signing.</source>
+        <translation>Open the Smart-ID application on your smart device and confirm device for signing.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -2934,6 +2975,49 @@ Additional licenses and components</translation>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>To view signature details press enter or space</translation>
+    </message>
+</context>
+<context>
+    <name>SmartIDDialog</name>
+    <message>
+        <source>SIGN</source>
+        <translation>SIGN</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Personal code</translation>
+    </message>
+    <message>
+        <source>Enter your personal code to sign with Smart-ID</source>
+        <translation>Enter your personal code to sign with Smart-ID</translation>
+    </message>
+    <message>
+        <source>Remember me</source>
+        <translation>Remember me</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Personal code is not valid</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>Estonia</source>
+        <translation>Estonia</translation>
+    </message>
+    <message>
+        <source>Lithuania</source>
+        <translation>Lithuania</translation>
+    </message>
+    <message>
+        <source>Latvia</source>
+        <translation>Latvia</translation>
     </message>
 </context>
 <context>

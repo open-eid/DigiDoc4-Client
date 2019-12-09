@@ -90,6 +90,7 @@ QString MainAction::label(Actions action) const
 	switch(action)
 	{
 	case SignatureMobile: return tr("SignatureMobile");
+	case SignatureSmartID: return tr("SignatureSmartID");
 	case SignatureToken: return tr("SignatureToken");
 	case EncryptContainer: return tr("EncryptContainer");
 	case DecryptContainer: return tr("DecryptContainer");

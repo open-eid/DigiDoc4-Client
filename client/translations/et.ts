@@ -1324,6 +1324,11 @@ LDAP serveriga ei saa ühendust.</translation>
 MOBIIL-ID’GA</translation>
     </message>
     <message>
+        <source>SignatureSmartID</source>
+        <translation>ALLKIRJASTA
+SMART-ID’GA</translation>
+    </message>
+    <message>
         <source>SignatureAdd</source>
         <translation>ALLKIRJASTA
 ID-KAARDIGA</translation>
@@ -1749,17 +1754,13 @@ Kontrollkood: %1</translation>
         <translation>%v sek</translation>
     </message>
     <message>
-        <source>Signing with Mobile-ID</source>
-        <translation>Allkirjastan Mobiil-ID -ga</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
     </message>
     <message>
-        <source>Mobile-ID service has encountered technical errors. Please try again later.</source>
-        <translation>Mobiil-ID teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
+        <source>%1 service has encountered technical errors. Please try again later.</source>
+        <translation>%1 teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
     </message>
     <message>
         <source>Failed to send request </source>
@@ -1788,6 +1789,46 @@ Kontrollkood: %1</translation>
     <message>
         <source>Session not found</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Service result: </source>
+        <translation>Teenuse vastus/tulemus: </translation>
+    </message>
+    <message>
+        <source>Make sure control code matches with one in phone screen
+and enter Smart-ID PIN2-code.
+Control code: %1</source>
+        <translation>Veendu kontrollkoodi õigsuses
+ja sisesta nutiseadmes Smart-ID PIN2-kood.
+Kontrollkood: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Kontrolli %1 teenuse ligipääsu seadeid. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
+        <translation>DigiDoc4 kliendis allkirjastamiseks peab teie Smart-ID vastama tasemele kõrge.</translation>
+    </message>
+    <message>
+        <source>Person should view app or self-service portal now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
+    </message>
+    <message>
+        <source>Open the Smart-ID application on your smart device and confirm device for signing.</source>
+        <translation>Ava oma nutiseadmes Smart-ID rakendus ja kinnita seade allkirjastamiseks.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -2934,6 +2975,49 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>To view signature details press enter or space</source>
         <extracomment>accessible</extracomment>
         <translation>Allkirja detailide vaatamiseks vajuta space või enter</translation>
+    </message>
+</context>
+<context>
+    <name>SmartIDDialog</name>
+    <message>
+        <source>SIGN</source>
+        <translation>ALLKIRJASTA</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Isikukood</translation>
+    </message>
+    <message>
+        <source>Enter your personal code to sign with Smart-ID</source>
+        <translation>Sisesta oma isikukood Smart-IDga allkirjastamiseks</translation>
+    </message>
+    <message>
+        <source>Remember me</source>
+        <translation>Pea mind meeles</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Isikukood pole kehtiv</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>Estonia</source>
+        <translation>Eesti</translation>
+    </message>
+    <message>
+        <source>Lithuania</source>
+        <translation>Leedu</translation>
+    </message>
+    <message>
+        <source>Latvia</source>
+        <translation>Läti</translation>
     </message>
 </context>
 <context>
