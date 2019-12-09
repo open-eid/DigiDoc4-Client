@@ -630,99 +630,99 @@
     <name>Diagnostics</name>
     <message>
         <source>Arguments:</source>
-        <translation type="unfinished"></translation>
+        <translation>Argumendid:</translation>
     </message>
     <message>
         <source>Library paths:</source>
-        <translation type="unfinished"></translation>
+        <translation>Teegi otsing:</translation>
     </message>
     <message>
         <source>Central Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguratsiooni andmed</translation>
     </message>
     <message>
         <source>Smart Card service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Smart Card teenuse staatus: </translation>
     </message>
     <message>
         <source>Running</source>
-        <translation type="unfinished"></translation>
+        <translation>Töötab</translation>
     </message>
     <message>
         <source>Not running</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei tööta</translation>
     </message>
     <message>
         <source>Smart Card readers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaardilugejad</translation>
     </message>
     <message>
         <source>Smart Card reader drivers</source>
-        <translation type="unfinished"></translation>
+        <translation>Lugeja draiverid</translation>
     </message>
     <message>
         <source>Locale:</source>
-        <translation type="unfinished"></translation>
+        <translation>Keeleseaded:</translation>
     </message>
     <message>
         <source>Base version:</source>
-        <translation type="unfinished">Baasversioon:</translation>
+        <translation>Baastarkvara:</translation>
     </message>
     <message>
         <source>Application version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rakenduse versioon:</translation>
     </message>
     <message>
         <source>OS:</source>
-        <translation type="unfinished"></translation>
+        <translation>Operatsioonisüsteem:</translation>
     </message>
     <message>
         <source>CPU:</source>
-        <translation type="unfinished"></translation>
+        <translation>Protsessor:</translation>
     </message>
     <message>
         <source>Kernel:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuum:</translation>
     </message>
     <message>
         <source>Libraries</source>
-        <translation type="unfinished"></translation>
+        <translation>Teegid</translation>
     </message>
     <message>
         <source>Browsers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Veebibrauserid:</translation>
     </message>
     <message>
         <source>USB info:</source>
-        <translation type="unfinished"></translation>
+        <translation>USB info:</translation>
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Teadmata - viga %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>Administraator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajaõigused: </translation>
     </message>
     <message>
         <source>ATRfiltr service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>ATRfiltr teenuse staatus: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei leitud</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Certificate Propagation teenuse staatus: </translation>
     </message>
 </context>
 <context>
