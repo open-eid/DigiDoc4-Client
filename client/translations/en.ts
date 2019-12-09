@@ -828,6 +828,14 @@ The Information System Authority does not retain information regarding the files
         <source>Internal error</source>
         <translation>Internal error</translation>
     </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
 </context>
 <context>
     <name>FileDialog</name>

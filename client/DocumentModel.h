@@ -19,7 +19,6 @@
 #pragma once
 
 #include <QObject>
-#include <QStringList>
 
 class DocumentModel: public QObject
 {
@@ -43,7 +42,10 @@ signals:
 	void added(const QString &file);
 	void openFile(const QString &file);
 	void removed(int row);
-	
+
 public slots:
 	virtual void open(int row) = 0;
+
+protected:
+	bool verifyFile(const QString &f);
 };
