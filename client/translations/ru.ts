@@ -632,99 +632,99 @@
     <name>Diagnostics</name>
     <message>
         <source>Arguments:</source>
-        <translation type="unfinished"></translation>
+        <translation>Аргументация:</translation>
     </message>
     <message>
         <source>Library paths:</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск библиотеки:</translation>
     </message>
     <message>
         <source>Central Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Центральная конфигурация</translation>
     </message>
     <message>
         <source>Smart Card service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Статус Smart Card сервиса: </translation>
     </message>
     <message>
         <source>Running</source>
-        <translation type="unfinished"></translation>
+        <translation>Работает</translation>
     </message>
     <message>
         <source>Not running</source>
-        <translation type="unfinished"></translation>
+        <translation>Не работает</translation>
     </message>
     <message>
         <source>Smart Card readers</source>
-        <translation type="unfinished"></translation>
+        <translation>Считыватели карт</translation>
     </message>
     <message>
         <source>Smart Card reader drivers</source>
-        <translation type="unfinished"></translation>
+        <translation>Драйвера считывателей</translation>
     </message>
     <message>
         <source>Locale:</source>
-        <translation type="unfinished"></translation>
+        <translation>Языковые настройки:</translation>
     </message>
     <message>
         <source>Base version:</source>
-        <translation type="unfinished">Базовая версия:</translation>
+        <translation>Базовая версия:</translation>
     </message>
     <message>
         <source>Application version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Версия приложения:</translation>
     </message>
     <message>
         <source>OS:</source>
-        <translation type="unfinished"></translation>
+        <translation>Оп. система:</translation>
     </message>
     <message>
         <source>CPU:</source>
-        <translation type="unfinished"></translation>
+        <translation>CPU:</translation>
     </message>
     <message>
         <source>Kernel:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ядро:</translation>
     </message>
     <message>
         <source>Libraries</source>
-        <translation type="unfinished"></translation>
+        <translation>Библиотеки</translation>
     </message>
     <message>
         <source>Browsers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Браузеры:</translation>
     </message>
     <message>
         <source>USB info:</source>
-        <translation type="unfinished"></translation>
+        <translation>Информация об USB:</translation>
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная - ошибка %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователь</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>Администратор</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="unfinished"></translation>
+        <translation>Права пользователя: </translation>
     </message>
     <message>
         <source>ATRfiltr service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Статус ATRfiltr сервиса: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Не найдено</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Статус Certificate Propagation сервиса: </translation>
     </message>
 </context>
 <context>

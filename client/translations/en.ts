@@ -630,99 +630,99 @@
     <name>Diagnostics</name>
     <message>
         <source>Arguments:</source>
-        <translation type="unfinished"></translation>
+        <translation>Arguments:</translation>
     </message>
     <message>
         <source>Library paths:</source>
-        <translation type="unfinished"></translation>
+        <translation>Library paths:</translation>
     </message>
     <message>
         <source>Central Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Central Configuration</translation>
     </message>
     <message>
         <source>Smart Card service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Smart Card service status: </translation>
     </message>
     <message>
         <source>Running</source>
-        <translation type="unfinished"></translation>
+        <translation>Running</translation>
     </message>
     <message>
         <source>Not running</source>
-        <translation type="unfinished"></translation>
+        <translation>Not running</translation>
     </message>
     <message>
         <source>Smart Card readers</source>
-        <translation type="unfinished"></translation>
+        <translation>Smart Card readers</translation>
     </message>
     <message>
         <source>Smart Card reader drivers</source>
-        <translation type="unfinished"></translation>
+        <translation>Smart Card reader drivers</translation>
     </message>
     <message>
         <source>Locale:</source>
-        <translation type="unfinished"></translation>
+        <translation>Locale:</translation>
     </message>
     <message>
         <source>Base version:</source>
-        <translation type="unfinished">Base version:</translation>
+        <translation>Base version:</translation>
     </message>
     <message>
         <source>Application version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Application version:</translation>
     </message>
     <message>
         <source>OS:</source>
-        <translation type="unfinished"></translation>
+        <translation>OS:</translation>
     </message>
     <message>
         <source>CPU:</source>
-        <translation type="unfinished"></translation>
+        <translation>CPU:</translation>
     </message>
     <message>
         <source>Kernel:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kernel:</translation>
     </message>
     <message>
         <source>Libraries</source>
-        <translation type="unfinished"></translation>
+        <translation>Libraries</translation>
     </message>
     <message>
         <source>Browsers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Browsers:</translation>
     </message>
     <message>
         <source>USB info:</source>
-        <translation type="unfinished"></translation>
+        <translation>USB info:</translation>
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown - error %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>User</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="unfinished"></translation>
+        <translation>User rights: </translation>
     </message>
     <message>
         <source>ATRfiltr service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>ATRfiltr service status: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Not found</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Certificate Propagation service status: </translation>
     </message>
 </context>
 <context>
