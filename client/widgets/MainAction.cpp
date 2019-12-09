@@ -20,6 +20,7 @@
 #include "MainAction.h"
 #include "ui_MainAction.h"
 #include "Styles.h"
+#include "Settings.h"
 
 using namespace ria::qdigidoc4;
 
@@ -40,6 +41,12 @@ MainAction::MainAction(QWidget *parent)
 	parent->installEventFilter(this);
 	move(parent->width() - width(), parent->height() - height());
 
+	connect(ui->mainAction, &QPushButton::clicked, this, [&]{
+		if (ui->actions.value(0) == Actions::SignatureMobile)
+			Settings(qApp->applicationName()).setValueEx("MIDOrder", true, true);
+		if (ui->actions.value(0) == Actions::SignatureSmartID)
+			Settings(qApp->applicationName()).setValueEx("MIDOrder", false, true);
+	});
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{ emit action(ui->actions.value(0)); });
 	connect(ui->mainAction, &QPushButton::clicked, this, &MainAction::hideDropdown);
 	connect(ui->otherCards, &QToolButton::clicked, this, &MainAction::showDropdown);
@@ -118,6 +125,10 @@ void MainAction::showDropdown()
 			other->setStyleSheet(ui->mainAction->styleSheet() +
 				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
 			other->setFont(ui->mainAction->font());
+			if (*i == Actions::SignatureMobile)
+				connect(other, &QPushButton::clicked, this, []{ Settings(qApp->applicationName()).setValueEx("MIDOrder", true, true); });
+			if (*i == Actions::SignatureSmartID)
+				connect(other, &QPushButton::clicked, this, []{ Settings(qApp->applicationName()).setValueEx("MIDOrder", false, true); });
 			connect(other, &QPushButton::clicked, this, &MainAction::hideDropdown);
 			connect(other, &QPushButton::clicked, this, [=]{ emit this->action(*i); });
 			ui->list.push_back(other);
@@ -130,10 +141,19 @@ void MainAction::showDropdown()
 
 void MainAction::update(const QList<Actions> &actions)
 {
+	QList<Actions> order = actions;
 	hideDropdown();
-	ui->actions = actions;
-	ui->mainAction->setText(label(actions[0]));
-	ui->mainAction->setAccessibleName(label(actions[0]).toLower());
-	ui->otherCards->setVisible(actions.size() > 1);
+	if(order.size() == 2 &&
+		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
+			return action == SignatureMobile || action == SignatureSmartID;
+		}) &&
+		!Settings(qApp->applicationName()).value("MIDOrder", true).toBool())
+	{
+		std::reverse(order.begin(), order.end());
+	}
+	ui->actions = order;
+	ui->mainAction->setText(label(order[0]));
+	ui->mainAction->setAccessibleName(label(order[0]).toLower());
+	ui->otherCards->setVisible(order.size() > 1);
 	show();
 }
