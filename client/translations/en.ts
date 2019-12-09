@@ -1044,16 +1044,16 @@ The Information System Authority does not retain information regarding the files
         <translation>Enter the application</translation>
     </message>
     <message>
-        <source>Go to signing</source>
-        <translation type="unfinished"></translation>
+        <source>Go to signing intro</source>
+        <translation>Go to signing intro</translation>
     </message>
     <message>
-        <source>Go to EID</source>
-        <translation type="unfinished"></translation>
+        <source>Go to EID intro</source>
+        <translation>Go to EID intro</translation>
     </message>
     <message>
-        <source>Go to encryption</source>
-        <translation type="unfinished"></translation>
+        <source>Go to encryption intro</source>
+        <translation>Go to encryption intro</translation>
     </message>
 </context>
 <context>
@@ -2685,6 +2685,10 @@ Additional licenses and components</translation>
     <message>
         <source>Help</source>
         <translation>Help</translation>
+    </message>
+    <message>
+        <source>Access to Mobile-ID and Smart-ID service</source>
+        <translation>Access to Mobile-ID and Smart-ID service</translation>
     </message>
 </context>
 <context>

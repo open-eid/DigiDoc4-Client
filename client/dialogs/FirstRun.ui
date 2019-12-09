@@ -936,7 +936,7 @@ QPushButton:disabled {
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to signing</string>
+      <string>Go to signing intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -968,7 +968,7 @@ image: url(:/images/icon_dot_active.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to EID</string>
+      <string>Go to EID intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1000,7 +1000,7 @@ image: url(:/images/icon_dot.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to encryption</string>
+      <string>Go to encryption intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1244,7 +1244,7 @@ image: url(:/images/icon_dot.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to signing</string>
+      <string>Go to signing intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1276,7 +1276,7 @@ image: url(:/images/icon_dot.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to EID</string>
+      <string>Go to EID intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1308,7 +1308,7 @@ image: url(:/images/icon_dot.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to encryption</string>
+      <string>Go to encryption intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1725,7 +1725,7 @@ border-radius: 3px;</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to signing</string>
+      <string>Go to signing intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1757,7 +1757,7 @@ image: url(:/images/icon_dot.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to encryption</string>
+      <string>Go to encryption intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;
@@ -1789,7 +1789,7 @@ image: url(:/images/icon_dot.png);</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="accessibleName">
-      <string>Go to EID</string>
+      <string>Go to EID intro</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border: none;

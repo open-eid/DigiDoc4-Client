@@ -1046,16 +1046,16 @@ The Information System Authority does not retain information regarding the files
         <translation>Войти в программу</translation>
     </message>
     <message>
-        <source>Go to signing</source>
-        <translation type="unfinished"></translation>
+        <source>Go to signing intro</source>
+        <translation>Перейти к информации о проставлении подписи</translation>
     </message>
     <message>
-        <source>Go to EID</source>
-        <translation type="unfinished"></translation>
+        <source>Go to EID intro</source>
+        <translation>Перейти к информации об eID</translation>
     </message>
     <message>
-        <source>Go to encryption</source>
-        <translation type="unfinished"></translation>
+        <source>Go to encryption intro</source>
+        <translation>Перейти к информации о шифровании</translation>
     </message>
 </context>
 <context>
@@ -2688,6 +2688,10 @@ Additional licenses and components</source>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
+    </message>
+    <message>
+        <source>Access to Mobile-ID and Smart-ID service</source>
+        <translation>Доступ к услуге Mobiil-ID и Smart-ID</translation>
     </message>
 </context>
 <context>

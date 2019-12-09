@@ -1044,16 +1044,16 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Sisene rakendusse</translation>
     </message>
     <message>
-        <source>Go to signing</source>
-        <translation type="unfinished"></translation>
+        <source>Go to signing intro</source>
+        <translation>Mine allkirjastamise tutvustuse juurde</translation>
     </message>
     <message>
-        <source>Go to EID</source>
-        <translation type="unfinished"></translation>
+        <source>Go to EID intro</source>
+        <translation>Mine eID tutvustuse juurde</translation>
     </message>
     <message>
-        <source>Go to encryption</source>
-        <translation type="unfinished"></translation>
+        <source>Go to encryption intro</source>
+        <translation>Mine krüpteerimise tutvustuse juurde</translation>
     </message>
 </context>
 <context>
@@ -2685,6 +2685,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
+    </message>
+    <message>
+        <source>Access to Mobile-ID and Smart-ID service</source>
+        <translation>Ligipääs mobiil-ID ja Smart-ID teenusele</translation>
     </message>
 </context>
 <context>
