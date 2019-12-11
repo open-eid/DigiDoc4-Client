@@ -260,6 +260,9 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
 		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39076"));
 	});
+	connect(ui->helpMID, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39023"));
+	});
 
 	initFunctionality();
 	updateDiagnostics();
