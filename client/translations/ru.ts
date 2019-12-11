@@ -2693,6 +2693,10 @@ Additional licenses and components</source>
         <source>Access to Mobile-ID and Smart-ID service</source>
         <translation>Доступ к услуге Mobiil-ID и Smart-ID</translation>
     </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=39023</source>
+        <translation>https://www.id.ee/index.php?id=39025</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
