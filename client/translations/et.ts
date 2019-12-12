@@ -809,6 +809,10 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Palun kontrollige oma arvuti kellaaega. &lt;a href=&apos;https://id.ee/index.php?id=39512&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
+    <message>
+        <source>The timestamp added to the signature must be taken before validity confirmation</source>
+        <translation>Allkirjale lisatud ajatempel peab olema varasem kehtivuskinnitusest</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>

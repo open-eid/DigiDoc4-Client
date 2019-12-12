@@ -188,7 +188,11 @@ void DigiDocSignature::setLastError( const Exception &e ) const
 	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	m_lastError = causes.join('\n');
+	switch(code) {
+	case Exception::OCSPBeforeTimeStamp:
+		m_lastError = DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation"); break;
+	default: m_lastError = causes.join('\n');
+	}
 }
 
 QString DigiDocSignature::signatureMethod() const
@@ -573,6 +577,7 @@ bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 	case Exception::CertificateUnknown:
 	case Exception::OCSPTimeSlot:
 	case Exception::OCSPRequestUnauthorized:
+	case Exception::OCSPBeforeTimeStamp:
 	case Exception::TSTooManyRequests:
 	case Exception::PINCanceled:
 	case Exception::PINFailed:
