@@ -35,7 +35,6 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QMimeData>
-#include <QtCore/QProcessEnvironment>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QtEndian>
 #include <QtCore/QThread>
@@ -879,22 +878,15 @@ void CDocumentModel::open(int row)
 {
 	if(d->encrypted)
 		return;
-	QFileInfo f(copy(row, FileDialog::tempPath(FileDialog::safeName(data(row)))));
+	QString path = FileDialog::tempPath(FileDialog::safeName(data(row)));
+	if(!verifyFile(path))
+		return;
+	QFileInfo f(copy(row, path));
 	if( !f.exists() )
 		return;
 	d->tempFiles << f.absoluteFilePath();
-#if defined(Q_OS_WIN)
-	QStringList exts = QProcessEnvironment::systemEnvironment().value( "PATHEXT" ).split(';');
-	exts << ".PIF" << ".SCR";
-	WarningDialog dlg(DocumentModel::tr("This is an executable file! "
-		"Executable files may contain viruses or other malicious code that could harm your computer. "
-		"Are you sure you want to launch this file?"), qApp->activeWindow());
-	dlg.setCancelText(tr("NO"));
-	dlg.addButton(tr("YES"), 1);
-	if(exts.contains( "." + f.suffix(), Qt::CaseInsensitive ) && dlg.exec() != 1)
-		return;
-#else
-	QFile::setPermissions( f.absoluteFilePath(), QFile::Permissions(0x6000) );
+#if !defined(Q_OS_WIN)
+	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(0x6000));
 #endif
 	emit openFile(f.absoluteFilePath());
 }

@@ -828,6 +828,14 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <source>Internal error</source>
         <translation>Sisemine viga</translation>
     </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
 </context>
 <context>
     <name>FileDialog</name>

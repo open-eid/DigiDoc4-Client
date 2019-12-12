@@ -830,6 +830,14 @@ The Information System Authority does not retain information regarding the files
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
     </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
 </context>
 <context>
     <name>FileDialog</name>

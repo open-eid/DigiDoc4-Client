@@ -19,9 +19,12 @@
 
 #include "DocumentModel.h"
 
+#include "Application.h"
 #include "dialogs/FileDialog.h"
+#include "dialogs/WarningDialog.h"
 
-#include <QFileInfo>
+#include <QtCore/QFileInfo>
+#include <QtCore/QProcessEnvironment>
 
 DocumentModel::DocumentModel(QObject *parent)
 : QObject(parent)
@@ -49,4 +52,22 @@ QStringList DocumentModel::tempFiles() const
 	}
 
 	return copied;
+}
+
+bool DocumentModel::verifyFile(const QString &f)
+{
+#if defined(Q_OS_WIN)
+	QStringList exts = QProcessEnvironment::systemEnvironment().value("PATHEXT").split(';');
+	exts.append({".PIF", ".SCR", ".LNK"});
+	WarningDialog dlg(tr("This is an executable file! "
+		"Executable files may contain viruses or other malicious code that could harm your computer. "
+		"Are you sure you want to launch this file?"), qApp->activeWindow());
+	dlg.setCancelText(tr("NO"));
+	dlg.addButton(tr("YES"), 1);
+	if(exts.contains("." + QFileInfo(f).suffix(), Qt::CaseInsensitive) && dlg.exec() != 1)
+		return false;
+#else
+	Q_UNUSED(f)
+#endif
+	return true;
 }
