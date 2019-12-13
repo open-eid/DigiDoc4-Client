@@ -809,6 +809,10 @@ The Information System Authority does not retain information regarding the files
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</translation>
     </message>
+    <message>
+        <source>The timestamp added to the signature must be taken before validity confirmation</source>
+        <translation>The timestamp added to the signature must be taken before validity confirmation</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
