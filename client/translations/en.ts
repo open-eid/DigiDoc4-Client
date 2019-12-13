@@ -1831,10 +1831,6 @@ Control code: %1</translation>
         <translation>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</translation>
     </message>
     <message>
-        <source>Person should view app or self-service portal now.</source>
-        <translation>Person should view app or self-service portal now.</translation>
-    </message>
-    <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
         <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
     </message>

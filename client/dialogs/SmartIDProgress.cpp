@@ -177,9 +177,6 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			case 471:
 				returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
 				return;
-			case 472:
-				returnError(tr("Person should view app or self-service portal now."));
-				return;
 			case 480:
 				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from <a href=\"http://www.id.ee/?lang=en\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
 				return;

@@ -1831,10 +1831,6 @@ Kontrollkood: %1</translation>
         <translation>DigiDoc4 kliendis allkirjastamiseks peab teie Smart-ID vastama tasemele kõrge.</translation>
     </message>
     <message>
-        <source>Person should view app or self-service portal now.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
         <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
     </message>
