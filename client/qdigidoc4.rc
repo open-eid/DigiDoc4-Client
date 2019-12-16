@@ -24,7 +24,7 @@ BEGIN
 			VALUE "FileDescription", "DigiDoc4 Client"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", APP
-			VALUE "LegalCopyright", "Copyright (C) 2017 Estonian Information System Authority"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2020 Estonian Information System Authority"
 			VALUE "OriginalFilename", APP ".exe"
 			VALUE "ProductName", "DigiDoc4 Client"
 			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
@@ -35,7 +35,7 @@ BEGIN
 			VALUE "FileDescription", "DigiDoc4 Klient"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 			VALUE "InternalName", APP
-			VALUE "LegalCopyright", "Copyright (C) 2017 Riigi Infosüsteemi Amet"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2020 Riigi Infosüsteemi Amet"
 			VALUE "OriginalFilename", APP ".exe"
 			VALUE "ProductName", "DigiDoc4 Klient"
 			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)

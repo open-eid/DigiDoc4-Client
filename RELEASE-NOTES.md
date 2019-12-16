@@ -1,3 +1,13 @@
+DigiDoc4 version [4.2.4](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.4) release notes
+--------------------------------------
+- Workaround Fin driver issues (#569)
+- Improve accessibility (#585, #586, #588, #587)
+- Use MID Rest API (#517)
+- SmartID support (#521)
+- Minor code, text and translation updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.2.3...v4.2.4)
+
 DigiDoc4 version [4.2.3](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.3) release notes
 --------------------------------------
 - Improve accessibility
