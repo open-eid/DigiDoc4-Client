@@ -10,6 +10,7 @@ project(qdigidoc4 VERSION 4.2.4)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
+set(MACOSX_BUNDLE_COPYRIGHT "(C) 2017-2020 Estonian Information System Authority")
 
 include( GNUInstallDirs )
 include( VersionInfo )

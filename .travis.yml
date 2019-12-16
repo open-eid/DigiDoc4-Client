@@ -81,7 +81,8 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    condition: "$TRAVIS_OS_NAME = linux"
+    condition: $TARGET = "ubuntu:16.04"
+    repo: open-eid/DigiDoc4-Client
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
@@ -93,4 +94,4 @@ deploy:
   acl: public_read
   on:
     branch: master
-    condition: $TRAVIS_REPO_SLUG = "open-eid/DigiDoc4-Client"
+    repo: open-eid/DigiDoc4-Client
