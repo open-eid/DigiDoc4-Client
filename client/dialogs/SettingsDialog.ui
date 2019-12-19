@@ -22,7 +22,18 @@
     <height>570</height>
    </size>
   </property>
-  <layout class="QGridLayout" name="SettingsDialogLayout">
+  <property name="styleSheet">
+   <string notr="true">QLabel {
+	color: #000000
+}
+QCheckBox {
+	color: #000000
+}
+QRadioButton {
+	color: #000000
+}</string>
+  </property>
+   <layout class="QGridLayout" name="SettingsDialogLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -979,6 +990,7 @@ QRadioButton::indicator::checked {
          <property name="styleSheet">
           <string notr="true">QTextEdit {
 	color: #363739;
+	background: #FFFFFF;
 }
 QScrollBar {
 	width: 10px;
@@ -1072,6 +1084,7 @@ Additional licenses and components</string>
          <property name="styleSheet">
           <string notr="true">QTextEdit {
 	color: #363739;
+	background: #FFFFFF;
 }
 QScrollBar{
 	width: 10px;

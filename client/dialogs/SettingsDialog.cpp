@@ -174,15 +174,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
 		{
-			QMessageBox::information(this, tr("DigiDoc4 Client"), tr("Digidoc4 client configuration and TSL update was successful."));
+			WarningDialog dlg(tr("Digidoc4 client configuration and TSL update was successful."), qApp->activeWindow());
+			dlg.exec();
 			return;
 		}
-		QMessageBox b(QMessageBox::Warning, tr("Checking updates has failed."),
-			tr("Checking updates has failed.") + "<br />" + tr("Please try again."),
-			QMessageBox::Ok, this);
-		b.setTextFormat(Qt::RichText);
-		b.setDetailedText(error);
-		b.exec();
+
+		WarningDialog dlg(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, qApp->activeWindow());
+		dlg.exec();
 	});
 #endif
 

@@ -226,6 +226,18 @@
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
     </message>
+    <message>
+        <source>Ignore forever</source>
+        <translation>Не устанавливать</translation>
+    </message>
+    <message>
+        <source>Remind later</source>
+        <translation>Напомнить позже</translation>
+    </message>
+    <message>
+        <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Чтобы использовать ID-кару для подписи в Э-услугах , вам также необходимо активировать подключаемый модуль для браузера.&lt;br/&gt;Руководство по активации можно найти &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=36641&quot;&gt;здесь&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CDocumentModel</name>

@@ -226,6 +226,18 @@
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
     </message>
+    <message>
+        <source>Ignore forever</source>
+        <translation>Mitte kunagi</translation>
+    </message>
+    <message>
+        <source>Remind later</source>
+        <translation>Mitte praegu</translation>
+    </message>
+    <message>
+        <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;http://id.ee/?lang=et&amp;id=36636&quot;&gt;siit&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CDocumentModel</name>

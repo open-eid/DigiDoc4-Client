@@ -20,7 +20,10 @@
    <string>DigiDoc4 client</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">outline: none;</string>
+   <string notr="true">outline: none;
+   QLabel {
+	color: #000000
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
