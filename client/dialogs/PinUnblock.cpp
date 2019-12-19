@@ -248,7 +248,7 @@ bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type, W
 	if(pin == birthDate.toString(QStringLiteral("yyyy")) || pin == birthDate.toString(QStringLiteral("ddMM")) || pin == birthDate.toString(QStringLiteral("MMdd")) ||
 		 pin == birthDate.toString(QStringLiteral("yyyyMMdd")) || pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
 	{
-		ui->labelPinValidation->setText(tr("New %1 code can't be your date of birth").arg(pinType));
+		setError(tr("New %1 code can't be your date of birth").arg(pinType));
 		return false;
 	}
 
