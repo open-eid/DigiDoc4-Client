@@ -2483,10 +2483,6 @@ Control code: %1</translation>
         <translation>Ask role and address info on signing</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration and TSL update was successful.</source>
-        <translation>Digidoc4 client configuration and TSL update was successful.</translation>
-    </message>
-    <message>
         <source>Access to validity confirmation service</source>
         <translation>Access to validity confirmation service</translation>
     </message>
@@ -2635,10 +2631,6 @@ Additional licenses and components</translation>
         <translation>Failed write to file!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 client</translation>
-    </message>
-    <message>
         <source>General</source>
         <extracomment>accessible</extracomment>
         <translation>General</translation>
@@ -2713,6 +2705,10 @@ Additional licenses and components</translation>
     <message>
         <source>https://www.id.ee/index.php?id=39023</source>
         <translation>https://www.id.ee/index.php?id=39023</translation>
+    </message>
+    <message>
+        <source>Digidoc4 client configuration update was successful.</source>
+        <translation>Digidoc4 client configuration update was successful.</translation>
     </message>
 </context>
 <context>
