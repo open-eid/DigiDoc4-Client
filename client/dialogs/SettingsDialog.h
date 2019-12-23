@@ -48,9 +48,6 @@ public:
 
 	static void loadProxy( const digidoc::Conf *conf );
 
-private Q_SLOTS:
-	void save();
-
 signals:
 	void langChanged(const QString& lang);
 	void togglePrinting(bool enable);
