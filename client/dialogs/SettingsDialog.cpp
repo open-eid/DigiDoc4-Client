@@ -174,7 +174,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
 		{
-			WarningDialog dlg(tr("Digidoc4 client configuration and TSL update was successful."), qApp->activeWindow());
+			WarningDialog dlg(tr("Digidoc4 client configuration update was successful."), qApp->activeWindow());
 			dlg.exec();
 			return;
 		}

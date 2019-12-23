@@ -2490,10 +2490,6 @@ Kонтрольный код: %1</translation>
         <translation>Просить роль и адрес при каждом подписании</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration and TSL update was successful.</source>
-        <translation>Обновление конфигурации программы DigiDoc4 и TSL удачно завершено.</translation>
-    </message>
-    <message>
         <source>Access to validity confirmation service</source>
         <translation>Доступ к услуге подтверждения действительности</translation>
     </message>
@@ -2638,10 +2634,6 @@ Additional licenses and components</source>
         <translation>Не удалось записать файл!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>General</source>
         <extracomment>accessible</extracomment>
         <translation>Основные</translation>
@@ -2716,6 +2708,10 @@ Additional licenses and components</source>
     <message>
         <source>https://www.id.ee/index.php?id=39023</source>
         <translation>https://www.id.ee/index.php?id=39025</translation>
+    </message>
+    <message>
+        <source>Digidoc4 client configuration update was successful.</source>
+        <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
     </message>
 </context>
 <context>

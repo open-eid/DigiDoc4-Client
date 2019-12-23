@@ -2487,10 +2487,6 @@ Kontrollkood: %1</translation>
         <translation>Küsi rolli ja aadressi igal allkirjastamisel</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration and TSL update was successful.</source>
-        <translation>Digidoc4 kliendi konfiguratsiooni ja TSL värskendamine õnnestus.</translation>
-    </message>
-    <message>
         <source>Access to validity confirmation service</source>
         <translation>Ligipääs kehtivuskinnitusteenusele</translation>
     </message>
@@ -2635,10 +2631,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Faili kirjutamine ebaõnnestus!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>General</source>
         <extracomment>accessible</extracomment>
         <translation>Üldine</translation>
@@ -2713,6 +2705,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>https://www.id.ee/index.php?id=39023</source>
         <translation>https://www.id.ee/index.php?id=39021</translation>
+    </message>
+    <message>
+        <source>Digidoc4 client configuration update was successful.</source>
+        <translation>Digidoc4 kliendi konfiguratsiooni värskendamine õnnestus.</translation>
     </message>
 </context>
 <context>
