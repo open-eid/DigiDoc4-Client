@@ -67,17 +67,10 @@ FirstRun::FirstRun(QWidget *parent) :
 	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this](int index) {
 		switch(index)
 		{
-		case 1:
-			emit langChanged(QStringLiteral("en"));
-			break;
-		case 2:
-			emit langChanged(QStringLiteral("ru"));
-			break;
-		default:
-			emit langChanged(QStringLiteral("et"));
-			break;
+		case 1: emit langChanged(QStringLiteral("en")); break;
+		case 2: emit langChanged(QStringLiteral("ru")); break;
+		default: emit langChanged(QStringLiteral("et")); break;
 		}
-
 		ui->retranslateUi(this);
 		loadImages();
 	});
@@ -91,84 +84,73 @@ FirstRun::FirstRun(QWidget *parent) :
 
 	// Page 2: intro
 	ui->introTitle->setFont(titleFont);
-	ui->labelSign->setFont(dmLabelFont);
-	ui->labelCrypto->setFont(dmLabelFont);
-	ui->labelEid->setFont(dmLabelFont);
-	ui->signIntro->setFont(regular14);
-	ui->cryptoIntro->setFont(regular14);
-	ui->eidIntro->setFont(regular14);
-	ui->skip->setFont(regular12);
-	connect(ui->skip, &QPushButton::clicked, this, [this]{ emit close(); });
-
-	ui->viewSigning->setFont(buttonFont);
-	ui->viewEncryption->setFont(buttonFont);
-	ui->viewEid->setFont(buttonFont);
-	connect(ui->viewSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
-	connect(ui->viewEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->viewEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
-
+	ui->introLabelSign->setFont(dmLabelFont);
+	ui->introLabelCrypto->setFont(dmLabelFont);
+	ui->introLabelEid->setFont(dmLabelFont);
+	ui->introIntroSign->setFont(regular14);
+	ui->introIntroCrypto->setFont(regular14);
+	ui->introIntroEid->setFont(regular14);
+	ui->introSkip->setFont(regular12);
+	ui->introViewSigning->setFont(buttonFont);
+	ui->introViewEncryption->setFont(buttonFont);
+	ui->introViewEid->setFont(buttonFont);
 	ui->introPageLayout->itemAtPosition(1, 0)->setAlignment(Qt::AlignCenter);
 	ui->introPageLayout->itemAtPosition(1, 1)->setAlignment(Qt::AlignCenter);
 	ui->introPageLayout->itemAtPosition(1, 2)->setAlignment(Qt::AlignCenter);
 	ui->signWidget->load(QStringLiteral(":/images/icon_Allkiri_hover.svg"));
 	ui->cryptoWidget->load(QStringLiteral(":/images/icon_Krypto_hover.svg"));
 	ui->eidWidget->load(QStringLiteral(":/images/icon_Minu_eID_hover.svg"));
+	connect(ui->introSkip, &QPushButton::clicked, this, &QDialog::close);
+	connect(ui->introViewSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
+	connect(ui->introViewEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->introViewEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 3: Signing
 	ui->signTitle->setFont(titleFont);
-	ui->labelSign1->setFont(dmLabelFont);
-	ui->labelSign2->setFont(dmLabelFont);
-	ui->labelSign3->setFont(dmLabelFont);
-	ui->textSign1->setFont(regular14);
-	ui->textSign2->setFont(regular14);
-	ui->textSign3->setFont(regular14);
-	ui->skip_2->setFont(regular12);
-	connect(ui->skip_2, &QPushButton::clicked, this, [this]{ emit close(); });
-
-	ui->next->setFont(buttonFont);
-	connect(ui->next, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
-
-	QPixmap one = QPixmap(QStringLiteral(":/images/intro_one.svg"));
-	QPixmap two = QPixmap(QStringLiteral(":/images/intro_two.svg"));
-	QPixmap three = QPixmap(QStringLiteral(":/images/intro_three.svg"));
-	ui->signOne->setPixmap(one.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->signTwo->setPixmap(two.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->signThree->setPixmap(three.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	connect(ui->gotoEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->gotoEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
+	ui->signLabel1->setFont(dmLabelFont);
+	ui->signLabel2->setFont(dmLabelFont);
+	ui->signLabel3->setFont(dmLabelFont);
+	ui->signText1->setFont(regular14);
+	ui->signText2->setFont(regular14);
+	ui->signText3->setFont(regular14);
+	ui->signSkip->setFont(regular12);
+	ui->signNext->setFont(buttonFont);
+	ui->signOne->load(QStringLiteral(":/images/intro_one.svg"));
+	ui->signTwo->load(QStringLiteral(":/images/intro_two.svg"));
+	ui->signThree->load(QStringLiteral(":/images/intro_three.svg"));
+	connect(ui->signSkip, &QPushButton::clicked, this, &QDialog::close);
+	connect(ui->signNext, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->signGotoEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+	connect(ui->signGotoEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 4: Crypto
 	ui->cryptoTitle->setFont(titleFont);
-	ui->labelCrypto1->setFont(dmLabelFont);
-	ui->labelCrypto2->setFont(dmLabelFont);
-	ui->labelCrypto3->setFont(dmLabelFont);
-	ui->textCrypto1->setFont(regular14);
-	ui->textCrypto2->setFont(regular14);
-	ui->textCrypto3->setFont(regular14);
-	ui->skip_3->setFont(regular12);
-	connect(ui->skip_3, &QPushButton::clicked, this, [this]{ emit close(); });
-
-	ui->next_2->setFont(buttonFont);
-	connect(ui->next_2, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
-
-	ui->cryptoOne->setPixmap(one.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->cryptoTwo->setPixmap(two.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	ui->cryptoThree->setPixmap(three.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-	connect(ui->gotoSigning_2, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
-	connect(ui->gotoEid_2, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
+	ui->cryptoLabel1->setFont(dmLabelFont);
+	ui->cryptoLabel2->setFont(dmLabelFont);
+	ui->cryptoLabel3->setFont(dmLabelFont);
+	ui->cryptoText1->setFont(regular14);
+	ui->cryptoText2->setFont(regular14);
+	ui->cryptoText3->setFont(regular14);
+	ui->cryptoSkip->setFont(regular12);
+	ui->cryptoNext->setFont(buttonFont);
+	ui->cryptoOne->load(QStringLiteral(":/images/intro_one.svg"));
+	ui->cryptoTwo->load(QStringLiteral(":/images/intro_two.svg"));
+	ui->cryptoThree->load(QStringLiteral(":/images/intro_three.svg"));
+	connect(ui->cryptoSkip, &QPushButton::clicked, this, &QDialog::close);
+	connect(ui->cryptoNext, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
+	connect(ui->cryptoGotoSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
+	connect(ui->cryptoGotoEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 5: My eID
 	ui->eidTitle->setFont(titleFont);
-	ui->labelEid1->setFont(dmLabelFont);
-	ui->labelEid3->setFont(dmLabelFont);
-	ui->textEid1->setFont(regular14);
-	ui->textEid3->setFont(regular14);
-
-	ui->enter->setFont(buttonFont);
-	connect(ui->enter, &QPushButton::clicked, this, [this]{ emit close(); });
-
-	connect(ui->gotoSigning_3, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
-	connect(ui->gotoEncryption_3, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+	ui->eidLabel1->setFont(dmLabelFont);
+	ui->eidLabel3->setFont(dmLabelFont);
+	ui->eidText1->setFont(regular14);
+	ui->eidText3->setFont(regular14);
+	ui->eidEnter->setFont(buttonFont);
+	connect(ui->eidEnter, &QPushButton::clicked, this, &QDialog::close);
+	connect(ui->eidGotoSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
+	connect(ui->eidGotoEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
 
 	loadImages();
 }
@@ -225,19 +207,13 @@ void FirstRun::mouseReleaseEvent(QMouseEvent * /*event*/)
 	dragged = false;
 }
 
-void FirstRun::loadPixmap(const QString &base, const QString &lang, QLabel *parent)
-{
-	QString resource;
- 	QTextStream st(&resource);
-
-	st << ":/images/" << base << '_' << lang << ".png";
-	parent->setPixmap(QPixmap(resource).scaled(parent->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-}
-
 void FirstRun::loadImages()
 {
 	QString lang = Common::language();
-
+	auto loadPixmap = [](const QString &base, const QString &lang, QLabel *label) {
+		label->setPixmap(QPixmap(QStringLiteral(":/images/%1_%2.png").arg(base, lang))
+			.scaled(label->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	};
 	loadPixmap(QStringLiteral("intro_sign-select"), lang, ui->signImage1);
 	loadPixmap(QStringLiteral("intro_sign-sign"), lang, ui->signImage2);
 	loadPixmap(QStringLiteral("intro_sign-pin"), lang, ui->signImage3);

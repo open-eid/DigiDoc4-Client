@@ -10,48 +10,54 @@
     <height>600</height>
    </rect>
   </property>
-  <widget class="QStackedWidget" name="stack">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1024</width>
-     <height>600</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
+  <layout class="QHBoxLayout" name="FirstRunLayout">
+   <property name="leftMargin">
     <number>0</number>
    </property>
-   <widget class="QWidget" name="langPage">
-    <property name="styleSheet">
-     <string notr="true">#langPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
-    </property>
-    <widget class="QComboBox" name="lang">
-     <property name="geometry">
-      <rect>
-       <x>412</x>
-       <y>417</y>
-       <width>201</width>
-       <height>35</height>
-      </rect>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QStackedWidget" name="stack">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>201</width>
-       <height>35</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>201</width>
-       <height>35</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QComboBox {
+     <widget class="QWidget" name="langPage">
+      <property name="styleSheet">
+       <string notr="true">#langPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
+      </property>
+      <widget class="QComboBox" name="lang">
+       <property name="geometry">
+        <rect>
+         <x>412</x>
+         <y>417</y>
+         <width>201</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>201</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>201</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
 	image: none;
     border: 1px solid #DEE4E9;
     border-radius: 2px;
@@ -91,43 +97,43 @@ QComboBox::down-arrow {
 	border: none;
     image: none;
 }</string>
-     </property>
-     <property name="maxVisibleItems">
-      <number>3</number>
-     </property>
-     <property name="maxCount">
-      <number>3</number>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="continueBtn">
-     <property name="geometry">
-      <rect>
-       <x>412</x>
-       <y>458</y>
-       <width>200</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>200</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Continue</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       </property>
+       <property name="maxVisibleItems">
+        <number>3</number>
+       </property>
+       <property name="maxCount">
+        <number>3</number>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="continueBtn">
+       <property name="geometry">
+        <rect>
+         <x>412</x>
+         <y>458</y>
+         <width>200</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Continue</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px; 
 	border: none;
@@ -143,190 +149,71 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>CONTINUE</string>
-     </property>
-    </widget>
-    <widget class="QSvgWidget" name="leaves" native="true">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>1024</width>
-       <height>343</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="coatOfArms" native="true">
-     <property name="geometry">
-      <rect>
-       <x>440</x>
-       <y>40</y>
-       <width>144</width>
-       <height>133</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="title">
-     <property name="geometry">
-      <rect>
-       <x>470</x>
-       <y>198</y>
-       <width>86</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>22</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">DIGIDOC</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="welcome">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>276</y>
-       <width>620</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-text-align: center;
-color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Welcome to the Estonian eID application DigiDoc!</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="intro">
-     <property name="geometry">
-      <rect>
-       <x>262</x>
-       <y>320</y>
-       <width>500</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;
-line-height: 16px;
-text-align: center;
-border: none;</string>
-     </property>
-     <property name="text">
-      <string>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignHCenter|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="langLabel">
-     <property name="geometry">
-      <rect>
-       <x>262</x>
-       <y>394</y>
-       <width>500</width>
-       <height>14</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #353739;
-text-align: center;</string>
-     </property>
-     <property name="text">
-      <string notr="true">Vali suhtluskeel / Выберите язык / Select language:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="buddy">
-      <cstring>lang</cstring>
-     </property>
-    </widget>
-    <widget class="QSvgWidget" name="structureFunds" native="true">
-     <property name="geometry">
-      <rect>
-       <x>883</x>
-       <y>509</y>
-       <width>111</width>
-       <height>61</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="introPage">
-    <property name="styleSheet">
-     <string notr="true">#introPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }
-QWidget { border: none; }</string>
-    </property>
-    <layout class="QGridLayout" name="introPageLayout">
-     <property name="leftMargin">
-      <number>20</number>
-     </property>
-     <property name="topMargin">
-      <number>20</number>
-     </property>
-     <property name="rightMargin">
-      <number>20</number>
-     </property>
-     <property name="bottomMargin">
-      <number>20</number>
-     </property>
-     <property name="horizontalSpacing">
-      <number>20</number>
-     </property>
-     <item row="0" column="0" colspan="3">
-      <widget class="QLabel" name="introTitle">
+       </property>
+       <property name="text">
+        <string>CONTINUE</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="leaves" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1024</width>
+         <height>343</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="coatOfArms" native="true">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>40</y>
+         <width>144</width>
+         <height>133</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="title">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>198</y>
+         <width>86</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="text">
+        <string notr="true">DIGIDOC</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="welcome">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>276</y>
+         <width>620</width>
+         <height>24</height>
+        </rect>
+       </property>
        <property name="font">
         <font>
          <family>Roboto</family>
@@ -337,132 +224,26 @@ QWidget { border: none; }</string>
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
+        <string notr="true">border: none;
+text-align: center;
+color: #041E42;</string>
        </property>
        <property name="text">
-        <string>The DigiDoc application allows you to:</string>
+        <string>Welcome to the Estonian eID application DigiDoc!</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QSvgWidget" name="signWidget" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>110</height>
-        </size>
+      <widget class="QLabel" name="intro">
+       <property name="geometry">
+        <rect>
+         <x>262</x>
+         <y>320</y>
+         <width>500</width>
+         <height>40</height>
+        </rect>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>150</width>
-         <height>110</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSvgWidget" name="cryptoWidget" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>106</width>
-         <height>117</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>106</width>
-         <height>117</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QSvgWidget" name="eidWidget" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>138</width>
-         <height>97</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>138</width>
-         <height>97</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="labelSign">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>18</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
-       </property>
-       <property name="text">
-        <string>Sign documents</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="labelCrypto">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>18</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
-       </property>
-       <property name="text">
-        <string>Encrypt documents</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QLabel" name="labelEid">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>18</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
-       </property>
-       <property name="text">
-        <string>Manage your eID-s</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="signIntro">
        <property name="font">
         <font>
          <family>Roboto</family>
@@ -473,91 +254,316 @@ QWidget { border: none; }</string>
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #353739;</string>
+        <string notr="true">color: #353739;
+line-height: 16px;
+text-align: center;
+border: none;</string>
        </property>
        <property name="text">
-        <string>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</string>
+        <string>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignHCenter|Qt::AlignTop</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
        </property>
       </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="cryptoIntro">
+      <widget class="QLabel" name="langLabel">
+       <property name="geometry">
+        <rect>
+         <x>262</x>
+         <y>394</y>
+         <width>500</width>
+         <height>14</height>
+        </rect>
+       </property>
        <property name="font">
         <font>
          <family>Roboto</family>
-         <pointsize>14</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
        <property name="styleSheet">
-        <string notr="true">color: #353739;</string>
+        <string notr="true">border: none;
+color: #353739;
+text-align: center;</string>
        </property>
        <property name="text">
-        <string>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</string>
+        <string notr="true">Vali suhtluskeel / Выберите язык / Select language:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignCenter</set>
        </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="eidIntro">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #353739;</string>
-       </property>
-       <property name="text">
-        <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
+       <property name="buddy">
+        <cstring>lang</cstring>
        </property>
       </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QPushButton" name="viewSigning">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>34</height>
-        </size>
+      <widget class="QSvgWidget" name="structureFunds" native="true">
+       <property name="geometry">
+        <rect>
+         <x>883</x>
+         <y>509</y>
+         <width>111</width>
+         <height>61</height>
+        </rect>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>34</height>
-        </size>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="introPage">
+      <property name="styleSheet">
+       <string notr="true">#introPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }
+QWidget { border: none; }</string>
+      </property>
+      <layout class="QGridLayout" name="introPageLayout">
+       <property name="leftMargin">
+        <number>20</number>
        </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
+       <property name="topMargin">
+        <number>20</number>
        </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">View introduction</string>
+       <property name="rightMargin">
+        <number>20</number>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>20</number>
+       </property>
+       <item row="0" column="0" colspan="3">
+        <widget class="QLabel" name="introTitle">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #041E42;</string>
+         </property>
+         <property name="text">
+          <string>The DigiDoc application allows you to:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QSvgWidget" name="signWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>110</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>110</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSvgWidget" name="cryptoWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>106</width>
+           <height>117</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>106</width>
+           <height>117</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSvgWidget" name="eidWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>138</width>
+           <height>97</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>138</width>
+           <height>97</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="introLabelSign">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #041E42;</string>
+         </property>
+         <property name="text">
+          <string>Sign documents</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="introLabelCrypto">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #041E42;</string>
+         </property>
+         <property name="text">
+          <string>Encrypt documents</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="introLabelEid">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #041E42;</string>
+         </property>
+         <property name="text">
+          <string>Manage your eID-s</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="introIntroSign">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #353739;</string>
+         </property>
+         <property name="text">
+          <string>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="introIntroCrypto">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #353739;</string>
+         </property>
+         <property name="text">
+          <string>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLabel" name="introIntroEid">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #353739;</string>
+         </property>
+         <property name="text">
+          <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QPushButton" name="introViewSigning">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="accessibleName">
+          <string extracomment="accessible">View introduction</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px; 
 	border: none;
@@ -573,37 +579,34 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-       </property>
-       <property name="text">
-        <string>VIEW INTRODUCTION</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QPushButton" name="viewEncryption">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">View introduction</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
+         </property>
+         <property name="text">
+          <string>VIEW INTRODUCTION</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QPushButton" name="introViewEncryption">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="accessibleName">
+          <string extracomment="accessible">View introduction</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px;
 	border: none;
@@ -619,34 +622,34 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
     background-color: #BEDBED;
 }</string>
-       </property>
-       <property name="text">
-        <string>VIEW INTRODUCTION</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QPushButton" name="viewEid">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">View introduction</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
+         </property>
+         <property name="text">
+          <string>VIEW INTRODUCTION</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QPushButton" name="introViewEid">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>34</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="accessibleName">
+          <string extracomment="accessible">View introduction</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px;
 	border: none;
@@ -662,31 +665,31 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
     background-color: #BEDBED;
 }</string>
-       </property>
-       <property name="text">
-        <string>VIEW INTRODUCTION</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QPushButton" name="skip">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
+         </property>
+         <property name="text">
+          <string>VIEW INTRODUCTION</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QPushButton" name="introSkip">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px;
 	border: none;
@@ -704,185 +707,838 @@ QPushButton:disabled {
     color: #75787B;
 	background-color: #BEDBED;
 }</string>
+         </property>
+         <property name="text">
+          <string>Skip introductions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <spacer name="introSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="signPage">
+      <property name="styleSheet">
+       <string notr="true">#signPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
+      </property>
+      <widget class="QLabel" name="signTitle">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>50</y>
+         <width>500</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>How to sign document digitally?</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signImage2">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 3px;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signImage1">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 3px;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signImage3">
+       <property name="geometry">
+        <rect>
+         <x>696</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
+border-radius: 3px;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="signNext">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>500</y>
+         <width>298</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>298</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>298</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">View next intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #ffffff;
+	background-color: #006EB5;
+}
+QPushButton:pressed {
+	background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+	background-color: #008DCF;
+}
+QPushButton:disabled {
+	background-color: #BEDBED;
+}</string>
+       </property>
+       <property name="text">
+        <string>VIEW NEXT INTRO</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="signSkip">
+       <property name="geometry">
+        <rect>
+         <x>436</x>
+         <y>540</y>
+         <width>151</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>151</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>151</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	image: none;
+	border-radius: 2px; 
+	border: none;
+	color: #006EB5;
+}
+QPushButton:pressed {
+	color: #FFFFFF;
+	background-color: #006EB5;
+}
+QPushButton:hover:!pressed {
+	border: 1px solid #006EB5;
+	color: #006EB5;
+}
+QPushButton:disabled {
+	color: #75787B;
+	background-color: #BEDBED;
+}</string>
        </property>
        <property name="text">
         <string>Skip introductions</string>
        </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-       <property name="default">
-        <bool>false</bool>
-       </property>
       </widget>
-     </item>
-     <item row="6" column="1">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+      <widget class="QToolButton" name="signGotoSigning">
+       <property name="geometry">
+        <rect>
+         <x>490</x>
+         <y>573</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+       <property name="minimumSize">
         <size>
-         <width>20</width>
-         <height>40</height>
+         <width>15</width>
+         <height>15</height>
         </size>
        </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="signPage">
-    <property name="styleSheet">
-     <string notr="true">#signPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
-    </property>
-    <widget class="QLabel" name="signTitle">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>50</y>
-       <width>500</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>How to sign document digitally?</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signImage2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signImage1">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signImage3">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
-border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="next">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>500</y>
-       <width>298</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">View next intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-     </property>
-     <property name="text">
-      <string>VIEW NEXT INTRO</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="skip_2">
-     <property name="geometry">
-      <rect>
-       <x>436</x>
-       <y>540</y>
-       <width>151</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>151</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>151</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to signing intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
+image: url(:/images/icon_dot_active.png);</string>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="signGotoEid">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>573</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to EID intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="signGotoEncryption">
+       <property name="geometry">
+        <rect>
+         <x>505</x>
+         <y>573</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to encryption intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="signOne" native="true">
+       <property name="geometry">
+        <rect>
+         <x>29</x>
+         <y>339</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="signTwo" native="true">
+       <property name="geometry">
+        <rect>
+         <x>362</x>
+         <y>339</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="signThree" native="true">
+       <property name="geometry">
+        <rect>
+         <x>695</x>
+         <y>339</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signLabel1">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>345</y>
+         <width>258</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Select file</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signLabel2">
+       <property name="geometry">
+        <rect>
+         <x>403</x>
+         <y>345</y>
+         <width>258</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Choose the signing method</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signText1">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>386</y>
+         <width>298</width>
+         <height>150</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signText2">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>386</y>
+         <width>298</width>
+         <height>110</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signLabel3">
+       <property name="geometry">
+        <rect>
+         <x>736</x>
+         <y>345</y>
+         <width>258</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Enter PIN2</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="signText3">
+       <property name="geometry">
+        <rect>
+         <x>696</x>
+         <y>386</y>
+         <width>298</width>
+         <height>150</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="cryptoPage">
+      <property name="styleSheet">
+       <string notr="true">#cryptoPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
+      </property>
+      <widget class="QToolButton" name="cryptoGotoSigning">
+       <property name="geometry">
+        <rect>
+         <x>490</x>
+         <y>573</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to signing intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="cryptoGotoEid">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>573</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to EID intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
+image: url(:/images/icon_dot.png);</string>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="cryptoGotoEncryption">
+       <property name="geometry">
+        <rect>
+         <x>505</x>
+         <y>573</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to encryption intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
+image: url(:/images/icon_dot_active.png);</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="cryptoOne" native="true">
+       <property name="geometry">
+        <rect>
+         <x>29</x>
+         <y>339</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="cryptoTwo" native="true">
+       <property name="geometry">
+        <rect>
+         <x>362</x>
+         <y>339</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QSvgWidget" name="cryptoThree" native="true">
+       <property name="geometry">
+        <rect>
+         <x>695</x>
+         <y>339</y>
+         <width>32</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoLabel1">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>345</y>
+         <width>258</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Select file</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoLabel2">
+       <property name="geometry">
+        <rect>
+         <x>403</x>
+         <y>345</y>
+         <width>258</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Add recipients</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoText1">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>386</y>
+         <width>298</width>
+         <height>160</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoText2">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>386</y>
+         <width>298</width>
+         <height>110</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>Select people who can open the container.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoLabel3">
+       <property name="geometry">
+        <rect>
+         <x>736</x>
+         <y>345</y>
+         <width>258</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoText3">
+       <property name="geometry">
+        <rect>
+         <x>696</x>
+         <y>386</y>
+         <width>298</width>
+         <height>140</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>Click the &quot;Encrypt&quot; button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="cryptoSkip">
+       <property name="geometry">
+        <rect>
+         <x>436</x>
+         <y>540</y>
+         <width>151</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>151</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>151</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px; 
 	border: none;
@@ -900,711 +1556,40 @@ QPushButton:disabled {
 	color: #75787B;
 	background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>Skip introductions</string>
-     </property>
-     <property name="autoDefault">
-      <bool>true</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoSigning">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>573</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to signing intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-image: url(:/images/icon_dot_active.png);</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoEid">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>573</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to EID intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoEncryption">
-     <property name="geometry">
-      <rect>
-       <x>505</x>
-       <y>573</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to encryption intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signOne">
-     <property name="geometry">
-      <rect>
-       <x>29</x>
-       <y>339</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signTwo">
-     <property name="geometry">
-      <rect>
-       <x>362</x>
-       <y>339</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="signThree">
-     <property name="geometry">
-      <rect>
-       <x>695</x>
-       <y>339</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelSign1">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>345</y>
-       <width>258</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Select file</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelSign2">
-     <property name="geometry">
-      <rect>
-       <x>403</x>
-       <y>345</y>
-       <width>258</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Choose the signing method</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textSign1">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>386</y>
-       <width>298</width>
-       <height>150</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textSign2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>386</y>
-       <width>298</width>
-       <height>110</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelSign3">
-     <property name="geometry">
-      <rect>
-       <x>736</x>
-       <y>345</y>
-       <width>258</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Enter PIN2</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textSign3">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>386</y>
-       <width>298</width>
-       <height>150</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="cryptoPage">
-    <property name="styleSheet">
-     <string notr="true">#cryptoPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
-    </property>
-    <widget class="QToolButton" name="gotoSigning_2">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>573</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to signing intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoEid_2">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>573</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to EID intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoEncryption_2">
-     <property name="geometry">
-      <rect>
-       <x>505</x>
-       <y>573</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to encryption intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-image: url(:/images/icon_dot_active.png);</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoOne">
-     <property name="geometry">
-      <rect>
-       <x>29</x>
-       <y>339</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoTwo">
-     <property name="geometry">
-      <rect>
-       <x>362</x>
-       <y>339</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoThree">
-     <property name="geometry">
-      <rect>
-       <x>695</x>
-       <y>339</y>
-       <width>32</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelCrypto1">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>345</y>
-       <width>258</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Select file</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelCrypto2">
-     <property name="geometry">
-      <rect>
-       <x>403</x>
-       <y>345</y>
-       <width>258</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Add recipients</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textCrypto1">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>386</y>
-       <width>298</width>
-       <height>160</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>A recipient must be selected in order to encrypt data. Drag the file to be encrypted from your computer to the DigiDoc application or select a file from the disk. You can drag or select multiple files at a time.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textCrypto2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>386</y>
-       <width>298</width>
-       <height>110</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>Select people who can open the container.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelCrypto3">
-     <property name="geometry">
-      <rect>
-       <x>736</x>
-       <y>345</y>
-       <width>258</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Encrypt</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textCrypto3">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>386</y>
-       <width>298</width>
-       <height>140</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>Click the &quot;Encrypt&quot; button and the file is now encrypted. You now have the option to open the location of the container or forward the file by e-mail.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="skip_3">
-     <property name="geometry">
-      <rect>
-       <x>436</x>
-       <y>540</y>
-       <width>151</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>151</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>151</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #75787B;
-	background-color: #BEDBED;
-}</string>
-     </property>
-     <property name="text">
-      <string>Skip introductions</string>
-     </property>
-     <property name="autoDefault">
-      <bool>true</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="next_2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>500</y>
-       <width>298</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">View next intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       </property>
+       <property name="text">
+        <string>Skip introductions</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="cryptoNext">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>500</y>
+         <width>298</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>298</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>298</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">View next intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px; 
 	border: none;
@@ -1620,323 +1605,323 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>VIEW NEXT INTRO</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoTitle">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>50</y>
-       <width>500</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>How to encrypt documents?</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoImage3">
-     <property name="geometry">
-      <rect>
-       <x>696</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
+       </property>
+       <property name="text">
+        <string>VIEW NEXT INTRO</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoTitle">
+       <property name="geometry">
+        <rect>
+         <x>270</x>
+         <y>50</y>
+         <width>500</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>How to encrypt documents?</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoImage3">
+       <property name="geometry">
+        <rect>
+         <x>696</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoImage1">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoImage1">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="cryptoImage2">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
+       </property>
+      </widget>
+      <widget class="QLabel" name="cryptoImage2">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="eidPage">
-    <property name="styleSheet">
-     <string notr="true">#eidPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
-    </property>
-    <widget class="QToolButton" name="gotoSigning_3">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>570</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to signing intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="eidPage">
+      <property name="styleSheet">
+       <string notr="true">#eidPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
+      </property>
+      <widget class="QToolButton" name="eidGotoSigning">
+       <property name="geometry">
+        <rect>
+         <x>490</x>
+         <y>570</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to signing intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
 image: url(:/images/icon_dot.png);</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoEncryption_3">
-     <property name="geometry">
-      <rect>
-       <x>505</x>
-       <y>570</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to encryption intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
+       </property>
+      </widget>
+      <widget class="QToolButton" name="eidGotoEncryption">
+       <property name="geometry">
+        <rect>
+         <x>505</x>
+         <y>570</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to encryption intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
 image: url(:/images/icon_dot.png);</string>
-     </property>
-    </widget>
-    <widget class="QToolButton" name="gotoEid_3">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>570</y>
-       <width>15</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string>Go to EID intro</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
+       </property>
+      </widget>
+      <widget class="QToolButton" name="eidGotoEid">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>570</y>
+         <width>15</width>
+         <height>15</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Go to EID intro</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;
 image: url(:/images/icon_dot_active.png);</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelEid1">
-     <property name="geometry">
-      <rect>
-       <x>138</x>
-       <y>345</y>
-       <width>300</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Manage PIN and PUK codes</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelEid3">
-     <property name="geometry">
-      <rect>
-       <x>588</x>
-       <y>345</y>
-       <width>280</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>Check personal data</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textEid1">
-     <property name="geometry">
-      <rect>
-       <x>138</x>
-       <y>386</y>
-       <width>298</width>
-       <height>150</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>Under &quot;My eID&quot;, you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="textEid3">
-     <property name="geometry">
-      <rect>
-       <x>588</x>
-       <y>386</y>
-       <width>298</width>
-       <height>140</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="enter">
-     <property name="geometry">
-      <rect>
-       <x>363</x>
-       <y>500</y>
-       <width>298</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>298</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Enter the application</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidLabel1">
+       <property name="geometry">
+        <rect>
+         <x>138</x>
+         <y>345</y>
+         <width>300</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Manage PIN and PUK codes</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidLabel3">
+       <property name="geometry">
+        <rect>
+         <x>588</x>
+         <y>345</y>
+         <width>280</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>Check personal data</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidText1">
+       <property name="geometry">
+        <rect>
+         <x>138</x>
+         <y>386</y>
+         <width>298</width>
+         <height>150</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>Under &quot;My eID&quot;, you will find the option to modify your PIN1, PIN2 and PUK, and the details of the certificates. Here you can also unlock the PUK code of your blocked PIN.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidText3">
+       <property name="geometry">
+        <rect>
+         <x>588</x>
+         <y>386</y>
+         <width>298</width>
+         <height>140</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #353739;</string>
+       </property>
+       <property name="text">
+        <string>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="eidEnter">
+       <property name="geometry">
+        <rect>
+         <x>363</x>
+         <y>500</y>
+         <width>298</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>298</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>298</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Enter the application</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	image: none;
 	border-radius: 2px; 
 	border: none;
@@ -1952,69 +1937,71 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-     </property>
-     <property name="text">
-      <string>ENTER THE APPLICATION</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="eidTitle">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>50</y>
-       <width>600</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="text">
-      <string>How to manage your electronic identities?</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="eidImage3">
-     <property name="geometry">
-      <rect>
-       <x>588</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
+       </property>
+       <property name="text">
+        <string>ENTER THE APPLICATION</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidTitle">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>50</y>
+         <width>600</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #041E42;</string>
+       </property>
+       <property name="text">
+        <string>How to manage your electronic identities?</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidImage3">
+       <property name="geometry">
+        <rect>
+         <x>588</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="eidImage1">
-     <property name="geometry">
-      <rect>
-       <x>138</x>
-       <y>104</y>
-       <width>298</width>
-       <height>216</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #DEE4E9;
+       </property>
+      </widget>
+      <widget class="QLabel" name="eidImage1">
+       <property name="geometry">
+        <rect>
+         <x>138</x>
+         <y>104</y>
+         <width>298</width>
+         <height>216</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
-     </property>
+       </property>
+      </widget>
+     </widget>
     </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
@@ -2031,49 +2018,49 @@ border-radius: 3px;</string>
   <tabstop>lang</tabstop>
   <tabstop>continueBtn</tabstop>
   <tabstop>introTitle</tabstop>
-  <tabstop>labelSign</tabstop>
-  <tabstop>signIntro</tabstop>
-  <tabstop>viewSigning</tabstop>
-  <tabstop>labelCrypto</tabstop>
-  <tabstop>cryptoIntro</tabstop>
-  <tabstop>viewEncryption</tabstop>
-  <tabstop>labelEid</tabstop>
-  <tabstop>eidIntro</tabstop>
-  <tabstop>viewEid</tabstop>
-  <tabstop>skip</tabstop>
+  <tabstop>introLabelSign</tabstop>
+  <tabstop>introIntroSign</tabstop>
+  <tabstop>introViewSigning</tabstop>
+  <tabstop>introLabelCrypto</tabstop>
+  <tabstop>introIntroCrypto</tabstop>
+  <tabstop>introViewEncryption</tabstop>
+  <tabstop>introLabelEid</tabstop>
+  <tabstop>introIntroEid</tabstop>
+  <tabstop>introViewEid</tabstop>
+  <tabstop>introSkip</tabstop>
   <tabstop>signTitle</tabstop>
-  <tabstop>labelSign1</tabstop>
-  <tabstop>textSign1</tabstop>
-  <tabstop>labelSign2</tabstop>
-  <tabstop>textSign2</tabstop>
-  <tabstop>labelSign3</tabstop>
-  <tabstop>textSign3</tabstop>
-  <tabstop>next</tabstop>
-  <tabstop>skip_2</tabstop>
-  <tabstop>gotoSigning</tabstop>
-  <tabstop>gotoEncryption</tabstop>
-  <tabstop>gotoEid</tabstop>
+  <tabstop>signLabel1</tabstop>
+  <tabstop>signText1</tabstop>
+  <tabstop>signLabel2</tabstop>
+  <tabstop>signText2</tabstop>
+  <tabstop>signLabel3</tabstop>
+  <tabstop>signText3</tabstop>
+  <tabstop>signNext</tabstop>
+  <tabstop>signSkip</tabstop>
+  <tabstop>signGotoSigning</tabstop>
+  <tabstop>signGotoEncryption</tabstop>
+  <tabstop>signGotoEid</tabstop>
   <tabstop>cryptoTitle</tabstop>
-  <tabstop>labelCrypto1</tabstop>
-  <tabstop>textCrypto1</tabstop>
-  <tabstop>labelCrypto2</tabstop>
-  <tabstop>textCrypto2</tabstop>
-  <tabstop>labelCrypto3</tabstop>
-  <tabstop>textCrypto3</tabstop>
-  <tabstop>next_2</tabstop>
-  <tabstop>skip_3</tabstop>
-  <tabstop>gotoSigning_2</tabstop>
-  <tabstop>gotoEncryption_2</tabstop>
-  <tabstop>gotoEid_2</tabstop>
+  <tabstop>cryptoLabel1</tabstop>
+  <tabstop>cryptoText1</tabstop>
+  <tabstop>cryptoLabel2</tabstop>
+  <tabstop>cryptoText2</tabstop>
+  <tabstop>cryptoLabel3</tabstop>
+  <tabstop>cryptoText3</tabstop>
+  <tabstop>cryptoNext</tabstop>
+  <tabstop>cryptoSkip</tabstop>
+  <tabstop>cryptoGotoSigning</tabstop>
+  <tabstop>cryptoGotoEncryption</tabstop>
+  <tabstop>cryptoGotoEid</tabstop>
   <tabstop>eidTitle</tabstop>
-  <tabstop>labelEid1</tabstop>
-  <tabstop>textEid1</tabstop>
-  <tabstop>labelEid3</tabstop>
-  <tabstop>textEid3</tabstop>
-  <tabstop>enter</tabstop>
-  <tabstop>gotoSigning_3</tabstop>
-  <tabstop>gotoEncryption_3</tabstop>
-  <tabstop>gotoEid_3</tabstop>
+  <tabstop>eidLabel1</tabstop>
+  <tabstop>eidText1</tabstop>
+  <tabstop>eidLabel3</tabstop>
+  <tabstop>eidText3</tabstop>
+  <tabstop>eidEnter</tabstop>
+  <tabstop>eidGotoSigning</tabstop>
+  <tabstop>eidGotoEncryption</tabstop>
+  <tabstop>eidGotoEid</tabstop>
  </tabstops>
  <resources/>
  <connections/>
