@@ -208,11 +208,16 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 		for(const QString &file: tsllist)
 		{
 			const QString target = cache + "/" + file;
-			const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
-			for(const QString &rm: cleanup)
-				QFile::remove(cache + "/" + rm);
-			QFile::copy(":/TSL/" + file, target);
-			QFile::setPermissions(target, QFile::Permissions(0x6444));
+			if(!QFile::exists(target) ||
+				Application::readTSLVersion(":/TSL/" + file) > Application::readTSLVersion(target))
+			{
+				const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
+				for(const QString &rm: cleanup)
+					QFile::remove(cache + "/" + rm);
+				QFile::copy(":/TSL/" + file, target);
+				QFile::setPermissions(target, QFile::Permissions(0x6444));
+			}
+		
 		}
 	});
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
