@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;id.ee&lt;/a&gt;.</translation>
+        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;Если у вас возникнут вопросы, пожалуйста, обратитесь за помощью через &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
