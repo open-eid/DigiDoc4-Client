@@ -2559,16 +2559,8 @@ Kontrollkood: %1</translation>
         <translation>Interneti seaded on korrektsed, kehtivuskinnitusteenus on kättesaadav!</translation>
     </message>
     <message>
-        <source>Base version:</source>
-        <translation>Baasversioon:</translation>
-    </message>
-    <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
-        <source>%1 version %2, released %3%4</source>
-        <translation>%1 versioon %2, avalikustatud %3%4</translation>
     </message>
     <message>
         <source>Checking updates has failed.</source>
@@ -2709,6 +2701,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Digidoc4 client configuration update was successful.</source>
         <translation>Digidoc4 kliendi konfiguratsiooni värskendamine õnnestus.</translation>
+    </message>
+    <message>
+        <source>%1 version %2, released %3</source>
+        <translation>%1 versioon %2, avalikustatud %3</translation>
     </message>
 </context>
 <context>

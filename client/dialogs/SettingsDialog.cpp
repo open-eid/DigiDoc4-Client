@@ -160,16 +160,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 
 	changePage(ui->btnMenuGeneral);
 
-	QString package;
-#ifndef Q_OS_MAC
-	QStringList packages = Common::packages({
-		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "open-eid", "eID software"});
-	if( !packages.isEmpty() )
-		package = "<br />" + tr("Base version:") + " " + packages.first();
-#endif
-	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
-		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE), package ) );
-
 #ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
@@ -223,8 +213,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
-	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
 #ifdef Q_OS_WIN
+	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 		QSmartCardData data = qApp->smartcard()->data();
 		CertStore s;
@@ -237,14 +227,15 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 				s.remove( c );
 		}
 		qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
-#endif
 	});
+#endif
 
-	connect( ui->btnMenuGeneral,  &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuGeneral); ui->stackedWidget->setCurrentIndex(GeneralSettings); } );
-	connect( ui->btnMenuCertificate, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuCertificate); ui->stackedWidget->setCurrentIndex(AccessCertSettings); } );
-	connect( ui->btnMenuProxy, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuProxy); ui->stackedWidget->setCurrentIndex(NetworkSettings); } );
-	connect( ui->btnMenuDiagnostics, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuDiagnostics); ui->stackedWidget->setCurrentIndex(DiagnosticsSettings); } );
-	connect( ui->btnMenuInfo, &QPushButton::clicked, this, [this]{ changePage(ui->btnMenuInfo); ui->stackedWidget->setCurrentIndex(LicenseSettings); } );
+	ui->pageGroup->setId(ui->btnMenuGeneral, GeneralSettings);
+	ui->pageGroup->setId(ui->btnMenuCertificate, AccessCertSettings);
+	ui->pageGroup->setId(ui->btnMenuProxy, NetworkSettings);
+	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
+	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
+	connect(ui->pageGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
 
 	Settings s(qApp->applicationName());
 	ui->rdMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
@@ -268,33 +259,14 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	});
 
 	initFunctionality();
+	updateVersion();
 	updateDiagnostics();
 }
 
 SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
 	: SettingsDialog(parent, std::move(appletVersion))
 {
-	ui->stackedWidget->setCurrentIndex(page);
-
-	if(page != GeneralSettings)
-	{
-		ui->btnMenuGeneral->setChecked(false);
-		switch(page)
-		{
-		case AccessCertSettings:
-			changePage(ui->btnMenuCertificate);
-			break;
-		case NetworkSettings:
-			changePage(ui->btnMenuProxy);
-			break;
-		case DiagnosticsSettings:
-			changePage(ui->btnMenuDiagnostics);
-			break;
-		case LicenseSettings:
-			changePage(ui->btnMenuInfo);
-			break;
-		}
-	}
+	changePage(ui->pageGroup->button(page));
 }
 
 
@@ -337,16 +309,7 @@ void SettingsDialog::retranslate(const QString& lang)
 
 	qApp->loadTranslation( lang );
 	ui->retranslateUi(this);
-
-	QString package;
-#ifndef Q_OS_MAC
-	QStringList packages = Common::packages({
-		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "estonianidcard", "eID software"});
-	if( !packages.isEmpty() )
-		package = "<br />" + tr("Base version:") + " " + packages.first();
-#endif
-	ui->txtNavVersion->setText( tr("%1 version %2, released %3%4")
-		.arg( tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE), package ) );
+	updateVersion();
 	updateCert();
 	updateDiagnostics();
 }
@@ -490,6 +453,12 @@ void SettingsDialog::updateProxy()
 	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
 	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
 	ui->chkProxyEnableForSSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
+}
+
+void SettingsDialog::updateVersion()
+{
+	ui->txtNavVersion->setText(tr("%1 version %2, released %3")
+		.arg(tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE)));
 }
 
 void SettingsDialog::save()
@@ -638,19 +607,10 @@ void SettingsDialog::useDefaultSettings()
 	ui->rdMIDUUID->clear();
 }
 
-void SettingsDialog::changePage(QPushButton* button)
+void SettingsDialog::changePage(QAbstractButton *button)
 {
-	if(button->isChecked())
-	{
-		ui->btnMenuGeneral->setChecked(false);
-		ui->btnMenuCertificate->setChecked(false);
-		ui->btnMenuProxy->setChecked(false);
-		ui->btnMenuDiagnostics->setChecked(false);
-		ui->btnMenuInfo->setChecked(false);
-	}
-
 	button->setChecked(true);
-
+	ui->stackedWidget->setCurrentIndex(ui->pageGroup->id(button));
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);

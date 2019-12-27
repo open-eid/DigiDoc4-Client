@@ -33,7 +33,7 @@ QRadioButton {
 	color: #000000
 }</string>
   </property>
-   <layout class="QGridLayout" name="SettingsDialogLayout">
+  <layout class="QGridLayout" name="SettingsDialogLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -144,6 +144,9 @@ QPushButton:!checked{
         <property name="checked">
          <bool>true</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -163,6 +166,9 @@ QPushButton:!checked{
         <property name="checkable">
          <bool>true</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -182,6 +188,9 @@ QPushButton:!checked{
         <property name="checkable">
          <bool>true</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -201,6 +210,9 @@ QPushButton:!checked{
         <property name="checkable">
          <bool>true</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -220,6 +232,9 @@ QPushButton:!checked{
         <property name="checkable">
          <bool>true</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -1411,7 +1426,8 @@ QPushButton:disabled {
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="langGroup"/>
   <buttongroup name="pathGroup"/>
+  <buttongroup name="langGroup"/>
+  <buttongroup name="pageGroup"/>
  </buttongroups>
 </ui>
