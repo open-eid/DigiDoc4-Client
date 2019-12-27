@@ -26,6 +26,8 @@
 	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>DigiDoc4 Client can use AppleScript to talk with apps, for example to insert attachments to emails.</string>
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>LSApplicationCategoryType</key>
