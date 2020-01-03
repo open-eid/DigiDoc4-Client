@@ -29,6 +29,7 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -79,6 +80,8 @@ public:
 SmartIDProgress::SmartIDProgress(QWidget *parent)
 	: d(new Private(parent))
 {
+	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
+		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->signProgressBar->setMaximum(100);
