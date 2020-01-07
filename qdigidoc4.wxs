@@ -35,6 +35,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
     <Icon Id="qdigidoc4.exe" SourceFile="$(var.client_path)"/>
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.exe"/>
+    <Property Id="APPLICATIONNAME" Value="qdigidoc4"/>
     <Property Id="DESKTOP_SHORTCUT" Value="0"/>
     <Property Id="TLS12" Value="1"/>
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
@@ -50,7 +51,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
         <Directory Id="ProgramMenuDir" Name="!(loc.idcardLabel)">
           <Component Id="ProgramMenuDir4" Guid="16A9EACF-B5D3-4FDC-8E9F-C03C8FA46DFF">
             <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
-            <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+            <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[APPLICATIONNAME]' Type='string' Value='' KeyPath='yes' />
           </Component>
         </Directory>
       </Directory>
@@ -61,7 +62,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
           <Condition>DESKTOP_SHORTCUT = 1</Condition>
           <Shortcut Id="ClientDesktopShortcut4" Name="!(loc.qdigidoc4Label)"
                     Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
-          <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="DesktopShortcut4" Value="1" Type="integer" KeyPath="yes"/>
+          <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[APPLICATIONNAME]" Name="DesktopShortcut4" Value="1" Type="integer" KeyPath="yes"/>
         </Component>
       </Directory>
 

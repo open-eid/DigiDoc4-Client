@@ -22,7 +22,7 @@
 #include "dialogs/PinPopup.h"
 #include "dialogs/PinUnblock.h"
 
-#include <common/Settings.h>
+#include <common/Common.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -101,9 +101,9 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 	if(!reader->isPinPad())
 		return reader->transfer(apdu);
 	quint16 language = 0x0000;
-	if(Settings::language() == QLatin1String("en")) language = 0x0409;
-	else if(Settings::language() == QLatin1String("et")) language = 0x0425;
-	else if(Settings::language() == QLatin1String("ru")) language = 0x0419;
+	if(Common::language() == QLatin1String("en")) language = 0x0409;
+	else if(Common::language() == QLatin1String("et")) language = 0x0425;
+	else if(Common::language() == QLatin1String("ru")) language = 0x0419;
 	QPCSCReader::Result result;
 	QEventLoop l;
 	std::thread([&]{

@@ -1,10 +1,12 @@
 #include "SmartIDDialog.h"
 #include "ui_SmartIDDialog.h"
 
-#include "Settings.h"
 #include "Styles.h"
 #include "effects/Overlay.h"
 
+#include <QtCore/QSettings>
+
+#include <common/Common.h>
 #include <common/IKValidator.h>
 
 SmartIDDialog::SmartIDDialog(QWidget *parent)
@@ -33,7 +35,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->sign->setFont(condensed14);
 	ui->cancel->setFont(condensed14);
 
-	Settings s(qApp->applicationName());
+    QSettings s;
 	QValidator *ik = new IKValidator(ui->idCode);
 	ui->idCode->setValidator(ik);
 	ui->idCode->setText(s.value(QStringLiteral("SmartID")).toString());
@@ -49,10 +51,9 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 		const QString EE = QStringLiteral("EE");
 		ui->idCode->setValidator(country() == EE ? ik : nullptr);
 		bool checked = ui->cbRemember->isChecked();
-		Settings s(qApp->applicationName());
-		s.setValueEx(QStringLiteral("SmartIDSettings"), checked, true);
-		s.setValueEx(QStringLiteral("SmartID"), checked ? idCode() : QString(), QString());
-		s.setValueEx(QStringLiteral("SmartIDCountry"), checked ? country() : EE, EE);
+		Common::setValueEx(QStringLiteral("SmartIDSettings"), checked, true);
+		Common::setValueEx(QStringLiteral("SmartID"), checked ? idCode() : QString(), QString());
+		Common::setValueEx(QStringLiteral("SmartIDCountry"), checked ? country() : EE, EE);
 		ui->sign->setToolTip(QString());
 		if(!idCode().isEmpty() && country() == EE && !IKValidator::isValid(idCode()))
 			ui->sign->setToolTip(tr("Personal code is not valid"));

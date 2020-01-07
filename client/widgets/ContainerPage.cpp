@@ -21,7 +21,6 @@
 #include "ui_ContainerPage.h"
 
 #include "DigiDoc.h"
-#include "Settings.h"
 #include "Styles.h"
 #include "crypto/CryptoDoc.h"
 #include "dialogs/AddRecipients.h"
@@ -35,6 +34,8 @@
 #include <QFileInfo>
 #include <QFontMetrics>
 #include <QMessageBox>
+
+#include <QtCore/QSettings>
 
 using namespace ria::qdigidoc4;
 
@@ -61,7 +62,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	ui->summary->init( LabelButton::BoxedDeepCerulean, tr("PRINT SUMMARY"), Actions::ContainerSummary );
 	ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
 
-	mobileCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
+	mobileCode = QSettings().value(QStringLiteral("MobileCode")).toString();
 
 	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
 	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool /*seal*/, bool /*isExpired*/, const QByteArray& serialNumber)
@@ -84,7 +85,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
 		{ emit action(Actions::ContainerNavigate, link); });
 
-	ui->summary->setVisible(Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool());
+	ui->summary->setVisible(QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool());
 }
 
 ContainerPage::~ContainerPage()
@@ -194,7 +195,7 @@ void ContainerPage::forward(int code)
 	case SignatureMobile:
 	{
 		MobileDialog dlg(qApp->activeWindow());
-		QString newCode = Settings().value(QStringLiteral("Client/MobileCode")).toString();
+		QString newCode = QSettings().value(QStringLiteral("MobileCode")).toString();
 		if(dlg.exec() == QDialog::Accepted)
 		{
 			if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
@@ -393,7 +394,7 @@ void ContainerPage::updateDecryptionButton()
 
 void ContainerPage::updatePanes(ContainerState state)
 {
-	bool showPrintSummary = Settings(qApp->applicationName()).value(QStringLiteral("Client/ShowPrintSummary"), false).toBool();
+	bool showPrintSummary = QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool();
 	auto setButtonsVisible = [](const QVector<QWidget*> &buttons, bool visible) {
 		for(QWidget *button: buttons) button->setVisible(visible);
 	};

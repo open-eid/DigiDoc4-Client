@@ -47,7 +47,6 @@
 #include "widgets/VerifyCert.h"
 
 #include <common/DateTime.h>
-#include <common/Settings.h>
 #include <common/TokenData.h>
 
 #include <QDebug>
@@ -57,6 +56,7 @@
 #include <QMimeData>
 #include <QSvgWidget>
 #include <QtCore/QUrlQuery>
+#include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrinterInfo>
@@ -81,7 +81,7 @@ MainWindow::MainWindow( QWidget *parent )
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
 
 	// Cleanup obsolete keys
-	Settings s(qApp->applicationName());
+	QSettings s;
 	s.remove(QStringLiteral("Client/Type"));
 
 	ui->setupUi(this);
@@ -415,7 +415,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 		if(create)
 		{
-			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+			QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
 			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir);
 			if(!filename.isNull())
 			{
@@ -446,7 +446,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 		if(create)
 		{
-			QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+			QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
 			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
 			if(!filename.isNull())
 			{
@@ -1291,7 +1291,7 @@ void MainWindow::warningClicked(const QString &link)
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
-	QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+	QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
 	QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir);
 	if(filename.isNull())
 		return false;

@@ -19,10 +19,11 @@
 
 #include "MobileDialog.h"
 #include "ui_MobileDialog.h"
-
-#include "Settings.h"
+#include <common/Common.h>
 #include "Styles.h"
 #include "effects/Overlay.h"
+
+#include <QtCore/QSettings>
 
 #include <common/IKValidator.h>
 
@@ -55,21 +56,18 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->sign->setFont( condensed14 );
 	ui->cancel->setFont( condensed14 );
 
-	Settings s;
-	Settings s2(qApp->applicationName());
 	// Mobile
 	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
-	ui->idCode->setText(s.value(QStringLiteral("Client/MobileCode")).toString());
+	ui->idCode->setText(QSettings().value(QStringLiteral("MobileCode")).toString());
 	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
-	ui->phoneNo->setText(s.value(QStringLiteral("Client/MobileNumber"), COUNTRY_CODE_EST).toString());
-	ui->cbRemember->setChecked(s2.value(QStringLiteral("MobileSettings"), true).toBool());
+	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
+	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, [=](bool checked) {
-		Settings s;
-		s.setValueEx(QStringLiteral("Client/MobileCode"), checked ? ui->idCode->text() : QString(), QString());
-		s.setValueEx(QStringLiteral("Client/MobileNumber"), checked ? ui->phoneNo->text() : QString(), QString());
-		Settings(qApp->applicationName()).setValueEx(QStringLiteral("MobileSettings"), checked, true);
+		Common::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString(), QString());
+		Common::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString(), QString());
+		Common::setValueEx(QStringLiteral("MobileSettings"), checked, true);
 	});
 
 	enableSign();
@@ -84,9 +82,8 @@ void MobileDialog::enableSign()
 {
 	if( ui->cbRemember->isChecked() )
 	{
-		Settings s;
-		s.setValueEx(QStringLiteral("Client/MobileCode"), ui->idCode->text(), QString());
-		s.setValueEx(QStringLiteral("Client/MobileNumber"), ui->phoneNo->text(),
+		Common::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text(), QString());
+		Common::setValueEx(QStringLiteral("MobileNumber"), ui->phoneNo->text(),
 			ui->phoneNo->text() == COUNTRY_CODE_EST ? COUNTRY_CODE_EST : QString());
 	}
 	ui->sign->setToolTip(QString());

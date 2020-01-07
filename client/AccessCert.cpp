@@ -23,13 +23,13 @@
 #include "QSigner.h"
 #include "SslCertificate.h"
 
-#include <common/Settings.h>
 #include <common/TokenData.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QStandardPaths>
+#include <QtCore/QSettings>
 #include <QtNetwork/QSslKey>
 
 #ifdef Q_OS_MAC
@@ -92,7 +92,7 @@ QSslCertificate AccessCert::cert()
 
 unsigned int AccessCert::count(const QString &date) const
 {
-	return QByteArray::fromBase64(Settings(qApp->applicationName()).value(date).toByteArray()).toUInt();
+	return QByteArray::fromBase64(QSettings().value(date).toByteArray()).toUInt();
 }
 
 void AccessCert::increment()
@@ -100,7 +100,7 @@ void AccessCert::increment()
 	if(isDefaultCert(cert()))
 	{
 		QString date = "AccessCertUsage" + QDate::currentDate().toString(QStringLiteral("yyyyMM"));
-		Settings(qApp->applicationName()).setValue(date, QString::fromUtf8(QByteArray::number(count(date) + 1).toBase64()));
+		QSettings().setValue(date, QString::fromUtf8(QByteArray::number(count(date) + 1).toBase64()));
 	}
 }
 
@@ -230,7 +230,7 @@ void AccessCert::showWarning( const QString &msg )
 bool AccessCert::validate()
 {
 	QString date = "AccessCertUsage" + QDate::currentDate().toString(QStringLiteral("yyyyMM"));
-	Settings s(qApp->applicationName());
+	QSettings s;
 	if(s.value(date).isNull())
 	{
 		for(const QString &key: s.allKeys())

@@ -24,7 +24,6 @@
 
 #include <common/Common.h>
 #include <common/Configuration.h>
-#include <common/Settings.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -36,6 +35,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QTimeLine>
 #include <QtCore/QUuid>
+#include <QtCore/QSettings>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -65,11 +65,11 @@ public:
 	QString PROXYURL = Configuration::instance().object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL));
 	QString SKURL = Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL));
 #else
-	QString PROXYURL = Settings(qApp->applicationName()).value(QStringLiteral("SID-PROXY-URL"), QStringLiteral(SMARTID_URL)).toString();
-	QString SKURL = Settings(qApp->applicationName()).value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
+	QString PROXYURL = QSettings().value(QStringLiteral("SID-PROXY-URL"), QStringLiteral(SMARTID_URL)).toString();
+	QString SKURL = QSettings().value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
 #endif
-	QString NAME = Settings(qApp->applicationName()).value(QStringLiteral("SIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	QUuid UUID = Settings(qApp->applicationName()).value(QStringLiteral("SIDUUID")).toUuid();
+	QString NAME = QSettings().value(QStringLiteral("SIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
+	QUuid UUID = QSettings().value(QStringLiteral("SIDUUID")).toUuid();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif

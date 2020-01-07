@@ -22,7 +22,6 @@
 #include "SslCertificate.h"
 #include "dialogs/PinPopup.h"
 #include <common/QPCSC.h>
-#include <common/Settings.h>
 #ifndef NO_PKCS11_CRYPTO
 #include <crypto/CryptoDoc.h>
 #endif

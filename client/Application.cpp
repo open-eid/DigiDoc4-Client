@@ -30,7 +30,6 @@
 #include "dialogs/WarningDialog.h"
 
 #include <common/Configuration.h>
-#include <common/Settings.h>
 
 #include <digidocpp/Container.h>
 #include <digidocpp/XmlConf.h>
@@ -49,6 +48,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 #include <QtCore/QXmlStreamReader>
+#include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
 #include <QtNetwork/QNetworkProxy>
@@ -98,13 +98,12 @@ public:
 				reload();
 		});
 #endif
-		s.beginGroup(QStringLiteral("Client"));
 		SettingsDialog::loadProxy(this);
 	}
 
 	std::string proxyHost() const override
 	{
-		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
+		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().hostName().toStdString();
@@ -114,7 +113,7 @@ public:
 
 	std::string proxyPort() const override
 	{
-		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
+		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return QString::number(systemProxy().port()).toStdString();
@@ -124,7 +123,7 @@ public:
 
 	std::string proxyUser() const override
 	{
-		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
+		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().user().toStdString();
@@ -134,7 +133,7 @@ public:
 
 	std::string proxyPass() const override
 	{
-		switch(s2.value(QStringLiteral("Client/proxyConfig")).toUInt())
+		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
 		case 0: return std::string();
 		case 1: return systemProxy().password().toStdString();
@@ -150,29 +149,29 @@ public:
 	std::string TSLCache() const override
 	{ return QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString(); }
 	bool TSLOnlineDigest() const override
-	{ return s2.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
+	{ return s.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 
 	void setProxyHost( const std::string &host ) override
-	{ s.setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host ), QString()); }
+	{ Common::setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host ), QString()); }
 	void setProxyPort( const std::string &port ) override
-	{ s.setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port ), QString()); }
+	{ Common::setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port ), QString()); }
 	void setProxyUser( const std::string &user ) override
-	{ s.setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user ), QString()); }
+	{ Common::setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user ), QString()); }
 	void setProxyPass( const std::string &pass ) override
-	{ s.setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass ), QString()); }
+	{ Common::setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass ), QString()); }
 	void setProxyTunnelSSL( bool enable ) override
-	{ s.setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
+	{ Common::setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 	void setPKCS12Cert( const std::string & /*cert*/) override {}
 	void setPKCS12Pass( const std::string & /*pass*/) override {}
 	void setPKCS12Disable( bool disable ) override
-	{ s.setValueEx(QStringLiteral("PKCS12Disable"), disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
+	{ Common::setValueEx(QStringLiteral("PKCS12Disable"), disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
 	void setTSLOnlineDigest( bool enable ) override
-	{ s2.setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
+	{ Common::setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
 
 	std::string TSUrl() const override { return valueUserScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl()); }
 	void setTSUrl(const std::string &url) override
-	{ s2.setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url), QString()); }
+	{ Common::setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url), QString()); }
 
 	std::string TSLUrl() const override { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	digidoc::X509Cert verifyServiceCert() const override
@@ -226,8 +225,8 @@ private:
 	void reload()
 	{
 		obj = Configuration::instance().object();
-		if(s2.value(QStringLiteral("TSA-URL")) == obj.value(QStringLiteral("TSA-URL")))
-			s2.remove(QStringLiteral("TSA-URL"));
+		if(s.value(QStringLiteral("TSA-URL")) == obj.value(QStringLiteral("TSA-URL")))
+			s.remove(QStringLiteral("TSA-URL"));
 		QList<QSslCertificate> list;
 		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
@@ -252,11 +251,10 @@ private:
 
 	std::string valueUserScope(const QString &key, const std::string &defaultValue) const
 	{
-		return s2.value(key, obj.value(key).toString(QString::fromStdString(defaultValue))).toString().toStdString();
+		return s.value(key, obj.value(key).toString(QString::fromStdString(defaultValue))).toString().toStdString();
 	}
 
-	Settings s;
-	Settings s2 = { qApp->applicationName() };
+	QSettings s;
 public:
 	QJsonObject obj;
 };
@@ -300,7 +298,7 @@ Application::Application( int &argc, char **argv )
 	installTranslator( &d->appTranslator );
 	installTranslator( &d->commonTranslator );
 	installTranslator( &d->qtTranslator );
-	loadTranslation( Settings::language() );
+	loadTranslation( Common::language() );
 
 	// Actions
 	d->closeAction = new QAction( tr("Close window"), this );
@@ -329,7 +327,7 @@ Application::Application( int &argc, char **argv )
 
 	QSigner::ApiType api = QSigner::PKCS11;
 #ifdef Q_OS_WIN
-	api = QSigner::ApiType(Settings(applicationName()).value("tokenBackend", QSigner::CNG).toUInt());
+	api = QSigner::ApiType(QSettings().value("tokenBackend", QSigner::CNG).toUInt());
 	if( args.contains("-cng") )
 		api = QSigner::CNG;
 	if( args.contains("-capi") )
@@ -601,7 +599,7 @@ void Application::loadTranslation( const QString &lang )
 {
 	if( d->lang == lang )
 		return;
-	Settings().setValue(QStringLiteral("Main/Language"), d->lang = lang);
+	QSettings().setValue(QStringLiteral("Language"), d->lang = lang);
 
 	if(lang == QStringLiteral("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 	else if(lang == QStringLiteral("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
@@ -760,19 +758,130 @@ QWidget* Application::mainWindow()
 	return root;
 }
 
-#ifndef Q_OS_MAC
 void Application::migrateSettings()
 {
-	Settings dd3Settings("qdigidocclient");
-	Settings settings(qApp->applicationName());
-	QString key = "proxyConfig";
-	if(dd3Settings.contains(key))
+#ifdef Q_OS_MAC
+	QSettings oldOrgSettings;
+	QSettings oldAppSettings;
+	QSettings newSettings;
+#else
+	QSettings dd3Settings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidocclient"));
+	QSettings oldOrgSettings(QStringLiteral("Estonian ID Card"), QString());
+	QSettings oldAppSettings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidoc4"));
+	QSettings newSettings;
+#endif
+
+	if(newSettings.value(QStringLiteral("SettingsMigrated"), false).toBool())
+		return;
+
+#ifdef Q_OS_WIN
+	QSettings reg(QStringLiteral("HKEY_CURRENT_USER\\Software"), QSettings::NativeFormat);
+	if(!reg.childGroups().contains(QStringLiteral("Estonian ID Card")))
 	{
-		settings.setValue("Client/proxyConfig", dd3Settings.value(key));
+		newSettings.setValue(QStringLiteral("SettingsMigrated"), true);
+		return;
+	}
+
+	if(!reg.childGroups().contains(QStringLiteral("RIA/Digidoc4 Client")))
+	{
+		if(reg.contains(QStringLiteral("RIA/DigiDoc4 Client/DesktopShortcut4")))
+			newSettings.setValue(QStringLiteral("DesktopShortcut4"), reg.value(QStringLiteral("RIA/DigiDoc4 Client/DesktopShortcut4")));
+
+		if(reg.contains(QStringLiteral("RIA/DigiDoc4 Client/ProgramMenuDir4")))
+			newSettings.setValue(QStringLiteral("ProgramMenuDir4"), reg.value(QStringLiteral("RIA/DigiDoc4 Client/ProgramMenuDir4")));
+
+		reg.remove(QStringLiteral("RIA/DigiDoc4 Client"));
+	}
+#endif
+
+	QList< QPair<QString, QString> > orgOldNewKeys = {
+		{"showIntro", "showIntro"},
+		{"PKCS12Disable","PKCS12Disable"},
+		{"Client/MobileCode","MobileCode"},
+		{"Client/MobileNumber","MobileNumber"},
+		{"ProxyHost","ProxyHost"},
+		{"ProxyPass","ProxyPass"},
+		{"ProxyPort","ProxyPort"},
+		{"ProxyUser","ProxyUser"},
+		{"Client/City","City"},
+		{"Client/Country","Country"},
+		{"Client/Zip","Zip"},
+		{"Client/Role","Role"},
+		{"Client/State","State"},
+		{"Client/Resolution","Resolution"},
+		{"Main/language","Language"},
+		{"Client/DefaultDir","DefaultDir"},
+		{"ProxyTunnelSSL","ProxyTunnelSSL"}
+	};
+
+	QList< QPair<QString, QString> > appOldNewKeys = {
+		{"TSLOnlineDigest", "TSLOnlineDigest"},
+		{"Client/proxyConfig", "ProxyConfig"},
+		{"lastPath", "lastPath"},
+		{"LastCheck", "LastCheck"},
+		{"Client/RoleAddressInfo", "RoleAddressInfo"},
+		{"Client/ShowPrintSummary", "ShowPrintSummary"},
+		{"TSA-URL", "TSA-URL"},
+		{"MobileSettings", "MobileSettings"},
+		{"tokenBackend", "tokenBackend"},
+		{"cdocwithddoc", "cdocwithddoc"}
+	};
+
+	for( QPair<const QString&, const QString&> keypairs : orgOldNewKeys){
+
+		QString oldKey = keypairs.first;
+		QString newKey = keypairs.second;
+
+		if(oldOrgSettings.contains(oldKey)){
+			newSettings.setValue(newKey, oldOrgSettings.value(oldKey));
+			
+#ifdef Q_OS_MAC
+			if(oldKey != newKey)
+				oldAppSettings.remove(oldKey);
+#endif
+		}
+	}
+
+	for( QPair<const QString&, const QString&> keypairs : appOldNewKeys){
+
+		QString oldKey = keypairs.first;
+		QString newKey = keypairs.second;
+
+		if(oldAppSettings.contains(oldKey)){
+			newSettings.setValue(newKey, oldAppSettings.value(oldKey));
+
+#ifdef Q_OS_MAC
+			if(oldKey != newKey)
+				oldAppSettings.remove(oldKey);
+#endif
+		}
+	}
+
+	for(const QString &key: oldAppSettings.allKeys()){
+		if(key.startsWith(QStringLiteral("AccessCertUsage")))
+			newSettings.setValue(key, oldAppSettings.value(key));
+	}
+
+	newSettings.setValue(QStringLiteral("SettingsMigrated"), true);
+
+#ifndef Q_OS_MAC
+	QString key = "proxyConfig";
+	if(!newSettings.contains("showIntro") && !newSettings.contains("ProxyConfig") && dd3Settings.contains(key))
+	{
+		newSettings.setValue("ProxyConfig", dd3Settings.value(key));
 		SettingsDialog::loadProxy(digidoc::Conf::instance());
 	}
+
+	oldOrgSettings.clear();
+	oldAppSettings.clear();
+	dd3Settings.clear();
+
+#ifdef Q_OS_WIN
+	reg.remove(QStringLiteral("Estonian ID Card"));
+#endif
+#endif
+
 }
-#endif // Q_OS_MAC
 
 bool Application::notify( QObject *o, QEvent *e )
 {
@@ -918,11 +1027,9 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign)
 	}
 	if( !w )
 	{
-		Settings settings;
-#ifndef Q_OS_MAC
-		if(!settings.contains("showIntro"))
-			migrateSettings();
-#else
+		QSettings settings;
+		migrateSettings();
+#ifdef Q_OS_MAC
 		if(QSettings().value(QStringLiteral("plugins")).isNull())
 		{
 			QTimer *timer = new QTimer(this);
@@ -939,7 +1046,8 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign)
 			});
 			timer->start(1000);
 		}
-#endif // !Q_OS_MAC
+#endif
+
 		if(settings.value(QStringLiteral("showIntro"), true).toBool())
 		{
 			FirstRun dlg;
