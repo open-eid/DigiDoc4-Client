@@ -23,6 +23,7 @@
 #include "dialogs/PinUnblock.h"
 
 #include <common/Common.h>
+#include <common/IKValidator.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -255,6 +256,8 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	d->signCert = readCert(SIGNCERT);
 	if(readFailed)
 		return false;
+	if(!d->data.contains(QSmartCardData::BirthDate))
+		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
 	d->data[QSmartCardData::Email] = d->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
 	return updateCounters(reader, d);
 }
@@ -484,6 +487,8 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		return false;
 	if(!d->data[QSmartCardData::Expiry].toDate().isValid())
 		d->data[QSmartCardData::Expiry] = d->authCert.expiryDate();
+	if(!d->data.contains(QSmartCardData::BirthDate))
+		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
 	d->data[QSmartCardData::Email] = d->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
 	return updateCounters(reader, d);
 }

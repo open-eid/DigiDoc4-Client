@@ -35,6 +35,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	, birthDate(birthDate)
 	, personalCode(std::move(personalCode))
 {
+	new Overlay(this, parent->topLevelWidget());
 	init( mode, type, leftAttempts );
 	adjustSize();
 	setFixedSize( size() );
@@ -186,28 +187,12 @@ void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
 	}
 }
 
-void PinUnblock::setError(const QString &msg)
-{
-	ui->labelPinValidation->setHidden(msg.isEmpty());
-	ui->labelPinValidation->setText(msg);
-}
-
 void PinUnblock::setUnblockEnabled()
 {
 	ui->iconLabelPuk->load(isFirstCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
 	ui->iconLabelPin->load(isNewCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
 	ui->iconLabelRepeat->load(isRepeatCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
 	ui->unblock->setEnabled( isFirstCodeOk && isNewCodeOk && isRepeatCodeOk );
-}
-
-int PinUnblock::exec()
-{
-	Overlay overlay( parentWidget() );
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
 }
 
 QString PinUnblock::firstCodeText() const { return ui->puk->text(); }
@@ -220,37 +205,24 @@ bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type, W
 	const static QString SEQUENCE_DESCENDING = QStringLiteral("0987654321098765432109");
 	QString pinType = type == QSmartCardData::Pin1Type ? QStringLiteral("PIN1") : (type == QSmartCardData::Pin2Type ? QStringLiteral("PIN2") : QStringLiteral("PUK"));
 
+	auto setError = [&](const QString &msg) {
+		ui->labelPinValidation->setHidden(msg.isEmpty());
+		ui->labelPinValidation->setText(msg);
+		return false;
+	};
 	if(mode == PinUnblock::PinChange && pin == ui->puk->text())
-	{
-		setError(tr("Current %1 code and new %1 code must be different").arg(pinType));
-		return false;
-	}
+		return setError(tr("Current %1 code and new %1 code must be different").arg(pinType));
 	if(SEQUENCE_ASCENDING.contains(pin))
-	{
-		setError(tr("New %1 code can't be increasing sequence").arg(pinType));
-		return false;
-	}
+		return setError(tr("New %1 code can't be increasing sequence").arg(pinType));
 	if(SEQUENCE_DESCENDING.contains(pin))
-	{
-		setError(tr("New %1 code can't be decreasing sequence").arg(pinType));
-		return false;
-	}
+		return setError(tr("New %1 code can't be decreasing sequence").arg(pinType));
 	if(pin.count(pin[1]) == pin.length())
-	{
-		setError(tr("New %1 code can't be sequence of same numbers").arg(pinType));
-		return false;
-	}
+		return setError(tr("New %1 code can't be sequence of same numbers").arg(pinType));
 	if(personalCode.contains(pin))
-	{
-		setError(tr("New %1 code can't be part of your personal code").arg(pinType));
-		return false;
-	}
-	if(pin == birthDate.toString(QStringLiteral("yyyy")) || pin == birthDate.toString(QStringLiteral("ddMM")) || pin == birthDate.toString(QStringLiteral("MMdd")) ||
-		 pin == birthDate.toString(QStringLiteral("yyyyMMdd")) || pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
-	{
-		setError(tr("New %1 code can't be your date of birth").arg(pinType));
-		return false;
-	}
-
+		return setError(tr("New %1 code can't be part of your personal code").arg(pinType));
+	if(pin == birthDate.toString(QStringLiteral("yyyy")) || pin == birthDate.toString(QStringLiteral("ddMM")) ||
+		pin == birthDate.toString(QStringLiteral("MMdd")) || pin == birthDate.toString(QStringLiteral("yyyyMMdd")) ||
+		pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
+		return setError(tr("New %1 code can't be your date of birth").arg(pinType));
 	return true;
 }
