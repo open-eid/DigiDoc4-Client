@@ -28,8 +28,7 @@ class DiagnosticsTask: public QObject
 {
 	Q_OBJECT
 public:
-	DiagnosticsTask(QObject *parent, const QString &appInfo, const QString &outFile = "" );
-	QString getDiagnostics() const;
+	DiagnosticsTask(QObject *parent, const QString &outFile);
 	void complete();
 
 public slots:
@@ -44,7 +43,6 @@ private:
 	QStringList html;
 	QString data;
 	QString outFile;
-	QString appInfo;
 	Diagnostics worker;
 
 	bool logDiagnostics();

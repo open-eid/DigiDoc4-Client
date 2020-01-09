@@ -53,7 +53,6 @@
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
 #include <QtNetwork/QNetworkProxy>
-#include <QtNetwork/QSslConfiguration>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
@@ -314,8 +313,8 @@ Application::Application( int &argc, char **argv )
 	// This is needed to release application from memory (Windows)
 	setQuitOnLastWindowClosed( true ); 
 	d->lastWindowTimer.setSingleShot(true);
-	connect(&d->lastWindowTimer, &QTimer::timeout, [](){ if(topLevelWindows().isEmpty()) quit(); });
-	connect(this, &Application::lastWindowClosed, [&](){ d->lastWindowTimer.start(10*1000); });
+	connect(&d->lastWindowTimer, &QTimer::timeout, []{ if(topLevelWindows().isEmpty()) quit(); });
+	connect(this, &Application::lastWindowClosed, [&]{ d->lastWindowTimer.start(10*1000); });
 
 #if defined(Q_OS_MAC)
 	d->bar = new MacMenuBar;
@@ -358,7 +357,7 @@ Application::Application( int &argc, char **argv )
 		}
 
 		qRegisterMetaType<QEventLoop*>("QEventLoop*");
-		digidoc::initialize(QStringLiteral("%1/%2 (%3)")
+		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
 			.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
@@ -547,24 +546,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	return r.isEmpty() ? value.toString() : QString::fromUtf8( r );
 }
 
-void Application::diagnostics(QTextStream &s)
-{
-	QString cache = confValue(TSLCache).toString();
-	QString file = QFileInfo(confValue(TSLUrl).toString()).fileName();
-	s << "<br />TSL_URL: " << confValue(TSLUrl).toString() << " (" << readTSLVersion(cache + "/" + file) << ")"
-		<< "<br />TSA_URL: " << confValue(TSAUrl).toString()
-		<< "<br />SIVA_URL: " << confValue(SiVaUrl).toString()
-#ifdef MOBILEID_URL
-		<< "<br />MOBILEID_URL: " << MOBILEID_URL
-#endif
-#ifdef SMARTID_URL
-		<< "<br />SMARTID_URL: " << SMARTID_URL
-#endif
-		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
-	for(const QSslCertificate &cert: confValue(TSLCerts).value<QList<QSslCertificate>>())
-		s << "<br />" << cert.subjectInfo("CN").value(0);
-}
-
 bool Application::event( QEvent *e )
 {
 	switch( int(e->type()) )
@@ -588,6 +569,11 @@ bool Application::event( QEvent *e )
 #endif
 	default: return Common::event( e );
 	}
+}
+
+void Application::initDiagnosticConf()
+{
+	digidoc::Conf::init(new DigidocConf);
 }
 
 bool Application::initialized()
@@ -1140,7 +1126,7 @@ void Application::waitForTSL( const QString &file )
 	p.setRange( 0, 100 );
 	p.open();
 	QTimer t;
-	connect(&t, &QTimer::timeout, &p, [&](){
+	connect(&t, &QTimer::timeout, &p, [&]{
 		if(p.value() + 1 == p.maximum())
 			p.setValue(0);
 		p.setValue( p.value() + 1 );
@@ -1152,25 +1138,4 @@ void Application::waitForTSL( const QString &file )
 	if( !d->ready )
 		e.exec();
 	t.stop();
-}
-
-DdCliApplication::DdCliApplication( int &argc, char **argv )
-	: CliApplication( argc, argv, QStringLiteral(APP))
-{
-}
-
-void DdCliApplication::diagnostics(QTextStream &s) const
-{
-	digidoc::Conf::init( new DigidocConf );
-
-#ifdef MOBILEID_URL
-	s << "<br />MOBILEID_URL: " << MOBILEID_URL;
-#endif
-#ifdef SMARTID_URL
-	s << "<br />SMARTID_URL: " << SMARTID_URL;
-#endif
-	s << "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString();
-	s << "<br /><br /><b>" << "TSL signing certs:</b>";
-	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
-		s << "<br />" << cert.subjectInfo("CN").value(0);
 }

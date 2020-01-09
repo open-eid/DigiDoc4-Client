@@ -18,47 +18,43 @@
  */
 #include "Diagnostics.h"
 
+#include "Application.h"
 #include "QPCSC.h"
-#include "Common.h"
 
 #ifdef CONFIG_URL
 #include "Configuration.h"
 #include <QtCore/QJsonObject>
 #endif
 
+#include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
+#include <QtNetwork/QSslCertificate>
 
 Diagnostics::Diagnostics() = default;
 
-Diagnostics::Diagnostics(QString appInfo)
-	: appInfoMsg(std::move(appInfo))
-	, hasAppInfo(false)
-{
-}
-
-void Diagnostics::appInfo(QTextStream &s) const
-{
-	if( hasAppInfo )
-	{
-		qApp->diagnostics(s);
-	}
-	else if ( !appInfoMsg.isEmpty() )
-	{
-		s << appInfoMsg;
-	}
-}
-
 void Diagnostics::generalInfo(QTextStream &s) const
 {
-	auto app = QCoreApplication::instance();
-	s << "<b>" << tr("Arguments:") << "</b> " << app->arguments().join(' ') << "<br />";
-	s << "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />";
-	s << "<b>" << "URLs:" << "</b>";
+	QString cache = qApp->confValue(Application::TSLCache).toString();
+	QString file = QFileInfo(qApp->confValue(Application::TSLUrl).toString()).fileName();
+	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(' ') << "<br />"
+		<< "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />"
+		<< "<b>" << "URLs:" << "</b>"
 #ifdef CONFIG_URL
-	s << "<br />CONFIG_URL: " << CONFIG_URL;
+		<< "<br />CONFIG_URL: " << CONFIG_URL
 #endif
-	appInfo(s);
+		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString() << " (" << qApp->readTSLVersion(cache + "/" + file) << ")"
+		<< "<br />TSA_URL: " << qApp->confValue(Application::TSAUrl).toString()
+		<< "<br />SIVA_URL: " << qApp->confValue(Application::SiVaUrl).toString()
+#ifdef MOBILEID_URL
+		<< "<br />MOBILEID_URL: " << MOBILEID_URL
+#endif
+#ifdef SMARTID_URL
+		<< "<br />SMARTID_URL: " << SMARTID_URL
+#endif
+		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
+	for(const QSslCertificate &cert: qApp->confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
+		s << "<br />" << cert.subjectInfo("CN").value(0);
 	s << "<br /><br />";
 
 #ifdef CONFIG_URL

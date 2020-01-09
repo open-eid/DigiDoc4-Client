@@ -29,7 +29,6 @@ class Diagnostics: public QObject, public QRunnable
 	Q_OBJECT
 public:
 	Diagnostics();
-	explicit Diagnostics(QString appInfo);
 
 	void run() override;
 
@@ -37,9 +36,5 @@ signals:
 	void update( const QString &data );
 
 private:
-	QString appInfoMsg;
-	bool hasAppInfo = true;
-
 	void generalInfo(QTextStream &s) const;
-	void appInfo(QTextStream &s) const;
 };

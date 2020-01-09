@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "CliApplication.h"
 #include <common/Common.h>
 
 #include <QtCore/QStringList>
@@ -75,6 +74,7 @@ public:
 	int run();
 	void waitForTSL( const QString &file );
 
+	static void initDiagnosticConf();
 	static uint readTSLVersion(const QString &path);
 	static void addRecent( const QString &file );
 	static QVariant confValue( ConfParameter parameter, const QVariant &value = QVariant() );
@@ -100,7 +100,6 @@ Q_SIGNALS:
 
 private:
 	void activate( QWidget *w );
-	void diagnostics(QTextStream &s) override;
 	bool event( QEvent *e ) override;
 	QWidget* mainWindow();
 	void migrateSettings();
@@ -121,13 +120,4 @@ class REOpenEvent: public QEvent
 public:
 	enum { Type = QEvent::User + 1 };
 	REOpenEvent(): QEvent( QEvent::Type(Type) ) {}
-};
-
-class DdCliApplication: public CliApplication
-{
-public:
-	DdCliApplication( int &argc, char **argv );
-
-protected:
-	virtual void diagnostics( QTextStream &s ) const;
 };
