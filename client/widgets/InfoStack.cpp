@@ -54,6 +54,7 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->valuePersonalCode->setFont(font);
 	ui->valueCitizenship->setFont(font);
 	ui->valueSerialNumber->setFont(font);
+	ui->valueSpacer->setFont(font);
 	ui->valueExpiryDate->setFont( Styles::font( Styles::Regular, 16 ) );
 
 	ui->photo->installEventFilter(this);
@@ -72,6 +73,7 @@ void InfoStack::clearData()
 	ui->valuePersonalCode->clear();
 	ui->valueCitizenship->clear();
 	ui->valueSerialNumber->clear();
+	ui->valueSpacer->hide();
 	ui->valueExpiryDate->clear();
 	pictureText = "DOWNLOAD";
 	ui->btnPicture->setText(tr(pictureText));
@@ -145,6 +147,7 @@ void InfoStack::update()
 	ui->labelCitizenship->setHidden(citizenshipText.isEmpty());
 	ui->valueExpiryDate->setText(text);
 	ui->valueSerialNumber->setText(serialNumberText);
+
 	ui->btnPicture->setText(tr(pictureText));
 	ui->btnPicture->hide();
 
@@ -173,7 +176,7 @@ void InfoStack::update()
 		ui->labelCitizenship->setText(tr("CITIZENSHIP"));
 		ui->labelSerialNumber->setText(tr("DOCUMENT"));
 	}
-
+	ui->valueSpacer->setHidden(ui->valueSerialNumber->text().isEmpty());
 }
 
 void InfoStack::update(const QCardInfo &cardInfo)
@@ -213,8 +216,6 @@ void InfoStack::update(const QSmartCardData &t)
 	personalCodeText = t.data(QSmartCardData::Id).toString();
 	citizenshipText = t.data(QSmartCardData::Citizen).toString();
 	serialNumberText = t.data(QSmartCardData::DocumentId).toString();
-	if(!serialNumberText.isEmpty())
-		serialNumberText += QStringLiteral("  |");
 
 	update();
 }
