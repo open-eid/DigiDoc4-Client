@@ -19,19 +19,14 @@
 
 #pragma once
 
-#include "crypto/CryptoDoc.h"
 #include "widgets/Item.h"
 
+#include "crypto/CryptoDoc.h"
 #include "SslCertificate.h"
-
-#include <memory>
 
 namespace Ui {
 class AddressItem;
 }
-
-class QFontMetrics;
-class QResizeEvent;
 
 class AddressItem : public Item
 {
@@ -51,32 +46,24 @@ public:
 
 	void disable(bool disable);
 	const CKey& getKey() const;
-	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) override;
-	QWidget* initTabOrder(QWidget *item) override;
+	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) final;
+	QWidget* initTabOrder(QWidget *item) final;
 	void showButton(ShowToolButton show);
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void stateChange(ria::qdigidoc4::ContainerState state) final;
 	void update(const QString& name, const QString& code, SslCertificate::CertType type, const QString& strDate, ShowToolButton show);
 
-protected:
-	void changeEvent(QEvent* event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
-
 private:
-	void changeNameHeight();
-	void recalculate();
+	void changeEvent(QEvent *event) final;
+	bool eventFilter(QObject *o, QEvent *e) final;
+	void mouseReleaseEvent(QMouseEvent *event) final;
 	void setName();
 	void setIdType();
 
 	Ui::AddressItem *ui;
 
 	QString code;
-	bool enlarged = false;
 	CKey key;
 	QString name;
-	std::unique_ptr<QFontMetrics> nameMetrics;
-	int nameWidth = 0;
-	int reservedWidth = false;
 	SslCertificate::CertType m_type;
 	QString expireDateText;
 	bool yourself = false;
