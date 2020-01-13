@@ -1905,10 +1905,6 @@ Kontrollkood: %1</translation>
         <translation>AKTIVEERI SUUNAMINE</translation>
     </message>
     <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&apos;http://www.eesti.ee/et/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
         <translation>Sinu @eesti.ee posti aadressid on suunatud e-postile </translation>
     </message>
@@ -1929,6 +1925,10 @@ Kontrollkood: %1</translation>
         <source>Activate redirection</source>
         <extracomment>accessible</extracomment>
         <translation>Aktiveeri suunamine</translation>
+    </message>
+    <message>
+        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
+        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&apos;http://www.eesti.ee/et/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. Eesti.ee ametliku postkasti teenuse &lt;a href=&apos;https://www.eesti.ee/et/riigiportaali-abi#eestiee-ametliku-postkasti-teenuse-kasutustingimused&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;kasutustingimused&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>

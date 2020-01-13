@@ -1908,10 +1908,6 @@ Kонтрольный код: %1</translation>
         <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
     </message>
     <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee/ru/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
         <source>Your @eesti.ee e-mail has been forwarded to </source>
         <translation>Ваши почтовые адреса @ eesti.ee переадресованы по электронной почте </translation>
     </message>
@@ -1932,6 +1928,10 @@ Kонтрольный код: %1</translation>
         <source>Activate redirection</source>
         <extracomment>accessible</extracomment>
         <translation>Активировать переадресацию</translation>
+    </message>
+    <message>
+        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
+        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee/ru/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/ru/v-pomos-polzovatelu#uslovia-ispolzovania-uslugi-oficialnogo-poctovogo-asika-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Условия использования&lt;/span&gt;&lt;/a&gt; услуги официального почтового ящика eesti.ee.</translation>
     </message>
 </context>
 <context>
