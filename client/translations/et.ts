@@ -265,14 +265,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>ID card in reader</source>
-        <translation>Lugejas on ID-kaart</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>Lugejas on %1</translation>
-    </message>
-    <message>
         <source>LOAD</source>
         <translation>LAADI</translation>
     </message>
@@ -305,6 +297,10 @@
     <message>
         <source>Authentication certificate</source>
         <translation>Isikutuvastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>Selected is </source>
+        <translation>Valitud on </translation>
     </message>
 </context>
 <context>

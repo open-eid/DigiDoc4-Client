@@ -265,14 +265,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>ID card in reader</source>
-        <translation>ID-card in card reader</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>%1 in card reader</translation>
-    </message>
-    <message>
         <source>LOAD</source>
         <translation>LOAD</translation>
     </message>
@@ -305,6 +297,10 @@
     <message>
         <source>Authentication certificate</source>
         <translation>Authentication certificate</translation>
+    </message>
+    <message>
+        <source>Selected is </source>
+        <translation>Selected is </translation>
     </message>
 </context>
 <context>
