@@ -20,9 +20,9 @@
 #include "QCNG.h"
 
 #include "SslCertificate.h"
+#include "TokenData.h"
 
 #include <common/QPCSC.h>
-#include <common/TokenData.h>
 
 #include <QtCore/QDebug>
 #include <QtCore/QLibrary>

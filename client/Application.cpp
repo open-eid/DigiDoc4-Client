@@ -24,6 +24,7 @@
 #include "MainWindow.h"
 #include "QSigner.h"
 #include "DigiDoc.h"
+#include "TokenData.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
@@ -75,9 +76,9 @@ class DigidocConf: public digidoc::XmlConfCurrent
 public:
 	DigidocConf()
 	{
-		Configuration::connect(&Configuration::instance(), &Configuration::updateReminder, [&](bool expired, const QString &title, const QString &message){
-			WarningDialog dlg(message, qApp->activeWindow());
-			dlg.exec();
+		Configuration::connect(&Configuration::instance(), &Configuration::updateReminder,
+				[&](bool /* expired */, const QString & /* title */, const QString &message){
+			WarningDialog(message, qApp->activeWindow()).exec();
 		});
 
 #ifdef CONFIG_URL
@@ -281,6 +282,8 @@ Application::Application( int &argc, char **argv )
 	: Common(argc, argv, QStringLiteral(APP), QStringLiteral(":/images/digidoc_icon_128x128.png"))
 	, d(new Private)
 {
+	qRegisterMetaType<TokenData>("TokenData");
+
 	QStringList args = arguments();
 	args.removeFirst();
 #ifndef Q_OS_MAC

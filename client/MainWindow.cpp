@@ -29,6 +29,7 @@
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
+#include "TokenData.h"
 #include "XmlReader.h"
 #ifdef Q_OS_WIN
 #include "CertStore.h"
@@ -47,7 +48,6 @@
 #include "widgets/VerifyCert.h"
 
 #include <common/DateTime.h>
-#include <common/TokenData.h>
 
 #include <QDebug>
 #include <QFileDialog>

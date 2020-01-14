@@ -22,6 +22,7 @@
 #include "QCardLock.h"
 
 #include "Application.h"
+#include "TokenData.h"
 
 #ifdef Q_OS_WIN
 #include "QCSP.h"
@@ -32,7 +33,6 @@ class QWin;
 #include "QPKCS11.h"
 #include "widgets/CardWidget.h"
 #include <common/QPCSC.h>
-#include <common/TokenData.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -175,9 +175,9 @@ QSigner::QSigner( ApiType api, QObject *parent )
 #else
 	RSA_meth_set1_name(d->rsamethod, "QSmartCard");
 	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
-	typedef int (*EC_KEY_sign)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
+	using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
 		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
-	typedef int (*EC_KEY_sign_setup)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+	using EC_KEY_sign_setup = int (*)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
 	EC_KEY_sign sign = nullptr;
 	EC_KEY_sign_setup sign_setup = nullptr;
 	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
@@ -571,12 +571,12 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	}
 
 	if(!QCardLock::instance().exclusiveTryLock())
-		throwException(tr("Signing/decrypting is already in progress another window."), Exception::General);
+		throwException(tr("Signing/decrypting is already in progress another window."), Exception::General)
 
 	if( !d->sign.cards().contains( d->sign.card() ) || d->sign.cert().isNull() )
 	{
 		QCardLock::instance().exclusiveUnlock();
-		throwException(tr("Signing certificate is not selected."), Exception::General);
+		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
 	int type = NID_sha256;
@@ -594,18 +594,18 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		case QPKCS11::PinOK: break;
 		case QPKCS11::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINCanceled);
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINCanceled)
 		case QPKCS11::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINIncorrect);
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINIncorrect)
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINLocked);
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINLocked)
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::General);
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::General)
 		}
 
 		sig = d->pkcs11->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
@@ -628,7 +628,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	QCardLock::instance().exclusiveUnlock();
 	reloadsign();
 	if( sig.isEmpty() )
-		throwException(tr("Failed to sign document"), Exception::General);
+		throwException(tr("Failed to sign document"), Exception::General)
 	return std::vector<unsigned char>( sig.constBegin(), sig.constEnd() );
 }
 

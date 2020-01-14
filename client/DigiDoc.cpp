@@ -22,10 +22,9 @@
 #include "Application.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
+#include "TokenData.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
-
-#include <common/TokenData.h>
 
 #include <digidocpp/DataFile.h>
 #include <digidocpp/Signature.h>
@@ -40,8 +39,8 @@
 using namespace digidoc;
 using namespace ria::qdigidoc4;
 
-static std::string to( const QString &str ) { return std::string( str.toUtf8().constData() ); }
-static QString from( const std::string &str ) { return QString::fromUtf8( str.c_str() ).normalized( QString::NormalizationForm_C ); }
+static std::string to(const QString &str) { return str.toStdString(); }
+static QString from(const std::string &str) { return QString::fromStdString(str).normalized(QString::NormalizationForm_C); }
 static QByteArray fromVector( const std::vector<unsigned char> &d )
 { return QByteArray((const char *)d.data(), int(d.size())); }
 
