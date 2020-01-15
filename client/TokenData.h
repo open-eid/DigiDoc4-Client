@@ -25,14 +25,6 @@ class QSslCertificate;
 class TokenData
 {
 public:
-	enum TokenFlag
-	{
-		PinCountLow = (1<<1),
-		PinFinalTry = (1<<2),
-		PinLocked = (1<<3)
-	};
-	Q_DECLARE_FLAGS(TokenFlags, TokenFlag)
-
 	TokenData();
 	TokenData( const TokenData &other );
 	~TokenData();
@@ -48,18 +40,9 @@ public:
 
 	void clear();
 
-	TokenFlags flags() const;
-	void setFlag( TokenFlags flag, bool enabled = true );
-	void setFlags( TokenFlags flags );
-
-	QStringList readers() const;
-	void setReaders( const QStringList &readers );
-
 	TokenData& operator =( const TokenData &other );
 	bool operator !=( const TokenData &other ) const;
 	bool operator ==( const TokenData &other ) const;
-
-	static bool cardsOrder( const QString &s1, const QString &s2 );
 
 private:
 	class Private;

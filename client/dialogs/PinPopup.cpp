@@ -33,13 +33,8 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 
-PinPopup::PinPopup(PinFlags flags, const TokenData &t, QWidget *parent)
-	: PinPopup(flags, t.cert(), t.flags(), parent)
-{
-}
-
-PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenData::TokenFlags token, QWidget *parent)
-	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), token, parent)
+PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
+	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), count, parent)
 {
 	if(c.type() & SslCertificate::TempelType)
 	{
@@ -49,7 +44,7 @@ PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenData::TokenFlag
 	}
 }
 
-PinPopup::PinPopup(PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent, const QString &bodyText)
+PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent, const QString &bodyText)
 	: QDialog(parent)
 	, ui(new Ui::PinPopup)
 {
@@ -82,9 +77,9 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenData::TokenFlags t
 	}
 	else
 	{
-		if( token & TokenData::PinFinalTry )
+		if(count & PinFinalTry)
 			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN will be locked next failed attempt"));
-		else if( token & TokenData::PinCountLow )
+		else if(count & PinCountLow)
 			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN has been entered incorrectly at least once"));
 
 		if( flags & Pin2Type )

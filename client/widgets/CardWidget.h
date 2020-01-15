@@ -42,7 +42,6 @@ public:
 
 	void clearPicture() override;
 	QString id() const;
-	bool isLoading() const;
 	void showPicture( const QPixmap &pix ) override;
 	void update(const QSharedPointer<const QCardInfo> &ci, const QString &cardId);
 

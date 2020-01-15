@@ -68,10 +68,11 @@ Q_SIGNALS:
 	void error( const QString &msg );
 
 private Q_SLOTS:
-	void cacheCardData(const QSet<QString> &cards);
 	void selectCard(const QString &card);
 
 private:
+	void cacheCardData();
+	static bool cardsOrder(const QString &s1, const QString &s2);
 	void reloadauth() const;
 	void reloadsign() const;
 	void run() override;
