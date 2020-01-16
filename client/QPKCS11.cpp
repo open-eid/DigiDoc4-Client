@@ -295,7 +295,6 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	PinPopup::TokenFlags f;
 	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
-	if(token.flags & CKF_USER_PIN_LOCKED) f = PinPopup::PinLocked;
 	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
 	{
 		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, rootWindow());
@@ -348,10 +347,9 @@ QList<TokenData> QPKCS11::tokens() const
 	for( CK_SLOT_ID slot: d->slotIds( true ) )
 	{
 		CK_TOKEN_INFO token;
-		if( d->f->C_GetTokenInfo( slot, &token ) != CKR_OK )
-			continue;
 		CK_SESSION_HANDLE session = 0;
-		if(d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &session) != CKR_OK)
+		if(d->f->C_GetTokenInfo(slot, &token) != CKR_OK ||
+			d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &session) != CKR_OK)
 			continue;
 		bool isAuthSlot = false;
 		for( CK_OBJECT_HANDLE obj: d->findObject( session, CKO_CERTIFICATE ) )
@@ -382,7 +380,8 @@ bool QPKCS11::reload()
 	static QMultiHash<QString,QByteArray> drivers {
 #ifdef Q_OS_MAC
 		{ qApp->applicationDirPath() + "/opensc-pkcs11.so", QByteArray() },
-		{ "/Library/latvia-eid/lib/otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" },
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3BF81300008131FE45536D617274417070F8" },
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000" },
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" },
@@ -392,12 +391,12 @@ bool QPKCS11::reload()
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
 #elif defined(Q_OS_WIN)
 		{ "opensc-pkcs11.dll", QByteArray() },
-		{ "OTLvP11.dll", "3BDD18008131FE45904C41545649412D65494490008C" },
 		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3BF81300008131FE45536D617274417070F8" },
 		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3B7D94000080318065B08311C0A983009000" },
 #else
 		{ "opensc-pkcs11.so", QByteArray() },
-		{ "otlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" },
 		{ "/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8" },
 		{ "/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000" },
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
