@@ -18,7 +18,6 @@
  */
 
 #include "QSigner.h"
-#include "QCardInfo.h"
 #include "QCardLock.h"
 
 #include "Application.h"
@@ -40,7 +39,6 @@ class QWin;
 #include <QtCore/QEventLoop>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QStringList>
-#include <QtCore/QSet>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/obj_mac.h>
@@ -70,14 +68,6 @@ static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 }
 #endif
 
-static QCardInfo *toCardInfo(const SslCertificate &c)
-{
-	QCardInfo *ci = new QCardInfo;
-	ci->c = c;
-	return ci;
-}
-
-
 class QSigner::Private
 {
 public:
@@ -86,7 +76,7 @@ public:
 	QPKCS11			*pkcs11 = nullptr;
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
-	QMap<QString, QSharedPointer<QCardInfo>> cache;
+	QMap<QString, SslCertificate> cache;
 
 	static QByteArray signData(int type, const QByteArray &digest, Private *d);
 	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
@@ -194,7 +184,7 @@ QSigner::~QSigner()
 	delete d;
 }
 
-const QMap<QString, QSharedPointer<QCardInfo>> QSigner::cache() const { return d->cache; }
+QMap<QString, SslCertificate> QSigner::cache() const { return d->cache; }
 
 void QSigner::cacheCardData()
 {
@@ -211,13 +201,14 @@ void QSigner::cacheCardData()
 #endif
 	if(d->pkcs11 && d->pkcs11->isLoaded())
 		tokens = d->pkcs11->tokens();
+	d->cache.clear();
 	for(const TokenData &i: qAsConst(tokens))
 	{
-		if(!d->cache.contains(i.card()) || !d->cache[i.card()]->c.isValid())
+		if(!d->cache.contains(i.card()) || !d->cache[i.card()].isValid())
 		{
 			auto sslCert = SslCertificate(i.cert());
 			if(isMatchingType(sslCert))
-				d->cache.insert(i.card(), QSharedPointer<QCardInfo>(toCardInfo(sslCert)));
+				d->cache.insert(i.card(), sslCert);
 		}
 	}
 }
@@ -273,7 +264,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		return DecryptFailed;
 	}
 
-	if( !d->auth.cards().contains( d->auth.card() ) || d->auth.cert().isNull() )
+	if( d->auth.cert().isNull() )
 	{
 		Q_EMIT error( tr("Authentication certificate is not selected.") );
 		QCardLock::instance().exclusiveUnlock();
@@ -469,8 +460,6 @@ void QSigner::run()
 
 			std::sort(acards.begin(), acards.end(), cardsOrder);
 			std::sort(scards.begin(), scards.end(), cardsOrder);
-			at.setCards( acards );
-			st.setCards( scards );
 
 			// check if selected card is still in slot
 			if( !at.card().isEmpty() && !acards.contains( at.card() ) )
@@ -589,7 +578,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	if(!QCardLock::instance().exclusiveTryLock())
 		throwException(tr("Signing/decrypting is already in progress another window."), Exception::General)
 
-	if( !d->sign.cards().contains( d->sign.card() ) || d->sign.cert().isNull() )
+	if( d->sign.cert().isNull() )
 	{
 		QCardLock::instance().exclusiveUnlock();
 		throwException(tr("Signing certificate is not selected."), Exception::General)

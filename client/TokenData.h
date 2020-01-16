@@ -32,9 +32,6 @@ public:
 	QString card() const;
 	void setCard( const QString &card );
 
-	QStringList cards() const;
-	void setCards( const QStringList &cards );
-
 	QSslCertificate cert() const;
 	void setCert( const QSslCertificate &cert );
 

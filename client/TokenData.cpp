@@ -19,14 +19,12 @@
 
 #include "TokenData.h"
 
-#include <QtCore/QStringList>
 #include <QtNetwork/QSslCertificate>
 
 class TokenData::Private: public QSharedData
 {
 public:
 	QString card;
-	QStringList cards;
 	QSslCertificate cert;
 };
 
@@ -39,9 +37,6 @@ TokenData::~TokenData() = default;
 QString TokenData::card() const { return d->card; }
 void TokenData::setCard( const QString &card ) { d->card = card; }
 
-QStringList TokenData::cards() const { return d->cards; }
-void TokenData::setCards( const QStringList &cards ) { d->cards = cards; }
-
 QSslCertificate TokenData::cert() const { return d->cert; }
 void TokenData::setCert( const QSslCertificate &cert ) { d->cert = cert; }
 
@@ -53,8 +48,5 @@ bool TokenData::operator !=( const TokenData &other ) const { return !(operator=
 
 bool TokenData::operator ==( const TokenData &other ) const
 {
-	return d == other.d ||
-		( d->card == other.d->card &&
-		  d->cards == other.d->cards &&
-		  d->cert == other.d->cert );
+	return d == other.d || (d->card == other.d->card && d->cert == other.d->cert);
 }
