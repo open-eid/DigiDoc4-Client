@@ -20,12 +20,9 @@
 #pragma once
 
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "widgets/StyledWidget.h"
 
-#include <QScopedPointer>
-#include <QSharedPointer>
-
-struct QCardInfo;
 class QSvgWidget;
 namespace Ui {
 class CardWidget;
@@ -43,7 +40,7 @@ public:
 	void clearPicture() override;
 	QString id() const;
 	void showPicture( const QPixmap &pix ) override;
-	void update(const QSharedPointer<const QCardInfo> &ci, const QString &cardId);
+	void update(const SslCertificate &c, const QString &cardId);
 
 signals:
 	void photoClicked( const QPixmap &pixmap );
@@ -56,6 +53,6 @@ private:
 
 	Ui::CardWidget *ui;
 	QString card;
-	QSharedPointer<const QCardInfo> cardInfo;
+	SslCertificate cert;
 	QSvgWidget *seal = nullptr;
 };

@@ -268,7 +268,9 @@ QString SslCertificate::personalCode() const
 	QString data = subjectInfo(QSslCertificate::SerialNumber);
 	if(data.size() > 6 && (types.contains(data.left(3)) || data[2] == ':') && data[5] == '-')
 		return data.mid(6);
-	return data;
+	if(!data.isEmpty())
+		return data;
+	return serialNumber(true);
 }
 
 QStringList SslCertificate::policies() const

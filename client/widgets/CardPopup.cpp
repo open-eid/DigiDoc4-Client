@@ -45,11 +45,8 @@ CardPopup::CardPopup(const QSet<QString> &cards, const QString &selectedCard,
 		cardWidget->setCursor(QCursor(Qt::PointingHandCursor));
 		auto cardData = cache[card];
 		if( cardData.isNull() )
-		{
 			cardData.reset(new QCardInfo);
-			cardData->id = card;
-		}
-		cardWidget->update(cardData, card);
+		cardWidget->update(cardData->c, card);
 		connect(cardWidget, &CardWidget::selected, this, &CardPopup::activated);
 		layout->addWidget(cardWidget);
 		cardWidgets << cardWidget;

@@ -961,15 +961,17 @@ void MainWindow::showCardStatus()
 	{
 		qCDebug(MLog) << "Select card" << t.card();
 		auto cardInfo = qApp->signer()->cache()[t.card()];
+		SslCertificate cert = cardInfo->c;
 		const SslCertificate &authCert = at.cert();
 		const SslCertificate &signCert = st.cert();
-		bool seal = cardInfo->type & SslCertificate::TempelType;
+		int type = cert.type();
+		bool seal = type & SslCertificate::TempelType;
 
 		ui->idSelector->show();
 		ui->noCardInfo->hide();
-		ui->infoStack->setHidden(cardInfo->type == SslCertificate::UnknownType || cardInfo->type == SslCertificate::EidType);
-		ui->accordion->setHidden(cardInfo->type == SslCertificate::UnknownType || cardInfo->type == SslCertificate::EidType);
-		ui->noReaderInfo->setVisible(cardInfo->type == SslCertificate::UnknownType || cardInfo->type == SslCertificate::EidType);
+		ui->infoStack->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::EidType);
+		ui->accordion->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::EidType);
+		ui->noReaderInfo->setVisible(type == SslCertificate::UnknownType || type == SslCertificate::EidType);
 		ui->noReaderInfoText->setProperty("currenttext", "The card in the card reader is not an Estonian ID-card");
 		ui->noReaderInfoText->setText(tr("The card in the card reader is not an Estonian ID-card"));
 
@@ -980,15 +982,15 @@ void MainWindow::showCardStatus()
 			ui->cardInfo->clearPicture();
 		}
 
-		ui->cardInfo->update(cardInfo, t.card());
+		ui->cardInfo->update(cert, t.card());
 
 		// Card (e.g. e-Seal) can have only one cert
 		if(!signCert.isNull())
-			emit ui->signContainerPage->cardChanged(cardInfo->id, seal, !signCert.isValid());
+			emit ui->signContainerPage->cardChanged(cert.personalCode(), seal, !signCert.isValid());
 		else
 			emit ui->signContainerPage->cardChanged();
 		if(!authCert.isNull())
-			emit ui->cryptoContainerPage->cardChanged(cardInfo->id, seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
+			emit ui->cryptoContainerPage->cardChanged(cert.personalCode(), seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
 		else
 			emit ui->cryptoContainerPage->cardChanged();
 		if(cryptoDoc)
@@ -996,8 +998,8 @@ void MainWindow::showCardStatus()
 
 		if(seal)
 		{
-			ui->infoStack->update(*cardInfo);
-			ui->accordion->updateInfo(*cardInfo);
+			ui->infoStack->update(cert);
+			ui->accordion->updateInfo(cert);
 			updateCardWarnings();
 		}
 	}

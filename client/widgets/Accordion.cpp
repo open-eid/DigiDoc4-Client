@@ -20,8 +20,6 @@
 #include "Accordion.h"
 #include "ui_Accordion.h"
 
-#include "QCardInfo.h"
-
 Accordion::Accordion(QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::Accordion)
@@ -101,15 +99,15 @@ void Accordion::setFocusToEmail()
 	ui->contentOtherData->setFocusToEmail();
 }
 
-void Accordion::updateInfo(const QCardInfo &info)
+void Accordion::updateInfo(const SslCertificate &c)
 {
-	bool isSign = info.c.keyUsage().contains(SslCertificate::NonRepudiation);
+	bool isSign = c.keyUsage().contains(SslCertificate::NonRepudiation);
 	ui->authBox->setHidden(isSign);
 	ui->signBox->setVisible(isSign);
 	if(isSign)
-		ui->signBox->update(QSmartCardData::Pin2Type, info.c);
+		ui->signBox->update(QSmartCardData::Pin2Type, c);
 	else
-		ui->authBox->update(QSmartCardData::Pin1Type, info.c);
+		ui->authBox->update(QSmartCardData::Pin1Type, c);
 
 	ui->pukBox->hide();
 	ui->titleOtherData->hide();

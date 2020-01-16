@@ -73,11 +73,6 @@ static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 static QCardInfo *toCardInfo(const SslCertificate &c)
 {
 	QCardInfo *ci = new QCardInfo;
-	ci->id = c.personalCode();
-	if(ci->id.isEmpty())
-		ci->id = c.serialNumber(true);
-	ci->loading = false;
-	ci->type = c.type();
 	ci->c = c;
 	return ci;
 }

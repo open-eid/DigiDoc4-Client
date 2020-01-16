@@ -23,8 +23,5 @@
 
 struct QCardInfo
 {
-	QString id;
-	int type;
-	bool loading;
 	SslCertificate c;
 };

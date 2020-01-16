@@ -20,13 +20,11 @@
 #include "InfoStack.h"
 #include "ui_InfoStack.h"
 
-#include "QCardInfo.h"
 #include "QSmartCard.h"
-#include "Styles.h"
+#include "SslCertificate.h"
 
 #include <common/DateTime.h>
 
-#include <QSvgWidget>
 #include <QtCore/QTextStream>
 
 InfoStack::InfoStack( QWidget *parent )
@@ -179,15 +177,15 @@ void InfoStack::update()
 	ui->valueSpacer->setHidden(ui->valueSerialNumber->text().isEmpty());
 }
 
-void InfoStack::update(const QCardInfo &cardInfo)
+void InfoStack::update(const SslCertificate &cert)
 {
-	certType = cardInfo.type;
+	certType = cert.type();
 	certIsValid = true;
 	expireDate.clear();
-	givenNamesText = cardInfo.c.toString(QStringLiteral("CN"));
+	givenNamesText = cert.toString(QStringLiteral("CN"));
 	surnameText.clear();
-	personalCodeText = cardInfo.id;
-	citizenshipText = cardInfo.c.toString(QStringLiteral("C"));
+	personalCodeText = cert.personalCode();
+	citizenshipText = cert.toString(QStringLiteral("C"));
 	update();
 }
 
