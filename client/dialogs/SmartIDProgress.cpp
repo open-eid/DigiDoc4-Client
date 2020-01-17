@@ -312,7 +312,7 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		{"certificateLevel", "QUALIFIED"},
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
-		{"requestProperties", QJsonObject::fromVariantHash({{"vcChoice", true}})},
+		{"requestProperties", QVariantHash{{"vcChoice", true}}},
 		{"displayText", "Sign document"}
 	})).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
