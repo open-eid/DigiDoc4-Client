@@ -120,8 +120,9 @@ public:
 
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
+	void selectCard( const QString &card );
 	void reload();
-	void reloadCard(const QString &card);
+	void reloadCard(const QString &reader, const QString &card);
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false, QWidget* parent = nullptr );
@@ -131,9 +132,6 @@ public:
 
 signals:
 	void dataChanged();
-
-private Q_SLOTS:
-	void selectCard( const QString &card );
 
 private:
 	class Private;

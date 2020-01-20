@@ -716,53 +716,11 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 
 void QSmartCard::reload() { selectCard(d->t.card());  }
 
-void QSmartCard::reloadCard(const QString &card)
+void QSmartCard::reloadCard(const QString &reader, const QString &card)
 {
 	qCDebug(CLog) << "Polling";
 	if(!d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == card)
 		return;
-
-	qCDebug(CLog) << "Poll" << card;
-	// Check available cards
-	QScopedPointer<QPCSCReader> selectedReader;
-	const QStringList readers = QPCSC::instance().readers();
-	if(![&] {
-		for(const QString &name: readers)
-		{
-			qCDebug(CLog) << "Connecting to reader" << name;
-			QScopedPointer<QPCSCReader> reader(new QPCSCReader(name, &QPCSC::instance()));
-			if(!reader->isPresent())
-				continue;
-			switch(reader->connectEx())
-			{
-			case 0x8010000CL: continue; //SCARD_E_NO_SMARTCARD
-			case 0:
-				if(reader->beginTransaction())
-					break;
-			default: return false;
-			}
-			QString nr;
-			if(IDEMIACard::isSupported(reader->atr()) != QSmartCardData::VER_INVALID)
-				nr = IDEMIACard::cardNR(reader.data());
-			else if(EstEIDCard::isSupported(reader->atr()) != QSmartCardData::VER_INVALID)
-				nr = EstEIDCard::cardNR(reader.data());
-			else
-				continue;
-			if(nr.isEmpty())
-				return false;
-			qCDebug(CLog) << "Card id:" << nr;
-			if(!nr.isEmpty() && nr == card)
-			{
-				selectedReader.swap(reader);
-				return true;
-			}
-		}
-		return true;
-	}())
-	{
-		qCDebug(CLog) << "Failed to poll card, try again next round";
-		return;
-	}
 
 	// check if selected card is same as signer
 	if(!d->t.card().isEmpty() && card != d->t.card())
@@ -779,7 +737,12 @@ void QSmartCard::reloadCard(const QString &card)
 		d->t.d = t;
 	}
 
-	if(!selectedReader || !d->t.isNull())
+	if(!d->t.isNull() || reader.isEmpty())
+		return;
+
+	qCDebug(CLog) << "Read" << reader;
+	QScopedPointer<QPCSCReader> selectedReader(new QPCSCReader(reader, &QPCSC::instance()));
+	if(!selectedReader->connect() || !selectedReader->beginTransaction())
 		return;
 
 	qCDebug(CLog) << "Read card" << card << "info";

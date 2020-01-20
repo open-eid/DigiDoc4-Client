@@ -24,7 +24,7 @@
 class TokenData::Private: public QSharedData
 {
 public:
-	QString card;
+	QString card, reader;
 	QSslCertificate cert;
 };
 
@@ -42,11 +42,14 @@ void TokenData::setCert( const QSslCertificate &cert ) { d->cert = cert; }
 
 void TokenData::clear() { d = new Private; }
 
+QString TokenData::reader() const { return d->reader; }
+void TokenData::setReader(const QString &reader) { d->reader = reader; }
+
 TokenData& TokenData::operator =( const TokenData &other ) = default;
 
 bool TokenData::operator !=( const TokenData &other ) const { return !(operator==(other)); }
 
 bool TokenData::operator ==( const TokenData &other ) const
 {
-	return d == other.d || (d->card == other.d->card && d->cert == other.d->cert);
+	return d == other.d || (d->card == other.d->card && d->reader == other.d->reader && d->cert == other.d->cert);
 }

@@ -346,6 +346,9 @@ QList<TokenData> QPKCS11::tokens() const
 	QList<TokenData> list;
 	for( CK_SLOT_ID slot: d->slotIds( true ) )
 	{
+		CK_SLOT_INFO slotInfo;
+		if(d->f->C_GetSlotInfo(slot, &slotInfo) != CKR_OK)
+			continue;
 		CK_TOKEN_INFO token;
 		CK_SESSION_HANDLE session = 0;
 		if(d->f->C_GetTokenInfo(slot, &token) != CKR_OK ||
@@ -368,6 +371,7 @@ QList<TokenData> QPKCS11::tokens() const
 			TokenData t;
 			t.setCard(toQByteArray(token.serialNumber).trimmed());
 			t.setCert(cert);
+			t.setReader(QByteArray::fromRawData((const char*)slotInfo.slotDescription, sizeof(slotInfo.slotDescription)).trimmed());
 			list << t;
 		}
 		d->f->C_CloseSession( session );
