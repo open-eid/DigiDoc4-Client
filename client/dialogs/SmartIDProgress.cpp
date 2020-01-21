@@ -187,7 +187,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg("Smart-ID"));
 				return;
 			default:
-				returnError(tr("Failed to send request ") + reply->errorString());
+				returnError(tr("Failed to send request. ") + reply->errorString());
 				return;
 			}
 		}
@@ -215,7 +215,12 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			if(endResult == QStringLiteral("USER_REFUSED") || endResult == QStringLiteral("TIMEOUT"))
 				d->l.exit(QDialog::Rejected);
 			else if(endResult != QStringLiteral("OK"))
-				returnError(tr("Service result: ") + endResult);
+			{
+				if(endResult == QStringLiteral("WRONG_VC"))
+					returnError(tr("Error: an incorrect control code was chosen"));
+				else
+					returnError(tr("Service result: ") + endResult);
+			}
 			else if(d->documentNumber.isEmpty())
 				d->documentNumber = result.value(QStringLiteral("result")).toObject().value(QStringLiteral("documentNumber")).toString();
 			if(result.contains(QStringLiteral("signature")))
