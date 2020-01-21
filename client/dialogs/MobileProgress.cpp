@@ -167,7 +167,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
-				returnError(tr("Failed to send request ") + reply->errorString());
+				returnError(tr("Failed to send request. ") + reply->errorString());
 			return;
 		}
 		static const QStringList contentType{"application/json", "application/json;charset=UTF-8"};

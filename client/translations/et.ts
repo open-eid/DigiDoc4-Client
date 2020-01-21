@@ -1787,8 +1787,8 @@ Kontrollkood: %1</translation>
         <translation>%1 teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
     </message>
     <message>
-        <source>Failed to send request </source>
-        <translation>Päringu saatmine ebaõnnestus </translation>
+        <source>Failed to send request. </source>
+        <translation>Päringu saatmine ebaõnnestus. </translation>
     </message>
     <message>
         <source>Invalid content type header </source>
@@ -1857,6 +1857,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>Please include correct country code.</source>
         <translation>Telefoninumber peab sisaldama riigikoodi.</translation>
+    </message>
+    <message>
+        <source>Error: an incorrect control code was chosen</source>
+        <translation>Viga: valiti vale kontrollkood</translation>
     </message>
 </context>
 <context>

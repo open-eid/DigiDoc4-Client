@@ -1787,8 +1787,8 @@ Control code: %1</translation>
         <translation>%1 service has encountered technical errors. Please try again later.</translation>
     </message>
     <message>
-        <source>Failed to send request </source>
-        <translation>Failed to send request </translation>
+        <source>Failed to send request. </source>
+        <translation>Failed to send request. </translation>
     </message>
     <message>
         <source>Invalid content type header </source>
@@ -1857,6 +1857,10 @@ Control code: %1</translation>
     <message>
         <source>Please include correct country code.</source>
         <translation>Please include correct country code.</translation>
+    </message>
+    <message>
+        <source>Error: an incorrect control code was chosen</source>
+        <translation>Error: an incorrect control code was chosen</translation>
     </message>
 </context>
 <context>

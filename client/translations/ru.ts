@@ -1790,8 +1790,8 @@ Kонтрольный код: %1</translation>
         <translation>Технический сбой услуги %1. Пожалуйста, попробуйте позже.</translation>
     </message>
     <message>
-        <source>Failed to send request </source>
-        <translation>Не удалось отправить запрос </translation>
+        <source>Failed to send request. </source>
+        <translation>Не удалось отправить запрос. </translation>
     </message>
     <message>
         <source>Invalid content type header </source>
@@ -1851,7 +1851,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Open the Smart-ID application on your smart device and confirm device for signing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Откройте приложение Smart-ID на смарт-устройстве и подтвердите это устройство для подписывания.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1860,6 +1860,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Please include correct country code.</source>
         <translation>Номер телефона должен содержать код страны.</translation>
+    </message>
+    <message>
+        <source>Error: an incorrect control code was chosen</source>
+        <translation>Ошибка: выбран неправильный контрольный код</translation>
     </message>
 </context>
 <context>
