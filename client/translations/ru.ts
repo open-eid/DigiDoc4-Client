@@ -1857,6 +1857,10 @@ Kонтрольный код: %1</translation>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
+    <message>
+        <source>Please include correct country code.</source>
+        <translation>Номер телефона должен содержать код страны.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

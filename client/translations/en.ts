@@ -1854,6 +1854,10 @@ Control code: %1</translation>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
+    <message>
+        <source>Please include correct country code.</source>
+        <translation>Please include correct country code.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

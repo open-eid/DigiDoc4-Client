@@ -1854,6 +1854,10 @@ Kontrollkood: %1</translation>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
+    <message>
+        <source>Please include correct country code.</source>
+        <translation>Telefoninumber peab sisaldama riigikoodi.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

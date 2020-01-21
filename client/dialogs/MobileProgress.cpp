@@ -164,6 +164,8 @@ MobileProgress::MobileProgress(QWidget *parent)
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
 			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
 				returnError(tr("The limit for digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"));
+			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
+				break;
 			else
 				returnError(tr("Failed to send request ") + reply->errorString());
 			return;
@@ -184,6 +186,15 @@ MobileProgress::MobileProgress(QWidget *parent)
 			return;
 		}
 
+		if(result.contains("error"))
+		{
+			QString error =result["error"].toString();
+			if(error == QStringLiteral("phoneNumber must contain of + and numbers(8-30)"))
+				returnError(tr("Please include correct country code."));
+			else
+				returnError(tr(error.toUtf8().constData()));
+			return;
+		}
 		if(result.contains(QStringLiteral("cert")))
 		{
 			try {
