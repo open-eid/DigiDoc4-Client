@@ -22,6 +22,7 @@
 #include <QtCore/QSharedDataPointer>
 
 class QSslCertificate;
+class QVariant;
 class TokenData
 {
 public:
@@ -39,6 +40,9 @@ public:
 	void setReader(const QString &reader);
 
 	void clear();
+
+	QVariant data(const QString &key) const;
+	void setData(const QString &key, const QVariant &value);
 
 	TokenData& operator =( const TokenData &other );
 	bool operator !=( const TokenData &other ) const;

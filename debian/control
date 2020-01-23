@@ -3,6 +3,7 @@ Section: utils
 Priority: extra
 Maintainer: RIA <info@ria.ee>
 Build-Depends:
+ pkg-config,
  cdbs,
  cmake,
  libdigidocpp-dev (>=3.0),

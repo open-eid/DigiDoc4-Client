@@ -206,28 +206,23 @@ QList<TokenData> QCSP::tokens() const
 	return certs;
 }
 
-TokenData QCSP::selectCert(const SslCertificate &cert)
+void QCSP::selectCert(const TokenData &t)
 {
-	TokenData t;
-	t.setCard(cert.subjectInfo("CN"));
-	t.setCert(cert);
-
 	if(d->cert)
 		CertFreeCertificateContext(d->cert);
 	d->cert = nullptr;
 
-	QByteArray der = cert.toDer();
+	QByteArray der = t.cert().toDer();
 	PCCERT_CONTEXT tmp = CertCreateCertificateContext(X509_ASN_ENCODING, PBYTE(der.constData()), DWORD(der.size()));
 	if(!tmp)
-		return t;
+		return;
 
 	HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
 		X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_READONLY_FLAG, L"MY");
 	d->cert = CertFindCertificateInStore(s, X509_ASN_ENCODING, 0, CERT_FIND_EXISTING, tmp, nullptr);
 	CertCloseStore(s, 0);
 	CertFreeCertificateContext(tmp);
-	qDebug() << "Selected cert" << cert.subjectInfo("CN");
-	return t;
+	qDebug() << "Selected cert" << t.cert().subjectInfo("CN");
 }
 
 QByteArray QCSP::sign(int method, const QByteArray &digest) const
