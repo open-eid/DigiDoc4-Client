@@ -814,6 +814,11 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 		if(dlg.exec() != 1)
 			return false;
 	}
+	if(info.size() > 120*1024*1024)
+	{
+		WarningDialog(tr("Added file(s) exceeds the maximum size limit of the container(120MB)."), qApp->activeWindow()).exec();
+		return false;
+	}
 
 	QString fileName(info.fileName());
 	for(const auto &containerFile: d->files)
