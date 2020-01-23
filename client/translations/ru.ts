@@ -134,6 +134,10 @@
         <extracomment>accessible</extracomment>
         <translation>Подтвердить</translation>
     </message>
+    <message>
+        <source>The name you were looking for gave a very large number of results, not all of the search results will be shown. If the desired recipient is not on the list, please enter a more specific name in the search box.</source>
+        <translation>Имя, которое вы искали, дало очень большое количество результатов, не все результаты поиска будут показаны. Если нужного получателя нет в списке, введите более  точное имя в поле поиска.</translation>
+    </message>
 </context>
 <context>
     <name>AddressItem</name>
