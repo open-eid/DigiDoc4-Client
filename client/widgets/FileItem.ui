@@ -22,9 +22,6 @@
     <height>44</height>
    </size>
   </property>
-  <property name="cursor">
-   <cursorShape>PointingHandCursor</cursorShape>
-  </property>
   <property name="styleSheet">
    <string notr="true">#FileItem { 
 border: solid rgba(217, 217, 216, 0.45);
@@ -49,21 +46,20 @@ background-color: #ffffff;
     <number>1</number>
    </property>
    <item>
-    <widget class="QLabel" name="fileName">
+    <widget class="QPushButton" name="fileName">
      <property name="font">
       <font>
        <family>Roboto</family>
        <pointsize>14</pointsize>
       </font>
      </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="accessibleDescription">
-      <string extracomment="accessible">To open file press space or enter</string>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #363739;</string>
+      <string notr="true">color: #363739;
+border: 0px;
+text-align: left;</string>
      </property>
      <property name="text">
       <string notr="true">Dokument 1.pdf</string>
