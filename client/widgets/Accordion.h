@@ -21,7 +21,7 @@
 
 #include "widgets/StyledWidget.h"
 
-class QSmartCard;
+class QSmartCardData;
 class SslCertificate;
 
 namespace Ui {
@@ -45,7 +45,7 @@ public:
 	void open(AccordionTitle* opened);
 	void setFocusToEmail();
 	void updateInfo(const SslCertificate &info);
-	void updateInfo( const QSmartCard *smartCard );
+	void updateInfo(const QSmartCardData &data);
 	bool updateOtherData(const QByteArray &data);
 
 protected:

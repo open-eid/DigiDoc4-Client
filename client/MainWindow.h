@@ -123,7 +123,7 @@ private:
 	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign);
-	void updateCardWarnings();
+	void updateCardWarnings(const QSmartCardData &data);
 	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);

@@ -993,7 +993,7 @@ void MainWindow::showCardStatus()
 		{
 			ui->infoStack->update(cert);
 			ui->accordion->updateInfo(cert);
-			updateCardWarnings();
+			updateCardWarnings(QSmartCardData());
 		}
 	}
 	else

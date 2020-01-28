@@ -38,7 +38,7 @@ public:
 
 	void addBorders();
 	void clear();
-	void update(QSmartCardData::PinType type, const QSmartCard *smartCard);
+	void update(QSmartCardData::PinType type, const QSmartCardData &data);
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
 
 signals:
