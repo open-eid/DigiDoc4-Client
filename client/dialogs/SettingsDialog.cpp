@@ -116,6 +116,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStamp->setFont(regularFont);
 	ui->lblMID->setFont(headerFont);
+	ui->rdMIDUUID->setFont(regularFont);
 	ui->helpRevocation->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpTimeStamp->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpMID->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
