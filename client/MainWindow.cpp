@@ -558,7 +558,7 @@ void MainWindow::convertToBDoc()
 
 void MainWindow::convertToCDoc()
 {
-	QString defaultDir = Settings().value(QStringLiteral("Client/DefaultDir")).toString();
+	QString defaultDir = QSettings().value(QStringLiteral("Client/DefaultDir")).toString();
 	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
 	if(filename.isNull())
 		return;
