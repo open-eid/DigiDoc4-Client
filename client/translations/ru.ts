@@ -1195,7 +1195,7 @@ The Information System Authority does not retain information regarding the files
     </message>
     <message>
         <source>Container is not signed</source>
-        <translation>Файлы контейнера</translation>
+        <translation>Подписи контейнера отсутствуют</translation>
     </message>
     <message>
         <source>Content of the envelope</source>
