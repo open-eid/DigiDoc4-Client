@@ -4,13 +4,12 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.9.8"
-OPENLDAP_VER="2.4.48"
+QT_VER="5.12.7"
+OPENLDAP_VER="2.4.49"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-SCRIPT_PATH=$(cd "$(dirname "$0")"; pwd -P)
 OPENSSL_PATH="/usr/local/opt/openssl"
-: ${MACOSX_DEPLOYMENT_TARGET:="10.11"}
+: ${MACOSX_DEPLOYMENT_TARGET:="10.13"}
 export MACOSX_DEPLOYMENT_TARGET
 
 while [[ $# -gt 0 ]]
@@ -71,38 +70,25 @@ RESET='\033[0m'
 if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     qt_ver_parts=( ${QT_VER//./ } )
     QT_MINOR="${qt_ver_parts[0]}.${qt_ver_parts[1]}"
-    QT_SRCSPEC="opensource"
-    if [[ "$QT_MINOR" = "5.10" ]] ; then
-        QT_SRCSPEC="everywhere"
-    fi
-
     echo -e "\n${ORANGE}##### Building Qt ${QT_VER} ${QT_PATH} #####${RESET}\n"
     mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
-    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-    tar xf qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-    cd qtbase-${QT_SRCSPEC}-src-${QT_VER}
-    patch -Np1 -i $SCRIPT_PATH/Qt-5.9.8-OpenSSL-1.1.patch
-    ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH}
-    make
-    make install
-    rm -rf ${BUILD_PATH}/qtbase-${QT_SRCSPEC}-src-${QT_VER}
-    rm ${BUILD_PATH}/qtbase-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-
-    cd ${BUILD_PATH}
-    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qtsvg-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-    tar xf qtsvg-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-    cd qtsvg-${QT_SRCSPEC}-src-${QT_VER}
-    "${QT_PATH}"/bin/qmake
-    make
-    make install
-
-    cd ${BUILD_PATH}
-    curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/qttools-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-    tar xf qttools-${QT_SRCSPEC}-src-${QT_VER}.tar.xz
-    cd qttools-${QT_SRCSPEC}-src-${QT_VER}
-    "${QT_PATH}"/bin/qmake
-    make
-    make install
+    for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER}; do
+        if [ ! -f ${PACKAGE}.tar.xz ]; then
+            curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
+        fi
+        rm -rf ${PACKAGE}
+        tar xf ${PACKAGE}.tar.xz
+        pushd ${PACKAGE}
+        if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
+            ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH}
+        else
+            "${QT_PATH}"/bin/qmake
+        fi
+        make
+        make install
+        popd
+        rm -rf ${PACKAGE}
+    done
 else
     echo -e "\n${GREY}  Qt not built${RESET}"
 fi
