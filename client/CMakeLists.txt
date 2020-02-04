@@ -146,15 +146,12 @@ if( APPLE )
 	get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
 		COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/
-		COMMAND cp -a /Library/Frameworks/libdigidoc.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
 		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app
-			-executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
 			-executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/MacOS/${PKCS11_NAME} 
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/imageformats -type f -a ! -name libqgif.dylib -a ! -name libqjpeg.dylib -a ! -name libqsvg.dylib -delete
 		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
 		COMMAND rm $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Resources/digidoc-tool
-		COMMAND rm $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libdigidoc.framework/Resources/cdigidoc
 		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libcrypto.dylib
 		    $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libcrypto.1.1.dylib
 		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libcrypto.dylib
@@ -166,10 +163,6 @@ if( APPLE )
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name Headers | xargs rm -rf
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
-		COMMAND install_name_tool -change /Library/libdigidocpp/lib/libssl.1.1.dylib @loader_path/../../../libssl.1.1.dylib
-			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
-		COMMAND install_name_tool -change /Library/libdigidocpp/lib/libcrypto.1.1.dylib @loader_path/../../../libcrypto.1.1.dylib
-			${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/libdigidoc.framework/Versions/2/libdigidoc
 	)
 
 	add_custom_target( codesign DEPENDS ${PROGNAME}

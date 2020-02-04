@@ -523,7 +523,12 @@ bool DigiDoc::open( const QString &file )
 {
 	qApp->waitForTSL( file );
 	clear();
-	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf"))
+	QString suffix = QFileInfo(file).suffix().toLower();
+#ifdef __APPLE__
+	if(suffix == QStringLiteral("pdf") || suffix == QStringLiteral("ddoc"))
+#else
+	if(suffix == QStringLiteral("pdf"))
+#endif
 	{
 		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 		if(parent == nullptr)
@@ -562,7 +567,12 @@ bool DigiDoc::open( const QString &file )
 		return true;
 	}
 	catch( const Exception &e )
-	{ setLastError( tr("An error occurred while opening the document."), e ); }
+	{
+		if(e.code() == Exception::NetworkError)
+			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection."), e);
+		else
+			setLastError(tr("An error occurred while opening the document."), e);
+	}
 	return false;
 }
 
@@ -716,9 +726,4 @@ QList<DigiDocSignature> DigiDoc::timestamps() const
 	for(const Signature *signature: parentContainer->signatures())
 		list << DigiDocSignature(signature, this);
 	return list;
-}
-
-DigiDoc::DocumentType DigiDoc::documentType() const
-{
-	return checkDoc() && b->mediaType() == "application/vnd.etsi.asic-e+zip" ? BDoc2Type : DDocType;
 }

@@ -833,6 +833,10 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <source>The timestamp added to the signature must be taken before validity confirmation.</source>
         <translation>Allkirjale lisatud ajatempel peab olema varasem kehtivuskinnitusest.</translation>
     </message>
+    <message>
+        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
+        <translation>Viga SiVa serveriga ühenduse saamisel! Palun kontrollige internetiühendust.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
