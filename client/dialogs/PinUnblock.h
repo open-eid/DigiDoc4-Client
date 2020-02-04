@@ -44,14 +44,12 @@ public:
 		QDate birthDate, QString personalCode);
 	~PinUnblock() final;
 
-	int exec() override;
 	QString firstCodeText() const;
 	QString newCodeText() const;
 
 private:
 	void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
 	void initIntro(WorkMode mode, QSmartCardData::PinType type);
-	void setError(const QString &msg);
 	void setUnblockEnabled();
 	bool validatePin(const QString& pin, QSmartCardData::PinType type, WorkMode mode);
 

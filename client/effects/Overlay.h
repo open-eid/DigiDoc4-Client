@@ -27,8 +27,13 @@
 class Overlay : public QWidget
 {
 public:
-	Overlay(QWidget *parent)
-	: QWidget (parent)
+	Overlay(QWidget *runner, QWidget *parent): Overlay(parent)
+	{
+		connect(runner, &QWidget::destroyed, this, &Overlay::deleteLater);
+		show();
+	}
+
+	Overlay(QWidget *parent): QWidget(parent)
 	{
 		setPalette(Qt::transparent);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
