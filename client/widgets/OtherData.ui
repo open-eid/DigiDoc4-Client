@@ -91,105 +91,84 @@ color: #353739;</string>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="activateEMail" native="true">
-     <layout class="QVBoxLayout" name="activateEMailLayout">
-      <property name="spacing">
-       <number>9</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="lblNoForwarding">
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-         </font>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::TabFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;
+    <widget class="QLabel" name="lblNoForwarding">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;
 color: #353739;</string>
-        </property>
-        <property name="text">
-         <string>No official email redirects found. To send email to @eesti.ee, please enter your email address:</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="inputEMail">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: 1px solid #c8c8c8;
+     </property>
+     <property name="text">
+      <string>No official email redirects found. To send email to @eesti.ee, please enter your email address:</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="inputEMail">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid #c8c8c8;
 font-size: 14px;
 color: #000000;
 font-weight: 400;
 text-decoration: underline;
 </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="activate">
-        <property name="minimumSize">
-         <size>
-          <width>267</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>267</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto Condensed</family>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Activate redirection</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="activate">
+     <property name="minimumSize">
+      <size>
+       <width>267</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>267</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Roboto Condensed</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Activate redirection</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
 QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}
 QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}
 QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 </string>
-        </property>
-        <property name="text">
-         <string>ACTIVATE REDIRECTION</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </property>
+     <property name="text">
+      <string>ACTIVATE REDIRECTION</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -221,7 +200,7 @@ QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
 color: #75787B;</string>
      </property>
      <property name="text">
-      <string>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee/en/'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;</string>
+      <string>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee/en/'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href='https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</string>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>

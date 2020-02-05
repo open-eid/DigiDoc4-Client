@@ -84,7 +84,9 @@ bool OtherData::update(bool activate, const QByteArray &data)
 		}
 	}
 
-	ui->activateEMail->setVisible(activate);
+	ui->lblNoForwarding->setVisible(activate);
+	ui->inputEMail->setVisible(activate);
+	ui->activate->setVisible(activate);
 	ui->btnCheckEMail->setHidden(activate || !eMail.isEmpty());
 	ui->lblEMail->setHidden(eMail.isEmpty());
 	ui->lblEMail->setText(QStringLiteral("<b>%1</b>").arg(eMail));
