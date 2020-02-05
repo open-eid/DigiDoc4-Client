@@ -2571,16 +2571,8 @@ Control code: %1</translation>
         <translation>Network settings are correct, certificate status service is accessible!</translation>
     </message>
     <message>
-        <source>Base version:</source>
-        <translation>Base version:</translation>
-    </message>
-    <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 client</translation>
-    </message>
-    <message>
-        <source>%1 version %2, released %3%4</source>
-        <translation>%1 version %2, released %3%4</translation>
     </message>
     <message>
         <source>Checking updates has failed.</source>
@@ -2725,6 +2717,10 @@ Additional licenses and components</translation>
     <message>
         <source>Digidoc4 client configuration update was successful.</source>
         <translation>Digidoc4 client configuration update was successful.</translation>
+    </message>
+    <message>
+        <source>%1 version %2, released %3</source>
+        <translation>%1 version %2, released %3</translation>
     </message>
 </context>
 <context>

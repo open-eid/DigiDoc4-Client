@@ -21,12 +21,13 @@
 
 #include <QDialog>
 
-
 namespace digidoc { class Conf; }
 
 namespace Ui {
 class SettingsDialog;
 }
+
+class QAbstractButton;
 
 class SettingsDialog : public QDialog
 {
@@ -55,21 +56,21 @@ signals:
 	void togglePrinting(bool enable);
 
 private:
+	void changePage(QAbstractButton *button);
 	void checkConnection();
-	void retranslate(const QString& lang);
 	void initFunctionality();
-	void updateCert();
-	void selectLanguage();
-	void setProxyEnabled();
-	void updateProxy();
+	void installCert();
 	void openDirectory();
-	void updateDiagnostics();
+	void retranslate(const QString& lang);
 	void saveDiagnostics();
 	void saveProxy();
-
-	void installCert();
+	void selectLanguage();
+	void setProxyEnabled();
+	void updateCert();
+	void updateProxy();
+	void updateVersion();
+	void updateDiagnostics();
 	void useDefaultSettings();
-	void changePage(QPushButton* button);
 
 	Ui::SettingsDialog *ui;
 	QString appletVersion;

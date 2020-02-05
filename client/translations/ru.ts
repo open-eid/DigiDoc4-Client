@@ -2578,16 +2578,8 @@ Kонтрольный код: %1</translation>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>
     <message>
-        <source>Base version:</source>
-        <translation>Базовая версия:</translation>
-    </message>
-    <message>
         <source>DigiDoc4 client</source>
         <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
-        <source>%1 version %2, released %3%4</source>
-        <translation>%1 версия %2, выпущенный %3%4</translation>
     </message>
     <message>
         <source>Checking updates has failed.</source>
@@ -2728,6 +2720,10 @@ Additional licenses and components</source>
     <message>
         <source>Digidoc4 client configuration update was successful.</source>
         <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
+    </message>
+    <message>
+        <source>%1 version %2, released %3</source>
+        <translation>%1 версия %2, выпущенный %3</translation>
     </message>
 </context>
 <context>
