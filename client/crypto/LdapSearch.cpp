@@ -135,7 +135,7 @@ void LdapSearch::search( const QString &search )
 	char *attrs[] = { const_cast<char*>("userCertificate;binary"), nullptr };
 
 	int err = ldap_search_ext( d->ldap, "c=EE", LDAP_SCOPE_SUBTREE,
-		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, nullptr, nullptr, 0, 0, &d->msg_id);
+		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &d->msg_id);
 	if( err )
 		setLastError( tr("Failed to init ldap search"), err );
 	else
@@ -179,8 +179,9 @@ void LdapSearch::timerEvent( QTimerEvent *e )
 	killTimer( e->timerId() );
 
 	QList<QSslCertificate> list;
-	for( LDAPMessage *entry = ldap_first_entry( d->ldap, result );
-		 entry; entry = ldap_next_entry( d->ldap, entry ) )
+	LDAPMessage *entry = ldap_first_entry(d->ldap, result);
+	int count = ldap_count_entries(d->ldap, entry);
+	for(; entry; entry = ldap_next_entry(d->ldap, entry))
 	{
 		BerElement *pos = nullptr;
 		for( char *attr = ldap_first_attribute( d->ldap, entry, &pos );
@@ -199,5 +200,5 @@ void LdapSearch::timerEvent( QTimerEvent *e )
 	}
 	ldap_msgfree( result );
 
-	Q_EMIT searchResult( list );
+	Q_EMIT searchResult(list, count);
 }

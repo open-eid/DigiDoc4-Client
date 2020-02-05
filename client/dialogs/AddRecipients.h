@@ -67,7 +67,7 @@ private:
 	void saveHistory();
 	void search(const QString &term);
 	void showError(const QString &msg, const QString &details = QString());
-	void showResult(const QList<QSslCertificate> &result);
+	void showResult(const QList<QSslCertificate> &result, int resultCount);
 	HistoryCertData toHistory(const QSslCertificate& cert) const;
 
 	Ui::AddRecipients *ui;

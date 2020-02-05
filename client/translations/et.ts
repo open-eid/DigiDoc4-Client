@@ -134,6 +134,10 @@
         <extracomment>accessible</extracomment>
         <translation>Kinnita</translation>
     </message>
+    <message>
+        <source>The name you were looking for gave a very large number of results, not all of the search results will be shown. If the desired recipient is not on the list, please enter a more specific name in the search box.</source>
+        <translation>Teie otsitud nimi andis väga palju vastuseid, kõiki otsingutulemusi ei näidata. Kui soovitud adressaati loendis ei ole, sisestage palun otsinguaknasse täpsem nimi.</translation>
+    </message>
 </context>
 <context>
     <name>AddressItem</name>

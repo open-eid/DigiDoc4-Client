@@ -434,7 +434,7 @@ void AddRecipients::showError( const QString &msg, const QString &details )
 	b.exec();
 }
 
-void AddRecipients::showResult(const QList<QSslCertificate> &result)
+void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount)
 {
 	QList<QSslCertificate> filter;
 	for(const QSslCertificate &k: result)
@@ -468,6 +468,12 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result)
 
 		if(select && item)
 			addRecipientToRightPane(item, true);
+	}
+
+	if(resultCount >= 50)
+	{
+		showError(tr("The name you were looking for gave a very large number of results, not all of the search results will be shown. "
+			"If the desired recipient is not on the list, please enter a more specific name in the search box."));
 	}
 
 	QApplication::restoreOverrideCursor();
