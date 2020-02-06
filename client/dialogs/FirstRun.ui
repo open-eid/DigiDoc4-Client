@@ -82,14 +82,22 @@ QComboBox:item:selected {
 
 /* drop-down button*/
 QComboBox::drop-down {
-    width: 0px;
-	border: none;
+    background-color: #FFFFFF;
+    width: 25px;
+    border-left-width: 1px;
+    border-left-color: #DEE4E9;
+    border-left-style: solid;
 }
 
 /* drop-down button image*/
 QComboBox::down-arrow {
-	border: none;
-    image: none;
+    image: url(:/images/arrow_down.svg);
+}
+
+/* drop-down button image on clicked*/
+QComboBox::down-arrow:on {
+    top: 1px;
+    left: 1px;
 }</string>
      </property>
      <property name="maxVisibleItems">

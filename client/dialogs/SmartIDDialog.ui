@@ -38,12 +38,18 @@ background-color: #006EB5;
 color: #FFFFFF;
 }
 QComboBox::drop-down {
-width: 0px;
-border: none;
+background-color: #FFFFFF;
+width: 25px;
+border-left-width: 1px;
+border-left-color: #DEE4E9;
+border-left-style: solid;
 }
 QComboBox::down-arrow {
-border: none;
-image: none;
+image: url(:/images/arrow_down.svg);
+}
+QComboBox::down-arrow:on {
+top: 1px;
+left: 1px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="SmartIDDialogLayout">
