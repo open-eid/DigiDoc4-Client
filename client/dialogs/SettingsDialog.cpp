@@ -238,15 +238,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
 	connect(ui->pageGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
 
-    QSettings s;
-	ui->rdMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
+	ui->rdMIDUUID->setText(QSettings().value(QStringLiteral("MIDUUID")).toString());
 	connect(ui->rdMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
 		Common::setValueEx(QStringLiteral("MIDUUID"), text, QString());
 		Common::setValueEx(QStringLiteral("SIDUUID"), text, QString());
 	});
 
-	connect( this, &SettingsDialog::finished, this, &SettingsDialog::save );
-	connect( this, &SettingsDialog::finished, this, []{ QApplication::restoreOverrideCursor(); } );
+	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
 
 	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
 	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
@@ -330,27 +328,17 @@ void SettingsDialog::initFunctionality()
 	ui->btGeneralChooseDirectory->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
+	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [=](bool enable) {
+		ui->btGeneralChooseDirectory->setVisible(enable);
+		ui->txtGeneralDirectory->setVisible(enable);
+		if(!enable)
+			ui->txtGeneralDirectory->clear();
+	});
 	ui->txtGeneralDirectory->setText(QSettings().value(QStringLiteral("DefaultDir")).toString());
 	if(ui->txtGeneralDirectory->text().isEmpty())
-	{
-		ui->rdGeneralSameDirectory->setChecked( true );
-		ui->btGeneralChooseDirectory->setEnabled(false);
-	}
-	else
-	{
-		ui->rdGeneralSpecifyDirectory->setChecked( true );
-		ui->btGeneralChooseDirectory->setEnabled(true);
-	}
-	connect(ui->rdGeneralSameDirectory, &QRadioButton::toggled, this, [this](bool checked) {
-		if(checked)
-		{
-			ui->btGeneralChooseDirectory->setEnabled(false);
-			ui->txtGeneralDirectory->clear();
-		}
-	});
-	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool checked) {
-		if(checked)
-			ui->btGeneralChooseDirectory->setEnabled(true);
+		ui->rdGeneralSameDirectory->setChecked(true);
+	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
+		Common::setValueEx(QStringLiteral("DefaultDir"), text, QString());
 	});
 #endif
 
@@ -378,19 +366,16 @@ void SettingsDialog::initFunctionality()
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	switch(QSettings().value(QStringLiteral("ProxyConfig"), 0).toInt())
 	{
-	case 1:
-		ui->rdProxySystem->setChecked( true );
-		break;
-	case 2:
-		ui->rdProxyManual->setChecked( true );
-		break;
-	default:
-		ui->rdProxyNone->setChecked( true );
-		break;
+	case 1: ui->rdProxySystem->setChecked(true); break;
+	case 2: ui->rdProxyManual->setChecked(true); break;
+	default: ui->rdProxyNone->setChecked(true); break;
 	}
 
 	updateProxy();
-	ui->chkIgnoreAccessCert->setChecked( Application::confValue( Application::PKCS12Disable, false ).toBool() );
+	ui->chkIgnoreAccessCert->setChecked(Application::confValue(Application::PKCS12Disable, false).toBool());
+	connect(ui->chkIgnoreAccessCert, &QCheckBox::toggled, this, [](bool checked) {
+		Application::setConfValue(Application::PKCS12Disable, checked);
+	});
 #ifdef CONFIG_URL
 	ui->rdTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
 #endif
@@ -400,11 +385,14 @@ void SettingsDialog::initFunctionality()
 		qApp->setConfValue(Application::TSAUrl, url);
 	});
 
-	ui->chkShowPrintSummary->setChecked(QSettings().value(QStringLiteral("ShowPrintSummary"), "false").toBool());
+	ui->chkShowPrintSummary->setChecked(QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool());
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
+		Common::setValueEx(QStringLiteral("ShowPrintSummary"), checked, false);
+	});
 	ui->chkRoleAddressInfo->setChecked(QSettings().value(QStringLiteral("RoleAddressInfo"), false).toBool());
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked){
-		QSettings().setValue(QStringLiteral("RoleAddressInfo"), checked);
+		Common::setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
 	});
 }
 
@@ -462,32 +450,14 @@ void SettingsDialog::updateVersion()
 		.arg(tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE)));
 }
 
-void SettingsDialog::save()
-{
-#ifndef Q_OS_MAC
-	QSettings().setValue("DefaultDir", ui->txtGeneralDirectory->text());
-#endif
-
-	Application::setConfValue( Application::PKCS12Disable, ui->chkIgnoreAccessCert->isChecked() );
-	saveProxy();
-	QSettings().setValue(QStringLiteral("ShowPrintSummary"), ui->chkShowPrintSummary->isChecked() );
-}
-
 void SettingsDialog::saveProxy()
 {
 	if(ui->rdProxyNone->isChecked())
-	{
-		QSettings().setValue(QStringLiteral("ProxyConfig"), 0);
-	}
+		Common::setValueEx(QStringLiteral("ProxyConfig"), 0, 0);
 	else if(ui->rdProxySystem->isChecked())
-	{
-		QSettings().setValue(QStringLiteral("ProxyConfig"), 1);
-	}
+		Common::setValueEx(QStringLiteral("ProxyConfig"), 1, 0);
 	else if(ui->rdProxyManual->isChecked())
-	{
-		QSettings().setValue(QStringLiteral("ProxyConfig"), 2);
-	}
-
+		Common::setValueEx(QStringLiteral("ProxyConfig"), 2, 0);
 	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
 	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
 	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
@@ -528,7 +498,7 @@ void SettingsDialog::openDirectory()
 	if(!dir.isEmpty())
 	{
 		ui->rdGeneralSpecifyDirectory->setChecked( true );
-		QSettings().setValue(QStringLiteral("DefaultDir"), dir);
+		Common::setValueEx(QStringLiteral("DefaultDir"), dir, QString());
 		ui->txtGeneralDirectory->setText( dir );
 	}
 }
