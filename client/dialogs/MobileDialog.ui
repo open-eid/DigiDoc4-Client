@@ -91,6 +91,9 @@ QPushButton:hover:!pressed {
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="accessibleName">
     <string extracomment="accessible">Sign</string>
    </property>

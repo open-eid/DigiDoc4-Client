@@ -739,6 +739,9 @@ background-position: bottom;
                    <strikeout>false</strikeout>
                   </font>
                  </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
                  <property name="accessibleName">
                   <string comment="accessible">Open file for encryption or decryption</string>
                  </property>

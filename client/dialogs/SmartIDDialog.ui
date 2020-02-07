@@ -251,6 +251,9 @@ QPushButton:hover:!pressed {
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	border-radius: 2px; 

@@ -92,6 +92,9 @@ QHeaderView::section {
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="accessibleName">
         <string extracomment="accessible">Close</string>
        </property>
@@ -132,6 +135,9 @@ QPushButton:disabled {
         <font>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="accessibleName">
         <string extracomment="accessible">Show certificate</string>
