@@ -271,6 +271,7 @@ QPushButton* SignatureDialog::itemButton(const QString &text, QTreeWidget *view)
 #endif
 	font.setUnderline(true);
 	button->setFont(font);
+	button->setCursor(QCursor(Qt::PointingHandCursor));
 	button->setStyleSheet(QStringLiteral("margin-left: 1px; border: none; text-align: left; color: #509B00"));
 	return button;
 }

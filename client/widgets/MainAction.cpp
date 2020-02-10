@@ -122,6 +122,7 @@ void MainAction::showDropdown()
 		{
 			QPushButton *other = new QPushButton(label(*i), parentWidget());
 			other->setAccessibleName(label(*i).toLower());
+			other->setCursor(QCursor(Qt::PointingHandCursor));
 			other->resize(size());
 			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
 			other->show();

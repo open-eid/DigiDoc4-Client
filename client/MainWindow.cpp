@@ -113,7 +113,6 @@ MainWindow::MainWindow( QWidget *parent )
 	selector->hide();
 	selector->resize( 12, 6 );
 	selector->move( 9, 32 );
-	selector->setCursor( Qt::PointingHandCursor );
 	ui->help->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->settings->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Seaded.svg"), QStringLiteral(":/images/icon_Seaded_hover.svg"), this));
 	buttonGroup = new QButtonGroup( this );

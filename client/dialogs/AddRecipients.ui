@@ -118,6 +118,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Certificate from card</string>
         </property>
@@ -137,6 +140,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Certificate from file</string>
         </property>
@@ -155,6 +161,9 @@ QPushButton:disabled {
           <width>145</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Latest used certificate</string>
@@ -193,6 +202,9 @@ QPushButton:disabled {
             <height>25</height>
            </size>
           </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="accessibleName">
            <string extracomment="accessible">Cancel</string>
           </property>
@@ -225,6 +237,9 @@ QPushButton:hover:!pressed {
             <width>120</width>
             <height>25</height>
            </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="accessibleName">
            <string extracomment="accessible">Confirm</string>

@@ -45,10 +45,13 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	d->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	setWindowModality(Qt::ApplicationModal);
-	d->buttonBox->addButton(tr("SIGN"), QDialogButtonBox::AcceptRole)->setFont(buttonFont);
+	QPushButton *sign = d->buttonBox->addButton(tr("SIGN"), QDialogButtonBox::AcceptRole);
+	sign->setFont(buttonFont);
+	sign->setCursor(QCursor(Qt::PointingHandCursor));
 	QPushButton *cancel = d->buttonBox->button(QDialogButtonBox::Cancel);
 	cancel->setFont(buttonFont);
 	cancel->setText(cancel->text().toUpper());
+	cancel->setCursor(QCursor(Qt::PointingHandCursor));
 
 	for(QLabel *label: findChildren<QLabel*>())
 		label->setFont(regularFont);

@@ -446,6 +446,9 @@ QRadioButton::indicator::checked {
              <height>31</height>
             </size>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string notr="true">...</string>
            </property>
@@ -480,6 +483,9 @@ QRadioButton::indicator::checked {
          </item>
          <item>
           <widget class="QPushButton" name="tokenRestart">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Restart now</string>
            </property>
@@ -607,6 +613,9 @@ QRadioButton::indicator::checked {
              <height>31</height>
             </size>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>INSTALL MANUALLY</string>
            </property>
@@ -622,6 +631,9 @@ QRadioButton::indicator::checked {
              <width>150</width>
              <height>31</height>
             </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="text">
             <string>SHOW CERTIFICATE</string>
@@ -1246,6 +1258,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">First run</string>
         </property>
@@ -1267,6 +1282,9 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Refresh configuration</string>
@@ -1290,6 +1308,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Check connection</string>
         </property>
@@ -1311,6 +1332,9 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Save diagnostics report</string>
@@ -1334,6 +1358,9 @@ QPushButton:disabled {
           <height>25</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Remove old certificates</string>
         </property>
@@ -1355,6 +1382,9 @@ QPushButton:disabled {
           <width>16777215</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Use default settings</string>
@@ -1382,6 +1412,9 @@ QPushButton:disabled {
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="accessibleName">
          <string extracomment="accessible">Close</string>

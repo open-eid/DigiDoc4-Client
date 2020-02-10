@@ -42,6 +42,7 @@ CardPopup::CardPopup(const QSet<QString> &cards, const QString &selectedCard,
 		if( card == selectedCard )
 			continue;
 		auto cardWidget = new CardWidget(card, this);
+		cardWidget->setCursor(QCursor(Qt::PointingHandCursor));
 		auto cardData = cache[card];
 		if( cardData.isNull() )
 		{
