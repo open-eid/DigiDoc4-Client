@@ -1881,16 +1881,16 @@ Kонтрольный код: %1</translation>
         <translation>В считывателе нет карты; проверьте, введена ли карточка правильно</translation>
     </message>
     <message>
-        <source>PCSC service is not running</source>
-        <translation>Служба PCSC не работает</translation>
-    </message>
-    <message>
         <source>No readers found</source>
         <translation>Считывающее устройство не обнаружено</translation>
     </message>
     <message>
         <source>Loading data</source>
         <translation>Данные считываются</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>Необходимая для использования ID-карты услуга PCSC не работает. Проверьте настройки компьютера.</translation>
     </message>
 </context>
 <context>
