@@ -22,12 +22,12 @@
         <translation>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
+        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <translation>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
     </message>
     <message>
-        <source>FREE_CERT_EXCEEDED</source>
-        <translation>You have reached the free service limit - 10 signatures. Regarding to terms and conditions of validity confirmation service you&apos;re allowed to use the service in extent of 10 signatures per month. If you are going to exceed the limit of 10 signatures per month or/and will use the service for commercial purposes, please contact to IT support team of your company or sign a contract to use the &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;service&lt;/a&gt;. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
+        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</source>
+        <translation>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

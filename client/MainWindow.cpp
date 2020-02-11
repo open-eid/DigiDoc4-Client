@@ -20,7 +20,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "AccessCert.h"
 #include "Application.h"
 #include "CheckConnection.h"
 #include "Colors.h"
@@ -36,6 +35,7 @@
 #include "crypto/CryptoDoc.h"
 #include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
+#include "dialogs/AccessCert.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/MobileProgress.h"
 #include "dialogs/RoleAddressDialog.h"

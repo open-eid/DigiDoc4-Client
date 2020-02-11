@@ -22,12 +22,12 @@
         <translation>Juurdepääsutõend aegub %1. Juurdepääsutõendi uuendamiseks pöörduge palun oma asutuse IT-meeskonna poole. Täiendav informatsioon: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
+        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <translation>Juurdepääsutõend aegus %1. Juurdepääsutõendi uuendamiseks paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
     </message>
     <message>
-        <source>FREE_CERT_EXCEEDED</source>
-        <translation>Täitunud on tasuta teenuse 10 allkirja limiit. Vastavalt kehtivuskinnitusteenuse kasutamise tavatingimustele on lubatud allkirjastamise teenust kasutada mahus kuni 10 allkirja kuus. Teenuse kasutamiseks suuremas mahus või kommertseesmärkidel pöörduge palun oma asutuse IT-meeskonna poole või sõlmige teenuse kasutamiseks &lt;a href=&quot;https://sk.ee/teenused/kehtivuskinnituse-teenus&quot;&gt;leping&lt;/a&gt;. Lisainfo: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1885</translation>
+        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</source>
+        <translation>Peagi on täitumas tasuta allkirjade kuulimiit. Suuremas mahus allkirjastamiseks tuleb sõlmida leping teenusepakkujaga. Loe rohkem &lt;a href=&quot;https://id.ee/index.php?id=39021&quot;&gt;siit&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
