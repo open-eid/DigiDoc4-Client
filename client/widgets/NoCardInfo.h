@@ -43,9 +43,9 @@ public:
 	void update(Status s);
 
 protected:
-	void changeEvent(QEvent* event) override;
+	void changeEvent(QEvent* event) final;
 
 private:
 	Ui::NoCardInfo *ui;
-	Status status;
+	Status status = Loading;
 };

@@ -1878,16 +1878,16 @@ Control code: %1</translation>
         <translation>No card in card reader; check if ID-card is inserted correctly</translation>
     </message>
     <message>
-        <source>PCSC service is not running</source>
-        <translation>PCSC service is not running</translation>
-    </message>
-    <message>
         <source>No readers found</source>
         <translation>No card readers found</translation>
     </message>
     <message>
         <source>Loading data</source>
         <translation>Loading data</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
     </message>
 </context>
 <context>

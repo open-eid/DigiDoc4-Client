@@ -1878,16 +1878,16 @@ Kontrollkood: %1</translation>
         <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
     </message>
     <message>
-        <source>PCSC service is not running</source>
-        <translation>PCSC teenus ei tööta</translation>
-    </message>
-    <message>
         <source>No readers found</source>
         <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
     </message>
     <message>
         <source>Loading data</source>
         <translation>Loen andmeid</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
     </message>
 </context>
 <context>

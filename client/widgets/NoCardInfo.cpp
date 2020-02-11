@@ -24,7 +24,6 @@
 NoCardInfo::NoCardInfo( QWidget *parent )
 	: QWidget(parent)
 	, ui(new Ui::NoCardInfo)
-	, status(Loading)
 {
 	ui->setupUi( this );
 	ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
@@ -42,7 +41,7 @@ void NoCardInfo::update(Status s)
 	switch(status)
 	{
 	case NoPCSC:
-		ui->cardStatus->setText(tr("PCSC service is not running"));
+		ui->cardStatus->setText(tr("The PCSC service, required for using the ID-card, is not working. Check your computer settings."));
 		break;
 	case NoReader:
 		ui->cardStatus->setText(tr("No readers found"));
