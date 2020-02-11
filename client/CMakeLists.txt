@@ -9,8 +9,6 @@ add_custom_command(
 	WORKING_DIRECTORY ${_qt5Core_install_prefix}/bin
 )
 
-include_directories( ${CMAKE_SOURCE_DIR} )
-
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
 qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
@@ -128,6 +126,7 @@ target_link_libraries( ${PROGNAME}
 	${LDAP_LIBRARIES}
 )
 
+target_include_directories(${PROGNAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR} )
 target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SMARTID_URL="${SMARTID_URL}" )
 
 if( APPLE )
