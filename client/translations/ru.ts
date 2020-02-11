@@ -1873,6 +1873,10 @@ Kонтрольный код: %1</translation>
         <source>Error: an incorrect control code was chosen</source>
         <translation>Ошибка: выбран неправильный контрольный код</translation>
     </message>
+    <message>
+        <source>Sign document</source>
+        <translation>Подписать документ</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
