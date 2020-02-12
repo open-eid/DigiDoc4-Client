@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <common/TokenData.h>
+#include "TokenData.h"
 
 #include <QDialog>
 #include <QtCore/QRegExp>

@@ -20,8 +20,7 @@
 #include "QCSP.h"
 
 #include "SslCertificate.h"
-
-#include <common/TokenData.h>
+#include "TokenData.h"
 
 #include <QtCore/QDebug>
 #include <QtWidgets/QApplication>

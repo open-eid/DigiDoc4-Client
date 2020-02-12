@@ -26,11 +26,11 @@
 #include "FileDialog.h"
 #include "QSigner.h"
 #include "Styles.h"
+#include "TokenData.h"
 #include "crypto/LdapSearch.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 
-#include <common/TokenData.h>
 #include <common/IKValidator.h>
 
 #include <QDebug>

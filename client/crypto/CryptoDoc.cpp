@@ -19,13 +19,12 @@
 
 #include "CryptoDoc.h"
 
-#include "client/Application.h"
-#include "client/QSigner.h"
-#include "client/SslCertificate.h"
-#include "client/dialogs/FileDialog.h"
-#include "client/dialogs/WarningDialog.h"
-
-#include <common/TokenData.h>
+#include "TokenData.h"
+#include "Application.h"
+#include "QSigner.h"
+#include "SslCertificate.h"
+#include "dialogs/FileDialog.h"
+#include "dialogs/WarningDialog.h"
 
 #include <QDebug>
 #include <QtCore/QBuffer>
