@@ -155,6 +155,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->signerCountry->setText( l.value( 3 ) );
 
 	d->signerRoles->setText(s.roles().join(QStringLiteral(", ")));
+	d->signerRoles->setFocusPolicy(d->signerRoles->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+	d->lblRole->setFocusPolicy(d->signerRoles->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
 
 	// Certificate info
 	QTreeWidget *t = d->signatureView;
