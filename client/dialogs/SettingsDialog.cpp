@@ -112,6 +112,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->lblRevocation->setFont(headerFont);
 	ui->lblAccessCert->setFont(regularFont);
 	ui->txtAccessCert->setFont(regularFont);
+	ui->btInstallManually->setFont(condensed12);
+	ui->btShowCertificate->setFont(condensed12);
 	ui->chkIgnoreAccessCert->setFont(regularFont);
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStamp->setFont(regularFont);
@@ -150,8 +152,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->btnNavFromHistory->setFont(condensed12);
 
 	ui->btnNavUseByDefault->setFont(condensed12);
-	ui->btnNavInstallManually->setFont(condensed12);
-	ui->btnNavShowCertificate->setFont(condensed12);
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnRefreshConfig->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
@@ -179,9 +179,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
 
 	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
-	connect( ui->btnNavShowCertificate, &QPushButton::clicked, this, [this] {
-		CertificateDetails::showCertificate(SslCertificate(AccessCert::cert()), this);
-	});
 	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
 		FirstRun dlg(this);
 		connect(&dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
@@ -211,7 +208,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 		
 		}
 	});
-	connect( ui->btnNavInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert );
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
 #ifdef Q_OS_WIN
@@ -237,25 +233,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
 	connect(ui->pageGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
-
-	ui->rdMIDUUID->setText(QSettings().value(QStringLiteral("MIDUUID")).toString());
-	connect(ui->rdMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
-		Common::setValueEx(QStringLiteral("MIDUUID"), text, QString());
-		Common::setValueEx(QStringLiteral("SIDUUID"), text, QString());
-	});
-
-	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
-
-	connect( ui->btGeneralChooseDirectory, &QPushButton::clicked, this, &SettingsDialog::openDirectory );
-	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39245"));
-	});
-	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39076"));
-	});
-	connect(ui->helpMID, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39023"));
-	});
 
 	initFunctionality();
 	updateVersion();
@@ -315,12 +292,26 @@ void SettingsDialog::retranslate(const QString& lang)
 
 void SettingsDialog::initFunctionality()
 {
+	// pageGeneral
 	selectLanguage();
 	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("et")); } );
 	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("en")); } );
 	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("ru")); } );
 
-	updateCert();
+	ui->chkGeneralTslRefresh->setChecked(qApp->confValue(Application::TSLOnlineDigest).toBool());
+	connect(ui->chkGeneralTslRefresh, &QCheckBox::toggled, [](bool checked) {
+		qApp->setConfValue(Application::TSLOnlineDigest, checked);
+	});
+	ui->chkShowPrintSummary->setChecked(QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool());
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
+		Common::setValueEx(QStringLiteral("ShowPrintSummary"), checked, false);
+	});
+	ui->chkRoleAddressInfo->setChecked(QSettings().value(QStringLiteral("RoleAddressInfo"), false).toBool());
+	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked) {
+		Common::setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
+	});
+
 #ifdef Q_OS_MAC
 	ui->lblDefaultDirectory->hide();
 	ui->rdGeneralSameDirectory->hide();
@@ -328,6 +319,16 @@ void SettingsDialog::initFunctionality()
 	ui->btGeneralChooseDirectory->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
+	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [=]{
+		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"),
+			QSettings().value(QStringLiteral("DefaultDir")).toString());
+		if(!dir.isEmpty())
+		{
+			ui->rdGeneralSpecifyDirectory->setChecked(true);
+			Common::setValueEx(QStringLiteral("DefaultDir"), dir, QString());
+			ui->txtGeneralDirectory->setText(dir);
+		}
+	});
 	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [=](bool enable) {
 		ui->btGeneralChooseDirectory->setVisible(enable);
 		ui->txtGeneralDirectory->setVisible(enable);
@@ -342,9 +343,6 @@ void SettingsDialog::initFunctionality()
 	});
 #endif
 
-	ui->chkGeneralTslRefresh->setChecked( qApp->confValue( Application::TSLOnlineDigest ).toBool() );
-	connect( ui->chkGeneralTslRefresh, &QCheckBox::toggled, []( bool checked ) { qApp->setConfValue( Application::TSLOnlineDigest, checked ); } );
-
 	ui->tokenRestart->hide();
 #ifdef Q_OS_WIN
 	connect(ui->tokenRestart, &QPushButton::clicked, this, []{
@@ -352,7 +350,7 @@ void SettingsDialog::initFunctionality()
 		qApp->quit();
 	});
 	ui->tokenBackend->setChecked(QSettings().value(QStringLiteral("tokenBackend")).toUInt());
-	connect(ui->tokenBackend, &QCheckBox::toggled, ui->tokenRestart, [=](bool checked){
+	connect(ui->tokenBackend, &QCheckBox::toggled, ui->tokenRestart, [=](bool checked) {
 		Common::setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
 		ui->tokenRestart->show();
 	});
@@ -360,6 +358,8 @@ void SettingsDialog::initFunctionality()
 	ui->tokenBackend->hide();
 #endif
 
+	// pageProxy
+	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
 	setProxyEnabled();
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
@@ -370,8 +370,14 @@ void SettingsDialog::initFunctionality()
 	case 2: ui->rdProxyManual->setChecked(true); break;
 	default: ui->rdProxyNone->setChecked(true); break;
 	}
-
 	updateProxy();
+
+	// pageServices
+	updateCert();
+	connect(ui->btShowCertificate, &QPushButton::clicked, this, [this] {
+		CertificateDetails::showCertificate(SslCertificate(AccessCert::cert()), this);
+	});
+	connect(ui->btInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert);
 	ui->chkIgnoreAccessCert->setChecked(Application::confValue(Application::PKCS12Disable, false).toBool());
 	connect(ui->chkIgnoreAccessCert, &QCheckBox::toggled, this, [](bool checked) {
 		Application::setConfValue(Application::PKCS12Disable, checked);
@@ -384,15 +390,19 @@ void SettingsDialog::initFunctionality()
 	connect(ui->rdTimeStamp, &QLineEdit::textChanged, this, [](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
 	});
-
-	ui->chkShowPrintSummary->setChecked(QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool());
-	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
-	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
-		Common::setValueEx(QStringLiteral("ShowPrintSummary"), checked, false);
+	ui->rdMIDUUID->setText(QSettings().value(QStringLiteral("MIDUUID")).toString());
+	connect(ui->rdMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
+		Common::setValueEx(QStringLiteral("MIDUUID"), text, QString());
+		Common::setValueEx(QStringLiteral("SIDUUID"), text, QString());
 	});
-	ui->chkRoleAddressInfo->setChecked(QSettings().value(QStringLiteral("RoleAddressInfo"), false).toBool());
-	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked){
-		Common::setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
+	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39245"));
+	});
+	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39076"));
+	});
+	connect(ui->helpMID, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39023"));
 	});
 }
 
@@ -412,8 +422,8 @@ void SettingsDialog::updateCert()
 		ui->txtAccessCert->setText( 
 			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
 	}
-	ui->btnNavShowCertificate->setEnabled( !c.isNull() );
-	ui->btnNavShowCertificate->setProperty( "cert", QVariant::fromValue( c ) );
+	ui->btShowCertificate->setEnabled(!c.isNull());
+	ui->btShowCertificate->setProperty("cert", QVariant::fromValue(c));
 }
 
 void SettingsDialog::selectLanguage()
@@ -486,20 +496,6 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 			QString::fromStdString(conf->proxyUser()),
 			QString::fromStdString(conf->proxyPass())));
 		break;
-	}
-}
-
-
-void SettingsDialog::openDirectory()
-{
-	QString dir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-	dir = FileDialog::getExistingDirectory( this, tr("Select folder"), dir );
-
-	if(!dir.isEmpty())
-	{
-		ui->rdGeneralSpecifyDirectory->setChecked( true );
-		Common::setValueEx(QStringLiteral("DefaultDir"), dir, QString());
-		ui->txtGeneralDirectory->setText( dir );
 	}
 }
 

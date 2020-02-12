@@ -57,7 +57,6 @@ private:
 	void checkConnection();
 	void initFunctionality();
 	void installCert();
-	void openDirectory();
 	void retranslate(const QString& lang);
 	void saveDiagnostics();
 	void saveProxy();

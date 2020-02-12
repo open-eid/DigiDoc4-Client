@@ -107,12 +107,6 @@ QPushButton:!checked{
           <height>55</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>55</height>
-         </size>
-        </property>
         <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
@@ -606,7 +600,7 @@ QRadioButton::indicator::checked {
        <item>
         <layout class="QHBoxLayout" name="accessCertButtonsLayout">
          <item>
-          <widget class="QPushButton" name="btnNavInstallManually">
+          <widget class="QPushButton" name="btInstallManually">
            <property name="minimumSize">
             <size>
              <width>150</width>
@@ -625,7 +619,7 @@ QRadioButton::indicator::checked {
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnNavShowCertificate">
+          <widget class="QPushButton" name="btShowCertificate">
            <property name="minimumSize">
             <size>
              <width>150</width>
@@ -808,6 +802,9 @@ QRadioButton::indicator::checked {
            <width>0</width>
            <height>31</height>
           </size>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
          </property>
          <property name="placeholderText">
           <string notr="true">00000000-0000-0000-0000-000000000000</string>
