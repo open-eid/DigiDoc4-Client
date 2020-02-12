@@ -22,12 +22,12 @@
         <translation>Срок действительности справки доступа истекает %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee&quot;&gt;www.id.ee&lt;/a&gt;. Additional information is available at ID-helpline (+372) 666 8888.</source>
-        <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372) 666 8888.</translation>
+        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <translation>Срок справки доступа истек %1. Для обновления справки доступа установите новое программное обеспечение для ID-карты со страницы &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация по справочному телефону ID-карт (+372) 666 8888.</translation>
     </message>
     <message>
-        <source>FREE_CERT_EXCEEDED</source>
-        <translation>Вы использовали 10 бесплатных подписей. Согласно условиям использования услуги подтверждения действительности Вы можете поставить максимум 10 бесплатных подписей в течение месяца. Если Вам необходимо использовать услугу подтверждения действительности в большем объеме или в служебных целях, обратитесь в ИТ-отдел Вашей организации или заключите договор на использование &lt;a href=&quot;https://sk.ee/en/services/validity-confirmation-services&quot;&gt;услуги&lt;/a&gt;. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
+        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</source>
+        <translation>Вскоре будет исчерпан ежемесячный лимит бесплатных подписей. Для проставления подписей в больших объемах необходимо заключить договор с поставщиком услуги. Подробнее читайте &lt;a href=&quot;https://id.ee/index.php?id=39025&quot;&gt;здесь&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

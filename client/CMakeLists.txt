@@ -52,7 +52,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${SOURCES}
 	${RESOURCE_FILES}
 	main.cpp
-	AccessCert.cpp
 	Application.cpp
 	CheckConnection.cpp
 	CliApplication.cpp
@@ -74,6 +73,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	TokenData.cpp
 	crypto/CryptoDoc.cpp
 	crypto/LdapSearch.cpp
+	dialogs/AccessCert.cpp
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.cpp
 	dialogs/CertificateHistory.cpp

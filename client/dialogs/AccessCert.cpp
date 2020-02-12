@@ -157,7 +157,7 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 		return false;
 	}
 #else
-	SslCertificate cert(PKCS12Certificate::fromPath(data, password).certificate());
+	SslCertificate cert(PKCS12Certificate(data, password).certificate());
 	if(cert.isNull())
 		return false;
 	QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
@@ -227,43 +227,39 @@ bool AccessCert::validate()
 		return true;
 
 	SslCertificate c = cert();
-	if(c.isNull() || !c.subjectInfo("GN").isEmpty() || !c.subjectInfo("SN").isEmpty())
+	if(isDefaultCert(c) && (!c.isValid() || c.expiryDate() < QDateTime::currentDateTime().addDays(8)))
 	{
-		remove();
-		c = cert();
-	}
-
-	if(!isDefaultCert(c))
-	{
+		showWarning(tr(
+			"Server access certificate expired on %1. To renew the certificate please update your ID "
+			"software, which you can get from <a href=\"http://www.id.ee/?lang=en\">www.id.ee</a>. "
+			"Additional info is available ID-helpline (+372) 666 8888.")
+			.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
 		if(!c.isValid())
-		{
-			showWarning( tr(
-				"Server access certificate expired on %1. To renew the certificate please "
-				"contact IT support team of your company. Additional information is available "
-				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
-				.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
 			return false;
-		}
-		else if(c.expiryDate() < QDateTime::currentDateTime().addDays(8))
-		{
-			showWarning( tr(
-				"Server access certificate is about to expire on %1. To renew the certificate "
-				"please contact IT support team of your company. Additional information is available "
-				"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
-				.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
-		}
 	}
-	else if(!c.isValid() || c.expiryDate() < QDateTime::currentDateTime().addDays(8))
+	else if(!c.isValid())
 	{
-		showWarning( tr(
-			"Your signing software needs an upgrade. Please update your ID software, "
-			"which you can get from <a href=\"http://www.id.ee\">www.id.ee</a>. "
-			"Additional information is available at ID-helpline (+372) 666 8888.") );
-		return c.isValid();
+		showWarning(tr(
+			"Server access certificate expired on %1. To renew the certificate please "
+			"contact IT support team of your company. Additional information is available "
+			"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
+			.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
+		return false;
 	}
-	else if(count(date) >= 50)
+	else if(c.expiryDate() < QDateTime::currentDateTime().addDays(8))
 	{
-		showWarning(tr("FREE_CERT_EXCEEDED"));
+		showWarning(tr(
+			"Server access certificate is about to expire on %1. To renew the certificate "
+			"please contact IT support team of your company. Additional information is available "
+			"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
+			.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
+	}
+	if(count(date) >= 50)
+	{
+		showWarning(tr(
+			"The limit of free digital signatures per month is about to exceed. To create more "
+			"digital signatures you need to conclude a contract with a service provider. Read more "
+			"<a href=\"https://id.ee/index.php?id=39023\">here</a>"));
 	}
 	return true;
 }
