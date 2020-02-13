@@ -1870,6 +1870,10 @@ Kontrollkood: %1</translation>
         <source>Error: an incorrect control code was chosen</source>
         <translation>Viga: valiti vale kontrollkood</translation>
     </message>
+    <message>
+        <source>Sign document</source>
+        <translation>Allkirjasta dokument</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

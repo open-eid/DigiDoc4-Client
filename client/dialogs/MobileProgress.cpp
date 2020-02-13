@@ -313,8 +313,8 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
 		{"language", lang.value(Common::language(), QStringLiteral("EST"))},
-		{"displayText", "Sign document"},
-		{"displayTextFormat", "GSM-7"}
+		{"displayText", tr("Sign document")},
+		{"displayTextFormat", "UCS-2"}
 	})).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL())));
 	qCDebug(MIDLog).noquote() << d->req.url() << data;

@@ -1870,6 +1870,10 @@ Control code: %1</translation>
         <source>Error: an incorrect control code was chosen</source>
         <translation>Error: an incorrect control code was chosen</translation>
     </message>
+    <message>
+        <source>Sign document</source>
+        <translation>Sign document</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
