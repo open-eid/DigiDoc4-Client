@@ -20,6 +20,7 @@
 #include "QPKCS11_p.h"
 
 #include "SslCertificate.h"
+#include "TokenData.h"
 #include "dialogs/PinPopup.h"
 #include <common/QPCSC.h>
 #ifndef NO_PKCS11_CRYPTO
@@ -123,13 +124,6 @@ std::vector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
 	else
 		result.clear();
 	return result;
-}
-
-void QPKCS11::Private::updateTokenFlags(TokenData &t, CK_ULONG f) const
-{
-	t.setFlag( TokenData::PinCountLow, f & CKF_USER_PIN_COUNT_LOW );
-	t.setFlag( TokenData::PinFinalTry, f & CKF_USER_PIN_FINAL_TRY );
-	t.setFlag( TokenData::PinLocked, f & CKF_USER_PIN_LOCKED );
 }
 
 
@@ -251,7 +245,7 @@ bool QPKCS11::load( const QString &driver )
 	return true;
 }
 
-QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
+QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 {
 	logout();
 
@@ -277,7 +271,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 					if(!cert.keyUsage().contains(SslCertificate::NonRepudiation))
 						isAuthSlot = true;
 				}
-				if(_t.cert() == cert)
+				if(t.cert() == cert)
 					return d->attribute(d->session, obj, CKA_ID);
 			}
 		}
@@ -292,16 +286,19 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	if(!d->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
 		return PinOK;
 
-	TokenData t = _t;
-	d->updateTokenFlags( t, token.flags );
-	if( t.flags() & TokenData::PinLocked )
+	if(token.flags & CKF_USER_PIN_LOCKED)
 		return PinLocked;
 
 	CK_RV err = CKR_OK;
-	bool pin2 = SslCertificate( t.cert() ).keyUsage().keys().contains( SslCertificate::NonRepudiation );
-	if( token.flags & CKF_PROTECTED_AUTHENTICATION_PATH )
+	SslCertificate cert(t.cert());
+	bool isSign = cert.keyUsage().keys().contains(SslCertificate::NonRepudiation);
+	PinPopup::TokenFlags f;
+	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
+	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
+	if(token.flags & CKF_USER_PIN_LOCKED) f = PinPopup::PinLocked;
+	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
 	{
-		PinPopup p(pin2 ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, t, rootWindow());
+		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, rootWindow());
 		connect(d, &Private::started, &p, &PinPopup::startTimer);
 		connect(d, &Private::finished, &p, &PinPopup::accept);
 		d->start();
@@ -310,7 +307,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	}
 	else
 	{
-		PinPopup p(pin2 ? PinPopup::Pin2Type : PinPopup::Pin1Type, t, rootWindow());
+		PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, rootWindow());
 		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;
@@ -318,8 +315,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 	}
 
-	if(d->f->C_GetTokenInfo(currentSlot, &token) == CKR_OK)
-		d->updateTokenFlags( t, token.flags );
+	d->f->C_GetTokenInfo(currentSlot, &token);
 
 	switch( err )
 	{
@@ -327,7 +323,7 @@ QPKCS11::PinStatus QPKCS11::login( const TokenData &_t )
 	case CKR_USER_ALREADY_LOGGED_IN: return PinOK;
 	case CKR_CANCEL:
 	case CKR_FUNCTION_CANCELED: return PinCanceled;
-	case CKR_PIN_INCORRECT: return (t.flags() & TokenData::PinLocked) ? PinLocked : PinIncorrect;
+	case CKR_PIN_INCORRECT: return (token.flags & CKF_USER_PIN_LOCKED) ? PinLocked : PinIncorrect;
 	case CKR_PIN_LOCKED: return PinLocked;
 	case CKR_DEVICE_ERROR: return DeviceError;
 	case CKR_GENERAL_ERROR: return GeneralError;
@@ -374,7 +370,6 @@ QList<TokenData> QPKCS11::tokens() const
 			TokenData t;
 			t.setCard(toQByteArray(token.serialNumber).trimmed());
 			t.setCert(cert);
-			d->updateTokenFlags( t, token.flags );
 			list << t;
 		}
 		d->f->C_CloseSession( session );

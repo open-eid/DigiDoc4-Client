@@ -619,7 +619,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded"), 750, 3000, 1200 );
 		}
-		else if((qApp->signer()->tokenauth().flags() & TokenData::PinLocked))
+		else
 		{
 			qApp->smartcard()->reload(); // QSmartCard should also know that PIN1 is blocked.
 			showPinBlockedWarning(qApp->smartcard()->data());
@@ -1007,7 +1007,7 @@ void MainWindow::showCardStatus()
 		emit ui->cryptoContainerPage->cardChanged();
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
-		else if ( t.readers().isEmpty() )
+		else if ( QPCSC::instance().readers().isEmpty() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoReader);
 		else if ( t.card().isEmpty() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoCard);

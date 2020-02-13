@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "TokenData.h"
-
 #include <QDialog>
 #include <QtCore/QRegExp>
 
@@ -47,10 +45,16 @@ public:
 		Pin2PinpadType = Pin2Type|PinpadFlag,
 		PukPinpadType = PukType|PinpadFlag
 	};
+	enum TokenFlag
+	{
+		PinCountLow = (1<<1),
+		PinFinalTry = (1<<2),
+		PinLocked = (1<<3)
+	};
+	Q_DECLARE_FLAGS(TokenFlags, TokenFlag)
 
-	PinPopup(PinFlags flags, const TokenData &t, QWidget *parent = nullptr);
-	PinPopup(PinFlags flags, const SslCertificate &cert, TokenData::TokenFlags token, QWidget *parent = nullptr);
-	PinPopup(PinFlags flags, const QString &title, TokenData::TokenFlags token, QWidget *parent = nullptr, const QString &bodyText = QString());
+	PinPopup(PinFlags flags, const SslCertificate &cert, TokenFlags count, QWidget *parent = nullptr);
+	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = nullptr, const QString &bodyText = QString());
 	~PinPopup() final;
 
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);

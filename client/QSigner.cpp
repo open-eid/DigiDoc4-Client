@@ -70,15 +70,6 @@ static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
 }
 #endif
 
-
-static bool isMatchingType(const SslCertificate &cert)
-{
-	// Check if cert is signing or authentication cert
-	return cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-		   cert.keyUsage().contains(SslCertificate::KeyAgreement) ||
-		   cert.keyUsage().contains(SslCertificate::NonRepudiation);
-}
-
 static QCardInfo *toCardInfo(const SslCertificate &c)
 {
 	QCardInfo *ci = new QCardInfo;
@@ -210,8 +201,14 @@ QSigner::~QSigner()
 
 const QMap<QString, QSharedPointer<QCardInfo>> QSigner::cache() const { return d->cache; }
 
-void QSigner::cacheCardData(const QSet<QString> & /*cards*/)
+void QSigner::cacheCardData()
 {
+	static auto isMatchingType = [](const SslCertificate &cert) {
+		// Check if cert is signing or authentication cert
+		return cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+			   cert.keyUsage().contains(SslCertificate::KeyAgreement) ||
+			   cert.keyUsage().contains(SslCertificate::NonRepudiation);
+	};
 	QList<TokenData> tokens;
 #ifdef Q_OS_WIN
 	if(d->win)
@@ -228,6 +225,40 @@ void QSigner::cacheCardData(const QSet<QString> & /*cards*/)
 				d->cache.insert(i.card(), QSharedPointer<QCardInfo>(toCardInfo(sslCert)));
 		}
 	}
+}
+
+bool QSigner::cardsOrder(const QString &s1, const QString &s2)
+{
+	static auto cardsOrderScore = [](QChar c) -> quint8 {
+		switch(c.toLatin1())
+		{
+		case 'N': return 6;
+		case 'A': return 5;
+		case 'P': return 4;
+		case 'E': return 3;
+		case 'F': return 2;
+		case 'B': return 1;
+		default: return 0;
+		}
+	};
+	QRegExp r("(\\w{1,2})(\\d{7})");
+	if(r.indexIn(s1) == -1)
+		return false;
+	QStringList cap1 = r.capturedTexts();
+	if(r.indexIn(s2) == -1)
+		return false;
+	QStringList cap2 = r.capturedTexts();
+	// new cards to front
+	if(cap1[1].size() != cap2[1].size())
+		return cap1[1].size() > cap2[1].size();
+	// card type order
+	if(cap1[1][0] != cap2[1][0])
+		return cardsOrderScore(cap1[1][0]) > cardsOrderScore(cap2[1][0]);
+	// card version order
+	if(cap1[1].size() > 1 && cap2[1].size() > 1 && cap1[1][1] != cap2[1][1])
+		return cap1[1][1] > cap2[1][1];
+	// serial number order
+	return cap1[2].toUInt() > cap2[2].toUInt();
 }
 
 X509Cert QSigner::cert() const
@@ -266,12 +297,8 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		case QPKCS11::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadauth();
-			if( !(d->auth.flags() & TokenData::PinLocked) )
-			{
-				Q_EMIT error( QPKCS11::errorString( status ) );
-				return PinIncorrect;
-			}
-			// else pin locked, fall through
+			Q_EMIT error( QPKCS11::errorString( status ) );
+			return PinIncorrect;
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			if (status != QPKCS11::PinIncorrect)
@@ -445,13 +472,10 @@ void QSigner::run()
 			acards.removeDuplicates();
 			scards.removeDuplicates();
 
-			std::sort( acards.begin(), acards.end(), TokenData::cardsOrder );
-			std::sort( scards.begin(), scards.end(), TokenData::cardsOrder );
-			QStringList readers = QPCSC::instance().drivers();
+			std::sort(acards.begin(), acards.end(), cardsOrder);
+			std::sort(scards.begin(), scards.end(), cardsOrder);
 			at.setCards( acards );
-			at.setReaders( readers );
 			st.setCards( scards );
-			st.setReaders( readers );
 
 			// check if selected card is still in slot
 			if( !at.card().isEmpty() && !acards.contains( at.card() ) )
@@ -493,8 +517,7 @@ void QSigner::run()
 						(sslCert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 						sslCert.keyUsage().contains(SslCertificate::KeyAgreement)))
 					{
-						at.setCert( i.cert() );
-						at.setFlags( i.flags() );
+						at = i;
 						if(sslCert.isValid())
 							break;
 					}
@@ -511,8 +534,7 @@ void QSigner::run()
 					SslCertificate sslCert(i.cert());
 					if( i.card() == st.card() && sslCert.keyUsage().contains( SslCertificate::NonRepudiation ) )
 					{
-						st.setCert( i.cert() );
-						st.setFlags( i.flags() );
+						st = i;
 						if(sslCert.isValid())
 							break;
 					}
@@ -520,9 +542,8 @@ void QSigner::run()
 				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();
 			}
 
-			auto added = scards.toSet().unite(acards.toSet()).subtract(d->cache.keys().toSet());
-			if(!added.isEmpty())
-				cacheCardData(added);
+			if(!scards.toSet().unite(acards.toSet()).subtract(d->cache.keys().toSet()).isEmpty())
+				cacheCardData();
 
 			bool changed = false;
 			// update data if something has changed

@@ -184,7 +184,6 @@ QList<TokenData> QCNG::tokens() const
 	for(QHash<SslCertificate,Private::Cache>::const_iterator i = cache.constBegin(); i != cache.constEnd(); ++i)
 	{
 		TokenData t;
-		t.setReaders({i.value().reader});
 		t.setCard(i.key().type() & SslCertificate::EstEidType || i.key().type() & SslCertificate::DigiIDType ?
 			i.value().guid : i.key().subjectInfo(QSslCertificate::CommonName) + "-" + i.key().serialNumber());
 		t.setCert(i.key());

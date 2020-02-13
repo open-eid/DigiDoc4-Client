@@ -114,11 +114,6 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 	return StyledWidget::eventFilter(o, e);
 }
 
-bool CardWidget::isLoading() const
-{
-	return !cardInfo || cardInfo->loading;
-}
-
 void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString &cardId)
 {
 	cardInfo = ci;
