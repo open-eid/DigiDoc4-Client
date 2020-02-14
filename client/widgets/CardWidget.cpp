@@ -20,11 +20,7 @@
 #include "CardWidget.h"
 #include "ui_CardWidget.h"
 
-#include "QCardInfo.h"
 #include "common_enums.h"
-#include "Styles.h"
-
-#include <QSvgWidget>
 
 using namespace ria::qdigidoc4;
 
@@ -88,8 +84,8 @@ bool CardWidget::event( QEvent *ev )
 		return true;
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
-		if(cardInfo)
-			update(cardInfo, card);
+		if(!cert.isNull())
+			update(cert, card);
 		break;
 	default: break;
 	}
@@ -114,42 +110,37 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 	return StyledWidget::eventFilter(o, e);
 }
 
-void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString &cardId)
+void CardWidget::update(const SslCertificate &c, const QString &cardId)
 {
-	cardInfo = ci;
+	cert = c;
 	card = cardId;
-	if(!ci->c.subjectInfo("GN").isEmpty() || !ci->c.subjectInfo("SN").isEmpty())
-		ui->cardName->setText(ci->c.toString(QStringLiteral("GN SN")));
+	QString id = c.personalCode();
+	if(!c.subjectInfo("GN").isEmpty() || !c.subjectInfo("SN").isEmpty())
+		ui->cardName->setText(c.toString(QStringLiteral("GN SN")));
 	else
-		ui->cardName->setText(ci->c.toString(QStringLiteral("CN")));
+		ui->cardName->setText(c.toString(QStringLiteral("CN")));
 	ui->cardName->setAccessibleName(ui->cardName->text().toLower());
-	ui->cardCode->setText(cardInfo->id + "   |");
-	ui->cardCode->setAccessibleName(cardInfo->id);
+	ui->cardCode->setText(id + "   |");
+	ui->cardCode->setAccessibleName(id);
 	ui->load->setText(tr("LOAD"));
-	if(cardInfo->loading)
-	{
-		ui->cardStatus->clear();
-		ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_disabled.svg"));
-	}
-	else
-	{
-		QString type = tr("ID-card");
-		if(ci->type & SslCertificate::TempelType &&
-			ci->c.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
-			type = tr("Authentication certificate");
-		else if(ci->type & SslCertificate::TempelType && (
-			ci->c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-			ci->c.keyUsage().contains(SslCertificate::KeyAgreement)))
-			type = tr("Certificate for Encryption");
-		else if(ci->type & SslCertificate::TempelType)
-			type = tr("e-Seal");
-		else if(ci->type & SslCertificate::DigiIDType)
-			type = tr("Digi-ID");
-		ui->cardStatus->setText(tr("%1 in reader").arg(type));
-		ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
-	}
 
-	if(ci->c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT")))
+	int type = c.type();
+	QString typeString = tr("ID-card");
+	if(type & SslCertificate::TempelType &&
+		c.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+		typeString = tr("Authentication certificate");
+	else if(type & SslCertificate::TempelType && (
+		c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+		c.keyUsage().contains(SslCertificate::KeyAgreement)))
+		typeString = tr("Certificate for Encryption");
+	else if(type & SslCertificate::TempelType)
+		typeString = tr("e-Seal");
+	else if(type & SslCertificate::DigiIDType)
+		typeString = tr("Digi-ID");
+	ui->cardStatus->setText(tr("%1 in reader").arg(typeString));
+	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
+
+	if(c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT")))
 	{
 		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
 		ui->cardPhoto->hide();
@@ -161,7 +152,7 @@ void CardWidget::update(const QSharedPointer<const QCardInfo> &ci, const QString
 	}
 
 	clearSeal();
-	if(cardInfo->type & SslCertificate::TempelType)
+	if(type & SslCertificate::TempelType)
 	{
 		ui->cardPhoto->clear();
 		seal = new QSvgWidget(ui->cardPhoto);

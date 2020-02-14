@@ -20,14 +20,15 @@
 #pragma once
 
 #include "widgets/StyledWidget.h"
-#include "QSmartCard.h"
+
+class QSmartCard;
+class SslCertificate;
 
 namespace Ui {
 class Accordion;
 }
 
 class AccordionTitle;
-struct QCardInfo;
 
 class Accordion : public StyledWidget
 {
@@ -43,7 +44,7 @@ public:
 	QString getEmail();
 	void open(AccordionTitle* opened);
 	void setFocusToEmail();
-	void updateInfo(const QCardInfo &info);
+	void updateInfo(const SslCertificate &info);
 	void updateInfo( const QSmartCard *smartCard );
 	bool updateOtherData(const QByteArray &data);
 

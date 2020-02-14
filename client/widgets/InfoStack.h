@@ -26,8 +26,8 @@ namespace Ui {
 class InfoStack;
 }
 
-struct QCardInfo;
 class QSmartCardData;
+class SslCertificate;
 
 class InfoStack : public StyledWidget, public PictureInterface
 {
@@ -39,7 +39,7 @@ public:
 
 	void clearData();
 	void clearPicture() final;
-	void update(const QCardInfo &cardInfo);
+	void update(const SslCertificate &cert);
 	void update(const QSmartCardData &t);
 	void showPicture(const QPixmap &pixmap) final;
 
