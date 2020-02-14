@@ -47,7 +47,6 @@ signals:
 
 private:
 	void loadImages();
-	void loadPixmap(const QString &base, const QString &lang, QLabel *parent);
 
 	enum View
 	{

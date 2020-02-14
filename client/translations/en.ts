@@ -972,8 +972,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Manage your eID-s</translation>
     </message>
     <message>
-        <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</translation>
+        <source>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
+        <translation>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
@@ -1004,12 +1004,12 @@ The Information System Authority does not retain information regarding the files
         <translation>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</translation>
     </message>
     <message>
-        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</translation>
+        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</source>
+        <translation>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</translation>
     </message>
     <message>
-        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</translation>
+        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</source>
+        <translation>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>

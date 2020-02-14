@@ -972,8 +972,8 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Oma eID-sid hallata</translation>
     </message>
     <message>
-        <source>DigiDoc Client can be used to sign digitally with ID-card and Mobile-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi ja Mobiil-ID-ga digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
+        <source>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
+        <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi, Mobiil-ID ja Smart-ID-ga digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
@@ -1004,12 +1004,12 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <translation>Faili allkirjastamiseks lohista fail oma arvutist DigiDoc rakendusse või vajuta nupul “… või vali fail kettalt”. Võid lohistada või valida ka mitu faili korraga.</translation>
     </message>
     <message>
-        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card or Mobile-ID. You can also save the container without signing.</source>
-        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi või Mobiil-ID-ga. Võid salvestada ümbriku ka allkirjasta­mata.</translation>
+        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</source>
+        <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi, Mobiil-ID või Smart-ID-ga. Võid salvestada ümbriku ka allkirjasta­mata.</translation>
     </message>
     <message>
-        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card or Mobile-ID.</source>
-        <translation>Sisestades PIN2 koodi, annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja­ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi või Mobiili-ID-ga.</translation>
+        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</source>
+        <translation>Sisestades PIN2 koodi, annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja­ga. PIN2 koodi leiad koodiümbrikust, mille said koos ID-kaardi, Mobiil-ID või Smart-ID-ga.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
