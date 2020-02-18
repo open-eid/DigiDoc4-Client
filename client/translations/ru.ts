@@ -1877,6 +1877,18 @@ Kонтрольный код: %1</translation>
         <source>Sign document</source>
         <translation>Подписать документ</translation>
     </message>
+    <message>
+        <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
+        <translation>Не удалось выполнить операцию Mobiil-ID. Пожалуйста, свяжитесь со своим мобильным оператором.</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Пользователю отказано</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID transaction has expired. Please try again.</source>
+        <translation>Срок действия вашей транзакции Mobiil-ID истек. Пожалуйста, попробуйте еще раз.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
