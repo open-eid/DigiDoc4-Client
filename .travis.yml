@@ -24,13 +24,15 @@ before_install:
     curl -s --location "https://github.com/open-eid/libdigidoc/releases/download/v3.10.3/libdigidoc_3.10.3.1214.pkg" -o libdigidoc.pkg;
     build=$(aws s3 ls s3://open-eid/libdigidocpp-nightly/ --no-sign-request |grep PRE|sed 's/.*PRE \(.*\)\/.*/\1/'|sort -n|tail -n1);
     aws s3 sync --exclude=* --include=*pkg s3://open-eid/libdigidocpp-nightly/${build} libdigidocpp-pkg --no-sign-request;
-    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.19.0.7.pkg opensc.pkg --no-sign-request;
+    aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.20.0.2.pkg opensc.pkg --no-sign-request;
     aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request;
     sudo installer -verboseR -pkg libdigidoc.pkg -target /;
     sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /;
     sudo installer -verboseR -pkg opensc.pkg -target /;
     unzip -qq -d /tmp ${HASH}.zip;
     rm -rf ${HASH}.zip opensc.pkg libdigidocpp.pkg libdigidoc.pkg;
+    ln -s /usr/local/opt/openssl@1.1/lib/libcrypto.1.1.dylib /usr/local/lib/libcrypto.1.1.dylib;
+    ln -s /usr/local/opt/openssl@1.1/lib/libssl.1.1.dylib /usr/local/lib/libssl.1.1.dylib;
   else
     sudo apt install awscli;
     build=$(aws s3 ls s3://open-eid/libdigidocpp-nightly/ --no-sign-request |grep PRE|sed 's/.*PRE \(.*\)\/.*/\1/'|sort -n|tail -n1);
