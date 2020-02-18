@@ -279,11 +279,11 @@ QHeaderView::section {
            <attribute name="horizontalHeaderVisible">
             <bool>true</bool>
            </attribute>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>140</number>
-           </attribute>
            <attribute name="horizontalHeaderMinimumSectionSize">
             <number>19</number>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>140</number>
            </attribute>
            <attribute name="horizontalHeaderStretchLastSection">
             <bool>true</bool>
@@ -291,11 +291,11 @@ QHeaderView::section {
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
-           <attribute name="verticalHeaderDefaultSectionSize">
-            <number>23</number>
-           </attribute>
            <attribute name="verticalHeaderMinimumSectionSize">
             <number>14</number>
+           </attribute>
+           <attribute name="verticalHeaderDefaultSectionSize">
+            <number>23</number>
            </attribute>
            <column/>
            <column/>
@@ -342,9 +342,12 @@ QHeaderView::section {
 background-color: #f7f7f7;</string>
      </property>
      <widget class="QPushButton" name="close">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
-        <x>854</x>
+        <x>720</x>
         <y>8</y>
         <width>120</width>
         <height>25</height>
@@ -376,13 +379,13 @@ background-color: #f7f7f7;</string>
 	border-radius: 2px; 
 	border: none;
 	color: #ffffff;
-	background-color: #006EB5;
+	background-color: #981E32;
 }
 QPushButton:pressed {
-	background-color: #41B6E6;
+	background-color: #F24A66;
 }
 QPushButton:hover:!pressed {
-	background-color: #008DCF;
+	background-color: #CD2541;
 }
 QPushButton:disabled {
 	background-color: #BEDBED;
@@ -401,7 +404,7 @@ QPushButton:disabled {
      <widget class="QPushButton" name="save">
       <property name="geometry">
        <rect>
-        <x>720</x>
+        <x>854</x>
         <y>8</y>
         <width>120</width>
         <height>25</height>

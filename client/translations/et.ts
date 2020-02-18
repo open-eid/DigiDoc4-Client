@@ -2373,6 +2373,14 @@ Kontrollkood: %1</translation>
         <source>SIGN</source>
         <translation>ALLKIRJASTAN</translation>
     </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjastan</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>Katkesta</translation>
+    </message>
 </context>
 <context>
     <name>SDocumentModel</name>

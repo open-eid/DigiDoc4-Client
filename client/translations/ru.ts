@@ -2376,6 +2376,14 @@ Kонтрольный код: %1</translation>
         <source>SIGN</source>
         <translation>ПОДПИСАТЬ</translation>
     </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>Отмена</translation>
+    </message>
 </context>
 <context>
     <name>SDocumentModel</name>

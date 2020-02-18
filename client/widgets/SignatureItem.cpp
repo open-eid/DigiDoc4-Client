@@ -284,7 +284,8 @@ void SignatureItem::removeSignature()
 
 	WarningDialog dlg(msg, qApp->activeWindow());
 	dlg.setCancelText(tr("CANCEL"));
-	dlg.addButton(tr("OK"), SignatureRemove);
+	dlg.resetCancelStyle();
+	dlg.addButton(tr("OK"), SignatureRemove, true);
 	if(dlg.exec() == SignatureRemove)
 		emit remove(this);
 }

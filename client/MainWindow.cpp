@@ -1188,7 +1188,8 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	{
 		WarningDialog dlg(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
 		dlg.setCancelText(tr("CANCEL"));
-		dlg.addButton(tr("REMOVE"), ContainerSave);
+		dlg.resetCancelStyle();
+		dlg.addButton(tr("REMOVE"), ContainerSave, true);
 		dlg.exec();
 
 		if (dlg.result() == ContainerSave) {
