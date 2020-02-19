@@ -219,10 +219,6 @@
         <translation>Loading TSL lists</translation>
     </message>
     <message>
-        <source>TSL signing certs</source>
-        <translation>TSL signing certs</translation>
-    </message>
-    <message>
         <source>Create %1</source>
         <translation>Create %1</translation>
     </message>
@@ -744,6 +740,18 @@
         <source>Certificate Propagation service status: </source>
         <translation>Certificate Propagation service status: </translation>
     </message>
+    <message>
+        <source>is set</source>
+        <translation>is set</translation>
+    </message>
+    <message>
+        <source>is not set</source>
+        <translation>is not set</translation>
+    </message>
+    <message>
+        <source>TSL signing certs</source>
+        <translation>TSL signing certs</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -843,10 +851,6 @@
 <context>
     <name>DocumentModel</name>
     <message>
-        <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
-    </message>
-    <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</translation>
     </message>
@@ -861,14 +865,6 @@
     <message>
         <source>Internal error</source>
         <translation>Internal error</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>NO</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>YES</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1899,6 +1895,10 @@ Control code: %1</translation>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
         <translation>Your Smart-ID transaction has expired. Please try again.</translation>
     </message>
+    <message>
+        <source>Failed to connect with service server. Please check your network settings or try again later.</source>
+        <translation>Failed to connect with service server. Please check your network settings or try again later.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
@@ -2379,10 +2379,6 @@ Control code: %1</translation>
         <translation>Role / resolution</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Address</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>City</translation>
     </message>
@@ -2409,6 +2405,10 @@ Control code: %1</translation>
     <message>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -2526,10 +2526,6 @@ Control code: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>I would like to sign with Lithuanian, Latvian ID-card</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Restart now</translation>
     </message>
     <message>
         <source>Show print summary</source>

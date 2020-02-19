@@ -219,10 +219,6 @@
         <translation>Laadin TSL-nimekirja</translation>
     </message>
     <message>
-        <source>TSL signing certs</source>
-        <translation>TSL signeerimise sertifikaadid</translation>
-    </message>
-    <message>
         <source>Create %1</source>
         <translation>Loo %1</translation>
     </message>
@@ -744,6 +740,18 @@
         <source>Certificate Propagation service status: </source>
         <translation>Certificate Propagation teenuse staatus: </translation>
     </message>
+    <message>
+        <source>is set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TSL signing certs</source>
+        <translation>TSL signeerimise sertifikaadid</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -843,10 +851,6 @@
 <context>
     <name>DocumentModel</name>
     <message>
-        <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada Sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
-    </message>
-    <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Sellise laiendiga faili ei ole võimalik avada DigiDoc4 kliendis. Faili vaatamiseks laadi see alla.</translation>
     </message>
@@ -861,14 +865,6 @@
     <message>
         <source>Internal error</source>
         <translation>Sisemine viga</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1899,6 +1895,10 @@ Kontrollkood: %1</translation>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
         <translation>Teie Smart-ID toiming aegus. Palun proovige uuesti.</translation>
     </message>
+    <message>
+        <source>Failed to connect with service server. Please check your network settings or try again later.</source>
+        <translation>Teenuse serveriga ühendus ebaõnnestus. Palun kontrolli võrgu sätteid või proovi hiljem uuesti.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
@@ -2379,10 +2379,6 @@ Kontrollkood: %1</translation>
         <translation>Roll / resolutsioon</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Aadress</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>Linn</translation>
     </message>
@@ -2409,6 +2405,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>CANCEL</source>
         <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -2530,10 +2530,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>Soovin allkirjastada Leedu, Läti ID-kaardiga</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Taaskäivita rakendus</translation>
     </message>
     <message>
         <source>Show print summary</source>

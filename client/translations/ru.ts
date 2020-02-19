@@ -219,10 +219,6 @@
         <translation>Загружаем список TSL</translation>
     </message>
     <message>
-        <source>TSL signing certs</source>
-        <translation>Сертификаты подписывания TSL</translation>
-    </message>
-    <message>
         <source>Create %1</source>
         <translation>Создайте %1</translation>
     </message>
@@ -746,6 +742,18 @@
         <source>Certificate Propagation service status: </source>
         <translation>Статус Certificate Propagation сервиса: </translation>
     </message>
+    <message>
+        <source>is set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TSL signing certs</source>
+        <translation>Сертификаты подписывания TSL</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -845,10 +853,6 @@
 <context>
     <name>DocumentModel</name>
     <message>
-        <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
-    </message>
-    <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Файл с таким расширением не может быть открыт в клиенте DigiDoc4. Загрузите файл, чтобы просмотреть его.</translation>
     </message>
@@ -863,14 +867,6 @@
     <message>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1902,6 +1898,10 @@ Kонтрольный код: %1</translation>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
         <translation>Срок действия вашей транзакции Smart-ID истек. Пожалуйста, попробуйте еще раз.</translation>
     </message>
+    <message>
+        <source>Failed to connect with service server. Please check your network settings or try again later.</source>
+        <translation>Не удалось связаться с сервером услуги. Пожалуйста, проверьте настройки сети или повторите попытку позже.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
@@ -2382,10 +2382,6 @@ Kонтрольный код: %1</translation>
         <translation>Роль / pезолюция</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Адрес</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>Город</translation>
     </message>
@@ -2412,6 +2408,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -2533,10 +2533,6 @@ Kонтрольный код: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>Желаю подписывать ИД-картами Латвии и Литвы</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Начать заново</translation>
     </message>
     <message>
         <source>Show print summary</source>
