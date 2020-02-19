@@ -28,7 +28,7 @@
 
 using namespace ria::qdigidoc4;
 
-FileItem::FileItem(ContainerState state, QWidget *parent)
+FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
 	: Item(parent)
 	, ui(new Ui::FileItem)
 {
@@ -41,17 +41,12 @@ FileItem::FileItem(ContainerState state, QWidget *parent)
 
 	stateChange(state);
 
+	connect(ui->fileName, &QToolButton::clicked, this, [this]{ emit open(this);});
 	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this);});
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
-}
 
-FileItem::FileItem( const QString& file, ContainerState state, QWidget *parent )
-	: FileItem(state, parent)
-{
 	fileName = QFileInfo(file).fileName();
-	setMouseTracking(true);
-	width = ui->fileName->fontMetrics().width(fileName);
-	setFileName(true);
+	setFileName();
 }
 
 FileItem::~FileItem()
@@ -64,25 +59,14 @@ bool FileItem::event(QEvent *event)
 	switch(event->type())
 	{
 	case QEvent::Enter:
-		if(isEnabled)
-			ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-decoration: underline;"));
+		if(ui->fileName->isEnabled())
+			ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-decoration: underline; text-align: left;"));
 		break;
 	case QEvent::Leave:
-		ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none;"));
-		break;
-	case QEvent::MouseButtonRelease:
-		if(isEnabled)
-			emit open(this);
+		ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-align: left;"));
 		break;
 	case QEvent::Resize:
-		setFileName(false);
-		break;
-	case QEvent::KeyRelease:
-		if(QKeyEvent *ke = static_cast<QKeyEvent*>(event))
-		{
-			if(isEnabled && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
-				emit open(this);
-		}
+		setFileName();
 		break;
 	default: break;
 	}
@@ -102,24 +86,14 @@ QWidget* FileItem::initTabOrder(QWidget *item)
 	return ui->remove;
 }
 
-void FileItem::setFileName(bool force)
+void FileItem::setFileName()
 {
-	if(ui->fileName->width() < width)
-	{
-		elided = true;
-		ui->fileName->setText(ui->fileName->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->fileName->width()));
-	}
-	else if(elided || force)
-	{
-		elided = false;
-		ui->fileName->setText(fileName.toHtmlEscaped());
-	}
+	ui->fileName->setText(ui->fileName->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->fileName->width()));
 }
 
 void FileItem::stateChange(ContainerState state)
 {
-	isEnabled = state != EncryptedContainer;
-	ui->fileName->setAccessibleDescription(isEnabled ? tr("To open file press space or enter") : QString());
+	ui->fileName->setDisabled(state == EncryptedContainer);
 	ui->download->setVisible(state == UnsignedSavedContainer || state == SignedContainer);
 	ui->remove->setHidden(state == SignedContainer || state == EncryptedContainer);
 }
