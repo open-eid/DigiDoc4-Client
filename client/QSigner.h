@@ -24,7 +24,6 @@
 #include <QtCore/QThread>
 #include <digidocpp/crypto/Signer.h>
 
-struct QCardInfo;
 class TokenData;
 
 class QSigner: public QThread, public digidoc::Signer
@@ -49,7 +48,7 @@ public:
 	explicit QSigner(ApiType api, QObject *parent = nullptr);
 	~QSigner();
 
-	const QMap<QString, QSharedPointer<QCardInfo>> cache() const;
+	QMap<QString, SslCertificate> cache() const;
 	digidoc::X509Cert cert() const override;
 	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);

@@ -87,7 +87,6 @@ protected:
 private:
 	void adjustDrops();
 	void browseOnDisk(const QString &fileName);
-	QSet<QString> cards() const;
 	void clearOverlay();
 	void containerToEmail(const QString &fileName);
 	void convertToBDoc();

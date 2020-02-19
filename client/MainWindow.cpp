@@ -262,12 +262,6 @@ void MainWindow::buttonClicked( int button )
 	}
 }
 
-QSet<QString> MainWindow::cards() const
-{
-	return qApp->signer()->tokenauth().cards().toSet()
-		.unite(qApp->signer()->tokensign().cards().toSet());
-}
-
 void MainWindow::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
@@ -935,7 +929,7 @@ void MainWindow::showCardMenu(bool show)
 		const TokenData &t = qApp->signer()->tokensign().cert().isNull() ? qApp->signer()->tokenauth()
 			: qApp->signer()->tokensign();
 
-		cardPopup.reset(new CardPopup(cards(), t.card(), qApp->signer()->cache(), this));
+		cardPopup.reset(new CardPopup(t.card(), qApp->signer()->cache(), this));
 		// To select active card from several cards in readers ..
 		connect(cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
 		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
@@ -960,8 +954,7 @@ void MainWindow::showCardStatus()
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
 		qCDebug(MLog) << "Select card" << t.card();
-		auto cardInfo = qApp->signer()->cache()[t.card()];
-		SslCertificate cert = cardInfo->c;
+		SslCertificate cert = qApp->signer()->cache()[t.card()];
 		const SslCertificate &authCert = at.cert();
 		const SslCertificate &signCert = st.cert();
 		int type = cert.type();
@@ -1018,7 +1011,7 @@ void MainWindow::showCardStatus()
 	}
 
 	// Combo box to select the cards from
-	selector->setVisible(cards().size() > 1);
+	selector->setVisible(qApp->signer()->cache().keys().size() > 1);
 	ui->cardInfo->setCursor(selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
 	if(selector->isHidden())
 		hideCardPopup();
