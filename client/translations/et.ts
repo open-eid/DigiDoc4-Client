@@ -1874,6 +1874,18 @@ Kontrollkood: %1</translation>
         <source>Sign document</source>
         <translation>Allkirjasta dokument</translation>
     </message>
+    <message>
+        <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
+        <translation>Teie Mobiil-ID toiming ebaõnnestus. Palun võtke ühendust enda mobiilioperaatoriga.</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>Kasutaja keeldus või katkestas</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID transaction has expired. Please try again.</source>
+        <translation>Teie Mobiil-ID toiming aegus. Palun proovige uuesti.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

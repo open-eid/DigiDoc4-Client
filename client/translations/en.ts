@@ -1874,6 +1874,18 @@ Control code: %1</translation>
         <source>Sign document</source>
         <translation>Sign document</translation>
     </message>
+    <message>
+        <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
+        <translation>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</translation>
+    </message>
+    <message>
+        <source>User denied or cancelled</source>
+        <translation>User denied or cancelled</translation>
+    </message>
+    <message>
+        <source>Your Mobile-ID transaction has expired. Please try again.</source>
+        <translation>Your Mobile-ID transaction has expired. Please try again.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
