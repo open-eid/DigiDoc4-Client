@@ -880,11 +880,6 @@ The Information System Authority does not retain information regarding the files
         <extracomment>accessible</extracomment>
         <translation>Download file</translation>
     </message>
-    <message>
-        <source>To open file press space or enter</source>
-        <extracomment>accessible</extracomment>
-        <translation>To open file press space or enter</translation>
-    </message>
 </context>
 <context>
     <name>FileList</name>
@@ -1885,6 +1880,10 @@ Control code: %1</translation>
     <message>
         <source>Your Mobile-ID transaction has expired. Please try again.</source>
         <translation>Your Mobile-ID transaction has expired. Please try again.</translation>
+    </message>
+    <message>
+        <source>Your Smart-ID transaction has expired. Please try again.</source>
+        <translation>Your Smart-ID transaction has expired. Please try again.</translation>
     </message>
 </context>
 <context>

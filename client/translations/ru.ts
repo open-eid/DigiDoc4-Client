@@ -882,11 +882,6 @@ The Information System Authority does not retain information regarding the files
         <extracomment>accessible</extracomment>
         <translation>Скачать файл</translation>
     </message>
-    <message>
-        <source>To open file press space or enter</source>
-        <extracomment>accessible</extracomment>
-        <translation>Для открытия файла нажмите пробел или enter</translation>
-    </message>
 </context>
 <context>
     <name>FileList</name>
@@ -1888,6 +1883,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Your Mobile-ID transaction has expired. Please try again.</source>
         <translation>Срок действия вашей транзакции Mobiil-ID истек. Пожалуйста, попробуйте еще раз.</translation>
+    </message>
+    <message>
+        <source>Your Smart-ID transaction has expired. Please try again.</source>
+        <translation>Срок действия вашей транзакции Smart-ID истек. Пожалуйста, попробуйте еще раз.</translation>
     </message>
 </context>
 <context>

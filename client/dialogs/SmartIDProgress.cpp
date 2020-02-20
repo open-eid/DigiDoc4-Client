@@ -212,15 +212,14 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 		else if(result.value(QStringLiteral("state")).toString() != QStringLiteral("RUNNING"))
 		{
 			QString endResult = result.value(QStringLiteral("result")).toObject().value(QStringLiteral("endResult")).toString();
-			if(endResult == QStringLiteral("USER_REFUSED") || endResult == QStringLiteral("TIMEOUT"))
-				d->l.exit(QDialog::Rejected);
+			if(endResult == QStringLiteral("USER_REFUSED"))
+				returnError(tr("User denied or cancelled"));
+			else if(endResult == QStringLiteral("TIMEOUT"))
+				returnError(tr("Your Smart-ID transaction has expired. Please try again."));
+			else if(endResult == QStringLiteral("WRONG_VC"))
+				returnError(tr("Error: an incorrect control code was chosen"));
 			else if(endResult != QStringLiteral("OK"))
-			{
-				if(endResult == QStringLiteral("WRONG_VC"))
-					returnError(tr("Error: an incorrect control code was chosen"));
-				else
-					returnError(tr("Service result: ") + endResult);
-			}
+				returnError(tr("Service result: ") + endResult);
 			else if(d->documentNumber.isEmpty())
 				d->documentNumber = result.value(QStringLiteral("result")).toObject().value(QStringLiteral("documentNumber")).toString();
 			if(result.contains(QStringLiteral("signature")))

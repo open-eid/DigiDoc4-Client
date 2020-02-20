@@ -880,11 +880,6 @@ Riigi Infosüsteemi Amet ei säilita informatsiooni teenuse kasutajate ja failid
         <extracomment>accessible</extracomment>
         <translation>Laadi fail alla</translation>
     </message>
-    <message>
-        <source>To open file press space or enter</source>
-        <extracomment>accessible</extracomment>
-        <translation>Faili avamiseks vajuta space või enter</translation>
-    </message>
 </context>
 <context>
     <name>FileList</name>
@@ -1885,6 +1880,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>Your Mobile-ID transaction has expired. Please try again.</source>
         <translation>Teie Mobiil-ID toiming aegus. Palun proovige uuesti.</translation>
+    </message>
+    <message>
+        <source>Your Smart-ID transaction has expired. Please try again.</source>
+        <translation>Teie Smart-ID toiming aegus. Palun proovige uuesti.</translation>
     </message>
 </context>
 <context>
