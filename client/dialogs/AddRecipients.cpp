@@ -405,25 +405,26 @@ void AddRecipients::search(const QString &term)
 
 	select = false;
 	personSearch = false;
-	if( isDigit.exactMatch(term) && (term.size() == 11 || term.size() == 8))
+	QString cleanTerm = term.simplified();
+	if( isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
 	{
-		if(term.size() == 11)
+		if(cleanTerm.size() == 11)
 		{
-			if(!IKValidator::isValid(term))
+			if(!IKValidator::isValid(cleanTerm))
 			{
 				QApplication::restoreOverrideCursor();
 				WarningDialog::warning(this, tr("Personal code is not valid!"));
 				return;
 			}
 			personSearch = true;
-			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), term));
+			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm));
 		}
 		else
-			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(term));
+			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm));
 	}
 	else
 	{
-		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(term));
+		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm));
 	}
 }
 
