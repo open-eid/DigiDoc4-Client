@@ -35,6 +35,9 @@ public:
 	QSslCertificate cert() const;
 	void setCert( const QSslCertificate &cert );
 
+	QString reader() const;
+	void setReader(const QString &reader);
+
 	void clear();
 
 	TokenData& operator =( const TokenData &other );

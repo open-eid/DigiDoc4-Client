@@ -165,6 +165,7 @@ QList<TokenData> QCSP::tokens() const
 		{
 			if(NCRYPT_HANDLE prov = keyProvider(key))
 			{
+				t.setReader(prop(prov, NCRYPT_READER_PROPERTY));
 				t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
 					prop(prov, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed() : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 				NCryptFreeObject(prov);
@@ -187,6 +188,7 @@ QList<TokenData> QCSP::tokens() const
 					result.clear();
 				return result;
 			};
+			t.setReader(cryptProp(key, PP_SMARTCARD_READER));
 			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
 				cryptProp(key, PP_SMARTCARD_GUID) : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 			if(freeKey)

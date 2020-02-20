@@ -543,7 +543,8 @@ void QSigner::run()
 			}
 			if(changed)
 				Q_EMIT dataChanged();
-			d->smartcard->reloadCard(st.card().isEmpty() ? at.card() : st.card());
+			TokenData tmp = st.card().isEmpty() ? at: st;
+			d->smartcard->reloadCard(tmp.reader(), tmp.card());
 
 			QCardLock::instance().readUnlock();
 		}
