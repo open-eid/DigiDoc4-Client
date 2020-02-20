@@ -370,6 +370,8 @@ void SettingsDialog::initFunctionality()
 	case 2: ui->rdProxyManual->setChecked(true); break;
 	default: ui->rdProxyNone->setChecked(true); break;
 	}
+
+	ui->chkProxyEnableForSSL->setDisabled((QSettings().value(QStringLiteral("ProxyConfig"), 0).toInt() != 2));
 	updateProxy();
 
 	// pageServices
