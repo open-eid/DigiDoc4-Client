@@ -1726,8 +1726,12 @@ ID-KAARDIGA</translation>
         <translation>Allkirjastan</translation>
     </message>
     <message>
-        <source>Country code and phone number</source>
-        <translation>Riigi kood ja telefoninumber</translation>
+        <source>Country code</source>
+        <translation>Riigi kood</translation>
+    </message>
+    <message>
+        <source>Phone number</source>
+        <translation>Telefoninumber</translation>
     </message>
     <message>
         <source>Personal code</source>

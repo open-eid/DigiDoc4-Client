@@ -19,6 +19,39 @@ QLineEdit {
 padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
+}
+QLineEdit, QComboBox {
+padding: 0px 10px;
+border: 1px solid #DEE4E9;
+border-radius: 2px;
+}
+QComboBox QAbstractItemView {
+border: 1px solid #DEE4E9;
+border-radius: 2px;
+padding: 3px 3px 3px 3px;
+background-color: #FFFFFF;
+}
+QComboBox:item {
+background-color: #FFFFFF;
+color: #353739;
+}
+QComboBox:item:selected {
+background-color: #006EB5;
+color: #FFFFFF;
+}
+QComboBox::drop-down {
+background-color: #FFFFFF;
+width: 25px;
+border-left-width: 1px;
+border-left-color: #DEE4E9;
+border-left-style: solid;
+}
+QComboBox::down-arrow {
+image: url(:/images/arrow_down.svg);
+}
+QComboBox::down-arrow:on {
+top: 1px;
+left: 1px;
 }</string>
   </property>
   <widget class="QPushButton" name="cancel">
@@ -124,9 +157,9 @@ QPushButton:disabled {
   <widget class="QLineEdit" name="phoneNo">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>160</x>
      <y>76</y>
-     <width>280</width>
+     <width>171</width>
      <height>34</height>
     </rect>
    </property>
@@ -137,10 +170,10 @@ QPushButton:disabled {
   <widget class="QLabel" name="labelPhone">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>60</y>
-     <width>241</width>
-     <height>16</height>
+     <x>160</x>
+     <y>58</y>
+     <width>121</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">
@@ -153,7 +186,7 @@ QPushButton:disabled {
     <string notr="true">color: #353739;</string>
    </property>
    <property name="text">
-    <string>Country code and phone number</string>
+    <string>Phone number</string>
    </property>
    <property name="buddy">
     <cstring>phoneNo</cstring>
@@ -235,6 +268,59 @@ QPushButton:disabled {
    </property>
    <property name="placeholderText">
     <string notr="true">47101010033</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="countryCode">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>76</y>
+     <width>90</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="currentText">
+    <string>372</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>372</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>371</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>370</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="labelCountryCode">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>58</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto Condensed</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #353739;</string>
+   </property>
+   <property name="text">
+    <string>Country code</string>
+   </property>
+   <property name="buddy">
+    <cstring>phoneNo</cstring>
    </property>
   </widget>
  </widget>

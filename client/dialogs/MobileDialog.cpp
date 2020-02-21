@@ -50,8 +50,10 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->labelNameId->setFont( header );
 	ui->labelPhone->setFont( condensed12 );
 	ui->labelIdCode->setFont( condensed12 );
+	ui->labelCountryCode->setFont( condensed12 );
 	ui->phoneNo->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
+	ui->countryCode->setFont(regularFont);
 	ui->cbRemember->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->sign->setFont( condensed14 );
 	ui->cancel->setFont( condensed14 );
@@ -59,14 +61,19 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	// Mobile
 	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
 	ui->idCode->setText(QSettings().value(QStringLiteral("MobileCode")).toString());
+	ui->countryCode->setItemData(0, "372");
+	ui->countryCode->setItemData(1, "371");
+	ui->countryCode->setItemData(2, "370");
+	ui->countryCode->setCurrentIndex(ui->countryCode->findData(QSettings().value(QStringLiteral("MobileIDCountryCode"), COUNTRY_CODE_EST).toString()));
 	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
-	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
+	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), QString()).toString());
 	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, [=](bool checked) {
 		Common::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString(), QString());
 		Common::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString(), QString());
+		Common::setValueEx(QStringLiteral("MobileIDCountryCode"), checked ? ui->countryCode->currentData().toString() : COUNTRY_CODE_EST, COUNTRY_CODE_EST);
 		Common::setValueEx(QStringLiteral("MobileSettings"), checked, true);
 	});
 
@@ -82,6 +89,7 @@ void MobileDialog::enableSign()
 {
 	if( ui->cbRemember->isChecked() )
 	{
+		Common::setValueEx(QStringLiteral("MobileIDCountryCode"), ui->countryCode->currentData().toString(), QString());
 		Common::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text(), QString());
 		Common::setValueEx(QStringLiteral("MobileNumber"), ui->phoneNo->text(),
 			ui->phoneNo->text() == COUNTRY_CODE_EST ? COUNTRY_CODE_EST : QString());
@@ -89,7 +97,7 @@ void MobileDialog::enableSign()
 	ui->sign->setToolTip(QString());
 	if( !IKValidator::isValid( ui->idCode->text() ) )
 		ui->sign->setToolTip( tr("Personal code is not valid") );
-	if(ui->phoneNo->text().isEmpty() || ui->phoneNo->text() == COUNTRY_CODE_EST)
+	if(ui->phoneNo->text().isEmpty() )
 		ui->sign->setToolTip( tr("Phone number is not entered") );
 	ui->sign->setEnabled( ui->sign->toolTip().isEmpty() );
 }
@@ -112,5 +120,5 @@ QString MobileDialog::idCode()
 
 QString MobileDialog::phoneNo()
 {
-	return ui->phoneNo->text();
+	return ui->countryCode->currentData().toString() + ui->phoneNo->text();
 }

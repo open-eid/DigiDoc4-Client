@@ -1729,8 +1729,12 @@ ID-КАРТОЙ</translation>
         <translation>Подписать</translation>
     </message>
     <message>
-        <source>Country code and phone number</source>
-        <translation>Код страны и телефонный номер</translation>
+        <source>Country code</source>
+        <translation>Код страны</translation>
+    </message>
+    <message>
+        <source>Phone number</source>
+        <translation>Телефонный номер</translation>
     </message>
     <message>
         <source>Personal code</source>

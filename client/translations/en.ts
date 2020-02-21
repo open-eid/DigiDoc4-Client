@@ -1726,8 +1726,12 @@ ID-CARD</translation>
         <translation>Sign</translation>
     </message>
     <message>
-        <source>Country code and phone number</source>
-        <translation>Country code and phone number</translation>
+        <source>Country code</source>
+        <translation>Country code</translation>
+    </message>
+    <message>
+        <source>Phone number</source>
+        <translation>Phone number</translation>
     </message>
     <message>
         <source>Personal code</source>
