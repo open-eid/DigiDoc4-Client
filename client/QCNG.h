@@ -33,7 +33,7 @@ public:
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
 	PinStatus lastError() const override;
-	TokenData selectCert(const SslCertificate &cert) override;
+	void selectCert(const TokenData &token) override;
 	QByteArray sign(int method, const QByteArray &digest) const override;
 
 private:

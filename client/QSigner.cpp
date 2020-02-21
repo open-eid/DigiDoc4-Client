@@ -305,7 +305,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 #ifdef Q_OS_WIN
 	else if(d->win)
 	{
-		d->win->selectCert(d->auth.cert());
+		d->win->selectCert(d->auth);
 		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
 			out = d->win->decrypt(in);
 		else
@@ -333,7 +333,7 @@ QSslKey QSigner::key() const
 
 #ifdef Q_OS_WIN
 	if(d->win)
-		d->win->selectCert(d->auth.cert());
+		d->win->selectCert(d->auth);
 	else
 #endif
 	{
@@ -620,7 +620,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 #ifdef Q_OS_WIN
 	else if(d->win)
 	{
-		d->win->selectCert(d->sign.cert());
+		d->win->selectCert(d->sign);
 		sig = d->win->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 		if(d->win->lastError() == QWin::PinCanceled)
 		{

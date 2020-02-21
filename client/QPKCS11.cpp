@@ -249,50 +249,27 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 {
 	logout();
 
-	CK_SLOT_ID currentSlot = 0;
-	d->id = [&]{
-		for(CK_SLOT_ID slot: d->slotIds(true))
-		{
-			if(d->session)
-				d->f->C_CloseSession(d->session);
-			d->session = 0;
-			if(d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
-				continue;
-			currentSlot = slot;
-			bool isAuthSlot = false;
-			for(CK_OBJECT_HANDLE obj: d->findObject(d->session, CKO_CERTIFICATE))
-			{
-				SslCertificate cert(d->attribute(d->session, obj, CKA_VALUE), QSsl::Der);
-				// Hack: Workaround broken FIN pkcs11 drivers showing non-repu certificates in auth slot
-				if(d->isFinDriver)
-				{
-					if(isAuthSlot)
-						continue;
-					if(!cert.keyUsage().contains(SslCertificate::NonRepudiation))
-						isAuthSlot = true;
-				}
-				if(t.cert() == cert)
-					return d->attribute(d->session, obj, CKA_ID);
-			}
-		}
-		return QByteArray();
-	}();
+	CK_SLOT_ID currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
+	d->id = t.data(QStringLiteral("id")).toByteArray();
 
 	CK_TOKEN_INFO token;
-	if(d->id.isEmpty() || d->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK)
+	if(d->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK ||
+		d->f->C_OpenSession(currentSlot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
+		return UnknownError;
+
+	std::vector<CK_OBJECT_HANDLE> list = d->findObject(d->session, CKO_CERTIFICATE, d->id);
+	if(list.size() != 1 || QSslCertificate(d->attribute(d->session, list[0], CKA_VALUE), QSsl::Der) != t.cert())
 		return UnknownError;
 
 	// Hack: Workaround broken FIN pkcs11 drivers not providing CKF_LOGIN_REQUIRED info
 	if(!d->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
 		return PinOK;
 
-	if(token.flags & CKF_USER_PIN_LOCKED)
-		return PinLocked;
-
 	CK_RV err = CKR_OK;
 	SslCertificate cert(t.cert());
 	bool isSign = cert.keyUsage().keys().contains(SslCertificate::NonRepudiation);
 	PinPopup::TokenFlags f;
+	if(token.flags & CKF_USER_PIN_LOCKED) return PinLocked;
 	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
 	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
@@ -347,11 +324,10 @@ QList<TokenData> QPKCS11::tokens() const
 	for( CK_SLOT_ID slot: d->slotIds( true ) )
 	{
 		CK_SLOT_INFO slotInfo;
-		if(d->f->C_GetSlotInfo(slot, &slotInfo) != CKR_OK)
-			continue;
 		CK_TOKEN_INFO token;
 		CK_SESSION_HANDLE session = 0;
-		if(d->f->C_GetTokenInfo(slot, &token) != CKR_OK ||
+		if(d->f->C_GetSlotInfo(slot, &slotInfo) != CKR_OK ||
+			d->f->C_GetTokenInfo(slot, &token) != CKR_OK ||
 			d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &session) != CKR_OK)
 			continue;
 		bool isAuthSlot = false;
@@ -372,6 +348,8 @@ QList<TokenData> QPKCS11::tokens() const
 			t.setCard(toQByteArray(token.serialNumber).trimmed());
 			t.setCert(cert);
 			t.setReader(QByteArray::fromRawData((const char*)slotInfo.slotDescription, sizeof(slotInfo.slotDescription)).trimmed());
+			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
+			t.setData(QStringLiteral("id"), d->attribute(session, obj, CKA_ID));
 			list << t;
 		}
 		d->f->C_CloseSession( session );

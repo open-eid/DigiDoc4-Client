@@ -51,7 +51,7 @@ script: case ${TARGET} in
     docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v ${HOME}:${HOME} -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
       apt-get update -qq; 
       export DEBIAN_FRONTEND=noninteractive;
-      apt-get install -y apt-transport-https dh-make devscripts cdbs cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev git curl wget ruby;
+      apt-get install -y apt-transport-https dh-make devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev git curl wget ruby;
       dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb;
       export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}");
       export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs);
