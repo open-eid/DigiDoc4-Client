@@ -592,8 +592,8 @@ void SettingsDialog::changePage(QAbstractButton *button)
 
 void SettingsDialog::saveDiagnostics()
 {
-	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_diagnostics.txt")
-		.arg( QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName() ),
+	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_diagnostics.txt")
+		.arg( QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName(), qApp->applicationVersion() ),
 		tr("Text files (*.txt)") );
 	if( filename.isEmpty() )
 		return;
