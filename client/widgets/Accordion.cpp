@@ -113,23 +113,21 @@ void Accordion::updateInfo(const SslCertificate &c)
 	ui->titleOtherData->hide();
 }
 
-void Accordion::updateInfo( const QSmartCard *smartCard )
+void Accordion::updateInfo(const QSmartCardData &data)
 {
-	QSmartCardData t = smartCard->data();
+	ui->authBox->setVisible(!data.authCert().isNull());
+	if (!data.authCert().isNull())
+		ui->authBox->update(QSmartCardData::Pin1Type, data);
 
-	ui->authBox->setVisible( !t.authCert().isNull() );
-	if ( !t.authCert().isNull() )
-		ui->authBox->update( QSmartCardData::Pin1Type, smartCard );
-
-	ui->signBox->setVisible( !t.signCert().isNull() );
-	if ( !t.signCert().isNull() )
-		ui->signBox->update( QSmartCardData::Pin2Type, smartCard );
+	ui->signBox->setVisible(!data.signCert().isNull());
+	if (!data.signCert().isNull())
+		ui->signBox->update(QSmartCardData::Pin2Type, data);
 
 	ui->pukBox->show();
-	ui->pukBox->update( QSmartCardData::PukType, smartCard );
+	ui->pukBox->update(QSmartCardData::PukType, data);
 
-	ui->titleOtherData->setHidden(t.version() == QSmartCardData::VER_USABLEUPDATER ||
-		t.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT")));
+	ui->titleOtherData->setHidden(data.version() == QSmartCardData::VER_USABLEUPDATER ||
+		data.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT")));
 }
 
 void Accordion::changeEvent(QEvent* event)

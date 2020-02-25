@@ -345,7 +345,8 @@ QList<TokenData> QPKCS11::tokens() const
 					isAuthSlot = true;
 			}
 			TokenData t;
-			t.setCard(toQByteArray(token.serialNumber).trimmed());
+			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
+				toQByteArray(token.serialNumber).trimmed() : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 			t.setCert(cert);
 			t.setReader(QByteArray::fromRawData((const char*)slotInfo.slotDescription, sizeof(slotInfo.slotDescription)).trimmed());
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));

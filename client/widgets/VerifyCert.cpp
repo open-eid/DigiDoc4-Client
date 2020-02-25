@@ -88,10 +88,10 @@ void VerifyCert::clear()
 	update();
 }
 
-void VerifyCert::update( QSmartCardData::PinType type, const QSmartCard *pSmartCard )
+void VerifyCert::update(QSmartCardData::PinType type, const QSmartCardData &data)
 {
 	pinType = type;
-	cardData = pSmartCard->data();
+	cardData = data;
 	c = (pinType == QSmartCardData::Pin1Type) ? cardData.authCert() : cardData.signCert();
 	isBlockedPin = cardData.retryCount( pinType ) == 0;
 	update();
