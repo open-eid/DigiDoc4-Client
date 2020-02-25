@@ -59,7 +59,7 @@ void ItemList::addHeader(const QString &label)
 	header->setFixedHeight(64);
 	header->setFont( Styles::font(Styles::Regular, 20));
 	header->setStyleSheet(QStringLiteral("border: solid rgba(217, 217, 216, 0.45);"
-			"border-width: 0px 0px 1px 0px;"));
+			"border-width: 0px 0px 1px 0px; color: #041E42;"));
 	ui->itemLayout->insertWidget(0, header);
 	headerItems++;
 }
