@@ -25,7 +25,6 @@
 WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
 : QDialog(parent)
 , ui(new Ui::WarningDialog)
-, buttonMargin(35)
 , buttonOffset(2)
 , buttonWidth(120)
 {
@@ -45,9 +44,14 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	{
 		ui->details->hide();
 		ui->showDetails->hide();
+		setTabOrder(ui->text, ui->cancel);
 	}
 	else
 	{
+		setTabOrder(ui->text, ui->details);
+		setTabOrder(ui->details, ui->showDetails);
+		setTabOrder(ui->showDetails, ui->cancel);
+
 		ui->details->setFont(regular);
 		ui->details->setText(details);
 		ui->details->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -58,6 +62,8 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 		connect(ui->showDetails, &AccordionTitle::closed, this, &WarningDialog::adjustSize);
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}
+
+	lastFocus = ui->cancel;
 	adjustSize();
 }
 
@@ -79,9 +85,6 @@ void WarningDialog::setCancelText(const QString& label)
 
 void WarningDialog::addButton(const QString& label, int ret)
 {
-	auto layout = qobject_cast<QBoxLayout*>(ui->buttonBar->layout());
-	layout->insertSpacing(buttonOffset++, buttonMargin);
-
 	QFont font = Styles::font(Styles::Condensed, 14);
 	QFontMetrics fm(font);
 
@@ -89,6 +92,9 @@ void WarningDialog::addButton(const QString& label, int ret)
 	button->setAccessibleName(label.toLower());
 	button->setCursor(Qt::PointingHandCursor);
 	button->setFont(font);
+	setTabOrder(lastFocus, button);
+	setTabOrder(button, ui->text);
+	lastFocus = button;
 
 	int width = buttonWidth;
 	int textWidth = fm.width(label);
@@ -102,15 +108,15 @@ void WarningDialog::addButton(const QString& label, int ret)
 		"QPushButton:disabled {background-color: #BEDBED;}"));
 
 	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
-	layout->insertWidget(buttonOffset++, button);
+	ui->buttonBarLayout->insertWidget(buttonOffset++, button);
 }
 
 void WarningDialog::setButtonSize(int width, int margin)
 {
+	ui->buttonBarLayout->setSpacing(margin);
 	ui->cancel->setMinimumSize(width, 34);
 	ui->cancel->setMaximumSize(width, 34);
 	buttonWidth = width;
-	buttonMargin = margin;
 }
 
 void WarningDialog::setText(const QString& text)

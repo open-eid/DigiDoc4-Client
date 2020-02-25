@@ -310,8 +310,12 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->activeWindow());
 		dlg.setCancelText(tr("NO"));
 		dlg.addButton(tr("YES"), 1);
-		if(dlg.exec() != 1)
+		dlg.setFocus();
+
+		if(dlg.exec() != 1) {
 			return false;
+		}
+		
 	}
 	QString fileName(info.fileName());
 	for(int row = 0; row < rowCount(); row++)

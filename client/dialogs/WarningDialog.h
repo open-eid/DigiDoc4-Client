@@ -42,8 +42,8 @@ public:
 	static void warning(QWidget *parent, const QString& text);
 
 private:
+	QWidget *lastFocus;
 	Ui::WarningDialog *ui;
-	int buttonMargin;
 	int buttonOffset;
 	int buttonWidth;
 };
