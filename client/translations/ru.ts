@@ -832,8 +832,8 @@ The Information System Authority does not retain information regarding the files
         <translation>Пожалуйста проверьте время Вашего компьютера. &lt;a href=&apos;https://id.ee/index.php?id=39514&apos;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>The timestamp added to the signature must be taken before validity confirmation</source>
-        <translation>Добавленная к подписи метка времени должна быть более ранней по времени, чем подтверждение действительности</translation>
+        <source>The timestamp added to the signature must be taken before validity confirmation.</source>
+        <translation>Добавленная к подписи метка времени должна быть более ранней по времени, чем подтверждение действительности.</translation>
     </message>
 </context>
 <context>

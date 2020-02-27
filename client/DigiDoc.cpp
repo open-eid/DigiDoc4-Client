@@ -188,7 +188,7 @@ void DigiDocSignature::setLastError( const Exception &e ) const
 	DigiDoc::parseException(e, causes, code);
 	switch(code) {
 	case Exception::OCSPBeforeTimeStamp:
-		m_lastError = DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation"); break;
+		m_lastError = DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation."); break;
 	default: m_lastError = causes.join('\n');
 	}
 }
