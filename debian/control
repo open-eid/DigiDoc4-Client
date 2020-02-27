@@ -29,10 +29,9 @@ Description: Estonian digital signature application
  ID-software allows you to use your ID-card electronically – use
  private and governmental e-services, digitally sign documents
  and encrypt documents for safe transfer; the software includes
- utilities to manage (change pin codes, update certificates etc.)
- the Estonian ID-card.
+ utilities to manage e.g. change pin codes of the Estonian ID-card.
  .
- DigiDoc4 Client can be used to sign digitally with ID-card and Mobile-ID, 
+ DigiDoc4 Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, 
  check the validity of digital signatures and open and save documents 
  inside the signature container. Digitally signed containers are files 
  with .bdoc or .asice extensions; read-only support is provided for 
