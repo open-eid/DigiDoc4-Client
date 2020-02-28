@@ -21,6 +21,7 @@
 
 #include "Application.h"
 #include "dialogs/WaitDialog.h"
+#include "dialogs/WarningDialog.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStandardPaths>
@@ -250,8 +251,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	if( !QFileInfo( res ).isWritable() )
 #endif
 	{
-		QMessageBox::warning( parent, caption,
-			tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ) );
+		WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ), parent).exec();
 		return QString();
 	}
 
@@ -268,8 +268,7 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 			caption, dir, filter, selectedFilter, options|addOptions() );
 		if( !file.isEmpty() && !fileIsWritable( file ) )
 		{
-			QMessageBox::warning( parent, caption,
-				tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ) );
+			WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ), parent).exec();
 		}
 		else
 			break;

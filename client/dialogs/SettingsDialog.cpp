@@ -544,11 +544,10 @@ void SettingsDialog::installCert()
 	{
 	case PKCS12Certificate::NullError: break;
 	case PKCS12Certificate::InvalidPasswordError:
-		QMessageBox::warning(this, tr("Select server access certificate"), tr("Invalid password"));
+		WarningDialog(tr("Invalid password"), this).exec();
 		return;
 	default:
-		QMessageBox::warning(this, tr("Select server access certificate"),
-			tr("Server access certificate error: %1").arg(p12.errorString()));
+		WarningDialog(tr("Server access certificate error: %1").arg(p12.errorString()), this).exec();
 		return;
 	}
 
@@ -594,5 +593,5 @@ void SettingsDialog::saveDiagnostics()
 		return;
 	QFile f( filename );
 	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(ui->txtDiagnostics->toPlainText().toUtf8()))
-		QMessageBox::warning( this, tr("Error occurred"), tr("Failed write to file!") );
+		WarningDialog(tr("Failed write to file!"), this).exec();
 }
