@@ -457,6 +457,9 @@ QHeaderView::section {
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
            </property>
+           <property name="indentation">
+            <number>5</number>
+           </property>
            <property name="columnCount">
             <number>2</number>
            </property>
