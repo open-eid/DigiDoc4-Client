@@ -97,7 +97,6 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);
 	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
-	QObject::connect(d->statusTimer, &QTimeLine::finished, d, &QDialog::reject);
 #ifdef Q_OS_WIN
 	d->taskbar = new QWinTaskbarButton(d);
 	d->taskbar->setWindow(parent->windowHandle());
