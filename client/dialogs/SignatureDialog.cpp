@@ -211,7 +211,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		addItem(t, tr("OCSP time"), s.ocspTime().toLocalTime());
 		addItem(t, tr("OCSP time") + " (UTC)", s.ocspTime());
 	}
-	addItem(t, tr("Signer's computer time (UTC)"), s.signTime());
+	addItem(t, tr("Claimed signing time (UTC)"), s.signTime());
 
 #ifdef Q_OS_MAC
 	t->setFont(Styles::font(Styles::Regular, 13));
