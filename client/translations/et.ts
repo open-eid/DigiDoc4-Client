@@ -2897,8 +2897,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Kehtivuskinnituse aeg</translation>
     </message>
     <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Allkirjastaja arvuti kellaaeg (UTC)</translation>
+        <source>Claimed signing time (UTC)</source>
+        <translation>Väidetav allkirjastamise aeg (UTC)</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>

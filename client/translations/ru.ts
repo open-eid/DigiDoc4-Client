@@ -2930,8 +2930,8 @@ Additional licenses and components</source>
         <translation>Время подтверждения подлинности подписи</translation>
     </message>
     <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Время на компьютере подписывающего (UTC)</translation>
+        <source>Claimed signing time (UTC)</source>
+        <translation>Заявленное время подписания (UTC)</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>

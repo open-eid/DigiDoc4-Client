@@ -2897,8 +2897,8 @@ Additional licenses and components</translation>
         <translation>OCSP time</translation>
     </message>
     <message>
-        <source>Signer&apos;s computer time (UTC)</source>
-        <translation>Signer&apos;s computer time (UTC)</translation>
+        <source>Claimed signing time (UTC)</source>
+        <translation>Claimed signing time (UTC)</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
