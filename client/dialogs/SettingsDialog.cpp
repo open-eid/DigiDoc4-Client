@@ -80,6 +80,9 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
 	QFont condensed12 = Styles::font(Styles::Condensed, 12);
+	headerFont.setPixelSize(18);
+	regularFont.setPixelSize(14);
+	condensed12.setPixelSize(12);
 
 	// Menu
 	ui->lblMenuSettings->setFont(headerFont);

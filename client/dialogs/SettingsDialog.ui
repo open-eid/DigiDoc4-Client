@@ -504,7 +504,12 @@ QRadioButton::indicator::checked {
      </widget>
      <widget class="QWidget" name="pageServices">
       <property name="styleSheet">
-       <string notr="true">QToolButton { border: none; }</string>
+       <string notr="true">QToolButton { border: none; }
+QPushButton {
+	text-align:middle;
+	padding-bottom:1px; 
+	min-height:30px;
+}</string>
       </property>
       <layout class="QVBoxLayout" name="pageServicesLayout">
        <property name="leftMargin">
