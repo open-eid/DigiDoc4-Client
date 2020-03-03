@@ -34,6 +34,8 @@
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${CMAKE_OSX_DEPLOYMENT_TARGET}</string>
+	<key>NSRequiresAquaSystemAppearance</key>
+	<string>True</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.ee.ria.qdigidoc4</key>
