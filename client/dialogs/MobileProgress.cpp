@@ -53,6 +53,7 @@ class MobileProgress::Private: public QDialog, public Ui::MobileProgress
 public:
 	QString URL() { return UUID.isNull() ? PROXYURL : SKURL; }
 	using QDialog::QDialog;
+	void reject() override { l.exit(QDialog::Rejected); }
 	QTimeLine *statusTimer = nullptr;
 	QNetworkAccessManager *manager = nullptr;
 	QNetworkRequest req;
@@ -87,7 +88,6 @@ MobileProgress::MobileProgress(QWidget *parent)
 	d->signProgressBar->setFont(d->labelError->font());
 	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
-	QObject::connect(d->cancel, &QPushButton::clicked,  [=] { d->l.exit(QDialog::Rejected); });
 
 	d->statusTimer = new QTimeLine(d->signProgressBar->maximum() * 1000, d);
 	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);
