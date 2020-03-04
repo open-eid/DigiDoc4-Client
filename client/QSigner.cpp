@@ -301,6 +301,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		else
 			out = d->pkcs11->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
 		d->pkcs11->logout();
+		d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 	}
 #ifdef Q_OS_WIN
 	else if(d->win)
@@ -313,7 +314,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		if(d->win->lastError() == QWin::PinCanceled)
 		{
 			QCardLock::instance().exclusiveUnlock();
-			smartcard()->reload(); // QSmartCard should also know that PIN1 is blocked.
+			d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
 			return PinCanceled;
 		}
 	}
@@ -344,7 +345,7 @@ QSslKey QSigner::key() const
 		case QPKCS11::PinLocked:
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			smartcard()->reload();
+			d->smartcard->reload();
 			return QSslKey();
 		}
 	}
@@ -385,7 +386,7 @@ void QSigner::logout()
 	if(d->pkcs11)
 		d->pkcs11->logout();
 	QCardLock::instance().exclusiveUnlock();
-	d->smartcard->reload();
+	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 }
 
 void QSigner::reloadauth() const
@@ -616,6 +617,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 
 		sig = d->pkcs11->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 		d->pkcs11->logout();
+		d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
 	}
 #ifdef Q_OS_WIN
 	else if(d->win)
@@ -625,7 +627,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		if(d->win->lastError() == QWin::PinCanceled)
 		{
 			QCardLock::instance().exclusiveUnlock();
-			smartcard()->reload(); // QSmartCard should also know that PIN2 is blocked.
+			d->smartcard->reload(); // QSmartCard should also know that PIN2 is blocked.
 			throwException(tr("Failed to login token"), Exception::PINCanceled);
 		}
 	}

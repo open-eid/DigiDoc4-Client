@@ -71,7 +71,6 @@ private Q_SLOTS:
 	void photoClicked(const QPixmap &photo);
 	void savePhoto();
 	void showCardStatus();
-	void updateMyEid();
 	void warningClicked(const QString &link);
 
 protected:
@@ -128,6 +127,7 @@ private:
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateKeys(const QList<CKey> &keys);
+	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
 	void containerSummary();
