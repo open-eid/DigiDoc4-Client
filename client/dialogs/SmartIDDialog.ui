@@ -172,16 +172,35 @@ padding-top: 8px;</string>
        <height>34</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="placeholderText">
       <string notr="true">47101010033</string>
      </property>
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>8</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QCheckBox" name="cbRemember">
      <property name="styleSheet">
       <string notr="true">color: #353739;
-padding-top: 8px;</string>
+</string>
      </property>
      <property name="text">
       <string>Remember me</string>
