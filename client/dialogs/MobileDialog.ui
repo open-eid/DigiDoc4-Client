@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>282</height>
+    <height>302</height>
    </rect>
   </property>
   <property name="styleSheet">
@@ -25,7 +25,7 @@ border-radius: 2px;
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>218</y>
+     <y>238</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -75,7 +75,7 @@ QPushButton:hover:!pressed {
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>218</y>
+     <y>238</y>
      <width>120</width>
      <height>32</height>
     </rect>
@@ -125,7 +125,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>76</y>
+     <y>96</y>
      <width>280</width>
      <height>34</height>
     </rect>
@@ -138,7 +138,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>60</y>
+     <y>80</y>
      <width>241</width>
      <height>16</height>
     </rect>
@@ -163,7 +163,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>8</y>
+     <y>28</y>
      <width>360</width>
      <height>38</height>
     </rect>
@@ -174,7 +174,8 @@ QPushButton:disabled {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #041E42;</string>
+    <string notr="true">color: #041E42;
+</string>
    </property>
    <property name="text">
     <string>Enter your phone number to sign with Mobile ID</string>
@@ -187,7 +188,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>181</y>
+     <y>201</y>
      <width>241</width>
      <height>20</height>
     </rect>
@@ -203,7 +204,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>118</y>
+     <y>138</y>
      <width>241</width>
      <height>16</height>
     </rect>
@@ -228,7 +229,7 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>134</y>
+     <y>154</y>
      <width>280</width>
      <height>34</height>
     </rect>
