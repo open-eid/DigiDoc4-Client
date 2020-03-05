@@ -2384,6 +2384,14 @@ Control code: %1</translation>
         <source>SIGN</source>
         <translation>SIGN</translation>
     </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>Cancel</translation>
+    </message>
 </context>
 <context>
     <name>SDocumentModel</name>

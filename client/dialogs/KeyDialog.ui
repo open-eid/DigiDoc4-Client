@@ -103,13 +103,13 @@ QHeaderView::section {
 	border-radius: 2px; 
 	border: none;
 	color: #ffffff;
-	background-color: #006EB5;
+	background-color: #981E32;
 }
 QPushButton:pressed {
-	background-color: #41B6E6;
+	background-color: #F24A66;
 }
 QPushButton:hover:!pressed {
-	background-color: #008DCF;
+	background-color: #CD2541;
 }
 QPushButton:disabled {
 	background-color: #BEDBED;
