@@ -56,10 +56,10 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	overlay->show();
 	connect(this, &PinPopup::destroyed, overlay, &Overlay::deleteLater);
 
-	QFont regular = Styles::font( Styles::Regular, 13 );
+	QFont regular = Styles::font( Styles::Regular, 14 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	
-	ui->labelNameId->setFont( Styles::font( Styles::Regular, 14 ) );
+
+	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
 	ui->label->setFont( regular );
 	ui->ok->setFont( condensed14 );
 	ui->cancel->setFont( condensed14 );

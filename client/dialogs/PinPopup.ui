@@ -42,10 +42,16 @@ background-color: #FFFFFF;
    <property name="geometry">
     <rect>
      <x>22</x>
-     <y>11</y>
+     <y>12</y>
      <width>461</width>
-     <height>16</height>
+     <height>24</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="font">
     <font>
@@ -53,7 +59,7 @@ background-color: #FFFFFF;
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #000000; border: none;</string>
+    <string notr="true">color: #041E42; border: none;</string>
    </property>
    <property name="text">
     <string notr="true">&lt;b&gt;Mari Maasikas,&lt;/b&gt; 48405050123</string>
