@@ -632,7 +632,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	{
 		if(!cryptoDoc)
 			break;
-		QString target = FileDialog::createNewFileName(cryptoDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), QString());
+		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
 		if(target.isEmpty())
 			break;
 		if( !FileDialog::fileIsWritable(target) &&

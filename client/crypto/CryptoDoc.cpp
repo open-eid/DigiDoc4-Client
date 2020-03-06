@@ -1187,6 +1187,8 @@ void CryptoDoc::removeKey( int id )
 
 bool CryptoDoc::saveCopy(const QString &filename)
 {
+	if(QFileInfo(filename) == QFileInfo(d->fileName))
+		return true;
 	if(QFile::exists(filename))
 		QFile::remove(filename);
 	return QFile::copy(d->fileName, filename);
