@@ -54,7 +54,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	Application.cpp
 	CheckConnection.cpp
-	CliApplication.cpp
 	DigiDoc.cpp
 	Diagnostics.cpp
 	DiagnosticsTask.cpp

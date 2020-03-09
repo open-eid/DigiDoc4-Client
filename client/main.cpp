@@ -19,6 +19,10 @@
 
 #include "Application.h"
 
+#include "DiagnosticsTask.h"
+
+#include <QtCore/QTimer>
+
 #ifdef Q_OS_WIN32
 #include <QtCore/QDebug>
 #include <QtCore/qt_windows.h>
@@ -42,10 +46,26 @@ int main( int argc, char *argv[] )
 #endif
 #endif
 
-	DdCliApplication cliApp( argc, argv );
-	if( cliApp.isDiagnosticRun() )
+	for(int i = 1; i < argc; ++i)
 	{
-		return cliApp.run();
+		QString parameter(argv[i]);
+		if(parameter.startsWith("-diag"))
+		{
+			QCoreApplication qtApp( argc, argv );
+			qtApp.setApplicationName(QStringLiteral(APP));
+			qtApp.setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
+				.arg(MAJOR_VER).arg(MINOR_VER).arg(RELEASE_VER).arg(BUILD_VER));
+			qtApp.setOrganizationDomain("ria.ee");
+			qtApp.setOrganizationName("RIA");
+
+			Application::initDiagnosticConf();
+			DiagnosticsTask task(&qtApp, parameter.remove(QStringLiteral("-diag")).remove(QRegExp(QStringLiteral("^[:]*"))));
+			QObject::connect(&task, &DiagnosticsTask::finished, &qtApp, &QCoreApplication::quit);
+			QObject::connect(&task, &DiagnosticsTask::failed, &qtApp, [] { QCoreApplication::exit(1); });
+
+			QTimer::singleShot(0, &task, &DiagnosticsTask::run);
+			return qtApp.exec();
+		}
 	}
 
 	return Application( argc, argv ).run();

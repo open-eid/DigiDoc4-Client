@@ -22,14 +22,11 @@
 #include <cstdio>
 
 #include <QFile>
-#include <QFileDevice>
 #include <QTextDocument>
 #include <QTextStream>
-#include <QtCore/QCoreApplication>
 
-
-DiagnosticsTask::DiagnosticsTask( QObject *parent, const QString &appInfo, const QString &outFile )
-	: QObject(parent), outFile(outFile), appInfo(appInfo), worker( appInfo )
+DiagnosticsTask::DiagnosticsTask( QObject *parent, const QString &outFile )
+	: QObject(parent), outFile(outFile)
 {
 }
 
@@ -66,7 +63,7 @@ bool DiagnosticsTask::logDiagnostics()
 	if ( isOpened )
 	{
 		QTextStream out( &file );
-		out << getDiagnostics();
+		out << data;
 		out.flush();
 	}
 	else
@@ -77,11 +74,6 @@ bool DiagnosticsTask::logDiagnostics()
 	return isOpened;
 }
 
-QString DiagnosticsTask::getDiagnostics() const
-{
-	return data;
-}
-
 void DiagnosticsTask::insertHtml( const QString &text )
 {
 	html << text;
@@ -90,7 +82,6 @@ void DiagnosticsTask::insertHtml( const QString &text )
 void DiagnosticsTask::complete()
 {
 	QTextDocument doc;
-	doc.setHtml( html.join("") );
-
+	doc.setHtml(html.join(QString()));
 	data = doc.toPlainText();
 }
