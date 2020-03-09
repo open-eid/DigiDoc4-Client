@@ -2745,6 +2745,18 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>%1 version %2, released %3</source>
         <translation>%1 versioon %2, avalikustatud %3</translation>
     </message>
+    <message>
+        <source>Applying this setting requires application restart. Restart now?</source>
+        <translation>Selle seadistuse rakendamine vajab rakenduse taaskäivitamist. Taaskäivita rakendus?</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
