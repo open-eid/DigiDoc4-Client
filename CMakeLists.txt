@@ -26,7 +26,7 @@ set_env( MOBILEID_URL "https://dd-mid.ria.ee/mid-api" CACHE STRING "URL for Mobi
 set_env( SMARTID_URL "https://dd-sid.ria.ee/v1" CACHE STRING "URL for Smart-ID" )
 
 if(APPLE)
-        set(BUNDLE_NAME qdigidoc4) 
+        set(BUNDLE_NAME qdigidoc4)
         add_subdirectory( extensions/DigiDocQL )
 elseif(UNIX)
         option(ENABLE_KDE "Install KDE service menu (default: TRUE)" TRUE)

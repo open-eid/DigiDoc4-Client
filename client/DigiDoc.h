@@ -117,11 +117,6 @@ class DigiDoc: public QObject
 {
 	Q_OBJECT
 public:
-	enum DocumentType {
-		DDocType,
-		BDoc2Type
-	};
-
 	enum Operation {
 		Saving,
 		Signing,
@@ -157,7 +152,6 @@ public:
 	QList<DigiDocSignature> signatures() const;
 	ria::qdigidoc4::ContainerState state();
 	QList<DigiDocSignature> timestamps() const;
-	DocumentType documentType() const;
 
 	static bool parseException( const digidoc::Exception &e, QStringList &causes,
 		digidoc::Exception::ExceptionCode &code);

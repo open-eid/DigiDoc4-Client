@@ -835,6 +835,10 @@ The Information System Authority does not retain information regarding the files
         <source>The timestamp added to the signature must be taken before validity confirmation.</source>
         <translation>Добавленная к подписи метка времени должна быть более ранней по времени, чем подтверждение действительности.</translation>
     </message>
+    <message>
+        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
+        <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
