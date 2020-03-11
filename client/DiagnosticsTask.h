@@ -28,7 +28,7 @@ class DiagnosticsTask: public QObject
 {
 	Q_OBJECT
 public:
-	DiagnosticsTask(QObject *parent, const QString &outFile);
+	DiagnosticsTask(QObject *parent, QString outFile);
 	void complete();
 
 public slots:

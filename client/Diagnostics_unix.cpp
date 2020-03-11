@@ -26,6 +26,47 @@
 #include <QtCore/QProcess>
 
 #include <sys/utsname.h>
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CFBundle.h>
+#endif
+
+QStringList Diagnostics::packages(const QStringList &names, bool withName)
+{
+	QStringList packages;
+#ifdef Q_OS_MAC
+	Q_UNUSED(withName);
+	for (const QString &name: names) {
+		CFStringRef id = QStringLiteral("ee.ria.").arg(name).toCFString();
+		CFBundleRef bundle = CFBundleGetBundleWithIdentifier(id);
+		CFRelease(id);
+		if (!bundle)
+			continue;
+		CFStringRef ver = CFStringRef(CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleShortVersionString")));
+		CFStringRef build = CFStringRef(CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleVersion")));
+		packages << QStringLiteral("%1 (%2.%3)").arg(name, QString::fromCFString(ver), QString::fromCFString(build));
+	}
+#elif defined(Q_OS_LINUX)
+	QProcess p;
+
+	for(const QString &name: names)
+	{
+		p.start("dpkg-query", { "-W", "-f=${Version}", name });
+		if( !p.waitForStarted() && p.error() == QProcess::FailedToStart )
+		{
+			p.start("rpm", { "-q", "--qf", "%{VERSION}", name });
+			p.waitForStarted();
+		}
+		p.waitForFinished();
+		if( !p.exitCode() )
+		{
+			QString ver = QString::fromLocal8Bit( p.readAll().trimmed() );
+			if( !ver.isEmpty() )
+				packages << packageName( name, ver, withName );
+		}
+	}
+#endif
+	return packages;
+}
 
 void Diagnostics::run()
 {
@@ -46,7 +87,7 @@ void Diagnostics::run()
 	info.clear();
 
 #ifndef Q_OS_MAC
-	QStringList package = Common::packages( { "estonianidcard" }, false );
+	QStringList package = packages({"open-eid", "estonianidcard"}, false);
 	if( !package.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << package.first() << "<br />";
 #endif
@@ -67,7 +108,7 @@ void Diagnostics::run()
 	}
 	s << "<br />";
 #endif
-	struct utsname unameData;
+	struct utsname unameData = {};
 	uname(&unameData);
 	s << "<b>" << tr("Kernel:") << "</b> "
 		<< unameData.sysname << " " << unameData.release << " "
@@ -75,7 +116,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << tr("Libraries") << ":</b><br />" << Common::packages({
+	s << "<b>" << tr("Libraries") << ":</b><br />" << packages({
 #ifdef Q_OS_MAC
 		"libdigidoc", "digidocpp"
 #else
@@ -92,7 +133,7 @@ void Diagnostics::run()
 	info.clear();
 
 #ifndef Q_OS_MAC
-	QStringList browsers = Common::packages( { "chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable" } );
+	QStringList browsers = packages({"chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable"});
 	if( !browsers.isEmpty() )
 		s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );

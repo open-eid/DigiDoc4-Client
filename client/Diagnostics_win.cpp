@@ -77,6 +77,31 @@ static QString getUserRights()
 	return rights;
 }
 
+QStringList Diagnostics::packages(const QStringList &names, bool withName)
+{
+	QStringList packages;
+	for(const QString &group: {QStringLiteral("HKEY_LOCAL_MACHINE"), QStringLiteral("HKEY_CURRENT_USER")})
+	{
+		QString path = QStringLiteral("%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").arg(group);
+		for(QSettings::Format format: {QSettings::Registry32Format, QSettings::Registry64Format})
+		{
+			QSettings s(path, format);
+			for(const QString &key: s.childGroups())
+			{
+				s.beginGroup(key);
+				QString name = s.value(QStringLiteral("/DisplayName")).toString();
+				QString version = s.value(QStringLiteral("/DisplayVersion")).toString();
+				QString type = s.value(QStringLiteral("/ReleaseType")).toString();
+				if(!type.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
+					name.contains(QRegExp(names.join('|'), Qt::CaseInsensitive)))
+					packages << packageName(name, version, withName);
+				s.endGroup();
+			}
+		}
+	}
+	return packages;
+}
+
 void Diagnostics::run()
 {
 	QString info;
@@ -96,7 +121,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList base = Common::packages({
+	QStringList base = packages({
 		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "eID software"}, false);
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
@@ -119,13 +144,13 @@ void Diagnostics::run()
 		+ ";C:\\Program Files (x86)\\TeRa Client"
 		+ ";C:\\Program Files (x86)\\EstIDMinidriver Minidriver");
 	SetDllDirectory(LPCWSTR(qApp->applicationDirPath().utf16()));
-	static const QStringList packages{
+	static const QStringList dlls{
 		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
 		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
 		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe",
 		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "libxml2",
 		"advapi32", "crypt32", "winscard"};
-	for(const QString &lib: packages)
+	for(const QString &lib: dlls)
 	{
 		DWORD infoHandle = 0;
 		DWORD sz = GetFileVersionInfoSize(LPCWSTR(lib.utf16()), &infoHandle);
@@ -138,7 +163,7 @@ void Diagnostics::run()
 		UINT len = 0;
 		if( !VerQueryValueW( data.constData(), L"\\", (LPVOID*)&info, &len ) )
 			continue;
-		s << QString( "%1 (%2.%3.%4.%5)" ).arg( lib )
+		s << QStringLiteral("%1 (%2.%3.%4.%5)").arg(lib)
 			.arg( HIWORD(info->dwFileVersionMS) )
 			.arg( LOWORD(info->dwFileVersionMS) )
 			.arg( HIWORD(info->dwFileVersionLS) )
@@ -194,11 +219,11 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList browsers = Common::packages( QStringList() << "Mozilla Firefox" << "Google Chrome" );
-	QSettings reg( "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Internet Explorer", QSettings::NativeFormat );
-	browsers << QString( "Internet Explorer (%1)" ).arg(
+	QStringList browsers = packages({"Mozilla Firefox", "Google Chrome"});
+	QSettings reg(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Internet Explorer"), QSettings::NativeFormat);
+	browsers << QStringLiteral("Internet Explorer (%1)").arg(
 		reg.value("svcVersion", reg.value( "Version" ) ).toString() );
-	s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join( "<br />" ) << "<br /><br />";
+	s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
 	info.clear();
 }
