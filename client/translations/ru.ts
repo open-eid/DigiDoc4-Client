@@ -2364,6 +2364,10 @@ Kонтрольный код: %1</translation>
 <context>
     <name>RoleAddressDialog</name>
     <message>
+        <source>Enter your role and address info</source>
+        <translation>Введите свою роль и адрес</translation>
+    </message>
+    <message>
         <source>Role / resolution</source>
         <translation>Роль / pезолюция</translation>
     </message>
