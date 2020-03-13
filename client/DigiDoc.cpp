@@ -533,9 +533,15 @@ bool DigiDoc::open( const QString &file )
 		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 		if(parent == nullptr)
 			parent = qApp->activeWindow();
-		WarningDialog dlg(tr("The verification of digital signatures in PDF format is performed through an external service. "
-				"The file requiring verification will be forwarded to the service.\n"
-				"The Information System Authority does not retain information regarding the files and users of the service."), parent);
+#ifdef Q_OS_MAC 
+		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
+				"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+				"Do you want to continue?"), parent);
+#else
+		WarningDialog dlg(tr("Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
+				"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+				"Do you want to continue?"), parent);
+#endif
 		dlg.setCancelText(tr("CANCEL"));
 		dlg.addButton(tr("OK"), ContainerSave);
 		if(dlg.exec() != ContainerSave)
