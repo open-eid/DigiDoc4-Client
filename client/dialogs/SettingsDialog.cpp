@@ -29,6 +29,7 @@
 #include "CheckConnection.h"
 #include "Colors.h"
 #include "FileDialog.h"
+#include "QSigner.h"
 #include "QSmartCard.h"
 #include "Styles.h"
 #include "SslCertificate.h"
@@ -59,10 +60,9 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTextBrowser>
 
-SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
+SettingsDialog::SettingsDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SettingsDialog)
-	, appletVersion(std::move(appletVersion))
 {
 	Overlay *overlay = new Overlay(parent->topLevelWidget());
 	overlay->show();
@@ -213,13 +213,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
-		QSmartCardData data = qApp->smartcard()->data();
+		QSmartCardData data = qApp->signer()->smartcard()->data();
 		CertStore s;
 		for(const QSslCertificate &c: s.list())
 		{
 			if(c == data.authCert() || c == data.signCert())
 				continue;
-			if(c.subjectInfo(QSslCertificate::Organization).join("").contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
+			if(c.subjectInfo(QSslCertificate::Organization).join(QString()).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
 				s.remove( c );
 		}
@@ -239,8 +239,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, QString appletVersion)
 	updateDiagnostics();
 }
 
-SettingsDialog::SettingsDialog(int page, QWidget *parent, QString appletVersion)
-	: SettingsDialog(parent, std::move(appletVersion))
+SettingsDialog::SettingsDialog(int page, QWidget *parent)
+	: SettingsDialog(parent)
 {
 	changePage(ui->pageGroup->button(page));
 }
@@ -508,6 +508,8 @@ void SettingsDialog::updateDiagnostics()
 	Diagnostics *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
 	connect(worker, &Diagnostics::destroyed, this, [=]{
+		QSmartCardData t = qApp->signer()->smartcard()->data();
+		QString appletVersion = t.isNull() ? QString() : t.appletVersion();
 		if(!appletVersion.isEmpty())
 		{
 			QString info;

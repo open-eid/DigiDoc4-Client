@@ -160,7 +160,7 @@ QSmartCardData::CardVersion EstEIDCard::isSupported(const QByteArray &atr)
 {
 	static const QHash<QByteArray,QSmartCardData::CardVersion> atrList{
 		{"3BFE1800008031FE454573744549442076657220312E30A8", QSmartCardData::VER_3_4}, /*ESTEID_V3_COLD_ATR*/
-		{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_4}, /*ESTEID_V3_WARM_ATR / ESTEID_V35_WARM_ATR*/
+		{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_5}, /*ESTEID_V3_WARM_ATR / ESTEID_V35_WARM_ATR*/
 		{"3BFA1800008031FE45FE654944202F20504B4903", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_ATR*/
 	};
 	return atrList.value(atr, QSmartCardData::VER_INVALID);
@@ -173,11 +173,7 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	static const QByteArray APPLETVER = APDU("00CA0100 00");
 
 	d->version = isSupported(reader->atr());
-	if(reader->transfer(AID30).resultOk())
-		d->version = QSmartCardData::VER_3_0;
-	else if(reader->transfer(AID34).resultOk())
-		d->version = QSmartCardData::VER_3_4;
-	else if(reader->transfer(UPDATER_AID).resultOk())
+	if(reader->transfer(UPDATER_AID).resultOk())
 	{
 		d->version = QSmartCardData::CardVersion(d->version|QSmartCardData::VER_HASUPDATER);
 		//Prefer EstEID applet when if it is usable
@@ -192,7 +188,7 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		d->version = QSmartCardData::VER_3_5;
 	if(reader->transfer(MASTER_FILE).resultOk() &&
 		reader->transfer(ESTEIDDF).resultOk() &&
-		reader->transfer(PERSONALDATA).resultOk())
+		d->data.isEmpty() && reader->transfer(PERSONALDATA).resultOk())
 	{
 		QByteArray cmd = READRECORD;
 		for(char data = QSmartCardData::SurName; data != QSmartCardData::Comment4; ++data)
@@ -252,8 +248,10 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		}
 		return QSslCertificate(cert, QSsl::Der);
 	};
-	d->authCert = readCert(AUTHCERT);
-	d->signCert = readCert(SIGNCERT);
+	if(d->authCert.isNull())
+		d->authCert = readCert(AUTHCERT);
+	if(d->signCert.isNull())
+		d->signCert = readCert(SIGNCERT);
 	if(readFailed)
 		return false;
 	if(!d->data.contains(QSmartCardData::BirthDate))
@@ -407,7 +405,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	if(!reader->transfer(AID) ||
 		!reader->transfer(MASTER_FILE))
 		return false;
-	if(reader->transfer(APDU("00A4010C025000")).resultOk())
+	if(d->data.isEmpty() && reader->transfer(APDU("00A4010C025000")).resultOk())
 	{
 		QByteArray cmd = APDU("00A4010C025001");
 		for(char data = 1; data <= 15; ++data)
@@ -480,8 +478,10 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		}
 		return QSslCertificate(cert, QSsl::Der);
 	};
-	d->authCert = readCert(APDU("00A4010C02ADF1"), APDU("00A4020402340100"));
-	d->signCert = readCert(APDU("00A4010C02ADF2"), APDU("00A4020402341F00"));
+	if(d->authCert.isNull())
+		d->authCert = readCert(APDU("00A4010C02ADF1"), APDU("00A4020402340100"));
+	if(d->signCert.isNull())
+		d->signCert = readCert(APDU("00A4010C02ADF2"), APDU("00A4020402341F00"));
 
 	if(readFailed)
 		return false;
@@ -758,7 +758,7 @@ void QSmartCard::reloadCard(const QString &reader, const QString &card)
 	if(d->card->loadPerso(selectedReader.data(), t))
 	{
 		d->t.d = t;
-		emit dataChanged();
+		emit dataChanged(d->t);
 	}
 	else
 		qDebug() << "Failed to read card info, try again next round";
@@ -773,7 +773,7 @@ void QSmartCard::selectCard(const QString &card)
 	t->authCert = QSslCertificate();
 	t->signCert = QSslCertificate();
 	d->t.d = t;
-	Q_EMIT dataChanged();
+	Q_EMIT dataChanged(d->t);
 }
 
 QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)

@@ -58,7 +58,6 @@ public:
 	enum CardVersion
 	{
 		VER_INVALID = -1,
-		VER_3_0,
 		VER_3_4,
 		VER_3_5,
 		VER_USABLEUPDATER,
@@ -131,11 +130,9 @@ public:
 	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
 
 signals:
-	void dataChanged();
+	void dataChanged(const QSmartCardData &data);
 
 private:
 	class Private;
 	Private *d;
-
-	friend class MainWindow;
 };

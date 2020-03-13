@@ -23,6 +23,7 @@
 
 #include "MainWindow.h"
 #include "QSigner.h"
+#include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "TokenData.h"
 #include "dialogs/FirstRun.h"
@@ -282,6 +283,7 @@ Application::Application( int &argc, char **argv )
 	, d(new Private)
 {
 	qRegisterMetaType<TokenData>("TokenData");
+	qRegisterMetaType<QSmartCardData>("QSmartCardData");
 
 	QStringList args = arguments();
 	args.removeFirst();
@@ -1085,8 +1087,6 @@ void Application::showWarning( const QString &msg, const QString &details )
 }
 
 QSigner* Application::signer() const { return d->signer; }
-
-QSmartCard* Application::smartcard() const { return d->signer->smartcard(); }
 
 QWidget* Application::uniqueRoot()
 {

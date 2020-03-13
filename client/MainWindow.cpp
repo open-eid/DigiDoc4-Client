@@ -146,7 +146,7 @@ MainWindow::MainWindow( QWidget *parent )
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
 	// Refresh card info on "My EID" page
-	connect(qApp->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
+	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
 	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
 
@@ -180,7 +180,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cardInfo, &CardWidget::selected, this, [this] { if( selector ) selector->press(); });
 
 	showCardStatus();
-	updateMyEid();
+	updateMyEid(QSmartCardData());
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
@@ -475,13 +475,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	case SignatureAdd:
 	case SignatureToken:
 		sign([this](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			if(!digiDoc->sign(city, state, zip, country, role, qApp->signer()))
-			{
-				qApp->smartcard()->reload();
-				showPinBlockedWarning(qApp->smartcard()->data());
-				return false;
-			}
-			return true;
+			return digiDoc->sign(city, state, zip, country, role, qApp->signer());
 		});
 		break;
 	case SignatureMobile:
@@ -612,11 +606,6 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded"), 750, 3000, 1200 );
-		}
-		else
-		{
-			qApp->smartcard()->reload(); // QSmartCard should also know that PIN1 is blocked.
-			showPinBlockedWarning(qApp->smartcard()->data());
 		}
 		break;
 	case EncryptContainer:
@@ -931,7 +920,7 @@ void MainWindow::showCardMenu(bool show)
 
 		cardPopup.reset(new CardPopup(t.card(), qApp->signer()->cache(), this));
 		// To select active card from several cards in readers ..
-		connect(cardPopup.get(), &CardPopup::activated, qApp->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
+		connect(cardPopup.get(), &CardPopup::activated, qApp->signer()->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
 		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		// .. and hide card popup menu
 		connect(cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup);
@@ -1039,9 +1028,7 @@ void MainWindow::showOverlay( QWidget *parent )
 
 void MainWindow::showSettings(int page)
 {
-	QSmartCardData t = qApp->smartcard()->data();
-	QString appletVersion = t.isNull() ? QString() : t.appletVersion();
-	SettingsDialog dlg(page, this, appletVersion);
+	SettingsDialog dlg(page, this);
 
 	connect(&dlg, &SettingsDialog::langChanged, this, [this](const QString& lang ) {
 		qApp->loadTranslation( lang );
@@ -1320,22 +1307,6 @@ bool MainWindow::wrapContainer(bool signing)
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
 	dlg.exec();
 	return dlg.result() == ContainerSave;
-}
-
-void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
-{
-	bool isBlockedPuk = t.retryCount( QSmartCardData::PukType ) == 0;
-
-	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin2Type ) == 0 )
-	{
-		warnings->showWarning(WarningText(WarningType::UnblockPin2Warning));
-		emit ui->signContainerPage->cardChanged(); // hide Sign button
-	}
-	if(	!isBlockedPuk && t.retryCount( QSmartCardData::Pin1Type ) == 0 )
-	{
-		warnings->showWarning(WarningText(WarningType::UnblockPin1Warning));
-		emit ui->cryptoContainerPage->cardChanged(); // hide Decrypt button
-	}
 }
 
 void MainWindow::updateKeys(const QList<CKey> &keys)

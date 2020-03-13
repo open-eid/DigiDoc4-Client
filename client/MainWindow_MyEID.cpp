@@ -63,14 +63,13 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 			.arg( QSmartCardData::typeString( type ) );
 
 	if(validateCardError(type, QSmartCardData::PukType,
-		qApp->smartcard()->pinUnblock(type, isForgotPin, this)))
+		qApp->signer()->smartcard()->pinUnblock(type, isForgotPin, this)))
 	{
 		if( isForgotPin )
 			text = tr("%1 changed!").arg( QSmartCardData::typeString( type ) );
 		showNotification( text, true );
-		QSmartCardData data = qApp->smartcard()->data();
+		QSmartCardData data = qApp->signer()->smartcard()->data();
 		updateCardWarnings(data);
-
 		if (type == QSmartCardData::Pin1Type)
 		{
 			warnings->closeWarning(WarningType::UnblockPin1Warning);
@@ -87,7 +86,7 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 void MainWindow::pinPukChange( QSmartCardData::PinType type )
 {
 	if(validateCardError(type, type,
-		qApp->smartcard()->pinChange(type, this)))
+		qApp->signer()->smartcard()->pinChange(type, this)))
 	{
 		showNotification( tr("%1 changed!")
 			.arg( QSmartCardData::typeString( type ) ), true );
@@ -144,7 +143,7 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 
 bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err)
 {
-	QSmartCardData data = qApp->smartcard()->data();
+	QSmartCardData data = qApp->signer()->smartcard()->data();
 	ui->accordion->updateInfo(data);
 	switch( err )
 	{
@@ -195,6 +194,22 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 	notification->start(msg, 750, 15000, 600);
 }
 
+void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
+{
+	bool isBlockedPuk = t.retryCount(QSmartCardData::PukType) == 0;
+
+	if(!isBlockedPuk && t.retryCount(QSmartCardData::Pin2Type) == 0)
+	{
+		warnings->showWarning(WarningText(WarningType::UnblockPin2Warning));
+		emit ui->signContainerPage->cardChanged(); // hide Sign button
+	}
+	if(!isBlockedPuk && t.retryCount(QSmartCardData::Pin1Type) == 0)
+	{
+		warnings->showWarning(WarningText(WarningType::UnblockPin1Warning));
+		emit ui->cryptoContainerPage->cardChanged(); // hide Decrypt button
+	}
+}
+
 void MainWindow::updateCardWarnings(const QSmartCardData &data)
 {
 	qint64 expiresIn = 106;
@@ -230,10 +245,9 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 	}
 }
 
-void MainWindow::updateMyEid()
+void MainWindow::updateMyEid(const QSmartCardData &t)
 {
 	Application::restoreOverrideCursor();
-	QSmartCardData t = qApp->smartcard()->data();
 	if(!t.card().isEmpty() && (!t.authCert().isNull() || !t.signCert().isNull()))
 	{
 		ui->infoStack->update(t);

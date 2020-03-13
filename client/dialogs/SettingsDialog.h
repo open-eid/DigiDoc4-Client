@@ -42,8 +42,8 @@ public:
 		LicenseSettings
 	};
 
-	explicit SettingsDialog(QWidget *parent = nullptr, QString appletVersion = QString());
-	explicit SettingsDialog(int page, QWidget *parent = nullptr, QString appletVersion = QString());
+	explicit SettingsDialog(QWidget *parent = nullptr);
+	explicit SettingsDialog(int page, QWidget *parent = nullptr);
 	~SettingsDialog() final;
 
 	static void loadProxy( const digidoc::Conf *conf );
@@ -69,5 +69,4 @@ private:
 	void useDefaultSettings();
 
 	Ui::SettingsDialog *ui;
-	QString appletVersion;
 };
