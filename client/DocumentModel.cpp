@@ -23,6 +23,10 @@
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
+#include <common/Configuration.h>
+
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
 
@@ -56,18 +60,26 @@ QStringList DocumentModel::tempFiles() const
 
 bool DocumentModel::verifyFile(const QString &f)
 {
-#if defined(Q_OS_WIN)
-	QStringList exts = QProcessEnvironment::systemEnvironment().value("PATHEXT").split(';');
-	exts.append({".PIF", ".SCR", ".LNK"});
-	WarningDialog dlg(tr("This is an executable file! "
-		"Executable files may contain viruses or other malicious code that could harm your computer. "
-		"Are you sure you want to launch this file?"), qApp->activeWindow());
-	dlg.setCancelText(tr("NO"));
-	dlg.addButton(tr("YES"), 1);
-	if(exts.contains("." + QFileInfo(f).suffix(), Qt::CaseInsensitive) && dlg.exec() != 1)
+	QJsonObject obj;
+	#ifdef CONFIG_URL
+		obj = Configuration::instance().object();
+	#endif
+
+	static const QJsonArray defaultArray = {
+			QStringLiteral("ddoc"), QStringLiteral("bdoc") ,QStringLiteral("edoc"), QStringLiteral("adoc"), QStringLiteral("asice"), QStringLiteral("cdoc"), QStringLiteral("asics"),
+			QStringLiteral("txt"), QStringLiteral("doc"), QStringLiteral("docx"), QStringLiteral("odt"), QStringLiteral("ods"), QStringLiteral("tex"), QStringLiteral("wks"), QStringLiteral("wps"),
+			QStringLiteral("wpd"), QStringLiteral("rtf"), QStringLiteral("xlr"), QStringLiteral("xls"), QStringLiteral("xlsx"), QStringLiteral("pdf"), QStringLiteral("key"), QStringLiteral("odp"),
+			QStringLiteral("pps"), QStringLiteral("ppt"), QStringLiteral("pptx"), QStringLiteral("png"), QStringLiteral("jpg"), QStringLiteral("jpeg"), QStringLiteral("bmp"), QStringLiteral("ai"),
+			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff")};
+
+	QJsonArray allowedExts = obj.value(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
+
+	if(!allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower()))){
+		WarningDialog dlg(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."), qApp->activeWindow());
+		dlg.setCancelText(tr("OK"));
+		dlg.exec();
 		return false;
-#else
-	Q_UNUSED(f)
-#endif
+	}
+
 	return true;
 }

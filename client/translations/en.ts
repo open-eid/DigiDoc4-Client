@@ -847,6 +847,10 @@
         <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
     </message>
     <message>
+        <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
+        <translation>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</translation>
+    </message>
+    <message>
         <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
         <translation>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</translation>
     </message>
@@ -865,6 +869,10 @@
     <message>
         <source>YES</source>
         <translation>YES</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
