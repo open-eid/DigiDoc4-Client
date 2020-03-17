@@ -37,6 +37,10 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 {
 	new Overlay(this, parent->topLevelWidget());
 	init( mode, type, leftAttempts );
+	QSizePolicy sp_retain = ui->labelPinValidation->sizePolicy();
+	sp_retain.setRetainSizeWhenHidden(true);
+	ui->labelPinValidation->setSizePolicy(sp_retain);
+	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
 	adjustSize();
 	setFixedSize( size() );
 }
