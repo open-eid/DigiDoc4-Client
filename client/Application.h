@@ -42,8 +42,6 @@ public:
 	{
 		LDAP_PERSON_URL,
 		LDAP_CORP_URL,
-		MobileID_URL,
-		MobileID_TEST_URL,
 		SiVaUrl,
 		ProxyHost,
 		ProxyPort,

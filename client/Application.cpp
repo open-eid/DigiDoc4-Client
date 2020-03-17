@@ -479,8 +479,6 @@ void Application::clearConfValue( ConfParameter parameter )
 		case TSLOnlineDigest:
 		case LDAP_PERSON_URL:
 		case LDAP_CORP_URL:
-		case MobileID_URL:
-		case MobileID_TEST_URL:
 		case SiVaUrl:
 		case TSAUrl:
 		case TSLCerts:
@@ -518,8 +516,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	{
 	case LDAP_PERSON_URL: return i->obj.value(QStringLiteral("LDAP-PERSON-URL")).toString(QStringLiteral("ldaps://esteid.ldap.sk.ee"));
 	case LDAP_CORP_URL: return i->obj.value(QStringLiteral("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee"));
-	case MobileID_URL: return i->obj.value(QStringLiteral("MID-SIGN-URL")).toString(QStringLiteral("https://digidocservice.sk.ee"));
-	case MobileID_TEST_URL: return i->obj.value(QStringLiteral("MID-SIGN-TEST-URL")).toString(QStringLiteral("https://tsp.demo.sk.ee"));
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
 	case ProxyHost: r = i->proxyHost().c_str(); break;
 	case ProxyPort: r = i->proxyPort().c_str(); break;
@@ -970,8 +966,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
 		case LDAP_PERSON_URL:
 		case LDAP_CORP_URL:
-		case MobileID_URL:
-		case MobileID_TEST_URL:
 		case SiVaUrl:
 		case TSLCerts:
 		case TSLUrl:

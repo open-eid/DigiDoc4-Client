@@ -25,8 +25,8 @@
 #include <QTextDocument>
 #include <QTextStream>
 
-DiagnosticsTask::DiagnosticsTask( QObject *parent, const QString &outFile )
-	: QObject(parent), outFile(outFile)
+DiagnosticsTask::DiagnosticsTask(QObject *parent, QString outFile)
+	: QObject(parent), outFile(std::move(outFile))
 {
 }
 

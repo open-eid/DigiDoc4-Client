@@ -27,6 +27,7 @@
 #endif
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QSettings>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
@@ -42,16 +43,22 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		<< "<b>" << "URLs:" << "</b>"
 #ifdef CONFIG_URL
 		<< "<br />CONFIG_URL: " << CONFIG_URL
-#endif
-		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString() << " (" << qApp->readTSLVersion(cache + "/" + file) << ")"
-		<< "<br />TSA_URL: " << qApp->confValue(Application::TSAUrl).toString()
-		<< "<br />SIVA_URL: " << qApp->confValue(Application::SiVaUrl).toString()
+		<< "<br />SID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />MID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL))
+		<< "<br />MID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL))
+		<< "<br />RPUUID: " << (QSettings().contains(QStringLiteral("MIDUUID")) ? tr("is set") : tr("is not set"))
+#else
 #ifdef MOBILEID_URL
 		<< "<br />MOBILEID_URL: " << MOBILEID_URL
 #endif
 #ifdef SMARTID_URL
 		<< "<br />SMARTID_URL: " << SMARTID_URL
 #endif
+#endif
+		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString() << " (" << qApp->readTSLVersion(cache + "/" + file) << ")"
+		<< "<br />TSA_URL: " << qApp->confValue(Application::TSAUrl).toString()
+		<< "<br />SIVA_URL: " << qApp->confValue(Application::SiVaUrl).toString()
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: qApp->confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);

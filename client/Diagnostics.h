@@ -37,4 +37,12 @@ signals:
 
 private:
 	void generalInfo(QTextStream &s) const;
+	QStringList packages(const QStringList &names, bool withName = true);
+
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+	QString packageName(const QString &name, const QString &ver, bool withName)
+	{
+		return withName ? name + " (" + ver + ")" : ver;
+	}
+#endif
 };
