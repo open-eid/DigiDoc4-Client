@@ -2361,6 +2361,10 @@ Kontrollkood: %1</translation>
 <context>
     <name>RoleAddressDialog</name>
     <message>
+        <source>Enter your role and address info</source>
+        <translation>Sisesta oma roll ja aadress</translation>
+    </message>
+    <message>
         <source>Role / resolution</source>
         <translation>Roll / resolutsioon</translation>
     </message>

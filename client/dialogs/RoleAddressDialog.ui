@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>346</height>
+    <width>444</width>
+    <height>452</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#RoleAddressDialog {
@@ -37,17 +43,70 @@ QLineEdit {
 	border: 1px solid #DEE4E9;
 	border-radius: 2px;
 	background-color: #FFFFFF;
+}
+QLabel {
+	margin-top:8px;
+	margin-bottom:2px;
 }</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+  <layout class="QVBoxLayout" name="SmartIDDialogLayout">
+   <property name="spacing">
+    <number>0</number>
    </property>
-   <property name="labelAlignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   <property name="leftMargin">
+    <number>25</number>
    </property>
-   <item row="0" column="0" colspan="2">
+   <property name="topMargin">
+    <number>16</number>
+   </property>
+   <property name="rightMargin">
+    <number>25</number>
+   </property>
+   <property name="bottomMargin">
+    <number>16</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="title">
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">margin:0px; color: #041E42;</string>
+     </property>
+     <property name="text">
+      <string>Enter your role and address info</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacerTitel">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>15</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QLabel" name="RoleLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>Role / resolution</string>
      </property>
@@ -56,7 +115,7 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item>
     <widget class="QLineEdit" name="Role">
      <property name="minimumSize">
       <size>
@@ -66,19 +125,28 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QLabel" name="addressLabel">
-     <property name="text">
-      <string>Address</string>
+   <item>
+    <spacer name="spacerRole">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>15</height>
+      </size>
+     </property>
+    </spacer>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QLabel" name="CityLabel">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>34</height>
+       <height>0</height>
       </size>
      </property>
      <property name="text">
@@ -89,7 +157,7 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item>
     <widget class="QLineEdit" name="City">
      <property name="minimumSize">
       <size>
@@ -99,12 +167,18 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
     <widget class="QLabel" name="StateLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>34</height>
+       <height>0</height>
       </size>
      </property>
      <property name="text">
@@ -115,7 +189,7 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item>
     <widget class="QLineEdit" name="State">
      <property name="minimumSize">
       <size>
@@ -125,12 +199,18 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item>
     <widget class="QLabel" name="CountryLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>34</height>
+       <height>0</height>
       </size>
      </property>
      <property name="text">
@@ -141,7 +221,7 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item>
     <widget class="QLineEdit" name="Country">
      <property name="minimumSize">
       <size>
@@ -151,12 +231,18 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item>
     <widget class="QLabel" name="ZipLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>34</height>
+       <height>0</height>
       </size>
      </property>
      <property name="text">
@@ -167,7 +253,7 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item>
     <widget class="QLineEdit" name="Zip">
      <property name="minimumSize">
       <size>
@@ -177,34 +263,33 @@ QLineEdit {
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
-    <spacer name="verticalSpacer">
+   <item>
+    <spacer name="spacertButtons">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>25</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item row="11" column="0" colspan="2">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>25</number>
+     </property>
+     <property name="rightMargin">
+      <number>25</number>
+     </property>
      <item>
       <widget class="QPushButton" name="cancel">
        <property name="sizePolicy">
@@ -212,6 +297,12 @@ QLineEdit {
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -237,23 +328,22 @@ QPushButton:disabled {
      </item>
      <item>
       <widget class="QPushButton" name="sign">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
+       </property>
        <property name="text">
         <string>Sign</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>

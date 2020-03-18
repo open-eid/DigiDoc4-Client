@@ -58,6 +58,9 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 
 	for(QLabel *label: findChildren<QLabel*>())
 		label->setFont(regularFont);
+
+	d->title->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+
 	for(QLineEdit *line: findChildren<QLineEdit*>())
 	{
 		QCompleter *completer = new QCompleter(d->s.value(line->objectName()).toStringList(), line);
