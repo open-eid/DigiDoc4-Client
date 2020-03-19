@@ -2398,7 +2398,7 @@ Control code: %1</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>Cancel</translation>
+        <translation>CANCEL</translation>
     </message>
 </context>
 <context>
