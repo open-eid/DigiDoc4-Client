@@ -2400,7 +2400,7 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>Katkesta</translation>
+        <translation>KATKESTA</translation>
     </message>
 </context>
 <context>

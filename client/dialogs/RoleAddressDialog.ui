@@ -343,6 +343,9 @@ QPushButton:disabled {
        <property name="text">
         <string>Sign</string>
        </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>

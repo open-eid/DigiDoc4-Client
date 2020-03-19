@@ -2403,7 +2403,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation>Отмена</translation>
+        <translation>ОТМЕНА</translation>
     </message>
 </context>
 <context>
