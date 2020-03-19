@@ -46,7 +46,7 @@ public:
 		DecryptOK
 	};
 	explicit QSigner(ApiType api, QObject *parent = nullptr);
-	~QSigner();
+	~QSigner() override;
 
 	QMap<QString, SslCertificate> cache() const;
 	digidoc::X509Cert cert() const override;

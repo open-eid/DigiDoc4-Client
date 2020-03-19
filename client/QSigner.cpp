@@ -301,7 +301,6 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		else
 			out = d->pkcs11->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
 		d->pkcs11->logout();
-		d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 	}
 #ifdef Q_OS_WIN
 	else if(d->win)
@@ -323,6 +322,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 	if( out.isEmpty() )
 		Q_EMIT error( tr("Failed to decrypt document") );
 	QCardLock::instance().exclusiveUnlock();
+	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 	reloadauth();
 	return !out.isEmpty() ? DecryptOK : DecryptFailed;
 }
@@ -617,7 +617,6 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 
 		sig = d->pkcs11->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 		d->pkcs11->logout();
-		d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
 	}
 #ifdef Q_OS_WIN
 	else if(d->win)
@@ -634,6 +633,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 #endif
 
 	QCardLock::instance().exclusiveUnlock();
+	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
 	reloadsign();
 	if( sig.isEmpty() )
 		throwException(tr("Failed to sign document"), Exception::General)
