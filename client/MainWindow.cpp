@@ -255,7 +255,7 @@ void MainWindow::buttonClicked( int button )
 	switch( button )
 	{
 	case HeadHelp:
-		QDesktopServices::openUrl( QUrl( Common::helpUrl() ) );
+		qApp->openHelp();
 		break;
 	case HeadSettings:
 		showSettings(SettingsDialog::GeneralSettings);

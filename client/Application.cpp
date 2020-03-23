@@ -262,7 +262,7 @@ public:
 class Application::Private
 {
 public:
-	QAction		*closeAction = nullptr, *newClientAction = nullptr, *newCryptoAction = nullptr;
+	QAction		*closeAction = nullptr, *newClientAction = nullptr, *newCryptoAction = nullptr, *helpAction = nullptr;
 	MacMenuBar	*bar = nullptr;
 	QSigner		*signer = nullptr;
 
@@ -304,10 +304,10 @@ Application::Application( int &argc, char **argv )
 	loadTranslation( Common::language() );
 
 	// Actions
-	d->closeAction = new QAction( tr("Close window"), this );
+	d->closeAction = new QAction( tr("Close Window"), this );
 	d->closeAction->setShortcut( Qt::CTRL + Qt::Key_W );
 	connect(d->closeAction, &QAction::triggered, this, &Application::closeWindow);
-	d->newClientAction = new QAction( tr("New Client window"), this );
+	d->newClientAction = new QAction( tr("New Window"), this );
 	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
 	connect(d->newClientAction, &QAction::triggered, this, [&]{ showClient({}, false, false, true); });
 
@@ -326,6 +326,7 @@ Application::Application( int &argc, char **argv )
 	d->bar->fileMenu()->addAction( d->closeAction );
 	d->bar->dockMenu()->addAction( d->newClientAction );
 	d->bar->dockMenu()->addAction( d->newCryptoAction );
+	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
 	QSigner::ApiType api = QSigner::PKCS11;
@@ -594,9 +595,10 @@ void Application::loadTranslation( const QString &lang )
 	d->appTranslator.load( ":/translations/" + lang );
 	d->commonTranslator.load( ":/translations/common_" + lang );
 	d->qtTranslator.load( ":/translations/qt_" + lang );
-	if( d->closeAction ) d->closeAction->setText( tr("Close window") );
-	if( d->newClientAction ) d->newClientAction->setText( tr("New Client window") );
+	if( d->closeAction ) d->closeAction->setText( tr("Close Window") );
+	if( d->newClientAction ) d->newClientAction->setText( tr("New Window") );
 	if( d->newCryptoAction ) d->newCryptoAction->setText( tr("New Crypto window") );
+	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
 }
 
 #ifndef Q_OS_MAC
@@ -889,6 +891,15 @@ bool Application::notify( QObject *o, QEvent *e )
 	}
 
 	return false;
+}
+
+void Application::openHelp()
+{
+	QString lang = language();
+	QUrl u(QStringLiteral("http://www.id.ee/index.php?id=10583"));
+	if(lang == QStringLiteral("en")) u = QStringLiteral("http://www.id.ee/index.php?id=30466");
+	if(lang == QStringLiteral("ru")) u = QStringLiteral("http://www.id.ee/index.php?id=30515");
+	QDesktopServices::openUrl(u);
 }
 
 void Application::parseArgs( const QString &msg )

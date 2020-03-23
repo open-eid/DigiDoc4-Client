@@ -29,7 +29,8 @@ public:
 	{
 		AboutAction,
 		CloseAction,
-		PreferencesAction
+		PreferencesAction,
+		HelpAction
 	};
 
 	explicit MacMenuBar();
@@ -37,6 +38,7 @@ public:
 
 	QAction* addAction(ActionType type, const QObject *receiver, const char *member);
 	QMenu* fileMenu() const;
+	QMenu* helpMenu() const;
 	QMenu* dockMenu() const;
 
 private slots:
@@ -48,6 +50,7 @@ private:
 	QString typeName(ActionType type) const;
 
 	QMenu		*file = nullptr;
+	QMenu		*help = nullptr;
 	QHash<ActionType,QAction*> actions;
 	QMenu		*dock = new QMenu;
 	QAction		*dockSeparator = nullptr;

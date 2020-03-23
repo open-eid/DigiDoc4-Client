@@ -24,6 +24,7 @@
 
 MacMenuBar::MacMenuBar()
 	: file(addMenu(tr("&File")))
+	, help(addMenu(tr("&Help")))
 {
 	qApp->installEventFilter(this);
 	connect(dock, &QMenu::triggered, this, &MacMenuBar::activateWindow);
@@ -108,6 +109,7 @@ bool MacMenuBar::eventFilter(QObject *o, QEvent *e)
 	{
 	case QEvent::LanguageChange:
 		file->setTitle(tr("&File"));
+		help->setTitle(tr("&Help"));
 		for(auto i = actions.constBegin(); i != actions.constEnd(); ++i)
 			i.value()->setText(typeName(i.key()));
 		break;
@@ -117,6 +119,7 @@ bool MacMenuBar::eventFilter(QObject *o, QEvent *e)
 }
 
 QMenu* MacMenuBar::fileMenu() const { return file; }
+QMenu* MacMenuBar::helpMenu() const { return help; }
 
 QString MacMenuBar::title(QObject *o) const
 {
@@ -133,6 +136,6 @@ QString MacMenuBar::typeName(ActionType type) const
 	case AboutAction: return tr("Info");
 	case CloseAction: return tr("Close");
 	case PreferencesAction: return tr("Settings");
-	default: return QString();
+	default: return {};
 	}
 }
