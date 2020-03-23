@@ -19,24 +19,35 @@
 
 #pragma once
 
-#include "QWin.h"
+#include <QObject>
 
-class QCNG: public QWin
+class TokenData;
+
+class QCryptoBackend: public QObject
 {
 	Q_OBJECT
 public:
-	explicit QCNG(QObject *parent = nullptr);
-	~QCNG() override;
+	enum PinStatus
+	{
+		PinOK,
+		PinCanceled,
+		PinIncorrect,
+		PinLocked,
+		DeviceError,
+		GeneralError,
+		UnknownError
+	};
 
-	QList<TokenData> tokens() const override;
-	QByteArray decrypt(const QByteArray &data) const override;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
-	PinStatus lastError() const override;
-	void login(const TokenData &token) override;
-	QByteArray sign(int method, const QByteArray &digest) const override;
 
-private:
-	class Private;
-	Private *d;
+	explicit QCryptoBackend(QObject *parent = nullptr);
+	~QCryptoBackend() override = default;
+
+	virtual QList<TokenData> tokens() const = 0;
+	virtual QByteArray decrypt(const QByteArray &data) const = 0;
+	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
+	virtual PinStatus lastError() const = 0;
+	virtual void login(const TokenData &cert) = 0;
+	virtual void logout() = 0;
+	virtual QByteArray sign(int method, const QByteArray &digest) const = 0;
 };

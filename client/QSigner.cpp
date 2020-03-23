@@ -26,8 +26,6 @@
 #ifdef Q_OS_WIN
 #include "QCSP.h"
 #include "QCNG.h"
-#else
-class QWin;
 #endif
 #include "QPKCS11.h"
 #include "SslCertificate.h"
@@ -73,8 +71,7 @@ class QSigner::Private
 {
 public:
 	QSigner::ApiType api = QSigner::PKCS11;
-	QWin			*win = nullptr;
-	QPKCS11			*pkcs11 = nullptr;
+	QCryptoBackend	*backend = nullptr;
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
 	QVector<TokenData> cache;
@@ -96,11 +93,7 @@ public:
 
 QByteArray QSigner::Private::signData(int type, const QByteArray &digest, Private *d)
 {
-#ifdef Q_OS_WIN
-	if(d->win)
-		return d->win->sign(type, digest);
-#endif
-	return d->pkcs11->sign(type, digest);
+	return d->backend->sign(type, digest);
 }
 
 int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_len,
@@ -197,23 +190,15 @@ QSet<QString> QSigner::cards() const
 
 void QSigner::cacheCardData()
 {
-	static auto isMatchingType = [](const SslCertificate &cert) {
-		// Check if cert is signing or authentication cert
-		return cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-			   cert.keyUsage().contains(SslCertificate::KeyAgreement) ||
-			   cert.keyUsage().contains(SslCertificate::NonRepudiation);
-	};
-	QList<TokenData> tokens;
-#ifdef Q_OS_WIN
-	if(d->win)
-		tokens = d->win->tokens();
-#endif
-	if(d->pkcs11 && d->pkcs11->isLoaded())
-		tokens = d->pkcs11->tokens();
+	//if(d->pkcs11 && d->pkcs11->isLoaded())
 	d->cache.clear();
-	for(const TokenData &token: qAsConst(tokens))
+	for(const TokenData &token: d->backend->tokens())
 	{
-		if(isMatchingType(token.cert()))
+		SslCertificate cert(token.cert());
+		// Check if cert is signing or authentication cert
+		if(cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+			cert.keyUsage().contains(SslCertificate::KeyAgreement) ||
+			cert.keyUsage().contains(SslCertificate::NonRepudiation))
 			d->cache << token;
 	}
 }
@@ -276,10 +261,10 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		return DecryptFailed;
 	}
 
-	if( d->pkcs11 )
+	d->backend->login(d->auth);
+	if(qobject_cast<QPKCS11*>(d->backend))
 	{
-		QPKCS11::PinStatus status = d->pkcs11->login( d->auth );
-		switch( status )
+		switch(d->backend->lastError())
 		{
 		case QPKCS11::PinOK: break;
 		case QPKCS11::PinCanceled:
@@ -288,47 +273,33 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		case QPKCS11::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadauth();
-			Q_EMIT error( QPKCS11::errorString( status ) );
+			Q_EMIT error(QPKCS11::errorString(d->backend->lastError()));
 			return PinIncorrect;
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
-			if (status != QPKCS11::PinIncorrect)
+			if (d->backend->lastError() != QPKCS11::PinIncorrect)
 				reloadauth();
-			Q_EMIT error( QPKCS11::errorString( status ) );
+			Q_EMIT error(QPKCS11::errorString(d->backend->lastError()));
 			return PinLocked;
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			Q_EMIT error( tr("Failed to login token") + " " + QPKCS11::errorString( status ) );
+			Q_EMIT error(tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError()));
 			return DecryptFailed;
 		}
-		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
-			out = d->pkcs11->decrypt(in);
-		else
-			out = d->pkcs11->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
-		d->pkcs11->logout();
 	}
-#ifdef Q_OS_WIN
-	else if(d->win)
-	{
-		d->win->selectCert(d->auth);
-		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
-			out = d->win->decrypt(in);
-		else
-			out = d->win->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
-		if(d->win->lastError() == QWin::PinCanceled)
-		{
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
-			return PinCanceled;
-		}
-	}
-#endif
+	if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
+		out = d->backend->decrypt(in);
+	else
+		out = d->backend->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
+	QCardLock::instance().exclusiveUnlock();
+	d->backend->logout();
+	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
+	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
+		return PinCanceled;
+	reloadauth();
 
 	if( out.isEmpty() )
 		Q_EMIT error( tr("Failed to decrypt document") );
-	QCardLock::instance().exclusiveUnlock();
-	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
-	reloadauth();
 	return !out.isEmpty() ? DecryptOK : DecryptFailed;
 }
 
@@ -337,22 +308,16 @@ QSslKey QSigner::key() const
 	if(!QCardLock::instance().exclusiveTryLock())
 		return QSslKey();
 
-#ifdef Q_OS_WIN
-	if(d->win)
-		d->win->selectCert(d->auth);
-	else
-#endif
+	d->backend->login(d->auth);
+	switch(d->backend->lastError())
 	{
-		switch(QPKCS11::PinStatus status = d->pkcs11->login(d->auth))
-		{
-		case QPKCS11::PinOK: break;
-		case QPKCS11::PinIncorrect:
-		case QPKCS11::PinLocked:
-		default:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload();
-			return QSslKey();
-		}
+	case QPKCS11::PinOK: break;
+	case QPKCS11::PinIncorrect:
+	case QPKCS11::PinLocked:
+	default:
+		QCardLock::instance().exclusiveUnlock();
+		d->smartcard->reload();
+		return QSslKey();
 	}
 
 	QSslKey key = d->auth.cert().publicKey();
@@ -388,8 +353,7 @@ QSslKey QSigner::key() const
 
 void QSigner::logout()
 {
-	if(d->pkcs11)
-		d->pkcs11->logout();
+	d->backend->logout();
 	QCardLock::instance().exclusiveUnlock();
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 }
@@ -426,17 +390,18 @@ void QSigner::run()
 	switch( d->api )
 	{
 #ifdef Q_OS_WIN
-	case CAPI: d->win = new QCSP( this ); break;
-	case CNG: d->win = new QCNG( this ); break;
+	case CAPI: d->backend = new QCSP( this ); break;
+	case CNG: d->backend = new QCNG( this ); break;
 #endif
-	default: d->pkcs11 = new QPKCS11(this); break;
+	default: d->backend = new QPKCS11(this); break;
 	}
 
 	while(!isInterruptionRequested())
 	{
 		if(QCardLock::instance().readTryLock())
 		{
-			if(d->pkcs11 && !d->pkcs11->reload())
+			QPKCS11 *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
+			if(!pkcs11->reload())
 			{
 				Q_EMIT error(tr("Failed to load PKCS#11 module"));
 				return;
@@ -444,13 +409,7 @@ void QSigner::run()
 
 			TokenData aold = d->auth, at = aold;
 			TokenData sold = d->sign, st = sold;
-			QList<TokenData> tokens;
-#ifdef Q_OS_WIN
-			if(d->win)
-				tokens = d->win->tokens();
-#endif
-			if(d->pkcs11)
-				tokens = d->pkcs11->tokens();
+			QList<TokenData> tokens = d->backend->tokens();
 			QStringList acards, scards;
 			for(const TokenData &t: qAsConst(tokens))
 			{
@@ -597,49 +556,36 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ) type = NID_sha384;
 	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ) type = NID_sha512;
 
-	QByteArray sig;
-	if( d->pkcs11 )
+	d->backend->login(d->sign);
+	if(qobject_cast<QPKCS11*>(d->backend))
 	{
-		QPKCS11::PinStatus status = d->pkcs11->login( d->sign );
-		switch( status )
+		switch(d->backend->lastError())
 		{
 		case QPKCS11::PinOK: break;
 		case QPKCS11::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINCanceled)
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINCanceled)
 		case QPKCS11::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINIncorrect)
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINIncorrect)
 		case QPKCS11::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::PINLocked)
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINLocked)
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(status)), Exception::General)
-		}
-
-		sig = d->pkcs11->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-		d->pkcs11->logout();
-	}
-#ifdef Q_OS_WIN
-	else if(d->win)
-	{
-		d->win->selectCert(d->sign);
-		sig = d->win->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-		if(d->win->lastError() == QWin::PinCanceled)
-		{
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN2 is blocked.
-			throwException(tr("Failed to login token"), Exception::PINCanceled);
+			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::General)
 		}
 	}
-#endif
-
+	QByteArray sig = d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	QCardLock::instance().exclusiveUnlock();
+	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
+	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
+		throwException(tr("Failed to login token"), Exception::PINCanceled);
 	reloadsign();
+
 	if( sig.isEmpty() )
 		throwException(tr("Failed to sign document"), Exception::General)
 	return std::vector<unsigned char>( sig.constBegin(), sig.constEnd() );

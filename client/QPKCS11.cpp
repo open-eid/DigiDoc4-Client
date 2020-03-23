@@ -129,8 +129,8 @@ std::vector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
 
 
 QPKCS11::QPKCS11( QObject *parent )
-:	QObject( parent )
-,	d(new Private)
+	: QCryptoBackend(parent)
+	, d(new Private)
 {
 }
 
@@ -245,31 +245,38 @@ bool QPKCS11::load( const QString &driver )
 	return true;
 }
 
-QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
+QPKCS11::PinStatus QPKCS11::lastError() const
+{
+	return d->lastError;
+}
+
+void QPKCS11::login(const TokenData &t)
 {
 	logout();
 
 	CK_SLOT_ID currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
 	d->id = t.data(QStringLiteral("id")).toByteArray();
 
+	#define RETURN_ERR(X) { d->lastError = X; return; }
+
 	CK_TOKEN_INFO token;
 	if(d->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK ||
 		d->f->C_OpenSession(currentSlot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
-		return UnknownError;
+		RETURN_ERR(UnknownError)
 
 	std::vector<CK_OBJECT_HANDLE> list = d->findObject(d->session, CKO_CERTIFICATE, d->id);
 	if(list.size() != 1 || QSslCertificate(d->attribute(d->session, list[0], CKA_VALUE), QSsl::Der) != t.cert())
-		return UnknownError;
+		RETURN_ERR(UnknownError)
 
 	// Hack: Workaround broken FIN pkcs11 drivers not providing CKF_LOGIN_REQUIRED info
 	if(!d->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
-		return PinOK;
+		RETURN_ERR(PinOK)
 
 	CK_RV err = CKR_OK;
 	SslCertificate cert(t.cert());
 	bool isSign = cert.keyUsage().keys().contains(SslCertificate::NonRepudiation);
 	PinPopup::TokenFlags f;
-	if(token.flags & CKF_USER_PIN_LOCKED) return PinLocked;
+	if(token.flags & CKF_USER_PIN_LOCKED) RETURN_ERR(PinLocked);
 	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
 	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
@@ -286,7 +293,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 		PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, rootWindow());
 		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
-			return PinCanceled;
+			RETURN_ERR(PinCanceled);
 		QByteArray pin = p.text().toUtf8();
 		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 	}
@@ -296,14 +303,14 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	switch( err )
 	{
 	case CKR_OK:
-	case CKR_USER_ALREADY_LOGGED_IN: return PinOK;
+	case CKR_USER_ALREADY_LOGGED_IN: RETURN_ERR(PinOK)
 	case CKR_CANCEL:
-	case CKR_FUNCTION_CANCELED: return PinCanceled;
-	case CKR_PIN_INCORRECT: return (token.flags & CKF_USER_PIN_LOCKED) ? PinLocked : PinIncorrect;
-	case CKR_PIN_LOCKED: return PinLocked;
-	case CKR_DEVICE_ERROR: return DeviceError;
-	case CKR_GENERAL_ERROR: return GeneralError;
-	default: return UnknownError;
+	case CKR_FUNCTION_CANCELED: RETURN_ERR(PinCanceled)
+	case CKR_PIN_INCORRECT: RETURN_ERR((token.flags & CKF_USER_PIN_LOCKED) ? PinLocked : PinIncorrect)
+	case CKR_PIN_LOCKED: RETURN_ERR(PinLocked)
+	case CKR_DEVICE_ERROR: RETURN_ERR(DeviceError)
+	case CKR_GENERAL_ERROR: RETURN_ERR(GeneralError)
+	default: RETURN_ERR(UnknownError)
 	}
 }
 

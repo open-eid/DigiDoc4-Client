@@ -51,7 +51,7 @@ QCSP::~QCSP()
 	delete d;
 }
 
-QByteArray QCSP::decrypt( const QByteArray &data )
+QByteArray QCSP::decrypt(const QByteArray &data) const
 {
 	d->error = PinOK;
 	if(!d->cert)
@@ -113,7 +113,7 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 QByteArray QCSP::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	d->error = PinUnknown;
+	d->error = PinOK;
 	QByteArray derived;
 	DWORD flags = CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG;
 	HCRYPTPROV_OR_NCRYPT_KEY_HANDLE key = 0;
@@ -206,7 +206,7 @@ QList<TokenData> QCSP::tokens() const
 	return certs;
 }
 
-void QCSP::selectCert(const TokenData &t)
+void QCSP::login(const TokenData &t)
 {
 	if(d->cert)
 		CertFreeCertificateContext(d->cert);
