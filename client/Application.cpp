@@ -25,6 +25,11 @@
 #include "QSigner.h"
 #include "QSmartCard.h"
 #include "DigiDoc.h"
+#ifdef Q_OS_MAC
+#include "MacMenuBar.h"
+#else
+class MacMenuBar;
+#endif
 #include "TokenData.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/SettingsDialog.h"
@@ -58,12 +63,6 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
 #include <QtWidgets/QAction>
-
-#if defined(Q_OS_MAC)
-#include <common/MacMenuBar.h>
-#else
-class MacMenuBar;
-#endif
 
 #ifdef Q_OS_WIN32
 #include <QtCore/QLibrary>
@@ -310,7 +309,7 @@ Application::Application( int &argc, char **argv )
 	connect(d->closeAction, &QAction::triggered, this, &Application::closeWindow);
 	d->newClientAction = new QAction( tr("New Client window"), this );
 	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
-	connect(d->newClientAction, &QAction::triggered, this, [&]{ showClient(); });
+	connect(d->newClientAction, &QAction::triggered, this, [&]{ showClient({}, false, false, true); });
 
 	// This is needed to release application from memory (Windows)
 	setQuitOnLastWindowClosed( true ); 
@@ -990,7 +989,7 @@ void Application::showSettings()
 		w->showSettings(SettingsDialog::GeneralSettings);
 }
 
-void Application::showClient(const QStringList &params, bool crypto, bool sign)
+void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)
 {
 	if(sign)
 	{
@@ -998,12 +997,12 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign)
 		sign = !(params.size() == 1 && canAddSignature.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive));
 	}
 	QWidget *w = nullptr;
-	if(params.isEmpty())
+	if(!newWindow && params.isEmpty())
 	{
 		// If no files selected (e.g. restoring minimized window), select first
 		w = qobject_cast<MainWindow*>(qApp->mainWindow());
 	}
-	else
+	else if(!newWindow)
 	{
 		// else select first window with no open files
 		MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
