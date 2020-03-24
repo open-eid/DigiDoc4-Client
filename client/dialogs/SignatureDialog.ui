@@ -443,10 +443,12 @@ background-color: #FFFFFF;</string>
             <string notr="true">#signatureView {
 	border:none;
 }
+QHeaderView::section::first{
+	padding-left:5px;
+}
 QHeaderView::section {
-	border: 1px solid #D9D9D8;
-	border-width: 0px 1px 1px 0px;
-	padding: 2px 0px 3px 5px;
+	border:none;
+	border-bottom: 1px solid #D9D9D8;
 	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                       stop:0 #FFFFFF, stop:1 #FFFFFF);
 }</string>
