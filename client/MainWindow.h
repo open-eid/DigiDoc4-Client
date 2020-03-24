@@ -23,13 +23,9 @@
 #include "QSmartCard.h"
 #include "sslConnect.h"
 #include "effects/Overlay.h"
-#include "widgets/CardPopup.h"
 #include "widgets/NoCardInfo.h"
-#include "widgets/PageIcon.h"
 
 #include <QButtonGroup>
-#include <QImage>
-#include <QWidget>
 
 namespace Ui {
 class MainWindow;
@@ -40,6 +36,7 @@ class CryptoDoc;
 class DigiDoc;
 class DropdownButton;
 class DocumentModel;
+class PageIcon;
 class WarningList;
 
 class MainWindow : public QWidget
@@ -73,14 +70,14 @@ private Q_SLOTS:
 	void warningClicked(const QString &link);
 
 protected:
-	void changeEvent(QEvent* event) override;
-	void closeEvent(QCloseEvent *event) override;
-	void dragEnterEvent( QDragEnterEvent *event ) override;
-	void dragLeaveEvent( QDragLeaveEvent *event ) override;
-	void dropEvent( QDropEvent *event ) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void resizeEvent( QResizeEvent *event ) override;
-	void showEvent(QShowEvent *event) override;
+	void changeEvent(QEvent* event) final;
+	void closeEvent(QCloseEvent *event) final;
+	void dragEnterEvent( QDragEnterEvent *event ) final;
+	void dragLeaveEvent( QDragLeaveEvent *event ) final;
+	void dropEvent( QDropEvent *event ) final;
+	void mouseReleaseEvent(QMouseEvent *event) final;
+	void resizeEvent( QResizeEvent *event ) final;
+	void showEvent(QShowEvent *event) final;
 
 private:
 	void adjustDrops();
@@ -137,7 +134,6 @@ private:
 	Ui::MainWindow *ui;
 
 	QButtonGroup *buttonGroup = nullptr;
-	std::unique_ptr<CardPopup> cardPopup;
 	std::unique_ptr<Overlay> overlay;
 	DropdownButton *selector = nullptr;
 	WarningList *warnings;

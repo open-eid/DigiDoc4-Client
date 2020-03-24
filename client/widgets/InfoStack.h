@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "Styles.h"
 #include "widgets/StyledWidget.h"
 
 namespace Ui {
@@ -29,7 +28,7 @@ class InfoStack;
 class QSmartCardData;
 class SslCertificate;
 
-class InfoStack : public StyledWidget, public PictureInterface
+class InfoStack : public StyledWidget
 {
 	Q_OBJECT
 
@@ -38,10 +37,10 @@ public:
 	~InfoStack() final;
 
 	void clearData();
-	void clearPicture() final;
+	void clearPicture();
 	void update(const SslCertificate &cert);
 	void update(const QSmartCardData &t);
-	void showPicture(const QPixmap &pixmap) final;
+	void showPicture(const QPixmap &pixmap);
 
 signals:
 	void photoClicked(const QPixmap &pixmap);

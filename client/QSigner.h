@@ -48,7 +48,8 @@ public:
 	explicit QSigner(ApiType api, QObject *parent = nullptr);
 	~QSigner() override;
 
-	QMap<QString, SslCertificate> cache() const;
+	QSet<QString> cards() const;
+	QVector<TokenData> cache() const;
 	digidoc::X509Cert cert() const override;
 	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);

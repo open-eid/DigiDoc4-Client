@@ -19,8 +19,7 @@
 
 #pragma once
 
-#include "Styles.h"
-#include "SslCertificate.h"
+#include "TokenData.h"
 #include "widgets/StyledWidget.h"
 
 class QSvgWidget;
@@ -28,19 +27,18 @@ namespace Ui {
 class CardWidget;
 }
 
-class CardWidget : public StyledWidget, public PictureInterface
+class CardWidget : public StyledWidget
 {
 	Q_OBJECT
 
 public:
-	explicit CardWidget( QWidget *parent = nullptr );
-	explicit CardWidget(QString id, QWidget *parent = nullptr);
+	explicit CardWidget(QWidget *parent = nullptr);
 	~CardWidget() final;
 
-	void clearPicture() override;
+	void clearPicture();
 	QString id() const;
-	void showPicture( const QPixmap &pix ) override;
-	void update(const SslCertificate &c, const QString &cardId);
+	void showPicture( const QPixmap &pix );
+	void update(const TokenData &token);
 
 signals:
 	void photoClicked( const QPixmap &pixmap );
@@ -52,7 +50,6 @@ private:
 	void clearSeal();
 
 	Ui::CardWidget *ui;
-	QString card;
-	SslCertificate cert;
+	TokenData t;
 	QSvgWidget *seal = nullptr;
 };

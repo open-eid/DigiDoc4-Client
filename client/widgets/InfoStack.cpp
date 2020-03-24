@@ -21,6 +21,7 @@
 #include "ui_InfoStack.h"
 
 #include "QSmartCard.h"
+#include "Styles.h"
 #include "SslCertificate.h"
 
 #include <common/DateTime.h>
