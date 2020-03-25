@@ -70,8 +70,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 	ui->setupUi(this);
 #ifdef Q_OS_MAC
-	setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint);
-	setWindowModality(Qt::WindowModal);
+	setWindowFlags(Qt::Popup);
+	move(parent->geometry().center() - geometry().center());
 #else
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	setWindowModality(Qt::ApplicationModal);
@@ -531,10 +531,7 @@ void SettingsDialog::updateDiagnostics()
 
 void SettingsDialog::installCert()
 {
-	QString certpath;
-
-	QFile file( !certpath.isEmpty() ? certpath :
-		FileDialog::getOpenFileName( this, tr("Select server access certificate"),
+	QFile file(FileDialog::getOpenFileName(this, tr("Select server access certificate"),
 		QString(), tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
 	if(!file.exists())
 		return;
