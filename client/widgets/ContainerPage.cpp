@@ -286,7 +286,12 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
 	}
 	mainAction->update(actions);
-	mainAction->setButtonEnabled(!isExpired || actions.contains(DecryptContainer) || actions.contains(DecryptToken) ||actions.contains(EncryptContainer));
+	bool isSign =
+		actions.contains(SignatureAdd) || actions.contains(SignatureToken) ||
+		actions.contains(SignatureMobile) || actions.contains(SignatureSmartID);
+	mainAction->setButtonEnabled((isSign && !isExpired) ||
+		(actions.contains(DecryptContainer) || actions.contains(DecryptToken)) ||
+		(actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty()));
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
 	ui->navigationArea->layout()->invalidate();
 }
@@ -380,6 +385,8 @@ void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 	ui->rightPane->clear();
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
+	if(ui->leftPane->getState() & UnencryptedContainer)
+		showMainAction({ EncryptContainer });
 }
 
 void ContainerPage::updateDecryptionButton()

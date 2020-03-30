@@ -1132,7 +1132,7 @@ bool CryptoDoc::isEncrypted() const { return d->encrypted; }
 bool CryptoDoc::isNull() const { return d->fileName.isEmpty(); }
 bool CryptoDoc::isSigned() const { return d->hasSignature; }
 
-QList<CKey> CryptoDoc::keys()
+QList<CKey> CryptoDoc::keys() const
 {
 	return d->keys;
 }
