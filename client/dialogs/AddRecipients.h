@@ -42,7 +42,6 @@ public:
 	explicit AddRecipients(ItemList* itemList, QWidget *parent = nullptr);
 	~AddRecipients() final;
 
-	int exec() override;
 	QList<CKey> keys();
 	bool isUpdated();
 
