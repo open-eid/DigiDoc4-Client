@@ -36,7 +36,7 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 #ifdef Q_OS_MAC
 	Q_UNUSED(withName);
 	for (const QString &name: names) {
-		CFStringRef id = QStringLiteral("ee.ria.").arg(name).toCFString();
+		CFStringRef id = QStringLiteral("ee.ria.%1").arg(name).toCFString();
 		CFBundleRef bundle = CFBundleGetBundleWithIdentifier(id);
 		CFRelease(id);
 		if (!bundle)

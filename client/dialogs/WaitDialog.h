@@ -29,20 +29,13 @@ class WaitDialogHider
 public:
 	WaitDialogHider();
 	~WaitDialogHider();
-
-	bool hasOverlay();
-
-private:
-	QString text;
-	Overlay *overlay;
-	QWidget *parent;
 };
 
 
 class WaitDialogHolder
 {
 public:
-	WaitDialogHolder(QWidget *parent, const QString& text = QString());
+	WaitDialogHolder(QWidget *parent, const QString &text = {});
 	~WaitDialogHolder();
 
 	void close();

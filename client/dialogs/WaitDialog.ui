@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>WaitDialog</class>
- <widget class="QDialog" name="WaitDialog">
+ <widget class="QWidget" name="WaitDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,10 +23,7 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog
-{
-background-color: #ECECEC;
-}</string>
+   <string notr="true">QWidget { background-color: #ECECEC; }</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -72,9 +69,6 @@ background-color: #ECECEC;
      <width>64</width>
      <height>64</height>
     </size>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
  </widget>

@@ -44,8 +44,9 @@
 #include "dialogs/SmartIDProgress.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "widgets/WarningList.h"
+#include "widgets/DropdownButton.h"
 #include "widgets/VerifyCert.h"
+#include "widgets/WarningList.h"
 
 #include <common/DateTime.h>
 
@@ -394,9 +395,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 		navigateToPage(Pages::SignIntro);
 	}
 	else
-	{
-		QWidget::mousePressEvent(event);
-	}
+		QWidget::mouseReleaseEvent(event);
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -481,17 +480,15 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	case SignatureMobile:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			MobileProgress m(this);
-			if(!m.init(info1, info2))
-				return false;
-			return digiDoc->sign(city, state, zip, country, role, &m);
+			return m.init(info1, info2) &&
+				digiDoc->sign(city, state, zip, country, role, &m);
 		});
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			SmartIDProgress s(this);
-			if(!s.init(info1, info2))
-				return false;
-			return digiDoc->sign(city, state, zip, country, role, &s);
+			return s.init(info1, info2) &&
+				digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
 	case ClearSignatureWarning:
@@ -726,7 +723,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 		{
 			bool crypto = state & CryptoContainers;
 			if(wrapContainer(!crypto))
-				content.insert(content.begin(), crypto ? cryptoDoc->fileName() : digiDoc->fileName());
+				content.insert(content.begin(), digiDoc->fileName());
 			else
 				create = false;
 
@@ -1075,8 +1072,8 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 	if(!save())
 		return;
 
-	ui->signContainerPage->transition(digiDoc);
 	waitDialog.close();
+	ui->signContainerPage->transition(digiDoc);
 
 	FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 	notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
