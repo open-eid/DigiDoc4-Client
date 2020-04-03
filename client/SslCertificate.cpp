@@ -19,6 +19,8 @@
 
 #include "SslCertificate.h"
 
+#include "Common.h"
+
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDataStream>
@@ -27,9 +29,12 @@
 #include <QtCore/QHash>
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/err.h>
+#include <openssl/ocsp.h>
 #include <openssl/pkcs12.h>
 #include <openssl/x509v3.h>
 
@@ -94,6 +99,31 @@ QString SslCertificate::subjectInfo( const QByteArray &tag ) const
 
 QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) const
 { return QSslCertificate::subjectInfo(subject).join(' '); }
+
+QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authorityInfoAccess() const
+{
+	QMultiHash<AuthorityInfoAccess, QString> result;
+	SCOPE(AUTHORITY_INFO_ACCESS, info, extension(NID_info_access));
+	if(!info)
+		return result;
+	for(int i = 0; i < sk_ACCESS_DESCRIPTION_num(info.get()); ++i)
+	{
+		ACCESS_DESCRIPTION *ad = sk_ACCESS_DESCRIPTION_value(info.get(), i);
+		if(ad->location->type != GEN_URI)
+			continue;
+		switch(OBJ_obj2nid(ad->method))
+		{
+		case NID_ad_OCSP:
+			result.insertMulti(ad_OCSP, toQByteArray(ad->location->d.uniformResourceIdentifier));
+			break;
+		case NID_ad_ca_issuers:
+			result.insertMulti(ad_CAIssuers, toQByteArray(ad->location->d.uniformResourceIdentifier));
+			break;
+		default: break;
+		}
+	}
+	return result;
+}
 
 QByteArray SslCertificate::authorityKeyIdentifier() const
 {
@@ -341,6 +371,69 @@ SslCertificate::CertType SslCertificate::type() const
 		}
 	}
 	return UnknownType;
+}
+
+bool SslCertificate::validateOnline() const
+{
+	QMultiHash<SslCertificate::AuthorityInfoAccess,QString> urls = authorityInfoAccess();
+	if(urls.isEmpty())
+		return false;
+
+	QEventLoop e;
+	QNetworkAccessManager m;
+	QNetworkAccessManager::connect(&m, &QNetworkAccessManager::finished, &e, &QEventLoop::quit);
+	QNetworkAccessManager::connect(&m, &QNetworkAccessManager::sslErrors, &m,
+		[](QNetworkReply *reply, const QList<QSslError> &errors){
+		reply->ignoreSslErrors(errors);
+	});
+
+	// Get issuer
+	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
+	r.setRawHeader("User-Agent", QString("%1/%2 (%3)")
+		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
+	QNetworkReply *repl = m.get(r);
+	e.exec();
+	QSslCertificate issuer(repl->readAll(), QSsl::Der);
+	repl->deleteLater();
+
+	// Build request
+	SCOPE(OCSP_REQUEST, ocspReq, OCSP_REQUEST_new());
+	if(!ocspReq)
+		return false;
+	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, (X509*)handle(), (X509*)issuer.handle());
+	if(!OCSP_request_add0_id(ocspReq.get(), certId))
+		return false;
+
+	// Send request
+	r.setUrl(urls.values(SslCertificate::ad_OCSP).first());
+	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/ocsp-request");
+	repl = m.post(r, i2dDer(i2d_OCSP_REQUEST, ocspReq.get()));
+	e.exec();
+
+	// Parse response
+	QByteArray respData = repl->readAll();
+	repl->deleteLater();
+	const unsigned char *p = (const unsigned char*)respData.constData();
+	SCOPE(OCSP_RESPONSE, resp, d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
+	if(!resp || OCSP_response_status(resp.get()) != OCSP_RESPONSE_STATUS_SUCCESSFUL)
+		return false;
+
+	// Validate response
+	SCOPE(OCSP_BASICRESP, basic, OCSP_response_get1_basic(resp.get()));
+	if(!basic)
+		return false;
+	//OCSP_TRUSTOTHER - enables OCSP_NOVERIFY
+	//OCSP_NOSIGS - does not verify ocsp signatures
+	//OCSP_NOVERIFY - ignores signer(responder) cert verification, requires store otherwise crashes
+	//OCSP_NOCHECKS - cancel futurer responder issuer checks and trust bits
+	//OCSP_NOEXPLICIT - returns 0 by mistake
+	//all checks enabled fails trust bit check, cant use OCSP_NOEXPLICIT instead using OCSP_NOCHECKS
+	if(OCSP_basic_verify(basic.get(), nullptr, nullptr, OCSP_NOVERIFY) <= 0)
+		return false;
+	int status = -1;
+	if(OCSP_resp_find_status(basic.get(), certId, &status, nullptr, nullptr, nullptr, nullptr) <= 0)
+		return false;
+	return status == V_OCSP_CERTSTATUS_GOOD;
 }
 
 

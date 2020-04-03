@@ -1578,10 +1578,6 @@ ID-KAARDIGA</translation>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
-        <source>Documents (%1%2)</source>
-        <translation>Dokumendid (%1%2)</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1-kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
     </message>
@@ -3351,6 +3347,30 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Unblock to reuse PIN%1.</source>
         <translation>Tühista blokeering, et PIN%1 taas kasutada.</translation>
+    </message>
+    <message>
+        <source>Check certificate status</source>
+        <translation>Kontrolli sertifikaadi staatust</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is valid. </source>
+        <translation>Sinu ID-kaardi isikutuvastamise sertifikaat kehtib. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is valid. </source>
+        <translation>Sinu ID-kaardi allkirjastamise sertifikaat kehtib. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Sinu ID-kaardi allkirjastamise sertifikaat ei kehti. ID-kaardi elektrooniliseks kasutamiseks on vaja kehtivaid sertifikaate. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Sinu ID-kaardi isikutuvastamise sertifikaat ei kehti. ID-kaardi elektrooniliseks kasutamiseks on vaja kehtivaid sertifikaate. </translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Loe rohkem &lt;a href=&quot;https://www.id.ee/artikkel/id-kaardi-sertifikaatide-kehtivus/&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>

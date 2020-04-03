@@ -21,12 +21,12 @@
 #include "ui_VerifyCert.h"
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
+#include "dialogs/WarningDialog.h"
 
 #include <common/DateTime.h>
 
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslKey>
-#include <QSvgWidget>
 
 VerifyCert::VerifyCert(QWidget *parent)
 	: StyledWidget(parent)
@@ -44,6 +44,19 @@ VerifyCert::VerifyCert(QWidget *parent)
 	connect(ui->details, &QPushButton::clicked, [=] {
 		CertificateDetails::showCertificate(c, this,
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
+	});
+	connect(ui->checkCert, &QPushButton::clicked, this, [=]{
+		QString msg;
+		if(c.validateOnline())
+			msg = c.keyUsage().contains(SslCertificate::NonRepudiation) ?
+				tr("Your ID-card signing certificate is valid. ") :
+				tr("Your ID-card authentication certificate is valid. ");
+		else
+			msg = c.keyUsage().contains(SslCertificate::NonRepudiation) ?
+				tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. ") :
+				tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. ");
+		msg += tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
+		WarningDialog::warning(this, msg);
 	});
 
 	ui->greenIcon->load(QStringLiteral(":/images/icon_check.svg"));
@@ -64,6 +77,9 @@ VerifyCert::VerifyCert(QWidget *parent)
 	ui->details->setFont( regular12 );
 	ui->details->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	ui->widgetLayout->setAlignment(ui->details, Qt::AlignCenter);
+	ui->checkCert->setFont(regular12);
+	ui->checkCert->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	ui->widgetLayout->setAlignment(ui->checkCert, Qt::AlignCenter);
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
 	ui->tempelText->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->tempelText->hide();
@@ -156,6 +172,7 @@ void VerifyCert::update()
 		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
 		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
 		ui->forgotPinLink->setHidden(isBlockedPin || isBlockedPuk || isTempelType);
+		ui->checkCert->setVisible(isValidCert);
 		ui->error->setText(
 			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. "
 				"You can find instructions on how to get a new document from <a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">here</span></a>.").arg(pinType) :
@@ -173,6 +190,7 @@ void VerifyCert::update()
 		ui->changePIN->setHidden(cardData.version() == QSmartCardData::VER_USABLEUPDATER || isBlockedPuk);
 		ui->forgotPinLink->hide();
 		ui->details->hide();
+		ui->checkCert->hide();
 		ui->error->setText(
 			isBlockedPin ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
 				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "

@@ -1580,10 +1580,6 @@ ID-КАРТОЙ</translation>
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
-        <source>Documents (%1%2)</source>
-        <translation>Документы (%1%2)</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1-код изменён и сертификат разблокирован!</translation>
     </message>
@@ -3354,6 +3350,30 @@ Additional licenses and components</source>
     <message>
         <source>Unblock to reuse PIN%1.</source>
         <translation>Разблокируйте его для повторного использования PIN%1.</translation>
+    </message>
+    <message>
+        <source>Check certificate status</source>
+        <translation>Проверить статус сертификата</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is valid. </source>
+        <translation>Сертификат идентификации личности в вашей ID-карте действителен. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is valid. </source>
+        <translation>Сертификат подписи в вашей ID-карте действителен. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Сертификат подписи вашей ID-карты недействителен. Для электронного использования ID-карты требуются действующие сертификаты. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Сертификат идентификации личности в вашей ID-карте недействителен. Для электронного использования ID-карты требуются действующие сертификаты. </translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dejstvitelnost-sertifikatov-id-karty/&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>

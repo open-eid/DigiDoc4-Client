@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>305</width>
-    <height>230</height>
+    <height>249</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -87,7 +87,7 @@
        <property name="styleSheet">
         <string notr="true">border: none;</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="nameRightLayout">
         <property name="leftMargin">
          <number>5</number>
         </property>
@@ -341,11 +341,18 @@ background-color: #F8DDA7;</string>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>38</height>
+       <height>57</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;</string>
+      <string notr="true">#widget { border: none; }
+QPushButton {
+color: #75787B;
+line-height: 19px;
+text-align: center;
+border: none;
+background-color: transparent;
+}</string>
      </property>
      <layout class="QVBoxLayout" name="widgetLayout">
       <property name="spacing">
@@ -387,16 +394,6 @@ background-color: #F8DDA7;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #75787B;
-line-height: 19px;
-text-align: center;
-border: none;
-background-color: transparent;</string>
-        </property>
         <property name="text">
          <string notr="true">Forgot PIN?</string>
         </property>
@@ -426,18 +423,37 @@ background-color: transparent;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #75787B;
-line-height: 19px;
-text-align: center;
-border: none;
-background-color: transparent;</string>
-        </property>
         <property name="text">
          <string>Check the details of the certificate</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="checkCert">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>19</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>19</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>12</pointsize>
+          <underline>true</underline>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Check certificate status</string>
         </property>
        </widget>
       </item>
