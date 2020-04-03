@@ -64,18 +64,16 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SettingsDialog)
 {
-	Overlay *overlay = new Overlay(parent->topLevelWidget());
-	overlay->show();
-	connect(this, &SettingsDialog::destroyed, overlay, &Overlay::deleteLater);
+	new Overlay(this, parent->topLevelWidget());
 
 	ui->setupUi(this);
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Popup);
-	move(parent->geometry().center() - geometry().center());
 #else
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	setWindowModality(Qt::ApplicationModal);
 #endif
+	move(parent->geometry().center() - geometry().center());
 
 	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
@@ -164,14 +162,9 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 #ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(error.isEmpty())
-		{
-			WarningDialog dlg(tr("Digidoc4 client configuration update was successful."), qApp->activeWindow());
-			dlg.exec();
-			return;
-		}
-
-		WarningDialog dlg(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, qApp->activeWindow());
-		dlg.exec();
+			WarningDialog(tr("Digidoc4 client configuration update was successful."), this).exec();
+		else
+			WarningDialog(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, this).exec();
 	});
 #endif
 
