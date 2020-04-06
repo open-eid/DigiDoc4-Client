@@ -104,6 +104,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 	ui->chkShowPrintSummary->setFont(regularFont);
 	ui->chkRoleAddressInfo->setFont(regularFont);
+	ui->chkLibdigidocppDebug->setFont(regularFont);
 
 	// pageServices
 	ui->lblRevocation->setFont(headerFont);
@@ -156,6 +157,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->btnFirstRun->setFont(condensed12);
 	ui->btnRefreshConfig->setFont(condensed12);
 	ui->btnNavSaveReport->setFont(condensed12);
+	ui->btnNavSaveLibdigidocpp->setFont(condensed12);
 	ui->btnCheckConnection->setFont(condensed12);
 
 	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
@@ -210,7 +212,16 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 		}
 	});
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
-	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, &SettingsDialog::saveDiagnostics );
+	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, [=]{
+		saveFile(QStringLiteral("diagnostics.txt"), ui->txtDiagnostics->toPlainText().toUtf8());
+	});
+	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [=]{
+		QFile f(QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()));
+		if(f.open(QFile::ReadOnly|QFile::Text))
+			saveFile(QStringLiteral("libdigidocpp.txt"), f.readAll());
+		f.remove();
+		ui->btnNavSaveLibdigidocpp->hide();
+	});
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
@@ -312,6 +323,25 @@ void SettingsDialog::initFunctionality()
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked) {
 		setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
 	});
+	ui->chkLibdigidocppDebug->setChecked(QSettings().value(QStringLiteral("LibdigidocppDebug"), false).toBool());
+	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [](bool checked) {
+		setValueEx(QStringLiteral("LibdigidocppDebug"), checked, false);
+		if(!checked)
+			return;
+#ifdef Q_OS_MAC
+		WarningDialog(tr("Restart DigiDoc4 Client to activate logging. Read more "
+			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>.")).exec();
+#else
+		WarningDialog dlg(tr("Restart DigiDoc4 Client to activate logging. Read more "
+			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"), qApp->activeWindow());
+		dlg.setCancelText(tr("NO"));
+		dlg.addButton(tr("YES"), 1) ;
+		if(dlg.exec() == 1) {
+			qApp->setProperty("restart", true);
+			qApp->quit();
+		}
+#endif
+	});
 
 #ifdef Q_OS_MAC
 	ui->lblDefaultDirectory->hide();
@@ -345,7 +375,6 @@ void SettingsDialog::initFunctionality()
 #endif
 
 #ifdef Q_OS_WIN
-
 	ui->tokenBackend->setChecked(QSettings().value(QStringLiteral("tokenBackend")).toUInt());
 	connect(ui->tokenBackend, &QCheckBox::toggled, this, [=](bool checked) {
 		setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
@@ -549,10 +578,6 @@ void SettingsDialog::updateDiagnostics()
 		QApplication::restoreOverrideCursor();
 	});
 	QThreadPool::globalInstance()->start( worker );
-	if(QSettings(QSettings::SystemScope, nullptr).value(QStringLiteral("disableSave"), false).toBool())
-	{
-		ui->btnNavSaveReport->hide();
-	}
 }
 
 void SettingsDialog::installCert()
@@ -612,6 +637,8 @@ void SettingsDialog::changePage(QAbstractButton *button)
 	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
 	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);
+	ui->btnNavSaveLibdigidocpp->setVisible(button == ui->btnMenuDiagnostics &&
+		QFile::exists(QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath())));
 #ifdef Q_OS_WIN
 	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);
 #else
@@ -619,14 +646,14 @@ void SettingsDialog::changePage(QAbstractButton *button)
 #endif
 }
 
-void SettingsDialog::saveDiagnostics()
+void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 {
-	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_diagnostics.txt")
-		.arg( QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName(), qApp->applicationVersion() ),
+	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_%4")
+		.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName(), qApp->applicationVersion(), name),
 		tr("Text files (*.txt)") );
 	if( filename.isEmpty() )
 		return;
 	QFile f( filename );
-	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(ui->txtDiagnostics->toPlainText().toUtf8()))
+	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
 		WarningDialog(tr("Failed write to file!"), this).exec();
 }

@@ -60,7 +60,7 @@ private:
 	void initFunctionality();
 	void installCert();
 	void retranslate(const QString& lang);
-	void saveDiagnostics();
+	void saveFile(const QString &name, const QByteArray &content);
 	void saveProxy();
 	void selectLanguage();
 	void setProxyEnabled();
