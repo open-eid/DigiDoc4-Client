@@ -30,7 +30,7 @@ border-width: 1px 0px 0px 0px;</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>36</x>
+     <x>21</x>
      <y>11</y>
      <width>390</width>
      <height>19</height>
@@ -61,17 +61,11 @@ border-width: 1px 0px 0px 0px;</string>
     <string notr="true">border: none;
 color: #353739;</string>
    </property>
-   <property name="text">
-    <string notr="true">TextLabel</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
   </widget>
   <widget class="QSvgWidget" name="icon" native="true">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>10</y>
      <width>12</width>
      <height>16</height>
@@ -86,7 +80,7 @@ color: #353739;</string>
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtSvg/QSvgWidget.h</header>
+   <header location="global">QtSvg/QSvgWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

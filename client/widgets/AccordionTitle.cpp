@@ -30,8 +30,8 @@ AccordionTitle::AccordionTitle(QWidget *parent)
 	, ui(new Ui::AccordionTitle)
 {
 	ui->setupUi(this);
-	ui->icon->resize( 12, 6 );
-	ui->icon->move( 15, 17 );
+	ui->icon->resize(2, 6);
+	ui->icon->move(0, 17);
 	ui->label->setFont( Styles::font( Styles::Condensed, 16 ) );
 }
 
@@ -90,14 +90,14 @@ void AccordionTitle::setSectionOpen(bool open)
 	{
 		ui->label->setStyleSheet(QStringLiteral("border: none; color: #006EB5;"));
 		ui->icon->resize( 12, 6 );
-		ui->icon->move( 15, 17 );
+		ui->icon->move(0, 17);
 		ui->icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
 	}
 	else
 	{
 		ui->label->setStyleSheet(QStringLiteral("border: none; color: #353739;"));
 		ui->icon->resize( 6, 12 );
-		ui->icon->move( 18, 14 );
+		ui->icon->move(3, 14);
 		ui->icon->load(QStringLiteral(":/images/accordion_arrow_right.svg"));
 	}
 }
