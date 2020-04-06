@@ -42,19 +42,17 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );
 	connect( this, &MobileDialog::finished, this, &MobileDialog::close );
 
-	QFont condensed12 = Styles::font( Styles::Condensed, 12 );
-	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont header = Styles::font( Styles::Regular, 14 );
+	QFont condensed = Styles::font(Styles::Condensed, 14);
+	QFont header = Styles::font(Styles::Regular, 16, QFont::DemiBold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
-	header.setWeight( QFont::DemiBold );
-	ui->labelNameId->setFont( header );
-	ui->labelPhone->setFont( condensed12 );
-	ui->labelIdCode->setFont( condensed12 );
+	ui->labelNameId->setFont(header);
+	ui->labelPhone->setFont(regularFont);
+	ui->labelIdCode->setFont(regularFont);
 	ui->phoneNo->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
-	ui->cbRemember->setFont( Styles::font( Styles::Regular, 14 ) );
-	ui->sign->setFont( condensed14 );
-	ui->cancel->setFont( condensed14 );
+	ui->cbRemember->setFont(regularFont);
+	ui->sign->setFont(condensed);
+	ui->cancel->setFont(condensed);
 
 	// Mobile
 	ui->idCode->setValidator( new IKValidator( ui->idCode ) );

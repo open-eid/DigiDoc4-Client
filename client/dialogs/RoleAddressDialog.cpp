@@ -40,26 +40,26 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	, d(new Private)
 {
 	const QFont regularFont = Styles::font(Styles::Regular, 14);
-	const QFont buttonFont = Styles::font(Styles::Condensed, 14);
+	const QFont condensed = Styles::font(Styles::Condensed, 14);
 
 	d->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	setWindowModality(Qt::ApplicationModal);
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
-	d->cancel->setFont(buttonFont);
+	d->cancel->setFont(condensed);
 	d->cancel->setText(tr("CANCEL"));
 	d->cancel->setCursor(QCursor(Qt::PointingHandCursor));
 
 	connect( d->sign, &QPushButton::clicked, this, &RoleAddressDialog::accept );
-	d->sign->setFont(buttonFont);
+	d->sign->setFont(condensed);
 	d->sign->setText(tr("SIGN"));
 	d->sign->setCursor(QCursor(Qt::PointingHandCursor));
 
 	for(QLabel *label: findChildren<QLabel*>())
 		label->setFont(regularFont);
 
-	d->title->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	d->title->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
 
 	for(QLineEdit *line: findChildren<QLineEdit*>())
 	{
