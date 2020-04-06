@@ -25,7 +25,6 @@
 #include "effects/Overlay.h"
 #include "widgets/AccordionTitle.h"
 #include "widgets/CardPopup.h"
-#include "widgets/DropdownButton.h"
 #include "widgets/NoCardInfo.h"
 #include "widgets/PageIcon.h"
 
@@ -40,6 +39,7 @@ class MainWindow;
 class CKey;
 class CryptoDoc;
 class DigiDoc;
+class DropdownButton;
 class DocumentModel;
 class WarningList;
 

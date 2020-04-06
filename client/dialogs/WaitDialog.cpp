@@ -29,99 +29,50 @@
 #include <QMovie>
 
 WaitDialogHider::WaitDialogHider()
-: overlay(nullptr)
-, parent(nullptr)
 {
-	WaitDialog *d = WaitDialog::instance();
-	if(d)
-	{
-		parent = d->parentWidget();
-		text = d->text();
-		overlay = d->detachOverlay();
-		WaitDialog::destroy();
-	}
+	if(WaitDialog *d = WaitDialog::instance())
+		d->hide();
 }
 
 WaitDialogHider::~WaitDialogHider()
 {
-	if(parent)
-	{
-		WaitDialog *d = WaitDialog::create(parent, overlay);
-		d->setText(text);
-		d->open();
-	}
+	if(WaitDialog *d = WaitDialog::instance())
+		d->show();
 }
 
-bool WaitDialogHider::hasOverlay()
-{
-	return overlay != nullptr;
-}
 
 
 WaitDialog* WaitDialog::waitDialog = nullptr;
 
-WaitDialog::WaitDialog(QWidget *parent, Overlay *o)
-: QDialog(parent)
-, ui(new Ui::WaitDialog)
-, overlay(o)
+WaitDialog::WaitDialog(QWidget *parent)
+	: QWidget(parent)
+	, ui(new Ui::WaitDialog)
 {
+	new Overlay(this, parent);
+	setWindowFlag(Qt::Popup);
 	ui->setupUi(this);
-	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
-	setWindowModality(Qt::WindowModal);
-
-	QMovie *movie = new QMovie(":/images/wait.gif");
-	ui->movie->setMovie(movie);
-	movie->start();
-
+	ui->movie->setMovie(new QMovie(":/images/wait.gif", {}, ui->movie));
+	ui->movie->movie()->start();
 	ui->label->setFont(Styles::font(Styles::Condensed, 24));
+	move(parent->geometry().center() - geometry().center());
 }
 
 WaitDialog::~WaitDialog()
 {
-	closeOverlay();
 	delete ui;
 }
 
-WaitDialog* WaitDialog::create(QWidget *parent, Overlay *o)
+WaitDialog* WaitDialog::create(QWidget *parent)
 {
 	if(!waitDialog)
-		waitDialog = new WaitDialog(parent, o);
-
+		waitDialog = new WaitDialog(parent);
 	return waitDialog;
-}
-
-void WaitDialog::closeOverlay()
-{
-	if(overlay)
-		overlay->close();
-	delete overlay;
-	overlay = nullptr;
-}
-
-Overlay* WaitDialog::detachOverlay()
-{
-	auto o = overlay;
-	overlay = nullptr;
-	return o;
 }
 
 void WaitDialog::destroy()
 {
-	if(waitDialog)
-	{
-		waitDialog->close();
-		delete waitDialog;
-		waitDialog = nullptr;
-	}
-}
-
-int WaitDialog::exec()
-{
-	showOverlay();
-	auto rc = QDialog::exec();
-	closeOverlay();
-
-	return rc;
+	delete waitDialog;
+	waitDialog = nullptr;
 }
 
 WaitDialog* WaitDialog::instance()
@@ -129,41 +80,23 @@ WaitDialog* WaitDialog::instance()
 	return waitDialog;
 }
 
-void WaitDialog::open()
-{
-	showOverlay();
-	QDialog::open();
-}
-
-void WaitDialog::showOverlay()
-{
-	if(!overlay)
-		overlay = new Overlay(parentWidget());
-	overlay->show();
-}
-
 void WaitDialog::setText(const QString &text)
 {
 	ui->label->setText(text);
 }
 
-QString WaitDialog::text()
-{
-	return ui->label->text();
-}
 
 
-WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString& text)
+WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString &text)
 {
 	WaitDialog *dialog = WaitDialog::create(parent);
-	if(!text.isEmpty())
-		dialog->setText(text);
-	dialog->open();
+	dialog->setText(text);
+	dialog->show();
 }
 
 WaitDialogHolder::~WaitDialogHolder()
 {
-	WaitDialog::destroy();
+	close();
 }
 
 void WaitDialogHolder::close()
