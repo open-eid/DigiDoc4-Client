@@ -67,12 +67,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	new Overlay(this, parent->topLevelWidget());
 
 	ui->setupUi(this);
-#ifdef Q_OS_MAC
-	setWindowFlags(Qt::Popup);
-#else
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
-	setWindowModality(Qt::ApplicationModal);
-#endif
 	move(parent->geometry().center() - geometry().center());
 
 	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
