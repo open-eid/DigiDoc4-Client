@@ -46,7 +46,7 @@ public:
 
 	void disable(bool disable);
 	const CKey& getKey() const;
-	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber) final;
+	void idChanged(const QString &cardCode, const QByteArray &serialNumber) final;
 	QWidget* initTabOrder(QWidget *item) final;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;

@@ -20,16 +20,9 @@
 #pragma once
 
 #include "common_enums.h"
-#include "widgets/ItemList.h"
 #include "widgets/MainAction.h"
-#include "widgets/WarningItem.h"
 
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QWidget>
-#include <vector>
 #include <memory>
-
 
 namespace Ui {
 class ContainerPage;
@@ -38,9 +31,8 @@ class ContainerPage;
 class CKey;
 class CryptoDoc;
 class DigiDoc;
-class QFont;
-class QFontMetrics;
 class SignatureItem;
+class WarningText;
 
 class ContainerPage : public QWidget
 {
@@ -50,6 +42,7 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage() final;
 
+	void cardChanged(const QString &idCode = {}, bool isSeal = false, bool isExpired = false, bool isBlocked = false, const QByteArray &serialNumber = {});
 	void clear();
 	void setHeader(const QString &file);
 	void transition(CryptoDoc *container, bool canDecrypt);
@@ -57,9 +50,8 @@ public:
 	void update(bool canDecrypt, CryptoDoc *container = nullptr);
 
 signals:
-	void action(int code, const QString &info1 = QString(), const QString &info2 = QString());
+	void action(int code, const QString &info1 = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
-	void cardChanged(const QString& idCode = QString(), bool seal = false, bool isExpired = false, const QByteArray &serialNumber = QByteArray());
 	void details(const QString &id);
 	void fileRemoved(int row);
 	void keysSelected(const QList<CKey> &keys);
@@ -77,7 +69,6 @@ protected:
 private:
 	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
-	void changeCard(const QString& idCode, bool isSeal, bool isExpired);
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName(bool force = false);
 	bool eventFilter(QObject *o, QEvent *e) override;
@@ -106,4 +97,5 @@ private:
 	bool canDecrypt = false;
 	bool seal = false;
 	bool isExpired = false;
+	bool isBlocked = false;
 };
