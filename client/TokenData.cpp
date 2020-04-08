@@ -34,6 +34,7 @@ public:
 
 TokenData::TokenData(): d( new Private ) {}
 TokenData::TokenData(const TokenData &other) = default;
+TokenData::TokenData(TokenData &&other) Q_DECL_NOEXCEPT = default;
 TokenData::~TokenData() = default;
 
 QString TokenData::card() const { return d->card; }
@@ -51,6 +52,7 @@ QVariant TokenData::data(const QString &key) const { return d->data.value(key); 
 void TokenData::setData(const QString &key, const QVariant &value) { d->data[key] = value; }
 
 TokenData& TokenData::operator =( const TokenData &other ) = default;
+TokenData& TokenData::operator =(TokenData &&other) Q_DECL_NOEXCEPT = default;
 
 bool TokenData::operator !=( const TokenData &other ) const { return !(operator==(other)); }
 

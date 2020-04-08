@@ -45,6 +45,7 @@
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/DropdownButton.h"
+#include "widgets/CardPopup.h"
 #include "widgets/VerifyCert.h"
 #include "widgets/WarningList.h"
 
@@ -666,7 +667,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 		- If dropped/file add selected, add file to files to be signed/encrypted
 		- else open file in another view
 	2.3 else
-		- If dropped/file add selected, ask if new container should be created with 
+		- If dropped/file add selected, ask if new container should be created with
 		  current container and files to be opened;
 		- else open file in another view
 */
@@ -915,18 +916,22 @@ void MainWindow::showCardMenu(bool show)
 		const TokenData &t = qApp->signer()->tokensign().cert().isNull() ? qApp->signer()->tokenauth()
 			: qApp->signer()->tokensign();
 
-		cardPopup.reset(new CardPopup(t.card(), qApp->signer()->cache(), this));
+		int current = ui->startScreen->currentIndex();
+		CardPopup::Filter filter = CardPopup::All;
+		if(current == SignIntro || current == SignDetails)
+			filter = CardPopup::NonReputation;
+		if(current == CryptoIntro || current == CryptoDetails)
+			filter = CardPopup::NonWebAuth;
+		CardPopup *cardPopup = new CardPopup(t.card(), qApp->signer()->cache(), filter, this);
 		// To select active card from several cards in readers ..
-		connect(cardPopup.get(), &CardPopup::activated, qApp->signer()->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
-		connect(cardPopup.get(), &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
+		connect(cardPopup, &CardPopup::activated, qApp->signer()->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
+		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		// .. and hide card popup menu
-		connect(cardPopup.get(), &CardPopup::activated, this, &MainWindow::hideCardPopup);
+		connect(cardPopup, &CardPopup::activated, this, &MainWindow::hideCardPopup);
 		cardPopup->show();
 	}
-	else if(cardPopup)
-	{
-		cardPopup->close();
-	}
+	else if(CardPopup *cardPopup = findChild<CardPopup*>())
+		cardPopup->deleteLater();
 }
 
 void MainWindow::showCardStatus()
@@ -940,9 +945,9 @@ void MainWindow::showCardStatus()
 	if(!t.card().isEmpty() && !t.cert().isNull())
 	{
 		qCDebug(MLog) << "Select card" << t.card();
-		SslCertificate cert = qApp->signer()->cache()[t.card()];
 		const SslCertificate &authCert = at.cert();
 		const SslCertificate &signCert = st.cert();
+		SslCertificate cert = authCert.isNull() ? signCert : authCert;
 		int type = cert.type();
 		bool seal = type & SslCertificate::TempelType;
 
@@ -961,7 +966,7 @@ void MainWindow::showCardStatus()
 			ui->cardInfo->clearPicture();
 		}
 
-		ui->cardInfo->update(cert, t.card());
+		ui->cardInfo->update(t);
 
 		// Card (e.g. e-Seal) can have only one cert
 		if(!signCert.isNull())
@@ -997,7 +1002,7 @@ void MainWindow::showCardStatus()
 	}
 
 	// Combo box to select the cards from
-	selector->setVisible(qApp->signer()->cache().keys().size() > 1);
+	selector->setVisible(qApp->signer()->cards().size() > 1);
 	ui->cardInfo->setCursor(selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
 	if(selector->isHidden())
 		hideCardPopup();
@@ -1173,7 +1178,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 			window()->setWindowFilePath(QString());
 			window()->setWindowTitle(tr("DigiDoc4 client"));
 			return true;
-		} 
+		}
 	}
 
 	return false;
@@ -1249,7 +1254,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 		{
 			WarningDialog dlg(tr("Cannot add container to same container\n%1").arg(container), this);
 			dlg.setCancelText(tr("CANCEL"));
-			dlg.exec();	
+			dlg.exec();
 			return false;
 		}
 	}

@@ -28,6 +28,7 @@ class TokenData
 public:
 	TokenData();
 	TokenData( const TokenData &other );
+	TokenData(TokenData &&other) Q_DECL_NOEXCEPT;
 	~TokenData();
 
 	QString card() const;
@@ -45,6 +46,7 @@ public:
 	void setData(const QString &key, const QVariant &value);
 
 	TokenData& operator =( const TokenData &other );
+	TokenData& operator =(TokenData &&other) Q_DECL_NOEXCEPT;
 	bool operator !=( const TokenData &other ) const;
 	bool operator ==( const TokenData &other ) const;
 

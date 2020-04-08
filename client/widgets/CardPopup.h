@@ -17,25 +17,25 @@
  *
  */
 
-#pragma once 
+#pragma once
 
-#include "SslCertificate.h"
-#include "widgets/CardWidget.h"
 #include "widgets/StyledWidget.h"
 
-#include <QMap>
+class TokenData;
 
 class CardPopup : public StyledWidget
 {
 	Q_OBJECT
 
 public:
-	explicit CardPopup(const QString &selectedCard,
-		const QMap<QString, SslCertificate> &cache, QWidget *parent = nullptr);
+	enum Filter {
+		NonReputation,
+		NonWebAuth,
+		All,
+	};
+	explicit CardPopup(const QString &selectedCard, const QVector<TokenData> &cache,
+		Filter filter, QWidget *parent = nullptr);
 
 signals:
 	void activated( const QString &card );
-
-private:
-	QList<CardWidget*> cardWidgets;
 };

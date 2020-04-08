@@ -30,6 +30,7 @@
 class QWin;
 #endif
 #include "QPKCS11.h"
+#include "SslCertificate.h"
 #include "widgets/CardWidget.h"
 #include <common/QPCSC.h>
 
@@ -76,7 +77,7 @@ public:
 	QPKCS11			*pkcs11 = nullptr;
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
-	QMap<QString, SslCertificate> cache;
+	QVector<TokenData> cache;
 
 	static QByteArray signData(int type, const QByteArray &digest, Private *d);
 	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
@@ -184,7 +185,15 @@ QSigner::~QSigner()
 	delete d;
 }
 
-QMap<QString, SslCertificate> QSigner::cache() const { return d->cache; }
+QVector<TokenData> QSigner::cache() const { return d->cache; }
+
+QSet<QString> QSigner::cards() const
+{
+	QSet<QString> cards;
+	for(const TokenData &t: d->cache)
+		cards.insert(t.card());
+	return cards;
+}
 
 void QSigner::cacheCardData()
 {
@@ -202,14 +211,10 @@ void QSigner::cacheCardData()
 	if(d->pkcs11 && d->pkcs11->isLoaded())
 		tokens = d->pkcs11->tokens();
 	d->cache.clear();
-	for(const TokenData &i: qAsConst(tokens))
+	for(const TokenData &token: qAsConst(tokens))
 	{
-		if(!d->cache.contains(i.card()) || !d->cache[i.card()].isValid())
-		{
-			auto sslCert = SslCertificate(i.cert());
-			if(isMatchingType(sslCert))
-				d->cache.insert(i.card(), sslCert);
-		}
+		if(isMatchingType(token.cert()))
+			d->cache << token;
 	}
 }
 
@@ -527,7 +532,7 @@ void QSigner::run()
 				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();
 			}
 
-			if(!scards.toSet().unite(acards.toSet()).subtract(d->cache.keys().toSet()).isEmpty())
+			if(!scards.toSet().unite(acards.toSet()).subtract(cards()).isEmpty())
 				cacheCardData();
 
 			bool changed = false;

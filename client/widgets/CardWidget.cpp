@@ -20,17 +20,15 @@
 #include "CardWidget.h"
 #include "ui_CardWidget.h"
 
+#include "Styles.h"
+#include "SslCertificate.h"
 #include "common_enums.h"
 
 using namespace ria::qdigidoc4;
 
-CardWidget::CardWidget( QWidget *parent )
-	: CardWidget( QString(), parent ) { }
-
-CardWidget::CardWidget(QString id, QWidget *parent)
+CardWidget::CardWidget(QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::CardWidget)
-	, card(std::move(id))
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
@@ -72,7 +70,7 @@ void CardWidget::clearSeal()
 
 QString CardWidget::id() const
 {
-	return card;
+	return t.card();
 }
 
 bool CardWidget::event( QEvent *ev )
@@ -80,12 +78,11 @@ bool CardWidget::event( QEvent *ev )
 	switch(ev->type())
 	{
 	case QEvent::MouseButtonRelease:
-		emit selected( card );
+		emit selected(t.card());
 		return true;
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
-		if(!cert.isNull())
-			update(cert, card);
+		update(t);
 		break;
 	default: break;
 	}
@@ -110,10 +107,10 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 	return StyledWidget::eventFilter(o, e);
 }
 
-void CardWidget::update(const SslCertificate &c, const QString &cardId)
+void CardWidget::update(const TokenData &token)
 {
-	cert = c;
-	card = cardId;
+	t = token;
+	SslCertificate c = t.cert();
 	QString id = c.personalCode();
 	if(!c.subjectInfo("GN").isEmpty() || !c.subjectInfo("SN").isEmpty())
 		ui->cardName->setText(c.toString(QStringLiteral("GN SN")));

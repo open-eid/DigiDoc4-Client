@@ -19,23 +19,8 @@
 
 #pragma once
 
-#include <memory>
-
-#include <QtCore/QtGlobal>
 #include <QFont>
-#include <QPixmap>
-#include <QStyle>
 
-class PictureInterface
-{
-public:
-	virtual ~PictureInterface() {};
-
-	virtual void clearPicture() = 0;
-	virtual void showPicture( const QPixmap &pixmap) = 0;
-};
-
-class StylesPrivate;
 class Styles
 {
 public:

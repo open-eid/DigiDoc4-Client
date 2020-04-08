@@ -22,6 +22,7 @@
 #include "Application.h"
 #include "QCardLock.h"
 #include "QSigner.h"
+#include "SslCertificate.h"
 #include "TokenData.h"
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningList.h"
