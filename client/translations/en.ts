@@ -804,12 +804,12 @@
         <translation>Failed to save container</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Failed to sign container</translation>
+        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
+        <translation>Failed to sign container. Check your Time-Stamping service access settings.</translation>
     </message>
     <message>
-        <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
-        <translation>You have not granted IP-based access. Check the settings of your server access certificate.</translation>
+        <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
+        <translation>You have not granted IP-based access. Check your validity confirmation service access settings.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1860,8 +1860,8 @@ Control code: %1</translation>
         <translation>Open the Smart-ID application on your smart device and confirm device for signing.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1894,6 +1894,10 @@ Control code: %1</translation>
     <message>
         <source>Failed to connect with service server. Please check your network settings or try again later.</source>
         <translation>Failed to connect with service server. Please check your network settings or try again later.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. Check your %1 service access settings.</source>
+        <translation>Failed to send request. Check your %1 service access settings.</translation>
     </message>
 </context>
 <context>

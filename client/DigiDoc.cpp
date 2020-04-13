@@ -656,7 +656,7 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 		qApp->showWarning(tr("Please check your computer time. <a href='https://id.ee/index.php?id=39513'>Additional information</a>"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
-			"Check the settings of your server access certificate."), causes.join('\n')); break;
+			"Check your validity confirmation service access settings."), causes.join('\n')); break;
 	case Exception::TSTooManyRequests:
 		qApp->showWarning(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"), causes.join('\n')); break;
@@ -704,7 +704,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			return sign(city, state, zip, country, role, signer);
 		}
 		else
-			setLastError( tr("Failed to sign container"), e );
+			setLastError( tr("Failed to sign container. Check your Time-Stamping service access settings."), e );
 	}
 	return false;
 }

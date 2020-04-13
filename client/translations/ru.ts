@@ -806,12 +806,12 @@
         <translation>Не удается сохранить контейнер</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Не удается подписать контейнер</translation>
+        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
+        <translation>Не удалось подписать контейнер. Проверьте настройки доступа к меткам времени.</translation>
     </message>
     <message>
-        <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
-        <translation>Отсутствует IP-основанный доступ. Проверьте настройки справки доступа.</translation>
+        <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
+        <translation>Отсутствует доступ по IP-адресу. Проверьте настройки доступа к услуге подтверждения действительности.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1863,8 +1863,8 @@ Kонтрольный код: %1</translation>
         <translation>Откройте приложение Smart-ID на смарт-устройстве и подтвердите это устройство для подписывания.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>С этого IP-адреса превышен месячный лимит бесплатных подписей %1. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Подробнее читайте здесь&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1897,6 +1897,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Failed to connect with service server. Please check your network settings or try again later.</source>
         <translation>Не удалось связаться с сервером услуги. Пожалуйста, проверьте настройки сети или повторите попытку позже.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. Check your %1 service access settings.</source>
+        <translation>Не удалось отправить запрос. Проверьте настройки доступа услуги %1.</translation>
     </message>
 </context>
 <context>
