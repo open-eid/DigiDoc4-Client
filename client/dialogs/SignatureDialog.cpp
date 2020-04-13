@@ -160,7 +160,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 
 	// Certificate info
 	QTreeWidget *t = d->signatureView;
-	t->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+	t->header()->setSectionResizeMode(0, QHeaderView::Fixed);
+	t->header()->resizeSection(0, 244);
 
 	QStringList horzHeaders { tr("Attribute"), tr("Value") };
 	t->setHeaderLabels(horzHeaders);
@@ -281,6 +282,7 @@ QPushButton* SignatureDialog::itemButton(const QString &text, QTreeWidget *view)
 QLabel* SignatureDialog::itemLabel(const QString &text, QTreeWidget *view)
 {
 	QLabel *label = new QLabel(text, view);
+	label->setToolTip(text);
 #ifdef Q_OS_MAC
 	label->setFont(Styles::font(Styles::Regular, 13));
 #else
