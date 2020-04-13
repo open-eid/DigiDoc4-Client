@@ -25,8 +25,6 @@ namespace Ui {
 class WaitDialog;
 }
 
-class Overlay;
-
 class WaitDialog : public QWidget
 {
 	Q_OBJECT

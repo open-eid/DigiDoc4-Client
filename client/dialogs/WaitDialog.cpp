@@ -49,7 +49,7 @@ WaitDialog::WaitDialog(QWidget *parent)
 	, ui(new Ui::WaitDialog)
 {
 	new Overlay(this, parent);
-	setWindowFlag(Qt::Popup);
+	setWindowFlags(Qt::Popup);
 	ui->setupUi(this);
 	ui->movie->setMovie(new QMovie(":/images/wait.gif", {}, ui->movie));
 	ui->movie->movie()->start();
