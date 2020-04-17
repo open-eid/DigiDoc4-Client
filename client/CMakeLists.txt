@@ -170,6 +170,7 @@ if( APPLE )
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Libraries/*
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/*.framework
 			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
+		COMMAND codesign -f -s \"$$SIGNCERT\" --entitlements ${CMAKE_SOURCE_DIR}/DigiDocQL.entitlements
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../.. --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
