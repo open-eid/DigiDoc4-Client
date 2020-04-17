@@ -25,15 +25,12 @@ namespace Ui {
 class FirstRun;
 }
 
-class QKeyEvent;
-class QLabel;
-
 class FirstRun : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit FirstRun(QWidget *parent = 0);
+	explicit FirstRun(QWidget *parent = nullptr);
 	~FirstRun();
 
 protected:
@@ -58,7 +55,7 @@ private:
 	};
 
 	Ui::FirstRun *ui;
-	bool dragged;
+	bool dragged = false;
 	QPoint lastPos;
 };
 
