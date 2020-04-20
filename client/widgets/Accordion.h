@@ -59,6 +59,8 @@ signals:
 	void changePukClicked();
 
 private:
+	void hideOtherData(bool visible);
+
 	Ui::Accordion *ui;
 	AccordionTitle* openSection = nullptr;
 };

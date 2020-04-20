@@ -147,7 +147,7 @@ void CardWidget::update(const TokenData &token, bool multiple)
 	ui->cardStatus->setText(typeString);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 
-	if(c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT")))
+	if(c.type() & SslCertificate::EResidentSubType)
 	{
 		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
 		ui->cardPhoto->hide();

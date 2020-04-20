@@ -33,6 +33,25 @@
 #include <openssl/pkcs12.h>
 #include <openssl/x509v3.h>
 
+#include <memory>
+
+#define SCOPE(TYPE, VAR, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)> VAR(static_cast<TYPE*>(DATA), TYPE##_free)
+#define toQByteArray(x) QByteArray((const char*)x->data, x->length)
+template <typename Func, typename Arg>
+static QByteArray i2dDer(Func func, Arg arg)
+{
+	QByteArray der;
+	if(!arg)
+		return der;
+	der.resize(func(arg, nullptr));
+	if(der.isEmpty())
+		return der;
+	unsigned char *p = (unsigned char*)der.data();
+	if(func(arg, &p) != der.size())
+		der.clear();
+	return der;
+}
+
 #if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
 {
@@ -45,6 +64,12 @@ void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGNUM **priv_key)
 {
 	if(pub_key) *pub_key = d->pub_key;
 	if(priv_key) *priv_key = d->priv_key;
+}
+
+void X509_get0_signature(const ASN1_BIT_STRING **psig, const X509_ALGOR **palg, const X509 *x)
+{
+	if(psig) *psig = x->signature;
+	if(palg) *palg = x->sig_alg;
 }
 #endif
 
@@ -72,27 +97,23 @@ QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) cons
 
 QByteArray SslCertificate::authorityKeyIdentifier() const
 {
-	AUTHORITY_KEYID *id = (AUTHORITY_KEYID*)extension( NID_authority_key_identifier );
-	QByteArray out;
-	if( id && id->keyid )
-		out = QByteArray( (const char*)id->keyid->data, id->keyid->length );
-	AUTHORITY_KEYID_free( id );
-	return out;
+	SCOPE(AUTHORITY_KEYID, id, extension(NID_authority_key_identifier));
+	return id && id->keyid ? toQByteArray(id->keyid) : QByteArray();
 }
 
 QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage() const
 {
 	QHash<EnhancedKeyUsage,QString> list;
-	EXTENDED_KEY_USAGE *usage = (EXTENDED_KEY_USAGE*)extension( NID_ext_key_usage );
+	SCOPE(EXTENDED_KEY_USAGE, usage, extension(NID_ext_key_usage));
 	if( !usage )
 	{
 		list[All] = tr("All application policies");
 		return list;
 	}
 
-	for( int i = 0; i < sk_ASN1_OBJECT_num( usage ); ++i )
+	for(int i = 0; i < sk_ASN1_OBJECT_num(usage.get()); ++i)
 	{
-		ASN1_OBJECT *obj = sk_ASN1_OBJECT_value( usage, i );
+		ASN1_OBJECT *obj = sk_ASN1_OBJECT_value(usage.get(), i);
 		switch( OBJ_obj2nid( obj ) )
 		{
 		case NID_client_auth:
@@ -108,7 +129,6 @@ QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage
 		default: break;
 		}
 	}
-	sk_ASN1_OBJECT_pop_free( usage, ASN1_OBJECT_free );
 	return list;
 }
 
@@ -122,6 +142,8 @@ QString SslCertificate::friendlyName() const
 	if(o == QStringLiteral("ESTEID"))
 		return QStringLiteral("%1,%2").arg(cn, tr("ID-CARD"));
 	int certType = type();
+	if(certType & SslCertificate::EResidentType)
+		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID E-RESIDENT"));
 	if(certType & SslCertificate::DigiIDType)
 		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID"));
 	if(certType & SslCertificate::EstEidType)
@@ -131,23 +153,13 @@ QString SslCertificate::friendlyName() const
 
 QSslCertificate SslCertificate::fromX509( Qt::HANDLE x509 )
 {
-	QByteArray der(i2d_X509((X509*)x509, nullptr), Qt::Uninitialized);
-	if( !der.isEmpty() )
-	{
-		unsigned char *p = (unsigned char*)der.data();
-		i2d_X509( (X509*)x509, &p );
-	}
-	return QSslCertificate( der, QSsl::Der );
+	return QSslCertificate(i2dDer(i2d_X509, (X509*)x509), QSsl::Der);
 }
 
 bool SslCertificate::isCA() const
 {
-	BASIC_CONSTRAINTS *cons = (BASIC_CONSTRAINTS*)extension( NID_basic_constraints );
-	if( !cons )
-		return false;
-	bool result = cons->ca > 0;
-	BASIC_CONSTRAINTS_free(cons);
-	return result;
+	SCOPE(BASIC_CONSTRAINTS, cons, extension(NID_basic_constraints));
+	return cons && cons->ca > 0;
 }
 
 QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
@@ -162,24 +174,22 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 	{
 	case EVP_PKEY_RSA:
 	{
-		RSA *rsa = EVP_PKEY_get1_RSA(key);
+		SCOPE(RSA, rsa, EVP_PKEY_get1_RSA(key));
 		alg = QSsl::Rsa;
 		const BIGNUM *d = nullptr;
-		RSA_get0_key(rsa, nullptr, nullptr, &d);
+		RSA_get0_key(rsa.get(), nullptr, nullptr, &d);
 		type = d ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = d ? i2d_RSAPrivateKey(rsa, &data) : i2d_RSAPublicKey(rsa, &data);
-		RSA_free(rsa);
+		len = d ? i2d_RSAPrivateKey(rsa.get(), &data) : i2d_RSAPublicKey(rsa.get(), &data);
 		break;
 	}
 	case EVP_PKEY_DSA:
 	{
-		DSA *dsa = EVP_PKEY_get1_DSA(key);
+		SCOPE(DSA, dsa, EVP_PKEY_get1_DSA(key));
 		alg = QSsl::Dsa;
 		const BIGNUM *priv_key = nullptr;
-		DSA_get0_key(dsa, nullptr, &priv_key);
+		DSA_get0_key(dsa.get(), nullptr, &priv_key);
 		type = priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = priv_key ? i2d_DSAPrivateKey(dsa, &data) : i2d_DSAPublicKey(dsa, &data);
-		DSA_free(dsa);
+		len = priv_key ? i2d_DSAPrivateKey(dsa.get(), &data) : i2d_DSAPublicKey(dsa.get(), &data);
 		break;
 	}
 	default: break;
@@ -195,53 +205,48 @@ QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
 
 QString SslCertificate::keyName() const
 {
-	X509 *c = (X509*)handle();
-	if(!c)
-		return QString();
-	EVP_PKEY *key = X509_get_pubkey(c);
 	QString name = tr("Unknown");
-	switch(EVP_PKEY_base_id(key))
+	switch(publicKey().algorithm())
 	{
-	case EVP_PKEY_DSA:
+	case QSsl::Dsa:
 		name = QString("DSA (%1)").arg( publicKey().length() );
 		break;
-	case EVP_PKEY_RSA:
+	case QSsl::Rsa:
 		name = QString("RSA (%1)").arg( publicKey().length() );
 		break;
+	default:
 #ifndef OPENSSL_NO_ECDSA
-	case EVP_PKEY_EC:
-	{
-		EC_KEY *ec = EVP_PKEY_get1_EC_KEY( key );
-
-		int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec));
-		ASN1_OBJECT *obj = OBJ_nid2obj(nid);
-		char buff[1024];
-		if(OBJ_obj2txt(buff, 1024, obj, 0) > 0)
-			name = buff;
-
-		EC_KEY_free( ec );
+		if(X509 *c = (X509*)handle())
+		{
+			SCOPE(EVP_PKEY, key, X509_get_pubkey(c));
+			SCOPE(EC_KEY, ec, EVP_PKEY_get1_EC_KEY(key.get()));
+			int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec.get()));
+			ASN1_OBJECT *obj = OBJ_nid2obj(nid);
+			QByteArray buff(50, 0);
+			if(OBJ_obj2txt(buff.data(), buff.size(), obj, 0) > 0)
+				name = buff;
+			break;
+		}
+#endif
 		break;
 	}
-#endif
-	default: break;
-	}
-	EVP_PKEY_free( key );
 	return name;
 }
 
 Qt::HANDLE SslCertificate::extension( int nid ) const
-{ return !isNull() ? Qt::HANDLE(X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr)) : nullptr; }
+{
+	return handle() ? Qt::HANDLE(X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr)) : nullptr;
+}
 
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
 	QHash<KeyUsage,QString> list;
-	ASN1_BIT_STRING *keyusage = (ASN1_BIT_STRING*)extension( NID_key_usage );
-	if( !keyusage )
+	SCOPE(ASN1_BIT_STRING, keyusage, extension(NID_key_usage));
+	if(!keyusage)
 		return list;
-
 	for( int n = 0; n < 9; ++n )
 	{
-		if( !ASN1_BIT_STRING_get_bit( keyusage, n ) )
+		if(!ASN1_BIT_STRING_get_bit(keyusage.get(), n))
 			continue;
 		switch( n )
 		{
@@ -257,7 +262,6 @@ QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 		default: break;
 		}
 	}
-	ASN1_BIT_STRING_free( keyusage );
 	return list;
 }
 
@@ -270,74 +274,25 @@ QString SslCertificate::personalCode() const
 		return data.mid(6);
 	if(!data.isEmpty())
 		return data;
-	return serialNumber(true);
+	return serialNumber();
 }
 
 QStringList SslCertificate::policies() const
 {
-	CERTIFICATEPOLICIES *cp = (CERTIFICATEPOLICIES*)extension( NID_certificate_policies );
+	SCOPE(CERTIFICATEPOLICIES, cp, extension(NID_certificate_policies));
 	QStringList list;
 	if( !cp )
 		return list;
 
-	for( int i = 0; i < sk_POLICYINFO_num( cp ); ++i )
+	for(int i = 0; i < sk_POLICYINFO_num(cp.get()); ++i)
 	{
-		POLICYINFO *pi = sk_POLICYINFO_value( cp, i );
-		char buf[50];
-		memset( buf, 0, 50 );
-		int len = OBJ_obj2txt( buf, 50, pi->policyid, 1 );
+		POLICYINFO *pi = sk_POLICYINFO_value(cp.get(), i);
+		QByteArray buf(50, 0);
+		int len = OBJ_obj2txt(buf.data(), buf.size(), pi->policyid, 1);
 		if( len != NID_undef )
 			list << buf;
 	}
-	sk_POLICYINFO_pop_free( cp, POLICYINFO_free );
 	return list;
-}
-
-QString SslCertificate::publicKeyHex() const
-{
-	X509 *x = static_cast<X509*>(handle());
-	if(!x)
-		return QString();
-	EVP_PKEY *key = X509_get_pubkey(x);
-	QString hex;
-	switch(EVP_PKEY_base_id(key))
-	{
-#ifndef OPENSSL_NO_ECDSA
-	case EVP_PKEY_EC:
-	{
-		EC_KEY *ec = EVP_PKEY_get1_EC_KEY(key);
-		QByteArray key(i2d_EC_PUBKEY(ec, nullptr), Qt::Uninitialized);
-		unsigned char *p = (unsigned char*)key.data();
-		i2d_EC_PUBKEY(ec, &p);
-		EC_KEY_free(ec);
-		hex = toHex(key);
-		break;
-	}
-#endif
-	default:
-		hex = toHex( publicKey().toDer() );
-		break;
-	}
-	EVP_PKEY_free( key );
-	return hex;
-}
-
-QByteArray SslCertificate::serialNumber( bool hex ) const
-{
-	QByteArray serial;
-	if( isNull() )
-		return serial;
-
-	if(BIGNUM *bn = ASN1_INTEGER_to_BN(X509_get_serialNumber((X509*)handle()), nullptr))
-	{
-		if( char *str = hex ? BN_bn2hex( bn ) : BN_bn2dec( bn ) )
-		{
-			serial = str;
-			OPENSSL_free( str );
-		}
-		BN_free( bn );
-	}
-	return serial;
 }
 
 bool SslCertificate::showCN() const
@@ -345,30 +300,19 @@ bool SslCertificate::showCN() const
 
 QString SslCertificate::signatureAlgorithm() const
 {
-	if( isNull() )
+	if(!handle())
 		return QString();
-
-	char buf[50];
-	memset( buf, 0, 50 );
-
-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-	i2t_ASN1_OBJECT( buf, 50, ((X509*)handle())->cert_info->signature->algorithm );
-#else
 	const X509_ALGOR *algo = nullptr;
 	X509_get0_signature(nullptr, &algo, (X509*)handle());
-	i2t_ASN1_OBJECT(buf, 50, algo->algorithm);
-#endif
+	QByteArray buf(50, 0);
+	i2t_ASN1_OBJECT(buf.data(), buf.size(), algo->algorithm);
 	return buf;
 }
 
 QByteArray SslCertificate::subjectKeyIdentifier() const
 {
-	ASN1_OCTET_STRING *id = (ASN1_OCTET_STRING*)extension( NID_subject_key_identifier );
-	if( !id )
-		return QByteArray();
-	QByteArray out = QByteArray( (const char*)id->data, id->length );
-	ASN1_OCTET_STRING_free( id );
-	return out;
+	SCOPE(ASN1_OCTET_STRING, id, extension(NID_subject_key_identifier));
+	return !id ? QByteArray() : toQByteArray(id);
 }
 
 QByteArray SslCertificate::toHex( const QByteArray &in, QChar separator )
@@ -408,7 +352,7 @@ SslCertificate::CertType SslCertificate::type() const
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")))
 			return EstEidType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")))
-			return DigiIDType;
+			return subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("E-RESIDENT")) ? EResidentType : DigiIDType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.3")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.11.1")))
 			return MobileIDType;
@@ -416,7 +360,7 @@ SslCertificate::CertType SslCertificate::type() const
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")))
 			return EstEidTestType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.2")))
-			return DigiIDTestType;
+			return subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("E-RESIDENT")) ? EResidentTestType : DigiIDTestType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.3")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.11")))
 			return MobileIDTestType;
@@ -431,12 +375,14 @@ SslCertificate::CertType SslCertificate::type() const
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.2.1")) )
 			return TempelType;
 
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.3")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.4")))
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.3")))
 			return DigiIDType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.3")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.4")))
+			return EResidentType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.3")))
 			return DigiIDTestType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
+			return EResidentTestType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")))
 			return EstEidType;

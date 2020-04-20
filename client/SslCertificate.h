@@ -62,9 +62,11 @@ public:
 		OCSPType = 1 << 3,
 		TempelType = 1 << 4,
 		EidType = 1 << 5,
-
+		EResidentSubType = 1 << 6,
 		TestType = 1 << 7,
+		EResidentType = DigiIDType|EResidentSubType,
 		DigiIDTestType = DigiIDType|TestType,
+		EResidentTestType = DigiIDType|EResidentSubType|TestType,
 		EstEidTestType = EstEidType|TestType,
 		MobileIDTestType = MobileIDType|TestType,
 		OCSPTestType = OCSPType|TestType,
@@ -94,9 +96,7 @@ public:
 	QHash<KeyUsage,QString> keyUsage() const;
 	QString		personalCode() const;
 	QStringList policies() const;
-	QString		publicKeyHex() const;
 	bool		showCN() const;
-	QByteArray	serialNumber( bool hex = false ) const;
 	QString		signatureAlgorithm() const;
 	QByteArray	subjectKeyIdentifier() const;
 	static QByteArray	toHex( const QByteArray &in, QChar separator = ' ' );

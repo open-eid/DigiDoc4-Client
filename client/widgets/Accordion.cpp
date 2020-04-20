@@ -65,16 +65,22 @@ void Accordion::clear()
 	ui->authBox->clear();
 	ui->signBox->clear();
 	ui->pukBox->clear();
-	// Set to default Certificate Info page
-	ui->contentOtherData->update(false, QByteArray());
 	closeOtherSection(ui->titleVerifyCert);
 	ui->titleVerifyCert->setSectionOpen(true);
+	ui->contentOtherData->update(false, QByteArray());
+	hideOtherData(true);
 }
 
 void Accordion::closeOtherSection(AccordionTitle* opened)
 {
 	openSection->setSectionOpen(false);
 	openSection = opened;
+}
+
+void Accordion::hideOtherData(bool visible)
+{
+	ui->titleOtherData->setHidden(visible);
+	ui->contentOtherData->hide();
 }
 
 bool Accordion::updateOtherData(const QByteArray &data)
@@ -110,7 +116,7 @@ void Accordion::updateInfo(const SslCertificate &c)
 		ui->authBox->update(QSmartCardData::Pin1Type, c);
 
 	ui->pukBox->hide();
-	ui->titleOtherData->hide();
+	hideOtherData(true);
 }
 
 void Accordion::updateInfo(const QSmartCardData &data)
@@ -126,8 +132,8 @@ void Accordion::updateInfo(const QSmartCardData &data)
 	ui->pukBox->show();
 	ui->pukBox->update(QSmartCardData::PukType, data);
 
-	ui->titleOtherData->setHidden(data.version() == QSmartCardData::VER_USABLEUPDATER ||
-		data.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT")));
+	hideOtherData(data.version() == QSmartCardData::VER_USABLEUPDATER ||
+		(data.authCert().type() & SslCertificate::EResidentSubType));
 }
 
 void Accordion::changeEvent(QEvent* event)
