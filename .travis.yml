@@ -1,7 +1,7 @@
 language: c++
 sudo: false
 dist: bionic
-osx_image: xcode11.3
+osx_image: xcode11.4
 services:
 - docker
 matrix:
@@ -47,6 +47,7 @@ script: case ${TARGET} in
     ;;
   *)
     docker run -e BUILD_NUMBER=${BUILD_NUMBER} -e COVERITY_SCAN_TOKEN=${COVERITY_SCAN_TOKEN} -e TRAVIS_BRANCH=${TRAVIS_BRANCH} -e IMAGE=${TARGET} -v ${HOME}:${HOME} -t "${TARGET}" /bin/bash -c "cd $(pwd);"'
+      set -e;
       apt-get update -qq; 
       export DEBIAN_FRONTEND=noninteractive;
       apt-get install -y apt-transport-https dh-make devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev git curl wget ruby;
@@ -58,7 +59,7 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSIONEX};
       dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      if [ "${IMAGE}" = "ubuntu:16.04" ]; then
+      if [[ "${IMAGE}" = "ubuntu:16.04" && "${TRAVIS_BRANCH}" = "coverity_scan" ]]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="eid-teenusehaldus@ria.ee";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;

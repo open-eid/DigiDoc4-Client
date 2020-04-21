@@ -27,6 +27,8 @@
 
 #include <QButtonGroup>
 
+#include <memory>
+
 namespace Ui {
 class MainWindow;
 }
