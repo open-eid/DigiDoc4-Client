@@ -849,6 +849,10 @@
         <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
     </message>
     <message>
+        <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
+        <translation>Файл с таким расширением не может быть открыт в клиенте DigiDoc4. Загрузите файл, чтобы просмотреть его.</translation>
+    </message>
+    <message>
         <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
         <translation>Невозможно добавить файл в контейнер. Файл &apos;%1&apos; уже в контейнере.</translation>
     </message>
@@ -867,6 +871,10 @@
     <message>
         <source>YES</source>
         <translation>ДА</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>

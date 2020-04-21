@@ -847,6 +847,10 @@
         <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada Sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
     </message>
     <message>
+        <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
+        <translation>Sellise laiendiga faili ei ole võimalik avada DigiDoc4 kliendis. Faili vaatamiseks laadi see alla.</translation>
+    </message>
+    <message>
         <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
         <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud &apos;%1&apos; on juba ümbrikus olemas.</translation>
     </message>
@@ -865,6 +869,10 @@
     <message>
         <source>YES</source>
         <translation>JAH</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
