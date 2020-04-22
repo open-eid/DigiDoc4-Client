@@ -36,7 +36,9 @@ FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, 
 	setStyleSheet(QStringLiteral("background-color: %2; color: %1;").arg(fgColor, bgColor));
 	setFocusPolicy(Qt::TabFocus);
 	setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-	setFont(Styles::font(Styles::Condensed, 22));
+	QFont font = Styles::font(Styles::Condensed, 22);
+	font.setPixelSize(22);
+	setFont(font);
 	setMinimumSize(width, height);
 	setGraphicsEffect(new QGraphicsOpacityEffect(this));
 	move(pos);
