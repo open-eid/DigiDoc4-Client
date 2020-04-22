@@ -3301,6 +3301,14 @@ Additional licenses and components</source>
         <source>Certificates are revoked!</source>
         <translation>Сертификаты отозваны!</translation>
     </message>
+    <message>
+        <source>Additional information</source>
+        <translation>Дополнительная информация</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30519&amp;read=38548&amp;page=3</source>
+        <translation>https://www.id.ee/index.php?id=30530&amp;read=38537&amp;page=3</translation>
+    </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
         <translation>

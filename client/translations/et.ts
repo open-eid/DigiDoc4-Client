@@ -3298,6 +3298,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Certificates are revoked!</source>
         <translation>Sertifikaadid on tühistatud!</translation>
     </message>
+    <message>
+        <source>Additional information</source>
+        <translation>Täiendav informatsioon</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/index.php?id=30519&amp;read=38548&amp;page=3</source>
+        <translation>https://www.id.ee/index.php?id=30011&amp;read=38534&amp;page=5</translation>
+    </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
         <translation>

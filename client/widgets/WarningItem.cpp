@@ -80,6 +80,7 @@ void WarningItem::lookupWarning()
 		break;
 	case ria::qdigidoc4::CertRevokedWarning:
 		warnText.text = tr("Certificates are revoked!");
+		warnText.details = QStringLiteral("<a href='%1'><span style='color:rgb(53, 55, 57)'>%2</span></a>").arg(tr("https://www.id.ee/index.php?id=30519&read=38548&page=3"), tr("Additional information").toUpper());
 		break;
 	case ria::qdigidoc4::UnblockPin1Warning:
 		warnText.text = QStringLiteral("%1 %2").arg(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1), VerifyCert::tr("Unblock to reuse PIN%1.").arg(1));
