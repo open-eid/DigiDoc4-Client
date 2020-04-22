@@ -993,6 +993,12 @@ QPushButton {
            <height>31</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QCheckBox:disabled {
+           color: #75787B;
+}
+          </string>
+         </property>
          <property name="text">
           <string>Enable proxy for SSL connections</string>
          </property>
