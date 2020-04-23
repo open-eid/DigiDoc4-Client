@@ -334,16 +334,19 @@ void SettingsDialog::initFunctionality()
 	});
 #endif
 
-	ui->tokenRestart->hide();
 #ifdef Q_OS_WIN
-	connect(ui->tokenRestart, &QPushButton::clicked, this, []{
-		qApp->setProperty("restart", true);
-		qApp->quit();
-	});
+
 	ui->tokenBackend->setChecked(QSettings().value(QStringLiteral("tokenBackend")).toUInt());
-	connect(ui->tokenBackend, &QCheckBox::toggled, ui->tokenRestart, [=](bool checked) {
+	connect(ui->tokenBackend, &QCheckBox::toggled, this, [=](bool checked) {
 		Common::setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
-		ui->tokenRestart->show();
+
+		WarningDialog dlg(tr("Applying this setting requires application restart. Restart now?"), qApp->activeWindow());
+		dlg.setCancelText(tr("NO"));
+		dlg.addButton(tr("YES"), 1) ;
+		if(dlg.exec() == 1) {
+			qApp->setProperty("restart", true);
+			qApp->quit();
+		}
 	});
 #else
 	ui->tokenBackend->hide();

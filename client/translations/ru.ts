@@ -2766,6 +2766,18 @@ Additional licenses and components</source>
         <source>%1 version %2, released %3</source>
         <translation>%1 версия %2, выпущенный %3</translation>
     </message>
+    <message>
+        <source>Applying this setting requires application restart. Restart now?</source>
+        <translation>Применение этого параметра требует перезапуска приложения. Перезапустить приложение?</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

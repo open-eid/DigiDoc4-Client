@@ -2763,6 +2763,18 @@ Additional licenses and components</translation>
         <source>%1 version %2, released %3</source>
         <translation>%1 version %2, released %3</translation>
     </message>
+    <message>
+        <source>Applying this setting requires application restart. Restart now?</source>
+        <translation>Applying this setting requires application restart. Restart now?</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>NO</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
