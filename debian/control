@@ -19,8 +19,7 @@ Package: qdigidoc4
 Architecture: any
 Depends:
  opensc-pkcs11,
- fonts-liberation,
- python3-nautilus | python-nautilus,
+ python3-nautilus|python-nautilus,
  ${shlibs:Depends},
  ${misc:Depends}
 Replaces:
