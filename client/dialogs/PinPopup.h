@@ -20,6 +20,9 @@
 #pragma once
 
 #include <QDialog>
+
+#include "WaitDialog.h"
+
 #include <QtCore/QRegExp>
 
 namespace Ui {
@@ -66,5 +69,6 @@ signals:
 private:
 	Ui::PinPopup *ui;
 	QRegExp		regexp;
+	WaitDialogHider hider;
 };
 

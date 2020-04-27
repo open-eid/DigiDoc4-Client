@@ -1697,6 +1697,10 @@ ID-КАРТОЙ</translation>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Карта в считывателе не является эстонской ID-картой</translation>
     </message>
+    <message>
+        <source>Decrypting</source>
+        <translation>Расшифровка</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>

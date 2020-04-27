@@ -1694,6 +1694,10 @@ ID-KAARDIGA</translation>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
     </message>
+    <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerin</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>

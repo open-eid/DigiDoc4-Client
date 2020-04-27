@@ -1694,6 +1694,10 @@ ID-CARD</translation>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>The card in the card reader is not an Estonian ID-card</translation>
     </message>
+    <message>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
