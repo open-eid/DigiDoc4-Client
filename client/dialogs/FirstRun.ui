@@ -63,7 +63,9 @@
     border-radius: 2px;
     background-color: #FFFFFF;
 	color: #353739;
-}	
+	padding: 0px;
+	padding-left:12px;
+}
 
 /* list */
 QComboBox QAbstractItemView {
