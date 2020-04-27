@@ -148,7 +148,7 @@ void Diagnostics::run()
 		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
 		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
 		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe",
-		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "libxml2",
+		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "xsec_2_0", "libxml2",
 		"advapi32", "crypt32", "winscard"};
 	for(const QString &lib: dlls)
 	{
@@ -219,7 +219,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList browsers = packages({"Mozilla Firefox", "Google Chrome"});
+	QStringList browsers = packages({"Mozilla Firefox", "Google Chrome", "Microsoft EDGE"});
 	QSettings reg(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Internet Explorer"), QSettings::NativeFormat);
 	browsers << QStringLiteral("Internet Explorer (%1)").arg(
 		reg.value("svcVersion", reg.value( "Version" ) ).toString() );
