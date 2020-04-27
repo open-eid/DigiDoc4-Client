@@ -17,23 +17,14 @@
  *
  */
 
-#pragma once
+#include <QtWidgets/QComboBox>
 
-#include <QDialog>
-
-namespace Ui { class SmartIDDialog; }
-
-class SmartIDDialog : public QDialog
+class ComboBox: public QComboBox
 {
 	Q_OBJECT
-
 public:
-	explicit SmartIDDialog(QWidget *parent = nullptr);
-	~SmartIDDialog() final;
+	explicit ComboBox(QWidget *parent = nullptr);
 
-	QString country() const;
-	QString idCode() const;
-
-private:
-	Ui::SmartIDDialog *ui;
+	void hidePopup() final;
+	void showPopup() final;
 };

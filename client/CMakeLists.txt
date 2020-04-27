@@ -99,6 +99,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/CardWidget.cpp
 	widgets/CardPopup.cpp
 	widgets/ContainerPage.cpp
+	widgets/ComboBox.cpp
 	widgets/DropdownButton.cpp
 	widgets/FileItem.cpp
 	widgets/FileList.cpp

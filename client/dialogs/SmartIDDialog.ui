@@ -23,26 +23,37 @@ padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
 }
-QComboBox QAbstractItemView {
+QComboBox QWidget#popup {
+background-color: transparent;
+}
+QComboBox QWidget#content {
 border: 1px solid #DEE4E9;
 border-radius: 2px;
-padding: 3px 3px 3px 3px;
 background-color: #FFFFFF;
 }
-QComboBox:item {
-background-color: #FFFFFF;
+QComboBox QPushButton {
+margin: 3px;
+padding: 0px 4px 0px 8px;
+border: 0px;
 color: #353739;
+text-align: left;
 }
-QComboBox:item:selected {
+QComboBox QPushButton#selected {
+background-image: url(:/images/arrow_up.svg);
+background-position: right center;
+background-repeat: none;
+background-origin: content;
+}
+QComboBox QPushButton:hover {
 background-color: #006EB5;
 color: #FFFFFF;
+}
+QComboBox QPushButton:hover#selected {
+background-image: url(:/images/arrow_up_white.svg);
 }
 QComboBox::drop-down {
 background-color: #FFFFFF;
 width: 25px;
-border-left-width: 1px;
-border-left-color: #DEE4E9;
-border-left-style: solid;
 }
 QComboBox::down-arrow {
 image: url(:/images/arrow_down.svg);
@@ -120,7 +131,7 @@ left: 1px;
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="idCountry">
+    <widget class="ComboBox" name="idCountry">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -171,9 +182,6 @@ padding-top: 8px;</string>
        <width>0</width>
        <height>34</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
      </property>
      <property name="placeholderText">
       <string notr="true">47101010033</string>
@@ -308,6 +316,13 @@ QPushButton:disabled {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>widgets/ComboBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
