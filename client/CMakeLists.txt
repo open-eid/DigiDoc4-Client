@@ -61,6 +61,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
 	QCardLock.cpp
+	QCryptoBackend.cpp
 	QPKCS11.cpp
 	QSigner.cpp
 	QSmartCard.cpp

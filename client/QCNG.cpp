@@ -67,9 +67,9 @@ QCNG::~QCNG()
 	delete d;
 }
 
-QByteArray QCNG::decrypt( const QByteArray &data )
+QByteArray QCNG::decrypt(const QByteArray &data) const
 {
-	d->err = PinUnknown;
+	d->err = PinOK;
 	DWORD size = 256;
 	QByteArray res(int(size), 0);
 	NCRYPT_KEY_HANDLE k = d->key();
@@ -92,7 +92,7 @@ QByteArray QCNG::decrypt( const QByteArray &data )
 QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	d->err = PinUnknown;
+	d->err = PinOK;
 	QByteArray derived;
 	NCRYPT_PROV_HANDLE prov = 0;
 	if(NCryptOpenStorageProvider(&prov, LPCWSTR(d->token.data(QStringLiteral("provider")).toString().utf16()), 0))
@@ -181,14 +181,14 @@ QList<TokenData> QCNG::tokens() const
 	return result;
 }
 
-void QCNG::selectCert(const TokenData &token)
+void QCNG::login(const TokenData &token)
 {
 	d->token = token;
 }
 
 QByteArray QCNG::sign( int method, const QByteArray &digest ) const
 {
-	d->err = PinUnknown;
+	d->err = PinOK;
 	BCRYPT_PKCS1_PADDING_INFO padInfo = { NCRYPT_SHA256_ALGORITHM };
 	switch( method )
 	{
