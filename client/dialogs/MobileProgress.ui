@@ -23,12 +23,15 @@
    <string notr="true">border-radius: 2px;
 background-color: #FFFFFF;</string>
   </property>
-  <layout class="QVBoxLayout" name="MobileProgressLayout" stretch="1,0,0,0">
+  <layout class="QVBoxLayout" name="MobileProgressLayout" stretch="0,1,0,0,0">
+   <property name="spacing">
+    <number>6</number>
+   </property>
    <property name="leftMargin">
     <number>12</number>
    </property>
    <property name="topMargin">
-    <number>12</number>
+    <number>24</number>
    </property>
    <property name="rightMargin">
     <number>12</number>
@@ -36,6 +39,24 @@ background-color: #FFFFFF;</string>
    <property name="bottomMargin">
     <number>24</number>
    </property>
+   <item>
+    <widget class="QLabel" name="controlCode">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #353739;
+line-height: 15px;
+border: none;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QLabel" name="code">
      <property name="font">
@@ -103,7 +124,7 @@ border: none;</string>
         <set>Qt::AlignCenter</set>
        </property>
        <property name="textVisible">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="format">
         <string>%v sec</string>

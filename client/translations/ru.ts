@@ -1802,11 +1802,13 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
+and enter Mobile-ID PIN2-code.</source>
         <translation>Убедитесь в правильности контрольного кодa
-и введите PIN2-код для Mobiil-ID.
-Kонтрольный код: %1</translation>
+и введите PIN2-код для Mobiil-ID.</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kонтрольный код:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1867,11 +1869,9 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Smart-ID PIN2-code.
-Control code: %1</source>
+and enter Smart-ID PIN2-code.</source>
         <translation>Убедитесь в правильности контрольного кодa
-и введите PIN2-код для Smart-ID.
-Kонтрольный код: %1</translation>
+и введите PIN2-код для Smart-ID.</translation>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
