@@ -1393,6 +1393,10 @@ ID-KAARDIGA</translation>
 <context>
     <name>MainWindow</name>
     <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
+    <message>
         <source>Help</source>
         <translation>Abi</translation>
     </message>

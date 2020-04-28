@@ -375,6 +375,19 @@ bool MainWindow::encrypt()
 	if(!cryptoDoc)
 		return false;
 
+	if( !FileDialog::fileIsWritable(cryptoDoc->fileName())){
+		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(cryptoDoc->fileName()), this);
+		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		dlg.exec();
+
+		if(dlg.result() == QMessageBox::Yes) {
+			moveCryptoContainer();
+			return encrypt();
+		}else {
+			return false;
+		}
+	}
+
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
 
 	return cryptoDoc->encrypt();
