@@ -162,6 +162,10 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 		case QNetworkReply::SslHandshakeFailedError:
 			returnError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
 			return;
+		case QNetworkReply::TimeoutError:
+		case QNetworkReply::UnknownNetworkError:
+			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
+			return;
 		case QNetworkReply::ProtocolInvalidOperationError:
 			qCWarning(SIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 			returnError(reply->readAll());
