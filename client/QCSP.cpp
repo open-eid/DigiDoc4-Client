@@ -23,7 +23,6 @@
 #include "TokenData.h"
 
 #include <QtCore/QDebug>
-#include <QtWidgets/QApplication>
 
 #include <wincrypt.h>
 
@@ -197,7 +196,7 @@ QList<TokenData> QCSP::tokens() const
 		}
 		}
 		if(t.card().isEmpty())
-			t.setCard(cert.subjectInfo("CN"));
+			t.setCard(cert.subjectInfo("CN") + "-" + cert.serialNumber());
 		t.setCert(cert);
 		certs << t;
 	}

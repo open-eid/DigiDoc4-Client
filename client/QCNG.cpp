@@ -25,11 +25,6 @@
 #include <common/QPCSC.h>
 
 #include <QtCore/QDebug>
-#include <QtCore/QLibrary>
-#include <QtCore/QStringList>
-#include <QtNetwork/QSslKey>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
 
 #include <wincrypt.h>
 
@@ -122,16 +117,14 @@ QCNG::PinStatus QCNG::lastError() const { return d->err; }
 
 QList<TokenData> QCNG::tokens() const
 {
-	qWarning() << "Start enumerationg providers";
-
 	QList<TokenData> result;
-	auto enumKeys = [](QList<TokenData> &result, const QString &provider, const QString &reader = {}) {
+	auto enumKeys = [&result](const QString &provider, const QString &reader = {}) {
 		QString scope = QStringLiteral(R"(\\.\%1\)").arg(reader);
 		NCRYPT_PROV_HANDLE h = 0;
 		SECURITY_STATUS err = NCryptOpenStorageProvider(&h, LPCWSTR(provider.utf16()), 0);
 		NCryptKeyName *keyname = nullptr;
 		PVOID pos = nullptr;
-		while(NCryptEnumKeys(h, LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG) == ERROR_SUCCESS)
+		while(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG) == ERROR_SUCCESS)
 		{
 			NCRYPT_KEY_HANDLE key = 0;
 			err = NCryptOpenKey(h, &key, keyname->pszName, keyname->dwLegacyKeySpec, NCRYPT_SILENT_FLAG);
@@ -157,25 +150,26 @@ QList<TokenData> QCNG::tokens() const
 		NCryptFreeObject(h);
 	};
 
+	qWarning() << "Start enumerationg providers";
 	DWORD count = 0;
-	NCryptProviderName *names = nullptr;
-	NCryptEnumStorageProviders( &count, &names, NCRYPT_SILENT_FLAG );
+	NCryptProviderName *providers = nullptr;
+	NCryptEnumStorageProviders(&count, &providers, NCRYPT_SILENT_FLAG);
 	for( DWORD i = 0; i < count; ++i )
 	{
-		QString provider = QString::fromWCharArray(names[i].pszName);
+		QString provider = QString::fromWCharArray(providers[i].pszName);
 		qWarning() << "Found provider" << provider;
-		if( wcscmp( names[i].pszName, MS_SMART_CARD_KEY_STORAGE_PROVIDER ) == 0 )
+		if(provider == MS_SMART_CARD_KEY_STORAGE_PROVIDER)
 		{
 			for( const QString &reader: QPCSC::instance().readers() )
 			{
 				qWarning() << reader;
-				enumKeys(result, provider, reader);
+				enumKeys(provider, reader);
 			}
 		}
 		else
-			enumKeys(result, provider);
+			enumKeys(provider);
 	}
-	NCryptFreeBuffer( names );
+	NCryptFreeBuffer(providers);
 	qWarning() << "End enumerationg providers";
 
 	return result;

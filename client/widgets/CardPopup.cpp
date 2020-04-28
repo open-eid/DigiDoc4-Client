@@ -40,9 +40,15 @@ CardPopup::CardPopup(const QString &selectedCard, const QVector<TokenData> &cach
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(1, 0, 2, 2);
 
+	auto contains = [this](const TokenData &token) {
+		for(CardWidget *card: findChildren<CardWidget*>())
+			if(token.card() == card->id())
+				return true;
+		return false;
+	};
 	for(const TokenData &token: cache)
 	{
-		if(token.card() == selectedCard)
+		if(token.card() == selectedCard || contains(token))
 			continue;
 		SslCertificate cert(token.cert());
 		if((filter == NonReputation && !cert.keyUsage().contains(SslCertificate::NonRepudiation)) ||
