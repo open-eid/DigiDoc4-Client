@@ -36,7 +36,7 @@ void ComboBox::showPopup()
 {
 	QWidget *popup = new QWidget(this);
 	popup->setObjectName(QStringLiteral("popup"));
-	popup->setWindowFlag(Qt::Popup);
+	popup->setWindowFlags(Qt::Popup);
 	popup->setMinimumWidth(width());
 	popup->move(parentWidget()->mapToGlobal(geometry().topLeft()));
 
