@@ -266,18 +266,18 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 	{
 		switch(d->backend->lastError())
 		{
-		case QPKCS11::PinOK: break;
-		case QPKCS11::PinCanceled:
+		case QCryptoBackend::PinOK: break;
+		case QCryptoBackend::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
 			return PinCanceled;
-		case QPKCS11::PinIncorrect:
+		case QCryptoBackend::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadauth();
 			Q_EMIT error(QPKCS11::errorString(d->backend->lastError()));
 			return PinIncorrect;
-		case QPKCS11::PinLocked:
+		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
-			if (d->backend->lastError() != QPKCS11::PinIncorrect)
+			if (d->backend->lastError() != QCryptoBackend::PinIncorrect)
 				reloadauth();
 			Q_EMIT error(QPKCS11::errorString(d->backend->lastError()));
 			return PinLocked;
@@ -311,9 +311,9 @@ QSslKey QSigner::key() const
 	d->backend->login(d->auth);
 	switch(d->backend->lastError())
 	{
-	case QPKCS11::PinOK: break;
-	case QPKCS11::PinIncorrect:
-	case QPKCS11::PinLocked:
+	case QCryptoBackend::PinOK: break;
+	case QCryptoBackend::PinIncorrect:
+	case QCryptoBackend::PinLocked:
 	default:
 		QCardLock::instance().exclusiveUnlock();
 		d->smartcard->reload();
@@ -401,7 +401,7 @@ void QSigner::run()
 		if(QCardLock::instance().readTryLock())
 		{
 			QPKCS11 *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
-			if(!pkcs11->reload())
+			if(pkcs11 && !pkcs11->reload())
 			{
 				Q_EMIT error(tr("Failed to load PKCS#11 module"));
 				return;
@@ -561,15 +561,15 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	{
 		switch(d->backend->lastError())
 		{
-		case QPKCS11::PinOK: break;
-		case QPKCS11::PinCanceled:
+		case QCryptoBackend::PinOK: break;
+		case QCryptoBackend::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
 			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINCanceled)
-		case QPKCS11::PinIncorrect:
+		case QCryptoBackend::PinIncorrect:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
 			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINIncorrect)
-		case QPKCS11::PinLocked:
+		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
 			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINLocked)
