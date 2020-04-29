@@ -48,7 +48,7 @@ CardPopup::CardPopup(const QString &selectedCard, const QVector<TokenData> &cach
 		if((filter == NonReputation && !cert.keyUsage().contains(SslCertificate::NonRepudiation)) ||
 			(filter == NonWebAuth && cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth)))
 			continue;
-		auto cardWidget = new CardWidget(this);
+		auto cardWidget = new CardWidget(true, this);
 		cardWidget->setCursor(QCursor(Qt::PointingHandCursor));
 		cardWidget->update(token);
 		connect(cardWidget, &CardWidget::selected, this, &CardPopup::activated);

@@ -265,14 +265,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>ID card in reader</source>
-        <translation>В считывателе ID-карта</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>В считывателе %1</translation>
-    </message>
-    <message>
         <source>LOAD</source>
         <translation>ЗАГРУ
 ЗИТЬ</translation>
@@ -307,6 +299,10 @@
     <message>
         <source>Authentication certificate</source>
         <translation>Сертификат идентификации</translation>
+    </message>
+    <message>
+        <source>Selected is </source>
+        <translation>Выбранный </translation>
     </message>
 </context>
 <context>

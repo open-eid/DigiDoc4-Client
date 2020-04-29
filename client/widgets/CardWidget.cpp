@@ -26,9 +26,10 @@
 
 using namespace ria::qdigidoc4;
 
-CardWidget::CardWidget(QWidget *parent)
+CardWidget::CardWidget(bool popup, QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::CardWidget)
+	, isPopup(popup)
 {
 	ui->setupUi( this );
 	QFont font = Styles::font( Styles::Condensed, 16 );
@@ -48,6 +49,10 @@ CardWidget::CardWidget(QWidget *parent)
 			emit photoClicked(ui->cardPhoto->pixmap());
 	});
 }
+
+CardWidget::CardWidget(QWidget *parent)
+	: CardWidget(false, parent)
+{}
 
 CardWidget::~CardWidget()
 {
@@ -134,7 +139,10 @@ void CardWidget::update(const TokenData &token)
 		typeString = tr("e-Seal");
 	else if(type & SslCertificate::DigiIDType)
 		typeString = tr("Digi-ID");
-	ui->cardStatus->setText(tr("%1 in reader").arg(typeString));
+	if(!isPopup)
+		typeString = tr("Selected is ") + typeString;
+
+	ui->cardStatus->setText(typeString);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 
 	if(c.subjectInfo("O").contains(QStringLiteral("E-RESIDENT")))
