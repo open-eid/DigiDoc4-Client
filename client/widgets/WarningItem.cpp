@@ -117,10 +117,6 @@ void WarningItem::lookupWarning()
 					.arg(tr("http://id.ee/?lang=en&id=34317"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
-	case ria::qdigidoc4::CheckConnectionWarning:
-		warnText.text = MainWindow::tr("Check internet connection");
-		warnText.page = ria::qdigidoc4::SignDetails;
-		break;
 	default:
 		break;
 	}
