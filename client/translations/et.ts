@@ -804,12 +804,12 @@
         <translation>Ümbriku salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Ümbriku allkirjastamine ebaõnnestus</translation>
+        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Kontrolli ajatempliteenuse ligipääsu seadeid.</translation>
     </message>
     <message>
-        <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
-        <translation>Puudub IP-põhine ligipääs, kontrolli juurdepääsutõendi seadeid.</translation>
+        <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
+        <translation>Puudub IP-põhine ligipääs. Kontrolli kehtivuskinnitusteenuse ligipääsu seadeid.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1860,8 +1860,8 @@ Kontrollkood: %1</translation>
         <translation>Ava oma nutiseadmes Smart-ID rakendus ja kinnita seade allkirjastamiseks.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>%1 tasuta allkirjade kuulimiit on ületatud sellelt IP-aadressilt. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1894,6 +1894,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>Failed to connect with service server. Please check your network settings or try again later.</source>
         <translation>Teenuse serveriga ühendus ebaõnnestus. Palun kontrolli võrgu sätteid või proovi hiljem uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. Check your %1 service access settings.</source>
+        <translation>Päringu saatmine ebaõnnestus. Kontrolli %1 teenuse ligipääsu seadeid.</translation>
     </message>
 </context>
 <context>

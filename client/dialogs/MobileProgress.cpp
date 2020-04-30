@@ -164,10 +164,13 @@ MobileProgress::MobileProgress(QWidget *parent)
 		case QNetworkReply::UnknownNetworkError:
 			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 			return;
+		case QNetworkReply::AuthenticationRequiredError:
+			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Mobile-ID")));
+			return;
 		default:
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
 			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
-				returnError(tr("The limit for digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>").arg(tr("Mobile-ID")));
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
