@@ -45,11 +45,11 @@ WaitDialogHider::~WaitDialogHider()
 WaitDialog* WaitDialog::waitDialog = nullptr;
 
 WaitDialog::WaitDialog(QWidget *parent)
-	: QWidget(parent)
+	: QDialog(parent)
 	, ui(new Ui::WaitDialog)
 {
 	new Overlay(this, parent);
-	setWindowFlags(Qt::Popup);
+	setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
 	ui->setupUi(this);
 	ui->movie->setMovie(new QMovie(":/images/wait.gif", {}, ui->movie));
 	ui->movie->movie()->start();

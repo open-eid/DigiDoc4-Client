@@ -317,7 +317,7 @@ bool MainWindow::decrypt()
 	if(!cryptoDoc)
 		return false;
 
-	WaitDialogHolder waitDialog(this);
+	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
 	return cryptoDoc->decrypt();
 }

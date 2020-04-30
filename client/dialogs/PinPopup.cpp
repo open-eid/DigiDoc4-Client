@@ -21,8 +21,6 @@
 #include "ui_PinPopup.h"
 #include "Styles.h"
 #include "SslCertificate.h"
-#include "effects/Overlay.h"
-#include "dialogs/WaitDialog.h"
 
 #include <common/Common.h>
 
@@ -52,9 +50,6 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
-	Overlay *overlay = new Overlay(parent->topLevelWidget());
-	overlay->show();
-	connect(this, &PinPopup::destroyed, overlay, &Overlay::deleteLater);
 
 	QFont regular = Styles::font( Styles::Regular, 14 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );

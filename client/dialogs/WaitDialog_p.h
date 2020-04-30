@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class WaitDialog;
 }
 
-class WaitDialog : public QWidget
+class WaitDialog : public QDialog
 {
 	Q_OBJECT
 
