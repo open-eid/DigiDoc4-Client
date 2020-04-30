@@ -2312,14 +2312,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
 </context>
 <context>
-    <name>QFileDialog</name>
-    <message>
-        <source>All Files (*)</source>
-        <translation>Kõik failid (*)</translation>
-    </message>
-</context>
-<context>
-    <name>QPKCS11</name>
+    <name>QCryptoBackend</name>
     <message>
         <source>PIN Canceled</source>
         <translation>PIN katkestatud</translation>
@@ -2341,8 +2334,15 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>PKCS11 seadme viga</translation>
     </message>
     <message>
-        <source>PKCS11 unknown error</source>
-        <translation>PKCS11 tundmatu viga</translation>
+        <source>Unknown error</source>
+        <translation>Tundmatu viga</translation>
+    </message>
+</context>
+<context>
+    <name>QFileDialog</name>
+    <message>
+        <source>All Files (*)</source>
+        <translation>Kõik failid (*)</translation>
     </message>
 </context>
 <context>

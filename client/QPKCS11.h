@@ -40,13 +40,11 @@ public:
 	PinStatus lastError() const override;
 	bool load( const QString &driver );
 	void unload();
-	void login(const TokenData &t) override;
+	PinStatus login(const TokenData &t) override;
 	void logout() override;
 	bool reload();
 	QByteArray sign(int type, const QByteArray &digest) const override;
 	QList<TokenData> tokens() const override;
-
-	static QString errorString( PinStatus error );
 private:
 	class Private;
 	Private *d;

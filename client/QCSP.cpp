@@ -218,7 +218,7 @@ QList<TokenData> QCSP::tokens() const
 	return certs;
 }
 
-void QCSP::login(const TokenData &t)
+QCSP::PinStatus QCSP::login(const TokenData &t)
 {
 	if(d->cert)
 		CertFreeCertificateContext(d->cert);
@@ -227,7 +227,7 @@ void QCSP::login(const TokenData &t)
 	QByteArray der = t.cert().toDer();
 	PCCERT_CONTEXT tmp = CertCreateCertificateContext(X509_ASN_ENCODING, PBYTE(der.constData()), DWORD(der.size()));
 	if(!tmp)
-		return;
+		return UnknownError;
 
 	HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
 		X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_READONLY_FLAG, L"MY");
@@ -235,7 +235,7 @@ void QCSP::login(const TokenData &t)
 	CertCloseStore(s, 0);
 	CertFreeCertificateContext(tmp);
 	qDebug() << "Selected cert" << t.cert().subjectInfo("CN");
-	d->error = QCSP::PinOK;
+	return d->error = QCSP::PinOK;
 }
 
 QByteArray QCSP::sign(int method, const QByteArray &digest) const

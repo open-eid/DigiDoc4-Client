@@ -47,7 +47,9 @@ public:
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual PinStatus lastError() const = 0;
-	virtual void login(const TokenData &cert) = 0;
+	virtual PinStatus login(const TokenData &cert) = 0;
 	virtual void logout() = 0;
 	virtual QByteArray sign(int method, const QByteArray &digest) const = 0;
+
+	static QString errorString( PinStatus error );
 };
