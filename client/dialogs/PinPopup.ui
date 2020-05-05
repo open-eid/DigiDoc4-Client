@@ -71,9 +71,9 @@ background-color: #FFFFFF;
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>25</x>
      <y>49</y>
-     <width>426</width>
+     <width>456</width>
      <height>51</height>
     </rect>
    </property>
@@ -85,13 +85,13 @@ background-color: #FFFFFF;
    </property>
    <property name="minimumSize">
     <size>
-     <width>426</width>
+     <width>456</width>
      <height>35</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>426</width>
+     <width>456</width>
      <height>60</height>
     </size>
    </property>
