@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="150" height="150" viewBox="0 0 150 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
     <title>icon_download hover</title>
-    <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Buttons&amp;Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="eID" transform="translate(-237.000000, -217.000000)">
-            <g id="icon_download-hover" transform="translate(237.000000, 217.000000)">
+    <g id="Buttons&amp;Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="scale(10)">
                 <circle id="Oval" stroke="#41B6E6" stroke-width="1" cx="7.5" cy="7.5" r="7"></circle>
                 <rect id="Rectangle-15" fill="#41B6E6" fill-rule="evenodd" x="5" y="11" width="5" height="1"></rect>
                 <rect id="Rectangle-14" fill="#41B6E6" fill-rule="evenodd" x="7" y="3" width="1" height="6"></rect>
                 <polyline id="Path-3" stroke="#41B6E6" stroke-width="1" points="10.5 6.5 7.5 9.5 4.5 6.5"></polyline>
-            </g>
-        </g>
     </g>
 </svg>
