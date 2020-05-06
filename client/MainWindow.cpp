@@ -622,14 +622,17 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
 		if(target.isEmpty())
 			break;
-		if( !FileDialog::fileIsWritable(target) &&
-			QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
-				tr("Cannot alter container %1. Save different location?").arg(target),
-				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+		if( !FileDialog::fileIsWritable(target))
 		{
-			QString file = selectFile(tr("Save file"), target, true);
-			if(!file.isEmpty())
-				cryptoDoc->saveCopy(file);
+			WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
+			dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
+			dlg.exec();
+
+			if(dlg.result() == QMessageBox::Yes) {
+				QString file = selectFile(tr("Save file"), target, true);
+				if(!file.isEmpty())
+					cryptoDoc->saveCopy(file);
+			}
 		}
 		cryptoDoc->saveCopy(target);
 		break;
@@ -848,14 +851,17 @@ bool MainWindow::save(bool saveAs)
 	if(target.isEmpty())
 		return false;
 
-	if( !FileDialog::fileIsWritable(target) &&
-		QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
-			tr("Cannot alter container %1. Save different location?").arg(target),
-			QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+	if(FileDialog::fileIsWritable(target))
 	{
-		QString file = selectFile(tr("Save file"), target, true);
-		if(!file.isEmpty())
-			return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
+		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
+		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		dlg.exec();
+
+		if(dlg.result() == QMessageBox::Yes) {
+			QString file = selectFile(tr("Save file"), target, true);
+			if(!file.isEmpty())
+				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
+		}
 	}
 	return saveAs ? digiDoc->saveAs(target) : digiDoc->save(target);
 }

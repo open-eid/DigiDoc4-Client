@@ -1393,6 +1393,10 @@ ID-CARD</translation>
 <context>
     <name>MainWindow</name>
     <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
+    <message>
         <source>Help</source>
         <translation>Help</translation>
     </message>

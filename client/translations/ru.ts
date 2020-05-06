@@ -1395,6 +1395,10 @@ ID-КАРТОЙ</translation>
 <context>
     <name>MainWindow</name>
     <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
+    <message>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>

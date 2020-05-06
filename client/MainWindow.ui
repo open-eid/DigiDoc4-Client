@@ -492,8 +492,10 @@ background-color: #023664;
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #023565;
-border: none;</string>
+        <string notr="true">#page{
+	background-color: #023565;
+	border: none;
+}</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_1">
         <property name="spacing">
@@ -552,8 +554,10 @@ border: none;</string>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">border:none;
-background-color: #ffffff;</string>
+           <string notr="true">#startScreen{
+	border:none;
+	background-color: #ffffff;
+}</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
