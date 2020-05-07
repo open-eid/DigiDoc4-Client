@@ -132,7 +132,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		drawTextRect( QRect( right-300, top, 130, nameHeight ),
 			cert.personalCode());
 		drawTextRect( QRect( right-170, top, 170, nameHeight ),
-			DateTime(sig.dateTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+			DateTime(sig.trustedTime().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		top += 20 + nameHeight;
 
 		QString valid;

@@ -3042,6 +3042,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
+    <message>
+        <source>Signing time (UTC)</source>
+        <translation>Allkirjastamise aeg (UTC)</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>

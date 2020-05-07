@@ -3045,6 +3045,10 @@ Additional licenses and components</source>
         <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
+    <message>
+        <source>Signing time (UTC)</source>
+        <translation>Время подписания (UTC)</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>

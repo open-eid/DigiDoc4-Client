@@ -82,9 +82,9 @@ QSslCertificate DigiDocSignature::cert() const
 	return QSslCertificate();
 }
 
-QDateTime DigiDocSignature::dateTime() const
+QDateTime DigiDocSignature::claimedTime() const
 {
-	return toTime(s->trustedSigningTime());
+	return toTime(s->claimedSigningTime());
 }
 
 QString DigiDocSignature::id() const
@@ -203,11 +203,6 @@ QString DigiDocSignature::signedBy() const
 	return from(s->signedBy());
 }
 
-QDateTime DigiDocSignature::signTime() const
-{
-	return toTime(s->claimedSigningTime());
-}
-
 QString DigiDocSignature::spuri() const
 {
 	return from(s->SPUri());
@@ -221,6 +216,11 @@ QDateTime DigiDocSignature::toTime(const std::string &time) const
 	date = QDateTime::fromString(from(time), QStringLiteral("yyyy-MM-dd'T'hh:mm:ss'Z'"));
 	date.setTimeSpec(Qt::UTC);
 	return date;
+}
+
+QDateTime DigiDocSignature::trustedTime() const
+{
+	return toTime(s->trustedSigningTime());
 }
 
 QSslCertificate DigiDocSignature::tsCert() const

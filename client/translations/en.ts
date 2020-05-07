@@ -3042,6 +3042,10 @@ Additional licenses and components</translation>
         <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
+    <message>
+        <source>Signing time (UTC)</source>
+        <translation>Signing time (UTC)</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>

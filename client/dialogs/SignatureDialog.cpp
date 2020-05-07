@@ -163,8 +163,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	t->header()->setSectionResizeMode(0, QHeaderView::Fixed);
 	t->header()->resizeSection(0, 244);
 
-	QStringList horzHeaders { tr("Attribute"), tr("Value") };
-	t->setHeaderLabels(horzHeaders);
+	t->setHeaderLabels({ tr("Attribute"), tr("Value") });
 
 	addItem( t, tr("Signer's Certificate issuer"), CertificateDetails::decodeCN(c.issuerInfo(QSslCertificate::CommonName)));
 	addItem( t, tr("Signer's Certificate"), c );
@@ -198,21 +197,20 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		SslCertificate ts = s.tsCert();
 		addItem(t, tr("Signature Timestamp"), s.tsTime().toLocalTime());
 		addItem(t, tr("Signature Timestamp") + " (UTC)", s.tsTime());
-		addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
 		addItem( t, tr("TS Certificate issuer"), ts.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("TS Certificate"), ts );
 	}
+	addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
 	if(!s.ocspTime().isNull())
 	{
 		SslCertificate ocsp = s.ocspCert();
 		addItem( t, tr("OCSP Certificate issuer"), ocsp.issuerInfo(QSslCertificate::CommonName) );
 		addItem( t, tr("OCSP Certificate"), ocsp );
-		if(s.tsTime().isNull())
-			addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
 		addItem(t, tr("OCSP time"), s.ocspTime().toLocalTime());
 		addItem(t, tr("OCSP time") + " (UTC)", s.ocspTime());
 	}
-	addItem(t, tr("Claimed signing time (UTC)"), s.signTime());
+	addItem(t, tr("Signing time (UTC)"), s.trustedTime());
+	addItem(t, tr("Claimed signing time (UTC)"), s.claimedTime());
 
 #ifdef Q_OS_MAC
 	t->setFont(Styles::font(Styles::Regular, 13));
