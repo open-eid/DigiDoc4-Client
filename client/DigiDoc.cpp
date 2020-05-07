@@ -523,12 +523,7 @@ bool DigiDoc::open( const QString &file )
 {
 	qApp->waitForTSL( file );
 	clear();
-	QString suffix = QFileInfo(file).suffix().toLower();
-#ifdef __APPLE__
-	if(suffix == QStringLiteral("pdf") || suffix == QStringLiteral("ddoc"))
-#else
-	if(suffix == QStringLiteral("pdf"))
-#endif
+	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf"))
 	{
 		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 		if(parent == nullptr)
