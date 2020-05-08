@@ -1884,7 +1884,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Sign document</source>
-        <translation>Подписать документ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
