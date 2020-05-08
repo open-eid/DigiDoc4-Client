@@ -851,7 +851,7 @@ bool MainWindow::save(bool saveAs)
 	if(target.isEmpty())
 		return false;
 
-	if(FileDialog::fileIsWritable(target))
+	if(!FileDialog::fileIsWritable(target))
 	{
 		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
 		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
