@@ -41,6 +41,7 @@ public:
 	void setReader(const QString &reader);
 
 	void clear();
+	bool isNull() const;
 
 	QVariant data(const QString &key) const;
 	void setData(const QString &key, const QVariant &value);

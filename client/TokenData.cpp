@@ -51,6 +51,10 @@ void TokenData::setReader(const QString &reader) { d->reader = reader; }
 QVariant TokenData::data(const QString &key) const { return d->data.value(key); }
 void TokenData::setData(const QString &key, const QVariant &value) { d->data[key] = value; }
 
+bool TokenData::isNull() const {
+	return d->card.isEmpty() && d->cert.isNull();
+}
+
 TokenData& TokenData::operator =( const TokenData &other ) = default;
 TokenData& TokenData::operator =(TokenData &&other) Q_DECL_NOEXCEPT = default;
 
@@ -61,6 +65,5 @@ bool TokenData::operator ==( const TokenData &other ) const
 	return d == other.d || (
 		d->card == other.d->card &&
 		d->reader == other.d->reader &&
-		d->cert == other.d->cert &&
-		d->data == other.d->data);
+		d->cert == other.d->cert);
 }

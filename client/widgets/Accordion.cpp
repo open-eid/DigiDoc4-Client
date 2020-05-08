@@ -25,15 +25,6 @@ Accordion::Accordion(QWidget *parent)
 	, ui(new Ui::Accordion)
 {
 	ui->setupUi( this );
-}
-
-Accordion::~Accordion()
-{
-	delete ui;
-}
-
-void Accordion::init()
-{
 	connect(ui->contentOtherData, &OtherData::checkEMailClicked, this, &Accordion::checkEMail);
 	connect(ui->contentOtherData, &OtherData::activateEMailClicked, this, &Accordion::activateEMail);
 
@@ -57,13 +48,18 @@ void Accordion::init()
 	clear();
 }
 
+Accordion::~Accordion()
+{
+	delete ui;
+}
+
 void Accordion::clear()
 {
 	ui->authBox->clear();
 	ui->signBox->clear();
 	ui->pukBox->clear();
 	openSection(ui->titleVerifyCert);
-	ui->contentOtherData->update(false, QByteArray());
+	updateOtherData({});
 	hideOtherData(true);
 }
 
@@ -100,6 +96,7 @@ void Accordion::setFocusToEmail()
 
 void Accordion::updateInfo(const SslCertificate &c)
 {
+	clear();
 	bool isSign = c.keyUsage().contains(SslCertificate::NonRepudiation);
 	ui->authBox->setHidden(isSign);
 	ui->signBox->setVisible(isSign);

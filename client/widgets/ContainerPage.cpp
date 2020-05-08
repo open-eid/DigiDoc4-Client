@@ -22,6 +22,7 @@
 
 #include "DigiDoc.h"
 #include "Styles.h"
+#include "SslCertificate.h"
 #include "crypto/CryptoDoc.h"
 #include "dialogs/AddRecipients.h"
 #include "dialogs/MobileDialog.h"
@@ -103,16 +104,18 @@ void ContainerPage::addressSearch()
 		emit keysSelected(dlg.keys());
 }
 
-void ContainerPage::cardChanged(const QString &idCode, bool isSeal, bool isExpired, bool isBlocked, const QByteArray &serialNumber)
+void ContainerPage::cardChanged(const SslCertificate &cert, bool isBlocked)
 {
-	emit ui->rightPane->idChanged(idCode, serialNumber);
-	if(cardInReader == idCode)
-		return;
-
-	cardInReader = idCode;
-	this->seal = isSeal;
-	this->isExpired = isExpired;
+	emit ui->rightPane->idChanged(cert);
+	isSeal = cert.type() & SslCertificate::TempelType;
+	isExpired = !cert.isValid();
 	this->isBlocked = isBlocked;
+	cardChanged(cert.personalCode());
+}
+
+void ContainerPage::cardChanged(const QString &idCode)
+{
+	cardInReader = idCode;
 	if(ui->leftPane->getState() & SignatureContainers)
 		showSigningButton();
 	else if(ui->leftPane->getState() & EncryptedContainer)
@@ -203,7 +206,7 @@ void ContainerPage::forward(int code)
 		if (newCode != mobileCode)
 		{
 			mobileCode = newCode;
-			cardChanged(cardInReader, seal, isExpired, isBlocked);
+			cardChanged(cardInReader);
 		}
 		break;
 	}
@@ -220,7 +223,7 @@ void ContainerPage::forward(int code)
 		if (newCode != mobileCode)
 		{
 			mobileCode = newCode;
-			cardChanged(cardInReader, seal, isExpired, isBlocked);
+			cardChanged(cardInReader);
 		}
 		break;
 	}
@@ -307,7 +310,7 @@ void ContainerPage::showSigningButton()
 {
 	if(cardInReader.isNull())
 		showMainAction({ SignatureMobile, SignatureSmartID });
-	else if(seal)
+	else if(isSeal)
 		showMainAction({ SignatureToken, SignatureMobile, SignatureSmartID });
 	else
 		showMainAction({ SignatureAdd, SignatureMobile, SignatureSmartID });
@@ -402,7 +405,7 @@ void ContainerPage::updateDecryptionButton()
 {
 	if(!canDecrypt || cardInReader.isNull())
 		hideMainAction();
-	else if(seal)
+	else if(isSeal)
 		showMainAction({ DecryptToken });
 	else
 		showMainAction({ DecryptContainer });

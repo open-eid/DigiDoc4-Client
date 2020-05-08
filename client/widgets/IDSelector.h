@@ -35,8 +35,9 @@ public:
 	};
 	explicit IDSelector(QWidget *parent = nullptr);
 
-	void setList(const QString &selectedCard, const QVector<TokenData> &cache, Filter filter);
+	void setList(const QString &selectedCard, const QList<TokenData> &cache, Filter filter);
 
+	Filter filter;
 	DropdownButton *selector = nullptr;
 	QVector<TokenData> list;
 };

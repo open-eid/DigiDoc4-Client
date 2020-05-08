@@ -70,14 +70,14 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 		if (type == QSmartCardData::Pin1Type)
 		{
 			warnings->closeWarning(WarningType::UnblockPin1Warning);
-			ui->cryptoContainerPage->cardChanged(data.card(), false,
-				!data.authCert().isValid(), data.retryCount(QSmartCardData::Pin1Type) == 0, data.authCert().serialNumber());
+			ui->cryptoContainerPage->cardChanged(data.authCert(),
+				data.retryCount(QSmartCardData::Pin1Type) == 0);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
 			warnings->closeWarning(WarningType::UnblockPin2Warning);
-			ui->signContainerPage->cardChanged(data.card(), false,
-				!data.signCert().isValid(), data.retryCount(QSmartCardData::Pin2Type) == 0);
+			ui->signContainerPage->cardChanged(data.signCert(),
+				data.retryCount(QSmartCardData::Pin2Type) == 0);
 		}
 	}
 }
@@ -135,7 +135,7 @@ QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString 
 		case SSLConnect::EmailInfo: showNotification(tr("Failed loading email settings.")); break;
 		case SSLConnect::PictureInfo: showNotification(tr("Loading picture failed.")); break;
 		}
-		return QByteArray();
+		return {};
 	}
 	return buffer;
 }
@@ -200,10 +200,10 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 		warnings->showWarning(WarningText(WarningType::UnblockPin2Warning));
 	if(!isBlockedPuk && t.retryCount(QSmartCardData::Pin1Type) == 0)
 		warnings->showWarning(WarningText(WarningType::UnblockPin1Warning));
-	ui->signContainerPage->cardChanged(t.card(), false,
-		!t.signCert().isValid(), t.retryCount(QSmartCardData::Pin2Type) == 0);
-	ui->cryptoContainerPage->cardChanged(t.card(), false,
-		!t.authCert().isValid(), t.retryCount(QSmartCardData::Pin1Type) == 0, t.authCert().serialNumber());
+	ui->signContainerPage->cardChanged(t.signCert(),
+		t.retryCount(QSmartCardData::Pin2Type) == 0);
+	ui->cryptoContainerPage->cardChanged(t.authCert(),
+		t.retryCount(QSmartCardData::Pin1Type) == 0);
 }
 
 void MainWindow::updateCardWarnings(const QSmartCardData &data)
@@ -242,9 +242,41 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 	}
 }
 
+void MainWindow::updateMyEID(const TokenData &t)
+{
+	warnings->clearMyEIDWarnings();
+	SslCertificate cert(t.cert());
+	int type = cert.type();
+	ui->infoStack->setHidden(t.isNull() || type == SslCertificate::UnknownType || type == SslCertificate::EidType);
+	ui->accordion->setHidden(t.isNull() || type == SslCertificate::UnknownType || type == SslCertificate::EidType);
+	ui->noReaderInfo->setVisible(t.isNull() || type == SslCertificate::UnknownType || type == SslCertificate::EidType);
+
+	if(!t.isNull())
+	{
+		ui->noReaderInfoText->setProperty("currenttext", "The card in the card reader is not an Estonian ID-card");
+		ui->noReaderInfoText->setText(tr("The card in the card reader is not an Estonian ID-card"));
+		if(ui->cardInfo->token().card() != t.card())
+			ui->accordion->clear();
+		if(type & SslCertificate::TempelType)
+		{
+			ui->infoStack->update(cert);
+			ui->accordion->updateInfo(cert);
+		}
+	}
+	else
+	{
+		ui->infoStack->setProperty("PICTURE", QVariant());
+		ui->infoStack->clearData();
+		ui->accordion->clear();
+		ui->myEid->invalidIcon(false);
+		ui->myEid->warningIcon(false);
+		ui->noReaderInfoText->setProperty("currenttext", "Connect the card reader to your computer and insert your ID card into the reader");
+		ui->noReaderInfoText->setText(tr("Connect the card reader to your computer and insert your ID card into the reader"));
+	}
+}
+
 void MainWindow::updateMyEid(const QSmartCardData &t)
 {
-	Application::restoreOverrideCursor();
 	if(!t.card().isEmpty() && (!t.authCert().isNull() || !t.signCert().isNull()))
 	{
 		ui->infoStack->update(t);

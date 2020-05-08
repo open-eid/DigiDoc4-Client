@@ -136,7 +136,20 @@ MainWindow::MainWindow( QWidget *parent )
 #endif
 
 	// Refresh ID card info in card widget
-	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
+	connect(qApp->signer(), &QSigner::cacheChanged, this, &MainWindow::updateSelector);
+	connect(qApp->signer(), &QSigner::signDataChanged, this, [=](const TokenData &token){
+		updateSelector();
+		updateMyEID(token);
+		ui->signContainerPage->cardChanged(token.cert());
+	});
+	connect(qApp->signer(), &QSigner::authDataChanged, this, [=](const TokenData &token){
+		updateSelector();
+		updateMyEID(token);
+		ui->cryptoContainerPage->cardChanged(token.cert());
+		if(cryptoDoc)
+			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(token.cert()));
+	});
+
 	// Refresh card info on "My EID" page
 	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
@@ -162,7 +175,6 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::keysSelected, this, &MainWindow::updateKeys);
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
 
-	ui->accordion->init();
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
@@ -172,8 +184,11 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
 
-	showCardStatus();
+	updateSelector();
+	updateMyEID(qApp->signer()->tokensign());
 	updateMyEid(QSmartCardData());
+	ui->signContainerPage->cardChanged(qApp->signer()->tokensign().cert());
+	ui->cryptoContainerPage->cardChanged(qApp->signer()->tokenauth().cert());
 }
 
 MainWindow::~MainWindow()
@@ -743,7 +758,7 @@ void MainWindow::openContainer()
 				QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc"),
 				qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QString() : QStringLiteral(" *.pdf"));
 
-	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), QString(), filter);
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
 	if(!files.isEmpty())
 		openFiles(files);
 }
@@ -861,6 +876,7 @@ void MainWindow::selectPage(Pages page)
 	ui->startScreen->setCurrentIndex(page);
 	warnings->updateWarnings();
 	adjustDrops();
+	updateSelector();
 }
 
 void MainWindow::selectPageIcon( PageIcon* page )
@@ -877,9 +893,24 @@ void MainWindow::showCardMenu(bool show)
 	if(show)
 	{
 		CardPopup *cardPopup = new CardPopup(ui->selector->list, this);
-		// To select active card from several cards in readers ..
-		connect(cardPopup, &CardPopup::activated, qApp->signer()->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
-		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
+		connect(cardPopup, &CardPopup::activated, qApp->signer(), [](const TokenData &token) {
+			bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
+			if(isSign)
+				qApp->signer()->selectCardSign(token);
+			else
+				qApp->signer()->selectCardAuth(token);
+			for(const TokenData &other: qApp->signer()->cache())
+			{
+				if(other == token)
+					continue;
+				if(other.card() != token.card())
+					continue;
+				if(isSign) // Select other cert if they are on same card
+					qApp->signer()->selectCardAuth(other);
+				else
+					qApp->signer()->selectCardSign(other);
+			}
+		}, Qt::QueuedConnection);
 		// .. and hide card popup menu
 		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); });
 		cardPopup->show();
@@ -888,93 +919,6 @@ void MainWindow::showCardMenu(bool show)
 		ui->selector->selector->init();
 		cardPopup->deleteLater();
 	}
-}
-
-void MainWindow::showCardStatus()
-{
-	Application::restoreOverrideCursor();
-	TokenData st = qApp->signer()->tokensign();
-	TokenData at = qApp->signer()->tokenauth();
-	const TokenData &t = st.cert().isNull() ? at : st;
-	warnings->clearMyEIDWarnings();
-
-	if(!t.card().isEmpty() && !t.cert().isNull())
-	{
-		qCDebug(MLog) << "Select card" << t.card();
-		const SslCertificate &authCert = at.cert();
-		const SslCertificate &signCert = st.cert();
-		SslCertificate cert = authCert.isNull() ? signCert : authCert;
-		int type = cert.type();
-		bool seal = type & SslCertificate::TempelType;
-
-		ui->idSelector->show();
-		ui->noCardInfo->hide();
-		ui->infoStack->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::EidType);
-		ui->accordion->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::EidType);
-		ui->noReaderInfo->setVisible(type == SslCertificate::UnknownType || type == SslCertificate::EidType);
-		ui->noReaderInfoText->setProperty("currenttext", "The card in the card reader is not an Estonian ID-card");
-		ui->noReaderInfoText->setText(tr("The card in the card reader is not an Estonian ID-card"));
-
-		if(ui->cardInfo->token().card() != t.card())
-		{
-			ui->infoStack->clearData();
-			ui->accordion->clear();
-			ui->cardInfo->clearPicture();
-		}
-
-		ui->cardInfo->update(t, qApp->signer()->cards().size() > 1);
-
-		// Card (e.g. e-Seal) can have only one cert
-		if(!signCert.isNull())
-			ui->signContainerPage->cardChanged(cert.personalCode(), seal, !signCert.isValid());
-		else
-			ui->signContainerPage->cardChanged();
-		if(!authCert.isNull())
-			ui->cryptoContainerPage->cardChanged(cert.personalCode(), seal, !authCert.isValid(), false, authCert.serialNumber());
-		else
-			ui->cryptoContainerPage->cardChanged();
-		if(cryptoDoc)
-			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
-
-		if(seal)
-		{
-			ui->infoStack->update(cert);
-			ui->accordion->updateInfo(cert);
-			updateCardWarnings(QSmartCardData());
-		}
-	}
-	else
-	{
-		ui->signContainerPage->cardChanged();
-		ui->cryptoContainerPage->cardChanged();
-		if ( !QPCSC::instance().serviceRunning() )
-			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
-		else if ( QPCSC::instance().readers().isEmpty() )
-			noReader_NoCard_Loading_Event(NoCardInfo::NoReader);
-		else if ( t.card().isEmpty() )
-			noReader_NoCard_Loading_Event(NoCardInfo::NoCard);
-		else
-			noReader_NoCard_Loading_Event(NoCardInfo::Loading);
-	}
-
-	// Combo box to select the cards from
-	IDSelector::Filter filter = IDSelector::Signing;
-	switch (ui->startScreen->currentIndex()) {
-	case SignIntro:
-	case SignDetails:
-		filter = IDSelector::Signing;
-		break;
-	case CryptoIntro:
-	case CryptoDetails:
-		filter = IDSelector::Decrypting;
-		break;
-	case MyEid:
-		filter = IDSelector::MyEID;
-	}
-	ui->selector->setList(t.card(), qApp->signer()->cache(), filter);
-	ui->cardInfo->setCursor(ui->selector->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
-	if(ui->selector->selector->isHidden())
-		showCardMenu(false);
 }
 
 void MainWindow::showEvent(QShowEvent * /*event*/)
@@ -988,7 +932,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
 	structureFunds->show();
-	notification->start(QString(), 400, 4000, 1100);
+	notification->start({}, 400, 4000, 1100);
 }
 
 void MainWindow::showSettings(int page)
@@ -1055,29 +999,6 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 	adjustDrops();
 }
 
-void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
-{
-	qCDebug(MLog) << "noReader_NoCard_Loading_Event" << status;
-	ui->idSelector->hide();
-	if(status == NoCardInfo::Loading)
-		Application::setOverrideCursor(Qt::BusyCursor);
-
-	ui->noCardInfo->show();
-	ui->noCardInfo->update(status);
-	ui->infoStack->clearData();
-	ui->cardInfo->clearPicture();
-	ui->version->setProperty("PICTURE", QVariant());
-	ui->infoStack->hide();
-	ui->accordion->hide();
-	ui->accordion->clear();
-	ui->noReaderInfo->setVisible(true);
-	ui->myEid->invalidIcon( false );
-	ui->myEid->warningIcon( false );
-	ui->noReaderInfoText->setProperty("currenttext", "Connect the card reader to your computer and insert your ID card into the reader");
-	ui->noReaderInfoText->setText(tr("Connect the card reader to your computer and insert your ID card into the reader"));
-	warnings->clearMyEIDWarnings();
-}
-
 // Loads picture
 void MainWindow::photoClicked(const QPixmap &photo)
 {
@@ -1102,7 +1023,7 @@ void MainWindow::photoClicked(const QPixmap &photo)
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );
 	ui->infoStack->showPicture( pixmap );
-	ui->version->setProperty("PICTURE", buffer);
+	ui->infoStack->setProperty("PICTURE", buffer);
 }
 
 void MainWindow::removeAddress(int index)
@@ -1142,7 +1063,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 		dlg.resetCancelStyle();
 		dlg.addButton(tr("REMOVE"), ContainerSave, true);
 		if (dlg.exec() == ContainerSave) {
-			window()->setWindowFilePath(QString());
+			window()->setWindowFilePath({});
 			window()->setWindowTitle(tr("DigiDoc4 client"));
 			return true;
 		}
@@ -1178,7 +1099,7 @@ void MainWindow::removeSignatureFile(int index)
 
 void MainWindow::savePhoto()
 {
-	if(!ui->version->property("PICTURE").isValid())
+	if(!ui->infoStack->property("PICTURE").isValid())
 		return;
 
 	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
@@ -1192,7 +1113,7 @@ void MainWindow::savePhoto()
 	static const QStringList exts{QStringLiteral("jpg"), QStringLiteral("jpeg")};
 	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
 		fileName.append(QStringLiteral(".jpg"));
-	QByteArray pix = ui->version->property("PICTURE").toByteArray();
+	QByteArray pix = ui->infoStack->property("PICTURE").toByteArray();
 	QFile f(fileName);
 	if(!f.open(QFile::WriteOnly) || f.write(pix) != pix.size())
 		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
@@ -1275,6 +1196,41 @@ bool MainWindow::wrapContainer(bool signing)
 	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
 	return dlg.exec() == ContainerSave;
+}
+
+void MainWindow::updateSelector()
+{
+	switch(ui->startScreen->currentIndex())
+	{
+	case SignIntro:
+	case SignDetails:
+		ui->selector->setList(qApp->signer()->tokensign().card(), qApp->signer()->cache(), IDSelector::Signing);
+		ui->cardInfo->update(qApp->signer()->tokensign(), ui->selector->list.size() > 1);
+		break;
+	case CryptoIntro:
+	case CryptoDetails:
+		ui->selector->setList(qApp->signer()->tokenauth().card(), qApp->signer()->cache(), IDSelector::Decrypting);
+		ui->cardInfo->update(qApp->signer()->tokenauth(), ui->selector->list.size() > 1);
+		break;
+	case MyEid:
+		ui->selector->setList(qApp->signer()->smartcard()->tokenData().card(), qApp->signer()->cache(), IDSelector::MyEID);
+		ui->cardInfo->update(qApp->signer()->smartcard()->tokenData(), ui->selector->list.size() > 1);
+		break;
+	default: break;
+	}
+	ui->idSelector->setHidden(ui->cardInfo->token().isNull());
+	ui->noCardInfo->setVisible(ui->idSelector->isHidden());
+	if (!QPCSC::instance().serviceRunning())
+		ui->noCardInfo->update(NoCardInfo::NoPCSC);
+	else if(QPCSC::instance().readers().isEmpty())
+		ui->noCardInfo->update(NoCardInfo::NoReader);
+	else if(ui->noCardInfo->isVisible())
+		ui->noCardInfo->update(NoCardInfo::NoCard);
+	else
+		ui->noCardInfo->update(NoCardInfo::Loading);
+	ui->cardInfo->setCursor(ui->selector->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
+	if(ui->selector->selector->isHidden())
+		showCardMenu(false);
 }
 
 void MainWindow::updateKeys(const QList<CKey> &keys)

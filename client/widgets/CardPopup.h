@@ -31,5 +31,5 @@ public:
 	explicit CardPopup(const QVector<TokenData> &cache, QWidget *parent = nullptr);
 
 signals:
-	void activated( const QString &card );
+	void activated(const TokenData &token);
 };

@@ -83,7 +83,7 @@ bool CardWidget::event( QEvent *ev )
 	switch(ev->type())
 	{
 	case QEvent::MouseButtonRelease:
-		emit selected(t.card());
+		emit selected(t);
 		return true;
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);

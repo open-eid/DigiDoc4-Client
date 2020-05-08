@@ -28,7 +28,7 @@ namespace Ui {
 class AddressItem;
 }
 
-class AddressItem : public Item
+class AddressItem final : public Item
 {
 	Q_OBJECT
 
@@ -46,7 +46,7 @@ public:
 
 	void disable(bool disable);
 	const CKey& getKey() const;
-	void idChanged(const QString &cardCode, const QByteArray &serialNumber) final;
+	void idChanged(const SslCertificate &cert) final;
 	QWidget* initTabOrder(QWidget *item) final;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;

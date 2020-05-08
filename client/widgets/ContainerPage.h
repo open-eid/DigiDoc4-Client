@@ -32,9 +32,10 @@ class CKey;
 class CryptoDoc;
 class DigiDoc;
 class SignatureItem;
+class SslCertificate;
 class WarningText;
 
-class ContainerPage : public QWidget
+class ContainerPage final : public QWidget
 {
 	Q_OBJECT
 
@@ -42,7 +43,8 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage() final;
 
-	void cardChanged(const QString &idCode = {}, bool isSeal = false, bool isExpired = false, bool isBlocked = false, const QByteArray &serialNumber = {});
+	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
+	void cardChanged(const QString &idCode);
 	void clear();
 	void setHeader(const QString &file);
 	void transition(CryptoDoc *container, bool canDecrypt);
@@ -95,7 +97,7 @@ private:
 	const char *cancelText = "CANCEL";
 	const char *convertText = "ENCRYPT";
 	bool canDecrypt = false;
-	bool seal = false;
+	bool isSeal = false;
 	bool isExpired = false;
 	bool isBlocked = false;
 };
