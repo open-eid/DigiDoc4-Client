@@ -816,16 +816,16 @@
         <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</translation>
-    </message>
-    <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</translation>
+        <translation>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;.&lt;br&gt;Do you want to continue?</translation>
     </message>
     <message>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
     </message>
     <message>
         <source>OK</source>
