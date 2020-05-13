@@ -19,6 +19,7 @@
 
 #include "LdapSearch.h"
 
+#include <QtCore/QTimer>
 #include <QtCore/QTimerEvent>
 #include <QtCore/QUrl>
 #include <QtNetwork/QSslCertificate>
@@ -32,8 +33,8 @@
 #define LDAP_DEPRECATED 1
 #include <sys/time.h>
 #include <ldap.h>
-#define ULONG int
-#define LDAP_TIMEVAL timeval
+using ULONG = int;
+using LDAP_TIMEVAL = timeval;
 #endif
 
 
@@ -114,6 +115,12 @@ bool LdapSearch::init()
 	err = ldap_simple_bind_s(d->ldap, nullptr, nullptr);
 	if(err)
 		setLastError(tr("Failed to init ldap"), err);
+
+	QTimer::singleShot(4*60*60, this, [this]{
+		if(d->ldap)
+			ldap_unbind_s(d->ldap);
+		d->ldap = nullptr;
+	});
 	return !err;
 }
 
