@@ -41,7 +41,7 @@ QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;
 QSmartCardData::QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT: d(std::move(other.d)) {}
 QSmartCardData::~QSmartCardData() = default;
 QSmartCardData& QSmartCardData::operator =(const QSmartCardData &other) = default;
-QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) Q_DECL_NOEXCEPT { qSwap(d, other.d); return *this; }
+QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) Q_DECL_NOEXCEPT { std::swap(d, other.d); return *this; }
 
 QString QSmartCardData::card() const { return d->card; }
 
@@ -740,8 +740,16 @@ void QSmartCard::reloadCard(const QString &reader, const QString &card)
 	if(!d->t.isNull() || reader.isEmpty())
 		return;
 
-	qCDebug(CLog) << "Read" << reader;
-	QScopedPointer<QPCSCReader> selectedReader(new QPCSCReader(reader, &QPCSC::instance()));
+	QString tmpReader = reader;
+	if(reader.endsWith(QStringLiteral("..."))) {
+		for(const QString &test: QPCSC::instance().readers()) {
+			if(test.startsWith(reader.left(reader.size() - 3)))
+				tmpReader = test;
+		}
+	}
+
+	qCDebug(CLog) << "Read" << tmpReader;
+	QScopedPointer<QPCSCReader> selectedReader(new QPCSCReader(tmpReader, &QPCSC::instance()));
 	if(!selectedReader->connect() || !selectedReader->beginTransaction())
 		return;
 
