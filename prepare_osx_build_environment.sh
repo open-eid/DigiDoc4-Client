@@ -5,7 +5,7 @@ set -e
 
 ######### Versions of libraries/frameworks to be compiled
 QT_VER="5.12.8"
-OPENLDAP_VER="2.4.49"
+OPENLDAP_VER="2.4.50"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 OPENSSL_PATH="/usr/local/opt/openssl"
