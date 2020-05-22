@@ -44,9 +44,7 @@ void IDSelector::setList(const QString &selectedCard, const QVector<TokenData> &
 		SslCertificate cert(token.cert());
 		if(filter == Signing && !cert.keyUsage().contains(SslCertificate::NonRepudiation))
 			continue;
-		if(filter == Decrypting &&
-			(cert.keyUsage().contains(SslCertificate::NonRepudiation) &&
-			 cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth)))
+		if(filter == Decrypting && cert.keyUsage().contains(SslCertificate::NonRepudiation))
 			continue;
 		if(filter == MyEID && !(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType))
 			continue;
