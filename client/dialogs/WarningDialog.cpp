@@ -23,11 +23,8 @@
 #include "Styles.h"
 
 WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
-: QDialog(parent)
-, ui(new Ui::WarningDialog)
-, buttonMargin(35)
-, buttonOffset(2)
-, buttonWidth(120)
+	: QDialog(parent)
+	, ui(new Ui::WarningDialog)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
@@ -91,14 +88,12 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 	auto layout = qobject_cast<QBoxLayout*>(ui->buttonBar->layout());
 	layout->insertSpacing(buttonOffset++, buttonMargin);
 
-	QFont font = Styles::font(Styles::Condensed, 14);
-	QFontMetrics fm(font);
-
 	QPushButton *button = new QPushButton(label, this);
 	button->setAccessibleName(label.toLower());
 	button->setCursor(Qt::PointingHandCursor);
-	button->setFont(font);
+	button->setFont(ui->cancel->font());
 
+	QFontMetrics fm(ui->cancel->fontMetrics());
 	int width = buttonWidth;
 	int textWidth = fm.width(label);
 	if(textWidth > (buttonWidth - 5))
@@ -120,7 +115,7 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 	}
 
 
-	connect(button, &QPushButton::clicked, [this, ret]() {done(ret);});
+	connect(button, &QPushButton::clicked, [this, ret] {done(ret);});
 	layout->insertWidget(buttonOffset++, button);
 }
 
@@ -140,6 +135,5 @@ void WarningDialog::setText(const QString& text)
 
 void WarningDialog::warning(QWidget *parent, const QString& text)
 {
-	WarningDialog dlg(text, QString(), parent);
-	dlg.exec();
+	WarningDialog(text, QString(), parent).exec();
 }

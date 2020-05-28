@@ -44,8 +44,8 @@ public:
 
 private:
 	Ui::WarningDialog *ui;
-	int buttonMargin;
-	int buttonOffset;
-	int buttonWidth;
+	int buttonMargin = 35;
+	int buttonOffset = 2;
+	int buttonWidth = 120;
 };
 
