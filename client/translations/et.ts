@@ -443,10 +443,6 @@
         <translation>SULGE</translation>
     </message>
     <message>
-        <source>SELECT</source>
-        <translation>VALI</translation>
-    </message>
-    <message>
         <source>REMOVE</source>
         <translation>EEMALDA</translation>
     </message>
@@ -490,7 +486,7 @@
     <message>
         <source>Select</source>
         <extracomment>accessible</extracomment>
-        <translation>Vali</translation>
+        <translation>Lisa</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -500,6 +496,10 @@
     <message>
         <source>Certificate for Encryption</source>
         <translation>Krüpteerimissertifikaat</translation>
+    </message>
+    <message>
+        <source>ADD</source>
+        <translation>LISA</translation>
     </message>
 </context>
 <context>

@@ -443,10 +443,6 @@
         <translation>CLOSE</translation>
     </message>
     <message>
-        <source>SELECT</source>
-        <translation>SELECT</translation>
-    </message>
-    <message>
         <source>REMOVE</source>
         <translation>REMOVE</translation>
     </message>
@@ -500,6 +496,10 @@
     <message>
         <source>Certificate for Encryption</source>
         <translation>Certificate for Encryption</translation>
+    </message>
+    <message>
+        <source>ADD</source>
+        <translation>ADD</translation>
     </message>
 </context>
 <context>

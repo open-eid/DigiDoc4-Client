@@ -33,7 +33,7 @@ public:
 	QString issuer;
 	QString expireDate;
 
-	bool operator==(const HistoryCertData& other);
+	bool operator==(const HistoryCertData& other) const;
 	QString typeName() const;
 };
 
@@ -53,8 +53,6 @@ public:
 
 	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = nullptr);
 	~CertificateHistory();
-
-	int exec() override;
 
 signals:
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);

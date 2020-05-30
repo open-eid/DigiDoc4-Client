@@ -21,20 +21,18 @@
 #include "ui_CertificateHistory.h"
 
 #include "Styles.h"
-#include "effects/Overlay.h"
 
-
-bool HistoryCertData::operator==(const HistoryCertData& other)
+bool HistoryCertData::operator==(const HistoryCertData& other) const
 {
-	return	this->CN == other.CN &&
-			this->type == other.type &&
-			this->issuer == other.issuer &&
-			this->expireDate == other.expireDate;
+	return	CN == other.CN &&
+			type == other.type &&
+			issuer == other.issuer &&
+			expireDate == other.expireDate;
 }
 
 QString HistoryCertData::typeName() const
 {
-	switch (QString(type).toInt())
+	switch (type.toInt())
 	{
 	case CertificateHistory::DigiID:
 		return CertificateHistory::tr("Digi-ID");
@@ -54,7 +52,8 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData,
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-	setWindowModality( Qt::ApplicationModal );
+	setMinimumSize(parent->frameSize());
+	move(parent->frameGeometry().center() - frameGeometry().center());
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
 	ui->close->setFont(condensed);
@@ -78,7 +77,6 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData,
 	adjustSize();
 }
 
-
 CertificateHistory::~CertificateHistory()
 {
 	delete ui;
@@ -87,6 +85,8 @@ CertificateHistory::~CertificateHistory()
 void CertificateHistory::fillView()
 {
 	ui->view->clear();
+	QSize sizeHint = ui->view->fontMetrics().boundingRect(ui->view->headerItem()->text(3)).size();
+	sizeHint += QSize(20, 0);
 	for(const HistoryCertData& certData : historyCertData)
 	{
 		QTreeWidgetItem *i = new QTreeWidgetItem( ui->view );
@@ -95,6 +95,7 @@ void CertificateHistory::fillView()
 		i->setText(1, certData.typeName());
 		i->setText(2, certData.issuer);
 		i->setText(3, certData.expireDate);
+		i->setData(3, Qt::SizeHintRole, sizeHint);
 		ui->view->addTopLevelItem(i);
 	}
 }
@@ -112,14 +113,4 @@ QList<HistoryCertData> CertificateHistory::selectedItems() const
 		});
 	}
 	return selectedCertData;
-}
-
-int CertificateHistory::exec()
-{
-	Overlay overlay(parentWidget());
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
 }

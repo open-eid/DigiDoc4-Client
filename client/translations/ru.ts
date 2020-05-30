@@ -445,10 +445,6 @@
         <translation>ЗАКРЫТЬ</translation>
     </message>
     <message>
-        <source>SELECT</source>
-        <translation>ВЫБРАТЬ</translation>
-    </message>
-    <message>
         <source>REMOVE</source>
         <translation>УДАЛИТЬ</translation>
     </message>
@@ -502,6 +498,10 @@
     <message>
         <source>Certificate for Encryption</source>
         <translation>Сертификат шифрования</translation>
+    </message>
+    <message>
+        <source>ADD</source>
+        <translation>ДОБАВИТЬ</translation>
     </message>
 </context>
 <context>

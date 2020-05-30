@@ -39,7 +39,6 @@ Q_SIGNALS:
 
 private:
 	bool init();
-	void timerEvent(QTimerEvent *e) final;
 	void setLastError( const QString &msg, int err );
 
 	class Private;
