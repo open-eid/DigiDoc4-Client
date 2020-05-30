@@ -828,10 +828,6 @@
         <translation>JAH</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Palun kontrollige oma arvuti kellaaega. &lt;a href=&apos;https://id.ee/index.php?id=39512&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
@@ -1278,10 +1274,6 @@
         <translation>NÄITA SERTIFIKAATI</translation>
     </message>
     <message>
-        <source>Key</source>
-        <translation>Adressaat</translation>
-    </message>
-    <message>
         <source>Crypto method</source>
         <translation>Krüpteerimismeetod</translation>
     </message>
@@ -1298,10 +1290,6 @@
         <translation>ConcatKDF digest method</translation>
     </message>
     <message>
-        <source>Expires</source>
-        <translation>Aegub</translation>
-    </message>
-    <message>
         <source>Issuer</source>
         <translation>Väljaandja</translation>
     </message>
@@ -1314,6 +1302,14 @@
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
         <translation>Näita sertifikaati</translation>
+    </message>
+    <message>
+        <source>Recipient</source>
+        <translation>Adressaat</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
     </message>
 </context>
 <context>
@@ -2693,10 +2689,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Tekstifailid (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Tekkis viga</translation>
     </message>
     <message>
         <source>Failed write to file!</source>
