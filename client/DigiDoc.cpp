@@ -523,37 +523,41 @@ bool DigiDoc::open( const QString &file )
 {
 	qApp->waitForTSL( file );
 	clear();
-	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf"))
-	{
+	auto serviceConfirmation = [this]{
 		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 		if(parent == nullptr)
 			parent = qApp->activeWindow();
-#ifdef Q_OS_MAC 
+#ifdef Q_OS_MAC
 		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-				"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
-				"Do you want to continue?"), parent);
+							 "Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+							 "Do you want to continue?"), parent);
 #else
 		WarningDialog dlg(tr("Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-				"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
-				"Do you want to continue?"), parent);
+							 "Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+							 "Do you want to continue?"), parent);
 #endif
 		dlg.setCancelText(tr("CANCEL"));
 		dlg.addButton(tr("YES"), ContainerSave);
-		if(dlg.exec() != ContainerSave)
-			return false;
-	}
+		return dlg.exec() == ContainerSave;
+	};
+	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf") && !serviceConfirmation())
+		return false;
+
 	try
 	{
 		b.reset(Container::open(to(file)));
 		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
+#ifdef Q_OS_MAC
+			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc") && !serviceConfirmation())
+#else
 			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc"))
+#endif
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
-				QFileInfo f(tmppath);
-				if(f.exists())
+				if(QFileInfo::exists(tmppath))
 				{
 					m_tempFiles << tmppath;
 					parentContainer = std::move(b);
