@@ -2802,6 +2802,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>NO</source>
         <translation>EI</translation>
     </message>
+    <message>
+        <source>Use default access</source>
+        <translation>Kasutan vaikimisi määratud ligipääsu</translation>
+    </message>
+    <message>
+        <source>Use manually configured access</source>
+        <translation>Kasutan käsitsi määratud ligipääsu</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

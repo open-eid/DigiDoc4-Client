@@ -40,8 +40,6 @@ class Application: public Common
 public:
 	enum ConfParameter
 	{
-		LDAP_PERSON_URL,
-		LDAP_CORP_URL,
 		SiVaUrl,
 		ProxyHost,
 		ProxyPort,

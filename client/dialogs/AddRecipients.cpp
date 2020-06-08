@@ -31,12 +31,14 @@
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 
+#include <common/Configuration.h>
 #include <common/IKValidator.h>
 
 #include <QDebug>
 #include <QDateTime>
 #include <QSslKey>
 #include <QStandardPaths>
+#include <QtCore/QJsonObject>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
 #include <QtCore/QSettings>
@@ -46,8 +48,8 @@
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::AddRecipients)
-	, ldap_person(new LdapSearch(qApp->confValue(Application::LDAP_PERSON_URL).toByteArray(), this))
-	, ldap_corp(new LdapSearch(qApp->confValue(Application::LDAP_CORP_URL).toByteArray(), this))
+	, ldap_person(new LdapSearch(defaultUrl(QStringLiteral("LDAP-PERSON-URL"), QStringLiteral("ldaps://esteid.ldap.sk.ee")).toUtf8(), this))
+	, ldap_corp(new LdapSearch(defaultUrl(QStringLiteral("LDAP-CORP-URL"), QStringLiteral("ldaps://k3.ldap.sk.ee")).toUtf8(), this))
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
@@ -265,6 +267,16 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	ui->leftPane->setTerm(term);
 	search(term);
 	select = true;
+}
+
+QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValue)
+{
+#ifdef CONFIG_URL
+	return Configuration::instance().object().value(key).toString(defaultValue);
+#else
+	Q_UNUSED(key)
+	return defaultValue;
+#endif
 }
 
 void AddRecipients::enableRecipientFromCard()

@@ -20,10 +20,9 @@
 #include "MainAction.h"
 #include "ui_MainAction.h"
 #include "Styles.h"
+#include "dialogs/SettingsDialog.h"
 
 #include <QtCore/QSettings>
-
-#include <common/Common.h>
 
 using namespace ria::qdigidoc4;
 
@@ -46,9 +45,9 @@ MainAction::MainAction(QWidget *parent)
 
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{
 		if (ui->actions.value(0) == Actions::SignatureMobile)
-			Common::setValueEx("MIDOrder", true, true);
+			SettingsDialog::setValueEx("MIDOrder", true, true);
 		if (ui->actions.value(0) == Actions::SignatureSmartID)
-			Common::setValueEx("MIDOrder", false, true);
+			SettingsDialog::setValueEx("MIDOrder", false, true);
 	});
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{ emit action(ui->actions.value(0)); });
 	connect(ui->mainAction, &QPushButton::clicked, this, &MainAction::hideDropdown);
@@ -130,9 +129,9 @@ void MainAction::showDropdown()
 				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
 			other->setFont(ui->mainAction->font());
 			if (*i == Actions::SignatureMobile)
-				connect(other, &QPushButton::clicked, this, []{ Common::setValueEx("MIDOrder", true, true); });
+				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", true, true); });
 			if (*i == Actions::SignatureSmartID)
-				connect(other, &QPushButton::clicked, this, []{ Common::setValueEx("MIDOrder", false, true); });
+				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", false, true); });
 			connect(other, &QPushButton::clicked, this, &MainAction::hideDropdown);
 			connect(other, &QPushButton::clicked, this, [=]{ emit this->action(*i); });
 			ui->list.push_back(other);

@@ -70,6 +70,8 @@ private:
 	void showResult(const QList<QSslCertificate> &result, int resultCount);
 	HistoryCertData toHistory(const QSslCertificate& cert) const;
 
+	static QString defaultUrl(const QString &key, const QString &defaultValue);
+
 	Ui::AddRecipients *ui;
 	QHash<QSslCertificate, AddressItem *> leftList;
 	QList<QSslCertificate> rightList;

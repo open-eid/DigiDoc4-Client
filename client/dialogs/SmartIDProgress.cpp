@@ -52,7 +52,7 @@ class SmartIDProgress::Private: public QDialog, public Ui::MobileProgress
 {
 	Q_OBJECT
 public:
-	QString URL() { return UUID.isNull() ? PROXYURL : SKURL; }
+	QString URL() { return !UUID.isNull() && useCustomUUID ? SKURL : PROXYURL; }
 	using QDialog::QDialog;
 	void reject() override { l.exit(QDialog::Rejected); }
 	QTimeLine *statusTimer = nullptr;
@@ -70,7 +70,8 @@ public:
 	QString SKURL = QSettings().value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
 #endif
 	QString NAME = QSettings().value(QStringLiteral("SIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	QUuid UUID = QSettings().value(QStringLiteral("SIDUUID")).toUuid();
+	bool useCustomUUID = QSettings().value(QStringLiteral("SIDUUID-CUSTOM"), false).toBool();
+	QUuid UUID = useCustomUUID ? QSettings().value(QStringLiteral("SIDUUID")).toUuid() : QUuid();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif

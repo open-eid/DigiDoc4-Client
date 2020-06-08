@@ -19,8 +19,8 @@
 
 #include "MobileDialog.h"
 #include "ui_MobileDialog.h"
-#include <common/Common.h>
 #include "Styles.h"
+#include "dialogs/SettingsDialog.h"
 #include "effects/Overlay.h"
 
 #include <QtCore/QSettings>
@@ -33,6 +33,8 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::MobileDialog)
 {
+	new Overlay(this, parent->topLevelWidget());
+
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
@@ -63,9 +65,9 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, [=](bool checked) {
-		Common::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString(), QString());
-		Common::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString(), QString());
-		Common::setValueEx(QStringLiteral("MobileSettings"), checked, true);
+		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString(), QString());
+		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString(), QString());
+		SettingsDialog::setValueEx(QStringLiteral("MobileSettings"), checked, true);
 	});
 
 	enableSign();
@@ -80,8 +82,8 @@ void MobileDialog::enableSign()
 {
 	if( ui->cbRemember->isChecked() )
 	{
-		Common::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text(), QString());
-		Common::setValueEx(QStringLiteral("MobileNumber"), ui->phoneNo->text(),
+		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text(), QString());
+		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), ui->phoneNo->text(),
 			ui->phoneNo->text() == COUNTRY_CODE_EST ? COUNTRY_CODE_EST : QString());
 	}
 	ui->sign->setToolTip(QString());
@@ -91,17 +93,6 @@ void MobileDialog::enableSign()
 		ui->sign->setToolTip( tr("Phone number is not entered") );
 	ui->sign->setEnabled( ui->sign->toolTip().isEmpty() );
 }
-
-int MobileDialog::exec()
-{
-	Overlay overlay(parentWidget());
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
-}
-
 
 QString MobileDialog::idCode()
 {

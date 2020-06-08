@@ -152,26 +152,31 @@ public:
 	{ return s.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 
 	void setProxyHost( const std::string &host ) override
-	{ Common::setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host ), QString()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host ), QString()); }
 	void setProxyPort( const std::string &port ) override
-	{ Common::setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port ), QString()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port ), QString()); }
 	void setProxyUser( const std::string &user ) override
-	{ Common::setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user ), QString()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user ), QString()); }
 	void setProxyPass( const std::string &pass ) override
-	{ Common::setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass ), QString()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass ), QString()); }
 	void setProxyTunnelSSL( bool enable ) override
-	{ Common::setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 	void setPKCS12Cert( const std::string & /*cert*/) override {}
 	void setPKCS12Pass( const std::string & /*pass*/) override {}
 	void setPKCS12Disable( bool disable ) override
-	{ Common::setValueEx(QStringLiteral("PKCS12Disable"), disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("PKCS12Disable"), disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
 	void setTSLOnlineDigest( bool enable ) override
-	{ Common::setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
 
-	std::string TSUrl() const override { return valueUserScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl()); }
+	std::string TSUrl() const override
+	{
+		if(s.value(QStringLiteral("TSA-URL-CUSTOM"), false).toBool())
+			return valueUserScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
+		return valueSystemScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
+	}
 	void setTSUrl(const std::string &url) override
-	{ Common::setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url), QString()); }
+	{ SettingsDialog::setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url), QString()); }
 
 	std::string TSLUrl() const override { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	digidoc::X509Cert verifyServiceCert() const override
@@ -226,7 +231,7 @@ private:
 	{
 		obj = Configuration::instance().object();
 		if(s.value(QStringLiteral("TSA-URL")) == obj.value(QStringLiteral("TSA-URL")))
-			s.remove(QStringLiteral("TSA-URL"));
+			s.remove(QStringLiteral("TSA-URL")); // Cleanup user conf if it is default url
 		QList<QSslCertificate> list;
 		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
@@ -477,8 +482,6 @@ void Application::clearConfValue( ConfParameter parameter )
 		case ProxySSL:
 		case PKCS12Disable:
 		case TSLOnlineDigest:
-		case LDAP_PERSON_URL:
-		case LDAP_CORP_URL:
 		case SiVaUrl:
 		case TSAUrl:
 		case TSLCerts:
@@ -514,8 +517,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	QByteArray r;
 	switch( parameter )
 	{
-	case LDAP_PERSON_URL: return i->obj.value(QStringLiteral("LDAP-PERSON-URL")).toString(QStringLiteral("ldaps://esteid.ldap.sk.ee"));
-	case LDAP_CORP_URL: return i->obj.value(QStringLiteral("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee"));
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
 	case ProxyHost: r = i->proxyHost().c_str(); break;
 	case ProxyPort: r = i->proxyPort().c_str(); break;
@@ -974,8 +975,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case PKCS12Disable: i->setPKCS12Disable( value.toBool() ); break;
 		case TSLOnlineDigest: i->setTSLOnlineDigest( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
-		case LDAP_PERSON_URL:
-		case LDAP_CORP_URL:
 		case SiVaUrl:
 		case TSLCerts:
 		case TSLUrl:
