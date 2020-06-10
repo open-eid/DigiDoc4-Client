@@ -830,10 +830,6 @@
         <translation>ДА</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Пожалуйста проверьте время Вашего компьютера. &lt;a href=&apos;https://id.ee/index.php?id=39514&apos;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
@@ -1647,10 +1643,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
         <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
-    </message>
-    <message>
-        <source>Opening</source>
-        <translation>Открывается</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -2677,10 +2669,6 @@ Additional licenses and components</source>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Текстовые файлы (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Возникла ошибка</translation>
     </message>
     <message>
         <source>Failed write to file!</source>

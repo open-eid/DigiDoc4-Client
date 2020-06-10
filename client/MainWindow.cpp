@@ -351,8 +351,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 	if(!files.isEmpty())
 	{
 		event->acceptProposedAction();
-		if(!files.isEmpty())
-			openFiles(files, true);
+		openFiles(files, true);
 	}
 	else
 		event->ignore();
@@ -744,10 +743,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 	}
 
 	if(create || current != page)
-	{
-		WaitDialogHolder waitDialog(this, tr("Opening"));
 		navigateToPage(page, content, create);
-	}
 }
 
 void MainWindow::open(const QStringList &params, bool crypto, bool sign)
@@ -1313,8 +1309,7 @@ bool MainWindow::wrapContainer(bool signing)
 	WarningDialog dlg(msg, this);
 	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
-	dlg.exec();
-	return dlg.result() == ContainerSave;
+	return dlg.exec() == ContainerSave;
 }
 
 void MainWindow::updateKeys(const QList<CKey> &keys)

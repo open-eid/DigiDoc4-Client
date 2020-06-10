@@ -828,10 +828,6 @@
         <translation>YES</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</translation>
     </message>
@@ -1644,10 +1640,6 @@ ID-CARD</translation>
     <message>
         <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
         <translation>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</translation>
-    </message>
-    <message>
-        <source>Opening</source>
-        <translation>Opening</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -2674,10 +2666,6 @@ Additional licenses and components</translation>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Text files (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Error occurred</translation>
     </message>
     <message>
         <source>Failed write to file!</source>
