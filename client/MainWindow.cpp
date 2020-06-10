@@ -1046,6 +1046,12 @@ void MainWindow::showOverlay( QWidget *parent )
 
 void MainWindow::showSettings(int page)
 {
+	if(SettingsDialog *settings = findChild<SettingsDialog*>())
+	{
+		settings->showPage(page);
+		settings->show();
+		return;
+	}
 	SettingsDialog dlg(page, this);
 
 	connect(&dlg, &SettingsDialog::langChanged, this, [this](const QString& lang ) {

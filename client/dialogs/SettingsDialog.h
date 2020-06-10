@@ -46,6 +46,7 @@ public:
 	explicit SettingsDialog(int page, QWidget *parent = nullptr);
 	~SettingsDialog() final;
 
+	void showPage(int page);
 	static void loadProxy( const digidoc::Conf *conf );
 
 signals:
