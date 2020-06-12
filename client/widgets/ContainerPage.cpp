@@ -42,8 +42,6 @@ using namespace ria::qdigidoc4;
 ContainerPage::ContainerPage(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::ContainerPage)
-, cancelText("CANCEL")
-, convertText("ENCRYPT")
 {
 	ui->setupUi( this );
 	ui->leftPane->init(fileName);
@@ -102,7 +100,7 @@ void ContainerPage::addError(const SignatureItem* item, QMap<ria::qdigidoc4::War
 
 void ContainerPage::addressSearch()
 {
-	AddRecipients dlg(ui->rightPane, qApp->activeWindow());
+	AddRecipients dlg(ui->rightPane, topLevelWidget());
 	if(dlg.exec() && dlg.isUpdated())
 		emit keysSelected(dlg.keys());
 }
@@ -194,7 +192,7 @@ void ContainerPage::forward(int code)
 	{
 	case SignatureMobile:
 	{
-		MobileDialog dlg(qApp->activeWindow());
+		MobileDialog dlg(topLevelWidget());
 		QString newCode = QSettings().value(QStringLiteral("MobileCode")).toString();
 		if(dlg.exec() == QDialog::Accepted)
 		{
@@ -216,7 +214,7 @@ void ContainerPage::forward(int code)
 		break;
 	case SignatureSmartID:
 	{
-		SmartIDDialog dlg(qApp->activeWindow());
+		SmartIDDialog dlg(topLevelWidget());
 		if(dlg.exec() == QDialog::Accepted)
 		{
 			if(checkAction(SignatureMobile, dlg.idCode(), QString()))

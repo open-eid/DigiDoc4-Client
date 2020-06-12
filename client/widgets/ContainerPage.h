@@ -101,8 +101,8 @@ private:
 	QString fileName;
 	QString mobileCode;
 
-	const char *cancelText;
-	const char *convertText;
+	const char *cancelText = "CANCEL";
+	const char *convertText = "ENCRYPT";
 	bool canDecrypt = false;
 	bool seal = false;
 	bool isExpired = false;
