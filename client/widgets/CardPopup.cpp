@@ -56,7 +56,7 @@ CardPopup::CardPopup(const QString &selectedCard, const QVector<TokenData> &cach
 			continue;
 		auto cardWidget = new CardWidget(true, this);
 		cardWidget->setCursor(QCursor(Qt::PointingHandCursor));
-		cardWidget->update(token);
+		cardWidget->update(token, true);
 		connect(cardWidget, &CardWidget::selected, this, &CardPopup::activated);
 		layout->addWidget(cardWidget);
 	}

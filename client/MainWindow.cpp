@@ -972,7 +972,7 @@ void MainWindow::showCardStatus()
 			ui->cardInfo->clearPicture();
 		}
 
-		ui->cardInfo->update(t);
+		ui->cardInfo->update(t, qApp->signer()->cards().size() > 1);
 
 		// Card (e.g. e-Seal) can have only one cert
 		if(!signCert.isNull())

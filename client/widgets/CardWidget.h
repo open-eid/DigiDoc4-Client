@@ -39,7 +39,7 @@ public:
 	void clearPicture();
 	QString id() const;
 	void showPicture( const QPixmap &pix );
-	void update(const TokenData &token);
+	void update(const TokenData &token, bool multiple);
 
 signals:
 	void photoClicked( const QPixmap &pixmap );
@@ -54,4 +54,5 @@ private:
 	TokenData t;
 	QSvgWidget *seal = nullptr;
 	bool isPopup = false;
+	bool isMultiple = false;
 };

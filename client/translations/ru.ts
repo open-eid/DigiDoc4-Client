@@ -301,8 +301,12 @@
         <translation>Сертификат идентификации</translation>
     </message>
     <message>
-        <source>Selected is </source>
-        <translation>Выбранный </translation>
+        <source>Selected is %1</source>
+        <translation>Выбранный %1</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>В считывателе %1</translation>
     </message>
 </context>
 <context>
@@ -828,10 +832,6 @@
     <message>
         <source>YES</source>
         <translation>ДА</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
@@ -2677,10 +2677,6 @@ Additional licenses and components</source>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Текстовые файлы (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Возникла ошибка</translation>
     </message>
     <message>
         <source>Failed write to file!</source>

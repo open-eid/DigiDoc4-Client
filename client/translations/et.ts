@@ -299,8 +299,12 @@
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
     <message>
-        <source>Selected is </source>
-        <translation>Valitud on </translation>
+        <source>Selected is %1</source>
+        <translation>Valitud on %1</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>Lugejas on %1</translation>
     </message>
 </context>
 <context>
@@ -826,10 +830,6 @@
     <message>
         <source>YES</source>
         <translation>JAH</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
@@ -2674,10 +2674,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Tekstifailid (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Tekkis viga</translation>
     </message>
     <message>
         <source>Failed write to file!</source>
