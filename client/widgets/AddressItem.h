@@ -64,7 +64,7 @@ private:
 	QString code;
 	CKey key;
 	QString name;
-	SslCertificate::CertType m_type;
+	SslCertificate::CertType m_type = SslCertificate::UnknownType;
 	QString expireDateText;
 	bool yourself = false;
 };
