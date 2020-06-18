@@ -28,13 +28,14 @@
 #include <common/IKValidator.h>
 
 #define COUNTRY_CODE_EST QStringLiteral("372")
+#define COUNTRY_CODE_LAT QStringLiteral("371")
+#define COUNTRY_CODE_LTU QStringLiteral("370")
 
 MobileDialog::MobileDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::MobileDialog)
 {
 	new Overlay(this, parent->topLevelWidget());
-
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
@@ -80,6 +81,7 @@ MobileDialog::~MobileDialog()
 
 void MobileDialog::enableSign()
 {
+	static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LAT, COUNTRY_CODE_LTU};
 	if( ui->cbRemember->isChecked() )
 	{
 		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text(), QString());
@@ -89,8 +91,10 @@ void MobileDialog::enableSign()
 	ui->sign->setToolTip(QString());
 	if( !IKValidator::isValid( ui->idCode->text() ) )
 		ui->sign->setToolTip( tr("Personal code is not valid") );
-	if(ui->phoneNo->text().isEmpty() || ui->phoneNo->text() == COUNTRY_CODE_EST)
+	if(ui->phoneNo->text().size() < 8 || countryCodes.contains(ui->phoneNo->text()))
 		ui->sign->setToolTip( tr("Phone number is not entered") );
+	if(!countryCodes.contains(ui->phoneNo->text().left(3)))
+		ui->sign->setToolTip(tr("Invalid country code"));
 	ui->sign->setEnabled( ui->sign->toolTip().isEmpty() );
 }
 
