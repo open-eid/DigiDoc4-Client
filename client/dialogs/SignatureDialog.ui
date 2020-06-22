@@ -481,6 +481,9 @@ background-color: #f7f7f7;</string>
         <property name="styleSheet">
          <string notr="true">border: none;</string>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+        </property>
        </widget>
       </item>
       <item>
