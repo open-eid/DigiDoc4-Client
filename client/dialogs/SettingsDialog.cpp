@@ -47,6 +47,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QIODevice>
 #include <QtCore/QJsonObject>
+#include <QtCore/QProcess>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QSysInfo>
 #include <QtCore/QThread>
@@ -159,10 +160,15 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 #ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
-		if(error.isEmpty())
-			WarningDialog(tr("Digidoc4 client configuration update was successful."), this).exec();
-		else
+		if(!error.isEmpty()) {
 			WarningDialog(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, this).exec();
+			return;
+		}
+		WarningDialog(tr("Digidoc4 client configuration update was successful."), this).exec();
+#ifdef Q_OS_WIN
+		if (QFile::exists(qApp->applicationDirPath() + "/id-updater.exe"))
+			QProcess::startDetached("id-updater");
+#endif
 	});
 #endif
 
