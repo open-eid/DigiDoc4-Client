@@ -1050,7 +1050,8 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 {
 	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		warnings->showWarning(WarningText(WarningType::CheckConnectionWarning));
+		FadeInNotification *notification = new FadeInNotification(this, MOJO, MARZIPAN, 110);
+		notification->start(tr("Check internet connection"), 750, 3000, 1200);
 		return;
 	}
 
