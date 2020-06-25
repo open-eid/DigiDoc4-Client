@@ -23,12 +23,8 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLabel {
-	color: #000000
-}
-QCheckBox {
-	color: #000000
-}
+   <string notr="true">QLabel,
+QCheckBox,
 QRadioButton {
 	color: #000000
 }</string>
@@ -66,21 +62,21 @@ QRadioButton {
      <property name="styleSheet">
       <string notr="true">#leftPane {
 	background-color: #ffffff;
-}
-QWidget {
 	border-right: 1px solid #DEE4E9;
 }
 QPushButton {
+	background-color: #ffffff;
 	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
 	text-align:left;
 	padding-left: 21;
 }
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
+QPushButton:checked {
+	background-color: #F4F5F6;
+	color: #006EB5;
+}
+QPushButton:hover {
+	background-color: #FAFAFB;
+	color: #006EB5;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="leftPaneLayout">
