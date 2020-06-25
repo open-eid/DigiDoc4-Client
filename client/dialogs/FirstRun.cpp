@@ -28,16 +28,16 @@
 #include <QTextStream>
 
 
-FirstRun::FirstRun(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::FirstRun),
-	dragged(false)
+FirstRun::FirstRun(QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::FirstRun)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 	setCursor(Qt::OpenHandCursor);
+	move(parent->geometry().center() - geometry().center());
 
 	auto buttonFont = Styles::font(Styles::Condensed, 14);
 	auto labelFont = Styles::font(Styles::Regular, 18);
@@ -210,16 +210,16 @@ void FirstRun::mouseReleaseEvent(QMouseEvent * /*event*/)
 void FirstRun::loadImages()
 {
 	QString lang = Common::language();
-	auto loadPixmap = [](const QString &base, const QString &lang, QLabel *label) {
+	auto loadPixmap = [lang](const QString &base, QLabel *label) {
 		label->setPixmap(QPixmap(QStringLiteral(":/images/%1_%2.png").arg(base, lang))
 			.scaled(label->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	};
-	loadPixmap(QStringLiteral("intro_sign-select"), lang, ui->signImage1);
-	loadPixmap(QStringLiteral("intro_sign-sign"), lang, ui->signImage2);
-	loadPixmap(QStringLiteral("intro_sign-pin"), lang, ui->signImage3);
-	loadPixmap(QStringLiteral("intro_crypto-select"), lang, ui->cryptoImage1);
-	loadPixmap(QStringLiteral("intro_crypto-recipient"), lang, ui->cryptoImage2);
-	loadPixmap(QStringLiteral("intro_crypto-encrypt"), lang, ui->cryptoImage3);
-	loadPixmap(QStringLiteral("intro_eid-manage"), lang, ui->eidImage1);
-	loadPixmap(QStringLiteral("intro_eid-info"), lang, ui->eidImage3);
+	loadPixmap(QStringLiteral("intro_sign-select"), ui->signImage1);
+	loadPixmap(QStringLiteral("intro_sign-sign"), ui->signImage2);
+	loadPixmap(QStringLiteral("intro_sign-pin"), ui->signImage3);
+	loadPixmap(QStringLiteral("intro_crypto-select"), ui->cryptoImage1);
+	loadPixmap(QStringLiteral("intro_crypto-recipient"), ui->cryptoImage2);
+	loadPixmap(QStringLiteral("intro_crypto-encrypt"), ui->cryptoImage3);
+	loadPixmap(QStringLiteral("intro_eid-manage"), ui->eidImage1);
+	loadPixmap(QStringLiteral("intro_eid-info"), ui->eidImage3);
 }
