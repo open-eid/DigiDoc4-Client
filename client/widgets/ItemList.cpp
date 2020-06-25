@@ -39,8 +39,8 @@ ItemList::ItemList(QWidget *parent)
 	ui->count->hide();
 	tabIndex = ui->btnFind;
 
-	connect(this, &ItemList::idChanged, this, [this](const QString &code, const QString &mobile, const QByteArray& serial)
-		{idCode = code; mobileCode = mobile; serialNumber = serial;});
+	connect(this, &ItemList::idChanged, this, [this](const QString &code, const QByteArray& serial)
+		{idCode = code; serialNumber = serial;});
 }
 
 ItemList::~ItemList()
@@ -118,7 +118,7 @@ void ItemList::addWidget(Item *widget, int index)
 	connect(widget, &Item::remove, this, &ItemList::remove);
 	connect(this, &ItemList::idChanged, widget, &Item::idChanged);
 	widget->stateChange(state);
-	widget->idChanged(idCode, mobileCode, serialNumber);
+	widget->idChanged(idCode, serialNumber);
 	widget->show();
 	items.push_back(widget);
 	tabIndex = widget->initTabOrder(tabIndex);

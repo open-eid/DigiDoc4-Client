@@ -55,7 +55,7 @@ signals:
 	void addAll();
 	void addItem(int code);
 	void addressSearch();
-	void idChanged(const QString& cardCode, const QString& mobileCode, const QByteArray& serialNumber);
+	void idChanged(const QString &cardCode, const QByteArray &serialNumber);
 	void keysSelected(QList<Item *> keys);
 	void removed(int row);
 	void search(const QString &term);
@@ -86,7 +86,6 @@ private:
 	QSvgWidget* infoIcon = nullptr;
 	QSvgWidget* infoHoverIcon = nullptr;
 	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
-	QString mobileCode;
 	QString headerText;
 	QString listText;
 	QByteArray serialNumber;

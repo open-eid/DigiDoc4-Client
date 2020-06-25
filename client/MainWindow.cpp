@@ -47,6 +47,7 @@
 #include "widgets/DropdownButton.h"
 #include "widgets/CardPopup.h"
 #include "widgets/VerifyCert.h"
+#include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
 #include <common/DateTime.h>
@@ -989,13 +990,13 @@ void MainWindow::showCardStatus()
 
 		// Card (e.g. e-Seal) can have only one cert
 		if(!signCert.isNull())
-			emit ui->signContainerPage->cardChanged(cert.personalCode(), seal, !signCert.isValid());
+			ui->signContainerPage->cardChanged(cert.personalCode(), seal, !signCert.isValid());
 		else
-			emit ui->signContainerPage->cardChanged();
+			ui->signContainerPage->cardChanged();
 		if(!authCert.isNull())
-			emit ui->cryptoContainerPage->cardChanged(cert.personalCode(), seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
+			ui->cryptoContainerPage->cardChanged(cert.personalCode(), seal, !authCert.isValid(), false, authCert.serialNumber());
 		else
-			emit ui->cryptoContainerPage->cardChanged();
+			ui->cryptoContainerPage->cardChanged();
 		if(cryptoDoc)
 			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
 
@@ -1008,8 +1009,8 @@ void MainWindow::showCardStatus()
 	}
 	else
 	{
-		emit ui->signContainerPage->cardChanged();
-		emit ui->cryptoContainerPage->cardChanged();
+		ui->signContainerPage->cardChanged();
+		ui->cryptoContainerPage->cardChanged();
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( QPCSC::instance().readers().isEmpty() )

@@ -29,6 +29,7 @@
 #include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
 #include "widgets/SignatureItem.h"
+#include "widgets/WarningItem.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -62,9 +63,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 
 	mobileCode = QSettings().value(QStringLiteral("MobileCode")).toString();
 
-	connect(this, &ContainerPage::cardChanged, this, &ContainerPage::changeCard);
-	connect(this, &ContainerPage::cardChanged, [this](const QString& idCode, bool /*seal*/, bool /*isExpired*/, const QByteArray& serialNumber)
-		{ emit ui->rightPane->idChanged(idCode, mobileCode, serialNumber); });
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -105,15 +103,17 @@ void ContainerPage::addressSearch()
 		emit keysSelected(dlg.keys());
 }
 
-void ContainerPage::changeCard(const QString& idCode, bool isSeal, bool isExpired)
+void ContainerPage::cardChanged(const QString &idCode, bool isSeal, bool isExpired, bool isBlocked, const QByteArray &serialNumber)
 {
+	emit ui->rightPane->idChanged(idCode, serialNumber);
 	if(cardInReader == idCode)
 		return;
 
 	cardInReader = idCode;
 	this->seal = isSeal;
 	this->isExpired = isExpired;
-	if(mainAction && (ui->leftPane->getState() & SignatureContainers))
+	this->isBlocked = isBlocked;
+	if(ui->leftPane->getState() & SignatureContainers)
 		showSigningButton();
 	else if(ui->leftPane->getState() & EncryptedContainer)
 		updateDecryptionButton();
@@ -203,7 +203,24 @@ void ContainerPage::forward(int code)
 		if (newCode != mobileCode)
 		{
 			mobileCode = newCode;
-			emit cardChanged(cardInReader, seal, isExpired);
+			cardChanged(cardInReader, seal, isExpired, isBlocked);
+		}
+		break;
+	}
+	case SignatureSmartID:
+	{
+		SmartIDDialog dlg(topLevelWidget());
+		QString newCode = QSettings().value(QStringLiteral("SmartID")).toString();
+		if(dlg.exec() == QDialog::Accepted)
+		{
+			if(checkAction(SignatureMobile, dlg.idCode(), QString()))
+				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
+		}
+
+		if (newCode != mobileCode)
+		{
+			mobileCode = newCode;
+			cardChanged(cardInReader, seal, isExpired, isBlocked);
 		}
 		break;
 	}
@@ -212,16 +229,6 @@ void ContainerPage::forward(int code)
 		window()->setWindowTitle(tr("DigiDoc4 client"));
 		emit action(code);
 		break;
-	case SignatureSmartID:
-	{
-		SmartIDDialog dlg(topLevelWidget());
-		if(dlg.exec() == QDialog::Accepted)
-		{
-			if(checkAction(SignatureMobile, dlg.idCode(), QString()))
-				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
-		}
-		break;
-	}
 	default:
 		if(checkAction(code, cardInReader, mobileCode))
 			emit action(code);
@@ -287,9 +294,11 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 	bool isSign =
 		actions.contains(SignatureAdd) || actions.contains(SignatureToken) ||
 		actions.contains(SignatureMobile) || actions.contains(SignatureSmartID);
-	mainAction->setButtonEnabled((isSign && !isExpired) ||
-		(actions.contains(DecryptContainer) || actions.contains(DecryptToken)) ||
-		(actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty()));
+	bool isEncrypt =
+		actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
+	bool isDecrypt =
+		actions.contains(DecryptContainer) || actions.contains(DecryptToken);
+	mainAction->setButtonEnabled(isEncrypt || (!isBlocked && ((isSign && !isExpired) || isDecrypt)));
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
 	ui->navigationArea->layout()->invalidate();
 }
