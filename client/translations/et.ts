@@ -1799,11 +1799,13 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
+and enter Mobile-ID PIN2-code.</source>
         <translation>Veendu kontrollkoodi õigsuses
-ja sisesta telefonil Mobiil-ID PIN2-kood.
-Kontrollkood: %1</translation>
+ja sisesta telefonil Mobiil-ID PIN2-kood.</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kontrollkood:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1864,11 +1866,9 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Smart-ID PIN2-code.
-Control code: %1</source>
+and enter Smart-ID PIN2-code.</source>
         <translation>Veendu kontrollkoodi õigsuses
-ja sisesta nutiseadmes Smart-ID PIN2-kood.
-Kontrollkood: %1</translation>
+ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>

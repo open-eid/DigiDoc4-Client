@@ -87,8 +87,9 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->setupUi(d);
 	d->signProgressBar->setMaximum(100);
 	d->code->setBuddy(d->signProgressBar);
-	d->code->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	d->code->setFont(Styles::font(Styles::Regular, 48));
 	d->labelError->setFont(Styles::font(Styles::Regular, 14));
+	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
 	d->signProgressBar->setFont(d->labelError->font());
 	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
@@ -142,6 +143,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			qCWarning(SIDLog) << err;
 			d->labelError->setText(err);
 			d->code->hide();
+			d->controlCode->hide();
 			d->signProgressBar->hide();
 			stop();
 		};
@@ -282,6 +284,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode)
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->labelError->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
+	d->controlCode->setText(tr("Control code:"));
 	d->statusTimer->start();
 	d->adjustSize();
 	d->show();
@@ -305,10 +308,9 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 
 	QByteArray codeDiest = QCryptographicHash::hash(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())), QCryptographicHash::Sha256);
 	int code = codeDiest.right(2).toHex().toUInt(nullptr, 16) % 10000;
-	d->code->setText(tr("Make sure control code matches with one in phone screen\n"
-		"and enter Smart-ID PIN2-code.\nControl code: %1")
-		.arg(code, 4, 10, QChar('0')));
-	d->labelError->clear();
+	d->code->setText(QString("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
+	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
+		"and enter Smart-ID PIN2-code."));
 
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
 		{"relyingPartyUUID", d->UUID

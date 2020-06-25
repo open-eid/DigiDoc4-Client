@@ -83,8 +83,9 @@ MobileProgress::MobileProgress(QWidget *parent)
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->code->setBuddy(d->signProgressBar);
-	d->code->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	d->code->setFont(Styles::font(Styles::Regular, 48));
 	d->labelError->setFont(Styles::font(Styles::Regular, 14));
+	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
 	d->signProgressBar->setFont(d->labelError->font());
 	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
@@ -139,6 +140,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			qCWarning(MIDLog) << err;
 			d->labelError->setText(err);
 			d->code->hide();
+			d->controlCode->hide();
 			d->signProgressBar->hide();
 			d->show();
 			stop();
@@ -264,6 +266,7 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 	d->ssid = ssid;
 	d->cell = '+' + cell;
 	d->labelError->setText(tr("Signing in process"));
+	d->controlCode->setText(tr("Control code:"));
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
 		{"relyingPartyUUID", d->UUID
@@ -301,9 +304,9 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	else
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
 
-	d->code->setText(tr("Make sure control code matches with one in phone screen\n"
-		"and enter Mobile-ID PIN2-code.\nControl code: %1")
-		.arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
+	d->code->setText(QString("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
+	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
+		"and enter Mobile-ID PIN2-code."));
 
 	QHash<QString,QString> lang;
 	lang[QStringLiteral("et")] = QStringLiteral("EST");
