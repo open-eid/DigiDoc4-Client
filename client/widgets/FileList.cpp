@@ -148,8 +148,15 @@ void FileList::save(FileItem *item)
 	int i;
 	if(documentModel && (i = index(item)) != -1)
 	{
-		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
-			QFileInfo(container).dir().absolutePath() + QDir::separator() + item->getFile());
+		QString extension = QFileInfo(item->getFile()).suffix();
+		QString capitalized = extension[0].toUpper() + extension.mid(1);
+		QString dest = FileDialog::getSaveFileName(this,
+			tr("Save file"), QFileInfo(container).dir().absolutePath() + QDir::separator() + item->getFile(),
+			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
+
+		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
+				dest.append(QStringLiteral(".%1").arg(extension));
+
 		if(dest.isEmpty())
 			return;
 		QFile::remove( dest );
