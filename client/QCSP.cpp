@@ -222,6 +222,7 @@ void QCSP::login(const TokenData &t)
 	CertCloseStore(s, 0);
 	CertFreeCertificateContext(tmp);
 	qDebug() << "Selected cert" << t.cert().subjectInfo("CN");
+	d->error = QCSP::PinOK;
 }
 
 QByteArray QCSP::sign(int method, const QByteArray &digest) const
