@@ -542,8 +542,14 @@ bool DigiDoc::open( const QString &file )
 		dlg.addButton(tr("YES"), ContainerSave);
 		return dlg.exec() == ContainerSave;
 	};
-	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf") && !serviceConfirmation())
+	QString suffix = QFileInfo(file).suffix().toLower();
+#ifdef __APPLE__
+	if((suffix == QStringLiteral("pdf") || suffix == QStringLiteral("ddoc")) && !serviceConfirmation())
 		return false;
+#else
+	if(suffix == QStringLiteral("pdf") && !serviceConfirmation())
+		return false;
+#endif
 
 	try
 	{
@@ -552,7 +558,7 @@ bool DigiDoc::open( const QString &file )
 		{
 			const DataFile *f = b->dataFiles().at(0);
 #ifdef Q_OS_MAC
-			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc") && !serviceConfirmation())
+			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc") && serviceConfirmation())
 #else
 			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc"))
 #endif
