@@ -21,9 +21,12 @@
 
 #include <common/QPCSC.h>
 
+#include <QtCore/QEventLoop>
 #include <QtCore/QVector>
 
 #include <wincrypt.h>
+
+#include <thread>
 
 int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo, QByteArray &derived) const
@@ -44,8 +47,15 @@ int QWin::derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArra
 	NCRYPT_KEY_HANDLE publicKeyHandle = 0;
 	NCRYPT_SECRET_HANDLE sharedSecret = 0;
 	SECURITY_STATUS err = 0;
-	if((err = NCryptImportKey(prov, NULL, BCRYPT_ECCPUBLIC_BLOB, nullptr, &publicKeyHandle, PBYTE(blob.data()), DWORD(blob.size()), 0)) ||
-		(err = NCryptSecretAgreement(key, publicKeyHandle, &sharedSecret, 0)))
+	QEventLoop e;
+	std::thread([&]{
+		if((err = NCryptImportKey(prov, NULL, BCRYPT_ECCPUBLIC_BLOB, nullptr, &publicKeyHandle, PBYTE(blob.data()), DWORD(blob.size()), 0)))
+			return e.exit();
+		err = NCryptSecretAgreement(key, publicKeyHandle, &sharedSecret, 0);
+		e.exit();
+	}).detach();
+	e.exec();
+	if(err)
 	{
 		if(publicKeyHandle)
 			NCryptFreeObject(publicKeyHandle);
