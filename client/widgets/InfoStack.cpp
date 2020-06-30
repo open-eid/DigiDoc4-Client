@@ -152,20 +152,19 @@ void InfoStack::update()
 
 	ui->alternateIcon->setVisible(certIsResident || certType & SslCertificate::TempelType);
 	ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
+	ui->labelSerialNumber->setHidden(certType & SslCertificate::TempelType);
+	ui->valueSerialNumber->setHidden(certType & SslCertificate::TempelType);
 	if(certType & SslCertificate::TempelType)
 	{
 		ui->labelGivenNames->setText(tr("NAME"));
 		ui->labelSurname->clear();
 		ui->labelPersonalCode->setText(tr("SERIAL"));
 		ui->labelCitizenship->setText(tr("COUNTRY"));
-		ui->labelSerialNumber->hide();
-		ui->valueSerialNumber->hide();
 
 		clearPicture();
 		ui->alternateIcon->load(QStringLiteral(":/images/icon_digitempel.svg"));
 		ui->alternateIcon->resize(100, 100);
 		ui->alternateIcon->move(10, 25);
-		ui->alternateIcon->show();
 	}
 	else
 	{
@@ -175,7 +174,7 @@ void InfoStack::update()
 		ui->labelCitizenship->setText(tr("CITIZENSHIP"));
 		ui->labelSerialNumber->setText(tr("DOCUMENT"));
 	}
-	ui->valueSpacer->setHidden(ui->valueSerialNumber->text().isEmpty());
+	ui->valueSpacer->setVisible(ui->valueExpiryDate->isVisible() && ui->valueSerialNumber->isVisible());
 }
 
 void InfoStack::update(const SslCertificate &cert)
