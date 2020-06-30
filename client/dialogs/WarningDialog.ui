@@ -13,12 +13,6 @@
     <height>260</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="maximumSize">
    <size>
     <width>650</width>
@@ -32,27 +26,21 @@ border-radius: 2px;
 background-color: #FFFFFF;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="WarningDialogLayout">
    <property name="leftMargin">
-    <number>1</number>
+    <number>15</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>25</number>
    </property>
    <property name="rightMargin">
-    <number>1</number>
+    <number>15</number>
    </property>
    <property name="bottomMargin">
     <number>25</number>
    </property>
    <item>
     <widget class="QLabel" name="text">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>520</width>
@@ -69,10 +57,7 @@ background-color: #FFFFFF;
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLabel
-{
-margin: 10px 15px 0px 15px;  border: none;
-}</string>
+      <string notr="true">QLabel { border: none; }</string>
      </property>
      <property name="text">
       <string notr="true">TextLabel</string>
@@ -81,7 +66,7 @@ margin: 10px 15px 0px 15px;  border: none;
       <enum>Qt::RichText</enum>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -96,12 +81,6 @@ margin: 10px 15px 0px 15px;  border: none;
    </item>
    <item>
     <widget class="AccordionTitle" name="showDetails" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -121,26 +100,11 @@ margin: 10px 15px 0px 15px;  border: none;
    </item>
    <item>
     <widget class="QLabel" name="details">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>520</width>
-       <height>30</height>
-      </size>
-     </property>
      <property name="cursor">
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLabel
-{
-margin: 0px 15px 0px 15px; border: none;
-}</string>
+      <string notr="true">QLabel { border: none; }</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -173,21 +137,15 @@ margin: 0px 15px 0px 15px; border: none;
      <property name="styleSheet">
       <string notr="true">border: none;</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>15</number>
-      </property>
+     <layout class="QHBoxLayout" name="buttonLayout">
       <property name="topMargin">
        <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>15</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="leftSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -248,7 +206,7 @@ QPushButton:hover:!pressed {
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer name="rightSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
