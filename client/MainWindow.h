@@ -98,8 +98,8 @@ private:
 	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void noReader_NoCard_Loading_Event(NoCardInfo::Status status);
-	void onCryptoAction(int code, const QString &id, const QString &phone);
-	void onSignAction(int code, const QString &info1, const QString &info2);
+	void onCryptoAction(int action, const QString &id, const QString &phone);
+	void onSignAction(int action, const QString &info1, const QString &info2);
 	void openContainer();
 	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
 	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);

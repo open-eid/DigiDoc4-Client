@@ -1664,10 +1664,6 @@ ID-КАРТОЙ</translation>
         <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
     </message>
     <message>
-        <source>Opening</source>
-        <translation>Открывается</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Подписывание</translation>
     </message>

@@ -1661,10 +1661,6 @@ ID-KAARDIGA</translation>
         <translation>Suunamine on salvestatud, ning Sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
     </message>
     <message>
-        <source>Opening</source>
-        <translation>Avamine</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
