@@ -828,10 +828,6 @@
         <translation>YES</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</translation>
     </message>
@@ -1278,10 +1274,6 @@
         <translation>SHOW CERTIFICATE</translation>
     </message>
     <message>
-        <source>Key</source>
-        <translation>Key</translation>
-    </message>
-    <message>
         <source>Crypto method</source>
         <translation>Crypto method</translation>
     </message>
@@ -1298,10 +1290,6 @@
         <translation>ConcatKDF digest method</translation>
     </message>
     <message>
-        <source>Expires</source>
-        <translation>Expires</translation>
-    </message>
-    <message>
         <source>Issuer</source>
         <translation>Issuer</translation>
     </message>
@@ -1314,6 +1302,14 @@
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
         <translation>Show certificate</translation>
+    </message>
+    <message>
+        <source>Recipient</source>
+        <translation>Recipient</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
     </message>
 </context>
 <context>
@@ -2693,10 +2689,6 @@ Additional licenses and components</translation>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Text files (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Error occurred</translation>
     </message>
     <message>
         <source>Failed write to file!</source>

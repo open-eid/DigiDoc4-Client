@@ -29,13 +29,6 @@ QWidget#KeyDialog{ border-radius: 2px; }
   </property>
   <layout class="QVBoxLayout" name="KeyDialogLayout">
    <item>
-    <widget class="QLabel" name="title">
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QTreeWidget" name="view">
      <property name="styleSheet">
       <string notr="true">#view {
@@ -43,7 +36,7 @@ QWidget#KeyDialog{ border-radius: 2px; }
 }
 QHeaderView::section {
 	border: 1px solid #D9D9D8;
-	border-width: 0px 1px 1px 0px;
+	border-width: 0px 0px 1px 0px;
 	padding: 2px 0px 3px 5px;
 	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                       stop:0 #FFFFFF, stop:1 #FFFFFF);
