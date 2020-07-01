@@ -211,8 +211,7 @@ void FirstRun::loadImages()
 {
 	QString lang = Common::language();
 	auto loadPixmap = [lang](const QString &base, QLabel *label) {
-		label->setPixmap(QPixmap(QStringLiteral(":/images/%1_%2.png").arg(base, lang))
-			.scaled(label->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+		label->setPixmap(QPixmap(QStringLiteral(":/images/%1_%2.png").arg(base, lang)));
 	};
 	loadPixmap(QStringLiteral("intro_sign-select"), ui->signImage1);
 	loadPixmap(QStringLiteral("intro_sign-sign"), ui->signImage2);

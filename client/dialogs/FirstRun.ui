@@ -797,6 +797,12 @@ QPushButton:disabled {
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
        </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_sign-sign_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="signImage1">
        <property name="geometry">
@@ -811,6 +817,12 @@ border-radius: 3px;</string>
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
        </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_sign-select_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="signImage3">
        <property name="geometry">
@@ -824,6 +836,12 @@ border-radius: 3px;</string>
        <property name="styleSheet">
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_sign-pin_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QPushButton" name="signNext">
@@ -1028,9 +1046,6 @@ image: url(:/images/icon_dot.png);</string>
          <height>32</height>
         </rect>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
       </widget>
       <widget class="QSvgWidget" name="signTwo" native="true">
        <property name="geometry">
@@ -1041,9 +1056,6 @@ image: url(:/images/icon_dot.png);</string>
          <height>32</height>
         </rect>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
       </widget>
       <widget class="QSvgWidget" name="signThree" native="true">
        <property name="geometry">
@@ -1053,9 +1065,6 @@ image: url(:/images/icon_dot.png);</string>
          <width>32</width>
          <height>32</height>
         </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
        </property>
       </widget>
       <widget class="QLabel" name="signLabel1">
@@ -1336,9 +1345,6 @@ image: url(:/images/icon_dot_active.png);</string>
          <height>32</height>
         </rect>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
       </widget>
       <widget class="QSvgWidget" name="cryptoTwo" native="true">
        <property name="geometry">
@@ -1349,9 +1355,6 @@ image: url(:/images/icon_dot_active.png);</string>
          <height>32</height>
         </rect>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
       </widget>
       <widget class="QSvgWidget" name="cryptoThree" native="true">
        <property name="geometry">
@@ -1361,9 +1364,6 @@ image: url(:/images/icon_dot_active.png);</string>
          <width>32</width>
          <height>32</height>
         </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
        </property>
       </widget>
       <widget class="QLabel" name="cryptoLabel1">
@@ -1672,6 +1672,12 @@ QPushButton:disabled {
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
        </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_crypto-encrypt_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="cryptoImage1">
        <property name="geometry">
@@ -1686,6 +1692,12 @@ border-radius: 3px;</string>
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
        </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_crypto-select_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="cryptoImage2">
        <property name="geometry">
@@ -1699,6 +1711,12 @@ border-radius: 3px;</string>
        <property name="styleSheet">
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_crypto-recipient_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
@@ -2004,6 +2022,12 @@ QPushButton:disabled {
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
        </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_eid-info_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="eidImage1">
        <property name="geometry">
@@ -2017,6 +2041,12 @@ border-radius: 3px;</string>
        <property name="styleSheet">
         <string notr="true">border: 1px solid #DEE4E9;
 border-radius: 3px;</string>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../images/images.qrc">:/images/intro_eid-manage_en.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
@@ -2088,6 +2118,8 @@ border-radius: 3px;</string>
   <tabstop>eidGotoEncryption</tabstop>
   <tabstop>eidGotoEid</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
  <connections/>
 </ui>
