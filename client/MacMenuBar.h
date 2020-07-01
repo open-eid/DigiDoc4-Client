@@ -1,5 +1,5 @@
 /*
- * QDigiDocClient
+ * QEstEidCommon
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +19,37 @@
 
 #pragma once
 
-#include "QCryptoBackend.h"
+#include <QtWidgets/QMenuBar>
 
-#include <qt_windows.h>
-#include <ncrypt.h>
-
-class QWin: public QCryptoBackend
+class MacMenuBar: public QMenuBar
 {
 	Q_OBJECT
 public:
-	explicit QWin(QObject *parent = nullptr): QCryptoBackend(parent) {}
+	enum ActionType
+	{
+		AboutAction,
+		CloseAction,
+		PreferencesAction
+	};
 
-	void logout() override {};
+	explicit MacMenuBar();
+	~MacMenuBar();
 
-protected:
-	int derive(NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo, QByteArray &derived) const;
+	QAction* addAction(ActionType type, const QObject *receiver, const char *member);
+	QMenu* fileMenu() const;
+	QMenu* dockMenu() const;
 
-	NCRYPT_HANDLE keyProvider(NCRYPT_HANDLE key) const;
-	static QByteArray prop(NCRYPT_HANDLE handle, LPCWSTR param, DWORD flags = 0);
+private slots:
+	void activateWindow(QAction *a);
+
+private:
+	bool eventFilter(QObject *o, QEvent *e);
+	QString title(QObject *o) const;
+	QString typeName(ActionType type) const;
+
+	QMenu		*file = nullptr;
+	QHash<ActionType,QAction*> actions;
+	QMenu		*dock = new QMenu;
+	QAction		*dockSeparator = nullptr;
+	QActionGroup *windowGroup = new QActionGroup(dock);
 };

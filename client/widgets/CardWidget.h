@@ -33,6 +33,7 @@ class CardWidget : public StyledWidget
 
 public:
 	explicit CardWidget(QWidget *parent = nullptr);
+	explicit CardWidget(bool popup, QWidget *parent = nullptr);
 	~CardWidget() final;
 
 	void clearPicture();
@@ -52,4 +53,5 @@ private:
 	Ui::CardWidget *ui;
 	TokenData t;
 	QSvgWidget *seal = nullptr;
+	bool isPopup = false;
 };

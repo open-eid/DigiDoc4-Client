@@ -66,6 +66,7 @@ public:
 #endif
 	bool initialized();
 	void loadTranslation( const QString &lang );
+	QWidget* mainWindow();
 	bool notify( QObject *o, QEvent *e ) override;
 	QSigner* signer() const;
 	int run();
@@ -74,21 +75,21 @@ public:
 	static void initDiagnosticConf();
 	static uint readTSLVersion(const QString &path);
 	static void addRecent( const QString &file );
-	static QVariant confValue( ConfParameter parameter, const QVariant &value = QVariant() );
+	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
 	static void clearConfValue( ConfParameter parameter );
 	static void setConfValue( ConfParameter parameter, const QVariant &value );
 
 public Q_SLOTS:
 	void showAbout();
 	void showSettings();
-	void showClient(const QStringList &params = QStringList(), bool crypto = false, bool sign = false);
-	void showWarning(const QString &msg, const QString &details = QString());
+	void showClient(const QStringList &params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
+	void showWarning(const QString &msg, const QString &details = {});
 
 private Q_SLOTS:
 	void browse( const QUrl &url );
 	void closeWindow();
 	void mailTo( const QUrl &url );
-	void parseArgs( const QString &msg = QString() );
+	void parseArgs(const QString &msg = {});
 	void parseArgs( const QStringList &args );
 	void showTSLWarning( QEventLoop *e );
 
@@ -98,7 +99,6 @@ Q_SIGNALS:
 private:
 	void activate( QWidget *w );
 	bool event( QEvent *e ) override;
-	QWidget* mainWindow();
 	void migrateSettings();
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
 	QWidget* uniqueRoot();

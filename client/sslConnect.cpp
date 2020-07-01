@@ -25,6 +25,8 @@
 #include <common/Configuration.h>
 
 #include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
+
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtWidgets/QProgressBar>
@@ -43,6 +45,13 @@ SSLConnect::SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject 
 	: QNetworkAccessManager(parent)
 	, d(new Private)
 {
+	QList<QSslCertificate> trusted;
+#ifdef CONFIG_URL
+	d->ssl.setCaCertificates({});
+	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
+#endif
+
 	d->ssl.setPrivateKey(key);
 	d->ssl.setLocalCertificate(cert);
 	connect(this, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
@@ -53,9 +62,11 @@ SSLConnect::SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject 
 			{
 			case QSslError::UnableToGetLocalIssuerCertificate:
 			case QSslError::CertificateUntrusted:
-				//if(trusted.contains(reply->sslConfiguration().peerCertificate()))
+			case QSslError::SelfSignedCertificateInChain:
+				if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
 					ignore << error;
-				break;
+					break;
+				}
 			default: break;
 			}
 		}

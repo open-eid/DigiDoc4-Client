@@ -93,6 +93,7 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 				QString version = s.value(QStringLiteral("/DisplayVersion")).toString();
 				QString type = s.value(QStringLiteral("/ReleaseType")).toString();
 				if(!type.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
+					!name.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
 					name.contains(QRegExp(names.join('|'), Qt::CaseInsensitive)))
 					packages << packageName(name, version, withName);
 				s.endGroup();
@@ -121,8 +122,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList base = packages({
-		"Eesti ID-kaardi tarkvara", "Estonian ID-card software", "eID software"}, false);
+	QStringList base = packages({"eID software"}, false);
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
 	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << " (" << QSysInfo::WordSize << " bit)<br />";
@@ -148,7 +148,7 @@ void Diagnostics::run()
 		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
 		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
 		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe",
-		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "libxml2",
+		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "xsec_2_0", "libxml2",
 		"advapi32", "crypt32", "winscard"};
 	for(const QString &lib: dlls)
 	{
@@ -219,10 +219,9 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList browsers = packages({"Mozilla Firefox", "Google Chrome"});
+	QStringList browsers = packages({"Mozilla Firefox", "Google Chrome", "Microsoft EDGE"});
 	QSettings reg(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Internet Explorer"), QSettings::NativeFormat);
-	browsers << QStringLiteral("Internet Explorer (%1)").arg(
-		reg.value("svcVersion", reg.value( "Version" ) ).toString() );
+	browsers << QStringLiteral("Internet Explorer (%1)").arg(reg.value("svcVersion", reg.value("Version")).toString());
 	s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
 	info.clear();

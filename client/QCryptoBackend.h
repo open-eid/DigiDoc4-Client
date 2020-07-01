@@ -19,33 +19,35 @@
 
 #pragma once
 
-#include <QDialog>
-#include <QString>
+#include <QObject>
 
-namespace Ui {
-class WarningDialog;
-}
+class TokenData;
 
-class WarningDialog : public QDialog
+class QCryptoBackend: public QObject
 {
 	Q_OBJECT
-
 public:
-	WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
-	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
-	~WarningDialog();
+	enum PinStatus
+	{
+		PinOK,
+		PinCanceled,
+		PinIncorrect,
+		PinLocked,
+		DeviceError,
+		GeneralError,
+		UnknownError
+	};
 
-    void addButton(const QString& label, int ret, bool red = false);
-	void setButtonSize(int width, int margin);
-	void setCancelText(const QString& label);
-    void resetCancelStyle();
-	void setText(const QString& text);
-	static void warning(QWidget *parent, const QString& text);
 
-private:
-	Ui::WarningDialog *ui;
-	int buttonMargin = 35;
-	int buttonOffset = 2;
-	int buttonWidth = 120;
+	explicit QCryptoBackend(QObject *parent = nullptr);
+	~QCryptoBackend() override = default;
+
+	virtual QList<TokenData> tokens() const = 0;
+	virtual QByteArray decrypt(const QByteArray &data) const = 0;
+	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
+	virtual PinStatus lastError() const = 0;
+	virtual void login(const TokenData &cert) = 0;
+	virtual void logout() = 0;
+	virtual QByteArray sign(int method, const QByteArray &digest) const = 0;
 };
-

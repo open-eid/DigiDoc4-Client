@@ -32,7 +32,7 @@
       <property name="styleSheet">
        <string notr="true">#langPage { background: qradialgradient(cx:0.5, cy:0.5, radius: 1, fx:0.5, fy:1, stop:0 white, stop:0.59 white, stop:1 #B9D9EB) }</string>
       </property>
-      <widget class="QComboBox" name="lang">
+      <widget class="ComboBox" name="lang">
        <property name="geometry">
         <rect>
          <x>412</x>
@@ -58,43 +58,54 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QComboBox {
-	image: none;
+    padding: 0px 10px;
+    image: none;
     border: 1px solid #DEE4E9;
     border-radius: 2px;
     background-color: #FFFFFF;
-	color: #353739;
-	padding: 0px;
-	padding-left:12px;
+    color: #353739;
+    padding: 0px;
+    padding-left:12px;
 }
 
 /* list */
-QComboBox QAbstractItemView {
-	image: none;
+QComboBox QWidget#popup {
+    background-color: transparent;
+}
+QComboBox QWidget#content {
     border: 1px solid #DEE4E9;
     border-radius: 2px;
-	padding: 3px 3px 3px 3px;
     background-color: #FFFFFF;
 }
 
 /* rows */
-QComboBox:item {
-    background-color: #FFFFFF;
-	color: #353739;
+QComboBox QPushButton {
+    margin: 3px;
+    padding: 0px 4px 0px 8px;
+    border: 0px;
+    color: #353739;
+    text-align: left;
+}
+QComboBox QPushButton#selected {
+    background-image: url(:/images/arrow_up.svg);
+    background-position: right center;
+    background-repeat: none;
+    background-origin: content;
 }
 
-/* selected row */
-QComboBox:item:selected {
+/* hover row */
+QComboBox QPushButton:hover {
     background-color: #006EB5;
     color: #FFFFFF;
+}
+QComboBox QPushButton:hover#selected {
+    background-image: url(:/images/arrow_up_white.svg);
 }
 
 /* drop-down button*/
 QComboBox::drop-down {
     background-color: #FFFFFF;
     width: 25px;
-    border-left-width: 1px;
-    border-left-color: #DEE4E9;
-    border-left-style: solid;
 }
 
 /* drop-down button image*/
@@ -2014,6 +2025,11 @@ border-radius: 3px;</string>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>widgets/ComboBox.h</header>
+  </customwidget>
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>

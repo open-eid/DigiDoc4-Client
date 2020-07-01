@@ -24,7 +24,7 @@
 
    * Install
 
-         sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev
+         sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
 
    * Also runtime dependency opensc-pkcs11 is needed with the [EstEID ECDH token support](https://github.com/OpenSC/OpenSC/commit/2846295e1f12790bd9d8b01531affbf6feccf22c); until OpenSC distribution with these changes is not released the library has to be built manually or downloaded from [installer.id.ee](https://installer.id.ee/media/ubuntu/pool/main/o/opensc/)
 
@@ -72,7 +72,7 @@
 
         mkdir build
         cd build
-        cmake -DQt5_DIR="~/cmake_builds/Qt-5.9.1-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
+        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.8-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
 
 4. Build
 

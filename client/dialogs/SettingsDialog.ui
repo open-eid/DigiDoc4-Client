@@ -23,12 +23,8 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLabel {
-	color: #000000
-}
-QCheckBox {
-	color: #000000
-}
+   <string notr="true">QLabel,
+QCheckBox,
 QRadioButton {
 	color: #000000
 }</string>
@@ -66,21 +62,21 @@ QRadioButton {
      <property name="styleSheet">
       <string notr="true">#leftPane {
 	background-color: #ffffff;
-}
-QWidget {
 	border-right: 1px solid #DEE4E9;
 }
 QPushButton {
+	background-color: #ffffff;
 	border: none;
-	background-color: #F4F5F6;
-	color: #006EB5;
 	text-align:left;
 	padding-left: 21;
 }
-
-QPushButton:!checked{
-	background-color: #ffffff;
-	color: #000000;
+QPushButton:checked {
+	background-color: #F4F5F6;
+	color: #006EB5;
+}
+QPushButton:hover {
+	background-color: #FAFAFB;
+	color: #006EB5;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="leftPaneLayout">
@@ -1024,7 +1020,7 @@ QScrollBar {
 	border: none;
 	background: #FFFFFF;
 }
-QScrollBar::handle:vertical{
+QScrollBar::handle:vertical {
 	background-color: #DEE4E9;
 	margin: 0 0 0 0;
 	border-radius: 2px;
@@ -1037,8 +1033,10 @@ QScrollBar::add-line:vertical {
 QScrollBar::sub-line:vertical {
       border: none;
       background: none;
-}
-</string>
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -1111,27 +1109,27 @@ Additional licenses and components</string>
 	color: #363739;
 	background: #FFFFFF;
 }
-QScrollBar{
+QScrollBar {
 	width: 10px;
 	padding: 5px 5px 5px 0;
 	margin: 2px 0px 2px 0;
 	border: none;
 	background: #FFFFFF;
 }
-QScrollBar::handle:vertical{
+QScrollBar::handle:vertical {
 	background-color: #DEE4E9;
 	margin: 0 0 0 0;
 	border-radius: 2px;
 	height: 145px;
 }
-QScrollBar::add-line:vertical {
-      border: none;
-      background: none;
-}
+QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
       border: none;
       background: none;
 }</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="readOnly">
           <bool>true</bool>

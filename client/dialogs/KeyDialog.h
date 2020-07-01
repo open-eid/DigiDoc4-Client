@@ -19,10 +19,9 @@
 
 #pragma once
 
-#include "crypto/CryptoDoc.h"
-
 #include <QDialog>
 
+class CKey;
 namespace Ui { class KeyDialog; }
 
 class KeyDialog: public QDialog
@@ -34,6 +33,5 @@ public:
 	~KeyDialog() final;
 
 private:
-	CKey k;
 	Ui::KeyDialog *d;
 };

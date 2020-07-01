@@ -219,10 +219,6 @@
         <translation>Загружаем список TSL</translation>
     </message>
     <message>
-        <source>TSL signing certs</source>
-        <translation>Сертификаты подписывания TSL</translation>
-    </message>
-    <message>
         <source>Create %1</source>
         <translation>Создайте %1</translation>
     </message>
@@ -269,14 +265,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>ID card in reader</source>
-        <translation>В считывателе ID-карта</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>В считывателе %1</translation>
-    </message>
-    <message>
         <source>LOAD</source>
         <translation>ЗАГРУ
 ЗИТЬ</translation>
@@ -311,6 +299,10 @@
     <message>
         <source>Authentication certificate</source>
         <translation>Сертификат идентификации</translation>
+    </message>
+    <message>
+        <source>Selected is </source>
+        <translation>Выбранный </translation>
     </message>
 </context>
 <context>
@@ -746,6 +738,18 @@
         <source>Certificate Propagation service status: </source>
         <translation>Статус Certificate Propagation сервиса: </translation>
     </message>
+    <message>
+        <source>is set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TSL signing certs</source>
+        <translation>Сертификаты подписывания TSL</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -802,32 +806,28 @@
         <translation>Не удается сохранить контейнер</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Не удается подписать контейнер</translation>
+        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
+        <translation>Не удалось подписать контейнер. Проверьте настройки доступа к меткам времени.</translation>
     </message>
     <message>
-        <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
-        <translation>Отсутствует IP-основанный доступ. Проверьте настройки справки доступа.</translation>
+        <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
+        <translation>Отсутствует доступ по IP-адресу. Проверьте настройки доступа к услуге подтверждения действительности.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF и DDOC файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;здесь&lt;/a&gt;. Желаете продолжить?</translation>
-    </message>
-    <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;здесь&lt;/a&gt;.Желаете продолжить?</translation>
+        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;здесь&lt;/a&gt;.&lt;br&gt;Желаете продолжить?</translation>
     </message>
     <message>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
+        <source>YES</source>
+        <translation>ДА</translation>
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
@@ -845,10 +845,6 @@
 <context>
     <name>DocumentModel</name>
     <message>
-        <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>Это выполняемый файл! Выполняемый файл может содержать вирусы или другой вредоносный код которые могут повредить ваш компьютер. Вы уверены что хотите запустить?</translation>
-    </message>
-    <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Файл с таким расширением не может быть открыт в клиенте DigiDoc4. Загрузите файл, чтобы просмотреть его.</translation>
     </message>
@@ -863,14 +859,6 @@
     <message>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1288,10 +1276,6 @@
         <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
     </message>
     <message>
-        <source>Key</source>
-        <translation>Ключ</translation>
-    </message>
-    <message>
         <source>Crypto method</source>
         <translation>Метод шифровки</translation>
     </message>
@@ -1308,10 +1292,6 @@
         <translation>Метод подсчета ConcatKDF</translation>
     </message>
     <message>
-        <source>Expires</source>
-        <translation>Истекает</translation>
-    </message>
-    <message>
         <source>Issuer</source>
         <translation>Выдавший</translation>
     </message>
@@ -1324,6 +1304,14 @@
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
         <translation>Показать сертификат</translation>
+    </message>
+    <message>
+        <source>Recipient</source>
+        <translation>Получател</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Дата окончания</translation>
     </message>
 </context>
 <context>
@@ -1357,6 +1345,25 @@ LDAP сервер недоступен.</translation>
     <message>
         <source>Failed to start ssl</source>
         <translation>Не удалось запустить SSL</translation>
+    </message>
+</context>
+<context>
+    <name>MacMenuBar</name>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Файл</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation>Информация</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
     </message>
 </context>
 <context>
@@ -1402,6 +1409,10 @@ ID-КАРТОЙ</translation>
 </context>
 <context>
     <name>MainWindow</name>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
+    </message>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -1653,10 +1664,6 @@ ID-КАРТОЙ</translation>
         <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
     </message>
     <message>
-        <source>Opening</source>
-        <translation>Открывается</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Подписывание</translation>
     </message>
@@ -1704,6 +1711,10 @@ ID-КАРТОЙ</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Карта в считывателе не является эстонской ID-картой</translation>
+    </message>
+    <message>
+        <source>Decrypting</source>
+        <translation>Расшифровка</translation>
     </message>
 </context>
 <context>
@@ -1783,11 +1794,13 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
+and enter Mobile-ID PIN2-code.</source>
         <translation>Убедитесь в правильности контрольного кодa
-и введите PIN2-код для Mobiil-ID.
-Kонтрольный код: %1</translation>
+и введите PIN2-код для Mobiil-ID.</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kонтрольный код:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1848,11 +1861,9 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Smart-ID PIN2-code.
-Control code: %1</source>
+and enter Smart-ID PIN2-code.</source>
         <translation>Убедитесь в правильности контрольного кодa
-и введите PIN2-код для Smart-ID.
-Kонтрольный код: %1</translation>
+и введите PIN2-код для Smart-ID.</translation>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1871,8 +1882,8 @@ Kонтрольный код: %1</translation>
         <translation>Откройте приложение Smart-ID на смарт-устройстве и подтвердите это устройство для подписывания.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>С этого IP-адреса превышен месячный лимит бесплатных подписей %1. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Подробнее читайте здесь&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1884,7 +1895,7 @@ Kонтрольный код: %1</translation>
     </message>
     <message>
         <source>Sign document</source>
-        <translation>Подписать документ</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
@@ -1901,6 +1912,14 @@ Kонтрольный код: %1</translation>
     <message>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
         <translation>Срок действия вашей транзакции Smart-ID истек. Пожалуйста, попробуйте еще раз.</translation>
+    </message>
+    <message>
+        <source>Failed to connect with service server. Please check your network settings or try again later.</source>
+        <translation>Не удалось связаться с сервером услуги. Пожалуйста, проверьте настройки сети или повторите попытку позже.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. Check your %1 service access settings.</source>
+        <translation>Не удалось отправить запрос. Проверьте настройки доступа услуги %1.</translation>
     </message>
 </context>
 <context>
@@ -2382,10 +2401,6 @@ Kонтрольный код: %1</translation>
         <translation>Роль / pезолюция</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Адрес</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>Город</translation>
     </message>
@@ -2412,6 +2427,10 @@ Kонтрольный код: %1</translation>
     <message>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -2533,10 +2552,6 @@ Kонтрольный код: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>Желаю подписывать ИД-картами Латвии и Литвы</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Начать заново</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2673,10 +2688,6 @@ Additional licenses and components</source>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Текстовые файлы (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Возникла ошибка</translation>
     </message>
     <message>
         <source>Failed write to file!</source>

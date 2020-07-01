@@ -307,7 +307,7 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->activeWindow());
+		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->mainWindow());
 		dlg.setCancelText(tr("NO"));
 		dlg.addButton(tr("YES"), 1);
 		if(dlg.exec() != 1)
@@ -523,27 +523,17 @@ bool DigiDoc::open( const QString &file )
 {
 	qApp->waitForTSL( file );
 	clear();
-	QString suffix = QFileInfo(file).suffix().toLower();
-#ifdef __APPLE__
-	if(suffix == QStringLiteral("pdf") || suffix == QStringLiteral("ddoc"))
-#else
-	if(suffix == QStringLiteral("pdf"))
-#endif
+	if(QFileInfo(file).suffix().toLower() == QStringLiteral("pdf"))
 	{
 		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 		if(parent == nullptr)
 			parent = qApp->activeWindow();
-#ifdef Q_OS_MAC 
-		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-				"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
-				"Do you want to continue?"), parent);
-#else
+
 		WarningDialog dlg(tr("Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-				"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
-				"Do you want to continue?"), parent);
-#endif
+			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+			"Do you want to continue?"), parent);
 		dlg.setCancelText(tr("CANCEL"));
-		dlg.addButton(tr("OK"), ContainerSave);
+		dlg.addButton(tr("YES"), ContainerSave);
 		if(dlg.exec() != ContainerSave)
 			return false;
 	}
@@ -656,7 +646,7 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 		qApp->showWarning(tr("Please check your computer time. <a href='https://id.ee/index.php?id=39513'>Additional information</a>"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
-			"Check the settings of your server access certificate."), causes.join('\n')); break;
+			"Check your validity confirmation service access settings."), causes.join('\n')); break;
 	case Exception::TSTooManyRequests:
 		qApp->showWarning(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"), causes.join('\n')); break;
@@ -704,7 +694,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			return sign(city, state, zip, country, role, signer);
 		}
 		else
-			setLastError( tr("Failed to sign container"), e );
+			setLastError( tr("Failed to sign container. Check your Time-Stamping service access settings."), e );
 	}
 	return false;
 }

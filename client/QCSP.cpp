@@ -23,11 +23,12 @@
 #include "TokenData.h"
 
 #include <QtCore/QDebug>
-#include <QtWidgets/QApplication>
 
 #include <wincrypt.h>
 
 #include <openssl/obj_mac.h>
+
+#include <thread>
 
 class QCSP::Private
 {
@@ -51,7 +52,7 @@ QCSP::~QCSP()
 	delete d;
 }
 
-QByteArray QCSP::decrypt( const QByteArray &data )
+QByteArray QCSP::decrypt(const QByteArray &data) const
 {
 	d->error = PinOK;
 	if(!d->cert)
@@ -73,8 +74,14 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 	{
 	case CERT_NCRYPT_KEY_SPEC:
 	{
-		err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()), nullptr,
-			PBYTE(result.data()), DWORD(result.size()), &size, NCRYPT_PAD_PKCS1_FLAG);
+		QEventLoop e;
+		std::thread([&]{
+			err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()), nullptr,
+				PBYTE(result.data()), DWORD(result.size()), &size, NCRYPT_PAD_PKCS1_FLAG);
+			e.exit();
+		}).detach();
+		e.exec();
+
 		if(freeKey)
 			NCryptFreeObject(key);
 		break;
@@ -83,8 +90,13 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 	{
 		result = data;
 		std::reverse(result.begin(), result.end());
-		if(!CryptDecrypt(key, 0, true, 0, LPBYTE(result.data()), &size))
-			err = SECURITY_STATUS(GetLastError());
+		QEventLoop e;
+		std::thread([&]{
+			if(!CryptDecrypt(key, 0, true, 0, LPBYTE(result.data()), &size))
+				err = SECURITY_STATUS(GetLastError());
+			e.exit();
+		}).detach();
+		e.exec();
 		if(freeKey)
 			CryptReleaseContext(key, 0);
 		break;
@@ -113,7 +125,7 @@ QByteArray QCSP::decrypt( const QByteArray &data )
 QByteArray QCSP::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	d->error = PinUnknown;
+	d->error = PinOK;
 	QByteArray derived;
 	DWORD flags = CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG;
 	HCRYPTPROV_OR_NCRYPT_KEY_HANDLE key = 0;
@@ -197,7 +209,7 @@ QList<TokenData> QCSP::tokens() const
 		}
 		}
 		if(t.card().isEmpty())
-			t.setCard(cert.subjectInfo("CN"));
+			t.setCard(cert.subjectInfo("CN") + "-" + cert.serialNumber());
 		t.setCert(cert);
 		certs << t;
 	}
@@ -206,7 +218,7 @@ QList<TokenData> QCSP::tokens() const
 	return certs;
 }
 
-void QCSP::selectCert(const TokenData &t)
+void QCSP::login(const TokenData &t)
 {
 	if(d->cert)
 		CertFreeCertificateContext(d->cert);
@@ -274,17 +286,19 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 		algo.resize(size/2 - 1);
 		bool isRSA = algo == QStringLiteral("RSA");
 
-		err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
-			nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
-		if(FAILED(err))
-		{
-			if(freeKey)
-				NCryptFreeObject(key);
-			return result;
-		}
-		result.resize(int(size));
-		err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
-			PBYTE(result.data()), DWORD(result.size()), &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
+		QEventLoop e;
+		std::thread([&]{
+			err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
+				nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
+			if(FAILED(err))
+				return e.exit();
+			result.resize(int(size));
+			err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
+				PBYTE(result.data()), DWORD(result.size()), &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
+			e.exit();
+		}).detach();
+		e.exec();
+
 		if( freeKey )
 			NCryptFreeObject(key);
 		break;
@@ -314,12 +328,21 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 				CryptReleaseContext(key, 0);
 			return result;
 		}
-		DWORD size = 0;
-		if(!CryptSignHashW(hash, spec, nullptr, 0, nullptr, &size))
-			err = SECURITY_STATUS(GetLastError());
-		result.resize(int(size));
-		if(!CryptSignHashW(hash, spec, nullptr, 0, LPBYTE(result.data()), &size))
-			err = SECURITY_STATUS(GetLastError());
+
+		QEventLoop e;
+		std::thread([&]{
+			DWORD size = 0;
+			if(!CryptSignHashW(hash, spec, nullptr, 0, nullptr, &size))
+			{
+				err = SECURITY_STATUS(GetLastError());
+				return e.exit();
+			}
+			result.resize(int(size));
+			if(!CryptSignHashW(hash, spec, nullptr, 0, LPBYTE(result.data()), &size))
+				err = SECURITY_STATUS(GetLastError());
+			e.exit();
+		}).detach();
+		e.exec();
 		std::reverse(result.begin(), result.end());
 
 		if(freeKey)

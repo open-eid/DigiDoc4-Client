@@ -57,7 +57,7 @@ public:
 	bool isEncrypted() const;
 	bool isNull() const;
 	bool isSigned() const;
-	QList<CKey> keys();
+	QList<CKey> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeKey( int id );

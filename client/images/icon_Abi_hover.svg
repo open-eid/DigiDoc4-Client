@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="200" height="200" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
-    <title>icon_Abi hover</title>
+    <title>icon_Abi_hover</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Buttons&amp;Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="eID" transform="translate(-232.000000, -282.000000)">
-            <g id="icon_Abi-hover" transform="translate(232.000000, 282.000000)">
+    <g id="Buttons&amp;Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="scale(10)">
+        <g id="eID">
+            <g id="icon_Abi">
                 <circle id="Combined-Shape" stroke="#006EB5" stroke-width="1" cx="10" cy="10" r="9.5"></circle>
                 <path d="M14,9.5 C13.3333333,9.5 12.6666667,9.16666667 12,8.5 C11,7.5 10.6568542,6 9,6 C7.34314575,6 6,7.34314575 6,9 C6,10.6568542 7.34314575,12 9,12" id="Oval-3" stroke="#006EB5" stroke-width="1" transform="translate(10.000000, 9.000000) rotate(-270.000000) translate(-10.000000, -9.000000) "></path>
                 <rect id="Rectangle-5" fill="#006EB5" fill-rule="evenodd" x="9" y="15" width="1" height="1"></rect>

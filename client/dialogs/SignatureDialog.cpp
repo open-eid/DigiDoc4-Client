@@ -221,7 +221,10 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 #endif
 }
 
-SignatureDialog::~SignatureDialog() { delete d; }
+SignatureDialog::~SignatureDialog()
+{
+	delete d;
+}
 
 void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, QWidget *value)
 {

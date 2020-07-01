@@ -219,10 +219,6 @@
         <translation>Laadin TSL-nimekirja</translation>
     </message>
     <message>
-        <source>TSL signing certs</source>
-        <translation>TSL signeerimise sertifikaadid</translation>
-    </message>
-    <message>
         <source>Create %1</source>
         <translation>Loo %1</translation>
     </message>
@@ -269,14 +265,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>ID card in reader</source>
-        <translation>Lugejas on ID-kaart</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>Lugejas on %1</translation>
-    </message>
-    <message>
         <source>LOAD</source>
         <translation>LAADI</translation>
     </message>
@@ -309,6 +297,10 @@
     <message>
         <source>Authentication certificate</source>
         <translation>Isikutuvastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>Selected is </source>
+        <translation>Valitud on </translation>
     </message>
 </context>
 <context>
@@ -744,6 +736,18 @@
         <source>Certificate Propagation service status: </source>
         <translation>Certificate Propagation teenuse staatus: </translation>
     </message>
+    <message>
+        <source>is set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TSL signing certs</source>
+        <translation>TSL signeerimise sertifikaadid</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -800,32 +804,28 @@
         <translation>Ümbriku salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Ümbriku allkirjastamine ebaõnnestus</translation>
+        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Kontrolli ajatempliteenuse ligipääsu seadeid.</translation>
     </message>
     <message>
-        <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
-        <translation>Puudub IP-põhine ligipääs, kontrolli juurdepääsutõendi seadeid.</translation>
+        <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
+        <translation>Puudub IP-põhine ligipääs. Kontrolli kehtivuskinnitusteenuse ligipääsu seadeid.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>PDF ja DDOC formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;. Kas soovid jätkata?</translation>
-    </message>
-    <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;. Kas soovid jätkata?</translation>
+        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;.&lt;br&gt;Kas soovid jätkata?</translation>
     </message>
     <message>
         <source>CANCEL</source>
         <translation>KATKESTA</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
+        <source>YES</source>
+        <translation>JAH</translation>
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
@@ -843,10 +843,6 @@
 <context>
     <name>DocumentModel</name>
     <message>
-        <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>See on käivitatav fail! Käivitatavad failid võivad sisaldada viirusi või muud pahatahtlikku koodi, mis võib kahjustada Sinu arvutit. Kas oled kindel, et tahad seda faili käivitada?</translation>
-    </message>
-    <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Sellise laiendiga faili ei ole võimalik avada DigiDoc4 kliendis. Faili vaatamiseks laadi see alla.</translation>
     </message>
@@ -861,14 +857,6 @@
     <message>
         <source>Internal error</source>
         <translation>Sisemine viga</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1286,10 +1274,6 @@
         <translation>NÄITA SERTIFIKAATI</translation>
     </message>
     <message>
-        <source>Key</source>
-        <translation>Adressaat</translation>
-    </message>
-    <message>
         <source>Crypto method</source>
         <translation>Krüpteerimismeetod</translation>
     </message>
@@ -1306,10 +1290,6 @@
         <translation>ConcatKDF digest method</translation>
     </message>
     <message>
-        <source>Expires</source>
-        <translation>Aegub</translation>
-    </message>
-    <message>
         <source>Issuer</source>
         <translation>Väljaandja</translation>
     </message>
@@ -1322,6 +1302,14 @@
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
         <translation>Näita sertifikaati</translation>
+    </message>
+    <message>
+        <source>Recipient</source>
+        <translation>Adressaat</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
     </message>
 </context>
 <context>
@@ -1355,6 +1343,25 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>Failed to start ssl</source>
         <translation>Ssl käivitamine ebaõnnestus</translation>
+    </message>
+</context>
+<context>
+    <name>MacMenuBar</name>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Fail</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation>Info</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Seaded</translation>
     </message>
 </context>
 <context>
@@ -1400,6 +1407,10 @@ ID-KAARDIGA</translation>
 </context>
 <context>
     <name>MainWindow</name>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
+    </message>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
@@ -1650,10 +1661,6 @@ ID-KAARDIGA</translation>
         <translation>Suunamine on salvestatud, ning Sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
     </message>
     <message>
-        <source>Opening</source>
-        <translation>Avamine</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
@@ -1701,6 +1708,10 @@ ID-KAARDIGA</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
+    </message>
+    <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerin</translation>
     </message>
 </context>
 <context>
@@ -1780,11 +1791,13 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
+and enter Mobile-ID PIN2-code.</source>
         <translation>Veendu kontrollkoodi õigsuses
-ja sisesta telefonil Mobiil-ID PIN2-kood.
-Kontrollkood: %1</translation>
+ja sisesta telefonil Mobiil-ID PIN2-kood.</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kontrollkood:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1845,11 +1858,9 @@ Kontrollkood: %1</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Smart-ID PIN2-code.
-Control code: %1</source>
+and enter Smart-ID PIN2-code.</source>
         <translation>Veendu kontrollkoodi õigsuses
-ja sisesta nutiseadmes Smart-ID PIN2-kood.
-Kontrollkood: %1</translation>
+ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1868,8 +1879,8 @@ Kontrollkood: %1</translation>
         <translation>Ava oma nutiseadmes Smart-ID rakendus ja kinnita seade allkirjastamiseks.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>%1 tasuta allkirjade kuulimiit on ületatud sellelt IP-aadressilt. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1898,6 +1909,14 @@ Kontrollkood: %1</translation>
     <message>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
         <translation>Teie Smart-ID toiming aegus. Palun proovige uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to connect with service server. Please check your network settings or try again later.</source>
+        <translation>Teenuse serveriga ühendus ebaõnnestus. Palun kontrolli võrgu sätteid või proovi hiljem uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. Check your %1 service access settings.</source>
+        <translation>Päringu saatmine ebaõnnestus. Kontrolli %1 teenuse ligipääsu seadeid.</translation>
     </message>
 </context>
 <context>
@@ -2379,10 +2398,6 @@ Kontrollkood: %1</translation>
         <translation>Roll / resolutsioon</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Aadress</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>Linn</translation>
     </message>
@@ -2409,6 +2424,10 @@ Kontrollkood: %1</translation>
     <message>
         <source>CANCEL</source>
         <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -2530,10 +2549,6 @@ Kontrollkood: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>Soovin allkirjastada Leedu, Läti ID-kaardiga</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Taaskäivita rakendus</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2670,10 +2685,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Tekstifailid (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Tekkis viga</translation>
     </message>
     <message>
         <source>Failed write to file!</source>

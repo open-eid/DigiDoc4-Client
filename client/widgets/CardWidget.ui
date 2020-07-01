@@ -192,7 +192,7 @@ border-radius: 3px;</string>
          <string notr="true">color: #75787B;</string>
         </property>
         <property name="text">
-         <string>ID card in reader</string>
+         <string>ID-card</string>
         </property>
        </widget>
       </item>

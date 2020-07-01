@@ -47,6 +47,7 @@
 #include "widgets/DropdownButton.h"
 #include "widgets/CardPopup.h"
 #include "widgets/VerifyCert.h"
+#include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
 #include <common/DateTime.h>
@@ -317,7 +318,7 @@ bool MainWindow::decrypt()
 	if(!cryptoDoc)
 		return false;
 
-	WaitDialogHolder waitDialog(this);
+	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
 	return cryptoDoc->decrypt();
 }
@@ -351,8 +352,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 	if(!files.isEmpty())
 	{
 		event->acceptProposedAction();
-		if(!files.isEmpty())
-			openFiles(files, true);
+		openFiles(files, true);
 	}
 	else
 		event->ignore();
@@ -374,6 +374,19 @@ bool MainWindow::encrypt()
 {
 	if(!cryptoDoc)
 		return false;
+
+	if( !FileDialog::fileIsWritable(cryptoDoc->fileName())){
+		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(cryptoDoc->fileName()), this);
+		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		dlg.exec();
+
+		if(dlg.result() == QMessageBox::Yes) {
+			moveCryptoContainer();
+			return encrypt();
+		}else {
+			return false;
+		}
+	}
 
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
 
@@ -622,14 +635,17 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
 		if(target.isEmpty())
 			break;
-		if( !FileDialog::fileIsWritable(target) &&
-			QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
-				tr("Cannot alter container %1. Save different location?").arg(target),
-				QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+		if( !FileDialog::fileIsWritable(target))
 		{
-			QString file = selectFile(tr("Save file"), target, true);
-			if(!file.isEmpty())
-				cryptoDoc->saveCopy(file);
+			WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
+			dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
+			dlg.exec();
+
+			if(dlg.result() == QMessageBox::Yes) {
+				QString file = selectFile(tr("Save file"), target, true);
+				if(!file.isEmpty())
+					cryptoDoc->saveCopy(file);
+			}
 		}
 		cryptoDoc->saveCopy(target);
 		break;
@@ -741,10 +757,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 	}
 
 	if(create || current != page)
-	{
-		WaitDialogHolder waitDialog(this, tr("Opening"));
 		navigateToPage(page, content, create);
-	}
 }
 
 void MainWindow::open(const QStringList &params, bool crypto, bool sign)
@@ -848,14 +861,17 @@ bool MainWindow::save(bool saveAs)
 	if(target.isEmpty())
 		return false;
 
-	if( !FileDialog::fileIsWritable(target) &&
-		QMessageBox::Yes == QMessageBox::warning(this, tr("DigiDoc4 client"),
-			tr("Cannot alter container %1. Save different location?").arg(target),
-			QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes))
+	if(!FileDialog::fileIsWritable(target))
 	{
-		QString file = selectFile(tr("Save file"), target, true);
-		if(!file.isEmpty())
-			return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
+		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
+		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		dlg.exec();
+
+		if(dlg.result() == QMessageBox::Yes) {
+			QString file = selectFile(tr("Save file"), target, true);
+			if(!file.isEmpty())
+				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
+		}
 	}
 	return saveAs ? digiDoc->saveAs(target) : digiDoc->save(target);
 }
@@ -970,13 +986,13 @@ void MainWindow::showCardStatus()
 
 		// Card (e.g. e-Seal) can have only one cert
 		if(!signCert.isNull())
-			emit ui->signContainerPage->cardChanged(cert.personalCode(), seal, !signCert.isValid());
+			ui->signContainerPage->cardChanged(cert.personalCode(), seal, !signCert.isValid());
 		else
-			emit ui->signContainerPage->cardChanged();
+			ui->signContainerPage->cardChanged();
 		if(!authCert.isNull())
-			emit ui->cryptoContainerPage->cardChanged(cert.personalCode(), seal, !authCert.isValid(), authCert.QSslCertificate::serialNumber());
+			ui->cryptoContainerPage->cardChanged(cert.personalCode(), seal, !authCert.isValid(), false, authCert.serialNumber());
 		else
-			emit ui->cryptoContainerPage->cardChanged();
+			ui->cryptoContainerPage->cardChanged();
 		if(cryptoDoc)
 			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(authCert));
 
@@ -989,8 +1005,8 @@ void MainWindow::showCardStatus()
 	}
 	else
 	{
-		emit ui->signContainerPage->cardChanged();
-		emit ui->cryptoContainerPage->cardChanged();
+		ui->signContainerPage->cardChanged();
+		ui->cryptoContainerPage->cardChanged();
 		if ( !QPCSC::instance().serviceRunning() )
 			noReader_NoCard_Loading_Event(NoCardInfo::NoPCSC);
 		else if ( QPCSC::instance().readers().isEmpty() )
@@ -1044,7 +1060,8 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 {
 	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		warnings->showWarning(WarningText(WarningType::CheckConnectionWarning));
+		FadeInNotification *notification = new FadeInNotification(this, MOJO, MARZIPAN, 110);
+		notification->start(tr("Check internet connection"), 750, 3000, 1200);
 		return;
 	}
 
@@ -1307,8 +1324,7 @@ bool MainWindow::wrapContainer(bool signing)
 	WarningDialog dlg(msg, this);
 	dlg.setCancelText(tr("CANCEL"));
 	dlg.addButton(tr("CONTINUE"), ContainerSave);
-	dlg.exec();
-	return dlg.result() == ContainerSave;
+	return dlg.exec() == ContainerSave;
 }
 
 void MainWindow::updateKeys(const QList<CKey> &keys)

@@ -19,42 +19,32 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "QCryptoBackend.h"
 
 class TokenData;
 
-class QPKCS11: public QObject
+class QPKCS11: public QCryptoBackend
 {
 	Q_OBJECT
 public:
-	enum PinStatus
-	{
-		PinOK,
-		PinCanceled,
-		PinIncorrect,
-		PinLocked,
-		DeviceError,
-		GeneralError,
-		UnknownError
-	};
-
 	explicit QPKCS11(QObject *parent = nullptr);
 	~QPKCS11() final;
 
-	QByteArray decrypt( const QByteArray &data ) const;
+	QByteArray decrypt(const QByteArray &data) const override;
 	QByteArray derive(const QByteArray &publicKey) const;
 #ifndef NO_PKCS11_CRYPTO
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const;
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
 #endif
 	bool isLoaded() const;
+	PinStatus lastError() const override;
 	bool load( const QString &driver );
 	void unload();
-	PinStatus login( const TokenData &t );
-	void logout();
+	void login(const TokenData &t) override;
+	void logout() override;
 	bool reload();
-	QByteArray sign( int type, const QByteArray &digest ) const;
-	QList<TokenData> tokens() const;
+	QByteArray sign(int type, const QByteArray &digest) const override;
+	QList<TokenData> tokens() const override;
 
 	static QString errorString( PinStatus error );
 private:

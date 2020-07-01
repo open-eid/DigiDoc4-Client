@@ -25,6 +25,6 @@ Item::Item(QWidget *parent)
 {}
 
 QString Item::id() const { return QString(); }
-void Item::idChanged(const QString & /* cardCode */, const QString & /* mobileCode */, const QByteArray & /* serialNumber */) {}
+void Item::idChanged(const QString & /* cardCode */, const QByteArray & /* serialNumber */) {}
 QWidget* Item::initTabOrder(QWidget * /* item */) { return this; }
 void Item::details() {}

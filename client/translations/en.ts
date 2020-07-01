@@ -219,10 +219,6 @@
         <translation>Loading TSL lists</translation>
     </message>
     <message>
-        <source>TSL signing certs</source>
-        <translation>TSL signing certs</translation>
-    </message>
-    <message>
         <source>Create %1</source>
         <translation>Create %1</translation>
     </message>
@@ -269,14 +265,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>ID card in reader</source>
-        <translation>ID-card in card reader</translation>
-    </message>
-    <message>
-        <source>%1 in reader</source>
-        <translation>%1 in card reader</translation>
-    </message>
-    <message>
         <source>LOAD</source>
         <translation>LOAD</translation>
     </message>
@@ -309,6 +297,10 @@
     <message>
         <source>Authentication certificate</source>
         <translation>Authentication certificate</translation>
+    </message>
+    <message>
+        <source>Selected is </source>
+        <translation>Selected is </translation>
     </message>
 </context>
 <context>
@@ -744,6 +736,18 @@
         <source>Certificate Propagation service status: </source>
         <translation>Certificate Propagation service status: </translation>
     </message>
+    <message>
+        <source>is set</source>
+        <translation>is set</translation>
+    </message>
+    <message>
+        <source>is not set</source>
+        <translation>is not set</translation>
+    </message>
+    <message>
+        <source>TSL signing certs</source>
+        <translation>TSL signing certs</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -800,32 +804,28 @@
         <translation>Failed to save container</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Failed to sign container</translation>
+        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
+        <translation>Failed to sign container. Check your Time-Stamping service access settings.</translation>
     </message>
     <message>
-        <source>You have not granted IP-based access. Check the settings of your server access certificate.</source>
-        <translation>You have not granted IP-based access. Check the settings of your server access certificate.</translation>
+        <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
+        <translation>You have not granted IP-based access. Check your validity confirmation service access settings.</translation>
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</translation>
-    </message>
-    <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</translation>
+        <translation>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;.&lt;br&gt;Do you want to continue?</translation>
     </message>
     <message>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
+        <source>YES</source>
+        <translation>YES</translation>
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
@@ -843,10 +843,6 @@
 <context>
     <name>DocumentModel</name>
     <message>
-        <source>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</source>
-        <translation>This is an executable file! Executable files may contain viruses or other malicious code that could harm your computer. Are you sure you want to launch this file?</translation>
-    </message>
-    <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</translation>
     </message>
@@ -861,14 +857,6 @@
     <message>
         <source>Internal error</source>
         <translation>Internal error</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>NO</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>YES</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1286,10 +1274,6 @@
         <translation>SHOW CERTIFICATE</translation>
     </message>
     <message>
-        <source>Key</source>
-        <translation>Key</translation>
-    </message>
-    <message>
         <source>Crypto method</source>
         <translation>Crypto method</translation>
     </message>
@@ -1306,10 +1290,6 @@
         <translation>ConcatKDF digest method</translation>
     </message>
     <message>
-        <source>Expires</source>
-        <translation>Expires</translation>
-    </message>
-    <message>
         <source>Issuer</source>
         <translation>Issuer</translation>
     </message>
@@ -1322,6 +1302,14 @@
         <source>Show certificate</source>
         <extracomment>accessible</extracomment>
         <translation>Show certificate</translation>
+    </message>
+    <message>
+        <source>Recipient</source>
+        <translation>Recipient</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
     </message>
 </context>
 <context>
@@ -1355,6 +1343,25 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Failed to start ssl</source>
         <translation>Failed to start ssl</translation>
+    </message>
+</context>
+<context>
+    <name>MacMenuBar</name>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;File</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation>About</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Settings</translation>
     </message>
 </context>
 <context>
@@ -1400,6 +1407,10 @@ ID-CARD</translation>
 </context>
 <context>
     <name>MainWindow</name>
+    <message>
+        <source>YES</source>
+        <translation>YES</translation>
+    </message>
     <message>
         <source>Help</source>
         <translation>Help</translation>
@@ -1650,10 +1661,6 @@ ID-CARD</translation>
         <translation>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</translation>
     </message>
     <message>
-        <source>Opening</source>
-        <translation>Opening</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Signing</translation>
     </message>
@@ -1701,6 +1708,10 @@ ID-CARD</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>The card in the card reader is not an Estonian ID-card</translation>
+    </message>
+    <message>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
     </message>
 </context>
 <context>
@@ -1780,11 +1791,13 @@ ID-CARD</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.
-Control code: %1</source>
+and enter Mobile-ID PIN2-code.</source>
         <translation>Make sure control code matches with one in phone screen
-and enter Mobiil-ID PIN2-code.
-Control code: %1</translation>
+and enter Mobiil-ID PIN2-code.</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Control code:</translation>
     </message>
     <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
@@ -1845,11 +1858,9 @@ Control code: %1</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Smart-ID PIN2-code.
-Control code: %1</source>
+and enter Smart-ID PIN2-code.</source>
         <translation>Make sure control code matches with one in phone screen
-and enter Smart-ID PIN2-code.
-Control code: %1</translation>
+and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
@@ -1868,8 +1879,8 @@ Control code: %1</translation>
         <translation>Open the Smart-ID application on your smart device and confirm device for signing.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1898,6 +1909,14 @@ Control code: %1</translation>
     <message>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
         <translation>Your Smart-ID transaction has expired. Please try again.</translation>
+    </message>
+    <message>
+        <source>Failed to connect with service server. Please check your network settings or try again later.</source>
+        <translation>Failed to connect with service server. Please check your network settings or try again later.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. Check your %1 service access settings.</source>
+        <translation>Failed to send request. Check your %1 service access settings.</translation>
     </message>
 </context>
 <context>
@@ -2379,10 +2398,6 @@ Control code: %1</translation>
         <translation>Role / resolution</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Address</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>City</translation>
     </message>
@@ -2409,6 +2424,10 @@ Control code: %1</translation>
     <message>
         <source>CANCEL</source>
         <translation>CANCEL</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -2526,10 +2545,6 @@ Control code: %1</translation>
     <message>
         <source>I would like to sign with Lithuanian, Latvian ID-card</source>
         <translation>I would like to sign with Lithuanian, Latvian ID-card</translation>
-    </message>
-    <message>
-        <source>Restart now</source>
-        <translation>Restart now</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2670,10 +2685,6 @@ Additional licenses and components</translation>
     <message>
         <source>Text files (*.txt)</source>
         <translation>Text files (*.txt)</translation>
-    </message>
-    <message>
-        <source>Error occurred</source>
-        <translation>Error occurred</translation>
     </message>
     <message>
         <source>Failed write to file!</source>

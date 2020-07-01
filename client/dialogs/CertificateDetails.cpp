@@ -25,6 +25,7 @@
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "effects/Overlay.h"
+#include "dialogs/WarningDialog.h"
 
 #include <common/DateTime.h>
 
@@ -187,7 +188,7 @@ void CertificateDetails::saveCert()
 	if( f.open( QIODevice::WriteOnly ) )
 		f.write(ui->cert.toPem());
 	else
-		QMessageBox::warning( this, tr("Save certificate"), tr("Failed to save file") );
+		WarningDialog(tr("Failed to save file"), this).exec();
 }
 
 QString CertificateDetails::decodeCN(const QString &cn)
