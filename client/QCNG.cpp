@@ -186,6 +186,7 @@ QList<TokenData> QCNG::tokens() const
 void QCNG::login(const TokenData &token)
 {
 	d->token = token;
+	d->err = QCNG::PinOK;
 }
 
 QByteArray QCNG::sign( int method, const QByteArray &digest ) const
