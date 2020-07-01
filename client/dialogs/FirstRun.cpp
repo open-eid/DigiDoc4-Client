@@ -52,7 +52,7 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->intro->setFont(regular14);
 	ui->langLabel->setFont(regular12);
 
-	ui->lang->setFont(Styles::font(Styles::Regular, 18));
+	ui->lang->setFont(regular14);
 	ui->lang->addItem(QStringLiteral("Eesti keel"));
 	ui->lang->addItem(QStringLiteral("English"));
 	ui->lang->addItem("Русский язык"); //QStringLiteral breaks windows text
