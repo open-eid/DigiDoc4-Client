@@ -816,6 +816,10 @@
         <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
+        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
+        <translation>PDF ja DDOC formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;. Kas soovid jätkata?</translation>
+    </message>
+    <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
         <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;.&lt;br&gt;Kas soovid jätkata?</translation>
     </message>
