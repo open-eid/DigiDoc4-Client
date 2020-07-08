@@ -299,8 +299,12 @@
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
     <message>
-        <source>Selected is </source>
-        <translation>Valitud on </translation>
+        <source>Selected is %1</source>
+        <translation>Valitud on %1</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>Lugejas on %1</translation>
     </message>
 </context>
 <context>

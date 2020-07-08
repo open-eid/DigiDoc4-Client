@@ -87,7 +87,7 @@ bool CardWidget::event( QEvent *ev )
 		return true;
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
-		update(t);
+		update(t, isMultiple);
 		break;
 	default: break;
 	}
@@ -112,7 +112,7 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 	return StyledWidget::eventFilter(o, e);
 }
 
-void CardWidget::update(const TokenData &token)
+void CardWidget::update(const TokenData &token, bool multiple)
 {
 	t = token;
 	SslCertificate c = t.cert();
@@ -140,7 +140,7 @@ void CardWidget::update(const TokenData &token)
 	else if(type & SslCertificate::DigiIDType)
 		typeString = tr("Digi-ID");
 	if(!isPopup)
-		typeString = tr("Selected is ") + typeString;
+		typeString = ((isMultiple = multiple) ? tr("Selected is %1") : tr("%1 in reader")).arg(typeString);
 
 	ui->cardStatus->setText(typeString);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));

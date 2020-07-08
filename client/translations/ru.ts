@@ -301,8 +301,12 @@
         <translation>Сертификат идентификации</translation>
     </message>
     <message>
-        <source>Selected is </source>
-        <translation>Выбранный </translation>
+        <source>Selected is %1</source>
+        <translation>Выбранный %1</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>В считывателе %1</translation>
     </message>
 </context>
 <context>

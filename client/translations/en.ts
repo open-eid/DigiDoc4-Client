@@ -299,8 +299,12 @@
         <translation>Authentication certificate</translation>
     </message>
     <message>
-        <source>Selected is </source>
-        <translation>Selected is </translation>
+        <source>Selected is %1</source>
+        <translation>Selected is %1</translation>
+    </message>
+    <message>
+        <source>%1 in reader</source>
+        <translation>%1 in reader</translation>
     </message>
 </context>
 <context>
