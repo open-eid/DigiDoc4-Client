@@ -22,3 +22,17 @@
 QCryptoBackend::QCryptoBackend(QObject *parent)
 	: QObject(parent)
 {}
+
+QString QCryptoBackend::errorString(PinStatus error)
+{
+	switch( error )
+	{
+	case PinOK: return QString();
+	case PinCanceled: return tr("PIN Canceled");
+	case PinLocked: return tr("PIN locked");
+	case PinIncorrect: return tr("PIN Incorrect");
+	case GeneralError: return tr("PKCS11 general error");
+	case DeviceError: return tr("PKCS11 device error");
+	default: return tr("Unknown error");
+	}
+}

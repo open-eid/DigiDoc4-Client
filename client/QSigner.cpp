@@ -261,32 +261,30 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		return DecryptFailed;
 	}
 
-	d->backend->login(d->auth);
-	if(qobject_cast<QPKCS11*>(d->backend))
+	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
+	do
 	{
-		switch(d->backend->lastError())
+		switch(status = d->backend->login(d->auth))
 		{
 		case QCryptoBackend::PinOK: break;
 		case QCryptoBackend::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
 			return PinCanceled;
 		case QCryptoBackend::PinIncorrect:
-			QCardLock::instance().exclusiveUnlock();
-			reloadauth();
-			Q_EMIT error(QPKCS11::errorString(d->backend->lastError()));
-			return PinIncorrect;
+			qApp->showWarning(QCryptoBackend::errorString(status));
+			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			if (d->backend->lastError() != QCryptoBackend::PinIncorrect)
 				reloadauth();
-			Q_EMIT error(QPKCS11::errorString(d->backend->lastError()));
+			Q_EMIT error(QCryptoBackend::errorString(status));
 			return PinLocked;
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			Q_EMIT error(tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError()));
+			Q_EMIT error(tr("Failed to login token") + " " + QCryptoBackend::errorString(status));
 			return DecryptFailed;
 		}
-	}
+	} while(status != QCryptoBackend::PinOK);
 	if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
 		out = d->backend->decrypt(in);
 	else
@@ -308,17 +306,22 @@ QSslKey QSigner::key() const
 	if(!QCardLock::instance().exclusiveTryLock())
 		return QSslKey();
 
-	d->backend->login(d->auth);
-	switch(d->backend->lastError())
+	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
+	do
 	{
-	case QCryptoBackend::PinOK: break;
-	case QCryptoBackend::PinIncorrect:
-	case QCryptoBackend::PinLocked:
-	default:
-		QCardLock::instance().exclusiveUnlock();
-		d->smartcard->reload();
-		return QSslKey();
-	}
+		switch(status = d->backend->login(d->auth))
+		{
+		case QCryptoBackend::PinOK: break;
+		case QCryptoBackend::PinIncorrect:
+			qApp->showWarning(QCryptoBackend::errorString(status));
+			continue;
+		case QCryptoBackend::PinLocked:
+		default:
+			QCardLock::instance().exclusiveUnlock();
+			d->smartcard->reload();
+			return QSslKey();
+		}
+	} while(status != QCryptoBackend::PinOK);
 
 	QSslKey key = d->auth.cert().publicKey();
 	if(!key.handle())
@@ -556,28 +559,27 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ) type = NID_sha384;
 	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ) type = NID_sha512;
 
-	d->backend->login(d->sign);
-	if(qobject_cast<QPKCS11*>(d->backend))
+	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
+	do
 	{
-		switch(d->backend->lastError())
+		switch(status = d->backend->login(d->sign))
 		{
 		case QCryptoBackend::PinOK: break;
 		case QCryptoBackend::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINCanceled)
+			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINCanceled)
 		case QCryptoBackend::PinIncorrect:
-			QCardLock::instance().exclusiveUnlock();
-			reloadsign();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINIncorrect)
+			qApp->showWarning(QCryptoBackend::errorString(status));
+			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
 			reloadsign();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::PINLocked)
+			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINLocked)
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QPKCS11::errorString(d->backend->lastError())), Exception::General)
+			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::General)
 		}
-	}
+	} while(status != QCryptoBackend::PinOK);
 	QByteArray sig = d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();

@@ -2315,14 +2315,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
 </context>
 <context>
-    <name>QFileDialog</name>
-    <message>
-        <source>All Files (*)</source>
-        <translation>Все файлы (*)</translation>
-    </message>
-</context>
-<context>
-    <name>QPKCS11</name>
+    <name>QCryptoBackend</name>
     <message>
         <source>PIN Canceled</source>
         <translation>PIN-код отменен</translation>
@@ -2344,8 +2337,15 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Ошибка PKCS11 устройства</translation>
     </message>
     <message>
-        <source>PKCS11 unknown error</source>
-        <translation>Неизвестная ошибка PKCS11</translation>
+        <source>Unknown error</source>
+        <translation>Неизвестная ошибка</translation>
+    </message>
+</context>
+<context>
+    <name>QFileDialog</name>
+    <message>
+        <source>All Files (*)</source>
+        <translation>Все файлы (*)</translation>
     </message>
 </context>
 <context>
