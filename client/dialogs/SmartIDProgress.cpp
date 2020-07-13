@@ -307,8 +307,8 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
 
 	QByteArray codeDiest = QCryptographicHash::hash(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())), QCryptographicHash::Sha256);
-	int code = codeDiest.right(2).toHex().toUInt(nullptr, 16) % 10000;
-	d->code->setText(QString("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
+	uint code = codeDiest.right(2).toHex().toUInt(nullptr, 16) % 10000;
+	d->code->setText(QStringLiteral("%1").arg(code, 4, 10, QChar('0')));
 	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
 		"and enter Smart-ID PIN2-code."));
 
