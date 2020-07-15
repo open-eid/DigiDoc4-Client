@@ -239,7 +239,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	: SettingsDialog(parent)
 {
-	changePage(ui->pageGroup->button(page));
+	showPage(page);
 }
 
 
@@ -572,6 +572,11 @@ void SettingsDialog::useDefaultSettings()
 	updateCert();
 	ui->rdTimeStamp->clear();
 	ui->rdMIDUUID->clear();
+}
+
+void SettingsDialog::showPage(int page)
+{
+	changePage(ui->pageGroup->button(page));
 }
 
 void SettingsDialog::changePage(QAbstractButton *button)
