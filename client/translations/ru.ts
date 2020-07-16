@@ -195,16 +195,8 @@
         <translation>Запуск не удался.</translation>
     </message>
     <message>
-        <source>Close window</source>
-        <translation>Закрыть окно</translation>
-    </message>
-    <message>
         <source>Caught exception!</source>
         <translation>Перехвачена системная ошибка!</translation>
-    </message>
-    <message>
-        <source>New Client window</source>
-        <translation>Новое окно Клиента</translation>
     </message>
     <message>
         <source>New Crypto window</source>
@@ -237,6 +229,18 @@
     <message>
         <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
         <translation>Чтобы использовать ID-кару для подписи в Э-услугах , вам также необходимо активировать подключаемый модуль для браузера.&lt;br/&gt;Руководство по активации можно найти &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=36641&quot;&gt;здесь&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client Help</source>
+        <translation>DigiDoc4 клиент помощь</translation>
+    </message>
+    <message>
+        <source>Close Window</source>
+        <translation>Закрыть окно</translation>
+    </message>
+    <message>
+        <source>New Window</source>
+        <translation>Новое окно</translation>
     </message>
 </context>
 <context>
@@ -1372,6 +1376,10 @@ LDAP сервер недоступен.</translation>
     <message>
         <source>Settings</source>
         <translation>Настройки</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Помощь</translation>
     </message>
 </context>
 <context>

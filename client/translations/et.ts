@@ -195,16 +195,8 @@
         <translation>Käivitamine ebaõnnestus.</translation>
     </message>
     <message>
-        <source>Close window</source>
-        <translation>Sulge aken</translation>
-    </message>
-    <message>
         <source>Caught exception!</source>
         <translation>Tekkis viga!</translation>
-    </message>
-    <message>
-        <source>New Client window</source>
-        <translation>Ava uus Kliendi aken</translation>
     </message>
     <message>
         <source>New Crypto window</source>
@@ -237,6 +229,18 @@
     <message>
         <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
         <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;http://id.ee/?lang=et&amp;id=36636&quot;&gt;siit&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client Help</source>
+        <translation>DigiDoc4 klient abi</translation>
+    </message>
+    <message>
+        <source>Close Window</source>
+        <translation>Sulge aken</translation>
+    </message>
+    <message>
+        <source>New Window</source>
+        <translation>Ava uus aken</translation>
     </message>
 </context>
 <context>
@@ -1370,6 +1374,10 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>Settings</source>
         <translation>Seaded</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Abi</translation>
     </message>
 </context>
 <context>

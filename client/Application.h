@@ -68,6 +68,7 @@ public:
 	void loadTranslation( const QString &lang );
 	QWidget* mainWindow();
 	bool notify( QObject *o, QEvent *e ) override;
+	void openHelp();
 	QSigner* signer() const;
 	int run();
 	void waitForTSL( const QString &file );

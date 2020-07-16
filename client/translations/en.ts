@@ -195,16 +195,8 @@
         <translation>Failed to initalize.</translation>
     </message>
     <message>
-        <source>Close window</source>
-        <translation>Close window</translation>
-    </message>
-    <message>
         <source>Caught exception!</source>
         <translation>Caught exception!</translation>
-    </message>
-    <message>
-        <source>New Client window</source>
-        <translation>New Client window</translation>
     </message>
     <message>
         <source>New Crypto window</source>
@@ -237,6 +229,18 @@
     <message>
         <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
         <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client Help</source>
+        <translation>DigiDoc4 Client Help</translation>
+    </message>
+    <message>
+        <source>Close Window</source>
+        <translation>Close Window</translation>
+    </message>
+    <message>
+        <source>New Window</source>
+        <translation>New Window</translation>
     </message>
 </context>
 <context>
@@ -1370,6 +1374,10 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Settings</source>
         <translation>Settings</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Help</translation>
     </message>
 </context>
 <context>
