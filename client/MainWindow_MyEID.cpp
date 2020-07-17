@@ -20,18 +20,13 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Application.h"
-#include "QCardLock.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
-#include "TokenData.h"
 #include "effects/FadeInNotification.h"
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
-#include <QtCore/QJsonObject>
 #include <QDateTime>
-#include <QMessageBox>
-#include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslKey>
 
 using namespace ria::qdigidoc4;
@@ -213,13 +208,14 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 
 void MainWindow::updateCardWarnings(const QSmartCardData &data)
 {
-	qint64 expiresIn = 106;
+	const qint64 DAY = 24 * 60 * 60;
+	qint64 expiresIn = 106 * DAY;
 	for(const QSslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
 	{
 		if(!cert.isNull())
 		{
 			expiresIn = std::min<qint64>(expiresIn,
-				QDateTime::currentDateTime().daysTo(cert.expiryDate().toLocalTime()));
+				QDateTime::currentDateTime().secsTo(cert.expiryDate().toLocalTime()));
 		}
 	}
 
@@ -239,7 +235,7 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 		ui->myEid->invalidIcon(true);
 		warnings->showWarning(WarningText(WarningType::CertRevokedWarning));
 	}
-	else if(expiresIn <= 105)
+	else if(expiresIn <= 105 * DAY)
 	{
 		ui->myEid->warningIcon(true);
 		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
