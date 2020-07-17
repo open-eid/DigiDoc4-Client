@@ -51,7 +51,7 @@ class MobileProgress::Private: public QDialog, public Ui::MobileProgress
 {
 	Q_OBJECT
 public:
-	QString URL() { return UUID.isNull() ? PROXYURL : SKURL; }
+	QString URL() { return !UUID.isNull() && useCustomUUID ? SKURL : PROXYURL; }
 	using QDialog::QDialog;
 	void reject() override { l.exit(QDialog::Rejected); }
 	QTimeLine *statusTimer = nullptr;
@@ -69,7 +69,8 @@ public:
 	QString SKURL = QSettings().value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
 #endif
 	QString NAME = QSettings().value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	QUuid UUID = QSettings().value(QStringLiteral("MIDUUID")).toUuid();
+	bool useCustomUUID = QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), false).toBool();
+	QUuid UUID = useCustomUUID ? QSettings().value(QStringLiteral("MIDUUID")).toUuid() : QUuid();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif

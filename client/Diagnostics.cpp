@@ -47,7 +47,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		<< "<br />SID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
 		<< "<br />MID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL))
 		<< "<br />MID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL))
-		<< "<br />RPUUID: " << (QSettings().contains(QStringLiteral("MIDUUID")) ? tr("is set") : tr("is not set"))
+		<< "<br />RPUUID: " << (QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), false).toBool() && QSettings().contains(QStringLiteral("MIDUUID")) ? tr("is set") : tr("is not set"))
 #else
 #ifdef MOBILEID_URL
 		<< "<br />MOBILEID_URL: " << MOBILEID_URL

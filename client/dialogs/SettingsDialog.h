@@ -48,6 +48,7 @@ public:
 
 	void showPage(int page);
 	static void loadProxy( const digidoc::Conf *conf );
+	static void setValueEx( const QString &key, const QVariant &value, const QVariant &def );
 
 signals:
 	void langChanged(const QString& lang);

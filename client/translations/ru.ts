@@ -2805,6 +2805,14 @@ Additional licenses and components</source>
         <source>NO</source>
         <translation>НЕТ</translation>
     </message>
+    <message>
+        <source>Use default access</source>
+        <translation>Использовать доступ, назначенный по умолчанию</translation>
+    </message>
+    <message>
+        <source>Use manually configured access</source>
+        <translation>Использовать доступ, назначенный вручную</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

@@ -20,9 +20,9 @@
 #include "RoleAddressDialog.h"
 #include "ui_RoleAddressDialog.h"
 
-#include "effects/Overlay.h"
 #include "Styles.h"
-#include <common/Common.h>
+#include "dialogs/SettingsDialog.h"
+#include "effects/Overlay.h"
 
 #include <QtCore/QSettings>
 
@@ -77,7 +77,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 			if(list.size() > 10)
 				list.removeLast();
 			d->s.setValue(line->objectName(), QString()); // Uses on Windows MULTI_STRING registry
-			Common::setValueEx(line->objectName(), list, QStringList());
+			SettingsDialog::setValueEx(line->objectName(), list, QStringList());
 		});
 	}
 }
@@ -91,8 +91,7 @@ int RoleAddressDialog::get(QString &city, QString &country, QString &state, QStr
 {
 	if(!QSettings().value(QStringLiteral("RoleAddressInfo"), false).toBool())
 		return QDialog::Accepted;
-	Overlay overlay(parentWidget());
-	overlay.show();
+	new Overlay(this, parentWidget());
 	int result = QDialog::exec();
 	if(result == QDialog::Rejected)
 		return result;

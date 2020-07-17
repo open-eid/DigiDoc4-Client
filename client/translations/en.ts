@@ -2802,6 +2802,14 @@ Additional licenses and components</translation>
         <source>NO</source>
         <translation>NO</translation>
     </message>
+    <message>
+        <source>Use default access</source>
+        <translation>Use default access</translation>
+    </message>
+    <message>
+        <source>Use manually configured access</source>
+        <translation>Use manually configured access</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
