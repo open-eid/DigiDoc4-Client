@@ -226,8 +226,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 					.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
 			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
-			dlg.exec();
-			if(dlg.result() != QMessageBox::Yes)
+			if(dlg.exec() != QMessageBox::Yes)
 				return;
 		}
 		QList<QSslError> errors = QSslCertificate::verify({ leftItem->getKey().cert });
@@ -237,8 +236,7 @@ void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
 			WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
 			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
-			dlg.exec();
-			if(dlg.result() != QMessageBox::Yes)
+			if(dlg.exec() != QMessageBox::Yes)
 				return;
 		}
 	}
@@ -443,8 +441,7 @@ void AddRecipients::search(const QString &term)
 void AddRecipients::showError( const QString &msg, const QString &details )
 {
 	QApplication::restoreOverrideCursor();
-	WarningDialog b(msg, details, this);
-	b.exec();
+	WarningDialog(msg, details, this).exec();
 }
 
 void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount)

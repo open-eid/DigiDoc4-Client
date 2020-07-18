@@ -32,25 +32,18 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	connect( ui->cancel, &QPushButton::clicked, this, &WarningDialog::reject );
 	connect( this, &WarningDialog::finished, this, &WarningDialog::close );
 
-	QFont regular(Styles::font(Styles::Regular, 14));
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
-	ui->text->setFont(regular);
+	ui->text->setFont(Styles::font(Styles::Regular, 14));
 	ui->text->setText(text);
-	ui->text->setTextInteractionFlags(ui->text->textInteractionFlags() | Qt::TextSelectableByMouse);
+	ui->details->setFont(ui->text->font());
+	ui->details->setText(details);
+	ui->details->setHidden(details.isEmpty());
+	ui->showDetails->setHidden(details.isEmpty());
 
-	if(details.isNull())
+	if(!details.isEmpty())
 	{
-		ui->details->hide();
-		ui->showDetails->hide();
-	}
-	else
-	{
-		ui->details->setFont(regular);
-		ui->details->setText(details);
-		ui->details->setTextInteractionFlags(Qt::TextSelectableByMouse);
 		ui->showDetails->borderless();
 		ui->showDetails->setClosable(true);
-		ui->showDetails->show();
 		ui->showDetails->init(false, tr("Details"), tr("Details"), ui->details);
 		connect(ui->showDetails, &AccordionTitle::closed, this, &WarningDialog::adjustSize);
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
@@ -59,7 +52,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)
-: WarningDialog(text, QString(), parent)
+	: WarningDialog(text, QString(), parent)
 {
 }
 
@@ -76,29 +69,16 @@ void WarningDialog::setCancelText(const QString& label)
 
 void WarningDialog::resetCancelStyle()
 {
-	ui->cancel->setStyleSheet(QStringLiteral(
-			"QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\n"
-			"QPushButton:pressed {background-color: #41B6E6;}\n"
-			"QPushButton:hover:!pressed {background-color: #008DCF;}\n"
-			"QPushButton:disabled {background-color: #BEDBED;}"));
+	ui->cancel->setStyleSheet(QString());
 }
 
 void WarningDialog::addButton(const QString& label, int ret, bool red)
 {
-	auto layout = qobject_cast<QBoxLayout*>(ui->buttonBar->layout());
-	layout->insertSpacing(buttonOffset++, buttonMargin);
-
 	QPushButton *button = new QPushButton(label, this);
 	button->setAccessibleName(label.toLower());
-	button->setCursor(Qt::PointingHandCursor);
+	button->setCursor(ui->cancel->cursor());
 	button->setFont(ui->cancel->font());
-
-	QFontMetrics fm(ui->cancel->fontMetrics());
-	int width = buttonWidth;
-	int textWidth = fm.width(label);
-	if(textWidth > (buttonWidth - 5))
-		width = textWidth + 16;
-	button->setMinimumSize(width, 34);
+	button->setMinimumSize(std::max<int>(ui->cancel->minimumWidth(), ui->cancel->fontMetrics().width(label) + 16), 34);
 
 	if(red) {
 		button->setStyleSheet(QStringLiteral(
@@ -106,25 +86,17 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 			"QPushButton:pressed { background-color: #F24A66; }\n"
 			"QPushButton:hover:!pressed { background-color: #CD2541; }\n"
 			"QPushButton:disabled {background-color: #BEDBED;}"));
-	} else {
-		button->setStyleSheet(QStringLiteral(
-			"QPushButton {border-radius: 2px; border: none;color: #ffffff;background-color: #006EB5;}\n"
-			"QPushButton:pressed {background-color: #41B6E6;}\n"
-			"QPushButton:hover:!pressed {background-color: #008DCF;}\n"
-			"QPushButton:disabled {background-color: #BEDBED;}"));
 	}
 
-
 	connect(button, &QPushButton::clicked, [this, ret] {done(ret);});
-	layout->insertWidget(buttonOffset++, button);
+	ui->buttonBarLayout->insertWidget(ui->buttonBarLayout->findChildren<QPushButton>().size() + 1, button);
 }
 
 void WarningDialog::setButtonSize(int width, int margin)
 {
+	ui->buttonBarLayout->setSpacing(margin);
 	ui->cancel->setMinimumSize(width, 34);
 	ui->cancel->setMaximumSize(width, 34);
-	buttonWidth = width;
-	buttonMargin = margin;
 }
 
 void WarningDialog::setText(const QString& text)

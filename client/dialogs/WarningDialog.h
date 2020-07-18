@@ -33,19 +33,15 @@ class WarningDialog : public QDialog
 public:
 	WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
 	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
-	~WarningDialog();
+	~WarningDialog() override;
 
-    void addButton(const QString& label, int ret, bool red = false);
+	void addButton(const QString& label, int ret, bool red = false);
 	void setButtonSize(int width, int margin);
 	void setCancelText(const QString& label);
-    void resetCancelStyle();
+	void resetCancelStyle();
 	void setText(const QString& text);
 	static void warning(QWidget *parent, const QString& text);
 
 private:
 	Ui::WarningDialog *ui;
-	int buttonMargin = 35;
-	int buttonOffset = 2;
-	int buttonWidth = 120;
 };
-

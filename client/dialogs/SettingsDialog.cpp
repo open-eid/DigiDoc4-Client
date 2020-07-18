@@ -350,7 +350,7 @@ void SettingsDialog::initFunctionality()
 	connect(ui->tokenBackend, &QCheckBox::toggled, this, [=](bool checked) {
 		setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
 
-		WarningDialog dlg(tr("Applying this setting requires application restart. Restart now?"), qApp->activeWindow());
+		WarningDialog dlg(tr("Applying this setting requires application restart. Restart now?"), this);
 		dlg.setCancelText(tr("NO"));
 		dlg.addButton(tr("YES"), 1) ;
 		if(dlg.exec() == 1) {
