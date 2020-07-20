@@ -892,7 +892,7 @@ void CDocumentModel::open(int row)
 #if !defined(Q_OS_WIN)
 	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(0x6000));
 #endif
-	emit openFile(f.absoluteFilePath());
+	QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
 }
 
 bool CDocumentModel::removeRows(int row, int count)

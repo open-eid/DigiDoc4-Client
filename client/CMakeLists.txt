@@ -103,6 +103,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/DropdownButton.cpp
 	widgets/FileItem.cpp
 	widgets/FileList.cpp
+	widgets/IDSelector.cpp
 	widgets/Item.cpp
 	widgets/ItemList.cpp
 	widgets/InfoStack.cpp

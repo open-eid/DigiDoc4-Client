@@ -42,6 +42,16 @@ QSmartCardData::QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT: d(std::m
 QSmartCardData::~QSmartCardData() = default;
 QSmartCardData& QSmartCardData::operator =(const QSmartCardData &other) = default;
 QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) Q_DECL_NOEXCEPT { std::swap(d, other.d); return *this; }
+bool QSmartCardData::operator ==(const QSmartCardData &other) const
+{
+	return d == other.d || (
+		d->card == other.d->card &&
+		d->authCert == other.d->authCert &&
+		d->signCert == other.d->signCert &&
+		d->appletVersion == other.d->appletVersion &&
+		d->version == other.d->version);
+}
+bool QSmartCardData::operator !=(const QSmartCardData &other) const { return !operator==(other); }
 
 QString QSmartCardData::card() const { return d->card; }
 

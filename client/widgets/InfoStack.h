@@ -21,11 +21,12 @@
 
 #include "widgets/StyledWidget.h"
 
+#include "QSmartCard.h"
+
 namespace Ui {
 class InfoStack;
 }
 
-class QSmartCardData;
 class SslCertificate;
 
 class InfoStack : public StyledWidget
@@ -37,7 +38,6 @@ public:
 	~InfoStack() final;
 
 	void clearData();
-	void clearPicture();
 	void update(const SslCertificate &cert);
 	void update(const QSmartCardData &t);
 	void showPicture(const QPixmap &pixmap);
@@ -54,6 +54,7 @@ private:
 
 	Ui::InfoStack *ui;
 
+	QSmartCardData data;
 	int certType = 0;
 	bool certIsValid = false;
 	bool certIsResident = false;

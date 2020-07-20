@@ -20,7 +20,6 @@
 #include "InfoStack.h"
 #include "ui_InfoStack.h"
 
-#include "QSmartCard.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 
@@ -66,6 +65,7 @@ InfoStack::~InfoStack()
 
 void InfoStack::clearData()
 {
+	data = QSmartCardData();
 	ui->alternateIcon->hide();
 	ui->valueGivenNames->clear();
 	ui->valueSurname->clear();
@@ -77,11 +77,6 @@ void InfoStack::clearData()
 	pictureText = "DOWNLOAD";
 	ui->btnPicture->setText(tr(pictureText));
 	ui->btnPicture->hide();
-	clearPicture();
-}
-
-void InfoStack::clearPicture()
-{
 	ui->photo->clear();
 }
 
@@ -147,24 +142,28 @@ void InfoStack::update()
 	ui->valueExpiryDate->setText(text);
 	ui->valueSerialNumber->setText(serialNumberText);
 
-	ui->btnPicture->setText(tr(pictureText));
-	ui->btnPicture->hide();
-
 	ui->alternateIcon->setVisible(certIsResident || certType & SslCertificate::TempelType);
-	ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
+	ui->btnPicture->setText(tr(pictureText));
+	if(!ui->photo->pixmap())
+		ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
 	ui->labelSerialNumber->setHidden(certType & SslCertificate::TempelType);
 	ui->valueSerialNumber->setHidden(certType & SslCertificate::TempelType);
+	if(certIsResident)
+	{
+		ui->alternateIcon->load(QStringLiteral(":/images/icon_person_blue.svg"));
+		ui->alternateIcon->resize(109, 118);
+		ui->alternateIcon->move(10, 16);
+	}
 	if(certType & SslCertificate::TempelType)
 	{
+		ui->alternateIcon->load(QStringLiteral(":/images/icon_digitempel.svg"));
+		ui->alternateIcon->resize(100, 100);
+		ui->alternateIcon->move(10, 25);
+
 		ui->labelGivenNames->setText(tr("NAME"));
 		ui->labelSurname->clear();
 		ui->labelPersonalCode->setText(tr("SERIAL"));
 		ui->labelCitizenship->setText(tr("COUNTRY"));
-
-		clearPicture();
-		ui->alternateIcon->load(QStringLiteral(":/images/icon_digitempel.svg"));
-		ui->alternateIcon->resize(100, 100);
-		ui->alternateIcon->move(10, 25);
 	}
 	else
 	{
@@ -179,6 +178,7 @@ void InfoStack::update()
 
 void InfoStack::update(const SslCertificate &cert)
 {
+	ui->photo->clear();
 	certType = cert.type();
 	certIsValid = true;
 	expireDate.clear();
@@ -191,6 +191,9 @@ void InfoStack::update(const SslCertificate &cert)
 
 void InfoStack::update(const QSmartCardData &t)
 {
+	if(data != t)
+		ui->photo->clear();
+	data = t;
 	QStringList firstName {
 		t.data( QSmartCardData::FirstName1 ).toString(),
 		t.data( QSmartCardData::FirstName2 ).toString()
@@ -200,20 +203,11 @@ void InfoStack::update(const QSmartCardData &t)
 	certType = t.authCert().type();
 	certIsValid = t.isValid();
 	certIsResident = t.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT"));
-	if(certIsResident)
-	{
-		ui->alternateIcon->load(QStringLiteral(":/images/icon_person_blue.svg"));
-		ui->alternateIcon->resize(109, 118);
-		ui->alternateIcon->move(10, 16);
-	}
-	ui->btnPicture->setHidden(certIsResident);
-	ui->alternateIcon->setVisible(certIsResident);
 	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
 	givenNamesText = firstName.join(' ');
 	surnameText = t.data(QSmartCardData::SurName).toString();
 	personalCodeText = t.data(QSmartCardData::Id).toString();
 	citizenshipText = t.data(QSmartCardData::Citizen).toString();
 	serialNumberText = t.data(QSmartCardData::DocumentId).toString();
-
 	update();
 }

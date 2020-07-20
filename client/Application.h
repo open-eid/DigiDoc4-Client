@@ -31,7 +31,6 @@
 
 namespace digidoc { class Exception; }
 class QAction;
-class QSmartCard;
 class QSigner;
 class Application: public Common
 {

@@ -759,6 +759,7 @@ void Application::migrateSettings()
 	QSettings oldAppSettings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidoc4"));
 	QSettings newSettings;
 #endif
+	newSettings.remove(QStringLiteral("Client/Type"));
 
 	if(newSettings.value(QStringLiteral("SettingsMigrated"), false).toBool())
 		return;
