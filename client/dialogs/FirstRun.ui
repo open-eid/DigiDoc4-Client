@@ -10,6 +10,24 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#signGotoSigning, #cryptoGotoEncryption, #eidGotoEid {
+border: none;
+border-radius: 5px;
+background-color: #B9D9EB;
+width: 10px;
+height: 10px;
+}
+#signGotoEncryption, #signGotoEid,
+#cryptoGotoSigning, #cryptoGotoEid,
+#eidGotoSigning, #eidGotoEncryption {
+border: none;
+border-radius: 5px;
+background-color: #F4F5F6;
+width: 10px;
+height: 10px;
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="FirstRunLayout">
    <property name="leftMargin">
     <number>0</number>
@@ -944,23 +962,11 @@ QPushButton:disabled {
       <widget class="QToolButton" name="signGotoSigning">
        <property name="geometry">
         <rect>
-         <x>490</x>
-         <y>573</y>
-         <width>15</width>
-         <height>15</height>
+         <x>492</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -968,31 +974,15 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to signing intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot_active.png);</string>
-       </property>
       </widget>
       <widget class="QToolButton" name="signGotoEid">
        <property name="geometry">
         <rect>
-         <x>520</x>
-         <y>573</y>
-         <width>15</width>
-         <height>15</height>
+         <x>522</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -1000,41 +990,21 @@ image: url(:/images/icon_dot_active.png);</string>
        <property name="accessibleName">
         <string>Go to EID intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-       </property>
       </widget>
       <widget class="QToolButton" name="signGotoEncryption">
        <property name="geometry">
         <rect>
-         <x>505</x>
-         <y>573</y>
-         <width>15</width>
-         <height>15</height>
+         <x>507</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="accessibleName">
         <string>Go to encryption intro</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
        </property>
       </widget>
       <widget class="QSvgWidget" name="signOne" native="true">
@@ -1243,23 +1213,11 @@ image: url(:/images/icon_dot.png);</string>
       <widget class="QToolButton" name="cryptoGotoSigning">
        <property name="geometry">
         <rect>
-         <x>490</x>
-         <y>573</y>
-         <width>15</width>
-         <height>15</height>
+         <x>492</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -1267,31 +1225,15 @@ image: url(:/images/icon_dot.png);</string>
        <property name="accessibleName">
         <string>Go to signing intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-       </property>
       </widget>
       <widget class="QToolButton" name="cryptoGotoEid">
        <property name="geometry">
         <rect>
-         <x>520</x>
-         <y>573</y>
-         <width>15</width>
-         <height>15</height>
+         <x>522</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -1299,41 +1241,21 @@ image: url(:/images/icon_dot.png);</string>
        <property name="accessibleName">
         <string>Go to EID intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-       </property>
       </widget>
       <widget class="QToolButton" name="cryptoGotoEncryption">
        <property name="geometry">
         <rect>
-         <x>505</x>
-         <y>573</y>
-         <width>15</width>
-         <height>15</height>
+         <x>507</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="accessibleName">
         <string>Go to encryption intro</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot_active.png);</string>
        </property>
       </widget>
       <widget class="QSvgWidget" name="cryptoOne" native="true">
@@ -1727,23 +1649,11 @@ border-radius: 3px;</string>
       <widget class="QToolButton" name="eidGotoSigning">
        <property name="geometry">
         <rect>
-         <x>490</x>
-         <y>570</y>
-         <width>15</width>
-         <height>15</height>
+         <x>492</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -1751,31 +1661,15 @@ border-radius: 3px;</string>
        <property name="accessibleName">
         <string>Go to signing intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-       </property>
       </widget>
       <widget class="QToolButton" name="eidGotoEncryption">
        <property name="geometry">
         <rect>
-         <x>505</x>
-         <y>570</y>
-         <width>15</width>
-         <height>15</height>
+         <x>507</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -1783,41 +1677,21 @@ image: url(:/images/icon_dot.png);</string>
        <property name="accessibleName">
         <string>Go to encryption intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot.png);</string>
-       </property>
       </widget>
       <widget class="QToolButton" name="eidGotoEid">
        <property name="geometry">
         <rect>
-         <x>520</x>
-         <y>570</y>
-         <width>15</width>
-         <height>15</height>
+         <x>522</x>
+         <y>575</y>
+         <width>10</width>
+         <height>10</height>
         </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="accessibleName">
         <string>Go to EID intro</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-image: url(:/images/icon_dot_active.png);</string>
        </property>
       </widget>
       <widget class="QLabel" name="eidLabel1">

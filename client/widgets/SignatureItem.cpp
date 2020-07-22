@@ -103,12 +103,12 @@ void SignatureItem::init()
 	{
 		isSignature = false;
 		label = tr("Timestamp");
-		ui->icon->setPixmap(QStringLiteral(":/images/icon_ajatempel.svg"));
+		ui->icon->load(QStringLiteral(":/images/icon_ajatempel.svg"));
 	}
 	else if(cert.type() & SslCertificate::TempelType)
-		ui->icon->setPixmap(QStringLiteral(":/images/icon_digitempel.svg"));
+		ui->icon->load(QStringLiteral(":/images/icon_digitempel.svg"));
 	else
-		ui->icon->setPixmap(QStringLiteral(":/images/icon_Allkiri_small.svg"));
+		ui->icon->load(QStringLiteral(":/images/icon_Allkiri_small.svg"));
 	sa << label << " ";
 	sc << "<span style=\"font-weight:normal;\">";
 	auto isValid = [&isSignature] {
