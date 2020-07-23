@@ -23,11 +23,11 @@
     </message>
     <message>
         <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Срок справки доступа истек %1. Для обновления справки доступа установите новое программное обеспечение для ID-карты со страницы &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация по справочному телефону ID-карт (+372) 666 8888.</translation>
+        <translation>Срок справки доступа истек %1. Для обновления справки доступа установите новое программное обеспечение для ID-карты со страницы &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация по справочному телефону ID-карт (+372) 666 8888.</translation>
     </message>
     <message>
         <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</source>
-        <translation>Вскоре будет исчерпан ежемесячный лимит бесплатных подписей. Для проставления подписей в больших объемах необходимо заключить договор с поставщиком услуги. Подробнее читайте &lt;a href=&quot;https://id.ee/index.php?id=39025&quot;&gt;здесь&lt;/a&gt;</translation>
+        <translation>Вскоре будет исчерпан ежемесячный лимит бесплатных подписей. Для проставления подписей в больших объемах необходимо заключить договор с поставщиком услуги. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;здесь&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;Если у вас возникнут вопросы, пожалуйста, обратитесь за помощью через &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;id.ee&lt;/a&gt;.</translation>
+        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;Если у вас возникнут вопросы, пожалуйста, обратитесь за помощью через &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Не удалось обновить список доверенных сертификатов, используемый для проверки действительности цифровых подписей. Пожалуйста, проверьте ваше интернет-соединение и убедитесь в том, что на компьютере установлена последняя версия программного обеспечения ID-карты. Для верификации подписей будет использован устаревший список доверенных сертификатов. &lt;a href=&quot;http://www.id.ee/?id=37013&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <translation>Не удалось обновить список доверенных сертификатов, используемый для проверки действительности цифровых подписей. Пожалуйста, проверьте ваше интернет-соединение и убедитесь в том, что на компьютере установлена последняя версия программного обеспечения ID-карты. Для верификации подписей будет использован устаревший список доверенных сертификатов. &lt;a href=&quot;https://www.id.ee/ru/artikkel/uvedomlenie-digidoc4-obnovlenie-spiska-doveriya-sertifikatov-ne-udalos/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Loading TSL lists</source>
@@ -228,7 +228,7 @@
     </message>
     <message>
         <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
-        <translation>Чтобы использовать ID-кару для подписи в Э-услугах , вам также необходимо активировать подключаемый модуль для браузера.&lt;br/&gt;Руководство по активации можно найти &lt;a href=&quot;https://www.id.ee/?lang=ru&amp;id=36641&quot;&gt;здесь&lt;/a&gt;.</translation>
+        <translation>Чтобы использовать ID-кару для подписи в Э-услугах , вам также необходимо активировать подключаемый модуль для браузера.&lt;br/&gt;Руководство по активации можно найти &lt;a href=&quot;https://www.id.ee/ru/artikkel/nastrojka-veb-brauzerov-dlya-ispolzovaniya-id-karty/&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>DigiDoc4 Client Help</source>
@@ -748,11 +748,11 @@
     </message>
     <message>
         <source>is set</source>
-        <translation type="unfinished"></translation>
+        <translation>назначено вручную</translation>
     </message>
     <message>
         <source>is not set</source>
-        <translation type="unfinished"></translation>
+        <translation>назначено по умолчанию</translation>
     </message>
     <message>
         <source>TSL signing certs</source>
@@ -823,15 +823,15 @@
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF и DDOC файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;здесь&lt;/a&gt;. Желаете продолжить?</translation>
+        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF и DDOC файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;. Желаете продолжить?</translation>
     </message>
     <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;здесь&lt;/a&gt;.&lt;br&gt;Желаете продолжить?</translation>
+        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;.&lt;br&gt;Желаете продолжить?</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -843,7 +843,7 @@
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Пожалуйста проверьте время Вашего компьютера. &lt;a href=&apos;https://id.ee/index.php?id=39514&apos;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <translation>Пожалуйста проверьте время Вашего компьютера. &lt;a href=&apos;https://www.id.ee/ru/artikkel/oshibka-klienta-digidoc4-pozhalujsta-proverte-chasy-na-vashem-kompyutere-2/&apos;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>The timestamp added to the signature must be taken before validity confirmation.</source>
@@ -1790,7 +1790,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Phone absent</source>
-        <translation>Нет телефона</translation>
+        <translation>Телефон вне сети интернет</translation>
     </message>
     <message>
         <source>Request sending error</source>
@@ -1857,11 +1857,11 @@ and enter Mobile-ID PIN2-code.</source>
     </message>
     <message>
         <source>Account not found</source>
-        <translation>Счет не найден</translation>
+        <translation>Учетная запись не найдена</translation>
     </message>
     <message>
         <source>Session not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Сессия не найден</translation>
     </message>
     <message>
         <source>Mobile-ID</source>
@@ -1883,7 +1883,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Не удалось подписать контейнер. Проверьте настройки доступа услуги %1 &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+        <translation>Не удалось подписать контейнер. Проверьте настройки доступа услуги %1 &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
@@ -1891,7 +1891,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;http://www.id.ee/?lang=ru&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372) 666 8888.</translation>
+        <translation>Обновите программу подписывания. Для этого установите программное обеспечение ID-карты, скачав его с сайта &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация: телефон линии помощи ID-карты (+372) 666 8888.</translation>
     </message>
     <message>
         <source>Open the Smart-ID application on your smart device and confirm device for signing.</source>
@@ -1899,7 +1899,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>С этого IP-адреса превышен месячный лимит бесплатных подписей %1. &lt;a href=&quot;https://www.id.ee/index.php?id=39025&quot;&gt;Подробнее читайте здесь&lt;/a&gt;</translation>
+        <translation>С этого IP-адреса превышен месячный лимит бесплатных подписей %1. &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Подробнее читайте здесь&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -1911,7 +1911,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Sign document</source>
-        <translation type="unfinished"></translation>
+        <translation>Подписать документ</translation>
     </message>
     <message>
         <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
@@ -2041,7 +2041,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Для использования сертификата цифровой подписи введите PIN2&lt;br/&gt;с клавиатуры считывателя.</translation>
+        <translation>Для использования сертификата цифровой подписи введите PIN2&lt;br/&gt;с клавиатуры считывателя</translation>
     </message>
     <message>
         <source>For using sign certificate enter PIN2</source>
@@ -2049,11 +2049,11 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Selected action requires sign certificate.</source>
-        <translation>Данная операция требует наличия сертификата цифровой подписи</translation>
+        <translation>Данная операция требует наличия сертификата цифровой подписи.</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Для использования сертификата идентификации введите PIN1&lt;br/&gt;с клавиатуры считывателя.</translation>
+        <translation>Для использования сертификата идентификации введите PIN1&lt;br/&gt;с клавиатуры считывателя</translation>
     </message>
     <message>
         <source>For using authentication certificate enter PIN1</source>
@@ -2583,7 +2583,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=39245</source>
-        <translation>https://www.id.ee/index.php?id=39246</translation>
+        <translation>https://www.id.ee/ru/artikkel/chto-takoe-sertifikat-dostupa/</translation>
     </message>
     <message>
         <source>Server access certificate</source>
@@ -2611,7 +2611,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=39076</source>
-        <translation>https://www.id.ee/index.php?id=39077</translation>
+        <translation>https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/</translation>
     </message>
     <message>
         <source>No proxy</source>
@@ -2682,7 +2682,7 @@ and enter Smart-ID PIN2-code.</source>
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
-Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://id.ee/?lang=ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
     </message>
     <message>
@@ -2783,7 +2783,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=39023</source>
-        <translation>https://www.id.ee/index.php?id=39025</translation>
+        <translation>https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/</translation>
     </message>
     <message>
         <source>Digidoc4 client configuration update was successful.</source>
@@ -2924,7 +2924,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Пробная подпись создается пробным сертификатом, который отличается от настоящего тем, что с пробным сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
+        <translation>Пробная подпись создается пробным сертификатом, который отличается от настоящего тем, что с пробным сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2932,7 +2932,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;http://id.ee/?lang=ru&amp;id=34529&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
+        <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;https://www.id.ee/ru/artikkel/digidoc4-klient-oshibka-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -3008,7 +3008,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/?lang=en&amp;id=38500&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Technical information</source>
@@ -3354,7 +3354,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30519&amp;read=38548&amp;page=3</source>
-        <translation>https://www.id.ee/index.php?id=30530&amp;read=38537&amp;page=3</translation>
+        <translation>https://www.id.ee/ru/artikkel/obnovleno-bolshinstvo-zatronutyh-riskom-id-kart-kotorye-ispolzovalis-elektronno/</translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
@@ -3390,11 +3390,11 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>https://www.id.ee/index.php?id=38500</translation>
+        <translation>https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30591</source>
-        <translation>https://www.id.ee/index.php?id=38500</translation>
+        <translation>https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/</translation>
     </message>
     <message>
         <source>More information</source>

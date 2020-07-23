@@ -23,11 +23,11 @@
     </message>
     <message>
         <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Juurdepääsutõend aegus %1. Juurdepääsutõendi uuendamiseks paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
+        <translation>Juurdepääsutõend aegus %1. Juurdepääsutõendi uuendamiseks paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;https://www.id.ee/&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
     </message>
     <message>
         <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</source>
-        <translation>Peagi on täitumas tasuta allkirjade kuulimiit. Suuremas mahus allkirjastamiseks tuleb sõlmida leping teenusepakkujaga. Loe rohkem &lt;a href=&quot;https://id.ee/index.php?id=39021&quot;&gt;siit&lt;/a&gt;</translation>
+        <translation>Peagi on täitumas tasuta allkirjade kuulimiit. Suuremas mahus allkirjastamiseks tuleb sõlmida leping teenusepakkujaga. Loe rohkem &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;siit&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;id.ee&lt;/a&gt;.</translation>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/&quot;&gt;ID-abikeskusega&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Digiallkirjade kehtivuse kontrollimiseks kasutatava sertifikaatide usaldusnimekirja uuendamine ebaõnnestus. Palun kontrolli oma arvuti internetiühendust ja seda, kas arvutis on kõige uuem ID-tarkvara versioon. Allkirjade verifitseerimiseks kasutatakse aegunud nimekirja. &lt;a href=&quot;http://www.id.ee/?id=37011&quot;&gt;Lisainfo&lt;/a&gt;</translation>
+        <translation>Digiallkirjade kehtivuse kontrollimiseks kasutatava sertifikaatide usaldusnimekirja uuendamine ebaõnnestus. Palun kontrolli oma arvuti internetiühendust ja seda, kas arvutis on kõige uuem ID-tarkvara versioon. Allkirjade verifitseerimiseks kasutatakse aegunud nimekirja. &lt;a href=&quot;https://www.id.ee/artikkel/digidoc4-teade-sertifikaatide-usaldusnimekirja-uuendamine-ebaonnestus/&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Loading TSL lists</source>
@@ -228,7 +228,7 @@
     </message>
     <message>
         <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
-        <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;http://id.ee/?lang=et&amp;id=36636&quot;&gt;siit&lt;/a&gt;.</translation>
+        <translation>E-teenustes ID-kaardiga allkirjastamiseks on Teil vajalik veel aktiveerida veebilehitsejas allkirjastamise plugin.&lt;br/&gt;Juhend aktiveerimiseks on leitav &lt;a href=&quot;https://www.id.ee/artikkel/veebibrauserite-seadistamine-id-kaardi-kasutamiseks/&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>DigiDoc4 Client Help</source>
@@ -746,11 +746,11 @@
     </message>
     <message>
         <source>is set</source>
-        <translation type="unfinished"></translation>
+        <translation>käsitsi määratud</translation>
     </message>
     <message>
         <source>is not set</source>
-        <translation type="unfinished"></translation>
+        <translation>vaikimisi määratud</translation>
     </message>
     <message>
         <source>TSL signing certs</source>
@@ -821,15 +821,15 @@
     </message>
     <message>
         <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>PDF ja DDOC formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;. Kas soovid jätkata?</translation>
+        <translation>PDF ja DDOC formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://www.id.ee/artikkel/riigi-infosusteemi-ameti-id-tarkvara-andmekaitsetingimused/&quot;&gt;siit&lt;/a&gt;. Kas soovid jätkata?</translation>
     </message>
     <message>
         <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_EST.pdf&quot;&gt;siit&lt;/a&gt;.&lt;br&gt;Kas soovid jätkata?</translation>
+        <translation>PDF formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://www.id.ee/artikkel/riigi-infosusteemi-ameti-id-tarkvara-andmekaitsetingimused/&quot;&gt;siit&lt;/a&gt;.&lt;br&gt;Kas soovid jätkata?</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -841,7 +841,7 @@
     </message>
     <message>
         <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Palun kontrollige oma arvuti kellaaega. &lt;a href=&apos;https://id.ee/index.php?id=39512&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <translation>Palun kontrollige oma arvuti kellaaega. &lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-palun-kontrollige-oma-arvuti-kellaaega-2/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>The timestamp added to the signature must be taken before validity confirmation.</source>
@@ -1109,7 +1109,7 @@
     </message>
     <message>
         <source>GIVEN NAMES</source>
-        <translation>EESNIMED</translation>
+        <translation>EESNIMI</translation>
     </message>
     <message>
         <source>PERSONAL CODE</source>
@@ -1163,7 +1163,7 @@
     <message>
         <source>Given names</source>
         <extracomment>accessible</extracomment>
-        <translation>Eesnimed</translation>
+        <translation>Eesnimi</translation>
     </message>
     <message>
         <source>Surname</source>
@@ -1194,7 +1194,7 @@
     </message>
     <message>
         <source>Enter the personal code, institution or registry code</source>
-        <translation>Sisteta isikukood, asutus või registri kood</translation>
+        <translation>Sisesta isikukood, asutus või registri kood</translation>
     </message>
     <message>
         <source>+ ADD MORE FILES</source>
@@ -1295,11 +1295,11 @@
     </message>
     <message>
         <source>Key derivation method</source>
-        <translation>Key derivation method</translation>
+        <translation>Võtme tuletamise meetod</translation>
     </message>
     <message>
         <source>ConcatKDF digest method</source>
-        <translation>ConcatKDF digest method</translation>
+        <translation>ConcatKDF referaatmeetod</translation>
     </message>
     <message>
         <source>Issuer</source>
@@ -1768,7 +1768,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Country code and phone number</source>
-        <translation>Riigi kood ja telefoninumber</translation>
+        <translation>Riigikood ja telefoninumber</translation>
     </message>
     <message>
         <source>Personal code</source>
@@ -1795,7 +1795,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>SIM error</source>
-        <translation>SIM kaardi viga</translation>
+        <translation>SIM-kaardi viga</translation>
     </message>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
@@ -1858,7 +1858,7 @@ ja sisesta telefonil Mobiil-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Session not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Sessiooni ei leitud</translation>
     </message>
     <message>
         <source>Mobile-ID</source>
@@ -1880,7 +1880,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Ümbriku allkirjastamine ebaõnnestus. Kontrolli %1 teenuse ligipääsu seadeid. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Kontrolli %1 teenuse ligipääsu seadeid. &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
@@ -1888,7 +1888,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;http://www.id.ee/?lang=et&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
+        <translation>Allkirjastamise tarkvara vajab uuendamist. Paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;https://www.id.ee/&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
     </message>
     <message>
         <source>Open the Smart-ID application on your smart device and confirm device for signing.</source>
@@ -1896,7 +1896,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>%1 tasuta allkirjade kuulimiit on ületatud sellelt IP-aadressilt. &lt;a href=&quot;https://www.id.ee/index.php?id=39021&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <translation>%1 tasuta allkirjade kuulimiit on ületatud sellelt IP-aadressilt. &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
@@ -2580,7 +2580,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=39245</source>
-        <translation>https://www.id.ee/index.php?id=39244</translation>
+        <translation>https://www.id.ee/artikkel/juurdepaasutoend-mis-see-on/</translation>
     </message>
     <message>
         <source>Server access certificate</source>
@@ -2608,7 +2608,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=39076</source>
-        <translation>https://www.id.ee/index.php?id=39062</translation>
+        <translation>https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/</translation>
     </message>
     <message>
         <source>No proxy</source>
@@ -2679,7 +2679,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
 In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
-Küsimuste korral pöörduge &lt;a href=&quot;https://id.ee/?lang=et&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+Küsimuste korral võtke ühendust &lt;a href=&quot;https://www.id.ee/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;ID-abikeskusega&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
@@ -2780,7 +2780,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=39023</source>
-        <translation>https://www.id.ee/index.php?id=39021</translation>
+        <translation>https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/</translation>
     </message>
     <message>
         <source>Digidoc4 client configuration update was successful.</source>
@@ -2891,7 +2891,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;http://www.id.ee/index.php?id=30379&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
+        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;https://www.id.ee/artikkel/testsertifikaatidega-antud-allkirjade-kontrollimine-digidoc4-kliendis/&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2899,7 +2899,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;http://www.id.ee/?id=35939&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
+        <translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -2975,7 +2975,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/index.php?id=38498&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>is valid</source>
@@ -3351,7 +3351,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30519&amp;read=38548&amp;page=3</source>
-        <translation>https://www.id.ee/index.php?id=30011&amp;read=38534&amp;page=5</translation>
+        <translation>https://www.id.ee/artikkel/uuendati-enamik-elektrooniliselt-kasutatud-id-kaartidest/</translation>
     </message>
     <message numerus="yes">
         <source>%n signatures are not valid</source>
@@ -3383,11 +3383,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>https://www.id.ee/index.php?id=38498</translation>
+        <translation>https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/</translation>
     </message>
     <message>
         <source>https://www.id.ee/index.php?id=30591</source>
-        <translation>https://www.id.ee/index.php?id=38498</translation>
+        <translation>https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/</translation>
     </message>
     <message>
         <source>More information</source>
