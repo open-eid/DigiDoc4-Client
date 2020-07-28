@@ -53,7 +53,7 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-	setWindowModality( Qt::ApplicationModal );
+	new Overlay(this, parent->topLevelWidget());
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, QStringLiteral("Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
@@ -282,16 +282,6 @@ QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValu
 void AddRecipients::enableRecipientFromCard()
 {
 	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
-}
-
-int AddRecipients::exec()
-{
-	Overlay overlay(parentWidget());
-	overlay.show();
-	auto rc = QDialog::exec();
-	overlay.close();
-
-	return rc;
 }
 
 void AddRecipients::initAddressItems(const std::vector<Item *> &items)
