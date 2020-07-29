@@ -553,7 +553,7 @@ QWidget { border: none; }</string>
           <string notr="true">color: #353739;</string>
          </property>
          <property name="text">
-          <string>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</string>
+          <string>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

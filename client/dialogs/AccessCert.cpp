@@ -231,7 +231,7 @@ bool AccessCert::validate()
 	{
 		showWarning(tr(
 			"Server access certificate expired on %1. To renew the certificate please update your ID "
-			"software, which you can get from <a href=\"http://www.id.ee/?lang=en\">www.id.ee</a>. "
+			"software, which you can get from <a href=\"https://www.id.ee/en/\">www.id.ee</a>. "
 			"Additional info is available ID-helpline (+372) 666 8888.")
 			.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
 		if(!c.isValid())
@@ -259,7 +259,7 @@ bool AccessCert::validate()
 		showWarning(tr(
 			"The limit of free digital signatures per month is about to exceed. To create more "
 			"digital signatures you need to conclude a contract with a service provider. Read more "
-			"<a href=\"https://id.ee/index.php?id=39023\">here</a>"));
+			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">here</a>"));
 	}
 	return true;
 }

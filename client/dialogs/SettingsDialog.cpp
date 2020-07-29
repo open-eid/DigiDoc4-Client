@@ -414,13 +414,13 @@ void SettingsDialog::initFunctionality()
 		setValueEx(QStringLiteral("SIDUUID"), text, QString());
 	});
 	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39245"));
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/access-certificate-what-is-it/"));
 	});
 	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39076"));
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
 	});
 	connect(ui->helpMID, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/index.php?id=39023"));
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
 	});
 }
 

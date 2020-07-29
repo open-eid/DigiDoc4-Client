@@ -89,7 +89,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			"Test signature is signed with test certificates that are similar to the "
 			"certificates of real tokens, but digital signatures with legal force cannot "
 			"be given with them as there is no actual owner of the card. "
-			"<a href='http://www.id.ee/index.php?id=30494'>Additional information</a>.") );
+			"<a href='https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/'>Additional information</a>.") );
 		break;
 	case DigiDocSignature::Invalid:
 		style = QStringLiteral("<font color=\"red\">");
@@ -107,7 +107,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->info->setText( tr(
 			"Signature status is displayed \"unknown\" if you don't have all validity confirmation "
 			"service certificates and/or certificate authority certificates installed into your computer "
-			"(<a href='http://id.ee/?lang=en&id=34317'>additional information</a>).") );
+			"(<a href='https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/'>additional information</a>).") );
 		break;
 	}
 	bool noError = d->error->toPlainText().isEmpty();

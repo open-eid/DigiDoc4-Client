@@ -454,7 +454,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	{
 		showError(tr("Person or company does not own a valid certificate.<br />"
 			"It is necessary to have a valid certificate for encryption.<br />"
-			"In case of questions please contact our support via <a href=\"https://id.ee/?lang=en\">id.ee</a>."));
+			"In case of questions please contact our support via <a href=\"https://www.id.ee/en/\">id.ee</a>."));
 	}
 	else
 	{

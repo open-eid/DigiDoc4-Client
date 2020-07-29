@@ -181,16 +181,16 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			switch (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
 			{
 			case 403:
-				returnError(tr("Failed to sign container. Check your %1 service access settings. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>").arg(tr("Smart-ID")));
+				returnError(tr("Failed to sign container. Check your %1 service access settings. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
 				return;
 			case 429:
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>").arg(tr("Smart-ID")));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
 				return;
 			case 471:
 				returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
 				return;
 			case 480:
-				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from <a href=\"http://www.id.ee/?lang=en\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
+				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from <a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
 				return;
 			case 580:
 				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg("Smart-ID"));
