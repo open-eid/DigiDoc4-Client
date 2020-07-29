@@ -22,11 +22,11 @@
         <translation>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
     </message>
     <message>
-        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
         <translation>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
     </message>
     <message>
-        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://id.ee/index.php?id=39023&quot;&gt;here&lt;/a&gt;</source>
+        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;here&lt;/a&gt;</source>
         <translation>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;here&lt;/a&gt;</translation>
     </message>
 </context>
@@ -86,7 +86,7 @@
         <translation>Personal code is not valid!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;id.ee&lt;/a&gt;.</source>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
         <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</translation>
     </message>
     <message>
@@ -203,7 +203,7 @@
         <translation>New Crypto window</translation>
     </message>
     <message>
-        <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;http://www.id.ee/?id=37012&quot;&gt;Additional information&lt;/a&gt;</source>
+        <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
@@ -227,7 +227,7 @@
         <translation>Remind later</translation>
     </message>
     <message>
-        <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;http://id.ee/?lang=en&amp;id=36639&quot;&gt;here&lt;/a&gt;.</source>
+        <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;https://www.id.ee/en/article/configuring-browsers-for-using-id-card/&quot;&gt;here&lt;/a&gt;.</source>
         <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;https://www.id.ee/en/article/configuring-browsers-for-using-id-card/&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
@@ -745,11 +745,11 @@
         <translation>Certificate Propagation service status: </translation>
     </message>
     <message>
-        <source>is set</source>
+        <source>is set manually</source>
         <translation>is set manually</translation>
     </message>
     <message>
-        <source>is not set</source>
+        <source>is set by default</source>
         <translation>is set by default</translation>
     </message>
     <message>
@@ -820,15 +820,15 @@
         <translation>You have not granted IP-based access. Check your validity confirmation service access settings.</translation>
     </message>
     <message>
-        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <source>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The limit for digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
+        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
         <translation>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;. Do you want to continue?</translation>
     </message>
     <message>
-        <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
+        <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
         <translation>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br&gt;Do you want to continue?</translation>
     </message>
     <message>
@@ -840,7 +840,7 @@
         <translation>YES</translation>
     </message>
     <message>
-        <source>Please check your computer time. &lt;a href=&apos;https://id.ee/index.php?id=39513&apos;&gt;Additional information&lt;/a&gt;</source>
+        <source>Please check your computer time. &lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Please check your computer time. &lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/&apos;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
@@ -989,7 +989,7 @@
         <translation>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</translation>
     </message>
     <message>
-        <source>Manage your ID-card’s PIN/PUK codes and handle certificate renewals.</source>
+        <source>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</source>
         <translation>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</translation>
     </message>
     <message>
@@ -1786,7 +1786,7 @@ ID-CARD</translation>
         <translation>Signing in process</translation>
     </message>
     <message>
-        <source>Phone absent</source>
+        <source>Phone is not in coverage area</source>
         <translation>Phone is not in coverage area</translation>
     </message>
     <message>
@@ -1879,7 +1879,7 @@ and enter Smart-ID PIN2-code.</source>
 and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
-        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
@@ -1887,7 +1887,7 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</translation>
     </message>
     <message>
-        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;http://www.id.ee/?lang=en&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
+        <source>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
         <translation>Your signing software needs an upgrade. Please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
     </message>
     <message>
@@ -1895,7 +1895,7 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Open the Smart-ID application on your smart device and confirm device for signing.</translation>
     </message>
     <message>
-        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/index.php?id=39023&quot;&gt;Additional information&lt;/a&gt;</source>
+        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
@@ -2575,7 +2575,7 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Access to validity confirmation service</translation>
     </message>
     <message>
-        <source>https://www.id.ee/index.php?id=39245</source>
+        <source>https://www.id.ee/en/article/access-certificate-what-is-it/</source>
         <translation>https://www.id.ee/en/article/access-certificate-what-is-it/</translation>
     </message>
     <message>
@@ -2603,7 +2603,7 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Access to Time-Stamping service</translation>
     </message>
     <message>
-        <source>https://www.id.ee/index.php?id=39076</source>
+        <source>https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/</source>
         <translation>https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/</translation>
     </message>
     <message>
@@ -2672,7 +2672,7 @@ and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://id.ee/?lang=en&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -2777,10 +2777,6 @@ Additional licenses and components</translation>
     <message>
         <source>Access to Mobile-ID and Smart-ID service</source>
         <translation>Access to Mobile-ID and Smart-ID service</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/index.php?id=39023</source>
-        <translation>https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/</translation>
     </message>
     <message>
         <source>Digidoc4 client configuration update was successful.</source>
@@ -2890,7 +2886,7 @@ Additional licenses and components</translation>
         <translation>Unknown error</translation>
     </message>
     <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;http://www.id.ee/index.php?id=30494&apos;&gt;Additional information&lt;/a&gt;.</source>
+        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
@@ -2898,7 +2894,7 @@ Additional licenses and components</translation>
         <translation>This is an invalid signature or malformed digitally signed file. The signature is not valid.</translation>
     </message>
     <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;http://id.ee/?lang=en&amp;id=34317&apos;&gt;additional information&lt;/a&gt;).</source>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;additional information&lt;/a&gt;).</source>
         <translation>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;additional information&lt;/a&gt;).</translation>
     </message>
     <message>
@@ -3350,7 +3346,7 @@ Additional licenses and components</translation>
         <translation>Additional information</translation>
     </message>
     <message>
-        <source>https://www.id.ee/index.php?id=30519&amp;read=38548&amp;page=3</source>
+        <source>https://www.id.ee/en/article/the-majority-of-electronically-used-id-cards-were-renewed/</source>
         <translation>https://www.id.ee/en/article/the-majority-of-electronically-used-id-cards-were-renewed/</translation>
     </message>
     <message numerus="yes">
@@ -3382,11 +3378,7 @@ Additional licenses and components</translation>
         </translation>
     </message>
     <message>
-        <source>http://id.ee/?lang=en&amp;id=34317</source>
-        <translation>https://www.id.ee/en/article/digital-signing-and-electronic-signatures/</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/index.php?id=30591</source>
+        <source>https://www.id.ee/en/article/digital-signing-and-electronic-signatures/</source>
         <translation>https://www.id.ee/en/article/digital-signing-and-electronic-signatures/</translation>
     </message>
     <message>

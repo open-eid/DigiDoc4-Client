@@ -529,11 +529,11 @@ bool DigiDoc::open( const QString &file )
 			parent = qApp->activeWindow();
 #ifdef Q_OS_MAC
 		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>. "
 			"Do you want to continue?"), parent);
 #else
 		WarningDialog dlg(tr("Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://id.ee/public/DigiDoc_Andmekaitsetingimused_ENG.pdf\">here</a>. "
+			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>. "
 			"Do you want to continue?"), parent);
 #endif
 		dlg.setCancelText(tr("CANCEL"));
@@ -652,13 +652,13 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	case Exception::CertificateUnknown:
 		qApp->showWarning(tr("Certificate status unknown"), causes.join('\n')); break;
 	case Exception::OCSPTimeSlot:
-		qApp->showWarning(tr("Please check your computer time. <a href='https://id.ee/index.php?id=39513'>Additional information</a>"), causes.join('\n')); break;
+		qApp->showWarning(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
 			"Check your validity confirmation service access settings."), causes.join('\n')); break;
 	case Exception::TSTooManyRequests:
 		qApp->showWarning(tr("The limit for digital signatures per month has been reached for this IP address. "
-			"<a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>"), causes.join('\n')); break;
+			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>"), causes.join('\n')); break;
 	case Exception::PINCanceled:
 		break;
 	case Exception::PINFailed:

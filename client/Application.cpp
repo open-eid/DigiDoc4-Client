@@ -1030,7 +1030,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 			timer->setSingleShot(true);
 			connect(timer, &QTimer::timeout, this, [=]{
 				timer->deleteLater();
-				WarningDialog dlg(tr("In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.<br/>Instructions on how to enable token plugin can be found <a href=\"http://id.ee/?lang=en&id=36639\">here</a>."), qApp->activeWindow());
+				WarningDialog dlg(tr("In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.<br/>Instructions on how to enable token plugin can be found <a href=\"https://www.id.ee/en/article/configuring-browsers-for-using-id-card/\">here</a>."), qApp->activeWindow());
 				dlg.setCancelText(tr("Ignore forever").toUpper());
 				dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Yes);
 				dlg.exec();
@@ -1070,7 +1070,7 @@ void Application::showTSLWarning(QEventLoop *e)
 		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 		"Please check your internet connection and make sure you have the latest ID-software version "
 		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
-		"<a href=\"http://www.id.ee/?id=37012\">Additional information</a>") );
+		"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>") );
 	e->exit();
 }
 

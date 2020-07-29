@@ -173,7 +173,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 		default:
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
 			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/index.php?id=39023\">Additional information</a>").arg(tr("Mobile-ID")));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Mobile-ID")));
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
@@ -235,7 +235,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			else if(endResult == QStringLiteral("TIMEOUT"))
 				returnError(tr("Your Mobile-ID transaction has expired. Please try again."));
 			else if(endResult == QStringLiteral("PHONE_ABSENT"))
-				returnError(tr("Phone absent"));
+				returnError(tr("Phone is not in coverage area"));
 			else if(endResult == QStringLiteral("DELIVERY_ERROR"))
 				returnError(tr("Request sending error"));
 			else if(endResult == QStringLiteral("SIM_ERROR"))
