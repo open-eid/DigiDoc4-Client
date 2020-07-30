@@ -70,6 +70,10 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	ui->confirm->setDisabled(rightList.isEmpty());
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
+	connect(ui->leftPane, &ItemList::search, this, [&]{
+		leftList.clear();
+		ui->leftPane->clear();
+	});
 	connect(ui->leftPane, &ItemList::search, this, &AddRecipients::search);
 	connect(ldap_person, &LdapSearch::searchResult, this, &AddRecipients::showResult);
 	connect(ldap_corp, &LdapSearch::searchResult, this, &AddRecipients::showResult);
@@ -262,10 +266,12 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	if(selectedCertData.isEmpty())
 		return;
 
-	HistoryCertData certData = selectedCertData.first();
-	QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
-	ui->leftPane->setTerm(term);
-	search(term);
+	leftList.clear();
+	ui->leftPane->clear();
+	for(const HistoryCertData &certData: selectedCertData) {
+		QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
+		search(term);
+	}
 	select = true;
 }
 
@@ -458,8 +464,6 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	}
 	else
 	{
-		leftList.clear();
-		ui->leftPane->clear();
 		Item *item = nullptr;
 
 		for(const QSslCertificate &k: filter)

@@ -20,7 +20,6 @@
 #include "LdapSearch.h"
 
 #include <QtCore/QTimer>
-#include <QtCore/QTimerEvent>
 #include <QtCore/QUrl>
 #include <QtNetwork/QSslCertificate>
 
@@ -42,7 +41,6 @@ class LdapSearch::Private
 {
 public:
 	LDAP *ldap = nullptr;
-	ULONG msg_id = 0;
 	QByteArray host;
 };
 
@@ -141,12 +139,56 @@ void LdapSearch::search( const QString &search )
 
 	char *attrs[] = { const_cast<char*>("userCertificate;binary"), nullptr };
 
+	ULONG msg_id = 0;
 	int err = ldap_search_ext( d->ldap, "c=EE", LDAP_SCOPE_SUBTREE,
-		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &d->msg_id);
-	if( err )
-		setLastError( tr("Failed to init ldap search"), err );
-	else
-		startTimer( 1000 );
+		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
+	if(err)
+		return setLastError( tr("Failed to init ldap search"), err );
+
+	QTimer *timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, this, [=] {
+		LDAPMessage *result = nullptr;
+		LDAP_TIMEVAL t = { 5, 0 };
+		int err = ldap_result(d->ldap, msg_id, LDAP_MSG_ALL, &t, &result);
+		switch(err)
+		{
+		case LDAP_SUCCESS: //Timeout
+			return;
+		case LDAP_RES_SEARCH_ENTRY:
+		case LDAP_RES_SEARCH_RESULT:
+			break;
+		default:
+			setLastError(tr("Failed to get result"), err);
+			timer->deleteLater();
+			return;
+		}
+		timer->deleteLater();
+
+		QList<QSslCertificate> list;
+		LDAPMessage *entry = ldap_first_entry(d->ldap, result);
+		int count = ldap_count_entries(d->ldap, entry);
+		for(; entry; entry = ldap_next_entry(d->ldap, entry))
+		{
+			BerElement *pos = nullptr;
+			for(char *attr = ldap_first_attribute(d->ldap, entry, &pos);
+				attr; attr = ldap_next_attribute(d->ldap, entry, pos))
+			{
+				if( qstrcmp( attr, "userCertificate;binary" ) == 0 )
+				{
+					berval **cert = ldap_get_values_len(d->ldap, entry, attr);
+					for(ULONG i = 0; i < ldap_count_values_len(cert); ++i)
+						list << QSslCertificate(QByteArray::fromRawData(cert[i]->bv_val, int(cert[i]->bv_len)), QSsl::Der);
+					ldap_value_free_len(cert);
+				}
+				ldap_memfree(attr);
+			}
+			ber_free(pos, 0);
+		}
+		ldap_msgfree(result);
+
+		Q_EMIT searchResult(list, count);
+	});
+	timer->start(1000);
 }
 
 void LdapSearch::setLastError( const QString &msg, int err )
@@ -166,46 +208,3 @@ void LdapSearch::setLastError( const QString &msg, int err )
 	Q_EMIT error( res, details );
 }
 
-void LdapSearch::timerEvent( QTimerEvent *e )
-{
-	LDAPMessage *result = nullptr;
-	LDAP_TIMEVAL t = { 5, 0 };
-	int err = ldap_result( d->ldap, d->msg_id, LDAP_MSG_ALL, &t, &result );
-	switch( err )
-	{
-	case LDAP_SUCCESS: //Timeout
-		return;
-	case LDAP_RES_SEARCH_ENTRY:
-	case LDAP_RES_SEARCH_RESULT:
-		break;
-	default:
-		setLastError( tr("Failed to get result"), err );
-		killTimer( e->timerId() );
-		return;
-	}
-	killTimer( e->timerId() );
-
-	QList<QSslCertificate> list;
-	LDAPMessage *entry = ldap_first_entry(d->ldap, result);
-	int count = ldap_count_entries(d->ldap, entry);
-	for(; entry; entry = ldap_next_entry(d->ldap, entry))
-	{
-		BerElement *pos = nullptr;
-		for( char *attr = ldap_first_attribute( d->ldap, entry, &pos );
-			 attr; attr = ldap_next_attribute( d->ldap, entry, pos ) )
-		{
-			if( qstrcmp( attr, "userCertificate;binary" ) == 0 )
-			{
-				berval **cert = ldap_get_values_len( d->ldap, entry, attr );
-				for( ULONG i = 0; i < ldap_count_values_len( cert ); ++i )
-					list << QSslCertificate(QByteArray::fromRawData(cert[i]->bv_val, int(cert[i]->bv_len)), QSsl::Der);
-				ldap_value_free_len( cert );
-			}
-			ldap_memfree( attr );
-		}
-		ber_free( pos, 0 );
-	}
-	ldap_msgfree( result );
-
-	Q_EMIT searchResult(list, count);
-}
