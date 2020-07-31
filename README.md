@@ -26,7 +26,7 @@
 
          sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
 
-   * Also runtime dependency opensc-pkcs11 is needed with the [EstEID ECDH token support](https://github.com/OpenSC/OpenSC/commit/2846295e1f12790bd9d8b01531affbf6feccf22c); until OpenSC distribution with these changes is not released the library has to be built manually or downloaded from [installer.id.ee](https://installer.id.ee/media/ubuntu/pool/main/o/opensc/)
+   * Also runtime dependency opensc-pkcs11 is needed
 
 2. Fetch the source
 
@@ -72,7 +72,7 @@
 
         mkdir build
         cd build
-        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.8-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
+        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.9-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
 
 4. Build
 
@@ -90,7 +90,7 @@
 ### Windows
 
 1. Install dependencies from
-    * [Visual Studio Community 2015](https://www.visualstudio.com/downloads/)
+    * [Visual Studio Community 2017](https://www.visualstudio.com/downloads/)
     * [http://www.cmake.org](http://www.cmake.org)
     * [http://qt-project.org](http://qt-project.org)
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
@@ -103,7 +103,7 @@
 
         mkdir build
         cd build
-        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.9\msvc2015\lib\cmake\Qt5" ..
+        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.12.9\msvc2017\lib\cmake\Qt5" ..
 
 4. Build
 
