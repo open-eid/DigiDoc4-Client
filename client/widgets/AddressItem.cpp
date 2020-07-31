@@ -65,7 +65,8 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 			strDate = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
 	}
 
-	update(name.toHtmlEscaped(), SslCertificate(key.cert).personalCode(), SslCertificate(key.cert).type(), strDate, AddressItem::Remove);
+	update(name.toHtmlEscaped(), SslCertificate(key.cert).personalCode().toHtmlEscaped(),
+		SslCertificate(key.cert).type(), strDate, AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()
@@ -171,7 +172,7 @@ void AddressItem::setIdType()
 	if(!expireDateText.isEmpty())
 	{
 		if(!str.isEmpty())
-			str += " - ";
+			str += QStringLiteral(" - ");
 		str += tr("Expires on") + " " + expireDateText;
 	}
 
