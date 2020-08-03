@@ -210,7 +210,7 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 {
 	const qint64 DAY = 24 * 60 * 60;
 	qint64 expiresIn = 106 * DAY;
-	for(const QSslCertificate &cert: {qApp->signer()->tokenauth().cert(), qApp->signer()->tokensign().cert()})
+	for(const QSslCertificate &cert: {data.authCert(), data.signCert()})
 	{
 		if(!cert.isNull())
 		{

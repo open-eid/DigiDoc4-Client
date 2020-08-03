@@ -58,9 +58,6 @@ enum Actions {
     FileAdd,
     FileRemove,
 
-    HeadSettings,
-    HeadHelp,
-
     SignatureAdd,
     SignatureMobile,
     SignatureSmartID,

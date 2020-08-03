@@ -28,13 +28,7 @@ class CardPopup : public StyledWidget
 	Q_OBJECT
 
 public:
-	enum Filter {
-		NonReputation,
-		NonWebAuth,
-		All,
-	};
-	explicit CardPopup(const QString &selectedCard, const QVector<TokenData> &cache,
-		Filter filter, QWidget *parent = nullptr);
+	explicit CardPopup(const QVector<TokenData> &cache, QWidget *parent = nullptr);
 
 signals:
 	void activated( const QString &card );

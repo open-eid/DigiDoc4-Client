@@ -27,7 +27,7 @@
 
 #include <QButtonGroup>
 
-#include <memory>
+#include <functional>
 
 namespace Ui {
 class MainWindow;
@@ -36,7 +36,6 @@ class MainWindow;
 class CKey;
 class CryptoDoc;
 class DigiDoc;
-class DropdownButton;
 class DocumentModel;
 class PageIcon;
 class WarningList;
@@ -58,13 +57,11 @@ signals:
 
 private Q_SLOTS:
 	void activateEmail ();
-	void buttonClicked( int button );
 	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked();
 	void getEmailStatus();
 	void open(const QStringList &params, bool crypto, bool sign);
-	void openFile(const QString &file);
 	void pageSelected(PageIcon *page);
 	void photoClicked(const QPixmap &photo);
 	void savePhoto();
@@ -84,7 +81,6 @@ protected:
 private:
 	void adjustDrops();
 	void browseOnDisk(const QString &fileName);
-	void clearOverlay();
 	void containerToEmail(const QString &fileName);
 	void convertToBDoc();
 	void convertToCDoc();
@@ -92,7 +88,6 @@ private:
 	bool decrypt();
 	QStringList dropEventFiles(QDropEvent *event) const;
 	bool encrypt();
-	void hideCardPopup();
 	void loadPicture();
 	void moveCryptoContainer();
 	void moveSignatureContainer();
@@ -117,7 +112,6 @@ private:
 	void selectPageIcon( PageIcon* page );
 	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
 	void showCardMenu( bool show );
-	void showOverlay( QWidget *parent );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign);
 	void updateCardWarnings(const QSmartCardData &data);
@@ -135,8 +129,5 @@ private:
 
 	Ui::MainWindow *ui;
 
-	QButtonGroup *buttonGroup = nullptr;
-	std::unique_ptr<Overlay> overlay;
-	DropdownButton *selector = nullptr;
 	WarningList *warnings;
 };

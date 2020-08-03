@@ -73,9 +73,9 @@ void CardWidget::clearSeal()
 	ui->cardPhoto->setCursor(QCursor(Qt::PointingHandCursor));
 }
 
-QString CardWidget::id() const
+TokenData CardWidget::token() const
 {
-	return t.card();
+	return t;
 }
 
 bool CardWidget::event( QEvent *ev )
@@ -114,6 +114,8 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 
 void CardWidget::update(const TokenData &token, bool multiple)
 {
+	if(t != token)
+		ui->cardPhoto->clear();
 	t = token;
 	SslCertificate c = t.cert();
 	QString id = c.personalCode();

@@ -78,21 +78,27 @@ MainWindow::MainWindow( QWidget *parent )
 	, warnings(new WarningList(ui, this))
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
-
-	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
-	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont regular20 = Styles::font( Styles::Regular, 20 );
-
-	// Cleanup obsolete keys
-	QSettings s;
-	s.remove(QStringLiteral("Client/Type"));
-
+	setAcceptDrops( true );
 	ui->setupUi(this);
-	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
 	QFont version = Styles::font(Styles::Regular, 12);
 	version.setUnderline(true);
+	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
+	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
+	QFont regular20 = Styles::font( Styles::Regular, 20 );
 	ui->version->setFont(version);
+	ui->signIntroLabel->setFont( regular20 );
+	ui->signIntroButton->setFont( condensed14 );
+	ui->cryptoIntroLabel->setFont( regular20 );
+	ui->cryptoIntroButton->setFont( condensed14 );
+	ui->noCardInfo->setFont(condensed14);
+	ui->noReaderInfoText->setFont(regular20);
+	ui->noReaderInfoText->setProperty("currenttext", ui->noReaderInfoText->text());
+	ui->help->setFont( condensed11 );
+	ui->settings->setFont( condensed11 );
+
+	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
+
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
@@ -101,6 +107,7 @@ MainWindow::MainWindow( QWidget *parent )
 	coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
 	coatOfArms->resize( 80, 32 );
 	coatOfArms->move( 15, 17 );
+
 	ui->signature->init( Pages::SignIntro, ui->signatureShadow, true );
 	ui->crypto->init( Pages::CryptoIntro, ui->cryptoShadow, false );
 	ui->myEid->init( Pages::MyEid, ui->myEidShadow, false );
@@ -112,26 +119,10 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::clearPopups);
 	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected);
 
-	selector = new DropdownButton(QStringLiteral(":/images/arrow_down.svg"), QStringLiteral(":/images/arrow_down_selected.svg"), ui->selector);
-	selector->hide();
-	selector->resize( 12, 6 );
-	selector->move( 9, 32 );
 	ui->help->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->settings->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Seaded.svg"), QStringLiteral(":/images/icon_Seaded_hover.svg"), this));
-	buttonGroup = new QButtonGroup( this );
-	buttonGroup->addButton( ui->help, HeadHelp );
-	buttonGroup->addButton( ui->settings, HeadSettings );
-
-	ui->signIntroLabel->setFont( regular20 );
-	ui->signIntroButton->setFont( condensed14 );
-	ui->cryptoIntroLabel->setFont( regular20 );
-	ui->cryptoIntroButton->setFont( condensed14 );
-	ui->noCardInfo->setFont(condensed14);
-	ui->noReaderInfoText->setFont(regular20);
-	ui->noReaderInfoText->setProperty("currenttext", ui->noReaderInfoText->text());
-
-	ui->help->setFont( condensed11 );
-	ui->settings->setFont( condensed11 );
+	connect(ui->help, &QToolButton::clicked, qApp, &Application::openHelp);
+	connect(ui->settings, &QToolButton::clicked, this, [this] { showSettings(SettingsDialog::GeneralSettings); });
 
 #ifdef Q_OS_WIN
 	// Add grey line on Windows in order to separate white title bar from card selection bar
@@ -144,23 +135,18 @@ MainWindow::MainWindow( QWidget *parent )
 	separator->show();
 #endif
 
-	setAcceptDrops( true );
-
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::dataChanged, this, &MainWindow::showCardStatus);
 	// Refresh card info on "My EID" page
 	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 	// Show card pop-up menu
-	connect( selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu );
+	connect(ui->selector->selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu);
 
 	connect(this, &MainWindow::clearPopups, ui->signContainerPage, &ContainerPage::clearPopups);
-	connect(this, &MainWindow::clearPopups, this, &MainWindow::hideCardPopup);
-
-	ui->accordion->init();
+	connect(this, &MainWindow::clearPopups, this, [this] { showCardMenu(false); });
 
 	connect(ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
 	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
-	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &MainWindow::buttonClicked);
 	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
@@ -176,17 +162,18 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::keysSelected, this, &MainWindow::updateKeys);
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
 
+	ui->accordion->init();
+	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
+	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
+	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
 	connect(ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus);   // To check e-mail
 	connect(ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail);   // To activate e-mail
 	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
-	connect(ui->cardInfo, &CardWidget::selected, this, [this] { if( selector ) selector->press(); });
+	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
 
 	showCardStatus();
 	updateMyEid(QSmartCardData());
-	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
-	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
-	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
 }
 
 MainWindow::~MainWindow()
@@ -250,21 +237,6 @@ void MainWindow::browseOnDisk( const QString &fileName )
 	QDesktopServices::openUrl( url );
 }
 
-void MainWindow::buttonClicked( int button )
-{
-	switch( button )
-	{
-	case HeadHelp:
-		qApp->openHelp();
-		break;
-	case HeadSettings:
-		showSettings(SettingsDialog::GeneralSettings);
-		break;
-	default:
-		break;
-	}
-}
-
 void MainWindow::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
@@ -273,15 +245,9 @@ void MainWindow::changeEvent(QEvent* event)
 		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
-		hideCardPopup();
+		showCardMenu(false);
 	}
 	QWidget::changeEvent(event);
-}
-
-void MainWindow::clearOverlay()
-{
-	overlay->close();
-	overlay.reset( nullptr );
 }
 
 void MainWindow::closeEvent(QCloseEvent * /*event*/)
@@ -333,7 +299,8 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 	if(!dropEventFiles(event).isEmpty())
 	{
 		event->acceptProposedAction();
-		showOverlay(this);
+		if(!findChild<Overlay*>())
+			new Overlay(this, this);
 	}
 	else
 		event->ignore();
@@ -342,12 +309,14 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
 	event->accept();
-	clearOverlay();
+	for(Overlay *overlay: findChildren<Overlay*>())
+		overlay->deleteLater();
 }
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
-	clearOverlay();
+	for(Overlay *overlay: findChildren<Overlay*>())
+		overlay->deleteLater();
 	QStringList files = dropEventFiles(event);
 	if(!files.isEmpty())
 	{
@@ -375,28 +344,19 @@ bool MainWindow::encrypt()
 	if(!cryptoDoc)
 		return false;
 
-	if( !FileDialog::fileIsWritable(cryptoDoc->fileName())){
+	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
 		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(cryptoDoc->fileName()), this);
 		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
-		dlg.exec();
-
-		if(dlg.result() == QMessageBox::Yes) {
+		if(dlg.exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
 			return encrypt();
-		}else {
-			return false;
 		}
+		return false;
 	}
 
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
 
 	return cryptoDoc->encrypt();
-}
-
-void MainWindow::hideCardPopup()
-{
-	selector->init();
-	showCardMenu( false );
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -585,14 +545,14 @@ void MainWindow::convertToCDoc()
 
 void MainWindow::moveCryptoContainer()
 {
-	QString to = selectFile(tr("Move file"),cryptoDoc->fileName(), true);
+	QString to = selectFile(tr("Move file"), cryptoDoc->fileName(), true);
 	if(!to.isNull() && cryptoDoc->move(to))
 		emit ui->cryptoContainerPage->moved(to);
 }
 
 void MainWindow::moveSignatureContainer()
 {
-	QString to = selectFile(tr("Move file"),digiDoc->fileName(), true);
+	QString to = selectFile(tr("Move file"), digiDoc->fileName(), true);
 	if(!to.isNull() && digiDoc->move(to))
 		emit ui->signContainerPage->moved(to);
 }
@@ -639,9 +599,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		{
 			WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
 			dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
-			dlg.exec();
-
-			if(dlg.result() == QMessageBox::Yes) {
+			if(dlg.exec() == QMessageBox::Yes) {
 				QString file = selectFile(tr("Save file"), target, true);
 				if(!file.isEmpty())
 					cryptoDoc->saveCopy(file);
@@ -663,11 +621,6 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			browseOnDisk( cryptoDoc->fileName() );
 		break;
 	}
-}
-
-void MainWindow::openFile(const QString &file)
-{
-	QDesktopServices::openUrl(QUrl::fromLocalFile(file));
 }
 
 void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCreate)
@@ -800,8 +753,6 @@ void MainWindow::resetCryptoDoc(CryptoDoc *doc)
 	ui->cryptoContainerPage->clear();
 	delete cryptoDoc;
 	cryptoDoc = doc;
-	if(cryptoDoc)
-		connect(cryptoDoc->documentModel(), &DocumentModel::openFile, this, &MainWindow::openFile);
 }
 
 void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
@@ -825,8 +776,7 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 		WarningDialog dlg(warning, this);
 		dlg.setCancelText(cancelTxt);
 		dlg.addButton(saveTxt, ContainerSave);
-		dlg.exec();
-		if(dlg.result() == ContainerSave)
+		if(dlg.exec() == ContainerSave)
 			save();
 	}
 
@@ -841,7 +791,6 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 		connect(digiDoc, &DigiDoc::operation, this, [] (int op, bool started) {
 			qCDebug(MLog) << "Op " << op << (started ? " started" : " ended");
 		});
-		connect(digiDoc->documentModel(), &DocumentModel::openFile, this, &MainWindow::openFile);
 	}
 }
 
@@ -865,9 +814,7 @@ bool MainWindow::save(bool saveAs)
 	{
 		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
 		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
-		dlg.exec();
-
-		if(dlg.result() == QMessageBox::Yes) {
+		if(dlg.exec() == QMessageBox::Yes) {
 			QString file = selectFile(tr("Save file"), target, true);
 			if(!file.isEmpty())
 				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
@@ -929,25 +876,18 @@ void MainWindow::showCardMenu(bool show)
 {
 	if(show)
 	{
-		const TokenData &t = qApp->signer()->tokensign().cert().isNull() ? qApp->signer()->tokenauth()
-			: qApp->signer()->tokensign();
-
-		int current = ui->startScreen->currentIndex();
-		CardPopup::Filter filter = CardPopup::All;
-		if(current == SignIntro || current == SignDetails)
-			filter = CardPopup::NonReputation;
-		if(current == CryptoIntro || current == CryptoDetails)
-			filter = CardPopup::NonWebAuth;
-		CardPopup *cardPopup = new CardPopup(t.card(), qApp->signer()->cache(), filter, this);
+		CardPopup *cardPopup = new CardPopup(ui->selector->list, this);
 		// To select active card from several cards in readers ..
 		connect(cardPopup, &CardPopup::activated, qApp->signer()->smartcard(), &QSmartCard::selectCard, Qt::QueuedConnection);
 		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		// .. and hide card popup menu
-		connect(cardPopup, &CardPopup::activated, this, &MainWindow::hideCardPopup);
+		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); });
 		cardPopup->show();
 	}
-	else if(CardPopup *cardPopup = findChild<CardPopup*>())
+	else if(CardPopup *cardPopup = findChild<CardPopup*>()) {
+		ui->selector->selector->init();
 		cardPopup->deleteLater();
+	}
 }
 
 void MainWindow::showCardStatus()
@@ -975,7 +915,7 @@ void MainWindow::showCardStatus()
 		ui->noReaderInfoText->setProperty("currenttext", "The card in the card reader is not an Estonian ID-card");
 		ui->noReaderInfoText->setText(tr("The card in the card reader is not an Estonian ID-card"));
 
-		if(ui->cardInfo->id() != t.card())
+		if(ui->cardInfo->token().card() != t.card())
 		{
 			ui->infoStack->clearData();
 			ui->accordion->clear();
@@ -1018,10 +958,23 @@ void MainWindow::showCardStatus()
 	}
 
 	// Combo box to select the cards from
-	selector->setVisible(qApp->signer()->cards().size() > 1);
-	ui->cardInfo->setCursor(selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
-	if(selector->isHidden())
-		hideCardPopup();
+	IDSelector::Filter filter = IDSelector::Signing;
+	switch (ui->startScreen->currentIndex()) {
+	case SignIntro:
+	case SignDetails:
+		filter = IDSelector::Signing;
+		break;
+	case CryptoIntro:
+	case CryptoDetails:
+		filter = IDSelector::Decrypting;
+		break;
+	case MyEid:
+		filter = IDSelector::MyEID;
+	}
+	ui->selector->setList(t.card(), qApp->signer()->cache(), filter);
+	ui->cardInfo->setCursor(ui->selector->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
+	if(ui->selector->selector->isHidden())
+		showCardMenu(false);
 }
 
 void MainWindow::showEvent(QShowEvent * /*event*/)
@@ -1036,12 +989,6 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	structureFunds->resize(width, height);
 	structureFunds->show();
 	notification->start(QString(), 400, 4000, 1100);
-}
-
-void MainWindow::showOverlay( QWidget *parent )
-{
-	overlay.reset( new Overlay(parent) );
-	overlay->show();
 }
 
 void MainWindow::showSettings(int page)
@@ -1119,7 +1066,6 @@ void MainWindow::noReader_NoCard_Loading_Event(NoCardInfo::Status status)
 	ui->noCardInfo->update(status);
 	ui->infoStack->clearData();
 	ui->cardInfo->clearPicture();
-	ui->infoStack->clearPicture();
 	ui->version->setProperty("PICTURE", QVariant());
 	ui->infoStack->hide();
 	ui->accordion->hide();
@@ -1195,9 +1141,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 		dlg.setCancelText(tr("CANCEL"));
 		dlg.resetCancelStyle();
 		dlg.addButton(tr("REMOVE"), ContainerSave, true);
-		dlg.exec();
-
-		if (dlg.result() == ContainerSave) {
+		if (dlg.exec() == ContainerSave) {
 			window()->setWindowFilePath(QString());
 			window()->setWindowTitle(tr("DigiDoc4 client"));
 			return true;

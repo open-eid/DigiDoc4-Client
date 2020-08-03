@@ -20,12 +20,10 @@
 #include "CardPopup.h"
 
 #include "CardWidget.h"
-#include "SslCertificate.h"
-#include "TokenData.h"
 
 #include <QtWidgets/QVBoxLayout>
 
-CardPopup::CardPopup(const QString &selectedCard, const QVector<TokenData> &cache, Filter filter, QWidget *parent)
+CardPopup::CardPopup(const QVector<TokenData> &cache, QWidget *parent)
 	: StyledWidget(parent)
 {
 	if(CardWidget *cardInfo = parent->findChild<CardWidget*>(QStringLiteral("cardInfo")))
@@ -40,20 +38,8 @@ CardPopup::CardPopup(const QString &selectedCard, const QVector<TokenData> &cach
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(1, 0, 2, 2);
 
-	auto contains = [this](const TokenData &token) {
-		for(CardWidget *card: findChildren<CardWidget*>())
-			if(token.card() == card->id())
-				return true;
-		return false;
-	};
 	for(const TokenData &token: cache)
 	{
-		if(token.card() == selectedCard || contains(token))
-			continue;
-		SslCertificate cert(token.cert());
-		if((filter == NonReputation && !cert.keyUsage().contains(SslCertificate::NonRepudiation)) ||
-			(filter == NonWebAuth && cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth)))
-			continue;
 		auto cardWidget = new CardWidget(true, this);
 		cardWidget->setCursor(QCursor(Qt::PointingHandCursor));
 		cardWidget->update(token, true);

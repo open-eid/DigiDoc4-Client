@@ -71,6 +71,8 @@ public:
 	~QSmartCardData();
 	QSmartCardData& operator=( const QSmartCardData &other );
 	QSmartCardData& operator=(QSmartCardData &&other) Q_DECL_NOEXCEPT;
+	bool operator ==(const QSmartCardData &other) const;
+	bool operator !=(const QSmartCardData &other) const;
 
 	QString card() const;
 	QString reader() const;

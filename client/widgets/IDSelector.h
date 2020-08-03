@@ -19,40 +19,24 @@
 
 #pragma once
 
-#include "TokenData.h"
-#include "widgets/StyledWidget.h"
+#include <QWidget>
 
-class QSvgWidget;
-namespace Ui {
-class CardWidget;
-}
+class DropdownButton;
+class TokenData;
 
-class CardWidget : public StyledWidget
+class IDSelector : public QWidget
 {
 	Q_OBJECT
-
 public:
-	explicit CardWidget(QWidget *parent = nullptr);
-	explicit CardWidget(bool popup, QWidget *parent = nullptr);
-	~CardWidget() final;
+	enum Filter {
+		Signing,
+		Decrypting,
+		MyEID,
+	};
+	explicit IDSelector(QWidget *parent = nullptr);
 
-	void clearPicture();
-	TokenData token() const;
-	void showPicture( const QPixmap &pix );
-	void update(const TokenData &token, bool multiple);
+	void setList(const QString &selectedCard, const QVector<TokenData> &cache, Filter filter);
 
-signals:
-	void photoClicked( const QPixmap &pixmap );
-	void selected( const QString &card );
-
-private:
-	bool event(QEvent *ev) override;
-	bool eventFilter(QObject *o, QEvent *e) override;
-	void clearSeal();
-
-	Ui::CardWidget *ui;
-	TokenData t;
-	QSvgWidget *seal = nullptr;
-	bool isPopup = false;
-	bool isMultiple = false;
+	DropdownButton *selector = nullptr;
+	QVector<TokenData> list;
 };
