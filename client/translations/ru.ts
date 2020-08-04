@@ -853,6 +853,10 @@
         <source>Connecting to SiVa server failed! Please check your internet connection.</source>
         <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте подключение к интернету.</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Не удалось подписать контейнер.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -1776,6 +1780,10 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Personal code</source>
         <translation>Личный код</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

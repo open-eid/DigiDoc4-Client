@@ -577,7 +577,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINLocked)
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::General)
+			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINFailed)
 		}
 	} while(status != QCryptoBackend::PinOK);
 	QByteArray sig = d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));

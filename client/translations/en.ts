@@ -851,6 +851,10 @@
         <source>Connecting to SiVa server failed! Please check your internet connection.</source>
         <translation>Connecting to SiVa server failed! Please check your internet connection.</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Failed to sign container</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -1773,6 +1777,10 @@ ID-CARD</translation>
     <message>
         <source>Personal code</source>
         <translation>Personal code</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation>Invalid country code</translation>
     </message>
 </context>
 <context>

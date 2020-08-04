@@ -697,13 +697,17 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		QStringList causes;
 		Exception::ExceptionCode code = Exception::General;
 		parseException(e, causes, code);
-		if( code == Exception::PINIncorrect )
+		switch(code)
 		{
-			qApp->showWarning( tr("PIN Incorrect") );
+		case Exception::PINIncorrect:
+			qApp->showWarning(tr("PIN Incorrect"));
 			return sign(city, state, zip, country, role, signer);
+		case Exception::NetworkError:
+			setLastError(tr("Failed to sign container. Check your Time-Stamping service access settings."), e);
+			break;
+		default:
+			setLastError(tr("Failed to sign container"), e);
 		}
-		else
-			setLastError( tr("Failed to sign container. Check your Time-Stamping service access settings."), e );
 	}
 	return false;
 }

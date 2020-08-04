@@ -851,6 +851,10 @@
         <source>Connecting to SiVa server failed! Please check your internet connection.</source>
         <translation>Viga SiVa serveriga ühenduse saamisel! Palun kontrollige internetiühendust.</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -1773,6 +1777,10 @@ ID-KAARDIGA</translation>
     <message>
         <source>Personal code</source>
         <translation>Isikukood</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
