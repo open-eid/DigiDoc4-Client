@@ -172,8 +172,9 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 		}
 		WarningDialog(tr("Digidoc4 client configuration update was successful."), this).exec();
 #ifdef Q_OS_WIN
-		if (QFile::exists(qApp->applicationDirPath() + "/id-updater.exe"))
-			QProcess::startDetached("id-updater");
+		QString path = qApp->applicationDirPath() + QStringLiteral("/id-updater.exe");
+		if (QFile::exists(path))
+			QProcess::startDetached(path, {});
 #endif
 	});
 #endif
