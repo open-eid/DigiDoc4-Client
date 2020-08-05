@@ -36,6 +36,8 @@
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
 
+#include <algorithm>
+
 using namespace digidoc;
 using namespace ria::qdigidoc4;
 
@@ -458,7 +460,7 @@ void DigiDoc::clear()
 void DigiDoc::create( const QString &file )
 {
 	clear();
-	b.reset(Container::create(to(file)));
+	b = Container::createPtr(to(file));
 	m_fileName = file;
 	modified = false;
 }
@@ -545,7 +547,7 @@ bool DigiDoc::open( const QString &file )
 
 	try
 	{
-		b.reset(Container::open(to(file)));
+		b = Container::openPtr(to(file));
 		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
@@ -561,7 +563,7 @@ bool DigiDoc::open( const QString &file )
 				{
 					m_tempFiles << tmppath;
 					parentContainer = std::move(b);
-					b.reset(Container::open(to(tmppath)));
+					b = Container::openPtr(to(tmppath));
 				}
 			}
 		}
@@ -591,6 +593,7 @@ bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 	case Exception::OCSPTimeSlot:
 	case Exception::OCSPRequestUnauthorized:
 	case Exception::OCSPBeforeTimeStamp:
+	case Exception::TSForbidden:
 	case Exception::TSTooManyRequests:
 	case Exception::PINCanceled:
 	case Exception::PINFailed:
@@ -599,10 +602,10 @@ bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 		code = e.code();
 	default: break;
 	}
-	for(const Exception &c: e.causes())
-		if(!parseException(c, causes, code))
-			return false;
-	return true;
+	Exception::Causes list = e.causes();
+	return std::any_of(list.cbegin(), list.cend(), [&](const Exception &c) {
+		return parseException(c, causes, code);
+	});
 }
 
 void DigiDoc::removeSignature( unsigned int num )
@@ -656,6 +659,9 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	case Exception::OCSPRequestUnauthorized:
 		qApp->showWarning(tr("You have not granted IP-based access. "
 			"Check your validity confirmation service access settings."), causes.join('\n')); break;
+	case Exception::TSForbidden:
+		qApp->showWarning(tr("Failed to sign container. "
+			"Check your Time-Stamping service access settings."), causes.join('\n')); break;
 	case Exception::TSTooManyRequests:
 		qApp->showWarning(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>"), causes.join('\n')); break;
@@ -697,17 +703,12 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		QStringList causes;
 		Exception::ExceptionCode code = Exception::General;
 		parseException(e, causes, code);
-		switch(code)
+		if(code == Exception::PINIncorrect)
 		{
-		case Exception::PINIncorrect:
 			qApp->showWarning(tr("PIN Incorrect"));
 			return sign(city, state, zip, country, role, signer);
-		case Exception::NetworkError:
-			setLastError(tr("Failed to sign container. Check your Time-Stamping service access settings."), e);
-			break;
-		default:
-			setLastError(tr("Failed to sign container"), e);
 		}
+		setLastError(tr("Failed to sign container"), e);
 	}
 	return false;
 }
