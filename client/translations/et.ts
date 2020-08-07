@@ -3222,6 +3222,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Digi-ID E-RESIDENT</source>
+        <translation>Digi-ID E-RESIDENT</translation>
+    </message>
 </context>
 <context>
     <name>VerifyCert</name>

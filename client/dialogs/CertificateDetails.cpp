@@ -33,6 +33,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTextStream>
 #include <QtGui/QDesktopServices>
+#include <QtNetwork/QSslKey>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
@@ -99,19 +100,16 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
 	connect(ui->tblDetails, &QTableWidget::itemSelectionChanged, this, [this] {
 		const QList<QTableWidgetItem*> &list = ui->tblDetails->selectedItems();
-		if( !list.isEmpty() )
-		{
-			auto contentItem = list.last();
-			auto userData = contentItem->data(Qt::UserRole);
-			ui->detailedValue->setPlainText(userData.isNull() ?
-				contentItem->data(Qt::DisplayRole).toString() : decodeCN(userData.toString()));
-		}
+		if(list.isEmpty())
+			return;
+		auto contentItem = list.last();
+		auto userData = contentItem->data(Qt::UserRole);
+		ui->detailedValue->setPlainText(userData.isNull() ?
+			contentItem->data(Qt::DisplayRole).toString() : decodeCN(userData.toString()));
 	});
 
-	QStringList horzHeaders { tr("Field"), tr("Value") };
-	ui->tblDetails->setHorizontalHeaderLabels(horzHeaders);
-
-	auto addItem = [this](const QString &variable, const QString &value, const QVariant &valueext = QVariant()) {
+	ui->tblDetails->setHorizontalHeaderLabels({ tr("Field"), tr("Value") });
+	auto addItem = [this](const QString &variable, const QString &value, const QVariant &valueext = {}) {
 		int row = ui->tblDetails->model()->rowCount();
 		ui->tblDetails->setRowCount(row + 1);
 		QTableWidgetItem *item = new QTableWidgetItem(value);
@@ -121,8 +119,7 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 	};
 
 	addItem(tr("Version"), QString("V" + cert.version()));
-	addItem(tr("Serial number"), QStringLiteral("%1 (0x%2)")
-		.arg(cert.serialNumber().constData(), cert.serialNumber( true ).constData()));
+	addItem(tr("Serial number"), cert.serialNumber());
 	addItem(tr("Signature algorithm"), cert.signatureAlgorithm());
 
 	QStringList text, textExt;
@@ -152,7 +149,7 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 		textExt << QStringLiteral("%1 = %2").arg(obj.constData(), data);
 	}
 	addItem(tr("Subject"), text.join(QStringLiteral(", ")), textExt.join('\n'));
-	addItem(tr("Public key"), cert.keyName(), cert.publicKeyHex());
+	addItem(tr("Public key"), cert.keyName(), cert.toHex(cert.publicKey().toDer()));
 	QStringList enhancedKeyUsage = cert.enhancedKeyUsage().values();
 	if( !enhancedKeyUsage.isEmpty() )
 		addItem(tr("Enhanced key usage"), enhancedKeyUsage.join(QStringLiteral(", ")), enhancedKeyUsage.join('\n'));

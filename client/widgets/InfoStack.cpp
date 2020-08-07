@@ -202,7 +202,7 @@ void InfoStack::update(const QSmartCardData &t)
 
 	certType = t.authCert().type();
 	certIsValid = t.isValid();
-	certIsResident = t.authCert().subjectInfo("O").contains(QStringLiteral("E-RESIDENT"));
+	certIsResident = t.authCert().type() & SslCertificate::EResidentSubType;
 	expireDate = DateTime(t.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
 	givenNamesText = firstName.join(' ');
 	surnameText = t.data(QSmartCardData::SurName).toString();
