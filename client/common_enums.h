@@ -109,6 +109,7 @@ enum WarningType {
     InvalidTimestampWarning,
     UnknownSignatureWarning,
     UnknownTimestampWarning,
+    UnsupportedDDocWarning,
 };
 
 }

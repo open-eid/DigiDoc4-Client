@@ -3397,6 +3397,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>More information</source>
         <translation>Rohkem infot</translation>
     </message>
+    <message>
+        <source>https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/</source>
+        <translation>https://www.id.ee/artikkel/digidoc-konteineri-formaatide-elutsukkel/</translation>
+    </message>
+    <message>
+        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</source>
+        <translation>Tegemist on vanas formaadis DigiDoc konteineriga. Sellele konteinerile ei saa allkirja lisada ega eemaldada.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>

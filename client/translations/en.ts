@@ -3397,6 +3397,14 @@ Additional licenses and components</translation>
         <source>More information</source>
         <translation>More information</translation>
     </message>
+    <message>
+        <source>https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/</source>
+        <translation>https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/</translation>
+    </message>
+    <message>
+        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</source>
+        <translation>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>

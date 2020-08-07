@@ -117,6 +117,12 @@ void WarningItem::lookupWarning()
 					.arg(tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
+	case ria::qdigidoc4::UnsupportedDDocWarning:
+		warnText.text = tr("The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.");
+		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
+					.arg(tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/"), tr("More information"));
+		warnText.page = ria::qdigidoc4::SignDetails;
+		break;
 	default:
 		break;
 	}

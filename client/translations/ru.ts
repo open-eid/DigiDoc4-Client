@@ -3404,6 +3404,14 @@ Additional licenses and components</source>
         <source>More information</source>
         <translation>Дополнительная информация</translation>
     </message>
+    <message>
+        <source>https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/</source>
+        <translation>https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/</translation>
+    </message>
+    <message>
+        <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</source>
+        <translation>DigiDoc контейнер имеет старый формат. К данному контейнеру нельзя добавить или удалить из него подпись.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>

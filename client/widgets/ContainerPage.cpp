@@ -370,6 +370,8 @@ void ContainerPage::transition(DigiDoc* container)
 		for (i = errors.constBegin(); i != errors.constEnd(); ++i)
 			emit warning(WarningText(i.key(), i.value()));
 	}
+	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
+		emit warning(UnsupportedDDocWarning);
 
 	if(enableSigning || container->isService())
 		showSigningButton();
