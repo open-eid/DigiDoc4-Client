@@ -10,8 +10,6 @@ matrix:
     env: TARGET=osx
     sudo: true
   - os: linux
-    env: TARGET=ubuntu:16.04
-  - os: linux
     env: TARGET=ubuntu:20.04
 env:
   global:
@@ -61,7 +59,7 @@ script: case ${TARGET} in
       dh_make --createorig --addmissing --copyright lgpl2 --defaultless -y -p qdigidoc4_${VERSIONEX};
       dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}.";
       dpkg-buildpackage -rfakeroot -us -uc;
-      if [[ "${IMAGE}" = "ubuntu:16.04" && "${TRAVIS_BRANCH}" = "coverity_scan" ]]; then
+      if [[ "${IMAGE}" = "ubuntu:20.04" && "${TRAVIS_BRANCH}" = "coverity_scan" ]]; then
         export COVERITY_SCAN_PROJECT_NAME="open-eid/DigiDoc4-Client";
         export COVERITY_SCAN_NOTIFICATION_EMAIL="eid-teenusehaldus@ria.ee";
         export COVERITY_SCAN_BRANCH_PATTERN=coverity_scan;
@@ -84,7 +82,7 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    condition: $TARGET = "ubuntu:16.04"
+    condition: $TARGET = "ubuntu:20.04"
     repo: open-eid/DigiDoc4-Client
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
