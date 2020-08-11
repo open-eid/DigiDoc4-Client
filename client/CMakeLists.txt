@@ -93,6 +93,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	dialogs/WarningDialog.cpp
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
+	effects/Overlay.cpp
 	widgets/Accordion.cpp
 	widgets/AccordionTitle.cpp
 	widgets/AddressItem.cpp
