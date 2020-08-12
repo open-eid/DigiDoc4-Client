@@ -19,47 +19,19 @@
 
 #pragma once
 
-#include <QGraphicsBlurEffect>
-#include <QPainter>
-#include <QPaintEvent>
 #include <QWidget>
+
+class QPaintEvent;
 
 class Overlay : public QWidget
 {
+	Q_OBJECT
 public:
-	Overlay(QWidget *runner, QWidget *parent): Overlay(parent)
-	{
-		connect(runner, &QWidget::destroyed, this, &Overlay::deleteLater);
-		show();
-	}
+	Overlay(QWidget *runner, QWidget *parent);
+	Overlay(QWidget *parent);
 
-	Overlay(QWidget *parent): QWidget(parent)
-	{
-		setPalette(Qt::transparent);
-		setAttribute(Qt::WA_TransparentForMouseEvents);
-		if(parent)
-		{
-			setMinimumSize(parent->width(), parent->height());
-			parent->setGraphicsEffect(new QGraphicsBlurEffect);
-		}
-	}
-
-	~Overlay() override
-	{
-		if(parentWidget())
-			parentWidget()->setGraphicsEffect(nullptr);
-	}
+	~Overlay() override;
 
 protected:
-	void paintEvent(QPaintEvent * /*event*/) override
-	{
-		if(parentWidget())
-			setMinimumSize(parentWidget()->width(), parentWidget()->height());
-		QPainter painter( this );
-		painter.setRenderHint( QPainter::Antialiasing );
-		// Opacity 90%
-		painter.setBrush(QBrush(QColor(0x04, 0x1E, 0x42, int(double(0xff) * 0.9))));
-		painter.setPen( Qt::NoPen );
-		painter.drawRect( rect() );
-	}
+	void paintEvent(QPaintEvent *event) override;
 };
