@@ -2817,6 +2817,27 @@ Additional licenses and components</source>
         <source>Use manually configured access</source>
         <translation>Использовать доступ, назначенный вручную</translation>
     </message>
+    <message>
+        <source>Enable one-time log generation</source>
+        <translation>Активировать одноразовое создание лог-файла</translation>
+    </message>
+    <message>
+        <source>Save log</source>
+        <extracomment>accessible</extracomment>
+        <translation>Сохранить лог-файл</translation>
+    </message>
+    <message>
+        <source>SAVE LOG</source>
+        <translation>СОХРАНИТЬ ЛОГ-ФАЙЛ</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
+        <translation>Перезапустите клиент DigiDoc4, чтобы активировать ведение журнала. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;. Перезапустить приложение?</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Перезапустите клиент DigiDoc4, чтобы активировать ведение журнала. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

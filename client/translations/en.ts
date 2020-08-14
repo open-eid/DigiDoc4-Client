@@ -2814,6 +2814,27 @@ Additional licenses and components</translation>
         <source>Use manually configured access</source>
         <translation>Use manually configured access</translation>
     </message>
+    <message>
+        <source>Enable one-time log generation</source>
+        <translation>Enable one-time log generation</translation>
+    </message>
+    <message>
+        <source>Save log</source>
+        <extracomment>accessible</extracomment>
+        <translation>Save log</translation>
+    </message>
+    <message>
+        <source>SAVE LOG</source>
+        <translation>SAVE LOG</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
+        <translation>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

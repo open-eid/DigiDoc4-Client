@@ -1095,6 +1095,13 @@ QScrollBar::sub-line:vertical {
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QCheckBox" name="chkLibdigidocppDebug">
+         <property name="text">
+          <string>Enable one-time log generation</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="pageInfo">
@@ -1241,6 +1248,9 @@ QPushButton {
 	color: #006EB5;
 	padding-left: 6px;
 	padding-right: 6px;
+	min-width: 120px;
+	min-height: 25px;
+	max-height: 25px;
 }
 QPushButton:pressed {
 	color: #FFFFFF;
@@ -1294,18 +1304,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnFirstRun">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -1319,18 +1317,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnRefreshConfig">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -1344,12 +1330,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnCheckConnection">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="maximumSize">
          <size>
           <width>210</width>
@@ -1369,18 +1349,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnNavSaveReport">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -1393,19 +1361,20 @@ QPushButton:disabled {
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnNavSaveLibdigidocpp">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Save log</string>
+        </property>
+        <property name="text">
+         <string>SAVE LOG</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnNavFromHistory">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -1419,18 +1388,6 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="btnNavUseByDefault">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -1446,13 +1403,13 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btNavClose">
         <property name="minimumSize">
          <size>
-          <width>120</width>
+          <width>0</width>
           <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>16777215</width>
           <height>30</height>
          </size>
         </property>

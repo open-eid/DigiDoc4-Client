@@ -2814,6 +2814,27 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Use manually configured access</source>
         <translation>Kasutan käsitsi määratud ligipääsu</translation>
     </message>
+    <message>
+        <source>Enable one-time log generation</source>
+        <translation>Aktiveeri ühekordne logifaili genereerimine</translation>
+    </message>
+    <message>
+        <source>Save log</source>
+        <extracomment>accessible</extracomment>
+        <translation>Salvesta logifail</translation>
+    </message>
+    <message>
+        <source>SAVE LOG</source>
+        <translation>SALVESTA LOGIFAIL</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
+        <translation>Logimise aktiveerimiseks taaskäivitada DigiDoc4 klient. Loe täpsemalt &lt;a href=&quot;https://www.id.ee/artikkel/logifaili-genereerimine-digidoc4-kliendis/&quot;&gt;siit&lt;/a&gt;. Taaskäivita rakendus?</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Logimise aktiveerimiseks taaskäivitada DigiDoc4 klient. Loe täpsemalt &lt;a href=&quot;https://www.id.ee/artikkel/logifaili-genereerimine-digidoc4-kliendis/&quot;&gt;siit&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

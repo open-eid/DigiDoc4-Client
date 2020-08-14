@@ -75,6 +75,9 @@ class DigidocConf: public digidoc::XmlConfCurrent
 public:
 	DigidocConf()
 	{
+		debug = s.value("LibdigidocppDebug", false).toBool();
+		s.remove("LibdigidocppDebug");
+
 		Configuration::connect(&Configuration::instance(), &Configuration::updateReminder,
 				[&](bool /* expired */, const QString & /* title */, const QString &message){
 			WarningDialog(message, qApp->activeWindow()).exec();
@@ -101,11 +104,21 @@ public:
 		SettingsDialog::loadProxy(this);
 	}
 
+	int logLevel() const override
+	{
+		return debug ? 4 : digidoc::XmlConfCurrent::logLevel();
+	}
+
+	std::string logFile() const override
+	{
+		return debug ? QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()).toStdString() : digidoc::XmlConfCurrent::logFile();
+	}
+
 	std::string proxyHost() const override
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
-		case 0: return std::string();
+		case 0: return {};
 		case 1: return systemProxy().hostName().toStdString();
 		default: return s.value(QStringLiteral("ProxyHost"), QString::fromStdString(digidoc::XmlConfCurrent::proxyHost()) ).toString().toStdString();
 		}
@@ -115,7 +128,7 @@ public:
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
-		case 0: return std::string();
+		case 0: return {};
 		case 1: return QString::number(systemProxy().port()).toStdString();
 		default: return s.value(QStringLiteral("ProxyPort"), QString::fromStdString(digidoc::XmlConfCurrent::proxyPort()) ).toString().toStdString();
 		}
@@ -125,7 +138,7 @@ public:
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
-		case 0: return std::string();
+		case 0: return {};
 		case 1: return systemProxy().user().toStdString();
 		default: return s.value(QStringLiteral("ProxyUser"), QString::fromStdString(digidoc::XmlConfCurrent::proxyUser()) ).toString().toStdString();
 		}
@@ -135,7 +148,7 @@ public:
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
-		case 0: return std::string();
+		case 0: return {};
 		case 1: return systemProxy().password().toStdString();
 		default: return s.value(QStringLiteral("ProxyPass"), QString::fromStdString(digidoc::XmlConfCurrent::proxyPass())).toString().toStdString();
 		}
@@ -260,6 +273,7 @@ private:
 	}
 
 	QSettings s;
+	bool	debug = false;
 public:
 	QJsonObject obj;
 };
@@ -784,7 +798,7 @@ void Application::migrateSettings()
 	}
 #endif
 
-	QList< QPair<QString, QString> > orgOldNewKeys = {
+	static const QVector<QPair<QString,QString>> orgOldNewKeys {
 		{"showIntro", "showIntro"},
 		{"PKCS12Disable","PKCS12Disable"},
 		{"Client/MobileCode","MobileCode"},
@@ -804,7 +818,7 @@ void Application::migrateSettings()
 		{"ProxyTunnelSSL","ProxyTunnelSSL"}
 	};
 
-	QList< QPair<QString, QString> > appOldNewKeys = {
+	static const QVector<QPair<QString,QString>> appOldNewKeys {
 		{"TSLOnlineDigest", "TSLOnlineDigest"},
 		{"Client/proxyConfig", "ProxyConfig"},
 		{"lastPath", "lastPath"},
@@ -817,10 +831,9 @@ void Application::migrateSettings()
 		{"cdocwithddoc", "cdocwithddoc"}
 	};
 
-	for( QPair<const QString&, const QString&> keypairs : orgOldNewKeys){
-
-		QString oldKey = keypairs.first;
-		QString newKey = keypairs.second;
+	for(const QPair<QString,QString> &keypairs: orgOldNewKeys) {
+		const QString &oldKey = keypairs.first;
+		const QString &newKey = keypairs.second;
 
 		if(oldOrgSettings.contains(oldKey)){
 			newSettings.setValue(newKey, oldOrgSettings.value(oldKey));
@@ -832,10 +845,9 @@ void Application::migrateSettings()
 		}
 	}
 
-	for( QPair<const QString&, const QString&> keypairs : appOldNewKeys){
-
-		QString oldKey = keypairs.first;
-		QString newKey = keypairs.second;
+	for(const QPair<QString,QString> &keypairs: appOldNewKeys) {
+		const QString &oldKey = keypairs.first;
+		const QString &newKey = keypairs.second;
 
 		if(oldAppSettings.contains(oldKey)){
 			newSettings.setValue(newKey, oldAppSettings.value(oldKey));
