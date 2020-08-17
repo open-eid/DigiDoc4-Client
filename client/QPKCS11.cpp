@@ -362,12 +362,14 @@ bool QPKCS11::reload()
 		{ "opensc-pkcs11.so", QByteArray() },
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" },
-		{ "/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8" },
-		{ "/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000" },
 #if Q_PROCESSOR_WORDSIZE == 8
+		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" },
+		{ "/usr/lib64/pwpw-card-pkcs11.so", "3B7D94000080318065B08311C0A983009000" },
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
 		{ "/usr/lib64/libcryptoki.so", "3B7B940000806212515646696E454944" },
 #else
+		{ "pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" },
+		{ "pwpw-card-pkcs11.so", "3B7D94000080318065B08311C0A983009000" },
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
 		{ "libcryptoki.so", "3B7B940000806212515646696E454944" },
 #endif
