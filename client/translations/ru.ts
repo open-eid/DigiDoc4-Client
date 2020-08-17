@@ -1945,6 +1945,10 @@ and enter Smart-ID PIN2-code.</source>
         <source>Failed to send request. Check your %1 service access settings.</source>
         <translation>Не удалось отправить запрос. Проверьте настройки доступа услуги %1.</translation>
     </message>
+    <message>
+        <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
+        <translation>Не удалось выполнить операцию Smart-ID. Пожалуйста, проверьте приложение Smart-ID или свяжитесь со службой поддержки Smart-ID.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

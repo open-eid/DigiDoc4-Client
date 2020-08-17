@@ -1942,6 +1942,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed to send request. Check your %1 service access settings.</source>
         <translation>Päringu saatmine ebaõnnestus. Kontrolli %1 teenuse ligipääsu seadeid.</translation>
     </message>
+    <message>
+        <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
+        <translation>Teie Smart-ID toiming ebaõnnestus. Palun kontrollige Smart-ID rakendust või võtke ühendust Smart-ID klienditoega.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

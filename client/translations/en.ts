@@ -1942,6 +1942,10 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Failed to send request. Check your %1 service access settings.</source>
         <translation>Failed to send request. Check your %1 service access settings.</translation>
     </message>
+    <message>
+        <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
+        <translation>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
