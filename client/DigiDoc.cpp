@@ -267,10 +267,6 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate() const
 		return result;
 	case Invalid: return result;
 	default:
-		if( SslCertificate( cert() ).type() & SslCertificate::TestType ||
-			SslCertificate( ocspCert() ).type() & SslCertificate::TestType )
-			return Test;
-
 		return result;
 	}
 }
