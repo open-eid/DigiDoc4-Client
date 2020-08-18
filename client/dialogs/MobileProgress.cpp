@@ -69,7 +69,7 @@ public:
 	QString SKURL = QSettings().value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
 #endif
 	QString NAME = QSettings().value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	bool useCustomUUID = QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), false).toBool();
+	bool useCustomUUID = QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("MIDUUID"))).toBool();
 	QUuid UUID = useCustomUUID ? QSettings().value(QStringLiteral("MIDUUID")).toUuid() : QUuid();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;

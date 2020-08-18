@@ -184,7 +184,7 @@ public:
 
 	std::string TSUrl() const override
 	{
-		if(s.value(QStringLiteral("TSA-URL-CUSTOM"), false).toBool())
+		if(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool())
 			return valueUserScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
 		return valueSystemScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
 	}
