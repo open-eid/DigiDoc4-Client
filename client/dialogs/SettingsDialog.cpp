@@ -304,6 +304,8 @@ void SettingsDialog::retranslate(const QString& lang)
 
 void SettingsDialog::initFunctionality()
 {
+	QSettings s;
+
 	// pageGeneral
 	selectLanguage();
 	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("et")); } );
@@ -314,16 +316,16 @@ void SettingsDialog::initFunctionality()
 	connect(ui->chkGeneralTslRefresh, &QCheckBox::toggled, [](bool checked) {
 		qApp->setConfValue(Application::TSLOnlineDigest, checked);
 	});
-	ui->chkShowPrintSummary->setChecked(QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool());
+	ui->chkShowPrintSummary->setChecked(s.value(QStringLiteral("ShowPrintSummary"), false).toBool());
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
 		setValueEx(QStringLiteral("ShowPrintSummary"), checked, false);
 	});
-	ui->chkRoleAddressInfo->setChecked(QSettings().value(QStringLiteral("RoleAddressInfo"), false).toBool());
+	ui->chkRoleAddressInfo->setChecked(s.value(QStringLiteral("RoleAddressInfo"), false).toBool());
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked) {
 		setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
 	});
-	ui->chkLibdigidocppDebug->setChecked(QSettings().value(QStringLiteral("LibdigidocppDebug"), false).toBool());
+	ui->chkLibdigidocppDebug->setChecked(s.value(QStringLiteral("LibdigidocppDebug"), false).toBool());
 	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [](bool checked) {
 		setValueEx(QStringLiteral("LibdigidocppDebug"), checked, false);
 		if(!checked)
@@ -366,7 +368,7 @@ void SettingsDialog::initFunctionality()
 		if(!enable)
 			ui->txtGeneralDirectory->clear();
 	});
-	ui->txtGeneralDirectory->setText(QSettings().value(QStringLiteral("DefaultDir")).toString());
+	ui->txtGeneralDirectory->setText(s.value(QStringLiteral("DefaultDir")).toString());
 	if(ui->txtGeneralDirectory->text().isEmpty())
 		ui->rdGeneralSameDirectory->setChecked(true);
 	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
@@ -375,7 +377,7 @@ void SettingsDialog::initFunctionality()
 #endif
 
 #ifdef Q_OS_WIN
-	ui->tokenBackend->setChecked(QSettings().value(QStringLiteral("tokenBackend")).toUInt());
+	ui->tokenBackend->setChecked(s.value(QStringLiteral("tokenBackend")).toUInt());
 	connect(ui->tokenBackend, &QCheckBox::toggled, this, [=](bool checked) {
 		setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
 
@@ -397,14 +399,14 @@ void SettingsDialog::initFunctionality()
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	switch(QSettings().value(QStringLiteral("ProxyConfig"), 0).toInt())
+	switch(s.value(QStringLiteral("ProxyConfig"), 0).toInt())
 	{
 	case 1: ui->rdProxySystem->setChecked(true); break;
 	case 2: ui->rdProxyManual->setChecked(true); break;
 	default: ui->rdProxyNone->setChecked(true); break;
 	}
 
-	ui->chkProxyEnableForSSL->setDisabled((QSettings().value(QStringLiteral("ProxyConfig"), 0).toInt() != 2));
+	ui->chkProxyEnableForSSL->setDisabled((s.value(QStringLiteral("ProxyConfig"), 0).toInt() != 2));
 	updateProxy();
 
 	// pageServices
@@ -420,24 +422,24 @@ void SettingsDialog::initFunctionality()
 
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [=](bool checked) {
 		ui->txtTimeStamp->setEnabled(checked);
-		setValueEx(QStringLiteral("TSA-URL-CUSTOM"), checked, false);
+		setValueEx(QStringLiteral("TSA-URL-CUSTOM"), checked, QSettings().contains(QStringLiteral("TSA-URL")));
 	});
-	ui->rdTimeStampCustom->setChecked(QSettings().value(QStringLiteral("TSA-URL-CUSTOM"), false).toBool());
+	ui->rdTimeStampCustom->setChecked(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool());
 #ifdef CONFIG_URL
 	ui->txtTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
 #endif
-	QString TSA_URL = QSettings().value(QStringLiteral("TSA-URL"), qApp->confValue(Application::TSAUrl)).toString();
+	QString TSA_URL = s.value(QStringLiteral("TSA-URL"), qApp->confValue(Application::TSAUrl)).toString();
 	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
 	});
 	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
 		ui->txtMIDUUID->setEnabled(checked);
-		setValueEx(QStringLiteral("MIDUUID-CUSTOM"), checked, false);
-		setValueEx(QStringLiteral("SIDUUID-CUSTOM"), checked, false);
+		setValueEx(QStringLiteral("MIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("MIDUUID")));
+		setValueEx(QStringLiteral("SIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("MIDUUID")));
 	});
-	ui->rdMIDUUIDCustom->setChecked(QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), false).toBool());
-	ui->txtMIDUUID->setText(QSettings().value(QStringLiteral("MIDUUID")).toString());
+	ui->rdMIDUUIDCustom->setChecked(s.value(QStringLiteral("MIDUUID-CUSTOM"), s.contains(QStringLiteral("MIDUUID"))).toBool());
+	ui->txtMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
 	connect(ui->txtMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
 		setValueEx(QStringLiteral("MIDUUID"), text, QString());
 		setValueEx(QStringLiteral("SIDUUID"), text, QString());
