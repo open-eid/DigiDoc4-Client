@@ -30,7 +30,6 @@
 InfoStack::InfoStack( QWidget *parent )
 	: StyledWidget( parent )
 	, ui( new Ui::InfoStack )
-	, pictureText("DOWNLOAD")
 {
 	ui->setupUi( this );
 
@@ -74,10 +73,14 @@ void InfoStack::clearData()
 	ui->valueSerialNumber->clear();
 	ui->valueSpacer->hide();
 	ui->valueExpiryDate->clear();
-	pictureText = "DOWNLOAD";
-	ui->btnPicture->setText(tr(pictureText));
+	clearPicture();
 	ui->btnPicture->hide();
+}
+
+void InfoStack::clearPicture()
+{
 	ui->photo->clear();
+	ui->btnPicture->setText(tr(pictureText = "DOWNLOAD"));
 }
 
 void InfoStack::changeEvent(QEvent* event)
@@ -112,9 +115,8 @@ void InfoStack::showPicture( const QPixmap &pixmap )
 {
 	ui->alternateIcon->hide();
 	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-	pictureText = "SAVE THE PICTURE";
 	tr("SAVE THE PICTURE");
-	ui->btnPicture->setText(tr(pictureText));
+	ui->btnPicture->setText(tr(pictureText = "SAVE THE PICTURE"));
 	ui->btnPicture->hide();
 }
 
@@ -178,7 +180,7 @@ void InfoStack::update()
 
 void InfoStack::update(const SslCertificate &cert)
 {
-	ui->photo->clear();
+	clearPicture();
 	certType = cert.type();
 	certIsValid = true;
 	expireDate.clear();
@@ -192,7 +194,7 @@ void InfoStack::update(const SslCertificate &cert)
 void InfoStack::update(const QSmartCardData &t)
 {
 	if(data != t)
-		ui->photo->clear();
+		clearPicture();
 	data = t;
 	QStringList firstName {
 		t.data( QSmartCardData::FirstName1 ).toString(),

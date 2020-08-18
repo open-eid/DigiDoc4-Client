@@ -51,6 +51,7 @@ protected:
 
 private:
 	void update();
+	void clearPicture();
 
 	Ui::InfoStack *ui;
 
@@ -64,5 +65,5 @@ private:
 	QString personalCodeText;
 	QString serialNumberText;
 	QString surnameText;
-	const char *pictureText;
+	const char *pictureText = "DOWNLOAD";
 };
