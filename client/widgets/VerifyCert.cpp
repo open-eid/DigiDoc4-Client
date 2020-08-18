@@ -171,7 +171,8 @@ void VerifyCert::update()
 		ui->validUntil->setHidden(isBlockedPuk);
 		ui->changePIN->setText(tr("CHANGE PUK"));
 		ui->changePIN->setHidden(cardData.version() == QSmartCardData::VER_USABLEUPDATER || isBlockedPuk);
-		ui->widget->hide();
+		ui->forgotPinLink->hide();
+		ui->details->hide();
 		ui->error->setText(
 			isBlockedPin ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
 				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "
