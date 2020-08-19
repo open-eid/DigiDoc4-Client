@@ -60,8 +60,10 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	// Mobile
 	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
 	ui->idCode->setText(QSettings().value(QStringLiteral("MobileCode")).toString());
+	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
 	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
+	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
