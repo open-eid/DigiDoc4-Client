@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>465</width>
-    <height>60</height>
+    <height>65</height>
    </rect>
   </property>
   <property name="cursor">
@@ -20,124 +20,108 @@ border-width: 0px 0px 1px 0px;
 background-color: #ffffff; 
 }</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="SignatureItemLayout" columnstretch="0,1,0">
    <property name="leftMargin">
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>7</number>
    </property>
-   <item>
-    <widget class="QLabel" name="icon">
+   <property name="horizontalSpacing">
+    <number>5</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0" rowspan="3">
+    <widget class="QSvgWidget" name="icon" native="true">
      <property name="minimumSize">
       <size>
-       <width>25</width>
-       <height>0</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>25</width>
-       <height>16777215</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
     </widget>
    </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>0</number>
+   <item row="0" column="1">
+    <widget class="QLabel" name="name">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
      </property>
-     <property name="leftMargin">
-      <number>0</number>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
      </property>
-     <property name="topMargin">
-      <number>5</number>
+     <property name="accessibleDescription">
+      <string extracomment="accessible">To view signature details press enter or space</string>
      </property>
-     <property name="rightMargin">
-      <number>0</number>
+     <property name="text">
+      <string notr="true">MARI MAASIKAS MUSTIKAS - &lt;span style=&quot;color:#53c964&quot;&gt;Allkiri on kehtiv&lt;/span&gt;</string>
      </property>
-     <property name="bottomMargin">
-      <number>5</number>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
-     <item>
-      <widget class="QLabel" name="name">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="accessibleDescription">
-        <string extracomment="accessible">To view signature details press enter or space</string>
-       </property>
-       <property name="text">
-        <string notr="true">MARI MAASIKAS MUSTIKAS - &lt;span style=&quot;color:#53c964&quot;&gt;Allkiri on kehtiv&lt;/span&gt;</string>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="role">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="accessibleDescription">
-        <string extracomment="accessible">To view signature details press enter or space</string>
-       </property>
-       <property name="text">
-        <string notr="true">Role / Resolution</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::PlainText</enum>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="idSignTime">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="accessibleDescription">
-        <string extracomment="accessible">To view signature details press enter or space</string>
-       </property>
-       <property name="text">
-        <string notr="true">48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
-   <item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="role">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="accessibleDescription">
+      <string extracomment="accessible">To view signature details press enter or space</string>
+     </property>
+     <property name="text">
+      <string notr="true">Role / Resolution</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="idSignTime">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="accessibleDescription">
+      <string extracomment="accessible">To view signature details press enter or space</string>
+     </property>
+     <property name="text">
+      <string notr="true">48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" rowspan="3">
     <widget class="LabelButton" name="remove">
      <property name="minimumSize">
       <size>
@@ -162,6 +146,12 @@ background-color: #ffffff;
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>LabelButton</class>
    <extends>QToolButton</extends>
