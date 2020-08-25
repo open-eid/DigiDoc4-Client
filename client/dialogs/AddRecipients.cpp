@@ -70,11 +70,11 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	ui->confirm->setDisabled(rightList.isEmpty());
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
-	connect(ui->leftPane, &ItemList::search, this, [&]{
+	connect(ui->leftPane, &ItemList::search, this, [&](const QString &term) {
 		leftList.clear();
 		ui->leftPane->clear();
+		search(term);
 	});
-	connect(ui->leftPane, &ItemList::search, this, &AddRecipients::search);
 	connect(ldap_person, &LdapSearch::searchResult, this, &AddRecipients::showResult);
 	connect(ldap_corp, &LdapSearch::searchResult, this, &AddRecipients::showResult);
 	connect(ldap_person, &LdapSearch::error, this, &AddRecipients::showError);
@@ -103,13 +103,12 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	{
 		if( xml.name() == "item" )
 		{
-			historyCertData.append(
-				{
-					xml.attributes().value( "CN" ).toString(),
-					xml.attributes().value( "type" ).toString(),
-					xml.attributes().value( "issuer" ).toString(),
-					xml.attributes().value( "expireDate" ).toString()
-				});
+			historyCertData.append({
+				xml.attributes().value( "CN" ).toString(),
+				xml.attributes().value( "type" ).toString(),
+				xml.attributes().value( "issuer" ).toString(),
+				xml.attributes().value( "expireDate" ).toString()
+			});
 		}
 		xml.skipCurrentElement();
 	}
@@ -127,12 +126,12 @@ void AddRecipients::addAllRecipientToRightPane()
 {
 	QList<HistoryCertData> history;
 
-	for(auto it = leftList.begin(); it != leftList.end(); ++it)
+	for(AddressItem *value: leftList)
 	{
-		if(!rightList.contains(it.value()->getKey().cert))
+		if(!rightList.contains(value->getKey().cert))
 		{
-			addRecipientToRightPane(it.value());
-			history << toHistory(it.value()->getKey().cert);
+			addRecipientToRightPane(value);
+			history << toHistory(value->getKey().cert);
 		}
 	}
 	ui->confirm->setDisabled(rightList.isEmpty());
@@ -174,11 +173,9 @@ void AddRecipients::addRecipientFromFile()
 	{
 		WarningDialog::warning( this, tr("This certificate cannot be used for encryption"));
 	}
-	else
+	else if(Item *item = addRecipientToLeftPane(cert))
 	{
-		Item *item = addRecipientToLeftPane( cert );
-		if( item )
-			addRecipientToRightPane( item, true );
+		addRecipientToRightPane(item, true);
 	}
 	f.close();
 }
@@ -270,7 +267,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	ui->leftPane->clear();
 	for(const HistoryCertData &certData: selectedCertData) {
 		QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
-		search(term);
+		search(term, certData.type);
 	}
 	select = true;
 }
@@ -404,7 +401,7 @@ void AddRecipients::saveHistory()
 	xml.writeEndDocument();
 }
 
-void AddRecipients::search(const QString &term)
+void AddRecipients::search(const QString &term, const QString &type)
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	ui->confirm->setDefault(false);
@@ -425,25 +422,24 @@ void AddRecipients::search(const QString &term)
 				return;
 			}
 			personSearch = true;
-			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm));
+			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), type);
 		}
 		else
-			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm));
+			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), type);
 	}
 	else
 	{
-		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm));
+		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), type);
 	}
 }
 
 void AddRecipients::showError( const QString &msg, const QString &details )
 {
 	QApplication::restoreOverrideCursor();
-	WarningDialog b(msg, details, this);
-	b.exec();
+	WarningDialog(msg, details, this).exec();
 }
 
-void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount)
+void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QString &type)
 {
 	QList<QSslCertificate> filter;
 	for(const QSslCertificate &k: result)
@@ -469,7 +465,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		for(const QSslCertificate &k: filter)
 		{
 			auto address = addRecipientToLeftPane(k);
-			if(!item)
+			if(!item && (type.isEmpty() || toType(SslCertificate(k)) == type))
 				item = address;
 		}
 
@@ -489,21 +485,19 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 HistoryCertData AddRecipients::toHistory(const QSslCertificate& c) const
 {
 	HistoryCertData hcd;
-	int type = 3;
 	SslCertificate cert(c);
-	auto certType = cert.type();
-
-	if(certType & SslCertificate::DigiIDType)
-		type = 2;
-	else if(certType & SslCertificate::TempelType)
-		type = 1;
-	else if(certType & SslCertificate::EstEidType)
-		type = 0;
-
 	hcd.CN = cert.subjectInfo("CN");
-	hcd.type = QString::number(type);
+	hcd.type = toType(cert);
 	hcd.issuer = cert.issuerInfo("CN");
 	hcd.expireDate = cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"));
-
 	return hcd;
+}
+
+QString AddRecipients::toType(const SslCertificate &cert) const
+{
+	auto certType = cert.type();
+	if(certType & SslCertificate::DigiIDType) return QString::number(2);
+	if(certType & SslCertificate::TempelType) return QString::number(1);
+	if(certType & SslCertificate::EstEidType) return QString::number(0);
+	return QString::number(3);
 }
