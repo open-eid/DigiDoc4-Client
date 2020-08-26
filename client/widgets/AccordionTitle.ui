@@ -30,7 +30,7 @@ border-width: 1px 0px 0px 0px;</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>21</x>
+     <x>36</x>
      <y>11</y>
      <width>390</width>
      <height>19</height>
@@ -65,8 +65,8 @@ color: #353739;</string>
   <widget class="QSvgWidget" name="icon" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>10</y>
+     <x>15</x>
+     <y>17</y>
      <width>12</width>
      <height>16</height>
     </rect>

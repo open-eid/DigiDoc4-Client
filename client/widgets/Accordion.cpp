@@ -29,9 +29,7 @@ Accordion::Accordion(QWidget *parent)
 	connect(ui->contentOtherData, &OtherData::activateEMailClicked, this, &Accordion::activateEMail);
 
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"), ui->contentVerifyCert);
-	ui->titleVerifyCert->setClosable(true);
 	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), tr("Redirection of eesti.ee e-mail", "accessible"), ui->contentOtherData);
-	ui->titleOtherData->setClosable(true);
 
 	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::openSection);
 	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] { openSection(ui->titleOtherData); });
