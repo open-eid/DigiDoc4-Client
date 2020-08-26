@@ -39,8 +39,6 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowFlags(windowFlags()|Qt::FramelessWindowHint);
 	d->showErrors->init(false, tr("TECHNICAL INFORMATION"), tr("Technical information", "accessible"), d->error);
-	d->showErrors->borderless();
-	d->showErrors->setClosable(true);
 	d->showErrors->hide();
 	d->error->hide();
 
@@ -117,10 +115,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->info->hide();
 	}
 	else if(!noError)
-	{
 		d->showErrors->show();
-		d->showErrors->borderless();
-	}
 
 	QString name = !c.isNull() ? c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")) : s.signedBy();
 	d->title->setText(QStringLiteral("%1 | %2%3</font>").arg(name, style, status));

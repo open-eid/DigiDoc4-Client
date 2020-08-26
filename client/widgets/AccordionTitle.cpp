@@ -31,18 +31,13 @@ AccordionTitle::AccordionTitle(QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->icon->resize(2, 6);
-	ui->icon->move(0, 17);
+	ui->icon->move(15, 17);
 	ui->label->setFont( Styles::font( Styles::Condensed, 16 ) );
 }
 
 AccordionTitle::~AccordionTitle()
 {
 	delete ui;
-}
-
-void AccordionTitle::borderless()
-{
-	setStyleSheet(QStringLiteral("background-color: #FFFFFF; border: none;"));
 }
 
 bool AccordionTitle::event(QEvent *e)
@@ -53,14 +48,12 @@ bool AccordionTitle::event(QEvent *e)
 			setSectionOpen(true);
 			emit opened(this);
 		}
-		else if(closable)
+		else
 		{
 			setSectionOpen(false);
 			emit closed(this);
 		}
-		else
-			return StyledWidget::event(e);
-		return true;
+		return StyledWidget::event(e);
 	};
 	switch(e->type())
 	{
@@ -95,21 +88,16 @@ void AccordionTitle::setSectionOpen(bool open)
 	{
 		ui->label->setStyleSheet(QStringLiteral("border: none; color: #006EB5;"));
 		ui->icon->resize( 12, 6 );
-		ui->icon->move(0, 17);
+		ui->icon->move(15, 17);
 		ui->icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
 	}
 	else
 	{
 		ui->label->setStyleSheet(QStringLiteral("border: none; color: #353739;"));
 		ui->icon->resize( 6, 12 );
-		ui->icon->move(3, 14);
+		ui->icon->move(18, 14);
 		ui->icon->load(QStringLiteral(":/images/accordion_arrow_right.svg"));
 	}
-}
-
-void AccordionTitle::setClosable(bool closable)
-{
-	this->closable = closable;
 }
 
 void AccordionTitle::setText(const QString &caption, const QString &accessible)

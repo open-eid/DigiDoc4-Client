@@ -25,7 +25,7 @@ namespace Ui {
 class AccordionTitle;
 }
 
-class AccordionTitle : public StyledWidget
+class AccordionTitle final : public StyledWidget
 {
 	Q_OBJECT
 
@@ -33,10 +33,8 @@ public:
 	explicit AccordionTitle(QWidget *parent = nullptr);
 	~AccordionTitle() final;
 
-	void borderless();
 	void init(bool open, const QString &caption, const QString &accessible, QWidget *content);
 	bool isOpen() const;
-	void setClosable(bool closable);
 	void setText(const QString &caption, const QString &accessible);
 	void setSectionOpen(bool open);
 
@@ -45,9 +43,8 @@ signals:
 	void opened(AccordionTitle* opened);
 
 private:
-	bool event(QEvent *e) override;
+	bool event(QEvent *e) final;
 
 	Ui::AccordionTitle *ui;
-	bool closable = false;
 	QWidget* content = nullptr;
 };
