@@ -12,7 +12,7 @@ include( GNUInstallDirs )
 include( VersionInfo )
 
 find_package( PKCS11 )
-find_package( LibDigiDocpp 3.14.4 REQUIRED )
+find_package( LibDigiDocpp 3.14.5 REQUIRED )
 find_package( LDAP REQUIRED )
 find_package( Qt5 5.9.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools )
 

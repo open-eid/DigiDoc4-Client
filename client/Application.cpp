@@ -193,6 +193,17 @@ public:
 		QByteArray cert = QByteArray::fromBase64(obj.value(QStringLiteral("SIVA-CERT")).toString().toLatin1());
 		return digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size()));
 	}
+	std::vector<digidoc::X509Cert> verifyServiceCerts() const override
+	{
+		std::vector<digidoc::X509Cert> list;
+		list.push_back(verifyServiceCert());
+		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
+		{
+			QByteArray der = QByteArray::fromBase64(cert.toString().toLatin1());
+			list.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
+		}
+		return list;
+	}
 	std::string verifyServiceUri() const override { return valueSystemScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri()); }
 	std::vector<digidoc::X509Cert> TSLCerts() const override
 	{
@@ -200,7 +211,7 @@ public:
 		for(const QJsonValue &val: obj.value(QStringLiteral("TSL-CERTS")).toArray())
 		{
 			QByteArray cert = QByteArray::fromBase64(val.toString().toLatin1());
-			tslcerts.emplace_back(digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size())));
+			tslcerts.emplace_back((const unsigned char*)cert.constData(), size_t(cert.size()));
 		}
 		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
 	}
