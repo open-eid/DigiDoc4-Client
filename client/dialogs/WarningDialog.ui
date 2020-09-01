@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>WarningDialog</class>
  <widget class="QDialog" name="WarningDialog">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,17 +10,25 @@
     <height>260</height>
    </rect>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>650</width>
-    <height>16777215</height>
-   </size>
-  </property>
   <property name="styleSheet">
-   <string notr="true">QDialog
-{
+   <string notr="true">QDialog {
 border-radius: 2px;
 background-color: #FFFFFF;
+}
+QPushButton {
+border-radius: 2px;
+border: none;
+color: #FFFFFF;
+background-color: #006EB5;
+}
+QPushButton:pressed {
+background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+background-color: #008DCF;
+}
+QPushButton:disabled {
+background-color: #BEDBED;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="WarningDialogLayout">
@@ -57,7 +62,10 @@ background-color: #FFFFFF;
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLabel { border: none; }</string>
+      <string notr="true">QLabel {
+margin: 10px 15px 0px 15px; 
+border: none;
+}</string>
      </property>
      <property name="text">
       <string notr="true">TextLabel</string>
@@ -75,7 +83,7 @@ background-color: #FFFFFF;
       <bool>true</bool>
      </property>
      <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+      <set>Qt::TextBrowserInteraction</set>
      </property>
     </widget>
    </item>
@@ -90,7 +98,7 @@ background-color: #FFFFFF;
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>30</height>
+       <height>40</height>
       </size>
      </property>
      <property name="cursor">
@@ -104,7 +112,10 @@ background-color: #FFFFFF;
       <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLabel { border: none; }</string>
+      <string notr="true">QLabel {
+margin: 0px 15px 0px 15px;
+border: none;
+}</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -116,75 +127,50 @@ background-color: #FFFFFF;
       <bool>true</bool>
      </property>
      <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+      <set>Qt::TextBrowserInteraction</set>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="buttonBar" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>45</height>
-      </size>
+    <layout class="QHBoxLayout" name="buttonBarLayout">
+     <property name="spacing">
+      <number>35</number>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>45</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
-     <layout class="QHBoxLayout" name="buttonLayout">
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <spacer name="leftSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>137</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cancel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>34</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto Condensed</family>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Close</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
+     <item>
+      <spacer name="buttonBarSpacerLeft">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>137</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Roboto Condensed</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Close</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	border-radius: 2px; 
 	border: none;
 	color: #ffffff;
@@ -196,30 +182,29 @@ QPushButton:pressed {
 QPushButton:hover:!pressed {
 	background-color: #CD2541;
 }</string>
-        </property>
-        <property name="text">
-         <string>CLOSE</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="rightSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>137</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
+       </property>
+       <property name="text">
+        <string>CLOSE</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="buttonBarSpacerRight">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>137</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
