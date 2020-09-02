@@ -157,15 +157,25 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	QTreeWidget *t = d->signatureView;
 	t->header()->setSectionResizeMode(0, QHeaderView::Fixed);
 	t->header()->resizeSection(0, 244);
-
 	t->setHeaderLabels({ tr("Attribute"), tr("Value") });
 
-	addItem( t, tr("Signer's Certificate issuer"), CertificateDetails::decodeCN(c.issuerInfo(QSslCertificate::CommonName)));
-	addItem( t, tr("Signer's Certificate"), c );
-	addItem( t, tr("Signature method"), QUrl( s.signatureMethod() ) );
-	addItem( t, tr("Container format"), s.parent()->mediaType() );
-	if( !s.profile().isEmpty() )
-		addItem( t, tr("Signature format"), s.profile() );
+	auto addCert = [this](QTreeWidget *t, const QString &title, const QString &title2, const SslCertificate &cert) {
+		if(cert.isNull())
+			return;
+		addItem(t, title, cert);
+		addItem(t, title2, CertificateDetails::decodeCN(cert.issuerInfo(QSslCertificate::CommonName)));
+	};
+	auto addTime = [this](QTreeWidget *t, const QString &title, const QDateTime &time) {
+		if(time.isNull())
+			return;
+		addItem(t, title, time.toLocalTime());
+		addItem(t, title + QStringLiteral(" (UTC)"), time);
+	};
+
+	addCert(t, tr("Signer's Certificate"), tr("Signer's Certificate issuer"), c);
+	addItem(t, tr("Signature method"), QUrl(s.signatureMethod()));
+	addItem(t, tr("Container format"), s.parent()->mediaType());
+	addItem(t, tr("Signature format"), s.profile());
 	if( !s.policy().isEmpty() )
 	{
 		#define toVer(X) ((X)->toUInt() - 1)
@@ -175,35 +185,15 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		else
 			addItem( t, tr("Signature policy"), s.policy() );
 	}
-	addItem( t, tr("Signed file count"), QString::number( s.parent()->documentModel()->rowCount() ) );
-	if( !s.spuri().isEmpty() )
-		addItem(t, QStringLiteral("SPUri"), QUrl(s.spuri()));
-
-	if(!s.tsaTime().isNull())
-	{
-		SslCertificate tsa = s.tsaCert();
-		addItem(t, tr("Archive Timestamp"), s.tsaTime().toLocalTime());
-		addItem(t, tr("Archive Timestamp") + " (UTC)", s.tsaTime());
-		addItem( t, tr("Archive TS Certificate issuer"), tsa.issuerInfo(QSslCertificate::CommonName) );
-		addItem( t, tr("Archive TS Certificate"), tsa );
-	}
-	if(!s.tsTime().isNull())
-	{
-		SslCertificate ts = s.tsCert();
-		addItem(t, tr("Signature Timestamp"), s.tsTime().toLocalTime());
-		addItem(t, tr("Signature Timestamp") + " (UTC)", s.tsTime());
-		addItem( t, tr("TS Certificate issuer"), ts.issuerInfo(QSslCertificate::CommonName) );
-		addItem( t, tr("TS Certificate"), ts );
-	}
+	addItem(t, tr("Signed file count"), QString::number(s.parent()->documentModel()->rowCount()));
+	addItem(t, QStringLiteral("SPUri"), QUrl(s.spuri()));
+	addTime(t, tr("Archive Timestamp"), s.tsaTime());
+	addCert(t, tr("Archive TS Certificate"), tr("Archive TS Certificate issuer"), s.tsaCert());
+	addTime(t, tr("Signature Timestamp"), s.tsTime());
+	addCert(t, tr("TS Certificate"), tr("TS Certificate issuer"), s.tsCert());
 	addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
-	if(!s.ocspTime().isNull())
-	{
-		SslCertificate ocsp = s.ocspCert();
-		addItem( t, tr("OCSP Certificate issuer"), ocsp.issuerInfo(QSslCertificate::CommonName) );
-		addItem( t, tr("OCSP Certificate"), ocsp );
-		addItem(t, tr("OCSP time"), s.ocspTime().toLocalTime());
-		addItem(t, tr("OCSP time") + " (UTC)", s.ocspTime());
-	}
+	addCert(t, tr("OCSP Certificate"), tr("OCSP Certificate issuer"), s.ocspCert());
+	addTime(t, tr("OCSP time"), s.ocspTime());
 	addItem(t, tr("Signing time (UTC)"), s.trustedTime());
 	addItem(t, tr("Claimed signing time (UTC)"), s.claimedTime());
 
@@ -231,7 +221,8 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, QWidge
 
 void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const QString &value)
 {
-	addItem(view, variable, itemLabel(value, view));
+	if(!value.isEmpty())
+		addItem(view, variable, itemLabel(value, view));
 }
 
 void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const QDateTime &value)
@@ -250,6 +241,8 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const 
 
 void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const QUrl &value)
 {
+	if(value.isEmpty())
+		return;
 	QPushButton *button = itemButton(value.toString(), view);
 	connect(button, &QPushButton::clicked, this, [=]{ QDesktopServices::openUrl( value ); });
 	addItem(view, variable, button);
