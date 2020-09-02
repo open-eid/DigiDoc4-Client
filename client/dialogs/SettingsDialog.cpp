@@ -28,12 +28,13 @@
 #endif
 #include "CheckConnection.h"
 #include "Colors.h"
+#include "Diagnostics.h"
 #include "FileDialog.h"
 #include "QSigner.h"
 #include "QSmartCard.h"
 #include "Styles.h"
 #include "SslCertificate.h"
-#include "Diagnostics.h"
+#include "TokenData.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
 #include "effects/ButtonHoverFilter.h"
@@ -49,17 +50,16 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
 #include <QtCore/QStandardPaths>
-#include <QtCore/QSysInfo>
 #include <QtCore/QThread>
 #include <QtCore/QThreadPool>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
 #include <QtCore/QSettings>
 #include <QtNetwork/QNetworkProxy>
-#include <QtNetwork/QSslCertificate>
 #include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTextBrowser>
+
+#include <algorithm>
 
 SettingsDialog::SettingsDialog(QWidget *parent)
 	: QDialog(parent)
@@ -226,11 +226,11 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
-		QSmartCardData data = qApp->signer()->smartcard()->data();
+		QVector<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
 		for(const QSslCertificate &c: s.list())
 		{
-			if(c == data.authCert() || c == data.signCert())
+			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == c; }))
 				continue;
 			if(c.subjectInfo(QSslCertificate::Organization).join(QString()).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
