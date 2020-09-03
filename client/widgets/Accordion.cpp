@@ -34,9 +34,6 @@ Accordion::~Accordion()
 
 void Accordion::init()
 {
-	// Initialize accordion.
-	openSection = ui->titleVerifyCert;
-
 	connect(ui->contentOtherData, &OtherData::checkEMailClicked, this, &Accordion::checkEMail);
 	connect(ui->contentOtherData, &OtherData::activateEMailClicked, this, &Accordion::activateEMail);
 
@@ -45,10 +42,10 @@ void Accordion::init()
 	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), tr("Redirection of eesti.ee e-mail", "accessible"), ui->contentOtherData);
 	ui->titleOtherData->setClosable(true);
 
-	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
-	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] {open(ui->titleOtherData);});
-	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::closeOtherSection);
-	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] {open(ui->titleVerifyCert);});
+	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::openSection);
+	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] { openSection(ui->titleOtherData); });
+	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::openSection);
+	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] { openSection(ui->titleVerifyCert); });
 
 	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
@@ -65,22 +62,25 @@ void Accordion::clear()
 	ui->authBox->clear();
 	ui->signBox->clear();
 	ui->pukBox->clear();
-	closeOtherSection(ui->titleVerifyCert);
-	ui->titleVerifyCert->setSectionOpen(true);
+	openSection(ui->titleVerifyCert);
 	ui->contentOtherData->update(false, QByteArray());
 	hideOtherData(true);
 }
 
-void Accordion::closeOtherSection(AccordionTitle* opened)
+void Accordion::openSection(AccordionTitle *opened)
 {
-	openSection->setSectionOpen(false);
-	openSection = opened;
+	for(AccordionTitle *section: findChildren<AccordionTitle*>())
+		if(section != opened)
+			section->setSectionOpen(false);
+	if(opened)
+		opened->setSectionOpen(true);
 }
 
 void Accordion::hideOtherData(bool visible)
 {
 	ui->titleOtherData->setHidden(visible);
-	ui->contentOtherData->hide();
+	if(ui->titleOtherData->isHidden() || !ui->titleOtherData->isOpen())
+		ui->contentOtherData->hide();
 }
 
 bool Accordion::updateOtherData(const QByteArray &data)
@@ -91,13 +91,6 @@ bool Accordion::updateOtherData(const QByteArray &data)
 QString Accordion::getEmail()
 {
 	return ui->contentOtherData->getEmail();
-}
-
-void Accordion::open(AccordionTitle* opened)
-{
-	if (opened->isVisible ())
-		openSection = opened;
-	openSection->setSectionOpen(true);
 }
 
 void Accordion::setFocusToEmail()

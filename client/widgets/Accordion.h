@@ -30,7 +30,7 @@ class Accordion;
 
 class AccordionTitle;
 
-class Accordion : public StyledWidget
+class Accordion final : public StyledWidget
 {
 	Q_OBJECT
 
@@ -40,16 +40,11 @@ public:
 
 	void init();
 	void clear();
-	void closeOtherSection( AccordionTitle* opened );
 	QString getEmail();
-	void open(AccordionTitle* opened);
 	void setFocusToEmail();
 	void updateInfo(const SslCertificate &info);
 	void updateInfo(const QSmartCardData &data);
 	bool updateOtherData(const QByteArray &data);
-
-protected:
-	void changeEvent(QEvent* event) override;
 
 signals:
 	void checkEMail();
@@ -59,8 +54,9 @@ signals:
 	void changePukClicked();
 
 private:
+	void changeEvent(QEvent* event) override;
+	void openSection(AccordionTitle *opened);
 	void hideOtherData(bool visible);
 
 	Ui::Accordion *ui;
-	AccordionTitle* openSection = nullptr;
 };
