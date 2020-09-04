@@ -129,7 +129,10 @@ target_link_libraries( ${PROGNAME}
 	${LIBDIGIDOCPP_LIBRARY}
 	${LDAP_LIBRARIES}
 )
-
+set_target_properties(${PROGNAME} PROPERTIES
+	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
+	INTERPROCEDURAL_OPTIMIZATION YES
+)
 target_include_directories(${PROGNAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR} )
 target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SMARTID_URL="${SMARTID_URL}" )
 
@@ -138,9 +141,6 @@ if( APPLE )
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
-	set_target_properties( ${PROGNAME} PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
-	)
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
 		COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
@@ -201,6 +201,11 @@ if( APPLE )
 	)
 elseif(WIN32)
 	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp Diagnostics_win.cpp)
+	target_compile_options(${PROGNAME} PRIVATE "/guard:cf")
+	target_link_options(${PROGNAME} PRIVATE "/guard:cf")
+	if(CROSSSIGNCERT)
+		target_link_options(${PROGNAME} PRIVATE "/INTEGRITYCHECK")
+	endif()
 	find_package( Qt5 COMPONENTS WinExtras )
 	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Cryptui )
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
@@ -255,7 +260,8 @@ elseif(WIN32)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
 			/du http://installer.id.ee /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256)
 		add_custom_command(TARGET ${PROGNAME} POST_BUILD
-			COMMAND ${SIGNCMD} $<TARGET_FILE:${PROGNAME}>
+			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROGNAME}>
+			COMMAND_EXPAND_LISTS
 		)
 		add_custom_command(TARGET msi POST_BUILD
 			COMMAND ${SIGNCMD} "${MSI_FILE}.en-US.msi" "${MSI_FILE}.et-EE.msi" "${MSI_FILE}.en-US.qt.msi" "${MSI_FILE}.et-EE.qt.msi"
