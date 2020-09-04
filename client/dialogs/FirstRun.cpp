@@ -37,7 +37,8 @@ FirstRun::FirstRun(QWidget *parent)
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 	setCursor(Qt::OpenHandCursor);
-	move(parent->geometry().center() - geometry().center());
+	if(parent)
+		move(parent->geometry().center() - geometry().center());
 
 	auto buttonFont = Styles::font(Styles::Condensed, 14);
 	auto labelFont = Styles::font(Styles::Regular, 18);
