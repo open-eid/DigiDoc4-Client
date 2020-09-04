@@ -83,6 +83,11 @@ void AccordionTitle::init(bool open, const QString &caption, const QString &acce
 	setSectionOpen(open);
 }
 
+bool AccordionTitle::isOpen() const
+{
+	return content->isVisible();
+}
+
 void AccordionTitle::setSectionOpen(bool open)
 {
 	content->setVisible(open);
