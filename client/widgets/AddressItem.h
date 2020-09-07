@@ -50,7 +50,6 @@ public:
 	QWidget* initTabOrder(QWidget *item) final;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
-	void update(const QString& name, const QString& code, SslCertificate::CertType type, const QString& strDate, ShowToolButton show);
 
 private:
 	void changeEvent(QEvent *event) final;
@@ -64,7 +63,6 @@ private:
 	QString code;
 	CKey key;
 	QString name;
-	SslCertificate::CertType m_type = SslCertificate::UnknownType;
 	QString expireDateText;
 	bool yourself = false;
 };

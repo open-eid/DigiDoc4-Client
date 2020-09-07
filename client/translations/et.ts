@@ -187,6 +187,14 @@
         <source>Certificate for Encryption</source>
         <translation>Krüpteerimissertifikaat</translation>
     </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Tempel</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Isikutuvastamise sertifikaat</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

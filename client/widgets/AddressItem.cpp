@@ -57,16 +57,17 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 			key.cert.subjectInfo("GN").join(' ') + " " + key.cert.subjectInfo("SN").join(' ') :
 			key.cert.subjectInfo("CN").join(' ');
 
-	QString strDate;
 	if(!showIcon)
 	{
 		DateTime date(key.cert.expiryDate().toLocalTime());
 		if(!date.isNull())
-			strDate = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
+			expireDateText = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
 	}
 
-	update(name.toHtmlEscaped(), SslCertificate(key.cert).personalCode().toHtmlEscaped(),
-		SslCertificate(key.cert).type(), strDate, AddressItem::Remove);
+	code = SslCertificate(key.cert).personalCode().toHtmlEscaped();
+	name = name.toHtmlEscaped();
+	setIdType();
+	showButton(AddressItem::Remove);
 }
 
 AddressItem::~AddressItem()
@@ -145,28 +146,26 @@ void AddressItem::stateChange(ContainerState state)
 	ui->remove->setVisible(state == UnencryptedContainer);
 }
 
-void AddressItem::update(const QString& cardName, const QString& cardCode, SslCertificate::CertType type, const QString& strDate, ShowToolButton show)
-{
-	m_type = type;
-	expireDateText = strDate;
-	code = cardCode;
-	name = cardName;
-
-	setIdType();
-	showButton(show);
-}
-
 void AddressItem::setIdType()
 {
 	QString str;
-	if(m_type & SslCertificate::DigiIDType)
+	SslCertificate cert(key.cert);
+	SslCertificate::CertType type = cert.type();
+	if(type & SslCertificate::DigiIDType)
 		str = tr("Digi-ID");
-	else if(m_type & SslCertificate::EstEidType)
+	else if(type & SslCertificate::EstEidType)
 		str = tr("ID-card");
-	else if(m_type & SslCertificate::TempelType)
-		str = tr("Certificate for Encryption");
-	else if(m_type & SslCertificate::MobileIDType)
+	else if(type & SslCertificate::MobileIDType)
 		str = tr("Mobile-ID");
+	else if(type & SslCertificate::TempelType)
+	{
+		if(cert.keyUsage().contains(SslCertificate::NonRepudiation))
+			str = tr("e-Seal");
+		else if(cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+			str = tr("Authentication certificate");
+		else
+			str = tr("Certificate for Encryption");
+	}
 
 	if(!expireDateText.isEmpty())
 	{
