@@ -159,7 +159,7 @@ void SignatureItem::init()
 		sa << " " <<  ui->serial << " - ";
 		si << ui->serial << " - ";
 	}
-	DateTime date(ui->signature.dateTime().toLocalTime());
+	DateTime date(ui->signature.trustedTime().toLocalTime());
 	if( !date.isNull() )
 	{
 		sa << " " << tr("Signed on") << " "

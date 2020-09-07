@@ -50,7 +50,7 @@ public:
 	DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent);
 
 	QSslCertificate	cert() const;
-	QDateTime	dateTime() const;
+	QDateTime	claimedTime() const;
 	QString		id() const;
 	QString		lastError() const;
 	QString		location() const;
@@ -65,8 +65,8 @@ public:
 	QStringList	roles() const;
 	QString		signatureMethod() const;
 	QString		signedBy() const;
-	QDateTime	signTime() const;
 	QString		spuri() const;
+	QDateTime	trustedTime() const;
 	QSslCertificate tsCert() const;
 	QDateTime	tsTime() const;
 	QSslCertificate tsaCert() const;
