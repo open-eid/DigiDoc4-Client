@@ -83,7 +83,11 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 	for(const QString &group: {QStringLiteral("HKEY_LOCAL_MACHINE"), QStringLiteral("HKEY_CURRENT_USER")})
 	{
 		QString path = QStringLiteral("%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").arg(group);
+#if Q_PROCESSOR_WORDSIZE == 8
 		for(QSettings::Format format: {QSettings::Registry32Format, QSettings::Registry64Format})
+#else
+		for(QSettings::Format format: {QSettings::Registry32Format})
+#endif
 		{
 			QSettings s(path, format);
 			for(const QString &key: s.childGroups())
