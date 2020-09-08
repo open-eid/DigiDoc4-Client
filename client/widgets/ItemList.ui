@@ -21,10 +21,7 @@ QScrollBar::handle:vertical{
 	border-radius: 2px;
 	height: 145px;
 }
-QScrollBar::add-line:vertical {
-      border: none;
-      background: none;
-}
+QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
       border: none;
       background: none;
@@ -68,6 +65,9 @@ border-width: 0px 0px 1px 0px;
      <number>20</number>
     </property>
     <property name="rightMargin">
+     <number>20</number>
+    </property>
+    <property name="bottomMargin">
      <number>20</number>
     </property>
     <item>
