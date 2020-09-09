@@ -167,6 +167,8 @@ QSigner::~QSigner()
 	delete d;
 }
 
+QSigner::ApiType QSigner::apiType() const { return d->api; }
+
 QList<TokenData> QSigner::cache() const { return d->cache; }
 
 QSet<QString> QSigner::cards() const

@@ -32,7 +32,7 @@
 namespace digidoc { class Exception; }
 class QAction;
 class QSigner;
-class Application: public Common
+class Application final: public Common
 {
 	Q_OBJECT
 

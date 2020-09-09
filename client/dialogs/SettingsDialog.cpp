@@ -381,6 +381,8 @@ void SettingsDialog::initFunctionality()
 	ui->tokenBackend->setChecked(s.value(QStringLiteral("tokenBackend")).toUInt());
 	connect(ui->tokenBackend, &QCheckBox::toggled, this, [=](bool checked) {
 		setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
+		if(qApp->signer()->apiType() == QSigner::ApiType(checked))
+			return;
 
 		WarningDialog dlg(tr("Applying this setting requires application restart. Restart now?"), this);
 		dlg.setCancelText(tr("NO"));
