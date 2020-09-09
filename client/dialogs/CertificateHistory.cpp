@@ -72,6 +72,7 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData,
 	connect(ui->view, &QTreeWidget::itemActivated, ui->select, &QPushButton::clicked);
 
 	fillView();
+	ui->view->header()->setMinimumSectionSize(ui->view->fontMetrics().boundingRect(ui->view->headerItem()->text(3)).width() + 10);
 	ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 	adjustSize();
@@ -85,8 +86,7 @@ CertificateHistory::~CertificateHistory()
 void CertificateHistory::fillView()
 {
 	ui->view->clear();
-	QSize sizeHint = ui->view->fontMetrics().boundingRect(ui->view->headerItem()->text(3)).size();
-	sizeHint += QSize(20, 0);
+	ui->view->header()->setSortIndicatorShown(!historyCertData.isEmpty());
 	for(const HistoryCertData& certData : historyCertData)
 	{
 		QTreeWidgetItem *i = new QTreeWidgetItem( ui->view );
@@ -95,7 +95,6 @@ void CertificateHistory::fillView()
 		i->setText(1, certData.typeName());
 		i->setText(2, certData.issuer);
 		i->setText(3, certData.expireDate);
-		i->setData(3, Qt::SizeHintRole, sizeHint);
 		ui->view->addTopLevelItem(i);
 	}
 }
