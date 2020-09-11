@@ -38,7 +38,6 @@ public:
 	explicit Accordion( QWidget *parent = nullptr );
 	~Accordion() final;
 
-	void init();
 	void clear();
 	QString getEmail();
 	void setFocusToEmail();

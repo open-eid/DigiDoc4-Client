@@ -49,7 +49,7 @@ public:
 	~QSigner() override;
 
 	QSet<QString> cards() const;
-	QVector<TokenData> cache() const;
+	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const override;
 	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);
@@ -62,19 +62,17 @@ public:
 	TokenData tokensign() const;
 
 Q_SIGNALS:
+	void cacheChanged();
 	void authDataChanged( const TokenData &token );
-	void dataChanged();
 	void signDataChanged( const TokenData &token );
 	void error( const QString &msg );
 
 private Q_SLOTS:
-	void selectCard(const QString &card);
+	void selectCardAuth(const TokenData &token);
+	void selectCardSign(const TokenData &token);
 
 private:
-	void cacheCardData();
-	static bool cardsOrder(const QString &s1, const QString &s2);
-	void reloadauth() const;
-	void reloadsign() const;
+	static bool cardsOrder(const TokenData &s1, const TokenData &s2);
 	void run() override;
 
 	class Private;

@@ -137,20 +137,23 @@ QList<TokenData> QCNG::tokens() const
 			NCRYPT_KEY_HANDLE key = 0;
 			err = NCryptOpenKey(h, &key, keyname->pszName, keyname->dwLegacyKeySpec, NCRYPT_SILENT_FLAG);
 			SslCertificate cert(QWin::prop(key, NCRYPT_CERTIFICATE_PROPERTY), QSsl::Der);
-			QString guid = QWin::prop(h, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed();
-			TokenData t;
-			t.setReader(reader);
-			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
-				guid : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
-			t.setCert(cert);
-			t.setData(QStringLiteral("provider"), provider);
-			t.setData(QStringLiteral("key"), QString::fromWCharArray(keyname->pszName));
-			t.setData(QStringLiteral("spec"), QVariant::fromValue(keyname->dwLegacyKeySpec));
-			qWarning() << "key" << t.data(QStringLiteral("provider"))
-				<< "spec" << t.data(QStringLiteral("spec"))
-				<< "alg" << QString::fromWCharArray(keyname->pszAlgid)
-				<< "flags" << keyname->dwFlags;
-			result << t;
+			if(!cert.isNull())
+			{
+				QString guid = QWin::prop(h, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed();
+				TokenData t;
+				t.setReader(reader);
+				t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
+					guid : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
+				t.setCert(cert);
+				t.setData(QStringLiteral("provider"), provider);
+				t.setData(QStringLiteral("key"), QString::fromWCharArray(keyname->pszName));
+				t.setData(QStringLiteral("spec"), QVariant::fromValue(keyname->dwLegacyKeySpec));
+				qWarning() << "key" << t.data(QStringLiteral("provider"))
+					<< "spec" << t.data(QStringLiteral("spec"))
+					<< "alg" << QString::fromWCharArray(keyname->pszAlgid)
+					<< "flags" << keyname->dwFlags;
+				result << t;
+			}
 			NCryptFreeObject(key);
 			NCryptFreeBuffer(keyname);
 			keyname = nullptr;

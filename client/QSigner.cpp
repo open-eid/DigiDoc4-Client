@@ -35,7 +35,6 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDebug>
-#include <QtCore/QEventLoop>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QStringList>
 #include <QtNetwork/QSslKey>
@@ -45,14 +44,6 @@
 #include <openssl/rsa.h>
 
 Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
-
-#if QT_VERSION < 0x050700
-template <class T>
-constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
-{
-	return t;
-}
-#endif
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
 static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
@@ -74,7 +65,7 @@ public:
 	QCryptoBackend	*backend = nullptr;
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
-	QVector<TokenData> cache;
+	QList<TokenData> cache;
 
 	static QByteArray signData(int type, const QByteArray &digest, Private *d);
 	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
@@ -155,8 +146,6 @@ QSigner::QSigner( ApiType api, QObject *parent )
 #endif
 
 	d->api = api;
-	d->auth.setCard(QStringLiteral("loading"));
-	d->sign.setCard(QStringLiteral("loading"));
 	d->smartcard = new QSmartCard(parent);
 	connect(this, &QSigner::error, qApp, [](const QString &msg) {
 		qApp->showWarning(msg);
@@ -178,7 +167,7 @@ QSigner::~QSigner()
 	delete d;
 }
 
-QVector<TokenData> QSigner::cache() const { return d->cache; }
+QList<TokenData> QSigner::cache() const { return d->cache; }
 
 QSet<QString> QSigner::cards() const
 {
@@ -188,22 +177,7 @@ QSet<QString> QSigner::cards() const
 	return cards;
 }
 
-void QSigner::cacheCardData()
-{
-	//if(d->pkcs11 && d->pkcs11->isLoaded())
-	d->cache.clear();
-	for(const TokenData &token: d->backend->tokens())
-	{
-		SslCertificate cert(token.cert());
-		// Check if cert is signing or authentication cert
-		if(cert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-			cert.keyUsage().contains(SslCertificate::KeyAgreement) ||
-			cert.keyUsage().contains(SslCertificate::NonRepudiation))
-			d->cache << token;
-	}
-}
-
-bool QSigner::cardsOrder(const QString &s1, const QString &s2)
+bool QSigner::cardsOrder(const TokenData &s1, const TokenData &s2)
 {
 	static auto cardsOrderScore = [](QChar c) -> quint8 {
 		switch(c.toLatin1())
@@ -218,10 +192,10 @@ bool QSigner::cardsOrder(const QString &s1, const QString &s2)
 		}
 	};
 	QRegExp r("(\\w{1,2})(\\d{7})");
-	if(r.indexIn(s1) == -1)
+	if(r.indexIn(s1.card()) == -1)
 		return false;
 	QStringList cap1 = r.capturedTexts();
-	if(r.indexIn(s2) == -1)
+	if(r.indexIn(s2.card()) == -1)
 		return false;
 	QStringList cap2 = r.capturedTexts();
 	// new cards to front
@@ -275,8 +249,6 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
-			if (d->backend->lastError() != QCryptoBackend::PinIncorrect)
-				reloadauth();
 			Q_EMIT error(QCryptoBackend::errorString(status));
 			return PinLocked;
 		default:
@@ -294,7 +266,6 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
 		return PinCanceled;
-	reloadauth();
 
 	if( out.isEmpty() )
 		Q_EMIT error( tr("Failed to decrypt document") );
@@ -361,34 +332,10 @@ void QSigner::logout()
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 }
 
-void QSigner::reloadauth() const
-{
-	QEventLoop e;
-	QObject::connect(this, &QSigner::authDataChanged, &e, &QEventLoop::quit);
-	{
-		QCardLocker locker;
-		d->auth.setCert( QSslCertificate() );
-	}
-	e.exec();
-}
-
-void QSigner::reloadsign() const
-{
-	QEventLoop e;
-	QObject::connect(this, &QSigner::signDataChanged, &e, &QEventLoop::quit);
-	{
-		QCardLocker locker;
-		d->sign.setCert( QSslCertificate() );
-	}
-	e.exec();
-}
-
 void QSigner::run()
 {
 	d->auth.clear();
-	d->auth.setCard(QStringLiteral("loading"));
 	d->sign.clear();
-	d->sign.setCard(QStringLiteral("loading"));
 
 	switch( d->api )
 	{
@@ -412,107 +359,48 @@ void QSigner::run()
 
 			TokenData aold = d->auth, at = aold;
 			TokenData sold = d->sign, st = sold;
-			QList<TokenData> tokens = d->backend->tokens();
-			QStringList acards, scards;
-			for(const TokenData &t: qAsConst(tokens))
+			QList<TokenData> acards, scards;
+			QList<TokenData> cache = d->backend->tokens();
+			std::sort(cache.begin(), cache.end(), cardsOrder);
+			if(cache != d->cache)
+			{
+				d->cache = cache;
+				Q_EMIT cacheChanged();
+			}
+			for(const TokenData &t: d->cache)
 			{
 				SslCertificate c(t.cert());
 				if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 					c.keyUsage().contains(SslCertificate::KeyAgreement))
-					acards << t.card();
+					acards << t;
 				if(c.keyUsage().contains(SslCertificate::NonRepudiation))
-					scards << t.card();
+					scards << t;
 			}
-			acards.removeDuplicates();
-			scards.removeDuplicates();
-
-			std::sort(acards.begin(), acards.end(), cardsOrder);
-			std::sort(scards.begin(), scards.end(), cardsOrder);
 
 			// check if selected card is still in slot
-			if( !at.card().isEmpty() && !acards.contains( at.card() ) )
+			if(!at.isNull() && !acards.contains(at))
 			{
-				at.setCard( QString() );
-				at.setCert( QSslCertificate() );
+				qCDebug(SLog) << "Disconnected from auth card" << st.card();
+				at.clear();
 			}
-			if( !st.card().isEmpty() && !scards.contains( st.card() ) )
+			if(!st.isNull() && !scards.contains(st))
 			{
-				qCDebug(SLog) << "Disconnected from card" << st.card();
-				st.setCard( QString() );
-				st.setCert( QSslCertificate() );
+				qCDebug(SLog) << "Disconnected from sign card" << st.card();
+				st.clear();
 			}
-
-			// Some tokens (e.g. e-Seals) can have only authentication or signing cert;
-			// Do not select first card in case if only one of the tokens is empty.
-			bool update = at.card().isEmpty() && st.card().isEmpty();
 
 			// if none is selected then pick first card with signing cert;
 			// if no signing certs then pick first card with auth cert
-			if(update && !scards.isEmpty())
-				st.setCard(scards.first());
-			if(update && !acards.isEmpty())
-			{
-				if(st.card().isEmpty())
-					at.setCard(acards.first());
-				else if(acards.contains(st.card()))
-					at.setCard(st.card());
-			}
+			if(st.isNull() && !scards.isEmpty())
+				st = scards.first();
+			if(at.isNull() && !acards.isEmpty())
+				at = acards.first();
 
-			// read auth cert; if several cards with the same id exist (e.g. e-token
-			// with expired and valid cert), then pick first valid cert with the id.
-			if( acards.contains( at.card() ) && at.cert().isNull() )
-			{
-				for(const TokenData &i: qAsConst(tokens))
-				{
-					SslCertificate sslCert(i.cert());
-					if(i.card() == at.card() &&
-						(sslCert.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-						sslCert.keyUsage().contains(SslCertificate::KeyAgreement)))
-					{
-						at = i;
-						if(sslCert.isValid())
-							break;
-					}
-				}
-			}
-
-			// read sign cert; if several cards with the same id exist (e.g. e-token
-			// with expired and valid cert), then pick first valid cert with the id.
-			if( scards.contains( st.card() ) && st.cert().isNull() )
-			{
-				qCDebug(SLog) << "Read sign cert" << st.card();
-				for(const TokenData &i: qAsConst(tokens))
-				{
-					SslCertificate sslCert(i.cert());
-					if( i.card() == st.card() && sslCert.keyUsage().contains( SslCertificate::NonRepudiation ) )
-					{
-						st = i;
-						if(sslCert.isValid())
-							break;
-					}
-				}
-				qCDebug(SLog) << "Cert is empty:" << st.cert().isNull();
-			}
-
-			if(!scards.toSet().unite(acards.toSet()).subtract(cards()).isEmpty())
-				cacheCardData();
-
-			bool changed = false;
 			// update data if something has changed
 			if(aold != at)
-			{
-				changed = true;
-				Q_EMIT authDataChanged(d->auth = at);
-			}
+				selectCardAuth(at);
 			if(sold != st)
-			{
-				changed = true;
-				Q_EMIT signDataChanged(d->sign = st);
-			}
-			if(changed)
-				Q_EMIT dataChanged();
-			TokenData tmp = st.card().isEmpty() ? at: st;
-			d->smartcard->reloadCard(tmp.reader(), tmp.card());
+				selectCardSign(st);
 
 			QCardLock::instance().readUnlock();
 		}
@@ -522,18 +410,16 @@ void QSigner::run()
 	}
 }
 
-void QSigner::selectCard(const QString &card)
+void QSigner::selectCardAuth(const TokenData &token)
 {
-	TokenData t = d->auth;
-	t.setCard( card );
-	t.setCert( QSslCertificate() );
-	Q_EMIT authDataChanged(d->auth = t);
+	d->smartcard->reloadCard(token);
+	Q_EMIT authDataChanged(d->auth = token);
+}
 
-	t = d->sign;
-	t.setCard( card );
-	t.setCert( QSslCertificate() );
-	Q_EMIT signDataChanged(d->sign = t);
-	Q_EMIT dataChanged();
+void QSigner::selectCardSign(const TokenData &token)
+{
+	d->smartcard->reloadCard(token);
+	Q_EMIT signDataChanged(d->sign = token);
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
@@ -573,7 +459,6 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
-			reloadsign();
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINLocked)
 		default:
 			QCardLock::instance().exclusiveUnlock();
@@ -586,7 +471,6 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
 		throwException(tr("Failed to login token"), Exception::PINCanceled);
-	reloadsign();
 
 	if( sig.isEmpty() )
 		throwException(tr("Failed to sign document"), Exception::General)

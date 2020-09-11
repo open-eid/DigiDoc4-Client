@@ -20,6 +20,7 @@
 #include "QSmartCard.h"
 
 #include "SslCertificate.h"
+#include "TokenData.h"
 
 #include <common/QPCSC.h>
 
@@ -94,6 +95,7 @@ public:
 
 	QSharedPointer<QPCSCReader> reader;
 	Card			*card = nullptr;
+	TokenData		token;
 	QSmartCardData	t;
 };
 

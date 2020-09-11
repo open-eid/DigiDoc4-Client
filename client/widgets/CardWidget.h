@@ -43,7 +43,7 @@ public:
 
 signals:
 	void photoClicked( const QPixmap &pixmap );
-	void selected( const QString &card );
+	void selected(const TokenData &token);
 
 private:
 	bool event(QEvent *ev) override;

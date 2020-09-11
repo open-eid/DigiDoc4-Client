@@ -21,6 +21,8 @@
 
 #include "widgets/StyledWidget.h"
 
+class SslCertificate;
+
 class Item : public StyledWidget
 {
 	Q_OBJECT
@@ -33,7 +35,7 @@ public:
 
 public slots:
 	virtual void details();
-	virtual void idChanged(const QString &cardCode, const QByteArray &serialNumber);
+	virtual void idChanged(const SslCertificate &cert);
 
 signals:
 	void add(Item* item);

@@ -32,8 +32,9 @@ IDSelector::IDSelector(QWidget *parent)
 	selector->move(9, 32);
 }
 
-void IDSelector::setList(const QString &selectedCard, const QVector<TokenData> &cache, Filter filter)
+void IDSelector::setList(const QString &selectedCard, const QList<TokenData> &cache, Filter _filter)
 {
+	filter = _filter;
 	list.clear();
 	for(const TokenData &token: cache)
 	{
@@ -46,7 +47,8 @@ void IDSelector::setList(const QString &selectedCard, const QVector<TokenData> &
 			continue;
 		if(filter == Decrypting && cert.keyUsage().contains(SslCertificate::NonRepudiation))
 			continue;
-		if(filter == MyEID && !(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType))
+		if(filter == MyEID &&
+			!(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType || cert.type() & SslCertificate::TempelType))
 			continue;
 		list.append(token);
 	}

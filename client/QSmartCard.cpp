@@ -29,6 +29,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QScopedPointer>
+#include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QApplication>
 
@@ -620,7 +621,6 @@ QSmartCard::QSmartCard(QObject *parent)
 :	QObject(parent)
 ,	d(new Private)
 {
-	d->t.d->card = QStringLiteral("loading");
 }
 
 QSmartCard::~QSmartCard()
@@ -724,46 +724,57 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	return unblock(type, parent, newPin, puk, title, textBody);
 }
 
-void QSmartCard::reload() { selectCard(d->t.card());  }
+void QSmartCard::reload()
+{
+	QCardLocker locker;
+	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+	t->data.clear();
+	t->authCert = QSslCertificate();
+	t->signCert = QSslCertificate();
+	d->t.d = t;
+	Q_EMIT dataChanged(d->t);
+	QTimer::singleShot(0, this, [this] {reloadCard(d->token); });
+}
 
-void QSmartCard::reloadCard(const QString &reader, const QString &card)
+void QSmartCard::reloadCard(const TokenData &token)
 {
 	qCDebug(CLog) << "Polling";
-	if(!d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == card)
+	d->token = token;
+	if(!d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == token.card())
 		return;
 
 	// check if selected card is same as signer
-	if(!d->t.card().isEmpty() && card != d->t.card())
+	if(!d->t.card().isEmpty() && token.card() != d->t.card())
 		d->t.d = new QSmartCardDataPrivate();
 
 	// select signer card
-	if(d->t.card().isEmpty() || d->t.card() != card)
+	if(d->t.card().isEmpty() || d->t.card() != token.card())
 	{
 		QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-		t->card = card;
+		t->card = token.card();
 		t->data.clear();
 		t->authCert = QSslCertificate();
 		t->signCert = QSslCertificate();
 		d->t.d = t;
 	}
 
-	if(!d->t.isNull() || reader.isEmpty())
+	if(!d->t.isNull() || token.reader().isEmpty())
 		return;
 
-	QString tmpReader = reader;
-	if(reader.endsWith(QStringLiteral("..."))) {
+	QString reader = token.reader();
+	if(token.reader().endsWith(QStringLiteral("..."))) {
 		for(const QString &test: QPCSC::instance().readers()) {
-			if(test.startsWith(reader.left(reader.size() - 3)))
-				tmpReader = test;
+			if(test.startsWith(token.reader().left(token.reader().size() - 3)))
+				reader = test;
 		}
 	}
 
-	qCDebug(CLog) << "Read" << tmpReader;
-	QScopedPointer<QPCSCReader> selectedReader(new QPCSCReader(tmpReader, &QPCSC::instance()));
+	qCDebug(CLog) << "Read" << reader;
+	QScopedPointer<QPCSCReader> selectedReader(new QPCSCReader(reader, &QPCSC::instance()));
 	if(!selectedReader->connect() || !selectedReader->beginTransaction())
 		return;
 
-	qCDebug(CLog) << "Read card" << card << "info";
+	qCDebug(CLog) << "Read card" << token.card() << "info";
 	QSharedDataPointer<QSmartCardDataPrivate> t;
 	t = d->t.d;
 	t->reader = selectedReader->name();
@@ -782,17 +793,7 @@ void QSmartCard::reloadCard(const QString &reader, const QString &card)
 		qDebug() << "Failed to read card info, try again next round";
 }
 
-void QSmartCard::selectCard(const QString &card)
-{
-	QCardLocker locker;
-	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-	t->card = card;
-	t->data.clear();
-	t->authCert = QSslCertificate();
-	t->signCert = QSslCertificate();
-	d->t.d = t;
-	Q_EMIT dataChanged(d->t);
-}
+TokenData QSmartCard::tokenData() const { return d->token; }
 
 QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)
 {

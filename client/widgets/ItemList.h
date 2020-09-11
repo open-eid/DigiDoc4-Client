@@ -22,6 +22,8 @@
 #include "common_enums.h"
 #include "widgets/Item.h"
 
+#include "SslCertificate.h"
+
 #include <functional>
 #include <QScrollArea>
 
@@ -55,7 +57,7 @@ signals:
 	void addAll();
 	void addItem(int code);
 	void addressSearch();
-	void idChanged(const QString &cardCode, const QByteArray &serialNumber);
+	void idChanged(const SslCertificate &cert);
 	void keysSelected(QList<Item *> keys);
 	void removed(int row);
 	void search(const QString &term);
@@ -82,13 +84,12 @@ private:
 
 	QLabel *header = nullptr;
 	int headerItems = 1;
-	QString idCode;
 	QSvgWidget* infoIcon = nullptr;
 	QSvgWidget* infoHoverIcon = nullptr;
 	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
 	QString headerText;
 	QString listText;
-	QByteArray serialNumber;
+	SslCertificate cert;
 	QWidget *tabIndex;
 
 	friend class AddRecipients;

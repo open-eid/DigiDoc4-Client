@@ -23,7 +23,6 @@
 #include "QSmartCard.h"
 #include "sslConnect.h"
 #include "effects/Overlay.h"
-#include "widgets/NoCardInfo.h"
 
 #include <QButtonGroup>
 
@@ -38,9 +37,10 @@ class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
 class PageIcon;
+class TokenData;
 class WarningList;
 
-class MainWindow : public QWidget
+class MainWindow final : public QWidget
 {
 	Q_OBJECT
 
@@ -65,7 +65,6 @@ private Q_SLOTS:
 	void pageSelected(PageIcon *page);
 	void photoClicked(const QPixmap &photo);
 	void savePhoto();
-	void showCardStatus();
 	void warningClicked(const QString &link);
 
 protected:
@@ -92,7 +91,6 @@ private:
 	void moveCryptoContainer();
 	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
-	void noReader_NoCard_Loading_Event(NoCardInfo::Status status);
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &info1, const QString &info2);
 	void openContainer();
@@ -110,7 +108,7 @@ private:
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPage(ria::qdigidoc4::Pages page);
 	void selectPageIcon( PageIcon* page );
-	QByteArray sendRequest( SSLConnect::RequestType type, const QString &param = QString() );
+	QByteArray sendRequest(SSLConnect::RequestType type, const QString &param = {});
 	void showCardMenu( bool show );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign);
@@ -118,7 +116,9 @@ private:
 	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
+	void updateSelector();
 	void updateKeys(const QList<CKey> &keys);
+	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
@@ -126,8 +126,6 @@ private:
 	
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
-
 	Ui::MainWindow *ui;
-
 	WarningList *warnings;
 };

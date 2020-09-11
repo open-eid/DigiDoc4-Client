@@ -25,6 +25,7 @@
 class SslCertificate;
 class QSmartCardDataPrivate;
 class QSslKey;
+class TokenData;
 
 class QSmartCardData
 {
@@ -121,9 +122,8 @@ public:
 
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
-	void selectCard( const QString &card );
-	void reload();
-	void reloadCard(const QString &reader, const QString &card);
+	TokenData tokenData() const;
+	void reloadCard(const TokenData &token);
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false, QWidget* parent = nullptr );
@@ -135,6 +135,9 @@ signals:
 	void dataChanged(const QSmartCardData &data);
 
 private:
+	void reload();
+
 	class Private;
 	Private *d;
+	friend class QSigner;
 };
