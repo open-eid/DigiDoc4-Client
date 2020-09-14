@@ -78,7 +78,6 @@ private:
 	void hideMainAction();
 	void hideRightPane();
 	void initContainer( const QString &file, const QString &suffix );
-	void showDropdown();
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
 	void showSigningButton();

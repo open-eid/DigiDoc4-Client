@@ -63,7 +63,7 @@ MainAction::~MainAction()
 void MainAction::changeEvent(QEvent* event)
 {
 	if(event->type() == QEvent::LanguageChange)
-		update(ui->actions);
+		update();
 	QWidget::changeEvent(event);
 }
 
@@ -113,6 +113,23 @@ void MainAction::setButtonEnabled(bool enabled)
 	ui->mainAction->setEnabled(enabled);
 }
 
+void MainAction::showActions(const QList<Actions> &actions)
+{
+	QList<Actions> order = actions;
+	if(order.size() == 2 &&
+		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
+			return action == SignatureMobile || action == SignatureSmartID;
+		}) &&
+		!QSettings().value("MIDOrder", true).toBool())
+	{
+		std::reverse(order.begin(), order.end());
+	}
+	ui->actions = order;
+	update();
+	ui->otherCards->setVisible(ui->actions.size() > 1);
+	show();
+}
+
 void MainAction::showDropdown()
 {
 	if(ui->actions.size() > 1 && ui->list.isEmpty())
@@ -121,13 +138,13 @@ void MainAction::showDropdown()
 		{
 			QPushButton *other = new QPushButton(label(*i), parentWidget());
 			other->setAccessibleName(label(*i).toLower());
-			other->setCursor(QCursor(Qt::PointingHandCursor));
+			other->setCursor(ui->mainAction->cursor());
+			other->setFont(ui->mainAction->font());
 			other->resize(size());
 			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
 			other->show();
 			other->setStyleSheet(ui->mainAction->styleSheet() +
 				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
-			other->setFont(ui->mainAction->font());
 			if (*i == Actions::SignatureMobile)
 				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", true, true); });
 			if (*i == Actions::SignatureSmartID)
@@ -142,21 +159,9 @@ void MainAction::showDropdown()
 		hideDropdown();
 }
 
-void MainAction::update(const QList<Actions> &actions)
+void MainAction::update()
 {
-	QList<Actions> order = actions;
 	hideDropdown();
-	if(order.size() == 2 &&
-		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
-			return action == SignatureMobile || action == SignatureSmartID;
-		}) &&
-		!QSettings().value("MIDOrder", true).toBool())
-	{
-		std::reverse(order.begin(), order.end());
-	}
-	ui->actions = order;
-	ui->mainAction->setText(label(order[0]));
-	ui->mainAction->setAccessibleName(label(order[0]).toLower());
-	ui->otherCards->setVisible(order.size() > 1);
-	show();
+	ui->mainAction->setText(label(ui->actions[0]));
+	ui->mainAction->setAccessibleName(label(ui->actions[0]).toLower());
 }
