@@ -37,18 +37,11 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
-class CertificateDetails::Private: public Ui::CertificateDetails
-{
-public:
-	SslCertificate cert;
-};
-
 CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *parent)
 	: QDialog(parent)
-	, ui(new Private)
+	, ui(new Ui::CertificateDetails)
 {
 	ui->setupUi(this);
-	ui->cert = cert;
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
 	setWindowModality(Qt::WindowModal);
@@ -95,7 +88,21 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 	ui->lblCertInfo->setHtml( i );
 
 
-	connect( ui->save, &QPushButton::clicked, this, &CertificateDetails::saveCert );
+	connect(ui->save, &QPushButton::clicked, this, [this, cert] {
+		QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QStringLiteral("%1%2%3.cer")
+				.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
+				.arg(QDir::separator())
+				.arg(cert.subjectInfo("serialNumber")),
+			tr("Certificates (*.cer *.crt *.pem)"));
+		if( file.isEmpty() )
+			return;
+
+		QFile f( file );
+		if( f.open( QIODevice::WriteOnly ) )
+			f.write(cert.toPem());
+		else
+			WarningDialog(tr("Failed to save file"), this).exec();
+	});
 	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
 	connect(ui->tblDetails, &QTableWidget::itemSelectionChanged, this, [this] {
@@ -171,23 +178,6 @@ CertificateDetails::~CertificateDetails()
 	delete ui;
 }
 
-void CertificateDetails::saveCert()
-{
-	QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QStringLiteral("%1%2%3.cer")
-			.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
-			.arg(QDir::separator())
-			.arg(ui->cert.subjectInfo("serialNumber")),
-		tr("Certificates (*.cer *.crt *.pem)"));
-	if( file.isEmpty() )
-		return;
-
-	QFile f( file );
-	if( f.open( QIODevice::WriteOnly ) )
-		f.write(ui->cert.toPem());
-	else
-		WarningDialog(tr("Failed to save file"), this).exec();
-}
-
 QString CertificateDetails::decodeCN(const QString &cn)
 {
 	// Detect double-encoded UTF-8 strings.
@@ -225,8 +215,8 @@ void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *pa
 #else
 	Q_UNUSED(parent);
 	QString name = cert.subjectInfo("serialNumber");
-	if(name.isNull() || name.isEmpty())
-		name = QStringLiteral("%1").arg(cert.serialNumber().constData());
+	if(name.isEmpty())
+		name = cert.serialNumber().replace(':', "");
 	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);
 	QFile f(path);
 	if(f.open(QIODevice::WriteOnly))
