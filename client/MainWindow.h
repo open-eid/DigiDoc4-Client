@@ -19,12 +19,11 @@
 
 #pragma once
 
+#include <QWidget>
+
 #include "common_enums.h"
 #include "QSmartCard.h"
 #include "sslConnect.h"
-#include "effects/Overlay.h"
-
-#include <QButtonGroup>
 
 #include <functional>
 

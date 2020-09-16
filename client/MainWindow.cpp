@@ -30,12 +30,10 @@
 #include "Styles.h"
 #include "TokenData.h"
 #include "XmlReader.h"
-#ifdef Q_OS_WIN
-#include "CertStore.h"
-#endif
 #include "crypto/CryptoDoc.h"
-#include "effects/FadeInNotification.h"
 #include "effects/ButtonHoverFilter.h"
+#include "effects/FadeInNotification.h"
+#include "effects/Overlay.h"
 #include "dialogs/AccessCert.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/MobileProgress.h"
@@ -50,22 +48,14 @@
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
-#include <common/DateTime.h>
-
-#include <QDebug>
-#include <QFileDialog>
 #include <QLoggingCategory>
 #include <QMessageBox>
 #include <QMimeData>
-#include <QSvgWidget>
 #include <QtCore/QUrlQuery>
 #include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
-#include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrinterInfo>
 #include <QtPrintSupport/QPrintPreviewDialog>
-
-#include <functional>
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
@@ -1224,10 +1214,8 @@ void MainWindow::updateSelector()
 		ui->noCardInfo->update(NoCardInfo::NoPCSC);
 	else if(QPCSC::instance().readers().isEmpty())
 		ui->noCardInfo->update(NoCardInfo::NoReader);
-	else if(ui->noCardInfo->isVisible())
-		ui->noCardInfo->update(NoCardInfo::NoCard);
 	else
-		ui->noCardInfo->update(NoCardInfo::Loading);
+		ui->noCardInfo->update(NoCardInfo::NoCard);
 	ui->cardInfo->setCursor(ui->selector->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
 	if(ui->selector->selector->isHidden())
 		showCardMenu(false);
