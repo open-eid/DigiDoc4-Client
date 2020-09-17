@@ -293,22 +293,19 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 		mainAction.reset(new MainAction(this));
 		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
 	}
-	mainAction->update(actions);
-	bool isSign =
-		actions.contains(SignatureAdd) || actions.contains(SignatureToken) ||
-		actions.contains(SignatureMobile) || actions.contains(SignatureSmartID);
-	bool isEncrypt =
-		actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
-	bool isDecrypt =
-		actions.contains(DecryptContainer) || actions.contains(DecryptToken);
-	mainAction->setButtonEnabled(isEncrypt || (!isBlocked && ((isSign && !isExpired) || isDecrypt)));
+	mainAction->showActions(actions);
+	bool isSign = actions.contains(SignatureAdd) || actions.contains(SignatureToken);
+	bool isSignMobile = !isSign && (actions.contains(SignatureMobile) || actions.contains(SignatureSmartID));
+	bool isEncrypt = actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
+	bool isDecrypt = actions.contains(DecryptContainer) || actions.contains(DecryptToken);
+	mainAction->setButtonEnabled(isEncrypt || isSignMobile || (!isBlocked && ((isSign && !isExpired) || isDecrypt)));
 	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
 	ui->navigationArea->layout()->invalidate();
 }
 
 void ContainerPage::showSigningButton()
 {
-	if(cardInReader.isNull())
+	if(cardInReader.isEmpty())
 		showMainAction({ SignatureMobile, SignatureSmartID });
 	else if(isSeal)
 		showMainAction({ SignatureToken, SignatureMobile, SignatureSmartID });
@@ -403,7 +400,7 @@ void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 
 void ContainerPage::updateDecryptionButton()
 {
-	if(!canDecrypt || cardInReader.isNull())
+	if(!canDecrypt || cardInReader.isEmpty())
 		hideMainAction();
 	else if(isSeal)
 		showMainAction({ DecryptToken });
