@@ -152,7 +152,7 @@ void ContainerPage::clear()
 {
 	ui->leftPane->clear();
 	ui->rightPane->clear();
-	canDecrypt = false;
+	isSupported = false;
 }
 
 void ContainerPage::clearPopups()
@@ -305,7 +305,9 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 
 void ContainerPage::showSigningButton()
 {
-	if(cardInReader.isEmpty())
+	if(!isSupported)
+		hideMainAction();
+	else if(cardInReader.isEmpty())
 		showMainAction({ SignatureMobile, SignatureSmartID });
 	else if(isSeal)
 		showMainAction({ SignatureToken, SignatureMobile, SignatureSmartID });
@@ -316,7 +318,7 @@ void ContainerPage::showSigningButton()
 void ContainerPage::transition(CryptoDoc* container, bool canDecrypt)
 {
 	clear();
-	this->canDecrypt = canDecrypt;
+	isSupported = canDecrypt;
 	ContainerState state = container->state();
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
@@ -348,17 +350,16 @@ void ContainerPage::transition(DigiDoc* container)
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
-			SignatureItem *item = new SignatureItem(c, state, false, ui->rightPane);
+			SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
 			if(item->isInvalid())
 				addError(item, errors);
 			ui->rightPane->addHeaderWidget(item);
 		}
 	}
 
-	bool enableSigning = container->isSupported();
 	for(const DigiDocSignature &c: container->signatures())
 	{
-		SignatureItem *item = new SignatureItem(c, state, enableSigning, ui->rightPane);
+		SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
 		if(item->isInvalid())
 			addError(item, errors);
 		ui->rightPane->addWidget(item);
@@ -373,10 +374,8 @@ void ContainerPage::transition(DigiDoc* container)
 	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
 		emit warning(UnsupportedDDocWarning);
 
-	if(enableSigning || container->isService())
-		showSigningButton();
-	else
-		hideMainAction();
+	isSupported = container->isSupported() || container->isService();
+	showSigningButton();
 
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(state);
@@ -384,7 +383,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 {
-	this->canDecrypt = canDecrypt;
+	isSupported = canDecrypt;
 	if(ui->leftPane->getState() & EncryptedContainer)
 		updateDecryptionButton();
 
@@ -400,7 +399,7 @@ void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 
 void ContainerPage::updateDecryptionButton()
 {
-	if(!canDecrypt || cardInReader.isEmpty())
+	if(!isSupported || cardInReader.isEmpty())
 		hideMainAction();
 	else if(isSeal)
 		showMainAction({ DecryptToken });

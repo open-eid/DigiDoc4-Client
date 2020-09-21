@@ -29,7 +29,7 @@ class SignatureItem : public Item
 	Q_OBJECT
 
 public:
-	explicit SignatureItem(DigiDocSignature s, ria::qdigidoc4::ContainerState state, bool isSupported, QWidget *parent = nullptr);
+	explicit SignatureItem(DigiDocSignature s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~SignatureItem() override;
 
 	ria::qdigidoc4::WarningType getError() const;
