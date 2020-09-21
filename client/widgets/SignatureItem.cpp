@@ -52,7 +52,7 @@ public:
 	QString status;
 };
 
-SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, bool isSupported, QWidget *parent)
+SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidget *parent)
 : Item(parent)
 , ui(new Private(std::move(s)))
 {
@@ -67,7 +67,7 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, bool 
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
 	ui->remove->init(LabelButton::White, QString(), 0);
-	ui->remove->setVisible(isSupported);
+	ui->remove->setVisible(s.parent()->isSupported());
 	connect(ui->remove, &LabelButton::clicked, this, &SignatureItem::removeSignature);
 	init();
 }

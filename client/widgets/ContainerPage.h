@@ -95,7 +95,7 @@ private:
 
 	const char *cancelText = "CANCEL";
 	const char *convertText = "ENCRYPT";
-	bool canDecrypt = false;
+	bool isSupported = false;
 	bool isSeal = false;
 	bool isExpired = false;
 	bool isBlocked = false;
