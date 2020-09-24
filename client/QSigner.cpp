@@ -397,11 +397,13 @@ void QSigner::run()
 				at = acards.first();
 
 			// update data if something has changed
+			TokenData update;
 			if(aold != at)
-				selectCardAuth(at);
+				Q_EMIT authDataChanged(d->auth = update = at);
 			if(sold != st)
-				selectCardSign(st);
-
+				Q_EMIT signDataChanged(d->sign = update = st);
+			if(!update.isNull())
+				d->smartcard->reloadCard(update);
 			QCardLock::instance().readUnlock();
 		}
 
@@ -410,16 +412,23 @@ void QSigner::run()
 	}
 }
 
-void QSigner::selectCardAuth(const TokenData &token)
+void QSigner::selectCard(const TokenData &token)
 {
+	bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
+	if(isSign)
+		Q_EMIT signDataChanged(d->sign = token);
+	else
+		Q_EMIT authDataChanged(d->auth = token);
+	for(const TokenData &other: cache())
+	{
+		if(other == token || other.card() != token.card())
+			continue;
+		if(isSign) // Select other cert if they are on same card
+			Q_EMIT authDataChanged(d->auth = token);
+		else
+			Q_EMIT signDataChanged(d->sign = token);
+	}
 	d->smartcard->reloadCard(token);
-	Q_EMIT authDataChanged(d->auth = token);
-}
-
-void QSigner::selectCardSign(const TokenData &token)
-{
-	d->smartcard->reloadCard(token);
-	Q_EMIT signDataChanged(d->sign = token);
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const

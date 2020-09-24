@@ -883,26 +883,8 @@ void MainWindow::showCardMenu(bool show)
 	if(show)
 	{
 		CardPopup *cardPopup = new CardPopup(ui->selector->list, this);
-		connect(cardPopup, &CardPopup::activated, qApp->signer(), [](const TokenData &token) {
-			bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
-			if(isSign)
-				qApp->signer()->selectCardSign(token);
-			else
-				qApp->signer()->selectCardAuth(token);
-			for(const TokenData &other: qApp->signer()->cache())
-			{
-				if(other == token)
-					continue;
-				if(other.card() != token.card())
-					continue;
-				if(isSign) // Select other cert if they are on same card
-					qApp->signer()->selectCardAuth(other);
-				else
-					qApp->signer()->selectCardSign(other);
-			}
-		}, Qt::QueuedConnection);
-		// .. and hide card popup menu
-		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); });
+		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
+		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); }); // .. and hide card popup menu
 		cardPopup->show();
 	}
 	else if(CardPopup *cardPopup = findChild<CardPopup*>()) {
