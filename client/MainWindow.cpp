@@ -176,7 +176,7 @@ MainWindow::MainWindow( QWidget *parent )
 
 	updateSelector();
 	updateMyEID(qApp->signer()->tokensign());
-	updateMyEid(QSmartCardData());
+	updateMyEid(qApp->signer()->smartcard()->data());
 	ui->signContainerPage->cardChanged(qApp->signer()->tokensign().cert());
 	ui->cryptoContainerPage->cardChanged(qApp->signer()->tokenauth().cert());
 }
