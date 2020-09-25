@@ -437,7 +437,7 @@ void SettingsDialog::initFunctionality()
 	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
 		ui->txtMIDUUID->setEnabled(checked);
 		setValueEx(QStringLiteral("MIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("MIDUUID")));
-		setValueEx(QStringLiteral("SIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("MIDUUID")));
+		setValueEx(QStringLiteral("SIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("SIDUUID")));
 	});
 	ui->rdMIDUUIDCustom->setChecked(s.value(QStringLiteral("MIDUUID-CUSTOM"), s.contains(QStringLiteral("MIDUUID"))).toBool());
 	ui->txtMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
