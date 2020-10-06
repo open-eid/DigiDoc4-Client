@@ -86,6 +86,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
+	d->move(parent->geometry().center() - d->geometry().center());
 	d->signProgressBar->setMaximum(100);
 	d->code->setBuddy(d->signProgressBar);
 	d->code->setFont(Styles::font(Styles::Regular, 48));

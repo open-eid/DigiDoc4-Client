@@ -83,6 +83,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
+	d->move(parent->geometry().center() - d->geometry().center());
 	d->code->setBuddy(d->signProgressBar);
 	d->code->setFont(Styles::font(Styles::Regular, 48));
 	d->labelError->setFont(Styles::font(Styles::Regular, 14));
