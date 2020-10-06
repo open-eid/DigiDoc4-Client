@@ -48,6 +48,7 @@ public:
 	explicit QSigner(ApiType api, QObject *parent = nullptr);
 	~QSigner() override;
 
+	ApiType apiType() const;
 	QSet<QString> cards() const;
 	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const override;

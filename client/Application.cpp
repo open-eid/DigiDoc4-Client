@@ -407,6 +407,8 @@ Application::Application( int &argc, char **argv )
 
 Application::~Application()
 {
+	for(QWidget *top: topLevelWidgets())
+		top->close();
 #ifdef Q_OS_WIN
 	for(const QString &file: d->tempFiles)
 		QFile::remove(file);

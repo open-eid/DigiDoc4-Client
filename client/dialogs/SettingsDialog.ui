@@ -67,6 +67,7 @@ QPushButton {
 	border: none;
 	text-align:left;
 	padding-left: 21;
+	min-height: 35px;
 }
 QPushButton:checked {
 	background-color: #F4F5F6;
@@ -117,12 +118,6 @@ QPushButton:hover {
       </item>
       <item>
        <widget class="QPushButton" name="btnMenuGeneral">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>35</height>
-         </size>
-        </property>
         <property name="accessibleName">
          <string extracomment="accessible">General</string>
         </property>
@@ -142,12 +137,6 @@ QPushButton:hover {
       </item>
       <item>
        <widget class="QPushButton" name="btnMenuCertificate">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>35</height>
-         </size>
-        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Services</string>
         </property>
@@ -164,12 +153,6 @@ QPushButton:hover {
       </item>
       <item>
        <widget class="QPushButton" name="btnMenuProxy">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>35</height>
-         </size>
-        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Proxy</string>
         </property>
@@ -186,12 +169,6 @@ QPushButton:hover {
       </item>
       <item>
        <widget class="QPushButton" name="btnMenuDiagnostics">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>35</height>
-         </size>
-        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Diagnostics</string>
         </property>
@@ -208,12 +185,6 @@ QPushButton:hover {
       </item>
       <item>
        <widget class="QPushButton" name="btnMenuInfo">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>35</height>
-         </size>
-        </property>
         <property name="accessibleName">
          <string extracomment="accessible">Info</string>
         </property>
@@ -260,6 +231,7 @@ QLineEdit {
     border: 1px solid #DEE4E9;
     border-radius: 2px;
     background-color: #FFFFFF;
+    min-height: 31px;
 }
 QCheckBox::indicator, QRadioButton::indicator {
     width: 14px;
@@ -449,20 +421,7 @@ QRadioButton::indicator::checked {
           </widget>
          </item>
          <item row="0" column="2" rowspan="2">
-          <widget class="QLineEdit" name="txtGeneralDirectory">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>31</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>31</height>
-            </size>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="txtGeneralDirectory"/>
          </item>
         </layout>
        </item>
@@ -496,7 +455,7 @@ QPushButton {
 	text-align: middle;
 	min-height: 30px;
 }
-QRadioButton, QCheckBox, QLineEdit {
+QRadioButton, QCheckBox {
 	min-height: 31px;
 }</string>
       </property>
@@ -840,12 +799,6 @@ QRadioButton, QCheckBox, QLineEdit {
          <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
          </property>
@@ -951,14 +904,7 @@ QRadioButton, QCheckBox, QLineEdit {
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="txtProxyHost">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="QLineEdit" name="txtProxyHost"/>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="lblProxyPort">
@@ -971,14 +917,7 @@ QRadioButton, QCheckBox, QLineEdit {
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="txtProxyPort">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="QLineEdit" name="txtProxyPort"/>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="lblProxyUsername">
@@ -991,14 +930,7 @@ QRadioButton, QCheckBox, QLineEdit {
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="txtProxyUsername">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="QLineEdit" name="txtProxyUsername"/>
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="lblProxyPassword">
@@ -1012,12 +944,6 @@ QRadioButton, QCheckBox, QLineEdit {
        </item>
        <item row="6" column="1">
         <widget class="QLineEdit" name="txtProxyPassword">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
          </property>
