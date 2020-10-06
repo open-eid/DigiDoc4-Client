@@ -41,8 +41,8 @@ FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
 
 	stateChange(state);
 
-	connect(ui->fileName, &QToolButton::clicked, this, [this]{ emit open(this);});
-	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this);});
+	connect(ui->fileName, &QToolButton::clicked, this, [this]{ emit open(this); setUnderline(false); });
+	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 
 	fileName = QFileInfo(file).fileName();
@@ -59,11 +59,10 @@ bool FileItem::event(QEvent *event)
 	switch(event->type())
 	{
 	case QEvent::Enter:
-		if(ui->fileName->isEnabled())
-			ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-decoration: underline; text-align: left;"));
+		setUnderline(true);
 		break;
 	case QEvent::Leave:
-		ui->fileName->setStyleSheet(QStringLiteral("color: #363739; border: none; text-align: left;"));
+		setUnderline(false);
 		break;
 	case QEvent::Resize:
 		setFileName();
@@ -89,6 +88,13 @@ QWidget* FileItem::initTabOrder(QWidget *item)
 void FileItem::setFileName()
 {
 	ui->fileName->setText(ui->fileName->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->fileName->width()));
+}
+
+void FileItem::setUnderline(bool enable)
+{
+	QFont font = ui->fileName->font();
+	font.setUnderline(ui->fileName->isEnabled() && enable);
+	ui->fileName->setFont(font);
 }
 
 void FileItem::stateChange(ContainerState state)

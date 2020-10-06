@@ -45,8 +45,9 @@ signals:
 	void download(FileItem* item);
 	
 private:
-	bool event(QEvent *event) override;
+	bool event(QEvent *event) final;
 	void setFileName();
+	void setUnderline(bool enable);
 
 	Ui::FileItem *ui;
 	QString fileName;

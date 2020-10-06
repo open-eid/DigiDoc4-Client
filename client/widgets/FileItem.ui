@@ -86,9 +86,6 @@ text-align: left;</string>
      <property name="accessibleName">
       <string extracomment="accessible">Remove file</string>
      </property>
-     <property name="text">
-      <string/>
-     </property>
     </widget>
    </item>
    <item>
@@ -110,9 +107,6 @@ text-align: left;</string>
      </property>
      <property name="accessibleName">
       <string extracomment="accessible">Download file</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>
