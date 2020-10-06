@@ -226,7 +226,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
-		QVector<TokenData> cache = qApp->signer()->cache();
+		QList<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
 		for(const QSslCertificate &c: s.list())
 		{
