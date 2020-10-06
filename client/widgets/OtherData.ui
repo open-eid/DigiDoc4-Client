@@ -208,6 +208,9 @@ color: #75787B;</string>
      <property name="text">
       <string>For more detailed official email address forwarding, please visit &lt;a href='http://www.eesti.ee/en/'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href='https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee'&gt;&lt;span style='color: #006EB5; text-decoration: none; font-weight: 900;'&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</string>
      </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
      <property name="openExternalLinks">
       <bool>true</bool>
      </property>
