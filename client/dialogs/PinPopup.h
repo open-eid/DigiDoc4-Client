@@ -31,7 +31,7 @@ class PinPopup;
 
 class SslCertificate;
 
-class PinPopup : public QDialog
+class PinPopup final : public QDialog
 {
 	Q_OBJECT
 
@@ -57,7 +57,7 @@ public:
 	Q_DECLARE_FLAGS(TokenFlags, TokenFlag)
 
 	PinPopup(PinFlags flags, const SslCertificate &cert, TokenFlags count, QWidget *parent = nullptr);
-	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = nullptr, const QString &bodyText = QString());
+	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = nullptr, const QString &bodyText = {});
 	~PinPopup() final;
 
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
