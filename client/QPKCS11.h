@@ -21,8 +21,6 @@
 
 #include "QCryptoBackend.h"
 
-class TokenData;
-
 class QPKCS11: public QCryptoBackend
 {
 	Q_OBJECT
@@ -32,10 +30,8 @@ public:
 
 	QByteArray decrypt(const QByteArray &data) const override;
 	QByteArray derive(const QByteArray &publicKey) const;
-#ifndef NO_PKCS11_CRYPTO
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
-#endif
 	bool isLoaded() const;
 	PinStatus lastError() const override;
 	bool load( const QString &driver );

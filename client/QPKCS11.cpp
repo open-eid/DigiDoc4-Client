@@ -22,17 +22,11 @@
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "dialogs/PinPopup.h"
+
 #include <common/QPCSC.h>
-#ifndef NO_PKCS11_CRYPTO
 #include <crypto/CryptoDoc.h>
-#endif
 
 #include <QtCore/QDebug>
-#include <QtCore/QEventLoop>
-#include <QtCore/QFile>
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
-#include <QtCore/QStringList>
 #include <QtWidgets/QApplication>
 
 #include <openssl/obj_mac.h>
@@ -163,13 +157,11 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	return d->attribute(d->session, newkey, CKA_VALUE);
 }
 
-#ifndef NO_PKCS11_CRYPTO
 QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	return CryptoDoc::concatKDF(digest, quint32(keySize), derive(publicKey), algorithmID + partyUInfo + partyVInfo);
 }
-#endif
 
 QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 {
@@ -360,7 +352,6 @@ bool QPKCS11::reload()
 		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000" },
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" },
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944" },
-		{ "/Library/OpenSC/lib/opensc-pkcs11.so", "3B7B940000806212515646696E454944" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
 #elif defined(Q_OS_WIN)
@@ -373,7 +364,13 @@ bool QPKCS11::reload()
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" },
 		{ "/usr/lib/ccs/libccpkip11.so", "3BF81300008131FE45536D617274417070F8" },
 		{ "/usr/lib/ccs/libccpkip11.so", "3B7D94000080318065B08311C0A983009000" },
+#if Q_PROCESSOR_WORDSIZE == 8
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
+		{ "/usr/lib64/libcryptoki.so", "3B7B940000806212515646696E454944" },
+#else
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
+		{ "libcryptoki.so", "3B7B940000806212515646696E454944" },
+#endif
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
 #endif
 	};
