@@ -163,9 +163,9 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>28</y>
+     <y>25</y>
      <width>360</width>
-     <height>38</height>
+     <height>40</height>
     </rect>
    </property>
    <property name="font">
@@ -174,8 +174,7 @@ QPushButton:disabled {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #041E42;
-</string>
+    <string notr="true">color: #041E42;</string>
    </property>
    <property name="text">
     <string>Enter your phone number to sign with Mobile ID</string>
