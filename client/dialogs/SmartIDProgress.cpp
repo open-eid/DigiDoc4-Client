@@ -227,6 +227,8 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 				returnError(tr("Your Smart-ID transaction has expired. Please try again."));
 			else if(endResult == QStringLiteral("WRONG_VC"))
 				returnError(tr("Error: an incorrect control code was chosen"));
+			else if(endResult == QStringLiteral("DOCUMENT_UNUSABLE"))
+				returnError(tr("Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support."));
 			else if(endResult != QStringLiteral("OK"))
 				returnError(tr("Service result: ") + endResult);
 			else if(d->documentNumber.isEmpty())
