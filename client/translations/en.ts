@@ -187,6 +187,14 @@
         <source>Certificate for Encryption</source>
         <translation>Certificate for Encryption</translation>
     </message>
+    <message>
+        <source>e-Seal</source>
+        <translation>e-Seal</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Authentication certificate</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

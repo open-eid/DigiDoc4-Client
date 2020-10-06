@@ -19,10 +19,6 @@
 
 #include "Item.h"
 
-Item::Item(QWidget *parent)
-: StyledWidget(parent)
-{}
-
 QString Item::id() const { return QString(); }
 void Item::idChanged(const SslCertificate & /* cert */) {}
 QWidget* Item::initTabOrder(QWidget * /* item */) { return this; }
