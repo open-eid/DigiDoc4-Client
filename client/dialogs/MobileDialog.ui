@@ -138,8 +138,8 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>80</y>
-     <width>241</width>
+     <y>78</y>
+     <width>281</width>
      <height>16</height>
     </rect>
    </property>
@@ -188,7 +188,7 @@ QPushButton:disabled {
     <rect>
      <x>50</x>
      <y>201</y>
-     <width>241</width>
+     <width>281</width>
      <height>20</height>
     </rect>
    </property>
@@ -203,8 +203,8 @@ QPushButton:disabled {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>138</y>
-     <width>241</width>
+     <y>136</y>
+     <width>281</width>
      <height>16</height>
     </rect>
    </property>
