@@ -40,7 +40,7 @@
 	Q_UNUSED(error)
 	QStringList result;
 	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
-		result << QString::fromNSString( filename );
+		result << QString::fromNSString(filename).normalized(QString::NormalizationForm_C);
 	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result) );
 }
 
@@ -50,7 +50,7 @@
 	Q_UNUSED(error)
 	QStringList result;
 	for(NSString *filename in [pboard propertyListForType:NSFilenamesPboardType])
-		result << QString::fromNSString(filename);
+		result << QString::fromNSString(filename).normalized(QString::NormalizationForm_C);
 	QMetaObject::invokeMethod(qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,false), Q_ARG(bool,true));
 }
 
@@ -60,7 +60,7 @@
 	Q_UNUSED(error)
 	QStringList result;
 	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
-		result << QString::fromNSString( filename );
+		result << QString::fromNSString(filename).normalized(QString::NormalizationForm_C);
 	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,true) );
 }
 @end
@@ -68,7 +68,7 @@
 void Application::addRecent( const QString &file )
 {
 	if( !file.isEmpty() )
-		[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:file.toNSString()]];
+		[NSDocumentController.sharedDocumentController noteNewRecentDocumentURL:[NSURL fileURLWithPath:file.toNSString()]];
 }
 
 void Application::initMacEvents()
@@ -84,7 +84,7 @@ void Application::initMacEvents()
 
 void Application::deinitMacEvents()
 {
-	[[NSAppleEventManager sharedAppleEventManager]
+	[NSAppleEventManager.sharedAppleEventManager
 		removeEventHandlerForEventClass:kCoreEventClass
 		andEventID:kAEReopenApplication];
 }
@@ -92,13 +92,11 @@ void Application::deinitMacEvents()
 void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
-	if(CFURLRef appUrl = LSCopyDefaultApplicationURLForURL((__bridge CFURLRef)url.toNSURL(), kLSRolesAll, nil))
+	if(NSURL *appUrl = CFBridgingRelease(LSCopyDefaultApplicationURLForURL((__bridge CFURLRef)url.toNSURL(), kLSRolesAll, nil)))
 	{
-		NSString *appPath = [((__bridge NSURL *)appUrl) path];
-		CFRelease( appUrl );
 		QString p;
 		QTextStream s( &p );
-		if( [appPath rangeOfString:@"/Applications/Mail.app"].location != NSNotFound )
+		if([appUrl.path rangeOfString:@"/Applications/Mail.app"].location != NSNotFound)
 		{
 			s << "on run" << endl
 			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << endl
@@ -110,7 +108,7 @@ void Application::mailTo( const QUrl &url )
 			<< "end tell" << endl
 			<< "end run" << endl;
 		}
-		else if( [appPath rangeOfString:@"Entourage"].location != NSNotFound )
+		else if([appUrl.path rangeOfString:@"Entourage"].location != NSNotFound)
 		{
 			s << "on run" << endl
 			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << endl
@@ -123,7 +121,7 @@ void Application::mailTo( const QUrl &url )
 			<< "end tell" << endl
 			<< "end run" << endl;
 		}
-		else if( [appPath rangeOfString:@"Outlook"].location != NSNotFound )
+		else if([appUrl.path rangeOfString:@"Outlook"].location != NSNotFound)
 		{
 			s << "on run" << endl
 			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\" as POSIX file" << endl
@@ -137,16 +135,15 @@ void Application::mailTo( const QUrl &url )
 			<< "end run" << endl;
 		}
 #if 0
-		else if([appPath rangeOfString:"/Applications/Thunderbird.app"].location != NSNotFound)
+		else if([appUrl.path rangeOfString:"/Applications/Thunderbird.app"].location != NSNotFound)
 		{
 			// TODO: Handle Thunderbird here? Impossible?
 		}
 #endif
 		if(!p.isEmpty())
 		{
-			NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:p.toNSString()];
 			NSDictionary *err;
-			if([appleScript executeAndReturnError:&err])
+			if([[[NSAppleScript alloc] initWithSource:p.toNSString()] executeAndReturnError:&err])
 				return;
 		}
 	}
