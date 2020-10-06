@@ -69,8 +69,7 @@ Q_SIGNALS:
 	void error( const QString &msg );
 
 private Q_SLOTS:
-	void selectCardAuth(const TokenData &token);
-	void selectCardSign(const TokenData &token);
+	void selectCard(const TokenData &token);
 
 private:
 	static bool cardsOrder(const TokenData &s1, const TokenData &s2);
