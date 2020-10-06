@@ -64,10 +64,11 @@ private:
 	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
 	void saveHistory();
-	void search(const QString &term);
-	void showError(const QString &msg, const QString &details = QString());
-	void showResult(const QList<QSslCertificate> &result, int resultCount);
+	void search(const QString &term, const QString &type = {});
+	void showError(const QString &msg, const QString &details = {});
+	void showResult(const QList<QSslCertificate> &result, int resultCount, const QString &type);
 	HistoryCertData toHistory(const QSslCertificate& cert) const;
+	QString toType(const SslCertificate &cert) const;
 
 	static QString defaultUrl(const QString &key, const QString &defaultValue);
 

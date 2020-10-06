@@ -127,7 +127,7 @@ bool LdapSearch::isSSL() const
 	return QUrl(d->host).scheme() == QStringLiteral("ldaps");
 }
 
-void LdapSearch::search( const QString &search )
+void LdapSearch::search(const QString &search, const QString &type)
 {
 	if(!init())
 	{
@@ -186,7 +186,7 @@ void LdapSearch::search( const QString &search )
 		}
 		ldap_msgfree(result);
 
-		Q_EMIT searchResult(list, count);
+		Q_EMIT searchResult(list, count, type);
 	});
 	timer->start(1000);
 }

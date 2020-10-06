@@ -31,10 +31,10 @@ public:
 	~LdapSearch() final;
 
 	bool isSSL() const;
-	void search( const QString &search );
+	void search(const QString &search, const QString &type);
 
 Q_SIGNALS:
-	void searchResult(const QList<QSslCertificate> &result, int resultCount);
+	void searchResult(const QList<QSslCertificate> &result, int resultCount, const QString &type);
 	void error( const QString &msg, const QString &details );
 
 private:
