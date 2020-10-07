@@ -326,7 +326,7 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
 		{"requestProperties", QVariantHash{{"vcChoice", true}}},
-		{"displayText", tr("Sign document")}
+		{"displayText", tr("Sign document", "Do not translate to RUS (IB-6416)")}
 	})).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;

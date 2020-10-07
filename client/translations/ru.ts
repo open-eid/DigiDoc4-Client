@@ -1919,7 +1919,8 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Sign document</source>
-        <translation>Подписать документ</translation>
+        <comment>Do not translate to RUS (IB-6416)</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
