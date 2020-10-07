@@ -529,27 +529,16 @@ bool DigiDoc::open( const QString &file )
 		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 		if(parent == nullptr)
 			parent = qApp->activeWindow();
-#ifdef Q_OS_MAC
 		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>. "
+			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 			"Do you want to continue?"), parent);
-#else
-		WarningDialog dlg(tr("Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>. "
-			"Do you want to continue?"), parent);
-#endif
 		dlg.setCancelText(tr("CANCEL"));
 		dlg.addButton(tr("YES"), ContainerSave);
 		return dlg.exec() == ContainerSave;
 	};
-	QString suffix = QFileInfo(file).suffix().toLower();
-#ifdef __APPLE__
-	if((suffix == QStringLiteral("pdf") || suffix == QStringLiteral("ddoc")) && !serviceConfirmation())
+	if((file.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) ||
+		file.endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
 		return false;
-#else
-	if(suffix == QStringLiteral("pdf") && !serviceConfirmation())
-		return false;
-#endif
 
 	try
 	{
@@ -557,11 +546,7 @@ bool DigiDoc::open( const QString &file )
 		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
-#ifdef Q_OS_MAC
-			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc") && serviceConfirmation())
-#else
-			if(QFileInfo(from(f->fileName())).suffix().toLower() == QStringLiteral("ddoc"))
-#endif
+			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && !serviceConfirmation())
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));

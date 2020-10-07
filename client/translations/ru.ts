@@ -834,14 +834,6 @@
         <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF и DDOC файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;. Желаете продолжить?</translation>
-    </message>
-    <message>
-        <source>Signed document in PDF format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;. Do you want to continue?</source>
-        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;.&lt;br&gt;Желаете продолжить?</translation>
-    </message>
-    <message>
         <source>CANCEL</source>
         <translation>ОТМЕНА</translation>
     </message>
@@ -864,6 +856,10 @@
     <message>
         <source>Failed to sign container</source>
         <translation>Не удалось подписать контейнер.</translation>
+    </message>
+    <message>
+        <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
+        <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF и DDOC файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;.&lt;br /&gt;Желаете продолжить?</translation>
     </message>
 </context>
 <context>
