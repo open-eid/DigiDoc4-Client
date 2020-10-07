@@ -328,7 +328,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
 		{"language", lang.value(Common::language(), QStringLiteral("EST"))},
-		{"displayText", tr("Sign document")},
+		{"displayText", tr("Sign document", "Do not translate to RUS (IB-6416)")},
 		{"displayTextFormat", "UCS-2"}
 	})).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL())));

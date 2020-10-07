@@ -25,7 +25,7 @@
 
 class QWidget;
 
-class MobileProgress: public digidoc::Signer
+class MobileProgress final: public digidoc::Signer
 {
 	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
 public:
