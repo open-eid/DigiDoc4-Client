@@ -1920,6 +1920,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Sign document</source>
+        <comment>Do not translate to RUS (IB-6416)</comment>
         <translation>Allkirjasta dokument</translation>
     </message>
     <message>
