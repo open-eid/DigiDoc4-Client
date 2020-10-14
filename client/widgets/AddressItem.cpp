@@ -53,10 +53,6 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	ui->added->hide();
 	ui->added->setDisabled(true);
 
-	QString name = !key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
-			key.cert.subjectInfo("GN").join(' ') + " " + key.cert.subjectInfo("SN").join(' ') :
-			key.cert.subjectInfo("CN").join(' ');
-
 	if(!showIcon)
 	{
 		DateTime date(key.cert.expiryDate().toLocalTime());
@@ -65,7 +61,9 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	}
 
 	code = SslCertificate(key.cert).personalCode().toHtmlEscaped();
-	name = name.toHtmlEscaped();
+	name = (!key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
+			key.cert.subjectInfo("GN").join(' ') + " " + key.cert.subjectInfo("SN").join(' ') :
+			key.cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
 	setIdType();
 	showButton(AddressItem::Remove);
 }
