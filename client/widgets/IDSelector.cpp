@@ -32,9 +32,8 @@ IDSelector::IDSelector(QWidget *parent)
 	selector->move(9, 32);
 }
 
-void IDSelector::setList(const QString &selectedCard, const QList<TokenData> &cache, Filter _filter)
+void IDSelector::setList(const QString &selectedCard, const QList<TokenData> &cache, Filter filter)
 {
-	filter = _filter;
 	list.clear();
 	for(const TokenData &token: cache)
 	{

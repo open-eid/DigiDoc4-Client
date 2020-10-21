@@ -37,7 +37,6 @@ public:
 
 	void setList(const QString &selectedCard, const QList<TokenData> &cache, Filter filter);
 
-	Filter filter;
 	DropdownButton *selector = nullptr;
 	QVector<TokenData> list;
 };
