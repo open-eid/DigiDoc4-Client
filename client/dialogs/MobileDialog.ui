@@ -165,7 +165,7 @@ QPushButton:disabled {
      <x>10</x>
      <y>25</y>
      <width>360</width>
-     <height>40</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="font">
