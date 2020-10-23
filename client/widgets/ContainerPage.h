@@ -89,7 +89,6 @@ private:
 	std::unique_ptr<MainAction> mainAction;
 	QString cardInReader;
 	int containerFileWidth;
-	bool elided;
 	QString fileName;
 	QString mobileCode;
 

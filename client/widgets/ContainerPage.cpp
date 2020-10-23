@@ -164,13 +164,11 @@ void ContainerPage::elideFileName(bool force)
 {
 	if(ui->containerFile->width() < containerFileWidth)
 	{
-		elided = true;
 		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
 			ui->containerFile->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
 	}
-	else if(elided || force)
+	else if(force)
 	{
-		elided = false;
 		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName.toHtmlEscaped() + "</span></a>");
 	}
 }
