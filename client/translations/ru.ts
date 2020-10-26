@@ -1985,10 +1985,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>ПРОВЕРИТЬ СОСТОЯНИЕ @EESTI.EE E-ПОЧТЫ</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
-        <translation>Не найдено официальных переадресаций электронной почты. Чтобы отправить электронное письмо на адрес @eesti.ee, введите ваш адрес электронной почты:</translation>
-    </message>
-    <message>
         <source>ACTIVATE REDIRECTION</source>
         <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
     </message>
@@ -2017,6 +2013,10 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
         <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee/ru/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/ru/v-pomos-polzovatelu#uslovia-ispolzovania-uslugi-oficialnogo-poctovogo-asika-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Условия использования&lt;/span&gt;&lt;/a&gt; услуги официального почтового ящика eesti.ee.</translation>
+    </message>
+    <message>
+        <source>To send email to @eesti.ee, please enter your email address:</source>
+        <translation>Чтобы отправить электронное письмо на адрес @eesti.ee, введите ваш адрес электронной почты:</translation>
     </message>
 </context>
 <context>

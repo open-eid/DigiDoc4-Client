@@ -1982,10 +1982,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>CHECK @EESTI.EE E-MAIL STATUS</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
-        <translation>No official email redirects found. To send email to @eesti.ee, please enter your email address:</translation>
-    </message>
-    <message>
         <source>ACTIVATE REDIRECTION</source>
         <translation>ACTIVATE REDIRECTION</translation>
     </message>
@@ -2014,6 +2010,10 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
         <translation>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</translation>
+    </message>
+    <message>
+        <source>To send email to @eesti.ee, please enter your email address:</source>
+        <translation>To send email to @eesti.ee, please enter your email address:</translation>
     </message>
 </context>
 <context>

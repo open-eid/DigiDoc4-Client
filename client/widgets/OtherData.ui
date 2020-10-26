@@ -11,9 +11,30 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: white;
+   <string notr="true">#OtherData {
+background-color: white;
 border: solid #DFE5E9;
-border-width: 1px 0px 0px 0px; </string>
+border-width: 1px 0px 0px 0px; 
+}
+QPushButton {
+padding: 6px 9px;
+border-radius: 2px;
+border: 1px solid #006EB5;
+color: #006EB5;
+background-color: #FFFFFF;
+max-width: 267px;
+}
+QPushButton:pressed {
+border: none;
+}
+QPushButton:hover:!pressed {
+border: 1px solid #008DCF;
+color: #008DCF;
+}
+QPushButton:disabled {
+border: 1px solid #BEDBED;
+color: #BEDBED;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="OtherDataLayout">
    <property name="spacing">
@@ -41,18 +62,6 @@ color: #353739;</string>
    </item>
    <item>
     <widget class="QPushButton" name="btnCheckEMail">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>267</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="font">
       <font>
        <family>Roboto Condensed</family>
@@ -64,13 +73,6 @@ color: #353739;</string>
      </property>
      <property name="accessibleName">
       <string extracomment="accessible">Check @eesti.ee e-mail status</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
-QPushButton:pressed {  border: none; background-color: #006EB5; color: #FFFFFF;}
-QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}
-QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
-</string>
      </property>
      <property name="text">
       <string>CHECK @EESTI.EE E-MAIL STATUS</string>
@@ -108,7 +110,7 @@ color: #353739;</string>
 color: #353739;</string>
      </property>
      <property name="text">
-      <string>No official email redirects found. To send email to @eesti.ee, please enter your email address:</string>
+      <string>To send email to @eesti.ee, please enter your email address:</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -141,18 +143,6 @@ text-decoration: underline;
    </item>
    <item>
     <widget class="QPushButton" name="activate">
-     <property name="minimumSize">
-      <size>
-       <width>267</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>267</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="font">
       <font>
        <family>Roboto Condensed</family>
@@ -164,13 +154,6 @@ text-decoration: underline;
      </property>
      <property name="accessibleName">
       <string extracomment="accessible">Activate redirection</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton { padding: 6px 9px; border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: #FFFFFF;}
-QPushButton:pressed { border: 1px solid #41B6E6; color: #41B6E6;}
-QPushButton:hover:!pressed { border: 1px solid #008DCF; color: #008DCF;}
-QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};
-</string>
      </property>
      <property name="text">
       <string>ACTIVATE REDIRECTION</string>
