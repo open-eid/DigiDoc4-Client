@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include "QSmartCard.h"
-
 #include <QtCore/QThread>
 #include <digidocpp/crypto/Signer.h>
 
+class QSmartCard;
+class QSslKey;
 class TokenData;
 
-class QSigner: public QThread, public digidoc::Signer
+class QSigner final: public QThread, public digidoc::Signer
 {
 	Q_OBJECT
 
@@ -46,18 +46,19 @@ public:
 		DecryptOK
 	};
 	explicit QSigner(ApiType api, QObject *parent = nullptr);
-	~QSigner() override;
+	~QSigner() final;
 
 	ApiType apiType() const;
 	QSet<QString> cards() const;
 	QList<TokenData> cache() const;
-	digidoc::X509Cert cert() const override;
+	digidoc::X509Cert cert() const final;
 	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);
 	QSslKey key() const;
 	void logout();
+	void selectCard(const TokenData &token);
 	std::vector<unsigned char> sign( const std::string &method,
-		const std::vector<unsigned char> &digest ) const override;
+		const std::vector<unsigned char> &digest) const final;
 	QSmartCard * smartcard() const;
 	TokenData tokenauth() const;
 	TokenData tokensign() const;
@@ -68,15 +69,10 @@ Q_SIGNALS:
 	void signDataChanged( const TokenData &token );
 	void error( const QString &msg );
 
-private Q_SLOTS:
-	void selectCard(const TokenData &token);
-
 private:
 	static bool cardsOrder(const TokenData &s1, const TokenData &s2);
 	void run() override;
 
 	class Private;
 	Private *d;
-
-	friend class MainWindow;
 };
