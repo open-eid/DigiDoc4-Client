@@ -1982,10 +1982,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
     </message>
     <message>
-        <source>No official email redirects found. To send email to @eesti.ee, please enter your email address:</source>
-        <translation>Ühtegi ametlikku e-posti suunamist ei leitud.  @eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
-    </message>
-    <message>
         <source>ACTIVATE REDIRECTION</source>
         <translation>AKTIVEERI SUUNAMINE</translation>
     </message>
@@ -2014,6 +2010,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
         <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&apos;http://www.eesti.ee/et/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. Eesti.ee ametliku postkasti teenuse &lt;a href=&apos;https://www.eesti.ee/et/riigiportaali-abi#eestiee-ametliku-postkasti-teenuse-kasutustingimused&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;kasutustingimused&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>To send email to @eesti.ee, please enter your email address:</source>
+        <translation>@eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
     </message>
 </context>
 <context>
