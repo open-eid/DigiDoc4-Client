@@ -18,25 +18,21 @@
  */
 
 #include "QSigner.h"
-#include "QCardLock.h"
 
 #include "Application.h"
+#include "QCardLock.h"
+#include "QSmartCard.h"
 #include "TokenData.h"
-
 #ifdef Q_OS_WIN
 #include "QCSP.h"
 #include "QCNG.h"
 #endif
 #include "QPKCS11.h"
 #include "SslCertificate.h"
-#include "widgets/CardWidget.h"
-#include <common/QPCSC.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <QtCore/QDebug>
 #include <QtCore/QLoggingCategory>
-#include <QtCore/QStringList>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/obj_mac.h>
@@ -277,7 +273,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 QSslKey QSigner::key() const
 {
 	if(!QCardLock::instance().exclusiveTryLock())
-		return QSslKey();
+		return {};
 
 	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
 	do
@@ -292,7 +288,7 @@ QSslKey QSigner::key() const
 		default:
 			QCardLock::instance().exclusiveUnlock();
 			d->smartcard->reload();
-			return QSslKey();
+			return {};
 		}
 	} while(status != QCryptoBackend::PinOK);
 
@@ -404,7 +400,7 @@ void QSigner::run()
 				Q_EMIT authDataChanged(d->auth = update = at);
 			if(sold != st)
 				Q_EMIT signDataChanged(d->sign = update = st);
-			if(!update.isNull())
+			if(aold != at || sold != st)
 				d->smartcard->reloadCard(update);
 			QCardLock::instance().readUnlock();
 		}
@@ -485,7 +481,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 
 	if( sig.isEmpty() )
 		throwException(tr("Failed to sign document"), Exception::General)
-	return std::vector<unsigned char>( sig.constBegin(), sig.constEnd() );
+	return {sig.constBegin(), sig.constEnd()};
 }
 
 QSmartCard * QSigner::smartcard() const { return d->smartcard; }
