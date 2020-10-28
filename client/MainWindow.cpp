@@ -1170,17 +1170,17 @@ void MainWindow::updateSelector()
 	{
 	case SignIntro:
 	case SignDetails:
-		ui->selector->setList(qApp->signer()->tokensign().card(), qApp->signer()->cache(), IDSelector::Signing);
 		ui->cardInfo->update(qApp->signer()->tokensign(), ui->selector->list.size() > 1);
+		ui->selector->setList(qApp->signer()->tokensign().card(), qApp->signer()->cache(), IDSelector::Signing);
 		break;
 	case CryptoIntro:
 	case CryptoDetails:
-		ui->selector->setList(qApp->signer()->tokenauth().card(), qApp->signer()->cache(), IDSelector::Decrypting);
 		ui->cardInfo->update(qApp->signer()->tokenauth(), ui->selector->list.size() > 1);
+		ui->selector->setList(qApp->signer()->tokenauth().card(), qApp->signer()->cache(), IDSelector::Decrypting);
 		break;
 	case MyEid:
-		ui->selector->setList(qApp->signer()->smartcard()->tokenData().card(), qApp->signer()->cache(), IDSelector::MyEID);
 		ui->cardInfo->update(qApp->signer()->smartcard()->tokenData(), ui->selector->list.size() > 1);
+		ui->selector->setList(qApp->signer()->smartcard()->tokenData().card(), qApp->signer()->cache(), IDSelector::MyEID);
 		break;
 	default: break;
 	}

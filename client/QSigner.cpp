@@ -415,6 +415,7 @@ void QSigner::run()
 void QSigner::selectCard(const TokenData &token)
 {
 	bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
+	d->smartcard->reloadCard(token);
 	if(isSign)
 		Q_EMIT signDataChanged(d->sign = token);
 	else
@@ -424,11 +425,10 @@ void QSigner::selectCard(const TokenData &token)
 		if(other == token || other.card() != token.card())
 			continue;
 		if(isSign) // Select other cert if they are on same card
-			Q_EMIT authDataChanged(d->auth = token);
+			Q_EMIT authDataChanged(d->auth = other);
 		else
-			Q_EMIT signDataChanged(d->sign = token);
+			Q_EMIT signDataChanged(d->sign = other);
 	}
-	d->smartcard->reloadCard(token);
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
