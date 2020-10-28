@@ -145,11 +145,9 @@ if( APPLE )
 		COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
 		COMMAND cp -a $<TARGET_FILE_DIR:DigiDocQL>/../../../DigiDocQL.qlgenerator
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook )
-	get_filename_component( PKCS11_NAME ${PKCS11_MODULE} NAME )
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
 		COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/
 		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app
-			-executable=${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/MacOS/${PKCS11_NAME} 
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/imageformats -type f -a ! -name libqgif.dylib -a ! -name libqjpeg.dylib -a ! -name libqsvg.dylib -delete
 		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
@@ -163,7 +161,6 @@ if( APPLE )
 		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libssl.dylib
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libssl.dylib
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name Headers | xargs rm -rf
-		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name 'TEST*.crt' -delete
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
 	)
 
@@ -175,13 +172,14 @@ if( APPLE )
 			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
 			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../.. --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
+				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
 			else
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_FILE_DIR:${PROGNAME}>/../.. --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements\;
+				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements\;
 			fi
 	)
+
 	add_custom_target( productbuild DEPENDS ${PROGNAME}
-		COMMAND productbuild --component ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app /Applications
+		COMMAND productbuild --component $<TARGET_BUNDLE_DIR:${PROGNAME}> /Applications
 			--sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/qdigidoc4-store_${VERSION}$ENV{VER_SUFFIX}.pkg
 	)
 	add_custom_target( zip DEPENDS ${PROGNAME}

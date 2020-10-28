@@ -274,7 +274,7 @@ QString SslCertificate::personalCode() const
 		return data.mid(6);
 	if(!data.isEmpty())
 		return data;
-	return serialNumber();
+	return QString(serialNumber()).remove(':');
 }
 
 QStringList SslCertificate::policies() const
