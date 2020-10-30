@@ -38,7 +38,7 @@ QString XmlReader::emailErr( quint8 code )
 	case 11: return ::MainWindow::tr("There was an error with request to KMA.");
 	case 12: return ::MainWindow::tr("There was an error with request to Äriregister.");
 	case 20: return ::MainWindow::tr("No official email forwarding addresses was found");
-	case 21: return ::MainWindow::tr("Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.");
+	case 21: return ::MainWindow::tr("Your email account has been blocked. To open it, please send an email to help@ria.ee.");
 	case 22: return ::MainWindow::tr("Invalid email address");
 	case 23: return ::MainWindow::tr("Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.");
 	default: return QString();

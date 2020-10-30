@@ -989,7 +989,7 @@
         <translation>Oma eID-sid hallata</translation>
     </message>
     <message>
-        <source>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
+        <source>DigiDoc Client can be used to sign digitally with ID-card, mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
         <translation>DigiDoc rakendusega saad dokumentidele anda ID-kaardi, mobiil-ID ja Smart-ID-ga digitaalallkirju, kontrollida allkirjade kehtivust ning avada ja salvestada ümbrikus sisalduvaid dokumente.</translation>
     </message>
     <message>
@@ -997,7 +997,7 @@
         <translation>DigiDoc rakendusega saad ka andmeid salasta­da ja krüpteeritud andmeid muuta uuesti kõigile loetavaks. Salastatud konfidentsiaalseid doku­mente saavad lugeda ainult soovitud inimesed.</translation>
     </message>
     <message>
-        <source>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</source>
+        <source>Manage your ID-card’s PIN/PUK codes and check personal data.</source>
         <translation>Halda oma ID-kaardi PIN- ja PUK-koode ning kontrolli isikuandmeid.</translation>
     </message>
     <message>
@@ -1021,11 +1021,11 @@
         <translation>Faili allkirjastamiseks lohista fail oma arvutist DigiDoc rakendusse või vajuta nupul “… või vali fail kettalt”. Võid lohistada või valida ka mitu faili korraga.</translation>
     </message>
     <message>
-        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</source>
+        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card, mobile-ID or Smart-ID. You can also save the container without signing.</source>
         <translation>Kui failid on valitud, siis kontrolli need üle ning vali, kas soovid allkirjastada ID-kaardi, mobiil-ID või Smart-ID-ga. Võid salvestada ümbriku ka allkirjasta­mata.</translation>
     </message>
     <message>
-        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</source>
+        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand.</source>
         <translation>Sisestades PIN2-koodi, annad digitaalse allkirja, mis on seaduse ees võrdne omakäelise allkirja­ga.</translation>
     </message>
     <message>
@@ -1673,7 +1673,7 @@ ID-KAARDIGA</translation>
         <translation>Ühtegi ametliku e-posti suunamist ei leitud</translation>
     </message>
     <message>
-        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
+        <source>Your email account has been blocked. To open it, please send an email to help@ria.ee.</source>
         <translation>Sinu e-posti konto on suletud. Avamiseks saatke palun e-kiri aadressil help@ria.ee.</translation>
     </message>
     <message>
@@ -1814,12 +1814,12 @@ ID-KAARDIGA</translation>
         <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
     </message>
     <message>
-        <source>User is not a Mobile-ID client</source>
+        <source>User is not a mobiil-ID client</source>
         <translation>Kasutaja ei ole mobiil-ID klient</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.</source>
+and enter mobile-ID PIN2-code.</source>
         <translation>Veendu kontrollkoodi õigsuses
 ja sisesta telefonil mobiil-ID PIN2-kood.</translation>
     </message>
@@ -1924,7 +1924,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Allkirjasta dokument</translation>
     </message>
     <message>
-        <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
+        <source>Your mobile-ID transaction has failed. Please contact your mobile network operator.</source>
         <translation>Sinu mobiil-ID toiming ebaõnnestus. Palun võta ühendust enda mobiilioperaatoriga.</translation>
     </message>
     <message>
@@ -1932,7 +1932,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Kasutaja keeldus või katkestas</translation>
     </message>
     <message>
-        <source>Your Mobile-ID transaction has expired. Please try again.</source>
+        <source>Your mobile-ID transaction has expired. Please try again.</source>
         <translation>Sinu mobiil-ID toiming aegus. Palun proovi uuesti.</translation>
     </message>
     <message>
@@ -2792,7 +2792,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Abi</translation>
     </message>
     <message>
-        <source>Access to Mobile-ID and Smart-ID service</source>
+        <source>Access to mobile-ID and Smart-ID service</source>
         <translation>Ligipääs mobiil-ID ja Smart-ID teenusele</translation>
     </message>
     <message>

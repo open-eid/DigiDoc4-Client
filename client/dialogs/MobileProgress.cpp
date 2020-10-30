@@ -230,11 +230,11 @@ MobileProgress::MobileProgress(QWidget *parent)
 				d->l.exit(QDialog::Accepted);
 			}
 			else if(endResult == QStringLiteral("NOT_MID_CLIENT") || endResult == QStringLiteral("NOT_FOUND") || endResult == QStringLiteral("NOT_ACTIVE"))
-				returnError(tr("User is not a Mobile-ID client"));
+				returnError(tr("User is not a mobiil-ID client"));
 			else if(endResult == QStringLiteral("USER_CANCELLED"))
 				returnError(tr("User denied or cancelled"));
 			else if(endResult == QStringLiteral("TIMEOUT"))
-				returnError(tr("Your Mobile-ID transaction has expired. Please try again."));
+				returnError(tr("Your mobile-ID transaction has expired. Please try again."));
 			else if(endResult == QStringLiteral("PHONE_ABSENT"))
 				returnError(tr("Phone is not in coverage area"));
 			else if(endResult == QStringLiteral("DELIVERY_ERROR"))
@@ -242,7 +242,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			else if(endResult == QStringLiteral("SIM_ERROR"))
 				returnError(tr("SIM error"));
 			else if(endResult == QStringLiteral("SIGNATURE_HASH_MISMATCH"))
-				returnError(tr("Your Mobile-ID transaction has failed. Please contact your mobile network operator."));
+				returnError(tr("Your mobile-ID transaction has failed. Please contact your mobile network operator."));
 			else
 				returnError(tr("Service result:") + endResult);
 			return;
