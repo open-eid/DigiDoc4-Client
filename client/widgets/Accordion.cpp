@@ -66,13 +66,13 @@ void Accordion::openSection(AccordionTitle *opened)
 	for(AccordionTitle *section: findChildren<AccordionTitle*>())
 		if(section != opened)
 			section->setSectionOpen(false);
-	if(opened)
+	if(opened && opened->isVisible())
 		opened->setSectionOpen(true);
 }
 
-void Accordion::hideOtherData(bool visible)
+void Accordion::hideOtherData(bool hidden)
 {
-	ui->titleOtherData->setHidden(visible);
+	ui->titleOtherData->setHidden(hidden);
 	if(ui->titleOtherData->isHidden() || !ui->titleOtherData->isOpen())
 		ui->contentOtherData->hide();
 }
@@ -122,6 +122,9 @@ void Accordion::updateInfo(const QSmartCardData &data)
 
 	hideOtherData(data.version() == QSmartCardData::VER_USABLEUPDATER ||
 		(data.authCert().type() & SslCertificate::EResidentSubType));
+	if(ui->contentOtherData->property("card").toString() != data.card())
+		ui->contentOtherData->update(false, {});
+	ui->contentOtherData->setProperty("card", data.card());
 }
 
 void Accordion::changeEvent(QEvent* event)

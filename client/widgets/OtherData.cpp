@@ -22,6 +22,9 @@
 #include "Styles.h"
 #include "XmlReader.h"
 
+#include <QPainter>
+#include <QStyleOption>
+
 OtherData::OtherData(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::OtherData)
