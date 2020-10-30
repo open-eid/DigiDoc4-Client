@@ -2796,7 +2796,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ligipääs mobiil-ID ja Smart-ID teenusele</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration update was successful.</source>
+        <source>DigiDoc4 client configuration update was successful.</source>
         <translation>DigiDoc4 kliendi konfiguratsiooni värskendamine õnnestus.</translation>
     </message>
     <message>

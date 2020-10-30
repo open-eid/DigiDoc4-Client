@@ -2799,7 +2799,7 @@ Additional licenses and components</source>
         <translation>Доступ к услуге mobiil-ID и Smart-ID</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration update was successful.</source>
+        <source>DigiDoc4 client configuration update was successful.</source>
         <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
     </message>
     <message>

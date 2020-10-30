@@ -2796,7 +2796,7 @@ Additional licenses and components</translation>
         <translation>Access to mobile-ID and Smart-ID service</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration update was successful.</source>
+        <source>DigiDoc4 client configuration update was successful.</source>
         <translation>DigiDoc4 client configuration update was successful.</translation>
     </message>
     <message>
