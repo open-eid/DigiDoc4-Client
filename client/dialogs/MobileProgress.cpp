@@ -308,7 +308,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 
 	d->code->setText(QString("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
 	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
-		"and enter Mobile-ID PIN2-code."));
+		"and enter mobile-ID PIN2-code."));
 
 	QHash<QString,QString> lang;
 	lang[QStringLiteral("et")] = QStringLiteral("EST");
