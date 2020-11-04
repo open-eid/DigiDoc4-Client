@@ -190,10 +190,11 @@ void AddRecipients::addRecipientFromHistory()
 
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 {
-	if(leftList.contains(cert))
-		return nullptr;
+	AddressItem *leftItem = leftList.value(cert);
+	if(leftItem)
+		return leftItem;
 
-	AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
+	leftItem = new AddressItem(CKey(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
 	bool contains = rightList.contains(cert);
@@ -458,17 +459,12 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	}
 	else
 	{
-		Item *item = nullptr;
-
 		for(const QSslCertificate &k: filter)
 		{
-			auto address = addRecipientToLeftPane(k);
-			if(!item && (type.isEmpty() || toType(SslCertificate(k)) == type))
-				item = address;
+			Item *item = addRecipientToLeftPane(k);
+			if(select && (type.isEmpty() || toType(SslCertificate(k)) == type))
+				addRecipientToRightPane(item, true);
 		}
-
-		if(select && item)
-			addRecipientToRightPane(item, true);
 	}
 
 	if(resultCount >= 50)
