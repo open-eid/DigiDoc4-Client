@@ -408,9 +408,11 @@ void AddRecipients::search(const QString &term, const QString &type)
 	QRegExp isDigit( "\\d*" );
 
 	select = false;
-	personSearch = false;
+	QVariantMap userData {
+		{"type", type}
+	};
 	QString cleanTerm = term.simplified();
-	if( isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
+	if(isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
 	{
 		if(cleanTerm.size() == 11)
 		{
@@ -420,15 +422,15 @@ void AddRecipients::search(const QString &term, const QString &type)
 				WarningDialog::warning(this, tr("Personal code is not valid!"));
 				return;
 			}
-			personSearch = true;
-			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), type);
+			userData["personSearch"] = true;
+			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), userData);
 		}
 		else
-			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), type);
+			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
 	}
 	else
 	{
-		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), type);
+		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), userData);
 	}
 }
 
@@ -438,7 +440,7 @@ void AddRecipients::showError( const QString &msg, const QString &details )
 	WarningDialog(msg, details, this).exec();
 }
 
-void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QString &type)
+void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData)
 {
 	QList<QSslCertificate> filter;
 	for(const QSslCertificate &k: result)
@@ -447,7 +449,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
 			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
-			(personSearch || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
+			(userData.value("personSearch", false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
 			c.type() != SslCertificate::MobileIDType)
 			filter << c;
 	}
@@ -462,7 +464,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		for(const QSslCertificate &k: filter)
 		{
 			Item *item = addRecipientToLeftPane(k);
-			if(select && (type.isEmpty() || toType(SslCertificate(k)) == type))
+			if(select && (!userData.value("type").isNull() || toType(SslCertificate(k)) == userData["type"]))
 				addRecipientToRightPane(item, true);
 		}
 	}
