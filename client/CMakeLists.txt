@@ -167,10 +167,10 @@ if( APPLE )
 	add_custom_target( codesign DEPENDS ${PROGNAME}
 		COMMAND codesign -f -s \"$$SIGNCERT\"
 			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Libraries/*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/*.framework
-			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Libraries/*
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/*.framework
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/*/*
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
 			else
