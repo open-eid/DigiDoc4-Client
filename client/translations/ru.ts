@@ -2412,15 +2412,15 @@ and enter Smart-ID PIN2-code.</source>
     <name>QSmartCard</name>
     <message>
         <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>Для замены %1 кода Вам необходимо ввести один раз&lt;br&gt;действующий %1 код и два раза новый %1 код с помощью PinPad.</translation>
+        <translation>Для замены %1-кода Вам необходимо ввести один раз&lt;br&gt;действующий %1-код и два раза новый %1-код с помощью PinPad.</translation>
     </message>
     <message>
         <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>Для изменения %1 кода с помощью PUK кода Вам необходимо&lt;br&gt;ввести один раз PUK код и два раза новый %1 код с помощью PinPad.</translation>
+        <translation>Для изменения %1-кода с помощью PUK-кода Вам необходимо&lt;br&gt;ввести один раз PUK-код и два раза новый %1-код с помощью PinPad.</translation>
     </message>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>Для разблокировки %1 кода Вам необходимо ввести один раз&lt;br&gt;PUK код и два раза новый %1 код с помощью PinPad.</translation>
+        <translation>Для разблокировки %1-кода Вам необходимо ввести один раз&lt;br&gt;PUK-код и два раза новый %1-код с помощью PinPad.</translation>
     </message>
 </context>
 <context>
