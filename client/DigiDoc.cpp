@@ -43,8 +43,6 @@ using namespace ria::qdigidoc4;
 
 static std::string to(const QString &str) { return str.toStdString(); }
 static QString from(const std::string &str) { return QString::fromStdString(str).normalized(QString::NormalizationForm_C); }
-static QByteArray fromVector( const std::vector<unsigned char> &d )
-{ return QByteArray((const char *)d.data(), int(d.size())); }
 
 
 
@@ -74,12 +72,7 @@ DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const Di
 
 QSslCertificate DigiDocSignature::cert() const
 {
-	try
-	{
-		return QSslCertificate( fromVector(s->signingCertificate()), QSsl::Der );
-	}
-	catch( const Exception & ) {}
-	return QSslCertificate();
+	return toCertificate(s->signingCertificate());
 }
 
 QDateTime DigiDocSignature::claimedTime() const
@@ -112,13 +105,13 @@ QStringList DigiDocSignature::locations() const
 
 QByteArray DigiDocSignature::messageImprint() const
 {
-	return fromVector(s->messageImprint());
+	std::vector<unsigned char> d = s->messageImprint();
+	return QByteArray((const char *)d.data(), int(d.size()));
 }
 
 QSslCertificate DigiDocSignature::ocspCert() const
 {
-	return QSslCertificate(
-		fromVector(s->OCSPCertificate()), QSsl::Der );
+	return toCertificate(s->OCSPCertificate());
 }
 
 QDateTime DigiDocSignature::ocspTime() const
@@ -208,6 +201,11 @@ QString DigiDocSignature::spuri() const
 	return from(s->SPUri());
 }
 
+QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char> &der) const
+{
+	return QSslCertificate(QByteArray::fromRawData((const char *)der.data(), int(der.size())), QSsl::Der);
+}
+
 QDateTime DigiDocSignature::toTime(const std::string &time) const
 {
 	QDateTime date;
@@ -225,8 +223,7 @@ QDateTime DigiDocSignature::trustedTime() const
 
 QSslCertificate DigiDocSignature::tsCert() const
 {
-	return QSslCertificate(
-		fromVector(s->TimeStampCertificate()), QSsl::Der );
+	return toCertificate(s->TimeStampCertificate());
 }
 
 QDateTime DigiDocSignature::tsTime() const
@@ -236,8 +233,7 @@ QDateTime DigiDocSignature::tsTime() const
 
 QSslCertificate DigiDocSignature::tsaCert() const
 {
-	return QSslCertificate(
-		fromVector(s->ArchiveTimeStampCertificate()), QSsl::Der );
+	return toCertificate(s->ArchiveTimeStampCertificate());
 }
 
 QDateTime DigiDocSignature::tsaTime() const
@@ -546,7 +542,7 @@ bool DigiDoc::open( const QString &file )
 		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
-			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && !serviceConfirmation())
+			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && serviceConfirmation())
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
@@ -574,7 +570,7 @@ bool DigiDoc::open( const QString &file )
 	return false;
 }
 
-bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
+void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
 {
 	causes << QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg()));
 	switch( e.code() )
@@ -593,10 +589,8 @@ bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 		code = e.code();
 	default: break;
 	}
-	Exception::Causes list = e.causes();
-	return std::any_of(list.cbegin(), list.cend(), [&](const Exception &c) {
-		return parseException(c, causes, code);
-	});
+	for(const Exception &c: e.causes())
+		parseException(c, causes, code);
 }
 
 void DigiDoc::removeSignature( unsigned int num )
