@@ -154,7 +154,7 @@
         <translation> (Yourself)</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
+        <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
     <message>
@@ -162,7 +162,7 @@
         <translation>ID-card</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
+        <source>mobile-ID</source>
         <translation>mobile-ID</translation>
     </message>
     <message>
@@ -1741,7 +1741,7 @@ ID-CARD</translation>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number to sign with Mobile ID</source>
+        <source>Enter your phone number to sign with mobile-ID</source>
         <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with mobile-ID&lt;/b&gt;</translation>
     </message>
     <message>
@@ -1814,7 +1814,7 @@ ID-CARD</translation>
         <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
     </message>
     <message>
-        <source>User is not a mobiil-ID client</source>
+        <source>User is not a mobile-ID client</source>
         <translation>User is not a mobile-ID client</translation>
     </message>
     <message>
@@ -1873,7 +1873,7 @@ and enter mobile-ID PIN2-code.</translation>
         <translation>Session not found</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
+        <source>mobile-ID</source>
         <translation>mobile-ID</translation>
     </message>
     <message>

@@ -154,7 +154,7 @@
         <translation> (Sina ise)</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
+        <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
     <message>
@@ -162,7 +162,7 @@
         <translation>ID-kaart</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
+        <source>mobile-ID</source>
         <translation>mobiil-ID</translation>
     </message>
     <message>
@@ -1741,7 +1741,7 @@ ID-KAARDIGA</translation>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number to sign with Mobile ID</source>
+        <source>Enter your phone number to sign with mobile-ID</source>
         <translation>&lt;b&gt;Sisesta oma telefoninumber mobiil-IDga&lt;br/&gt;allkirjastamiseks&lt;/b&gt;</translation>
     </message>
     <message>
@@ -1814,7 +1814,7 @@ ID-KAARDIGA</translation>
         <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
     </message>
     <message>
-        <source>User is not a mobiil-ID client</source>
+        <source>User is not a mobile-ID client</source>
         <translation>Kasutaja ei ole mobiil-ID klient</translation>
     </message>
     <message>
@@ -1873,7 +1873,7 @@ ja sisesta telefonil mobiil-ID PIN2-kood.</translation>
         <translation>Sessiooni ei leitud</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
+        <source>mobile-ID</source>
         <translation>mobiil-ID</translation>
     </message>
     <message>

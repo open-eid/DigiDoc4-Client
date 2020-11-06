@@ -169,7 +169,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 			return;
 		case QNetworkReply::AuthenticationRequiredError:
-			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Mobile-ID")));
+			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 			return;
 		default:
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
@@ -230,7 +230,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 				d->l.exit(QDialog::Accepted);
 			}
 			else if(endResult == QStringLiteral("NOT_MID_CLIENT") || endResult == QStringLiteral("NOT_FOUND") || endResult == QStringLiteral("NOT_ACTIVE"))
-				returnError(tr("User is not a mobiil-ID client"));
+				returnError(tr("User is not a mobile-ID client"));
 			else if(endResult == QStringLiteral("USER_CANCELLED"))
 				returnError(tr("User denied or cancelled"));
 			else if(endResult == QStringLiteral("TIMEOUT"))

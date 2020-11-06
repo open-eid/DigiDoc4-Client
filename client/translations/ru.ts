@@ -154,7 +154,7 @@
         <translation> (Вы сами)</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
+        <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
     <message>
@@ -162,7 +162,7 @@
         <translation>ID-карта</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
+        <source>mobile-ID</source>
         <translation>mobiil-ID</translation>
     </message>
     <message>
@@ -1744,7 +1744,7 @@ ID-КАРТОЙ</translation>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number to sign with Mobile ID</source>
+        <source>Enter your phone number to sign with mobile-ID</source>
         <translation>&lt;b&gt;Введите свой номер телефона для&lt;br/&gt;подписи с mobiil-ID &lt;/b&gt;</translation>
     </message>
     <message>
@@ -1817,7 +1817,7 @@ ID-КАРТОЙ</translation>
         <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
     </message>
     <message>
-        <source>User is not a mobiil-ID client</source>
+        <source>User is not a mobile-ID client</source>
         <translation>Пользователь не является клиентом mobiil-ID</translation>
     </message>
     <message>
@@ -1876,7 +1876,7 @@ and enter mobile-ID PIN2-code.</source>
         <translation>Сессия не найден</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
+        <source>mobile-ID</source>
         <translation>mobiil-ID</translation>
     </message>
     <message>
