@@ -155,7 +155,7 @@
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
+        <translation>digi-ID</translation>
     </message>
     <message>
         <source>ID-card</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <translation>mobiil-ID</translation>
     </message>
     <message>
         <source>Expires on</source>
@@ -1874,7 +1874,7 @@ ja sisesta telefonil mobiil-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <translation>mobiil-ID</translation>
     </message>
     <message>
         <source>Smart-ID</source>

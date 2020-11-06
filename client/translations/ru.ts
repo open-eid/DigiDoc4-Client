@@ -155,7 +155,7 @@
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
+        <translation>digi-ID</translation>
     </message>
     <message>
         <source>ID-card</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Мobiil-ID</translation>
+        <translation>mobiil-ID</translation>
     </message>
     <message>
         <source>Expires on</source>
@@ -1000,7 +1000,7 @@
     </message>
     <message>
         <source>Manage your ID-card’s PIN/PUK codes and check personal data.</source>
-        <translation>Управлять PIN/PUK кодами Вашей ID-карты и проверяйте личные данные.</translation>
+        <translation>Управлять PIN/PUK-кодами Вашей ID-карты и проверяйте личные данные.</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
@@ -1028,7 +1028,7 @@
     </message>
     <message>
         <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand.</source>
-        <translation>Введя PIN2 код, вы подписываете документ цифровой подписью, которая по закону равносильна подписи «от руки».</translation>
+        <translation>Введя PIN2-код, вы подписываете документ цифровой подписью, которая по закону равносильна подписи «от руки».</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
@@ -1060,7 +1060,7 @@
     </message>
     <message>
         <source>Manage PIN and PUK codes</source>
-        <translation>Управление PIN и PUK кодами</translation>
+        <translation>Управление PIN- и PUK-кодами</translation>
     </message>
     <message>
         <source>Check personal data</source>
@@ -1585,11 +1585,11 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1 код изменён и сертификат разблокирован!</translation>
+        <translation>%1-код изменён и сертификат разблокирован!</translation>
     </message>
     <message>
         <source>%1 changed!</source>
-        <translation>%1 код изменён!</translation>
+        <translation>%1-код изменён!</translation>
     </message>
     <message>
         <source>E-mail address missing or invalid!</source>
@@ -1613,7 +1613,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Changing %1 failed</source>
-        <translation>Смена %1 кода прошла неудачно</translation>
+        <translation>Смена %1-кода прошла неудачно</translation>
     </message>
     <message>
         <source>%1 length has to be between %2 and 12</source>
@@ -1622,9 +1622,9 @@ ID-КАРТОЙ</translation>
     <message numerus="yes">
         <source>Wrong %1 code. You can try %n more time(s).</source>
         <translation>
-            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
-            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
-            <numerusform>Неверный %1 код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
         </translation>
     </message>
     <message>
@@ -1637,11 +1637,11 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>New %1 codes doesn&apos;t match</source>
-        <translation>Новые %1 коды не сходятся</translation>
+        <translation>Новые %1-коды не сходятся</translation>
     </message>
     <message>
         <source>%1 timeout</source>
-        <translation>Время запроса %1 кода истекло</translation>
+        <translation>Время запроса %1-кода истекло</translation>
     </message>
     <message>
         <source>Success</source>
@@ -1653,7 +1653,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Ввели неверный PIN код, прервали введение PIN кода, возникли проблемы с сертификатами или отсутствует поддержка ID-карты в браузере.</translation>
+        <translation>Ввели неверный PIN-код, прервали введение PIN-кода, возникли проблемы с сертификатами или отсутствует поддержка ID-карты в браузере.</translation>
     </message>
     <message>
         <source>ID-card certificate is not valid.</source>
@@ -1877,7 +1877,7 @@ and enter mobile-ID PIN2-code.</source>
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <translation>mobiil-ID</translation>
     </message>
     <message>
         <source>Smart-ID</source>
@@ -2090,7 +2090,7 @@ and enter Smart-ID PIN2-code.</source>
     <name>PinUnblock</name>
     <message>
         <source>VALID PUK CODE</source>
-        <translation>ДЕЙСТВУЮЩИЙ PUK КОД</translation>
+        <translation>ДЕЙСТВУЮЩИЙ PUK-КОД</translation>
     </message>
     <message>
         <source>CANCEL</source>
@@ -2102,11 +2102,11 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>PIN2 code is used to digitally sign documents.</source>
-        <translation>PIN2 код используется для дигитальной подписи.</translation>
+        <translation>PIN2-код используется для дигитальной подписи.</translation>
     </message>
     <message>
         <source>PIN1 code is used for confirming the identity of a person.</source>
-        <translation>PIN1 код используется для идентификации личности.</translation>
+        <translation>PIN1-код используется для идентификации личности.</translation>
     </message>
     <message>
         <source>%1 unblocking</source>
@@ -2114,11 +2114,11 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>%1 code change</source>
-        <translation>Замена %1 кода</translation>
+        <translation>Замена %1-кода</translation>
     </message>
     <message>
         <source>VALID %1 CODE</source>
-        <translation>ДЕЙСТВУЮЩИЙ %1 КОД</translation>
+        <translation>ДЕЙСТВУЮЩИЙ %1-КОД</translation>
     </message>
     <message>
         <source>CHANGE</source>
@@ -2126,11 +2126,11 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>NEW %1 CODE</source>
-        <translation>НОВЫЙ %1 КОД</translation>
+        <translation>НОВЫЙ %1-КОД</translation>
     </message>
     <message>
         <source>NEW %1 CODE AGAIN</source>
-        <translation>НОВЫЙ %1 КОД ЗАНОВО</translation>
+        <translation>НОВЫЙ %1-КОД ЗАНОВО</translation>
     </message>
     <message>
         <source>PUK remaining attempts: %1</source>
@@ -2181,31 +2181,31 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly.</source>
-        <translation>PUK код - это код, разблокирующий заблокированные сертификаты, если код PIN1 или PIN2 был введён неверно 3 раза подряд.</translation>
+        <translation>PUK-код - это код, разблокирующий заблокированные сертификаты, если код PIN1 или PIN2 был введён неверно 3 раза подряд.</translation>
     </message>
     <message>
         <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</source>
-        <translation>Если PUK код забыт и сетрификат блокируется из-за неверно введённых PIN1 или PIN2, то единственной возможностью восстановить работоспособность ID-карты, это обратиться в &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро обслуживания&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Если PUK-код забыт и сетрификат блокируется из-за неверно введённых PIN1 или PIN2, то единственной возможностью восстановить работоспособность ID-карты, это обратиться в &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро обслуживания&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>To unblock the certificate you have to enter the PUK code.</source>
-        <translation>Для разблокировки сертификата введите PUK код.</translation>
+        <translation>Для разблокировки сертификата введите PUK-код.</translation>
     </message>
     <message>
         <source>You can find your PUK code inside the ID-card codes envelope.</source>
-        <translation>PUK код находится в конверте с кодами, который выдаётся при получении ID-карты или смене сертификатов.</translation>
+        <translation>PUK-код находится в конверте с кодами, который выдаётся при получении ID-карты или смене сертификатов.</translation>
     </message>
     <message>
         <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</source>
-        <translation>Если вы забыли PUK код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро&lt;/span&gt;&lt;/a&gt; &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;обслуживания Департамента полиции и пограничной&lt;/span&gt;&lt;/a&gt; &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.</translation>
+        <translation>Если вы забыли PUK-код своей ID-карты, посетите &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;бюро&lt;/span&gt;&lt;/a&gt; &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;обслуживания Департамента полиции и пограничной&lt;/span&gt;&lt;/a&gt; &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;охраны&lt;/span&gt;&lt;/a&gt;, где вы сможете получить конверт с кодами.</translation>
     </message>
     <message>
         <source>PUK code is written in the envelope, that is given with the ID-card.</source>
-        <translation>Ваш PUK код находится в конверте с кодами.</translation>
+        <translation>Ваш PUK-код находится в конверте с кодами.</translation>
     </message>
     <message>
         <source>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
-        <translation>Если PIN%1 введён 3 раза неверно, тогда блокируется %2 и использовать ID-карту для %3 невозможно, пока блокировка не снята PUK кодом.</translation>
+        <translation>Если PIN%1 введён 3 раза неверно, тогда блокируется %2 и использовать ID-карту для %3 невозможно, пока блокировка не снята PUK-кодом.</translation>
     </message>
     <message>
         <source>signing</source>
@@ -2225,7 +2225,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</source>
-        <translation>Если вы забыли PIN%1 код, но знаете PUK код, тогда здесь вы можете ввести новый PIN%1 код.</translation>
+        <translation>Если вы забыли PIN%1-код, но знаете PUK-код, тогда здесь вы можете ввести новый PIN%1-код.</translation>
     </message>
 </context>
 <context>
@@ -2385,7 +2385,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Failed to login token</source>
-        <translation>PIN код не подтвежден</translation>
+        <translation>PIN-код не подтвежден</translation>
     </message>
     <message>
         <source>Failed to sign document</source>
@@ -3312,11 +3312,11 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PUK code</source>
-        <translation>PUK код</translation>
+        <translation>PUK-код</translation>
     </message>
     <message>
         <source>The PUK code is located in your envelope</source>
-        <translation>PUK код находится в конверте</translation>
+        <translation>PUK-код находится в конверте</translation>
     </message>
     <message>
         <source>CHANGE PUK</source>
@@ -3324,7 +3324,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Для получения нового PUK кода для своей ID-карты, посетите центр обслуживания, где вы сможете получить конверт с кодами. &lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/pamyatka-dlya-polzovatelya-id-karti/&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
+        <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK-код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Для получения нового PUK-кода для своей ID-карты, посетите центр обслуживания, где вы сможете получить конверт с кодами. &lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/pamyatka-dlya-polzovatelya-id-karti/&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>
@@ -3346,7 +3346,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
-        <translation>PIN%1 заблокирован, потому что PIN%1 код был введен неверно 3 раза.</translation>
+        <translation>PIN%1 заблокирован, потому что PIN%1-код был введен неверно 3 раза.</translation>
     </message>
     <message>
         <source>Unblock to reuse PIN%1.</source>

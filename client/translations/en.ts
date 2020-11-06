@@ -155,7 +155,7 @@
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
+        <translation>digi-ID</translation>
     </message>
     <message>
         <source>ID-card</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <translation>mobile-ID</translation>
     </message>
     <message>
         <source>Expires on</source>
@@ -1393,7 +1393,7 @@ LDAP server is unavailable.</translation>
     <message>
         <source>SignatureMobile</source>
         <translation>SIGN WITH
-MOBIIL-ID</translation>
+MOBILE-ID</translation>
     </message>
     <message>
         <source>SignatureSmartID</source>
@@ -1742,7 +1742,7 @@ ID-CARD</translation>
     <name>MobileDialog</name>
     <message>
         <source>Enter your phone number to sign with Mobile ID</source>
-        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with mobiil-ID&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with mobile-ID&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Remember me</source>
@@ -1815,13 +1815,13 @@ ID-CARD</translation>
     </message>
     <message>
         <source>User is not a mobiil-ID client</source>
-        <translation>User is not a mobiil-ID client</translation>
+        <translation>User is not a mobile-ID client</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
 and enter mobile-ID PIN2-code.</source>
         <translation>Make sure control code matches with one in phone screen
-and enter mobiil-ID PIN2-code.</translation>
+and enter mobile-ID PIN2-code.</translation>
     </message>
     <message>
         <source>Control code:</source>
@@ -1874,7 +1874,7 @@ and enter mobiil-ID PIN2-code.</translation>
     </message>
     <message>
         <source>Mobile-ID</source>
-        <translation>Mobile-ID</translation>
+        <translation>mobile-ID</translation>
     </message>
     <message>
         <source>Smart-ID</source>
