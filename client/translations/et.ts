@@ -1908,7 +1908,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>%1 tasuta allkirjade kuulimiit on ületatud sellelt IP-aadressilt. &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+        <translation>Selle IP-aadressi %1 tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
