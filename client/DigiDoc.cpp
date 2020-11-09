@@ -46,25 +46,6 @@ static QString from(const std::string &str) { return QString::fromStdString(str)
 
 
 
-class OpEmitter
-{
-public:
-	OpEmitter(DigiDoc *digiDoc, DigiDoc::Operation operation) : doc(digiDoc), op(operation) 
-	{
-		emit doc->operation(op, true);
-	}
-	~OpEmitter()
-	{
-		emit doc->operation(op, false);
-	}
-
-private:
-	DigiDoc *doc;
-	DigiDoc::Operation op;
-};
-
-
-
 DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent)
 :	s(signature)
 ,	m_parent(parent)
@@ -618,13 +599,15 @@ bool DigiDoc::save( const QString &filename )
 
 bool DigiDoc::saveAs(const QString &filename)
 {
-	OpEmitter op(this, Saving);
 	try
 	{
 		b->save(to(filename));
 		return true;
 	}
-	catch( const Exception &e ) { setLastError( tr("Failed to save container"), e ); }
+	catch( const Exception &e ) {
+		if(!QFile::copy(m_fileName, filename))
+			setLastError(tr("Failed to save container"), e);
+	}
 	return false;
 }
 
@@ -669,7 +652,6 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
 		return false;
 
-	OpEmitter op(this, Signing);
 	try
 	{
 		signer->setSignatureProductionPlace(to(city), to(state), to(zip), to(country));

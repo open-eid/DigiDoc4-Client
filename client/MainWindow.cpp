@@ -791,12 +791,6 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	delete digiDoc;
 	warnings->closeWarnings(SignDetails);
 	digiDoc = doc;
-	if(digiDoc)
-	{
-		connect(digiDoc, &DigiDoc::operation, this, [] (int op, bool started) {
-			qCDebug(MLog) << "Op " << op << (started ? " started" : " ended");
-		});
-	}
 }
 
 void MainWindow::resizeEvent(QResizeEvent * /*event*/)
