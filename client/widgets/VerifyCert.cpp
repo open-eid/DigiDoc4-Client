@@ -185,8 +185,6 @@ void VerifyCert::update()
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 	{
 		setStyleSheet( "opacity: 0.25; background-color: #F9EBEB;"  + borders );
-		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
-		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
 		ui->changePIN->setStyleSheet(
 					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
 					"QPushButton:pressed { background-color: #41B6E6;}"
@@ -205,8 +203,6 @@ void VerifyCert::update()
 	else if( isBlockedPin )
 	{
 		setStyleSheet( "opacity: 0.25; background-color: #fcf5ea;"  + borders );
-		ui->verticalSpacerAboveBtn->changeSize( 20, 8 );
-		ui->verticalSpacerBelowBtn->changeSize( 20, 6 );
 		ui->changePIN->setStyleSheet(
 					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
 					"QPushButton:pressed { background-color: #41B6E6;}" 
@@ -224,10 +220,6 @@ void VerifyCert::update()
 	else
 	{
 		setStyleSheet( "background-color: #ffffff;" + borders );
-		// Check height: if warning shown, decrease height by 30px (15*2)
-		int decrease = height() < 210 ? 15 : 0;
-		ui->verticalSpacerAboveBtn->changeSize(20, 29 - decrease);
-		ui->verticalSpacerBelowBtn->changeSize(20, 34 - decrease);
 		changePinStyle(QStringLiteral("#FFFFFF"));
 	}
 	ui->redIcon->setVisible(!isValidCert && pinType != QSmartCardData::PukType);
