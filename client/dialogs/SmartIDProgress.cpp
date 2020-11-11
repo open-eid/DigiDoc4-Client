@@ -21,6 +21,7 @@
 #include "ui_MobileProgress.h"
 
 #include "Styles.h"
+#include "WarningDialog.h"
 
 #include <common/Common.h>
 #include <common/Configuration.h>
@@ -119,7 +120,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	d->manager = new QNetworkAccessManager(d);
-	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, [=](QNetworkReply *reply, const QList<QSslError> &err) {
+	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [=](QNetworkReply *reply, const QList<QSslError> &err) {
 		QList<QSslError> ignore;
 		for(const QSslError &e: err)
 		{
@@ -132,6 +133,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 					ignore << e;
 					break;
 				}
+				Q_FALLTHROUGH();
 			default:
 				qCWarning(SIDLog) << "SSL Error:" << e.error() << e.certificate().subjectInfo(QSslCertificate::CommonName);
 				break;
@@ -141,13 +143,12 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	});
 	QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, [&](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=](const QString &err) {
+		auto returnError = [=](const QString &err, const QString &details = {}) {
 			qCWarning(SIDLog) << err;
-			d->labelError->setText(err);
-			d->code->hide();
-			d->controlCode->hide();
-			d->signProgressBar->hide();
-			stop();
+			d->hide();
+			WarningDialog dlg(err, details, d->parentWidget());
+			QObject::connect(&dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
+			dlg.exec();
 		};
 
 		switch(reply->error())
@@ -194,10 +195,10 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from <a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
 				return;
 			case 580:
-				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg("Smart-ID"));
+				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(QStringLiteral("Smart-ID")));
 				return;
 			default:
-				returnError(tr("Failed to send request. ") + reply->errorString());
+				returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(QStringLiteral("Smart-ID")), reply->errorString());
 				return;
 			}
 		}
