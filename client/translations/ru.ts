@@ -1787,7 +1787,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Invalid country code</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный код страны</translation>
     </message>
 </context>
 <context>
@@ -1953,6 +1953,10 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Не удалось выполнить операцию Smart-ID. Пожалуйста, проверьте приложение Smart-ID или свяжитесь со службой поддержки Smart-ID.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>mobiil-ID</translation>
     </message>
 </context>
 <context>

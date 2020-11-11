@@ -1951,6 +1951,10 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</translation>
     </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

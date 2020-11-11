@@ -1784,7 +1784,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Invalid country code</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane riigikood</translation>
     </message>
 </context>
 <context>
@@ -1950,6 +1950,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Sinu Smart-ID toiming ebaõnnestus. Palun kontrolli Smart-ID rakendust või võta ühendust Smart-ID klienditoega.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
     </message>
 </context>
 <context>

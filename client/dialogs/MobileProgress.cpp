@@ -174,7 +174,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 		default:
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
 			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Mobile-ID")));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
