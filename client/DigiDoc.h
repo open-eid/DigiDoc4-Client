@@ -118,12 +118,6 @@ class DigiDoc: public QObject
 {
 	Q_OBJECT
 public:
-	enum Operation {
-		Saving,
-		Signing,
-		Validation
-	};
-
 	explicit DigiDoc(QObject *parent = nullptr);
 	~DigiDoc();
 
@@ -156,9 +150,6 @@ public:
 
 	static void parseException( const digidoc::Exception &e, QStringList &causes,
 		digidoc::Exception::ExceptionCode &code);
-
-signals:
-	void operation(Operation op, bool started);
 
 private:
 	bool checkDoc( bool status = false, const QString &msg = QString() ) const;
