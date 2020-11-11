@@ -72,7 +72,7 @@
 
         mkdir build
         cd build
-        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.9-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
+        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.10-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
 
 4. Build
 
@@ -103,7 +103,7 @@
 
         mkdir build
         cd build
-        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.12.9\msvc2017\lib\cmake\Qt5" ..
+        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.12.10\msvc2017\lib\cmake\Qt5" ..
 
 4. Build
 

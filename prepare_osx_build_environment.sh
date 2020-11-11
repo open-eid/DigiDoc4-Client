@@ -4,8 +4,8 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.12.9"
-OPENLDAP_VER="2.4.50"
+QT_VER="5.12.10"
+OPENLDAP_VER="2.4.56"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 OPENSSL_PATH="/usr/local/opt/openssl"
@@ -94,10 +94,12 @@ else
 fi
 
 if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
+    SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
     echo -e "\n${ORANGE}##### Building OpenLDAP ${OPENLDAP_VER} ${OPENLDAP_PATH} #####${RESET}\n"
     curl -O -L http://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
     tar xf openldap-${OPENLDAP_VER}.tgz
     cd openldap-${OPENLDAP_VER}
+    patch -Np1 -i ${SCRIPTPATH}/openldap.patch
     LDFLAGS="-L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure -prefix ${OPENLDAP_PATH} \
         --enable-static --disable-shared --disable-syslog --disable-proctitle --disable-local --disable-slapd \
         --without-threads --without-cyrus-sasl --with-tls=openssl
