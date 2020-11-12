@@ -34,7 +34,7 @@ background-color: #1a7dbc;</string>
     <widget class="QPushButton" name="mainAction">
      <property name="minimumSize">
       <size>
-       <width>166</width>
+       <width>0</width>
        <height>65</height>
       </size>
      </property>

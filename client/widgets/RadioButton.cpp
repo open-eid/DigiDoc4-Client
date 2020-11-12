@@ -17,34 +17,32 @@
  *
  */
 
-#pragma once
+#include "RadioButton.h"
 
-#include "common_enums.h"
+#include <QBrush>
+#include <QPaintEvent>
+#include <QPainter>
 
-#include <QWidget>
+RadioButton::RadioButton(QWidget *parent)
+	: QRadioButton(parent)
+{}
 
-class MainAction final : public QWidget
+void RadioButton::paintEvent(QPaintEvent *event)
 {
-	Q_OBJECT
-
-public:
-	explicit MainAction(QWidget *parent);
-	~MainAction() final;
-
-	void hideDropdown();
-	void setButtonEnabled(bool enabled);
-	void showActions(const QList<ria::qdigidoc4::Actions> &actions);
-
-signals:
-	void action(ria::qdigidoc4::Actions action);
-
-private:
-	void changeEvent(QEvent* event) override;
-	bool eventFilter(QObject *watched, QEvent *event) override;
-	QString label(ria::qdigidoc4::Actions action) const;
-	void showDropdown();
-	void update();
-
-	class Private;
-	Private *ui;
-};
+	QRadioButton::paintEvent(event);
+	QRect rect(0, 0, 14, 14);
+	rect.moveCenter(QPoint(rect.center().x() + 1, event->rect().center().y()));
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::HighQualityAntialiasing);
+	painter.fillRect(rect, Qt::white);
+	painter.setPen(QStringLiteral("#AAADAD"));
+	painter.drawEllipse(rect);
+	if (isChecked())
+	{
+		rect.adjust(3, 3, -3, -3);
+		painter.setPen(QStringLiteral("#0C5AA6"));
+		painter.setBrush(painter.pen().color());
+		painter.drawEllipse(rect);
+	}
+}

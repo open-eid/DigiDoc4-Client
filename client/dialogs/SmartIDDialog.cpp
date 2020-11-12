@@ -67,7 +67,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 		ui->idCode->setValidator(country() == EE ? ik : nullptr);
 		bool checked = ui->cbRemember->isChecked();
 		SettingsDialog::setValueEx(QStringLiteral("SmartIDSettings"), checked, true);
-		SettingsDialog::setValueEx(QStringLiteral("SmartID"), checked ? idCode() : QString(), QString());
+		SettingsDialog::setValueEx(QStringLiteral("SmartID"), checked ? idCode() : QString());
 		SettingsDialog::setValueEx(QStringLiteral("SmartIDCountry"), checked ? country() : EE, EE);
 		ui->sign->setToolTip(QString());
 		if(!idCode().isEmpty() && country() == EE && !IKValidator::isValid(idCode()))

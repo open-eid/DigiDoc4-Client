@@ -19,32 +19,14 @@
 
 #pragma once
 
-#include "common_enums.h"
+#include <QRadioButton>
 
-#include <QWidget>
-
-class MainAction final : public QWidget
+class RadioButton : public QRadioButton
 {
 	Q_OBJECT
-
 public:
-	explicit MainAction(QWidget *parent);
-	~MainAction() final;
-
-	void hideDropdown();
-	void setButtonEnabled(bool enabled);
-	void showActions(const QList<ria::qdigidoc4::Actions> &actions);
-
-signals:
-	void action(ria::qdigidoc4::Actions action);
+	explicit RadioButton(QWidget *parent = nullptr);
 
 private:
-	void changeEvent(QEvent* event) override;
-	bool eventFilter(QObject *watched, QEvent *event) override;
-	QString label(ria::qdigidoc4::Actions action) const;
-	void showDropdown();
-	void update();
-
-	class Private;
-	Private *ui;
+	void paintEvent(QPaintEvent *event) override;
 };
