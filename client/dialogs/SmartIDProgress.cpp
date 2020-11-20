@@ -72,7 +72,7 @@ public:
 #endif
 	QString NAME = QSettings().value(QStringLiteral("SIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
 	bool useCustomUUID = QSettings().value(QStringLiteral("SIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("SIDUUID"))).toBool();
-	QUuid UUID = useCustomUUID ? QSettings().value(QStringLiteral("SIDUUID")).toUuid() : QUuid();
+	QString UUID = useCustomUUID ? QSettings().value(QStringLiteral("SIDUUID")).toString() : QString();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
@@ -273,15 +273,14 @@ X509Cert SmartIDProgress::cert() const
 
 bool SmartIDProgress::init(const QString &country, const QString &idCode)
 {
+	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
+	{
+		WarningDialog(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")), {}, d->parentWidget()).exec();
+		return false;
+	}
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
-		{"relyingPartyUUID", d->UUID
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-			.toString(QUuid::WithoutBraces)
-#else
-			.toString().remove('{').remove('}')
-#endif
-		},
+		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
 		{"relyingPartyName", d->NAME},
 		{"certificateLevel", "QUALIFIED"}
 	})).toJson();
@@ -318,13 +317,7 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		"and enter Smart-ID PIN2-code."));
 
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
-		{"relyingPartyUUID", d->UUID
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-			.toString(QUuid::WithoutBraces)
-#else
-			.toString().remove('{').remove('}')
-#endif
-		},
+		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
 		{"relyingPartyName", d->NAME},
 		{"certificateLevel", "QUALIFIED"},
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},

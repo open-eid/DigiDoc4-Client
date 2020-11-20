@@ -71,7 +71,7 @@ public:
 #endif
 	QString NAME = QSettings().value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
 	bool useCustomUUID = QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("MIDUUID"))).toBool();
-	QUuid UUID = useCustomUUID ? QSettings().value(QStringLiteral("MIDUUID")).toUuid() : QUuid();
+	QString UUID = useCustomUUID ? QSettings().value(QStringLiteral("MIDUUID")).toString() : QString();
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
@@ -266,19 +266,18 @@ X509Cert MobileProgress::cert() const
 
 bool MobileProgress::init(const QString &ssid, const QString &cell)
 {
+	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
+	{
+		WarningDialog(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")), {}, d->parentWidget()).exec();
+		return false;
+	}
 	d->ssid = ssid;
 	d->cell = '+' + cell;
 	d->labelError->setText(tr("Signing in process"));
 	d->controlCode->setText(tr("Control code:"));
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
-		{"relyingPartyUUID", d->UUID
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-			.toString(QUuid::WithoutBraces)
-#else
-			.toString().remove('{').remove('}')
-#endif
-		},
+		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
 		{"relyingPartyName", d->NAME},
 		{"nationalIdentityNumber", d->ssid},
 		{"phoneNumber", d->cell},
@@ -317,13 +316,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	lang[QStringLiteral("ru")] = QStringLiteral("RUS");
 
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
-		{"relyingPartyUUID", d->UUID
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-			.toString(QUuid::WithoutBraces)
-#else
-			.toString().remove('{').remove('}')
-#endif
-		},
+		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
 		{"relyingPartyName", d->NAME},
 		{"nationalIdentityNumber", d->ssid},
 		{"phoneNumber", d->cell},
