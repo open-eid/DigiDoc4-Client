@@ -71,7 +71,7 @@ QString DigiDocSignature::lastError() const { return m_lastError; }
 QString DigiDocSignature::location() const
 {
 	QStringList l = locations();
-	l.removeAll(QString());
+	l.removeAll({});
 	return l.join(QStringLiteral(", "));
 }
 
@@ -87,7 +87,7 @@ QStringList DigiDocSignature::locations() const
 QByteArray DigiDocSignature::messageImprint() const
 {
 	std::vector<unsigned char> d = s->messageImprint();
-	return QByteArray((const char *)d.data(), int(d.size()));
+	return {(const char *)d.data(), int(d.size())};
 }
 
 QSslCertificate DigiDocSignature::ocspCert() const
@@ -145,7 +145,7 @@ QString DigiDocSignature::profile() const
 QString DigiDocSignature::role() const
 {
 	QStringList r = roles();
-	r.removeAll(QString());
+	r.removeAll({});
 	return r.join(QStringLiteral(" / "));
 }
 
@@ -297,7 +297,7 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
-			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName), QString());
+			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
 			return false;
 		}
 	}
@@ -317,7 +317,7 @@ void SDocumentModel::addTempReference(const QString &file)
 QString SDocumentModel::data(int row) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	return from(doc->b->dataFiles().at(size_t(row))->fileName());
 }
@@ -325,7 +325,7 @@ QString SDocumentModel::data(int row) const
 QString SDocumentModel::fileSize(int row) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	return FileDialog::fileSize(doc->b->dataFiles().at(size_t(row))->fileSize());
 }
@@ -333,7 +333,7 @@ QString SDocumentModel::fileSize(int row) const
 QString SDocumentModel::mime(int row) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	return from(doc->b->dataFiles().at(size_t(row))->mediaType());
 }
@@ -383,7 +383,7 @@ int SDocumentModel::rowCount() const
 QString SDocumentModel::save(int row, const QString &path) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	QFile::remove( path );
 	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
@@ -601,10 +601,14 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
-		b->save(to(filename));
+		if(parentContainer)
+			parentContainer->save(to(filename));
+		else
+			b->save(to(filename));
 		return true;
 	}
 	catch( const Exception &e ) {
+		QFile::remove(filename);
 		if(!QFile::copy(m_fileName, filename))
 			setLastError(tr("Failed to save container"), e);
 	}
