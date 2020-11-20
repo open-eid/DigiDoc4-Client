@@ -289,6 +289,11 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 			return false;
 	}
 	QString fileName(info.fileName());
+	if(fileName == QStringLiteral("mimetype"))
+	{
+		qApp->showWarning(DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
+		return false;
+	}
 	for(int row = 0; row < rowCount(); row++)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
