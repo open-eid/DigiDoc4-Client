@@ -128,8 +128,6 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 
 
 
-const QByteArray EstEIDCard::AID30 = APDU("00A40400 10 D2330000010000010000000000000000");
-const QByteArray EstEIDCard::AID34 = APDU("00A40400 0E F04573744549442076657220312E");
 const QByteArray EstEIDCard::AID35 = APDU("00A40400 0F D23300000045737445494420763335");
 const QByteArray EstEIDCard::UPDATER_AID = APDU("00A40400 0A D2330000005550443101");
 const QByteArray EstEIDCard::ESTEIDDF = APDU("00A4010C 02 EEEE");
@@ -170,7 +168,7 @@ QPCSCReader::Result EstEIDCard::change(QPCSCReader *reader, QSmartCardData::PinT
 QSmartCardData::CardVersion EstEIDCard::isSupported(const QByteArray &atr)
 {
 	static const QHash<QByteArray,QSmartCardData::CardVersion> atrList{
-		{"3BFE1800008031FE454573744549442076657220312E30A8", QSmartCardData::VER_3_4}, /*ESTEID_V3_COLD_ATR*/
+		{"3BFE1800008031FE454573744549442076657220312E30A8", QSmartCardData::VER_3_5}, /*ESTEID_V3_COLD_ATR*/
 		{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_5}, /*ESTEID_V3_WARM_ATR / ESTEID_V35_WARM_ATR*/
 		{"3BFA1800008031FE45FE654944202F20504B4903", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_ATR*/
 	};
@@ -195,8 +193,8 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			d->version = QSmartCardData::VER_USABLEUPDATER;
 		}
 	}
-	else if(reader->transfer(AID35).resultOk())
-		d->version = QSmartCardData::VER_3_5;
+	else
+		reader->transfer(AID35);
 	if(reader->transfer(MASTER_FILE).resultOk() &&
 		reader->transfer(ESTEIDDF).resultOk() &&
 		d->data.isEmpty() && reader->transfer(PERSONALDATA).resultOk())
@@ -214,9 +212,11 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			switch(data)
 			{
 			case QSmartCardData::BirthDate:
-			case QSmartCardData::Expiry:
 			case QSmartCardData::IssueDate:
 				d->data[QSmartCardData::PersonalDataType(data)] = QDate::fromString(record, QStringLiteral("dd.MM.yyyy"));
+				break;
+			case QSmartCardData::Expiry:
+				d->data[QSmartCardData::PersonalDataType(data)] = QDateTime::fromString(record, QStringLiteral("dd.MM.yyyy")).addDays(1).addSecs(-1);
 				break;
 			default:
 				d->data[QSmartCardData::PersonalDataType(data)] = record;
@@ -448,7 +448,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 				break;
 			case 6: d->data[QSmartCardData::Id] = record; break;
 			case 7: d->data[QSmartCardData::DocumentId] = record; break;
-			case 8: d->data[QSmartCardData::Expiry] = QDate::fromString(record, QStringLiteral("dd MM yyyy")); break;
+			case 8: d->data[QSmartCardData::Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1); break;
 			case 9: d->data[QSmartCardData::IssueDate] = record; break;
 			case 10: d->data[QSmartCardData::ResidencePermit] = record; break;
 			case 11: d->data[QSmartCardData::Comment1] = record; break;
@@ -705,7 +705,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock((isForgotPin) ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, parent, type,
+		p.reset(new PinUnblock(isForgotPin ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, parent, type,
 			d->t.retryCount(QSmartCardData::PukType), d->t.data(QSmartCardData::BirthDate).toDate(), d->t.data(QSmartCardData::Id).toString()));
 		if (!p->exec())
 			return CancelError;
@@ -716,9 +716,8 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	{
 		SslCertificate cert = d->t.authCert();
 		title = cert.toString(cert.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber"));
-		textBody = (isForgotPin) ?  
-			tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type))
-			:
+		textBody = isForgotPin ?
+			tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type)) :
 			tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 	}
 	return unblock(type, parent, newPin, puk, title, textBody);
