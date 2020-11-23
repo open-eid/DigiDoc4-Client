@@ -24,11 +24,10 @@
 #ifdef CONFIG_URL
 #include "Configuration.h"
 #include <QtCore/QJsonObject>
+#include <QtCore/QSettings>
 #endif
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QSettings>
-#include <QtCore/QStringList>
+#include <QtCore/QDir>
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
 
@@ -36,8 +35,6 @@ Diagnostics::Diagnostics() = default;
 
 void Diagnostics::generalInfo(QTextStream &s) const
 {
-	QString cache = qApp->confValue(Application::TSLCache).toString();
-	QString file = QFileInfo(qApp->confValue(Application::TSLUrl).toString()).fileName();
 	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(' ') << "<br />"
 		<< "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />"
 		<< "<b>" << "URLs:" << "</b>"
@@ -56,12 +53,21 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		<< "<br />SMARTID_URL: " << SMARTID_URL
 #endif
 #endif
-		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString() << " (" << qApp->readTSLVersion(cache + "/" + file) << ")"
+		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString()
 		<< "<br />TSA_URL: " << qApp->confValue(Application::TSAUrl).toString()
 		<< "<br />SIVA_URL: " << qApp->confValue(Application::SiVaUrl).toString()
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: qApp->confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
+	s << "<br /><br /><b>" << tr("TSL cache") << ":</b>";
+	QString cache = qApp->confValue(Application::TSLCache).toString();
+	const QStringList tsllist = QDir(cache).entryList({QStringLiteral("*.xml")});
+	for(const QString &file: tsllist)
+	{
+		uint ver = Application::readTSLVersion(cache + "/" + file);
+		if(ver > 0)
+			s << "<br />" << file << " (" << ver << ")";
+	}
 	s << "<br /><br />";
 
 #ifdef CONFIG_URL
@@ -122,8 +128,8 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		  << "ATR warm - " << warm << "<br />";
 
 		reader.beginTransaction();
-		#define APDU QByteArray::fromHex
-		auto printAID = [&s, &reader](const QString &label, const QByteArray &apdu)
+		constexpr auto APDU = &QByteArray::fromHex;
+		auto printAID = [&](const QString &label, const QByteArray &apdu)
 		{
 			QPCSCReader::Result r = reader.transfer(apdu);
 			s << label << ": " << r.SW.toHex();
@@ -133,8 +139,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 			s << "<br />";
 			return r.resultOk();
 		};
-		if(printAID(QStringLiteral("AID34"), APDU("00A40400 0E F04573744549442076657220312E")) ||
-			printAID(QStringLiteral("AID35"), APDU("00A40400 0F D23300000045737445494420763335")) ||
+		if(printAID(QStringLiteral("AID35"), APDU("00A40400 0F D23300000045737445494420763335")) ||
 			printAID(QStringLiteral("UPDATER_AID"), APDU("00A40400 0A D2330000005550443101")))
 		{
 			reader.transfer(APDU("00A4000C"));

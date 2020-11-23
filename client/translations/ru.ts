@@ -766,6 +766,10 @@
         <source>TSL signing certs</source>
         <translation>Сертификаты подписывания TSL</translation>
     </message>
+    <message>
+        <source>TSL cache</source>
+        <translation>TSL-буфер</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -1578,10 +1582,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
-    </message>
-    <message>
-        <source>Documents (%1%2)</source>
-        <translation>Документы (%1%2)</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>

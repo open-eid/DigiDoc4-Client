@@ -764,6 +764,10 @@
         <source>TSL signing certs</source>
         <translation>TSL signeerimise sertifikaadid</translation>
     </message>
+    <message>
+        <source>TSL cache</source>
+        <translation>TSL puhver</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -1576,10 +1580,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
-    </message>
-    <message>
-        <source>Documents (%1%2)</source>
-        <translation>Dokumendid (%1%2)</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>

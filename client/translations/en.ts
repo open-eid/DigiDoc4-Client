@@ -764,6 +764,10 @@
         <source>TSL signing certs</source>
         <translation>TSL signing certs</translation>
     </message>
+    <message>
+        <source>TSL cache</source>
+        <translation>TSL cache</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -1576,10 +1580,6 @@ ID-CARD</translation>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
-    </message>
-    <message>
-        <source>Documents (%1%2)</source>
-        <translation>Documents (%1%2)</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
