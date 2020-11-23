@@ -63,7 +63,7 @@ private:
 	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
 	void saveHistory();
-	void search(const QString &term, const QString &type = {});
+	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 	HistoryCertData toHistory(const QSslCertificate& cert) const;
@@ -75,7 +75,6 @@ private:
 	QHash<QSslCertificate, AddressItem *> leftList;
 	QList<QSslCertificate> rightList;
 	LdapSearch *ldap_person, *ldap_corp;
-	bool select = false;
 	bool updated = false;
 
 	QList<HistoryCertData> historyCertData;

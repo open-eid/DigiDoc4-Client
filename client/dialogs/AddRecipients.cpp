@@ -266,9 +266,8 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	ui->leftPane->clear();
 	for(const HistoryCertData &certData: selectedCertData) {
 		QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
-		search(term, certData.type);
+		search(term, true, certData.type);
 	}
-	select = true;
 }
 
 QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValue)
@@ -400,16 +399,16 @@ void AddRecipients::saveHistory()
 	xml.writeEndDocument();
 }
 
-void AddRecipients::search(const QString &term, const QString &type)
+void AddRecipients::search(const QString &term, bool select, const QString &type)
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	ui->confirm->setDefault(false);
 	ui->confirm->setAutoDefault(false);
 	QRegExp isDigit( "\\d*" );
 
-	select = false;
 	QVariantMap userData {
-		{"type", type}
+		{"type", type},
+		{"select", select}
 	};
 	QString cleanTerm = term.simplified();
 	if(isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
@@ -464,7 +463,8 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		for(const QSslCertificate &k: filter)
 		{
 			Item *item = addRecipientToLeftPane(k);
-			if(select && (!userData.value("type").isNull() || toType(SslCertificate(k)) == userData["type"]))
+			if(userData.value(QStringLiteral("select"), false).toBool() &&
+				(userData.value(QStringLiteral("type")).isNull() || toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
 				addRecipientToRightPane(item, true);
 		}
 	}
