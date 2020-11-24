@@ -29,7 +29,7 @@ class InfoStack;
 
 class SslCertificate;
 
-class InfoStack : public StyledWidget
+class InfoStack final: public StyledWidget
 {
 	Q_OBJECT
 
@@ -57,10 +57,7 @@ private:
 
 	QSmartCardData data;
 	int certType = 0;
-	bool certIsValid = false;
-	bool certIsResident = false;
 	QString citizenshipText;
-	QString expireDate;
 	QString givenNamesText;
 	QString personalCodeText;
 	QString serialNumberText;
