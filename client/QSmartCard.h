@@ -59,7 +59,6 @@ public:
 	enum CardVersion
 	{
 		VER_INVALID = -1,
-		VER_3_4,
 		VER_3_5,
 		VER_USABLEUPDATER,
 		VER_IDEMIA,

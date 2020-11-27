@@ -66,7 +66,7 @@ public:
 	QPCSCReader::Result verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin) const final;
 
 	static QTextCodec *codec;
-	static const QByteArray AID30, AID34, AID35, UPDATER_AID;
+	static const QByteArray AID35, UPDATER_AID;
 	static const QByteArray ESTEIDDF;
 	static const QByteArray PERSONALDATA;
 };
