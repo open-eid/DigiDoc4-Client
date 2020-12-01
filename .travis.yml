@@ -1,7 +1,7 @@
 language: c++
 sudo: false
-dist: bionic
-osx_image: xcode11.6
+dist: focal
+osx_image: xcode12.2
 services:
 - docker
 matrix:
