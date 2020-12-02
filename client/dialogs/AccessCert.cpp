@@ -40,7 +40,7 @@ public:
 };
 
 AccessCert::AccessCert( QWidget *parent )
-	: WarningDialog(QString(), parent)
+	: WarningDialog({}, parent)
 	, d(new Private)
 {
 	setCancelText(::WarningDialog::tr("CLOSE"));
@@ -254,7 +254,7 @@ bool AccessCert::validate()
 			"<a href=\"mailto:sales@sk.ee\">sales@sk.ee</a> or phone (+372) 610 1885")
 			.arg(c.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
 	}
-	if(count(date) >= 50)
+	if(isDefaultCert(c) && count(date) >= 50)
 	{
 		showWarning(tr(
 			"The limit of free digital signatures per month is about to exceed. To create more "
