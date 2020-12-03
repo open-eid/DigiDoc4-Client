@@ -151,16 +151,18 @@ if( APPLE )
 		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
 		COMMAND rm $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Resources/digidoc-tool
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libcrypto.dylib
-		    $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libcrypto.1.1.dylib
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libcrypto.dylib
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libcrypto.dylib
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libssl.dylib
-		    $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libssl.1.1.dylib
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libssl.dylib
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libssl.dylib
 		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name Headers | xargs rm -rf
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
+		# For QT
+		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.dylib
+		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.dylib
+		# For Target
+		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.1.1.dylib
+		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.1.1.dylib
 	)
 
 	add_custom_target( codesign DEPENDS ${PROGNAME}

@@ -24,8 +24,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #FFFFFF;
-border: solid #DFE5E9;
-border-width: 1px 0px 0px 0px;</string>
+border: none;</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
