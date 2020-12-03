@@ -92,7 +92,7 @@ private:
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &info1, const QString &info2);
-	void openContainer();
+	void openContainer(bool signature);
 	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
 	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
 	void pinPukChange( QSmartCardData::PinType type );
