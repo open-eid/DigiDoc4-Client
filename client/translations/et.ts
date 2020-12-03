@@ -1845,10 +1845,6 @@ ja sisesta telefonil Mobiil-ID PIN2-kood.</translation>
         <translation>%1 teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
     </message>
     <message>
-        <source>Failed to send request. </source>
-        <translation>Päringu saatmine ebaõnnestus. </translation>
-    </message>
-    <message>
         <source>Invalid content type header </source>
         <translation>Vale sisutüübi päis </translation>
     </message>
@@ -1950,6 +1946,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Teie Smart-ID toiming ebaõnnestus. Palun kontrollige Smart-ID rakendust või võtke ühendust Smart-ID klienditoega.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
+        <translation>Päringu saatmine ebaõnnestus. %1 teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
     </message>
 </context>
 <context>

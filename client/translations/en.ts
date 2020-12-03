@@ -1845,10 +1845,6 @@ and enter Mobiil-ID PIN2-code.</translation>
         <translation>%1 service has encountered technical errors. Please try again later.</translation>
     </message>
     <message>
-        <source>Failed to send request. </source>
-        <translation>Failed to send request. </translation>
-    </message>
-    <message>
         <source>Invalid content type header </source>
         <translation>Invalid content type header </translation>
     </message>
@@ -1950,6 +1946,10 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
+        <translation>Failed to send request. %1 service has encountered technical errors. Please try again later.</translation>
     </message>
 </context>
 <context>

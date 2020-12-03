@@ -1848,10 +1848,6 @@ and enter Mobile-ID PIN2-code.</source>
         <translation>Технический сбой услуги %1. Пожалуйста, попробуйте позже.</translation>
     </message>
     <message>
-        <source>Failed to send request. </source>
-        <translation>Не удалось отправить запрос. </translation>
-    </message>
-    <message>
         <source>Invalid content type header </source>
         <translation>Неправильный заголовок типа содержимого </translation>
     </message>
@@ -1953,6 +1949,10 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Не удалось выполнить операцию Smart-ID. Пожалуйста, проверьте приложение Smart-ID или свяжитесь со службой поддержки Smart-ID.</translation>
+    </message>
+    <message>
+        <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
+        <translation>Не удалось отправить запрос. Технический сбой услуги %1. Пожалуйста, попробуйте позже.</translation>
     </message>
 </context>
 <context>

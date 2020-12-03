@@ -25,11 +25,11 @@
 
 class QWidget;
 
-class SmartIDProgress: public digidoc::Signer
+class SmartIDProgress final: public digidoc::Signer
 {
 	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
 public:
-	SmartIDProgress(QWidget *parent = nullptr);
+	explicit SmartIDProgress(QWidget *parent = nullptr);
 	~SmartIDProgress() final;
 	digidoc::X509Cert cert() const final;
 	bool init(const QString &country, const QString &idCode);
