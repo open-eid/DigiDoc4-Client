@@ -34,6 +34,8 @@ public:
 	static bool fileIsWritable( const QString &filename );
 	static QString fileSize( quint64 bytes );
 	static ria::qdigidoc4::ExtensionType extension(const QString &filename);
+	static int fileZone(const QString &path);
+	static void setFileZone(const QString &path, int zone);
 	static QString safeName(const QString &file);
 	static QString tempPath(const QString &file);
 

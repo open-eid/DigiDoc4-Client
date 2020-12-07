@@ -31,6 +31,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	MainWindow.ui
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
+	LdapSearch.cpp
 	QCardLock.cpp
 	QCryptoBackend.cpp
 	QPKCS11.cpp
@@ -42,7 +43,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	PrintSheet.cpp
 	SslCertificate.cpp
 	TokenData.cpp
-	crypto/LdapSearch.cpp
 	dialogs/AccessCert.cpp
 	dialogs/AddRecipients.ui
 	dialogs/AddRecipients.cpp
@@ -143,7 +143,7 @@ target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SM
 if( APPLE )
 	target_sources( ${PROGNAME} PRIVATE Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+    set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>

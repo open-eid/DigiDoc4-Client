@@ -382,7 +382,9 @@ QString SDocumentModel::save(int row, const QString &path) const
 		return {};
 
 	QFile::remove( path );
+	int zone = FileDialog::fileZone(doc->fileName());
 	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
+	FileDialog::setFileZone(path, zone);
 	return path;
 }
 
