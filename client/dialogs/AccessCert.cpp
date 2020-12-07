@@ -90,9 +90,10 @@ unsigned int AccessCert::count(const QString &date) const
 	return QByteArray::fromBase64(QSettings().value(date).toByteArray()).toUInt();
 }
 
-void AccessCert::increment()
+void AccessCert::increment(const QSslCertificate &signer)
 {
-	if(isDefaultCert(cert()))
+	QString CN = signer.issuerInfo(QSslCertificate::CommonName).join(' ');
+	if(isDefaultCert(cert()) && (CN.contains(QStringLiteral("ESTEID-SK")) || CN.contains(QStringLiteral("KLASS3-SK"))))
 	{
 		QString date = "AccessCertUsage" + QDate::currentDate().toString(QStringLiteral("yyyyMM"));
 		QSettings().setValue(date, QString::fromUtf8(QByteArray::number(count(date) + 1).toBase64()));

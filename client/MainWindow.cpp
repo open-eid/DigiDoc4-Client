@@ -459,15 +459,13 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	case SignatureMobile:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			MobileProgress m(this);
-			return m.init(info1, info2) &&
-				digiDoc->sign(city, state, zip, country, role, &m);
+			return m.init(info1, info2) ? digiDoc->sign(city, state, zip, country, role, &m) : QSslCertificate();
 		});
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			SmartIDProgress s(this);
-			return s.init(info1, info2) &&
-				digiDoc->sign(city, state, zip, country, role, &s);
+			return s.init(info1, info2) ? digiDoc->sign(city, state, zip, country, role, &s) : QSslCertificate();
 		});
 		break;
 	case ClearSignatureWarning:
@@ -919,7 +917,7 @@ void MainWindow::showSettings(int page)
 	dlg.exec();
 }
 
-void MainWindow::sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign)
+void MainWindow::sign(const std::function<QSslCertificate(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign)
 {
 	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
@@ -936,6 +934,7 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 	if(RoleAddressDialog(this).get(city, country, state, zip, role) == QDialog::Rejected)
 		return;
 
+	QSslCertificate signer;
 	WaitDialogHolder waitDialog(this, tr("Signing"));
 	if(digiDoc->isService())
 	{
@@ -943,17 +942,22 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 		if(!wrap(wrappedFile, true))
 			return;
 
-		if(!sign(city, state, zip, country, role))
+		signer = sign(city, state, zip, country, role);
+		if(signer.isNull())
 		{
 			resetDigiDoc(nullptr, false);
 			navigateToPage(SignDetails, {wrappedFile}, false);
 			return;
 		}
 	}
-	else if(!sign(city, state, zip, country, role))
-		return;
+	else
+	{
+		signer = sign(city, state, zip, country, role);
+		if(signer.isNull())
+			return;
+	}
 
-	access.increment();
+	access.increment(signer);
 	if(!save())
 		return;
 

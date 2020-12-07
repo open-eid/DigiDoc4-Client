@@ -78,7 +78,6 @@ private:
 	void setLastError( const digidoc::Exception &e ) const;
 	void parseException( SignatureStatus &result, const digidoc::Exception &e ) const;
 	SignatureStatus validate(const std::string &policy) const;
-	QSslCertificate toCertificate(const std::vector<unsigned char> &der) const;
 	QDateTime toTime(const std::string &time) const;
 
 	const digidoc::Signature *s;
@@ -138,7 +137,7 @@ public:
 	void removeSignature( unsigned int num );
 	bool save( const QString &filename = QString() );
 	bool saveAs(const QString &filename);
-	bool sign(const QString &city,
+	QSslCertificate sign(const QString &city,
 		const QString &state,
 		const QString &zip,
 		const QString &country,

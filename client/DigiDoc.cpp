@@ -43,6 +43,10 @@ using namespace ria::qdigidoc4;
 
 static std::string to(const QString &str) { return str.toStdString(); }
 static QString from(const std::string &str) { return QString::fromStdString(str).normalized(QString::NormalizationForm_C); }
+static QSslCertificate toCertificate(const std::vector<unsigned char> &der)
+{
+	return QSslCertificate(QByteArray::fromRawData((const char *)der.data(), int(der.size())), QSsl::Der);
+}
 
 
 
@@ -180,11 +184,6 @@ QString DigiDocSignature::signedBy() const
 QString DigiDocSignature::spuri() const
 {
 	return from(s->SPUri());
-}
-
-QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char> &der) const
-{
-	return QSslCertificate(QByteArray::fromRawData((const char *)der.data(), int(der.size())), QSsl::Der);
 }
 
 QDateTime DigiDocSignature::toTime(const std::string &time) const
@@ -646,11 +645,11 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	}
 }
 
-bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip,
+QSslCertificate DigiDoc::sign(const QString &city, const QString &state, const QString &zip,
 	const QString &country, const QString &role, Signer *signer)
 {
 	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
-		return false;
+		return QSslCertificate();
 
 	try
 	{
@@ -663,7 +662,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		qApp->waitForTSL( fileName() );
 		b->sign(signer);
 		modified = true;
-		return true;
+		return toCertificate(signer->cert());
 	}
 	catch( const Exception &e )
 	{
@@ -677,7 +676,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		}
 		setLastError(tr("Failed to sign container"), e);
 	}
-	return false;
+	return QSslCertificate();
 }
 
 QList<DigiDocSignature> DigiDoc::signatures() const

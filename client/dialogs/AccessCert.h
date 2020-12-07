@@ -33,7 +33,7 @@ public:
 	bool validate();
 
 	static QSslCertificate cert();
-	void increment();
+	void increment(const QSslCertificate &signer);
 	bool installCert( const QByteArray &data, const QString &password );
 	void remove();
 
