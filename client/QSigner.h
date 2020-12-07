@@ -71,7 +71,7 @@ Q_SIGNALS:
 
 private:
 	static bool cardsOrder(const TokenData &s1, const TokenData &s2);
-	void run() override;
+	void run() final;
 
 	class Private;
 	Private *d;
