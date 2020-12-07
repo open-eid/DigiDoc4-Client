@@ -1,0 +1,126 @@
+name: CI
+on: [push, pull_request]
+env:
+  MAKEFLAGS: -j3
+  BUILD_NUMBER: ${{ github.run_number }}
+  AWS_DEFAULT_REGION: eu-west-1
+jobs:
+  macos:
+    name: Build on macOS
+    runs-on: macos-latest
+    env:
+      MACOSX_DEPLOYMENT_TARGET: '10.13'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: pkgs
+        path: libdigidocpp-pkg
+        repo: 'open-eid/libdigidocpp'
+    - name: Install dependencies
+      run: |
+        HASH=($(shasum prepare_osx_build_environment.sh))
+        aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.20.0.2.pkg opensc.pkg --no-sign-request
+        aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request
+        sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
+        sudo installer -verboseR -pkg opensc.pkg -target /
+        unzip -qq -d /tmp ${HASH}.zip
+        ln -s /usr/local/opt/openssl@1.1/lib/libcrypto.1.1.dylib /usr/local/lib/libcrypto.1.1.dylib
+        ln -s /usr/local/opt/openssl@1.1/lib/libssl.1.1.dylib /usr/local/lib/libssl.1.1.dylib
+    - name: Build
+      run: |
+        QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1)
+        echo "Qt - ${QT_DIR}"
+        mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl\@1.1 -DLDAP_ROOT=/tmp/OpenLDAP -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
+        make zipdebug macdeployqt zip
+        cd .. && mkdir upload && cp build/qdigidoc4*.zip upload/
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: pkgs
+        path: upload
+  ubuntu:
+    name: Build on Ubuntu to ${{ matrix.container }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
+    strategy:
+      matrix:
+        container: ['ubuntu:20.04', 'ubuntu:20.10']
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      DEBFULLNAME: 'github-actions'
+      DEBEMAIL: 'github-actions@github.com'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: apt-get update -qq && apt-get install -y dh-make devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: debs
+        path: libdigidocpp-pkg
+        repo: 'open-eid/libdigidocpp'
+    - name: Install artifact
+      run: dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+    - name: Setup changelog
+      run: |
+        export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
+        export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs)
+        dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSIONEX}
+        dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}."
+    - name: Build packages
+      run: |
+        dpkg-buildpackage -rfakeroot -us -uc
+        mkdir upload
+        cp ../qdigidoc4*.* upload
+    - name: Lintian
+      run: lintian ../*.deb;
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: debs
+        path: upload
+  coverity:
+    name: Run Coverity tests
+    if: contains(github.repository, 'open-eid/qdigidoc4') && contains(github.ref, 'coverity_scan')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: sudo apt-get update -qq && sudo apt-get install -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: debs
+        path: libdigidocpp-pkg
+        repo: 'open-eid/libdigidocpp'
+    - name: Install artifact
+      run: dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+    - name: Build and send to Coverity
+      continue-on-error: true
+      run: |
+        export TRAVIS_BRANCH=${GITHUB_REF##*/}
+        wget -O - https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh | bash
+      env:
+        COVERITY_SCAN_PROJECT_NAME: 'open-eid/qdigidoc4'
+        COVERITY_SCAN_NOTIFICATION_EMAIL: 'eid-teenusehaldus@ria.ee'
+        COVERITY_SCAN_BRANCH_PATTERN: 'coverity_scan'
+        COVERITY_SCAN_BUILD_COMMAND_PREPEND: 'cmake .'
+        COVERITY_SCAN_BUILD_COMMAND: 'make'
+        COVERITY_SCAN_TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
