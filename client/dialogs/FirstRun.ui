@@ -521,7 +521,7 @@ QWidget { border: none; }</string>
           <string notr="true">color: #353739;</string>
          </property>
          <property name="text">
-          <string>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</string>
+          <string>DigiDoc Client can be used to sign digitally with ID-card, mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -571,7 +571,7 @@ QWidget { border: none; }</string>
           <string notr="true">color: #353739;</string>
          </property>
          <property name="text">
-          <string>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</string>
+          <string>Manage your ID-card’s PIN/PUK codes and check personal data.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1140,7 +1140,7 @@ QPushButton:disabled {
         <string notr="true">color: #353739;</string>
        </property>
        <property name="text">
-        <string>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</string>
+        <string>Once the files have been selected, check them and choose whether you want to sign with ID-card, mobile-ID or Smart-ID. You can also save the container without signing.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1196,7 +1196,7 @@ QPushButton:disabled {
         <string notr="true">color: #353739;</string>
        </property>
        <property name="text">
-        <string>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</string>
+        <string>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

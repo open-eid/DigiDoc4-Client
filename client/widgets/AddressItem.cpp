@@ -150,11 +150,11 @@ void AddressItem::setIdType()
 	SslCertificate cert(key.cert);
 	SslCertificate::CertType type = cert.type();
 	if(type & SslCertificate::DigiIDType)
-		str = tr("Digi-ID");
+		str = tr("digi-ID");
 	else if(type & SslCertificate::EstEidType)
 		str = tr("ID-card");
 	else if(type & SslCertificate::MobileIDType)
-		str = tr("Mobile-ID");
+		str = tr("mobile-ID");
 	else if(type & SslCertificate::TempelType)
 	{
 		if(cert.keyUsage().contains(SslCertificate::NonRepudiation))

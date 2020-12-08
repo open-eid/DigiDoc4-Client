@@ -177,7 +177,7 @@ QPushButton:disabled {
     <string notr="true">color: #041E42;</string>
    </property>
    <property name="text">
-    <string>Enter your phone number to sign with Mobile ID</string>
+    <string>Enter your phone number to sign with mobile-ID</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

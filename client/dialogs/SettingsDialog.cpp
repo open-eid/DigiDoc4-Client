@@ -170,7 +170,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 			WarningDialog(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, this).exec();
 			return;
 		}
-		WarningDialog(tr("Digidoc4 client configuration update was successful."), this).exec();
+		WarningDialog(tr("DigiDoc4 client configuration update was successful."), this).exec();
 #ifdef Q_OS_WIN
 		QString path = qApp->applicationDirPath() + QStringLiteral("/id-updater.exe");
 		if (QFile::exists(path))

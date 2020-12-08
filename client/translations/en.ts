@@ -154,16 +154,16 @@
         <translation> (Yourself)</translation>
     </message>
     <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
+        <source>digi-ID</source>
+        <translation>digi-ID</translation>
     </message>
     <message>
         <source>ID-card</source>
         <translation>ID-card</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
+        <source>mobile-ID</source>
+        <translation>mobile-ID</translation>
     </message>
     <message>
         <source>Expires on</source>
@@ -989,16 +989,16 @@
         <translation>Manage your eID-s</translation>
     </message>
     <message>
-        <source>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
-        <translation>DigiDoc Client can be used to sign digitally with ID-card, Mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</translation>
+        <source>DigiDoc Client can be used to sign digitally with ID-card, mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</source>
+        <translation>DigiDoc Client can be used to sign digitally with ID-card, mobile-ID and Smart-ID, check the validity of digital signatures and open and save documents inside the signature container.</translation>
     </message>
     <message>
         <source>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</source>
         <translation>DigiDoc Client can also be used to encrypt data and decrypt the previously encrypted data. For encryption the program uses the authentication certificate of the ID-card.</translation>
     </message>
     <message>
-        <source>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</source>
-        <translation>Manage your ID-card’s PIN/PUK codes and check certificate renewals.</translation>
+        <source>Manage your ID-card’s PIN/PUK codes and check personal data.</source>
+        <translation>Manage your ID-card’s PIN/PUK codes and check personal data.</translation>
     </message>
     <message>
         <source>How to sign document digitally?</source>
@@ -1021,12 +1021,12 @@
         <translation>To sign the file, drag it from your computer to the DigiDoc application or click the &quot;... or load a file from disk&quot; button. You can drag or select multiple files at a time.</translation>
     </message>
     <message>
-        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</source>
-        <translation>Once the files have been selected, check them and choose whether you want to sign with ID-card, Mobile-ID or Smart-ID. You can also save the container without signing.</translation>
+        <source>Once the files have been selected, check them and choose whether you want to sign with ID-card, mobile-ID or Smart-ID. You can also save the container without signing.</source>
+        <translation>Once the files have been selected, check them and choose whether you want to sign with ID-card, mobile-ID or Smart-ID. You can also save the container without signing.</translation>
     </message>
     <message>
-        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</source>
-        <translation>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand. You will find the PIN2 code in the envelope that came with your ID-card, Mobile-ID or Smart-ID.</translation>
+        <source>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand.</source>
+        <translation>By entering the PIN2 code, you will have signed the document with digital signature that by law is equal to the signature signed by hand.</translation>
     </message>
     <message>
         <source>How to encrypt documents?</source>
@@ -1393,7 +1393,7 @@ LDAP server is unavailable.</translation>
     <message>
         <source>SignatureMobile</source>
         <translation>SIGN WITH
-MOBIIL-ID</translation>
+MOBILE-ID</translation>
     </message>
     <message>
         <source>SignatureSmartID</source>
@@ -1673,8 +1673,8 @@ ID-CARD</translation>
         <translation>No official email forwarding addresses was found</translation>
     </message>
     <message>
-        <source>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</source>
-        <translation>Your email account has been blocked. To open it, please send an email to toimetaja@eesti.ee or call 663 0215.</translation>
+        <source>Your email account has been blocked. To open it, please send an email to help@ria.ee.</source>
+        <translation>Your email account has been blocked. To open it, please send an email to help@ria.ee.</translation>
     </message>
     <message>
         <source>Invalid email address</source>
@@ -1741,8 +1741,8 @@ ID-CARD</translation>
 <context>
     <name>MobileDialog</name>
     <message>
-        <source>Enter your phone number to sign with Mobile ID</source>
-        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with Mobiil-ID&lt;/b&gt;</translation>
+        <source>Enter your phone number to sign with mobile-ID</source>
+        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with mobile-ID&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Remember me</source>
@@ -1814,14 +1814,14 @@ ID-CARD</translation>
         <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
     </message>
     <message>
-        <source>User is not a Mobile-ID client</source>
-        <translation>User is not a Mobiil-ID client</translation>
+        <source>User is not a mobile-ID client</source>
+        <translation>User is not a mobile-ID client</translation>
     </message>
     <message>
         <source>Make sure control code matches with one in phone screen
-and enter Mobile-ID PIN2-code.</source>
+and enter mobile-ID PIN2-code.</source>
         <translation>Make sure control code matches with one in phone screen
-and enter Mobiil-ID PIN2-code.</translation>
+and enter mobile-ID PIN2-code.</translation>
     </message>
     <message>
         <source>Control code:</source>
@@ -1869,8 +1869,8 @@ and enter Mobiil-ID PIN2-code.</translation>
         <translation>Session not found</translation>
     </message>
     <message>
-        <source>Mobile-ID</source>
-        <translation>Mobile-ID</translation>
+        <source>mobile-ID</source>
+        <translation>mobile-ID</translation>
     </message>
     <message>
         <source>Smart-ID</source>
@@ -1920,16 +1920,16 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Sign document</translation>
     </message>
     <message>
-        <source>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</source>
-        <translation>Your Mobile-ID transaction has failed. Please contact your mobile network operator.</translation>
+        <source>Your mobile-ID transaction has failed. Please contact your mobile network operator.</source>
+        <translation>Your mobile-ID transaction has failed. Please contact your mobile network operator.</translation>
     </message>
     <message>
         <source>User denied or cancelled</source>
         <translation>User denied or cancelled</translation>
     </message>
     <message>
-        <source>Your Mobile-ID transaction has expired. Please try again.</source>
-        <translation>Your Mobile-ID transaction has expired. Please try again.</translation>
+        <source>Your mobile-ID transaction has expired. Please try again.</source>
+        <translation>Your mobile-ID transaction has expired. Please try again.</translation>
     </message>
     <message>
         <source>Your Smart-ID transaction has expired. Please try again.</source>
@@ -1946,6 +1946,10 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</source>
         <translation>Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
     </message>
     <message>
         <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
@@ -2792,12 +2796,12 @@ Additional licenses and components</translation>
         <translation>Help</translation>
     </message>
     <message>
-        <source>Access to Mobile-ID and Smart-ID service</source>
-        <translation>Access to Mobile-ID and Smart-ID service</translation>
+        <source>Access to mobile-ID and Smart-ID service</source>
+        <translation>Access to mobile-ID and Smart-ID service</translation>
     </message>
     <message>
-        <source>Digidoc4 client configuration update was successful.</source>
-        <translation>Digidoc4 client configuration update was successful.</translation>
+        <source>DigiDoc4 client configuration update was successful.</source>
+        <translation>DigiDoc4 client configuration update was successful.</translation>
     </message>
     <message>
         <source>%1 version %2, released %3</source>

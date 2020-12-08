@@ -730,7 +730,7 @@ QRadioButton, QCheckBox {
             <string notr="true">color: #041E42;</string>
            </property>
            <property name="text">
-            <string>Access to Mobile-ID and Smart-ID service</string>
+            <string>Access to mobile-ID and Smart-ID service</string>
            </property>
           </widget>
          </item>

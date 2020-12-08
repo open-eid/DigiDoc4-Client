@@ -170,12 +170,12 @@ MobileProgress::MobileProgress(QWidget *parent)
 			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 			return;
 		case QNetworkReply::AuthenticationRequiredError:
-			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Mobile-ID")));
+			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 			return;
 		default:
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
 			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Mobile-ID")));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
@@ -231,11 +231,11 @@ MobileProgress::MobileProgress(QWidget *parent)
 				d->l.exit(QDialog::Accepted);
 			}
 			else if(endResult == QStringLiteral("NOT_MID_CLIENT") || endResult == QStringLiteral("NOT_FOUND") || endResult == QStringLiteral("NOT_ACTIVE"))
-				returnError(tr("User is not a Mobile-ID client"));
+				returnError(tr("User is not a mobile-ID client"));
 			else if(endResult == QStringLiteral("USER_CANCELLED"))
 				returnError(tr("User denied or cancelled"));
 			else if(endResult == QStringLiteral("TIMEOUT"))
-				returnError(tr("Your Mobile-ID transaction has expired. Please try again."));
+				returnError(tr("Your mobile-ID transaction has expired. Please try again."));
 			else if(endResult == QStringLiteral("PHONE_ABSENT"))
 				returnError(tr("Phone is not in coverage area"));
 			else if(endResult == QStringLiteral("DELIVERY_ERROR"))
@@ -243,7 +243,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			else if(endResult == QStringLiteral("SIM_ERROR"))
 				returnError(tr("SIM error"));
 			else if(endResult == QStringLiteral("SIGNATURE_HASH_MISMATCH"))
-				returnError(tr("Your Mobile-ID transaction has failed. Please contact your mobile network operator."));
+				returnError(tr("Your mobile-ID transaction has failed. Please contact your mobile network operator."));
 			else
 				returnError(tr("Service result:") + endResult);
 			return;
@@ -309,7 +309,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 
 	d->code->setText(QStringLiteral("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
 	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
-		"and enter Mobile-ID PIN2-code."));
+		"and enter mobile-ID PIN2-code."));
 
 	QHash<QString,QString> lang;
 	lang[QStringLiteral("et")] = QStringLiteral("EST");
