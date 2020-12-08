@@ -21,8 +21,6 @@
 #include "ui_FileItem.h"
 #include "Styles.h"
 
-#include <QtCore/QFileInfo>
-
 using namespace ria::qdigidoc4;
 
 FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
@@ -42,7 +40,7 @@ FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
 	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 
-	fileName = QFileInfo(file).fileName();
+	fileName = file;
 	setFileName();
 }
 

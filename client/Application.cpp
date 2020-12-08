@@ -1025,7 +1025,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	{
 		// else select first window with no open files
 		MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
-		if(main && main->digiDocPath().isEmpty() && main->cryptoPath().isEmpty())
+		if(main && main->windowFilePath().isEmpty())
 			w = main;
 	}
 	if( !w )

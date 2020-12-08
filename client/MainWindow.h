@@ -47,8 +47,6 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() final;
 
-	QString cryptoPath();
-	QString digiDocPath();
 	void showSettings(int page);
 
 signals:
