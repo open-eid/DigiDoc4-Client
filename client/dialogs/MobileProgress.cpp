@@ -21,6 +21,7 @@
 #include "ui_MobileProgress.h"
 
 #include "Styles.h"
+#include "WarningDialog.h"
 
 #include <common/Common.h>
 #include <common/Configuration.h>
@@ -116,7 +117,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	d->manager = new QNetworkAccessManager(d);
-	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, [=](QNetworkReply *reply, const QList<QSslError> &err) {
+	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [=](QNetworkReply *reply, const QList<QSslError> &err) {
 		QList<QSslError> ignore;
 		for(const QSslError &e: err)
 		{
@@ -129,6 +130,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 					ignore << e;
 					break;
 				}
+				Q_FALLTHROUGH();
 			default:
 				qCWarning(MIDLog) << "SSL Error:" << e.error() << e.certificate().subjectInfo(QSslCertificate::CommonName);
 				break;
@@ -136,16 +138,15 @@ MobileProgress::MobileProgress(QWidget *parent)
 		}
 		reply->ignoreSslErrors(ignore);
 	});
-	QObject::connect(d->manager, &QNetworkAccessManager::finished, [=](QNetworkReply *reply) {
+	QObject::connect(d->manager, &QNetworkAccessManager::finished, d, [=](QNetworkReply *reply) {
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=](const QString &err) {
+		auto returnError = [=](const QString &err, const QString &details = {}) {
 			qCWarning(MIDLog) << err;
-			d->labelError->setText(err);
-			d->code->hide();
-			d->controlCode->hide();
-			d->signProgressBar->hide();
-			d->show();
 			stop();
+			d->hide();
+			WarningDialog dlg(err, details, d->parentWidget());
+			QObject::connect(&dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
+			dlg.exec();
 		};
 
 		switch(reply->error())
@@ -178,7 +179,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
-				returnError(tr("Failed to send request. ") + reply->errorString());
+				returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")), reply->errorString());
 			return;
 		}
 		static const QStringList contentType{"application/json", "application/json;charset=UTF-8"};
@@ -197,9 +198,9 @@ MobileProgress::MobileProgress(QWidget *parent)
 			return;
 		}
 
-		if(result.contains("error"))
+		if(result.contains(QStringLiteral("error")))
 		{
-			QString error =result["error"].toString();
+			QString error =result[QStringLiteral("error")].toString();
 			if(error == QStringLiteral("phoneNumber must contain of + and numbers(8-30)"))
 				returnError(tr("Please include correct country code."));
 			else
@@ -306,7 +307,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	else
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
 
-	d->code->setText(QString("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
+	d->code->setText(QStringLiteral("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
 	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
 		"and enter mobile-ID PIN2-code."));
 

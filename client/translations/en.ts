@@ -1845,10 +1845,6 @@ and enter mobile-ID PIN2-code.</translation>
         <translation>%1 service has encountered technical errors. Please try again later.</translation>
     </message>
     <message>
-        <source>Failed to send request. </source>
-        <translation>Failed to send request. </translation>
-    </message>
-    <message>
         <source>Invalid content type header </source>
         <translation>Invalid content type header </translation>
     </message>
@@ -1954,6 +1950,10 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Mobile-ID</source>
         <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
+        <translation>Failed to send request. %1 service has encountered technical errors. Please try again later.</translation>
     </message>
 </context>
 <context>

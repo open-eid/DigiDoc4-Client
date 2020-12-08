@@ -22,7 +22,7 @@
 #include <QtCore/QObject>
 
 class QSslCertificate;
-class LdapSearch: public QObject
+class LdapSearch final: public QObject
 {
 	Q_OBJECT
 
@@ -31,10 +31,10 @@ public:
 	~LdapSearch() final;
 
 	bool isSSL() const;
-	void search(const QString &search, const QString &type);
+	void search(const QString &search, const QVariantMap &userData);
 
 Q_SIGNALS:
-	void searchResult(const QList<QSslCertificate> &result, int resultCount, const QString &type);
+	void searchResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 	void error( const QString &msg, const QString &details );
 
 private:

@@ -43,27 +43,6 @@ using namespace ria::qdigidoc4;
 
 static std::string to(const QString &str) { return str.toStdString(); }
 static QString from(const std::string &str) { return QString::fromStdString(str).normalized(QString::NormalizationForm_C); }
-static QByteArray fromVector( const std::vector<unsigned char> &d )
-{ return QByteArray((const char *)d.data(), int(d.size())); }
-
-
-
-class OpEmitter
-{
-public:
-	OpEmitter(DigiDoc *digiDoc, DigiDoc::Operation operation) : doc(digiDoc), op(operation) 
-	{
-		emit doc->operation(op, true);
-	}
-	~OpEmitter()
-	{
-		emit doc->operation(op, false);
-	}
-
-private:
-	DigiDoc *doc;
-	DigiDoc::Operation op;
-};
 
 
 
@@ -74,12 +53,7 @@ DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const Di
 
 QSslCertificate DigiDocSignature::cert() const
 {
-	try
-	{
-		return QSslCertificate( fromVector(s->signingCertificate()), QSsl::Der );
-	}
-	catch( const Exception & ) {}
-	return QSslCertificate();
+	return toCertificate(s->signingCertificate());
 }
 
 QDateTime DigiDocSignature::claimedTime() const
@@ -97,7 +71,7 @@ QString DigiDocSignature::lastError() const { return m_lastError; }
 QString DigiDocSignature::location() const
 {
 	QStringList l = locations();
-	l.removeAll(QString());
+	l.removeAll({});
 	return l.join(QStringLiteral(", "));
 }
 
@@ -112,13 +86,13 @@ QStringList DigiDocSignature::locations() const
 
 QByteArray DigiDocSignature::messageImprint() const
 {
-	return fromVector(s->messageImprint());
+	std::vector<unsigned char> d = s->messageImprint();
+	return {(const char *)d.data(), int(d.size())};
 }
 
 QSslCertificate DigiDocSignature::ocspCert() const
 {
-	return QSslCertificate(
-		fromVector(s->OCSPCertificate()), QSsl::Der );
+	return toCertificate(s->OCSPCertificate());
 }
 
 QDateTime DigiDocSignature::ocspTime() const
@@ -171,7 +145,7 @@ QString DigiDocSignature::profile() const
 QString DigiDocSignature::role() const
 {
 	QStringList r = roles();
-	r.removeAll(QString());
+	r.removeAll({});
 	return r.join(QStringLiteral(" / "));
 }
 
@@ -208,6 +182,11 @@ QString DigiDocSignature::spuri() const
 	return from(s->SPUri());
 }
 
+QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char> &der) const
+{
+	return QSslCertificate(QByteArray::fromRawData((const char *)der.data(), int(der.size())), QSsl::Der);
+}
+
 QDateTime DigiDocSignature::toTime(const std::string &time) const
 {
 	QDateTime date;
@@ -225,8 +204,7 @@ QDateTime DigiDocSignature::trustedTime() const
 
 QSslCertificate DigiDocSignature::tsCert() const
 {
-	return QSslCertificate(
-		fromVector(s->TimeStampCertificate()), QSsl::Der );
+	return toCertificate(s->TimeStampCertificate());
 }
 
 QDateTime DigiDocSignature::tsTime() const
@@ -236,8 +214,7 @@ QDateTime DigiDocSignature::tsTime() const
 
 QSslCertificate DigiDocSignature::tsaCert() const
 {
-	return QSslCertificate(
-		fromVector(s->ArchiveTimeStampCertificate()), QSsl::Der );
+	return toCertificate(s->ArchiveTimeStampCertificate());
 }
 
 QDateTime DigiDocSignature::tsaTime() const
@@ -267,10 +244,6 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate() const
 		return result;
 	case Invalid: return result;
 	default:
-		if( SslCertificate( cert() ).type() & SslCertificate::TestType ||
-			SslCertificate( ocspCert() ).type() & SslCertificate::TestType )
-			return Test;
-
 		return result;
 	}
 }
@@ -320,7 +293,7 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
-			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName), QString());
+			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
 			return false;
 		}
 	}
@@ -340,7 +313,7 @@ void SDocumentModel::addTempReference(const QString &file)
 QString SDocumentModel::data(int row) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	return from(doc->b->dataFiles().at(size_t(row))->fileName());
 }
@@ -348,7 +321,7 @@ QString SDocumentModel::data(int row) const
 QString SDocumentModel::fileSize(int row) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	return FileDialog::fileSize(doc->b->dataFiles().at(size_t(row))->fileSize());
 }
@@ -356,7 +329,7 @@ QString SDocumentModel::fileSize(int row) const
 QString SDocumentModel::mime(int row) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	return from(doc->b->dataFiles().at(size_t(row))->mediaType());
 }
@@ -406,7 +379,7 @@ int SDocumentModel::rowCount() const
 QString SDocumentModel::save(int row, const QString &path) const
 {
 	if(row >= rowCount())
-		return QString();
+		return {};
 
 	QFile::remove( path );
 	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
@@ -546,7 +519,7 @@ bool DigiDoc::open( const QString &file )
 		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
-			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && !serviceConfirmation())
+			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && serviceConfirmation())
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
@@ -574,7 +547,7 @@ bool DigiDoc::open( const QString &file )
 	return false;
 }
 
-bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
+void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
 {
 	causes << QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg()));
 	switch( e.code() )
@@ -593,10 +566,8 @@ bool DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 		code = e.code();
 	default: break;
 	}
-	Exception::Causes list = e.causes();
-	return std::any_of(list.cbegin(), list.cend(), [&](const Exception &c) {
-		return parseException(c, causes, code);
-	});
+	for(const Exception &c: e.causes())
+		parseException(c, causes, code);
 }
 
 void DigiDoc::removeSignature( unsigned int num )
@@ -624,13 +595,19 @@ bool DigiDoc::save( const QString &filename )
 
 bool DigiDoc::saveAs(const QString &filename)
 {
-	OpEmitter op(this, Saving);
 	try
 	{
-		b->save(to(filename));
+		if(parentContainer)
+			parentContainer->save(to(filename));
+		else
+			b->save(to(filename));
 		return true;
 	}
-	catch( const Exception &e ) { setLastError( tr("Failed to save container"), e ); }
+	catch( const Exception &e ) {
+		QFile::remove(filename);
+		if(!QFile::copy(m_fileName, filename))
+			setLastError(tr("Failed to save container"), e);
+	}
 	return false;
 }
 
@@ -675,7 +652,6 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
 		return false;
 
-	OpEmitter op(this, Signing);
 	try
 	{
 		signer->setSignatureProductionPlace(to(city), to(state), to(zip), to(country));

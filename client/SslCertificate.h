@@ -63,14 +63,7 @@ public:
 		TempelType = 1 << 4,
 		EidType = 1 << 5,
 		EResidentSubType = 1 << 6,
-		TestType = 1 << 7,
 		EResidentType = DigiIDType|EResidentSubType,
-		DigiIDTestType = DigiIDType|TestType,
-		EResidentTestType = DigiIDType|EResidentSubType|TestType,
-		EstEidTestType = EstEidType|TestType,
-		MobileIDTestType = MobileIDType|TestType,
-		OCSPTestType = OCSPType|TestType,
-		TempelTestType = TempelType|TestType
 	};
 
 	SslCertificate();

@@ -26,7 +26,6 @@
 #include <QDialog>
 #include <QHash>
 
-
 namespace Ui {
 class AddRecipients;
 }
@@ -34,7 +33,7 @@ class AddRecipients;
 class LdapSearch;
 class QSslCertificate;
 
-class AddRecipients : public QDialog
+class AddRecipients final : public QDialog
 {
 	Q_OBJECT
 
@@ -64,9 +63,9 @@ private:
 	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
 	void saveHistory();
-	void search(const QString &term, const QString &type = {});
+	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
-	void showResult(const QList<QSslCertificate> &result, int resultCount, const QString &type);
+	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 	HistoryCertData toHistory(const QSslCertificate& cert) const;
 	QString toType(const SslCertificate &cert) const;
 
@@ -76,8 +75,6 @@ private:
 	QHash<QSslCertificate, AddressItem *> leftList;
 	QList<QSslCertificate> rightList;
 	LdapSearch *ldap_person, *ldap_corp;
-	bool personSearch = false;
-	bool select = false;
 	bool updated = false;
 
 	QList<HistoryCertData> historyCertData;

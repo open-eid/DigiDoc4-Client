@@ -22,7 +22,7 @@
 #include "dialogs/WarningDialog.h"
 
 class QSslCertificate;
-class AccessCert: public WarningDialog
+class AccessCert final: public WarningDialog
 {
 	Q_OBJECT
 

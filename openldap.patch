@@ -1,0 +1,12 @@
+--- openldap-2.4.56/libraries/libldap/tls2.c.orig	2020-11-11 12:15:02.000000000 +0200
++++ openldap-2.4.56/libraries/libldap/tls2.c	2020-11-11 12:15:47.000000000 +0200
+@@ -33,6 +33,9 @@
+ 
+ #include "ldap-int.h"
+ 
++int
++ldap_pvt_tls_check_hostname( LDAP *ld, void *s, const char *name_in );
++
+ #ifdef HAVE_TLS
+ 
+ #include "ldap-tls.h"

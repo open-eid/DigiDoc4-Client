@@ -84,16 +84,16 @@ SslCertificate::SslCertificate( const QSslCertificate &cert )
 : QSslCertificate( cert ) {}
 
 QString SslCertificate::issuerInfo( const QByteArray &tag ) const
-{ return QSslCertificate::issuerInfo( tag ).value(0); }
+{ return QSslCertificate::issuerInfo(tag).join(' '); }
 
 QString SslCertificate::issuerInfo( QSslCertificate::SubjectInfo subject ) const
- { return QSslCertificate::issuerInfo( subject ).value(0); }
+ { return QSslCertificate::issuerInfo(subject).join(' '); }
 
 QString SslCertificate::subjectInfo( const QByteArray &tag ) const
- { return QSslCertificate::subjectInfo( tag ).value(0); }
+ { return QSslCertificate::subjectInfo(tag).join(' '); }
 
 QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) const
-{ return QSslCertificate::subjectInfo( subject ).value(0); }
+{ return QSslCertificate::subjectInfo(subject).join(' '); }
 
 QByteArray SslCertificate::authorityKeyIdentifier() const
 {
@@ -341,54 +341,35 @@ SslCertificate::CertType SslCertificate::type() const
 {
 	for(const QString &p: policies())
 	{
-		if( enhancedKeyUsage().keys().contains( OCSPSign ) )
-		{
-			return
-				p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3")) ||
-				subjectInfo(QSslCertificate::CommonName).indexOf(QLatin1String("TEST")) != -1 ?
-				OCSPTestType : OCSPType;
-		}
-
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")))
+		if(enhancedKeyUsage().keys().contains(OCSPSign))
+			return OCSPType;
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")))
 			return EstEidType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")))
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.2")))
 			return subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("E-RESIDENT")) ? EResidentType : DigiIDType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.3")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.11.1")))
-			return MobileIDType;
-
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")))
-			return EstEidTestType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.2")))
-			return subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("E-RESIDENT")) ? EResidentTestType : DigiIDTestType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.11.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.3")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.11")))
-			return MobileIDTestType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.7")) ||
-			((p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.1")) ||
-			  p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.3"))) &&
-			 issuerInfo(QSslCertificate::CommonName).indexOf(QLatin1String("TEST")) != -1))
-			return TempelTestType;
-
+			return MobileIDType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.7.3")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.2.1")) )
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.2.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.7")))
 			return TempelType;
-
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.3")))
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.3")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.3")))
 			return DigiIDType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.4")))
+		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.4")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
 			return EResidentType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.3")))
-			return DigiIDTestType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
-			return EResidentTestType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")))
-			return EstEidType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")))
-			return EstEidTestType;
+			return EstEidType;
 	}
 
 	// Check qcStatements extension according to ETSI EN 319 412-5

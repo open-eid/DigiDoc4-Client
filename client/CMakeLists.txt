@@ -142,35 +142,35 @@ if( APPLE )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
-		COMMAND mkdir -p $<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook
-		COMMAND cp -a $<TARGET_FILE_DIR:DigiDocQL>/../../../DigiDocQL.qlgenerator
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook )
+		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
+		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
+	)
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
-		COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app/Contents/Frameworks/
-		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt ${CMAKE_CURRENT_BINARY_DIR}/${PROGNAME}.app
-		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/imageformats -type f -a ! -name libqgif.dylib -a ! -name libqjpeg.dylib -a ! -name libqsvg.dylib -delete
-		COMMAND rm -rf $<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/bearer
-		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks
-		COMMAND rm $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Resources/digidoc-tool
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libcrypto.dylib
-		    $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libcrypto.1.1.dylib
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libcrypto.dylib
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libcrypto.dylib
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libssl.dylib
-		    $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libssl.1.1.dylib
-		COMMAND ln -sf ../Frameworks/digidocpp.framework/Libraries/libssl.dylib
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/libssl.dylib
-		COMMAND find $<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks -name Headers | xargs rm -rf
+		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt $<TARGET_BUNDLE_DIR:${PROGNAME}>
+		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/bearer
+		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks
+		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
+		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks -name Headers | xargs rm -rf
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
+		# For QT
+		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.dylib
+		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.dylib
+		# For Target
+		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.1.1.dylib
+		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.1.1.dylib
 	)
 
 	add_custom_target( codesign DEPENDS ${PROGNAME}
 		COMMAND codesign -f -s \"$$SIGNCERT\"
 			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/digidocpp.framework/Libraries/*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Frameworks/*.framework
-			$<TARGET_FILE_DIR:${PROGNAME}>/../PlugIns/*/*
-			$<TARGET_FILE_DIR:${PROGNAME}>/../Library/QuickLook/DigiDocQL.qlgenerator
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Libraries/*
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/*.framework
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/*/*
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
 			else

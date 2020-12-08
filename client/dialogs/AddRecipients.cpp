@@ -190,10 +190,11 @@ void AddRecipients::addRecipientFromHistory()
 
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 {
-	if(leftList.contains(cert))
-		return nullptr;
+	AddressItem *leftItem = leftList.value(cert);
+	if(leftItem)
+		return leftItem;
 
-	AddressItem *leftItem = new AddressItem(CKey(cert), ui->leftPane);
+	leftItem = new AddressItem(CKey(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
 	bool contains = rightList.contains(cert);
@@ -265,9 +266,8 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	ui->leftPane->clear();
 	for(const HistoryCertData &certData: selectedCertData) {
 		QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
-		search(term, certData.type);
+		search(term, true, certData.type);
 	}
-	select = true;
 }
 
 QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValue)
@@ -399,17 +399,19 @@ void AddRecipients::saveHistory()
 	xml.writeEndDocument();
 }
 
-void AddRecipients::search(const QString &term, const QString &type)
+void AddRecipients::search(const QString &term, bool select, const QString &type)
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	ui->confirm->setDefault(false);
 	ui->confirm->setAutoDefault(false);
 	QRegExp isDigit( "\\d*" );
 
-	select = false;
-	personSearch = false;
+	QVariantMap userData {
+		{"type", type},
+		{"select", select}
+	};
 	QString cleanTerm = term.simplified();
-	if( isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
+	if(isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
 	{
 		if(cleanTerm.size() == 11)
 		{
@@ -419,15 +421,15 @@ void AddRecipients::search(const QString &term, const QString &type)
 				WarningDialog::warning(this, tr("Personal code is not valid!"));
 				return;
 			}
-			personSearch = true;
-			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), type);
+			userData["personSearch"] = true;
+			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), userData);
 		}
 		else
-			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), type);
+			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
 	}
 	else
 	{
-		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), type);
+		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), userData);
 	}
 }
 
@@ -437,7 +439,7 @@ void AddRecipients::showError( const QString &msg, const QString &details )
 	WarningDialog(msg, details, this).exec();
 }
 
-void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QString &type)
+void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData)
 {
 	QList<QSslCertificate> filter;
 	for(const QSslCertificate &k: result)
@@ -446,7 +448,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
 			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
-			(personSearch || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
+			(userData.value("personSearch", false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
 			c.type() != SslCertificate::MobileIDType)
 			filter << c;
 	}
@@ -458,17 +460,13 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	}
 	else
 	{
-		Item *item = nullptr;
-
 		for(const QSslCertificate &k: filter)
 		{
-			auto address = addRecipientToLeftPane(k);
-			if(!item && (type.isEmpty() || toType(SslCertificate(k)) == type))
-				item = address;
+			Item *item = addRecipientToLeftPane(k);
+			if(userData.value(QStringLiteral("select"), false).toBool() &&
+				(userData.value(QStringLiteral("type")).isNull() || toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
+				addRecipientToRightPane(item, true);
 		}
-
-		if(select && item)
-			addRecipientToRightPane(item, true);
 	}
 
 	if(resultCount >= 50)

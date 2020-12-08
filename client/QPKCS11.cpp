@@ -152,7 +152,7 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	};
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
 	if(d->f->C_DeriveKey(d->session, &mech, key[0], newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
-		return QByteArray();
+		return {};
 
 	return d->attribute(d->session, newkey, CKA_VALUE);
 }
@@ -313,27 +313,22 @@ QList<TokenData> QPKCS11::tokens() const
 			d->f->C_GetTokenInfo(slot, &token) != CKR_OK ||
 			d->f->C_OpenSession(slot, CKF_SERIAL_SESSION, nullptr, nullptr, &session) != CKR_OK)
 			continue;
-		bool isAuthSlot = false;
 		for( CK_OBJECT_HANDLE obj: d->findObject( session, CKO_CERTIFICATE ) )
 		{
 			SslCertificate cert(d->attribute(session, obj, CKA_VALUE), QSsl::Der);
 			if(cert.isCA())
 				continue;
+			QByteArray id = d->attribute(session, obj, CKA_ID);
 			// Hack: Workaround broken FIN pkcs11 drivers showing non-repu certificates in auth slot
-			if(d->isFinDriver)
-			{
-				if(isAuthSlot)
-					continue;
-				if(!cert.keyUsage().contains(SslCertificate::NonRepudiation))
-					isAuthSlot = true;
-			}
+			if(d->isFinDriver && d->findObject(session, CKO_PUBLIC_KEY, id).empty())
+				continue;
 			TokenData t;
 			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
 				toQByteArray(token.serialNumber).trimmed() : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 			t.setCert(cert);
 			t.setReader(QByteArray::fromRawData((const char*)slotInfo.slotDescription, sizeof(slotInfo.slotDescription)).trimmed());
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
-			t.setData(QStringLiteral("id"), d->attribute(session, obj, CKA_ID));
+			t.setData(QStringLiteral("id"), id);
 			list << t;
 		}
 		d->f->C_CloseSession( session );
@@ -354,6 +349,7 @@ bool QPKCS11::reload()
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 #elif defined(Q_OS_WIN)
 		{ "opensc-pkcs11.dll", QByteArray() },
 		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3BF81300008131FE45536D617274417070F8" },
@@ -373,7 +369,9 @@ bool QPKCS11::reload()
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
 		{ "libcryptoki.so", "3B7B940000806212515646696E454944" },
 #endif
+		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
+		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 #endif
 	};
 	for(const QString &reader: QPCSC::instance().readers())

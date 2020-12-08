@@ -21,6 +21,7 @@
 
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
+#include <QtCore/QVariantMap>
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
@@ -127,7 +128,7 @@ bool LdapSearch::isSSL() const
 	return QUrl(d->host).scheme() == QStringLiteral("ldaps");
 }
 
-void LdapSearch::search(const QString &search, const QString &type)
+void LdapSearch::search(const QString &search, const QVariantMap &userData)
 {
 	if(!init())
 	{
@@ -146,7 +147,7 @@ void LdapSearch::search(const QString &search, const QString &type)
 		return setLastError( tr("Failed to init ldap search"), err );
 
 	QTimer *timer = new QTimer(this);
-	connect(timer, &QTimer::timeout, this, [=] {
+	connect(timer, &QTimer::timeout, this, [this, msg_id, timer, userData] {
 		LDAPMessage *result = nullptr;
 		LDAP_TIMEVAL t = { 5, 0 };
 		int err = ldap_result(d->ldap, msg_id, LDAP_MSG_ALL, &t, &result);
@@ -186,7 +187,7 @@ void LdapSearch::search(const QString &search, const QString &type)
 		}
 		ldap_msgfree(result);
 
-		Q_EMIT searchResult(list, count, type);
+		Q_EMIT searchResult(list, count, userData);
 	});
 	timer->start(1000);
 }
