@@ -20,14 +20,12 @@
 #pragma once
 
 #include <QWidget>
-#include <QPainter>
-#include <QStyleOption>
 
 namespace Ui {
 class OtherData;
 }
 
-class OtherData : public QWidget
+class OtherData final : public QWidget
 {
 	Q_OBJECT
 
@@ -35,7 +33,7 @@ public:
 	explicit OtherData( QWidget *parent = nullptr );
 	~OtherData() final;
 
-	bool update(bool activate, const QByteArray &data = QByteArray());
+	bool update(bool activate, const QByteArray &data = {});
 	QString getEmail();
 	void setFocusToEmail();
 
