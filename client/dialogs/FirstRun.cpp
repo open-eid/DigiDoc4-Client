@@ -65,7 +65,7 @@ FirstRun::FirstRun(QWidget *parent)
 	else
 		ui->lang->setCurrentIndex(0);
 
-	connect( ui->lang, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this](int index) {
+	connect(ui->lang, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
 		switch(index)
 		{
 		case 1: emit langChanged(QStringLiteral("en")); break;

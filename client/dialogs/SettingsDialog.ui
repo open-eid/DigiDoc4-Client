@@ -233,6 +233,12 @@ QLineEdit {
     background-color: #FFFFFF;
     min-height: 31px;
 }
+QCheckBox, QRadioButton {
+    min-height: 31px;
+}
+QCheckBox:disabled {
+    color: #75787B;
+}
 QCheckBox::indicator, QRadioButton::indicator {
     width: 14px;
     height: 14px;
@@ -286,7 +292,7 @@ QRadioButton::indicator::checked {
        <item>
         <layout class="QHBoxLayout" name="languageBoxLayout">
          <item>
-          <widget class="QRadioButton" name="rdGeneralEstonian">
+          <widget class="RadioButton" name="rdGeneralEstonian">
            <property name="text">
             <string notr="true">Eesti</string>
            </property>
@@ -299,7 +305,7 @@ QRadioButton::indicator::checked {
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="rdGeneralRussian">
+          <widget class="RadioButton" name="rdGeneralRussian">
            <property name="text">
             <string notr="true">Русский</string>
            </property>
@@ -309,7 +315,7 @@ QRadioButton::indicator::checked {
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="rdGeneralEnglish">
+          <widget class="RadioButton" name="rdGeneralEnglish">
            <property name="text">
             <string notr="true">English</string>
            </property>
@@ -334,7 +340,7 @@ QRadioButton::indicator::checked {
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="chkGeneralTslRefresh">
+        <widget class="CheckBox" name="chkGeneralTslRefresh">
          <property name="text">
           <string>Online TSL digest check</string>
          </property>
@@ -344,14 +350,14 @@ QRadioButton::indicator::checked {
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="chkShowPrintSummary">
+        <widget class="CheckBox" name="chkShowPrintSummary">
          <property name="text">
           <string>Show print summary</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="chkRoleAddressInfo">
+        <widget class="CheckBox" name="chkRoleAddressInfo">
          <property name="text">
           <string>Ask role and address info on signing</string>
          </property>
@@ -373,10 +379,10 @@ QRadioButton::indicator::checked {
           <number>2</number>
          </property>
          <property name="verticalSpacing">
-          <number>20</number>
+          <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QRadioButton" name="rdGeneralSameDirectory">
+          <widget class="RadioButton" name="rdGeneralSameDirectory">
            <property name="text">
             <string>Same folder</string>
            </property>
@@ -386,7 +392,7 @@ QRadioButton::indicator::checked {
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
+          <widget class="RadioButton" name="rdGeneralSpecifyDirectory">
            <property name="text">
             <string>Select the default directory</string>
            </property>
@@ -398,7 +404,7 @@ QRadioButton::indicator::checked {
            </attribute>
           </widget>
          </item>
-         <item row="0" column="1" rowspan="2">
+         <item row="1" column="1">
           <widget class="QToolButton" name="btGeneralChooseDirectory">
            <property name="minimumSize">
             <size>
@@ -420,13 +426,13 @@ QRadioButton::indicator::checked {
            </property>
           </widget>
          </item>
-         <item row="0" column="2" rowspan="2">
+         <item row="1" column="2">
           <widget class="QLineEdit" name="txtGeneralDirectory"/>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="tokenBackend">
+        <widget class="CheckBox" name="tokenBackend">
          <property name="text">
           <string>I would like to sign with Lithuanian, Latvian ID-card</string>
          </property>
@@ -454,9 +460,6 @@ QPushButton {
 	padding-bottom:1px; 
 	text-align: middle;
 	min-height: 30px;
-}
-QRadioButton, QCheckBox {
-	min-height: 31px;
 }</string>
       </property>
       <layout class="QVBoxLayout" name="pageServicesLayout">
@@ -609,7 +612,7 @@ QRadioButton, QCheckBox {
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="chkIgnoreAccessCert">
+        <widget class="CheckBox" name="chkIgnoreAccessCert">
          <property name="text">
           <string>Ignore server access certificate (IP based access)</string>
          </property>
@@ -687,7 +690,7 @@ QRadioButton, QCheckBox {
         </layout>
        </item>
        <item>
-        <widget class="QRadioButton" name="rdTimeStampDefault">
+        <widget class="RadioButton" name="rdTimeStampDefault">
          <property name="text">
           <string>Use default access</string>
          </property>
@@ -700,7 +703,7 @@ QRadioButton, QCheckBox {
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="rdTimeStampCustom">
+        <widget class="RadioButton" name="rdTimeStampCustom">
          <property name="text">
           <string>Use manually configured access</string>
          </property>
@@ -772,7 +775,7 @@ QRadioButton, QCheckBox {
         </layout>
        </item>
        <item>
-        <widget class="QRadioButton" name="rdMIDUUIDDefault">
+        <widget class="RadioButton" name="rdMIDUUIDDefault">
          <property name="text">
           <string>Use default access</string>
          </property>
@@ -785,7 +788,7 @@ QRadioButton, QCheckBox {
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="rdMIDUUIDCustom">
+        <widget class="RadioButton" name="rdMIDUUIDCustom">
          <property name="text">
           <string>Use manually configured access</string>
          </property>
@@ -846,13 +849,7 @@ QRadioButton, QCheckBox {
         <number>20</number>
        </property>
        <item row="0" column="0" colspan="2">
-        <widget class="QRadioButton" name="rdProxyNone">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
+        <widget class="RadioButton" name="rdProxyNone">
          <property name="text">
           <string>No proxy</string>
          </property>
@@ -862,26 +859,14 @@ QRadioButton, QCheckBox {
         </widget>
        </item>
        <item row="1" column="0" colspan="2">
-        <widget class="QRadioButton" name="rdProxySystem">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
+        <widget class="RadioButton" name="rdProxySystem">
          <property name="text">
           <string>Use system proxy settings</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0" colspan="2">
-        <widget class="QRadioButton" name="rdProxyManual">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
+        <widget class="RadioButton" name="rdProxyManual">
          <property name="text">
           <string>Manual proxy configuration</string>
          </property>
@@ -950,19 +935,7 @@ QRadioButton, QCheckBox {
         </widget>
        </item>
        <item row="7" column="0" colspan="2">
-        <widget class="QCheckBox" name="chkProxyEnableForSSL">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>31</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QCheckBox:disabled {
-           color: #75787B;
-}
-          </string>
-         </property>
+        <widget class="CheckBox" name="chkProxyEnableForSSL">
          <property name="text">
           <string>Enable proxy for SSL connections</string>
          </property>
@@ -1022,7 +995,7 @@ QScrollBar::sub-line:vertical {
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="chkLibdigidocppDebug">
+        <widget class="CheckBox" name="chkLibdigidocppDebug">
          <property name="text">
           <string>Enable one-time log generation</string>
          </property>
@@ -1386,6 +1359,16 @@ QPushButton:disabled {
    <extends>QWidget</extends>
    <header location="global">QtSvg/QSvgWidget</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>widgets/CheckBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>widgets/RadioButton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -23,6 +23,8 @@
 #include "dialogs/SettingsDialog.h"
 
 #include <QtCore/QSettings>
+#include <QtGui/QPainter>
+#include <QtGui/QPaintEvent>
 
 using namespace ria::qdigidoc4;
 
@@ -40,6 +42,7 @@ MainAction::MainAction(QWidget *parent)
 	ui->setupUi(this);
 	ui->mainAction->setFont(Styles::font(Styles::Condensed, 16));
 	ui->otherCards->hide();
+	ui->otherCards->installEventFilter(this);
 	parent->installEventFilter(this);
 	move(parent->width() - width(), parent->height() - height());
 
@@ -75,12 +78,12 @@ void MainAction::hideDropdown()
 	setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; }"));
 }
 
-bool MainAction::eventFilter(QObject *o, QEvent *e)
+bool MainAction::eventFilter(QObject *watched, QEvent *event)
 {
-	switch(e->type())
+	switch(event->type())
 	{
 	case QEvent::Resize:
-		if(o == parentWidget())
+		if(watched == parentWidget())
 		{
 			move(parentWidget()->width() - width(), parentWidget()->height() - height());
 			int i = 1;
@@ -88,9 +91,41 @@ bool MainAction::eventFilter(QObject *o, QEvent *e)
 				other->move(pos() + QPoint(0, (-height() - 1) * (i++)));
 		}
 		break;
+	case QEvent::MouseButtonPress:
+		if(watched == ui->otherCards)
+			ui->otherCards->setProperty("pressed", true);
+		break;
+	case QEvent::MouseButtonRelease:
+		if(watched == ui->otherCards)
+			ui->otherCards->setProperty("pressed", false);
+		break;
+	case QEvent::Paint:
+		if(watched == ui->otherCards)
+		{
+			QPaintEvent *paintEvent = static_cast<QPaintEvent*>(event);
+			QToolButton *button = qobject_cast<QToolButton*>(watched);
+			QPainter painter(button);
+			painter.setRenderHint(QPainter::Antialiasing);
+			painter.setRenderHint(QPainter::HighQualityAntialiasing);
+			if(ui->otherCards->property("pressed").toBool())
+				painter.fillRect(paintEvent->rect(), QStringLiteral("#41B6E6"));
+			else if(paintEvent->rect().contains(button->mapFromGlobal(QCursor::pos())))
+				painter.fillRect(paintEvent->rect(), QStringLiteral("#008DCF"));
+			else
+				painter.fillRect(paintEvent->rect(), QStringLiteral("#006EB5"));
+			QRect rect(0, 0, 13, 6);
+			rect.moveCenter(paintEvent->rect().center());
+			painter.setPen(QPen(Qt::white, 2));
+			QPainterPath path(rect.bottomLeft());
+			path.lineTo(rect.center().x(), rect.top());
+			path.lineTo(rect.bottomRight());
+			painter.drawPath(path);
+			return true;
+		}
+		break;
 	default: break;
 	}
-	return QWidget::eventFilter(o, e);
+	return QWidget::eventFilter(watched, event);
 }
 
 

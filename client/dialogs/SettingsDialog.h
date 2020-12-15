@@ -21,6 +21,8 @@
 
 #include <QDialog>
 
+#include <QVariant>
+
 namespace digidoc { class Conf; }
 
 namespace Ui {
@@ -29,7 +31,7 @@ class SettingsDialog;
 
 class QAbstractButton;
 
-class SettingsDialog : public QDialog
+class SettingsDialog final: public QDialog
 {
 	Q_OBJECT
 
@@ -48,7 +50,7 @@ public:
 
 	void showPage(int page);
 	static void loadProxy( const digidoc::Conf *conf );
-	static void setValueEx( const QString &key, const QVariant &value, const QVariant &def );
+	static void setValueEx(const QString &key, const QVariant &value, const QVariant &def = {});
 
 signals:
 	void langChanged(const QString& lang);

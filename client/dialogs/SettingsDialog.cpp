@@ -49,12 +49,12 @@
 #include <QtCore/QIODevice>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
+#include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QThread>
 #include <QtCore/QThreadPool>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
-#include <QtCore/QSettings>
 #include <QtNetwork/QNetworkProxy>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QTextBrowser>
@@ -245,7 +245,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->pageGroup->setId(ui->btnMenuProxy, NetworkSettings);
 	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
-	connect(ui->pageGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
+	connect(ui->pageGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
 
 	initFunctionality();
 	updateVersion();
@@ -257,7 +257,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 {
 	showPage(page);
 }
-
 
 SettingsDialog::~SettingsDialog()
 {
@@ -359,7 +358,7 @@ void SettingsDialog::initFunctionality()
 		if(!dir.isEmpty())
 		{
 			ui->rdGeneralSpecifyDirectory->setChecked(true);
-			setValueEx(QStringLiteral("DefaultDir"), dir, QString());
+			setValueEx(QStringLiteral("DefaultDir"), dir);
 			ui->txtGeneralDirectory->setText(dir);
 		}
 	});
@@ -373,7 +372,7 @@ void SettingsDialog::initFunctionality()
 	if(ui->txtGeneralDirectory->text().isEmpty())
 		ui->rdGeneralSameDirectory->setChecked(true);
 	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
-		setValueEx(QStringLiteral("DefaultDir"), text, QString());
+		setValueEx(QStringLiteral("DefaultDir"), text);
 	});
 #endif
 
@@ -444,8 +443,8 @@ void SettingsDialog::initFunctionality()
 	ui->rdMIDUUIDCustom->setChecked(s.value(QStringLiteral("MIDUUID-CUSTOM"), s.contains(QStringLiteral("MIDUUID"))).toBool());
 	ui->txtMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
 	connect(ui->txtMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
-		setValueEx(QStringLiteral("MIDUUID"), text, QString());
-		setValueEx(QStringLiteral("SIDUUID"), text, QString());
+		setValueEx(QStringLiteral("MIDUUID"), text);
+		setValueEx(QStringLiteral("SIDUUID"), text);
 	});
 	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
 		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/access-certificate-what-is-it/"));
@@ -531,7 +530,7 @@ void SettingsDialog::saveProxy()
 
 void SettingsDialog::setValueEx(const QString &key, const QVariant &value, const QVariant &def)
 {
-	if(value == def)
+	if(value == def || (def.isNull() && value.isNull()))
 		QSettings().remove(key);
 	else
 		QSettings().setValue(key, value);

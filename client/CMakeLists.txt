@@ -99,6 +99,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/AddressItem.cpp
 	widgets/CardWidget.cpp
 	widgets/CardPopup.cpp
+	widgets/CheckBox.cpp
 	widgets/ContainerPage.cpp
 	widgets/ComboBox.cpp
 	widgets/DropdownButton.cpp
@@ -113,6 +114,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/NoCardInfo.cpp
 	widgets/OtherData.cpp
 	widgets/PageIcon.cpp
+	widgets/RadioButton.cpp
 	widgets/SignatureItem.cpp
 	widgets/StyledWidget.cpp
 	widgets/VerifyCert.cpp

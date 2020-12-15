@@ -99,16 +99,15 @@ QComboBox QWidget#content {
 /* rows */
 QComboBox QPushButton {
     margin: 3px;
-    padding: 0px 4px 0px 8px;
+    padding: 0px 8px 0px 4px;
     border: 0px;
     color: #353739;
     text-align: left;
+    qproperty-iconSize: 14px 9px;
+    qproperty-layoutDirection: RightToLeft;
 }
 QComboBox QPushButton#selected {
-    background-image: url(:/images/arrow_up.svg);
-    background-position: right center;
-    background-repeat: none;
-    background-origin: content;
+    qproperty-icon: url(:/images/arrow_up.svg);
 }
 
 /* hover row */
@@ -117,7 +116,7 @@ QComboBox QPushButton:hover {
     color: #FFFFFF;
 }
 QComboBox QPushButton:hover#selected {
-    background-image: url(:/images/arrow_up_white.svg);
+    qproperty-icon: url(:/images/arrow_up_white.svg);
 }
 
 /* drop-down button*/

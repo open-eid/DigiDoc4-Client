@@ -15,7 +15,7 @@ include( VersionInfo )
 find_package( PKCS11 )
 find_package( LibDigiDocpp 3.14.4 REQUIRED )
 find_package( LDAP REQUIRED )
-find_package( Qt5 COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools REQUIRED )
+find_package( Qt5 5.9.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools )
 
 set_env( TSL_URL "https://ec.europa.eu/tools/lotl/eu-lotl.xml" CACHE STRING "TSL trust list primary URL" )
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )
