@@ -61,7 +61,6 @@ public:
 #ifdef Q_OS_WIN
 	void addTempFile(const QString &file);
 #endif
-	bool initialized();
 	void loadTranslation( const QString &lang );
 	QWidget* mainWindow();
 	bool notify( QObject *o, QEvent *e ) override;
