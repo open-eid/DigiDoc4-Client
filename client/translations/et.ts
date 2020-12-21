@@ -3046,11 +3046,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>on teadmata</translation>
     </message>
     <message>
-        <source>Technical information</source>
-        <comment>accessible</comment>
-        <translation>Tehniline informatsioon</translation>
-    </message>
-    <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
@@ -3058,6 +3053,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Allkirjastamise aeg (UTC)</translation>
+    </message>
+    <message>
+        <source>ROLE AND ADDRESS</source>
+        <translation>ROLL JA AADRESS</translation>
     </message>
 </context>
 <context>

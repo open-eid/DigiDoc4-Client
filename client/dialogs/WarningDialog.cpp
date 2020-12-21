@@ -42,7 +42,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 
 	if(!details.isEmpty())
 	{
-		ui->showDetails->init(false, tr("Details"), tr("Details"), ui->details);
+		ui->showDetails->init(false, tr("Details"), ui->details);
 		connect(ui->showDetails, &AccordionTitle::closed, this, &WarningDialog::adjustSize);
 		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
 	}

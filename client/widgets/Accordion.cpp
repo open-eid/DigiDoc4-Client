@@ -31,10 +31,10 @@ Accordion::Accordion(QWidget *parent)
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"), ui->contentVerifyCert);
 	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), tr("Redirection of eesti.ee e-mail", "accessible"), ui->contentOtherData);
 
-	connect(ui->titleVerifyCert, &AccordionTitle::opened, this, &Accordion::openSection);
-	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] { openSection(ui->titleOtherData); });
-	connect(ui->titleOtherData, &AccordionTitle::opened, this, &Accordion::openSection);
-	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] { openSection(ui->titleVerifyCert); });
+	connect(ui->titleVerifyCert, &AccordionTitle::opened, ui->titleOtherData, &AccordionTitle::openSection);
+	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] { ui->titleOtherData->setSectionOpen(); });
+	connect(ui->titleOtherData, &AccordionTitle::opened, ui->titleVerifyCert, &AccordionTitle::openSection);
+	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] { ui->titleVerifyCert->setSectionOpen(); });
 
 	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
@@ -56,18 +56,9 @@ void Accordion::clear()
 	ui->authBox->clear();
 	ui->signBox->clear();
 	ui->pukBox->clear();
-	openSection(ui->titleVerifyCert);
+	ui->titleVerifyCert->setSectionOpen();
 	updateOtherData({});
 	hideOtherData(true);
-}
-
-void Accordion::openSection(AccordionTitle *opened)
-{
-	for(AccordionTitle *section: findChildren<AccordionTitle*>())
-		if(section != opened)
-			section->setSectionOpen(false);
-	if(opened && opened->isVisible())
-		opened->setSectionOpen(true);
 }
 
 void Accordion::hideOtherData(bool hidden)
