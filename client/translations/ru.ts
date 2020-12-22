@@ -1580,10 +1580,6 @@ ID-КАРТОЙ</translation>
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
-        <source>Documents (%1%2)</source>
-        <translation>Документы (%1%2)</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1-код изменён и сертификат разблокирован!</translation>
     </message>

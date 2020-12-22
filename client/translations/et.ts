@@ -1578,10 +1578,6 @@ ID-KAARDIGA</translation>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
-        <source>Documents (%1%2)</source>
-        <translation>Dokumendid (%1%2)</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1-kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
     </message>

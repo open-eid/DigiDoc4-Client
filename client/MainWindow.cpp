@@ -826,7 +826,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	static const QString cdoc = tr("Documents (%1)").arg(QStringLiteral("*.cdoc"));
 	static const QString edoc = tr("Documents (%1)").arg(QStringLiteral("*.edoc"));
 	static const QString asic = tr("Documents (%1)").arg(QStringLiteral("*.asice *.sce"));
-	static const QString ext = QFileInfo( filename ).suffix().toLower();
+	const QString ext = QFileInfo( filename ).suffix().toLower();
 	QStringList exts;
 	QString active;
 	if( fixedExt )
