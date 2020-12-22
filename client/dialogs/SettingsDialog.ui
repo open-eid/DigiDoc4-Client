@@ -299,6 +299,9 @@ QRadioButton::indicator::checked {
            <property name="checked">
             <bool>true</bool>
            </property>
+           <property name="lang" stdset="0">
+            <string>et</string>
+           </property>
            <attribute name="buttonGroup">
             <string notr="true">langGroup</string>
            </attribute>
@@ -309,6 +312,9 @@ QRadioButton::indicator::checked {
            <property name="text">
             <string notr="true">Русский</string>
            </property>
+           <property name="lang" stdset="0">
+            <string>ru</string>
+           </property>
            <attribute name="buttonGroup">
             <string notr="true">langGroup</string>
            </attribute>
@@ -318,6 +324,9 @@ QRadioButton::indicator::checked {
           <widget class="RadioButton" name="rdGeneralEnglish">
            <property name="text">
             <string notr="true">English</string>
+           </property>
+           <property name="lang" stdset="0">
+            <string>en</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">langGroup</string>
