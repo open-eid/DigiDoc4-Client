@@ -659,24 +659,26 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 			auto fileType = FileDialog::detect(content[0]);
 			if(current == MyEid)
 				page = (fileType == CryptoDocument) ? CryptoDetails : SignDetails;
-
-			if(!forceCreate && (
+			create = forceCreate || !(
 				(fileType == CryptoDocument && page == CryptoDetails) ||
-				(fileType == SignatureDocument && page == SignDetails)))
-			{
-				create = false;
-			}
+				(fileType == SignatureDocument && page == SignDetails));
 		}
 		break;
 	case ContainerState::UnsignedContainer:
 	case ContainerState::UnsignedSavedContainer:
 	case ContainerState::UnencryptedContainer:
+		create = !addFile;
 		if(addFile)
 		{
 			page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
-			create = false;
 			if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
 			{
+				if(digiDoc->isService())
+				{
+					QString wrappedFile = digiDoc->fileName();
+					if(!wrap(wrappedFile, true))
+						return;
+				}
 				DocumentModel* model = (current == CryptoDetails) ?
 					cryptoDoc->documentModel() : digiDoc->documentModel();
 				for(const auto &file: content)
@@ -689,7 +691,6 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 		{
 			// If browsed (double-clicked in Explorer/Finder, clicked on bdoc/cdoc in opened container)
 			// or recently opened file is opened, then new container should be created.
-			create = true;
 			page = (state == ContainerState::UnencryptedContainer) ? SignDetails : CryptoDetails;
 		}
 		break;
