@@ -102,19 +102,18 @@ bool MainAction::eventFilter(QObject *watched, QEvent *event)
 	case QEvent::Paint:
 		if(watched == ui->otherCards)
 		{
-			QPaintEvent *paintEvent = static_cast<QPaintEvent*>(event);
 			QToolButton *button = qobject_cast<QToolButton*>(watched);
 			QPainter painter(button);
 			painter.setRenderHint(QPainter::Antialiasing);
 			painter.setRenderHint(QPainter::HighQualityAntialiasing);
 			if(ui->otherCards->property("pressed").toBool())
-				painter.fillRect(paintEvent->rect(), QStringLiteral("#41B6E6"));
-			else if(paintEvent->rect().contains(button->mapFromGlobal(QCursor::pos())))
-				painter.fillRect(paintEvent->rect(), QStringLiteral("#008DCF"));
+				painter.fillRect(button->rect(), QStringLiteral("#41B6E6"));
+			else if(button->rect().contains(button->mapFromGlobal(QCursor::pos())))
+				painter.fillRect(button->rect(), QStringLiteral("#008DCF"));
 			else
-				painter.fillRect(paintEvent->rect(), QStringLiteral("#006EB5"));
+				painter.fillRect(button->rect(), QStringLiteral("#006EB5"));
 			QRect rect(0, 0, 13, 6);
-			rect.moveCenter(paintEvent->rect().center());
+			rect.moveCenter(button->rect().center());
 			painter.setPen(QPen(Qt::white, 2));
 			QPainterPath path(rect.bottomLeft());
 			path.lineTo(rect.center().x(), rect.top());
