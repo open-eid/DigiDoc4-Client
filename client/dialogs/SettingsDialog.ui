@@ -963,6 +963,7 @@ QPushButton {
           <string notr="true">QTextEdit {
 	color: #363739;
 	background: #FFFFFF;
+	border-bottom: 1px solid #DEE4E9;
 }
 QScrollBar {
 	width: 10px;
