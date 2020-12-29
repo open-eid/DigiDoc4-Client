@@ -25,4 +25,4 @@ extraction:
       command:
       - mkdir _lgtm_build_dir
       - cd _lgtm_build_dir
-      - cmake -DLIBDIGIDOCPP_LIBRARY=libdigidocpp-install/lib/libdigidocpp.so -DLIBDIGIDOCPP_INCLUDE_DIR=libdigidocpp-install/include ..
+      - cmake -DLIBDIGIDOCPP_LIBRARY=../libdigidocpp-install/lib/libdigidocpp.so -DLIBDIGIDOCPP_INCLUDE_DIR=../libdigidocpp-install/include ..
