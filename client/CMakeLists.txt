@@ -220,11 +220,11 @@ elseif(WIN32)
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
 		-dssl_path="${SSL_PATH}" -dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf
 		-dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
+        ${CMAKE_MODULE_PATH}/WelcomeDlg2.wxs ${CMAKE_MODULE_PATH}/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
-		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
-		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
+        -dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
+        -dWixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp)
 	if(EXISTS ${LIBS_PATH}/../certs)
 		list(APPEND CANDLE_CMD -dcertsLocation=CertsFragment CertsFragment.wxs)
 		list(APPEND LIGHT_CMD CertsFragment.wixobj)
