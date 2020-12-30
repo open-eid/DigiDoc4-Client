@@ -96,9 +96,6 @@ public:
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
 
-	static QSslCertificate fromX509( Qt::HANDLE x509 );
-	static QSslKey keyFromEVP( Qt::HANDLE evp );
-
 private:
 	Qt::HANDLE extension( int nid ) const;
 };
@@ -131,6 +128,8 @@ public:
 	static PKCS12Certificate fromPath( const QString &path, const QString &pin );
 
 private:
+	QSslKey fromEVP(Qt::HANDLE evp) const;
+
 	class Private;
 	QSharedDataPointer<Private> d;
 };
