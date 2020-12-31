@@ -7,8 +7,7 @@
  * [Architecture of ID-software](http://open-eid.github.io)
 
 ## Building
-[![Build Status](https://travis-ci.com/open-eid/DigiDoc4-Client.svg?branch=master)](https://travis-ci.com/open-eid/DigiDoc4-Client)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/open-eid/DigiDoc4-Client?branch=master&svg=true)](https://ci.appveyor.com/project/uudisaru/digidoc4-client/branch/master)
+[![Build Status](https://github.com/open-eid/DigiDoc4-Client/workflows/CI/badge.svg?branch=master)](https://github.com/open-eid/DigiDoc4-Client/actions)
 * [Ubuntu](#ubuntu)
 * [macOS](#macos)
 * [Windows](#windows)
