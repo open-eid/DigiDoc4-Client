@@ -1,13 +1,13 @@
 name: CI
 on: [push, pull_request]
 env:
-  MAKEFLAGS: -j3
   BUILD_NUMBER: ${{ github.run_number }}
 jobs:
   macos:
     name: Build on macOS
     runs-on: macos-latest
     env:
+      MAKEFLAGS: -j3
       MACOSX_DEPLOYMENT_TARGET: '10.13'
       AWS_DEFAULT_REGION: eu-west-1
     steps:
@@ -30,14 +30,13 @@ jobs:
         aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request
         sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc.pkg -target /
-        unzip -qq -d /tmp ${HASH}.zip
+        unzip -qq -d libs ${HASH}.zip
         ln -s /usr/local/opt/openssl@1.1/lib/libcrypto.1.1.dylib /usr/local/lib/libcrypto.1.1.dylib
         ln -s /usr/local/opt/openssl@1.1/lib/libssl.1.1.dylib /usr/local/lib/libssl.1.1.dylib
     - name: Build
       run: |
-        QT_DIR=$(ls -d /tmp/Qt-*-OpenSSL | tail -n 1)
-        echo "Qt - ${QT_DIR}"
-        mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl\@1.1 -DLDAP_ROOT=/tmp/OpenLDAP -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
+        QT_DIR=$(ls -d libs/Qt-*-OpenSSL | tail -n 1)
+        mkdir build && cd build && cmake -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl\@1.1 -DLDAP_ROOT=../libs/OpenLDAP -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
         make zipdebug macdeployqt zip
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
@@ -52,6 +51,7 @@ jobs:
       matrix:
         container: ['ubuntu:20.04', 'ubuntu:20.10']
     env:
+      MAKEFLAGS: -j3
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: 'github-actions'
       DEBEMAIL: 'github-actions@github.com'
@@ -89,11 +89,76 @@ jobs:
       with:
         name: debs
         path: qdigidoc4*.*
+  windows:
+    name: Build on Windows
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x86, x64]
+        include:
+        - arch: x86
+          qt: win32_msvc2017
+        - arch: x64
+          qt: win64_msvc2017_64
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: msi
+        path: ./
+        repo: 'open-eid/libdigidocpp'
+    - name: Install artifact
+      run: |
+        Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
+        msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
+    - name: Prepare vcpkg
+      uses: lukka/run-vcpkg@v6.1
+      id: runvcpkg
+      with:
+        vcpkgArguments: openssl
+        vcpkgGitCommitId: ec6fe06e8da05a8157dc8581fa96b36b571c1bd5
+        vcpkgTriplet: ${{ matrix.arch }}-windows
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.12.10'
+        arch: ${{ matrix.qt }}
+    - name: Setup dev env
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+        sdk: 10.0.16299.0
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        mkdir client
+        copy ${{ env.VCPKG_ROOT }}\installed\${{ matrix.arch }}-windows\bin\*.dll client\
+        cmake "-GNMake Makefiles" `
+          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
+          "-DLIBDIGIDOCPP_LIBRARY=../libs/libdigidocpp/${{ matrix.arch }}/digidocpp.lib" `
+          "-DLIBDIGIDOCPP_INCLUDE_DIR=../libs/libdigidocpp/include" ..
+        cmake --build . --target msi
+        cmake --build . --target appx
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: msi
+        path: |
+          build/*.msi
+          build/*.appx
   coverity:
     name: Run Coverity tests
     if: contains(github.repository, 'open-eid/DigiDoc4-Client') && contains(github.ref, 'coverity_scan')
     runs-on: ubuntu-20.04
     env:
+      MAKEFLAGS: -j3
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
       PROJECTNAME: 'open-eid/DigiDoc4-Client'
     steps:
@@ -137,6 +202,8 @@ jobs:
   codeql:
     name: Run CodeQL tests
     runs-on: ubuntu-20.04
+    env:
+      MAKEFLAGS: -j3
     steps:
     - name: Checkout
       uses: actions/checkout@v2
