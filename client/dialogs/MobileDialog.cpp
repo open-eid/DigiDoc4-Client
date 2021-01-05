@@ -53,7 +53,7 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	QFont regularFont = Styles::font(Styles::Regular, 14);
 	ui->labelNameId->setFont(header);
 	ui->labelPhone->setFont(regularFont);
-	ui->labelIdCode->setFont(regularFont);
+	ui->labelCode->setFont(regularFont);
 	ui->phoneNo->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
 	ui->cbRemember->setFont(regularFont);

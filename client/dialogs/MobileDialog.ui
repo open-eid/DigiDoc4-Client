@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
+    <width>380</width>
     <height>282</height>
    </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mobile-ID</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
@@ -19,9 +22,25 @@ QLineEdit {
 padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
+}
+QCheckBox {
+min-height: 31px;
+}
+QCheckBox:disabled {
+color: #75787B;
+}
+QCheckBox::indicator {
+width: 14px;
+height: 14px;
+}
+QCheckBox::indicator:unchecked {
+image: url(:/images/icon_checkbox.png);
+}
+QCheckBox::indicator:checked {
+image: url(:/images/icon_checkbox_check.png);
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="MobileDialogLayout">
+  <layout class="QVBoxLayout" name="MobileIDDialogLayout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -43,6 +62,9 @@ border-radius: 2px;
       <font>
        <pointsize>14</pointsize>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #041E42;</string>
@@ -104,7 +126,7 @@ border-radius: 2px;
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelIdCode">
+    <widget class="QLabel" name="labelCode">
      <property name="font">
       <font>
        <family>Roboto Condensed</family>
@@ -153,7 +175,7 @@ padding-top: 8px;</string>
     </spacer>
    </item>
    <item>
-    <widget class="QCheckBox" name="cbRemember">
+    <widget class="CheckBox" name="cbRemember">
      <property name="styleSheet">
       <string notr="true">color: #353739;</string>
      </property>
@@ -176,7 +198,7 @@ padding-top: 8px;</string>
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="buttonLayout" stretch="0,0">
+    <layout class="QHBoxLayout" name="buttonLayout">
      <property name="spacing">
       <number>40</number>
      </property>
@@ -272,11 +294,13 @@ QPushButton:disabled {
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>phoneNo</tabstop>
-  <tabstop>idCode</tabstop>
-  <tabstop>cbRemember</tabstop>
- </tabstops>
+ <customwidgets>
+  <customwidget>
+   <class>CheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>widgets/CheckBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

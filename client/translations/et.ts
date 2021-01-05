@@ -1794,6 +1794,10 @@ ID-KAARDIGA</translation>
         <source>Invalid country code</source>
         <translation>Vigane riigikood</translation>
     </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
 </context>
 <context>
     <name>MobileProgress</name>
@@ -3183,6 +3187,16 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Latvia</source>
         <translation>Läti</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <extracomment>accessible</extracomment>
+        <translation>Katkesta</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <extracomment>accessible</extracomment>
+        <translation>Allkirjastan</translation>
     </message>
 </context>
 <context>
