@@ -22,6 +22,7 @@
 #include <QBrush>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QStyleOptionButton>
 
 CheckBox::CheckBox(QWidget *parent)
 	: QCheckBox(parent)
@@ -30,8 +31,10 @@ CheckBox::CheckBox(QWidget *parent)
 void CheckBox::paintEvent(QPaintEvent *event)
 {
 	QCheckBox::paintEvent(event);
-	QRect rect(0, 0, 14, 14);
-	rect.moveCenter(QPoint(rect.center().x() + 1, event->rect().center().y()));
+	QStyleOptionButton opt;
+	initStyleOption(&opt);
+	QRect rect = style()->subElementRect(QStyle::SE_RadioButtonIndicator, &opt, this);
+	rect.adjust(1, 1, -1, -1);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::HighQualityAntialiasing);
