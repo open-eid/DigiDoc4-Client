@@ -28,6 +28,17 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
   <?define OpenSSLSuffix = "" ?>
 <?endif ?>
 
+<?if $(env.VisualStudioVersion) = "16.0" ?>
+<?define VCVER = "142" ?>
+<?define VCPATH = "$(env.VCTOOLSREDISTDIR)" ?>
+<?elseif $(env.VisualStudioVersion) = "15.0" ?>
+<?define VCVER = "141" ?>
+<?define VCPATH = "$(env.VCTOOLSREDISTDIR)" ?>
+<?elseif $(env.VisualStudioVersion) = "14.0" ?>
+<?define VCVER = "140" ?>
+<?define VCPATH = "$(env.VCINSTALLDIR)\redist" ?>
+<?endif?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
@@ -140,6 +151,11 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
               Name="digidoc.ini" Key="CA_CERT_PATH" Value="[APPLICATIONFOLDER]certs"/>
 <?endif?>
 <?ifdef var.qt_path ?>
+            <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp140.dll"/>
+            <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140.dll"/>
+<!--?if $(env.VisualStudioVersion) = "16.0" ?>
+            <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140_1.dll"/>
+<?endif ?-->
             <File Source="$(var.ssl_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.ssl_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
