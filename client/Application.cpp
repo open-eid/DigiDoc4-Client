@@ -86,13 +86,7 @@ public:
 
 		reload();
 #ifdef Q_OS_MAC
-		QTimer *t = new QTimer();
-		t->setSingleShot(true);
-		QTimer::connect(t, &QTimer::timeout, [=] {
-			t->deleteLater();
-			Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4"));
-		});
-		t->start(0);
+		QTimer::singleShot(0, [] { Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4")); });
 #else
 		Configuration::instance().checkVersion("QDIGIDOC4");
 #endif
@@ -259,7 +253,7 @@ private:
 			if(proxy.type() == QNetworkProxy::HttpProxy)
 				return proxy;
 		}
-		return QNetworkProxy();
+		return {};
 	}
 
 	std::string valueSystemScope(const QString &key, const std::string &defaultValue) const
@@ -334,7 +328,7 @@ Application::Application( int &argc, char **argv )
 	connect(&d->lastWindowTimer, &QTimer::timeout, []{ if(topLevelWindows().isEmpty()) quit(); });
 	connect(this, &Application::lastWindowClosed, [&]{ d->lastWindowTimer.start(10*1000); });
 
-#if defined(Q_OS_MAC)
+#ifdef Q_OS_MAC
 	d->bar = new MacMenuBar;
 	d->bar->addAction( MacMenuBar::AboutAction, this, SLOT(showAbout()) );
 	d->bar->addAction( MacMenuBar::PreferencesAction, this, SLOT(showSettings()) );
@@ -1024,16 +1018,17 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	{
 		QSettings settings;
 		migrateSettings();
+
 #ifdef Q_OS_MAC
 		if(QSettings().value(QStringLiteral("plugins")).isNull())
 		{
-			QTimer::singleShot(1000, this, [=]{
-				WarningDialog dlg(tr("In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.<br/>Instructions on how to enable token plugin can be found <a href=\"https://www.id.ee/en/article/configuring-browsers-for-using-id-card/\">here</a>."), qApp->activeWindow());
-				dlg.setCancelText(tr("Ignore forever").toUpper());
-				dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Yes);
-				if(dlg.exec() != QMessageBox::Yes)
-					QSettings().setValue(QStringLiteral("plugins"), "ignore");
-			});
+			WarningDialog dlg(tr(
+				"In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.<br/>"
+				"Instructions on how to enable token plugin can be found <a href=\"https://www.id.ee/en/article/configuring-browsers-for-using-id-card/\">here</a>."));
+			dlg.setCancelText(tr("Ignore forever").toUpper());
+			dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Yes);
+			if(dlg.exec() != QMessageBox::Yes)
+				QSettings().setValue(QStringLiteral("plugins"), "ignore");
 		}
 #endif
 
