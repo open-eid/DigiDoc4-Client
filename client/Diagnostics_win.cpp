@@ -24,6 +24,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QSettings>
 #include <QtCore/QTextStream>
+#include <QtCore/QVector>
 
 #include <qt_windows.h>
 
@@ -45,13 +46,10 @@ static QString getUserRights()
 			return Diagnostics::tr( "Unknown - error %1" ).arg( GetLastError() );
 	}
 
-	PTOKEN_GROUPS pGroup = PTOKEN_GROUPS(GlobalAlloc(GPTR, dwLength));
+	QByteArray tokenGroupsBuffer(dwLength, 0);
+	PTOKEN_GROUPS pGroup = PTOKEN_GROUPS(tokenGroupsBuffer.data());
 	if ( !GetTokenInformation( hToken, TokenGroups, pGroup, dwLength, &dwLength ) )
-	{
-		if ( pGroup )
-			GlobalFree( pGroup );
-		return Diagnostics::tr( "Unknown - error %1" ).arg( GetLastError() );;
-	}
+		return Diagnostics::tr("Unknown - error %1").arg(GetLastError());
 
 	QString rights = Diagnostics::tr( "User" );
 	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
@@ -67,12 +65,8 @@ static QString getUserRights()
 				break;
 			}
 		}
+		FreeSid(AdministratorsGroup);
 	}
-
-	if ( AdministratorsGroup )
-		FreeSid( AdministratorsGroup );
-	if ( pGroup )
-		GlobalFree( pGroup );
 
 	return rights;
 }
@@ -83,11 +77,12 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 	for(const QString &group: {QStringLiteral("HKEY_LOCAL_MACHINE"), QStringLiteral("HKEY_CURRENT_USER")})
 	{
 		QString path = QStringLiteral("%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").arg(group);
-#if Q_PROCESSOR_WORDSIZE == 8
-		for(QSettings::Format format: {QSettings::Registry32Format, QSettings::Registry64Format})
-#else
-		for(QSettings::Format format: {QSettings::Registry32Format})
-#endif
+		static const QVector<QSettings::Format> formats = []() -> QVector<QSettings::Format> {
+			if(QSysInfo::currentCpuArchitecture().contains(QStringLiteral("64")))
+				return {QSettings::Registry32Format, QSettings::Registry64Format};
+			return {QSettings::Registry32Format};
+		}();
+		for(QSettings::Format format: formats)
 		{
 			QSettings s(path, format);
 			for(const QString &key: s.childGroups())
