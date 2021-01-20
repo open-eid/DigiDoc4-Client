@@ -11,46 +11,15 @@ add_custom_command(
 
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
-qt5_add_resources( SOURCES images/images.qrc fonts/fonts.qrc ${CMAKE_CURRENT_BINARY_DIR}/tr.qrc ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc )
-qt5_wrap_ui( SOURCES
-	MainWindow.ui
-	dialogs/AddRecipients.ui
-	dialogs/CertificateDetails.ui
-	dialogs/CertificateHistory.ui
-	dialogs/FirstRun.ui
-	dialogs/KeyDialog.ui
-	dialogs/MobileDialog.ui
-	dialogs/MobileProgress.ui
-	dialogs/PinPopup.ui
-	dialogs/PinUnblock.ui
-	dialogs/RoleAddressDialog.ui
-	dialogs/SettingsDialog.ui
-	dialogs/SignatureDialog.ui
-	dialogs/SmartIDDialog.ui
-	dialogs/WaitDialog.ui
-	dialogs/WarningDialog.ui
-	widgets/Accordion.ui
-	widgets/AccordionTitle.ui
-	widgets/AddressItem.ui
-	widgets/CardWidget.ui
-	widgets/ContainerPage.ui
-	widgets/FileItem.ui
-	widgets/InfoStack.ui
-	widgets/ItemList.ui
-	widgets/MainAction.ui
-	widgets/NoCardInfo.ui
-	widgets/OtherData.ui
-	widgets/PageIcon.ui
-	widgets/SignatureItem.ui
-	widgets/VerifyCert.ui
-	widgets/WarningItem.ui
-	widgets/WarningRibbon.ui
-)
 
 add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${PROGNAME}.rc
 	${SOURCES}
 	${RESOURCE_FILES}
+	images/images.qrc
+	fonts/fonts.qrc
+	${CMAKE_CURRENT_BINARY_DIR}/tr.qrc
+	${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc
 	main.cpp
 	Application.cpp
 	CheckConnection.cpp
@@ -58,6 +27,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	Diagnostics.cpp
 	DiagnosticsTask.cpp
 	DocumentModel.cpp
+	MainWindow.ui
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
 	QCardLock.cpp
@@ -74,52 +44,83 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	crypto/CryptoDoc.cpp
 	crypto/LdapSearch.cpp
 	dialogs/AccessCert.cpp
+	dialogs/AddRecipients.ui
 	dialogs/AddRecipients.cpp
+	dialogs/CertificateDetails.ui
 	dialogs/CertificateDetails.cpp
+	dialogs/CertificateHistory.ui
 	dialogs/CertificateHistory.cpp
 	dialogs/FileDialog.cpp
+	dialogs/FirstRun.ui
 	dialogs/FirstRun.cpp
+	dialogs/KeyDialog.ui
 	dialogs/KeyDialog.cpp
+	dialogs/MobileDialog.ui
 	dialogs/MobileDialog.cpp
+	dialogs/MobileProgress.ui
 	dialogs/MobileProgress.cpp
+	dialogs/PinPopup.ui
 	dialogs/PinPopup.cpp
+	dialogs/PinUnblock.ui
 	dialogs/PinUnblock.cpp
+	dialogs/RoleAddressDialog.ui
 	dialogs/RoleAddressDialog.cpp
+	dialogs/SettingsDialog.ui
 	dialogs/SettingsDialog.cpp
+	dialogs/SignatureDialog.ui
+	dialogs/SignatureDialog.cpp
+	dialogs/SmartIDDialog.ui
 	dialogs/SmartIDDialog.cpp
 	dialogs/SmartIDProgress.cpp
-	dialogs/SignatureDialog.cpp
+	dialogs/WaitDialog.ui
 	dialogs/WaitDialog.cpp
+	dialogs/WarningDialog.ui
 	dialogs/WarningDialog.cpp
 	effects/ButtonHoverFilter.cpp
 	effects/FadeInNotification.cpp
 	effects/Overlay.cpp
+	widgets/Accordion.ui
 	widgets/Accordion.cpp
+	widgets/AccordionTitle.ui
 	widgets/AccordionTitle.cpp
+	widgets/AddressItem.ui
 	widgets/AddressItem.cpp
+	widgets/CardWidget.ui
 	widgets/CardWidget.cpp
 	widgets/CardPopup.cpp
 	widgets/CheckBox.cpp
+	widgets/ContainerPage.ui
 	widgets/ContainerPage.cpp
 	widgets/ComboBox.cpp
 	widgets/DropdownButton.cpp
+	widgets/FileItem.ui
 	widgets/FileItem.cpp
 	widgets/FileList.cpp
 	widgets/IDSelector.cpp
 	widgets/Item.cpp
+	widgets/ItemList.ui
 	widgets/ItemList.cpp
+	widgets/InfoStack.ui
 	widgets/InfoStack.cpp
 	widgets/LabelButton.cpp
+	widgets/MainAction.ui
 	widgets/MainAction.cpp
+	widgets/NoCardInfo.ui
 	widgets/NoCardInfo.cpp
+	widgets/OtherData.ui
 	widgets/OtherData.cpp
+	widgets/PageIcon.ui
 	widgets/PageIcon.cpp
 	widgets/RadioButton.cpp
+	widgets/SignatureItem.ui
 	widgets/SignatureItem.cpp
 	widgets/StyledWidget.cpp
+	widgets/VerifyCert.ui
 	widgets/VerifyCert.cpp
+	widgets/WarningItem.ui
 	widgets/WarningItem.cpp
 	widgets/WarningList.cpp
+	widgets/WarningRibbon.ui
 	widgets/WarningRibbon.cpp
 )
 add_manifest( ${PROGNAME} )
@@ -132,6 +133,8 @@ target_link_libraries( ${PROGNAME}
 	${LDAP_LIBRARIES}
 )
 set_target_properties(${PROGNAME} PROPERTIES
+	AUTOUIC ON
+	AUTORCC ON
 	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 )
 target_include_directories(${PROGNAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR} )

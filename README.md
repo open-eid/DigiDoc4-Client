@@ -25,7 +25,7 @@
 
          sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
 
-   * Also runtime dependency opensc-pkcs11 is needed
+   * Also runtime dependency opensc-pkcs11 and pcscd is needed
 
 2. Fetch the source
 

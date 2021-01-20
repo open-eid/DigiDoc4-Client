@@ -23,9 +23,9 @@ BEGIN
 			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "DigiDoc4 Client"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
-			VALUE "InternalName", APP
-			VALUE "LegalCopyright", "Copyright (C) 2017-2020 Estonian Information System Authority"
-			VALUE "OriginalFilename", APP ".exe"
+			VALUE "InternalName", "qdigidoc4"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2021 Estonian Information System Authority"
+			VALUE "OriginalFilename", "qdigidoc4.exe"
 			VALUE "ProductName", "DigiDoc4 Client"
 			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 		END
@@ -34,9 +34,9 @@ BEGIN
 			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "DigiDoc4 Klient"
 			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
-			VALUE "InternalName", APP
-			VALUE "LegalCopyright", "Copyright (C) 2017-2020 Riigi Infosüsteemi Amet"
-			VALUE "OriginalFilename", APP ".exe"
+			VALUE "InternalName", "qdigidoc4"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2021 Riigi Infosüsteemi Amet"
+			VALUE "OriginalFilename", "qdigidoc4.exe"
 			VALUE "ProductName", "DigiDoc4 Klient"
 			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
 		END
