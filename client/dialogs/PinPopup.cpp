@@ -30,6 +30,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtSvg/QSvgWidget>
 
 PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
 	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), count, parent)
@@ -103,14 +104,10 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->pin->hide();
 		ui->ok->hide();
 		ui->cancel->hide();
-		QLabel *movie = new QLabel(this);
-		movie->setAlignment(Qt::AlignCenter);
-		movie->setMovie(new QMovie(QStringLiteral(":/images/wait.gif"), QByteArray(), movie));
-		movie->movie()->setScaledSize(QSize(movie->height(), movie->height()));
+		QSvgWidget *movie = new QSvgWidget(QStringLiteral(":/images/wait.gif"), this);
 		movie->move(ui->pin->pos());
 		movie->resize(ui->pin->size());
 		movie->show();
-		movie->movie()->start();
 	}
 	if( flags & PinpadFlag )
 	{

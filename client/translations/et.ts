@@ -3355,13 +3355,6 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
 </context>
 <context>
-    <name>WaitDialog</name>
-    <message>
-        <source>Decrypting</source>
-        <translation>Dekrüpteerin</translation>
-    </message>
-</context>
-<context>
     <name>WarningDialog</name>
     <message>
         <source>CLOSE</source>
