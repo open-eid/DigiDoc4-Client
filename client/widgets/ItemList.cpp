@@ -97,7 +97,7 @@ void ItemList::changeEvent(QEvent* event)
 			setRecipientTooltip();
 	}
 
-	QWidget::changeEvent(event);
+	QFrame::changeEvent(event);
 }
 
 QString ItemList::addLabel()
@@ -164,7 +164,7 @@ void ItemList::details(const QString &id)
 bool ItemList::eventFilter(QObject *o, QEvent *e)
 {
 	if(o != ui->infoIcon)
-		return QWidget::eventFilter(o, e);
+		return QFrame::eventFilter(o, e);
 	switch(e->type())
 	{
 	case QEvent::Enter:
@@ -172,7 +172,7 @@ bool ItemList::eventFilter(QObject *o, QEvent *e)
 		infoIcon->setHidden(e->type() == QEvent::Enter);
 		infoHoverIcon->setVisible(e->type() == QEvent::Enter);
 		return true;
-	default: return QWidget::eventFilter(o, e);
+	default: return QFrame::eventFilter(o, e);
 	}
 }
 
@@ -217,14 +217,14 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->findGroup->show();
 		ui->txtFind->setPlaceholderText(tr("Enter personal code, company or registry code"));
-		connect(ui->txtFind, &QLineEdit::returnPressed, [this]{ emit search(ui->txtFind->text()); });
-		connect(ui->btnFind, &QPushButton::clicked, [this]{ emit search(ui->txtFind->text()); });
+		connect(ui->txtFind, &QLineEdit::returnPressed, this, [this]{ if(!ui->txtFind->text().isEmpty()) emit search(ui->txtFind->text()); });
+		connect(ui->btnFind, &QPushButton::clicked, this, [this]{ emit search(ui->txtFind->text()); });
 		ui->btnFind->setDisabled(ui->txtFind->text().isEmpty());
-		connect(ui->txtFind, &QLineEdit::textChanged, [=](const QString &text){
+		connect(ui->txtFind, &QLineEdit::textChanged, this, [this](const QString &text){
 			ui->btnFind->setDisabled(text.isEmpty());
 			ui->btnFind->setDefault(text.isEmpty());
 			ui->btnFind->setAutoDefault(text.isEmpty());
-		});		
+		});
 		headerItems = 2;
 	}
 
