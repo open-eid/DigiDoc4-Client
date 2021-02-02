@@ -387,7 +387,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(create)
 		{
 			QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir);
+			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir, this);
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -418,7 +418,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(create)
 		{
 			QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
+			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir, this);
 			if(!filename.isNull())
 			{
 				cryptoContainer->clear(filename);
@@ -522,7 +522,7 @@ void MainWindow::convertToBDoc()
 void MainWindow::convertToCDoc()
 {
 	QString defaultDir = QSettings().value(QStringLiteral("Client/DefaultDir")).toString();
-	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), defaultDir);
+	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), defaultDir, this);
 	if(filename.isNull())
 		return;
 
@@ -1131,7 +1131,7 @@ void MainWindow::warningClicked(const QString &link)
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
 	QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-	QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir);
+	QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir, this);
 	if(filename.isNull())
 		return false;
 
