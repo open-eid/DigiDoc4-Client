@@ -148,6 +148,21 @@ void Diagnostics::generalInfo(QTextStream &s) const
 			QByteArray row = APDU("00B20004 00");
 			row[2] = 0x07; // read card id
 			s << "ID - " << reader.transfer(row).data << "<br />";
+
+			QPCSCReader::Result data = reader.transfer(APDU("00CA0100 00"));
+			QString appletVersion;
+			if(data.resultOk())
+			{
+				for(int i = 0; i < data.data.size(); ++i)
+				{
+					if(i == 0)
+						appletVersion = QString::number(quint8(data.data[i]));
+					else
+						appletVersion += QStringLiteral(".%1").arg(quint8(data.data[i]));
+				}
+			}
+			if(!appletVersion.isEmpty())
+				s << tr("Applet") << ": " << appletVersion << "<br />";
 		}
 		else if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A40400 10 A000000077010800070000FE00000100")) ||
 			printAID(QStringLiteral("AID_OT"), APDU("00A4040C 0D E828BD080FF2504F5420415750")) ||

@@ -49,7 +49,6 @@ bool QSmartCardData::operator ==(const QSmartCardData &other) const
 		d->card == other.d->card &&
 		d->authCert == other.d->authCert &&
 		d->signCert == other.d->signCert &&
-		d->appletVersion == other.d->appletVersion &&
 		d->version == other.d->version);
 }
 bool QSmartCardData::operator !=(const QSmartCardData &other) const { return !operator==(other); }
@@ -72,7 +71,6 @@ SslCertificate QSmartCardData::authCert() const { return d->authCert; }
 SslCertificate QSmartCardData::signCert() const { return d->signCert; }
 quint8 QSmartCardData::retryCount(PinType type) const { return d->retry.value(type); }
 ulong QSmartCardData::usageCount(PinType type) const { return d->usage.value(type); }
-QString QSmartCardData::appletVersion() const { return d->appletVersion; }
 QSmartCardData::CardVersion QSmartCardData::version() const { return d->version; }
 
 quint8 QSmartCardData::minPinLen(QSmartCardData::PinType type)
@@ -179,7 +177,6 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
 	static const QByteArray AUTHCERT = APDU("00A40200 02 AACE");
 	static const QByteArray SIGNCERT = APDU("00A40200 02 DDCE");
-	static const QByteArray APPLETVER = APDU("00CA0100 00");
 
 	d->version = isSupported(reader->atr());
 	if(reader->transfer(UPDATER_AID).resultOk())
@@ -222,17 +219,6 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 				d->data[QSmartCardData::PersonalDataType(data)] = record;
 				break;
 			}
-		}
-	}
-	QPCSCReader::Result data = reader->transfer(APPLETVER);
-	if(data.resultOk())
-	{
-		for(int i = 0; i < data.data.size(); ++i)
-		{
-			if(i == 0)
-				d->appletVersion = QString::number(quint8(data.data[i]));
-			else
-				d->appletVersion += QString(QStringLiteral(".%1")).arg(quint8(data.data[i]));
 		}
 	}
 	bool readFailed = false;
