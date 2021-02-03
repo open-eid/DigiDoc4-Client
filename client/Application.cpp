@@ -297,7 +297,7 @@ public:
 };
 
 Application::Application( int &argc, char **argv )
-	: Common(argc, argv, QStringLiteral("qdigidoc4"), QStringLiteral(":/images/digidoc_icon_128x128.png"))
+	: Common(argc, argv, QStringLiteral("qdigidoc4"), QStringLiteral(":/images/digidoc_128.png"))
 	, d(new Private)
 {
 	qRegisterMetaType<TokenData>("TokenData");

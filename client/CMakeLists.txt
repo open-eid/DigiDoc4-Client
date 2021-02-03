@@ -318,23 +318,33 @@ else()
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
 	install( FILES qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
 	install( FILES qdigidoc4.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )
-	foreach(RES 16 22 32 48 128)
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png)
-			install(
-				FILES images/qdigidoc_client_document_${RES}x${RES}.png
-				DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
-				RENAME ${TGT}
-			)
-		endforeach()
+	foreach(RES 16 22 32 48 128 256 512)
 		install(
-			FILES images/qdigidoc_crypto_document_${RES}x${RES}.png
-			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
-			RENAME application-x-cdoc.png
-		)
-		install(
-			FILES images/digidoc_icon_${RES}x${RES}.png
+			FILES images/digidoc_${RES}.png
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/apps/
 			RENAME qdigidoc4.png
 		)
+		install(
+			FILES images/qdigidoc_client_document_${RES}.png
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
+			RENAME application-vnd.etsi.asic-e+zip.png
+		)
+		install(
+			FILES images/qdigidoc_crypto_document_${RES}.png
+			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
+			RENAME application-x-cdoc.png
+		)
+		foreach(TGT application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png)
+			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
+				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
+		endforeach()
+		# Workaround Ubuntu 20.10 Yaru icon theme issues
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
+			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
+		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png application-x-cdoc.png)
+			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
+				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
+				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
+		endforeach()
 	endforeach()
 endif()
