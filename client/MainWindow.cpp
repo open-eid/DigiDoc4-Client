@@ -148,8 +148,8 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(this, &MainWindow::clearPopups, ui->signContainerPage, &ContainerPage::clearPopups);
 	connect(this, &MainWindow::clearPopups, this, [this] { showCardMenu(false); });
 
-	connect(ui->signIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
-	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, &MainWindow::openContainer);
+	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] { openContainer(true); });
+	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(false); });
 	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
@@ -301,7 +301,7 @@ QString MainWindow::digiDocPath()
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-	if(!dropEventFiles(event).isEmpty())
+	if(!event->source() && !dropEventFiles(event).isEmpty())
 	{
 		event->acceptProposedAction();
 		if(!findChild<Overlay*>())
@@ -736,18 +736,15 @@ void MainWindow::open(const QStringList &params, bool crypto, bool sign)
 		openFiles(files, false, sign);
 }
 
-void MainWindow::openContainer()
+void MainWindow::openContainer(bool signature)
 {
-	auto current = ui->startScreen->currentIndex();
-	auto filter = QString();
-
-	if(current == CryptoIntro)
-		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1)").arg(QStringLiteral("*.cdoc"));
-	else if(current == SignIntro)
-		filter = QFileDialog::tr("All Files (*)") + ";;" + tr("Documents (%1%2)").arg(
-				QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc"),
-				qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QString() : QStringLiteral(" *.pdf"));
-
+	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
+	if(signature)
+		filter = filter.arg(
+			QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc") +
+			(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QString() : QStringLiteral(" *.pdf")));
+	else
+		filter = filter.arg(QStringLiteral("*.cdoc"));
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
 	if(!files.isEmpty())
 		openFiles(files);
