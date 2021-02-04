@@ -52,7 +52,7 @@ int main( int argc, char *argv[] )
 		if(parameter.startsWith("-diag"))
 		{
 			QCoreApplication qtApp( argc, argv );
-			qtApp.setApplicationName(QStringLiteral(APP));
+			qtApp.setApplicationName(QStringLiteral("qdigidoc4"));
 			qtApp.setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
 				.arg(MAJOR_VER).arg(MINOR_VER).arg(RELEASE_VER).arg(BUILD_VER));
 			qtApp.setOrganizationDomain("ria.ee");

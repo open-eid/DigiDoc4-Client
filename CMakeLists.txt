@@ -2,12 +2,11 @@ cmake_minimum_required(VERSION 3.10)
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
-project(qdigidoc4 VERSION 4.2.8)
+project(qdigidoc4 VERSION 4.2.9)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(MACOSX_BUNDLE_COPYRIGHT "(C) 2017-2020 Estonian Information System Authority")
 
 include( GNUInstallDirs )
 include( VersionInfo )

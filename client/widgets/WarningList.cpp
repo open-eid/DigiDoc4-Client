@@ -4,7 +4,7 @@
 #include "WarningItem.h"
 #include "WarningRibbon.h"
 
-#include "ui_MainWindow.h"
+#include "../ui_MainWindow.h"
 
 #include <QtWidgets/QBoxLayout>
 
