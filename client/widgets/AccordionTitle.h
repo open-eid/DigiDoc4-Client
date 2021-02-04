@@ -33,12 +33,14 @@ public:
 	explicit AccordionTitle(QWidget *parent = nullptr);
 	~AccordionTitle() final;
 
+	void init(bool open, const QString &caption, QWidget *content);
 	void init(bool open, const QString &caption, const QString &accessible, QWidget *content);
 	bool isOpen() const;
+	void openSection(AccordionTitle *opened);
 	void setText(const QString &caption, const QString &accessible);
-	void setSectionOpen(bool open);
+	void setSectionOpen(bool open = true);
 
-signals:
+Q_SIGNALS:
 	void closed(AccordionTitle* opened);
 	void opened(AccordionTitle* opened);
 

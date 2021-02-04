@@ -54,7 +54,6 @@ signals:
 
 private:
 	void changeEvent(QEvent* event) override;
-	void openSection(AccordionTitle *opened);
 	void hideOtherData(bool hidden);
 
 	Ui::Accordion *ui;

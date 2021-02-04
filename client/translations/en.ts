@@ -3046,11 +3046,6 @@ Additional licenses and components</translation>
         <translation>is unknown</translation>
     </message>
     <message>
-        <source>Technical information</source>
-        <comment>accessible</comment>
-        <translation>Technical information</translation>
-    </message>
-    <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Close</translation>
@@ -3058,6 +3053,10 @@ Additional licenses and components</translation>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Signing time (UTC)</translation>
+    </message>
+    <message>
+        <source>ROLE AND ADDRESS</source>
+        <translation>ROLE AND ADDRESS</translation>
     </message>
 </context>
 <context>

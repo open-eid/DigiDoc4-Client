@@ -3049,11 +3049,6 @@ Additional licenses and components</source>
         <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Technical information</source>
-        <comment>accessible</comment>
-        <translation>Техническая информация</translation>
-    </message>
-    <message>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
@@ -3061,6 +3056,10 @@ Additional licenses and components</source>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Время подписания (UTC)</translation>
+    </message>
+    <message>
+        <source>ROLE AND ADDRESS</source>
+        <translation>РОЛЬ И АДРЕС</translation>
     </message>
 </context>
 <context>

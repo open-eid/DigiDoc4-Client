@@ -69,11 +69,17 @@ bool AccordionTitle::event(QEvent *e)
 	return StyledWidget::event(e);
 }
 
+void AccordionTitle::init(bool open, const QString &caption, QWidget *content)
+{
+	init(open, caption, caption.toLower(), content);
+}
+
 void AccordionTitle::init(bool open, const QString &caption, const QString &accessible, QWidget *content)
 {
 	setText(caption, accessible);
 	this->content = content;
 	setSectionOpen(open);
+	content->setVisible(true);
 }
 
 bool AccordionTitle::isOpen() const
@@ -81,9 +87,14 @@ bool AccordionTitle::isOpen() const
 	return content->isVisible();
 }
 
+void AccordionTitle::openSection(AccordionTitle *opened)
+{
+	setSectionOpen(this == opened);
+}
+
 void AccordionTitle::setSectionOpen(bool open)
 {
-	content->setVisible(open);
+	content->setVisible(open && isVisible());
 	if(open)
 	{
 		ui->label->setStyleSheet(QStringLiteral("border: none; color: #006EB5;"));
