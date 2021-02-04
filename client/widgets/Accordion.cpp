@@ -111,8 +111,7 @@ void Accordion::updateInfo(const QSmartCardData &data)
 	ui->pukBox->show();
 	ui->pukBox->update(QSmartCardData::PukType, data);
 
-	hideOtherData(data.version() == QSmartCardData::VER_USABLEUPDATER ||
-		(data.authCert().type() & SslCertificate::EResidentSubType));
+	hideOtherData(data.version() == QSmartCardData::VER_USABLEUPDATER);
 	if(ui->contentOtherData->property("card").toString() != data.card())
 		ui->contentOtherData->update(false, {});
 	ui->contentOtherData->setProperty("card", data.card());

@@ -45,7 +45,7 @@ public:
 	void updateInfo(const QSmartCardData &data);
 	bool updateOtherData(const QByteArray &data);
 
-signals:
+Q_SIGNALS:
 	void checkEMail();
 	void activateEMail();
 	void changePin1Clicked(bool isForgotPin, bool isBlockedPin);
