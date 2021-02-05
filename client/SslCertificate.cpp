@@ -53,20 +53,20 @@ static QByteArray i2dDer(Func func, Arg arg)
 }
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
+static void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
 {
 	if(n) *n = r->n;
 	if(e) *e = r->e;
 	if(d) *d = r->d;
 }
 
-void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGNUM **priv_key)
+static void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGNUM **priv_key)
 {
 	if(pub_key) *pub_key = d->pub_key;
 	if(priv_key) *priv_key = d->priv_key;
 }
 
-void X509_get0_signature(const ASN1_BIT_STRING **psig, const X509_ALGOR **palg, const X509 *x)
+static void X509_get0_signature(const ASN1_BIT_STRING **psig, const X509_ALGOR **palg, const X509 *x)
 {
 	if(psig) *psig = x->signature;
 	if(palg) *palg = x->sig_alg;
@@ -142,7 +142,7 @@ QString SslCertificate::friendlyName() const
 	if(o == QStringLiteral("ESTEID"))
 		return QStringLiteral("%1,%2").arg(cn, tr("ID-CARD"));
 	int certType = type();
-	if(certType & SslCertificate::EResidentType)
+	if(certType & SslCertificate::EResidentSubType)
 		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID E-RESIDENT"));
 	if(certType & SslCertificate::DigiIDType)
 		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID"));
@@ -151,56 +151,10 @@ QString SslCertificate::friendlyName() const
 	return cn;
 }
 
-QSslCertificate SslCertificate::fromX509( Qt::HANDLE x509 )
-{
-	return QSslCertificate(i2dDer(i2d_X509, (X509*)x509), QSsl::Der);
-}
-
 bool SslCertificate::isCA() const
 {
 	SCOPE(BASIC_CONSTRAINTS, cons, extension(NID_basic_constraints));
 	return cons && cons->ca > 0;
-}
-
-QSslKey SslCertificate::keyFromEVP( Qt::HANDLE evp )
-{
-	EVP_PKEY *key = (EVP_PKEY*)evp;
-	unsigned char *data = nullptr;
-	int len = 0;
-	QSsl::KeyAlgorithm alg = QSsl::Rsa;
-	QSsl::KeyType type = QSsl::PublicKey;
-
-	switch(EVP_PKEY_base_id(key))
-	{
-	case EVP_PKEY_RSA:
-	{
-		SCOPE(RSA, rsa, EVP_PKEY_get1_RSA(key));
-		alg = QSsl::Rsa;
-		const BIGNUM *d = nullptr;
-		RSA_get0_key(rsa.get(), nullptr, nullptr, &d);
-		type = d ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = d ? i2d_RSAPrivateKey(rsa.get(), &data) : i2d_RSAPublicKey(rsa.get(), &data);
-		break;
-	}
-	case EVP_PKEY_DSA:
-	{
-		SCOPE(DSA, dsa, EVP_PKEY_get1_DSA(key));
-		alg = QSsl::Dsa;
-		const BIGNUM *priv_key = nullptr;
-		DSA_get0_key(dsa.get(), nullptr, &priv_key);
-		type = priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = priv_key ? i2d_DSAPrivateKey(dsa.get(), &data) : i2d_DSAPublicKey(dsa.get(), &data);
-		break;
-	}
-	default: break;
-	}
-
-	QSslKey k;
-	if( len > 0 )
-		k = QSslKey(QByteArray::fromRawData((char*)data, len), alg, QSsl::Der, type);
-	OPENSSL_free( data );
-
-	return k;
 }
 
 QString SslCertificate::keyName() const
@@ -450,10 +404,11 @@ PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin
 	// Hack: clear PKCS12_parse error ERROR: 185073780 - error:0B080074:x509 certificate routines:X509_check_private_key:key values mismatch
 	ERR_get_error();
 
-	d->cert = SslCertificate::fromX509(Qt::HANDLE(c));
-	d->key = SslCertificate::keyFromEVP(Qt::HANDLE(k));
+	auto fromX509 = [](X509 *x509) { return QSslCertificate(i2dDer(i2d_X509, x509), QSsl::Der); };
+	d->cert = fromX509(c);
+	d->key = fromEVP(Qt::HANDLE(k));
 	for(int i = 0; i < sk_X509_num(ca); ++i)
-		d->caCerts << SslCertificate::fromX509(Qt::HANDLE(sk_X509_value(ca, i)));
+		d->caCerts << fromX509(sk_X509_value(ca, i));
 
 	X509_free(c);
 	EVP_PKEY_free(k);
@@ -479,6 +434,48 @@ PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QStrin
 	else
 		return PKCS12Certificate(&f, pin);
 	return p12;
+}
+
+
+QSslKey PKCS12Certificate::fromEVP(Qt::HANDLE evp) const
+{
+	EVP_PKEY *key = (EVP_PKEY*)evp;
+	unsigned char *data = nullptr;
+	int len = 0;
+	QSsl::KeyAlgorithm alg = QSsl::Rsa;
+	QSsl::KeyType type = QSsl::PublicKey;
+
+	switch(EVP_PKEY_base_id(key))
+	{
+	case EVP_PKEY_RSA:
+	{
+		SCOPE(RSA, rsa, EVP_PKEY_get1_RSA(key));
+		alg = QSsl::Rsa;
+		const BIGNUM *d = nullptr;
+		RSA_get0_key(rsa.get(), nullptr, nullptr, &d);
+		type = d ? QSsl::PrivateKey : QSsl::PublicKey;
+		len = d ? i2d_RSAPrivateKey(rsa.get(), &data) : i2d_RSAPublicKey(rsa.get(), &data);
+		break;
+	}
+	case EVP_PKEY_DSA:
+	{
+		SCOPE(DSA, dsa, EVP_PKEY_get1_DSA(key));
+		alg = QSsl::Dsa;
+		const BIGNUM *priv_key = nullptr;
+		DSA_get0_key(dsa.get(), nullptr, &priv_key);
+		type = priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
+		len = priv_key ? i2d_DSAPrivateKey(dsa.get(), &data) : i2d_DSAPublicKey(dsa.get(), &data);
+		break;
+	}
+	default: break;
+	}
+
+	QSslKey k;
+	if( len > 0 )
+		k = QSslKey(QByteArray::fromRawData((char*)data, len), alg, QSsl::Der, type);
+	OPENSSL_free(data);
+
+	return k;
 }
 
 bool PKCS12Certificate::isNull() const { return d->cert.isNull() && d->key.isNull(); }
