@@ -65,11 +65,12 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
 	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
+	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, [=](bool checked) {
-		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString(), QString());
-		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString(), QString());
+		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString());
+		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString());
 		SettingsDialog::setValueEx(QStringLiteral("MobileSettings"), checked, true);
 	});
 
@@ -86,7 +87,7 @@ void MobileDialog::enableSign()
 	static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LAT, COUNTRY_CODE_LTU};
 	if( ui->cbRemember->isChecked() )
 	{
-		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text(), QString());
+		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text());
 		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), ui->phoneNo->text(),
 			ui->phoneNo->text() == COUNTRY_CODE_EST ? COUNTRY_CODE_EST : QString());
 	}

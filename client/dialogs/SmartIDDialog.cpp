@@ -45,8 +45,10 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->labelCode->setFont(regularFont);
 	ui->labelCountry->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
+	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	ui->idCountry->setFont(regularFont);
 	ui->cbRemember->setFont(regularFont);
+	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, 0);
 	ui->sign->setFont(condensed);
 	ui->cancel->setFont(condensed);
 
