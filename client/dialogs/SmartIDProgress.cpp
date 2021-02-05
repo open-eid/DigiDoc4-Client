@@ -91,9 +91,9 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->signProgressBar->setMaximum(100);
 	d->code->setBuddy(d->signProgressBar);
 	d->code->setFont(Styles::font(Styles::Regular, 48));
-	d->labelError->setFont(Styles::font(Styles::Regular, 14));
+	d->info->setFont(Styles::font(Styles::Regular, 14));
 	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
-	d->signProgressBar->setFont(d->labelError->font());
+	d->signProgressBar->setFont(d->info->font());
 	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
 
@@ -109,9 +109,9 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 #endif
 
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	QList<QSslCertificate> trusted;
 	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 #endif
@@ -183,16 +183,19 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			switch (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
 			{
 			case 403:
-				returnError(tr("Failed to sign container. Check your %1 service access settings. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
+				returnError(tr("Failed to sign container. Check your %1 service access settings. "
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
 				return;
 			case 429:
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
 				return;
 			case 471:
 				returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
 				return;
 			case 480:
-				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from <a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
+				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from "
+					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
 				return;
 			case 580:
 				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(QStringLiteral("Smart-ID")));
@@ -287,8 +290,8 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode)
 	d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL(), country, idCode)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
-	d->labelError->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
-	d->controlCode->setText(tr("Control code:"));
+	d->info->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
+	d->code->setAccessibleName(d->info->text());
 	d->statusTimer->start();
 	d->adjustSize();
 	d->show();
@@ -313,8 +316,9 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 	QByteArray codeDiest = QCryptographicHash::hash(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())), QCryptographicHash::Sha256);
 	uint code = codeDiest.right(2).toHex().toUInt(nullptr, 16) % 10000;
 	d->code->setText(QStringLiteral("%1").arg(code, 4, 10, QChar('0')));
-	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
+	d->info->setText(tr("Make sure control code matches with one in phone screen\n"
 		"and enter Smart-ID PIN2-code."));
+	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
 
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},

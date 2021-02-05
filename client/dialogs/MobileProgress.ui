@@ -20,8 +20,7 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-radius: 2px;
-background-color: #FFFFFF;</string>
+   <string notr="true">background-color: #FFFFFF;</string>
   </property>
   <layout class="QVBoxLayout" name="MobileProgressLayout" stretch="0,1,0,0,0">
    <property name="spacing">
@@ -41,16 +40,11 @@ background-color: #FFFFFF;</string>
    </property>
    <item>
     <widget class="QLabel" name="controlCode">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
      <property name="styleSheet">
-      <string notr="true">color: #353739;
-line-height: 15px;
-border: none;</string>
+      <string notr="true">color: #353739;</string>
      </property>
      <property name="text">
-      <string/>
+      <string>Control code:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -70,7 +64,7 @@ border: none;</string>
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #041E42; border: none;</string>
+      <string notr="true">color: #041E42;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -78,14 +72,9 @@ border: none;</string>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelError">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
+    <widget class="QLabel" name="info">
      <property name="styleSheet">
-      <string notr="true">color: #353739;
-line-height: 15px;
-border: none;</string>
+      <string notr="true">color: #353739;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

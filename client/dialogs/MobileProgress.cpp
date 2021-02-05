@@ -87,9 +87,9 @@ MobileProgress::MobileProgress(QWidget *parent)
 	d->move(parent->geometry().center() - d->geometry().center());
 	d->code->setBuddy(d->signProgressBar);
 	d->code->setFont(Styles::font(Styles::Regular, 48));
-	d->labelError->setFont(Styles::font(Styles::Regular, 14));
+	d->info->setFont(Styles::font(Styles::Regular, 14));
 	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
-	d->signProgressBar->setFont(d->labelError->font());
+	d->signProgressBar->setFont(d->info->font());
 	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
 
@@ -175,7 +175,8 @@ MobileProgress::MobileProgress(QWidget *parent)
 		default:
 			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
 			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. <a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
+				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
 			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
 				break;
 			else
@@ -273,8 +274,8 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 	}
 	d->ssid = ssid;
 	d->cell = '+' + cell;
-	d->labelError->setText(tr("Signing in process"));
-	d->controlCode->setText(tr("Control code:"));
+	d->info->setText(tr("Signing in process"));
+	d->code->setAccessibleName(d->info->text());
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
@@ -307,8 +308,9 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
 
 	d->code->setText(QStringLiteral("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
-	d->labelError->setText(tr("Make sure control code matches with one in phone screen\n"
+	d->info->setText(tr("Make sure control code matches with one in phone screen\n"
 		"and enter mobile-ID PIN2-code."));
+	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
 
 	QHash<QString,QString> lang;
 	lang[QStringLiteral("et")] = QStringLiteral("EST");
