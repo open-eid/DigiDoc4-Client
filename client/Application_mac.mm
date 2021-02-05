@@ -73,6 +73,9 @@ void Application::addRecent( const QString &file )
 
 void Application::initMacEvents()
 {
+	static bool isInitalized = false;
+	if(isInitalized)
+		return;
 	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:NSApp
 		andSelector:@selector(appReopen:withReplyEvent:)
 		forEventClass:kCoreEventClass
@@ -80,6 +83,7 @@ void Application::initMacEvents()
 	// reload /System/Library/CoreServices/pbs
 	// list /System/Library/CoreServices/pbs -dump_pboard
 	[NSApp setServicesProvider:NSApp];
+	isInitalized = true;
 }
 
 void Application::deinitMacEvents()

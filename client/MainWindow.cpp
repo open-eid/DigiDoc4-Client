@@ -886,7 +886,8 @@ void MainWindow::showCardMenu(bool show)
 
 void MainWindow::showEvent(QShowEvent * /*event*/)
 {
-	if(qApp->initialized())
+	static bool isShown = false;
+	if(isShown)
 		return;
 	static const int height = 94;
 	static const int width = 166;
@@ -896,6 +897,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	structureFunds->resize(width, height);
 	structureFunds->show();
 	notification->start({}, 400, 4000, 1100);
+	isShown = true;
 }
 
 void MainWindow::showSettings(int page)
