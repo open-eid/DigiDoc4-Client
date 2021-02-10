@@ -49,7 +49,7 @@ BEGIN
 END
 /* End of Version info */
 
-IDI_ICON1   ICON  DISCARDABLE  "images/digidoc_icon_48x48.ico"
-IDI_ICON2   ICON  DISCARDABLE  "images/qdigidoc_client_document_48x48.ico"
-IDI_ICON3   ICON  DISCARDABLE  "images/crypto_48x48.ico"
-IDI_ICON4   ICON  DISCARDABLE  "images/qdigidoc_crypto_document_48x48.ico"
+IDI_ICON1   ICON  DISCARDABLE  "images/digidoc.ico"
+IDI_ICON2   ICON  DISCARDABLE  "images/qdigidoc_client_document.ico"
+IDI_ICON3   ICON  DISCARDABLE  "images/crypto.ico"
+IDI_ICON4   ICON  DISCARDABLE  "images/qdigidoc_crypto_document.ico"
