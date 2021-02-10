@@ -30,9 +30,9 @@ AccordionTitle::AccordionTitle(QWidget *parent)
 	, ui(new Ui::AccordionTitle)
 {
 	ui->setupUi(this);
-	ui->icon->resize(2, 6);
-	ui->icon->move(15, 17);
 	ui->label->setFont( Styles::font( Styles::Condensed, 16 ) );
+	ui->label->setStyleSheet(QStringLiteral("border: none; color: #006EB5;"));
+	ui->icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
 }
 
 AccordionTitle::~AccordionTitle()
@@ -42,27 +42,15 @@ AccordionTitle::~AccordionTitle()
 
 bool AccordionTitle::event(QEvent *e)
 {
-	auto process = [&]{
-		if(!content->isVisible())
-		{
-			setSectionOpen(true);
-			emit opened(this);
-		}
-		else
-		{
-			setSectionOpen(false);
-			emit closed(this);
-		}
-		return StyledWidget::event(e);
-	};
 	switch(e->type())
 	{
 	case QEvent::MouseButtonRelease:
-		return process();
+		setSectionOpen(!isOpen());
+		break;
 	case QEvent::KeyRelease:
 		if(QKeyEvent *ke = static_cast<QKeyEvent*>(e))
 			if(ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space)
-				return process();
+				setSectionOpen(!isOpen());
 		break;
 	default: break;
 	}
@@ -79,12 +67,11 @@ void AccordionTitle::init(bool open, const QString &caption, const QString &acce
 	setText(caption, accessible);
 	this->content = content;
 	setSectionOpen(open);
-	content->setVisible(true);
 }
 
 bool AccordionTitle::isOpen() const
 {
-	return content->isVisible();
+	return _isOpen;
 }
 
 void AccordionTitle::openSection(AccordionTitle *opened)
@@ -94,13 +81,18 @@ void AccordionTitle::openSection(AccordionTitle *opened)
 
 void AccordionTitle::setSectionOpen(bool open)
 {
-	content->setVisible(open && isVisible());
+	if(_isOpen == open)
+		return;
+	_isOpen = open;
+	if(content)
+		content->setVisible(open && !isHidden());
 	if(open)
 	{
 		ui->label->setStyleSheet(QStringLiteral("border: none; color: #006EB5;"));
 		ui->icon->resize( 12, 6 );
 		ui->icon->move(15, 17);
 		ui->icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
+		emit opened(this);
 	}
 	else
 	{
@@ -108,6 +100,7 @@ void AccordionTitle::setSectionOpen(bool open)
 		ui->icon->resize( 6, 12 );
 		ui->icon->move(18, 14);
 		ui->icon->load(QStringLiteral(":/images/accordion_arrow_right.svg"));
+		emit closed(this);
 	}
 }
 
@@ -115,4 +108,11 @@ void AccordionTitle::setText(const QString &caption, const QString &accessible)
 {
 	ui->label->setText(caption);
 	ui->label->setAccessibleName(accessible);
+}
+
+void AccordionTitle::setVisible(bool visible)
+{
+	StyledWidget::setVisible(visible);
+	if(content)
+		content->setVisible(visible && isOpen());
 }

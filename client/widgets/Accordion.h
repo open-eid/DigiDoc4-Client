@@ -54,7 +54,6 @@ Q_SIGNALS:
 
 private:
 	void changeEvent(QEvent* event) override;
-	void hideOtherData(bool hidden);
 
 	Ui::Accordion *ui;
 };

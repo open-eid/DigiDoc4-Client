@@ -39,6 +39,7 @@ public:
 	void openSection(AccordionTitle *opened);
 	void setText(const QString &caption, const QString &accessible);
 	void setSectionOpen(bool open = true);
+	void setVisible(bool visible) final;
 
 Q_SIGNALS:
 	void closed(AccordionTitle* opened);
@@ -48,5 +49,6 @@ private:
 	bool event(QEvent *e) final;
 
 	Ui::AccordionTitle *ui;
+	bool _isOpen = true;
 	QWidget* content = nullptr;
 };
