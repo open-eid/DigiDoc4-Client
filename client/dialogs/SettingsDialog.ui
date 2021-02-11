@@ -463,6 +463,9 @@ QPushButton {
 }</string>
       </property>
       <layout class="QVBoxLayout" name="pageServicesLayout">
+       <property name="spacing">
+        <number>5</number>
+       </property>
        <property name="leftMargin">
         <number>20</number>
        </property>

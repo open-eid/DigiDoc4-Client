@@ -56,23 +56,27 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData,
 	move(parent->frameGeometry().center() - frameGeometry().center());
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
+	QFont regular = Styles::font(Styles::Regular, 14);
+	ui->view->header()->setFont(regular);
+	ui->view->setFont(regular);
 	ui->close->setFont(condensed);
 	ui->select->setFont(condensed);
 	ui->remove->setFont(condensed);
 
 	connect(ui->close, &QPushButton::clicked, this, &CertificateHistory::reject);
-	connect(ui->select, &QPushButton::clicked, this, [&]{
+	connect(ui->select, &QPushButton::clicked, this, [this]{
 		emit addSelectedCerts(selectedItems());
 	});
 	connect(ui->select, &QPushButton::clicked, this, &CertificateHistory::reject);
-	connect(ui->remove, &QPushButton::clicked, this, [&]{
+	connect(ui->remove, &QPushButton::clicked, this, [this]{
 		emit removeSelectedCerts(selectedItems());
 		fillView();
 	});
 	connect(ui->view, &QTreeWidget::itemActivated, ui->select, &QPushButton::clicked);
 
 	fillView();
-	ui->view->header()->setMinimumSectionSize(ui->view->fontMetrics().boundingRect(ui->view->headerItem()->text(3)).width() + 10);
+	ui->view->header()->setMinimumSectionSize(
+		ui->view->fontMetrics().boundingRect(ui->view->headerItem()->text(3)).width() + 25);
 	ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 	adjustSize();
