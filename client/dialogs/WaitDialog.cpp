@@ -26,8 +26,6 @@
 #include "Styles.h"
 #include "effects/Overlay.h"
 
-#include <QMovie>
-
 WaitDialogHider::WaitDialogHider()
 {
 	if(WaitDialog *d = WaitDialog::instance())
@@ -51,8 +49,7 @@ WaitDialog::WaitDialog(QWidget *parent)
 	new Overlay(this, parent);
 	setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
 	ui->setupUi(this);
-	ui->movie->setMovie(new QMovie(":/images/wait.gif", {}, ui->movie));
-	ui->movie->movie()->start();
+	ui->movie->load(QStringLiteral(":/images/wait.svg"));
 	ui->label->setFont(Styles::font(Styles::Condensed, 24));
 	move(parent->geometry().center() - geometry().center());
 }

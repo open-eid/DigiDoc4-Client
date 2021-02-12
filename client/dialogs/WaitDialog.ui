@@ -43,13 +43,13 @@
     <string notr="true">color: #041E42; border: none;</string>
    </property>
    <property name="text">
-    <string>Decrypting</string>
+    <string notr="true">Decrypting</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="movie">
+  <widget class="QSvgWidget" name="movie" native="true">
    <property name="geometry">
     <rect>
      <x>132</x>
@@ -72,6 +72,14 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QSvgWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

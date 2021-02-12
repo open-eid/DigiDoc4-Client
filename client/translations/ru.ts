@@ -3357,13 +3357,6 @@ Additional licenses and components</source>
     </message>
 </context>
 <context>
-    <name>WaitDialog</name>
-    <message>
-        <source>Decrypting</source>
-        <translation>Расшифровка</translation>
-    </message>
-</context>
-<context>
     <name>WarningDialog</name>
     <message>
         <source>CLOSE</source>
