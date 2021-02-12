@@ -1578,10 +1578,6 @@ ID-CARD</translation>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
     <message>
-        <source>Documents (%1%2)</source>
-        <translation>Documents (%1%2)</translation>
-    </message>
-    <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
         <translation>%1 has been changed and the certificate has been unblocked!</translation>
     </message>
