@@ -113,7 +113,8 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 		xml.skipCurrentElement();
 	}
 
-	initAddressItems(itemList->items);
+	for(Item *item: itemList->items)
+		addRecipientToRightPane((qobject_cast<AddressItem *>(item))->getKey(), false);
 }
 
 AddRecipients::~AddRecipients()
@@ -140,7 +141,7 @@ void AddRecipients::addAllRecipientToRightPane()
 
 void AddRecipients::addRecipientFromCard()
 {
-	if(Item *item = addRecipientToLeftPane(qApp->signer()->tokenauth().cert()))
+	if(AddressItem *item = addRecipientToLeftPane(qApp->signer()->tokenauth().cert()))
 		addRecipientToRightPane(item, true);
 }
 
@@ -173,7 +174,7 @@ void AddRecipients::addRecipientFromFile()
 	{
 		WarningDialog::warning( this, tr("This certificate cannot be used for encryption"));
 	}
-	else if(Item *item = addRecipientToLeftPane(cert))
+	else if(AddressItem *item = addRecipientToLeftPane(cert))
 	{
 		addRecipientToRightPane(item, true);
 	}
@@ -202,7 +203,7 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
 
 	connect(leftItem, &AddressItem::add, this, [this](Item *item) {
-		addRecipientToRightPane(item, true);
+		addRecipientToRightPane(static_cast<AddressItem*>(item), true);
 	});
 
 	if(QWidget *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
@@ -211,50 +212,55 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	return leftItem;
 }
 
-void AddRecipients::addRecipientToRightPane(Item *toAdd, bool update)
+bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 {
-	AddressItem *leftItem = qobject_cast<AddressItem *>(toAdd);
-
-	if (rightList.contains(leftItem->getKey().cert))
-		return;
+	if (rightList.contains(key.cert))
+		return false;
 
 	if(update)
 	{
-		auto expiryDate = leftItem->getKey().cert.expiryDate();
+		auto expiryDate = key.cert.expiryDate();
 		if(expiryDate <= QDateTime::currentDateTime())
 		{
 			WarningDialog dlg(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-					"When decrypter has updated certificates then decrypting is impossible.")
-					.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
+								 "When decrypter has updated certificates then decrypting is impossible.")
+								  .arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
 			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
 			if(dlg.exec() != QMessageBox::Yes)
-				return;
+				return false;
 		}
-		QList<QSslError> errors = QSslCertificate::verify({ leftItem->getKey().cert });
-		errors.removeAll(QSslError(QSslError::CertificateExpired, leftItem->getKey().cert));
+		QList<QSslError> errors = QSslCertificate::verify({ key.cert });
+		errors.removeAll(QSslError(QSslError::CertificateExpired, key.cert));
 		if(!errors.isEmpty())
 		{
 			WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
 			dlg.setCancelText(tr("NO"));
 			dlg.addButton(tr("YES"), QMessageBox::Yes);
 			if(dlg.exec() != QMessageBox::Yes)
-				return;
+				return false;
 		}
 	}
 	updated = update;
 
-	rightList.append(leftItem->getKey().cert);
+	rightList.append(key.cert);
 
-	AddressItem *rightItem = new AddressItem(leftItem->getKey(), ui->leftPane);
+	AddressItem *rightItem = new AddressItem(key, ui->rightPane);
 	ui->rightPane->addWidget(rightItem);
 	rightItem->showButton(AddressItem::Remove);
 
 	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
-	leftItem->disable(true);
-	leftItem->showButton(AddressItem::Added);
 	ui->confirm->setDisabled(rightList.isEmpty());
-	rememberCerts({toHistory(leftItem->getKey().cert)});
+	rememberCerts({toHistory(key.cert)});
+	return true;
+}
+
+void AddRecipients::addRecipientToRightPane(AddressItem *leftItem, bool update)
+{
+	if(addRecipientToRightPane(leftItem->getKey(), update)) {
+		leftItem->disable(true);
+		leftItem->showButton(AddressItem::Added);
+	}
 }
 
 void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertData)
@@ -283,25 +289,6 @@ QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValu
 void AddRecipients::enableRecipientFromCard()
 {
 	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
-}
-
-void AddRecipients::initAddressItems(const std::vector<Item *> &items)
-{
-	for(Item *item: items)
-	{
-		AddressItem *leftItem = new AddressItem((qobject_cast<AddressItem *>(item))->getKey(), ui->leftPane);
-
-		// Add to left pane
-		leftList.insert(leftItem->getKey().cert, leftItem);
-		ui->leftPane->addWidget(leftItem);
-
-		leftItem->disable(true);
-		leftItem->showButton(AddressItem::Added);
-		connect(leftItem, &AddressItem::add, this, [this](Item *item){ addRecipientToRightPane(item, true); });
-
-		// Add to right pane
-		addRecipientToRightPane(leftItem, false);
-	}
 }
 
 bool AddRecipients::isUpdated()
@@ -462,7 +449,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	{
 		for(const QSslCertificate &k: filter)
 		{
-			Item *item = addRecipientToLeftPane(k);
+			AddressItem *item = addRecipientToLeftPane(k);
 			if(userData.value(QStringLiteral("select"), false).toBool() &&
 				(userData.value(QStringLiteral("type")).isNull() || toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
 				addRecipientToRightPane(item, true);

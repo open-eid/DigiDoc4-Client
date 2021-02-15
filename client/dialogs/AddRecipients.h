@@ -50,12 +50,12 @@ private:
 	void addRecipientFromFile();
 	void addRecipientFromHistory();
 	AddressItem * addRecipientToLeftPane(const QSslCertificate& cert);
-	void addRecipientToRightPane(Item* toAdd, bool update = true);
+	bool addRecipientToRightPane(const CKey &key, bool update = true);
+	void addRecipientToRightPane(AddressItem *leftItem, bool update = true);
 
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
 
 	void enableRecipientFromCard();
-	void initAddressItems(const std::vector<Item*>& items);
 
 	QString path() const;
 	void rememberCerts(const QList<HistoryCertData>& selectedCertData);
