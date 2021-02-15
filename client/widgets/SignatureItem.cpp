@@ -48,7 +48,7 @@ public:
 	QString nameText;
 	QString serial;
 	QString statusHtml;
-	QString roleElided;
+	QString roleText;
 	QString status;
 };
 
@@ -63,7 +63,6 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidg
 	ui->idSignTime->setFont(Styles::font(Styles::Regular, 11));
 	ui->idSignTime->installEventFilter(this);
 	ui->role->setFont(Styles::font(Styles::Regular, 11));
-	ui->role->installEventFilter(this);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
 	ui->remove->init(LabelButton::White, QString(), 0);
@@ -150,7 +149,6 @@ void SignatureItem::init()
 		break;
 	}
 	sc << "</span>";
-	updateNameField();
 	ui->status = accessibility;
 
 	if(!cert.isNull())
@@ -172,10 +170,9 @@ void SignatureItem::init()
 			<< date.toString(QStringLiteral("hh:mm"));
 	}
 	ui->idSignTime->setText(signingInfo);
-	const QString role = ui->signature.role();
-	ui->role->setHidden(role.isEmpty());
-	ui->role->setText(role);
-	ui->roleElided = ui->role->fontMetrics().elidedText(ui->role->text(), Qt::ElideRight, ui->role->geometry().width(), Qt::TextShowMnemonic);
+	ui->roleText = ui->signature.role();
+	ui->role->setHidden(ui->roleText.isEmpty());
+	updateNameField();
 
 	setAccessibleName(label + " " + cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")));
 	setAccessibleDescription( accessibility );
@@ -192,7 +189,6 @@ bool SignatureItem::event(QEvent *event)
 	case QEvent::Resize:
 		updateNameField();
 		break;
-
 	default: break;
 	}
 	return Item::event(event);
@@ -207,26 +203,6 @@ bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 {
 	switch(e->type())
 	{
-	case QEvent::Paint:
-		if(o == ui->role)
-		{
-			QPainter(qobject_cast<QLabel*>(o)).drawText(0, 0,
-				ui->role->geometry().width(),
-				ui->role->geometry().height(),
-				ui->role->alignment(),
-				ui->roleElided
-			);
-			return true;
-		}
-		break;
-	case QEvent::Resize:
-		if(QResizeEvent *r = static_cast<QResizeEvent*>(e))
-		{
-			if(o == ui->role)
-				ui->roleElided = ui->role->fontMetrics().elidedText(
-					ui->role->text().simplified(), Qt::ElideRight, r->size().width(), Qt::TextShowMnemonic);
-		}
-		break;
 	case QEvent::MouseButtonRelease:
 		details();
 		return true;
@@ -299,4 +275,7 @@ void SignatureItem::updateNameField()
 	QTextDocument doc;
 	doc.setHtml(ui->name->text());
 	ui->name->setAccessibleName(doc.toPlainText());
+	if(ui->role->isVisible())
+		ui->role->setText(ui->role->fontMetrics().elidedText(
+			ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
 }
