@@ -84,7 +84,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	: d(new Private(parent))
 {
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
+		true || QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
@@ -282,11 +282,12 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode)
 		return false;
 	}
 	d->sessionID.clear();
-	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
+	QByteArray data = QJsonDocument({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
 		{"relyingPartyName", d->NAME},
-		{"certificateLevel", "QUALIFIED"}
-	})).toJson();
+		{"certificateLevel", "QUALIFIED"},
+		{"nonce", QUuid::createUuid().toString().remove('-').mid(1, 30)}
+	}).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL(), country, idCode)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
@@ -320,15 +321,15 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		"and enter Smart-ID PIN2-code."));
 	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
 
-	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
-		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
+	QByteArray data = QJsonDocument({
+		{"relyingPartyUUID", (d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID)},
 		{"relyingPartyName", d->NAME},
 		{"certificateLevel", "QUALIFIED"},
-		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
+		{"hash", QString(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64())},
 		{"hashType", digestMethod},
-		{"requestProperties", QVariantHash{{"vcChoice", true}}},
+		{"requestProperties", QJsonObject{{"vcChoice", true}}},
 		{"displayText", tr("Sign document", "Do not translate to RUS (IB-6416)")}
-	})).toJson();
+	}).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
