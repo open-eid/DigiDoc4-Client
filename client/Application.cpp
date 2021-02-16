@@ -913,16 +913,18 @@ void Application::parseArgs( const QStringList &args )
 {
 	bool crypto = args.contains(QStringLiteral("-crypto"));
 	bool sign = args.contains(QStringLiteral("-sign"));
+	bool newWindow = args.contains(QStringLiteral("-newWindow"));
 	QStringList params = args;
 	params.removeAll(QStringLiteral("-sign"));
 	params.removeAll(QStringLiteral("-crypto"));
+	params.removeAll(QStringLiteral("-newWindow"));
 	params.removeAll(QStringLiteral("-capi"));
 	params.removeAll(QStringLiteral("-cng"));
 	params.removeAll(QStringLiteral("-pkcs11"));
 	params.removeAll(QStringLiteral("-noNativeFileDialog"));
 
 	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
-	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign);
+	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
 }
 
 uint Application::readTSLVersion(const QString &path)
