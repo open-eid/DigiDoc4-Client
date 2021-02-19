@@ -22,16 +22,10 @@
 #include <QDialog>
 
 class CKey;
-namespace Ui { class KeyDialog; }
-
-class KeyDialog: public QDialog
+class KeyDialog final: public QDialog
 {
 	Q_OBJECT
 
 public:
 	KeyDialog(const CKey &key, QWidget *parent = nullptr);
-	~KeyDialog() final;
-
-private:
-	Ui::KeyDialog *d;
 };

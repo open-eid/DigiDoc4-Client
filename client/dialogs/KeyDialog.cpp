@@ -28,17 +28,19 @@
 
 KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	: QDialog( parent )
-	, d(new Ui::KeyDialog)
 {
+	Ui::KeyDialog *d = new Ui::KeyDialog;
 	d->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	new Overlay(this, parent->topLevelWidget());
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
+	QFont regular = Styles::font(Styles::Regular, 14);
 	d->close->setFont(condensed);
 	d->showCert->setFont(condensed);
-
+	d->view->header()->setFont(regular);
+	d->view->setFont(regular);
 	d->view->setHeaderLabels({tr("Attribute"), tr("Value")});
 
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
@@ -68,9 +70,5 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	d->view->resizeColumnToContents( 0 );
 	if(!k.agreement.isEmpty())
 		adjustSize();
-}
-
-KeyDialog::~KeyDialog()
-{
 	delete d;
 }
