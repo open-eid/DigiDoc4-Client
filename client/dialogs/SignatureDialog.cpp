@@ -47,9 +47,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	connect(d->showRole, &AccordionTitle::opened, d->showErrors, &AccordionTitle::openSection);
 	connect(d->showRole, &AccordionTitle::closed, this, [this] { d->showErrors->setSectionOpen(); });
 
-	Overlay *overlay = new Overlay(parent->topLevelWidget());
-	overlay->show();
-	connect(this, &SignatureDialog::destroyed, overlay, &Overlay::deleteLater);
+	new Overlay(this, parent->topLevelWidget());
 
 	SslCertificate c = signature.cert();
 	QString style = QStringLiteral("<font color=\"green\">");

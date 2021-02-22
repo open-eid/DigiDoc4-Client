@@ -58,14 +58,7 @@ void Accordion::clear()
 	ui->pukBox->clear();
 	ui->titleVerifyCert->setSectionOpen();
 	updateOtherData({});
-	hideOtherData(true);
-}
-
-void Accordion::hideOtherData(bool hidden)
-{
-	ui->titleOtherData->setHidden(hidden);
-	if(ui->titleOtherData->isHidden() || !ui->titleOtherData->isOpen())
-		ui->contentOtherData->hide();
+	ui->titleOtherData->hide();
 }
 
 bool Accordion::updateOtherData(const QByteArray &data)
@@ -95,7 +88,7 @@ void Accordion::updateInfo(const SslCertificate &c)
 		ui->authBox->update(QSmartCardData::Pin1Type, c);
 
 	ui->pukBox->hide();
-	hideOtherData(true);
+	ui->titleOtherData->hide();
 }
 
 void Accordion::updateInfo(const QSmartCardData &data)
@@ -111,7 +104,7 @@ void Accordion::updateInfo(const QSmartCardData &data)
 	ui->pukBox->show();
 	ui->pukBox->update(QSmartCardData::PukType, data);
 
-	hideOtherData(data.version() == QSmartCardData::VER_USABLEUPDATER);
+	ui->titleOtherData->setHidden(data.version() == QSmartCardData::VER_USABLEUPDATER);
 	if(ui->contentOtherData->property("card").toString() != data.card())
 		ui->contentOtherData->update(false, {});
 	ui->contentOtherData->setProperty("card", data.card());
