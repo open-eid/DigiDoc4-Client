@@ -764,6 +764,10 @@
         <source>TSL signing certs</source>
         <translation>TSL signeerimise sertifikaadid</translation>
     </message>
+    <message>
+        <source>TSL cache</source>
+        <translation>TSL puhver</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>

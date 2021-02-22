@@ -766,6 +766,10 @@
         <source>TSL signing certs</source>
         <translation>Сертификаты подписывания TSL</translation>
     </message>
+    <message>
+        <source>TSL cache</source>
+        <translation>TSL-буфер</translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
