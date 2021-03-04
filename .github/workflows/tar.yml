@@ -16,9 +16,9 @@ jobs:
       run: |
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
         cd ..
-        mv qdigidoc4 qdigidoc4-${VERSION}
+        mv DigiDoc4-Client qdigidoc4-${VERSION}
         tar czf qdigidoc4-${VERSION}.tar.gz --exclude-vcs qdigidoc4-${VERSION}
-        mv qdigidoc4-${VERSION} qdigidoc4
+        mv qdigidoc4-${VERSION} DigiDoc4-Client
         echo "::set-output name=version::$(echo ${VERSION})"
         echo "::set-output name=asset_name::$(echo qdigidoc4-${VERSION}.tar.gz)"
     - name: Create Release
