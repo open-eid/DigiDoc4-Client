@@ -312,7 +312,7 @@
     </message>
     <message>
         <source>Selected is %1</source>
-        <translation>Selected is %1</translation>
+        <translation>%1 is selected</translation>
     </message>
     <message>
         <source>%1 in reader</source>
@@ -577,7 +577,7 @@
     </message>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <translation>DigiDoc4 Client</translation>
     </message>
     <message>
         <source>Change</source>
@@ -1485,7 +1485,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <translation>DigiDoc4 Client</translation>
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
@@ -2665,7 +2665,7 @@ and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
         <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <translation>DigiDoc4 Client</translation>
     </message>
     <message>
         <source>Checking updates has failed.</source>
@@ -2801,7 +2801,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>DigiDoc4 client configuration update was successful.</source>
-        <translation>DigiDoc4 client configuration update was successful.</translation>
+        <translation>DigiDoc4 Client configuration update was successful.</translation>
     </message>
     <message>
         <source>%1 version %2, released %3</source>

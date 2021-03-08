@@ -286,7 +286,7 @@
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
+        <translation>digi-ID</translation>
     </message>
     <message>
         <source>e-Seal</source>
@@ -304,11 +304,11 @@
     </message>
     <message>
         <source>Certificate for Encryption</source>
-        <translation>Krüpteerimissertifikaat</translation>
+        <translation>krüpteerimissertifikaat</translation>
     </message>
     <message>
         <source>Authentication certificate</source>
-        <translation>Isikutuvastamise sertifikaat</translation>
+        <translation>isikutuvastamise sertifikaat</translation>
     </message>
     <message>
         <source>Selected is %1</source>
@@ -2186,7 +2186,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</source>
-        <translation>Kui peale vahetamist PUK-kood läheb meelest ära ja sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisetamise järel, siis ainus võimalus ID-kaart jälle tööle saada on pöörduda &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;klienditeeninduspunkti&lt;/span&gt;&lt;/a&gt; poole.</translation>
+        <translation>Kui peale vahetamist PUK-kood läheb meelest ära ja sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise järel, siis ainus võimalus ID-kaart jälle tööle saada on pöörduda &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;klienditeeninduspunkti&lt;/span&gt;&lt;/a&gt; poole.</translation>
     </message>
     <message>
         <source>To unblock the certificate you have to enter the PUK code.</source>

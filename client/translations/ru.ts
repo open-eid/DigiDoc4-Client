@@ -287,7 +287,7 @@
     </message>
     <message>
         <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
+        <translation>digi-ID</translation>
     </message>
     <message>
         <source>e-Seal</source>
@@ -306,11 +306,11 @@
     </message>
     <message>
         <source>Certificate for Encryption</source>
-        <translation>Сертификат шифрования</translation>
+        <translation>сертификат шифрования</translation>
     </message>
     <message>
         <source>Authentication certificate</source>
-        <translation>Сертификат идентификации</translation>
+        <translation>сертификат идентификации</translation>
     </message>
     <message>
         <source>Selected is %1</source>
@@ -1167,7 +1167,7 @@
     </message>
     <message>
         <source>Expired</source>
-        <translation>Недействителен</translation>
+        <translation>Истекший</translation>
     </message>
     <message>
         <source>Download picture</source>
@@ -2692,7 +2692,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>expired</source>
-        <translation>недействителен</translation>
+        <translation>истекший</translation>
     </message>
     <message>
         <source>Applet</source>
