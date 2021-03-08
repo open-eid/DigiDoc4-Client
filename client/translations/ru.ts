@@ -313,7 +313,7 @@
         <translation>сертификат идентификации</translation>
     </message>
     <message>
-        <source>Selected is %1</source>
+        <source>%1 is selected</source>
         <translation>Выбранный %1</translation>
     </message>
     <message>
@@ -578,7 +578,7 @@
         <translation>ПОДПИСАТЬ</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
@@ -1486,7 +1486,7 @@ ID-КАРТОЙ</translation>
         <translation>Добавить файлы</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
@@ -2671,7 +2671,7 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
@@ -2803,7 +2803,7 @@ Additional licenses and components</source>
         <translation>Доступ к услуге mobiil-ID и Smart-ID</translation>
     </message>
     <message>
-        <source>DigiDoc4 client configuration update was successful.</source>
+        <source>DigiDoc4 Client configuration update was successful.</source>
         <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
     </message>
     <message>

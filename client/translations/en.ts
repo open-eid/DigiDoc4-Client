@@ -311,7 +311,7 @@
         <translation>Authentication certificate</translation>
     </message>
     <message>
-        <source>Selected is %1</source>
+        <source>%1 is selected</source>
         <translation>%1 is selected</translation>
     </message>
     <message>
@@ -576,7 +576,7 @@
         <translation>CONTINUE SIGNING</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
@@ -1484,7 +1484,7 @@ ID-CARD</translation>
         <translation>Select documents</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
@@ -2664,7 +2664,7 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Network settings are correct, certificate status service is accessible!</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
@@ -2800,7 +2800,7 @@ Additional licenses and components</translation>
         <translation>Access to mobile-ID and Smart-ID service</translation>
     </message>
     <message>
-        <source>DigiDoc4 client configuration update was successful.</source>
+        <source>DigiDoc4 Client configuration update was successful.</source>
         <translation>DigiDoc4 Client configuration update was successful.</translation>
     </message>
     <message>

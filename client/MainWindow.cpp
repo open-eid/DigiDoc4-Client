@@ -249,7 +249,7 @@ void MainWindow::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
-		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 client") : QFileInfo(windowFilePath()).fileName());
+		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 Client") : QFileInfo(windowFilePath()).fileName());
 		showCardMenu(false);
 	}
 	QWidget::changeEvent(event);
@@ -1029,7 +1029,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 		dlg.addButton(tr("REMOVE"), ContainerSave, true);
 		if (dlg.exec() == ContainerSave) {
 			window()->setWindowFilePath({});
-			window()->setWindowTitle(tr("DigiDoc4 client"));
+			window()->setWindowTitle(tr("DigiDoc4 Client"));
 			return true;
 		}
 	}

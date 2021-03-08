@@ -311,7 +311,7 @@
         <translation>isikutuvastamise sertifikaat</translation>
     </message>
     <message>
-        <source>Selected is %1</source>
+        <source>%1 is selected</source>
         <translation>Valitud on %1</translation>
     </message>
     <message>
@@ -576,7 +576,7 @@
         <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
@@ -1484,7 +1484,7 @@ ID-KAARDIGA</translation>
         <translation>Lisa failid</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
@@ -2668,7 +2668,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Interneti seaded on korrektsed, kehtivuskinnitusteenus on kättesaadav!</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
+        <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
@@ -2800,7 +2800,7 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ligipääs mobiil-ID ja Smart-ID teenusele</translation>
     </message>
     <message>
-        <source>DigiDoc4 client configuration update was successful.</source>
+        <source>DigiDoc4 Client configuration update was successful.</source>
         <translation>DigiDoc4 kliendi konfiguratsiooni värskendamine õnnestus.</translation>
     </message>
     <message>
