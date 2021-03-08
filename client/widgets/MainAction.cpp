@@ -24,6 +24,7 @@
 
 #include <QtCore/QSettings>
 #include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
 #include <QtGui/QPaintEvent>
 
 using namespace ria::qdigidoc4;
