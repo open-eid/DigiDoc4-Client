@@ -43,6 +43,12 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	const QFont condensed = Styles::font(Styles::Condensed, 14);
 
 	d->setupUi(this);
+
+// For Windows all positive buttons should be on the left side of the dialog window
+#if defined (Q_OS_WIN)
+        d->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
+
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	setWindowModality(Qt::ApplicationModal);
 

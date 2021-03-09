@@ -41,7 +41,12 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 
-	connect( ui->sign, &QPushButton::clicked, this, &MobileDialog::accept );
+// For Windows all positive buttons should be on the left side of the dialog window
+#if defined (Q_OS_WIN)
+        ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
+
+    connect( ui->sign, &QPushButton::clicked, this, &MobileDialog::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );
 	connect( this, &MobileDialog::finished, this, &MobileDialog::close );
 
