@@ -22,6 +22,7 @@
 #include <QBrush>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOptionButton>
 
 CheckBox::CheckBox(QWidget *parent)
