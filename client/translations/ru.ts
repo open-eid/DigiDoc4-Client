@@ -3355,6 +3355,30 @@ Additional licenses and components</source>
         <source>Unblock to reuse PIN%1.</source>
         <translation>Разблокируйте его для повторного использования PIN%1.</translation>
     </message>
+    <message>
+        <source>Check certificate status</source>
+        <translation>Проверить статус сертификата</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is valid. </source>
+        <translation>Сертификат идентификации личности в вашей ID-карте действителен. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is valid. </source>
+        <translation>Сертификат подписи в вашей ID-карте действителен. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Сертификат подписи вашей ID-карты недействителен. Для электронного использования ID-карты требуются действующие сертификаты. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Сертификат идентификации личности в вашей ID-карте недействителен. Для электронного использования ID-карты требуются действующие сертификаты. </translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dejstvitelnost-sertifikatov-id-karty/&quot;&gt;здесь&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>

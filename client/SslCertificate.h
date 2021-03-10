@@ -24,6 +24,7 @@
 #include <QtCore/QCoreApplication>
 
 template<class Key,class T> class QHash;
+template<class Key,class T> class QMultiHash;
 
 class SslCertificate: public QSslCertificate
 {
@@ -53,6 +54,11 @@ public:
 		EncipherOnly,
 		DecipherOnly
 	};
+	enum AuthorityInfoAccess
+	{
+		ad_OCSP,
+		ad_CAIssuers,
+	};
 	enum CertType
 	{
 		UnknownType = 0,
@@ -75,6 +81,7 @@ public:
 	QString		subjectInfo( const QByteArray &tag ) const;
 	QString		subjectInfo( QSslCertificate::SubjectInfo subject ) const;
 
+	QMultiHash<AuthorityInfoAccess,QString> authorityInfoAccess() const;
 	QByteArray	authorityKeyIdentifier() const;
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
 	QString		friendlyName() const;
@@ -95,6 +102,7 @@ public:
 	static QByteArray	toHex( const QByteArray &in, QChar separator = ' ' );
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
+	bool		validateOnline() const;
 
 private:
 	Qt::HANDLE extension( int nid ) const;
