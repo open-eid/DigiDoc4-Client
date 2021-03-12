@@ -142,7 +142,7 @@ void CardWidget::update(const TokenData &token, bool multiple)
 	else if(type & SslCertificate::DigiIDType)
 		typeString = tr("Digi-ID");
 	if(!isPopup)
-		typeString = ((isMultiple = multiple) ? tr("Selected is %1") : tr("%1 in reader")).arg(typeString);
+		typeString = ((isMultiple = multiple) ? tr("%1 is selected") : tr("%1 in reader")).arg(typeString);
 
 	ui->cardStatus->setText(typeString);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));

@@ -170,7 +170,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 			WarningDialog(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, this).exec();
 			return;
 		}
-		WarningDialog(tr("DigiDoc4 client configuration update was successful."), this).exec();
+		WarningDialog(tr("DigiDoc4 Client configuration update was successful."), this).exec();
 #ifdef Q_OS_WIN
 		QString path = qApp->applicationDirPath() + QStringLiteral("/id-updater.exe");
 		if (QFile::exists(path))
@@ -508,7 +508,7 @@ void SettingsDialog::updateProxy()
 void SettingsDialog::updateVersion()
 {
 	ui->txtNavVersion->setText(tr("%1 version %2, released %3")
-		.arg(tr("DigiDoc4 client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE)));
+		.arg(tr("DigiDoc4 Client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE)));
 }
 
 void SettingsDialog::saveProxy()

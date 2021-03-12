@@ -227,7 +227,7 @@ void ContainerPage::forward(int code)
 	}
 	case ContainerCancel:
 		window()->setWindowFilePath(QString());
-		window()->setWindowTitle(tr("DigiDoc4 client"));
+		window()->setWindowTitle(tr("DigiDoc4 Client"));
 		emit action(code);
 		break;
 	default:
@@ -274,7 +274,7 @@ void ContainerPage::setHeader(const QString &file)
 {
 	fileName = QDir::toNativeSeparators (file);
 	window()->setWindowFilePath(fileName);
-	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 client") : QFileInfo(file).fileName());
+	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 Client") : QFileInfo(file).fileName());
 	elideFileName(true);
 }
 

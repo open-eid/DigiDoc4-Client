@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>DigiDoc4 client</string>
+   <string>DigiDoc4 Client</string>
   </property>
   <property name="styleSheet">
    <string notr="true">outline: none;

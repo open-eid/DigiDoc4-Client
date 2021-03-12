@@ -311,8 +311,8 @@
         <translation>Authentication certificate</translation>
     </message>
     <message>
-        <source>Selected is %1</source>
-        <translation>Selected is %1</translation>
+        <source>%1 is selected</source>
+        <translation>%1 is selected</translation>
     </message>
     <message>
         <source>%1 in reader</source>
@@ -576,8 +576,8 @@
         <translation>CONTINUE SIGNING</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 Client</translation>
     </message>
     <message>
         <source>Change</source>
@@ -1484,8 +1484,8 @@ ID-CARD</translation>
         <translation>Select documents</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 Client</translation>
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
@@ -2664,8 +2664,8 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Network settings are correct, certificate status service is accessible!</translation>
     </message>
     <message>
-        <source>DigiDoc4 client</source>
-        <translation>DigiDoc4 client</translation>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 Client</translation>
     </message>
     <message>
         <source>Checking updates has failed.</source>
@@ -2800,8 +2800,8 @@ Additional licenses and components</translation>
         <translation>Access to mobile-ID and Smart-ID service</translation>
     </message>
     <message>
-        <source>DigiDoc4 client configuration update was successful.</source>
-        <translation>DigiDoc4 client configuration update was successful.</translation>
+        <source>DigiDoc4 Client configuration update was successful.</source>
+        <translation>DigiDoc4 Client configuration update was successful.</translation>
     </message>
     <message>
         <source>%1 version %2, released %3</source>

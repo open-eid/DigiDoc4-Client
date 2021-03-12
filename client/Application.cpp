@@ -903,9 +903,9 @@ bool Application::notify( QObject *o, QEvent *e )
 void Application::openHelp()
 {
 	QString lang = language();
-	QUrl u(QStringLiteral("http://www.id.ee/index.php?id=10583"));
-	if(lang == QStringLiteral("en")) u = QStringLiteral("http://www.id.ee/index.php?id=30466");
-	if(lang == QStringLiteral("ru")) u = QStringLiteral("http://www.id.ee/index.php?id=30515");
+	QUrl u(QStringLiteral("https://www.id.ee/id-abikeskus/"));
+	if(lang == QStringLiteral("en")) u = QStringLiteral("https://www.id.ee/en/id-help/");
+	if(lang == QStringLiteral("ru")) u = QStringLiteral("https://www.id.ee/ru/id-pomoshh/");
 	QDesktopServices::openUrl(u);
 }
 
