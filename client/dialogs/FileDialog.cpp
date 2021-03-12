@@ -105,9 +105,9 @@ FileType FileDialog::detect( const QString &filename )
 		if(!file.open(QIODevice::ReadOnly))
 			return Other;
 		QByteArray blob = file.readAll();
-		for(auto token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
+		for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
 		{
-			if(blob.indexOf(QByteArray(token)) > 0)
+			if(blob.indexOf(token) > 0 && blob.indexOf("/Type /DSS") > 0)
 				return SignatureDocument;
 		}
 		return Other;

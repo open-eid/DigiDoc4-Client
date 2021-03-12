@@ -206,21 +206,16 @@ elseif(WIN32)
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
-		set(SSL_PATH "C:/OpenSSL-Win64/bin")
 		set(OPENSSL_SUFFIX "-x64")
 	else()
 		set(PLATFORM x86)
-		set(SSL_PATH "C:/OpenSSL-Win32/bin")
 		set(OPENSSL_SUFFIX "")
-	endif()
-	if(OPENSSL_ROOT_DIR)
-		set(SSL_PATH "${OPENSSL_ROOT_DIR}/bin")
 	endif()
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
-		-dssl_path="${SSL_PATH}" -dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf
+		-dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dqtconf=${CMAKE_SOURCE_DIR}/qt.conf
 		-dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
-        ${CMAKE_MODULE_PATH}/WelcomeDlg2.wxs ${CMAKE_MODULE_PATH}/WixUI_Minimal2.wxs)
+		${CMAKE_MODULE_PATH}/WelcomeDlg2.wxs ${CMAKE_MODULE_PATH}/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
         -dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
@@ -285,9 +280,6 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
 		COMMAND ${_qt5Core_install_prefix}/bin/windeployqt --no-translations --no-compiler-runtime --no-patchqt appx
 		COMMAND ${CMAKE_COMMAND} -E remove_directory appx/bearer
-		COMMAND ${CMAKE_COMMAND} -E remove_directory appx/iconengines
-		COMMAND ${CMAKE_COMMAND} -E remove_directory appx/imageformats
-		COMMAND ${CMAKE_COMMAND} -E remove_directory appx/styles
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 	if(EXISTS ${LIBS_PATH}/../certs)

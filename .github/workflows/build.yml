@@ -143,9 +143,8 @@ jobs:
         sdk: 10.0.16299.0
     - name: Build
       run: |
-        mkdir build
+        md build/client
         cd build
-        mkdir client
         copy ${{ env.VCPKG_ROOT }}\installed\${{ matrix.arch }}-windows\bin\*.dll client\
         cmake "-GNMake Makefiles" `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `

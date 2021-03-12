@@ -156,8 +156,8 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <!--?if $(env.VisualStudioVersion) = "16.0" ?>
             <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140_1.dll"/>
 <?endif ?-->
-            <File Source="$(var.ssl_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
-            <File Source="$(var.ssl_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
+            <File Source="$(var.libs_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
+            <File Source="$(var.libs_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
             <File Source="$(var.qt_path)\bin\Qt5Network.dll"/>
