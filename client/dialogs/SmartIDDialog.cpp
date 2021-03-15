@@ -38,6 +38,10 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	setWindowModality( Qt::ApplicationModal);
 	setFixedSize(size());
+#if defined (Q_OS_WIN)
+    ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
+
 	QFont condensed = Styles::font(Styles::Condensed, 14);
 	QFont header = Styles::font(Styles::Regular, 16, QFont::DemiBold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);

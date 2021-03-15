@@ -84,7 +84,16 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 			"QPushButton:pressed { background-color: #F24A66; }\n"
 			"QPushButton:hover:!pressed { background-color: #CD2541; }\n"
 			"QPushButton:disabled {background-color: #BEDBED;}"));
-	}
+// For Windows this button should be on the left side of the dialog window
+#if defined (Q_OS_WIN)
+        setLayoutDirection(Qt::RightToLeft);
+#endif
+	} else {
+// For macOS and Linux all positive buttons should be on the right side of the dialog window
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+        setLayoutDirection(Qt::RightToLeft);
+#endif
+    }
 
 	connect(button, &QPushButton::clicked, [this, ret] {done(ret);});
 	ui->buttonBarLayout->insertWidget(ui->buttonBarLayout->findChildren<QPushButton>().size() + 1, button);
