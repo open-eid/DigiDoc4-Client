@@ -21,10 +21,7 @@
 #include "ui_FileItem.h"
 #include "Styles.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QAccessibleWidget>
 
 using namespace ria::qdigidoc4;
 
@@ -35,9 +32,9 @@ FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
 	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"), QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
-	ui->download->init(LabelButton::White, QString(), 0);
+	ui->download->init(LabelButton::White, {}, 0);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"), QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White, QString(), 0);
+	ui->remove->init(LabelButton::White, {}, 0);
 
 	stateChange(state);
 
@@ -100,6 +97,6 @@ void FileItem::setUnderline(bool enable)
 void FileItem::stateChange(ContainerState state)
 {
 	ui->fileName->setDisabled(state == EncryptedContainer);
-	ui->download->setVisible(state == UnsignedSavedContainer || state == SignedContainer);
+	ui->download->setVisible(state == UnsignedSavedContainer || state == SignedContainer || state == UnencryptedContainer);
 	ui->remove->setHidden(state == SignedContainer || state == EncryptedContainer);
 }

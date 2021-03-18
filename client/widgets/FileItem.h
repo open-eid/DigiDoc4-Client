@@ -25,10 +25,7 @@ namespace Ui {
 class FileItem;
 }
 
-class QFont;
-class QFontMetrics;
-
-class FileItem : public Item
+class FileItem final : public Item
 {
 	Q_OBJECT
 
@@ -43,7 +40,7 @@ public:
 signals:
 	void open(FileItem* item);
 	void download(FileItem* item);
-	
+
 private:
 	bool event(QEvent *event) final;
 	void setFileName();
