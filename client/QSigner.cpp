@@ -89,7 +89,7 @@ int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_
 	QByteArray result = signData(type, QByteArray::fromRawData((const char*)m, int(m_len)), (Private*)RSA_get_app_data(rsa));
 	if(result.isEmpty())
 		return 0;
-	*siglen = (unsigned int)result.size();
+	*siglen = uint(result.size());
 	memcpy(sigret, result.constData(), size_t(result.size()));
 	return 1;
 }
@@ -170,7 +170,7 @@ QList<TokenData> QSigner::cache() const { return d->cache; }
 QSet<QString> QSigner::cards() const
 {
 	QSet<QString> cards;
-	for(const TokenData &t: d->cache)
+	for(const TokenData &t: qAsConst(d->cache))
 		cards.insert(t.card());
 	return cards;
 }
@@ -449,10 +449,14 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	}
 
 	int type = NID_sha256;
-	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224" ) type = NID_sha224;
-	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" ) type = NID_sha256;
-	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ) type = NID_sha384;
-	if( method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ) type = NID_sha512;
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224") type = NID_sha224;
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256") type = NID_sha256;
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384") type = NID_sha384;
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512") type = NID_sha512;
 
 	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
 	do
@@ -482,7 +486,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
-		throwException(tr("Failed to login token"), Exception::PINCanceled);
+		throwException(tr("Failed to login token"), Exception::PINCanceled)
 
 	if( sig.isEmpty() )
 		throwException(tr("Failed to sign document"), Exception::General)
