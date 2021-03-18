@@ -173,16 +173,29 @@ MobileProgress::MobileProgress(QWidget *parent)
 			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 			return;
 		default:
-			qCWarning(MIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
-			if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 429)
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
-					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
-			else if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 400)
-				break;
-			else
-				returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")), reply->errorString());
-			return;
-		}
+			{
+				const auto httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+				qCWarning(MIDLog) << httpStatusCode << "Error :" << reply->error();
+				if (400 == httpStatusCode)
+				{
+					break;
+				}
+				switch(httpStatusCode)
+				{
+					case 409:
+						returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
+					break;
+					case 429:
+						returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
+						"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
+					break;
+					default:
+						returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")), reply->errorString());
+					break;
+				}
+				return;
+			}
+		} // switch (reply->error())
 		static const QStringList contentType{"application/json", "application/json;charset=UTF-8"};
 		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
 		{

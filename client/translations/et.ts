@@ -1952,6 +1952,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Mobiil-ID</translation>
     </message>
     <message>
+        <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
+        <translation>Päringu saatmine ebaõnnestus. Sellelt IP-aadressilt on ebaõnnestunud päringute arv ületatud. Palun proovige mõne aja pärast uuesti.</translation>
+    </message>
+    <message>
         <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
         <translation>Päringu saatmine ebaõnnestus. %1 teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
     </message>

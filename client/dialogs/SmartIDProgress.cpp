@@ -179,13 +179,17 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")));
 			return;
 		default:
-			qCWarning(SIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << "Error :" << reply->error();
-			switch (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+			const auto httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+			qCWarning(SIDLog) << httpStatusCode << "Error :" << reply->error();
+			switch (httpStatusCode)
 			{
 			case 403:
 				returnError(tr("Failed to sign container. Check your %1 service access settings. "
 					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
 				return;
+			case 409:
+				returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
+				return;	
 			case 429:
 				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
 					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
