@@ -44,7 +44,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 
 	d->setupUi(this);
 #if defined (Q_OS_WIN)
-    d->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
+	d->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
