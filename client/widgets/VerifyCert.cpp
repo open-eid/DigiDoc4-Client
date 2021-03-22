@@ -46,16 +46,22 @@ VerifyCert::VerifyCert(QWidget *parent)
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
 	connect(ui->checkCert, &QPushButton::clicked, this, [=]{
-		QString msg;
-		if(c.validateOnline())
-			msg = c.keyUsage().contains(SslCertificate::NonRepudiation) ?
+		QString msg = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");;
+		switch(c.validateOnline())
+		{
+		case SslCertificate::Good:
+			msg.prepend(c.keyUsage().contains(SslCertificate::NonRepudiation) ?
 				tr("Your ID-card signing certificate is valid. ") :
-				tr("Your ID-card authentication certificate is valid. ");
-		else
-			msg = c.keyUsage().contains(SslCertificate::NonRepudiation) ?
+				tr("Your ID-card authentication certificate is valid. "));
+			break;
+		case SslCertificate::Revoked:
+			msg.prepend(c.keyUsage().contains(SslCertificate::NonRepudiation) ?
 				tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. ") :
-				tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. ");
-		msg += tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
+				tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. "));
+			break;
+		default:
+			msg = tr("Connecting to SK server failed! Please check your internet connection.");
+		}
 		WarningDialog::warning(this, msg);
 	});
 

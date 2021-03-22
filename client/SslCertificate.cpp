@@ -189,15 +189,12 @@ bool SslCertificate::isCA() const
 
 QString SslCertificate::keyName() const
 {
-	QString name = tr("Unknown");
 	switch(publicKey().algorithm())
 	{
 	case QSsl::Dsa:
-		name = QString("DSA (%1)").arg( publicKey().length() );
-		break;
+		return QStringLiteral("DSA (%1)").arg( publicKey().length() );
 	case QSsl::Rsa:
-		name = QString("RSA (%1)").arg( publicKey().length() );
-		break;
+		return QStringLiteral("RSA (%1)").arg( publicKey().length() );
 	default:
 #ifndef OPENSSL_NO_ECDSA
 		if(X509 *c = (X509*)handle())
@@ -208,13 +205,11 @@ QString SslCertificate::keyName() const
 			ASN1_OBJECT *obj = OBJ_nid2obj(nid);
 			QByteArray buff(50, 0);
 			if(OBJ_obj2txt(buff.data(), buff.size(), obj, 0) > 0)
-				name = buff;
-			break;
+				return buff;
 		}
 #endif
-		break;
 	}
-	return name;
+	return tr("Unknown");
 }
 
 Qt::HANDLE SslCertificate::extension( int nid ) const
@@ -325,8 +320,6 @@ SslCertificate::CertType SslCertificate::type() const
 {
 	for(const QString &p: policies())
 	{
-		if(enhancedKeyUsage().keys().contains(OCSPSign))
-			return OCSPType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")))
 			return EstEidType;
@@ -364,8 +357,6 @@ SslCertificate::CertType SslCertificate::type() const
 			size_t(der.size()), digidoc::X509Cert::Der);
 		for(const std::string &statement: x509Cert.qcStatements())
 		{
-			if(statement == digidoc::X509Cert::QCT_ESIGN)
-				return EidType;
 			if(statement == digidoc::X509Cert::QCT_ESEAL)
 				return TempelType;
 		}
@@ -373,11 +364,11 @@ SslCertificate::CertType SslCertificate::type() const
 	return UnknownType;
 }
 
-bool SslCertificate::validateOnline() const
+SslCertificate::Validity SslCertificate::validateOnline() const
 {
 	QMultiHash<SslCertificate::AuthorityInfoAccess,QString> urls = authorityInfoAccess();
 	if(urls.isEmpty())
-		return false;
+		return Unknown;
 
 	QEventLoop e;
 	QNetworkAccessManager m;
@@ -389,20 +380,22 @@ bool SslCertificate::validateOnline() const
 
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
-	r.setRawHeader("User-Agent", QString("%1/%2 (%3)")
+	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	QNetworkReply *repl = m.get(r);
 	e.exec();
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);
 	repl->deleteLater();
+	if(issuer.isNull())
+		return Unknown;
 
 	// Build request
 	SCOPE(OCSP_REQUEST, ocspReq, OCSP_REQUEST_new());
 	if(!ocspReq)
-		return false;
+		return Unknown;
 	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, (X509*)handle(), (X509*)issuer.handle());
 	if(!OCSP_request_add0_id(ocspReq.get(), certId))
-		return false;
+		return Unknown;
 
 	// Send request
 	r.setUrl(urls.values(SslCertificate::ad_OCSP).first());
@@ -416,12 +409,12 @@ bool SslCertificate::validateOnline() const
 	const unsigned char *p = (const unsigned char*)respData.constData();
 	SCOPE(OCSP_RESPONSE, resp, d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
 	if(!resp || OCSP_response_status(resp.get()) != OCSP_RESPONSE_STATUS_SUCCESSFUL)
-		return false;
+		return Unknown;
 
 	// Validate response
 	SCOPE(OCSP_BASICRESP, basic, OCSP_response_get1_basic(resp.get()));
 	if(!basic)
-		return false;
+		return Unknown;
 	//OCSP_TRUSTOTHER - enables OCSP_NOVERIFY
 	//OCSP_NOSIGS - does not verify ocsp signatures
 	//OCSP_NOVERIFY - ignores signer(responder) cert verification, requires store otherwise crashes
@@ -429,11 +422,11 @@ bool SslCertificate::validateOnline() const
 	//OCSP_NOEXPLICIT - returns 0 by mistake
 	//all checks enabled fails trust bit check, cant use OCSP_NOEXPLICIT instead using OCSP_NOCHECKS
 	if(OCSP_basic_verify(basic.get(), nullptr, nullptr, OCSP_NOVERIFY) <= 0)
-		return false;
+		return Unknown;
 	int status = -1;
 	if(OCSP_resp_find_status(basic.get(), certId, &status, nullptr, nullptr, nullptr, nullptr) <= 0)
-		return false;
-	return status == V_OCSP_CERTSTATUS_GOOD;
+		return Unknown;
+	return Validity(status);
 }
 
 

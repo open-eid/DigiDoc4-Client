@@ -56,7 +56,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:20.10']
+        container: ['ubuntu:20.04', 'ubuntu:20.10', 'ubuntu:21.04']
     env:
       MAKEFLAGS: -j3
       DEBIAN_FRONTEND: noninteractive
@@ -126,10 +126,9 @@ jobs:
         msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
-      id: runvcpkg
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: ec6fe06e8da05a8157dc8581fa96b36b571c1bd5
+        vcpkgGitCommitId: 18376a2f2ce989e022db5c1199b468e43f7c1a79
         vcpkgTriplet: ${{ matrix.arch }}-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v2

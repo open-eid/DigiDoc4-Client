@@ -65,11 +65,14 @@ public:
 		DigiIDType = 1 << 0,
 		EstEidType = 1 << 1,
 		MobileIDType = 1 << 2,
-		OCSPType = 1 << 3,
 		TempelType = 1 << 4,
-		EidType = 1 << 5,
 		EResidentSubType = 1 << 6,
 		EResidentType = DigiIDType|EResidentSubType,
+	};
+	enum Validity {
+		Good = 0,
+		Revoked = 1,
+		Unknown = 2,
 	};
 
 	SslCertificate();
@@ -102,7 +105,7 @@ public:
 	static QByteArray	toHex( const QByteArray &in, QChar separator = ' ' );
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
-	bool		validateOnline() const;
+	Validity	validateOnline() const;
 
 private:
 	Qt::HANDLE extension( int nid ) const;
