@@ -29,8 +29,7 @@ class FileDialog : public QFileDialog
 public:
 	explicit FileDialog(QWidget *parent = nullptr);
 
-	static QString create(const QFileInfo &fileInfo, const QString &extension, const QString &type);
-	static QString createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir);
+	static QString createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent);
 	static ria::qdigidoc4::FileType detect(const QString &filename);
 	static bool fileIsWritable( const QString &filename );
 	static QString fileSize( quint64 bytes );

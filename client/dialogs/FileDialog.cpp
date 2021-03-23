@@ -59,9 +59,11 @@ FileDialog::Options FileDialog::addOptions()
 	return nullptr;
 }
 
-QString FileDialog::create(const QFileInfo &fileInfo, const QString &extension, const QString &type)
+QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent)
 {
-	QString fileName = QDir::toNativeSeparators(fileInfo.dir().path() + QDir::separator() + fileInfo.completeBaseName() + extension);
+	const QFileInfo f(file);
+	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
+	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
 #ifndef Q_OS_OSX
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
@@ -70,23 +72,14 @@ QString FileDialog::create(const QFileInfo &fileInfo, const QString &extension, 
 #endif
 		WaitDialogHider hider;
 		QString capitalized = type[0].toUpper() + type.mid(1);
-		fileName = FileDialog::getSaveFileName(qApp->activeWindow(), Application::tr("Create %1").arg(type), fileName,
-			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
+		fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
+											   QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 		if(!fileName.isEmpty())
 			QFile::remove(fileName);
 #ifndef Q_OS_OSX
 	}
 #endif
-
 	return fileName;
-}
-
-QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir)
-{
-	const QFileInfo f(file);
-	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
-	QString filePath = dir + QDir::separator() + f.fileName();
-	return create(QFileInfo(filePath), extension, type);
 }
 
 FileType FileDialog::detect( const QString &filename )
@@ -252,7 +245,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 #endif
 	{
 		WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ), parent).exec();
-		return QString();
+		return {};
 	}
 
 	return result( res );

@@ -218,8 +218,8 @@ elseif(WIN32)
 		${CMAKE_MODULE_PATH}/WelcomeDlg2.wxs ${CMAKE_MODULE_PATH}/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
-        -dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
-        -dWixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp)
+		-dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
+		-dWixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp)
 	if(EXISTS ${LIBS_PATH}/../certs)
 		list(APPEND CANDLE_CMD -dcertsLocation=CertsFragment CertsFragment.wxs)
 		list(APPEND LIGHT_CMD CertsFragment.wixobj)
@@ -231,9 +231,6 @@ elseif(WIN32)
 		)
 	else()
 		add_custom_target(CertsFragment.wxs)
-	endif()
-	if(EXISTS ${LIBS_PATH}/Xalan-C_1_11.dll)
-		list(APPEND CANDLE_CMD -dxalan=true)
 	endif()
 	add_custom_target(msi DEPENDS ${PROGNAME} CertsFragment.wxs
 		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
