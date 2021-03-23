@@ -75,8 +75,8 @@ class DigidocConf: public digidoc::XmlConfCurrent
 public:
 	DigidocConf()
 	{
-		debug = s.value("LibdigidocppDebug", false).toBool();
-		s.remove("LibdigidocppDebug");
+		debug = s.value(QStringLiteral("LibdigidocppDebug"), false).toBool();
+		s.remove(QStringLiteral("LibdigidocppDebug"));
 
 #ifdef CONFIG_URL
 		Configuration::connect(&Configuration::instance(), &Configuration::updateReminder,
@@ -88,9 +88,9 @@ public:
 #ifdef Q_OS_MAC
 		QTimer::singleShot(0, [] { Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4")); });
 #else
-		Configuration::instance().checkVersion("QDIGIDOC4");
+		Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4"));
 #endif
-		Configuration::connect(&Configuration::instance(), &Configuration::finished, [&](bool changed, const QString &){
+		Configuration::connect(&Configuration::instance(), &Configuration::finished, [&](bool changed, const QString & /*error*/){
 			if(changed)
 				reload();
 		});
@@ -188,9 +188,9 @@ public:
 	std::string TSLUrl() const override { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	digidoc::X509Cert verifyServiceCert() const override
 	{
-		if(!obj.contains(QStringLiteral("SIVA-CERT")))
-			return digidoc::XmlConfCurrent::verifyServiceCert();
 		QByteArray cert = QByteArray::fromBase64(obj.value(QStringLiteral("SIVA-CERT")).toString().toLatin1());
+		if(cert.isEmpty())
+			return digidoc::XmlConfCurrent::verifyServiceCert();
 		return digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size()));
 	}
 	std::vector<digidoc::X509Cert> verifyServiceCerts() const override

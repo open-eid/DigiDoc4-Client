@@ -220,19 +220,7 @@ elseif(WIN32)
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
 		-dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
 		-dWixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp)
-	if(EXISTS ${LIBS_PATH}/../certs)
-		list(APPEND CANDLE_CMD -dcertsLocation=CertsFragment CertsFragment.wxs)
-		list(APPEND LIGHT_CMD CertsFragment.wixobj)
-		add_custom_target(CertsFragment.wxs
-			COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/../certs CertsFragment
-			COMMAND del "CertsFragment\\TEST*.crt"
-			COMMAND "$ENV{WIX}bin\\heat.exe" dir CertsFragment -nologo -cg Certs -gg -scom -sreg -sfrag -srd -dr CertsFolder -var var.certsLocation -out CertsFragment.wxs
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-	else()
-		add_custom_target(CertsFragment.wxs)
-	endif()
-	add_custom_target(msi DEPENDS ${PROGNAME} CertsFragment.wxs
+	add_custom_target(msi DEPENDS ${PROGNAME}
 		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
 		COMMAND ${CANDLE_CMD}
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
@@ -277,19 +265,6 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
 		COMMAND ${_qt5Core_install_prefix}/bin/windeployqt --no-translations --no-compiler-runtime --no-patchqt appx
 		COMMAND ${CMAKE_COMMAND} -E remove_directory appx/bearer
-		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-	)
-	if(EXISTS ${LIBS_PATH}/../certs)
-		add_custom_command(TARGET appx POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/../certs appx/certs
-			COMMAND del "appx\\certs\\TEST*.crt"
-			COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxml2.dll appx
-			COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc.dll appx
-			COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc.ini appx
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-	endif()
-	add_custom_command(TARGET appx POST_BUILD
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
 		#Popups GUI
