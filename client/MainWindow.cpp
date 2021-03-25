@@ -673,7 +673,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 			page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
 			if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
 			{
-				if(digiDoc->isService())
+				if(page != CryptoDetails && digiDoc->isService())
 				{
 					QString wrappedFile = digiDoc->fileName();
 					if(!wrap(wrappedFile, true))

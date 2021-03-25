@@ -236,16 +236,9 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate() const
 		parseException( result, e );
 		setLastError( e );
 	}
-	switch( result )
-	{
-	case Unknown:
-		if ( validate(digidoc::Signature::POLv1) == Valid )
-			return NonQSCD;
-		return result;
-	case Invalid: return result;
-	default:
-		return result;
-	}
+	if(result == Unknown && validate(digidoc::Signature::POLv1) == Valid)
+		return NonQSCD;
+	return result;
 }
 
 DigiDocSignature::SignatureStatus DigiDocSignature::validate(const std::string &policy) const
@@ -446,17 +439,17 @@ DocumentModel* DigiDoc::documentModel() const
 QString DigiDoc::fileName() const { return m_fileName; }
 bool DigiDoc::isService() const
 {
-	return b->mediaType() == "application/pdf";
+	return b && b->mediaType() == "application/pdf";
 }
 bool DigiDoc::isModified() const { return modified; }
 bool DigiDoc::isNull() const { return b == nullptr; }
 bool DigiDoc::isReadOnlyTS() const
 {
-	return b->mediaType() == "application/vnd.etsi.asic-s+zip";
+	return b && b->mediaType() == "application/vnd.etsi.asic-s+zip";
 }
 bool DigiDoc::isSupported() const
 {
-	return b->mediaType() == "application/vnd.etsi.asic-e+zip";
+	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip";
 }
 
 QString DigiDoc::mediaType() const
