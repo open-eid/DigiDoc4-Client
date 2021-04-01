@@ -886,6 +886,10 @@
         <source>OK</source>
         <translation>OK</translation>
     </message>
+    <message>
+        <source>Cannot add file with name &apos;mimetype&apos; to the envelope.</source>
+        <translation>Cannot add file with name &apos;mimetype&apos; to the envelope.</translation>
+    </message>
 </context>
 <context>
     <name>FileDialog</name>
