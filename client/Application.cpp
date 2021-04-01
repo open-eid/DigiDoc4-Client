@@ -25,10 +25,11 @@
 #include "QSigner.h"
 #include "QSmartCard.h"
 #include "DigiDoc.h"
+#include "Styles.h"
 #ifdef Q_OS_MAC
 #include "MacMenuBar.h"
 #else
-class MacMenuBar;
+class MacMenuBar {};
 #endif
 #include "TokenData.h"
 #include "dialogs/FirstRun.h"
@@ -45,24 +46,24 @@ class MacMenuBar;
 #include <qtsingleapplication/src/qtlocalpeer.h>
 
 #include <QtCore/QFileInfo>
-#include <QtCore/QProcess>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-#include <QtCore/QSysInfo>
+#include <QtCore/QProcess>
+#include <QtCore/QSettings>
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 #include <QtCore/QXmlStreamReader>
-#include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
 #include <QtNetwork/QNetworkProxy>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
-#include <QtWidgets/QAction>
+#include <QtWidgets/QToolTip>
 
 #ifdef Q_OS_WIN32
 #include <QtCore/QLibrary>
@@ -305,6 +306,7 @@ Application::Application( int &argc, char **argv )
 {
 	qRegisterMetaType<TokenData>("TokenData");
 	qRegisterMetaType<QSmartCardData>("QSmartCardData");
+	QToolTip::setFont(Styles::font(Styles::Regular, 14));
 
 	QStringList args = arguments();
 	args.removeFirst();
@@ -413,7 +415,7 @@ Application::~Application()
 	for(QWidget *top: topLevelWidgets())
 		top->close();
 #ifdef Q_OS_WIN
-	for(const QString &file: d->tempFiles)
+	for(const QString &file: qAsConst(d->tempFiles))
 		QFile::remove(file);
 	d->tempFiles.clear();
 #endif // Q_OS_WIN
@@ -573,7 +575,7 @@ bool Application::event( QEvent *e )
 			parseArgs();
 		return true;
 	case QEvent::FileOpen:
-		parseArgs( QStringList() << static_cast<QFileOpenEvent*>(e)->file() );
+		parseArgs({ static_cast<QFileOpenEvent*>(e)->file() });
 		return true;
 #ifdef Q_OS_MAC
 	// Load here because cocoa NSApplication overides events
@@ -762,7 +764,7 @@ void Application::migrateSettings()
 	QSettings newSettings;
 #else
 	QSettings dd3Settings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidocclient"));
-	QSettings oldOrgSettings(QStringLiteral("Estonian ID Card"), QString());
+	QSettings oldOrgSettings(QStringLiteral("Estonian ID Card"), {});
 	QSettings oldAppSettings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidoc4"));
 	QSettings newSettings;
 #endif
@@ -1099,8 +1101,7 @@ QWidget* Application::uniqueRoot()
 	// Return main window if only one main window is opened
 	for(auto w : topLevelWidgets())
 	{
-		MainWindow* r = qobject_cast<MainWindow*>(w);
-		if(r)
+		if(MainWindow *r = qobject_cast<MainWindow*>(w))
 		{
 			if(root)
 				return nullptr;
