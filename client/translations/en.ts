@@ -1959,6 +1959,10 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
         <translation>Failed to send request. %1 service has encountered technical errors. Please try again later.</translation>
     </message>
+    <message>
+        <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
+        <translation>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

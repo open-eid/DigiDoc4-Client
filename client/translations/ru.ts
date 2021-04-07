@@ -1962,6 +1962,10 @@ and enter Smart-ID PIN2-code.</source>
         <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
         <translation>Не удалось отправить запрос. Технический сбой услуги %1. Пожалуйста, попробуйте позже.</translation>
     </message>
+    <message>
+        <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
+        <translation>Не удалось отправить запрос. Превышено количество неудачных запросов с этого IP-адреса. Пожалуйста, попробуйте позже.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
