@@ -87,6 +87,16 @@ QWidget* FileItem::initTabOrder(QWidget *item)
 void FileItem::setFileName()
 {
 	ui->fileName->setText(ui->fileName->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->fileName->width()));
+
+	if (fileSize.startsWith("0"))
+	{
+		auto sheet = ui->fileName->styleSheet();
+		static const auto emptyFileColor = QStringLiteral("color: %1;").arg(QColor(Qt::darkRed).name());
+		sheet.replace(QRegExp("color:\\s*#\\d{6};"), emptyFileColor);
+
+		ui->fileName->setStyleSheet(sheet);
+	}
+
 }
 
 void FileItem::setUnderline(bool enable)
