@@ -275,11 +275,8 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->mainWindow());
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), 1);
-		if(dlg.exec() != 1)
-			return false;
+		WarningDialog(tr("Cannot add empty file to the container."), qApp->mainWindow()).exec();
+		return false;
 	}
 	QString fileName(info.fileName());
 	if(fileName == QStringLiteral("mimetype"))
