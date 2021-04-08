@@ -48,9 +48,9 @@ FileList::FileList(QWidget *parent)
 	connect(ui->download, &LabelButton::clicked, this, &FileList::saveAll);
 }
 
-void FileList::addFile( const QString& file )
+void FileList::addFile( const QString& file, const QString& size )
 {
-	FileItem *item = new FileItem(file, state);
+	FileItem *item = new FileItem(file, size, state);
 	item->installEventFilter(this);
 	addWidget(item);
 
@@ -230,8 +230,11 @@ void FileList::setModel(DocumentModel *documentModel)
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
 	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
 	auto count = documentModel->rowCount();
-	for(int i = 0; i < count; i++)
-		addFile(documentModel->data(i));
+	for (int i = 0; i < count; i++)
+	{
+		addFile(documentModel->data(i), documentModel->fileSize(i));
+	}
+
 }
 
 void FileList::updateDownload()

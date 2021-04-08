@@ -270,7 +270,7 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 	
 }
 
-bool SDocumentModel::addFile(const QString &file, const QString &mime)
+bool SDocumentModel::addFile(const QString &file, const QString &size, const QString &mime)
 {
 	QFileInfo info(file);
 	if(info.size() == 0)
@@ -294,7 +294,12 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	}
 	if(doc->addFile(file, mime))
 	{
-		emit added(file);
+		auto fileSize = size;
+		if (fileSize.isEmpty())
+		{
+			fileSize = FileDialog::fileSize(quint64(info.size()));
+		}
+		emit added(file, fileSize);
 		return true;
 	}
 	return false;

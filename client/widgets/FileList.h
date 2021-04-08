@@ -34,7 +34,7 @@ class FileList : public ItemList
 public:
 	explicit FileList(QWidget *parent = nullptr);
 
-	void addFile(const QString& file);
+	void addFile(const QString& file, const QString &size = "");
 	void clear() override;
 	void init(const QString &container, const QString &label = "Container's files");
 	void removeItem(int row) override;

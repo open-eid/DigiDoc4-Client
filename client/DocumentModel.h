@@ -27,7 +27,7 @@ public:
 	DocumentModel(QObject *parent = nullptr);
 	~DocumentModel() override;
 
-	virtual bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) = 0;
+	virtual bool addFile(const QString &file, const QString &size = "", const QString &mime = QStringLiteral("application/octet-stream")) = 0;
 	virtual void addTempFiles(const QStringList &files);
 	virtual void addTempReference(const QString &file) = 0;
 	virtual QString data(int row) const = 0;
@@ -39,7 +39,7 @@ public:
 	virtual QStringList tempFiles() const;
 
 signals:
-	void added(const QString &file);
+	void added(const QString &file, const QString &size);
 	void removed(int row);
 
 public slots:
