@@ -258,8 +258,8 @@
         <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
     <message>
         <source>NO</source>
@@ -2485,8 +2485,8 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Не удается удалить файл из контейнера</translation>
     </message>
     <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
     <message>
         <source>NO</source>
