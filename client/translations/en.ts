@@ -266,8 +266,8 @@
         <translation>Failed to save file &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>File you want to add is empty. Do you want to continue?</translation>
+         <source>Cannot add empty file to the container.</source>
+         <translation>Cannot add empty file to the container.</translation>
     </message>
     <message>
         <source>NO</source>
@@ -2489,10 +2489,10 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Failed remove document from container</source>
         <translation>Failed remove document from container</translation>
     </message>
-    <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>File you want to add is empty. Do you want to continue?</translation>
-    </message>
+ <message>
+         <source>Cannot add empty file to the container.</source>
+         <translation>Cannot add empty file to the container.</translation>
+</message>
     <message>
         <source>NO</source>
         <translation>NO</translation>
