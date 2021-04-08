@@ -788,6 +788,7 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	ui->signContainerPage->clear();
 	delete digiDoc;
 	warnings->closeWarnings(SignDetails);
+	warnings->closeWarning(EmptyFileWarning);
 	digiDoc = doc;
 }
 
@@ -1032,6 +1033,24 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 			window()->setWindowFilePath({});
 			window()->setWindowTitle(tr("DigiDoc4 Client"));
 			return true;
+		}
+	}
+
+	bool hasEmptyFile = false;
+	for (auto i = 0; i < model->rowCount(); ++i) {
+		const auto fileSize = model->fileSize(i).trimmed();
+		if (fileSize.startsWith(QStringLiteral("0 "), Qt::CaseInsensitive))
+		{
+			hasEmptyFile = true;
+		}
+	}
+
+	if (false == hasEmptyFile)
+	{
+		warnings->closeWarning(EmptyFileWarning);
+		if  (digiDoc)
+		{
+			this->ui->signContainerPage->transition(digiDoc);
 		}
 	}
 
