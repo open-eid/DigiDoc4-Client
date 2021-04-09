@@ -31,6 +31,9 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 {
 	Ui::KeyDialog *d = new Ui::KeyDialog;
 	d->setupUi(this);
+#if defined (Q_OS_WIN)
+	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	new Overlay(this, parent->topLevelWidget());
