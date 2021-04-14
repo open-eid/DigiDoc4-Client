@@ -68,7 +68,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: apt-get update -qq && apt-get install -y dh-make devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+      run: apt update -qq && apt install --no-install-recommends -y lsb-release dh-make fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -122,7 +122,7 @@ jobs:
         repo: 'open-eid/libdigidocpp'
     - name: Install artifact
       run: |
-        Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
+        Rename-Item "libdigidocpp*VS142.msi" libdigidocpp.msi
         msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
@@ -173,7 +173,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: sudo apt-get update -qq && sudo apt-get install -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -186,7 +186,7 @@ jobs:
       run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
     - name: Download Coverity Build Tool
       run: |
-        wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=$PROJECTNAME" -O cov-analysis-linux64.tar.gz
+        curl --silent --data "token=$TOKEN&project=$PROJECTNAME" -o cov-analysis-linux64.tar.gz https://scan.coverity.com/download/cxx/linux64
         mkdir cov-analysis-linux64
         tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
     - name: Build
@@ -216,7 +216,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: sudo apt-get update -qq && sudo apt-get install -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
