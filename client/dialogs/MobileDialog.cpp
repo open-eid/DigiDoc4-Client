@@ -40,6 +40,9 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
+#if defined (Q_OS_WIN)
+	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
 
 	connect( ui->sign, &QPushButton::clicked, this, &MobileDialog::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );

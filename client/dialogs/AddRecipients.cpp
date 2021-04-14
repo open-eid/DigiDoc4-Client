@@ -52,6 +52,9 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	, ldap_corp(new LdapSearch(defaultUrl(QStringLiteral("LDAP-CORP-URL"), QStringLiteral("ldaps://k3.ldap.sk.ee")).toUtf8(), this))
 {
 	ui->setupUi(this);
+#if defined (Q_OS_WIN)
+	ui->actionLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	new Overlay(this, parent->topLevelWidget());
 
