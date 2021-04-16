@@ -228,11 +228,13 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 		QList<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
-		for(const QSslCertificate &c: s.list())
+		const QList<QSslCertificate> certificates = s.list();
+		for(const QSslCertificate &c: certificates)
 		{
 			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == c; }))
 				continue;
 			if(c.subjectInfo(QSslCertificate::Organization).join(QString()).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
+				c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
 				s.remove( c );
 		}
@@ -308,9 +310,8 @@ void SettingsDialog::initFunctionality()
 
 	// pageGeneral
 	selectLanguage();
-	connect( ui->rdGeneralEstonian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("et")); } );
-	connect( ui->rdGeneralEnglish, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("en")); } );
-	connect( ui->rdGeneralRussian, &QRadioButton::toggled, this, [this](bool checked) { if(checked) retranslate(QStringLiteral("ru")); } );
+	connect(ui->langGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked), this,
+		[this](QAbstractButton *button){ retranslate(button->property("lang").toString()); });
 
 	ui->chkGeneralTslRefresh->setChecked(qApp->confValue(Application::TSLOnlineDigest).toBool());
 	connect(ui->chkGeneralTslRefresh, &QCheckBox::toggled, [](bool checked) {
@@ -479,12 +480,9 @@ void SettingsDialog::updateCert()
 
 void SettingsDialog::selectLanguage()
 {
-	if(Common::language() == QStringLiteral("en"))
-		ui->rdGeneralEnglish->setChecked(true);
-	else if(Common::language() == QStringLiteral("ru"))
-		ui->rdGeneralRussian->setChecked(true);
-	else
-		ui->rdGeneralEstonian->setChecked(true);
+	const QList<QAbstractButton*> list = ui->langGroup->buttons();
+	for(QAbstractButton *button: list)
+		button->setChecked(button->property("lang").toString() == Common::language());
 }
 
 void SettingsDialog::setProxyEnabled()
