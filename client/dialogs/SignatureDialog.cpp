@@ -282,5 +282,6 @@ QLabel* SignatureDialog::itemLabel(const QString &text, QTreeWidget *view)
 #endif
 	label->setFocusPolicy(Qt::TabFocus);
 	label->setStyleSheet(QStringLiteral("border: none;"));
+	label->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	return label;
 }
