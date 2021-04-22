@@ -21,14 +21,13 @@
 
 #include "SslCertificate.h"
 #include "TokenData.h"
+#include "Utils.h"
 
 #include <QtCore/QDebug>
 
 #include <wincrypt.h>
 
 #include <openssl/obj_mac.h>
-
-#include <thread>
 
 class QCSP::Private
 {
@@ -56,7 +55,7 @@ QByteArray QCSP::decrypt(const QByteArray &data) const
 {
 	d->error = PinOK;
 	if(!d->cert)
-		return QByteArray();
+		return {};
 
 	DWORD flags = CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG|CRYPT_ACQUIRE_COMPARE_KEY_FLAG;
 	HCRYPTPROV_OR_NCRYPT_KEY_HANDLE key = 0;
@@ -65,7 +64,7 @@ QByteArray QCSP::decrypt(const QByteArray &data) const
 	CryptAcquireCertificatePrivateKey(d->cert, flags, nullptr, &key, &spec, &freeKey);
 	qDebug() << "Key spec" << spec;
 	if(!key)
-		return QByteArray();
+		return {};
 
 	DWORD size = DWORD(data.size());
 	QByteArray result(int(size), 0);
@@ -74,13 +73,10 @@ QByteArray QCSP::decrypt(const QByteArray &data) const
 	{
 	case CERT_NCRYPT_KEY_SPEC:
 	{
-		QEventLoop e;
-		std::thread([&]{
+		waitFor([&]{
 			err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()), nullptr,
 				PBYTE(result.data()), DWORD(result.size()), &size, NCRYPT_PAD_PKCS1_FLAG);
-			e.exit();
-		}).detach();
-		e.exec();
+		});
 
 		if(freeKey)
 			NCryptFreeObject(key);
@@ -90,13 +86,10 @@ QByteArray QCSP::decrypt(const QByteArray &data) const
 	{
 		result = data;
 		std::reverse(result.begin(), result.end());
-		QEventLoop e;
-		std::thread([&]{
+		waitFor([&]{
 			if(!CryptDecrypt(key, 0, true, 0, LPBYTE(result.data()), &size))
 				err = SECURITY_STATUS(GetLastError());
-			e.exit();
-		}).detach();
-		e.exec();
+		});
 		if(freeKey)
 			CryptReleaseContext(key, 0);
 		break;
@@ -118,7 +111,7 @@ QByteArray QCSP::decrypt(const QByteArray &data) const
 	case ERROR_CANCELLED:
 		d->error = PinCanceled;
 	default:
-		return QByteArray();
+		return {};
 	}
 }
 
@@ -287,18 +280,15 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 		algo.resize(size/2 - 1);
 		bool isRSA = algo == QStringLiteral("RSA");
 
-		QEventLoop e;
-		std::thread([&]{
+		waitFor([&]{
 			err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
 				nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
 			if(FAILED(err))
-				return e.exit();
+				return;
 			result.resize(int(size));
 			err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
 				PBYTE(result.data()), DWORD(result.size()), &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
-			e.exit();
-		}).detach();
-		e.exec();
+		});
 
 		if( freeKey )
 			NCryptFreeObject(key);
@@ -330,20 +320,17 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 			return result;
 		}
 
-		QEventLoop e;
-		std::thread([&]{
+		waitFor([&]{
 			DWORD size = 0;
 			if(!CryptSignHashW(hash, spec, nullptr, 0, nullptr, &size))
 			{
 				err = SECURITY_STATUS(GetLastError());
-				return e.exit();
+				return;
 			}
 			result.resize(int(size));
 			if(!CryptSignHashW(hash, spec, nullptr, 0, LPBYTE(result.data()), &size))
 				err = SECURITY_STATUS(GetLastError());
-			e.exit();
-		}).detach();
-		e.exec();
+		});
 		std::reverse(result.begin(), result.end());
 
 		if(freeKey)

@@ -21,6 +21,7 @@
 
 #include "SslCertificate.h"
 #include "TokenData.h"
+#include "Utils.h"
 
 #include <common/QPCSC.h>
 
@@ -29,8 +30,6 @@
 #include <wincrypt.h>
 
 #include <openssl/obj_mac.h>
-
-#include <thread>
 
 class QCNG::Private
 {
@@ -71,13 +70,10 @@ QByteArray QCNG::decrypt(const QByteArray &data) const
 	QByteArray res(int(size), 0);
 	NCRYPT_KEY_HANDLE k = d->key();
 	SECURITY_STATUS err = 0;
-	QEventLoop e;
-	std::thread([&]{
+	waitFor([&]{
 		err = NCryptDecrypt(k, PBYTE(data.constData()), DWORD(data.size()), nullptr,
 			PBYTE(res.data()), DWORD(res.size()), &size, NCRYPT_PAD_PKCS1_FLAG);
-		e.exit();
-	}).detach();
-	e.exec();
+	});
 	NCryptFreeObject( k );
 	switch( err )
 	{
@@ -89,7 +85,7 @@ QByteArray QCNG::decrypt(const QByteArray &data) const
 		d->err = PinCanceled; break;
 	default: break;
 	}
-	return QByteArray();
+	return {};
 }
 
 QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
@@ -213,18 +209,15 @@ QByteArray QCNG::sign( int method, const QByteArray &digest ) const
 	SECURITY_STATUS err = NCryptGetProperty(k, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
 	algo.resize(size/2 - 1);
 	bool isRSA = algo == QStringLiteral("RSA");
-	QEventLoop e;
-	std::thread([&]{
+	waitFor([&]{
 		err = NCryptSignHash(k, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
 			nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
 		if(FAILED(err))
-			return e.exit();
+			return;
 		res.resize(int(size));
 		err = NCryptSignHash(k, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
 			PBYTE(res.data()), DWORD(res.size()), &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
-		e.exit();
-	}).detach();
-	e.exec();
+	});
 	NCryptFreeObject( k );
 	switch( err )
 	{

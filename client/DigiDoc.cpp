@@ -23,6 +23,7 @@
 #include "QSigner.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
+#include "Utils.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
@@ -513,7 +514,7 @@ bool DigiDoc::open( const QString &file )
 
 	try
 	{
-		b = Container::openPtr(to(file));
+		waitFor([&] { b = Container::openPtr(to(file)); });
 		if(isReadOnlyTS())
 		{
 			const DataFile *f = b->dataFiles().at(0);
@@ -595,10 +596,12 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
-		if(parentContainer)
-			parentContainer->save(to(filename));
-		else
-			b->save(to(filename));
+		waitFor([&]{
+			if(parentContainer)
+				parentContainer->save(to(filename));
+			else
+				b->save(to(filename));
+		});
 		return true;
 	}
 	catch( const Exception &e ) {

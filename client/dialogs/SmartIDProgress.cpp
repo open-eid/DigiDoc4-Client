@@ -49,13 +49,13 @@ Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
 
 using namespace digidoc;
 
-class SmartIDProgress::Private: public QDialog, public Ui::MobileProgress
+class SmartIDProgress::Private final: public QDialog, public Ui::MobileProgress
 {
 	Q_OBJECT
 public:
 	QString URL() { return !UUID.isNull() && useCustomUUID ? SKURL : PROXYURL; }
 	using QDialog::QDialog;
-	void reject() override { l.exit(QDialog::Rejected); }
+	void reject() final { l.exit(QDialog::Rejected); }
 	QTimeLine *statusTimer = nullptr;
 	QNetworkAccessManager *manager = nullptr;
 	QNetworkRequest req;
@@ -247,6 +247,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 				QByteArray b64 = QByteArray::fromBase64(
 					result.value(QStringLiteral("signature")).toObject().value(QStringLiteral("value")).toString().toUtf8());
 				d->signature.assign(b64.cbegin(), b64.cend());
+				d->hide();
 				d->l.exit(QDialog::Accepted);
 			}
 			else if(result.contains(QStringLiteral("cert")))
@@ -255,6 +256,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 					QByteArray b64 = QByteArray::fromBase64(
 						result.value(QStringLiteral("cert")).toObject().value(QStringLiteral("value")).toString().toUtf8());
 					d->cert = X509Cert((const unsigned char*)b64.constData(), size_t(b64.size()), X509Cert::Der);
+					d->hide();
 					d->l.exit(QDialog::Accepted);
 				} catch(const Exception &e) {
 					returnError(tr("Failed to parse certificate: ") + QString::fromStdString(e.msg()));
