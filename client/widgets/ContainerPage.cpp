@@ -376,7 +376,7 @@ void ContainerPage::transition(DigiDoc* container)
 		}
 	}
 
-	isSupported = container->isSupported() || container->isService();
+	isSupported = container->isSupported() || container->isPDF();
 	showSigningButton();
 
 	ui->leftPane->setModel(container->documentModel());

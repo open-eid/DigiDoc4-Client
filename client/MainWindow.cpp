@@ -673,7 +673,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 			page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
 			if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
 			{
-				if(page != CryptoDetails && digiDoc->isService())
+				if(page != CryptoDetails && digiDoc->isPDF())
 				{
 					QString wrappedFile = digiDoc->fileName();
 					if(!wrap(wrappedFile, true))
@@ -938,7 +938,7 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 		return;
 
 	WaitDialogHolder waitDialog(this, tr("Signing"));
-	if(digiDoc->isService())
+	if(digiDoc->isPDF())
 	{
 		QString wrappedFile = digiDoc->fileName();
 		if(!wrap(wrappedFile, true))
