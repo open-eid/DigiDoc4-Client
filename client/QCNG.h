@@ -21,20 +21,20 @@
 
 #include "QWin.h"
 
-class QCNG: public QWin
+class QCNG final: public QWin
 {
 	Q_OBJECT
 public:
 	explicit QCNG(QObject *parent = nullptr);
-	~QCNG() override;
+	~QCNG() final;
 
-	QList<TokenData> tokens() const override;
-	QByteArray decrypt(const QByteArray &data) const override;
+	QList<TokenData> tokens() const final;
+	QByteArray decrypt(const QByteArray &data) const final;
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
-	PinStatus lastError() const override;
-	PinStatus login(const TokenData &token) override;
-	QByteArray sign(int method, const QByteArray &digest) const override;
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
+	PinStatus lastError() const final;
+	PinStatus login(const TokenData &token) final;
+	QByteArray sign(int method, const QByteArray &digest) const final;
 
 private:
 	class Private;

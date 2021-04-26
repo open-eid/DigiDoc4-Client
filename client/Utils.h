@@ -19,24 +19,14 @@
 
 #pragma once
 
-#include "QWin.h"
+#include <thread>
 
-class QCSP final: public QWin
-{
-	Q_OBJECT
-public:
-	explicit QCSP(QObject *parent = nullptr);
-	~QCSP() final;
-
-	QList<TokenData> tokens() const final;
-	QByteArray decrypt(const QByteArray &data) const final;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
-	PinStatus lastError() const final;
-	PinStatus login(const TokenData &cert) final;
-	QByteArray sign(int method, const QByteArray &digest) const final;
-
-private:
-	class Private;
-	Private *d;
-};
+template <typename F>
+static void waitFor(F&& function) {
+	QEventLoop l;
+	std::thread([&]{
+		function();
+		l.exit();
+	}).detach();
+	l.exec();
+}
