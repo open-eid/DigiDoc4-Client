@@ -72,7 +72,7 @@ private:
 	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
-	void elideFileName(bool force = false);
+	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) override;
 	void forward(int code);
 	void hideMainAction();
@@ -88,7 +88,6 @@ private:
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
 	QString cardInReader;
-	int containerFileWidth;
 	QString fileName;
 	QString mobileCode;
 

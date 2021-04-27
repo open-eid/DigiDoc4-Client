@@ -20,7 +20,7 @@
 #include "KeyDialog.h"
 #include "ui_KeyDialog.h"
 
-#include "crypto/CryptoDoc.h"
+#include "CryptoDoc.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "effects/Overlay.h"

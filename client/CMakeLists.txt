@@ -23,6 +23,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	Application.cpp
 	CheckConnection.cpp
+	CryptoDoc.cpp
 	DigiDoc.cpp
 	Diagnostics.cpp
 	DiagnosticsTask.cpp
@@ -41,7 +42,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	PrintSheet.cpp
 	SslCertificate.cpp
 	TokenData.cpp
-	crypto/CryptoDoc.cpp
 	crypto/LdapSearch.cpp
 	dialogs/AccessCert.cpp
 	dialogs/AddRecipients.ui

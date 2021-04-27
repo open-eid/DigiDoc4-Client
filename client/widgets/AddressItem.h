@@ -21,7 +21,7 @@
 
 #include "widgets/Item.h"
 
-#include "crypto/CryptoDoc.h"
+#include "CryptoDoc.h"
 #include "SslCertificate.h"
 
 namespace Ui {
