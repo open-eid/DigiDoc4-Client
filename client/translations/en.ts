@@ -235,10 +235,6 @@
         <translation>Remind later</translation>
     </message>
     <message>
-        <source>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;https://www.id.ee/en/article/configuring-browsers-for-using-id-card/&quot;&gt;here&lt;/a&gt;.</source>
-        <translation>In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.&lt;br/&gt;Instructions on how to enable token plugin can be found &lt;a href=&quot;https://www.id.ee/en/article/configuring-browsers-for-using-id-card/&quot;&gt;here&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client Help</source>
         <translation>DigiDoc4 Client Help</translation>
     </message>
@@ -249,6 +245,18 @@
     <message>
         <source>New Window</source>
         <translation>New Window</translation>
+    </message>
+    <message>
+        <source>In order to authenticate and sign in e-services with an ID-card you need to install the web browser components.</source>
+        <translation>In order to authenticate and sign in e-services with an ID-card you need to install the web browser components.</translation>
+    </message>
+    <message>
+        <source>Install</source>
+        <translation>Install</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/install-id-software/</source>
+        <translation>https://www.id.ee/en/article/install-id-software/</translation>
     </message>
 </context>
 <context>
