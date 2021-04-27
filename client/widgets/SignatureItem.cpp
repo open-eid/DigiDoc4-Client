@@ -170,7 +170,7 @@ void SignatureItem::init()
 			<< date.toString(QStringLiteral("hh:mm"));
 	}
 	ui->idSignTime->setText(signingInfo);
-	ui->roleText = ui->signature.role();
+	ui->roleText = ui->signature.role().replace('\n', ' ');
 	ui->role->setHidden(ui->roleText.isEmpty());
 	updateNameField();
 
