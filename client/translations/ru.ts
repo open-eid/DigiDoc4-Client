@@ -3487,7 +3487,7 @@ Additional licenses and components</source>
         <translation>DigiDoc контейнер имеет старый формат. К данному контейнеру нельзя добавить или удалить из него подпись.</translation>
     </message>
     <message>
-        <source>An empty file is attached to the container. Remove an empty file from the container to sign.</source>
+        <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
         <translation>В контейнер добавлен пустой файл. Для подписания удалите из контейнера пустой файл.</translation>
     </message>
 </context>

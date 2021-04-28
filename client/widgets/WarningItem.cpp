@@ -124,7 +124,7 @@ void WarningItem::lookupWarning()
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::EmptyFileWarning:
-		warnText.text = tr("An empty file is attached to the container. Remove an empty file from the container to sign.");
+		warnText.text = tr("An empty file is attached to the container. Remove the empty file from the container to sign.");
 		warnText.page = ria::qdigidoc4::SignDetails;
 	break;
 	default:

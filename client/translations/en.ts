@@ -3480,8 +3480,8 @@ Additional licenses and components</translation>
         <translation>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</translation>
     </message>
     <message>
-        <source>An empty file is attached to the container. Remove an empty file from the container to sign.</source>
-        <translation>An empty file is attached to the container. Remove an empty file from the container to sign.</translation>
+        <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
+        <translation>An empty file is attached to the container. Remove the empty file from the container to sign.</translation>
     </message>
 </context>
 <context>

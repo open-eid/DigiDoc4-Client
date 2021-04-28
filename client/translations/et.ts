@@ -3480,8 +3480,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Tegemist on vanas formaadis DigiDoc ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
     </message>
     <message>
-        <source>An empty file is attached to the container. Remove an empty file from the container to sign.</source>
-        <translation>Ümbrikule on lisatud tühi faili. Allkirjastamiseks eemalda ümbrikust tühi fail.</translation>
+        <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
+        <translation>Ümbrikule on lisatud tühi fail. Allkirjastamiseks eemalda ümbrikust tühi fail.</translation>
     </message>
 </context>
 <context>
