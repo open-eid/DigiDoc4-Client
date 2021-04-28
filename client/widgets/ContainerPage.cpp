@@ -303,7 +303,7 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 
 void ContainerPage::showSigningButton()
 {
-	if(!isSupported)
+	if (false == isSupported || hasEmptyFile)
 		hideMainAction();
 	else if(cardInReader.isEmpty())
 		showMainAction({ SignatureMobile, SignatureSmartID });
@@ -371,6 +371,17 @@ void ContainerPage::transition(DigiDoc* container)
 	}
 	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
 		emit warning(UnsupportedDDocWarning);
+
+	hasEmptyFile = false;
+	for (auto i = 0; i < container->documentModel()->rowCount(); i++)
+	{
+		const auto fileSize = container->documentModel()->fileSize(i).trimmed();
+		if (fileSize.startsWith(QStringLiteral("0 "), Qt::CaseInsensitive))
+		{
+			emit warning(EmptyFileWarning);
+			hasEmptyFile = true;
+		}
+	}
 
 	isSupported = container->isSupported() || container->isService();
 	showSigningButton();

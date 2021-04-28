@@ -80,7 +80,7 @@ class CDocumentModel: public DocumentModel
 {
 	Q_OBJECT
 public:
-	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
+	bool addFile(const QString &file, const QString &size, const QString &mime = QStringLiteral("application/octet-stream")) override;
 	void addTempReference(const QString &file) override;
 	QString data(int row) const override;
 	QString fileSize(int row) const override;

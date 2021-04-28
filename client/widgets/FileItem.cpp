@@ -25,7 +25,7 @@
 
 using namespace ria::qdigidoc4;
 
-FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
+FileItem::FileItem(const QString& file, const QString& size, ContainerState state, QWidget *parent)
 	: Item(parent)
 	, ui(new Ui::FileItem)
 {
@@ -42,7 +42,9 @@ FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
 	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 
-	fileName = QFileInfo(file).fileName();
+	fileSize = size.trimmed();
+	fileName = QFileInfo(file).fileName().append(QStringLiteral(" (%1)").arg(fileSize));
+
 	setFileName();
 }
 

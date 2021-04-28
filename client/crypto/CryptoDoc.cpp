@@ -799,7 +799,7 @@ CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
 		QFile::exists(QStringLiteral("%1/%2.log").arg( QDir::tempPath(), qApp->applicationName())));
 }
 
-bool CDocumentModel::addFile(const QString &file, const QString &mime)
+bool CDocumentModel::addFile(const QString &file, const QString &size, const QString &mime)
 {
 	if( d->isEncryptedWarning() )
 		return false;
@@ -807,11 +807,8 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		WarningDialog dlg(tr("File you want to add is empty. Do you want to continue?"), qApp->activeWindow());
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), 1);
-		if(dlg.exec() != 1)
-			return false;
+		WarningDialog(tr("Cannot add empty file to the container."), qApp->mainWindow()).exec();
+		return false;
 	}
 	if(info.size() > 120*1024*1024)
 	{
@@ -839,7 +836,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	f.data = data.readAll();
 	f.size = FileDialog::fileSize(quint64(f.data.size()));
 	d->files << f;
-	emit added(file);
+	emit added(file, f.size);
 	return true;
 }
 
@@ -868,9 +865,9 @@ QString CDocumentModel::data(int row) const
 	return d->files.at(row).name.normalized(QString::NormalizationForm_C);
 }
 
-QString CDocumentModel::fileSize(int /*row*/) const
+QString CDocumentModel::fileSize(int row) const
 {
-	return QString();
+	return d->files.at(row).size;
 }
 
 QString CDocumentModel::mime(int row) const
