@@ -247,9 +247,9 @@ void MainWindow::updateMyEID(const TokenData &t)
 	warnings->clearMyEIDWarnings();
 	SslCertificate cert(t.cert());
 	int type = cert.type();
-	ui->infoStack->setHidden(t.isNull() || type == SslCertificate::UnknownType || type == SslCertificate::EidType);
-	ui->accordion->setHidden(t.isNull() || type == SslCertificate::UnknownType || type == SslCertificate::EidType);
-	ui->noReaderInfo->setVisible(t.isNull() || type == SslCertificate::UnknownType || type == SslCertificate::EidType);
+	ui->infoStack->setHidden(t.isNull() || type == SslCertificate::UnknownType);
+	ui->accordion->setHidden(t.isNull() || type == SslCertificate::UnknownType);
+	ui->noReaderInfo->setVisible(t.isNull() || type == SslCertificate::UnknownType);
 
 	if(!t.isNull())
 	{
