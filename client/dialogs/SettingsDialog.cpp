@@ -31,7 +31,6 @@
 #include "Diagnostics.h"
 #include "FileDialog.h"
 #include "QSigner.h"
-#include "QSmartCard.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -560,25 +559,18 @@ void SettingsDialog::updateDiagnostics()
 {
 	ui->txtDiagnostics->setEnabled(false);
 	ui->txtDiagnostics->clear();
+	ui->btnNavSaveReport->setDisabled(true);
 
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	Diagnostics *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
 	connect(worker, &Diagnostics::destroyed, this, [=]{
-		QSmartCardData t = qApp->signer()->smartcard()->data();
-		QString appletVersion = t.isNull() ? QString() : t.appletVersion();
-		if(!appletVersion.isEmpty())
-		{
-			QString info;
-			QTextStream s(&info);
-			s << "<b>" << tr("Applet") << ":</b> " << appletVersion;
-			ui->txtDiagnostics->append(info);
-		}
 		ui->txtDiagnostics->setEnabled(true);
-		ui->txtDiagnostics->moveCursor(QTextCursor::Start) ;
-		ui->txtDiagnostics->ensureCursorVisible() ;
+		ui->txtDiagnostics->moveCursor(QTextCursor::Start);
+		ui->txtDiagnostics->ensureCursorVisible();
+		ui->btnNavSaveReport->setEnabled(true);
 		QApplication::restoreOverrideCursor();
-	});
+	}, Qt::QueuedConnection);
 	QThreadPool::globalInstance()->start( worker );
 }
 
@@ -644,7 +636,7 @@ void SettingsDialog::changePage(QAbstractButton *button)
 #ifdef Q_OS_WIN
 	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);
 #else
-	ui->btnNavFromHistory->setVisible(false);
+	ui->btnNavFromHistory->hide();
 #endif
 }
 

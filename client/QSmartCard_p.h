@@ -102,7 +102,7 @@ public:
 class QSmartCardDataPrivate: public QSharedData
 {
 public:
-	QString card, reader, appletVersion;
+	QString card, reader;
 	QHash<QSmartCardData::PersonalDataType,QVariant> data;
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;
