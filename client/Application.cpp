@@ -1038,12 +1038,16 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 		if(QSettings().value(QStringLiteral("plugins")).isNull())
 		{
 			WarningDialog dlg(tr(
-				"In order to use digital signing in online services the browser token plugin must be enabled in Your web browser.<br/>"
-				"Instructions on how to enable token plugin can be found <a href=\"https://www.id.ee/en/article/configuring-browsers-for-using-id-card/\">here</a>."));
+				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
 			dlg.setCancelText(tr("Ignore forever").toUpper());
-			dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Yes);
-			if(dlg.exec() != QMessageBox::Yes)
-				QSettings().setValue(QStringLiteral("plugins"), "ignore");
+			dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
+			dlg.addButton(tr("Install").toUpper(), QMessageBox::Open);
+			switch(dlg.exec())
+			{
+			case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
+			case QMessageBox::Ignore: break;
+			default: QSettings().setValue(QStringLiteral("plugins"), "ignore");
+			}
 		}
 #endif
 
@@ -1114,7 +1118,8 @@ QWidget* Application::uniqueRoot()
 
 void Application::waitForTSL( const QString &file )
 {
-	if( !QStringList({"asice", "sce", "bdoc", "asics", "scs"}).contains(QFileInfo(file).suffix(), Qt::CaseInsensitive) )
+	static const QStringList exts {"asice", "sce", "bdoc", "asics", "scs"};
+	if(!exts.contains(QFileInfo(file).suffix(), Qt::CaseInsensitive))
 		return;
 
 	if( d->ready )
