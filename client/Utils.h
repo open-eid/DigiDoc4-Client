@@ -19,14 +19,23 @@
 
 #pragma once
 
+#include <QEventLoop>
+#include <exception>
 #include <thread>
 
 template <typename F>
 static void waitFor(F&& function) {
+	std::exception_ptr exception;
 	QEventLoop l;
 	std::thread([&]{
-		function();
+		try {
+			function();
+		} catch(...) {
+			exception = std::current_exception();
+		}
 		l.exit();
 	}).detach();
 	l.exec();
+	if(exception)
+		std::rethrow_exception(exception);
 }
