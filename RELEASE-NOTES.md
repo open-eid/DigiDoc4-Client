@@ -1,3 +1,15 @@
+DigiDoc4 version [4.2.9](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.9) release notes
+--------------------------------------
+- Code, Text and translation improvements and updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.2.8...v4.2.9)
+
+DigiDoc4 version [4.2.8](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.8) release notes
+--------------------------------------
+- Code, Text and translation improvements and updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.2.7...v4.2.8)
+
 DigiDoc4 version [4.2.7](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.2.7) release notes
 --------------------------------------
 - Fix Mobile-ID signing with Russian translations
