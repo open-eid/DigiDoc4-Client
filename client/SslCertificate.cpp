@@ -363,7 +363,7 @@ SslCertificate::CertType SslCertificate::type() const
 				if(statement == digidoc::X509Cert::QCT_ESEAL)
 					return TempelType;
 			}
-		} catch (digidoc::Exception e) {
+		} catch (const digidoc::Exception &e) {
 			qWarning() << "digidoc::X509Cert error:" << QString::fromStdString(e.msg());
 		}
 	}
