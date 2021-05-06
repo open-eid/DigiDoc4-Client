@@ -58,4 +58,7 @@ private:
 	QSmartCardData::PinType pinType = QSmartCardData::Pin1Type;
 	QSmartCardData cardData;
 	SslCertificate c;
+
+static QString getGoodCertMessage(const SslCertificate& cert);
+static QString getRevokedCertMessage(const SslCertificate& cert);
 };
