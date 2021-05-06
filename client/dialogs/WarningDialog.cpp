@@ -76,7 +76,7 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 	button->setAccessibleName(label.toLower());
 	button->setCursor(ui->cancel->cursor());
 	button->setFont(ui->cancel->font());
-	button->setMinimumSize(std::max<int>(ui->cancel->minimumWidth(), ui->cancel->fontMetrics().width(label) + 16), 34);
+	button->setMinimumSize(std::max<int>(ui->cancel->minimumWidth(), ui->cancel->fontMetrics().horizontalAdvance(label) + 16), 34);
 
 	if(red) {
 		button->setStyleSheet(QStringLiteral(

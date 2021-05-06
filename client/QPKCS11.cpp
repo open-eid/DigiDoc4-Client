@@ -33,6 +33,12 @@
 
 #define toQByteArray(X) QByteArray::fromRawData((const char*)(X), sizeof(X)).toUpper()
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define QT_ENDL Qt::endl
+#else
+#define QT_ENDL endl
+#endif
+
 QWidget* rootWindow()
 {
 	QWidget* win = qApp->activeWindow();
@@ -215,9 +221,9 @@ bool QPKCS11::load( const QString &driver )
 	d->f->C_GetInfo( &info );
 	qWarning()
 		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.manufacturerID).constData())
-			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << endl
+			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << QT_ENDL
 		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.libraryDescription).constData())
-			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << endl
+			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << QT_ENDL
 		<< "Flags:" << info.flags;
 	d->isFinDriver = toQByteArray(info.libraryDescription).contains("MPOLLUX");
 	return true;

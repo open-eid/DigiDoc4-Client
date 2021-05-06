@@ -34,13 +34,13 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 :	QPainter( printer )
 ,	p( printer )
 {
-	printer->setOrientation( QPrinter::Portrait );
-
-	left		= p->pageRect().left();
+	printer->setPageOrientation( QPageLayout::Portrait );
+	const auto pageRect = p->pageLayout().paintRectPixels(printer->resolution());
+	left		= pageRect.left();
 	margin		= left;
-	right		= p->pageRect().right() - 2*margin;
-	top			= p->pageRect().top();
-	bottom		= p->pageRect().y() + p->pageRect().height() - 2*margin;
+	right		= pageRect.right() - 2*margin;
+	top			= pageRect.top();
+	bottom		= pageRect.y() + pageRect.height() - 2*margin;
 
 #ifdef Q_OS_MAC
 	scale( 0.8, 0.8 );
@@ -220,6 +220,6 @@ void PrintSheet::newPage( int height )
 	if ( top + height > bottom )
 	{
 		p->newPage();
-		top = p->pageRect().top() + 30;
+		top = p->pageLayout().paintRectPixels(p->resolution()).top() + 30;
 	}
 }

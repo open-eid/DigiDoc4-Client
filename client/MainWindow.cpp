@@ -1220,8 +1220,8 @@ void MainWindow::containerSummary()
 	}
 #endif
 	QPrintPreviewDialog *dialog = new QPrintPreviewDialog( this );
-	dialog->printer()->setPaperSize( QPrinter::A4 );
-	dialog->printer()->setOrientation( QPrinter::Portrait );
+	dialog->printer()->setPageSize( QPageSize(QPageSize::A4 ));
+	dialog->printer()->setPageOrientation( QPageLayout::Portrait );
 	dialog->setMinimumHeight( 700 );
 	connect(dialog, &QPrintPreviewDialog::paintRequested, digiDoc, [=](QPrinter *printer){
 		PrintSheet(digiDoc, printer);

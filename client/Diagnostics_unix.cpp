@@ -140,7 +140,11 @@ void Diagnostics::run()
 	info.clear();
 
 	QProcess p;
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+	p.start( "lsusb", QStringList() );
+#else
 	p.start( "lsusb" );
+#endif
 	p.waitForFinished();
 	QString cmd = QString::fromLocal8Bit( p.readAll() );
 	if( !cmd.isEmpty() )

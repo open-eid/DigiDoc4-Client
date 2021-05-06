@@ -131,7 +131,13 @@ private:
 
 		for(; fontSize >= MIN_FONT_SIZE; fontSize--)
 		{
-			width = QFontMetrics(QFont(font, fontSize)).width(sample.sample);
+//#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+//			width = QFontMetrics(QFont(font, fontSize)).horizontalAdvance(sample.sample);
+//#else
+//			width = QFontMetrics(QFont(font, fontSize)).width(sample.sample);
+//#endif
+
+			width = QFontMetrics(QFont(font, fontSize)).horizontalAdvance(sample.sample);
 			if (width <= sample.width)
 				break;
 			prevWidth = width;
