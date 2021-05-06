@@ -20,10 +20,10 @@
 #include "ContainerPage.h"
 #include "ui_ContainerPage.h"
 
+#include "CryptoDoc.h"
 #include "DigiDoc.h"
 #include "Styles.h"
 #include "SslCertificate.h"
-#include "crypto/CryptoDoc.h"
 #include "dialogs/AddRecipients.h"
 #include "dialogs/MobileDialog.h"
 #include "dialogs/SmartIDDialog.h"
@@ -160,17 +160,10 @@ void ContainerPage::clearPopups()
 	if(mainAction) mainAction->hideDropdown();
 }
 
-void ContainerPage::elideFileName(bool force)
+void ContainerPage::elideFileName()
 {
-	if(ui->containerFile->width() < containerFileWidth)
-	{
-		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
-			ui->containerFile->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
-	}
-	else if(force)
-	{
-		ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" + fileName.toHtmlEscaped() + "</span></a>");
-	}
+	ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
+		ui->containerFile->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
 }
 
 bool ContainerPage::eventFilter(QObject *o, QEvent *e)
@@ -180,7 +173,7 @@ bool ContainerPage::eventFilter(QObject *o, QEvent *e)
 	case QEvent::Resize:
 	case QEvent::LanguageChange:
 		if(o == ui->containerFile)
-			elideFileName(true);
+			elideFileName();
 		break;
 	default: break;
 	}
@@ -275,7 +268,7 @@ void ContainerPage::setHeader(const QString &file)
 	fileName = QDir::toNativeSeparators (file);
 	window()->setWindowFilePath(fileName);
 	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 Client") : QFileInfo(file).fileName());
-	elideFileName(true);
+	elideFileName();
 }
 
 void ContainerPage::showRightPane(ItemType itemType, const QString &header)

@@ -19,12 +19,12 @@
 
 #include "QPKCS11_p.h"
 
+#include "CryptoDoc.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "dialogs/PinPopup.h"
 
 #include <common/QPCSC.h>
-#include <crypto/CryptoDoc.h>
 
 #include <QtCore/QDebug>
 #include <QtWidgets/QApplication>

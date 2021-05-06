@@ -63,14 +63,6 @@ using pcuchar = const uchar *;
 
 Q_LOGGING_CATEGORY(CRYPTO,"CRYPTO")
 
-#if QT_VERSION < 0x050700
-template <class T>
-constexpr typename std::add_const<T>::type& qAsConst(T& t) noexcept
-{
-	return t;
-}
-#endif
-
 class CryptoDoc::Private: public QThread
 {
 	Q_OBJECT
@@ -195,7 +187,7 @@ const QHash<QString, quint32> CryptoDoc::Private::KWAES_SIZE{{KWAES128_MTH, 16},
 QByteArray CryptoDoc::Private::AES_wrap(const QByteArray &key, const QByteArray &data, bool encrypt)
 {
 	QByteArray result;
-	AES_KEY aes;
+	AES_KEY aes = {};
 	if(0 != (encrypt ?
 		AES_set_encrypt_key(pcuchar(key.data()), key.length() * 8, &aes) :
 		AES_set_decrypt_key(pcuchar(key.data()), key.length() * 8, &aes)))
@@ -233,7 +225,7 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 		RAND_bytes(indata, sizeof(indata));
 		if(opensslError(EVP_BytesToKey(cipher, EVP_sha256(), salt, indata, sizeof(indata),
 				1, puchar(key.data()), puchar(iv.data())) <= 0))
-			return QByteArray();
+			return {};
 	}
 	else
 	{
@@ -245,20 +237,20 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 
 	SCOPE(EVP_CIPHER_CTX, ctx, EVP_CIPHER_CTX_new());
 	if(opensslError(EVP_CipherInit(ctx.get(), cipher, pcuchar(key.constData()), pcuchar(iv.constData()), encrypt) <= 0))
-		return QByteArray();
+		return {};
 
 	int size = 0;
 	QByteArray result(_data.size() + EVP_CIPHER_CTX_block_size(ctx.get()), Qt::Uninitialized);
 	puchar resultPointer = puchar(result.data()); //Detach only once
 	if(opensslError(EVP_CipherUpdate(ctx.get(), resultPointer, &size, pcuchar(_data.constData()), _data.size()) <= 0))
-		return QByteArray();
+		return {};
 
 	if(!encrypt && EVP_CIPHER_mode(cipher) == EVP_CIPH_GCM_MODE)
 		EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_GCM_SET_TAG, tag.size(), tag.data());
 
 	int size2 = 0;
 	if(opensslError(EVP_CipherFinal(ctx.get(), resultPointer + size, &size2) <= 0))
-		return QByteArray();
+		return {};
 	result.resize(size + size2);
 	if(encrypt)
 	{
@@ -477,10 +469,10 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 		case QXmlStreamReader::StartElement: break;
 		case QXmlStreamReader::DTD:
 			qCWarning(CRYPTO) << "XML DTD Declarations are not supported";
-			return QByteArray();
+			return {};
 		case QXmlStreamReader::EntityReference:
 			qCWarning(CRYPTO) << "XML ENTITY References are not supported";
-			return QByteArray();
+			return {};
 		default: continue;
 		}
 
@@ -585,7 +577,7 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 			keys << key;
 		}
 	}
-	return QByteArray();
+	return {};
 }
 
 void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey,
@@ -858,7 +850,7 @@ QString CDocumentModel::copy(int row, const QString &dst) const
 	if(!f.open(QFile::WriteOnly) || f.write(file.data) < 0)
 	{
 		d->setLastError( tr("Failed to save file '%1'").arg( dst ) );
-		return QString();
+		return {};
 	}
 	return dst;
 }
@@ -870,7 +862,7 @@ QString CDocumentModel::data(int row) const
 
 QString CDocumentModel::fileSize(int /*row*/) const
 {
-	return QString();
+	return {};
 }
 
 QString CDocumentModel::mime(int row) const
@@ -922,14 +914,14 @@ int CDocumentModel::rowCount() const
 QString CDocumentModel::save(int row, const QString &path) const
 {
 	if(d->encrypted)
-		return QString();
+		return {};
 
 	QString fileName = copy(row, path);
 	QFileInfo f(fileName);
 	if(f.exists())
 		return fileName;
 
-	return QString();
+	return {};
 }
 
 
@@ -997,7 +989,7 @@ QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen,
 	case QCryptographicHash::Sha256: hashLen = 32; break;
 	case QCryptographicHash::Sha384: hashLen = 48; break;
 	case QCryptographicHash::Sha512: hashLen = 64; break;
-	default: return QByteArray();
+	default: return {};
 	}
 	quint32 reps = quint32(std::ceil(double(keyDataLen) / double(hashLen)));
 	QCryptographicHash md(hashAlg);

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "crypto/CryptoDoc.h"
+#include "CryptoDoc.h"
 
 #include <QDialog>
 
