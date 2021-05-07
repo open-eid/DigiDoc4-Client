@@ -3393,8 +3393,8 @@ Additional licenses and components</translation>
         <translation>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Certificate is valid. </source>
-        <translation>Certificate is valid. </translation>
+        <source>Certificate is valid.</source>
+        <translation>Certificate is valid.</translation>
     </message>
     <message>
         <source>Certificate is not valid. A valid certificate is required for electronic use.</source>
