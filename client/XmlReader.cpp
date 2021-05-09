@@ -59,7 +59,11 @@ Emails XmlReader::readEmailAddresses()
 		if(name() == QStringLiteral("epost"))
 			email = readElementText();
 		else if(name() == QStringLiteral("suunamine"))
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+			emails.insert( email, readForwards() );
+#else
 			emails.insertMulti( email, readForwards() );
+#endif
 	}
 	return emails;
 }

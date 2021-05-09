@@ -269,7 +269,7 @@ void SignatureItem::removeSignature()
 
 void SignatureItem::updateNameField()
 {
-	if(ui->name->fontMetrics().width(ui->nameText  + " - " + ui->status) < ui->name->width())
+	if(ui->name->fontMetrics().horizontalAdvance(ui->nameText  + " - " + ui->status) < ui->name->width())
 		ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->statusHtml);
 	else
 		ui->name->setText((ui->invalid ? red(ui->nameText) : ui->nameText) + "<br/>" + ui->statusHtml);

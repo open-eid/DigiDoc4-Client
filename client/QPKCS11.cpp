@@ -33,6 +33,10 @@
 
 #define toQByteArray(X) QByteArray::fromRawData((const char*)(X), sizeof(X)).toUpper()
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+using namespace Qt;
+#endif
+
 QWidget* rootWindow()
 {
 	QWidget* win = qApp->activeWindow();

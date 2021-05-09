@@ -616,7 +616,7 @@ QSmartCard::~QSmartCard()
 
 QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText)
 {
-	PinPopup::PinFlags flags;
+	PinPopup::PinFlags flags = {};
 	switch(type)
 	{
 	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
@@ -632,7 +632,7 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 	QScopedPointer<PinPopup> p;
 	if(d->t.isPinpad())
 	{
-		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, nullptr, parent, bodyText));
+		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, {}, parent, bodyText));
 		p->open();
 	}
 	return d->handlePinResult(reader.data(), d->card->change(reader.data(), type, pin, newpin), true);
@@ -782,7 +782,7 @@ TokenData QSmartCard::tokenData() const { return d->token; }
 
 QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)
 {
-	PinPopup::PinFlags flags;
+	PinPopup::PinFlags flags = {};
 	switch(type)
 	{
 	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type;	break;
@@ -797,7 +797,7 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget*
 	QScopedPointer<PinPopup> p;
 	if(d->t.isPinpad())
 	{
-		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, nullptr, parent, bodyText));
+		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, {}, parent, bodyText));
 		p->open();
 	}
 	return d->handlePinResult(reader.data(), d->card->replace(reader.data(), type, puk, pin), true);
