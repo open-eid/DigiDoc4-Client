@@ -898,7 +898,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
 	structureFunds->show();
-	notification->start({}, 400, 4000, 1100);
+	notification->start({}, 400, 3000, 1100);
 	isShown = true;
 }
 
