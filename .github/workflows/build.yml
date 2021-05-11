@@ -68,7 +68,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: apt update -qq && apt install --no-install-recommends -y lsb-release dh-make fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
+      run: apt update -qq && apt install --no-install-recommends -y lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -78,16 +78,17 @@ jobs:
         path: libdigidocpp-pkg
         repo: 'open-eid/libdigidocpp'
     - name: Install artifact
-      run: dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+      run: |
+        apt install --no-install-recommends -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+        rm -rf libdigidocpp-pkg
     - name: Setup changelog
       run: |
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
         export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs)
-        dh_make --createorig --addmissing --defaultless -y -p qdigidoc4_${VERSIONEX}
         dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}."
     - name: Build packages
       run: |
-        dpkg-buildpackage -rfakeroot -us -uc
+        dpkg-buildpackage -us -uc
         mv ../qdigidoc4*.* .
     - name: Lintian
       run: lintian *.deb;
@@ -98,15 +99,33 @@ jobs:
         path: qdigidoc4*.*
   windows:
     name: Build on Windows
-    runs-on: windows-latest
+    runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        arch: [x86, x64]
+        build: [VC17x86, VC17x64, VC19x86, VC19x64]
         include:
-        - arch: x86
+        - build: VC17x86
+          arch: x86
           qt: win32_msvc2017
-        - arch: x64
+          image: 'windows-2016'
+          toolset: VS141
+        - build: VC17x64
+          arch: x64
           qt: win64_msvc2017_64
+          image: 'windows-2016'
+          toolset: VS141
+        - build: VC19x86
+          arch: x86
+          qt: win32_msvc2017
+          image: 'windows-2019'
+          toolset: VS142
+        - build: VC19x64
+          arch: x64
+          qt: win64_msvc2017_64
+          image: 'windows-2019'
+          toolset: VS142
+    env:
+      VER_SUFFIX: ".${{ matrix.toolset }}"
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -122,7 +141,7 @@ jobs:
         repo: 'open-eid/libdigidocpp'
     - name: Install artifact
       run: |
-        Rename-Item "libdigidocpp*VS142.msi" libdigidocpp.msi
+        Rename-Item "libdigidocpp*${{ matrix.toolset }}.msi" libdigidocpp.msi
         msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
@@ -145,7 +164,7 @@ jobs:
         md build/client
         cd build
         copy ${{ env.VCPKG_ROOT }}\installed\${{ matrix.arch }}-windows\bin\*.dll client\
-        cmake "-GNMake Makefiles" `
+        cmake "-GNinja" -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
           "-DLIBDIGIDOCPP_LIBRARY=../libs/libdigidocpp/${{ matrix.arch }}/digidocpp.lib" `
           "-DLIBDIGIDOCPP_INCLUDE_DIR=../libs/libdigidocpp/include" ..

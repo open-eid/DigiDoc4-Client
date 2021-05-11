@@ -8,6 +8,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
  -dlibs_path="C:\target\libdigidocpp\x86"
  -dqt_path=C:\Qt\5.12\msvc2017
  -dclient_path=client\qdigidoc4.exe
+ -dico_path=client\images\digidoc.ico
 
 "%WIX%\bin\light.exe" -out qdigidoc4.msi qdigidoc4.wixobj -v -ext WixUIExtension
 -->
@@ -40,8 +41,8 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
     <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
-    <Icon Id="qdigidoc4.exe" SourceFile="$(var.client_path)"/>
-    <Property Id="ARPPRODUCTICON" Value="qdigidoc4.exe"/>
+    <Icon Id="qdigidoc4.ico" SourceFile="$(var.ico_path)"/>
+    <Property Id="ARPPRODUCTICON" Value="qdigidoc4.ico"/>
     <Property Id="APPLICATIONNAME" Value="qdigidoc4"/>
     <Property Id="DESKTOP_SHORTCUT" Value="0"/>
     <Property Id="TLS12" Value="1"/>
@@ -77,7 +78,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
         <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client">
           <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB" Transitive="yes">
             <File Source="$(var.client_path)" KeyPath='yes'>
-              <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="!(loc.qdigidoc4Label)" Icon="qdigidoc4.exe"
+              <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="!(loc.qdigidoc4Label)" Icon="qdigidoc4.ico"
                 Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
             <ProgId Id="qdigidoc4.adoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
@@ -110,7 +111,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
                 <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='"%1"' />
               </Extension>
             </ProgId>
-            <ProgId Id="qdigidoc4.cdoc" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="3">
+            <ProgId Id="qdigidoc4.cdoc" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="2">
               <Extension Id="cdoc" ContentType="application/x-cdoc">
                 <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='-crypto "%1"' />
               </Extension>
@@ -139,7 +140,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?ifdef var.qt_path ?>
             <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp140.dll"/>
             <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140.dll"/>
-<?if $(var.Platform) = x64 ?>
+<?if $(var.Platform) = x64 AND $(env.VisualStudioVersion) = "16.0" ?>
             <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140_1.dll"/>
 <?endif ?>
             <File Source="$(var.libs_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
