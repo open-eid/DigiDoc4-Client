@@ -68,6 +68,12 @@ bool WarningList::eventFilter(QObject *object, QEvent *event)
 	{
 		if(warning->underMouse())
 		{
+			// this warning should be closed iff there are no zero-byte(empty) files in the container
+			if (warning->warningType() == ria::qdigidoc4::EmptyFileWarning)
+			{
+				continue;
+			}
+
 			closeWarning(warning);
 			break;
 		}

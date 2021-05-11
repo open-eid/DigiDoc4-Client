@@ -266,8 +266,8 @@
         <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
     <message>
         <source>NO</source>
@@ -2493,8 +2493,8 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Не удается удалить файл из контейнера</translation>
     </message>
     <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Вы желаете добавить пустой файл. Продолжить?</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
     <message>
         <source>NO</source>
@@ -3485,6 +3485,10 @@ Additional licenses and components</source>
     <message>
         <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</source>
         <translation>DigiDoc контейнер имеет старый формат. К данному контейнеру нельзя добавить или удалить из него подпись.</translation>
+    </message>
+    <message>
+        <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
+        <translation>В контейнер добавлен пустой файл. Для подписания удалите из контейнера пустой файл.</translation>
     </message>
 </context>
 <context>

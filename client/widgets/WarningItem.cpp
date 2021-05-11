@@ -123,6 +123,10 @@ void WarningItem::lookupWarning()
 					.arg(tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
+	case ria::qdigidoc4::EmptyFileWarning:
+		warnText.text = tr("An empty file is attached to the container. Remove the empty file from the container to sign.");
+		warnText.page = ria::qdigidoc4::SignDetails;
+	break;
 	default:
 		break;
 	}

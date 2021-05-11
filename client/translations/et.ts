@@ -266,8 +266,8 @@
         <translation>Faili &apos;%1&apos; salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Fail mida soovid lisada on tühi. Kas soovid jätkata?</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
     </message>
     <message>
         <source>NO</source>
@@ -2489,10 +2489,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
-    <message>
-        <source>File you want to add is empty. Do you want to continue?</source>
-        <translation>Fail, mida soovid lisada, on tühi. Kas soovid jätkata?</translation>
-    </message>
+<message>
+    <source>Cannot add empty file to the container.</source>
+    <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
+</message>
     <message>
         <source>NO</source>
         <translation>EI</translation>
@@ -3478,6 +3478,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.</source>
         <translation>Tegemist on vanas formaadis DigiDoc ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
+    </message>
+    <message>
+        <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
+        <translation>Ümbrikule on lisatud tühi fail. Allkirjastamiseks eemalda ümbrikust tühi fail.</translation>
     </message>
 </context>
 <context>
