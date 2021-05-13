@@ -33,8 +33,10 @@
 
 #define toQByteArray(X) QByteArray::fromRawData((const char*)(X), sizeof(X)).toUpper()
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-using namespace Qt;
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+namespace Qt {
+	using ::endl;
+}
 #endif
 
 QWidget* rootWindow()
@@ -106,22 +108,6 @@ std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE ses
 void QPKCS11::Private::run()
 {
 	result = f->C_Login(session, CKU_USER, nullptr, 0);
-}
-
-std::vector<CK_SLOT_ID> QPKCS11::Private::slotIds(bool token_present) const
-{
-	std::vector<CK_SLOT_ID> result;
-	if(!f)
-		return result;
-	CK_ULONG size = 0;
-	if(f->C_GetSlotList(token_present, nullptr, &size) != CKR_OK)
-		return result;
-	result.resize(size_t(size));
-	if( f->C_GetSlotList( token_present, result.data(), &size ) == CKR_OK )
-		result.resize(size_t(size));
-	else
-		result.clear();
-	return result;
 }
 
 
@@ -219,9 +205,9 @@ bool QPKCS11::load( const QString &driver )
 	d->f->C_GetInfo( &info );
 	qWarning()
 		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.manufacturerID).constData())
-			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << endl
+			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << Qt::endl
 		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.libraryDescription).constData())
-			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << endl
+			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << Qt::endl
 		<< "Flags:" << info.flags;
 	d->isFinDriver = toQByteArray(info.libraryDescription).contains("MPOLLUX");
 	return true;
@@ -308,7 +294,16 @@ void QPKCS11::logout()
 QList<TokenData> QPKCS11::tokens() const
 {
 	QList<TokenData> list;
-	for( CK_SLOT_ID slot: d->slotIds( true ) )
+	if(!d->f)
+		return list;
+	size_t size = 0;
+	if(d->f->C_GetSlotList(CK_TRUE, nullptr, CK_ULONG_PTR(&size)) != CKR_OK)
+		return list;
+	std::vector<CK_SLOT_ID> slotIDs(size);
+	if(d->f->C_GetSlotList(CK_TRUE, slotIDs.data(), CK_ULONG_PTR(&size)) != CKR_OK)
+		return list;
+	slotIDs.resize(size);
+	for(CK_SLOT_ID slot: slotIDs)
 	{
 		CK_SLOT_INFO slotInfo;
 		CK_TOKEN_INFO token;

@@ -36,11 +36,11 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
 	ui->btnPicture->hide();
 
-// TODO: Ubuntu 21.04	connect( ui->btnPicture, &QPushButton::clicked, this, [this]
-//	{
-//		emit photoClicked(ui->photo->pixmap(Qt::ReturnByValue));
-//	} );
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked(ui->photo->pixmap() ? *ui->photo->pixmap() : QPixmap()); } );
+#else
+	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked(ui->photo->pixmap(Qt::ReturnByValue)); } );
+#endif
 	
 	QFont labelFont = Styles::font(Styles::Condensed, 11);
 	ui->labelGivenNames->setFont(labelFont);
@@ -102,9 +102,13 @@ void InfoStack::changeEvent(QEvent* event)
 
 bool InfoStack::eventFilter(QObject *o, QEvent *e)
 {
-	// TODO: Ubuntu 21.04 if(ui->photo != o || ui->alternateIcon->isVisible() || (QPixmap() == ui->photo->pixmap(Qt::ReturnByValue)))
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	if(ui->photo != o || ui->alternateIcon->isVisible() || !ui->photo->pixmap())
 		return StyledWidget::eventFilter(o, e);
+#else
+	if(ui->photo != o || ui->alternateIcon->isVisible() || ui->photo->pixmap(Qt::ReturnByValue).isNull())
+		return StyledWidget::eventFilter(o, e);
+#endif
 	switch(e->type())
 	{
 	case QEvent::Enter:
@@ -153,9 +157,13 @@ void InfoStack::update()
 
 	ui->alternateIcon->setVisible(certType & SslCertificate::EResidentSubType || certType & SslCertificate::TempelType);
 	ui->btnPicture->setText(tr(pictureText));
-	// 	TODO: Ubuntu 21.04 if(QPixmap() == ui->photo->pixmap(Qt::ReturnByValue))
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	if(!ui->photo->pixmap())
 		ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
+#else
+	if(ui->photo->pixmap(Qt::ReturnByValue).isNull())
+		ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
+#endif
 	ui->labelSerialNumber->setHidden(certType & SslCertificate::TempelType);
 	ui->valueSerialNumber->setHidden(certType & SslCertificate::TempelType);
 	if(certType & SslCertificate::EResidentSubType)

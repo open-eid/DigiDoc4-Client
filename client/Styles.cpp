@@ -94,7 +94,7 @@ public:
 		for (auto sample : regularSamples)
 			regularMapping[sample.fontSize] = calcFontSize(sample, regular);
 #endif
-	};
+	}
 	QString fontName( Styles::Font font )
 	{
 		switch( font )
