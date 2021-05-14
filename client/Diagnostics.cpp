@@ -162,7 +162,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 				}
 			}
 			if(!appletVersion.isEmpty())
-				s << tr("Applet") << ": " << appletVersion << "<br />";
+				s << tr("Applet version") << ": " << appletVersion << "<br />";
 		}
 		else if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A40400 10 A000000077010800070000FE00000100")) ||
 			printAID(QStringLiteral("AID_OT"), APDU("00A4040C 0D E828BD080FF2504F5420415750")) ||

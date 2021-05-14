@@ -270,14 +270,6 @@
         <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
     </message>
@@ -775,6 +767,10 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL puhver</translation>
+    </message>
+    <message>
+        <source>Applet version</source>
+        <translation>Apleti versioon</translation>
     </message>
 </context>
 <context>
@@ -1484,11 +1480,11 @@ ID-KAARDIGA</translation>
         <translation>krüpto ümbrik</translation>
     </message>
     <message>
-        <source>Decryption succeeded</source>
+        <source>Decryption succeeded!</source>
         <translation>Dekrüpteerimine õnnestus!</translation>
     </message>
     <message>
-        <source>Encryption succeeded</source>
+        <source>Encryption succeeded!</source>
         <translation>Krüpteerimine õnnestus!</translation>
     </message>
     <message>
@@ -1944,10 +1940,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Sinu mobiil-ID toiming aegus. Palun proovi uuesti.</translation>
     </message>
     <message>
-        <source>Your Smart-ID transaction has expired. Please try again.</source>
-        <translation>Sinu Smart-ID toiming aegus. Palun proovi uuesti.</translation>
-    </message>
-    <message>
         <source>Failed to connect with service server. Please check your network settings or try again later.</source>
         <translation>Teenuse serveriga ühendus ebaõnnestus. Palun kontrolli võrgu sätteid või proovi hiljem uuesti.</translation>
     </message>
@@ -1970,6 +1962,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Failed to send request. %1 service has encountered technical errors. Please try again later.</source>
         <translation>Päringu saatmine ebaõnnestus. %1 teenuses esinevad tehnilised tõrked. Palun proovige mõne aja pärast uuesti.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Sinu Smart-ID toiming aegus või kontot ei leitud.</translation>
     </message>
 </context>
 <context>
@@ -2489,17 +2485,9 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
-<message>
-    <source>Cannot add empty file to the container.</source>
-    <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
-</message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
     </message>
 </context>
 <context>
@@ -2706,10 +2694,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>expired</source>
         <translation>aegunud</translation>
-    </message>
-    <message>
-        <source>Applet</source>
-        <translation>Apleti versioon</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
