@@ -24,7 +24,7 @@
 
 class DigiDocSignature;
 
-class SignatureItem : public Item
+class SignatureItem final : public Item
 {
 	Q_OBJECT
 
@@ -34,16 +34,16 @@ public:
 
 	ria::qdigidoc4::WarningType getError() const;
 	QString id() const override;
-	QWidget* initTabOrder(QWidget *item) override;
+	QWidget* initTabOrder(QWidget *item) final;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
 
 public slots:
-	void details() override;
+	void details() final;
 
 protected:
-	bool event(QEvent *event) override;
-	bool eventFilter(QObject *o, QEvent *e) override;
+	bool event(QEvent *event) final;
+	bool eventFilter(QObject *o, QEvent *e) final;
 
 private:
 	void init();
