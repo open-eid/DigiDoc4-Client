@@ -266,16 +266,16 @@
         <translation>Failed to save file &apos;%1&apos;</translation>
     </message>
     <message>
-         <source>Cannot add empty file to the container.</source>
-         <translation>Cannot add empty file to the container.</translation>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Cannot add empty file to the container.</translation>
     </message>
     <message>
         <source>NO</source>
-        <translation>NO</translation>
+        <translation type="vanished">NO</translation>
     </message>
     <message>
         <source>YES</source>
-        <translation>YES</translation>
+        <translation type="vanished">YES</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
@@ -775,6 +775,10 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL cache</translation>
+    </message>
+    <message>
+        <source>Applet</source>
+        <translation type="unfinished">Applet version</translation>
     </message>
 </context>
 <context>
@@ -2489,17 +2493,17 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Failed remove document from container</source>
         <translation>Failed remove document from container</translation>
     </message>
- <message>
-         <source>Cannot add empty file to the container.</source>
-         <translation>Cannot add empty file to the container.</translation>
-</message>
+    <message>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Cannot add empty file to the container.</translation>
+    </message>
     <message>
         <source>NO</source>
-        <translation>NO</translation>
+        <translation type="vanished">NO</translation>
     </message>
     <message>
         <source>YES</source>
-        <translation>YES</translation>
+        <translation type="vanished">YES</translation>
     </message>
 </context>
 <context>
@@ -2705,7 +2709,7 @@ and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
         <source>Applet</source>
-        <translation>Applet version</translation>
+        <translation type="vanished">Applet version</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
@@ -3393,16 +3397,16 @@ Additional licenses and components</translation>
         <translation>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Certificate is valid.</source>
-        <translation>Certificate is valid.</translation>
-    </message>
-    <message>
-        <source>Certificate is not valid. A valid certificate is required for electronic use.</source>
-        <translation>Certificate is not valid. A valid certificate is required for electronic use.</translation>
-    </message>
-    <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
+    </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Certificate is valid. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Certificate is not valid. A valid certificate is required for electronic use. </translation>
     </message>
 </context>
 <context>

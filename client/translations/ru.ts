@@ -271,11 +271,11 @@
     </message>
     <message>
         <source>NO</source>
-        <translation>НЕТ</translation>
+        <translation type="vanished">НЕТ</translation>
     </message>
     <message>
         <source>YES</source>
-        <translation>ДА</translation>
+        <translation type="vanished">ДА</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
@@ -777,6 +777,10 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL-буфер</translation>
+    </message>
+    <message>
+        <source>Applet</source>
+        <translation type="unfinished">Версия апплета</translation>
     </message>
 </context>
 <context>
@@ -2498,11 +2502,11 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>NO</source>
-        <translation>НЕТ</translation>
+        <translation type="vanished">НЕТ</translation>
     </message>
     <message>
         <source>YES</source>
-        <translation>ДА</translation>
+        <translation type="vanished">ДА</translation>
     </message>
 </context>
 <context>
@@ -2712,7 +2716,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Applet</source>
-        <translation>Версия апплета</translation>
+        <translation type="vanished">Версия апплета</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
@@ -3396,16 +3400,16 @@ Additional licenses and components</source>
         <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dejstvitelnost-sertifikatov-id-karty/&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
     <message>
-         <source>Certificate is valid.</source>
-         <translation>Сертификат действителен.</translation>
-    </message>
-     <message>
-          <source>Certificate is not valid. A valid certificate is required for electronic use.</source>
-          <translation>Сертификат недействителен. Для электронного использования необходим действующий сертификат.</translation>
-     </message>
-    <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Сертификат действителен. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Сертификат недействителен. Для электронного использования необходим действующий сертификат. </translation>
     </message>
 </context>
 <context>

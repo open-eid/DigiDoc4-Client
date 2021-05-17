@@ -271,11 +271,11 @@
     </message>
     <message>
         <source>NO</source>
-        <translation>EI</translation>
+        <translation type="vanished">EI</translation>
     </message>
     <message>
         <source>YES</source>
-        <translation>JAH</translation>
+        <translation type="vanished">JAH</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
@@ -775,6 +775,10 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL puhver</translation>
+    </message>
+    <message>
+        <source>Applet</source>
+        <translation type="unfinished">Apleti versioon</translation>
     </message>
 </context>
 <context>
@@ -2489,17 +2493,17 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
     </message>
-<message>
-    <source>Cannot add empty file to the container.</source>
-    <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
-</message>
+    <message>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
+    </message>
     <message>
         <source>NO</source>
-        <translation>EI</translation>
+        <translation type="vanished">EI</translation>
     </message>
     <message>
         <source>YES</source>
-        <translation>JAH</translation>
+        <translation type="vanished">JAH</translation>
     </message>
 </context>
 <context>
@@ -2709,7 +2713,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>Applet</source>
-        <translation>Apleti versioon</translation>
+        <translation type="vanished">Apleti versioon</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
@@ -3392,17 +3396,17 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</source>
         <translation>Loe rohkem &lt;a href=&quot;https://www.id.ee/artikkel/id-kaardi-sertifikaatide-kehtivus/&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
-     <message>
-         <source>Certificate is valid.</source>
-         <translation>Sertifikaat kehtib.</translation>
-     </message>
-     <message>
-          <source>Certificate is not valid. A valid certificate is required for electronic use.</source>
-          <translation>Sertifikaat ei kehti. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati.</translation>
-     </message>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
+    </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Sertifikaat kehtib. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Sertifikaat ei kehti. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
     </message>
 </context>
 <context>
