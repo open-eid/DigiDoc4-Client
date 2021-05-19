@@ -52,13 +52,6 @@ FileDialog::FileDialog( QWidget *parent )
 {
 }
 
-FileDialog::Options FileDialog::addOptions()
-{
-	if(qApp->arguments().contains(QStringLiteral("-noNativeFileDialog")))
-		return DontUseNativeDialog;
-	return nullptr;
-}
-
 QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent)
 {
 	const QFileInfo f(file);
@@ -100,7 +93,7 @@ FileType FileDialog::detect( const QString &filename )
 		QByteArray blob = file.readAll();
 		for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
 		{
-			if(blob.indexOf(token) > 0 && blob.indexOf("/Type /DSS") > 0)
+			if(blob.indexOf(token) > 0)
 				return SignatureDocument;
 		}
 		return Other;
@@ -169,7 +162,7 @@ QString FileDialog::getOpenFileName( QWidget *parent, const QString &caption,
 	const QString &dir, const QString &filter, QString *selectedFilter, Options options )
 {
 	return result( QFileDialog::getOpenFileName( parent,
-		caption, getDir( dir ), filter, selectedFilter, options|addOptions() ) );
+		caption, getDir(dir), filter, selectedFilter, options));
 }
 
 QStringList FileDialog::getOpenFileNames( QWidget *parent, const QString &caption,
@@ -178,9 +171,9 @@ QStringList FileDialog::getOpenFileNames( QWidget *parent, const QString &captio
 	return result( QFileDialog::getOpenFileNames( parent,
 		caption, getDir( dir ), filter, selectedFilter,
 #ifdef Q_OS_WIN
-		DontResolveSymlinks|options|addOptions() ) );
+		DontResolveSymlinks|options));
 #else
-		options|addOptions() ) );
+		options));
 #endif
 }
 
@@ -233,7 +226,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	}
 #else
 	res = QFileDialog::getExistingDirectory( parent,
-		caption, getDir( dir ), ShowDirsOnly|options|addOptions() );
+		caption, getDir(dir), ShowDirsOnly|options);
 #endif
 	if(res.isEmpty())
 		return res;
@@ -257,8 +250,8 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 	QString file;
 	while( true )
 	{
-		file =  QFileDialog::getSaveFileName( parent,
-			caption, dir, filter, selectedFilter, options|addOptions() );
+		file = QFileDialog::getSaveFileName(parent,
+			caption, dir, filter, selectedFilter, options);
 		if( !file.isEmpty() && !fileIsWritable( file ) )
 		{
 			WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ), parent).exec();

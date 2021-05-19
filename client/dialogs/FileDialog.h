@@ -37,21 +37,20 @@ public:
 	static QString safeName(const QString &file);
 	static QString tempPath(const QString &file);
 
-	static QString getOpenFileName(QWidget *parent = nullptr, const QString &caption = QString(),
-		const QString &dir = QString(), const QString &filter = QString(),
-		QString *selectedFilter = nullptr, Options options = nullptr);
-	static QStringList getOpenFileNames(QWidget *parent = nullptr, const QString &caption = QString(),
-		const QString &dir = QString(), const QString &filter = QString(),
-		QString *selectedFilter = nullptr, Options options = nullptr);
-	static QString getExistingDirectory(QWidget *parent = nullptr, const QString &caption = QString(),
-		const QString &dir = QString(), Options options = nullptr);
-	static QString getSaveFileName(QWidget *parent = nullptr, const QString &caption = QString(),
-		const QString &dir = QString(), const QString &filter = QString(),
-		QString *selectedFilter = nullptr, Options options = nullptr);
+	static QString getOpenFileName(QWidget *parent = nullptr, const QString &caption = {},
+		const QString &dir = {}, const QString &filter = {},
+		QString *selectedFilter = nullptr, Options options = {});
+	static QStringList getOpenFileNames(QWidget *parent = nullptr, const QString &caption = {},
+		const QString &dir = {}, const QString &filter = {},
+		QString *selectedFilter = nullptr, Options options = {});
+	static QString getExistingDirectory(QWidget *parent = nullptr, const QString &caption = {},
+		const QString &dir = {}, Options options = {});
+	static QString getSaveFileName(QWidget *parent = nullptr, const QString &caption = {},
+		const QString &dir = {}, const QString &filter = {},
+		QString *selectedFilter = nullptr, Options options = {});
 
 private:
 	static QString result( const QString &str );
 	static QStringList result( const QStringList &list );
-	static Options addOptions();
 	static QString getDir( const QString &dir );
 };
