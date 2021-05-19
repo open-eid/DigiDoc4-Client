@@ -581,7 +581,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			ui->cryptoContainerPage->transition(cryptoDoc, false);
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-			notification->start( tr("Decryption succeeded"), 750, 3000, 1200 );
+			notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
 	case EncryptContainer:
@@ -590,7 +590,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
-			notification->start( tr("Encryption succeeded"), 750, 3000, 1200 );
+			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
 	case ContainerSaveAs:
