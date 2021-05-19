@@ -25,6 +25,12 @@
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+namespace Qt {
+using ::endl;
+}
+#endif
+
 @implementation NSApplication (ApplicationObjC)
 
 - (void)appReopen:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -102,41 +108,41 @@ void Application::mailTo( const QUrl &url )
 		QTextStream s( &p );
 		if([appUrl.path rangeOfString:@"/Applications/Mail.app"].location != NSNotFound)
 		{
-			s << "on run" << endl
-			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << endl
-			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << endl
-			<< "tell application \"Mail\"" << endl
-			<< "set msg to make new outgoing message with properties {subject:vsubject, visible:true}" << endl
-			<< "tell content of msg to make new attachment with properties {file name:(vattachment as POSIX file) as alias}" << endl
-			<< "activate" << endl
-			<< "end tell" << endl
-			<< "end run" << endl;
+			s << "on run" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << Qt::endl
+			<< "tell application \"Mail\"" << Qt::endl
+			<< "set msg to make new outgoing message with properties {subject:vsubject, visible:true}" << Qt::endl
+			<< "tell content of msg to make new attachment with properties {file name:(vattachment as POSIX file) as alias}" << Qt::endl
+			<< "activate" << Qt::endl
+			<< "end tell" << Qt::endl
+			<< "end run" << Qt::endl;
 		}
 		else if([appUrl.path rangeOfString:@"Entourage"].location != NSNotFound)
 		{
-			s << "on run" << endl
-			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << endl
-			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << endl
-			<< "tell application \"Microsoft Entourage\"" << endl
-			<< "set vmessage to make new outgoing message with properties" << endl
-			<< "{subject:vsubject, attachments:vattachment}" << endl
-			<< "open vmessage" << endl
-			<< "activate" << endl
-			<< "end tell" << endl
-			<< "end run" << endl;
+			s << "on run" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << Qt::endl
+			<< "tell application \"Microsoft Entourage\"" << Qt::endl
+			<< "set vmessage to make new outgoing message with properties" << Qt::endl
+			<< "{subject:vsubject, attachments:vattachment}" << Qt::endl
+			<< "open vmessage" << Qt::endl
+			<< "activate" << Qt::endl
+			<< "end tell" << Qt::endl
+			<< "end run" << Qt::endl;
 		}
 		else if([appUrl.path rangeOfString:@"Outlook"].location != NSNotFound)
 		{
-			s << "on run" << endl
-			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\" as POSIX file" << endl
-			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << endl
-			<< "tell application \"Microsoft Outlook\"" << endl
-			<< "activate" << endl
-			<< "set vmessage to make new outgoing message with properties {subject:vsubject}" << endl
-			<< "make new attachment at vmessage with properties {file: vattachment}" << endl
-			<< "open vmessage" << endl
-			<< "end tell" << endl
-			<< "end run" << endl;
+			s << "on run" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\" as POSIX file" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << Qt::endl
+			<< "tell application \"Microsoft Outlook\"" << Qt::endl
+			<< "activate" << Qt::endl
+			<< "set vmessage to make new outgoing message with properties {subject:vsubject}" << Qt::endl
+			<< "make new attachment at vmessage with properties {file: vattachment}" << Qt::endl
+			<< "open vmessage" << Qt::endl
+			<< "end tell" << Qt::endl
+			<< "end run" << Qt::endl;
 		}
 #if 0
 		else if([appUrl.path rangeOfString:"/Applications/Thunderbird.app"].location != NSNotFound)

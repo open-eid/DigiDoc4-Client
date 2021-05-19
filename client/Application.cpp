@@ -254,7 +254,7 @@ private:
 		QList<QSslCertificate> list;
 		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
-		QSslSocket::setDefaultCaCertificates(list);
+		QSslConfiguration::defaultConfiguration().setCaCertificates(list);
 	}
 #endif
 
@@ -914,7 +914,13 @@ void Application::openHelp()
 void Application::parseArgs( const QString &msg )
 {
 	QStringList params;
+
+
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+	for(const QString &param: msg.split(QStringLiteral("\", \""), Qt::SkipEmptyParts))
+#else
 	for(const QString &param: msg.split(QStringLiteral("\", \""), QString::SkipEmptyParts))
+#endif
 	{
 		QUrl url( param, QUrl::StrictMode );
 		params << (param != QStringLiteral("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);

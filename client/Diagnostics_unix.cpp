@@ -140,7 +140,7 @@ void Diagnostics::run()
 	info.clear();
 
 	QProcess p;
-	p.start( "lsusb" );
+	p.start( "lsusb", QStringList() );
 	p.waitForFinished();
 	QString cmd = QString::fromLocal8Bit( p.readAll() );
 	if( !cmd.isEmpty() )

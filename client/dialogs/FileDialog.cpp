@@ -56,7 +56,7 @@ FileDialog::Options FileDialog::addOptions()
 {
 	if(qApp->arguments().contains(QStringLiteral("-noNativeFileDialog")))
 		return DontUseNativeDialog;
-	return nullptr;
+	return {};
 }
 
 QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent)

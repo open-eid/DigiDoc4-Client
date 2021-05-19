@@ -39,15 +39,15 @@ public:
 
 	static QString getOpenFileName(QWidget *parent = nullptr, const QString &caption = QString(),
 		const QString &dir = QString(), const QString &filter = QString(),
-		QString *selectedFilter = nullptr, Options options = nullptr);
+		QString *selectedFilter = nullptr, Options options = {});
 	static QStringList getOpenFileNames(QWidget *parent = nullptr, const QString &caption = QString(),
 		const QString &dir = QString(), const QString &filter = QString(),
-		QString *selectedFilter = nullptr, Options options = nullptr);
+		QString *selectedFilter = nullptr, Options options = {});
 	static QString getExistingDirectory(QWidget *parent = nullptr, const QString &caption = QString(),
-		const QString &dir = QString(), Options options = nullptr);
+		const QString &dir = QString(), Options options = {});
 	static QString getSaveFileName(QWidget *parent = nullptr, const QString &caption = QString(),
 		const QString &dir = QString(), const QString &filter = QString(),
-		QString *selectedFilter = nullptr, Options options = nullptr);
+		QString *selectedFilter = nullptr, Options options = {});
 
 private:
 	static QString result( const QString &str );
