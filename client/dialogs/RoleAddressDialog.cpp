@@ -27,6 +27,7 @@
 #include <QtCore/QSettings>
 
 #include <QtWidgets/QCompleter>
+#include <QListView>
 #include <QtWidgets/QPushButton>
 
 class RoleAddressDialog::Private: public Ui::RoleAddressDialog
@@ -83,6 +84,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 			d->s.setValue(line->objectName(), QString()); // Uses on Windows MULTI_STRING registry
 			SettingsDialog::setValueEx(line->objectName(), list, QStringList());
 		});
+		completer->popup()->setStyleSheet("background-color:#FFFFFF; color: #000000;");
 	}
 }
 

@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QScrollBar{
+   <string notr="true">QWidget {
+color: #000000;
+}
+QScrollBar{
 	width: 10px;
 	padding: 5px 5px 5px 0;
 }

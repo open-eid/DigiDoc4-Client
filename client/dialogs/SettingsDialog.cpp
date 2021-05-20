@@ -111,6 +111,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->txtAccessCert->setFont(regularFont);
 	ui->btInstallManually->setFont(condensed12);
 	ui->btShowCertificate->setFont(condensed12);
+#ifdef Q_OS_LINUX
+	ui->btInstallManually->setStyleSheet("background-color: #d3d3d3");
+	ui->btShowCertificate->setStyleSheet("background-color: #d3d3d3");
+#endif
 	ui->chkIgnoreAccessCert->setFont(regularFont);
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStampDefault->setFont(regularFont);
