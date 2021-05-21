@@ -3380,6 +3380,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
     </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Sertifikaat kehtib. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Sertifikaat ei kehti. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>

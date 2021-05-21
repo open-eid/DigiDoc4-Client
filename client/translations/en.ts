@@ -3380,6 +3380,14 @@ Additional licenses and components</translation>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
     </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Certificate is valid. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Certificate is not valid. A valid certificate is required for electronic use. </translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>

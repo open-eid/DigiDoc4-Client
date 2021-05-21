@@ -50,14 +50,10 @@ VerifyCert::VerifyCert(QWidget *parent)
 		switch(c.validateOnline())
 		{
 		case SslCertificate::Good:
-			msg.prepend(c.keyUsage().contains(SslCertificate::NonRepudiation) ?
-				tr("Your ID-card signing certificate is valid. ") :
-				tr("Your ID-card authentication certificate is valid. "));
+			msg.prepend(getGoodCertMessage(c));
 			break;
 		case SslCertificate::Revoked:
-			msg.prepend(c.keyUsage().contains(SslCertificate::NonRepudiation) ?
-				tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. ") :
-				tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. "));
+			msg.prepend(getRevokedCertMessage(c));
 			break;
 		default:
 			msg = tr("Connecting to SK server failed! Please check your internet connection.");
@@ -298,3 +294,23 @@ void VerifyCert::changePinStyle( const QString &background )
 		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )
 	);
 }
+
+QString VerifyCert::getGoodCertMessage(const SslCertificate& cert) {
+	if (SslCertificate::CertType::TempelType == cert.type()) {
+		return tr("Certificate is valid. ");
+	}
+
+	return cert.keyUsage().contains(SslCertificate::NonRepudiation) ?
+		tr("Your ID-card signing certificate is valid. ") :
+		tr("Your ID-card authentication certificate is valid. ");
+}
+QString VerifyCert::getRevokedCertMessage(const SslCertificate& cert) {
+	if (SslCertificate::CertType::TempelType == cert.type()) {
+		return tr("Certificate is not valid. A valid certificate is required for electronic use. ");
+	}
+
+	return cert.keyUsage().contains(SslCertificate::NonRepudiation) ?
+		tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. ") :
+		tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. ");
+}
+

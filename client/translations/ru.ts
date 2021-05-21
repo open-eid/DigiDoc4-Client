@@ -3383,6 +3383,14 @@ Additional licenses and components</source>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
     </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Сертификат действителен. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Сертификат недействителен. Для электронного использования необходим действующий сертификат. </translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
