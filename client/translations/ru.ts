@@ -270,14 +270,6 @@
         <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation type="vanished">НЕТ</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation type="vanished">ДА</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
     </message>
@@ -779,8 +771,8 @@
         <translation>TSL-буфер</translation>
     </message>
     <message>
-        <source>Applet</source>
-        <translation type="unfinished">Версия апплета</translation>
+        <source>Applet version</source>
+        <translation>Версия апплета</translation>
     </message>
 </context>
 <context>
@@ -1490,11 +1482,11 @@ ID-КАРТОЙ</translation>
         <translation>криптоконтейнер</translation>
     </message>
     <message>
-        <source>Decryption succeeded</source>
+        <source>Decryption succeeded!</source>
         <translation>Расшифровывание прошло успешно!</translation>
     </message>
     <message>
-        <source>Encryption succeeded</source>
+        <source>Encryption succeeded!</source>
         <translation>Зашифровывание выполнено успешно!</translation>
     </message>
     <message>
@@ -1951,10 +1943,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Срок действия вашей транзакции mobiil-ID истек. Пожалуйста, попробуйте еще раз.</translation>
     </message>
     <message>
-        <source>Your Smart-ID transaction has expired. Please try again.</source>
-        <translation>Срок действия вашей транзакции Smart-ID истек. Пожалуйста, попробуйте еще раз.</translation>
-    </message>
-    <message>
         <source>Failed to connect with service server. Please check your network settings or try again later.</source>
         <translation>Не удалось связаться с сервером услуги. Пожалуйста, проверьте настройки сети или повторите попытку позже.</translation>
     </message>
@@ -1977,6 +1965,10 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
         <translation>Не удалось отправить запрос. Превышено количество неудачных запросов с этого IP-адреса. Пожалуйста, попробуйте позже.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
+        <translation>Не удалось подписать контейнер. Срок действия вашей операции Smart-ID истек или учетная запись не найдена.</translation>
     </message>
 </context>
 <context>
@@ -2500,14 +2492,6 @@ and enter Smart-ID PIN2-code.</source>
         <source>Cannot add empty file to the container.</source>
         <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
-    <message>
-        <source>NO</source>
-        <translation type="vanished">НЕТ</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation type="vanished">ДА</translation>
-    </message>
 </context>
 <context>
     <name>SSLConnect</name>
@@ -2713,10 +2697,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>expired</source>
         <translation>истекший</translation>
-    </message>
-    <message>
-        <source>Applet</source>
-        <translation type="vanished">Версия апплета</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;

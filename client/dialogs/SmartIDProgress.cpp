@@ -156,7 +156,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 		case QNetworkReply::NoError:
 			break;
 		case QNetworkReply::ContentNotFoundError:
-			returnError(d->sessionID.isEmpty() ? tr("Account not found") : tr("Session not found"));
+			returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
 			return;
 		case QNetworkReply::HostNotFoundError:
 			returnError(tr("Connecting to SK server failed! Please check your internet connection."));
@@ -233,7 +233,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 			if(endResult == QStringLiteral("USER_REFUSED"))
 				returnError(tr("User denied or cancelled"));
 			else if(endResult == QStringLiteral("TIMEOUT"))
-				returnError(tr("Your Smart-ID transaction has expired. Please try again."));
+				returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
 			else if(endResult == QStringLiteral("WRONG_VC"))
 				returnError(tr("Error: an incorrect control code was chosen"));
 			else if(endResult == QStringLiteral("DOCUMENT_UNUSABLE"))

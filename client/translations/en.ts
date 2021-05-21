@@ -270,14 +270,6 @@
         <translation>Cannot add empty file to the container.</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation type="vanished">NO</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation type="vanished">YES</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
     </message>
@@ -777,8 +769,8 @@
         <translation>TSL cache</translation>
     </message>
     <message>
-        <source>Applet</source>
-        <translation type="unfinished">Applet version</translation>
+        <source>Applet version</source>
+        <translation>Applet version</translation>
     </message>
 </context>
 <context>
@@ -1488,11 +1480,11 @@ ID-CARD</translation>
         <translation>crypto container</translation>
     </message>
     <message>
-        <source>Decryption succeeded</source>
+        <source>Decryption succeeded!</source>
         <translation>Decryption succeeded!</translation>
     </message>
     <message>
-        <source>Encryption succeeded</source>
+        <source>Encryption succeeded!</source>
         <translation>Encryption succeeded!</translation>
     </message>
     <message>
@@ -1948,10 +1940,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Your mobile-ID transaction has expired. Please try again.</translation>
     </message>
     <message>
-        <source>Your Smart-ID transaction has expired. Please try again.</source>
-        <translation>Your Smart-ID transaction has expired. Please try again.</translation>
-    </message>
-    <message>
         <source>Failed to connect with service server. Please check your network settings or try again later.</source>
         <translation>Failed to connect with service server. Please check your network settings or try again later.</translation>
     </message>
@@ -1974,6 +1962,10 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
         <translation>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
+        <translation>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</translation>
     </message>
 </context>
 <context>
@@ -2497,14 +2489,6 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Cannot add empty file to the container.</source>
         <translation>Cannot add empty file to the container.</translation>
     </message>
-    <message>
-        <source>NO</source>
-        <translation type="vanished">NO</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation type="vanished">YES</translation>
-    </message>
 </context>
 <context>
     <name>SSLConnect</name>
@@ -2706,10 +2690,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>expired</source>
         <translation>expired</translation>
-    </message>
-    <message>
-        <source>Applet</source>
-        <translation type="vanished">Applet version</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
