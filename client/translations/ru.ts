@@ -1970,6 +1970,11 @@ and enter Smart-ID PIN2-code.</source>
         <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
         <translation>Не удалось подписать контейнер. Срок действия вашей операции Smart-ID истек или учетная запись не найдена.</translation>
     </message>
+    <message>
+        <source>Sign document %1</source>
+        <comment>Do not translate to RUS (IB-6416)</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
