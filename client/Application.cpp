@@ -934,7 +934,6 @@ void Application::parseArgs( const QStringList &args )
 	params.removeAll(QStringLiteral("-capi"));
 	params.removeAll(QStringLiteral("-cng"));
 	params.removeAll(QStringLiteral("-pkcs11"));
-	params.removeAll(QStringLiteral("-noNativeFileDialog"));
 
 	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
 	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
