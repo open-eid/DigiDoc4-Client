@@ -2921,10 +2921,6 @@ Additional licenses and components</source>
         <translation>Предупреждения</translation>
     </message>
     <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Данный контейнер имеет меньшую надежность по сравнению с официально признанным в Эстонии контейнером в формате BDOC.</translation>
-    </message>
-    <message>
         <source>Restrictions</source>
         <translation>Ограничения</translation>
     </message>
@@ -3060,6 +3056,10 @@ Additional licenses and components</source>
     <message>
         <source>ROLE AND ADDRESS</source>
         <translation>РОЛЬ И АДРЕС</translation>
+    </message>
+    <message>
+        <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
+        <translation>Подпись технически верна, но основана на но ее алгоритм хеширования SHA-1 сейчас имеет слабую оценку, поэтому она не защищена от подделки или изменения.</translation>
     </message>
 </context>
 <context>

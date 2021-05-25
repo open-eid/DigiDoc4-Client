@@ -2908,10 +2908,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Hoiatused</translation>
     </message>
     <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Praegune BDOC-ümbrik kasutab nõrgemat krüpteerimismeetodit kui Eestis on ametlikult aktsepteeritud.</translation>
-    </message>
-    <message>
         <source>Restrictions</source>
         <translation>Piirangud</translation>
     </message>
@@ -3057,6 +3053,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>ROLE AND ADDRESS</source>
         <translation>ROLL JA AADRESS</translation>
+    </message>
+    <message>
+        <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
+        <translation>Allkiri on tehniliselt korrektne, kuid põhineb praeguseks nõrgaks hinnatud räsialgorütmil SHA-1, mistõttu ei ole see kaitstud võltsimise või muutmise eest.</translation>
     </message>
 </context>
 <context>
