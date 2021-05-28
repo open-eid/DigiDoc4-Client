@@ -157,12 +157,6 @@ if( APPLE )
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
 		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks -name Headers | xargs rm -rf
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
-		# For QT
-		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.dylib
-		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.dylib
-		# For Target
 		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.1.1.dylib
 		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
