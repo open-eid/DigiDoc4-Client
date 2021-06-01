@@ -17,13 +17,13 @@
 1. Install dependencies (libdigidocpp-dev must be installed from RIA repository)
    * Add custom RIA repository to APT repository list
 
-         curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | sudo apt-key add -
-         sudo echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/repo.list
-         sudo apt-get update
+         curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | gpg --dearmor | tee /etc/apt/trusted.gpg.d/ria-repository.gpg > /dev/null
+         sudo echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ria-repository.list
+         sudo apt update
 
    * Install
 
-         sudo apt-get install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
+         sudo apt install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
 
    * Also runtime dependency opensc-pkcs11 and pcscd is needed
 
@@ -71,7 +71,7 @@
 
         mkdir build
         cd build
-        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.10-OpenSSL/lib/cmake/Qt5" -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" ..
+        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.10-OpenSSL/lib/cmake/Qt5" ..
 
 4. Build
 
@@ -102,7 +102,7 @@
 
         mkdir build
         cd build
-        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.12.10\msvc2017\lib\cmake\Qt5" ..
+        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.12.11\msvc2017\lib\cmake\Qt5" ..
 
 4. Build
 

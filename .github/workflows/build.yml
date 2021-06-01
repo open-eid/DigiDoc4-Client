@@ -26,23 +26,18 @@ jobs:
     - name: Install dependencies
       run: |
         HASH=($(shasum prepare_osx_build_environment.sh))
-        aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.20.0.2.pkg opensc.pkg --no-sign-request
-        aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request
+        curl -L -s https://github.com/open-eid/DigiDoc4-Client/blob/cache/opensc_0.20.0.2.pkg?raw=true -o opensc_0.20.0.2.pkg
+        curl -L -s https://github.com/open-eid/DigiDoc4-Client/blob/cache/${HASH}.zip?raw=true -o ${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
-        sudo installer -verboseR -pkg opensc.pkg -target /
-        unzip -qq -d libs ${HASH}.zip
-        ln -s /Library/Frameworks/digidocpp.framework/Libraries/libcrypto.dylib /usr/local/lib/libcrypto.1.1.dylib
-        ln -s /Library/Frameworks/digidocpp.framework/Libraries/libssl.dylib /usr/local/lib/libssl.1.1.dylib
+        sudo installer -verboseR -pkg opensc_*.pkg -target /
+        sudo unzip -qq -d /Library/Developer ${HASH}.zip
     - name: Build
       run: |
-        QT_DIR=$(ls -d libs/Qt-*-OpenSSL | tail -n 1)
+        QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
         mkdir build && cd build && cmake \
           -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 \
-          -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl\@1.1 \
-          -DOPENSSL_CRYPTO_LIBRARY=/Library/Frameworks/digidocpp.framework/Libraries/libcrypto.dylib \
-          -DOPENSSL_SSL_LIBRARY=/Library/Frameworks/digidocpp.framework/Libraries/libssl.dylib \
-          -DLDAP_ROOT=/tmp/OpenLDAP \
-          -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" \
+          -DOPENSSL_ROOT_DIR=/Library/Developer/OpenSSL \
+          -DLDAP_ROOT=/Library/Developer/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" ..
         make zipdebug macdeployqt zip
     - name: Archive artifacts
@@ -56,7 +51,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:20.10', 'ubuntu:21.04']
+        container: ['ubuntu:20.04', 'ubuntu:21.04']
     env:
       MAKEFLAGS: -j3
       DEBIAN_FRONTEND: noninteractive
@@ -152,7 +147,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.12.10'
+        version: '5.12.11'
         arch: ${{ matrix.qt }}
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
