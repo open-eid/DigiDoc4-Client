@@ -28,6 +28,9 @@
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QSettings>
 #include <QtWidgets/QMessageBox>
+
+#include <algorithm>
+
 #ifdef Q_OS_WIN
 #include <ShObjIdl.h>
 #include <ShlGuid.h>
@@ -60,25 +63,21 @@ QString FileDialog::createNewFileName(const QString &file, const QString &extens
 #ifndef Q_OS_OSX
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
-	if(QFile::exists(fileName))
-	{
+	if(!QFile::exists(fileName))
+		return fileName;
 #endif
-		WaitDialogHider hider;
-		QString capitalized = type[0].toUpper() + type.mid(1);
-		fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
-											   QStringLiteral("%1 (*%2)").arg(capitalized, extension));
-		if(!fileName.isEmpty())
-			QFile::remove(fileName);
-#ifndef Q_OS_OSX
-	}
-#endif
+	WaitDialogHider hider;
+	QString capitalized = type[0].toUpper() + type.mid(1);
+	fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
+		QStringLiteral("%1 (*%2)").arg(capitalized, extension));
+	if(!fileName.isEmpty())
+		QFile::remove(fileName);
 	return fileName;
 }
 
 FileType FileDialog::detect( const QString &filename )
 {
 	ExtensionType ext = extension(filename);
-
 	switch(ext)
 	{
 	case ExtSignature:
@@ -91,11 +90,9 @@ FileType FileDialog::detect( const QString &filename )
 		if(!file.open(QIODevice::ReadOnly))
 			return Other;
 		QByteArray blob = file.readAll();
-		for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
-		{
-			if(blob.indexOf(token) > 0)
-				return SignatureDocument;
-		}
+		static const QByteArrayList tokens{"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"};
+		if(std::any_of(tokens.cbegin(), tokens.cend(), [blob](const QByteArray &token){ return blob.indexOf(token) > 0; }))
+			return SignatureDocument;
 		return Other;
 	}
 	default:
@@ -111,9 +108,9 @@ ExtensionType FileDialog::extension(const QString &filename)
 		return ExtOther;
 	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
 		return ExtSignature;
-	if(!QString::compare(f.suffix(), QStringLiteral("cdoc"), Qt::CaseInsensitive))
+	if(filename.endsWith(QStringLiteral("cdoc"), Qt::CaseInsensitive))
 		return ExtCrypto;
-	if(!QString::compare(f.suffix(), QStringLiteral("pdf"), Qt::CaseInsensitive))
+	if(filename.endsWith(QStringLiteral("pdf"), Qt::CaseInsensitive))
 		return ExtPDF;
 	return ExtOther;
 }
@@ -143,6 +140,37 @@ QString FileDialog::fileSize( quint64 bytes )
 	if( bytes >= kb )
 		return QStringLiteral("%1 KB").arg(bytes / kb);
 	return QStringLiteral("%1 B").arg(bytes);
+}
+
+int FileDialog::fileZone(const QString &path)
+{
+#ifdef Q_OS_WIN
+	CPtr<IZoneIdentifier> spzi;
+	CPtr<IPersistFile> spf;
+	DWORD dwZone = 0;
+	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&spzi))) &&
+		SUCCEEDED(spzi->QueryInterface(&spf)) &&
+		SUCCEEDED(spf->Load(LPCWSTR(QDir::toNativeSeparators(path).utf16()), STGM_READ)) &&
+		SUCCEEDED(spzi->GetId(&dwZone)))
+		return int(dwZone);
+#endif
+	return -1;
+}
+
+void FileDialog::setFileZone(const QString &path, int zone)
+{
+	if(zone < 0)
+		return;
+#ifdef Q_OS_WIN
+	CPtr<IZoneIdentifier> spzi;
+	CPtr<IPersistFile> spf;
+	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&spzi))) &&
+		SUCCEEDED(spzi->SetId(zone)) &&
+		SUCCEEDED(spzi->QueryInterface(&spf)))
+		spf->Save(LPCWSTR(QDir::toNativeSeparators(path).utf16()), TRUE);
+#else
+	Q_UNUSED(path)
+#endif
 }
 
 QString FileDialog::getDir( const QString &dir )
@@ -202,7 +230,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 			LPWSTR path = nullptr;
 			if( SUCCEEDED(item->GetDisplayName( SIGDN_FILESYSPATH, &path )) )
 			{
-				res = QString( (QChar*)path );
+				res = QString::fromWCharArray(path);
 				CoTaskMemFree( path );
 			}
 			else
@@ -216,7 +244,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 					{
 						if( SUCCEEDED(list->GetDisplayName( SIGDN_FILESYSPATH, &path )) )
 						{
-							res = QFileInfo( QString( (QChar*)path ) + "/.." ).absoluteFilePath();
+							res = QFileInfo(QString::fromWCharArray(path) + "/..").absoluteFilePath();
 							CoTaskMemFree( path );
 						}
 					}

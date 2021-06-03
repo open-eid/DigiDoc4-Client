@@ -24,10 +24,10 @@
 #include "Application.h"
 #include "common_enums.h"
 #include "FileDialog.h"
+#include "LdapSearch.h"
 #include "QSigner.h"
 #include "Styles.h"
 #include "TokenData.h"
-#include "crypto/LdapSearch.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 
