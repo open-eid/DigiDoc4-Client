@@ -1162,7 +1162,7 @@
         <translation>СОХРАНИТЬ ФОТО</translation>
     </message>
     <message>
-        <source>You&apos;re using Digital identity card</source>
+        <source>You&apos;re using digital identity card</source>
         <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
     <message>
@@ -3063,7 +3063,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
-        <translation>Подпись технически верна, но основана на но ее алгоритм хеширования SHA-1 сейчас имеет слабую оценку, поэтому она не защищена от подделки или изменения.</translation>
+        <translation>Подпись технически верна, но так как она основана на слабом на данный момент алгоритме хеширования SHA-1, то не защищена от подделки или изменения.</translation>
     </message>
 </context>
 <context>
