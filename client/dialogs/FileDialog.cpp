@@ -48,16 +48,11 @@ class CPtr
 };
 #endif
 
-using namespace ria::qdigidoc4;
-
-FileDialog::FileDialog( QWidget *parent )
-:	QFileDialog( parent )
-{
-}
+#include <array>
 
 QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent)
 {
-	const QFileInfo f(file);
+	const QFileInfo f(normalized(file));
 	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
 	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
 #ifndef Q_OS_OSX
@@ -75,44 +70,29 @@ QString FileDialog::createNewFileName(const QString &file, const QString &extens
 	return fileName;
 }
 
-FileType FileDialog::detect( const QString &filename )
+FileDialog::FileType FileDialog::detect(const QString &filename)
 {
-	ExtensionType ext = extension(filename);
-	switch(ext)
-	{
-	case ExtSignature:
+	const QFileInfo f(filename);
+	if(!f.isFile())
+		return Other;
+	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
+	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
 		return SignatureDocument;
-	case ExtCrypto:
+	if(!f.suffix().compare(QStringLiteral("cdoc"), Qt::CaseInsensitive))
 		return CryptoDocument;
-	case ExtPDF:
+	if(!f.suffix().compare(QStringLiteral("pdf"), Qt::CaseInsensitive))
 	{
 		QFile file(filename);
 		if(!file.open(QIODevice::ReadOnly))
 			return Other;
 		QByteArray blob = file.readAll();
-		static const QByteArrayList tokens{"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"};
-		if(std::any_of(tokens.cbegin(), tokens.cend(), [blob](const QByteArray &token){ return blob.indexOf(token) > 0; }))
-			return SignatureDocument;
-		return Other;
+		for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
+		{
+			if(blob.indexOf(token) > 0)
+				return SignatureDocument;
+		}
 	}
-	default:
-		return Other;
-	}
-}
-
-ExtensionType FileDialog::extension(const QString &filename)
-{
-	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
-	const QFileInfo f( filename );
-	if(!f.isFile())
-		return ExtOther;
-	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
-		return ExtSignature;
-	if(filename.endsWith(QStringLiteral("cdoc"), Qt::CaseInsensitive))
-		return ExtCrypto;
-	if(filename.endsWith(QStringLiteral("pdf"), Qt::CaseInsensitive))
-		return ExtPDF;
-	return ExtOther;
+	return Other;
 }
 
 bool FileDialog::fileIsWritable( const QString &filename )
@@ -279,7 +259,7 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 	while( true )
 	{
 		file = QFileDialog::getSaveFileName(parent,
-			caption, dir, filter, selectedFilter, options);
+			caption, normalized(dir), filter, selectedFilter, options);
 		if( !file.isEmpty() && !fileIsWritable( file ) )
 		{
 			WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ), parent).exec();
@@ -288,6 +268,21 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 			break;
 	}
 	return result( file );
+}
+
+QString FileDialog::normalized(const QString &data)
+{
+	static constexpr std::array<const unsigned char[3],5> list = {{
+		{0xE2, 0x80, 0x8E}, // \u200E LEFT-TO-RIGHT MARK
+		{0xE2, 0x80, 0x8F}, // \u200F RIGHT-TO-LEFT MARK
+		{0xE2, 0x80, 0xAA}, // \u202A LEFT-TO-RIGHT EMBEDDING
+		{0xE2, 0x80, 0xAB}, // \u202B RIGHT-TO-LEFT EMBEDDING
+		{0xE2, 0x80, 0xAE}, // \u202E RIGHT-TO-LEFT OVERRIDE
+	}};
+	QString result = data.normalized(QString::NormalizationForm_C);
+	for (const unsigned char *replace: list)
+		result = result.remove((const char*)replace);
+	return result;
 }
 
 QString FileDialog::result( const QString &str )

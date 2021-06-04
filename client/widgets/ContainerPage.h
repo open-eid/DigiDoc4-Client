@@ -33,7 +33,7 @@ class CryptoDoc;
 class DigiDoc;
 class SignatureItem;
 class SslCertificate;
-class WarningText;
+struct WarningText;
 
 class ContainerPage final : public QWidget
 {
@@ -65,15 +65,13 @@ public slots:
 	void clearPopups();
 	void togglePrinting(bool enable);
 
-protected:
-	void changeEvent(QEvent* event) override;
-
 private:
 	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
+	void changeEvent(QEvent* event) final;
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName();
-	bool eventFilter(QObject *o, QEvent *e) override;
+	bool eventFilter(QObject *o, QEvent *e) final;
 	void forward(int code);
 	void hideMainAction();
 	void hideRightPane();

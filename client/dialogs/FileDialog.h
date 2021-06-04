@@ -21,21 +21,26 @@
 
 #include <QtWidgets/QFileDialog>
 
-#include "common_enums.h"
-
 class FileDialog : public QFileDialog
 {
 	Q_OBJECT
 public:
-	explicit FileDialog(QWidget *parent = nullptr);
+	enum FileType {
+		SignatureDocument,
+		CryptoDocument,
+		Other
+	};
 
-	static QString createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent);
-	static ria::qdigidoc4::FileType detect(const QString &filename);
+	using QFileDialog::QFileDialog;
+
+	static QString createNewFileName(const QString &file, const QString &extension,
+		const QString &type, const QString &defaultDir, QWidget *parent);
+	static FileType detect(const QString &filename);
 	static bool fileIsWritable( const QString &filename );
 	static QString fileSize( quint64 bytes );
-	static ria::qdigidoc4::ExtensionType extension(const QString &filename);
 	static int fileZone(const QString &path);
 	static void setFileZone(const QString &path, int zone);
+	static QString normalized(const QString &file);
 	static QString safeName(const QString &file);
 	static QString tempPath(const QString &file);
 

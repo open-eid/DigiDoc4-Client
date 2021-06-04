@@ -249,7 +249,7 @@ void MainWindow::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
-		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 Client") : QFileInfo(windowFilePath()).fileName());
+		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 Client") : FileDialog::normalized(QFileInfo(windowFilePath()).fileName()));
 		showCardMenu(false);
 	}
 	QWidget::changeEvent(event);
@@ -260,11 +260,6 @@ void MainWindow::closeEvent(QCloseEvent * /*event*/)
 	resetCryptoDoc();
 	resetDigiDoc();
 	ui->startScreen->setCurrentIndex(SignIntro);
-}
-
-QString MainWindow::cryptoPath()
-{
-	return cryptoDoc ? cryptoDoc->fileName() : QString();
 }
 
 ContainerState MainWindow::currentState()
@@ -292,11 +287,6 @@ bool MainWindow::decrypt()
 	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
 	return cryptoDoc->decrypt();
-}
-
-QString MainWindow::digiDocPath()
-{
-	return digiDoc ? digiDoc->fileName() : QString();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -350,7 +340,8 @@ bool MainWindow::encrypt()
 		return false;
 
 	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
-		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(cryptoDoc->fileName()), this);
+		WarningDialog dlg(tr("Cannot alter container %1. Save different location?")
+			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
 		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
 		if(dlg.exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
@@ -658,10 +649,10 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 		{
 			auto fileType = FileDialog::detect(content[0]);
 			if(current == MyEid)
-				page = (fileType == CryptoDocument) ? CryptoDetails : SignDetails;
+				page = (fileType == FileDialog::CryptoDocument) ? CryptoDetails : SignDetails;
 			create = forceCreate || !(
-				(fileType == CryptoDocument && page == CryptoDetails) ||
-				(fileType == SignatureDocument && page == SignDetails));
+				(fileType == FileDialog::CryptoDocument && page == CryptoDetails) ||
+				(fileType == FileDialog::SignatureDocument && page == SignDetails));
 		}
 		break;
 	case ContainerState::UnsignedContainer:
@@ -673,12 +664,8 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 			page = (state == ContainerState::UnencryptedContainer) ? CryptoDetails : SignDetails;
 			if(validateFiles(page == CryptoDetails ? cryptoDoc->fileName() : digiDoc->fileName(), content))
 			{
-				if(page != CryptoDetails && digiDoc->isPDF())
-				{
-					QString wrappedFile = digiDoc->fileName();
-					if(!wrap(wrappedFile, true))
-						return;
-				}
+				if(page != CryptoDetails && digiDoc->isPDF() && !wrap(digiDoc->fileName(), true))
+					return;
 				DocumentModel* model = (current == CryptoDetails) ?
 					cryptoDoc->documentModel() : digiDoc->documentModel();
 				for(const auto &file: content)
@@ -841,7 +828,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	}
 	else
 	{
-		exts = QStringList({ bdoc, asic, edoc, adoc });
+		exts = QStringList{ bdoc, asic, edoc, adoc };
 		if(ext == QStringLiteral("bdoc")) active = bdoc;
 		if(ext == QStringLiteral("cdoc")) active = cdoc;
 		if(ext == QStringLiteral("asice") || ext == QStringLiteral("sce")) active = asic;
@@ -1125,7 +1112,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	{
 		if(containerInfo == QFileInfo(file))
 		{
-			WarningDialog dlg(tr("Cannot add container to same container\n%1").arg(container), this);
+			WarningDialog dlg(tr("Cannot add container to same container\n%1").arg(FileDialog::normalized(container)), this);
 			dlg.setCancelText(tr("CANCEL"));
 			dlg.exec();
 			return false;
