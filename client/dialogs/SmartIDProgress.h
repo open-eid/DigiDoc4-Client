@@ -32,7 +32,7 @@ public:
 	explicit SmartIDProgress(QWidget *parent = nullptr);
 	~SmartIDProgress() final;
 	digidoc::X509Cert cert() const final;
-	bool init(const QString &country, const QString &idCode);
+	bool init(const QString &country, const QString &idCode, const QString &fileName);
 	std::vector<unsigned char> sign(const std::string &method, const std::vector<unsigned char> &digest) const final;
 
 private:

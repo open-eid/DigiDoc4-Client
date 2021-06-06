@@ -59,13 +59,14 @@ public:
 	QTimeLine *statusTimer = nullptr;
 	QNetworkAccessManager *manager = nullptr;
 	QNetworkRequest req;
-	QString documentNumber, sessionID;
+	QString documentNumber, sessionID, fileName;
 	X509Cert cert;
 	std::vector<unsigned char> signature;
 	QEventLoop l;
 #ifdef CONFIG_URL
-	QString PROXYURL = Configuration::instance().object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL));
-	QString SKURL = Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL));
+	QJsonObject config = Configuration::instance().object();
+	QString PROXYURL = config.value(QStringLiteral("SIDV2-PROXY-URL")).toString(config.value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL)));
+	QString SKURL = config.value(QStringLiteral("SIDV2-SK-URL")).toString(config.value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL)));
 #else
 	QString PROXYURL = QSettings().value(QStringLiteral("SID-PROXY-URL"), QStringLiteral(SMARTID_URL)).toString();
 	QString SKURL = QSettings().value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
@@ -84,7 +85,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	: d(new Private(parent))
 {
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
-		true || QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
+		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
@@ -112,7 +113,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+	for(const QJsonValue cert: d->config.value(QStringLiteral("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 #endif
 	d->req.setSslConfiguration(ssl);
@@ -280,13 +281,15 @@ X509Cert SmartIDProgress::cert() const
 	return d->cert;
 }
 
-bool SmartIDProgress::init(const QString &country, const QString &idCode)
+bool SmartIDProgress::init(const QString &country, const QString &idCode, const QString &fileName)
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
 		WarningDialog(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")), {}, d->parentWidget()).exec();
 		return false;
 	}
+	QFileInfo info(fileName);
+	d->fileName = QStringLiteral("%1...%2.%3").arg(info.completeBaseName().left(3), info.completeBaseName().right(1), info.suffix());
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
@@ -327,15 +330,23 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		"and enter Smart-ID PIN2-code."));
 	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
 
-	QByteArray data = QJsonDocument({
+	QJsonObject req{
 		{"relyingPartyUUID", (d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID)},
 		{"relyingPartyName", d->NAME},
 		{"certificateLevel", "QUALIFIED"},
 		{"hash", QString(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64())},
 		{"hashType", digestMethod},
-		{"requestProperties", QJsonObject{{"vcChoice", true}}},
-		{"displayText", tr("Sign document", "Do not translate to RUS (IB-6416)")}
-	}).toJson();
+	};
+	if (d->req.url().path().contains(QStringLiteral("v1"), Qt::CaseInsensitive)) {
+		req[QStringLiteral("requestProperties")] = QJsonObject{{"vcChoice", true}};
+		req[QStringLiteral("displayText")] = tr("Sign document", "Do not translate to RUS (IB-6416)");
+	} else {
+		req[QStringLiteral("allowedInteractionsOrder")] = QJsonArray{QJsonObject{
+			{"type", "confirmationMessageAndVerificationCodeChoice"},
+			{"displayText200", tr("Sign document %1", "Do not translate to RUS (IB-6416)").arg(d->fileName)}
+		}};
+	}
+	QByteArray data = QJsonDocument(req).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);

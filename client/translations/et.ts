@@ -1967,6 +1967,11 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus. Sinu Smart-ID toiming aegus või kontot ei leitud.</translation>
     </message>
+    <message>
+        <source>Sign document %1</source>
+        <comment>Do not translate to RUS (IB-6416)</comment>
+        <translation>Allkirjasta dokument %1</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
