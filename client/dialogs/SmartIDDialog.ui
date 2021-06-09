@@ -60,6 +60,22 @@ image: url(:/images/arrow_down.svg);
 QComboBox::down-arrow:on {
 top: 1px;
 left: 1px;
+}
+QCheckBox {
+min-height: 31px;
+}
+QCheckBox:disabled {
+color: #75787B;
+}
+QCheckBox::indicator {
+width: 14px;
+height: 14px;
+}
+QCheckBox::indicator:unchecked {
+image: url(:/images/icon_checkbox.png);
+}
+QCheckBox::indicator:checked {
+image: url(:/images/icon_checkbox_check.png);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="SmartIDDialogLayout">
@@ -80,6 +96,11 @@ left: 1px;
    </property>
    <item>
     <widget class="QLabel" name="labelNameId">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
@@ -204,10 +225,9 @@ padding-top: 8px;</string>
     </spacer>
    </item>
    <item>
-    <widget class="QCheckBox" name="cbRemember">
+    <widget class="CheckBox" name="cbRemember">
      <property name="styleSheet">
-      <string notr="true">color: #353739;
-</string>
+      <string notr="true">color: #353739;</string>
      </property>
      <property name="text">
       <string>Remember me</string>
@@ -248,6 +268,9 @@ padding-top: 8px;</string>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Cancel</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -264,6 +287,9 @@ QPushButton:hover:!pressed {
        </property>
        <property name="text">
         <string>CANCEL</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -285,6 +311,9 @@ QPushButton:hover:!pressed {
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Sign</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -316,6 +345,11 @@ QPushButton:disabled {
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>CheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>widgets/CheckBox.h</header>
+  </customwidget>
   <customwidget>
    <class>ComboBox</class>
    <extends>QComboBox</extends>

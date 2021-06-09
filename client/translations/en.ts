@@ -1794,6 +1794,10 @@ ID-CARD</translation>
         <source>Invalid country code</source>
         <translation>Invalid country code</translation>
     </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
 </context>
 <context>
     <name>MobileProgress</name>
@@ -3183,6 +3187,16 @@ Additional licenses and components</translation>
     <message>
         <source>Latvia</source>
         <translation>Latvia</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <extracomment>accessible</extracomment>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <extracomment>accessible</extracomment>
+        <translation>Sign</translation>
     </message>
 </context>
 <context>
