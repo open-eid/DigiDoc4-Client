@@ -24,6 +24,7 @@ border: 1px solid #DEE4E9;
 border-radius: 2px;
 }
 QCheckBox {
+color: #353739;
 min-height: 31px;
 }
 QCheckBox:disabled {
@@ -38,6 +39,30 @@ image: url(:/images/icon_checkbox.png);
 }
 QCheckBox::indicator:checked {
 image: url(:/images/icon_checkbox_check.png);
+}
+QPushButton {
+border-radius: 2px; 
+border: none;
+color: #ffffff;
+background-color: #981E32;
+}
+QPushButton:pressed {
+background-color: #F24A66;
+}
+QPushButton:hover:!pressed {
+background-color: #CD2541;
+}
+QPushButton::default {
+background-color: #006EB5;
+}
+QPushButton::default:pressed {
+background-color: #41B6E6;
+}
+QPushButton::default:hover:!pressed {
+background-color: #008DCF;
+}
+QPushButton::default:disabled {
+background-color: #BEDBED;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="MobileIDDialogLayout">
@@ -45,13 +70,13 @@ image: url(:/images/icon_checkbox_check.png);
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>50</number>
+    <number>30</number>
    </property>
    <property name="topMargin">
     <number>30</number>
    </property>
    <property name="rightMargin">
-    <number>50</number>
+    <number>30</number>
    </property>
    <property name="bottomMargin">
     <number>30</number>
@@ -176,9 +201,6 @@ padding-top: 8px;</string>
    </item>
    <item>
     <widget class="CheckBox" name="cbRemember">
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
      <property name="text">
       <string>Remember me</string>
      </property>
@@ -221,20 +243,6 @@ padding-top: 8px;</string>
        <property name="accessibleName">
         <string extracomment="accessible">Cancel</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
-}
-QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
-}</string>
-       </property>
        <property name="text">
         <string>CANCEL</string>
        </property>
@@ -264,23 +272,6 @@ QPushButton:hover:!pressed {
        </property>
        <property name="accessibleName">
         <string extracomment="accessible">Sign</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
        </property>
        <property name="text">
         <string>SIGN</string>
