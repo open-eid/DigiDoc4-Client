@@ -79,6 +79,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->version->setFont(version);
 	ui->signIntroLabel->setFont( regular20 );
 	ui->signIntroButton->setFont( condensed14 );
+	ui->signIntroButton->setFocus();
 	ui->cryptoIntroLabel->setFont( regular20 );
 	ui->cryptoIntroButton->setFont( condensed14 );
 	ui->noCardInfo->setFont(condensed14);
@@ -882,6 +883,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	static const int width = 166;
 	FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
 		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
+	notification->setFocusPolicy(Qt::NoFocus);
 	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
 	structureFunds->show();
