@@ -101,7 +101,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	ui->label->setText( text );
 
 	QTextDocument doc;
-	doc.setHtml(ui->label->text());
+	doc.setHtml(ui->labelNameId->text() + "\n" + ui->label->text());
 	ui->pin->setAccessibleName(doc.toPlainText());
 
 	if(flags & PinpadChangeFlag)
