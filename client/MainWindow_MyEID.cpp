@@ -190,7 +190,7 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 	FadeInNotification* notification = new FadeInNotification(this,
 		isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739"),
 		isSuccess ? QStringLiteral("#8CC368") : QStringLiteral("#F8DDA7"), 110);
-	notification->start(msg, 750, 15000, 600);
+	notification->start(msg, 750, 3000, 1200);
 }
 
 void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
