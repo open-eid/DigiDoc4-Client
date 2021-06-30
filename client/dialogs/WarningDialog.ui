@@ -6,14 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>522</width>
+    <width>550</width>
     <height>260</height>
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
-border-radius: 2px;
+   <string notr="true">QWidget {
 background-color: #FFFFFF;
+}
+QDialog {
+border-radius: 2px;
 }
 QPushButton {
 border-radius: 2px;
