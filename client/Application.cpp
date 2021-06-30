@@ -575,7 +575,7 @@ bool Application::event( QEvent *e )
 			parseArgs();
 		return true;
 	case QEvent::FileOpen:
-		parseArgs({ static_cast<QFileOpenEvent*>(e)->file() });
+		parseArgs({ (static_cast<QFileOpenEvent*>(e)->file()).normalized(QString::NormalizationForm_C) });
 		return true;
 #ifdef Q_OS_MAC
 	// Load here because cocoa NSApplication overides events
