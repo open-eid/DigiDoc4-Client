@@ -123,7 +123,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/WarningRibbon.ui
 	widgets/WarningRibbon.cpp
 )
-add_manifest( ${PROGNAME} )
 
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
