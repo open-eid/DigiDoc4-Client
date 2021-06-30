@@ -22,8 +22,6 @@
 #include "Styles.h"
 #include "SslCertificate.h"
 
-#include <common/Common.h>
-
 #include <QtCore/QTimeLine>
 #include <QtGui/QMovie>
 #include <QtGui/QRegExpValidator>
