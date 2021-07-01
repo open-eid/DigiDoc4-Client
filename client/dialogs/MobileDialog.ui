@@ -14,9 +14,10 @@
    <string>Mobile-ID</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
-border-radius: 2px;
+   <string notr="true">QWidget {
 background-color: #FFFFFF;
+color: #000000;
+border-radius: 2px;
 }
 QLineEdit {
 padding: 0px 10px;
@@ -145,6 +146,11 @@ background-color: #BEDBED;
        <height>34</height>
       </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget {
+	background-color: #FFFFFF;
+}</string>
+     </property>
      <property name="placeholderText">
       <string notr="true">37254321</string>
      </property>
@@ -177,6 +183,11 @@ padding-top: 8px;</string>
        <width>0</width>
        <height>34</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget {
+	background-color: #FFFFFF;
+}</string>
      </property>
      <property name="placeholderText">
       <string notr="true">47101010033</string>

@@ -12,6 +12,10 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
+color: #000000;
+}
+QDialog {
+border-radius: 2px;
 background-color: #FFFFFF;
 }
 QDialog {
