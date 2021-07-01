@@ -217,13 +217,14 @@ void ItemList::init(ItemType item, const QString &header)
 		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
 		ui->findGroup->show();
 		ui->txtFind->setPlaceholderText(tr("Enter personal code, company or registry code"));
-		connect(ui->txtFind, &QLineEdit::returnPressed, this, [this]{ if(!ui->txtFind->text().isEmpty()) emit search(ui->txtFind->text()); });
+		connect(ui->txtFind, &QLineEdit::returnPressed, this, [this]{ if(!ui->txtFind->text().trimmed().isEmpty()) emit search(ui->txtFind->text()); });
 		connect(ui->btnFind, &QPushButton::clicked, this, [this]{ emit search(ui->txtFind->text()); });
-		ui->btnFind->setDisabled(ui->txtFind->text().isEmpty());
+		ui->btnFind->setDisabled(ui->txtFind->text().trimmed().isEmpty());
 		connect(ui->txtFind, &QLineEdit::textChanged, this, [this](const QString &text){
-			ui->btnFind->setDisabled(text.isEmpty());
-			ui->btnFind->setDefault(text.isEmpty());
-			ui->btnFind->setAutoDefault(text.isEmpty());
+			const auto isEmpty = text.trimmed().isEmpty();
+			ui->btnFind->setDisabled(isEmpty);
+			ui->btnFind->setDefault(isEmpty);
+			ui->btnFind->setAutoDefault(isEmpty);
 		});
 		headerItems = 2;
 	}

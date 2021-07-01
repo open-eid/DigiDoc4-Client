@@ -34,14 +34,14 @@ void CheckBox::paintEvent(QPaintEvent *event)
 	QCheckBox::paintEvent(event);
 	QStyleOptionButton opt;
 	initStyleOption(&opt);
-	QRect rect = style()->subElementRect(QStyle::SE_RadioButtonIndicator, &opt, this);
+	QRectF rect = style()->subElementRect(QStyle::SE_RadioButtonIndicator, &opt, this);
 	rect.adjust(1, 1, -1, -1);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setRenderHint(QPainter::HighQualityAntialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 	painter.fillRect(rect, Qt::white);
 	painter.setPen(QStringLiteral("#AAADAD"));
-	painter.drawRoundedRect(rect, 2.0, 2.0);
+	painter.drawRoundedRect(rect.translated(0.5, 0.5), 2.0, 2.0);
 	if (isChecked())
 	{
 		rect.adjust(3, 3, -3, -3);

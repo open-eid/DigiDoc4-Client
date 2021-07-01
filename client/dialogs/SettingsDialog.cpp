@@ -285,7 +285,7 @@ void SettingsDialog::checkConnection()
 		s << connection.errorString();
 		if (!details.isEmpty())
 			s << "\n\n" << details << ".";
-		notification->start(error, 750, 6000, 1200);
+		notification->start(error, 750, 3000, 1200);
 	}
 	else
 	{

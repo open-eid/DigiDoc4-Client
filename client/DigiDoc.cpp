@@ -43,7 +43,7 @@ using namespace digidoc;
 using namespace ria::qdigidoc4;
 
 static std::string to(const QString &str) { return str.toStdString(); }
-static QString from(const std::string &str) { return QString::fromStdString(str).normalized(QString::NormalizationForm_C); }
+static QString from(const std::string &str) { return FileDialog::normalized(QString::fromStdString(str)); }
 
 
 
@@ -293,13 +293,14 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
-			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
+			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
+				.arg(FileDialog::normalized(fileName)));
 			return false;
 		}
 	}
 	if(doc->addFile(file, mime))
 	{
-		emit added(file);
+		emit added(FileDialog::normalized(fileName));
 		return true;
 	}
 	return false;
@@ -382,7 +383,9 @@ QString SDocumentModel::save(int row, const QString &path) const
 		return {};
 
 	QFile::remove( path );
+	int zone = FileDialog::fileZone(doc->fileName());
 	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
+	FileDialog::setFileZone(path, zone);
 	return path;
 }
 

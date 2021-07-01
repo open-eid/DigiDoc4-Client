@@ -19,8 +19,8 @@
 
 #include "CryptoDoc.h"
 
-#include "TokenData.h"
 #include "Application.h"
+#include "TokenData.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
 #include "dialogs/FileDialog.h"
@@ -814,7 +814,8 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 		qDebug() << containerFile.name << " vs " << file;
 		if(containerFile.name == fileName)
 		{
-			d->setLastError(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
+			d->setLastError(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
+				.arg(FileDialog::normalized(fileName)));
 			return false;
 		}
 	}
@@ -828,7 +829,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	f.data = data.readAll();
 	f.size = FileDialog::fileSize(quint64(f.data.size()));
 	d->files << f;
-	emit added(file);
+	emit added(FileDialog::normalized(f.name));
 	return true;
 }
 
@@ -854,7 +855,7 @@ QString CDocumentModel::copy(int row, const QString &dst) const
 
 QString CDocumentModel::data(int row) const
 {
-	return d->files.at(row).name.normalized(QString::NormalizationForm_C);
+	return FileDialog::normalized(d->files.at(row).name);
 }
 
 QString CDocumentModel::fileSize(int /*row*/) const
@@ -864,7 +865,7 @@ QString CDocumentModel::fileSize(int /*row*/) const
 
 QString CDocumentModel::mime(int row) const
 {
-	return d->files.at(row).mime;
+	return FileDialog::normalized(d->files.at(row).mime);
 }
 
 void CDocumentModel::open(int row)
@@ -913,12 +914,13 @@ QString CDocumentModel::save(int row, const QString &path) const
 	if(d->encrypted)
 		return {};
 
+	int zone = FileDialog::fileZone(d->fileName);
 	QString fileName = copy(row, path);
 	QFileInfo f(fileName);
-	if(f.exists())
-		return fileName;
-
-	return {};
+	if(!f.exists())
+		return {};
+	FileDialog::setFileZone(fileName, zone);
+	return fileName;
 }
 
 

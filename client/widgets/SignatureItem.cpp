@@ -276,7 +276,6 @@ void SignatureItem::updateNameField()
 	QTextDocument doc;
 	doc.setHtml(ui->name->text());
 	ui->name->setAccessibleName(doc.toPlainText());
-	if(ui->role->isVisible())
-		ui->role->setText(ui->role->fontMetrics().elidedText(
-			ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
+	ui->role->setText(ui->role->fontMetrics().elidedText(
+		ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
 }

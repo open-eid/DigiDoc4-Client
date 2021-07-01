@@ -1797,6 +1797,10 @@ ID-КАРТОЙ</translation>
         <source>Invalid country code</source>
         <translation>Неверный код страны</translation>
     </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
 </context>
 <context>
     <name>MobileProgress</name>
@@ -3186,6 +3190,16 @@ Additional licenses and components</source>
     <message>
         <source>Latvia</source>
         <translation>Латвия</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <extracomment>accessible</extracomment>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <extracomment>accessible</extracomment>
+        <translation>Подписать</translation>
     </message>
 </context>
 <context>
