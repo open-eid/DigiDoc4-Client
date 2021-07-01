@@ -190,10 +190,7 @@ if( APPLE )
 elseif(WIN32)
 	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp Diagnostics_win.cpp)
 	target_compile_options(${PROGNAME} PRIVATE "/guard:cf")
-	target_link_options(${PROGNAME} PRIVATE "/guard:cf")
-	if(CROSSSIGNCERT)
-		target_link_options(${PROGNAME} PRIVATE "/INTEGRITYCHECK")
-	endif()
+	target_link_options(${PROGNAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	find_package( Qt5 COMPONENTS WinExtras )
 	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Cryptui )
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
@@ -294,14 +291,6 @@ else()
 		foreach(TGT application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png)
 			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
 				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
-		# Workaround Ubuntu 20.10 Yaru icon theme issues
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
-			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png application-x-cdoc.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
-				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
 		endforeach()
 	endforeach()
 endif()
