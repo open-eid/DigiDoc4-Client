@@ -1160,8 +1160,8 @@
         <translation>SAVE THE PICTURE</translation>
     </message>
     <message>
-        <source>You&apos;re using Digital identity card</source>
-        <translation>You&apos;re using Digital identity card</translation>
+        <source>You&apos;re using digital identity card</source>
+        <translation>You&apos;re using digital identity card</translation>
     </message>
     <message>
         <source>Valid</source>

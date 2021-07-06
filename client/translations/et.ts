@@ -1160,8 +1160,8 @@
         <translation>SALVESTA PILT</translation>
     </message>
     <message>
-        <source>You&apos;re using Digital identity card</source>
-        <translation>See on digitaalne isikutunnistus</translation>
+        <source>You&apos;re using digital identity card</source>
+        <translation>Kasutate digitaalset isikutunnistust</translation>
     </message>
     <message>
         <source>Valid</source>
