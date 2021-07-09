@@ -22,8 +22,6 @@
 #include "Styles.h"
 #include "SslCertificate.h"
 
-#include <common/Common.h>
-
 #include <QtCore/QTimeLine>
 #include <QtGui/QMovie>
 #include <QtGui/QRegExpValidator>
@@ -31,6 +29,8 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtSvg/QSvgWidget>
+
+#include <QTextDocument>
 
 PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
 	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), count, parent)
@@ -97,7 +97,10 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	}
 	ui->labelNameId->setText(QStringLiteral("<b>%1</b>").arg(title));
 	ui->label->setText( text );
-	Common::setAccessibleName( ui->label );
+
+	QTextDocument doc;
+	doc.setHtml(ui->labelNameId->text() + "\n" + ui->label->text());
+	ui->pin->setAccessibleName(doc.toPlainText());
 
 	if(flags & PinpadChangeFlag)
 	{
