@@ -882,6 +882,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	static const int width = 166;
 	FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
 		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
+	notification->setFocusPolicy(Qt::NoFocus);
 	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
 	structureFunds->show();
