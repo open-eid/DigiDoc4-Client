@@ -3317,14 +3317,6 @@ Additional licenses and components</translation>
         <translation>Check the details of the certificate</translation>
     </message>
     <message>
-        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
-        <translation>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 can not be used because the certificate has expired. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>PUK code</source>
         <translation>PUK code</translation>
     </message>
@@ -3402,6 +3394,14 @@ Additional licenses and components</translation>
         <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
         <translation>Certificate is not valid. A valid certificate is required for electronic use. </translation>
     </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired.</source>
+        <translation>PIN%1 can not be used because the certificate has expired.</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
+        <translation>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
@@ -3421,14 +3421,6 @@ Additional licenses and components</translation>
 </context>
 <context>
     <name>WarningItem</name>
-    <message>
-        <source>Certificates have expired!</source>
-        <translation>Certificates have expired!</translation>
-    </message>
-    <message>
-        <source>Certificates expire soon!</source>
-        <translation>Certificates will expire soon!</translation>
-    </message>
     <message>
         <source>Certificates are revoked!</source>
         <translation>Certificates are revoked!</translation>
@@ -3488,6 +3480,26 @@ Additional licenses and components</translation>
     <message>
         <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
         <translation>An empty file is attached to the container. Remove the empty file from the container to sign.</translation>
+    </message>
+    <message>
+        <source>Certificates have expired! </source>
+        <translation>Certificates have expired! </translation>
+    </message>
+    <message>
+        <source>You can find instructions on how to get a new document from </source>
+        <translation>You can find instructions on how to get a new document from </translation>
+    </message>
+    <message>
+        <source>here</source>
+        <translation>here</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</source>
+        <translation>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</translation>
+    </message>
+    <message>
+        <source>Certificates expire soon! </source>
+        <translation> Certificates expire soon! </translation>
     </message>
 </context>
 <context>

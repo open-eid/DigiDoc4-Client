@@ -3317,12 +3317,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Vaata sertifikaadi detaile</translation>
     </message>
     <message>
-        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on tühistatud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
+        <source>PIN%1 can not be used because the certificate has expired.</source>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on aegunud.</translation>
     </message>
     <message>
         <source>PUK code</source>
@@ -3402,6 +3398,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
         <translation>Sertifikaat ei kehti. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
     </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
+        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on tühistatud. Juhised uue dokumendi taotlemiseks leiad &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;siit&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
@@ -3421,14 +3421,6 @@ Täiendavad litsentsid ja komponendid</translation>
 </context>
 <context>
     <name>WarningItem</name>
-    <message>
-        <source>Certificates have expired!</source>
-        <translation>Sertifikaadid on aegunud!</translation>
-    </message>
-    <message>
-        <source>Certificates expire soon!</source>
-        <translation>Sertifikaadid aeguvad varsti!</translation>
-    </message>
     <message>
         <source>Certificates are revoked!</source>
         <translation>Sertifikaadid on tühistatud!</translation>
@@ -3488,6 +3480,26 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
         <translation>Ümbrikule on lisatud tühi fail. Allkirjastamiseks eemalda ümbrikust tühi fail.</translation>
+    </message>
+    <message>
+        <source>You can find instructions on how to get a new document from </source>
+        <translation>Juhised uue dokumendi taotlemiseks leiad </translation>
+    </message>
+    <message>
+        <source>here</source>
+        <translation>siit</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</source>
+        <translation>https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/</translation>
+    </message>
+    <message>
+        <source>Certificates expire soon! </source>
+        <translation>Sertifikaadid aeguvad varsti! </translation>
+    </message>
+    <message>
+        <source>Certificates have expired! </source>
+        <translation>Sertifikaadid on aegunud! </translation>
     </message>
 </context>
 <context>

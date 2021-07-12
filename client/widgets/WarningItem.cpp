@@ -68,15 +68,35 @@ void WarningItem::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
+static QString getLink(const QString& text, const QString& url)
+{
+	return QStringLiteral("<a href=\"%1\"><span style=\"color: #006EB5; text-decoration: none;\">%2</span></a>.")
+			.arg(url, text);
+}
 void WarningItem::lookupWarning()
 {
 	switch(warnText.warningType)
 	{
 	case ria::qdigidoc4::CertExpiredWarning:
-		warnText.text = tr("Certificates have expired!");
+		warnText.text = QStringLiteral("%1 %2 %3")
+				.arg(tr("Certificates have expired! "),
+					tr("You can find instructions on how to get a new document from "),
+					 ::getLink(tr("here"),
+							   tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/")));
+		//make a QLabel behave like a hyperlink
+		ui->warningText->setTextInteractionFlags(Qt::TextBrowserInteraction);
+		ui->warningText->setOpenExternalLinks(true);
+		warnText.page = ria::qdigidoc4::MyEid;
 		break;
 	case ria::qdigidoc4::CertExpiryWarning:
-		warnText.text = tr("Certificates expire soon!");
+		warnText.text = QStringLiteral("%1 %2 %3")
+				.arg(tr("Certificates expire soon! "),
+					 tr("You can find instructions on how to get a new document from "),
+					 ::getLink(tr("here"),
+							   tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/")));
+		ui->warningText->setTextInteractionFlags(Qt::TextBrowserInteraction);
+		ui->warningText->setOpenExternalLinks(true);
+		warnText.page = ria::qdigidoc4::MyEid;
 		break;
 	case ria::qdigidoc4::CertRevokedWarning:
 		warnText.text = tr("Certificates are revoked!");

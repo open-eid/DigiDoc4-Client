@@ -3320,14 +3320,6 @@ Additional licenses and components</source>
         <translation>Проверьте сведения о сертификате</translation>
     </message>
     <message>
-        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
-        <translation>PIN%1 нельзя использовать, потому что сертификат был отменен. Инструкции по подаче заявки на новый документ можно найти &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>PIN%1 can not be used because the certificate has expired. Update certificate to reuse PIN%1.</source>
-        <translation>PIN%1 не может использоваться, поскольку срок действия сертификата истек. Инструкции по ходатайству нового документа находятся &lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>PUK code</source>
         <translation>PUK-код</translation>
     </message>
@@ -3405,6 +3397,14 @@ Additional licenses and components</source>
         <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
         <translation>Сертификат недействителен. Для электронного использования необходим действующий сертификат. </translation>
     </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has expired.</source>
+        <translation>PIN%1 не может быть использован, так как срок действия сертификата истек.</translation>
+    </message>
+    <message>
+        <source>PIN%1 can not be used because the certificate has revoked. You can find instructions on how to get a new document from &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;.</source>
+        <translation>PIN%1 не может быть использован, так как сертификат был отменен. Вы можете найти инструкции о том, как получить новый документ &lt;a href=&quot;https://www.politsei.ee/ru/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;здесь&lt;/span&gt;&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
@@ -3424,14 +3424,6 @@ Additional licenses and components</source>
 </context>
 <context>
     <name>WarningItem</name>
-    <message>
-        <source>Certificates have expired!</source>
-        <translation>Срок действия сертификатов истек!</translation>
-    </message>
-    <message>
-        <source>Certificates expire soon!</source>
-        <translation>Срок действия сертификатов скоро истекает!</translation>
-    </message>
     <message>
         <source>Certificates are revoked!</source>
         <translation>Сертификаты отозваны!</translation>
@@ -3495,6 +3487,26 @@ Additional licenses and components</source>
     <message>
         <source>An empty file is attached to the container. Remove the empty file from the container to sign.</source>
         <translation>В контейнер добавлен пустой файл. Для подписания удалите из контейнера пустой файл.</translation>
+    </message>
+    <message>
+        <source>Certificates have expired! </source>
+        <translation>Срок действия сертификатов истек! </translation>
+    </message>
+    <message>
+        <source>You can find instructions on how to get a new document from </source>
+        <translation>Вы можете найти инструкции о том, как получить новый документ  </translation>
+    </message>
+    <message>
+        <source>here</source>
+        <translation>здесь</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</source>
+        <translation>https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/</translation>
+    </message>
+    <message>
+        <source>Certificates expire soon! </source>
+        <translation>Срок действия сертификатов скоро истекает! </translation>
     </message>
 </context>
 <context>
