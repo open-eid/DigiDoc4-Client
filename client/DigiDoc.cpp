@@ -560,7 +560,10 @@ void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 	case Exception::PINFailed:
 	case Exception::PINIncorrect:
 	case Exception::PINLocked:
+	case Exception::HostNotFound:
+	case Exception::InvalidUrl:
 		code = e.code();
+		break;
 	default: break;
 	}
 	for(const Exception &c: e.causes())
@@ -640,6 +643,15 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 		qApp->showWarning(tr("PIN Incorrect"), causes.join('\n')); break;
 	case Exception::PINLocked:
 		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
+	case Exception::HostNotFound:
+		qApp->showWarning(tr("Failed to sign container. "
+							 "Connecting to network service is failed! Please check your network connection. "
+							 "(Or Check your Time-Stamping service access settings.)"), causes.join('\n'));
+		break;
+	case Exception::InvalidUrl:
+		qApp->showWarning(tr("Failed to sign container. "
+							 "Incorrect URL is provided.)"), causes.join('\n'));
+		break;
 	default:
 		qApp->showWarning(msg, causes.join('\n')); break;
 	}
