@@ -1016,7 +1016,13 @@ void CryptoDoc::clear( const QString &file )
 {
 	delete d->ddoc;
 	for(const QString &file: qAsConst(d->tempFiles))
+	{
+#if defined(Q_OS_WIN)
+		//reset read-only attribute to enable delete file
+		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
+#endif
 		QFile::remove(file);
+	}
 	d->tempFiles.clear();
 	d->ddoc = nullptr;
 	d->hasSignature = false;

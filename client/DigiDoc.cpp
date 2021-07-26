@@ -435,7 +435,14 @@ void DigiDoc::clear()
 	parentContainer.reset();
 	m_fileName.clear();
 	for(const QString &file: m_tempFiles)
+		{
+#if defined(Q_OS_WIN)
+		//reset read-only attribute to enable delete file
+		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
+#endif
 		QFile::remove(file);
+		}
+
 	m_tempFiles.clear();
 	modified = false;
 }
