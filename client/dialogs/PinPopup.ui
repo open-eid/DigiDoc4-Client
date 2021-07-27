@@ -58,6 +58,9 @@ background-color: #FFFFFF;
      <pointsize>14</pointsize>
     </font>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true">color: #041E42; border: none;</string>
    </property>
@@ -94,6 +97,9 @@ background-color: #FFFFFF;
      <width>456</width>
      <height>60</height>
     </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::TabFocus</enum>
    </property>
    <property name="styleSheet">
     <string notr="true">color: #000000;
