@@ -54,6 +54,11 @@
 #include <cmath>
 #include <memory>
 
+#if defined(Q_OS_WIN)
+#include <qt_windows.h>
+#include <fileapi.h>
+#endif
+
 using namespace ria::qdigidoc4;
 
 using puchar = uchar *;
@@ -879,8 +884,10 @@ void CDocumentModel::open(int row)
 	if( !f.exists() )
 		return;
 	d->tempFiles << f.absoluteFilePath();
-#if !defined(Q_OS_WIN)
-	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(0x6000));
+#if defined(Q_OS_WIN)
+	::SetFileAttributesW(f.absoluteFilePath().toStdWString().c_str(), FILE_ATTRIBUTE_READONLY);
+#else
+	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
 #endif
 	QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
 }
@@ -1009,7 +1016,13 @@ void CryptoDoc::clear( const QString &file )
 {
 	delete d->ddoc;
 	for(const QString &file: qAsConst(d->tempFiles))
+	{
+#if defined(Q_OS_WIN)
+		//reset read-only attribute to enable delete file
+		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
+#endif
 		QFile::remove(file);
+	}
 	d->tempFiles.clear();
 	d->ddoc = nullptr;
 	d->hasSignature = false;
