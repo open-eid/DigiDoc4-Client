@@ -27,6 +27,10 @@
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
+#if defined(Q_OS_MAC)
+#include <dialogs/QuickLook_mac.h>
+#endif
+
 #include <digidocpp/DataFile.h>
 #include <digidocpp/Signature.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -357,7 +361,12 @@ void SDocumentModel::open(int row)
 #else
 	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
 #endif
-	QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
+
+#if defined(Q_OS_MAC)
+	QuickLook::previewDocument(f.absoluteFilePath(), doc->getParent());
+#else
+    QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
+#endif
 }
 
 bool SDocumentModel::removeRows(int row, int count)

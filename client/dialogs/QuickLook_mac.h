@@ -17,36 +17,13 @@
  *
  */
 
-#include "CertificateDetails.h"
+#pragma once
 
-#include "SslCertificate.h"
-
-#if defined(Q_OS_MAC)
-#include "QuickLook_mac.h"
-#endif
-
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QUrl>
+#include <QtCore/QString>
 #include <QtWidgets/QWidget>
-#include <QtCore/QDebug>
 
-#import <objc/runtime.h>
-#import <Quartz/Quartz.h>
-
-void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
+class QuickLook
 {
-	QString name = cert.subjectInfo("serialNumber");
-	if(name.isNull() || name.isEmpty())
-		name = QString::fromUtf8(cert.serialNumber());
-	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);
-	QFile f(path);
-	if(f.open(QIODevice::WriteOnly))
-		f.write(cert.toPem());
-	f.close();
-
-	QuickLook::previewDocument(path, parent);
-
-}
-
-
+public:
+	static void previewDocument(const QString &path, QWidget *parent);
+};

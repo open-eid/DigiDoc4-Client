@@ -778,6 +778,10 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	warnings->closeWarnings(SignDetails);
 	warnings->closeWarning(EmptyFileWarning);
 	digiDoc = doc;
+	if (digiDoc)
+    {
+        digiDoc->setParent(this);
+    }
 }
 
 void MainWindow::resizeEvent(QResizeEvent * /*event*/)
