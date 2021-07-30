@@ -2580,7 +2580,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Online TSL digest check</source>
-        <translation>Проверка обновлений TSL</translation>
+        <translation>Проверить обновления TSL</translation>
     </message>
     <message>
         <source>Container default location</source>
@@ -2604,7 +2604,7 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>Ask role and address info on signing</source>
-        <translation>Просить роль и адрес при каждом подписании</translation>
+        <translation>Спросить роль и адрес при каждом подписании</translation>
     </message>
     <message>
         <source>Access to validity confirmation service</source>
