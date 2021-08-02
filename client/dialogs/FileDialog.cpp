@@ -28,6 +28,9 @@
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QSettings>
 #include <QtWidgets/QMessageBox>
+
+#include <algorithm>
+
 #ifdef Q_OS_WIN
 #include <ShObjIdl.h>
 #include <ShlGuid.h>
@@ -45,54 +48,39 @@ class CPtr
 };
 #endif
 
-using namespace ria::qdigidoc4;
-
-FileDialog::FileDialog( QWidget *parent )
-:	QFileDialog( parent )
-{
-}
-
-FileDialog::Options FileDialog::addOptions()
-{
-	if(qApp->arguments().contains(QStringLiteral("-noNativeFileDialog")))
-		return DontUseNativeDialog;
-	return {};
-}
+#include <array>
 
 QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent)
 {
-	const QFileInfo f(file);
+	const QFileInfo f(normalized(file));
 	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
 	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
 #ifndef Q_OS_OSX
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
-	if(QFile::exists(fileName))
-	{
+	if(!QFile::exists(fileName))
+		return fileName;
 #endif
-		WaitDialogHider hider;
-		QString capitalized = type[0].toUpper() + type.mid(1);
-		fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
-											   QStringLiteral("%1 (*%2)").arg(capitalized, extension));
-		if(!fileName.isEmpty())
-			QFile::remove(fileName);
-#ifndef Q_OS_OSX
-	}
-#endif
+	WaitDialogHider hider;
+	QString capitalized = type[0].toUpper() + type.mid(1);
+	fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
+		QStringLiteral("%1 (*%2)").arg(capitalized, extension));
+	if(!fileName.isEmpty())
+		QFile::remove(fileName);
 	return fileName;
 }
 
-FileType FileDialog::detect( const QString &filename )
+FileDialog::FileType FileDialog::detect(const QString &filename)
 {
-	ExtensionType ext = extension(filename);
-
-	switch(ext)
-	{
-	case ExtSignature:
+	const QFileInfo f(filename);
+	if(!f.isFile())
+		return Other;
+	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
+	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
 		return SignatureDocument;
-	case ExtCrypto:
+	if(!f.suffix().compare(QStringLiteral("cdoc"), Qt::CaseInsensitive))
 		return CryptoDocument;
-	case ExtPDF:
+	if(!f.suffix().compare(QStringLiteral("pdf"), Qt::CaseInsensitive))
 	{
 		QFile file(filename);
 		if(!file.open(QIODevice::ReadOnly))
@@ -100,29 +88,11 @@ FileType FileDialog::detect( const QString &filename )
 		QByteArray blob = file.readAll();
 		for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
 		{
-			if(blob.indexOf(token) > 0 && blob.indexOf("/Type /DSS") > 0)
+			if(blob.indexOf(token) > 0)
 				return SignatureDocument;
 		}
-		return Other;
 	}
-	default:
-		return Other;
-	}
-}
-
-ExtensionType FileDialog::extension(const QString &filename)
-{
-	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
-	const QFileInfo f( filename );
-	if(!f.isFile())
-		return ExtOther;
-	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
-		return ExtSignature;
-	if(!QString::compare(f.suffix(), QStringLiteral("cdoc"), Qt::CaseInsensitive))
-		return ExtCrypto;
-	if(!QString::compare(f.suffix(), QStringLiteral("pdf"), Qt::CaseInsensitive))
-		return ExtPDF;
-	return ExtOther;
+	return Other;
 }
 
 bool FileDialog::fileIsWritable( const QString &filename )
@@ -152,6 +122,37 @@ QString FileDialog::fileSize( quint64 bytes )
 	return QStringLiteral("%1 B").arg(bytes);
 }
 
+int FileDialog::fileZone(const QString &path)
+{
+#ifdef Q_OS_WIN
+	CPtr<IZoneIdentifier> spzi;
+	CPtr<IPersistFile> spf;
+	DWORD dwZone = 0;
+	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&spzi))) &&
+		SUCCEEDED(spzi->QueryInterface(&spf)) &&
+		SUCCEEDED(spf->Load(LPCWSTR(QDir::toNativeSeparators(path).utf16()), STGM_READ)) &&
+		SUCCEEDED(spzi->GetId(&dwZone)))
+		return int(dwZone);
+#endif
+	return -1;
+}
+
+void FileDialog::setFileZone(const QString &path, int zone)
+{
+	if(zone < 0)
+		return;
+#ifdef Q_OS_WIN
+	CPtr<IZoneIdentifier> spzi;
+	CPtr<IPersistFile> spf;
+	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&spzi))) &&
+		SUCCEEDED(spzi->SetId(zone)) &&
+		SUCCEEDED(spzi->QueryInterface(&spf)))
+		spf->Save(LPCWSTR(QDir::toNativeSeparators(path).utf16()), TRUE);
+#else
+	Q_UNUSED(path)
+#endif
+}
+
 QString FileDialog::getDir( const QString &dir )
 {
 #ifdef Q_OS_OSX
@@ -169,7 +170,7 @@ QString FileDialog::getOpenFileName( QWidget *parent, const QString &caption,
 	const QString &dir, const QString &filter, QString *selectedFilter, Options options )
 {
 	return result( QFileDialog::getOpenFileName( parent,
-		caption, getDir( dir ), filter, selectedFilter, options|addOptions() ) );
+		caption, getDir(dir), filter, selectedFilter, options));
 }
 
 QStringList FileDialog::getOpenFileNames( QWidget *parent, const QString &caption,
@@ -178,9 +179,9 @@ QStringList FileDialog::getOpenFileNames( QWidget *parent, const QString &captio
 	return result( QFileDialog::getOpenFileNames( parent,
 		caption, getDir( dir ), filter, selectedFilter,
 #ifdef Q_OS_WIN
-		DontResolveSymlinks|options|addOptions() ) );
+		DontResolveSymlinks|options));
 #else
-		options|addOptions() ) );
+		options));
 #endif
 }
 
@@ -209,7 +210,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 			LPWSTR path = nullptr;
 			if( SUCCEEDED(item->GetDisplayName( SIGDN_FILESYSPATH, &path )) )
 			{
-				res = QString( (QChar*)path );
+				res = QString::fromWCharArray(path);
 				CoTaskMemFree( path );
 			}
 			else
@@ -223,7 +224,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 					{
 						if( SUCCEEDED(list->GetDisplayName( SIGDN_FILESYSPATH, &path )) )
 						{
-							res = QFileInfo( QString( (QChar*)path ) + "/.." ).absoluteFilePath();
+							res = QFileInfo(QString::fromWCharArray(path) + "/..").absoluteFilePath();
 							CoTaskMemFree( path );
 						}
 					}
@@ -233,7 +234,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	}
 #else
 	res = QFileDialog::getExistingDirectory( parent,
-		caption, getDir( dir ), ShowDirsOnly|options|addOptions() );
+		caption, getDir(dir), ShowDirsOnly|options);
 #endif
 	if(res.isEmpty())
 		return res;
@@ -257,8 +258,8 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 	QString file;
 	while( true )
 	{
-		file =  QFileDialog::getSaveFileName( parent,
-			caption, dir, filter, selectedFilter, options|addOptions() );
+		file = QFileDialog::getSaveFileName(parent,
+			caption, normalized(dir), filter, selectedFilter, options);
 		if( !file.isEmpty() && !fileIsWritable( file ) )
 		{
 			WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ), parent).exec();
@@ -267,6 +268,21 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 			break;
 	}
 	return result( file );
+}
+
+QString FileDialog::normalized(const QString &data)
+{
+	static constexpr std::array<const unsigned char[3],5> list = {{
+		{0xE2, 0x80, 0x8E}, // \u200E LEFT-TO-RIGHT MARK
+		{0xE2, 0x80, 0x8F}, // \u200F RIGHT-TO-LEFT MARK
+		{0xE2, 0x80, 0xAA}, // \u202A LEFT-TO-RIGHT EMBEDDING
+		{0xE2, 0x80, 0xAB}, // \u202B RIGHT-TO-LEFT EMBEDDING
+		{0xE2, 0x80, 0xAE}, // \u202E RIGHT-TO-LEFT OVERRIDE
+	}};
+	QString result = data.normalized(QString::NormalizationForm_C);
+	for (const unsigned char *replace: list)
+		result = result.remove((const char*)replace);
+	return result;
 }
 
 QString FileDialog::result( const QString &str )

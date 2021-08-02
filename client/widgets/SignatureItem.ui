@@ -14,7 +14,10 @@
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="styleSheet">
-   <string notr="true">#SignatureItem {
+   <string notr="true">QWidget {
+color: #000000;
+}
+#SignatureItem {
 border: solid rgba(217, 217, 216, 0.45);
 border-width: 0px 0px 1px 0px; 
 background-color: #ffffff; 

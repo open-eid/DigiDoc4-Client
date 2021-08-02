@@ -111,6 +111,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->txtAccessCert->setFont(regularFont);
 	ui->btInstallManually->setFont(condensed12);
 	ui->btShowCertificate->setFont(condensed12);
+#ifdef Q_OS_LINUX
+	ui->btInstallManually->setStyleSheet("background-color: #d3d3d3");
+	ui->btShowCertificate->setStyleSheet("background-color: #d3d3d3");
+#endif
 	ui->chkIgnoreAccessCert->setFont(regularFont);
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStampDefault->setFont(regularFont);
@@ -281,7 +285,7 @@ void SettingsDialog::checkConnection()
 		s << connection.errorString();
 		if (!details.isEmpty())
 			s << "\n\n" << details << ".";
-		notification->start(error, 750, 6000, 1200);
+		notification->start(error, 750, 3000, 1200);
 	}
 	else
 	{

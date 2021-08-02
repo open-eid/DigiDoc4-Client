@@ -11,9 +11,12 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#RoleAddressDialog {
-	border-radius: 2px;
+   <string notr="true">QWidget {
+	color: #000000;
 	background-color: #FFFFFF;
+}
+QWidget#RoleAddressDialog {
+	border-radius: 2px;
 	border: none;
 }
 QPushButton {
@@ -41,7 +44,8 @@ QLineEdit {
 QLabel {
 	margin-top:8px;
 	margin-bottom:2px;
-}</string>
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="SmartIDDialogLayout">
    <property name="spacing">

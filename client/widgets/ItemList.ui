@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QScrollBar{
+   <string notr="true">QWidget {
+color: #000000;
+}
+QScrollBar{
 	width: 10px;
 	padding: 5px 5px 5px 0;
 }
@@ -145,9 +148,6 @@ border-width: 0px 0px 1px 0px;
          </property>
          <property name="lineWidth">
           <number>0</number>
-         </property>
-         <property name="text">
-          <string>Container's files</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

@@ -31,6 +31,10 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-top: 1px solid #DFE5E9;
+</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -67,6 +71,9 @@
     <widget class="AccordionTitle" name="titleOtherData" native="true">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-top: 1px solid #DFE5E9;</string>
      </property>
     </widget>
    </item>

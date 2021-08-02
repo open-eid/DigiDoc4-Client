@@ -31,6 +31,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	MainWindow.ui
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
+	LdapSearch.cpp
 	QCardLock.cpp
 	QCryptoBackend.cpp
 	QPKCS11.cpp
@@ -42,7 +43,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	PrintSheet.cpp
 	SslCertificate.cpp
 	TokenData.cpp
-	crypto/LdapSearch.cpp
 	dialogs/AccessCert.cpp
 	dialogs/AddRecipients.ui
 	dialogs/AddRecipients.cpp
@@ -123,7 +123,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/WarningRibbon.ui
 	widgets/WarningRibbon.cpp
 )
-add_manifest( ${PROGNAME} )
 
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
@@ -143,7 +142,7 @@ target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SM
 if( APPLE )
 	target_sources( ${PROGNAME} PRIVATE Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	set_source_files_properties( crypto/LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
+    set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
@@ -157,12 +156,6 @@ if( APPLE )
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
 		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks -name Headers | xargs rm -rf
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
-		# For QT
-		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.dylib
-		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.dylib
-		# For Target
 		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.1.1.dylib
 		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
@@ -197,10 +190,7 @@ if( APPLE )
 elseif(WIN32)
 	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp Diagnostics_win.cpp)
 	target_compile_options(${PROGNAME} PRIVATE "/guard:cf")
-	target_link_options(${PROGNAME} PRIVATE "/guard:cf")
-	if(CROSSSIGNCERT)
-		target_link_options(${PROGNAME} PRIVATE "/INTEGRITYCHECK")
-	endif()
+	target_link_options(${PROGNAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	find_package( Qt5 COMPONENTS WinExtras )
 	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Cryptui )
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
@@ -301,14 +291,6 @@ else()
 		foreach(TGT application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png)
 			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
 				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
-		# Workaround Ubuntu 20.10 Yaru icon theme issues
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
-			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png application-x-cdoc.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
-				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
 		endforeach()
 	endforeach()
 endif()

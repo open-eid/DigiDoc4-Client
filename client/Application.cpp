@@ -575,7 +575,7 @@ bool Application::event( QEvent *e )
 			parseArgs();
 		return true;
 	case QEvent::FileOpen:
-		parseArgs({ static_cast<QFileOpenEvent*>(e)->file() });
+		parseArgs({ (static_cast<QFileOpenEvent*>(e)->file()).normalized(QString::NormalizationForm_C) });
 		return true;
 #ifdef Q_OS_MAC
 	// Load here because cocoa NSApplication overides events
@@ -940,7 +940,6 @@ void Application::parseArgs( const QStringList &args )
 	params.removeAll(QStringLiteral("-capi"));
 	params.removeAll(QStringLiteral("-cng"));
 	params.removeAll(QStringLiteral("-pkcs11"));
-	params.removeAll(QStringLiteral("-noNativeFileDialog"));
 
 	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
 	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
@@ -1032,7 +1031,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	{
 		// else select first window with no open files
 		MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
-		if(main && main->digiDocPath().isEmpty() && main->cryptoPath().isEmpty())
+		if(main && main->windowFilePath().isEmpty())
 			w = main;
 	}
 	if( !w )

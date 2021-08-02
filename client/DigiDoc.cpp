@@ -39,17 +39,23 @@
 
 #include <algorithm>
 
+#if defined(Q_OS_WIN)
+#include <qt_windows.h>
+#include <fileapi.h>
+#endif
+
 using namespace digidoc;
 using namespace ria::qdigidoc4;
 
 static std::string to(const QString &str) { return str.toStdString(); }
-static QString from(const std::string &str) { return QString::fromStdString(str).normalized(QString::NormalizationForm_C); }
+static QString from(const std::string &str) { return FileDialog::normalized(QString::fromStdString(str)); }
 
 
 
-DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent)
-:	s(signature)
-,	m_parent(parent)
+DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent, bool isTimeStamped)
+	: s(signature)
+	, m_parent(parent)
+	, m_isTimeStamped(isTimeStamped)
 {}
 
 QSslCertificate DigiDocSignature::cert() const
@@ -111,8 +117,11 @@ void DigiDocSignature::parseException( DigiDocSignature::SignatureStatus &result
 		{
 		case Exception::ReferenceDigestWeak:
 		case Exception::SignatureDigestWeak:
-			m_warning |= DigestWeak;
-			result = std::max( result, Warning );
+			if(!m_isTimeStamped)
+			{
+				m_warning |= DigestWeak;
+				result = std::max( result, Warning );
+			}
 			break;
 		case Exception::DataFileNameSpaceWarning:
 		case Exception::IssuerNameSpaceWarning:
@@ -289,13 +298,14 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
-			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.").arg(fileName));
+			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
+				.arg(FileDialog::normalized(fileName)));
 			return false;
 		}
 	}
 	if(doc->addFile(file, mime))
 	{
-		emit added(file);
+		emit added(FileDialog::normalized(fileName));
 		return true;
 	}
 	return false;
@@ -342,8 +352,10 @@ void SDocumentModel::open(int row)
 	if( !f.exists() )
 		return;
 	doc->m_tempFiles << f.absoluteFilePath();
-#if !defined(Q_OS_WIN)
-	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(0x6000));
+#if defined(Q_OS_WIN)
+	::SetFileAttributesW(f.absoluteFilePath().toStdWString().c_str(), FILE_ATTRIBUTE_READONLY);
+#else
+	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
 #endif
 	QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
 }
@@ -378,7 +390,9 @@ QString SDocumentModel::save(int row, const QString &path) const
 		return {};
 
 	QFile::remove( path );
+	int zone = FileDialog::fileZone(doc->fileName());
 	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
+	FileDialog::setFileZone(path, zone);
 	return path;
 }
 
@@ -421,7 +435,14 @@ void DigiDoc::clear()
 	parentContainer.reset();
 	m_fileName.clear();
 	for(const QString &file: m_tempFiles)
+		{
+#if defined(Q_OS_WIN)
+		//reset read-only attribute to enable delete file
+		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
+#endif
 		QFile::remove(file);
+		}
+
 	m_tempFiles.clear();
 	modified = false;
 }
@@ -431,7 +452,6 @@ void DigiDoc::create( const QString &file )
 	clear();
 	b = Container::createPtr(to(file));
 	m_fileName = file;
-	modified = false;
 }
 
 DocumentModel* DigiDoc::documentModel() const
@@ -440,16 +460,12 @@ DocumentModel* DigiDoc::documentModel() const
 }
 
 QString DigiDoc::fileName() const { return m_fileName; }
-bool DigiDoc::isService() const
+bool DigiDoc::isPDF() const
 {
 	return b && b->mediaType() == "application/pdf";
 }
 bool DigiDoc::isModified() const { return modified; }
 bool DigiDoc::isNull() const { return b == nullptr; }
-bool DigiDoc::isReadOnlyTS() const
-{
-	return b && b->mediaType() == "application/vnd.etsi.asic-s+zip";
-}
 bool DigiDoc::isSupported() const
 {
 	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip";
@@ -460,12 +476,8 @@ QString DigiDoc::mediaType() const
 
 bool DigiDoc::move(const QString &to)
 {
-	bool success = false;
-	if(containerState == ContainerState::UnsignedContainer)
-	{
-		success = true;
-	}
-	else
+	bool success = containerState == ContainerState::UnsignedContainer;
+	if(!success)
 	{
 		QFile f(m_fileName);
 		if(!modified)
@@ -478,16 +490,6 @@ bool DigiDoc::move(const QString &to)
 		m_fileName = to;
 
 	return success;
-}
-
-QString DigiDoc::newSignatureID() const
-{
-	QStringList list;
-	for(const Signature *s: b->signatures())
-		list << QString::fromUtf8(s->id().c_str());
-	unsigned int id = 0;
-	while(list.contains(QStringLiteral("S%1").arg(id), Qt::CaseInsensitive)) ++id;
-	return QStringLiteral("S%1").arg(id);
 }
 
 bool DigiDoc::open( const QString &file )
@@ -512,7 +514,7 @@ bool DigiDoc::open( const QString &file )
 	try
 	{
 		waitFor([&] { b = Container::openPtr(to(file)); });
-		if(isReadOnlyTS())
+		if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 		{
 			const DataFile *f = b->dataFiles().at(0);
 			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && serviceConfirmation())
@@ -529,7 +531,6 @@ bool DigiDoc::open( const QString &file )
 		}
 		m_fileName = file;
 		qApp->addRecent( file );
-		modified = false;
 		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 		return true;
 	}
@@ -683,8 +684,14 @@ QList<DigiDocSignature> DigiDoc::signatures() const
 	QList<DigiDocSignature> list;
 	if( isNull() )
 		return list;
+	bool isTimeStamped = false;
+	if(parentContainer &&
+		parentContainer->dataFiles().size() == 1 &&
+		parentContainer->signatures().size() == 1 &&
+		from(parentContainer->dataFiles()[0]->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
+		isTimeStamped = parentContainer->signatures()[0]->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
 	for(const Signature *signature: b->signatures())
-		list << DigiDocSignature(signature, this);
+		list << DigiDocSignature(signature, this, isTimeStamped);
 	return list;
 }
 

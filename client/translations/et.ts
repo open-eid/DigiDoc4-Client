@@ -1160,8 +1160,8 @@
         <translation>SALVESTA PILT</translation>
     </message>
     <message>
-        <source>You&apos;re using Digital identity card</source>
-        <translation>See on digitaalne isikutunnistus</translation>
+        <source>You&apos;re using digital identity card</source>
+        <translation>Kasutate digitaalset isikutunnistust</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -1793,6 +1793,10 @@ ID-KAARDIGA</translation>
     <message>
         <source>Invalid country code</source>
         <translation>Vigane riigikood</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
     </message>
 </context>
 <context>
@@ -2908,10 +2912,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Hoiatused</translation>
     </message>
     <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Praegune BDOC-ümbrik kasutab nõrgemat krüpteerimismeetodit kui Eestis on ametlikult aktsepteeritud.</translation>
-    </message>
-    <message>
         <source>Restrictions</source>
         <translation>Piirangud</translation>
     </message>
@@ -3058,6 +3058,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>ROLE AND ADDRESS</source>
         <translation>ROLL JA AADRESS</translation>
     </message>
+    <message>
+        <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
+        <translation>Allkiri on tehniliselt korrektne, kuid põhineb praeguseks nõrgaks hinnatud räsialgorütmil SHA-1, mistõttu ei ole see kaitstud võltsimise või muutmise eest.</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>
@@ -3183,6 +3187,16 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Latvia</source>
         <translation>Läti</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <extracomment>accessible</extracomment>
+        <translation>Katkesta</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <extracomment>accessible</extracomment>
+        <translation>Allkirjastan</translation>
     </message>
 </context>
 <context>
@@ -3379,6 +3393,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
+    </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Sertifikaat kehtib. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Sertifikaat ei kehti. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
     </message>
 </context>
 <context>

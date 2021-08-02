@@ -144,7 +144,7 @@ void InfoStack::update()
 			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
 	}
 	else if(certType & SslCertificate::DigiIDType)
-		st << tr("You're using Digital identity card");
+		st << tr("You're using digital identity card");
 
 	ui->valueGivenNames->setText(givenNamesText);
 	ui->valueSurname->setText(surnameText);

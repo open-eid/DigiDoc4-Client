@@ -1160,8 +1160,8 @@
         <translation>SAVE THE PICTURE</translation>
     </message>
     <message>
-        <source>You&apos;re using Digital identity card</source>
-        <translation>You&apos;re using Digital identity card</translation>
+        <source>You&apos;re using digital identity card</source>
+        <translation>You&apos;re using digital identity card</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -1793,6 +1793,10 @@ ID-CARD</translation>
     <message>
         <source>Invalid country code</source>
         <translation>Invalid country code</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
     </message>
 </context>
 <context>
@@ -2908,10 +2912,6 @@ Additional licenses and components</translation>
         <translation>Warnings</translation>
     </message>
     <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</translation>
-    </message>
-    <message>
         <source>Restrictions</source>
         <translation>Restrictions</translation>
     </message>
@@ -3058,6 +3058,10 @@ Additional licenses and components</translation>
         <source>ROLE AND ADDRESS</source>
         <translation>ROLE AND ADDRESS</translation>
     </message>
+    <message>
+        <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
+        <translation>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>
@@ -3183,6 +3187,16 @@ Additional licenses and components</translation>
     <message>
         <source>Latvia</source>
         <translation>Latvia</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <extracomment>accessible</extracomment>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <extracomment>accessible</extracomment>
+        <translation>Sign</translation>
     </message>
 </context>
 <context>
@@ -3379,6 +3393,14 @@ Additional licenses and components</translation>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
+    </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Certificate is valid. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Certificate is not valid. A valid certificate is required for electronic use. </translation>
     </message>
 </context>
 <context>

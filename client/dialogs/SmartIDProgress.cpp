@@ -94,6 +94,22 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->info->setFont(Styles::font(Styles::Regular, 14));
 	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
 	d->signProgressBar->setFont(d->info->font());
+#ifdef Q_OS_LINUX
+const auto styleSheet = R"(QProgressBar {
+background-color: #d3d3d3;;
+border-style: solid;
+border-radius: 3px;
+min-height: 6px;
+max-height: 6px;
+margin: 15px 5px;
+}
+QProgressBar::chunk {
+border-style: solid;
+border-radius: 3px;
+background-color: #007aff;
+})";
+	d->signProgressBar->setStyleSheet(styleSheet);
+#endif
 	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
 

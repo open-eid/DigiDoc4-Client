@@ -1162,7 +1162,7 @@
         <translation>СОХРАНИТЬ ФОТО</translation>
     </message>
     <message>
-        <source>You&apos;re using Digital identity card</source>
+        <source>You&apos;re using digital identity card</source>
         <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
     <message>
@@ -1796,6 +1796,10 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Invalid country code</source>
         <translation>Неверный код страны</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
     </message>
 </context>
 <context>
@@ -2921,10 +2925,6 @@ Additional licenses and components</source>
         <translation>Предупреждения</translation>
     </message>
     <message>
-        <source>The current BDOC container uses weaker encryption method than officialy accepted in Estonia.</source>
-        <translation>Данный контейнер имеет меньшую надежность по сравнению с официально признанным в Эстонии контейнером в формате BDOC.</translation>
-    </message>
-    <message>
         <source>Restrictions</source>
         <translation>Ограничения</translation>
     </message>
@@ -3061,6 +3061,10 @@ Additional licenses and components</source>
         <source>ROLE AND ADDRESS</source>
         <translation>РОЛЬ И АДРЕС</translation>
     </message>
+    <message>
+        <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
+        <translation>Подпись технически верна, но так как она основана на слабом на данный момент алгоритме хеширования SHA-1, то не защищена от подделки или изменения.</translation>
+    </message>
 </context>
 <context>
     <name>SignatureItem</name>
@@ -3186,6 +3190,16 @@ Additional licenses and components</source>
     <message>
         <source>Latvia</source>
         <translation>Латвия</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <extracomment>accessible</extracomment>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <extracomment>accessible</extracomment>
+        <translation>Подписать</translation>
     </message>
 </context>
 <context>
@@ -3382,6 +3396,14 @@ Additional licenses and components</source>
     <message>
         <source>Connecting to SK server failed! Please check your internet connection.</source>
         <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
+        <source>Certificate is valid. </source>
+        <translation>Сертификат действителен. </translation>
+    </message>
+    <message>
+        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
+        <translation>Сертификат недействителен. Для электронного использования необходим действующий сертификат. </translation>
     </message>
 </context>
 <context>

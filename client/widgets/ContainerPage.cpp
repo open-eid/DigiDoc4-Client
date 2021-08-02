@@ -25,6 +25,7 @@
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "dialogs/AddRecipients.h"
+#include "dialogs/FileDialog.h"
 #include "dialogs/MobileDialog.h"
 #include "dialogs/SmartIDDialog.h"
 #include "dialogs/WarningDialog.h"
@@ -163,7 +164,7 @@ void ContainerPage::clearPopups()
 void ContainerPage::elideFileName()
 {
 	ui->containerFile->setText("<a href='#browse-Container'><span style='color:rgb(53, 55, 57)'>" +
-		ui->containerFile->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
+		ui->containerFile->fontMetrics().elidedText(FileDialog::normalized(fileName).toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width()) + "</span></a>");
 }
 
 bool ContainerPage::eventFilter(QObject *o, QEvent *e)
@@ -207,7 +208,7 @@ void ContainerPage::forward(int code)
 		QString newCode = QSettings().value(QStringLiteral("SmartID")).toString();
 		if(dlg.exec() == QDialog::Accepted)
 		{
-			if(checkAction(SignatureMobile, dlg.idCode(), QString()))
+			if(checkAction(SignatureMobile, dlg.idCode(), {}))
 				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
 		}
 
@@ -219,7 +220,7 @@ void ContainerPage::forward(int code)
 		break;
 	}
 	case ContainerCancel:
-		window()->setWindowFilePath(QString());
+		window()->setWindowFilePath({});
 		window()->setWindowTitle(tr("DigiDoc4 Client"));
 		emit action(code);
 		break;
@@ -376,7 +377,7 @@ void ContainerPage::transition(DigiDoc* container)
 		}
 	}
 
-	isSupported = container->isSupported() || container->isService();
+	isSupported = container->isSupported() || container->isPDF();
 	showSigningButton();
 
 	ui->leftPane->setModel(container->documentModel());

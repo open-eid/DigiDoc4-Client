@@ -4,11 +4,11 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.12.10"
-OPENLDAP_VER="2.5.4"
+QT_VER="5.12.11"
+OPENSSL_VER="1.1.1k"
+OPENLDAP_VER="2.5.5"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-OPENSSL_PATH="/usr/local/opt/openssl"
 : ${MACOSX_DEPLOYMENT_TARGET:="10.13"}
 export MACOSX_DEPLOYMENT_TARGET
 
@@ -42,7 +42,7 @@ do
         echo ""
         echo "Options:"
         echo "  -o or --openssl openssl-path:"
-        echo "     OpenSSL path; default found from homebrew ${OPENSSL_PATH}"
+        echo "     OpenSSL path; default will be built ${OPENSSL_PATH}"
         echo "  -p or --path build-path"
         echo "     folder where the dependencies should be built; default ${BUILD_PATH}"
         echo "  -q or --qt qt-version:"
@@ -60,12 +60,52 @@ do
     shift # past argument or value
 done
 
+if [[ -z "${OPENSSL_PATH}" ]]; then
+   OPENSSL_PATH="${BUILD_PATH}/OpenSSL"
+fi
 QT_PATH=${BUILD_PATH}/Qt-${QT_VER}-OpenSSL
 OPENLDAP_PATH=${BUILD_PATH}/OpenLDAP
 GREY='\033[0;37m'
 ORANGE='\033[0;33m'
 RED='\033[0;31m'
 RESET='\033[0m'
+
+if [[ ! -d ${OPENSSL_PATH} ]] ; then
+    echo -e "\n${ORANGE}##### Building OpenSSL ${OPENSSL_VER} ${OPENSSL_PATH} #####${RESET}\n"
+    mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
+    if [ ! -f openssl-${OPENSSL_VER}.tar.gz ]; then
+        curl -O -L https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz
+    fi
+    rm -rf openssl-${OPENSSL_VER}
+    tar xf openssl-${OPENSSL_VER}.tar.gz
+    cd openssl-${OPENSSL_VER}
+
+    sed -ie 's!, "apps"!!' Configure
+    sed -ie 's!, "fuzz"!!' Configure
+    sed -ie 's!, "test"!!' Configure
+    for ARCH in x86_64 arm64; do
+        case "${ARCH}" in
+        *x86_64*)
+            CC="" CFLAGS="" KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
+            ;;
+        *arm64*)
+            CC="" CFLAGS="" MACHINE=arm64 KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
+            ;;
+        esac
+        make -s > /dev/null
+        make install_sw
+        mv ${OPENSSL_PATH} ${OPENSSL_PATH}.${ARCH}
+        make distclean
+    done
+    cp -a ${OPENSSL_PATH}.x86_64 ${OPENSSL_PATH}
+    cd ${OPENSSL_PATH}.arm64
+    for i in lib/lib*1.1.dylib; do
+        lipo -create ${OPENSSL_PATH}.x86_64/${i} ${i} -output ${OPENSSL_PATH}/${i}
+    done
+    cd -
+else
+    echo -e "\n${GREY}  OpenSSL not built${RESET}"
+fi
 
 if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     qt_ver_parts=( ${QT_VER//./ } )
@@ -79,28 +119,28 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
             fi
             rm -rf ${PACKAGE}
             tar xf ${PACKAGE}.tar.xz
-            pushd ${PACKAGE}
+            cd ${PACKAGE}
             if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
                 if [[ "${ARCH}" == "arm64" ]] ; then
                     CROSSCOMPILE="-device-option QMAKE_APPLE_DEVICE_ARCHS=${ARCH}"
                 fi
-                ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH} ${CROSSCOMPILE}
+                ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH} ${CROSSCOMPILE}
             else
                 "${QT_PATH}"/bin/qmake
             fi
             make
             make install
-            popd
+            cd -
             rm -rf ${PACKAGE}
         done
-        sudo mv ${QT_PATH} ${QT_PATH}.${ARCH}
+        mv ${QT_PATH} ${QT_PATH}.${ARCH}
     done
-    sudo cp -a ${QT_PATH}.x86_64 ${QT_PATH}
-    pushd ${QT_PATH}.arm64
-        for i in lib/Qt*.framework/Versions/Current/Qt* plugins/*/*.dylib; do
-            sudo lipo -create ${QT_PATH}.x86_64/${i} ${i} -output ${QT_PATH}/${i};
-        done
-    popd
+    cp -a ${QT_PATH}.x86_64 ${QT_PATH}
+    cd ${QT_PATH}.arm64
+    for i in lib/Qt*.framework/Versions/Current/Qt* plugins/*/*.dylib; do
+        lipo -create ${QT_PATH}.x86_64/${i} ${i} -output ${QT_PATH}/${i}
+    done
+    cd -
 else
     echo -e "\n${GREY}  Qt not built${RESET}"
 fi
@@ -118,6 +158,7 @@ if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
         --without-threads --without-cyrus-sasl --with-tls=openssl
     make
     make install
+    cd -
 else
     echo -e "\n${GREY}  OpenLDAP not built${RESET}"
 fi

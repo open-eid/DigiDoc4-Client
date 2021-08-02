@@ -21,10 +21,12 @@
 
 #include "Common.h"
 
+#include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDataStream>
 #include <QtCore/QDateTime>
+#include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QHash>
 #include <QtCore/QMap>
@@ -368,12 +370,16 @@ SslCertificate::CertType SslCertificate::type() const
 	QByteArray der = toDer();
 	if (!der.isNull())
 	{
-		digidoc::X509Cert x509Cert((const unsigned char*)der.constData(),
-			size_t(der.size()), digidoc::X509Cert::Der);
-		for(const std::string &statement: x509Cert.qcStatements())
-		{
-			if(statement == digidoc::X509Cert::QCT_ESEAL)
-				return TempelType;
+		try {
+			digidoc::X509Cert x509Cert((const unsigned char*)der.constData(),
+									   size_t(der.size()), digidoc::X509Cert::Der);
+			for(const std::string &statement: x509Cert.qcStatements())
+			{
+				if(statement == digidoc::X509Cert::QCT_ESEAL)
+					return TempelType;
+			}
+		} catch (const digidoc::Exception &e) {
+			qWarning() << "digidoc::X509Cert error:" << QString::fromStdString(e.msg());
 		}
 	}
 	return UnknownType;

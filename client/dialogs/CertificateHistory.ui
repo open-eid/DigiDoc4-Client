@@ -14,7 +14,11 @@
    <string>Used certificates</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#CertificateHistory{ background-color: #FFFFFF; }</string>
+   <string notr="true">QWidget {
+color: #000000;
+background-color: #FFFFFF;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="CertificateHistoryLayout">
    <item row="0" column="0" colspan="4">

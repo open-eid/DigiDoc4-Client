@@ -2,14 +2,13 @@ name: CI
 on: [push, pull_request]
 env:
   BUILD_NUMBER: ${{ github.run_number }}
+  MAKEFLAGS: -j3
 jobs:
   macos:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MAKEFLAGS: -j3
       MACOSX_DEPLOYMENT_TARGET: '10.13'
-      AWS_DEFAULT_REGION: eu-west-1
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -26,23 +25,18 @@ jobs:
     - name: Install dependencies
       run: |
         HASH=($(shasum prepare_osx_build_environment.sh))
-        aws s3 cp s3://open-eid/digidoc4-cache/opensc_0.20.0.2.pkg opensc.pkg --no-sign-request
-        aws s3 cp s3://open-eid/digidoc4-cache/${HASH}.zip ${HASH}.zip --no-sign-request
+        curl -O -L -s https://installer.id.ee/media/github/opensc_0.20.0.2.pkg
+        curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
-        sudo installer -verboseR -pkg opensc.pkg -target /
-        unzip -qq -d libs ${HASH}.zip
-        ln -s /Library/Frameworks/digidocpp.framework/Libraries/libcrypto.dylib /usr/local/lib/libcrypto.1.1.dylib
-        ln -s /Library/Frameworks/digidocpp.framework/Libraries/libssl.dylib /usr/local/lib/libssl.1.1.dylib
+        sudo installer -verboseR -pkg opensc_*.pkg -target /
+        sudo unzip -qq -d /Library/Developer ${HASH}.zip
     - name: Build
       run: |
-        QT_DIR=$(ls -d libs/Qt-*-OpenSSL | tail -n 1)
+        QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
         mkdir build && cd build && cmake \
           -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 \
-          -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl\@1.1 \
-          -DOPENSSL_CRYPTO_LIBRARY=/Library/Frameworks/digidocpp.framework/Libraries/libcrypto.dylib \
-          -DOPENSSL_SSL_LIBRARY=/Library/Frameworks/digidocpp.framework/Libraries/libssl.dylib \
-          -DLDAP_ROOT=/tmp/OpenLDAP \
-          -DCMAKE_EXE_LINKER_FLAGS="-F/Library/Frameworks" \
+          -DOPENSSL_ROOT_DIR=/Library/Developer/OpenSSL \
+          -DLDAP_ROOT=/Library/Developer/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" ..
         make zipdebug macdeployqt zip
     - name: Archive artifacts
@@ -56,9 +50,8 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:20.10', 'ubuntu:21.04']
+        container: ['ubuntu:20.04', 'ubuntu:21.04']
     env:
-      MAKEFLAGS: -j3
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: 'github-actions'
       DEBEMAIL: 'github-actions@github.com'
@@ -147,12 +140,12 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: 18376a2f2ce989e022db5c1199b468e43f7c1a79
+        vcpkgGitCommitId: d417ae59d6e9aa20d9f812b5deb966645c54687d
         vcpkgTriplet: ${{ matrix.arch }}-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.12.10'
+        version: '5.12.11'
         arch: ${{ matrix.qt }}
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -182,7 +175,6 @@ jobs:
     if: contains(github.repository, 'open-eid/DigiDoc4-Client') && contains(github.ref, 'coverity_scan')
     runs-on: ubuntu-20.04
     env:
-      MAKEFLAGS: -j3
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
       PROJECTNAME: 'open-eid/DigiDoc4-Client'
     steps:
@@ -204,7 +196,7 @@ jobs:
       run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
     - name: Download Coverity Build Tool
       run: |
-        curl --silent --data "token=$TOKEN&project=$PROJECTNAME" -o cov-analysis-linux64.tar.gz https://scan.coverity.com/download/cxx/linux64
+        curl -s -d "token=$TOKEN&project=$PROJECTNAME" -o cov-analysis-linux64.tar.gz https://scan.coverity.com/download/cxx/linux64
         mkdir cov-analysis-linux64
         tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
     - name: Build
@@ -215,19 +207,17 @@ jobs:
     - name: Submit the result to Coverity Scan
       run: |
         tar czvf upload.tgz cov-int
-        curl --silent \
-          --form project=$PROJECTNAME \
-          --form token=$TOKEN \
-          --form email=eid-teenusehaldus@ria.ee \
-          --form file=@upload.tgz \
-          --form version=master \
-          --form description="Github Actions CI build" \
+        curl -s \
+          -F project=$PROJECTNAME \
+          -F token=$TOKEN \
+          -F email=eid-teenusehaldus@ria.ee \
+          -F file=@upload.tgz \
+          -F version=master \
+          -F description="Github Actions CI build" \
           https://scan.coverity.com/builds?project=$PROJECTNAME
   codeql:
     name: Run CodeQL tests
     runs-on: ubuntu-20.04
-    env:
-      MAKEFLAGS: -j3
     steps:
     - name: Checkout
       uses: actions/checkout@v2

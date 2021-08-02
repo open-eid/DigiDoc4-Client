@@ -71,7 +71,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			d->error->setPlainText( s.lastError() );
 		if(s.warning() & DigiDocSignature::DigestWeak )
 			d->info->setText( tr(
-				"The current BDOC container uses weaker encryption method than officialy accepted in Estonia.") );
+				"The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.") );
 		else
 			d->info->setText(tr("SIGNATURE_WARNING"));
 		break;

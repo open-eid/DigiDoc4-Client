@@ -47,7 +47,7 @@ public:
 	{
 		DigestWeak = 1 << 2
 	};
-	DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent);
+	DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent, bool isTimeStamped = false);
 
 	QSslCertificate	cert() const;
 	QDateTime	claimedTime() const;
@@ -85,6 +85,7 @@ private:
 	mutable QString m_lastError;
 	const DigiDoc *m_parent;
 	mutable unsigned int m_warning = 0;
+	bool m_isTimeStamped;
 };
 
 
@@ -127,16 +128,14 @@ public:
 	DocumentModel *documentModel() const;
 	QString fileName() const;
 	bool isNull() const;
-	bool isReadOnlyTS() const;
-	bool isService() const;
+	bool isPDF() const;
 	bool isModified() const;
 	bool isSupported() const;
 	QString mediaType() const;
 	bool move(const QString &to);
-	QString newSignatureID() const;
 	bool open( const QString &file );
 	void removeSignature( unsigned int num );
-	bool save( const QString &filename = QString() );
+	bool save(const QString &filename = {});
 	bool saveAs(const QString &filename);
 	bool sign(const QString &city,
 		const QString &state,
@@ -164,5 +163,6 @@ private:
 	QString			m_fileName;
 	QStringList		m_tempFiles;
 
+	friend class DigiDocSignature;
 	friend class SDocumentModel;
 };
