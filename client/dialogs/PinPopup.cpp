@@ -124,7 +124,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		progress->resize( 200, 30 );
 		progress->move( 153, 122 );
 		QTimeLine *statusTimer = new QTimeLine( progress->maximum() * 1000, this );
-		statusTimer->setCurveShape( QTimeLine::LinearCurve );
+		statusTimer->setEasingCurve(QEasingCurve::Linear);
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );
 		connect( statusTimer, &QTimeLine::frameChanged, progress, &QProgressBar::setValue );
 		connect( this, &PinPopup::startTimer, statusTimer, &QTimeLine::start );

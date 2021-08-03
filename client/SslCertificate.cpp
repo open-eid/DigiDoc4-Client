@@ -116,10 +116,18 @@ QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authori
 		switch(OBJ_obj2nid(ad->method))
 		{
 		case NID_ad_OCSP:
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+			result.insert(ad_OCSP, toQByteArray(ad->location->d.uniformResourceIdentifier));
+#else
 			result.insertMulti(ad_OCSP, toQByteArray(ad->location->d.uniformResourceIdentifier));
+#endif
 			break;
 		case NID_ad_ca_issuers:
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+			result.insert(ad_CAIssuers, toQByteArray(ad->location->d.uniformResourceIdentifier));
+#else
 			result.insertMulti(ad_CAIssuers, toQByteArray(ad->location->d.uniformResourceIdentifier));
+#endif
 			break;
 		default: break;
 		}
@@ -298,10 +306,17 @@ QByteArray SslCertificate::subjectKeyIdentifier() const
 
 QByteArray SslCertificate::toHex( const QByteArray &in, QChar separator )
 {
+#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
+	QString ret = {in.toHex().toUpper()};
+	for( int i = 2; i < ret.size(); i += 3 )
+		ret.insert( i, separator );
+	return ret.toUtf8();
+#else
 	QByteArray ret = in.toHex().toUpper();
 	for( int i = 2; i < ret.size(); i += 3 )
 		ret.insert( i, separator );
 	return ret;
+#endif
 }
 
 QString SslCertificate::toString( const QString &format ) const

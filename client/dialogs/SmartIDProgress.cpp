@@ -114,7 +114,7 @@ background-color: #007aff;
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
 
 	d->statusTimer = new QTimeLine(d->signProgressBar->maximum() * 1000, d);
-	d->statusTimer->setCurveShape(QTimeLine::LinearCurve);
+	d->statusTimer->setEasingCurve(QEasingCurve::Linear);
 	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
 #ifdef Q_OS_WIN
