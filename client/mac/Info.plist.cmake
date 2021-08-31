@@ -37,7 +37,7 @@
 	<key>NSRequiresAquaSystemAppearance</key>
 	<string>True</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
-	<true/>
+	<false/>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.ee.ria.qdigidoc4</key>
