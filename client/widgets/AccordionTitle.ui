@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>AccordionTitle</class>
- <widget class="QWidget" name="AccordionTitle">
+ <widget class="QLabel" name="AccordionTitle">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -22,45 +22,15 @@
     <height>40</height>
    </size>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: #FFFFFF;
-border: none;</string>
+  <property name="focusPolicy">
+   <enum>Qt::TabFocus</enum>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>36</x>
-     <y>11</y>
-     <width>390</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>19</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>19</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <family>Roboto Condensed</family>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::TabFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border: none;
-color: #353739;</string>
-   </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">color: #006EB5;</string>
+  </property>
+  <property name="indent">
+   <number>36</number>
+  </property>
   <widget class="QSvgWidget" name="icon" native="true">
    <property name="geometry">
     <rect>
@@ -71,7 +41,7 @@ color: #353739;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border: none</string>
+    <string notr="true">border: none;</string>
    </property>
   </widget>
  </widget>
