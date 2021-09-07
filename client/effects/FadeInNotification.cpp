@@ -54,7 +54,8 @@ void FadeInNotification::start( const QString &label, int fadeInTime, int displa
 	a->setEasingCurve(QEasingCurve::InBack);
 	a->start(QPropertyAnimation::DeleteWhenStopped);
 	connect(a, &QPropertyAnimation::finished, this, [this, displayTime, fadeOutTime]() {
-		setFocus();
+		if(focusPolicy() == Qt::TabFocus)
+			setFocus();
 		QTimer::singleShot(displayTime, this, [this, fadeOutTime] {
 			QPropertyAnimation *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
 			a->setDuration(fadeOutTime);
