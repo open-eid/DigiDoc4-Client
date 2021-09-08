@@ -29,6 +29,7 @@
 #endif
 #include "QPKCS11.h"
 #include "SslCertificate.h"
+#include "Utils.h"
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -257,10 +258,12 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 			return DecryptFailed;
 		}
 	} while(status != QCryptoBackend::PinOK);
-	if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
-		out = d->backend->decrypt(in);
-	else
-		out = d->backend->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
+	waitFor([&]{
+		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
+			out = d->backend->decrypt(in);
+		else
+			out = d->backend->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
+	});
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
@@ -481,7 +484,10 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINFailed)
 		}
 	} while(status != QCryptoBackend::PinOK);
-	QByteArray sig = d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+	QByteArray sig;
+	waitFor([&]{
+		sig = d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+	});
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated

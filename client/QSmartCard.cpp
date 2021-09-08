@@ -21,6 +21,7 @@
 #include "QCardLock.h"
 #include "dialogs/PinPopup.h"
 #include "dialogs/PinUnblock.h"
+#include "Utils.h"
 
 #include <common/Common.h>
 #include <common/IKValidator.h>
@@ -32,8 +33,6 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QApplication>
-
-#include <thread>
 
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
@@ -115,12 +114,9 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 	else if(Common::language() == QLatin1String("et")) language = 0x0425;
 	else if(Common::language() == QLatin1String("ru")) language = 0x0419;
 	QPCSCReader::Result result;
-	QEventLoop l;
-	std::thread([&]{
+	waitFor([&]{
 		result = reader->transferCTL(apdu, verify, language, QSmartCardData::minPinLen(type), newPINOffset, requestCurrentPIN);
-		l.quit();
-	}).detach();
-	l.exec();
+	});
 	return result;
 }
 
@@ -718,7 +714,7 @@ void QSmartCard::reload()
 	t->signCert = QSslCertificate();
 	d->t.d = t;
 	Q_EMIT dataChanged(d->t);
-	QTimer::singleShot(0, this, [this] {reloadCard(d->token); });
+	QTimer::singleShot(0, this, [this] { reloadCard(d->token); });
 }
 
 void QSmartCard::reloadCard(const TokenData &token)
