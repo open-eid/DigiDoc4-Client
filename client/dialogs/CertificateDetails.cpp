@@ -26,6 +26,9 @@
 #include "SslCertificate.h"
 #include "effects/Overlay.h"
 #include "dialogs/WarningDialog.h"
+#ifdef Q_OS_MAC
+#include "dialogs/QuickLook_mac.h"
+#endif
 
 #include <common/DateTime.h>
 
@@ -207,13 +210,11 @@ QString CertificateDetails::decodeCN(const QString &cn)
 	return isDoubleEncodedUtf8 ? QString(str).toLatin1() : cn;
 }
 
-#ifndef Q_OS_MAC
 void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
 {
 #ifdef Q_OS_LINUX
 	CertificateDetails(cert, parent).exec();
 #else
-	Q_UNUSED(parent);
 	QString name = cert.subjectInfo("serialNumber");
 	if(name.isEmpty())
 		name = cert.serialNumber().replace(':', "");
@@ -222,8 +223,12 @@ void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *pa
 	if(f.open(QIODevice::WriteOnly))
 		f.write(cert.toPem());
 	f.close();
+#ifdef Q_OS_MAC
+	QuickLook::previewDocument(path, parent);
+#else
+	Q_UNUSED(parent);
 	qApp->addTempFile(path);
 	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 #endif
-}
 #endif
+}

@@ -32,61 +32,56 @@
 
 - (BOOL)acceptsFirstResponder
 {
-    return YES;
+	return YES;
 }
 
 - (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel
 {
-    Q_UNUSED(panel);
-    return YES;
+	Q_UNUSED(panel)
+	return YES;
 }
 
 - (void)beginPreviewPanelControl:(QLPreviewPanel *)panel
 {
-    Q_UNUSED(panel);
-    panel.dataSource = self;
-    panel.delegate = self;
+	Q_UNUSED(panel)
+	panel.dataSource = self;
+	panel.delegate = self;
 }
 
 - (void)endPreviewPanelControl:(QLPreviewPanel *)panel
 {
-    Q_UNUSED(panel);
-    QFile::remove(QUrl::fromNSURL(self.docUrl).toLocalFile());
-    panel.dataSource = nil;
-    panel.delegate = nil;
-    self.docUrl = nil;
+	Q_UNUSED(panel)
+	QFile::remove(QUrl::fromNSURL(self.docUrl).toLocalFile());
+	panel.dataSource = nil;
+	panel.delegate = nil;
+	self.docUrl = nil;
 }
 
 - (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel
 {
-    return 1;
+	return 1;
 }
 
 - (id<QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index
 {
-    Q_UNUSED(panel);
-    return self.docUrl;
+	Q_UNUSED(panel)
+	return self.docUrl;
 }
 
 @end
 
 void QuickLook::previewDocument(const QString &path, QWidget *parent)
 {
-    static DocumentPreview *preview;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        preview = [DocumentPreview new];
-    });
+	static DocumentPreview *preview = [DocumentPreview new];
+	if(preview.docUrl)
+		QFile::remove(QUrl::fromNSURL(preview.docUrl).toLocalFile());
 
-    if(preview.docUrl != nullptr)
-        QFile::remove(QUrl::fromNSURL(preview.docUrl).toLocalFile());
+	preview.docUrl = [NSURL fileURLWithPath:path.toNSString()];
+	[[(__bridge NSView *)reinterpret_cast<void *>(parent->winId()) window] makeFirstResponder:preview];
 
-    preview.docUrl = [NSURL fileURLWithPath:path.toNSString()];
-    [[(__bridge NSView *)reinterpret_cast<void *>(parent->winId()) window] makeFirstResponder:preview];
-
-    auto qlPanel = QLPreviewPanel.sharedPreviewPanel;
-    if (qlPanel.isVisible)
-        [qlPanel reloadData];
-    else
-        [qlPanel makeKeyAndOrderFront:preview];
+	auto qlPanel = QLPreviewPanel.sharedPreviewPanel;
+	if (qlPanel.isVisible)
+		[qlPanel reloadData];
+	else
+		[qlPanel makeKeyAndOrderFront:preview];
 }

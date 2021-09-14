@@ -147,15 +147,6 @@ public:
 	ria::qdigidoc4::ContainerState state();
 	QList<DigiDocSignature> timestamps() const;
 
-	void setParent(QWidget* parent)
-    {
-	    m_parent = parent;
-    }
-
-    QWidget* getParent()
-    {
-	    return m_parent;
-    }
 	static void parseException( const digidoc::Exception &e, QStringList &causes,
 		digidoc::Exception::ExceptionCode &code);
 
@@ -174,6 +165,4 @@ private:
 
 	friend class DigiDocSignature;
 	friend class SDocumentModel;
-
-    QWidget *m_parent;
 };

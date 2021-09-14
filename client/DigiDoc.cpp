@@ -20,6 +20,7 @@
 #include "DigiDoc.h"
 
 #include "Application.h"
+#include "MainWindow.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -363,9 +364,9 @@ void SDocumentModel::open(int row)
 #endif
 
 #if defined(Q_OS_MAC)
-	QuickLook::previewDocument(f.absoluteFilePath(), doc->getParent());
+	QuickLook::previewDocument(f.absoluteFilePath(), qobject_cast<MainWindow*>(doc->parent()));
 #else
-    QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
+	QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
 #endif
 }
 
