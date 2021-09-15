@@ -674,7 +674,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			qApp->showWarning(tr("PIN Incorrect"));
 			return sign(city, state, zip, country, role, signer);
 		}
-		setLastError(tr("Failed to sign container"), e);
+		setLastError(tr("Failed to sign container."), e);
 	}
 	return false;
 }

@@ -233,8 +233,13 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 		}
 	}
 #else
-	res = QFileDialog::getExistingDirectory( parent,
-		caption, getDir(dir), ShowDirsOnly|options);
+	QFileDialog dlg(parent, caption, getDir(dir));
+	dlg.setFileMode(QFileDialog::Directory);
+	dlg.setOptions(ShowDirsOnly|options);
+	dlg.setLabelText(QFileDialog::Accept, tr("Choose"));
+	if(!dlg.exec())
+		return {};
+	res = dlg.selectedFiles().first();
 #endif
 	if(res.isEmpty())
 		return res;

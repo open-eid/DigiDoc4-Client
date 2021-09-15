@@ -528,7 +528,7 @@
 <context>
     <name>ContainerPage</name>
     <message>
-        <source>Container</source>
+        <source>Container:</source>
         <translation>Ümbrik:</translation>
     </message>
     <message>
@@ -860,7 +860,7 @@
         <translation>Viga SiVa serveriga ühenduse saamisel! Palun kontrolli internetiühendust.</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
+        <source>Failed to sign container.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus.</translation>
     </message>
     <message>
@@ -900,6 +900,10 @@
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>Sul ei ole piisavalt õigusi, et kirjutada fail kataloogi %1</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>Vali</translation>
     </message>
 </context>
 <context>
@@ -1168,7 +1172,7 @@
         <translation>Kehtiv</translation>
     </message>
     <message>
-        <source>until</source>
+        <source> until </source>
         <translation> kuni </translation>
     </message>
     <message>

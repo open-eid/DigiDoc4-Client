@@ -96,7 +96,7 @@ border-width: 1px 0px 0px 0px;
 background-color: #F4F5F6;</string>
         </property>
         <property name="text">
-         <string>Container</string>
+         <string>Container:</string>
         </property>
        </widget>
       </item>

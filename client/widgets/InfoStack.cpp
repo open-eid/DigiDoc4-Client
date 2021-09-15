@@ -138,7 +138,7 @@ void InfoStack::update()
 	if(certType & SslCertificate::EstEidType)
 	{
 		if(data.isValid())
-			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr("until")
+			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr(" until ")
 				<< DateTime(data.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
 		else
 			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
