@@ -35,8 +35,11 @@ CardWidget::CardWidget(bool popup, QWidget *parent)
 	QFont font = Styles::font( Styles::Condensed, 16 );
 
 	ui->cardName->setFont( Styles::font( Styles::Condensed, 20, QFont::DemiBold ) );
+    ui->cardName->installEventFilter(this);
 	ui->cardCode->setFont( font );
+    ui->cardCode->installEventFilter(this);
 	ui->cardStatus->setFont( font );
+    ui->cardStatus->installEventFilter(this);
 	ui->cardPhoto->init(LabelButton::None, QString(), CardPhoto);
 	ui->cardPhoto->installEventFilter(this);
 	ui->load->setFont(Styles::font(Styles::Condensed, 9));
@@ -100,6 +103,13 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 		return StyledWidget::eventFilter(o, e);
 	switch(e->type())
 	{
+    case QEvent::MouseButtonRelease:
+        if(o == ui->cardName || o == ui->cardStatus || o == ui->cardCode)
+        {
+            emit selected(t);
+            return true;
+        }
+        break;
 	case QEvent::HoverEnter:
 		if(!ui->cardPhoto->pixmap() && !seal)
 			ui->load->show();

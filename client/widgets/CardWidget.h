@@ -27,7 +27,7 @@ namespace Ui {
 class CardWidget;
 }
 
-class CardWidget : public StyledWidget
+class CardWidget final: public StyledWidget
 {
 	Q_OBJECT
 
@@ -46,8 +46,8 @@ signals:
 	void selected(const TokenData &token);
 
 private:
-	bool event(QEvent *ev) override;
-	bool eventFilter(QObject *o, QEvent *e) override;
+    bool event(QEvent *ev) final;
+    bool eventFilter(QObject *o, QEvent *e) final;
 	void clearSeal();
 
 	Ui::CardWidget *ui;
