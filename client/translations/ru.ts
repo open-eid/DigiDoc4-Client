@@ -869,6 +869,18 @@
         <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
         <translation>Для проверки действительности электронно-цифровых подписей в форматах PDF и DDOC файл пересылается в службу проверки цифровых подписей SiVa. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;.&lt;br /&gt;Желаете продолжить?</translation>
     </message>
+    <message>
+        <source>Connecting to SiVa server failed! Please check your internet connection and network settings.</source>
+        <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте интернет соединение и настройки сети.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Please check the access to signing services and network settings.</source>
+        <translation>Не удалось подписать контейнер. Пожалуйста, проверьте настройки доступа и сеть для служб подписи.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Signing service URL is incorrect.</source>
+        <translation>Не удалось подписать контейнер. Службы URL-адрес подписи неверены.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>

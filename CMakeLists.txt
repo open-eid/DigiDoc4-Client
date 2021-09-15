@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
-project(qdigidoc4 VERSION 4.2.9)
+project(qdigidoc4 VERSION 4.2.11)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -12,7 +12,7 @@ include( GNUInstallDirs )
 include( VersionInfo )
 
 find_package( PKCS11 )
-find_package( LibDigiDocpp 3.14.5 REQUIRED )
+find_package( LibDigiDocpp 3.14.8 REQUIRED )
 find_package( LDAP REQUIRED )
 find_package( Qt5 5.9.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools )
 

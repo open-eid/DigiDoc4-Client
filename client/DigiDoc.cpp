@@ -536,10 +536,19 @@ bool DigiDoc::open( const QString &file )
 	}
 	catch( const Exception &e )
 	{
-		if(e.code() == Exception::NetworkError)
+		switch(e.code())
+		{
+		case Exception::NetworkError:
 			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection."), e);
-		else
+			break;
+		case Exception::HostNotFound:
+		case Exception::InvalidUrl:
+			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection and network settings."), e);
+			break;
+		default:
 			setLastError(tr("An error occurred while opening the document."), e);
+			break;
+		}
 	}
 	return false;
 }
@@ -560,6 +569,7 @@ void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 	case Exception::PINFailed:
 	case Exception::PINIncorrect:
 	case Exception::PINLocked:
+	case Exception::NetworkError:
 	case Exception::HostNotFound:
 	case Exception::InvalidUrl:
 		code = e.code();
@@ -643,15 +653,9 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 		qApp->showWarning(tr("PIN Incorrect"), causes.join('\n')); break;
 	case Exception::PINLocked:
 		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
+	case Exception::NetworkError: // use passed message for these thre exceptions
 	case Exception::HostNotFound:
-		qApp->showWarning(tr("Failed to sign container. "
-							 "Connecting to network service is failed! Please check your network connection. "
-							 "(Or Check your Time-Stamping service access settings.)"), causes.join('\n'));
-		break;
 	case Exception::InvalidUrl:
-		qApp->showWarning(tr("Failed to sign container. "
-							 "Incorrect URL is provided.)"), causes.join('\n'));
-		break;
 	default:
 		qApp->showWarning(msg, causes.join('\n')); break;
 	}
@@ -681,12 +685,19 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		QStringList causes;
 		Exception::ExceptionCode code = Exception::General;
 		parseException(e, causes, code);
-		if(code == Exception::PINIncorrect)
+		switch(code)
 		{
+		case Exception::PINIncorrect:
 			qApp->showWarning(tr("PIN Incorrect"));
 			return sign(city, state, zip, country, role, signer);
+		case Exception::NetworkError:
+		case Exception::HostNotFound:
+			qApp->showWarning(tr("Failed to sign container. Please check the access to signing services and network settings."), causes.join('\n')); break;
+		case Exception::InvalidUrl:
+			qApp->showWarning(tr("Failed to sign container. Signing service URL is incorrect."), causes.join('\n')); break;
+		default:
+			setLastError(tr("Failed to sign container"), e); break;
 		}
-		setLastError(tr("Failed to sign container"), e);
 	}
 	return false;
 }
