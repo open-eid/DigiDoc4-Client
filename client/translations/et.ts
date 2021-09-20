@@ -867,6 +867,18 @@
         <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
         <translation>PDF ja DDOC formaadis digitaalallkirjade kehtivuse kontrollimiseks edastatakse fail valideerimisteenusele SiVa. Digitaalallkirjade kehtivuse kontrollimisel edastatud andmete kohta loe lähemalt &lt;a href=&quot;https://www.id.ee/artikkel/riigi-infosusteemi-ameti-id-tarkvara-andmekaitsetingimused/&quot;&gt;siit&lt;/a&gt;.&lt;br /&gt;Kas soovid jätkata?</translation>
     </message>
+    <message>
+        <source>Connecting to SiVa server failed! Please check your internet connection and network settings.</source>
+        <translation>Viga SiVa serveriga ühenduse saamisel! Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Please check the access to signing services and network settings.</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Palun kontrolli allkirjastamiseks vajalike teenuste ligipääsu ja võrgu sätteid.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Signing service URL is incorrect.</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. Allkirjastamise teenuse URL ei ole korrektne.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>

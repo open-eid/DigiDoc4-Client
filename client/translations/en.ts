@@ -867,6 +867,18 @@
         <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
         <translation>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</translation>
     </message>
+    <message>
+        <source>Connecting to SiVa server failed! Please check your internet connection and network settings.</source>
+        <translation>Connecting to SiVa server failed! Please check your internet connection and network settings.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Please check the access to signing services and network settings.</source>
+        <translation>Failed to sign container. Please check the access to signing services and network settings.</translation>
+    </message>
+    <message>
+        <source>Failed to sign container. Signing service URL is incorrect.</source>
+        <translation>Failed to sign container. Signing service URL is incorrect.</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
