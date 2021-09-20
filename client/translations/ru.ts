@@ -530,7 +530,7 @@
 <context>
     <name>ContainerPage</name>
     <message>
-        <source>Container</source>
+        <source>Container:</source>
         <translation>Kонтейнер:</translation>
     </message>
     <message>
@@ -862,7 +862,7 @@
         <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте подключение к интернету.</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
+        <source>Failed to sign container.</source>
         <translation>Не удалось подписать контейнер.</translation>
     </message>
     <message>
@@ -914,6 +914,10 @@
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>У Вас недостаточно прав для записи файла в каталог %1</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>Выбрать</translation>
     </message>
 </context>
 <context>
@@ -1182,7 +1186,7 @@
         <translation>Действителен</translation>
     </message>
     <message>
-        <source>until</source>
+        <source> until </source>
         <translation> до </translation>
     </message>
     <message>

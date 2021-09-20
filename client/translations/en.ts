@@ -528,7 +528,7 @@
 <context>
     <name>ContainerPage</name>
     <message>
-        <source>Container</source>
+        <source>Container:</source>
         <translation>Container:</translation>
     </message>
     <message>
@@ -860,8 +860,8 @@
         <translation>Connecting to SiVa server failed! Please check your internet connection.</translation>
     </message>
     <message>
-        <source>Failed to sign container</source>
-        <translation>Failed to sign container</translation>
+        <source>Failed to sign container.</source>
+        <translation>Failed to sign container.</translation>
     </message>
     <message>
         <source>Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
@@ -912,6 +912,10 @@
     <message>
         <source>You don&apos;t have sufficient privileges to write this file into folder %1</source>
         <translation>You don&apos;t have sufficient privileges to write this file into folder %1</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>Choose</translation>
     </message>
 </context>
 <context>
@@ -1180,7 +1184,7 @@
         <translation>Valid</translation>
     </message>
     <message>
-        <source>until</source>
+        <source> until </source>
         <translation> until </translation>
     </message>
     <message>
