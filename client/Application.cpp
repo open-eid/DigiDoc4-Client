@@ -254,7 +254,9 @@ private:
 		QList<QSslCertificate> list;
 		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
-		QSslConfiguration::defaultConfiguration().setCaCertificates(list);
+		QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+		ssl.setCaCertificates(list);
+		QSslConfiguration::setDefaultConfiguration(ssl);
 	}
 #endif
 
