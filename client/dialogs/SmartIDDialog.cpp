@@ -84,7 +84,6 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	connect(ui->idCountry, &QComboBox::currentTextChanged, this, enableSign);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, enableSign);
 	enableSign();
-	ui->sign->setFocus();
 }
 
 SmartIDDialog::~SmartIDDialog()
