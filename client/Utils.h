@@ -23,19 +23,36 @@
 #include <exception>
 #include <thread>
 
-template <typename F>
-static void waitFor(F&& function) {
-	std::exception_ptr exception;
-	QEventLoop l;
-	std::thread([&]{
-		try {
-			function();
-		} catch(...) {
-			exception = std::current_exception();
+namespace {
+	template <typename F>
+	inline void waitFor(F&& function) {
+		std::exception_ptr exception;
+		QEventLoop l;
+		std::thread([&]{
+			try {
+				function();
+			} catch(...) {
+				exception = std::current_exception();
+			}
+			l.exit();
+		}).detach();
+		l.exec();
+		if(exception)
+			std::rethrow_exception(exception);
+	}
+
+	inline QString escapeUnicode(const QString &str) {
+		QString escaped;
+		escaped.reserve(6 * str.size());
+		for (QChar ch: str) {
+			ushort code = ch.unicode();
+			if (code < 0x80) {
+				escaped += ch;
+			} else {
+				escaped += QString("\\u");
+				escaped += QString::number(code, 16).rightJustified(4, '0');
+			}
 		}
-		l.exit();
-	}).detach();
-	l.exec();
-	if(exception)
-		std::rethrow_exception(exception);
+		return escaped;
+	}
 }

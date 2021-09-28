@@ -696,7 +696,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		case Exception::InvalidUrl:
 			qApp->showWarning(tr("Failed to sign container. Signing service URL is incorrect."), causes.join('\n')); break;
 		default:
-			setLastError(tr("Failed to sign container"), e); break;
+			setLastError(tr("Failed to sign container."), e); break;
 		}
 	}
 	return false;

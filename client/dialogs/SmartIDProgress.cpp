@@ -21,6 +21,7 @@
 #include "ui_MobileProgress.h"
 
 #include "Styles.h"
+#include "Utils.h"
 #include "WarningDialog.h"
 
 #include <common/Common.h>
@@ -350,8 +351,10 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		{"hash", QString(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64())},
 		{"hashType", digestMethod},
 		{"requestProperties", QJsonObject{{"vcChoice", true}}},
-		{"displayText", tr("Sign document", "Do not translate to RUS (IB-6416)")}
+		{"displayText", "%1"}
 	}).toJson();
+	// Workaround SID proxy issues
+	data = QString::fromUtf8(data).arg(escapeUnicode(tr("Sign document"))).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);

@@ -21,6 +21,7 @@
 #include "ui_MobileProgress.h"
 
 #include "Styles.h"
+#include "Utils.h"
 #include "WarningDialog.h"
 
 #include <common/Common.h>
@@ -356,9 +357,11 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
 		{"language", lang.value(Common::language(), QStringLiteral("EST"))},
-		{"displayText", tr("Sign document", "Do not translate to RUS (IB-6416)")},
+		{"displayText", "%1"},
 		{"displayTextFormat", "UCS-2"}
 	})).toJson();
+	// Workaround MID proxy issues
+	data = QString::fromUtf8(data).arg(escapeUnicode(tr("Sign document"))).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL())));
 	qCDebug(MIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
