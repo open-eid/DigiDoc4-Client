@@ -5,8 +5,8 @@ set -e
 
 ######### Versions of libraries/frameworks to be compiled
 QT_VER="5.12.11"
-OPENSSL_VER="1.1.1k"
-OPENLDAP_VER="2.5.5"
+OPENSSL_VER="1.1.1l"
+OPENLDAP_VER="2.5.7"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 : ${MACOSX_DEPLOYMENT_TARGET:="10.13"}
