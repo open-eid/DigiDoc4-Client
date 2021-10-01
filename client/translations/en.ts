@@ -977,7 +977,7 @@
         <translation>Welcome to the Estonian eID application DigiDoc!</translation>
     </message>
     <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</source>
         <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
     </message>
     <message>
@@ -1836,10 +1836,6 @@ ID-CARD</translation>
     <message>
         <source>SIM error</source>
         <translation>SIM error</translation>
-    </message>
-    <message>
-        <source>Connecting to SK server failed! Please check your internet connection.</source>
-        <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
     </message>
     <message>
         <source>User is not a mobile-ID client</source>
@@ -3450,28 +3446,28 @@ Additional licenses and components</translation>
         <translation>https://www.id.ee/en/article/the-majority-of-electronically-used-id-cards-were-renewed/</translation>
     </message>
     <message numerus="yes">
-        <source>%n signatures are not valid</source>
+        <source>%n signatures are not valid!</source>
         <translation>
             <numerusform>%n signature is not valid!</numerusform>
             <numerusform>%n signatures are not valid!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n timestamps are not valid</source>
+        <source>%n timestamps are not valid!</source>
         <translation>
             <numerusform>%n timestamp is not valid!</numerusform>
             <numerusform>%n timestamps are not valid!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n signatures are unknown</source>
+        <source>%n signatures are unknown!</source>
         <translation>
             <numerusform>%n signature is unknown!</numerusform>
             <numerusform>%n signatures are unknown!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n timestamps are unknown</source>
+        <source>%n timestamps are unknown!</source>
         <translation>
             <numerusform>%n timestamp is unknown!</numerusform>
             <numerusform>%n timestamps are unknown!</numerusform>
@@ -3515,7 +3511,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Certificates expire soon! </source>
-        <translation> Certificates expire soon! </translation>
+        <translation>Certificates expire soon! </translation>
     </message>
 </context>
 <context>

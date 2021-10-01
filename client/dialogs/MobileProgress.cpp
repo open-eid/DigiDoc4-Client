@@ -172,9 +172,6 @@ background-color: #007aff;
 		case QNetworkReply::ContentNotFoundError:
 			returnError(d->sessionID.isEmpty() ? tr("Account not found") : tr("Session not found"));
 			return;
-		case QNetworkReply::HostNotFoundError:
-			returnError(tr("Connecting to SK server failed! Please check your internet connection."));
-			return;
 		case QNetworkReply::ConnectionRefusedError:
 			returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")));
 			return;
@@ -185,6 +182,7 @@ background-color: #007aff;
 		case QNetworkReply::UnknownNetworkError:
 			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 			return;
+		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::AuthenticationRequiredError:
 			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 			return;

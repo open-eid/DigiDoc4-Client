@@ -174,9 +174,6 @@ background-color: #007aff;
 		case QNetworkReply::ContentNotFoundError:
 			returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
 			return;
-		case QNetworkReply::HostNotFoundError:
-			returnError(tr("Connecting to SK server failed! Please check your internet connection."));
-			return;
 		case QNetworkReply::ConnectionRefusedError:
 			returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Smart-ID")));
 			return;
@@ -191,6 +188,7 @@ background-color: #007aff;
 			qCWarning(SIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 			returnError(reply->readAll());
 			return;
+		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::AuthenticationRequiredError:
 			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")));
 			return;

@@ -979,7 +979,7 @@
         <translation>Добро пожаловать в Эстонское приложение eID DigiDoc!</translation>
     </message>
     <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</source>
         <translation>DigiDoc создан для управления эстонскими eID и является официальным приложением для цифровой подписи и шифрования.</translation>
     </message>
     <message>
@@ -1839,10 +1839,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>SIM error</source>
         <translation>Ошибка SIM карты</translation>
-    </message>
-    <message>
-        <source>Connecting to SK server failed! Please check your internet connection.</source>
-        <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
     </message>
     <message>
         <source>User is not a mobile-ID client</source>
@@ -3453,7 +3449,7 @@ Additional licenses and components</source>
         <translation>https://www.id.ee/ru/artikkel/obnovleno-bolshinstvo-zatronutyh-riskom-id-kart-kotorye-ispolzovalis-elektronno/</translation>
     </message>
     <message numerus="yes">
-        <source>%n signatures are not valid</source>
+        <source>%n signatures are not valid!</source>
         <translation>
             <numerusform>%n подпись недействительна!</numerusform>
             <numerusform>%n подписи недействительны!</numerusform>
@@ -3461,7 +3457,7 @@ Additional licenses and components</source>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n timestamps are not valid</source>
+        <source>%n timestamps are not valid!</source>
         <translation>
             <numerusform>%n временной штамп недействителен!</numerusform>
             <numerusform>%n временных штампов недействительны!</numerusform>
@@ -3469,7 +3465,7 @@ Additional licenses and components</source>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n signatures are unknown</source>
+        <source>%n signatures are unknown!</source>
         <translation>
             <numerusform>%n подпись неизвестная!</numerusform>
             <numerusform>%n подписи неизвестны!</numerusform>
@@ -3477,7 +3473,7 @@ Additional licenses and components</source>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n timestamps are unknown</source>
+        <source>%n timestamps are unknown!</source>
         <translation>
             <numerusform>%n временной штамп неизвестен!</numerusform>
             <numerusform>%n временных штампов неизвестны!</numerusform>
@@ -3510,7 +3506,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>You can find instructions on how to get a new document from </source>
-        <translation>Вы можете найти инструкции о том, как получить новый документ  </translation>
+        <translation>Вы можете найти инструкции о том, как получить новый документ </translation>
     </message>
     <message>
         <source>here</source>

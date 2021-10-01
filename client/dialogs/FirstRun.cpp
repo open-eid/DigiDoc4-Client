@@ -95,9 +95,6 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->introViewSigning->setFont(buttonFont);
 	ui->introViewEncryption->setFont(buttonFont);
 	ui->introViewEid->setFont(buttonFont);
-	ui->introPageLayout->itemAtPosition(1, 0)->setAlignment(Qt::AlignCenter);
-	ui->introPageLayout->itemAtPosition(1, 1)->setAlignment(Qt::AlignCenter);
-	ui->introPageLayout->itemAtPosition(1, 2)->setAlignment(Qt::AlignCenter);
 	ui->signWidget->load(QStringLiteral(":/images/icon_Allkiri_hover.svg"));
 	ui->cryptoWidget->load(QStringLiteral(":/images/icon_Krypto_hover.svg"));
 	ui->eidWidget->load(QStringLiteral(":/images/icon_Minu_eID_hover.svg"));
