@@ -2420,10 +2420,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>ОСНОВНЫЕ</translation>
     </message>
     <message>
-        <source>SERVICES</source>
-        <translation>СЛУЖБЫ</translation>
-    </message>
-    <message>
         <source>PROXY</source>
         <translation>ПРОКСИ</translation>
     </message>
@@ -2747,6 +2743,39 @@ Additional licenses and components</source>
     <message>
         <source>The project is supported by the European Regional Development Fund</source>
         <translation>Проект поддерживается Европейским фондом регионального развития</translation>
+    </message>
+    <message>
+        <source>SIGNING SERVICES</source>
+        <translation>УСЛУГИ ПОДПИСАНИЯ</translation>
+    </message>
+    <message>
+        <source>VALIDATION SERVICES</source>
+        <translation>УСЛУГИ ВАЛИДАЦИИ</translation>
+    </message>
+    <message>
+        <source>Access to Digital Signature Validation Service SiVa</source>
+        <translation>Доступ к услуге валидации SiVa</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/configuring-the-siva-validation-service-in-the-digidoc4-client/</source>
+        <translation>https://www.id.ee/ru/artikkel/nastrojka-sluzhby-validaczii-siva-v-digidoc4-klient-2/</translation>
+    </message>
+    <message>
+        <source>Digital Signature Validation Service SiVa SSL certificate</source>
+        <translation>Сертификат услуги валидации SiVa SSL</translation>
+    </message>
+    <message>
+        <source>Select SiVa server certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ADD CERTIFICATE</source>
+        <translation>ДОБАВИТЬ СЕРТИФИКАТ</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <comment>accessCert</comment>
+        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
     </message>
 </context>
 <context>

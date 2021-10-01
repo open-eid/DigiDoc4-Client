@@ -152,10 +152,20 @@ QRadioButton:hover {
          <string extracomment="accessible">Services</string>
         </property>
         <property name="text">
-         <string>SERVICES</string>
+         <string>SIGNING SERVICES</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="btnMenuValidation">
+        <property name="text">
+         <string>VALIDATION SERVICES</string>
         </property>
         <attribute name="buttonGroup">
          <string notr="true">pageGroup</string>
@@ -235,8 +245,11 @@ QRadioButton:hover {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">#pageGeneral, #pageServices, #pageProxy, #pageDiagnostics, #pageInfo {
+      <string notr="true">#pageGeneral, #pageServices, #pageValidation, #pageProxy, #pageDiagnostics, #pageInfo {
 	background-color: #ffffff;
+}
+#lblGeneralLang, #lblRevocation, #lblTimeStamp, #lblMID, #lblSiVa {
+    color: #041E42;
 }
 QLineEdit {
     border: 1px solid #DEE4E9;
@@ -293,9 +306,6 @@ QRadioButton::indicator::checked {
         <widget class="QLabel" name="lblGeneralLang">
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #041E42;</string>
          </property>
          <property name="text">
           <string>Language</string>
@@ -472,9 +482,10 @@ QRadioButton::indicator::checked {
       <property name="styleSheet">
        <string notr="true">QToolButton { border: none; }
 QPushButton {
-	padding-bottom:1px; 
+	padding: 1px;
 	text-align: middle;
 	min-height: 30px;
+	min-width: 150px;
 }</string>
       </property>
       <layout class="QVBoxLayout" name="pageServicesLayout">
@@ -499,9 +510,6 @@ QPushButton {
           <widget class="QLabel" name="lblRevocation">
            <property name="focusPolicy">
             <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: #041E42;</string>
            </property>
            <property name="text">
             <string>Access to validity confirmation service</string>
@@ -578,12 +586,6 @@ QPushButton {
         <layout class="QHBoxLayout" name="accessCertButtonsLayout">
          <item>
           <widget class="QPushButton" name="btInstallManually">
-           <property name="minimumSize">
-            <size>
-             <width>150</width>
-             <height>31</height>
-            </size>
-           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
@@ -597,17 +599,11 @@ QPushButton {
          </item>
          <item>
           <widget class="QPushButton" name="btShowCertificate">
-           <property name="minimumSize">
-            <size>
-             <width>150</width>
-             <height>31</height>
-            </size>
-           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="text">
-            <string>SHOW CERTIFICATE</string>
+            <string comment="accessCert">SHOW CERTIFICATE</string>
            </property>
            <property name="autoDefault">
             <bool>false</bool>
@@ -658,9 +654,6 @@ QPushButton {
           <widget class="QLabel" name="lblTimeStamp">
            <property name="focusPolicy">
             <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: #041E42;</string>
            </property>
            <property name="text">
             <string>Access to Time-Stamping service</string>
@@ -747,9 +740,6 @@ QPushButton {
            <property name="focusPolicy">
             <enum>Qt::TabFocus</enum>
            </property>
-           <property name="styleSheet">
-            <string notr="true">color: #041E42;</string>
-           </property>
            <property name="text">
             <string>Access to mobile-ID and Smart-ID service</string>
            </property>
@@ -833,6 +823,207 @@ QPushButton {
        </item>
        <item>
         <spacer name="pageServicesBottomSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageValidation">
+      <property name="styleSheet">
+       <string notr="true">QToolButton { border: none; }
+QPushButton {
+	padding: 1px;
+	text-align: middle;
+	min-height: 30px;
+	min-width: 150px;
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="pageValidationLayout">
+       <property name="spacing">
+        <number>5</number>
+       </property>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="SiVaLayout">
+         <item>
+          <widget class="QLabel" name="lblSiVa">
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
+           <property name="text">
+            <string>Access to Digital Signature Validation Service SiVa</string>
+           </property>
+           <property name="buddy">
+            <cstring>txtSiVa</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="helpSiVa">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Help</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/images/icon_Abi.svg</normalon>
+             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="helpSiVaSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="RadioButton" name="rdSiVaDefault">
+         <property name="text">
+          <string>Use default access</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">rdSiVa</string>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <widget class="RadioButton" name="rdSiVaCustom">
+         <property name="text">
+          <string>Use manually configured access</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">rdSiVa</string>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <widget class="LineEdit" name="txtSiVa">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="wgtSiVaCert" native="true">
+         <layout class="QVBoxLayout" name="wgtSiVaCertLayout">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblSiVaCert">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="text">
+             <string>Digital Signature Validation Service SiVa SSL certificate</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="CertLabel" name="txtSiVaCert">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="installSiVaCertLayout">
+            <item>
+             <widget class="QPushButton" name="btInstallSiVaCert">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>ADD CERTIFICATE</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btShowSiVaCert">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>SHOW CERTIFICATE</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="installSiVaCertSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="pageValidationBottomSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -1398,6 +1589,11 @@ QPushButton:disabled {
    <extends>QRadioButton</extends>
    <header>widgets/RadioButton.h</header>
   </customwidget>
+  <customwidget>
+   <class>CertLabel</class>
+   <extends>QLabel</extends>
+   <header>dialogs/SettingsDialog.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
@@ -1407,5 +1603,6 @@ QPushButton:disabled {
   <buttongroup name="langGroup"/>
   <buttongroup name="rdMIDUUID"/>
   <buttongroup name="rdTimeStamp"/>
+  <buttongroup name="rdSiVa"/>
  </buttongroups>
 </ui>

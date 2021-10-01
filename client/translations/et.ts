@@ -2417,10 +2417,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>ÜLDINE</translation>
     </message>
     <message>
-        <source>SERVICES</source>
-        <translation>TEENUSED</translation>
-    </message>
-    <message>
         <source>PROXY</source>
         <translation>PROKSI</translation>
     </message>
@@ -2454,7 +2450,7 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>SHOW CERTIFICATE</source>
-        <translation>NÄITA TŌENDIT</translation>
+        <translation>NÄITA SERTIFIKAATI</translation>
     </message>
     <message>
         <source>USE DEFAULT SETTINGS</source>
@@ -2744,6 +2740,39 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>The project is supported by the European Regional Development Fund</source>
         <translation>Projekti on toetatud Euroopa Liidu Regionaalarengu Fondist</translation>
+    </message>
+    <message>
+        <source>SIGNING SERVICES</source>
+        <translation>ALLKIRJASTAMISTEENUSED</translation>
+    </message>
+    <message>
+        <source>VALIDATION SERVICES</source>
+        <translation>VALIDEERIMISTEENUSED</translation>
+    </message>
+    <message>
+        <source>Access to Digital Signature Validation Service SiVa</source>
+        <translation>Ligipääs valideerimisteenusele SiVa</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/configuring-the-siva-validation-service-in-the-digidoc4-client/</source>
+        <translation>https://www.id.ee/artikkel/digidoc4-kliendis-valideerimisteenuse-siva-seadistamine/</translation>
+    </message>
+    <message>
+        <source>Digital Signature Validation Service SiVa SSL certificate</source>
+        <translation>Valideerimisteenuse SiVa SSL sertifikaat</translation>
+    </message>
+    <message>
+        <source>Select SiVa server certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ADD CERTIFICATE</source>
+        <translation>LISA SERTIFIKAAT</translation>
+    </message>
+    <message>
+        <source>SHOW CERTIFICATE</source>
+        <comment>accessCert</comment>
+        <translation>NÄITA TŌENDIT</translation>
     </message>
 </context>
 <context>

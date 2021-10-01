@@ -194,6 +194,17 @@ public:
 	{ SettingsDialog::setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url)); }
 
 	std::string TSLUrl() const final { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
+	std::vector<digidoc::X509Cert> TSLCerts() const final
+	{
+		std::vector<digidoc::X509Cert> tslcerts;
+		for(const QJsonValue &val: obj.value(QStringLiteral("TSL-CERTS")).toArray())
+		{
+			QByteArray cert = QByteArray::fromBase64(val.toString().toLatin1());
+			tslcerts.emplace_back((const unsigned char*)cert.constData(), size_t(cert.size()));
+		}
+		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
+	}
+
 	digidoc::X509Cert verifyServiceCert() const final
 	{
 		QByteArray cert = QByteArray::fromBase64(obj.value(QStringLiteral("SIVA-CERT")).toString().toLatin1());
@@ -212,17 +223,15 @@ public:
 		}
 		return list;
 	}
-	std::string verifyServiceUri() const final { return valueSystemScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri()); }
-	std::vector<digidoc::X509Cert> TSLCerts() const final
+	std::string verifyServiceUri() const final
 	{
-		std::vector<digidoc::X509Cert> tslcerts;
-		for(const QJsonValue &val: obj.value(QStringLiteral("TSL-CERTS")).toArray())
-		{
-			QByteArray cert = QByteArray::fromBase64(val.toString().toLatin1());
-			tslcerts.emplace_back((const unsigned char*)cert.constData(), size_t(cert.size()));
-		}
-		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
+		if(s.value(QStringLiteral("SIVA-URL-CUSTOM"), s.contains(QStringLiteral("SIVA-URL"))).toBool())
+			return valueUserScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri());
+		return valueSystemScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri());
 	}
+	void setVerifyServiceUri(const std::string &url) final
+	{ SettingsDialog::setValueEx(QStringLiteral("SIVA-URL"), QString::fromStdString(url), QString()); }
+
 	std::string ocsp(const std::string &issuer) const final
 	{
 		QJsonObject ocspissuer = obj.value(QStringLiteral("OCSP-URL-ISSUER")).toObject();
@@ -1047,7 +1056,7 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case PKCS12Disable: i->setPKCS12Disable( value.toBool() ); break;
 		case TSLOnlineDigest: i->setTSLOnlineDigest( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
-		case SiVaUrl:
+		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
 		case TSLCerts:
 		case TSLUrl:
 		case TSLCache: break;
