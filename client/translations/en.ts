@@ -2770,6 +2770,14 @@ Additional licenses and components</translation>
         <translation>ADD CERTIFICATE</translation>
     </message>
     <message>
+        <source>Select Time-Stamping server certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time-Stamping service SSL certificate</source>
+        <translation>Time-Stamping Service SSL certificate</translation>
+    </message>
+    <message>
         <source>SHOW CERTIFICATE</source>
         <comment>accessCert</comment>
         <translation>SHOW CERTIFICATE</translation>

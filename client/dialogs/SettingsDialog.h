@@ -30,7 +30,9 @@ namespace Ui {
 class SettingsDialog;
 }
 
+class CertLabel;
 class QAbstractButton;
+class QLabel;
 class QSslCertificate;
 class SslCertificate;
 
@@ -70,10 +72,13 @@ private:
 	void saveFile(const QString &name, const QString &path);
 	void saveFile(const QString &name, const QByteArray &content);
 	void saveProxy();
+	QSslCertificate selectCert(const QString &label, const QString &format);
 	void selectLanguage();
 	void setProxyEnabled();
 	void updateCert();
+	void updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl);
 	void updateSiVaCert(const QSslCertificate &c);
+	void updateTSACert(const QSslCertificate &c);
 	void updateProxy();
 	void updateVersion();
 	void updateDiagnostics();

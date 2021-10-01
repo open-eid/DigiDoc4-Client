@@ -2773,6 +2773,14 @@ Additional licenses and components</source>
         <translation>ДОБАВИТЬ СЕРТИФИКАТ</translation>
     </message>
     <message>
+        <source>Select Time-Stamping server certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time-Stamping service SSL certificate</source>
+        <translation>SSL сертификат службы отметок времени</translation>
+    </message>
+    <message>
         <source>SHOW CERTIFICATE</source>
         <comment>accessCert</comment>
         <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>

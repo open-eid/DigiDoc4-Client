@@ -25,6 +25,8 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
+      env:
+        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: YES
       run: |
         brew install ninja
         HASH=($(shasum prepare_osx_build_environment.sh))
