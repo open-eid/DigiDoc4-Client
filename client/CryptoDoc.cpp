@@ -599,8 +599,8 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 	props.insert(QStringLiteral("Filename"), file);
 	QList<File> reverse = files;
 	std::reverse(reverse.begin(), reverse.end());
-	for(const File &file: qAsConst(reverse))
-		props.insert(QStringLiteral("orig_file"), QStringLiteral("%1|%2|%3|%4").arg(file.name).arg(file.data.size()).arg(file.mime).arg(file.id));
+	for(const File &f: qAsConst(reverse))
+		props.insert(QStringLiteral("orig_file"), QStringLiteral("%1|%2|%3|%4").arg(f.name).arg(f.data.size()).arg(f.mime).arg(f.id));
 
 	QXmlStreamWriter w(cdoc);
 	w.setAutoFormatting(true);
@@ -1015,13 +1015,13 @@ QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen,
 void CryptoDoc::clear( const QString &file )
 {
 	delete d->ddoc;
-	for(const QString &file: qAsConst(d->tempFiles))
+	for(const QString &f: qAsConst(d->tempFiles))
 	{
 #if defined(Q_OS_WIN)
 		//reset read-only attribute to enable delete file
-		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
+		::SetFileAttributesW(f.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
 #endif
-		QFile::remove(file);
+		QFile::remove(f);
 	}
 	d->tempFiles.clear();
 	d->ddoc = nullptr;

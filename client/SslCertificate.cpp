@@ -290,7 +290,7 @@ bool SslCertificate::showCN() const
 QString SslCertificate::signatureAlgorithm() const
 {
 	if(!handle())
-		return QString();
+		return {};
 	const X509_ALGOR *algo = nullptr;
 	X509_get0_signature(nullptr, &algo, (X509*)handle());
 	QByteArray buf(50, 0);
@@ -523,6 +523,9 @@ PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin
 }
 
 PKCS12Certificate::PKCS12Certificate( const PKCS12Certificate &other ) = default;
+PKCS12Certificate::PKCS12Certificate(PKCS12Certificate &&other) Q_DECL_NOEXCEPT = default;
+PKCS12Certificate& PKCS12Certificate::operator=(const PKCS12Certificate &other) = default;
+PKCS12Certificate& PKCS12Certificate::operator=(PKCS12Certificate &&other) Q_DECL_NOEXCEPT = default;
 
 PKCS12Certificate::~PKCS12Certificate() = default;
 QList<QSslCertificate> PKCS12Certificate::caCertificates() const { return d->caCerts; }
@@ -532,7 +535,7 @@ QString PKCS12Certificate::errorString() const { return d->errorString; }
 
 PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QString &pin )
 {
-	PKCS12Certificate p12(nullptr, QString());
+	PKCS12Certificate p12(nullptr, {});
 	QFile f( path );
 	if( !f.exists() )
 		p12.d->error = PKCS12Certificate::FileNotExist;

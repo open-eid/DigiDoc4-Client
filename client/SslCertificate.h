@@ -127,7 +127,11 @@ public:
 	PKCS12Certificate( QIODevice *device, const QString &pin );
 	PKCS12Certificate( const QByteArray &data, const QString &pin );
 	PKCS12Certificate( const PKCS12Certificate &other );
+	PKCS12Certificate(PKCS12Certificate &&other) Q_DECL_NOEXCEPT;
 	~PKCS12Certificate();
+
+	PKCS12Certificate& operator =(const PKCS12Certificate &other);
+	PKCS12Certificate& operator =(PKCS12Certificate &&other) Q_DECL_NOEXCEPT;
 
 	QList<QSslCertificate> caCertificates() const;
 	QSslCertificate certificate() const;
