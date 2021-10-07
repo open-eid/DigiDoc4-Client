@@ -1944,7 +1944,6 @@ and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
         <source>Sign document</source>
-        <comment>Do not translate to RUS (IB-6416)</comment>
         <translation>Sign document</translation>
     </message>
     <message>
