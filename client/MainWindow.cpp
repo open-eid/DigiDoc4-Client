@@ -128,6 +128,7 @@ MainWindow::MainWindow( QWidget *parent )
 
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::cacheChanged, this, &MainWindow::updateSelector);
+	connect(&QPCSC::instance(), &QPCSC::statusChanged, this, &MainWindow::updateSelector);
 	connect(qApp->signer(), &QSigner::signDataChanged, this, [=](const TokenData &token){
 		updateSelector();
 		updateMyEID(token);
@@ -140,6 +141,7 @@ MainWindow::MainWindow( QWidget *parent )
 		if(cryptoDoc)
 			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(token.cert()));
 	});
+	QPCSC::instance().start();
 
 	// Refresh card info on "My EID" page
 	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
