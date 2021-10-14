@@ -39,15 +39,10 @@ public:
 	~Accordion() final;
 
 	void clear();
-	QString getEmail();
-	void setFocusToEmail();
 	void updateInfo(const SslCertificate &info);
 	void updateInfo(const QSmartCardData &data);
-	bool updateOtherData(const QByteArray &data);
 
 Q_SIGNALS:
-	void checkEMail();
-	void activateEMail();
 	void changePin1Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
 	void changePukClicked();

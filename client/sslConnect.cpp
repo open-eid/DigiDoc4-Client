@@ -79,33 +79,17 @@ SSLConnect::~SSLConnect()
 	delete d;
 }
 
-QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
+QByteArray SSLConnect::getUrl()
 {
 	QJsonObject obj;
 #ifdef CONFIG_URL
 	obj = Configuration::instance().object();
 #endif
-	QString label = tr("Loading Email info");
-	QByteArray contentType = "application/xml";
 	QNetworkRequest req;
 	req.setSslConfiguration(d->ssl);
 	req.setRawHeader("User-Agent", QString(QStringLiteral("%1/%2 (%3)"))
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
-	switch(type)
-	{
-	case EmailInfo:
-		req.setUrl(obj.value(QLatin1String("EMAIL-REDIRECT-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.naita_suunamised")));
-		break;
-	case ActivateEmails:
-		req.setUrl(obj.value(QLatin1String("EMAIL-ACTIVATE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/postisysteem.lisa_suunamine?=%1")).arg(value));
-		break;
-	case PictureInfo:
-		label = tr("Downloading picture");
-		req.setUrl(obj.value(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
-		contentType = "image/jpeg";
-		break;
-	default: return QByteArray();
-	}
+	req.setUrl(obj.value(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
 
 	QWidget *active = qApp->activeWindow();
 	for(QWidget *w: qApp->topLevelWidgets())
@@ -122,7 +106,7 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 	popup.setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px; font-size: 24px; color: #53c964;"));
 	popup.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	popup.setWordWrap(true);
-	popup.setText(label);
+	popup.setText(tr("Downloading picture"));
 	popup.show();
 
 	QEventLoop e;
@@ -135,7 +119,7 @@ QByteArray SSLConnect::getUrl(RequestType type, const QString &value)
 		d->errorString = reply->errorString();
 		return QByteArray();
 	}
-	if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains(contentType))
+	if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains("image/jpeg"))
 	{
 		d->errorString = tr("Invalid Content-Type");
 		return QByteArray();

@@ -30,7 +30,6 @@
 #include "QSigner.h"
 #include "Styles.h"
 #include "TokenData.h"
-#include "XmlReader.h"
 #include "effects/ButtonHoverFilter.h"
 #include "effects/FadeInNotification.h"
 #include "effects/Overlay.h"
@@ -48,14 +47,15 @@
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
-#include <QLoggingCategory>
-#include <QMessageBox>
-#include <QMimeData>
-#include <QtCore/QUrlQuery>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QMimeData>
 #include <QtCore/QSettings>
+#include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
+#include <QtNetwork/QSslKey>
 #include <QtPrintSupport/QPrinterInfo>
 #include <QtPrintSupport/QPrintPreviewDialog>
+#include <QtWidgets/QMessageBox>
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
@@ -171,8 +171,6 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
-	connect(ui->accordion, &Accordion::checkEMail, this, &MainWindow::getEmailStatus);   // To check e-mail
-	connect(ui->accordion, &Accordion::activateEMail, this, &MainWindow::activateEmail);   // To activate e-mail
 	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
@@ -963,20 +961,25 @@ void MainWindow::photoClicked(const QPixmap &photo)
 	if(!photo.isNull())
 		return savePhoto();
 
-	QByteArray buffer = sendRequest( SSLConnect::PictureInfo );
+	QSslKey key = qApp->signer()->key();
+	QString err;
+	QByteArray buffer;
+	if(!key.isNull())
+	{
+		SSLConnect ssl(qApp->signer()->tokenauth().cert(), key);
+		buffer = ssl.getUrl();
+		qApp->signer()->logout();
+		err = ssl.errorString();
+	}
+	if(!err.isEmpty() || key.isNull())
+		showNotification(tr("Loading picture failed."));
+
 	if( buffer.isEmpty() )
 		return;
 
 	QImage image;
 	if( !image.loadFromData( buffer ) )
-	{
-		XmlReader xml( buffer );
-		QString error;
-		xml.readEmailStatus( error );
-		if( !error.isEmpty() )
-			warnings->showWarning(WarningText(XmlReader::emailErr(error.toUInt())));
 		return;
-	}
 
 	QPixmap pixmap = QPixmap::fromImage( image );
 	ui->cardInfo->showPicture( pixmap );

@@ -37,18 +37,9 @@
         <translation>PIN/PUK И СЕРТИФИКАТЫ</translation>
     </message>
     <message>
-        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>ПЕРЕНАПРАВЛЕНИЕ EESTI.EE ПОЧТЫ</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
         <comment>accessible</comment>
         <translation>PIN/PUK и сертификаты</translation>
-    </message>
-    <message>
-        <source>Redirection of eesti.ee e-mail</source>
-        <comment>accessible</comment>
-        <translation>Перенаправление eesti.ee почты</translation>
     </message>
 </context>
 <context>
@@ -979,7 +970,7 @@
         <translation>Добро пожаловать в Эстонское приложение eID DigiDoc!</translation>
     </message>
     <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</source>
         <translation>DigiDoc создан для управления эстонскими eID и является официальным приложением для цифровой подписи и шифрования.</translation>
     </message>
     <message>
@@ -1099,10 +1090,6 @@
         <translation>В «Мой eID» можно изменить свои PIN1, PIN2 и PUK, и увидеть данные сертификатов. Также можно разблокировать PUK-кодом заблокированный PIN-код.</translation>
     </message>
     <message>
-        <source>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
-        <translation>«Мой eID» дает хороший обзор вашей контактной информации и возможность переадресации электронной почты @eesti.ee на Ваш электронный адрес.</translation>
-    </message>
-    <message>
         <source>Continue</source>
         <extracomment>accessible</extracomment>
         <translation>Продолжить</translation>
@@ -1133,6 +1120,10 @@
     <message>
         <source>Go to encryption intro</source>
         <translation>Перейти к информации о шифровании</translation>
+    </message>
+    <message>
+        <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
+        <translation>&quot;Мой eID&quot; даёт хороший обзор о статусе вставленой в считыватель ID-карты и контактных данных.</translation>
     </message>
 </context>
 <context>
@@ -1616,18 +1607,6 @@ ID-КАРТОЙ</translation>
         <translation>%1-код изменён!</translation>
     </message>
     <message>
-        <source>E-mail address missing or invalid!</source>
-        <translation>Введите адрес эл. почты!</translation>
-    </message>
-    <message>
-        <source>Failed activating email forwards.</source>
-        <translation>Активация перенаправления с эл. почты неуспешна.</translation>
-    </message>
-    <message>
-        <source>Failed loading email settings.</source>
-        <translation>Загрузка настройки эл. почты неуспешна.</translation>
-    </message>
-    <message>
         <source>Loading picture failed.</source>
         <translation>Загрузка картинки неуспешна.</translation>
     </message>
@@ -1668,50 +1647,6 @@ ID-КАРТОЙ</translation>
         <translation>Время запроса %1-кода истекло</translation>
     </message>
     <message>
-        <source>Success</source>
-        <translation>Выполнение успешно</translation>
-    </message>
-    <message>
-        <source>ID-card has not been published by locally recognized verification provider.</source>
-        <translation>ID- карта не была выдана разрешённым сертифицирующим органом.</translation>
-    </message>
-    <message>
-        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Ввели неверный PIN-код, прервали введение PIN-кода, возникли проблемы с сертификатами или отсутствует поддержка ID-карты в браузере.</translation>
-    </message>
-    <message>
-        <source>ID-card certificate is not valid.</source>
-        <translation>Сертификат ID-карты недействителен.</translation>
-    </message>
-    <message>
-        <source>Entrance is permitted only with Estonian personal code.</source>
-        <translation>Вход разрешён только с эстонским личным кодом.</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>There was an error with request to KMA.</source>
-        <translation>В запросе КМА возникла ошибка.</translation>
-    </message>
-    <message>
-        <source>No official email forwarding addresses was found</source>
-        <translation>Не было найдено ни одной официальной пересылки эл. почты</translation>
-    </message>
-    <message>
-        <source>Your email account has been blocked. To open it, please send an email to help@ria.ee.</source>
-        <translation>Ваша учётная запись эл. почты закрыта. Для открытия пошлите письмо на help@ria.ee.</translation>
-    </message>
-    <message>
-        <source>Invalid email address</source>
-        <translation>Неверный адрес эл. почты</translation>
-    </message>
-    <message>
-        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
-        <translation>Переадресация сохранена и Вам послано письмо с ключом активации. Переадресация активна только после введения ключа.</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Подписывание</translation>
     </message>
@@ -1722,10 +1657,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
         <translation>Фото (*.jpg *.jpeg);;Все файлы (*)</translation>
-    </message>
-    <message>
-        <source>There was an error with request to Äriregister.</source>
-        <translation>Возникла ошибка при осуществлении запроса в Коммерческий регистр.</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
@@ -1751,10 +1682,6 @@ ID-КАРТОЙ</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Выбрать раздел Мой eID</translation>
-    </message>
-    <message>
-        <source>Succeeded activating email forwards.</source>
-        <translation>Перенаправление электронной почты успешно активировано.</translation>
     </message>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
@@ -2007,51 +1934,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>Необходимая для использования ID-карты услуга PCSC не работает. Проверьте настройки компьютера.</translation>
-    </message>
-</context>
-<context>
-    <name>OtherData</name>
-    <message>
-        <source>@eesti.ee post</source>
-        <translation>@eesti.ee почта</translation>
-    </message>
-    <message>
-        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
-        <translation>ПРОВЕРИТЬ СОСТОЯНИЕ @EESTI.EE E-ПОЧТЫ</translation>
-    </message>
-    <message>
-        <source>ACTIVATE REDIRECTION</source>
-        <translation>АКТИВИРОВАТЬ ПЕРЕАДРЕСАЦИЮ</translation>
-    </message>
-    <message>
-        <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Ваши почтовые адреса @ eesti.ee переадресованы по электронной почте </translation>
-    </message>
-    <message>
-        <source>active</source>
-        <translation>активно</translation>
-    </message>
-    <message>
-        <source>not active</source>
-        <translation>неактивно</translation>
-    </message>
-    <message>
-        <source>Check @eesti.ee e-mail status</source>
-        <extracomment>accessible</extracomment>
-        <translation>Проверить состояние @eesti.ee e-почты</translation>
-    </message>
-    <message>
-        <source>Activate redirection</source>
-        <extracomment>accessible</extracomment>
-        <translation>Активировать переадресацию</translation>
-    </message>
-    <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
-        <translation>Более подробную информацию по настройке пересылки электронной почты найдёте на портале &lt;a href=&apos;http://www.eesti.ee/ru/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/ru/v-pomos-polzovatelu#uslovia-ispolzovania-uslugi-oficialnogo-poctovogo-asika-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Условия использования&lt;/span&gt;&lt;/a&gt; услуги официального почтового ящика eesti.ee.</translation>
-    </message>
-    <message>
-        <source>To send email to @eesti.ee, please enter your email address:</source>
-        <translation>Чтобы отправить электронное письмо на адрес @eesti.ee, введите ваш адрес электронной почты:</translation>
     </message>
 </context>
 <context>
@@ -2517,10 +2399,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Downloading picture</source>
         <translation>Загрузка картинки</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Загрузка информации электронной почты</translation>
     </message>
     <message>
         <source>Invalid Content-Type</source>

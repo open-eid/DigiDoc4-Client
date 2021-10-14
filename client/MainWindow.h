@@ -53,11 +53,9 @@ signals:
 	void clearPopups();
 
 private Q_SLOTS:
-	void activateEmail ();
 	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked();
-	void getEmailStatus();
 	void open(const QStringList &params, bool crypto, bool sign);
 	void pageSelected(PageIcon *page);
 	void photoClicked(const QPixmap &photo);
@@ -105,7 +103,6 @@ private:
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPage(ria::qdigidoc4::Pages page);
 	void selectPageIcon( PageIcon* page );
-	QByteArray sendRequest(SSLConnect::RequestType type, const QString &param = {});
 	void showCardMenu( bool show );
 	void showNotification( const QString &msg, bool isSuccess = false );
 	void sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign);

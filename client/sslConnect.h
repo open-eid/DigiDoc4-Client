@@ -25,22 +25,16 @@ class QFrame;
 class QSslCertificate;
 class QSslKey;
 
-class SSLConnect: public QNetworkAccessManager
+class SSLConnect final: public QNetworkAccessManager
 {
 	Q_OBJECT
 
 public:
-	enum RequestType {
-		EmailInfo,
-		ActivateEmails,
-		PictureInfo
-	};
-
 	explicit SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject *parent = nullptr);
 	~SSLConnect() final;
 
 	QString errorString() const;
-	QByteArray getUrl(RequestType type, const QString &value = QString());
+	QByteArray getUrl();
 
 private:
 	class Private;

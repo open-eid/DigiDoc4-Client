@@ -37,18 +37,9 @@
         <translation>PIN/PUK CODES AND CERTIFICATES</translation>
     </message>
     <message>
-        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>REDIRECTION OF EESTI.EE E-MAIL</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
         <comment>accessible</comment>
         <translation>PIN/PUK codes and certificates</translation>
-    </message>
-    <message>
-        <source>Redirection of eesti.ee e-mail</source>
-        <comment>accessible</comment>
-        <translation>Redirection of eesti.ee e-mail</translation>
     </message>
 </context>
 <context>
@@ -977,7 +968,7 @@
         <translation>Welcome to the Estonian eID application DigiDoc!</translation>
     </message>
     <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</source>
         <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
     </message>
     <message>
@@ -1097,10 +1088,6 @@
         <translation>Under “My eID“, you will find the option to modify your PIN1, PIN2 and PUK, and you can see the details of the certificates. Here you can also unlock your blocked PIN codes with the PUK code.</translation>
     </message>
     <message>
-        <source>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
-        <translation>“My eID“ also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</translation>
-    </message>
-    <message>
         <source>Continue</source>
         <extracomment>accessible</extracomment>
         <translation>Continue</translation>
@@ -1131,6 +1118,10 @@
     <message>
         <source>Go to encryption intro</source>
         <translation>Go to encryption intro</translation>
+    </message>
+    <message>
+        <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
+        <translation>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</translation>
     </message>
 </context>
 <context>
@@ -1614,18 +1605,6 @@ ID-CARD</translation>
         <translation>%1 changed!</translation>
     </message>
     <message>
-        <source>E-mail address missing or invalid!</source>
-        <translation>E-mail address missing or invalid!</translation>
-    </message>
-    <message>
-        <source>Failed activating email forwards.</source>
-        <translation>Failed activating email forwards.</translation>
-    </message>
-    <message>
-        <source>Failed loading email settings.</source>
-        <translation>Failed loading email settings.</translation>
-    </message>
-    <message>
         <source>Loading picture failed.</source>
         <translation>Loading picture failed.</translation>
     </message>
@@ -1665,50 +1644,6 @@ ID-CARD</translation>
         <translation>%1 timeout</translation>
     </message>
     <message>
-        <source>Success</source>
-        <translation>Success</translation>
-    </message>
-    <message>
-        <source>ID-card has not been published by locally recognized verification provider.</source>
-        <translation>ID-card has not been published by locally recognized verification provider.</translation>
-    </message>
-    <message>
-        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</translation>
-    </message>
-    <message>
-        <source>ID-card certificate is not valid.</source>
-        <translation>ID-card certificate is not valid.</translation>
-    </message>
-    <message>
-        <source>Entrance is permitted only with Estonian personal code.</source>
-        <translation>Entrance is permitted only with Estonian personal code.</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Unknown error</translation>
-    </message>
-    <message>
-        <source>There was an error with request to KMA.</source>
-        <translation>There was an error with request to KMA.</translation>
-    </message>
-    <message>
-        <source>No official email forwarding addresses was found</source>
-        <translation>No official email forwarding addresses was found</translation>
-    </message>
-    <message>
-        <source>Your email account has been blocked. To open it, please send an email to help@ria.ee.</source>
-        <translation>Your email account has been blocked. To open it, please send an email to help@ria.ee.</translation>
-    </message>
-    <message>
-        <source>Invalid email address</source>
-        <translation>Invalid email address</translation>
-    </message>
-    <message>
-        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
-        <translation>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Signing</translation>
     </message>
@@ -1719,10 +1654,6 @@ ID-CARD</translation>
     <message>
         <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
         <translation>Photo (*.jpg *.jpeg);;All Files (*)</translation>
-    </message>
-    <message>
-        <source>There was an error with request to Äriregister.</source>
-        <translation>There was an error with request to Äriregister.</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
@@ -1748,10 +1679,6 @@ ID-CARD</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Select my EID page</translation>
-    </message>
-    <message>
-        <source>Succeeded activating email forwards.</source>
-        <translation>Succeeded activating email forwards.</translation>
     </message>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
@@ -2004,51 +1931,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
-    </message>
-</context>
-<context>
-    <name>OtherData</name>
-    <message>
-        <source>@eesti.ee post</source>
-        <translation>@eesti.ee post</translation>
-    </message>
-    <message>
-        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
-        <translation>CHECK @EESTI.EE E-MAIL STATUS</translation>
-    </message>
-    <message>
-        <source>ACTIVATE REDIRECTION</source>
-        <translation>ACTIVATE REDIRECTION</translation>
-    </message>
-    <message>
-        <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Your @eesti.ee e-mail has been forwarded to </translation>
-    </message>
-    <message>
-        <source>active</source>
-        <translation>active</translation>
-    </message>
-    <message>
-        <source>not active</source>
-        <translation>not active</translation>
-    </message>
-    <message>
-        <source>Check @eesti.ee e-mail status</source>
-        <extracomment>accessible</extracomment>
-        <translation>Check @eesti.ee e-mail status</translation>
-    </message>
-    <message>
-        <source>Activate redirection</source>
-        <extracomment>accessible</extracomment>
-        <translation>Activate redirection</translation>
-    </message>
-    <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
-        <translation>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</translation>
-    </message>
-    <message>
-        <source>To send email to @eesti.ee, please enter your email address:</source>
-        <translation>To send email to @eesti.ee, please enter your email address:</translation>
     </message>
 </context>
 <context>
@@ -2514,10 +2396,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Downloading picture</source>
         <translation>Downloading picture</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Loading Email info</translation>
     </message>
     <message>
         <source>Invalid Content-Type</source>
@@ -3514,7 +3392,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Certificates expire soon! </source>
-        <translation> Certificates expire soon! </translation>
+        <translation>Certificates expire soon! </translation>
     </message>
 </context>
 <context>
