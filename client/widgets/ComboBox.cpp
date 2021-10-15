@@ -41,7 +41,7 @@ void ComboBox::showPopup()
 	popup->move(parentWidget()->mapToGlobal(geometry().topLeft()));
 
 	QVBoxLayout *c = new QVBoxLayout(popup);
-	c->setMargin(0);
+	c->setContentsMargins(0, 0, 0, 0);
 	c->setSpacing(0);
 
 	QWidget *content = new QWidget(popup);
@@ -49,7 +49,7 @@ void ComboBox::showPopup()
 	c->addWidget(content);
 
 	QVBoxLayout *l = new QVBoxLayout(content);
-	l->setMargin(0);
+	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(0);
 	auto addWidget = [=](const QString &text, int index) {
 		QPushButton *b = new QPushButton(text, content);

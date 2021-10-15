@@ -19,13 +19,12 @@
 
 #include "MobileDialog.h"
 #include "ui_MobileDialog.h"
+#include "IKValidator.h"
 #include "Styles.h"
 #include "dialogs/SettingsDialog.h"
 #include "effects/Overlay.h"
 
 #include <QtCore/QSettings>
-
-#include <common/IKValidator.h>
 
 #define COUNTRY_CODE_EST QStringLiteral("372")
 #define COUNTRY_CODE_LTU QStringLiteral("370")
@@ -61,12 +60,12 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	// Mobile
 	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
 	ui->idCode->setText(QSettings().value(QStringLiteral("MobileCode")).toString());
-	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
 	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
-	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
-	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, [=](bool checked) {

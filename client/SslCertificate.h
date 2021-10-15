@@ -87,7 +87,6 @@ public:
 	QMultiHash<AuthorityInfoAccess,QString> authorityInfoAccess() const;
 	QByteArray	authorityKeyIdentifier() const;
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
-	QString		friendlyName() const;
 	bool		isCA() const;
 	inline bool isValid() const {
 		const QDateTime currentTime = QDateTime::currentDateTime();
@@ -111,7 +110,11 @@ private:
 	Qt::HANDLE extension( int nid ) const;
 };
 
-uint qHash( const SslCertificate &cert );
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+size_t qHash(const SslCertificate &cert);
+#else
+uint qHash(const SslCertificate &cert);
+#endif
 
 class PKCS12Certificate
 {

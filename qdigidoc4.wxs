@@ -33,6 +33,12 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?define VCVER = "141" ?>
 <?endif?>
 
+<?if $(var.qt_suffix) = "d" ?>
+<?define VCPATH = "$(env.VCTOOLSREDISTDIR)\Debug_NonRedist\$(var.Platform)\Microsoft.VC$(var.VCVER).DebugCRT" ?>
+<?else ?>
+<?define VCPATH = "$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT" ?>
+<?endif ?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
@@ -42,7 +48,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.ico"/>
     <Property Id="APPLICATIONNAME" Value="qdigidoc4"/>
     <Property Id="DESKTOP_SHORTCUT" Value="0"/>
-    <Property Id="TLS12" Value="1"/>
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
       "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first."/>
     <Condition Message="[ProductName] requires Windows 7 or higher.">
@@ -125,64 +130,74 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
             </ProgId>
           </Component>
           <Component Id="Base" Guid="6976e89e-e815-444a-9b1f-5ee63cfe230d">
-            <File Source="$(var.libs_path)\zlib1.dll"/>
-            <File Source="$(var.libs_path)\xerces-c_3_2.dll"/>
-            <File Source="$(var.libs_path)\XalanMessages_1_12.dll"/>
-            <File Source="$(var.libs_path)\Xalan-C_1_12.dll"/>
-            <File Source="$(var.libs_path)\xsec_2_0.dll"/>
-            <File Source="$(var.libs_path)\digidocpp.dll"/>
+            <File Source="$(var.libs_path)\zlib$(var.qt_suffix)1.dll"/>
+            <File Source="$(var.libs_path)\xerces-c_3_2$(var.qt_suffix).dll"/>
+            <File Source="$(var.libs_path)\XalanMessages_1_12$(var.qt_suffix).dll"/>
+            <File Source="$(var.libs_path)\Xalan-C_1_12$(var.qt_suffix).dll"/>
+            <File Source="$(var.libs_path)\xsec_2_0$(var.qt_suffix).dll"/>
+            <File Source="$(var.libs_path)\digidocpp$(var.qt_suffix).dll"/>
             <File Source="$(var.libs_path)\digidoc-tool.exe"/>
             <File Source="$(var.libs_path)\digidocpp.conf"/>
             <File Source="$(var.libs_path)\798.p12"/>
 <?ifdef var.qt_path ?>
-            <File Source="$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp140.dll"/>
-            <File Source="$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140.dll"/>
-<?if $(var.Platform) = x64 AND $(env.VisualStudioVersion) = "16.0" ?>
-            <File Source="$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140_1.dll"/>
+            <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll"/>
+            <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll"/>
+<?if $(var.Platform) = x64 AND $(env.VisualStudioVersion) != "15.0" ?>
+            <File Source="$(var.VCPATH)\msvcp140_1$(var.qt_suffix).dll"/>
+            <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll"/>
+            <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll"/>
 <?endif ?>
             <File Source="$(var.libs_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.libs_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5Core.dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5Gui.dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5Network.dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5PrintSupport.dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5Widgets.dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5WinExtras.dll"/>
-            <File Source="$(var.qt_path)\bin\Qt5Svg.dll"/>
-            <File Source="$(var.qt_path)\bin\libEGL.dll"/>
-            <File Source="$(var.qt_path)\bin\libGLESv2.dll"/>
-            <File Source="$(var.qt_path)\bin\D3DCompiler_47.dll"/>
-            <File Source="$(var.qt_path)\bin\opengl32sw.dll" />
+            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Core$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Gui$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Network$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)PrintSupport$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Svg$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Widgets$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\D3DCompiler_47.dll"/>
+            <File Source="$(var.qt_path)\opengl32sw.dll"/>
+<?if $(var.qt_ver_major) = "5" ?>
+            <File Source="$(var.qt_path)\Qt5WinExtras$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\libEGL$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\libGLESv2$(var.qt_suffix).dll"/>
             <File Source="$(var.qtconf)" />
+<?else ?>
+            <File Source="$(var.qt_path)\Qt6Core5Compat$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll"/>
 <?endif?>
-          </Component>
-          <Component Id="ldapsOnW7" Guid="14397c62-610a-41ee-8168-a70757e71cdc">
-            <Condition><![CDATA[(VersionNT = 601 AND TLS12 = 1)]]></Condition>
-            <RegistryValue Root='HKLM' Type='integer' Name='DisabledByDefault' Value='0'
-                Key='SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'/>
+<?endif?>
           </Component>
           <Directory Id="SchemaFolder" Name="schema"/>
 <?ifdef var.qt_path ?>
-          <Directory Id="platforms" Name="platforms" FileSource="$(var.qt_path)\plugins\platforms">
+          <Directory Id="platforms" Name="platforms" FileSource="$(var.qt_path)\..\plugins\platforms">
             <Component Id="qwindows.dll">
-              <File Name="qwindows.dll"/>
+              <File Name="qwindows$(var.qt_suffix).dll"/>
             </Component>
           </Directory>
-          <Directory Id="styles" Name="styles" FileSource="$(var.qt_path)\plugins\styles">
-            <Component Id="qwindowsvistastyle.dll">
-              <File Name="qwindowsvistastyle.dll"/>
-            </Component>
-          </Directory>
-          <Directory Id="printsupport" Name="printsupport" FileSource="$(var.qt_path)\plugins\printsupport">
+<?if $(var.qt_ver_major) = "5" ?>
+          <Directory Id="printsupport" Name="printsupport" FileSource="$(var.qt_path)\..\plugins\printsupport">
             <Component Id="windowsprintersupport.dll">
-              <File Name="windowsprintersupport.dll"/>
+              <File Name="windowsprintersupport$(var.qt_suffix).dll"/>
             </Component>
           </Directory>
-          <Directory Id="imageformats" Name="imageformats" FileSource="$(var.qt_path)\plugins\imageformats">
+<?else ?>
+          <Directory Id="tls" Name="tls" FileSource="$(var.qt_path)\..\plugins\tls">
+            <Component Id="qopensslbackend.dll">
+              <File Name="qopensslbackend$(var.qt_suffix).dll"/>
+            </Component>
+          </Directory>
+<?endif?>
+          <Directory Id="styles" Name="styles" FileSource="$(var.qt_path)\..\plugins\styles">
+            <Component Id="qwindowsvistastyle.dll">
+              <File Name="qwindowsvistastyle$(var.qt_suffix).dll"/>
+            </Component>
+          </Directory>
+          <Directory Id="imageformats" Name="imageformats" FileSource="$(var.qt_path)\..\plugins\imageformats">
             <Component Id="imageformats.dll" Guid="2796915c-6255-4569-97cc-12fa979c4777">
-              <File Name="qgif.dll"/>
-              <File Name="qjpeg.dll"/>
-              <File Name="qsvg.dll"/>
+              <File Name="qgif$(var.qt_suffix).dll"/>
+              <File Name="qjpeg$(var.qt_suffix).dll"/>
+              <File Name="qsvg$(var.qt_suffix).dll"/>
             </Component>
           </Directory>
 <?endif?>
@@ -195,12 +210,15 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
       <ComponentRef Id="DesktopShortcut4" />
       <ComponentRef Id="Application4"/>
       <ComponentRef Id="Base"/>
-      <ComponentRef Id="ldapsOnW7"/>
       <ComponentGroupRef Id="Schemas"/>
 <?ifdef var.qt_path ?>
       <ComponentRef Id="qwindows.dll" />
       <ComponentRef Id="qwindowsvistastyle.dll" />
+<?if $(var.qt_ver_major) = "5" ?>
       <ComponentRef Id="windowsprintersupport.dll" />
+<?else ?>
+      <ComponentRef Id="qopensslbackend.dll" />
+<?endif?>
       <ComponentRef Id="imageformats.dll" />
 <?endif?>
     </Feature>

@@ -32,7 +32,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QTextDocument>
-#include <QtSvg/QSvgWidget>
+#include <QSvgWidget>
 
 using namespace ria::qdigidoc4;
 

@@ -47,6 +47,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
 #include <QtCore/QSettings>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QThreadPool>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QNetworkProxy>

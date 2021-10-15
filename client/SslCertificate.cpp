@@ -30,6 +30,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QHash>
 #include <QtCore/QMap>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QStringList>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
@@ -59,7 +60,11 @@ static QByteArray i2dDer(Func func, Arg arg)
 	return der;
 }
 
-uint qHash( const SslCertificate &cert ) { return qHash( cert.digest() ); }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+size_t qHash(const SslCertificate &cert) { return qHash(cert.digest()); }
+#else
+uint qHash(const SslCertificate &cert) { return qHash(cert.digest()); }
+#endif
 
 SslCertificate::SslCertificate() = default;
 
@@ -149,25 +154,6 @@ QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage
 		}
 	}
 	return list;
-}
-
-QString SslCertificate::friendlyName() const
-{
-	QString cn = subjectInfo(QSslCertificate::CommonName);
-	QString o = subjectInfo(QSslCertificate::Organization);
-	QRegExp rx("ESTEID \\((.*)\\)");
-	if(rx.indexIn(o) != -1)
-		return QStringLiteral("%1,%2").arg(cn, rx.cap(1));
-	if(o == QStringLiteral("ESTEID"))
-		return QStringLiteral("%1,%2").arg(cn, tr("ID-CARD"));
-	int certType = type();
-	if(certType & SslCertificate::EResidentSubType)
-		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID E-RESIDENT"));
-	if(certType & SslCertificate::DigiIDType)
-		return QStringLiteral("%1,%2").arg(cn, tr("Digi-ID"));
-	if(certType & SslCertificate::EstEidType)
-		return QStringLiteral("%1,%2").arg(cn, tr("ID-CARD"));
-	return cn;
 }
 
 bool SslCertificate::isCA() const
@@ -300,14 +286,15 @@ QByteArray SslCertificate::toHex( const QByteArray &in, QChar separator )
 
 QString SslCertificate::toString( const QString &format ) const
 {
-	QRegExp r( "[a-zA-Z]+" );
+	QRegularExpression r(QStringLiteral("[a-zA-Z]+"));
 	QString ret = format;
+	QRegularExpressionMatch match;
 	int pos = 0;
-	while( (pos = r.indexIn( ret, pos )) != -1 )
-	{
-		QString si = r.cap(0) == QStringLiteral("serialNumber") ? personalCode() : subjectInfo(r.cap(0).toLatin1());
-		ret.replace( pos, r.cap(0).size(), si );
-		pos += si.size();
+	while((match = r.match(ret, pos)).hasMatch()) {
+		QString cap = match.captured();
+		QString si = cap == QStringLiteral("serialNumber") ? personalCode() : subjectInfo(cap.toLatin1());
+		ret.replace(match.capturedStart(), cap.size(), si);
+		pos = match.capturedStart() + si.size();
 	}
 	return ret;
 }

@@ -29,20 +29,18 @@
 int main(int argc, char *argv[])
 {
 	QCoreApplication a(argc, argv);
-	QStringList territories = a.arguments();
+	QStringList territories = QCoreApplication::arguments();
 	territories.removeFirst();
-	QString path = territories.first();
-	territories.removeFirst();
-	QString url = territories.first();
-	territories.removeFirst();
+	QString path = territories.takeFirst();
+	QString url = territories.takeFirst();
 
 	QNetworkAccessManager m;
-	QObject::connect(&m, &QNetworkAccessManager::sslErrors, [](QNetworkReply *r, const QList<QSslError> &errors){
+	QObject::connect(&m, &QNetworkAccessManager::sslErrors, &m, [](QNetworkReply *r, const QList<QSslError> &errors){
 		r->ignoreSslErrors(errors);
 	});
 
 	QNetworkReply *r = m.get(QNetworkRequest(QUrl(url)));
-	QObject::connect(r, &QNetworkReply::finished, [&](){
+	QObject::connect(r, &QNetworkReply::finished, r, [&] {
 		QFile f(path + "/" + r->request().url().fileName());
 		if(f.open(QFile::ReadWrite))
 			f.write(r->readAll());
@@ -54,16 +52,18 @@ int main(int argc, char *argv[])
 		{
 			if(!xml.isStartElement())
 				continue;
-			if(xml.name() == "TSLLocation")
+			if(xml.name() == QLatin1String("TSLLocation"))
 				url = xml.readElementText();
-			else if( xml.name() == "SchemeTerritory")
+			else if( xml.name() ==  QLatin1String("SchemeTerritory"))
 				territory = xml.readElementText();
-			else if(xml.name() == "MimeType" && xml.readElementText() == "application/vnd.etsi.tsl+xml" && territories.contains(territory))
+			else if(xml.name() ==  QLatin1String("MimeType") &&
+					 xml.readElementText() == QLatin1String("application/vnd.etsi.tsl+xml") &&
+				territories.contains(territory))
 			{
 				QNetworkReply *rt = m.get(QNetworkRequest(QUrl(url)));
 				QEventLoop e;
 				QObject::connect(rt, &QNetworkReply::finished, [&](){
-					QFile t(path + "/" + territory + ".xml");
+					QFile t(QStringLiteral("%1/%2.xml").arg(path, territory));
 					if(t.open(QFile::WriteOnly))
 						t.write(rt->readAll());
 					e.quit();
@@ -77,16 +77,16 @@ int main(int argc, char *argv[])
 		QFile o(path + "/TSL.qrc");
 		o.open(QFile::WriteOnly);
 		QXmlStreamWriter w(&o);
-		w.writeStartElement("RCC");
-		w.writeStartElement("qresource");
-		w.writeAttribute("prefix", "TSL");
-		w.writeTextElement("file", r->request().url().fileName());
+		w.writeStartElement(QStringLiteral("RCC"));
+		w.writeStartElement(QStringLiteral("qresource"));
+		w.writeAttribute(QStringLiteral("prefix"), QStringLiteral("TSL"));
+		w.writeTextElement(QStringLiteral("file"), r->request().url().fileName());
 		for(const QString &territory: territories)
-			w.writeTextElement("file", territory + ".xml");
+			w.writeTextElement(QStringLiteral("file"), territory + ".xml");
 		w.writeEndElement();
 		w.writeEndElement();
 
-		a.quit();
+		QCoreApplication::quit();
 	});
-	return a.exec();
+	return QCoreApplication::exec();
 }

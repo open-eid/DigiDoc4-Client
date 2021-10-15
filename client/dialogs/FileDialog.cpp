@@ -23,6 +23,7 @@
 #include "dialogs/WarningDialog.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QSettings>
@@ -338,11 +339,11 @@ QString FileDialog::safeName(const QString &file)
 										"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
 	if(disabled.contains(info.baseName(), Qt::CaseInsensitive))
 		filename = QStringLiteral("___.") + info.suffix();
-	filename.replace(QRegExp(QStringLiteral("[\\\\/*:?\"<>|]")), QStringLiteral("_"));
+	filename.replace(QRegularExpression(QStringLiteral("[\\\\/*:?\"<>|]")), QStringLiteral("_"));
 #elif defined(Q_OS_MAC)
-	filename.replace(QRegExp(QStringLiteral("[\\\\/:]")), QStringLiteral("_"));
+	filename.replace(QRegularExpression(QStringLiteral("[\\\\/:]")), QStringLiteral("_"));
 #else
-	filename.replace(QRegExp(QStringLiteral("[\\\\/]")), QStringLiteral("_"));
+	filename.replace(QRegularExpression(QStringLiteral("[\\\\/]")), QStringLiteral("_"));
 #endif
 	return filename;
 }

@@ -34,7 +34,7 @@ jobs:
       run: |
         QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
         cmake \
-          -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 \
+          -DCMAKE_PREFIX_PATH=${QT_DIR} \
           -DOPENSSL_ROOT_DIR=/Library/Developer/OpenSSL \
           -DLDAP_ROOT=/Library/Developer/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -B build -S .
@@ -133,10 +133,9 @@ jobs:
     strategy:
       matrix:
         vcver: [141, 142, 143]
-        arch: [x86, x64]
+        arch: [x64]
+        qtver: [5.12.12]
         include:
-        - arch: x86
-          qt: win32_msvc2017
         - arch: x64
           qt: win64_msvc2017_64
         - vcver: 141
@@ -147,7 +146,20 @@ jobs:
           toolset: 14.29
         - vcver: 143
           image: windows-2022
-          toolset: 14.31
+          toolset: 14.32
+        - vcver: 142
+          arch: x86
+          qtver: 5.12.12
+          qt: win32_msvc2017
+          image: windows-2019
+          toolset: 14.29
+        - vcver: 142
+          arch: x64
+          qtver: 6.3.0
+          qtmodules: qt5compat
+          qt: win64_msvc2019_64
+          image: windows-2019
+          toolset: 14.29
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -176,8 +188,9 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.12.12'
+        version: ${{ matrix.qtver }}
         arch: ${{ matrix.qt }}
+        modules: ${{ matrix.qtmodules }}
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:

@@ -106,7 +106,6 @@ bool MainAction::eventFilter(QObject *watched, QEvent *event)
 			QToolButton *button = qobject_cast<QToolButton*>(watched);
 			QPainter painter(button);
 			painter.setRenderHint(QPainter::Antialiasing);
-			painter.setRenderHint(QPainter::HighQualityAntialiasing);
 			if(ui->otherCards->property("pressed").toBool())
 				painter.fillRect(button->rect(), QStringLiteral("#41B6E6"));
 			else if(button->rect().contains(button->mapFromGlobal(QCursor::pos())))

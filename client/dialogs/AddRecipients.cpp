@@ -24,6 +24,7 @@
 #include "Application.h"
 #include "common_enums.h"
 #include "FileDialog.h"
+#include "IKValidator.h"
 #include "LdapSearch.h"
 #include "QSigner.h"
 #include "Styles.h"
@@ -32,7 +33,6 @@
 #include "effects/Overlay.h"
 
 #include <common/Configuration.h>
-#include <common/IKValidator.h>
 
 #include <QDebug>
 #include <QDateTime>
@@ -99,12 +99,12 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 		return;
 
 	QXmlStreamReader xml( &f );
-	if( !xml.readNextStartElement() || xml.name() != "History" )
+	if(!xml.readNextStartElement() || xml.name() != QStringLiteral("History"))
 		return;
 
 	while( xml.readNextStartElement() )
 	{
-		if( xml.name() == "item" )
+		if(xml.name() == QStringLiteral("item"))
 		{
 			historyCertData.append({
 				xml.attributes().value( "CN" ).toString(),
@@ -317,7 +317,7 @@ QString AddRecipients::path() const
 	QFileInfo f( s.fileName() );
 	return f.absolutePath() + "/" + f.baseName() + "/certhistory.xml";
 #else
-	return QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/certhistory.xml";
+	return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/certhistory.xml";
 #endif
 }
 
@@ -394,14 +394,15 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	ui->confirm->setDefault(false);
 	ui->confirm->setAutoDefault(false);
-	QRegExp isDigit( "\\d*" );
 
 	QVariantMap userData {
 		{"type", type},
 		{"select", select}
 	};
 	QString cleanTerm = term.simplified();
-	if(isDigit.exactMatch(cleanTerm) && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
+	bool isDigit = false;
+	cleanTerm.toULong(&isDigit);
+	if(isDigit && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
 	{
 		if(cleanTerm.size() == 11)
 		{

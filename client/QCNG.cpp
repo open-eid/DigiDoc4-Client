@@ -161,7 +161,7 @@ QList<TokenData> QCNG::tokens() const
 	{
 		QString provider = QString::fromWCharArray(providers[i].pszName);
 		qWarning() << "Found provider" << provider;
-		if(provider == MS_SMART_CARD_KEY_STORAGE_PROVIDER)
+		if(provider == QString::fromWCharArray(MS_SMART_CARD_KEY_STORAGE_PROVIDER))
 		{
 			for( const QString &reader: QPCSC::instance().readers() )
 			{
@@ -201,7 +201,7 @@ QByteArray QCNG::sign( int method, const QByteArray &digest ) const
 	DWORD size = 0;
 	QByteArray res;
 	NCRYPT_KEY_HANDLE k = d->key();
-	QString algo(5, 0);
+	QString algo(5, '\0');
 	SECURITY_STATUS err = NCryptGetProperty(k, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
 	algo.resize(size/2 - 1);
 	bool isRSA = algo == QStringLiteral("RSA");

@@ -37,7 +37,6 @@ void RadioButton::paintEvent(QPaintEvent *event)
 	rect.adjust(1, 1, -1, -1);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setRenderHint(QPainter::HighQualityAntialiasing);
 	painter.fillRect(rect, Qt::white);
 	painter.setPen(QStringLiteral("#AAADAD"));
 	painter.drawEllipse(rect);

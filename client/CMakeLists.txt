@@ -1,16 +1,18 @@
 set_app_name( PROGNAME qdigidoc4 )
 
 add_executable( TSLDownload TSLDownload.cpp )
-target_link_libraries( TSLDownload Qt5::Network )
+target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
+get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 add_custom_command(
 	OUTPUT TSL.qrc
 	DEPENDS TSLDownload
 	COMMAND $<TARGET_FILE:TSLDownload> "${CMAKE_CURRENT_BINARY_DIR}" ${TSL_URL} ${TSL_INCLUDE}
-	WORKING_DIRECTORY ${_qt5Core_install_prefix}/bin
+	WORKING_DIRECTORY ${qtCore_install_prefix}
 )
 
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
-qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/ru.ts )
+qt_add_translation(SOURCES translations/en.ts translations/et.ts translations/ru.ts)
 
 add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${PROGNAME}.rc
@@ -28,6 +30,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	Diagnostics.cpp
 	DiagnosticsTask.cpp
 	DocumentModel.cpp
+	IKValidator.cpp
 	MainWindow.ui
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
@@ -102,6 +105,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/InfoStack.ui
 	widgets/InfoStack.cpp
 	widgets/LabelButton.cpp
+	widgets/LineEdit.cpp
 	widgets/MainAction.ui
 	widgets/MainAction.cpp
 	widgets/NoCardInfo.ui
@@ -123,11 +127,21 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 
 target_link_libraries( ${PROGNAME}
 	qdigidoccommon
-	Qt5::PrintSupport
-	Qt5::Svg
+	Qt${QT_VERSION_MAJOR}::PrintSupport
+	Qt${QT_VERSION_MAJOR}::Svg
 	${LIBDIGIDOCPP_LIBRARY}
 	${LDAP_LIBRARIES}
 )
+
+if(${QT_VERSION_MAJOR} STREQUAL "6")
+	find_package(Qt6 COMPONENTS Core5Compat SvgWidgets REQUIRED)
+	target_link_libraries(${PROGNAME} Qt6::Core5Compat Qt6::SvgWidgets)
+elseif(WIN32)
+	find_package(Qt5 COMPONENTS WinExtras)
+	target_compile_definitions(${PROGNAME} PRIVATE QT_WIN_EXTRAS)
+	target_link_libraries(${PROGNAME} Qt5::WinExtras)
+endif()
+
 set_target_properties(${PROGNAME} PROPERTIES
 	AUTOUIC ON
 	AUTORCC ON
@@ -156,7 +170,7 @@ if( APPLE )
 		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
 	)
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
-		COMMAND ${_qt5Core_install_prefix}/bin/macdeployqt $<TARGET_BUNDLE_DIR:${PROGNAME}>
+		COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROGNAME}>
 		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
@@ -197,8 +211,7 @@ elseif(WIN32)
 	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp Diagnostics_win.cpp)
 	target_compile_options(${PROGNAME} PRIVATE "/guard:cf")
 	target_link_options(${PROGNAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
-	find_package( Qt5 COMPONENTS WinExtras )
-	target_link_libraries( ${PROGNAME} Qt5::WinExtras NCrypt Crypt32 Cryptui )
+	target_link_libraries(${PROGNAME} NCrypt Crypt32 Cryptui)
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
@@ -210,19 +223,20 @@ elseif(WIN32)
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
 		-dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
-		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
-		${CMAKE_MODULE_PATH}/WelcomeDlg2.wxs ${CMAKE_MODULE_PATH}/WixUI_Minimal2.wxs)
+		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs
+		-dqt_ver_major=${QT_VERSION_MAJOR} -dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
+		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
-		-dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
-		-dWixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp)
+		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
+		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
 	add_custom_target(msi DEPENDS ${PROGNAME}
 		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
 		COMMAND ${CANDLE_CMD}
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.msi"
 		#Build MSI with QT
-		COMMAND ${CANDLE_CMD} -dqt_path=${_qt5Core_install_prefix}
+		COMMAND ${CANDLE_CMD} -dqt_path=${qtCore_install_prefix}
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.qt.msi"
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -259,7 +273,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidocpp.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Assets appx/Assets
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
-		COMMAND ${_qt5Core_install_prefix}/bin/windeployqt --no-translations --no-compiler-runtime --no-patchqt appx
+		COMMAND ${qtCore_install_prefix}/windeployqt --no-translations --no-compiler-runtime --no-patchqt appx
 		COMMAND ${CMAKE_COMMAND} -E remove_directory appx/bearer
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx

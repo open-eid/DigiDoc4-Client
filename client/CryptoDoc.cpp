@@ -33,6 +33,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QMimeData>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QtEndian>
 #include <QtCore/QThread>
@@ -82,7 +83,11 @@ public:
 	QByteArray crypto(const EVP_CIPHER *cipher, const QByteArray &data, bool encrypt);
 
 	bool isEncryptedWarning();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QByteArray fromBase64(const QStringView &data);
+#else
 	QByteArray fromBase64(const QStringRef &data);
+#endif
 	static bool opensslError(bool err);
 	QByteArray readCDoc(QIODevice *cdoc, bool data);
 	void readDDoc(QIODevice *ddoc);
@@ -266,7 +271,11 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 	return result;
 }
 
-QByteArray CryptoDoc::Private::fromBase64( const QStringRef &data )
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+QByteArray CryptoDoc::Private::fromBase64(const QStringView &data)
+#else
+QByteArray CryptoDoc::Private::fromBase64(const QStringRef &data)
+#endif
 {
 	unsigned int buf = 0;
 	int nbits = 0;
@@ -480,10 +489,10 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 		if(data)
 		{
 			// EncryptedData/KeyInfo
-			if(xml.name() == "KeyInfo")
+			if(xml.name() == QStringLiteral("KeyInfo"))
 				xml.skipCurrentElement();
 			// EncryptedData/CipherData/CipherValue
-			else if(xml.name() == "CipherValue")
+			else if(xml.name() == QStringLiteral("CipherValue"))
 			{
 				xml.readNext();
 				return fromBase64(xml.text());
@@ -492,16 +501,16 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 		}
 
 		// EncryptedData
-		if( xml.name() == "EncryptedData")
+		if(xml.name() == QStringLiteral("EncryptedData"))
 			mime = xml.attributes().value(QStringLiteral("MimeType")).toString();
 		// EncryptedData/EncryptionProperties/EncryptionProperty
-		else if( xml.name() == "EncryptionProperty" )
+		else if(xml.name() == QStringLiteral("EncryptionProperty"))
 		{
 			for( const QXmlStreamAttribute &attr: xml.attributes() )
 			{
-				if( attr.name() != "Name" )
+				if(attr.name() != QStringLiteral("Name"))
 					continue;
-				if( attr.value() == "orig_file" )
+				if(attr.value() == QStringLiteral("orig_file"))
 				{
 					QStringList fileparts = xml.readElementText().split('|');
 					File file;
@@ -516,10 +525,10 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 			}
 		}
 		// EncryptedData/EncryptionMethod
-		else if( xml.name() == "EncryptionMethod" )
+		else if(xml.name() == QStringLiteral("EncryptionMethod"))
 			method = xml.attributes().value(QStringLiteral("Algorithm")).toString();
 		// EncryptedData/KeyInfo/EncryptedKey
-		else if( xml.name() == "EncryptedKey" )
+		else if(xml.name() == QStringLiteral("EncryptedKey"))
 		{
 			CKey key;
 			key.id = xml.attributes().value(QStringLiteral("Id")).toString();
@@ -718,7 +727,7 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 			writeBase64Element(w, DENC, QStringLiteral("CipherValue"), encryptedData);
 		});
 		writeElement(w, DENC, QStringLiteral("EncryptionProperties"), [&]{
-			for(QHash<QString,QString>::const_iterator i = props.constBegin(); i != props.constEnd(); ++i)
+			for(QMultiHash<QString,QString>::const_iterator i = props.constBegin(); i != props.constEnd(); ++i)
 				writeElement(w, DENC, QStringLiteral("EncryptionProperty"), {{"Name", i.key()}}, [&]{ w.writeCharacters(i.value()); });
 		});
 	});
@@ -744,7 +753,7 @@ void CryptoDoc::Private::readDDoc(QIODevice *ddoc)
 		default: continue;
 		}
 
-		if(x.name() == "DataFile")
+		if(x.name() == QStringLiteral("DataFile"))
 		{
 			File file;
 			file.name = x.attributes().value(QStringLiteral("Filename")).toString().normalized(QString::NormalizationForm_C);
@@ -755,7 +764,7 @@ void CryptoDoc::Private::readDDoc(QIODevice *ddoc)
 			file.size = FileDialog::fileSize(quint64(file.data.size()));
 			files << file;
 		}
-		else if(x.name() == "Signature")
+		else if(x.name() == QStringLiteral("Signature"))
 			hasSignature = true;
 	}
 	qCDebug(CRYPTO) << "Container contains signature" << hasSignature;
@@ -934,7 +943,25 @@ QString CDocumentModel::save(int row, const QString &path) const
 void CKey::setCert( const QSslCertificate &c )
 {
 	cert = c;
-	recipient = SslCertificate(c).friendlyName();
+	recipient = [](const SslCertificate &c) {
+		QString cn = c.subjectInfo(QSslCertificate::CommonName);
+		QString o = c.subjectInfo(QSslCertificate::Organization);
+
+		QRegularExpression rx("ESTEID \\((.*)\\)");
+		QRegularExpressionMatch match = rx.match(o);
+		if(match.hasMatch())
+			return QStringLiteral("%1,%2").arg(cn, match.captured(1));
+		if(o == QStringLiteral("ESTEID"))
+			return QStringLiteral("%1,%2").arg(cn, CryptoDoc::tr("ID-CARD"));
+		int certType = c.type();
+		if(certType & SslCertificate::EResidentSubType)
+			return QStringLiteral("%1,%2").arg(cn, CryptoDoc::tr("Digi-ID E-RESIDENT"));
+		if(certType & SslCertificate::DigiIDType)
+			return QStringLiteral("%1,%2").arg(cn, CryptoDoc::tr("Digi-ID"));
+		if(certType & SslCertificate::EstEidType)
+			return QStringLiteral("%1,%2").arg(cn, CryptoDoc::tr("ID-CARD"));
+		return cn;
+	}(c);
 }
 
 

@@ -730,7 +730,7 @@ QPushButton {
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="txtTimeStamp">
+        <widget class="LineEdit" name="txtTimeStamp">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -815,7 +815,7 @@ QPushButton {
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="txtMIDUUID">
+        <widget class="LineEdit" name="txtMIDUUID">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -1371,15 +1371,20 @@ QPushButton:disabled {
  </widget>
  <customwidgets>
   <customwidget>
+   <class>CheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>widgets/CheckBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>widgets/LineEdit.h</header>
+  </customwidget>
+  <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
    <header location="global">QSvgWidget</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>widgets/CheckBox.h</header>
   </customwidget>
   <customwidget>
    <class>RadioButton</class>
