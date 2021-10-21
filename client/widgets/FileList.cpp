@@ -150,8 +150,8 @@ void FileList::save(FileItem *item)
 	{
 		QString extension = QFileInfo(item->getFile()).suffix();
 		QString capitalized = extension[0].toUpper() + extension.mid(1);
-		QString dest = FileDialog::getSaveFileName(this,
-			tr("Save file"), QFileInfo(container).dir().absolutePath() + QDir::separator() + item->getFile(),
+		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
+			QFileInfo(container).dir().absolutePath() + QDir::separator() + FileDialog::safeName(item->getFile()),
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 
 		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
@@ -166,14 +166,14 @@ void FileList::save(FileItem *item)
 
 void FileList::saveAll()
 {
-	QString dir = FileDialog::getExistingDirectory( this,
-		tr("Select folder where files will be stored") );
+	QString dir = QDir::toNativeSeparators(FileDialog::getExistingDirectory(this,
+		tr("Select folder where files will be stored")));
 	if( dir.isEmpty() )
 		return;
 	int b = QMessageBox::No;	// default
 	for( int i = 0; i < documentModel->rowCount(); ++i )
 	{
-		QString dest = dir + QDir::separator() + documentModel->data(i);
+		QString dest = dir + QDir::separator() + FileDialog::safeName(documentModel->data(i));
 		if( QFile::exists( dest ) )
 		{
 			if( b == QMessageBox::YesToAll )

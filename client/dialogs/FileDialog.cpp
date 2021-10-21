@@ -133,6 +133,8 @@ int FileDialog::fileZone(const QString &path)
 		SUCCEEDED(spf->Load(LPCWSTR(QDir::toNativeSeparators(path).utf16()), STGM_READ)) &&
 		SUCCEEDED(spzi->GetId(&dwZone)))
 		return int(dwZone);
+#else
+	Q_UNUSED(path)
 #endif
 	return -1;
 }
@@ -323,8 +325,14 @@ QString FileDialog::tempPath(const QString &file)
 
 QString FileDialog::safeName(const QString &file)
 {
-	QString filename = file;
+	QFileInfo info(file);
+	QString filename = info.fileName();
 #if defined(Q_OS_WIN)
+	static const QStringList disabled { "CON", "PRN", "AUX", "NUL",
+									  "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+									  "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+	if(disabled.contains(info.baseName(), Qt::CaseInsensitive))
+		filename = QStringLiteral("___.") + info.suffix();
 	filename.replace(QRegExp(QStringLiteral("[\\\\/*:?\"<>|]")), QStringLiteral("_"));
 #elif defined(Q_OS_MAC)
 	filename.replace(QRegExp(QStringLiteral("[\\\\/:]")), QStringLiteral("_"));
