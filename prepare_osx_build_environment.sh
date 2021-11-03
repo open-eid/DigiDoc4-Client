@@ -6,10 +6,10 @@ set -e
 ######### Versions of libraries/frameworks to be compiled
 QT_VER="5.12.11"
 OPENSSL_VER="1.1.1l"
-OPENLDAP_VER="2.5.7"
+OPENLDAP_VER="2.6.0"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-: ${MACOSX_DEPLOYMENT_TARGET:="10.13"}
+: ${MACOSX_DEPLOYMENT_TARGET:="10.14"}
 export MACOSX_DEPLOYMENT_TARGET
 
 while [[ $# -gt 0 ]]
@@ -151,10 +151,9 @@ if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
     curl -O -L http://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
     tar xf openldap-${OPENLDAP_VER}.tgz
     cd openldap-${OPENLDAP_VER}
-    patch -Np1 -i ${SCRIPTPATH}/openldap.patch
     ARCH="-arch x86_64 -arch arm64"
-    CFLAGS="${ARCH}" CXXFLAGS="${ARCH}" LDFLAGS="${ARCH} -L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure -prefix ${OPENLDAP_PATH} \
-        --enable-static --disable-shared --disable-syslog --disable-proctitle --disable-local --disable-slapd \
+    CFLAGS="${ARCH}" CXXFLAGS="${ARCH}" LDFLAGS="${ARCH} -L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure \
+        --prefix ${OPENLDAP_PATH} --enable-static --disable-shared --disable-syslog --disable-local --disable-slapd \
         --without-threads --without-cyrus-sasl --with-tls=openssl
     make
     make install
