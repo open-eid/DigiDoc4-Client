@@ -30,7 +30,7 @@ class FileItem final : public Item
 	Q_OBJECT
 
 public:
-	explicit FileItem(const QString& file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
+	explicit FileItem(QString file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~FileItem() final;
 
 	QString getFile();
