@@ -160,7 +160,7 @@ QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 	if(key.size() != 1)
 		return result;
 
-	CK_MECHANISM mech = { CKM_RSA_PKCS, nullptr, 0 };
+	CK_MECHANISM mech = { CKM_SHA256_RSA_PKCS, nullptr, 0 };
 	if(d->f->C_DecryptInit(d->session, &mech, key[0]) != CKR_OK)
 		return result;
 
@@ -355,8 +355,6 @@ bool QPKCS11::reload()
 		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3B7D94000080318065B08311C0A983009000" },
 #else
 		{ "opensc-pkcs11.so", QByteArray() },
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" },
 #if Q_PROCESSOR_WORDSIZE == 8
 		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" },
 		{ "/usr/lib64/pwpw-card-pkcs11.so", "3B7D94000080318065B08311C0A983009000" },
@@ -396,7 +394,7 @@ QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
 	CK_ATTRIBUTE attribute = { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
 	d->f->C_GetAttributeValue(d->session, key[0], &attribute, 1);
 
-	CK_MECHANISM mech = { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, nullptr, 0 };
+	CK_MECHANISM mech = { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_SHA256_RSA_PKCS, nullptr, 0 };
 	if(d->f->C_SignInit(d->session, &mech, key[0]) != CKR_OK)
 		return sig;
 
