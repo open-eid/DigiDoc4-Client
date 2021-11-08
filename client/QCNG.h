@@ -40,7 +40,7 @@ public:
 	PinStatus lastError() const final;
 	PinStatus login(const TokenData &token) final;
 	void logout() final {}
-	QByteArray sign(int method, const QByteArray &digest) const final;
+	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 private:
 	QByteArray derive(const QByteArray &publicKey, std::function<long (NCRYPT_SECRET_HANDLE, QByteArray &)> &&func) const;

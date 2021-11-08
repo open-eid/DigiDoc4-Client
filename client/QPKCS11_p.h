@@ -40,6 +40,7 @@ public:
 	bool			isFinDriver = false;
 	CK_SESSION_HANDLE session = 0;
 	QByteArray		id;
+	bool			isPSS = false;
 
 	void run() override;
 	CK_RV result = CKR_OK;

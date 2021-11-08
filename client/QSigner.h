@@ -22,6 +22,8 @@
 #include <QtCore/QThread>
 #include <digidocpp/crypto/Signer.h>
 
+#include <QCryptographicHash>
+
 #include <functional>
 
 class QCryptoBackend;
@@ -58,6 +60,7 @@ Q_SIGNALS:
 
 private:
 	static bool cardsOrder(const TokenData &s1, const TokenData &s2);
+	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 	void run() final;
 
 	class Private;

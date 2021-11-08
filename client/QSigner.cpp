@@ -30,13 +30,13 @@
 #include "SslCertificate.h"
 #include "Utils.h"
 
+#include <digidocpp/Conf.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QRegularExpression>
 #include <QtNetwork/QSslKey>
 
-#include <openssl/obj_mac.h>
 #include <openssl/ecdsa.h>
 
 #include <memory>
@@ -61,7 +61,7 @@ ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_l
 		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 {
 	QCryptoBackend *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
-	QByteArray result = backend->sign(NID_sha256, QByteArray::fromRawData((const char*)dgst, dgst_len));
+	QByteArray result = backend->sign(QCryptographicHash::Sha512, QByteArray::fromRawData((const char*)dgst, dgst_len));
 	if(result.isEmpty())
 		return nullptr;
 	QByteArray r = result.left(result.size()/2);
@@ -92,6 +92,21 @@ QSigner::QSigner(QObject *parent)
 	d->smartcard = new QSmartCard(parent);
 	connect(this, &QSigner::error, qApp, [](const QString &msg) {
 		qApp->showWarning(msg);
+	});
+	connect(this, &QSigner::signDataChanged, this, [this](const TokenData &token) {
+		std::string method = (CONF(signatureDigestUri));
+		if(token.data(QStringLiteral("PSS")).toBool())
+		{
+			switch(methodToNID(method))
+			{
+			case QCryptographicHash::Sha224: method = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1"; break;
+			case QCryptographicHash::Sha256: method = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1"; break;
+			case QCryptographicHash::Sha384: method = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1"; break;
+			case QCryptographicHash::Sha512: method = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"; break;
+			default: break;
+			}
+		}
+		setMethod(method);
 	});
 	start();
 }
@@ -249,6 +264,27 @@ void QSigner::logout()
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
 }
 
+QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
+{
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#sha224" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224" ||
+		method == "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224") return QCryptographicHash::Sha224;
+	if(method == "http://www.w3.org/2001/04/xmlenc#sha256" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" ||
+		method == "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256") return QCryptographicHash::Sha256;
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#sha384" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ||
+		method == "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384") return QCryptographicHash::Sha384;
+	if(method == "http://www.w3.org/2001/04/xmlenc#sha512" ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ||
+		method == "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"  ||
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512") return QCryptographicHash::Sha512;
+	return QCryptographicHash::Sha256;
+}
+
 void QSigner::run()
 {
 	d->auth.clear();
@@ -362,16 +398,6 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
-	int type = NID_sha256;
-	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224") type = NID_sha224;
-	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256") type = NID_sha256;
-	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384") type = NID_sha384;
-	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512") type = NID_sha512;
-
 	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
 	do
 	{
@@ -396,7 +422,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		}
 	} while(status != QCryptoBackend::PinOK);
 	QByteArray sig = waitFor([&]{
-		return d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+		return d->backend->sign(methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	});
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
