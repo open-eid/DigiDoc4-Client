@@ -62,18 +62,26 @@
 	background-color: #ffffff;
 	border-right: 1px solid #DEE4E9;
 }
-QPushButton {
+QRadioButton {
 	background-color: #ffffff;
 	border: none;
 	text-align:left;
 	padding-left: 21;
 	min-height: 35px;
 }
-QPushButton:checked {
+QRadioButton::indicator {
+    width: 0px;
+    height: 0px;
+    background-color:transparent;
+    selection-background-color:transparent;
+    color:transparent;
+    selection-color:transparent;
+}
+QRadioButton:checked {
 	background-color: #F4F5F6;
 	color: #006EB5;
 }
-QPushButton:hover {
+QRadioButton:hover {
 	background-color: #FAFAFB;
 	color: #006EB5;
 }</string>
@@ -117,7 +125,7 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnMenuGeneral">
+       <widget class="QRadioButton" name="btnMenuGeneral">
         <property name="accessibleName">
          <string extracomment="accessible">General</string>
         </property>
@@ -136,7 +144,7 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnMenuCertificate">
+       <widget class="QRadioButton" name="btnMenuCertificate">
         <property name="accessibleName">
          <string extracomment="accessible">Services</string>
         </property>
@@ -152,7 +160,7 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnMenuProxy">
+       <widget class="QRadioButton" name="btnMenuProxy">
         <property name="accessibleName">
          <string extracomment="accessible">Proxy</string>
         </property>
@@ -168,7 +176,7 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnMenuDiagnostics">
+       <widget class="QRadioButton" name="btnMenuDiagnostics">
         <property name="accessibleName">
          <string extracomment="accessible">Diagnostics</string>
         </property>
@@ -184,7 +192,7 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnMenuInfo">
+       <widget class="QRadioButton" name="btnMenuInfo">
         <property name="accessibleName">
          <string extracomment="accessible">Info</string>
         </property>

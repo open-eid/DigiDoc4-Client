@@ -628,7 +628,6 @@ void SettingsDialog::showPage(int page)
 
 void SettingsDialog::changePage(QAbstractButton *button)
 {
-	button->setChecked(true);
 	ui->stackedWidget->setCurrentIndex(ui->pageGroup->id(button));
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
