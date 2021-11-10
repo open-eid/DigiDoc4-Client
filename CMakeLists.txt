@@ -29,21 +29,6 @@ set(CPACK_PACKAGE_RELEASE 1)
 set(CPACK_PACKAGE_CONTACT "Andrus Randveer")
 set(CPACK_PACKAGE_VENDOR "RIA")
 set(CPACK_PACKAGING_INSTALL_PREFIX "/usr/")
-set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION
-        "/usr/local" "/usr/local/etc" "/usr/share/man"
-        "/usr/share/man/man1" "/usr/lib64/pkgconfig" "/usr/share/icons/hicolor"
-        "/usr/share/applications" "/usr/share/icons" "/usr/share/mime" "/usr/share/mime/packages"
-        "/usr/share/icons/hicolor/16x16" "/usr/share/icons/hicolor/16x16/apps" "/usr/share/icons/hicolor/16x16/mimetypes"
-        "/usr/share/icons/hicolor/22x22" "/usr/share/icons/hicolor/22x22/apps" "/usr/share/icons/hicolor/22x22/mimetypes"
-        "/usr/share/icons/hicolor/32x32" "/usr/share/icons/hicolor/32x32/apps" "/usr/share/icons/hicolor/32x32/mimetypes"
-        "/usr/share/icons/hicolor/48x48" "/usr/share/icons/hicolor/48x48/apps" "/usr/share/icons/hicolor/48x48/mimetypes"
-        "/usr/share/icons/hicolor/128x128" "/usr/share/icons/hicolor/128x128/apps" "/usr/share/icons/hicolor/128x128/mimetypes"
-        "/usr/share/icons/hicolor/256x256" "/usr/share/icons/hicolor/256x256/apps" "/usr/share/icons/hicolor/256x256/mimetypes"
-        "/usr/share/icons/hicolor/512x512" "/usr/share/icons/hicolor/512x512/apps" "/usr/share/icons/hicolor/512x512/mimetypes"
-        "/usr/share/locale/et" "/usr/share/locale/et/LC_MESSAGES"
-        "/usr/share/locale/ru" "/usr/share/locale/ru/LC_MESSAGES"
-        "/usr/local/share" "/usr/share/locale"
-    )
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_RELEASE}.${CMAKE_SYSTEM_PROCESSOR}")
 include(CPack)
 if(APPLE)
