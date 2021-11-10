@@ -28,7 +28,6 @@
 #include <common/IKValidator.h>
 
 #define COUNTRY_CODE_EST QStringLiteral("372")
-#define COUNTRY_CODE_LAT QStringLiteral("371")
 #define COUNTRY_CODE_LTU QStringLiteral("370")
 
 MobileDialog::MobileDialog(QWidget *parent) :
@@ -87,7 +86,7 @@ MobileDialog::~MobileDialog()
 
 void MobileDialog::enableSign()
 {
-	static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LAT, COUNTRY_CODE_LTU};
+	static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LTU};
 	if( ui->cbRemember->isChecked() )
 	{
 		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text());
