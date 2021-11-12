@@ -49,7 +49,6 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 #endif
 
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
-	setWindowModality(Qt::ApplicationModal);
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
 	d->cancel->setFont(condensed);

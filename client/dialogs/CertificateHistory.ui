@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>CertificateHistory</class>
  <widget class="QWidget" name="CertificateHistory">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>

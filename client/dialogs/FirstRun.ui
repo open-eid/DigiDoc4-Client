@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>FirstRun</class>
  <widget class="QDialog" name="FirstRun">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -191,6 +194,9 @@ QPushButton:disabled {
        <property name="text">
         <string>CONTINUE</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QSvgWidget" name="leaves" native="true">
        <property name="geometry">
@@ -621,6 +627,9 @@ QPushButton:disabled {
          <property name="text">
           <string>VIEW INTRODUCTION</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="4" column="1">
@@ -664,6 +673,9 @@ QPushButton:disabled {
          <property name="text">
           <string>VIEW INTRODUCTION</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="4" column="2">
@@ -707,6 +719,9 @@ QPushButton:disabled {
          <property name="text">
           <string>VIEW INTRODUCTION</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="5" column="1">
@@ -749,6 +764,9 @@ QPushButton:disabled {
          <property name="text">
           <string>Skip introductions</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="6" column="1">
@@ -909,6 +927,9 @@ QPushButton:disabled {
        <property name="text">
         <string>VIEW NEXT INTRO</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QPushButton" name="signSkip">
        <property name="geometry">
@@ -957,6 +978,9 @@ QPushButton:disabled {
        <property name="text">
         <string>Skip introductions</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="signGotoSigning">
        <property name="geometry">
@@ -973,6 +997,9 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to signing intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="signGotoEid">
        <property name="geometry">
@@ -989,6 +1016,9 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to EID intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="signGotoEncryption">
        <property name="geometry">
@@ -1005,6 +1035,9 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to encryption intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QSvgWidget" name="signOne" native="true">
        <property name="geometry">
@@ -1224,6 +1257,9 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to signing intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="cryptoGotoEid">
        <property name="geometry">
@@ -1240,6 +1276,9 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to EID intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="cryptoGotoEncryption">
        <property name="geometry">
@@ -1256,6 +1295,9 @@ QPushButton:disabled {
        <property name="accessibleName">
         <string>Go to encryption intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QSvgWidget" name="cryptoOne" native="true">
        <property name="geometry">
@@ -1502,6 +1544,9 @@ QPushButton:disabled {
        <property name="text">
         <string>Skip introductions</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QPushButton" name="cryptoNext">
        <property name="geometry">
@@ -1551,6 +1596,9 @@ QPushButton:disabled {
        <property name="text">
         <string>VIEW NEXT INTRO</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QLabel" name="cryptoTitle">
        <property name="geometry">
@@ -1660,6 +1708,9 @@ border-radius: 3px;</string>
        <property name="accessibleName">
         <string>Go to signing intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="eidGotoEncryption">
        <property name="geometry">
@@ -1676,6 +1727,9 @@ border-radius: 3px;</string>
        <property name="accessibleName">
         <string>Go to encryption intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QToolButton" name="eidGotoEid">
        <property name="geometry">
@@ -1692,6 +1746,9 @@ border-radius: 3px;</string>
        <property name="accessibleName">
         <string>Go to EID intro</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QLabel" name="eidLabel1">
        <property name="geometry">
@@ -1853,6 +1910,9 @@ QPushButton:disabled {
        <property name="text">
         <string>ENTER THE APPLICATION</string>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
       <widget class="QLabel" name="eidTitle">
        <property name="geometry">
@@ -1995,4 +2055,7 @@ border-radius: 3px;</string>
   <include location="../images/images.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

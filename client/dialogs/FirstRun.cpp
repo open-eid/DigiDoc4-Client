@@ -34,7 +34,6 @@ FirstRun::FirstRun(QWidget *parent)
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 	setCursor(Qt::OpenHandCursor);
 	if(parent)
@@ -76,7 +75,6 @@ FirstRun::FirstRun(QWidget *parent)
 		loadImages();
 	});
 	ui->continueBtn->setFont(buttonFont);
-	connect(ui->continueBtn, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Intro);});
 
 	QSvgWidget* coatOfArs = new QSvgWidget(QStringLiteral(":/images/Logo_Suur.svg"), ui->coatOfArms);
 	coatOfArs->show();
@@ -98,10 +96,6 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->signWidget->load(QStringLiteral(":/images/icon_Allkiri_hover.svg"));
 	ui->cryptoWidget->load(QStringLiteral(":/images/icon_Krypto_hover.svg"));
 	ui->eidWidget->load(QStringLiteral(":/images/icon_Minu_eID_hover.svg"));
-	connect(ui->introSkip, &QPushButton::clicked, this, &QDialog::close);
-	connect(ui->introViewSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
-	connect(ui->introViewEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->introViewEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 3: Signing
 	ui->signTitle->setFont(titleFont);
@@ -116,10 +110,6 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->signOne->load(QStringLiteral(":/images/intro_one.svg"));
 	ui->signTwo->load(QStringLiteral(":/images/intro_two.svg"));
 	ui->signThree->load(QStringLiteral(":/images/intro_three.svg"));
-	connect(ui->signSkip, &QPushButton::clicked, this, &QDialog::close);
-	connect(ui->signNext, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->signGotoEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
-	connect(ui->signGotoEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 4: Crypto
 	ui->cryptoTitle->setFont(titleFont);
@@ -134,10 +124,6 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->cryptoOne->load(QStringLiteral(":/images/intro_one.svg"));
 	ui->cryptoTwo->load(QStringLiteral(":/images/intro_two.svg"));
 	ui->cryptoThree->load(QStringLiteral(":/images/intro_three.svg"));
-	connect(ui->cryptoSkip, &QPushButton::clicked, this, &QDialog::close);
-	connect(ui->cryptoNext, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
-	connect(ui->cryptoGotoSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
-	connect(ui->cryptoGotoEid, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(MyEid);});
 
 	// Page 5: My eID
 	ui->eidTitle->setFont(titleFont);
@@ -146,9 +132,30 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->eidText1->setFont(regular14);
 	ui->eidText3->setFont(regular14);
 	ui->eidEnter->setFont(buttonFont);
-	connect(ui->eidEnter, &QPushButton::clicked, this, &QDialog::close);
-	connect(ui->eidGotoSigning, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Signing);});
-	connect(ui->eidGotoEncryption, &QPushButton::clicked, this, [this]{ui->stack->setCurrentIndex(Encryption);});
+
+	connect(ui->buttonGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked), this, [this](QAbstractButton *b){
+		if(b == ui->continueBtn)
+			ui->stack->setCurrentIndex(Intro);
+		if(b == ui->introViewSigning ||
+			b == ui->cryptoGotoSigning ||
+			b == ui->eidGotoSigning)
+			ui->stack->setCurrentIndex(Signing);
+		if(b == ui->introViewEncryption ||
+			b == ui->signNext ||
+			b == ui->signGotoEncryption ||
+			b == ui->eidGotoEncryption)
+			ui->stack->setCurrentIndex(Encryption);
+		if(b == ui->introViewEid ||
+			b == ui->cryptoNext ||
+			b == ui->signGotoEid ||
+			b == ui->cryptoGotoEid)
+			ui->stack->setCurrentIndex(MyEid);
+		if(b == ui->introSkip ||
+			b == ui->signSkip ||
+			b == ui->cryptoSkip ||
+			b == ui->eidEnter)
+			close();
+	});
 
 	loadImages();
 }
@@ -180,29 +187,6 @@ void FirstRun::keyPressEvent(QKeyEvent *event)
 
 	if(next != ui->stack->currentIndex())
 		ui->stack->setCurrentIndex(next);
-}
-
-void FirstRun::mouseMoveEvent(QMouseEvent *event)
-{
-	if (!dragged)
-		return;
-
-	const QPoint delta = event->globalPos() - lastPos;
-	move(x()+delta.x(), y()+delta.y());
-	lastPos = event->globalPos();
-}
-
-void FirstRun::mousePressEvent(QMouseEvent *event)
-{
-	setCursor(Qt::ClosedHandCursor);
-	dragged = true;
-	lastPos = event->globalPos();
-}
-
-void FirstRun::mouseReleaseEvent(QMouseEvent * /*event*/)
-{
-	setCursor(Qt::OpenHandCursor);
-	dragged = false;
 }
 
 void FirstRun::loadImages()
