@@ -26,14 +26,9 @@ Accordion::Accordion(QWidget *parent)
 {
 	ui->setupUi( this );
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"), ui->contentVerifyCert);
-
 	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
 	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
-
-	// Initialize PIN/PUK content widgets.
-	ui->signBox->addBorders();
-
 	clear();
 }
 

@@ -62,7 +62,6 @@ public:
 		VER_3_5,
 		VER_USABLEUPDATER,
 		VER_IDEMIA,
-		VER_HASUPDATER = 128
 	};
 
 	QSmartCardData();
@@ -79,7 +78,6 @@ public:
 
 	bool isNull() const;
 	bool isPinpad() const;
-	bool isSecurePinpad() const;
 	bool isValid() const;
 
 	QVariant data( PersonalDataType type ) const;

@@ -24,7 +24,7 @@
     <number>5</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>22</number>
    </property>
    <property name="rightMargin">
     <number>5</number>
@@ -33,29 +33,25 @@
     <number>2</number>
    </property>
    <item>
-    <spacer name="topSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="nameLayout" stretch="1,0,1">
      <property name="spacing">
       <number>0</number>
      </property>
      <item>
-      <widget class="QWidget" name="nameLeft" native="true">
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
+      <spacer name="nameLeft">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-      </widget>
+       <property name="sizeType">
+        <enum>QSizePolicy::Preferred</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="name">
@@ -101,7 +97,7 @@
          <number>5</number>
         </property>
         <item>
-         <widget class="QSvgWidget" name="greenIcon" native="true">
+         <widget class="QSvgWidget" name="nameIcon" native="true">
           <property name="minimumSize">
            <size>
             <width>12</width>
@@ -111,44 +107,6 @@
           <property name="maximumSize">
            <size>
             <width>12</width>
-            <height>13</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none; background-color: transparent;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSvgWidget" name="orangeIcon" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>13</width>
-            <height>13</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>13</width>
-            <height>13</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none; background-color: transparent;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSvgWidget" name="redIcon" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>13</width>
-            <height>13</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>13</width>
             <height>13</height>
            </size>
           </property>
@@ -180,7 +138,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>33</height>
+       <height>35</height>
       </size>
      </property>
      <property name="font">
@@ -196,7 +154,7 @@
       <string notr="true">color: #353739; border: none;</string>
      </property>
      <property name="text">
-      <string notr="true">validUntil</string>
+      <string notr="true">Certificate %1is valid%2 until %3</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -205,6 +163,19 @@
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <spacer name="buttonSpacerTop">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>6</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QLabel" name="error">
@@ -225,7 +196,7 @@ border-radius: 2px;
 background-color: #F8DDA7;</string>
      </property>
      <property name="text">
-      <string notr="true">PIN2 on blokeeritud, kuna PIN2 koodi on 3 korda valesti sisestatud. Tühista blokeering, et PIN2 uuesti kasutada.</string>
+      <string notr="true">PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -242,83 +213,66 @@ background-color: #F8DDA7;</string>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacerAboveBtn">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+    <widget class="QLabel" name="tempelText">
+     <property name="minimumSize">
       <size>
-       <width>20</width>
-       <height>8</height>
+       <width>0</width>
+       <height>30</height>
       </size>
      </property>
-    </spacer>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #353739; border: none;</string>
+     </property>
+     <property name="text">
+      <string>PIN can be changed only using eToken utility</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+    <widget class="QPushButton" name="changePIN">
+     <property name="minimumSize">
+      <size>
+       <width>157</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>157</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="text">
+      <string notr="true">changePIN</string>
+     </property>
+    </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="buttonLayout">
-     <item>
-      <widget class="QLabel" name="tempelText">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #353739; border: none;</string>
-       </property>
-       <property name="text">
-        <string>PIN can be changed only using eToken utility</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="changePIN">
-       <property name="minimumSize">
-        <size>
-         <width>157</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>157</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string notr="true">changePIN</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacerBelowBtn">
+    <spacer name="buttonSpacerBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -335,7 +289,7 @@ background-color: #F8DDA7;</string>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>38</height>
+       <height>57</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -370,8 +324,14 @@ background-color: transparent;
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
+      <item alignment="Qt::AlignHCenter">
        <widget class="QPushButton" name="forgotPinLink">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -399,8 +359,14 @@ background-color: transparent;
         </property>
        </widget>
       </item>
-      <item>
+      <item alignment="Qt::AlignHCenter">
        <widget class="QPushButton" name="details">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -428,8 +394,14 @@ background-color: transparent;
         </property>
        </widget>
       </item>
-      <item>
+      <item alignment="Qt::AlignHCenter">
        <widget class="QPushButton" name="checkCert">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -464,6 +436,9 @@ background-color: transparent;
     <spacer name="bottomSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Preferred</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
