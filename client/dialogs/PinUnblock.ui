@@ -38,7 +38,7 @@ QLineEdit {
    line-height: 14px;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="SmartIDDialogLayout">
+  <layout class="QVBoxLayout" name="PinUnblockLayout">
    <property name="spacing">
     <number>10</number>
    </property>
@@ -82,7 +82,10 @@ line-height: 24px;</string>
    </item>
    <item>
     <widget class="QWidget" name="infoBox" native="true">
-     <layout class="QGridLayout" name="infoBoxLayout" columnstretch="0,0,0">
+     <property name="styleSheet">
+      <string notr="true">color: #353739;</string>
+     </property>
+     <layout class="QGridLayout" name="infoBoxLayout" columnstretch="0,0">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -98,115 +101,6 @@ line-height: 24px;</string>
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="2" column="2">
-       <widget class="QLabel" name="line3_text">
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>14</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::TabFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="openExternalLinks">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="line4_bullet">
-        <property name="minimumSize">
-         <size>
-          <width>15</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>15</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
-        </property>
-        <property name="text">
-         <string notr="true">&amp;bull;</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="line4_text">
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>14</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::TabFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="openExternalLinks">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="line1_text">
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>14</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::TabFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-        <property name="openExternalLinks">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="line1_bullet">
         <property name="sizePolicy">
@@ -227,9 +121,6 @@ line-height: 24px;</string>
           <height>16777215</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
-        </property>
         <property name="text">
          <string notr="true">&amp;bull;</string>
         </property>
@@ -241,36 +132,8 @@ line-height: 24px;</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="line3_bullet">
-        <property name="minimumSize">
-         <size>
-          <width>15</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>15</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
-        </property>
-        <property name="text">
-         <string notr="true">&amp;bull;</string>
-        </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="line2_text">
+      <item row="0" column="1">
+       <widget class="QLabel" name="line1_text">
         <property name="font">
          <font>
           <family>Roboto</family>
@@ -281,9 +144,6 @@ line-height: 24px;</string>
         </property>
         <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
@@ -310,8 +170,54 @@ line-height: 24px;</string>
           <height>16777215</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">color: #353739;</string>
+        <property name="text">
+         <string notr="true">&amp;bull;</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="line2_text">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>14</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="line3_bullet">
+        <property name="minimumSize">
+         <size>
+          <width>15</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>15</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="text">
          <string notr="true">&amp;bull;</string>
@@ -321,6 +227,79 @@ line-height: 24px;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="line3_text">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>14</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="line4_bullet">
+        <property name="minimumSize">
+         <size>
+          <width>15</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>15</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">&amp;bull;</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="line4_text">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>14</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -827,7 +806,7 @@ line-height: 24px;</string>
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtSvg/QSvgWidget</header>
+   <header location="global">QSvgWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
