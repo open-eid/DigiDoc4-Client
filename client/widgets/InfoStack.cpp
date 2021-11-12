@@ -135,14 +135,11 @@ void InfoStack::update()
 	QString text;
 	QTextStream st( &text );
 
-	if(certType & SslCertificate::EstEidType)
-	{
-		if(data.isValid())
-			st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr(" until ")
-				<< DateTime(data.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
-		else
-			st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
-	}
+	if(!data.isNull() && !data.isValid())
+		st << "<span style='color: #e80303;'>" << tr("Expired") << "</span>";
+	else if(certType & SslCertificate::EstEidType)
+		st << "<span style='color: #37a447'>" << tr("Valid") << "</span>" << tr(" until ")
+			<< DateTime(data.data(QSmartCardData::Expiry).toDateTime()).formatDate(QStringLiteral("dd.MM.yyyy"));
 	else if(certType & SslCertificate::DigiIDType)
 		st << tr("You're using digital identity card");
 
