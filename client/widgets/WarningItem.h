@@ -26,16 +26,16 @@ namespace Ui { class WarningItem; }
 
 struct WarningText {
 
-	QString text, details;
+	QString text, details, url;
 	int counter = 0, page = -1;
 	ria::qdigidoc4::WarningType warningType = ria::qdigidoc4::NoWarning;
 
-	WarningText(QString text, QString details = {}, int page = -1);
+	WarningText(QString text);
 	WarningText(ria::qdigidoc4::WarningType warningType, int counter = 0);
 };
 
 
-class WarningItem : public StyledWidget
+class WarningItem final: public StyledWidget
 {
 	Q_OBJECT
 
@@ -49,10 +49,8 @@ public:
 signals:
 	void linkActivated(const QString& link);
 
-protected:
-	void changeEvent(QEvent* event) override;
-
 private:
+	void changeEvent(QEvent* event) final;
 	void lookupWarning();
 
 	Ui::WarningItem *ui;
