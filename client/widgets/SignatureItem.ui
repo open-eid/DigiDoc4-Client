@@ -94,12 +94,6 @@ background-color: #ffffff;
        <height>16</height>
       </size>
      </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="accessibleDescription">
-      <string extracomment="accessible">To view signature details press enter or space</string>
-     </property>
      <property name="text">
       <string notr="true">Role / Resolution</string>
      </property>
@@ -115,12 +109,6 @@ background-color: #ffffff;
        <width>16777215</width>
        <height>16</height>
       </size>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="accessibleDescription">
-      <string extracomment="accessible">To view signature details press enter or space</string>
      </property>
      <property name="text">
       <string notr="true">48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
