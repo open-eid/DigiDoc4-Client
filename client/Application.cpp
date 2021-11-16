@@ -59,6 +59,8 @@ class MacMenuBar {};
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
 #include <QtNetwork/QNetworkProxy>
+#include <QtNetwork/QSslCertificate>
+#include <QtNetwork/QSslConfiguration>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>

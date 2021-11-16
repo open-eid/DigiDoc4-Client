@@ -19,59 +19,37 @@
  
 #include "sslConnect.h"
 
+#include "Application.h"
 #include "MainWindow.h"
+#include "QSigner.h"
+#include "TokenData.h"
 
-#include <common/Common.h>
 #include <common/Configuration.h>
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
-
+#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include <QtWidgets/QProgressBar>
-#include <QtWidgets/QProgressDialog>
+#include <QtNetwork/QSslKey>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QHBoxLayout>
 
 class SSLConnect::Private
 {
 public:
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-	QString errorString;
+	QList<QSslCertificate> trusted;
 };
 
-SSLConnect::SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject *parent)
-	: QNetworkAccessManager(parent)
+SSLConnect::SSLConnect(QObject *parent)
+	: QObject(parent)
 	, d(new Private)
 {
-	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	d->ssl.setCaCertificates({});
 	for(const QJsonValue c: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
-		trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
+		d->trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
 #endif
-
-	d->ssl.setPrivateKey(key);
-	d->ssl.setLocalCertificate(cert);
-	connect(this, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
-		QList<QSslError> ignore;
-		for(const QSslError &error: errors)
-		{
-			switch(error.error())
-			{
-			case QSslError::UnableToGetLocalIssuerCertificate:
-			case QSslError::CertificateUntrusted:
-			case QSslError::SelfSignedCertificateInChain:
-				if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
-					ignore << error;
-					break;
-				}
-			default: break;
-			}
-		}
-		reply->ignoreSslErrors(ignore);
-	});
 }
 
 SSLConnect::~SSLConnect()
@@ -79,8 +57,18 @@ SSLConnect::~SSLConnect()
 	delete d;
 }
 
-QByteArray SSLConnect::getUrl()
+void SSLConnect::fetch()
 {
+	QSslCertificate cert = qApp->signer()->tokenauth().cert();
+	QSslKey key = qApp->signer()->key();
+	if(cert.isNull() || key.isNull())
+	{
+		emit error(tr("Private key is missing"));
+		return;
+	}
+	d->ssl.setPrivateKey(key);
+	d->ssl.setLocalCertificate(cert);
+
 	QJsonObject obj;
 #ifdef CONFIG_URL
 	obj = Configuration::instance().object();
@@ -100,33 +88,69 @@ QByteArray SSLConnect::getUrl()
 			break;
 		}
 	}
-	QLabel popup(active, Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
-	popup.resize(328, 179);
-	popup.move(active->geometry().center() - popup.geometry().bottomRight() / 2);
-	popup.setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px; font-size: 24px; color: #53c964;"));
-	popup.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-	popup.setWordWrap(true);
-	popup.setText(tr("Downloading picture"));
-	popup.show();
+	QLabel *popup = new QLabel(active, Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
+	popup->resize(328, 179);
+	popup->move(active->geometry().center() - popup->geometry().bottomRight() / 2);
+	popup->setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px; font-size: 24px; color: #53c964;"));
+	popup->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	popup->setWordWrap(true);
+	popup->setText(tr("Downloading picture"));
+	popup->show();
 
-	QEventLoop e;
-	QNetworkReply *reply = get(req);
-	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
-	e.exec();
+	QNetworkAccessManager *nam = new QNetworkAccessManager(this);
+	connect(nam, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
+		QList<QSslError> ignore;
+		for(const QSslError &error: errors)
+		{
+			switch(error.error())
+			{
+			case QSslError::UnableToGetLocalIssuerCertificate:
+			case QSslError::CertificateUntrusted:
+			case QSslError::SelfSignedCertificateInChain:
+				if(d->trusted.contains(reply->sslConfiguration().peerCertificate())) {
+					ignore << error;
+					break;
+				}
+			default: break;
+			}
+		}
+		reply->ignoreSslErrors(ignore);
+	});
+	QNetworkReply *reply = nam->get(req);
+	connect(reply, &QNetworkReply::finished, this, [this, popup, reply] {
+		qApp->signer()->logout();
+		popup->deleteLater();
+		if(reply->error() != QNetworkReply::NoError)
+		{
+			emit error(reply->errorString());
+			return;
+		}
+		if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains("image/jpeg"))
+		{
+			emit error(tr("Invalid Content-Type"));
+			return;
+		}
+		QByteArray result = reply->readAll();
+		reply->manager()->deleteLater();
 
-	if(reply->error() != QNetworkReply::NoError)
-	{
-		d->errorString = reply->errorString();
-		return QByteArray();
-	}
-	if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains("image/jpeg"))
-	{
-		d->errorString = tr("Invalid Content-Type");
-		return QByteArray();
-	}
-	QByteArray result = reply->readAll();
-	reply->deleteLater();
-	return result;
+		if(result.isEmpty())
+		{
+			emit error(tr("Empty content"));
+			return;
+		}
+
+		QImage img;
+		if(!img.loadFromData(result))
+		{
+			emit error(tr("Failed to parse image"));
+			return;
+		}
+		emit image(img);
+	});
 }
 
-QString SSLConnect::errorString() const { return d->errorString; }
+SSLConnect* SSLConnect::instance()
+{
+	static SSLConnect sslConnect;
+	return &sslConnect;
+}
