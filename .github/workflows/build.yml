@@ -90,6 +90,40 @@ jobs:
       with:
         name: debs
         path: qdigidoc4*.*
+  fedora:
+    name: Build on Fedora to ${{ matrix.container }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
+    strategy:
+      matrix:
+        container: ['fedora:33']
+    env:
+      MAKEFLAGS: -j3
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+    - name: Install Build Deps
+      run: dnf groupinstall -y "Development Tools" "Development Libraries" fedora-packager
+    - name: Install Deps
+      run: |
+        dnf install -y \
+          cmake openssl-devel xerces-c-devel \
+          xml-security-c-devel zlib-devel vim-common \
+          https://www.codesynthesis.com/download/xsd/4.0/linux-gnu/x86_64/xsd-4.0.0-1.x86_64.rpm
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+        make package
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: rpms
+        path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
     runs-on: ${{ matrix.image }}
