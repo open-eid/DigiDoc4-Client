@@ -57,6 +57,7 @@ DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const Di
 	: s(signature)
 	, m_parent(parent)
 	, m_isTimeStamped(isTimeStamped)
+	, m_status(validate())
 {}
 
 QSslCertificate DigiDocSignature::cert() const
@@ -110,7 +111,7 @@ QDateTime DigiDocSignature::ocspTime() const
 
 const DigiDoc* DigiDocSignature::parent() const { return m_parent; }
 
-void DigiDocSignature::parseException( DigiDocSignature::SignatureStatus &result, const digidoc::Exception &e ) const
+void DigiDocSignature::parseException(DigiDocSignature::SignatureStatus &result, const digidoc::Exception &e)
 {
 	for(const Exception &child: e.causes())
 	{
@@ -168,7 +169,7 @@ QStringList DigiDocSignature::roles() const
 	return list;
 }
 
-void DigiDocSignature::setLastError( const Exception &e ) const
+void DigiDocSignature::setLastError(const Exception &e)
 {
 	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
@@ -191,6 +192,11 @@ QString DigiDocSignature::signedBy() const
 QString DigiDocSignature::spuri() const
 {
 	return from(s->SPUri());
+}
+
+DigiDocSignature::SignatureStatus DigiDocSignature::status() const
+{
+	return m_status;
 }
 
 QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char> &der) const
@@ -233,36 +239,32 @@ QDateTime DigiDocSignature::tsaTime() const
 	return toTime(s->ArchiveTimeStampTime());
 }
 
-DigiDocSignature::SignatureStatus DigiDocSignature::validate() const
+DigiDocSignature::SignatureStatus DigiDocSignature::validate()
 {
+	if(!s)
+		return Invalid;
 	DigiDocSignature::SignatureStatus result = Valid;
-	m_warning = 0;
 	try
 	{
 		s->validate();
+		return Valid;
 	}
-	catch( const Exception &e )
+	catch(const Exception &e)
 	{
-		parseException( result, e );
-		setLastError( e );
+		parseException(result, e);
+		setLastError(e);
 	}
-	if(result == Unknown && validate(digidoc::Signature::POLv1) == Valid)
-		return NonQSCD;
-	return result;
-}
-
-DigiDocSignature::SignatureStatus DigiDocSignature::validate(const std::string &policy) const
-{
-	DigiDocSignature::SignatureStatus result = Valid;
+	if(result != Unknown)
+		return result;
 	try
 	{
-		s->validate(policy);
+		s->validate(digidoc::Signature::POLv1);
+		return NonQSCD;
 	}
-	catch( const Exception &e )
+	catch(const Exception &e)
 	{
-		parseException( result, e );
+		parseException(result, e);
 	}
-
 	return result;
 }
 
@@ -436,6 +438,7 @@ void DigiDoc::clear()
 {
 	b.reset();
 	parentContainer.reset();
+	m_signatures.clear();
 	m_fileName.clear();
 	for(const QString &file: m_tempFiles)
 		{
@@ -516,26 +519,36 @@ bool DigiDoc::open( const QString &file )
 
 	try {
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
-		waitFor([&] { b = Container::openPtr(to(file)); });
-		if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
-		{
-			const DataFile *f = b->dataFiles().at(0);
-			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)  &&
-				CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")) &&
-				serviceConfirmation())
+		waitFor([&] {
+			b = Container::openPtr(to(file));
+			if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 			{
-				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
-				f->saveAs(to(tmppath));
-				if(QFileInfo::exists(tmppath))
+				const DataFile *f = b->dataFiles().at(0);
+				if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)  &&
+					CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")) &&
+					serviceConfirmation())
 				{
-					m_tempFiles << tmppath;
-					try {
-						parentContainer = std::exchange(b, Container::openPtr(to(tmppath)));
-					} catch(const Exception &) {}
+					const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
+					f->saveAs(to(tmppath));
+					if(QFileInfo::exists(tmppath))
+					{
+						m_tempFiles << tmppath;
+						try {
+							parentContainer = std::exchange(b, Container::openPtr(to(tmppath)));
+						} catch(const Exception &) {}
+					}
 				}
 			}
-		}
-		m_fileName = file;
+			m_fileName = file;
+			bool isTimeStamped = false;
+			if(parentContainer &&
+				parentContainer->dataFiles().size() == 1 &&
+				parentContainer->signatures().size() == 1 &&
+				from(parentContainer->dataFiles()[0]->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
+				isTimeStamped = parentContainer->signatures()[0]->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
+			for(const Signature *signature: b->signatures())
+				m_signatures.append(DigiDocSignature(signature, this, isTimeStamped));
+		});
 		qApp->addRecent( file );
 		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 		return true;
@@ -682,7 +695,8 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		signer->setSignerRoles(roles);
 		signer->setProfile("time-stamp");
 		qApp->waitForTSL( fileName() );
-		b->sign(signer);
+		digidoc::Signature *s = b->sign(signer);
+		m_signatures.append(DigiDocSignature(s, this, false));
 		modified = true;
 		return true;
 	}
@@ -710,18 +724,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 
 QList<DigiDocSignature> DigiDoc::signatures() const
 {
-	QList<DigiDocSignature> list;
-	if( isNull() )
-		return list;
-	bool isTimeStamped = false;
-	if(parentContainer &&
-		parentContainer->dataFiles().size() == 1 &&
-		parentContainer->signatures().size() == 1 &&
-		from(parentContainer->dataFiles()[0]->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
-		isTimeStamped = parentContainer->signatures()[0]->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
-	for(const Signature *signature: b->signatures())
-		list << DigiDocSignature(signature, this, isTimeStamped);
-	return list;
+	return m_signatures;
 }
 
 ContainerState DigiDoc::state()

@@ -135,7 +135,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		top += 20 + nameHeight;
 
 		QString valid;
-		switch( sig.validate() )
+		switch(sig.status())
 		{
 		case DigiDocSignature::Valid: valid = tr("SIGNATURE IS VALID"); break;
 		case DigiDocSignature::Warning:valid = QStringLiteral("%1 (%2)").arg(tr("SIGNATURE IS VALID"), tr("NB! WARNINGS")); break;

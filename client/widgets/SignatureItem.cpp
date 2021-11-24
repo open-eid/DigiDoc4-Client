@@ -77,7 +77,7 @@ SignatureItem::~SignatureItem()
 void SignatureItem::init()
 {
 	const SslCertificate cert = ui->signature.cert();
-	DigiDocSignature::SignatureStatus signatureValidity = ui->signature.validate();
+	DigiDocSignature::SignatureStatus signatureValidity = ui->signature.status();
 
 	ui->serial.clear();
 	ui->status.clear();
