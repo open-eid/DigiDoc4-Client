@@ -20,7 +20,6 @@
 #include "FileDialog.h"
 
 #include "Application.h"
-#include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <QtCore/QCoreApplication>
@@ -61,7 +60,6 @@ QString FileDialog::createNewFileName(const QString &file, const QString &extens
 	if(!QFile::exists(fileName))
 		return fileName;
 #endif
-	WaitDialogHider hider;
 	QString capitalized = type[0].toUpper() + type.mid(1);
 	fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
 		QStringLiteral("%1 (*%2)").arg(capitalized, extension));

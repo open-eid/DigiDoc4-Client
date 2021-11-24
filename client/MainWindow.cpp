@@ -846,7 +846,6 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 		if(ext == QStringLiteral("adoc")) active = adoc;
 	}
 
-	WaitDialogHider hider;
 	return FileDialog::getSaveFileName( this, title, filename, exts.join(QStringLiteral(";;")), &active );
 }
 
@@ -956,7 +955,6 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 	if(!save())
 		return;
 
-	waitDialog.close();
 	ui->signContainerPage->transition(digiDoc);
 
 	FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);

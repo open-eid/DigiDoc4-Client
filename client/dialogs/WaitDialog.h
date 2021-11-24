@@ -32,8 +32,6 @@ public:
 class WaitDialogHolder
 {
 public:
-	WaitDialogHolder(QWidget *parent, const QString &text = {});
+	WaitDialogHolder(QWidget *parent, const QString &text, bool delay = false);
 	~WaitDialogHolder();
-
-	void close();
 };
