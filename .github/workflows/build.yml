@@ -112,6 +112,18 @@ jobs:
           cmake openssl-devel xerces-c-devel \
           xml-security-c-devel zlib-devel vim-common \
           https://www.codesynthesis.com/download/xsd/4.0/linux-gnu/x86_64/xsd-4.0.0-1.x86_64.rpm
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: rpms
+        path: libdigidocpp-pkg
+        repo: 'open-eid/libdigidocpp'
+    - name: Install artifact
+      run: |
+        dnf install -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.rpm
+        rm -rf libdigidocpp-pkg
     - name: Build
       run: |
         mkdir build
