@@ -80,18 +80,8 @@ FileDialog::FileType FileDialog::detect(const QString &filename)
 		return SignatureDocument;
 	if(!f.suffix().compare(QStringLiteral("cdoc"), Qt::CaseInsensitive))
 		return CryptoDocument;
-	if(!f.suffix().compare(QStringLiteral("pdf"), Qt::CaseInsensitive))
-	{
-		QFile file(filename);
-		if(!file.open(QIODevice::ReadOnly))
-			return Other;
-		QByteArray blob = file.readAll();
-		for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
-		{
-			if(blob.indexOf(token) > 0)
-				return SignatureDocument;
-		}
-	}
+	if(isSignedPDF(filename))
+		return SignatureDocument;
 	return Other;
 }
 
@@ -137,6 +127,23 @@ int FileDialog::fileZone(const QString &path)
 	Q_UNUSED(path)
 #endif
 	return -1;
+}
+
+bool FileDialog::isSignedPDF(const QString &path)
+{
+	const QFileInfo f(path);
+	if(f.suffix().compare(QStringLiteral("pdf"), Qt::CaseInsensitive))
+		return false;
+	QFile file(path);
+	if(!file.open(QIODevice::ReadOnly))
+		return false;
+	QByteArray blob = file.readAll();
+	for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
+	{
+		if(blob.indexOf(token) > 0)
+			return true;
+	}
+	return false;
 }
 
 void FileDialog::setFileZone(const QString &path, int zone)
@@ -329,8 +336,8 @@ QString FileDialog::safeName(const QString &file)
 	QString filename = info.fileName();
 #if defined(Q_OS_WIN)
 	static const QStringList disabled { "CON", "PRN", "AUX", "NUL",
-									  "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-									  "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+										"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+										"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
 	if(disabled.contains(info.baseName(), Qt::CaseInsensitive))
 		filename = QStringLiteral("___.") + info.suffix();
 	filename.replace(QRegExp(QStringLiteral("[\\\\/*:?\"<>|]")), QStringLiteral("_"));
