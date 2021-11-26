@@ -43,6 +43,7 @@ class LdapSearch::Private
 public:
 	LDAP *ldap = nullptr;
 	QByteArray host;
+	QTimer *timer;
 };
 
 LdapSearch::LdapSearch(QByteArray host, QObject *parent)
@@ -50,6 +51,13 @@ LdapSearch::LdapSearch(QByteArray host, QObject *parent)
 ,	d(new Private)
 {
 	d->host = std::move(host);
+	d->timer = new QTimer(this);
+	d->timer->setSingleShot(true);
+	connect(d->timer, &QTimer::timeout, this, [this]{
+		if(d->ldap)
+			ldap_unbind_s(d->ldap);
+		d->ldap = nullptr;
+	});
 }
 
 LdapSearch::~LdapSearch()
@@ -62,7 +70,10 @@ LdapSearch::~LdapSearch()
 bool LdapSearch::init()
 {
 	if(d->ldap)
+	{
+		d->timer->start(4*60*60);
 		return true;
+	}
 
 #ifdef Q_OS_WIN
 	QUrl url(d->host);
@@ -115,11 +126,7 @@ bool LdapSearch::init()
 	if(err)
 		setLastError(tr("Failed to init ldap"), err);
 
-	QTimer::singleShot(4*60*60, this, [this]{
-		if(d->ldap)
-			ldap_unbind_s(d->ldap);
-		d->ldap = nullptr;
-	});
+	d->timer->start(4*60*60);
 	return !err;
 }
 
