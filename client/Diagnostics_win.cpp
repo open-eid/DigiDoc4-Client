@@ -22,6 +22,7 @@
 #include "Common.h"
 
 #include <QtCore/QProcess>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QSettings>
 #include <QtCore/QTextStream>
 #include <QtCore/QVector>
@@ -93,7 +94,7 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 				QString type = s.value(QStringLiteral("/ReleaseType")).toString();
 				if(!type.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
 					!name.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
-					name.contains(QRegExp(names.join('|'), Qt::CaseInsensitive)))
+					name.contains(QRegularExpression(names.join('|').prepend('^'), QRegularExpression::CaseInsensitiveOption)))
 					packages << packageName(name, version, withName);
 				s.endGroup();
 			}
@@ -146,7 +147,7 @@ void Diagnostics::run()
 	static const QStringList dlls{
 		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
 		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
-		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe",
+		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe", "web-eid.exe",
 		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "xsec_2_0", "libxml2",
 		"advapi32", "crypt32", "winscard"};
 	for(const QString &lib: dlls)

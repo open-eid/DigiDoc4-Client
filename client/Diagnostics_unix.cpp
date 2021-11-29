@@ -87,7 +87,7 @@ void Diagnostics::run()
 	info.clear();
 
 #ifndef Q_OS_MAC
-	QStringList package = packages({"open-eid", "estonianidcard"}, false);
+	QStringList package = packages({"open-eid"}, false);
 	if( !package.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << package.first() << "<br />";
 #endif
@@ -118,10 +118,10 @@ void Diagnostics::run()
 
 	s << "<b>" << tr("Libraries") << ":</b><br />" << packages({
 #ifdef Q_OS_MAC
-		"libdigidoc", "digidocpp"
+		"digidocpp"
 #else
 		"libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil", "qdigidoc-tera", "firefox-pkcs11-loader",
-		"chrome-token-signing", "openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
+		"chrome-token-signing", "web-eid", "openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
 #endif
 	}).join(QStringLiteral("<br />")) << "<br />";
 	s << "QT (" << qVersion() << ")" << "<br /><br />";
