@@ -109,7 +109,7 @@ jobs:
     - name: Install Deps
       run: |
         dnf install -y \
-          cmake openssl-devel vim-common qt5-qtsvg-devel
+          cmake openssl-devel vim-common qt5-qtsvg-devel qt5-linguist
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
