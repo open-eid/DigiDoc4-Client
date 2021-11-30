@@ -295,10 +295,12 @@ else()
 		# Workaround Ubuntu 21.10 Yaru icon theme issues
 		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
 			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png application-x-cdoc.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
-				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
+		if(NOT DEFINED CPACK_TYPE)
+			foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png application-x-cdoc.png)
+				install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
+					${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
+					\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
+			endforeach()
+		endif()
 	endforeach()
 endif()
