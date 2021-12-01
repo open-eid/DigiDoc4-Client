@@ -4,13 +4,14 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.12.11"
+QT_VER="5.12.12"
 OPENSSL_VER="1.1.1l"
 OPENLDAP_VER="2.6.0"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 : ${MACOSX_DEPLOYMENT_TARGET:="10.14"}
 export MACOSX_DEPLOYMENT_TARGET
+SCRIPTPATH=$(exec 2>/dev/null;cd -- $(dirname "$0"); unset PWD; /usr/bin/pwd || /bin/pwd || pwd)
 
 while [[ $# -gt 0 ]]
 do
@@ -124,6 +125,7 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
                 if [[ "${ARCH}" == "arm64" ]] ; then
                     CROSSCOMPILE="-device-option QMAKE_APPLE_DEVICE_ARCHS=${ARCH}"
                 fi
+                patch -Np1 -i ${SCRIPTPATH}/qt-macos12.patch
                 ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH} ${CROSSCOMPILE}
             else
                 "${QT_PATH}"/bin/qmake
