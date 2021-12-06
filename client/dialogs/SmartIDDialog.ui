@@ -69,7 +69,7 @@ QCheckBox {
 min-height: 31px;
 }
 QCheckBox:disabled {
-color: #75787B;
+color: #727679;
 }
 QCheckBox::indicator {
 width: 14px;

@@ -65,8 +65,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		status += isValid(isTS);
 		break;
 	case DigiDocSignature::Warning:
-		status += QStringLiteral("%1</font> <font color=\"gold\">(%2)").arg(isValid(isTS), tr("Warnings"));
-		decorateNotice(QStringLiteral("gold"));
+		status += QStringLiteral("%1</font> <font color=\"#996C0B\">(%2)").arg(isValid(isTS), tr("Warnings"));
+		decorateNotice(QStringLiteral("#996C0B"));
 		if(!s.lastError().isEmpty())
 			d->error->setPlainText( s.lastError() );
 		if(s.warning() & DigiDocSignature::DigestWeak )
@@ -76,8 +76,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			d->info->setText(tr("SIGNATURE_WARNING"));
 		break;
 	case DigiDocSignature::NonQSCD:
-		status += QStringLiteral("%1</font> <font color=\"gold\">(%2)").arg(isValid(isTS), tr("Restrictions"));
-		decorateNotice(QStringLiteral("gold"));
+		status += QStringLiteral("%1</font> <font color=\"#996C0B\">(%2)").arg(isValid(isTS), tr("Restrictions"));
+		decorateNotice(QStringLiteral("#996C0B"));
 		d->info->setText( tr(
 			"This e-Signature is not equivalent with handwritten signature and therefore "
 			"can be used only in transactions where Qualified e-Signature is not required.") );

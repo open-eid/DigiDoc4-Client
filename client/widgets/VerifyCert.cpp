@@ -125,9 +125,9 @@ void VerifyCert::update()
 	{
 		qint64 leftDays = std::max<qint64>(0, QDateTime::currentDateTime().daysTo(c.expiryDate().toLocalTime()));
 		if(leftDays <= 105 && !c.isNull())
-			cert << "<span style='color: #F0BF72'>";
+			cert << "<span style='color: #996C0B'>";
 		cert << tr("Certificate %1is valid%2 until %3").arg(
-				QStringLiteral("<span style='color: #37a447'>"),
+				QStringLiteral("<span style='color: #498526'>"),
 				QStringLiteral("</span>"),
 				DateTime(c.expiryDate().toLocalTime()).formatDate(QStringLiteral("dd. MMMM yyyy")));
 		if(leftDays <= 105 && !c.isNull())

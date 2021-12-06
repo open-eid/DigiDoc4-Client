@@ -125,7 +125,7 @@ text-decoration: none solid rgb(0, 0, 0);</string>
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #75787B;border: none;</string>
+        <string notr="true">color: #727679;border: none;</string>
        </property>
        <property name="text">
         <string notr="true">ID-card</string>
@@ -202,7 +202,7 @@ QToolButton:hover:!pressed {
 	color: #006EB5;
 }
 QToolButton:disabled {
-	color: #75787B;
+	color: #727679;
 }</string>
      </property>
      <property name="text">
@@ -245,7 +245,7 @@ QToolButton:hover:!pressed {
 	color: #006EB5;
 }
 QToolButton:disabled {
-	color: #75787B;
+	color: #727679;
 	background-color: #BEDBED;
 }</string>
      </property>

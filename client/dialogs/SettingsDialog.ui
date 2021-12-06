@@ -248,7 +248,7 @@ QCheckBox, QRadioButton {
     min-height: 31px;
 }
 QCheckBox:disabled {
-    color: #75787B;
+    color: #727679;
 }
 QCheckBox::indicator, QRadioButton::indicator {
     width: 14px;
@@ -1185,7 +1185,7 @@ QPushButton:hover:!pressed {
 	color: #006EB5;
 }
 QPushButton:disabled {
-	color: #75787B;
+	color: #727679;
 }</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout">

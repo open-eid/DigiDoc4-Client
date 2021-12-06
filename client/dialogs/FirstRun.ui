@@ -757,7 +757,7 @@ QPushButton:hover:!pressed {
 	color: #006EB5;
 }
 QPushButton:disabled {
-    color: #75787B;
+    color: #727679;
 	background-color: #BEDBED;
 }</string>
          </property>
@@ -971,7 +971,7 @@ QPushButton:hover:!pressed {
 	color: #006EB5;
 }
 QPushButton:disabled {
-	color: #75787B;
+	color: #727679;
 	background-color: #BEDBED;
 }</string>
        </property>
@@ -1537,7 +1537,7 @@ QPushButton:hover:!pressed {
 	color: #006EB5;
 }
 QPushButton:disabled {
-	color: #75787B;
+	color: #727679;
 	background-color: #BEDBED;
 }</string>
        </property>

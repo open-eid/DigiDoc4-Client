@@ -94,7 +94,7 @@ QPushButton:hover:!pressed {
 	color: #006EB5;
 }
 QPushButton:disabled {
-	color: #75787B;
+	color: #727679;
 }</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout" stretch="0,0,0,1,0">

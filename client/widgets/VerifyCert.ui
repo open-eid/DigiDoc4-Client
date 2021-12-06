@@ -301,7 +301,7 @@ background-color: #F8DDA7;</string>
      <property name="styleSheet">
       <string notr="true">#widget { border: none; }
 QPushButton {
-color: #75787B;
+color: #727679;
 line-height: 19px;
 text-align: center;
 border: none;
