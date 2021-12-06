@@ -26,7 +26,7 @@
          # Ubuntu
          sudo apt install cmake qttools5-dev libqt5svg5-dev qttools5-dev-tools libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
          # Fedora
-         sudo dnf install qt5-qttools-devel qt5-qtsvg-devel pcsc-lite-devel openssl-devel libdigidocpp openldap-devel gettext pkg-config
+         sudo dnf install qt5-qttools-devel qt5-qtsvg-devel qt5-linguist pcsc-lite-devel openssl-devel libdigidocpp openldap-devel gettext pkg-config
 
    * Also runtime dependency opensc-pkcs11 and pcscd is needed
 
