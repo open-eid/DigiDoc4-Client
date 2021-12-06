@@ -1,0 +1,11 @@
+--- qtbase-everywhere-src-5.12.11.orig/src/plugins/platforms/cocoa/qiosurfacegraphicsbuffer.h   2021-05-18 09:43:52.000000000 +0300
++++ qtbase-everywhere-src-5.12.11/src/plugins/platforms/cocoa/qiosurfacegraphicsbuffer.h        2021-11-26 19:44:43.000000000 +0200
+@@ -43,6 +43,8 @@
+ #include <qpa/qplatformgraphicsbuffer.h>
+ #include <private/qcore_mac_p.h>
+ 
++#include <CoreGraphics/CGColorSpace.h>
++
+ QT_BEGIN_NAMESPACE
+ 
+ class QIOSurfaceGraphicsBuffer : public QPlatformGraphicsBuffer

@@ -50,7 +50,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:21.04']
+        container: ['ubuntu:20.04', 'ubuntu:21.10']
     env:
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: 'github-actions'
