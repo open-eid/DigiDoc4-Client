@@ -90,6 +90,50 @@ jobs:
       with:
         name: debs
         path: qdigidoc4*.*
+  fedora:
+    name: Build on Fedora to ${{ matrix.container }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
+    strategy:
+      matrix:
+        container: ['fedora:33']
+    env:
+      MAKEFLAGS: -j3
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: recursive
+    - name: Install Build Deps
+      run: dnf groupinstall -y "Development Tools" "Development Libraries" fedora-packager
+    - name: Install Deps
+      run: |
+        dnf install -y \
+          cmake openssl-devel vim-common qt5-qtsvg-devel qt5-linguist
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: rpms
+        path: libdigidocpp-pkg
+        repo: 'open-eid/libdigidocpp'
+    - name: Install artifact
+      run: |
+        dnf install -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.rpm
+        rm -rf libdigidocpp-pkg
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+        make
+        make package
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: rpms
+        path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
     runs-on: ${{ matrix.image }}
