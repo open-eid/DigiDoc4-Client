@@ -44,21 +44,17 @@
 
 #include <digidocpp/Conf.h>
 
-#include <QtCore/QFile>
-#include <QtCore/QIODevice>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
 #include <QtCore/QSettings>
-#include <QtCore/QStandardPaths>
-#include <QtCore/QThread>
 #include <QtCore/QThreadPool>
-#include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QNetworkProxy>
 #include <QtWidgets/QInputDialog>
-#include <QtWidgets/QTextBrowser>
 
 #include <algorithm>
+
+#define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())
 
 SettingsDialog::SettingsDialog(QWidget *parent)
 	: QDialog(parent)
@@ -220,10 +216,9 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 		saveFile(QStringLiteral("diagnostics.txt"), ui->txtDiagnostics->toPlainText().toUtf8());
 	});
 	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [=]{
-		QFile f(QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()));
-		if(f.open(QFile::ReadOnly|QFile::Text))
-			saveFile(QStringLiteral("libdigidocpp.txt"), f.readAll());
-		f.remove();
+		saveFile(QStringLiteral("libdigidocpp.txt"),
+			QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()));
+		saveFile(QStringLiteral("qdigidoc4.txt"), qdigidoc4log);
 		ui->btnNavSaveLibdigidocpp->hide();
 	});
 #ifdef Q_OS_WIN
@@ -328,25 +323,6 @@ void SettingsDialog::initFunctionality()
 	ui->chkRoleAddressInfo->setChecked(s.value(QStringLiteral("RoleAddressInfo"), false).toBool());
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked) {
 		setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
-	});
-	ui->chkLibdigidocppDebug->setChecked(s.value(QStringLiteral("LibdigidocppDebug"), false).toBool());
-	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [](bool checked) {
-		setValueEx(QStringLiteral("LibdigidocppDebug"), checked, false);
-		if(!checked)
-			return;
-#ifdef Q_OS_MAC
-		WarningDialog(tr("Restart DigiDoc4 Client to activate logging. Read more "
-			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>.")).exec();
-#else
-		WarningDialog dlg(tr("Restart DigiDoc4 Client to activate logging. Read more "
-			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"), qApp->activeWindow());
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), 1) ;
-		if(dlg.exec() == 1) {
-			qApp->setProperty("restart", true);
-			qApp->quit();
-		}
-#endif
 	});
 
 #ifdef Q_OS_MAC
@@ -458,6 +434,33 @@ void SettingsDialog::initFunctionality()
 	});
 	connect(ui->helpMID, &QToolButton::clicked, this, []{
 		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
+	});
+
+	// pageDiagnostics
+	ui->chkLibdigidocppDebug->setChecked(s.value(QStringLiteral("LibdigidocppDebug"), false).toBool());
+	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [](bool checked) {
+		setValueEx(QStringLiteral("LibdigidocppDebug"), checked, false);
+		if(!checked)
+		{
+			QFile::remove(qdigidoc4log);
+			return;
+		}
+		QFile f(qdigidoc4log);
+		if(f.open(QFile::WriteOnly|QFile::Truncate))
+			f.write({});
+#ifdef Q_OS_MAC
+		WarningDialog(tr("Restart DigiDoc4 Client to activate logging. Read more "
+						 "<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>.")).exec();
+#else
+		WarningDialog dlg(tr("Restart DigiDoc4 Client to activate logging. Read more "
+							 "<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"), qApp->activeWindow());
+		dlg.setCancelText(tr("NO"));
+		dlg.addButton(tr("YES"), 1) ;
+		if(dlg.exec() == 1) {
+			qApp->setProperty("restart", true);
+			qApp->quit();
+		}
+#endif
 	});
 }
 
@@ -642,6 +645,14 @@ void SettingsDialog::changePage(QAbstractButton *button)
 #else
 	ui->btnNavFromHistory->hide();
 #endif
+}
+
+void SettingsDialog::saveFile(const QString &name, const QString &path)
+{
+	QFile f(path);
+	if(f.open(QFile::ReadOnly|QFile::Text))
+		saveFile(name, f.readAll());
+	f.remove();
 }
 
 void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
