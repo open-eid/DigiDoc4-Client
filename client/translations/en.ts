@@ -856,10 +856,6 @@
         <translation>The timestamp added to the signature must be taken before validity confirmation.</translation>
     </message>
     <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
-        <translation>Connecting to SiVa server failed! Please check your internet connection.</translation>
-    </message>
-    <message>
         <source>Failed to sign container.</source>
         <translation>Failed to sign container.</translation>
     </message>
@@ -878,6 +874,10 @@
     <message>
         <source>Failed to sign container. Signing service URL is incorrect.</source>
         <translation>Failed to sign container. Signing service URL is incorrect.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
+        <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
     </message>
 </context>
 <context>

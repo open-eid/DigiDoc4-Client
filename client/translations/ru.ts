@@ -858,10 +858,6 @@
         <translation>Добавленная к подписи метка времени должна быть более ранней по времени, чем подтверждение действительности.</translation>
     </message>
     <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
-        <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте подключение к интернету.</translation>
-    </message>
-    <message>
         <source>Failed to sign container.</source>
         <translation>Не удалось подписать контейнер.</translation>
     </message>
@@ -880,6 +876,10 @@
     <message>
         <source>Failed to sign container. Signing service URL is incorrect.</source>
         <translation>Не удалось подписать контейнер. Службы URL-адрес подписи неверены.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
+        <translation>Не удалось создать SSL канал передачи данных. Проверьте настройки буферного сервера компьютера или обновления программного обеспечения.</translation>
     </message>
 </context>
 <context>

@@ -856,10 +856,6 @@
         <translation>Allkirjale lisatud ajatempel peab olema varasem kehtivuskinnitusest.</translation>
     </message>
     <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
-        <translation>Viga SiVa serveriga ühenduse saamisel! Palun kontrolli internetiühendust.</translation>
-    </message>
-    <message>
         <source>Failed to sign container.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus.</translation>
     </message>
@@ -878,6 +874,10 @@
     <message>
         <source>Failed to sign container. Signing service URL is incorrect.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus. Allkirjastamise teenuse URL ei ole korrektne.</translation>
+    </message>
+    <message>
+        <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
+        <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
     </message>
 </context>
 <context>

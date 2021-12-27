@@ -539,7 +539,7 @@ bool DigiDoc::open( const QString &file )
 		switch(e.code())
 		{
 		case Exception::NetworkError:
-			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection."), e);
+			setLastError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."), e);
 			break;
 		case Exception::HostNotFound:
 		case Exception::InvalidUrl:
