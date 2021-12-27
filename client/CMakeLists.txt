@@ -137,6 +137,15 @@ target_include_directories(${PROGNAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCP
 target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SMARTID_URL="${SMARTID_URL}" )
 
 if( APPLE )
+	file(GLOB_RECURSE RESOURCE_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.icns
+		${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.strings)
+	foreach(_file ${RESOURCE_FILES})
+		get_filename_component(_file_dir ${_file} PATH)
+		file(RELATIVE_PATH _file_dir ${CMAKE_CURRENT_SOURCE_DIR}/mac ${_file_dir})
+		set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir})
+	endforeach(_file)
+
 	target_sources( ${PROGNAME} PRIVATE Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
