@@ -3398,10 +3398,6 @@ Additional licenses and components</translation>
         <translation>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Connecting to SK server failed! Please check your internet connection.</source>
-        <translation>Connecting to SK server failed!&lt;br/&gt;Please check your internet connection.</translation>
-    </message>
-    <message>
         <source>Certificate is valid. </source>
         <translation>Certificate is valid. </translation>
     </message>
@@ -3416,6 +3412,10 @@ Additional licenses and components</translation>
     <message>
         <source>PIN%1 can not be used because the certificate has revoked. </source>
         <translation>PIN%1 can not be used because the certificate has revoked. </translation>
+    </message>
+    <message>
+        <source>Certificate status check failed. Please check your internet connection.</source>
+        <translation>Certificate status check failed. Please check your internet connection.</translation>
     </message>
 </context>
 <context>

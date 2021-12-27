@@ -3402,10 +3402,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Loe rohkem &lt;a href=&quot;https://www.id.ee/artikkel/id-kaardi-sertifikaatide-kehtivus/&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Connecting to SK server failed! Please check your internet connection.</source>
-        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
-    </message>
-    <message>
         <source>Certificate is valid. </source>
         <translation>Sertifikaat kehtib. </translation>
     </message>
@@ -3416,6 +3412,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>PIN%1 can not be used because the certificate has revoked. </source>
         <translation>PIN%1 ei saa kasutada, kuna sertifikaat on tühistatud. </translation>
+    </message>
+    <message>
+        <source>Certificate status check failed. Please check your internet connection.</source>
+        <translation>Sertifikaadi staatuse kontrollimine ebaõnnestus. Palun kontrolli internetiühendust.</translation>
     </message>
 </context>
 <context>

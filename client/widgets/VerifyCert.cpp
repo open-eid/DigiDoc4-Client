@@ -56,7 +56,7 @@ VerifyCert::VerifyCert(QWidget *parent)
 			msg.prepend(getRevokedCertMessage(c));
 			break;
 		default:
-			msg = tr("Connecting to SK server failed! Please check your internet connection.");
+			msg = tr("Certificate status check failed. Please check your internet connection.");
 		}
 		WarningDialog::warning(this, msg);
 	});
