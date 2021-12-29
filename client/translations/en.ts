@@ -1192,9 +1192,9 @@
         <translation>Expired</translation>
     </message>
     <message>
-        <source>Download picture</source>
+        <source>Load picture</source>
         <extracomment>accessible</extracomment>
-        <translation>Download picture</translation>
+        <translation>Load picture</translation>
     </message>
     <message>
         <source>Given names</source>
