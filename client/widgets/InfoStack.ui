@@ -95,7 +95,7 @@ background-color: #F9FAFA;</string>
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="accessibleName">
-       <string extracomment="accessible">Download picture</string>
+       <string extracomment="accessible">Load picture</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {

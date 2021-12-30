@@ -1192,7 +1192,7 @@
         <translation>Aegunud</translation>
     </message>
     <message>
-        <source>Download picture</source>
+        <source>Load picture</source>
         <extracomment>accessible</extracomment>
         <translation>Laadi pilt</translation>
     </message>
