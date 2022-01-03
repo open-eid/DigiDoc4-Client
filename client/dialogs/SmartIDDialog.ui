@@ -64,6 +64,7 @@ left: 1px;
 }
 QCheckBox {
 min-height: 31px;
+spacing: 5px;
 }
 QCheckBox:disabled {
 color: #75787B;

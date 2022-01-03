@@ -235,6 +235,7 @@ QLineEdit {
 }
 QCheckBox, QRadioButton {
     min-height: 31px;
+    spacing: 5px;
 }
 QCheckBox:disabled {
     color: #75787B;
@@ -262,7 +263,7 @@ QRadioButton::indicator::checked {
      <widget class="QWidget" name="pageGeneral">
       <layout class="QVBoxLayout" name="pageGeneralLayout">
        <property name="spacing">
-        <number>20</number>
+        <number>5</number>
        </property>
        <property name="leftMargin">
         <number>20</number>
@@ -1368,7 +1369,7 @@ QPushButton:disabled {
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtSvg/QSvgWidget</header>
+   <header location="global">QSvgWidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
