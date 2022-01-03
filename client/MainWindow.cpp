@@ -139,7 +139,7 @@ MainWindow::MainWindow( QWidget *parent )
 		updateMyEID(token);
 		ui->cryptoContainerPage->cardChanged(token.cert());
 		if(cryptoDoc)
-			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(token.cert()));
+			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(token.cert()), cryptoDoc);
 	});
 	QPCSC::instance().start();
 

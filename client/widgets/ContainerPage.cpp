@@ -240,14 +240,6 @@ void ContainerPage::initContainer( const QString &file, const QString &suffix )
 	ui->containerFile->setText(fileName.toHtmlEscaped());
 }
 
-void ContainerPage::hideMainAction()
-{
-	if(mainAction)
-		mainAction->hide();
-	ui->mainActionSpacer->changeSize( 1, 20, QSizePolicy::Fixed );
-	ui->navigationArea->layout()->invalidate();
-}
-
 void ContainerPage::hideRightPane()
 {
 	ui->rightPane->hide();
@@ -266,7 +258,7 @@ void ContainerPage::changeEvent(QEvent* event)
 
 void ContainerPage::setHeader(const QString &file)
 {
-	fileName = QDir::toNativeSeparators (file);
+	fileName = QDir::toNativeSeparators(file);
 	window()->setWindowFilePath(fileName);
 	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 Client") : QFileInfo(file).fileName());
 	elideFileName();
@@ -286,20 +278,17 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
 	}
 	mainAction->showActions(actions);
-	bool isSign = actions.contains(SignatureAdd) || actions.contains(SignatureToken);
-	bool isSignMobile = !isSign && (actions.contains(SignatureMobile) || actions.contains(SignatureSmartID));
+	bool isSignCard = actions.contains(SignatureAdd) || actions.contains(SignatureToken);
+	bool isSignMobile = !isSignCard && (actions.contains(SignatureMobile) || actions.contains(SignatureSmartID));
 	bool isEncrypt = actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
 	bool isDecrypt = actions.contains(DecryptContainer) || actions.contains(DecryptToken);
-	mainAction->setButtonEnabled(isEncrypt || isSignMobile || (!isBlocked && ((isSign && !isExpired) || isDecrypt)));
-	ui->mainActionSpacer->changeSize( 198, 20, QSizePolicy::Fixed );
-	ui->navigationArea->layout()->invalidate();
+	mainAction->setButtonEnabled(isSupported && !hasEmptyFile &&
+		(isEncrypt || isSignMobile || (!isBlocked && ((isSignCard && !isExpired) || isDecrypt))));
 }
 
 void ContainerPage::showSigningButton()
 {
-	if (false == isSupported || hasEmptyFile)
-		hideMainAction();
-	else if(cardInReader.isEmpty())
+	if(cardInReader.isEmpty())
 		showMainAction({ SignatureMobile, SignatureSmartID });
 	else if(isSeal)
 		showMainAction({ SignatureToken, SignatureMobile, SignatureSmartID });
@@ -311,29 +300,18 @@ void ContainerPage::transition(CryptoDoc* container, bool canDecrypt)
 {
 	clear();
 	isSupported = canDecrypt;
-	ContainerState state = container->state();
-	ui->leftPane->stateChange(state);
-	ui->rightPane->stateChange(state);
-
 	setHeader(container->fileName());
-
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
-
 	ui->leftPane->setModel(container->documentModel());
-	updatePanes(state);
+	updatePanes(container->state());
 }
 
 void ContainerPage::transition(DigiDoc* container)
 {
 	clear();
 	emit action(ClearSignatureWarning);
-
-	ContainerState state = container->state();
 	QMap<ria::qdigidoc4::WarningType, int> errors;
-	ui->leftPane->stateChange(state);
-	ui->rightPane->stateChange(state);
-
 	setHeader(container->fileName());
 
 	if(!container->timestamps().isEmpty())
@@ -342,7 +320,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
-			SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
+			SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
 			if(item->isInvalid())
 				addError(item, errors);
 			ui->rightPane->addHeaderWidget(item);
@@ -351,7 +329,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	for(const DigiDocSignature &c: container->signatures())
 	{
-		SignatureItem *item = new SignatureItem(c, state, ui->rightPane);
+		SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
 		if(item->isInvalid())
 			addError(item, errors);
 		ui->rightPane->addWidget(item);
@@ -381,30 +359,29 @@ void ContainerPage::transition(DigiDoc* container)
 	showSigningButton();
 
 	ui->leftPane->setModel(container->documentModel());
-	updatePanes(state);
+	updatePanes(container->state());
 }
 
 void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 {
-	isSupported = canDecrypt;
-	if(ui->leftPane->getState() & EncryptedContainer)
+	isSupported = canDecrypt || container->state() & UnencryptedContainer;
+	if(container->state() & EncryptedContainer)
 		updateDecryptionButton();
 
 	if(!container)
 		return;
 
+	hasEmptyFile = false;
 	ui->rightPane->clear();
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
-	if(ui->leftPane->getState() & UnencryptedContainer)
+	if(container->state() & UnencryptedContainer)
 		showMainAction({ EncryptContainer });
 }
 
 void ContainerPage::updateDecryptionButton()
 {
-	if(!isSupported || cardInReader.isEmpty())
-		hideMainAction();
-	else if(isSeal)
+	if(isSeal)
 		showMainAction({ DecryptToken });
 	else
 		showMainAction({ DecryptContainer });
@@ -412,6 +389,8 @@ void ContainerPage::updateDecryptionButton()
 
 void ContainerPage::updatePanes(ContainerState state)
 {
+	ui->leftPane->stateChange(state);
+	ui->rightPane->stateChange(state);
 	bool showPrintSummary = QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool();
 	auto setButtonsVisible = [](const QVector<QWidget*> &buttons, bool visible) {
 		for(QWidget *button: buttons) button->setVisible(visible);

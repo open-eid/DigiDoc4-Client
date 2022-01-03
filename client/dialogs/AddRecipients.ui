@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-color: #0000000;
+color: #000000;
 }
 #leftPane, #rightPane {
 background-color: #ffffff;
