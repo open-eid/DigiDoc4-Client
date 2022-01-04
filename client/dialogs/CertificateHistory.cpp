@@ -63,6 +63,10 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData,
 	ui->select->setFont(condensed);
 	ui->remove->setFont(condensed);
 
+	connect(ui->view->selectionModel(), &QItemSelectionModel::selectionChanged, ui->remove, [this] {
+		ui->select->setDisabled(ui->view->selectedItems().isEmpty());
+		ui->remove->setDisabled(ui->view->selectedItems().isEmpty());
+	});
 	connect(ui->close, &QPushButton::clicked, this, &CertificateHistory::reject);
 	connect(ui->select, &QPushButton::clicked, this, [this]{
 		emit addSelectedCerts(selectedItems());
@@ -79,6 +83,7 @@ CertificateHistory::CertificateHistory(QList<HistoryCertData> &_historyCertData,
 		ui->view->fontMetrics().boundingRect(ui->view->headerItem()->text(3)).width() + 25);
 	ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+	ui->view->sortItems(0, Qt::AscendingOrder);
 	adjustSize();
 }
 
