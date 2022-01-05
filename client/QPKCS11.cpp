@@ -72,7 +72,7 @@ QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HAND
 		return data;
 	CK_ATTRIBUTE attr = { type, nullptr, 0 };
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
-		return QByteArray();
+		return {};
 	data.resize(int(attr.ulValueLen));
 	attr.pValue = data.data();
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
@@ -128,7 +128,7 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 {
 	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1)
-		return QByteArray();
+		return {};
 
 	CK_ECDH1_DERIVE_PARAMS ecdh_parms = { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
 	CK_MECHANISM mech = { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
@@ -339,38 +339,37 @@ bool QPKCS11::reload()
 {
 	static QMultiHash<QString,QByteArray> drivers {
 #ifdef Q_OS_MAC
-		{ qApp->applicationDirPath() + "/opensc-pkcs11.so", QByteArray() },
-		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" },
-		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" },
-		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3BF81300008131FE45536D617274417070F8" },
-		{ "/Library/Security/tokend/CCSuite.tokend/Contents/Frameworks/libccpkip11.dylib", "3B7D94000080318065B08311C0A983009000" },
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" },
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944" },
+		{ qApp->applicationDirPath() + "/opensc-pkcs11.so", {} },
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
+		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
+		{ "/Library/PWPW-Card/lib/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944" }, // FI-G2
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
 #elif defined(Q_OS_WIN)
-		{ "opensc-pkcs11.dll", QByteArray() },
-		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3BF81300008131FE45536D617274417070F8" },
-		{ qApp->applicationDirPath() + "/../CryptoTech/CryptoCard/CCPkiP11.dll", "3B7D94000080318065B08311C0A983009000" },
+		{ "opensc-pkcs11.dll", {} },
 #else
-		{ "opensc-pkcs11.so", QByteArray() },
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" },
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" },
+		{ "opensc-pkcs11.so", {} },
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
+		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 #if Q_PROCESSOR_WORDSIZE == 8
-		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" },
-		{ "/usr/lib64/pwpw-card-pkcs11.so", "3B7D94000080318065B08311C0A983009000" },
-		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
-		{ "/usr/lib64/libcryptoki.so", "3B7B940000806212515646696E454944" },
+		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/usr/lib64/libcryptoki.so", "3B7B940000806212515646696E454944" }, // FI-G2
 #else
-		{ "pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" },
-		{ "pwpw-card-pkcs11.so", "3B7D94000080318065B08311C0A983009000" },
-		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" },
-		{ "libcryptoki.so", "3B7B940000806212515646696E454944" },
+		{ "pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
+		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "libcryptoki.so", "3B7B940000806212515646696E454944" }, // FI-G2
 #endif
 		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
+		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
 #endif
 	};
 	for(const QString &reader: QPCSC::instance().readers())
@@ -378,11 +377,12 @@ bool QPKCS11::reload()
 		QPCSCReader r(reader, &QPCSC::instance());
 		if(!r.isPresent())
 			continue;
+		qDebug() << r.atr();
 		QString driver = drivers.key(r.atr());
 		if(!driver.isEmpty() && load(driver))
 			return true;
 	}
-	return load(drivers.key(QByteArray()));
+	return load(drivers.key({}));
 }
 
 QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
