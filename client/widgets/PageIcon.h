@@ -35,7 +35,7 @@ namespace Ui {
 class PageIcon;
 }
 
-class PageIcon : public QPushButton
+class PageIcon final : public QPushButton
 {
 	Q_OBJECT
 
@@ -52,11 +52,6 @@ public:
 signals:
 	void activated( PageIcon *icon );
 
-protected:
-	void enterEvent( QEvent *ev ) override;
-	void leaveEvent( QEvent *ev ) override;
-	void changeEvent(QEvent* event) override;
-
 private:
 	enum IconType {
 		None,
@@ -69,15 +64,17 @@ private:
 		QString image, backColor, foreColor, border;
 	};
 
+	void changeEvent(QEvent *event) final;
+	void enterEvent(QEvent *event) final;
+	void leaveEvent(QEvent *event) final;
 	void updateIcon();
+	void updateSelection();
+	void updateSelection(const Style &style);
 
 	Ui::PageIcon *ui;
 	QWidget *shadow = nullptr;
-	std::unique_ptr<QSvgWidget> brightRedIcon;
-	std::unique_ptr<QSvgWidget> filledOrangeIcon;
-	std::unique_ptr<QSvgWidget> icon;
-	std::unique_ptr<QSvgWidget> redIcon;
-	std::unique_ptr<QSvgWidget> orangeIcon;
+	QSvgWidget *errorIcon;
+	QSvgWidget *icon;
 
 	Style active;
 	IconType iconType = IconType::None;
@@ -85,7 +82,4 @@ private:
 	Style hover;
 	bool selected = false;
 	ria::qdigidoc4::Pages type = ria::qdigidoc4::Pages::SignIntro;
-
-	void updateSelection();
-	void updateSelection(const Style &style);
 };

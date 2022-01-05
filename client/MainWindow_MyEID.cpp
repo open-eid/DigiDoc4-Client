@@ -219,6 +219,7 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 		}
 	}
 
+	ui->myEid->invalidIcon(false);
 	if(!data.isNull())
 		ui->myEid->warningIcon(
 			data.retryCount(QSmartCardData::Pin1Type) == 0 ||

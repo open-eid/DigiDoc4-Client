@@ -33,33 +33,15 @@ PageIcon::PageIcon(QWidget *parent)
 	ui->setupUi(this);
 	connect(this, &QPushButton::clicked, this, [this] { emit activated(this); });
 
-	icon.reset( new QSvgWidget( this ) );
+	icon = new QSvgWidget(this);
 	icon->resize( 48, 38 );
 	icon->move( 31, 23 );
 
-	brightRedIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_filled_red.svg"), this));
-	brightRedIcon->resize( 13, 12 );
-	brightRedIcon->move( 84, 12 );
-	brightRedIcon->hide();
-	brightRedIcon->setStyleSheet(QStringLiteral("border: none;"));
-
-	redIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_red.svg"), this));
-	redIcon->resize( 13, 12 );
-	redIcon->move( 84, 12 );
-	redIcon->hide();
-	redIcon->setStyleSheet(QStringLiteral("border: none;"));
-
-	filledOrangeIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_filled_orange.svg"), this));
-	filledOrangeIcon->resize( 13, 12 );
-	filledOrangeIcon->move( 84, 12 );
-	filledOrangeIcon->hide();
-	filledOrangeIcon->setStyleSheet(QStringLiteral("border: none;"));
-
-	orangeIcon.reset(new QSvgWidget(QStringLiteral(":/images/icon_alert_whitebg_orange.svg"), this));
-	orangeIcon->resize( 13, 12 );
-	orangeIcon->move( 84, 12 );
-	orangeIcon->hide();
-	orangeIcon->setStyleSheet(QStringLiteral("border: none;"));
+	errorIcon = new QSvgWidget(QStringLiteral(":/images/icon_alert_filled_red.svg"), this);
+	errorIcon->resize( 13, 12 );
+	errorIcon->move( 84, 12 );
+	errorIcon->hide();
+	errorIcon->setStyleSheet(QStringLiteral("border: none;"));
 }
 
 PageIcon::~PageIcon()
@@ -111,19 +93,13 @@ void PageIcon::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 		switch( type )
 		{
-		case CryptoIntro:
-			ui->label->setText( tr("CRYPTO") );
-			break;
-		case MyEid:
-			ui->label->setText( tr("My eID") );
-			break;
-		default:
-			ui->label->setText( tr("SIGNATURE") );
-			break;
+		case CryptoIntro: ui->label->setText(tr("CRYPTO")); break;
+		case MyEid: ui->label->setText(tr("My eID")); break;
+		default: ui->label->setText(tr("SIGNATURE")); break;
 		}
 	}
 
-	QWidget::changeEvent(event);
+	QPushButton::changeEvent(event);
 }
 
 void PageIcon::activate( bool selected )
@@ -136,9 +112,7 @@ void PageIcon::activate( bool selected )
 void PageIcon::enterEvent( QEvent * /*ev*/ )
 {
 	if( !selected )
-	{
 		updateSelection(hover);
-	}
 }
 
 Pages PageIcon::getType()
@@ -155,17 +129,20 @@ void PageIcon::invalidIcon(bool show)
 void PageIcon::leaveEvent( QEvent * /*ev*/ )
 {
 	if( !selected )
-	{
 		updateSelection(inactive);
-	}
 }
 
 void PageIcon::updateIcon()
 {
-	redIcon->setVisible(iconType == Error && selected);
-	brightRedIcon->setVisible(iconType == Error && !selected);
-	orangeIcon->setVisible(iconType == Warning && selected);
-	filledOrangeIcon->setVisible(iconType == Warning && !selected);
+	if(iconType == Error)
+		errorIcon->load(selected ?
+			QStringLiteral(":/images/icon_alert_red.svg") :
+			QStringLiteral(":/images/icon_alert_filled_red.svg"));
+	if(iconType == Warning)
+		errorIcon->load(selected ?
+			QStringLiteral(":/images/icon_alert_whitebg_orange.svg") :
+			QStringLiteral(":/images/icon_alert_filled_orange.svg"));
+	errorIcon->setHidden(iconType == None);
 }
 
 void PageIcon::updateSelection()
@@ -179,9 +156,7 @@ void PageIcon::updateSelection()
 		raise();
 	}
 	else
-	{
 		shadow->hide();
-	}
 
 	ui->label->setFont(style.font);
 	icon->load(QStringLiteral(":%1").arg(style.image));
