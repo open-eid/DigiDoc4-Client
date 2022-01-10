@@ -51,7 +51,7 @@ background-color: #FFFFFF;
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>12</number>
       </property>
       <property name="rightMargin">
        <number>1</number>
@@ -374,6 +374,9 @@ QScrollBar::sub-line:vertical {
      <layout class="QVBoxLayout" name="rightPaneLayout">
       <property name="leftMargin">
        <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
       </property>
       <property name="rightMargin">
        <number>9</number>
