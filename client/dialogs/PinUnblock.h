@@ -28,7 +28,7 @@ namespace Ui {
 class PinUnblock;
 }
 
-class PinUnblock : public QDialog
+class PinUnblock final : public QDialog
 {
 	Q_OBJECT
 

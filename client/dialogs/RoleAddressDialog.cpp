@@ -47,8 +47,9 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 #if defined (Q_OS_WIN)
 	d->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
-
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	for(QLineEdit *w: findChildren<QLineEdit*>())
+		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
 	d->cancel->setFont(condensed);
@@ -81,7 +82,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 			if(list.size() > 10)
 				list.removeLast();
 			d->s.setValue(line->objectName(), QString()); // Uses on Windows MULTI_STRING registry
-			SettingsDialog::setValueEx(line->objectName(), list, QStringList());
+			SettingsDialog::setValueEx(line->objectName(), list);
 		});
 		completer->popup()->setStyleSheet("background-color:#FFFFFF; color: #000000;");
 	}

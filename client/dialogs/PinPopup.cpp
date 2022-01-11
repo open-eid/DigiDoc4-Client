@@ -50,6 +50,8 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setFixedSize( size() );
+	for(QLineEdit *w: findChildren<QLineEdit*>())
+		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	QFont regular = Styles::font( Styles::Regular, 14 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
