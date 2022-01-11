@@ -135,8 +135,8 @@
         <translation>Confirm</translation>
     </message>
     <message>
-        <source>The name you were looking for gave a very large number of results, not all of the search results will be shown. If the desired recipient is not on the list, please enter a more specific name in the search box.</source>
-        <translation>The name you were looking for gave a very large number of results, not all of the search results will be shown. If the desired recipient is not on the list, please enter a more specific name in the search box.</translation>
+        <source>The name you were looking for gave too many results, please refine your search.</source>
+        <translation>The name you were looking for gave too many results, please refine your search.</translation>
     </message>
 </context>
 <context>
