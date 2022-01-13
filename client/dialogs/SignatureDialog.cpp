@@ -153,8 +153,15 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->signerCountry->setText( l.value( 3 ) );
 
 	d->signerRoles->setText(s.roles().join(QStringLiteral(", ")));
-	d->signerRoles->setFocusPolicy(d->signerRoles->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
-	d->lblRole->setFocusPolicy(d->signerRoles->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+	auto setFocus = [](QLabel *lbl, QLabel *cnt) {
+		lbl->setFocusPolicy(cnt->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		cnt->setFocusPolicy(cnt->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+	};
+	setFocus(d->lblSigningCity, d->signerCity);
+	setFocus(d->lblSigningCounty, d->signerState);
+	setFocus(d->lblSigningCountry, d->signerCountry);
+	setFocus(d->lblSigningZipCode, d->signerZip);
+	setFocus(d->lblRole, d->signerRoles);
 
 	// Certificate info
 	QTreeWidget *t = d->signatureView;
@@ -216,10 +223,15 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, QWidge
 {
 	QTreeWidgetItem *i = new QTreeWidgetItem(view);
 	QLabel *header = itemLabel(variable, view);
-	setTabOrder(header, value);
 	view->setItemWidget(i, 0, header);
 	view->setItemWidget(i, 1, value);
 	view->addTopLevelItem(i);
+	QWidget *prev = d->lblSignatureHeader;
+	if(view->model()->rowCount() > 0)
+		prev = view->itemWidget(view->itemAbove(i), 1);
+	setTabOrder(prev, header);
+	setTabOrder(header, value);
+	setTabOrder(value, d->close);
 }
 
 void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const QString &value)

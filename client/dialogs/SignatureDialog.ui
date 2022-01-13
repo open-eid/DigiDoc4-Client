@@ -42,7 +42,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">#leftPane { border-right: 1px solid #DEE4E9; }
-QTextEdit, QLineEdit, #signerRoles {
+QTextEdit, #signerCity, #signerCountry, #signerState, #signerZip, #signerRoles {
 border: 1px solid #DEE4E9;
 border-radius: 2px;
 background-color: #FFFFFF;
@@ -54,7 +54,7 @@ background-color: #FFFFFF;
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>12</number>
       </property>
       <property name="rightMargin">
        <number>1</number>
@@ -195,21 +195,18 @@ QScrollBar::sub-line:vertical {
            <property name="text">
             <string>City</string>
            </property>
-           <property name="buddy">
-            <cstring>signerCity</cstring>
-           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="signerCity">
+          <widget class="QLabel" name="signerCity">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>31</height>
             </size>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="textInteractionFlags">
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
@@ -227,21 +224,18 @@ QScrollBar::sub-line:vertical {
            <property name="text">
             <string>State</string>
            </property>
-           <property name="buddy">
-            <cstring>signerState</cstring>
-           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="signerState">
+          <widget class="QLabel" name="signerState">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>31</height>
             </size>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="textInteractionFlags">
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
@@ -259,21 +253,18 @@ QScrollBar::sub-line:vertical {
            <property name="text">
             <string>Country</string>
            </property>
-           <property name="buddy">
-            <cstring>signerCountry</cstring>
-           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="signerCountry">
+          <widget class="QLabel" name="signerCountry">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>31</height>
             </size>
            </property>
-           <property name="readOnly">
-            <bool>true</bool>
+           <property name="textInteractionFlags">
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
@@ -291,21 +282,21 @@ QScrollBar::sub-line:vertical {
            <property name="text">
             <string>Zip</string>
            </property>
-           <property name="buddy">
-            <cstring>signerZip</cstring>
-           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="signerZip">
+          <widget class="QLabel" name="signerZip">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>31</height>
             </size>
            </property>
-           <property name="readOnly">
+           <property name="wordWrap">
             <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
@@ -377,6 +368,9 @@ QScrollBar::sub-line:vertical {
      <layout class="QVBoxLayout" name="rightPaneLayout">
       <property name="leftMargin">
        <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
       </property>
       <property name="rightMargin">
        <number>9</number>
