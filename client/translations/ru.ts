@@ -3291,10 +3291,6 @@ Additional licenses and components</source>
         <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dejstvitelnost-sertifikatov-id-karty/&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Connecting to SK server failed! Please check your internet connection.</source>
-        <translation>Ошибка при подключении с SK сервером&lt;br/&gt;Пожалуйста проверьте подключение к интернету.</translation>
-    </message>
-    <message>
         <source>Certificate is valid. </source>
         <translation>Сертификат действителен. </translation>
     </message>
@@ -3309,6 +3305,10 @@ Additional licenses and components</source>
     <message>
         <source>PIN%1 can not be used because the certificate has revoked. </source>
         <translation>PIN%1 не может быть использован, так как сертификат был отменен. </translation>
+    </message>
+    <message>
+        <source>Certificate status check failed. Please check your internet connection.</source>
+        <translation>Проверка статуса сертификата не удалась. Пожалуйста проверьте подключение к интернету.</translation>
     </message>
 </context>
 <context>
