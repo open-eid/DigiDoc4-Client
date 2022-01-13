@@ -42,12 +42,12 @@ public:
 	void update(const TokenData &token, bool multiple);
 
 signals:
-	void photoClicked( const QPixmap &pixmap );
+	void photoClicked();
 	void selected(const TokenData &token);
 
 private:
-    bool event(QEvent *ev) final;
-    bool eventFilter(QObject *o, QEvent *e) final;
+	bool event(QEvent *ev) final;
+	bool eventFilter(QObject *o, QEvent *e) final;
 	void clearSeal();
 
 	Ui::CardWidget *ui;

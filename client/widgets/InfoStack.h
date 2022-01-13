@@ -43,13 +43,11 @@ public:
 	void showPicture(const QPixmap &pixmap);
 
 signals:
-	void photoClicked(const QPixmap &pixmap);
-
-protected:
-	void changeEvent(QEvent* event) final;
-	bool eventFilter(QObject *o, QEvent *e) final;
+	void photoClicked();
 
 private:
+	void changeEvent(QEvent* event) final;
+	bool eventFilter(QObject *o, QEvent *e) final;
 	void update();
 	void clearPicture();
 

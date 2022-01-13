@@ -174,6 +174,15 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
+	connect(SSLConnect::instance(), &SSLConnect::error, this, [this] {
+		showNotification(tr("Loading picture failed."));
+	});
+	connect(SSLConnect::instance(), &SSLConnect::image, this, [this] (const QImage &image) {
+		ui->infoStack->setProperty("PICTURE", image);
+		QPixmap pixmap = QPixmap::fromImage(image);
+		ui->cardInfo->showPicture(pixmap);
+		ui->infoStack->showPicture(pixmap);
+	});
 
 	updateSelector();
 	updateMyEID(qApp->signer()->tokensign());
@@ -955,36 +964,25 @@ void MainWindow::sign(const std::function<bool(const QString &city, const QStrin
 	adjustDrops();
 }
 
-// Loads picture
-void MainWindow::photoClicked(const QPixmap &photo)
+void MainWindow::photoClicked()
 {
-	if(!photo.isNull())
-		return savePhoto();
-
-	QSslKey key = qApp->signer()->key();
-	QString err;
-	QByteArray buffer;
-	if(!key.isNull())
+	if(!ui->infoStack->property("PICTURE").isValid())
 	{
-		SSLConnect ssl(qApp->signer()->tokenauth().cert(), key);
-		buffer = ssl.getUrl();
-		qApp->signer()->logout();
-		err = ssl.errorString();
+		SSLConnect::instance()->fetch();
+		return;
 	}
-	if(!err.isEmpty() || key.isNull())
-		showNotification(tr("Loading picture failed."));
-
-	if( buffer.isEmpty() )
+	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+	fileName += "/" + qApp->signer()->tokenauth().card();
+	fileName = QFileDialog::getSaveFileName(this,tr("Save photo"), fileName,
+		tr("Photo (*.jpg *.jpeg);;All Files (*)"));
+	if(fileName.isEmpty())
 		return;
-
-	QImage image;
-	if( !image.loadFromData( buffer ) )
-		return;
-
-	QPixmap pixmap = QPixmap::fromImage( image );
-	ui->cardInfo->showPicture( pixmap );
-	ui->infoStack->showPicture( pixmap );
-	ui->infoStack->setProperty("PICTURE", buffer);
+	static const QStringList exts{QStringLiteral("jpg"), QStringLiteral("jpeg")};
+	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
+		fileName.append(QStringLiteral(".jpg"));
+	QImage pix = ui->infoStack->property("PICTURE").value<QImage>();
+	if(!pix.save(fileName))
+		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
 void MainWindow::removeAddress(int index)
@@ -1074,28 +1072,6 @@ void MainWindow::removeSignatureFile(int index)
 		resetDigiDoc(nullptr, false);
 		navigateToPage(Pages::SignIntro);
 	}
-}
-
-void MainWindow::savePhoto()
-{
-	if(!ui->infoStack->property("PICTURE").isValid())
-		return;
-
-	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-	fileName += "/" + qApp->signer()->tokenauth().card();
-	fileName = QFileDialog::getSaveFileName(this,
-		tr("Save photo"), fileName,
-		tr("Photo (*.jpg *.jpeg);;All Files (*)"));
-
-	if(fileName.isEmpty())
-		return;
-	static const QStringList exts{QStringLiteral("jpg"), QStringLiteral("jpeg")};
-	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
-		fileName.append(QStringLiteral(".jpg"));
-	QByteArray pix = ui->infoStack->property("PICTURE").toByteArray();
-	QFile f(fileName);
-	if(!f.open(QFile::WriteOnly) || f.write(pix) != pix.size())
-		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
 void MainWindow::containerToEmail( const QString &fileName )

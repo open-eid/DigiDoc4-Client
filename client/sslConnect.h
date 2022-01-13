@@ -19,24 +19,25 @@
 
 #pragma once
 
-#include <QtNetwork/QNetworkAccessManager>
+#include <QtCore/QObject>
 
-class QFrame;
-class QSslCertificate;
-class QSslKey;
-
-class SSLConnect final: public QNetworkAccessManager
+class SSLConnect final: public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject *parent = nullptr);
 	~SSLConnect() final;
 
-	QString errorString() const;
-	QByteArray getUrl();
+	static SSLConnect* instance();
+	void fetch();
+
+signals:
+	void error(const QString &msg);
+	void image(const QImage &image);
 
 private:
+	explicit SSLConnect(QObject *parent = nullptr);
+
 	class Private;
 	Private *d;
 };

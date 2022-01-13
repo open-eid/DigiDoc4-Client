@@ -36,12 +36,8 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
 	ui->btnPicture->hide();
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked(ui->photo->pixmap() ? *ui->photo->pixmap() : QPixmap()); } );
-#else
-	connect( ui->btnPicture, &QPushButton::clicked, this, [this] { emit photoClicked(ui->photo->pixmap(Qt::ReturnByValue)); } );
-#endif
-	
+	connect(ui->btnPicture, &QPushButton::clicked, this, &InfoStack::photoClicked);
+
 	QFont labelFont = Styles::font(Styles::Condensed, 11);
 	ui->labelGivenNames->setFont(labelFont);
 	ui->labelSurname->setFont(labelFont);
