@@ -408,6 +408,16 @@ Application::Application( int &argc, char **argv )
 		return;
 	}
 
+	if(QSettings().value(QStringLiteral("showIntro"), true).toBool())
+	{
+		QSettings().setValue(QStringLiteral("showIntro"), false);
+		QTimer::singleShot(0, [this] {
+			FirstRun dlg;
+			connect(&dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
+			dlg.exec();
+		});
+	}
+
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
 		parseArgs( args );
 }
@@ -577,8 +587,13 @@ bool Application::event( QEvent *e )
 			parseArgs();
 		return true;
 	case QEvent::FileOpen:
-		parseArgs({ (static_cast<QFileOpenEvent*>(e)->file()).normalized(QString::NormalizationForm_C) });
+	{
+		QString fileName = static_cast<QFileOpenEvent*>(e)->file().normalized(QString::NormalizationForm_C);
+		QTimer::singleShot(0, [this, fileName] {
+			parseArgs({ fileName });
+		});
 		return true;
+	}
 #ifdef Q_OS_MAC
 	// Load here because cocoa NSApplication overides events
 	case QEvent::ApplicationActivate:
@@ -1057,14 +1072,6 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 			}
 		}
 #endif
-
-		if(settings.value(QStringLiteral("showIntro"), true).toBool())
-		{
-			settings.setValue(QStringLiteral("showIntro"), false);
-			FirstRun dlg;
-			connect(&dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
-			dlg.exec();
-		}
 
 		w = new MainWindow();
 		QWidgetList list = topLevelWidgets();
