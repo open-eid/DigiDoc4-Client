@@ -69,7 +69,7 @@ color: #353739;</string>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="warningAction">
+    <widget class="QPushButton" name="warningAction">
      <property name="font">
       <font>
        <family>Roboto</family>
@@ -85,19 +85,7 @@ color: #353739;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string notr="true">Click to resolve problem</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::RichText</enum>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="openExternalLinks">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::TextBrowserInteraction</set>
+      <string notr="true">PushButton</string>
      </property>
     </widget>
    </item>
