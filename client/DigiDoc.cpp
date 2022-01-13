@@ -25,6 +25,7 @@
 #include "TokenData.h"
 #include "Utils.h"
 #include "dialogs/FileDialog.h"
+#include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <digidocpp/DataFile.h>
@@ -497,12 +498,12 @@ bool DigiDoc::move(const QString &to)
 
 bool DigiDoc::open( const QString &file )
 {
+	QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
+	if(parent == nullptr)
+		parent = qApp->activeWindow();
 	qApp->waitForTSL( file );
 	clear();
-	auto serviceConfirmation = [this]{
-		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
-		if(parent == nullptr)
-			parent = qApp->activeWindow();
+	auto serviceConfirmation = [this, parent]{
 		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 			"Do you want to continue?"), parent);
@@ -516,6 +517,7 @@ bool DigiDoc::open( const QString &file )
 
 	try
 	{
+		WaitDialogHolder waitDialog(parent, tr("Opening"), true);
 		waitFor([&] { b = Container::openPtr(to(file)); });
 		if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 		{

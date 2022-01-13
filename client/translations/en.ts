@@ -870,6 +870,10 @@
         <source>Failed to sign container. Signing service URL is incorrect.</source>
         <translation>Failed to sign container. Signing service URL is incorrect.</translation>
     </message>
+    <message>
+        <source>Opening</source>
+        <translation>Opening</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -2396,6 +2400,18 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Invalid Content-Type</source>
         <translation>Invalid content type</translation>
+    </message>
+    <message>
+        <source>Private key is missing</source>
+        <translation>Private key is missing</translation>
+    </message>
+    <message>
+        <source>Empty content</source>
+        <translation>Empty content</translation>
+    </message>
+    <message>
+        <source>Failed to parse image</source>
+        <translation>Failed to parse image</translation>
     </message>
 </context>
 <context>

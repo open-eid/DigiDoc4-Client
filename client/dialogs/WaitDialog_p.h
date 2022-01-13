@@ -33,11 +33,11 @@ public:
 	explicit WaitDialog(QWidget *parent = nullptr);
 	~WaitDialog();
 
+	void setText(const QString &text);
+
 	static WaitDialog* create(QWidget *parent);
 	static void destroy();
-
 	static WaitDialog* instance();
-	void setText(const QString &text);
 
 private:
 	Ui::WaitDialog *ui;

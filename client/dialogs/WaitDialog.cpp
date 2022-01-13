@@ -26,19 +26,7 @@
 #include "Styles.h"
 #include "effects/Overlay.h"
 
-WaitDialogHider::WaitDialogHider()
-{
-	if(WaitDialog *d = WaitDialog::instance())
-		d->hide();
-}
-
-WaitDialogHider::~WaitDialogHider()
-{
-	if(WaitDialog *d = WaitDialog::instance())
-		d->show();
-}
-
-
+#include <QTimer>
 
 WaitDialog* WaitDialog::waitDialog = nullptr;
 
@@ -46,7 +34,9 @@ WaitDialog::WaitDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::WaitDialog)
 {
+#ifndef Q_OS_MAC
 	new Overlay(this, parent);
+#endif
 	setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
 	ui->setupUi(this);
 	ui->movie->load(QStringLiteral(":/images/wait.svg"));
@@ -84,19 +74,31 @@ void WaitDialog::setText(const QString &text)
 
 
 
-WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString &text)
+WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString &text, bool delay)
 {
 	WaitDialog *dialog = WaitDialog::create(parent);
 	dialog->setText(text);
-	dialog->show();
+	if(delay)
+		QTimer::singleShot(5000, dialog, &WaitDialog::show);
+	else
+		dialog->show();
 }
 
 WaitDialogHolder::~WaitDialogHolder()
 {
-	close();
+	WaitDialog::destroy();
 }
 
-void WaitDialogHolder::close()
+
+
+WaitDialogHider::WaitDialogHider()
 {
-	WaitDialog::destroy();
+	if(WaitDialog *d = WaitDialog::instance())
+		d->hide();
+}
+
+WaitDialogHider::~WaitDialogHider()
+{
+	if(WaitDialog *d = WaitDialog::instance())
+		d->show();
 }

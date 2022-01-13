@@ -872,6 +872,10 @@
         <source>Failed to sign container. Signing service URL is incorrect.</source>
         <translation>Не удалось подписать контейнер. Службы URL-адрес подписи неверены.</translation>
     </message>
+    <message>
+        <source>Opening</source>
+        <translation>Открывается</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -2399,6 +2403,18 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Invalid Content-Type</source>
         <translation>Недопустимый тип содержимого</translation>
+    </message>
+    <message>
+        <source>Private key is missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Empty content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to parse image</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -23,6 +23,7 @@
 #include "MainWindow.h"
 #include "QSigner.h"
 #include "TokenData.h"
+#include "dialogs/WaitDialog.h"
 
 #include <common/Configuration.h>
 
@@ -32,7 +33,6 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QSslKey>
-#include <QtWidgets/QLabel>
 
 class SSLConnect::Private
 {
@@ -88,15 +88,8 @@ void SSLConnect::fetch()
 			break;
 		}
 	}
-	QLabel *popup = new QLabel(active, Qt::Tool | Qt::Window | Qt::FramelessWindowHint);
-	popup->resize(328, 179);
-	popup->move(active->geometry().center() - popup->geometry().bottomRight() / 2);
-	popup->setStyleSheet(QStringLiteral("background-color: #e8e8e8; border: solid #5e5e5e; border-width: 1px 1px 1px 1px; font-size: 24px; color: #53c964;"));
-	popup->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-	popup->setWordWrap(true);
-	popup->setText(tr("Downloading picture"));
-	popup->show();
 
+	WaitDialogHolder *popup = new WaitDialogHolder(active, tr("Downloading picture"));
 	QNetworkAccessManager *nam = new QNetworkAccessManager(this);
 	connect(nam, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
 		QList<QSslError> ignore;
@@ -119,7 +112,7 @@ void SSLConnect::fetch()
 	QNetworkReply *reply = nam->get(req);
 	connect(reply, &QNetworkReply::finished, this, [this, popup, reply] {
 		qApp->signer()->logout();
-		popup->deleteLater();
+		delete popup;
 		if(reply->error() != QNetworkReply::NoError)
 		{
 			emit error(reply->errorString());

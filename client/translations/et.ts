@@ -870,6 +870,10 @@
         <source>Failed to sign container. Signing service URL is incorrect.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus. Allkirjastamise teenuse URL ei ole korrektne.</translation>
     </message>
+    <message>
+        <source>Opening</source>
+        <translation>Avamine</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
@@ -2396,6 +2400,18 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Invalid Content-Type</source>
         <translation>Kehtetu sisutüüp</translation>
+    </message>
+    <message>
+        <source>Private key is missing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Empty content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to parse image</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
