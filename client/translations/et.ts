@@ -977,7 +977,7 @@
         <translation>Tere tulemast Eesti eID rakenduse DigiDoc kasutajaks!</translation>
     </message>
     <message>
-        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application</source>
+        <source>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</source>
         <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
     </message>
     <message>
@@ -1836,10 +1836,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>SIM error</source>
         <translation>SIM-kaardi viga</translation>
-    </message>
-    <message>
-        <source>Connecting to SK server failed! Please check your internet connection.</source>
-        <translation>Viga SK serveriga ühenduse saamisel!&lt;br/&gt;Palun kontrolli internetiühendust.</translation>
     </message>
     <message>
         <source>User is not a mobile-ID client</source>
@@ -3449,28 +3445,28 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>https://www.id.ee/artikkel/uuendati-enamik-elektrooniliselt-kasutatud-id-kaartidest/</translation>
     </message>
     <message numerus="yes">
-        <source>%n signatures are not valid</source>
+        <source>%n signatures are not valid!</source>
         <translation>
             <numerusform>%n allkiri ei ole kehtiv!</numerusform>
             <numerusform>%n allkirja ei ole kehtivad!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n timestamps are not valid</source>
+        <source>%n timestamps are not valid!</source>
         <translation>
             <numerusform>%n ajatempel ei ole kehtiv!</numerusform>
             <numerusform>%n ajatemplit ei ole kehtivad!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n signatures are unknown</source>
+        <source>%n signatures are unknown!</source>
         <translation>
             <numerusform>%n allkiri on teadmata!</numerusform>
             <numerusform>%n allkirja on teadmata!</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n timestamps are unknown</source>
+        <source>%n timestamps are unknown!</source>
         <translation>
             <numerusform>%n ajatempel on teadmata!</numerusform>
             <numerusform>%n ajatemplit on teadmata!</numerusform>

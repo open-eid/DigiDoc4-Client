@@ -112,25 +112,25 @@ void WarningItem::lookupWarning()
 		break;
 	// SignDetails
 	case ria::qdigidoc4::InvalidSignatureWarning:
-		warnText.text = tr("%n signatures are not valid", nullptr, warnText.counter);
+		warnText.text = tr("%n signatures are not valid!", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::InvalidTimestampWarning:
-		warnText.text = tr("%n timestamps are not valid", nullptr, warnText.counter);
+		warnText.text = tr("%n timestamps are not valid!", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::UnknownSignatureWarning:
-		warnText.text = tr("%n signatures are unknown", nullptr, warnText.counter);
+		warnText.text = tr("%n signatures are unknown!", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
 	case ria::qdigidoc4::UnknownTimestampWarning:
-		warnText.text = tr("%n timestamps are unknown", nullptr, warnText.counter);
+		warnText.text = tr("%n timestamps are unknown!", nullptr, warnText.counter);
 		warnText.details = QStringLiteral("<a href='%1' style='color: rgb(53, 55, 57)'>%2</a>")
 					.arg(tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/"), tr("More information"));
 		warnText.page = ria::qdigidoc4::SignDetails;
