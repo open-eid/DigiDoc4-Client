@@ -48,8 +48,8 @@ SSLConnect::SSLConnect(const QSslCertificate &cert, const QSslKey &key, QObject 
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	d->ssl.setCaCertificates({});
-	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
-		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
+	for(const QJsonValue c: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+		trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
 #endif
 
 	d->ssl.setPrivateKey(key);
