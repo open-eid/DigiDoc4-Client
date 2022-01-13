@@ -31,7 +31,6 @@
 VerifyCert::VerifyCert(QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::VerifyCert)
-	, borders(QStringLiteral(" border: solid #DFE5E9; border-width: 1px 0px 0px 0px; "))
 {
 	ui->setupUi( this );
 
@@ -61,27 +60,15 @@ VerifyCert::VerifyCert(QWidget *parent)
 		WarningDialog::warning(this, msg);
 	});
 
-	ui->greenIcon->load(QStringLiteral(":/images/icon_check.svg"));
-	ui->orangeIcon->load(QStringLiteral(":/images/icon_alert_orange.svg"));
-	ui->redIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
-	ui->greenIcon->hide();
-	ui->orangeIcon->hide();
-	ui->redIcon->hide();
-
+	ui->nameIcon->hide();
 	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->error->setFont( Styles::font( Styles::Regular, 12, QFont::DemiBold ) );
 	QFont regular12 = Styles::font( Styles::Regular, 12 );
 	regular12.setUnderline(true);
 	ui->forgotPinLink->setFont( regular12 );
-	ui->forgotPinLink->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	ui->widgetLayout->setAlignment(ui->forgotPinLink, Qt::AlignCenter);
 	ui->details->setFont( regular12 );
-	ui->details->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	ui->widgetLayout->setAlignment(ui->details, Qt::AlignCenter);
 	ui->checkCert->setFont(regular12);
-	ui->checkCert->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	ui->widgetLayout->setAlignment(ui->checkCert, Qt::AlignCenter);
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
 	ui->tempelText->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->tempelText->hide();
@@ -90,12 +77,6 @@ VerifyCert::VerifyCert(QWidget *parent)
 VerifyCert::~VerifyCert()
 {
 	delete ui;
-}
-
-void VerifyCert::addBorders()
-{
-	// Add top, right and left border shadows
-	borders = QStringLiteral(" border: solid #DFE5E9; border-width: 1px 1px 0px 1px; ");
 }
 
 void VerifyCert::clear()
@@ -193,17 +174,18 @@ void VerifyCert::update()
 		ui->details->hide();
 		ui->checkCert->hide();
 		ui->error->setText(
-			isBlockedPin ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
+			isBlockedPuk ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
 				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "
 				"Please visit the service center to obtain new codes. <a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/\">Additional information</a>.") :
 			QString()
 		);
+		ui->widget->setHidden(isBlockedPuk);
 		break;
 	}
 
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 	{
-		setStyleSheet( "opacity: 0.25; background-color: #F9EBEB;"  + borders );
+		setStyleSheet(QStringLiteral("opacity: 0.25; background-color: #F9EBEB;"));
 		ui->changePIN->setStyleSheet(
 					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
 					"QPushButton:pressed { background-color: #41B6E6;}"
@@ -218,10 +200,12 @@ void VerifyCert::update()
 					"background-color: #e09797;"
 					"color: #5c1c1c;"
 					);
+		ui->nameIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
+		ui->nameIcon->show();
 	}
 	else if( isBlockedPin )
 	{
-		setStyleSheet( "opacity: 0.25; background-color: #fcf5ea;"  + borders );
+		setStyleSheet(QStringLiteral("opacity: 0.25; background-color: #fcf5ea;"));
 		ui->changePIN->setStyleSheet(
 					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
 					"QPushButton:pressed { background-color: #41B6E6;}" 
@@ -235,18 +219,26 @@ void VerifyCert::update()
 					"border-radius: 2px;"
 					"background-color: #F8DDA7;"
 					);
+		ui->nameIcon->load(QStringLiteral(":/images/icon_alert_orange.svg"));
+		ui->nameIcon->show();
 	}
 	else
 	{
-		setStyleSheet( "background-color: #ffffff;" + borders );
+		setStyleSheet(QStringLiteral("background-color: #ffffff;"));
 		changePinStyle(QStringLiteral("#FFFFFF"));
+		ui->nameIcon->load(QStringLiteral(":/images/icon_check.svg"));
+		ui->nameIcon->setHidden(pinType == QSmartCardData::PukType);
 	}
-	ui->redIcon->setVisible(!isValidCert && pinType != QSmartCardData::PukType);
-	ui->orangeIcon->setVisible(ui->redIcon->isHidden() && isBlockedPin);
-	ui->greenIcon->setVisible(ui->redIcon->isHidden() && ui->orangeIcon->isHidden() && pinType != QSmartCardData::PukType);
 	ui->error->setHidden(ui->error->text().isEmpty());
 	ui->tempelText->setVisible(isTempelType);
 	ui->changePIN->setAccessibleName(ui->changePIN->text().toLower());
+
+	if(pinType == QSmartCardData::Pin1Type)
+	{
+		adjustSize();
+		if(VerifyCert *pukBox = parent()->findChild<VerifyCert*>(QStringLiteral("pukBox")))
+			pukBox->ui->validUntil->setMinimumSize(ui->validUntil->size());
+	}
 }
 
 bool VerifyCert::event(QEvent *event)
@@ -255,23 +247,23 @@ bool VerifyCert::event(QEvent *event)
 	{
 	case QEvent::Enter:
 		if( !isValidCert && pinType != QSmartCardData::PukType )
-			setStyleSheet("background-color: #f3d8d8;" + borders);
+			setStyleSheet(QStringLiteral("background-color: #f3d8d8;"));
 		else if( isBlockedPin )
-			setStyleSheet("background-color: #fbecd0;" + borders);
+			setStyleSheet(QStringLiteral("background-color: #fbecd0;"));
 		else
 		{
-			setStyleSheet("background-color: #f7f7f7;" + borders);
+			setStyleSheet(QStringLiteral("background-color: #f7f7f7;"));
 			changePinStyle(QStringLiteral("#f7f7f7"));
 		}
 		break;
 	case QEvent::Leave:
 		if( !isValidCert && pinType != QSmartCardData::PukType )
-			setStyleSheet("background-color: #F9EBEB;" + borders);
+			setStyleSheet(QStringLiteral("background-color: #F9EBEB;"));
 		else if( isBlockedPin )
-			setStyleSheet("background-color: #fcf5ea;" + borders);
+			setStyleSheet(QStringLiteral("background-color: #fcf5ea;"));
 		else
 		{
-			setStyleSheet( "background-color: white;" + borders);
+			setStyleSheet(QStringLiteral("background-color: white;"));
 			changePinStyle(QStringLiteral("white"));
 		}
 		break;

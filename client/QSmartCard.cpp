@@ -57,8 +57,6 @@ QString QSmartCardData::card() const { return d->card; }
 bool QSmartCardData::isNull() const
 { return d->data.isEmpty() && d->authCert.isNull() && d->signCert.isNull(); }
 bool QSmartCardData::isPinpad() const { return d->pinpad; }
-bool QSmartCardData::isSecurePinpad() const
-{ return d->reader.contains(QLatin1String("EZIO SHIELD"), Qt::CaseInsensitive); }
 bool QSmartCardData::isValid() const
 { return d->data.value(Expiry).toDateTime() >= QDateTime::currentDateTime(); }
 
@@ -177,7 +175,6 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	d->version = isSupported(reader->atr());
 	if(reader->transfer(UPDATER_AID).resultOk())
 	{
-		d->version = QSmartCardData::CardVersion(d->version|QSmartCardData::VER_HASUPDATER);
 		//Prefer EstEID applet when if it is usable
 		if(!reader->transfer(AID35) ||
 			!reader->transfer(MASTER_FILE))

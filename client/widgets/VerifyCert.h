@@ -28,7 +28,7 @@ namespace Ui {
 class VerifyCert;
 }
 
-class VerifyCert : public StyledWidget
+class VerifyCert final : public StyledWidget
 {
 	Q_OBJECT
 
@@ -36,7 +36,6 @@ public:
 	explicit VerifyCert( QWidget *parent = nullptr );
 	~VerifyCert() final;
 
-	void addBorders();
 	void clear();
 	void update(QSmartCardData::PinType type, const QSmartCardData &data);
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
@@ -53,7 +52,6 @@ private:
 
 	bool isValidCert = false;
 	bool isBlockedPin = false;
-	QString borders;
 
 	QSmartCardData::PinType pinType = QSmartCardData::Pin1Type;
 	QSmartCardData cardData;
