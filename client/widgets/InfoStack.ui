@@ -104,13 +104,11 @@ background-color: #F9FAFA;</string>
    color: #006EB5;
 }
 QPushButton:pressed {
-   border-radius: 2px;
    background-color: #006EB5;
    color: #FFFFFF;
 }
 QPushButton:hover:!pressed {
-   border: 1px solid #008DCF;
-   border-radius: 2px;
+   border-color: #008DCF;
    color: #008DCF;
 }</string>
       </property>
