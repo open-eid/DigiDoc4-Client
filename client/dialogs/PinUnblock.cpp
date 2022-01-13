@@ -57,7 +57,6 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	ui->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setWindowModality( Qt::ApplicationModal );
 
 	ui->unblock->setEnabled( false );
 	connect( ui->unblock, &QPushButton::clicked, this, &PinUnblock::accept );

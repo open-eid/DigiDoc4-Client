@@ -35,7 +35,6 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-	setWindowModality( Qt::ApplicationModal );
 	new Overlay(this, parent->topLevelWidget());
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);

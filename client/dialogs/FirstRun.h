@@ -25,7 +25,7 @@ namespace Ui {
 class FirstRun;
 }
 
-class FirstRun : public QDialog
+class FirstRun final: public QDialog
 {
 	Q_OBJECT
 
@@ -33,16 +33,11 @@ public:
 	explicit FirstRun(QWidget *parent = nullptr);
 	~FirstRun();
 
-protected:
-	void keyPressEvent(QKeyEvent *event) override;
-	void mouseMoveEvent(QMouseEvent *event) override;
-	void mousePressEvent(QMouseEvent *event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
-
 signals:
 	void langChanged(const QString& lang);
 
 private:
+	void keyPressEvent(QKeyEvent *event) final;
 	void loadImages();
 
 	enum View
@@ -55,7 +50,5 @@ private:
 	};
 
 	Ui::FirstRun *ui;
-	bool dragged = false;
-	QPoint lastPos;
 };
 

@@ -44,10 +44,8 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 	ui->setupUi(this);
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
-	setWindowModality(Qt::WindowModal);
 #else
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
-	setWindowModality(Qt::ApplicationModal);
 #endif
 	Overlay *overlay = new Overlay(parent->topLevelWidget());
 	overlay->show();

@@ -37,7 +37,6 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	new Overlay(this, parent->topLevelWidget());
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 #if defined (Q_OS_WIN)
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);

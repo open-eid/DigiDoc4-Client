@@ -49,7 +49,6 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setWindowModality( Qt::ApplicationModal );
 	setFixedSize( size() );
 
 	QFont regular = Styles::font( Styles::Regular, 14 );
