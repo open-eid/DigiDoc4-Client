@@ -752,6 +752,9 @@ line-height: 24px;</string>
      </item>
      <item>
       <widget class="QPushButton" name="unblock">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -796,8 +799,8 @@ line-height: 24px;</string>
        <property name="text">
         <string>UNBLOCK</string>
        </property>
-       <property name="autoDefault">
-        <bool>false</bool>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
