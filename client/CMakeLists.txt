@@ -39,7 +39,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	QSmartCard.cpp
 	sslConnect.cpp
 	Styles.cpp
-	XmlReader.cpp
 	PrintSheet.cpp
 	SslCertificate.cpp
 	TokenData.cpp
@@ -107,8 +106,6 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/MainAction.cpp
 	widgets/NoCardInfo.ui
 	widgets/NoCardInfo.cpp
-	widgets/OtherData.ui
-	widgets/OtherData.cpp
 	widgets/PageIcon.ui
 	widgets/PageIcon.cpp
 	widgets/RadioButton.cpp

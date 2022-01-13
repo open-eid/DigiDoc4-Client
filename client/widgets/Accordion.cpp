@@ -25,16 +25,7 @@ Accordion::Accordion(QWidget *parent)
 	, ui(new Ui::Accordion)
 {
 	ui->setupUi( this );
-	connect(ui->contentOtherData, &OtherData::checkEMailClicked, this, &Accordion::checkEMail);
-	connect(ui->contentOtherData, &OtherData::activateEMailClicked, this, &Accordion::activateEMail);
-
 	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"), ui->contentVerifyCert);
-	ui->titleOtherData->init(false, tr("REDIRECTION OF EESTI.EE E-MAIL"), tr("Redirection of eesti.ee e-mail", "accessible"), ui->contentOtherData);
-
-	connect(ui->titleVerifyCert, &AccordionTitle::opened, ui->titleOtherData, &AccordionTitle::openSection);
-	connect(ui->titleVerifyCert, &AccordionTitle::closed, this, [this] { ui->titleOtherData->setSectionOpen(); });
-	connect(ui->titleOtherData, &AccordionTitle::opened, ui->titleVerifyCert, &AccordionTitle::openSection);
-	connect(ui->titleOtherData, &AccordionTitle::closed, this, [this] { ui->titleVerifyCert->setSectionOpen(); });
 
 	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
 	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
@@ -57,23 +48,6 @@ void Accordion::clear()
 	ui->signBox->clear();
 	ui->pukBox->clear();
 	ui->titleVerifyCert->setSectionOpen();
-	updateOtherData({});
-	ui->titleOtherData->hide();
-}
-
-bool Accordion::updateOtherData(const QByteArray &data)
-{
-	return ui->contentOtherData->update(false, data);
-}
-
-QString Accordion::getEmail()
-{
-	return ui->contentOtherData->getEmail();
-}
-
-void Accordion::setFocusToEmail()
-{
-	ui->contentOtherData->setFocusToEmail();
 }
 
 void Accordion::updateInfo(const SslCertificate &c)
@@ -88,7 +62,6 @@ void Accordion::updateInfo(const SslCertificate &c)
 		ui->authBox->update(QSmartCardData::Pin1Type, c);
 
 	ui->pukBox->hide();
-	ui->titleOtherData->hide();
 }
 
 void Accordion::updateInfo(const QSmartCardData &data)
@@ -103,11 +76,6 @@ void Accordion::updateInfo(const QSmartCardData &data)
 
 	ui->pukBox->show();
 	ui->pukBox->update(QSmartCardData::PukType, data);
-
-	ui->titleOtherData->setHidden(data.version() == QSmartCardData::VER_USABLEUPDATER);
-	if(ui->contentOtherData->property("card").toString() != data.card())
-		ui->contentOtherData->update(false, {});
-	ui->contentOtherData->setProperty("card", data.card());
 }
 
 void Accordion::changeEvent(QEvent* event)
@@ -116,7 +84,6 @@ void Accordion::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"));
-		ui->titleOtherData->setText(tr("REDIRECTION OF EESTI.EE E-MAIL"), tr("Redirection of eesti.ee e-mail", "accessible"));
 	}
 	QWidget::changeEvent(event);
 }

@@ -37,18 +37,9 @@
         <translation>PIN-/PUK-KOODID JA SERTIFIKAATIDE KONTROLL</translation>
     </message>
     <message>
-        <source>REDIRECTION OF EESTI.EE E-MAIL</source>
-        <translation>EESTI.EE POSTI SUUNAMINE</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
         <comment>accessible</comment>
         <translation>PIN/PUK koodid ja sertifikaatide kontroll</translation>
-    </message>
-    <message>
-        <source>Redirection of eesti.ee e-mail</source>
-        <comment>accessible</comment>
-        <translation>Eesti.ee posti suunamine</translation>
     </message>
 </context>
 <context>
@@ -1097,10 +1088,6 @@
         <translation>“Minu eID” alt leiad oma PIN1-, PIN2- ja PUK-koodi muutmise võimaluse ning sertifikaatide detail­andmed. Siin saad ka oma blokeeritud PIN-e PUK-koodi abil lukust lahti teha.</translation>
     </message>
     <message>
-        <source>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</source>
-        <translation>“Minu eID” annab ka hea ülevaate oma kontaktandmetest ning pakub võimaluse oma @eesti.ee e-posti suunata.</translation>
-    </message>
-    <message>
         <source>Continue</source>
         <extracomment>accessible</extracomment>
         <translation>Edasi</translation>
@@ -1131,6 +1118,10 @@
     <message>
         <source>Go to encryption intro</source>
         <translation>Mine krüpteerimise tutvustuse juurde</translation>
+    </message>
+    <message>
+        <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
+        <translation>&quot;Minu eID&quot; annab ka hea ülevaate kaardilugejasse sisestatud ID-kaardi staatusest ja kontaktandmetest.</translation>
     </message>
 </context>
 <context>
@@ -1614,18 +1605,6 @@ ID-KAARDIGA</translation>
         <translation>%1-kood muudetud!</translation>
     </message>
     <message>
-        <source>E-mail address missing or invalid!</source>
-        <translation>E-posti aadress sisestamata või vigane!</translation>
-    </message>
-    <message>
-        <source>Failed activating email forwards.</source>
-        <translation>E-posti suunamise aktiveerimine ebaõnnestus.</translation>
-    </message>
-    <message>
-        <source>Failed loading email settings.</source>
-        <translation>E-posti aadresside laadimine ebaõnnestus.</translation>
-    </message>
-    <message>
         <source>Loading picture failed.</source>
         <translation>Pildi laadimine ebaõnnestus.</translation>
     </message>
@@ -1665,50 +1644,6 @@ ID-KAARDIGA</translation>
         <translation>%1 päring aegus</translation>
     </message>
     <message>
-        <source>Success</source>
-        <translation>Toiming õnnestus</translation>
-    </message>
-    <message>
-        <source>ID-card has not been published by locally recognized verification provider.</source>
-        <translation>ID-kaart pole väljastatud riiklikult tunnustatud sertifitseerija poolt.</translation>
-    </message>
-    <message>
-        <source>Wrong PIN was entered or cancelled, there was a problem with certificates or browser does not support ID-card.</source>
-        <translation>Sisestati vale PIN-kood, katkestati PIN-koodi sisestamine, tekkisid probleemid sertifikaatidega või puudub ID-kaardi tugi brauseris.</translation>
-    </message>
-    <message>
-        <source>ID-card certificate is not valid.</source>
-        <translation>ID-kaardi sertifikaat ei kehti.</translation>
-    </message>
-    <message>
-        <source>Entrance is permitted only with Estonian personal code.</source>
-        <translation>Sisemine on lubatud ainult Eesti isikukoodiga.</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>There was an error with request to KMA.</source>
-        <translation>KMA päringu tegemisel tekkis viga.</translation>
-    </message>
-    <message>
-        <source>No official email forwarding addresses was found</source>
-        <translation>Ühtegi ametliku e-posti suunamist ei leitud</translation>
-    </message>
-    <message>
-        <source>Your email account has been blocked. To open it, please send an email to help@ria.ee.</source>
-        <translation>Sinu e-posti konto on suletud. Avamiseks saatke palun e-kiri aadressil help@ria.ee.</translation>
-    </message>
-    <message>
-        <source>Invalid email address</source>
-        <translation>Vigane e-posti aadress</translation>
-    </message>
-    <message>
-        <source>Forwarding is activated and you have been sent an email with activation key. Forwarding will be activated only after confirming the key.</source>
-        <translation>Suunamine on salvestatud, ning Sinule on saadetud kiri edasisuunamisaadressi aktiveerimisvõtmega. Suunamine on kasutatav ainult pärast aktiveerimisvõtme sisestamist.</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
@@ -1719,10 +1654,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
         <translation>Foto (*.jpg *.jpeg);;Kõik failid (*)</translation>
-    </message>
-    <message>
-        <source>There was an error with request to Äriregister.</source>
-        <translation>Äriregistri päringu tegemisel tekkis viga.</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
@@ -1748,10 +1679,6 @@ ID-KAARDIGA</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Vali leht minu eID</translation>
-    </message>
-    <message>
-        <source>Succeeded activating email forwards.</source>
-        <translation>E-posti suunamise aktiveerimine õnnestus.</translation>
     </message>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
@@ -2000,51 +1927,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
-    </message>
-</context>
-<context>
-    <name>OtherData</name>
-    <message>
-        <source>@eesti.ee post</source>
-        <translation>@eesti.ee post</translation>
-    </message>
-    <message>
-        <source>CHECK @EESTI.EE E-MAIL STATUS</source>
-        <translation>KONTROLLI @EESTI.EE E-POSTI STAATUST</translation>
-    </message>
-    <message>
-        <source>ACTIVATE REDIRECTION</source>
-        <translation>AKTIVEERI SUUNAMINE</translation>
-    </message>
-    <message>
-        <source>Your @eesti.ee e-mail has been forwarded to </source>
-        <translation>Sinu @eesti.ee posti aadressid on suunatud e-postile </translation>
-    </message>
-    <message>
-        <source>active</source>
-        <translation>aktiivne</translation>
-    </message>
-    <message>
-        <source>not active</source>
-        <translation>mitteaktiivne</translation>
-    </message>
-    <message>
-        <source>Check @eesti.ee e-mail status</source>
-        <extracomment>accessible</extracomment>
-        <translation>Kontrolli @eesti.ee e-posti staatust</translation>
-    </message>
-    <message>
-        <source>Activate redirection</source>
-        <extracomment>accessible</extracomment>
-        <translation>Aktiveeri suunamine</translation>
-    </message>
-    <message>
-        <source>For more detailed official email address forwarding, please visit &lt;a href=&apos;http://www.eesti.ee/en/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. &lt;a href=&apos;https://www.eesti.ee/en/using-the-state-portal#terms-of-the-official-email-service-of-eestiee&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;Terms&lt;/span&gt;&lt;/a&gt; of the official email service of eesti.ee.</source>
-        <translation>Täiuslikuma ametliku e-posti häälestamisvahendi leiad portaalist &lt;a href=&apos;http://www.eesti.ee/et/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;eesti.ee&lt;/span&gt;&lt;/a&gt;. Eesti.ee ametliku postkasti teenuse &lt;a href=&apos;https://www.eesti.ee/et/riigiportaali-abi#eestiee-ametliku-postkasti-teenuse-kasutustingimused&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: none; font-weight: 900;&apos;&gt;kasutustingimused&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>To send email to @eesti.ee, please enter your email address:</source>
-        <translation>@eesti.ee kirjade suunamiseks palun sisesta oma e-posti aadress:</translation>
     </message>
 </context>
 <context>
@@ -2510,10 +2392,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Downloading picture</source>
         <translation>Laadin pilti</translation>
-    </message>
-    <message>
-        <source>Loading Email info</source>
-        <translation>Laadin e-posti seadeid</translation>
     </message>
     <message>
         <source>Invalid Content-Type</source>

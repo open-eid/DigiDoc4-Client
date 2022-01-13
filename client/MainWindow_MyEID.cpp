@@ -92,54 +92,6 @@ void MainWindow::pinPukChange( QSmartCardData::PinType type )
 	}
 }
 
-void MainWindow::getEmailStatus()
-{
-	QByteArray buffer = sendRequest( SSLConnect::EmailInfo );
-	if(!buffer.isEmpty())
-		ui->accordion->updateOtherData(buffer);
-}
-
-void MainWindow::activateEmail()
-{
-	QString eMail = ui->accordion->getEmail();
-	if( eMail.isEmpty() )
-	{
-		showNotification( tr("E-mail address missing or invalid!") );
-		ui->accordion->setFocusToEmail();
-		return;
-	}
-	QByteArray buffer = sendRequest( SSLConnect::ActivateEmails, eMail );
-	if(buffer.isEmpty())
-		return;
-	if(ui->accordion->updateOtherData(buffer))
-		showNotification(tr("Succeeded activating email forwards."), true);
-}
-
-QByteArray MainWindow::sendRequest( SSLConnect::RequestType type, const QString &param )
-{
-	QSslKey key = qApp->signer()->key();
-	QString err;
-	QByteArray buffer;
-	if(!key.isNull())
-	{
-		SSLConnect ssl(qApp->signer()->tokenauth().cert(), key);
-		buffer = ssl.getUrl( type, param );
-		qApp->signer()->logout();
-		err = ssl.errorString();
-	}
-	if(!err.isEmpty() || key.isNull())
-	{
-		switch( type )
-		{
-		case SSLConnect::ActivateEmails: showNotification(tr("Failed activating email forwards.")); break;
-		case SSLConnect::EmailInfo: showNotification(tr("Failed loading email settings.")); break;
-		case SSLConnect::PictureInfo: showNotification(tr("Loading picture failed.")); break;
-		}
-		return {};
-	}
-	return buffer;
-}
-
 bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err)
 {
 	QSmartCardData data = qApp->signer()->smartcard()->data();

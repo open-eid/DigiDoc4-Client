@@ -10,7 +10,7 @@
     <height>780</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,1,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
    <property name="spacing">
     <number>1</number>
    </property>
@@ -68,19 +68,6 @@
     </widget>
    </item>
    <item>
-    <widget class="AccordionTitle" name="titleOtherData" native="true">
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-top: 1px solid #DFE5E9;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="OtherData" name="contentOtherData" native="true"/>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -106,12 +93,6 @@
    <class>VerifyCert</class>
    <extends>QWidget</extends>
    <header>widgets/VerifyCert.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>OtherData</class>
-   <extends>QWidget</extends>
-   <header>widgets/OtherData.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

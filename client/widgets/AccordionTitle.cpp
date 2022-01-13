@@ -66,6 +66,7 @@ void AccordionTitle::init(bool open, const QString &caption, const QString &acce
     setText(caption, accessible);
     this->content = content;
     style = styleSheet();
+    setStyleSheet(style + QStringLiteral("color: #006EB5;"));
     setSectionOpen(open);
 }
 

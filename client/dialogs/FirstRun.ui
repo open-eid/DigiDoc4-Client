@@ -1796,7 +1796,7 @@ border-radius: 3px;</string>
         <string notr="true">color: #353739;</string>
        </property>
        <property name="text">
-        <string>&quot;My eID&quot; also provides a good overview of your contact information and offers the opportunity to forward your email to @eesti.ee address.</string>
+        <string>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
