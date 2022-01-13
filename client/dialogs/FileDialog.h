@@ -39,6 +39,7 @@ public:
 	static bool fileIsWritable( const QString &filename );
 	static QString fileSize( quint64 bytes );
 	static int fileZone(const QString &path);
+	static bool isSignedPDF(const QString &path);
 	static void setFileZone(const QString &path, int zone);
 	static QString normalized(const QString &file);
 	static QString safeName(const QString &file);

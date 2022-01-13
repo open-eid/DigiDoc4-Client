@@ -889,7 +889,10 @@ void CDocumentModel::open(int row)
 #else
 	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
 #endif
-	QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
+	if(FileDialog::isSignedPDF(f.absoluteFilePath()))
+		qApp->showClient({ f.absoluteFilePath() }, false, false, true);
+	else
+		QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
 }
 
 bool CDocumentModel::removeRows(int row, int count)
