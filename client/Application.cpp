@@ -408,15 +408,33 @@ Application::Application( int &argc, char **argv )
 		return;
 	}
 
-	if(QSettings().value(QStringLiteral("showIntro"), true).toBool())
-	{
-		QSettings().setValue(QStringLiteral("showIntro"), false);
-		QTimer::singleShot(0, [this] {
+	QTimer::singleShot(0, [this] {
+		if(QSettings().value(QStringLiteral("showIntro"), true).toBool())
+		{
+			QSettings().setValue(QStringLiteral("showIntro"), false);
 			FirstRun dlg;
 			connect(&dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
 			dlg.exec();
-		});
-	}
+		}
+#ifdef Q_OS_MAC
+		if(QSettings().value(QStringLiteral("plugins")).isNull())
+		{
+			QTimer::singleShot(0, [] {
+				WarningDialog dlg(tr(
+					"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
+				dlg.setCancelText(tr("Ignore forever").toUpper());
+				dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
+				dlg.addButton(tr("Install").toUpper(), QMessageBox::Open);
+				switch(dlg.exec())
+				{
+				case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
+				case QMessageBox::Ignore: break;
+				default: QSettings().setValue(QStringLiteral("plugins"), "ignore");
+				}
+			});
+		}
+#endif
+	});
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
 		parseArgs( args );
@@ -1055,23 +1073,6 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	{
 		QSettings settings;
 		migrateSettings();
-
-#ifdef Q_OS_MAC
-		if(QSettings().value(QStringLiteral("plugins")).isNull())
-		{
-			WarningDialog dlg(tr(
-				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
-			dlg.setCancelText(tr("Ignore forever").toUpper());
-			dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
-			dlg.addButton(tr("Install").toUpper(), QMessageBox::Open);
-			switch(dlg.exec())
-			{
-			case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
-			case QMessageBox::Ignore: break;
-			default: QSettings().setValue(QStringLiteral("plugins"), "ignore");
-			}
-		}
-#endif
 
 		w = new MainWindow();
 		QWidgetList list = topLevelWidgets();
