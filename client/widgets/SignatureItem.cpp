@@ -47,9 +47,8 @@ public:
 	ria::qdigidoc4::WarningType error = ria::qdigidoc4::NoWarning;
 	QString nameText;
 	QString serial;
-	QString statusHtml;
-	QString roleText;
 	QString status;
+	QString roleText;
 };
 
 SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidget *parent)
@@ -83,7 +82,6 @@ void SignatureItem::init()
 	DigiDocSignature::SignatureStatus signatureValidity = ui->signature.validate();
 
 	ui->serial.clear();
-	ui->statusHtml.clear();
 	ui->status.clear();
 	ui->error = ria::qdigidoc4::NoWarning;
 	ui->invalid = signatureValidity >= DigiDocSignature::Invalid;
@@ -92,11 +90,7 @@ void SignatureItem::init()
 	else
 		ui->nameText = ui->signature.signedBy().toHtmlEscaped();
 
-	QString accessibility, signingInfo;
-	QTextStream sa(&accessibility);
-	QTextStream sc(&ui->statusHtml);
-	QTextStream si(&signingInfo);
-
+	QTextStream s(&ui->status);
 	bool isSignature = true;
 	QString label = tr("Signature");
 	if(ui->signature.profile() == QStringLiteral("TimeStampToken"))
@@ -109,8 +103,7 @@ void SignatureItem::init()
 		ui->icon->load(QStringLiteral(":/images/icon_digitempel.svg"));
 	else
 		ui->icon->load(QStringLiteral(":/images/icon_Allkiri_small.svg"));
-	sa << label << " ";
-	sc << "<span style=\"font-weight:normal;\">";
+	s << "<span style=\"font-weight:normal;\">";
 	auto isValid = [&isSignature] {
 		return isSignature ? tr("is valid", "Signature") : tr("is valid", "Timestamp");
 	};
@@ -123,48 +116,38 @@ void SignatureItem::init()
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
-		sa << isValid();
-		sc << "<font color=\"green\">" << label << " " << isValid() << "</font>";
+		s << "<font color=\"green\">" << label << " " << isValid() << "</font>";
 		break;
 	case DigiDocSignature::Warning:
-		sa << isValid() << " (" << tr("Warnings") << ")";
-		sc << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
+		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
 		break;
 	case DigiDocSignature::NonQSCD:
-		sa << isValid() << " (" << tr("Restrictions") << ")";
-		sc << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
+		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
 		break;
 	case DigiDocSignature::Test:
-		sa << isValid() << " (" << tr("Test signature") << ")";
-		sc << "<font color=\"green\">" << label << " " << isValid() << "</font> <font>(" << tr("Test signature") << ")";
+		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font>(" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
 		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureWarning : ria::qdigidoc4::InvalidTimestampWarning;
-		sa << isNotValid();
-		sc << "<font color=\"red\">" << label << " " << isNotValid();
+		s << "<font color=\"red\">" << label << " " << isNotValid();
 		break;
 	case DigiDocSignature::Unknown:
 		ui->error = isSignature ? ria::qdigidoc4::UnknownSignatureWarning : ria::qdigidoc4::UnknownTimestampWarning;
-		sa << isUnknown();
-		sc << "<font color=\"red\">" << label << " " << isUnknown();
+		s << "<font color=\"red\">" << label << " " << isUnknown();
 		break;
 	}
-	sc << "</span>";
-	ui->status = accessibility;
+	s << "</span>";
 
+	QString signingInfo;
+	QTextStream si(&signingInfo);
 	if(!cert.isNull())
 	{
 		ui->serial = cert.toString(QStringLiteral("serialNumber")).toHtmlEscaped();
-		sa << " " <<  ui->serial << " - ";
 		si << ui->serial << " - ";
 	}
 	DateTime date(ui->signature.trustedTime().toLocalTime());
 	if( !date.isNull() )
 	{
-		sa << " " << tr("Signed on") << " "
-			<< date.formatDate(QStringLiteral("dd. MMMM yyyy")) << " "
-			<< tr("time") << " "
-			<< date.toString(QStringLiteral("hh:mm"));
 		si << tr("Signed on") << " "
 			<< date.formatDate(QStringLiteral("dd. MMMM yyyy")) << " "
 			<< tr("time") << " "
@@ -174,9 +157,6 @@ void SignatureItem::init()
 	ui->roleText = ui->signature.role().replace('\n', ' ');
 	ui->role->setHidden(ui->roleText.isEmpty());
 	updateNameField();
-
-	setAccessibleName(label + " " + cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")));
-	setAccessibleDescription( accessibility );
 }
 
 bool SignatureItem::event(QEvent *event)
@@ -232,9 +212,7 @@ QString SignatureItem::id() const
 QWidget* SignatureItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->name);
-	setTabOrder(ui->name, ui->role);
-	setTabOrder(ui->role, ui->idSignTime);
-	setTabOrder(ui->idSignTime, ui->remove);
+	setTabOrder(ui->name, ui->remove);
 	return  ui->remove;
 }
 
@@ -269,17 +247,18 @@ void SignatureItem::removeSignature()
 
 void SignatureItem::updateNameField()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-	if(ui->name->fontMetrics().horizontalAdvance(ui->nameText  + " - " + ui->status) < ui->name->width())
-#else
-	if(ui->name->fontMetrics().width(ui->nameText  + " - " + ui->status) < ui->name->width())
-#endif
-		ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->statusHtml);
-	else
-		ui->name->setText((ui->invalid ? red(ui->nameText) : ui->nameText) + "<br/>" + ui->statusHtml);
 	QTextDocument doc;
 	doc.setHtml(ui->name->text());
-	ui->name->setAccessibleName(doc.toPlainText());
+	QString plain = doc.toPlainText();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+	if(ui->name->fontMetrics().horizontalAdvance(ui->nameText  + " - " + plain) < ui->name->width())
+#else
+	if(ui->name->fontMetrics().width(ui->nameText  + " - " + plain) < ui->name->width())
+#endif
+		ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->status);
+	else
+		ui->name->setText((ui->invalid ? red(ui->nameText) : ui->nameText) + "<br/>" + ui->status);
+	ui->name->setAccessibleName(QStringLiteral("%1. %2 %3").arg(plain, ui->role->text(), ui->idSignTime->text()));
 	ui->role->setText(ui->role->fontMetrics().elidedText(
 		ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
 }
