@@ -46,10 +46,12 @@ public:
 	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
 	void cardChanged(const QString &idCode);
 	void clear();
+	void clearPopups();
 	void setHeader(const QString &file);
+	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, bool canDecrypt);
 	void transition(DigiDoc* container);
-	void update(bool canDecrypt, CryptoDoc *container = nullptr);
+	void update(bool canDecrypt, CryptoDoc *container);
 
 signals:
 	void action(int code, const QString &info1 = {}, const QString &info2 = {});
@@ -61,10 +63,6 @@ signals:
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
-public slots:
-	void clearPopups();
-	void togglePrinting(bool enable);
-
 private:
 	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
@@ -73,7 +71,6 @@ private:
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void forward(int code);
-	void hideMainAction();
 	void hideRightPane();
 	void initContainer( const QString &file, const QString &suffix );
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
