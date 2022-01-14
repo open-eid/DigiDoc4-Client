@@ -30,6 +30,7 @@ border-radius: 2px;
 QCheckBox {
 color: #353739;
 min-height: 31px;
+spacing: 5px;
 }
 QCheckBox:disabled {
 color: #727679;
