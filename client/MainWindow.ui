@@ -185,7 +185,7 @@ border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
         <property name="styleSheet">
          <string notr="true">QToolButton {
   border: none;
-  color: #75787B;
+  color: #727679;
   font-size: 11px;
 }
 QToolButton:hover {

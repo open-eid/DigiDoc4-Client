@@ -119,10 +119,10 @@ void SignatureItem::init()
 		s << "<font color=\"green\">" << label << " " << isValid() << "</font>";
 		break;
 	case DigiDocSignature::Warning:
-		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Warnings") << ")";
+		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"996C0B\">(" << tr("Warnings") << ")";
 		break;
 	case DigiDocSignature::NonQSCD:
-		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"gold\">(" << tr("Restrictions") << ")";
+		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"996C0B\">(" << tr("Restrictions") << ")";
 		break;
 	case DigiDocSignature::Test:
 		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font>(" << tr("Test signature") << ")";

@@ -26,26 +26,23 @@ namespace qdigidoc4
 namespace colors
 {
 	// Blues
-	static const char* ASTRONAUT_BLUE = "#023664";
-	static const char* BAHAMA_BLUE = "#035894";
-	static const char* CURIOUS_BLUE = "#31A3D9";
-	static const char* DEEP_CERULEAN = "#006EB5";
-	static const char* LOCHMARA = "#008DCF";
-	static const char* CORNFLOWER_BLUE = "#53c964";
+	static const QString ASTRONAUT_BLUE = QStringLiteral("#023664");
+	static const QString BAHAMA_BLUE = QStringLiteral("#035894");
+	static const QString CURIOUS_BLUE = QStringLiteral("#31A3D9");
+	static const QString DEEP_CERULEAN = QStringLiteral("#006EB5");
+	static const QString LOCHMARA = QStringLiteral("#008DCF");
 	// Reds
-	static const char* MOJO = "#981E32";
+	static const QString MOJO = QStringLiteral("#981E32");
 	// Whites
-	static const char* ALABASTER = "#fafafa";
-	static const char* DARKER_ALABASTER = "#f7f7f7";
-	static const char* PORCELAIN = "#f4f5f6";
-	static const char* WHITE = "#ffffff";
+	static const QString PORCELAIN = QStringLiteral("#f4f5f6");
+	static const QString WHITE = QStringLiteral("#ffffff");
 	// Golds-yellows
-	static const char* CLAY_CREEK = "#998B66";
-	static const char* MARZIPAN = "#F8DDA7";
+	static const QString CLAY_CREEK = QStringLiteral("#998B66");
+	static const QString MARZIPAN = QStringLiteral("#F8DDA7");
 	// Green
-	static const char* MANTIS = "#8CC368";
+	static const QString MANTIS = QStringLiteral("#498526");
 	// Other
-	static const char* NONE = "none";
+	static const QString NONE = QStringLiteral("none");
 }
 }
 }

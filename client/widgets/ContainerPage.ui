@@ -92,7 +92,7 @@ border-width: 1px 0px 0px 0px;
          <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;
+         <string notr="true">color: #727679;
 background-color: #F4F5F6;</string>
         </property>
         <property name="text">

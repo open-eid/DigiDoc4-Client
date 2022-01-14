@@ -163,7 +163,7 @@ QPushButton:hover:!pressed {
          <string extracomment="accessible">Given names</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string>GIVEN NAMES</string>
@@ -185,7 +185,7 @@ QPushButton:hover:!pressed {
          <string extracomment="accessible">Surname</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string>SURNAME</string>
@@ -254,7 +254,7 @@ QPushButton:hover:!pressed {
          <string extracomment="accessible">Personal code</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string>PERSONAL CODE</string>
@@ -276,7 +276,7 @@ QPushButton:hover:!pressed {
          <string extracomment="accessible">Citizenship</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string>CITIZENSHIP</string>
@@ -342,7 +342,7 @@ QPushButton:hover:!pressed {
          <string extracomment="accessible">Document</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string>DOCUMENT</string>

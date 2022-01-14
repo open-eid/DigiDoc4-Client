@@ -6,11 +6,11 @@
     <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="icon_IDkaart_green">
-            <rect id="Rectangle-4" stroke="#8CC368" x="0.5" y="0.5" width="16" height="11" rx="2"></rect>
-            <rect id="Rectangle-6" fill="#8CC368" x="9" y="3" width="5" height="1"></rect>
-            <rect id="Rectangle-6-Copy" fill="#8CC368" x="9" y="5" width="5" height="1"></rect>
-            <circle id="Oval" stroke="#8CC368" cx="5" cy="4" r="1.5"></circle>
-            <path d="M8,10 L8,7.5 C8,6.67157288 7.32842712,6 6.5,6 L3.5,6 C2.67157288,6 2,6.67157288 2,7.5 L2,8 L3,8 L3,7.5 C3,7.22385763 3.22385763,7 3.5,7 L6.5,7 C6.77614237,7 7,7.22385763 7,7.5 L7,10 L8,10 Z" id="Rectangle-5" fill="#8CC368" fill-rule="nonzero"></path>
+            <rect id="Rectangle-4" stroke="#498526" x="0.5" y="0.5" width="16" height="11" rx="2"></rect>
+            <rect id="Rectangle-6" fill="#498526" x="9" y="3" width="5" height="1"></rect>
+            <rect id="Rectangle-6-Copy" fill="#498526" x="9" y="5" width="5" height="1"></rect>
+            <circle id="Oval" stroke="#498526" cx="5" cy="4" r="1.5"></circle>
+            <path d="M8,10 L8,7.5 C8,6.67157288 7.32842712,6 6.5,6 L3.5,6 C2.67157288,6 2,6.67157288 2,7.5 L2,8 L3,8 L3,7.5 C3,7.22385763 3.22385763,7 3.5,7 L6.5,7 C6.77614237,7 7,7.22385763 7,7.5 L7,10 L8,10 Z" id="Rectangle-5" fill="#498526" fill-rule="nonzero"></path>
         </g>
     </g>
 </svg>

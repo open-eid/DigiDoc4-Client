@@ -155,7 +155,7 @@ border-radius: 3px;</string>
          <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string notr="true">48405050123 |</string>
@@ -189,7 +189,7 @@ border-radius: 3px;</string>
          <enum>Qt::TabFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: #75787B;</string>
+         <string notr="true">color: #727679;</string>
         </property>
         <property name="text">
          <string>ID-card</string>
@@ -210,7 +210,7 @@ border-radius: 3px;</string>
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtSvg/QSvgWidget.h</header>
+   <header location="global">QtSvg/QSvgWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
