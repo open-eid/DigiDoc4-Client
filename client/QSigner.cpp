@@ -431,6 +431,7 @@ void QSigner::selectCard(const TokenData &token)
 			Q_EMIT authDataChanged(d->auth = other);
 		else
 			Q_EMIT signDataChanged(d->sign = other);
+		return;
 	}
 }
 
