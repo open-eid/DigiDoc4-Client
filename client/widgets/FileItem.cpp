@@ -23,9 +23,10 @@
 
 using namespace ria::qdigidoc4;
 
-FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
+FileItem::FileItem(QString file, ContainerState state, QWidget *parent)
 	: Item(parent)
 	, ui(new Ui::FileItem)
+	, fileName(std::move(file))
 {
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
@@ -40,7 +41,6 @@ FileItem::FileItem(const QString& file, ContainerState state, QWidget *parent)
 	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 
-	fileName = file;
 	setFileName();
 }
 
@@ -82,7 +82,8 @@ QWidget* FileItem::initTabOrder(QWidget *item)
 
 void FileItem::setFileName()
 {
-	ui->fileName->setText(ui->fileName->fontMetrics().elidedText(fileName.toHtmlEscaped(), Qt::ElideMiddle, ui->fileName->width()));
+	QString text = ui->fileName->fontMetrics().elidedText(fileName, Qt::ElideMiddle, ui->fileName->width());
+	ui->fileName->setText(text.replace(QStringLiteral("&"), QStringLiteral("&&")));
 }
 
 void FileItem::setUnderline(bool enable)
