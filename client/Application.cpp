@@ -73,6 +73,12 @@ class MacMenuBar {};
 #include <MAPI.h>
 #endif
 
+const QStringList Application::CONTAINER_EXT {
+	QStringLiteral("asice"), QStringLiteral("sce"),
+	QStringLiteral("asics"), QStringLiteral("scs"),
+	QStringLiteral("bdoc"), QStringLiteral("edoc"),
+};
+
 class DigidocConf: public digidoc::XmlConfCurrent
 {
 public:
@@ -1058,10 +1064,7 @@ void Application::showSettings()
 void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)
 {
 	if(sign)
-	{
-		static const QStringList canAddSignature{QStringLiteral("asice"), QStringLiteral("ace"), QStringLiteral("bdoc"), QStringLiteral("edoc")};
-		sign = !(params.size() == 1 && canAddSignature.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive));
-	}
+		sign = !(params.size() == 1 && CONTAINER_EXT.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive));
 	QWidget *w = nullptr;
 	if(!newWindow && params.isEmpty())
 	{
@@ -1139,8 +1142,7 @@ QWidget* Application::uniqueRoot()
 
 void Application::waitForTSL( const QString &file )
 {
-	static const QStringList exts {"asice", "sce", "bdoc", "asics", "scs"};
-	if(!exts.contains(QFileInfo(file).suffix(), Qt::CaseInsensitive))
+	if(!CONTAINER_EXT.contains(QFileInfo(file).suffix(), Qt::CaseInsensitive))
 		return;
 
 	if( d->ready )

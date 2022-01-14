@@ -105,6 +105,7 @@ private:
 	void deinitMacEvents();
 #endif
 
+	static const QStringList CONTAINER_EXT;
 	class Private;
 	Private *d;
 };
