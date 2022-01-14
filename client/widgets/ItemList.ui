@@ -71,7 +71,7 @@ border-width: 0px 0px 1px 0px;
      <number>20</number>
     </property>
     <property name="bottomMargin">
-     <number>20</number>
+     <number>22</number>
     </property>
     <item>
      <widget class="QWidget" name="header" native="true">
@@ -174,13 +174,13 @@ border-width: 0px 0px 1px 0px;
            <height>60</height>
           </size>
          </property>
-         <widget class="QWidget" name="infoIcon" native="true">
+         <widget class="QSvgWidget" name="infoIcon" native="true">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>1</x>
             <y>22</y>
-            <width>16</width>
-            <height>16</height>
+            <width>15</width>
+            <height>15</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -406,6 +406,11 @@ background-position: left bottom; }</string>
    <class>LabelButton</class>
    <extends>QToolButton</extends>
    <header>widgets/LabelButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QSvgWidget</header>
   </customwidget>
  </customwidgets>
  <resources/>

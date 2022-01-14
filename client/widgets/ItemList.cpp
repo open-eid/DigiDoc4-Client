@@ -37,6 +37,7 @@ ItemList::ItemList(QWidget *parent)
 	ui->download->hide();
 	ui->count->setFont(Styles::font(Styles::Condensed, 12));
 	ui->count->hide();
+	ui->infoIcon->hide();
 	tabIndex = ui->btnFind;
 
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
@@ -107,7 +108,7 @@ QString ItemList::addLabel()
 	case ItemFile: return tr("+ ADD MORE FILES");
 	case ItemAddress: return tr("+ ADD RECIPIENT");
 	case ToAddAdresses: return tr("ADD ALL");
-	default: return QString();
+	default: return {};
 	}
 }
 
@@ -142,10 +143,9 @@ void ItemList::clear()
 		headerItems = ui->findGroup->isHidden() ? 1 : 2;
 	}
 
-	Item* widget;
 	auto it = items.begin();
 	while (it != items.end()) {
-		widget = *it;
+		Item *widget = *it;
 		it = items.erase(it);
 		widget->close();
 		delete widget;
@@ -164,15 +164,15 @@ void ItemList::details(const QString &id)
 bool ItemList::eventFilter(QObject *o, QEvent *e)
 {
 	if(o != ui->infoIcon)
-		return QFrame::eventFilter(o, e);
+		return QScrollArea::eventFilter(o, e);
 	switch(e->type())
 	{
 	case QEvent::Enter:
 	case QEvent::Leave:
-		infoIcon->setHidden(e->type() == QEvent::Enter);
-		infoHoverIcon->setVisible(e->type() == QEvent::Enter);
+		ui->infoIcon->load(e->type() == QEvent::Enter ?
+			QStringLiteral(":/images/icon_info_hover.svg") : QStringLiteral(":/images/icon_info.svg"));
 		return true;
-	default: return QFrame::eventFilter(o, e);
+	default: return QScrollArea::eventFilter(o, e);
 	}
 }
 
@@ -242,16 +242,8 @@ void ItemList::init(ItemType item, const QString &header)
 	if(itemType == ItemAddress)
 	{
 		ui->add->disconnect();
-		infoIcon = new QSvgWidget(ui->infoIcon);
-		infoIcon->load(QStringLiteral(":/images/icon_info.svg"));
-		infoIcon->resize(15, 15);
-		infoIcon->move(1, 1);
-		infoIcon->show();
-		infoHoverIcon = new QSvgWidget(ui->infoIcon);
-		infoHoverIcon->hide();
-		infoHoverIcon->load(QStringLiteral(":/images/icon_info_hover.svg"));
-		infoHoverIcon->resize(15, 15);
-		infoHoverIcon->move(1, 1);
+		ui->infoIcon->load(QStringLiteral(":/images/icon_info.svg"));
+		ui->infoIcon->show();
 		ui->infoIcon->installEventFilter(this);
 		setRecipientTooltip();
 

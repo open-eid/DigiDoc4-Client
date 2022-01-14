@@ -84,8 +84,6 @@ private:
 
 	QLabel *header = nullptr;
 	int headerItems = 1;
-	QSvgWidget* infoIcon = nullptr;
-	QSvgWidget* infoHoverIcon = nullptr;
 	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
 	QString headerText;
 	QString listText;
