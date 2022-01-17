@@ -15,7 +15,6 @@ qt5_add_translation( SOURCES translations/en.ts translations/et.ts translations/
 add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	${PROGNAME}.rc
 	${SOURCES}
-	${RESOURCE_FILES}
 	images/images.qrc
 	fonts/fonts.qrc
 	${CMAKE_CURRENT_BINARY_DIR}/tr.qrc
@@ -146,7 +145,7 @@ if( APPLE )
 		set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir})
 	endforeach(_file)
 
-	target_sources( ${PROGNAME} PRIVATE Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
+	target_sources( ${PROGNAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
