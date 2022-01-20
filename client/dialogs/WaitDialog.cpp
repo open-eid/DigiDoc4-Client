@@ -74,14 +74,14 @@ void WaitDialog::setText(const QString &text)
 
 
 
-WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString &text, bool delay)
+WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString &text, bool show)
 {
 	WaitDialog *dialog = WaitDialog::create(parent);
 	dialog->setText(text);
-	if(delay)
-		QTimer::singleShot(5000, dialog, &WaitDialog::show);
-	else
+	if(show)
 		dialog->show();
+	else if(!dialog->isHidden())
+		QTimer::singleShot(5000, dialog, &WaitDialog::show);
 }
 
 WaitDialogHolder::~WaitDialogHolder()

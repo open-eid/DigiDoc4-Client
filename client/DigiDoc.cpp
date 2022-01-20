@@ -239,7 +239,6 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate() const
 	m_warning = 0;
 	try
 	{
-		qApp->waitForTSL( m_parent->fileName() );
 		s->validate();
 	}
 	catch( const Exception &e )
@@ -503,7 +502,8 @@ bool DigiDoc::open( const QString &file )
 		parent = qApp->activeWindow();
 	qApp->waitForTSL( file );
 	clear();
-	auto serviceConfirmation = [this, parent]{
+	auto serviceConfirmation = [parent] {
+		WaitDialogHider hider;
 		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 			"Do you want to continue?"), parent);
@@ -517,7 +517,7 @@ bool DigiDoc::open( const QString &file )
 
 	try
 	{
-		WaitDialogHolder waitDialog(parent, tr("Opening"), true);
+		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		waitFor([&] { b = Container::openPtr(to(file)); });
 		if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 		{
