@@ -459,6 +459,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case SignatureMobile:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+			WaitDialogHider hider;
 			MobileProgress m(this);
 			return m.init(info1, info2) &&
 				digiDoc->sign(city, state, zip, country, role, &m);
@@ -466,6 +467,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+			WaitDialogHider hider;
 			SmartIDProgress s(this);
 			return s.init(info1, info2) &&
 				digiDoc->sign(city, state, zip, country, role, &s);
