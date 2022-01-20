@@ -47,7 +47,7 @@ protected:
 
 private:
 	void init();
-	QString red(const QString &text);
+	QString red(const QString &text, bool paint = true) const;
 	void removeSignature();
 	void updateNameField();
 

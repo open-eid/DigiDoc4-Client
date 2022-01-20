@@ -226,9 +226,9 @@ bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileC
 	return !ui->serial.isEmpty() && (ui->serial == cardCode || ui->serial == mobileCode);
 }
 
-QString SignatureItem::red(const QString &text)
+QString SignatureItem::red(const QString &text, bool paint) const
 {
-	return "<font color=\"red\">" + text + "</font>";
+	return paint ? QStringLiteral("<font color=\"red\">%1</font>").arg(text) : text;
 }
 
 void SignatureItem::removeSignature()
@@ -248,16 +248,12 @@ void SignatureItem::removeSignature()
 void SignatureItem::updateNameField()
 {
 	QTextDocument doc;
-	doc.setHtml(ui->name->text());
+	doc.setHtml(ui->status);
 	QString plain = doc.toPlainText();
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-	if(ui->name->fontMetrics().horizontalAdvance(ui->nameText  + " - " + plain) < ui->name->width())
-#else
-	if(ui->name->fontMetrics().width(ui->nameText  + " - " + plain) < ui->name->width())
-#endif
-		ui->name->setText((ui->invalid ? red(ui->nameText + " - ") : ui->nameText + " - ") + ui->status);
+	if(ui->name->fontMetrics().boundingRect(ui->nameText  + " - " + plain).width() < ui->name->width())
+		ui->name->setText(red(ui->nameText + " - ", ui->invalid) + ui->status);
 	else
-		ui->name->setText((ui->invalid ? red(ui->nameText) : ui->nameText) + "<br/>" + ui->status);
+		ui->name->setText(QStringLiteral("%1<br />%2").arg(red(ui->nameText, ui->invalid), ui->status));
 	ui->name->setAccessibleName(QStringLiteral("%1. %2 %3").arg(plain, ui->role->text(), ui->idSignTime->text()));
 	ui->role->setText(ui->role->fontMetrics().elidedText(
 		ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
