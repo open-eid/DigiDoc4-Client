@@ -296,10 +296,10 @@ void ContainerPage::showSigningButton()
 		showMainAction({ SignatureAdd, SignatureMobile, SignatureSmartID });
 }
 
-void ContainerPage::transition(CryptoDoc* container, bool canDecrypt)
+void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
 {
 	clear();
-	isSupported = canDecrypt;
+	isSupported = container && container->canDecrypt(cert);
 	setHeader(container->fileName());
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));

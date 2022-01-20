@@ -439,7 +439,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(navigate)
 		{
 			resetCryptoDoc(cryptoContainer.release());
-			ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
+			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
 		}
 	}
 
@@ -542,7 +542,7 @@ void MainWindow::convertToCDoc()
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
-	ui->cryptoContainerPage->transition(cryptoDoc, false);
+	ui->cryptoContainerPage->transition(cryptoDoc,  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
 	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
@@ -579,7 +579,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	case DecryptToken:
 		if(decrypt())
 		{
-			ui->cryptoContainerPage->transition(cryptoDoc, false);
+			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
@@ -588,7 +588,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	case EncryptContainer:
 		if(encrypt())
 		{
-			ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
+			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
 
 			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
 			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
@@ -988,7 +988,7 @@ void MainWindow::removeAddress(int index)
 	if(cryptoDoc)
 	{
 		cryptoDoc->removeKey(index);
-		ui->cryptoContainerPage->transition(cryptoDoc, cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()));
+		ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
 	}
 }
 
