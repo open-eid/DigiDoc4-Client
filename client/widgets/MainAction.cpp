@@ -49,9 +49,9 @@ MainAction::MainAction(QWidget *parent)
 
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{
 		if (ui->actions.value(0) == Actions::SignatureMobile)
-			SettingsDialog::setValueEx("MIDOrder", true, true);
+			SettingsDialog::setValueEx(QStringLiteral("MIDOrder"), true, true);
 		if (ui->actions.value(0) == Actions::SignatureSmartID)
-			SettingsDialog::setValueEx("MIDOrder", false, true);
+			SettingsDialog::setValueEx(QStringLiteral("MIDOrder"), false, true);
 	});
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{ emit action(ui->actions.value(0)); });
 	connect(ui->mainAction, &QPushButton::clicked, this, &MainAction::hideDropdown);
@@ -155,7 +155,7 @@ void MainAction::showActions(const QList<Actions> &actions)
 		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
 			return action == SignatureMobile || action == SignatureSmartID;
 		}) &&
-		!QSettings().value("MIDOrder", true).toBool())
+		!QSettings().value(QStringLiteral("MIDOrder"), true).toBool())
 	{
 		std::reverse(order.begin(), order.end());
 	}
@@ -175,15 +175,16 @@ void MainAction::showDropdown()
 			other->setAccessibleName(label(*i).toLower());
 			other->setCursor(ui->mainAction->cursor());
 			other->setFont(ui->mainAction->font());
+			other->setEnabled(ui->mainAction->isEnabled());
 			other->resize(size());
 			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
 			other->show();
 			other->setStyleSheet(ui->mainAction->styleSheet() +
 				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
 			if (*i == Actions::SignatureMobile)
-				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", true, true); });
+				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx(QStringLiteral("MIDOrder"), true, true); });
 			if (*i == Actions::SignatureSmartID)
-				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", false, true); });
+				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx(QStringLiteral("MIDOrder"), false, true); });
 			connect(other, &QPushButton::clicked, this, &MainAction::hideDropdown);
 			connect(other, &QPushButton::clicked, this, [=]{ emit this->action(*i); });
 			ui->list.push_back(other);
