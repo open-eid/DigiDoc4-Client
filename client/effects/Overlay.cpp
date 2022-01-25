@@ -36,7 +36,7 @@ Overlay::Overlay(QWidget *parent): QWidget(parent)
 	setAttribute(Qt::WA_TransparentForMouseEvents);
 	if(parent)
 	{
-		setMinimumSize(parent->width(), parent->height());
+		setMinimumSize(parent->size());
 		parent->setGraphicsEffect(new QGraphicsBlurEffect);
 	}
 }
@@ -50,7 +50,7 @@ Overlay::~Overlay()
 void Overlay::paintEvent(QPaintEvent * /*event*/)
 {
 	if(parentWidget())
-		setMinimumSize(parentWidget()->width(), parentWidget()->height());
+		setMinimumSize(parentWidget()->size());
 	QPainter painter( this );
 	painter.setRenderHint( QPainter::Antialiasing );
 	// Opacity 90%

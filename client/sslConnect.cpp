@@ -59,10 +59,22 @@ SSLConnect::~SSLConnect()
 
 void SSLConnect::fetch()
 {
+	QWidget *active = qApp->activeWindow();
+	for(QWidget *w: qApp->topLevelWidgets())
+	{
+		if(MainWindow *main = qobject_cast<MainWindow*>(w))
+		{
+			active = main;
+			break;
+		}
+	}
+	WaitDialogHolder *popup = new WaitDialogHolder(active, tr("Downloading picture"));
+
 	QSslCertificate cert = qApp->signer()->tokenauth().cert();
 	QSslKey key = qApp->signer()->key();
 	if(cert.isNull() || key.isNull())
 	{
+		delete popup;
 		emit error(tr("Private key is missing"));
 		return;
 	}
@@ -79,17 +91,6 @@ void SSLConnect::fetch()
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
 	req.setUrl(obj.value(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
 
-	QWidget *active = qApp->activeWindow();
-	for(QWidget *w: qApp->topLevelWidgets())
-	{
-		if(MainWindow *main = qobject_cast<MainWindow*>(w))
-		{
-			active = main;
-			break;
-		}
-	}
-
-	WaitDialogHolder *popup = new WaitDialogHolder(active, tr("Downloading picture"));
 	QNetworkAccessManager *nam = new QNetworkAccessManager(this);
 	connect(nam, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){
 		QList<QSslError> ignore;

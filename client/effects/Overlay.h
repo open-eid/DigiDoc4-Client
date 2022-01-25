@@ -23,7 +23,7 @@
 
 class QPaintEvent;
 
-class Overlay : public QWidget
+class Overlay final : public QWidget
 {
 	Q_OBJECT
 public:
@@ -33,5 +33,5 @@ public:
 	~Overlay() override;
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
+	void paintEvent(QPaintEvent *event) final;
 };

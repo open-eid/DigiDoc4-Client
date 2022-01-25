@@ -34,9 +34,7 @@ WaitDialog::WaitDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::WaitDialog)
 {
-#ifndef Q_OS_MAC
 	new Overlay(this, parent);
-#endif
 	setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
 	ui->setupUi(this);
 	ui->movie->load(QStringLiteral(":/images/wait.svg"));

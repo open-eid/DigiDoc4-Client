@@ -20,7 +20,8 @@
 #pragma once
 
 #include <QDialog>
-#include <QString>
+
+#include "dialogs/WaitDialog.h"
 
 namespace Ui {
 class WarningDialog;
@@ -44,4 +45,5 @@ public:
 
 private:
 	Ui::WarningDialog *ui;
+	WaitDialogHider hider;
 };
