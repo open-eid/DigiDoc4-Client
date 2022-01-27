@@ -357,7 +357,7 @@ void SDocumentModel::open(int row)
 #else
 	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
 #endif
-	if(!doc->fileName().endsWith(".pdf", Qt::CaseInsensitive) && FileDialog::isSignedPDF(f.absoluteFilePath()))
+	if(!doc->fileName().endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(f.absoluteFilePath()))
 		qApp->showClient({ f.absoluteFilePath() }, false, false, true);
 	else
 		QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
@@ -511,18 +511,19 @@ bool DigiDoc::open( const QString &file )
 		dlg.addButton(tr("YES"), ContainerSave);
 		return dlg.exec() == ContainerSave;
 	};
-	if((file.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) ||
-		file.endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
-		return false;
+	bool online =
+		!(file.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) ||
+		file.endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)) ||
+		serviceConfirmation();
 
 	try
 	{
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
-		waitFor([&] { b = Container::openPtr(to(file)); });
+		waitFor([&] { b = Container::openPtr(to(file), online ? Container::OpenDefault : Container::OpenOffline); });
 		if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 		{
 			const DataFile *f = b->dataFiles().at(0);
-			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && serviceConfirmation())
+			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
@@ -530,7 +531,7 @@ bool DigiDoc::open( const QString &file )
 				{
 					m_tempFiles << tmppath;
 					parentContainer = std::move(b);
-					b = Container::openPtr(to(tmppath));
+					b = Container::openPtr(to(tmppath), serviceConfirmation() ? Container::OpenDefault : Container::OpenOffline);
 				}
 			}
 		}
