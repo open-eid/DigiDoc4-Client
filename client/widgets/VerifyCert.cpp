@@ -19,11 +19,11 @@
 
 #include "VerifyCert.h"
 #include "ui_VerifyCert.h"
+
+#include "DateTime.h"
 #include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/WarningDialog.h"
-
-#include <common/DateTime.h>
 
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslKey>

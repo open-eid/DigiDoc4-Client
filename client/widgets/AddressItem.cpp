@@ -20,10 +20,10 @@
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
 
+#include "DateTime.h"
+#include "SslCertificate.h"
 #include "Styles.h"
 #include "dialogs/KeyDialog.h"
-
-#include <common/DateTime.h>
 
 using namespace ria::qdigidoc4;
 
@@ -53,13 +53,6 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	ui->added->hide();
 	ui->added->setDisabled(true);
 
-	if(!showIcon)
-	{
-		DateTime date(key.cert.expiryDate().toLocalTime());
-		if(!date.isNull())
-			expireDateText = date.formatDate(QStringLiteral("dd. MMMM yyyy"));
-	}
-
 	code = SslCertificate(key.cert).personalCode().toHtmlEscaped();
 	name = (!key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
 			key.cert.subjectInfo("GN").join(' ') + " " + key.cert.subjectInfo("SN").join(' ') :
@@ -78,12 +71,9 @@ void AddressItem::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
 		setName();
-
 		setIdType();
 	}
-
 	QWidget::changeEvent(event);
 }
 
@@ -165,12 +155,10 @@ void AddressItem::setIdType()
 			str = tr("Certificate for Encryption");
 	}
 
-	if(!expireDateText.isEmpty())
-	{
-		if(!str.isEmpty())
-			str += QStringLiteral(" - ");
-		str += tr("Expires on") + " " + expireDateText;
-	}
-
-	ui->idType->setText(str);
+	if(!str.isEmpty())
+		str += QStringLiteral(" - ");
+	DateTime date(cert.expiryDate().toLocalTime());
+	ui->idType->setText(QStringLiteral("%1%2 %3").arg(str,
+		cert.isValid() ? tr("Expires on") : tr("Expired on"),
+		date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
 }

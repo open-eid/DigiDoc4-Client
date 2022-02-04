@@ -186,6 +186,10 @@
         <source>Authentication certificate</source>
         <translation>Сертификат идентификации</translation>
     </message>
+    <message>
+        <source>Expired on</source>
+        <translation>Истекший</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

@@ -21,12 +21,11 @@
 #include "SignatureDialog.h"
 #include "ui_SignatureDialog.h"
 
+#include "DateTime.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "dialogs/CertificateDetails.h"
 #include "effects/Overlay.h"
-
-#include <common/DateTime.h>
 
 #include <QDesktopServices>
 

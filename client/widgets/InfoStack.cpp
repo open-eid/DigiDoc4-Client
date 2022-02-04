@@ -20,10 +20,9 @@
 #include "InfoStack.h"
 #include "ui_InfoStack.h"
 
+#include "DateTime.h"
 #include "Styles.h"
 #include "SslCertificate.h"
-
-#include <common/DateTime.h>
 
 #include <QtCore/QTextStream>
 
