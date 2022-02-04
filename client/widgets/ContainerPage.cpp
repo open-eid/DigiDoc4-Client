@@ -365,7 +365,7 @@ void ContainerPage::transition(DigiDoc* container)
 void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 {
 	isSupported = canDecrypt || container->state() & UnencryptedContainer;
-	if(container->state() & EncryptedContainer)
+	if(container && container->state() & EncryptedContainer)
 		updateDecryptionButton();
 
 	if(!container)
