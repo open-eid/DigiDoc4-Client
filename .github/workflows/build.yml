@@ -8,7 +8,7 @@ jobs:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: '10.13'
+      MACOSX_DEPLOYMENT_TARGET: '10.14'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -33,12 +33,12 @@ jobs:
     - name: Build
       run: |
         QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
-        mkdir build && cd build && cmake \
+        cmake \
           -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 \
           -DOPENSSL_ROOT_DIR=/Library/Developer/OpenSSL \
           -DLDAP_ROOT=/Library/Developer/OpenLDAP \
-          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" ..
-        make zipdebug macdeployqt zip
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -B build -S .
+        cmake --build build --target zipdebug macdeployqt zip
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -107,9 +107,7 @@ jobs:
     - name: Install Build Deps
       run: dnf groupinstall -y "Development Tools" "Development Libraries" fedora-packager
     - name: Install Deps
-      run: |
-        dnf install -y \
-          cmake openssl-devel vim-common qt5-qtsvg-devel qt5-linguist
+      run: dnf install -y cmake openssl-devel vim-common qt5-qtsvg-devel qt5-linguist
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -119,16 +117,11 @@ jobs:
         path: libdigidocpp-pkg
         repo: 'open-eid/libdigidocpp'
     - name: Install artifact
-      run: |
-        dnf install -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.rpm
-        rm -rf libdigidocpp-pkg
+      run: dnf install -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.rpm
     - name: Build
       run: |
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-        make
-        make package
+        cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
+        cmake --build build --target all package
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -200,7 +193,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: d417ae59d6e9aa20d9f812b5deb966645c54687d
+        vcpkgGitCommitId: b25cb779e5783531cc66562e224079b376055939
         vcpkgTriplet: ${{ matrix.arch }}-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
@@ -216,14 +209,13 @@ jobs:
     - name: Build
       run: |
         md build/client
-        cd build
-        copy ${{ env.VCPKG_ROOT }}\installed\${{ matrix.arch }}-windows\bin\*.dll client\
+        copy ${{ env.VCPKG_ROOT }}\installed\${{ matrix.arch }}-windows\bin\*.dll build\client\
         cmake "-GNinja" -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
-          "-DLIBDIGIDOCPP_LIBRARY=../libs/libdigidocpp/${{ matrix.arch }}/digidocpp.lib" `
-          "-DLIBDIGIDOCPP_INCLUDE_DIR=../libs/libdigidocpp/include" ..
-        cmake --build . --target msi
-        cmake --build . --target appx
+          "-DLIBDIGIDOCPP_LIBRARY=libs/libdigidocpp/${{ matrix.arch }}/digidocpp.lib" `
+          "-DLIBDIGIDOCPP_INCLUDE_DIR=libs/libdigidocpp/include" -B build -S .
+        cmake --build build --target msi
+        cmake --build build --target appx
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
