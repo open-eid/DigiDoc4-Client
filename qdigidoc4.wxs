@@ -25,15 +25,12 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
   <?define OpenSSLSuffix = "" ?>
 <?endif ?>
 
-<?if $(env.VisualStudioVersion) = "16.0" ?>
+<?if $(env.VisualStudioVersion) = "17.0" ?>
+<?define VCVER = "143" ?>
+<?elseif $(env.VisualStudioVersion) = "16.0" ?>
 <?define VCVER = "142" ?>
-<?define VCPATH = "$(env.VCTOOLSREDISTDIR)" ?>
 <?elseif $(env.VisualStudioVersion) = "15.0" ?>
 <?define VCVER = "141" ?>
-<?define VCPATH = "$(env.VCTOOLSREDISTDIR)" ?>
-<?elseif $(env.VisualStudioVersion) = "14.0" ?>
-<?define VCVER = "140" ?>
-<?define VCPATH = "$(env.VCINSTALLDIR)\redist" ?>
 <?endif?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -138,10 +135,10 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
             <File Source="$(var.libs_path)\digidocpp.conf"/>
             <File Source="$(var.libs_path)\798.p12"/>
 <?ifdef var.qt_path ?>
-            <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp140.dll"/>
-            <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140.dll"/>
+            <File Source="$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\msvcp140.dll"/>
+            <File Source="$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140.dll"/>
 <?if $(var.Platform) = x64 AND $(env.VisualStudioVersion) = "16.0" ?>
-            <File Source="$(var.VCPATH)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140_1.dll"/>
+            <File Source="$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT\vcruntime140_1.dll"/>
 <?endif ?>
             <File Source="$(var.libs_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.libs_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
