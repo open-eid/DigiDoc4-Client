@@ -139,30 +139,46 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        build: [VC17x86, VC17x64, VC19x86, VC19x64]
+        build: [VC17x86, VC17x64, VC19x86, VC19x64, VC22x86, VC22x64]
         include:
         - build: VC17x86
           arch: x86
           qt: win32_msvc2017
-          image: 'windows-2016'
-          toolset: VS141
+          image: windows-2019
+          toolset: 14.16
+          vcver: 141
         - build: VC17x64
           arch: x64
           qt: win64_msvc2017_64
-          image: 'windows-2016'
-          toolset: VS141
+          image: windows-2019
+          toolset: 14.16
+          vcver: 141
         - build: VC19x86
           arch: x86
           qt: win32_msvc2017
-          image: 'windows-2019'
-          toolset: VS142
+          image: windows-2019
+          toolset: 14.29
+          vcver: 142
         - build: VC19x64
           arch: x64
           qt: win64_msvc2017_64
-          image: 'windows-2019'
-          toolset: VS142
+          image: windows-2019
+          toolset: 14.29
+          vcver: 142
+        - build: VC22x86
+          arch: x86
+          qt: win32_msvc2017
+          image: windows-2022
+          toolset: 14.30
+          vcver: 143
+        - build: VC22x64
+          arch: x64
+          qt: win64_msvc2017_64
+          image: windows-2022
+          toolset: 14.30
+          vcver: 143
     env:
-      VER_SUFFIX: ".${{ matrix.toolset }}"
+      VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -178,7 +194,7 @@ jobs:
         repo: 'open-eid/libdigidocpp'
     - name: Install artifact
       run: |
-        Rename-Item "libdigidocpp*${{ matrix.toolset }}.msi" libdigidocpp.msi
+        Rename-Item "libdigidocpp*VS${{ matrix.vcver }}.msi" libdigidocpp.msi
         msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
@@ -189,13 +205,14 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.12.11'
+        version: '5.12.12'
         arch: ${{ matrix.qt }}
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: ${{ matrix.arch }}
-        sdk: 10.0.16299.0
+        sdk: 10.0.17763.0
+        toolset: ${{ matrix.toolset }}
     - name: Build
       run: |
         md build/client
