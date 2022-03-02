@@ -453,13 +453,6 @@ QRadioButton::indicator::checked {
         </layout>
        </item>
        <item>
-        <widget class="CheckBox" name="tokenBackend">
-         <property name="text">
-          <string>I would like to sign with Lithuanian, Latvian ID-card</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer name="pageGeneralSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
