@@ -75,7 +75,7 @@ void SSLConnect::fetch()
 	if(cert.isNull() || key.isNull())
 	{
 		delete popup;
-		emit error(tr("Private key is missing"));
+		emit error(QStringLiteral("Private key is missing"));
 		return;
 	}
 	d->ssl.setPrivateKey(key);
@@ -121,7 +121,7 @@ void SSLConnect::fetch()
 		}
 		if(!reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().contains("image/jpeg"))
 		{
-			emit error(tr("Invalid Content-Type"));
+			emit error(QStringLiteral("Invalid Content-Type"));
 			return;
 		}
 		QByteArray result = reply->readAll();
@@ -129,14 +129,14 @@ void SSLConnect::fetch()
 
 		if(result.isEmpty())
 		{
-			emit error(tr("Empty content"));
+			emit error(QStringLiteral("Empty content"));
 			return;
 		}
 
 		QImage img;
 		if(!img.loadFromData(result))
 		{
-			emit error(tr("Failed to parse image"));
+			emit error(QStringLiteral("Failed to parse image"));
 			return;
 		}
 		emit image(img);

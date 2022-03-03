@@ -2401,22 +2401,6 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Downloading picture</source>
         <translation>Downloading picture</translation>
     </message>
-    <message>
-        <source>Invalid Content-Type</source>
-        <translation>Invalid content type</translation>
-    </message>
-    <message>
-        <source>Private key is missing</source>
-        <translation>Private key is missing</translation>
-    </message>
-    <message>
-        <source>Empty content</source>
-        <translation>Empty content</translation>
-    </message>
-    <message>
-        <source>Failed to parse image</source>
-        <translation>Failed to parse image</translation>
-    </message>
 </context>
 <context>
     <name>SettingsDialog</name>

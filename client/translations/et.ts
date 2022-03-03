@@ -2401,22 +2401,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Downloading picture</source>
         <translation>Laadin pilti</translation>
     </message>
-    <message>
-        <source>Invalid Content-Type</source>
-        <translation>Kehtetu sisutüüp</translation>
-    </message>
-    <message>
-        <source>Private key is missing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to parse image</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SettingsDialog</name>
