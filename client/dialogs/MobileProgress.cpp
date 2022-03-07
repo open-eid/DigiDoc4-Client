@@ -22,7 +22,8 @@
 
 #include "Styles.h"
 #include "Utils.h"
-#include "WarningDialog.h"
+#include "dialogs/WarningDialog.h"
+#include "dialogs/WaitDialog.h"
 
 #include <common/Common.h>
 #include <common/Configuration.h>
@@ -76,6 +77,7 @@ public:
 #ifdef Q_OS_WIN
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
+	WaitDialogHider hider;
 };
 
 MobileProgress::MobileProgress(QWidget *parent)

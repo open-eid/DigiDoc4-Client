@@ -25,7 +25,6 @@
 #include "TokenData.h"
 #include "Utils.h"
 #include "dialogs/FileDialog.h"
-#include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <digidocpp/DataFile.h>
@@ -503,7 +502,6 @@ bool DigiDoc::open( const QString &file )
 	qApp->waitForTSL( file );
 	clear();
 	auto serviceConfirmation = [parent] {
-		WaitDialogHider hider;
 		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 			"Do you want to continue?"), parent);
