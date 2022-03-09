@@ -2493,10 +2493,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Select the default directory</translation>
     </message>
     <message>
-        <source>I would like to sign with Lithuanian, Latvian ID-card</source>
-        <translation>I would like to sign with Lithuanian, Latvian ID-card</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Show print summary</translation>
     </message>
@@ -2715,10 +2711,6 @@ Additional licenses and components</translation>
     <message>
         <source>%1 version %2, released %3</source>
         <translation>%1 version %2, released %3</translation>
-    </message>
-    <message>
-        <source>Applying this setting requires application restart. Restart now?</source>
-        <translation>Applying this setting requires application restart. Restart now?</translation>
     </message>
     <message>
         <source>YES</source>

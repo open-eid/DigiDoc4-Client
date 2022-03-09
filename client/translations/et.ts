@@ -2497,10 +2497,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Vali vaikimisi kataloog</translation>
     </message>
     <message>
-        <source>I would like to sign with Lithuanian, Latvian ID-card</source>
-        <translation>Soovin allkirjastada Leedu, Läti ID-kaardiga</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Näita kinnituslehte</translation>
     </message>
@@ -2715,10 +2711,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>%1 version %2, released %3</source>
         <translation>%1 versioon %2, avalikustatud %3</translation>
-    </message>
-    <message>
-        <source>Applying this setting requires application restart. Restart now?</source>
-        <translation>Selle seadistuse rakendamine vajab rakenduse taaskäivitamist. Taaskäivita rakendus?</translation>
     </message>
     <message>
         <source>YES</source>

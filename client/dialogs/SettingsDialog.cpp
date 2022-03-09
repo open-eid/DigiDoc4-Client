@@ -95,7 +95,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->txtGeneralDirectory->setFont(regularFont);
 
 	ui->chkGeneralTslRefresh->setFont(regularFont);
-	ui->tokenBackend->setFont(regularFont);
 
 	ui->chkShowPrintSummary->setFont(regularFont);
 	ui->chkRoleAddressInfo->setFont(regularFont);
@@ -354,25 +353,6 @@ void SettingsDialog::initFunctionality()
 	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
 		setValueEx(QStringLiteral("DefaultDir"), text);
 	});
-#endif
-
-#ifdef Q_OS_WIN
-	ui->tokenBackend->setChecked(s.value(QStringLiteral("tokenBackend")).toUInt());
-	connect(ui->tokenBackend, &QCheckBox::toggled, this, [=](bool checked) {
-		setValueEx(QStringLiteral("tokenBackend"), int(checked), 0);
-		if(qApp->signer()->apiType() == QSigner::ApiType(checked))
-			return;
-
-		WarningDialog dlg(tr("Applying this setting requires application restart. Restart now?"), this);
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), 1) ;
-		if(dlg.exec() == 1) {
-			qApp->setProperty("restart", true);
-			qApp->quit();
-		}
-	});
-#else
-	ui->tokenBackend->hide();
 #endif
 
 	// pageProxy

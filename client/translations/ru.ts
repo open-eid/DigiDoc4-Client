@@ -2500,10 +2500,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Выберите каталог</translation>
     </message>
     <message>
-        <source>I would like to sign with Lithuanian, Latvian ID-card</source>
-        <translation>Желаю подписывать ИД-картами Латвии и Литвы</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Показать подтверждающий лист</translation>
     </message>
@@ -2718,10 +2714,6 @@ Additional licenses and components</source>
     <message>
         <source>%1 version %2, released %3</source>
         <translation>%1 версия %2, выпущенный %3</translation>
-    </message>
-    <message>
-        <source>Applying this setting requires application restart. Restart now?</source>
-        <translation>Применение этого параметра требует перезапуска приложения. Перезапустить приложение?</translation>
     </message>
     <message>
         <source>YES</source>
