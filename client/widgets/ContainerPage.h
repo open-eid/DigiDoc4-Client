@@ -31,6 +31,7 @@ class ContainerPage;
 class CKey;
 class CryptoDoc;
 class DigiDoc;
+class QSslCertificate;
 class SignatureItem;
 class SslCertificate;
 struct WarningText;
@@ -49,7 +50,7 @@ public:
 	void clearPopups();
 	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
-	void transition(CryptoDoc *container, bool canDecrypt);
+	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
 	void update(bool canDecrypt, CryptoDoc *container);
 

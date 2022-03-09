@@ -968,6 +968,8 @@ bool CryptoDoc::addKey( const CKey &key )
 
 bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 {
+	if(cert.isNull())
+		return false;
 	for(const CKey &k: qAsConst(d->keys))
 	{
 		if(!Private::ENC_MTH.contains(d->method) || k.cert != cert)
