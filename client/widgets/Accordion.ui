@@ -11,8 +11,11 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#contentVerifyCert {
-	background-color: #DFE5E9;
+   <string notr="true">#authBox, #signBox {
+border-right: 1px solid #DFE5E9;
+}
+#authBox, #signBox, #pukBox {
+border-top: 1px solid #DFE5E9;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
@@ -46,13 +49,13 @@
     <widget class="QWidget" name="contentVerifyCert" native="true">
      <layout class="QHBoxLayout" name="contentVerifyCertLayout">
       <property name="spacing">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
@@ -73,7 +76,7 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
+    <spacer name="accordionSpacerVertical">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
