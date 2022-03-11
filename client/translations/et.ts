@@ -186,6 +186,10 @@
         <source>Authentication certificate</source>
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
+    <message>
+        <source>Expired on</source>
+        <translation>Aegus</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

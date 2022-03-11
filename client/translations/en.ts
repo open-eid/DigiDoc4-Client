@@ -186,6 +186,10 @@
         <source>Authentication certificate</source>
         <translation>Authentication certificate</translation>
     </message>
+    <message>
+        <source>Expired on</source>
+        <translation>Expired on</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

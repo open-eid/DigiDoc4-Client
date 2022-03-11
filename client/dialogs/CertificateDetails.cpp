@@ -22,12 +22,11 @@
 #include "ui_CertificateDetails.h"
 
 #include "Application.h"
+#include "DateTime.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "effects/Overlay.h"
 #include "dialogs/WarningDialog.h"
-
-#include <common/DateTime.h>
 
 #include <QtCore/QDir>
 #include <QtCore/QStandardPaths>

@@ -22,7 +22,6 @@
 #include "widgets/Item.h"
 
 #include "CryptoDoc.h"
-#include "SslCertificate.h"
 
 namespace Ui {
 class AddressItem;
@@ -63,6 +62,5 @@ private:
 	QString code;
 	CKey key;
 	QString name;
-	QString expireDateText;
 	bool yourself = false;
 };

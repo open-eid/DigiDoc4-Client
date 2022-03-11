@@ -23,6 +23,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	Application.cpp
 	CheckConnection.cpp
 	CryptoDoc.cpp
+	DateTime.cpp
 	DigiDoc.cpp
 	Diagnostics.cpp
 	DiagnosticsTask.cpp
