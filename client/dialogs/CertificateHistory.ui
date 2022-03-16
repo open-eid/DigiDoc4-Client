@@ -21,7 +21,21 @@
 color: #000000;
 background-color: #FFFFFF;
 }
-</string>
+QPushButton {
+border-radius: 2px;
+border: none;
+color: #FFFFFF;
+background-color: #006EB5;
+}
+QPushButton:pressed {
+background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+background-color: #008DCF;
+}
+QPushButton:disabled {
+background-color: #BEDBED;
+}</string>
   </property>
   <layout class="QGridLayout" name="CertificateHistoryLayout">
    <item row="0" column="0" colspan="4">
@@ -156,7 +170,7 @@ QPushButton:disabled {
    <item row="1" column="2">
     <widget class="QPushButton" name="select">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="minimumSize">
       <size>
@@ -172,33 +186,16 @@ QPushButton:disabled {
      <property name="accessibleName">
       <string extracomment="accessible">Select</string>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	border-radius: 2px;
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-     </property>
      <property name="text">
       <string>ADD</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
      </property>
     </widget>
    </item>
    <item row="1" column="3">
     <widget class="QPushButton" name="remove">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="minimumSize">
       <size>
        <width>120</width>
@@ -212,23 +209,6 @@ QPushButton:disabled {
      </property>
      <property name="accessibleName">
       <string extracomment="accessible">Remove</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	border-radius: 2px;
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
      </property>
      <property name="text">
       <string>REMOVE</string>
