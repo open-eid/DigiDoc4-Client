@@ -258,7 +258,7 @@ void ContainerPage::changeEvent(QEvent* event)
 
 void ContainerPage::setHeader(const QString &file)
 {
-	fileName = QDir::toNativeSeparators(file);
+	fileName = QDir::toNativeSeparators (file);
 	window()->setWindowFilePath(fileName);
 	window()->setWindowTitle(file.isEmpty() ? tr("DigiDoc4 Client") : QFileInfo(file).fileName());
 	elideFileName();
@@ -284,11 +284,20 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 	bool isDecrypt = actions.contains(DecryptContainer) || actions.contains(DecryptToken);
 	mainAction->setButtonEnabled(isSupported && !hasEmptyFile &&
 		(isEncrypt || isSignMobile || (!isBlocked && ((isSignCard && !isExpired) || isDecrypt))));
+	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
+	ui->navigationArea->layout()->invalidate();
 }
 
 void ContainerPage::showSigningButton()
 {
-	if(cardInReader.isEmpty())
+	if (!isSupported || hasEmptyFile)
+	{
+		if(mainAction)
+			mainAction->hide();
+		ui->mainActionSpacer->changeSize(1, 20, QSizePolicy::Fixed);
+		ui->navigationArea->layout()->invalidate();
+	}
+	else if(cardInReader.isEmpty())
 		showMainAction({ SignatureMobile, SignatureSmartID });
 	else if(isSeal)
 		showMainAction({ SignatureToken, SignatureMobile, SignatureSmartID });
