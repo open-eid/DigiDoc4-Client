@@ -126,8 +126,8 @@
         <translation>Kinnita</translation>
     </message>
     <message>
-        <source>The name you were looking for gave a very large number of results, not all of the search results will be shown. If the desired recipient is not on the list, please enter a more specific name in the search box.</source>
-        <translation>Sinu otsitud nimi andis väga palju vastuseid, kõiki otsingutulemusi ei näidata. Kui soovitud adressaati loendis ei ole, sisesta palun otsinguaknasse täpsem nimi.</translation>
+        <source>The name you were looking for gave too many results, please refine your search.</source>
+        <translation>Sinu otsitud nimi andis liiga palju vastuseid, palun täpsusta otsingut.</translation>
     </message>
 </context>
 <context>

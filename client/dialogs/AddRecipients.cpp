@@ -431,7 +431,7 @@ void AddRecipients::showError( const QString &msg, const QString &details )
 
 void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData)
 {
-	QList<QSslCertificate> filter;
+	bool isEmpty = true;
 	for(const QSslCertificate &k: result)
 	{
 		SslCertificate c(k);
@@ -440,31 +440,22 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
 			(userData.value("personSearch", false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
 			c.type() != SslCertificate::MobileIDType)
-			filter << c;
-	}
-	if(filter.isEmpty())
-	{
-		showError(tr("Person or company does not own a valid certificate.<br />"
-			"It is necessary to have a valid certificate for encryption.<br />"
-			"In case of questions please contact our support via <a href=\"https://www.id.ee/en/\">id.ee</a>."));
-	}
-	else
-	{
-		for(const QSslCertificate &k: filter)
 		{
+			isEmpty = false;
 			AddressItem *item = addRecipientToLeftPane(k);
 			if(userData.value(QStringLiteral("select"), false).toBool() &&
 				(userData.value(QStringLiteral("type")).isNull() || toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
 				addRecipientToRightPane(item, true);
 		}
 	}
-
 	if(resultCount >= 50)
+		showError(tr("The name you were looking for gave too many results, please refine your search."));
+	else if(isEmpty)
 	{
-		showError(tr("The name you were looking for gave a very large number of results, not all of the search results will be shown. "
-			"If the desired recipient is not on the list, please enter a more specific name in the search box."));
+		showError(tr("Person or company does not own a valid certificate.<br />"
+					 "It is necessary to have a valid certificate for encryption.<br />"
+					 "In case of questions please contact our support via <a href=\"https://www.id.ee/en/\">id.ee</a>."));
 	}
-
 	QApplication::restoreOverrideCursor();
 }
 
