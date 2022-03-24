@@ -26,8 +26,6 @@
 #include "Styles.h"
 #include "effects/Overlay.h"
 
-#include <QTimer>
-
 WaitDialog* WaitDialog::waitDialog = nullptr;
 
 WaitDialog::WaitDialog(QWidget *parent)
@@ -40,6 +38,8 @@ WaitDialog::WaitDialog(QWidget *parent)
 	ui->movie->load(QStringLiteral(":/images/wait.svg"));
 	ui->label->setFont(Styles::font(Styles::Condensed, 24));
 	move(parent->geometry().center() - geometry().center());
+	timer.setSingleShot(true);
+	connect(&timer, &QTimer::timeout, this, &WaitDialog::show);
 }
 
 WaitDialog::~WaitDialog()
@@ -78,8 +78,8 @@ WaitDialogHolder::WaitDialogHolder(QWidget *parent, const QString &text, bool sh
 	dialog->setText(text);
 	if(show)
 		dialog->show();
-	else if(!dialog->isHidden())
-		QTimer::singleShot(5000, dialog, &WaitDialog::show);
+	else
+		dialog->timer.start(5000);
 }
 
 WaitDialogHolder::~WaitDialogHolder()
@@ -92,7 +92,10 @@ WaitDialogHolder::~WaitDialogHolder()
 WaitDialogHider::WaitDialogHider()
 {
 	if(WaitDialog *d = WaitDialog::instance())
+	{
+		d->timer.stop();
 		d->hide();
+	}
 }
 
 WaitDialogHider::~WaitDialogHider()

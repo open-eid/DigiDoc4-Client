@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QTimer>
 
 namespace Ui {
 class WaitDialog;
@@ -39,7 +40,7 @@ public:
 	static void destroy();
 	static WaitDialog* instance();
 
-private:
 	Ui::WaitDialog *ui;
 	static WaitDialog *waitDialog;
+	QTimer timer;
 };
