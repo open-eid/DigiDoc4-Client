@@ -38,6 +38,7 @@ ItemList::ItemList(QWidget *parent)
 	ui->count->setFont(Styles::font(Styles::Condensed, 12));
 	ui->count->hide();
 	ui->infoIcon->hide();
+	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
 	tabIndex = ui->btnFind;
 
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
@@ -265,10 +266,10 @@ void ItemList::remove(Item *item)
 
 void ItemList::removeItem(int row)
 {
-	if(items.size() < row)
+	if(items.size() < size_t(row))
 		return;
 
-	auto item = items[row];
+	auto item = items[size_t(row)];
 	item->close();
 	items.erase(items.begin()+row);
 }

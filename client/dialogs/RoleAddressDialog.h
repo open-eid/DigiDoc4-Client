@@ -21,7 +21,7 @@
 
 #include <QDialog>
 
-class RoleAddressDialog : public QDialog
+class RoleAddressDialog final : public QDialog
 {
 	Q_OBJECT
 public:

@@ -65,6 +65,12 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	move(parent->geometry().center() - geometry().center());
+	for(QLineEdit *w: findChildren<QLineEdit*>())
+		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	for(QRadioButton *w: findChildren<QRadioButton*>())
+		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	for(QCheckBox *w: findChildren<QCheckBox*>())
+		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);

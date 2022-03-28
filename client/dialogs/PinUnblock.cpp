@@ -57,6 +57,8 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	ui->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	for(QLineEdit *w: findChildren<QLineEdit*>())
+		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	ui->unblock->setEnabled( false );
 	connect( ui->unblock, &QPushButton::clicked, this, &PinUnblock::accept );
