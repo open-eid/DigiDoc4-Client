@@ -172,7 +172,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		if(cert.isNull())
 			return;
 		addItem(t, title, cert);
-		addItem(t, title2, CertificateDetails::decodeCN(cert.issuerInfo(QSslCertificate::CommonName)));
+		addItem(t, title2, cert.issuerInfo(QSslCertificate::CommonName));
 	};
 	auto addTime = [this](QTreeWidget *t, const QString &title, const QDateTime &time) {
 		if(time.isNull())
@@ -248,7 +248,7 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const 
 {
 	SslCertificate c(value);
 	QPushButton *button = itemButton(
-		CertificateDetails::decodeCN(c.subjectInfo(QSslCertificate::CommonName)), view);
+		c.toString(c.showCN() ? QStringLiteral("CN") : QStringLiteral("GN,SN,serialNumber")), view);
 	connect(button, &QPushButton::clicked, this, [=]{ CertificateDetails::showCertificate(c, this); });
 	addItem(view, variable, button);
 }
