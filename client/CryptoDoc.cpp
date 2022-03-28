@@ -64,11 +64,11 @@ using namespace ria::qdigidoc4;
 using puchar = uchar *;
 using pcuchar = const uchar *;
 
-#define SCOPE(TYPE, VAR, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)> VAR(DATA, TYPE##_free)
+#define SCOPE(TYPE, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)>(DATA, TYPE##_free)
 
 Q_LOGGING_CATEGORY(CRYPTO,"CRYPTO")
 
-class CryptoDoc::Private: public QThread
+class CryptoDoc::Private final: public QThread
 {
 	Q_OBJECT
 public:
@@ -214,11 +214,7 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 	if(encrypt)
 	{
 #ifdef WIN32
-#if OPENSSL_VERSION_NUMBER >= 0x10101000L 
 		RAND_poll();
-#else
-		RAND_screen();
-#endif
 #else
 		RAND_load_file("/dev/urandom", 1024);
 #endif
@@ -240,7 +236,7 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 		_data = data.mid(iv.size(), data.size() - iv.size() - tag.size());
 	}
 
-	SCOPE(EVP_CIPHER_CTX, ctx, EVP_CIPHER_CTX_new());
+	auto ctx = SCOPE(EVP_CIPHER_CTX, EVP_CIPHER_CTX_new());
 	if(opensslError(EVP_CipherInit(ctx.get(), cipher, pcuchar(key.constData()), pcuchar(iv.constData()), encrypt) <= 0))
 		return {};
 
@@ -640,20 +636,20 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 				{
 					QByteArray derCert = k.cert.toDer();
 					pcuchar pp = pcuchar(derCert.data());
-					SCOPE(X509, peerCert, d2i_X509(nullptr, &pp, derCert.size()));
-					SCOPE(EVP_PKEY, peerPKey, X509_get_pubkey(peerCert.get()));
-					SCOPE(EC_KEY, peerECKey, EVP_PKEY_get1_EC_KEY(peerPKey.get()));
-					int curve = EC_GROUP_get_curve_name(EC_KEY_get0_group(peerECKey.get()));
-					SCOPE(EC_KEY, priv, EC_KEY_new_by_curve_name(curve));
-					SCOPE(EVP_PKEY, pkey, EVP_PKEY_new());
+					auto peerCert = SCOPE(X509, d2i_X509(nullptr, &pp, derCert.size()));
+					EVP_PKEY *peerPKey = X509_get0_pubkey(peerCert.get());
+					EC_KEY *peerECKey = EVP_PKEY_get0_EC_KEY(peerPKey);
+					int curve = EC_GROUP_get_curve_name(EC_KEY_get0_group(peerECKey));
+					auto priv = SCOPE(EC_KEY, EC_KEY_new_by_curve_name(curve));
+					auto pkey = SCOPE(EVP_PKEY, EVP_PKEY_new());
 					if (opensslError(EC_KEY_generate_key(priv.get()) <= 0) ||
 						opensslError(EVP_PKEY_set1_EC_KEY(pkey.get(), priv.get()) <= 0))
 						return;
-					SCOPE(EVP_PKEY_CTX, ctx, EVP_PKEY_CTX_new(pkey.get(), nullptr));
+					auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(pkey.get(), nullptr));
 					size_t sharedSecretLen = 0;
 					if (opensslError(!ctx) ||
 						opensslError(EVP_PKEY_derive_init(ctx.get()) <= 0) ||
-						opensslError(EVP_PKEY_derive_set_peer(ctx.get(), peerPKey.get()) <= 0) ||
+						opensslError(EVP_PKEY_derive_set_peer(ctx.get(), peerPKey) <= 0) ||
 						opensslError(EVP_PKEY_derive(ctx.get(), nullptr, &sharedSecretLen) <= 0))
 						return;
 					QByteArray sharedSecret(int(sharedSecretLen), 0);

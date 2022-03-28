@@ -193,7 +193,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: b25cb779e5783531cc66562e224079b376055939
+        vcpkgGitCommitId: a69b65229b3956b7f45abd81671b7330114bcaad
         vcpkgTriplet: ${{ matrix.arch }}-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
