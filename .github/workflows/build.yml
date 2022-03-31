@@ -132,44 +132,22 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        build: [VC17x86, VC17x64, VC19x86, VC19x64, VC22x86, VC22x64]
+        vcver: [141, 142, 143]
+        arch: [x86, x64]
         include:
-        - build: VC17x86
-          arch: x86
+        - arch: x86
           qt: win32_msvc2017
+        - arch: x64
+          qt: win64_msvc2017_64
+        - vcver: 141
           image: windows-2019
           toolset: 14.16
-          vcver: 141
-        - build: VC17x64
-          arch: x64
-          qt: win64_msvc2017_64
-          image: windows-2019
-          toolset: 14.16
-          vcver: 141
-        - build: VC19x86
-          arch: x86
-          qt: win32_msvc2017
+        - vcver: 142
           image: windows-2019
           toolset: 14.29
-          vcver: 142
-        - build: VC19x64
-          arch: x64
-          qt: win64_msvc2017_64
-          image: windows-2019
-          toolset: 14.29
-          vcver: 142
-        - build: VC22x86
-          arch: x86
-          qt: win32_msvc2017
+        - vcver: 143
           image: windows-2022
-          toolset: 14.30
-          vcver: 143
-        - build: VC22x64
-          arch: x64
-          qt: win64_msvc2017_64
-          image: windows-2022
-          toolset: 14.30
-          vcver: 143
+          toolset: 14.31
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -268,31 +246,3 @@ jobs:
           -F version=master \
           -F description="Github Actions CI build" \
           https://scan.coverity.com/builds?project=$PROJECTNAME
-  codeql:
-    name: Run CodeQL tests
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
-    - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
-      with:
-        workflow: build.yml
-        branch: master
-        name: debs
-        path: libdigidocpp-pkg
-        repo: 'open-eid/libdigidocpp'
-    - name: Install artifact
-      run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: cpp
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
