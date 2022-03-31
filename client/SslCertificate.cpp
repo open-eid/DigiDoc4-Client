@@ -42,7 +42,7 @@
 
 #include <memory>
 
-#define SCOPE(TYPE, VAR, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)> VAR(static_cast<TYPE*>(DATA), TYPE##_free)
+#define SCOPE(TYPE, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)>(static_cast<TYPE*>(DATA), TYPE##_free)
 #define toQByteArray(x) QByteArray((const char*)x->data, x->length)
 template <typename Func, typename Arg>
 static QByteArray i2dDer(Func func, Arg arg)
@@ -58,27 +58,6 @@ static QByteArray i2dDer(Func func, Arg arg)
 		der.clear();
 	return der;
 }
-
-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-static void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
-{
-	if(n) *n = r->n;
-	if(e) *e = r->e;
-	if(d) *d = r->d;
-}
-
-static void DSA_get0_key(const DSA *d, const BIGNUM **pub_key, const BIGNUM **priv_key)
-{
-	if(pub_key) *pub_key = d->pub_key;
-	if(priv_key) *priv_key = d->priv_key;
-}
-
-static void X509_get0_signature(const ASN1_BIT_STRING **psig, const X509_ALGOR **palg, const X509 *x)
-{
-	if(psig) *psig = x->signature;
-	if(palg) *palg = x->sig_alg;
-}
-#endif
 
 uint qHash( const SslCertificate &cert ) { return qHash( cert.digest() ); }
 
@@ -105,7 +84,7 @@ QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) cons
 QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authorityInfoAccess() const
 {
 	QMultiHash<AuthorityInfoAccess, QString> result;
-	SCOPE(AUTHORITY_INFO_ACCESS, info, extension(NID_info_access));
+	auto info = SCOPE(AUTHORITY_INFO_ACCESS, extension(NID_info_access));
 	if(!info)
 		return result;
 	for(int i = 0; i < sk_ACCESS_DESCRIPTION_num(info.get()); ++i)
@@ -137,14 +116,14 @@ QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authori
 
 QByteArray SslCertificate::authorityKeyIdentifier() const
 {
-	SCOPE(AUTHORITY_KEYID, id, extension(NID_authority_key_identifier));
+	auto id = SCOPE(AUTHORITY_KEYID, extension(NID_authority_key_identifier));
 	return id && id->keyid ? toQByteArray(id->keyid) : QByteArray();
 }
 
 QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage() const
 {
 	QHash<EnhancedKeyUsage,QString> list;
-	SCOPE(EXTENDED_KEY_USAGE, usage, extension(NID_ext_key_usage));
+	auto usage = SCOPE(EXTENDED_KEY_USAGE, extension(NID_ext_key_usage));
 	if( !usage )
 	{
 		list[All] = tr("All application policies");
@@ -193,7 +172,7 @@ QString SslCertificate::friendlyName() const
 
 bool SslCertificate::isCA() const
 {
-	SCOPE(BASIC_CONSTRAINTS, cons, extension(NID_basic_constraints));
+	auto cons = SCOPE(BASIC_CONSTRAINTS, extension(NID_basic_constraints));
 	return cons && cons->ca > 0;
 }
 
@@ -209,9 +188,9 @@ QString SslCertificate::keyName() const
 #ifndef OPENSSL_NO_ECDSA
 		if(X509 *c = (X509*)handle())
 		{
-			SCOPE(EVP_PKEY, key, X509_get_pubkey(c));
-			SCOPE(EC_KEY, ec, EVP_PKEY_get1_EC_KEY(key.get()));
-			int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec.get()));
+			EVP_PKEY *key = X509_get0_pubkey(c);
+			EC_KEY *ec = EVP_PKEY_get0_EC_KEY(key);
+			int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec));
 			ASN1_OBJECT *obj = OBJ_nid2obj(nid);
 			QByteArray buff(50, 0);
 			if(OBJ_obj2txt(buff.data(), buff.size(), obj, 0) > 0)
@@ -230,7 +209,7 @@ Qt::HANDLE SslCertificate::extension( int nid ) const
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
 	QHash<KeyUsage,QString> list;
-	SCOPE(ASN1_BIT_STRING, keyusage, extension(NID_key_usage));
+	auto keyusage = SCOPE(ASN1_BIT_STRING, extension(NID_key_usage));
 	if(!keyusage)
 		return list;
 	for( int n = 0; n < 9; ++n )
@@ -268,7 +247,7 @@ QString SslCertificate::personalCode() const
 
 QStringList SslCertificate::policies() const
 {
-	SCOPE(CERTIFICATEPOLICIES, cp, extension(NID_certificate_policies));
+	auto cp = SCOPE(CERTIFICATEPOLICIES, extension(NID_certificate_policies));
 	QStringList list;
 	if( !cp )
 		return list;
@@ -300,7 +279,7 @@ QString SslCertificate::signatureAlgorithm() const
 
 QByteArray SslCertificate::subjectKeyIdentifier() const
 {
-	SCOPE(ASN1_OCTET_STRING, id, extension(NID_subject_key_identifier));
+	auto id = SCOPE(ASN1_OCTET_STRING, extension(NID_subject_key_identifier));
 	return !id ? QByteArray() : toQByteArray(id);
 }
 
@@ -411,7 +390,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 		return Unknown;
 
 	// Build request
-	SCOPE(OCSP_REQUEST, ocspReq, OCSP_REQUEST_new());
+	auto ocspReq = SCOPE(OCSP_REQUEST, OCSP_REQUEST_new());
 	if(!ocspReq)
 		return Unknown;
 	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, (X509*)handle(), (X509*)issuer.handle());
@@ -428,12 +407,12 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	QByteArray respData = repl->readAll();
 	repl->deleteLater();
 	const unsigned char *p = (const unsigned char*)respData.constData();
-	SCOPE(OCSP_RESPONSE, resp, d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
+	auto resp = SCOPE(OCSP_RESPONSE, d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
 	if(!resp || OCSP_response_status(resp.get()) != OCSP_RESPONSE_STATUS_SUCCESSFUL)
 		return Unknown;
 
 	// Validate response
-	SCOPE(OCSP_BASICRESP, basic, OCSP_response_get1_basic(resp.get()));
+	auto basic = SCOPE(OCSP_BASICRESP, OCSP_response_get1_basic(resp.get()));
 	if(!basic)
 		return Unknown;
 	//OCSP_TRUSTOTHER - enables OCSP_NOVERIFY
@@ -452,7 +431,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 
 
 
-class PKCS12Certificate::Private: public QSharedData
+class PKCS12Certificate::Private final: public QSharedData
 {
 public:
 	void setLastError()
@@ -542,7 +521,7 @@ PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QStrin
 	else if( !f.open( QFile::ReadOnly ) )
 		p12.d->error = PKCS12Certificate::FailedToRead;
 	else
-		return PKCS12Certificate(&f, pin);
+		return {&f, pin};
 	return p12;
 }
 
@@ -559,22 +538,22 @@ QSslKey PKCS12Certificate::fromEVP(Qt::HANDLE evp) const
 	{
 	case EVP_PKEY_RSA:
 	{
-		SCOPE(RSA, rsa, EVP_PKEY_get1_RSA(key));
+		RSA *rsa = EVP_PKEY_get0_RSA(key);
 		alg = QSsl::Rsa;
 		const BIGNUM *d = nullptr;
-		RSA_get0_key(rsa.get(), nullptr, nullptr, &d);
+		RSA_get0_key(rsa, nullptr, nullptr, &d);
 		type = d ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = d ? i2d_RSAPrivateKey(rsa.get(), &data) : i2d_RSAPublicKey(rsa.get(), &data);
+		len = d ? i2d_RSAPrivateKey(rsa, &data) : i2d_RSAPublicKey(rsa, &data);
 		break;
 	}
 	case EVP_PKEY_DSA:
 	{
-		SCOPE(DSA, dsa, EVP_PKEY_get1_DSA(key));
+		DSA *dsa = EVP_PKEY_get0_DSA(key);
 		alg = QSsl::Dsa;
 		const BIGNUM *priv_key = nullptr;
-		DSA_get0_key(dsa.get(), nullptr, &priv_key);
+		DSA_get0_key(dsa, nullptr, &priv_key);
 		type = priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = priv_key ? i2d_DSAPrivateKey(dsa.get(), &data) : i2d_DSAPublicKey(dsa.get(), &data);
+		len = priv_key ? i2d_DSAPrivateKey(dsa, &data) : i2d_DSAPublicKey(dsa, &data);
 		break;
 	}
 	default: break;

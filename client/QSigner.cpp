@@ -42,20 +42,7 @@
 
 Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
-static int ECDSA_SIG_set0(ECDSA_SIG *sig, BIGNUM *r, BIGNUM *s)
-{
-	if(!r || !s)
-		return 0;
-	BN_clear_free(sig->r);
-	BN_clear_free(sig->s);
-	sig->r = r;
-	sig->s = s;
-	return 1;
-}
-#endif
-
-class QSigner::Private
+class QSigner::Private final
 {
 public:
 	QSigner::ApiType api = QSigner::PKCS11;
@@ -70,13 +57,8 @@ public:
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-	RSA_METHOD		rsamethod = *RSA_get_default_method();
-	ECDSA_METHOD	*ecmethod = ECDSA_METHOD_new(nullptr);
-#else
 	RSA_METHOD		*rsamethod = RSA_meth_dup(RSA_get_default_method());
 	EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(EC_KEY_get_default_method());
-#endif
 };
 
 QByteArray QSigner::Private::signData(int type, const QByteArray &digest, Private *d)
@@ -98,11 +80,7 @@ int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_
 ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 {
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
-	Private *d = (Private*)ECDSA_get_ex_data(eckey, 0);
-#else
 	Private *d = (Private*)EC_KEY_get_ex_data(eckey, 0);
-#endif
 	QByteArray result = signData(0, QByteArray::fromRawData((const char*)dgst, dgst_len), d);
 	if(result.isEmpty())
 		return nullptr;
@@ -123,14 +101,6 @@ QSigner::QSigner( ApiType api, QObject *parent )
 	: QThread(parent)
 	, d(new Private)
 {
-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-	d->rsamethod.name = "QSmartCard";
-	d->rsamethod.rsa_sign = Private::rsa_sign;
-	d->rsamethod.flags |= RSA_FLAG_SIGN_VER;
-	ECDSA_METHOD_set_name(d->ecmethod, const_cast<char*>("QSmartCard"));
-	ECDSA_METHOD_set_sign(d->ecmethod, Private::ecdsa_do_sign);
-	ECDSA_METHOD_set_app_data(d->ecmethod, d);
-#else
 	RSA_meth_set1_name(d->rsamethod, "QSmartCard");
 	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
 	using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
@@ -140,7 +110,6 @@ QSigner::QSigner( ApiType api, QObject *parent )
 	EC_KEY_sign_setup sign_setup = nullptr;
 	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
 	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
-#endif
 
 	d->api = api;
 	d->smartcard = new QSmartCard(parent);
@@ -155,12 +124,8 @@ QSigner::~QSigner()
 	requestInterruption();
 	wait();
 	delete d->smartcard;
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
 	RSA_meth_free(d->rsamethod);
 	EC_KEY_METHOD_free(d->ecmethod);
-#else
-	ECDSA_METHOD_free(d->ecmethod);
-#endif
 	delete d;
 }
 
@@ -306,23 +271,13 @@ QSslKey QSigner::key() const
 	if (key.algorithm() == QSsl::Ec)
 	{
 		EC_KEY *ec = (EC_KEY*)key.handle();
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
-		ECDSA_set_ex_data(ec, 0, d);
-		ECDSA_set_method(ec, d->ecmethod);
-#else
 		EC_KEY_set_ex_data(ec, 0, d);
 		EC_KEY_set_method(ec, d->ecmethod);
-#endif
 	}
 	else
 	{
 		RSA *rsa = (RSA*)key.handle();
-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-		RSA_set_method(rsa, &d->rsamethod);
-		rsa->flags |= RSA_FLAG_SIGN_VER;
-#else
 		RSA_set_method(rsa, d->rsamethod);
-#endif
 		RSA_set_app_data(rsa, d);
 	}
 	return key;
