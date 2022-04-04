@@ -60,7 +60,7 @@ bool DocumentModel::verifyFile(const QString &f)
 
 	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
 	if(!allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower()))){
-		WarningDialog::show(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))->setCancelText(tr("OK"));
+		WarningDialog::show(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))->setCancelText(WarningDialog::OK);
 		return false;
 	}
 

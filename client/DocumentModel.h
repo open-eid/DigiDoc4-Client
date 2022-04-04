@@ -30,10 +30,10 @@ public:
 	virtual void addTempFiles(const QStringList &files);
 	virtual void addTempReference(const QString &file) = 0;
 	virtual QString data(int row) const = 0;
-	virtual QString fileSize(int row) const = 0;
+	virtual quint64 fileSize(int row) const = 0;
 	virtual QString mime(int row) const = 0;
 	virtual void open(int row) = 0;
-	virtual bool removeRows(int row, int count) = 0;
+	virtual bool removeRow(int row) = 0;
 	virtual int rowCount() const = 0;
 	virtual QString save(int row, const QString &path) const = 0;
 	virtual QStringList tempFiles() const;

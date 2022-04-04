@@ -313,7 +313,7 @@ QRadioButton::indicator::checked {
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="languageBoxLayout">
+        <layout class="QHBoxLayout" name="languageBoxLayout" stretch="0,0,1">
          <item>
           <widget class="RadioButton" name="rdGeneralEstonian">
            <property name="text">
@@ -355,19 +355,6 @@ QRadioButton::indicator::checked {
             <string notr="true">langGroup</string>
            </attribute>
           </widget>
-         </item>
-         <item>
-          <spacer name="languageBoxSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>495</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -454,6 +441,99 @@ QRadioButton::indicator::checked {
         </layout>
        </item>
        <item>
+        <widget class="QWidget" name="wgtCDoc2" native="true">
+         <layout class="QGridLayout" name="cdoc2Layout">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>5</number>
+          </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="lblGeneralCDoc2">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #041E42;</string>
+            </property>
+            <property name="text">
+             <string notr="true">CDoc 2.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QCheckBox" name="chkCdoc2KeyServer">
+            <property name="text">
+             <string notr="true">Use key server</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblCdoc2Name">
+            <property name="text">
+             <string notr="true">Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="cmbCdoc2Name"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblCdoc2UUID">
+            <property name="text">
+             <string notr="true">UUID</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="txtCdoc2UUID">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblCdoc2Fetch">
+            <property name="text">
+             <string notr="true">Fetch URL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="txtCdoc2Fetch">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="lblCdoc2Post">
+            <property name="text">
+             <string notr="true">Post URL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="txtCdoc2Post">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="pageGeneralSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -480,7 +560,7 @@ QRadioButton::indicator::checked {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>789</width>
+         <width>378</width>
          <height>527</height>
         </rect>
        </property>
@@ -1542,5 +1622,6 @@ QPushButton:disabled {
   <buttongroup name="rdMIDUUID"/>
   <buttongroup name="rdTimeStamp"/>
   <buttongroup name="rdSiVa"/>
+  <buttongroup name="cdoc2Group"/>
  </buttongroups>
 </ui>

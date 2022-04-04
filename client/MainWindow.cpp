@@ -87,7 +87,7 @@ MainWindow::MainWindow( QWidget *parent )
 
 	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
-	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
+	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	ui->coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
@@ -232,7 +232,7 @@ void MainWindow::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
-		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
+		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 Client") : FileDialog::normalized(QFileInfo(windowFilePath()).fileName()));
 		showCardMenu(false);
 	}
@@ -326,7 +326,7 @@ bool MainWindow::encrypt()
 	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
 			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
-		dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
 			return encrypt();
@@ -573,7 +573,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if( !FileDialog::fileIsWritable(target))
 		{
 			auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
-			dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
+			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() == QMessageBox::Yes) {
 				QString file = selectFile(tr("Save file"), target, true);
 				if(!file.isEmpty())
@@ -708,9 +708,9 @@ void MainWindow::openContainer(bool signature)
 	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
 	if(signature)
 		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
-			.arg(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
+			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
 	else
-		filter = filter.arg(QLatin1String("*.cdoc"));
+		filter = filter.arg(QLatin1String("*.cdoc *.cdoc2"));
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
 	if(!files.isEmpty())
 		openFiles(files);
@@ -776,7 +776,7 @@ bool MainWindow::save(bool saveAs)
 	if(!FileDialog::fileIsWritable(target))
 	{
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
-		dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
 			if(QString file = selectFile(tr("Save file"), target, true); !file.isEmpty())
 				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
@@ -790,6 +790,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	static const QString adoc = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
 	static const QString bdoc = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
 	static const QString cdoc = tr("Documents (%1)").arg(QLatin1String("*.cdoc"));
+	static const QString cdoc2 = tr("Documents (%1)").arg(QLatin1String("*.cdoc2"));
 	static const QString edoc = tr("Documents (%1)").arg(QLatin1String("*.edoc"));
 	static const QString asic = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
 	const QString ext = QFileInfo( filename ).suffix().toLower();
@@ -799,6 +800,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	{
 		if(ext == QLatin1String("bdoc")) exts.append(bdoc);
 		if(ext == QLatin1String("cdoc")) exts.append(cdoc);
+		if(ext == QLatin1String("cdoc2")) exts.append(cdoc2);
 		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) exts.append(asic);
 		if(ext == QLatin1String("edoc")) exts.append(edoc);
 		if(ext == QLatin1String("adoc")) exts.append(adoc);
@@ -808,6 +810,7 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 		exts = QStringList{ bdoc, asic, edoc, adoc };
 		if(ext == QLatin1String("bdoc")) active = bdoc;
 		if(ext == QLatin1String("cdoc")) active = cdoc;
+		if(ext == QLatin1String("cdoc2")) active = cdoc2;
 		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) active = asic;
 		if(ext == QLatin1String("edoc")) active = edoc;
 		if(ext == QLatin1String("adoc")) active = adoc;
@@ -889,7 +892,7 @@ void MainWindow::showSettings(int page)
 template<typename F>
 void MainWindow::sign(F &&sign)
 {
-	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
+	if(!CheckConnection().check())
 	{
 		auto *notification = new FadeInNotification(this, MOJO, MARZIPAN, 110);
 		notification->start(tr("Check internet connection"), 750, 3000, 1200);
@@ -955,12 +958,12 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	auto count = model->rowCount();
 	if(count != 1)
 	{
-		model->removeRows(index, 1);
+		model->removeRow(index);
 	}
 	else
 	{
 		auto *dlg = new WarningDialog(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
-		dlg->setCancelText(tr("CANCEL"));
+		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->resetCancelStyle();
 		dlg->addButton(tr("REMOVE"), ContainerSave, true);
 		if (dlg->exec() == ContainerSave) {
@@ -971,7 +974,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	}
 
 	for(auto i = 0; i < model->rowCount(); ++i) {
-		if(!model->fileSize(i).trimmed().startsWith(QLatin1String("0 ")))
+		if(model->fileSize(i) > 0)
 			continue;
 		warnings->closeWarning(EmptyFileWarning);
 		if(digiDoc)
@@ -1028,7 +1031,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
 	WarningDialog::show(this, tr("Cannot add container to same container\n%1")
-		.arg(FileDialog::normalized(container)))->setCancelText(tr("CANCEL"));
+		.arg(FileDialog::normalized(container)))->setCancelText(WarningDialog::Cancel);
 	return false;
 }
 
@@ -1072,7 +1075,7 @@ bool MainWindow::wrapContainer(bool signing)
 		tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
 		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
 	auto *dlg = new WarningDialog(msg, this);
-	dlg->setCancelText(tr("CANCEL"));
+	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->addButton(tr("CONTINUE"), ContainerSave);
 	return dlg->exec() == ContainerSave;
 }

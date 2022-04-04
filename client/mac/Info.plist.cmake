@@ -107,12 +107,14 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>cdoc</string>
+				<string>cdoc2</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>cdoc.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/x-cdoc</string>
+				<string>application/x-cdoc2</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>DigiDoc encrypted container</string>
@@ -220,8 +222,6 @@
 			<string>ee.ria.bdoc</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
-				<key>com.apple.ostype</key>
-				<string>BDOC</string>
 				<key>public.filename-extension</key>
 				<array>
 					<string>asice</string>
@@ -251,8 +251,6 @@
 			<string>ee.ria.ddoc</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
-				<key>com.apple.ostype</key>
-				<string>DDOC</string>
 				<key>public.filename-extension</key>
 				<string>ddoc</string>
 				<key>public.mime-type</key>
@@ -273,12 +271,16 @@
 			<string>ee.ria.cdoc</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
-				<key>com.apple.ostype</key>
-				<string>CDOC</string>
 				<key>public.filename-extension</key>
-				<string>cdoc</string>
+				<array>
+					<string>cdoc</string>
+					<string>cdoc2</string>
+				</array>
 				<key>public.mime-type</key>
-				<string>application/x-cdoc</string>
+				<array>
+					<string>application/x-cdoc</string>
+					<string>application/x-cdoc2</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
@@ -295,8 +297,6 @@
 			<string>ee.ria.asics</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
-				<key>com.apple.ostype</key>
-				<string>ASICS</string>
 				<key>public.filename-extension</key>
 				<array>
 					<string>asics</string>

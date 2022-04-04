@@ -36,10 +36,10 @@ public:
 	static QString createNewFileName(const QString &file, bool signature, QWidget *parent);
 	static FileType detect(const QString &filename);
 	static bool fileIsWritable( const QString &filename );
-	static QString fileSize( quint64 bytes );
 	static int fileZone(const QString &path);
 	static bool isSignedPDF(const QString &path);
 	static void setFileZone(const QString &path, int zone);
+	static void setReadOnly(const QString &path, bool readonly = true);
 	static QString normalized(const QString &file);
 	static QString safeName(const QString &file);
 	static QString tempPath(const QString &file);

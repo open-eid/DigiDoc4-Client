@@ -60,14 +60,6 @@
         <translation>Вы уверены, что хотите использовать для зашифровки сертификат, который просрочился %1?&lt;br /&gt;&lt;br /&gt;В случае, когда расшифровщик обновит сертификат, расшифровка будет невозможна.</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>ДА</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Цепочка сертификатов получателя содержит ненадежные сертификаты. Продолжить шифрование?</translation>
     </message>
@@ -99,6 +91,10 @@
     <message>
         <source>The name you were looking for gave too many results, please refine your search.</source>
         <translation>Согласно Вашему запросу выдается много ответов, пожалуйста уточните запрос.</translation>
+    </message>
+    <message>
+        <source>Failed to add certificate. An expired certificate cannot be used for encryption.</source>
+        <translation>Не удалось добавить сертификат. Сертификат с истекшим сроком действия нельзя использовать для шифрования.</translation>
     </message>
 </context>
 <context>
@@ -231,6 +227,13 @@
     <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Выпущено обновление для программного обеспечения ID-карты. Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать обновление в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+</context>
+<context>
+    <name>CDoc2</name>
+    <message>
+        <source>CDoc contains additional payload data that is not part of content</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -614,12 +617,32 @@
         <translation>Digi-ID</translation>
     </message>
     <message>
-        <source>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</source>
-        <translation>Не удалось открыть конверт. Для того чтобы открыть конверт CDOC2, необходимо обновить программное обеспечение ID. Установите новое программное обеспечение ID с веб-сайта &lt;a href=&apos;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&apos;&gt;www.id.ee&lt;/a&gt;.</translation>
+        <source>Failed to decrypt document</source>
+        <translation>Не удалось расшифровать документ</translation>
+    </message>
+    <message>
+        <source>Failed to open document</source>
+        <translation>Не удалось открыть документ</translation>
     </message>
     <message>
         <source>An error occurred while opening the document.</source>
         <translation>Во время открытия конверта возникла ошибка.</translation>
+    </message>
+    <message>
+        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
+        <translation>PIN-код необходимо ввести дважды, чтобы расшифровать конверт CDOC2. Первый ввод PIN-кода требуется для аутентификации на сервере передачи ключей, указанном в конверте CDOC2. Для расшифровки конверта CDOC2 требуется второй ввод PIN-кода.</translation>
+    </message>
+    <message>
+        <source>Failed to encrypt document. Please check your internet connection and network settings.</source>
+        <translation>Не удалось зашифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
+    </message>
+    <message>
+        <source>DON&apos;T SHOW AGAIN</source>
+        <translation>БОЛЬШЕ НЕ ПОКАЗЫВАТЬ</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
+        <translation>Не удалось расшифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
     </message>
 </context>
 <context>
@@ -740,6 +763,14 @@
         <source>Applet version</source>
         <translation>Версия апплета</translation>
     </message>
+    <message>
+        <source>true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -808,14 +839,6 @@
         <translation>Предел для цифровых подписей в месяц был достигнут для этого IP-адреса. &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
-    </message>
-    <message>
         <source>Please check your computer time. &lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Пожалуйста проверьте время Вашего компьютера. &lt;a href=&apos;https://www.id.ee/ru/artikkel/oshibka-klienta-digidoc4-pozhalujsta-proverte-chasy-na-vashem-kompyutere-2/&apos;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
@@ -865,10 +888,6 @@
     <message>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Cannot add file with name &apos;mimetype&apos; to the envelope.</source>
@@ -926,14 +945,6 @@
         <translation>Добавить файлы</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
-    </message>
-    <message>
         <source>SAVE WITH OTHER NAME</source>
         <translation>СОХРАНИТЬ ПОД ДРУГИМ ИМЕНЕМ</translation>
     </message>
@@ -948,10 +959,6 @@
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
     </message>
 </context>
 <context>
@@ -1326,6 +1333,14 @@
         <source>Expiry date</source>
         <translation>Дата окончания</translation>
     </message>
+    <message>
+        <source>Key server ID</source>
+        <translation>Идентификатор сервера</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>Идентификатор транзакции</translation>
+    </message>
 </context>
 <context>
     <name>LdapSearch</name>
@@ -1414,10 +1429,6 @@ ID-КАРТОЙ</translation>
 </context>
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -1517,10 +1528,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>You are about to delete the last file in the container, it is removed along with the container.</source>
         <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
     </message>
     <message>
         <source>Removing signature</source>
@@ -2403,10 +2410,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <source>Online TSL digest check</source>
-        <translation>Проверить обновления TSL</translation>
-    </message>
-    <message>
         <source>Container default location</source>
         <translation>Расположение контейнера по умолчанию</translation>
     </message>
@@ -2593,10 +2596,6 @@ Additional licenses and components</source>
     <message>
         <source>%1 version %2, released %3</source>
         <translation>%1 версия %2, выпущенный %3</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>ДА</translation>
     </message>
     <message>
         <source>NO</source>
@@ -2921,10 +2920,6 @@ Additional licenses and components</source>
         <translation>Удалить подпись %1?</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
         <translation>Удалить подпись</translation>
@@ -3194,6 +3189,18 @@ Additional licenses and components</source>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>НЕТ</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>ОТМЕНА</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>ДА</translation>
     </message>
 </context>
 <context>

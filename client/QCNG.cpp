@@ -53,13 +53,20 @@ QCNG::~QCNG()
 	delete d;
 }
 
-QByteArray QCNG::decrypt(const QByteArray &data) const
+QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 {
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
-		auto size = DWORD(data.size());
+		BCRYPT_OAEP_PADDING_INFO padding {BCRYPT_SHA256_ALGORITHM, nullptr, 0};
+		PVOID paddingInfo = oaep ? &padding : nullptr;
+		DWORD flags = oaep ? NCRYPT_PAD_OAEP_FLAG : NCRYPT_PAD_PKCS1_FLAG;
+		DWORD size = 0;
+		SECURITY_STATUS err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()),
+			paddingInfo, nullptr, 0, &size, flags);
+		if(FAILED(err))
+			return err;
 		result.resize(int(size));
-		SECURITY_STATUS err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()), nullptr,
-			PBYTE(result.data()), DWORD(result.size()), &size, NCRYPT_PAD_PKCS1_FLAG);
+		err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()),
+			paddingInfo, PBYTE(result.data()), DWORD(result.size()), &size, flags);
 		if(SUCCEEDED(err))
 			result.resize(int(size));
 		return err;
@@ -115,6 +122,27 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 			return err;
 		derived.resize(int(size));
 		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, PBYTE(derived.data()), size, &size, 0)))
+			derived.resize(keySize);
+		return err;
+	});
+}
+
+QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
+{
+	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
+		QVector<BCryptBuffer> paramValues{
+			{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
+			{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
+		};
+		BCryptBufferDesc params{ BCRYPTBUFFER_VERSION };
+		params.cBuffers = ULONG(paramValues.size());
+		params.pBuffers = paramValues.data();
+		DWORD size = 0;
+		SECURITY_STATUS err = 0;
+		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, nullptr, 0, &size, 0)))
+			return err;
+		derived.resize(int(size));
+		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, PBYTE(derived.data()), size, &size, 0)))
 			derived.resize(keySize);
 		return err;
 	});

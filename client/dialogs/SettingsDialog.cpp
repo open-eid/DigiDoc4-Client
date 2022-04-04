@@ -105,6 +105,18 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->chkRoleAddressInfo->setFont(regularFont);
 	ui->chkLibdigidocppDebug->setFont(regularFont);
 
+	ui->lblGeneralCDoc2->setFont(headerFont);
+
+	ui->chkCdoc2KeyServer->setFont(regularFont);
+	ui->lblCdoc2Name->setFont(regularFont);
+	ui->lblCdoc2UUID->setFont(regularFont);
+	ui->lblCdoc2Fetch->setFont(regularFont);
+	ui->lblCdoc2Post->setFont(regularFont);
+	ui->cmbCdoc2Name->setFont(regularFont);
+	ui->txtCdoc2UUID->setFont(regularFont);
+	ui->txtCdoc2Fetch->setFont(regularFont);
+	ui->txtCdoc2Post->setFont(regularFont);
+
 	// pageServices
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStampDefault->setFont(regularFont);
@@ -286,7 +298,7 @@ void SettingsDialog::checkConnection()
 {
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	saveProxy();
-	if(CheckConnection connection; !connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
+	if(CheckConnection connection; !connection.check())
 	{
 		Application::restoreOverrideCursor();
 		auto *notification = new FadeInNotification(this,
@@ -363,6 +375,41 @@ void SettingsDialog::initFunctionality()
 	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
 		Settings::DEFAULT_DIR = text;
 	});
+#endif
+	ui->wgtCDoc2->hide();
+#if 0
+	ui->chkCdoc2KeyServer->setChecked(Settings::CDOC2_USE_KEYSERVER);
+	ui->cmbCdoc2Name->setEnabled(ui->chkCdoc2KeyServer->isChecked());
+	connect(ui->chkCdoc2KeyServer, &QCheckBox::toggled, this, [this](bool checked) {
+		Settings::CDOC2_USE_KEYSERVER = checked;
+		ui->cmbCdoc2Name->setEnabled(checked);
+	});
+#ifdef CONFIG_URL
+	QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+	auto setCDoc2Values = [this, list](const QString &key) {
+		ui->txtCdoc2UUID->setText(key);
+		QJsonObject data = list.value(key).toObject();
+		ui->txtCdoc2Fetch->setText(data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET));
+		ui->txtCdoc2Post->setText(data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST));
+	};
+	for(QJsonObject::const_iterator i = list.constBegin(); i != list.constEnd(); ++i)
+		ui->cmbCdoc2Name->addItem(i.value().toObject().value(QLatin1String("NAME")).toString(), i.key());
+	if(Settings::CDOC2_GET.isSet() || Settings::CDOC2_POST.isSet())
+		ui->cmbCdoc2Name->addItem(QStringLiteral("Custom"), QStringLiteral("custom"));
+	connect(ui->cmbCdoc2Name, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, setCDoc2Values] (int index) {
+		QString key = ui->cmbCdoc2Name->itemData(index).toString();
+		Settings::CDOC2_DEFAULT_KEYSERVER = key;
+		setCDoc2Values(key);
+	});
+	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
+	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
+	setCDoc2Values(cdoc2Service);
+#else
+	ui->cmbCdoc2Name->addItem(QStringLiteral("Default"));
+	ui->txtCdoc2UUID->setText(QStringLiteral("default"));
+	ui->txtCdoc2Fetch->setText(QStringLiteral(CDOC2_GET_URL));
+	ui->txtCdoc2Post->setText(QStringLiteral(CDOC2_POST_URL));
+#endif
 #endif
 
 	// pageProxy
@@ -480,7 +527,7 @@ void SettingsDialog::initFunctionality()
 		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
 			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
 		dlg->setCancelText(tr("NO"));
-		dlg->addButton(tr("YES"), 1);
+		dlg->addButton(WarningDialog::YES, 1);
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
 			if(result == 1) {
 				qApp->setProperty("restart", true);

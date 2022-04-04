@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocClient
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,41 +19,27 @@
 
 #pragma once
 
-#include "widgets/Item.h"
+#include "CryptoDoc.h"
 
-class CKey;
+#include <QtCore/QFile>
 
-class AddressItem final : public Item
-{
-	Q_OBJECT
-
+class CDoc2 final: public CDoc, private QFile {
 public:
-	enum ShowToolButton
-	{
-		None,
-		Remove,
-		Add,
-		Added,
-	};
+	explicit CDoc2() = default;
+	explicit CDoc2(const QString &path);
 
-	explicit AddressItem(CKey k, QWidget *parent = {}, bool showIcon = false);
-	~AddressItem() final;
-
-	const CKey& getKey() const;
-	void idChanged(const CKey &cert);
-	void idChanged(const SslCertificate &cert) final;
-	void initTabOrder(QWidget *item) final;
-	QWidget* lastTabWidget() final;
-	void showButton(ShowToolButton show);
-	void stateChange(ria::qdigidoc4::ContainerState state) final;
+	CKey canDecrypt(const QSslCertificate &cert) const final;
+	bool decryptPayload(const QByteArray &fmk) final;
+	QByteArray deriveFMK(const QByteArray &priv, const CKey &key);
+	bool isSupported();
+	bool save(const QString &path) final;
+	QByteArray transportKey(const CKey &key) final;
+	int version() final;
 
 private:
-	void changeEvent(QEvent *event) final;
-	bool eventFilter(QObject *o, QEvent *e) final;
-	void mouseReleaseEvent(QMouseEvent *event) final;
-	void setName();
-	void setIdType();
+	QByteArray header_data, headerHMAC;
+	qint64 noncePos = -1;
 
-	class Private;
-	Private *ui;
+	static const QByteArray LABEL, CEK, HMAC, KEK, KEKPREMASTER, PAYLOAD, SALT;
+	static constexpr int KEY_LEN = 32, NONCE_LEN = 12;
 };

@@ -73,7 +73,7 @@ private:
 
 	Ui::AddRecipients *ui;
 	QHash<QSslCertificate, AddressItem *> leftList;
-	QList<QSslCertificate> rightList;
+	QList<CKey> rightList;
 	LdapSearch *ldap_person, *ldap_corp;
 	bool updated = false;
 

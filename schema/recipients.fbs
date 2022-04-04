@@ -1,0 +1,76 @@
+/*
+ * QDigiDocClient
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
+namespace cdoc20.Recipients;
+
+// Union for communicating the recipient type
+union Capsule {
+    ECCPublicKeyCapsule,
+    RSAPublicKeyCapsule,
+    KeyServerCapsule,
+    SymmetricKeyCapsule
+}
+
+//for future proofing and data type
+union ServerDetailsUnion {
+    ServerEccDetails,
+    ServerRsaDetails
+}
+
+// Elliptic curve type enum for ECCPublicKey recipient
+enum EllipticCurve:byte {
+    UNKNOWN,
+    secp384r1
+}
+
+table ServerRsaDetails {
+    //RSA pub key in DER
+    recipient_public_key: [ubyte] (required);
+}
+
+table ServerEccDetails {
+    // Elliptic curve type enum
+    curve:                 EllipticCurve = UNKNOWN;
+    //EC pub key in TLS format
+    //for secp384r1 curve: 0x04 + X 48 coord bytes + Y coord 48 bytes)
+    recipient_public_key:  [ubyte] (required);
+}
+
+// ECC public key recipient
+table ECCPublicKeyCapsule {
+    curve:                 EllipticCurve = UNKNOWN;
+    recipient_public_key:  [ubyte] (required);
+    sender_public_key:     [ubyte] (required);
+}
+
+table RSAPublicKeyCapsule {
+    recipient_public_key:  [ubyte] (required);
+    encrypted_kek:         [ubyte] (required);
+}
+
+table KeyServerCapsule {
+    recipient_key_details: ServerDetailsUnion;
+    keyserver_id:          string (required);
+    transaction_id:        string (required);
+}
+
+// symmetric long term crypto
+table SymmetricKeyCapsule {
+    salt:                 [ubyte] (required);
+}

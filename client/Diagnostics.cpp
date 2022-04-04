@@ -45,6 +45,10 @@ void Diagnostics::generalInfo(QTextStream &s)
 		<< "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString()
 		<< "<br />TSA_URL: " << Application::confValue(Application::TSAUrl).toString()
 		<< "<br />SIVA_URL: " << Application::confValue(Application::SiVaUrl).toString()
+		<< "<br /><b>CDOC2:</b>"
+		<< "<br />" << Settings::CDOC2_DEFAULT.KEY << ": " << (Settings::CDOC2_DEFAULT ? tr("true") : tr("false"))
+		<< "<br />" << Settings::CDOC2_USE_KEYSERVER.KEY << ": " << (Settings::CDOC2_USE_KEYSERVER ? tr("true") : tr("false"))
+		<< "<br />" << Settings::CDOC2_DEFAULT_KEYSERVER.KEY << ": " << Settings::CDOC2_DEFAULT_KEYSERVER
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
@@ -53,8 +57,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 	const QStringList tsllist = QDir(cache).entryList({QStringLiteral("*.xml")});
 	for(const QString &file: tsllist)
 	{
-		uint ver = Application::readTSLVersion(cache + "/" + file);
-		if(ver > 0)
+		if(uint ver = Application::readTSLVersion(cache + "/" + file); ver > 0)
 			s << "<br />" << file << " (" << ver << ")";
 	}
 	s << "<br /><br />";
@@ -126,7 +129,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 			if (r.SW == APDU("6A81")) s << " (Locked)";
 			if (r.SW == APDU("6A82")) s << " (Not found)";
 			s << "<br />";
-			return r.resultOk();
+			return r;
 		};
 		if(printAID(QStringLiteral("AID35"), APDU("00A40400 0F D23300000045737445494420763335")) ||
 			printAID(QStringLiteral("UPDATER_AID"), APDU("00A40400 0A D2330000005550443101")))
@@ -138,9 +141,8 @@ void Diagnostics::generalInfo(QTextStream &s)
 			row[2] = 0x07; // read card id
 			s << "ID - " << reader.transfer(row).data << "<br />";
 
-			QPCSCReader::Result data = reader.transfer(APDU("00CA0100 00"));
 			QString appletVersion;
-			if(data.resultOk())
+			if(QPCSCReader::Result data = reader.transfer(APDU("00CA0100 00")))
 			{
 				for(int i = 0; i < data.data.size(); ++i)
 				{
@@ -166,6 +168,6 @@ void Diagnostics::generalInfo(QTextStream &s)
 	}
 
 #ifdef Q_OS_WIN
-	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << QPCSC::instance().drivers().join(QStringLiteral("<br />"));
+	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << QPCSC::instance().drivers().join(QLatin1String("<br />"));
 #endif
 }

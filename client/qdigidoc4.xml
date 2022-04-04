@@ -34,4 +34,10 @@
 		<comment xml:lang="ru">Зашифрованный DigiDoc контейнер</comment>
 		<glob pattern="*.cdoc"/>
 	</mime-type>
+	<mime-type type="application/x-cdoc2">
+		<comment>DigiDoc encrypted container</comment>
+		<comment xml:lang="et">DigiDoc turvaümbrik</comment>
+		<comment xml:lang="ru">Зашифрованный DigiDoc контейнер</comment>
+		<glob pattern="*.cdoc2"/>
+	</mime-type>
 </mime-info>

@@ -60,14 +60,6 @@
         <translation>Kas oled kindel, et soovid kasutada krüpteerimiseks sertifikaati, mis aegus %1?&lt;br /&gt;&lt;br /&gt;Juhul, kui dekrüpteerija on oma sertifikaate uuendanud, ei ole dekrüpteerimine võimalik.</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
-    <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
         <source>Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?</source>
         <translation>Adressaadi sertifitseerimisahelas on mitteusaldatud sertifikaate. Jätkame krüpteerimist?</translation>
     </message>
@@ -99,6 +91,10 @@
     <message>
         <source>The name you were looking for gave too many results, please refine your search.</source>
         <translation>Sinu otsitud nimi andis liiga palju vastuseid, palun täpsusta otsingut.</translation>
+    </message>
+    <message>
+        <source>Failed to add certificate. An expired certificate cannot be used for encryption.</source>
+        <translation>Sertifikaadi lisamine ebaõnnestus. Aegunud sertifikaati ei saa kasutada krüpteerimiseks.</translation>
     </message>
 </context>
 <context>
@@ -231,6 +227,13 @@
     <message>
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;https://www.id.ee/artikkel/paigalda-id-tarkvara/&quot;&gt;id.ee&lt;/a&gt;, macOS kasutajad saavad uuenduse alla laadida &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+    </message>
+</context>
+<context>
+    <name>CDoc2</name>
+    <message>
+        <source>CDoc contains additional payload data that is not part of content</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -614,12 +617,32 @@
         <translation>Digi-ID</translation>
     </message>
     <message>
-        <source>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</source>
-        <translation>Ümbriku avamine ebaõnnestus. CDOC2 ümbriku avamiseks pead ID-tarkvara uuendama. Paigalda uus ID-tarkvara veebilehelt &lt;a href=&apos;https://www.id.ee/artikkel/paigalda-id-tarkvara/&apos;&gt;www.id.ee&lt;/a&gt;.</translation>
+        <source>Failed to decrypt document</source>
+        <translation>Dokumendi dekrüpteerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to open document</source>
+        <translation>Dokumendi avamine ebaõnnestus</translation>
     </message>
     <message>
         <source>An error occurred while opening the document.</source>
         <translation>Ümbriku avamisel tekkis viga.</translation>
+    </message>
+    <message>
+        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
+        <translation>CDOC2 ümbriku dekrüpteerimiseks tuleb sisestada PIN-koodi kaks korda. Esimene PIN-koodi sisestamine on vajalik autentimiseks CDOC2 ümbrikus viidatud võtmeedastusserverisse. Teine PIN-koodi sisestamine on vajalik CDOC2 ümbriku dekrüpteerimiseks.</translation>
+    </message>
+    <message>
+        <source>Failed to encrypt document. Please check your internet connection and network settings.</source>
+        <translation>Dokumendi krüpteerimine ebaõnnestus. Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
+    </message>
+    <message>
+        <source>DON&apos;T SHOW AGAIN</source>
+        <translation>ÄRA ROHKEM NÄITA</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
+        <translation>Dokumendi dekrüpteerimine ebaõnnestus. Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
     </message>
 </context>
 <context>
@@ -740,6 +763,14 @@
         <source>Applet version</source>
         <translation>Apleti versioon</translation>
     </message>
+    <message>
+        <source>true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -808,14 +839,6 @@
         <translation>Sinu IP-aadressi tasuta allkirjade kuulimiit on ületatud. &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
-    <message>
         <source>Please check your computer time. &lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/&apos;&gt;Additional information&lt;/a&gt;</source>
         <translation>Palun kontrolli oma arvuti kellaaega. &lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-palun-kontrollige-oma-arvuti-kellaaega-2/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
@@ -865,10 +888,6 @@
     <message>
         <source>Internal error</source>
         <translation>Sisemine viga</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Cannot add file with name &apos;mimetype&apos; to the envelope.</source>
@@ -926,14 +945,6 @@
         <translation>Lisa faile</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
-    <message>
         <source>SAVE WITH OTHER NAME</source>
         <translation>SALVESTA TEISE NIMEGA</translation>
     </message>
@@ -948,10 +959,6 @@
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
     </message>
 </context>
 <context>
@@ -1326,6 +1333,14 @@
         <source>Expiry date</source>
         <translation>Aegumiskuupäev</translation>
     </message>
+    <message>
+        <source>Key server ID</source>
+        <translation>Serveri identifikaator</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>Transaktsiooni identifikaator</translation>
+    </message>
 </context>
 <context>
     <name>LdapSearch</name>
@@ -1414,10 +1429,6 @@ ID-KAARDIGA</translation>
 </context>
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
-    </message>
     <message>
         <source>Help</source>
         <translation>Abi</translation>
@@ -1517,10 +1528,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>You are about to delete the last file in the container, it is removed along with the container.</source>
         <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
     </message>
     <message>
         <source>Removing signature</source>
@@ -2402,10 +2409,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Keel</translation>
     </message>
     <message>
-        <source>Online TSL digest check</source>
-        <translation>Kontrolli TSL värskendust</translation>
-    </message>
-    <message>
         <source>Container default location</source>
         <translation>Ümbriku loomise vaikekataloog</translation>
     </message>
@@ -2592,10 +2595,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>%1 version %2, released %3</source>
         <translation>%1 versioon %2, avalikustatud %3</translation>
-    </message>
-    <message>
-        <source>YES</source>
-        <translation>JAH</translation>
     </message>
     <message>
         <source>NO</source>
@@ -2920,10 +2919,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Kas eemaldada allkiri %1?</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
         <translation>Eemalda allkiri</translation>
@@ -3193,6 +3188,18 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Close</source>
         <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
+    </message>
+    <message>
+        <source>NO</source>
+        <translation>EI</translation>
+    </message>
+    <message>
+        <source>CANCEL</source>
+        <translation>KATKESTA</translation>
+    </message>
+    <message>
+        <source>YES</source>
+        <translation>JAH</translation>
     </message>
 </context>
 <context>

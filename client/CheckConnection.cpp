@@ -19,26 +19,26 @@
 
 #include "CheckConnection.h"
 
+#include "Application.h"
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEventLoop>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonValue>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 
-CheckConnection::CheckConnection() = default;
-
-bool CheckConnection::check(const QString &url)
+bool CheckConnection::check(const QUrl &url)
 {
 	QNetworkAccessManager nam;
 	QEventLoop e;
 	QNetworkReply *reply = nam.head(QNetworkRequest(url));
-	QObject::connect(reply, &QNetworkReply::sslErrors, reply, [&](const QList<QSslError> &errors){
-		reply->ignoreSslErrors(errors);
-	});
+	QObject::connect(reply, &QNetworkReply::sslErrors, reply,
+		QOverload<const QList<QSslError> &>::of(&QNetworkReply::ignoreSslErrors));
 	QObject::connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
 	m_error = reply->error();
 	qtmessage = reply->errorString();
-	reply->deleteLater();
 	return m_error == QNetworkReply::NoError;
 }
 
@@ -59,4 +59,59 @@ QString CheckConnection::errorString() const
 	default:
 		return QCoreApplication::translate("CheckConnection", "Cannot connect to certificate status service!");
 	}
+}
+
+QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QByteArray &add)
+{
+	req.setSslConfiguration(sslConfiguration(add));
+	req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
+		.arg(Application::applicationName(), Application::applicationVersion(), Common::applicationOs()).toUtf8());
+	auto *nam = new QNetworkAccessManager();
+	QObject::connect(nam, &QNetworkAccessManager::sslErrors, nam, [](QNetworkReply *reply, const QList<QSslError> &errors) {
+		QList<QSslError> ignore;
+		for(const QSslError &error: errors)
+		{
+			switch(error.error())
+			{
+			case QSslError::UnableToVerifyFirstCertificate:
+			case QSslError::UnableToGetLocalIssuerCertificate:
+			case QSslError::CertificateUntrusted:
+			case QSslError::SelfSignedCertificateInChain:
+				if(reply->sslConfiguration().caCertificates().contains(reply->sslConfiguration().peerCertificate())) {
+					ignore.append(error);
+					break;
+				}
+				Q_FALLTHROUGH();
+			default:
+				qDebug() << "SSL Error:" << error.error() << error.certificate().subjectInfo(QSslCertificate::CommonName);
+			}
+		}
+		reply->ignoreSslErrors(ignore);
+	});
+	return nam;
+}
+
+QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req,
+	const QSslCertificate &cert, const QSslKey &key, const QByteArray &add)
+{
+	QNetworkAccessManager* nam = setupNAM(req, add);
+	QSslConfiguration ssl = req.sslConfiguration();
+	ssl.setPrivateKey(key);
+	ssl.setLocalCertificate(cert);
+	req.setSslConfiguration(ssl);
+	return nam;
+}
+
+QSslConfiguration CheckConnection::sslConfiguration(const QByteArray &add)
+{
+	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+#ifdef CONFIG_URL
+	QList<QSslCertificate> trusted;
+	for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
+		trusted.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
+	if(!add.isEmpty())
+		trusted.append(QSslCertificate(QByteArray::fromBase64(add), QSsl::Der));
+	ssl.setCaCertificates(trusted);
+#endif
+	return ssl;
 }

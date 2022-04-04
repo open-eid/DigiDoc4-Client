@@ -71,7 +71,6 @@ private:
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void forward(int code);
 	void hideRightPane();
-	void initContainer( const QString &file, const QString &suffix );
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
 	void showSigningButton();

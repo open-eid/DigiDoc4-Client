@@ -22,24 +22,61 @@
 #include "common_enums.h"
 #include "DocumentModel.h"
 
-#include <QtCore/QStringList>
+#include <QtCore/QIODevice>
 #include <QtNetwork/QSslCertificate>
+
+#include <memory>
+
+class QSslKey;
 
 class CKey
 {
 public:
 	CKey() = default;
-	CKey( const QSslCertificate &cert ) { setCert( cert ); }
-	void setCert( const QSslCertificate &cert );
-	bool operator==( const CKey &other ) const { return other.cert == cert; }
+	CKey(const QByteArray &_key, bool _isRSA): key(_key), isRSA(_isRSA) {}
+	CKey(const QSslCertificate &cert);
+	bool operator==(const CKey &other) const { return other.key == key; }
 
+	void setCert(const QSslCertificate &c);
+
+	QByteArray key, cipher, publicKey;
 	QSslCertificate cert;
-	QString id, name, recipient, method, agreement, derive, concatDigest;
+	bool isRSA = false;
+	QString recipient;
+	// CDoc1
+	QString agreement, concatDigest, derive, method, id, name;
 	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
-	QByteArray cipher, publicKey;
+	// CDoc2
+	QByteArray encrypted_kek;
+	QString keyserver_id, transaction_id;
 };
 
-class CryptoDoc: public QObject
+
+
+class CDoc
+{
+public:
+	struct File
+	{
+		QString name, id, mime;
+		qint64 size;
+		std::unique_ptr<QIODevice> data;
+	};
+
+	virtual ~CDoc() = default;
+	virtual CKey canDecrypt(const QSslCertificate &cert) const = 0;
+	virtual bool decryptPayload(const QByteArray &key) = 0;
+	virtual bool save(const QString &path) = 0;
+	bool setLastError(const QString &msg) { return (lastError = msg).isEmpty(); }
+	virtual QByteArray transportKey(const CKey &key) = 0;
+	virtual int version() = 0;
+
+	QList<CKey> keys;
+	std::vector<File> files;
+	QString lastError;
+};
+
+class CryptoDoc final: public QObject
 {
 	Q_OBJECT
 public:
@@ -61,9 +98,6 @@ public:
 	bool saveCopy(const QString &filename);
 	ria::qdigidoc4::ContainerState state() const;
 
-	static QByteArray concatKDF(QCryptographicHash::Algorithm digestMethod,
-		quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);
-
 private:
 	class Private;
 	Private *d;
@@ -71,21 +105,21 @@ private:
 	friend class CDocumentModel;
 };
 
-class CDocumentModel: public DocumentModel
+class CDocumentModel final: public DocumentModel
 {
 	Q_OBJECT
 public:
-	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
-	void addTempReference(const QString &file) override;
-	QString data(int row) const override;
-	QString fileSize(int row) const override;
-	QString mime(int row) const override;
-	bool removeRows(int row, int count) override;
-	int rowCount() const override;
-	QString save(int row, const QString &path) const override;
+	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) final;
+	void addTempReference(const QString &file) final;
+	QString data(int row) const final;
+	quint64 fileSize(int row) const final;
+	QString mime(int row) const final;
+	bool removeRow(int row) final;
+	int rowCount() const final;
+	QString save(int row, const QString &path) const final;
 
 public slots:
-	void open(int row) override;
+	void open(int row) final;
 
 private:
 	CDocumentModel(CryptoDoc::Private *doc);

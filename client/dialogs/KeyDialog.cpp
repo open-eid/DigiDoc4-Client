@@ -52,6 +52,7 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	connect(d->showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
 		CertificateDetails::showCertificate(cert, this);
 	});
+	d->showCert->setHidden(k.cert.isNull());
 
 	auto addItem = [&](const QString &parameter, const QString &value) {
 		if(value.isEmpty())
@@ -67,6 +68,8 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	addItem(tr("Agreement method"), k.agreement);
 	addItem(tr("Key derivation method"), k.derive);
 	addItem(tr("ConcatKDF digest method"), k.concatDigest);
+	addItem(tr("Key server ID"), k.keyserver_id);
+	addItem(tr("Transaction ID"), k.transaction_id);
 	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	addItem(tr("Issuer"), SslCertificate(k.cert).issuerInfo(QSslCertificate::CommonName));
 	d->view->resizeColumnToContents( 0 );

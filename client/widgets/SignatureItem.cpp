@@ -201,9 +201,9 @@ void SignatureItem::removeSignature()
 		.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")));
 
 	auto *dlg = WarningDialog::show(this, msg);
-	dlg->setCancelText(tr("CANCEL"));
+	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->resetCancelStyle();
-	dlg->addButton(QStringLiteral("OK"), SignatureRemove, true);
+	dlg->addButton(WarningDialog::OK, SignatureRemove, true);
 	connect(dlg, &WarningDialog::finished, this, [this](int result) {
 		if(result == SignatureRemove)
 			emit remove(this);

@@ -24,12 +24,15 @@
 class CheckConnection
 {
 public:
-	CheckConnection();
-
-	bool check(const QString &url);
+	bool check(const QUrl &url = QStringLiteral("https://id.eesti.ee/config.json"));
 	QNetworkReply::NetworkError error() const;
 	QString errorString() const;
 	QString errorDetails() const;
+
+	static QNetworkAccessManager* setupNAM(QNetworkRequest &req, const QByteArray &add = {});
+	static QNetworkAccessManager* setupNAM(QNetworkRequest &req,
+		const QSslCertificate &cert, const QSslKey &key, const QByteArray &add = {});
+	static QSslConfiguration sslConfiguration(const QByteArray &add = {});
 
 private:
 	QNetworkReply::NetworkError m_error = QNetworkReply::NoError;

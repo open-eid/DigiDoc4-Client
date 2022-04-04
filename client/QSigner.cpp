@@ -39,6 +39,8 @@
 #include <QtNetwork/QSslKey>
 
 #include <openssl/ecdsa.h>
+#include <openssl/obj_mac.h>
+#include <openssl/rsa.h>
 
 #include <memory>
 
@@ -54,7 +56,10 @@ public:
 
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
+	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
+		unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
 
+	RSA_METHOD		*rsamethod = RSA_meth_dup(RSA_get_default_method());
 	EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(EC_KEY_get_default_method());
 };
 
@@ -74,6 +79,26 @@ ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_l
 	return sig;
 }
 
+int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_len,
+							   unsigned char *sigret, unsigned int *siglen, const RSA *rsa)
+{
+	auto *backend = (QCryptoBackend*)RSA_get_ex_data(rsa, 0);
+	QCryptographicHash::Algorithm algo = QCryptographicHash::Sha256;
+	switch(type)
+	{
+	case NID_sha224: algo = QCryptographicHash::Sha224; break;
+	case NID_sha256: algo = QCryptographicHash::Sha256; break;
+	case NID_sha384: algo = QCryptographicHash::Sha384; break;
+	case NID_sha512: algo = QCryptographicHash::Sha512; break;
+	}
+	QByteArray result = backend->sign(algo, QByteArray::fromRawData((const char*)m, int(m_len)));
+	if(result.isEmpty())
+		return 0;
+	*siglen = (unsigned int)result.size();
+	memcpy(sigret, result.constData(), size_t(result.size()));
+	return 1;
+}
+
 
 
 using namespace digidoc;
@@ -82,6 +107,8 @@ QSigner::QSigner(QObject *parent)
 	: QThread(parent)
 	, d(new Private)
 {
+	RSA_meth_set1_name(d->rsamethod, "QSmartCard");
+	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
 	using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
 		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
 	using EC_KEY_sign_setup = int (*)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
@@ -117,19 +144,12 @@ QSigner::~QSigner()
 	requestInterruption();
 	wait();
 	delete d->smartcard;
+	RSA_meth_free(d->rsamethod);
 	EC_KEY_METHOD_free(d->ecmethod);
 	delete d;
 }
 
 QList<TokenData> QSigner::cache() const { return d->cache; }
-
-QSet<QString> QSigner::cards() const
-{
-	QSet<QString> cards;
-	for(const TokenData &t: qAsConst(d->cache))
-		cards.insert(t.card());
-	return cards;
-}
 
 bool QSigner::cardsOrder(const TokenData &s1, const TokenData &s2)
 {
@@ -229,7 +249,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 QSslKey QSigner::key() const
 {
 	QSslKey key = d->auth.cert().publicKey();
-	if(!key.handle() || key.algorithm() != QSsl::Ec)
+	if(!key.handle())
 		return {};
 	if(!QCardLock::instance().exclusiveTryLock())
 		return {};
@@ -251,9 +271,18 @@ QSslKey QSigner::key() const
 		}
 	} while(status != QCryptoBackend::PinOK);
 
-	EC_KEY *ec = (EC_KEY*)key.handle();
-	EC_KEY_set_method(ec, d->ecmethod);
-	EC_KEY_set_ex_data(ec, 0, d->backend);
+	if(key.algorithm() == QSsl::Ec)
+	{
+		auto *ec = (EC_KEY*)key.handle();
+		EC_KEY_set_method(ec, d->ecmethod);
+		EC_KEY_set_ex_data(ec, 0, d->backend);
+	}
+	else
+	{
+		RSA *rsa = (RSA*)key.handle();
+		RSA_set_method(rsa, d->rsamethod);
+		RSA_set_ex_data(rsa, 0, d->backend);
+	}
 	return key;
 }
 

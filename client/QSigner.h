@@ -39,7 +39,6 @@ public:
 	explicit QSigner(QObject *parent = nullptr);
 	~QSigner() final;
 
-	QSet<QString> cards() const;
 	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const final;
 	QByteArray decrypt(std::function<QByteArray (QCryptoBackend *)> &&func);

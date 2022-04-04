@@ -52,7 +52,8 @@ class CPtr
 
 QString FileDialog::createNewFileName(const QString &file, bool signature, QWidget *parent)
 {
-	const QString extension = signature ? QStringLiteral(".asice") : QStringLiteral(".cdoc");
+	const QString extension = signature ? QStringLiteral(".asice") :
+		Settings::CDOC2_DEFAULT ? QStringLiteral(".cdoc2") : QStringLiteral(".cdoc");
 	const QString type = signature ? tr("signature container") : tr("crypto container");
 	QString capitalized = type[0].toUpper() + type.mid(1);
 	const QString defaultDir = Settings::DEFAULT_DIR;
@@ -77,10 +78,18 @@ FileDialog::FileType FileDialog::detect(const QString &filename)
 	const QFileInfo f(filename);
 	if(!f.isFile())
 		return Other;
-	static const QStringList exts {"bdoc", "ddoc", "asice", "sce", "asics", "scs", "edoc", "adoc"};
+	static const QStringList exts {
+		QStringLiteral("bdoc"), QStringLiteral("ddoc"),
+		QStringLiteral("asice"), QStringLiteral("sce"),
+		QStringLiteral("asics"), QStringLiteral("scs"),
+		QStringLiteral("edoc"), QStringLiteral("adoc"),
+	};
 	if(exts.contains(f.suffix(), Qt::CaseInsensitive))
 		return SignatureDocument;
-	if(!f.suffix().compare(QStringLiteral("cdoc"), Qt::CaseInsensitive))
+	static const QStringList cexts {
+		QStringLiteral("cdoc"), QStringLiteral("cdoc2"),
+	};
+	if(cexts.contains(f.suffix(), Qt::CaseInsensitive))
 		return CryptoDocument;
 	if(isSignedPDF(filename))
 		return SignatureDocument;
@@ -95,23 +104,6 @@ bool FileDialog::fileIsWritable( const QString &filename )
 	if( remove )
 		f.remove();
 	return result;
-}
-
-QString FileDialog::fileSize( quint64 bytes )
-{
-	const quint64 kb = 1024;
-	const quint64 mb = 1024 * kb;
-	const quint64 gb = 1024 * mb;
-	const quint64 tb = 1024 * gb;
-	if( bytes >= tb )
-		return QStringLiteral("%1 TB").arg(qreal(bytes) / tb, 0, 'f', 3);
-	if( bytes >= gb )
-		return QStringLiteral("%1 GB").arg(qreal(bytes) / gb, 0, 'f', 2);
-	if( bytes >= mb )
-		return QStringLiteral("%1 MB").arg(qreal(bytes) / mb, 0, 'f', 1);
-	if( bytes >= kb )
-		return QStringLiteral("%1 KB").arg(bytes / kb);
-	return QStringLiteral("%1 B").arg(bytes);
 }
 
 int FileDialog::fileZone(const QString &path)
@@ -161,6 +153,16 @@ void FileDialog::setFileZone(const QString &path, int zone)
 		spf->Save(LPCWSTR(QDir::toNativeSeparators(path).utf16()), TRUE);
 #else
 	Q_UNUSED(path)
+#endif
+}
+
+void FileDialog::setReadOnly(const QString &path, bool readonly)
+{
+#if defined(Q_OS_WIN)
+	::SetFileAttributesW(LPCWSTR(path.utf16()), readonly ? FILE_ATTRIBUTE_READONLY : FILE_ATTRIBUTE_NORMAL);
+#else
+	QFile::setPermissions(path, QFile::Permissions(QFile::Permission::ReadOwner)
+		.setFlag(QFile::Permission::WriteOwner, !readonly));
 #endif
 }
 

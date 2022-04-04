@@ -78,7 +78,7 @@ if [[ ! -d ${OPENSSL_PATH} ]] ; then
     tar xf openssl-${OPENSSL_VER}.tar.gz
     cd openssl-${OPENSSL_VER}
     for ARCH in x86_64 arm64; do
-        ./Configure darwin64-${ARCH} --prefix=${OPENSSL_PATH} shared no-autoload-config no-module no-engine no-tests enable-ec_nistp_64_gcc_128
+        ./Configure darwin64-${ARCH} --prefix=${OPENSSL_PATH} shared no-autoload-config no-module no-tests enable-ec_nistp_64_gcc_128
         make -s > /dev/null
         make install_sw
         mv ${OPENSSL_PATH} ${OPENSSL_PATH}.${ARCH}
