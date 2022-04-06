@@ -19,22 +19,19 @@
 
 #pragma once
 
-#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
-class CheckConnection: public QNetworkAccessManager
+class CheckConnection
 {
-	Q_OBJECT
-
 public:
-	CheckConnection( QObject *parent = 0 );
+	CheckConnection();
 
-	bool check( const QString &url );
+	bool check(const QString &url);
 	QNetworkReply::NetworkError error() const;
 	QString errorString() const;
 	QString errorDetails() const;
 
 private:
-	QNetworkReply::NetworkError m_error;
+	QNetworkReply::NetworkError m_error = QNetworkReply::NoError;
 	QString qtmessage;
 };

@@ -20,6 +20,7 @@
 #include "DigiDoc.h"
 
 #include "Application.h"
+#include "CheckConnection.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -513,22 +514,24 @@ bool DigiDoc::open( const QString &file )
 		file.endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
 		return false;
 
-	try
-	{
+	try {
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		waitFor([&] { b = Container::openPtr(to(file)); });
 		if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 		{
 			const DataFile *f = b->dataFiles().at(0);
-			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive) && serviceConfirmation())
+			if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)  &&
+				CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")) &&
+				serviceConfirmation())
 			{
 				const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 				f->saveAs(to(tmppath));
 				if(QFileInfo::exists(tmppath))
 				{
 					m_tempFiles << tmppath;
-					parentContainer = std::move(b);
-					b = Container::openPtr(to(tmppath));
+					try {
+						parentContainer = std::exchange(b, Container::openPtr(to(tmppath)));
+					} catch(const Exception &) {}
 				}
 			}
 		}
@@ -536,9 +539,7 @@ bool DigiDoc::open( const QString &file )
 		qApp->addRecent( file );
 		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 		return true;
-	}
-	catch( const Exception &e )
-	{
+	} catch(const Exception &e) {
 		switch(e.code())
 		{
 		case Exception::NetworkError:
