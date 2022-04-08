@@ -189,7 +189,7 @@ QString SslCertificate::keyName() const
 		if(X509 *c = (X509*)handle())
 		{
 			EVP_PKEY *key = X509_get0_pubkey(c);
-			EC_KEY *ec = EVP_PKEY_get0_EC_KEY(key);
+			const EC_KEY *ec = EVP_PKEY_get0_EC_KEY(key);
 			int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec));
 			ASN1_OBJECT *obj = OBJ_nid2obj(nid);
 			QByteArray buff(50, 0);
@@ -452,9 +452,7 @@ public:
 		}
 	}
 
-	QList<QSslCertificate> caCerts;
 	QSslCertificate cert;
-	QSslKey key;
 	PKCS12Certificate::ErrorType error = PKCS12Certificate::NullError;
 	QString errorString;
 };
@@ -476,29 +474,22 @@ PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin
 		return;
 	}
 
-	STACK_OF(X509) *ca = nullptr;
 	X509 *c = nullptr;
 	EVP_PKEY *k = nullptr;
 	QByteArray _pin = pin.toUtf8();
-	int ret = PKCS12_parse(p12, _pin.constData(), &k, &c, &ca);
+	int ret = PKCS12_parse(p12, _pin.constData(), &k, &c, nullptr);
 	PKCS12_free(p12);
 	if(!ret)
 	{
 		d->setLastError();
 		return;
 	}
-	// Hack: clear PKCS12_parse error ERROR: 185073780 - error:0B080074:x509 certificate routines:X509_check_private_key:key values mismatch
 	ERR_get_error();
 
-	auto fromX509 = [](X509 *x509) { return QSslCertificate(i2dDer(i2d_X509, x509), QSsl::Der); };
-	d->cert = fromX509(c);
-	d->key = fromEVP(Qt::HANDLE(k));
-	for(int i = 0; i < sk_X509_num(ca); ++i)
-		d->caCerts << fromX509(sk_X509_value(ca, i));
+	d->cert = QSslCertificate(i2dDer(i2d_X509, c), QSsl::Der);
 
 	X509_free(c);
 	EVP_PKEY_free(k);
-	sk_X509_free(ca);
 }
 
 PKCS12Certificate::PKCS12Certificate( const PKCS12Certificate &other ) = default;
@@ -507,7 +498,6 @@ PKCS12Certificate& PKCS12Certificate::operator=(const PKCS12Certificate &other) 
 PKCS12Certificate& PKCS12Certificate::operator=(PKCS12Certificate &&other) Q_DECL_NOEXCEPT = default;
 
 PKCS12Certificate::~PKCS12Certificate() = default;
-QList<QSslCertificate> PKCS12Certificate::caCertificates() const { return d->caCerts; }
 QSslCertificate PKCS12Certificate::certificate() const { return d->cert; }
 PKCS12Certificate::ErrorType PKCS12Certificate::error() const { return d->error; }
 QString PKCS12Certificate::errorString() const { return d->errorString; }
@@ -525,47 +515,4 @@ PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QStrin
 	return p12;
 }
 
-
-QSslKey PKCS12Certificate::fromEVP(Qt::HANDLE evp) const
-{
-	EVP_PKEY *key = (EVP_PKEY*)evp;
-	unsigned char *data = nullptr;
-	int len = 0;
-	QSsl::KeyAlgorithm alg = QSsl::Rsa;
-	QSsl::KeyType type = QSsl::PublicKey;
-
-	switch(EVP_PKEY_base_id(key))
-	{
-	case EVP_PKEY_RSA:
-	{
-		RSA *rsa = EVP_PKEY_get0_RSA(key);
-		alg = QSsl::Rsa;
-		const BIGNUM *d = nullptr;
-		RSA_get0_key(rsa, nullptr, nullptr, &d);
-		type = d ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = d ? i2d_RSAPrivateKey(rsa, &data) : i2d_RSAPublicKey(rsa, &data);
-		break;
-	}
-	case EVP_PKEY_DSA:
-	{
-		DSA *dsa = EVP_PKEY_get0_DSA(key);
-		alg = QSsl::Dsa;
-		const BIGNUM *priv_key = nullptr;
-		DSA_get0_key(dsa, nullptr, &priv_key);
-		type = priv_key ? QSsl::PrivateKey : QSsl::PublicKey;
-		len = priv_key ? i2d_DSAPrivateKey(dsa, &data) : i2d_DSAPublicKey(dsa, &data);
-		break;
-	}
-	default: break;
-	}
-
-	QSslKey k;
-	if( len > 0 )
-		k = QSslKey(QByteArray::fromRawData((char*)data, len), alg, QSsl::Der, type);
-	OPENSSL_free(data);
-
-	return k;
-}
-
-bool PKCS12Certificate::isNull() const { return d->cert.isNull() && d->key.isNull(); }
-QSslKey PKCS12Certificate::key() const { return d->key; }
+bool PKCS12Certificate::isNull() const { return d->cert.isNull(); }
