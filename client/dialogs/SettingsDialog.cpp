@@ -532,7 +532,7 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 	{
 	case 0:
 		QNetworkProxyFactory::setUseSystemConfiguration(false);
-		QNetworkProxy::setApplicationProxy(QNetworkProxy());
+		QNetworkProxy::setApplicationProxy({});
 		break;
 	case 1:
 		QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -569,8 +569,8 @@ void SettingsDialog::updateDiagnostics()
 
 void SettingsDialog::installCert()
 {
-	QFile file(FileDialog::getOpenFileName(this, tr("Select server access certificate"),
-		QString(), tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
+	QFile file(FileDialog::getOpenFileName(this, tr("Select server access certificate"), {},
+		tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
 	if(!file.exists())
 		return;
 	QString pass = QInputDialog::getText( this, tr("Password"),
@@ -617,6 +617,7 @@ void SettingsDialog::showPage(int page)
 
 void SettingsDialog::changePage(QAbstractButton *button)
 {
+	button->setChecked(true);
 	ui->stackedWidget->setCurrentIndex(ui->pageGroup->id(button));
 	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
