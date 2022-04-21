@@ -91,13 +91,6 @@ ContainerPage::~ContainerPage()
 	delete ui;
 }
 
-void ContainerPage::addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors)
-{
-	auto counter = errors.value(item->getError());
-	counter++;
-	errors[item->getError()] = counter;
-}
-
 void ContainerPage::addressSearch()
 {
 	AddRecipients dlg(ui->rightPane, topLevelWidget());
@@ -308,7 +301,7 @@ void ContainerPage::showSigningButton()
 void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
 {
 	clear();
-	isSupported = container && container->canDecrypt(cert);
+	isSupported = container && (container->state() & UnencryptedContainer || container->canDecrypt(cert));
 	setHeader(container->fileName());
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
@@ -322,6 +315,10 @@ void ContainerPage::transition(DigiDoc* container)
 	emit action(ClearSignatureWarning);
 	QMap<ria::qdigidoc4::WarningType, int> errors;
 	setHeader(container->fileName());
+	auto addError = [&errors](const SignatureItem* item) {
+		auto counter = errors.value(item->getError());
+		errors[item->getError()] = counter++;
+	};
 
 	if(!container->timestamps().isEmpty())
 	{
@@ -331,7 +328,7 @@ void ContainerPage::transition(DigiDoc* container)
 		{
 			SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
 			if(item->isInvalid())
-				addError(item, errors);
+				addError(item);
 			ui->rightPane->addHeaderWidget(item);
 		}
 	}
@@ -340,7 +337,7 @@ void ContainerPage::transition(DigiDoc* container)
 	{
 		SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
 		if(item->isInvalid())
-			addError(item, errors);
+			addError(item);
 		ui->rightPane->addWidget(item);
 	}
 
@@ -390,10 +387,7 @@ void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 
 void ContainerPage::updateDecryptionButton()
 {
-	if(isSeal)
-		showMainAction({ DecryptToken });
-	else
-		showMainAction({ DecryptContainer });
+	showMainAction({ isSeal ? DecryptToken : DecryptContainer });
 }
 
 void ContainerPage::updatePanes(ContainerState state)

@@ -65,7 +65,6 @@ signals:
 	void warning(const WarningText &warningText);
 
 private:
-	void addError(const SignatureItem* item, QMap<ria::qdigidoc4::WarningType, int> &errors);
 	void addressSearch();
 	void changeEvent(QEvent* event) final;
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
