@@ -39,14 +39,10 @@ public:
 	void init(const QString &container, const QString &label = "Container's files");
 	void removeItem(int row) override;
 	void setModel(DocumentModel *documentModel);
+	void stateChange(ria::qdigidoc4::ContainerState state) override;
 
 signals:
 	void addFiles(const QStringList &files);
-
-protected:
-	void changeEvent(QEvent* event) override;
-	bool eventFilter(QObject *obj, QEvent *event) override;
-	void remove(Item *item) override;
 
 private slots:
 	void open(FileItem *item) const;
@@ -54,7 +50,10 @@ private slots:
 	void saveAll();
 
 private:
+	void changeEvent(QEvent* event) override;
+	bool eventFilter(QObject *obj, QEvent *event) override;
 	void selectFile();
+	void remove(Item *item) override;
 	void updateDownload();
 	
 	QString container;

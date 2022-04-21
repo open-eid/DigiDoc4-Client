@@ -138,19 +138,13 @@ void ItemList::clear()
 
 	if(header)
 	{
-		header->close();
-		delete header;
+		header->deleteLater();
 		header = nullptr;
 		headerItems = ui->findGroup->isHidden() ? 1 : 2;
 	}
 
-	auto it = items.begin();
-	while (it != items.end()) {
-		Item *widget = *it;
-		it = items.erase(it);
-		widget->close();
-		delete widget;
-	}
+	for(auto it = items.cbegin(); it != items.cend(); it = items.erase(it))
+		(*it)->deleteLater();
 }
 
 void ItemList::details(const QString &id)
@@ -269,9 +263,9 @@ void ItemList::removeItem(int row)
 	if(items.size() < size_t(row))
 		return;
 
-	auto item = items[size_t(row)];
-	item->close();
-	items.erase(items.begin()+row);
+	auto item = items.cbegin()+row;
+	(*item)->deleteLater();
+	items.erase(item);
 }
 
 void ItemList::setRecipientTooltip()
