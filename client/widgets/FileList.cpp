@@ -234,6 +234,12 @@ void FileList::setModel(DocumentModel *documentModel)
 		addFile(documentModel->data(i));
 }
 
+void FileList::stateChange(ria::qdigidoc4::ContainerState state)
+{
+	ItemList::stateChange(state);
+	updateDownload();
+}
+
 void FileList::updateDownload()
 {
 	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && !items.empty());
