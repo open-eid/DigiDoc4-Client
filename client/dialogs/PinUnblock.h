@@ -49,7 +49,6 @@ public:
 	QString newCodeText() const;
 
 private:
-	void init(  WorkMode mode, QSmartCardData::PinType type, short leftAttempts );
 	void initIntro(WorkMode mode, QSmartCardData::PinType type);
 	void setUnblockEnabled();
 	bool validatePin(const QString& pin, QSmartCardData::PinType type, WorkMode mode);
