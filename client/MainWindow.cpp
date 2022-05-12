@@ -174,7 +174,8 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
 	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
-	connect(SSLConnect::instance(), &SSLConnect::error, this, [this] {
+	connect(SSLConnect::instance(), &SSLConnect::error, this, [this](const QString &error) {
+		qWarning() << error;
 		showNotification(tr("Loading picture failed."));
 	});
 	connect(SSLConnect::instance(), &SSLConnect::image, this, [this] (const QImage &image) {
@@ -338,7 +339,7 @@ QStringList MainWindow::dropEventFiles(QDropEvent *event) const
 	const QList<QUrl> urls = event->mimeData()->urls();
 	for(const auto &url: urls)
 	{
-		if(url.scheme() == QStringLiteral("file") && QFileInfo(url.toLocalFile()).isFile())
+		if(url.scheme() == QLatin1String("file") && QFileInfo(url.toLocalFile()).isFile())
 			files << url.toLocalFile();
 	}
 	return files;
@@ -740,9 +741,9 @@ void MainWindow::openContainer(bool signature)
 	if(signature)
 		filter = filter.arg(
 			QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc") +
-			(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QString() : QStringLiteral(" *.pdf")));
+			(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QStringLiteral() : QStringLiteral(" *.pdf")));
 	else
-		filter = filter.arg(QStringLiteral("*.cdoc"));
+		filter = filter.arg(QLatin1String("*.cdoc"));
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
 	if(!files.isEmpty())
 		openFiles(files);
@@ -820,33 +821,33 @@ bool MainWindow::save(bool saveAs)
 
 QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )
 {
-	static const QString adoc = tr("Documents (%1)").arg(QStringLiteral("*.adoc"));
-	static const QString bdoc = tr("Documents (%1)").arg(QStringLiteral("*.bdoc"));
-	static const QString cdoc = tr("Documents (%1)").arg(QStringLiteral("*.cdoc"));
-	static const QString edoc = tr("Documents (%1)").arg(QStringLiteral("*.edoc"));
-	static const QString asic = tr("Documents (%1)").arg(QStringLiteral("*.asice *.sce"));
+	static const QString adoc = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
+	static const QString bdoc = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
+	static const QString cdoc = tr("Documents (%1)").arg(QLatin1String("*.cdoc"));
+	static const QString edoc = tr("Documents (%1)").arg(QLatin1String("*.edoc"));
+	static const QString asic = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
 	const QString ext = QFileInfo( filename ).suffix().toLower();
 	QStringList exts;
 	QString active;
 	if( fixedExt )
 	{
-		if(ext == QStringLiteral("bdoc")) exts << bdoc;
-		if(ext == QStringLiteral("cdoc")) exts << cdoc;
-		if(ext == QStringLiteral("asice") || ext == QStringLiteral("sce")) exts << asic;
-		if(ext == QStringLiteral("edoc")) exts << edoc;
-		if(ext == QStringLiteral("adoc")) exts << adoc;
+		if(ext == QLatin1String("bdoc")) exts << bdoc;
+		if(ext == QLatin1String("cdoc")) exts << cdoc;
+		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) exts << asic;
+		if(ext == QLatin1String("edoc")) exts << edoc;
+		if(ext == QLatin1String("adoc")) exts << adoc;
 	}
 	else
 	{
 		exts = QStringList{ bdoc, asic, edoc, adoc };
-		if(ext == QStringLiteral("bdoc")) active = bdoc;
-		if(ext == QStringLiteral("cdoc")) active = cdoc;
-		if(ext == QStringLiteral("asice") || ext == QStringLiteral("sce")) active = asic;
-		if(ext == QStringLiteral("edoc")) active = edoc;
-		if(ext == QStringLiteral("adoc")) active = adoc;
+		if(ext == QLatin1String("bdoc")) active = bdoc;
+		if(ext == QLatin1String("cdoc")) active = cdoc;
+		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) active = asic;
+		if(ext == QLatin1String("edoc")) active = edoc;
+		if(ext == QLatin1String("adoc")) active = adoc;
 	}
 
-	return FileDialog::getSaveFileName( this, title, filename, exts.join(QStringLiteral(";;")), &active );
+	return FileDialog::getSaveFileName( this, title, filename, exts.join(QLatin1String(";;")), &active );
 }
 
 void MainWindow::selectPage(Pages page)
@@ -1029,7 +1030,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	bool hasEmptyFile = false;
 	for (auto i = 0; i < model->rowCount(); ++i) {
 		const auto fileSize = model->fileSize(i).trimmed();
-		if (fileSize.startsWith(QStringLiteral("0 "), Qt::CaseInsensitive))
+		if (fileSize.startsWith(QLatin1String("0 "), Qt::CaseInsensitive))
 		{
 			hasEmptyFile = true;
 		}
@@ -1105,13 +1106,13 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 
 void MainWindow::warningClicked(const QString &link)
 {
-	if(link.startsWith(QStringLiteral("#invalid-signature-")))
+	if(link.startsWith(QLatin1String("#invalid-signature-")))
 		emit ui->signContainerPage->details(link.mid(19));
-	else if(link == QStringLiteral("#unblock-PIN1"))
+	else if(link == QLatin1String("#unblock-PIN1"))
 		ui->accordion->changePin1Clicked (false, true);
-	else if(link == QStringLiteral("#unblock-PIN2"))
+	else if(link == QLatin1String("#unblock-PIN2"))
 		ui->accordion->changePin2Clicked (false, true);
-	else if(link.startsWith(QStringLiteral("http")))
+	else if(link.startsWith(QLatin1String("http")))
 		QDesktopServices::openUrl(QUrl(link));
 }
 
