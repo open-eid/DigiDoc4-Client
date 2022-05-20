@@ -302,6 +302,8 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 {
 	clear();
 	isSupported = container && (container->state() & UnencryptedContainer || container->canDecrypt(cert));
+	if(!container)
+		return;
 	setHeader(container->fileName());
 	for(const CKey &key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));

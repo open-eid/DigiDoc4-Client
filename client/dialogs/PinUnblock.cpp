@@ -35,67 +35,51 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	, birthDate(birthDate)
 	, personalCode(std::move(personalCode))
 {
-	new Overlay(this, parent->topLevelWidget());
-	init( mode, type, leftAttempts );
-	QSizePolicy sp_retain = ui->labelPinValidation->sizePolicy();
-	sp_retain.setRetainSizeWhenHidden(true);
-	ui->labelPinValidation->setSizePolicy(sp_retain);
-	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
-	adjustSize();
-	setFixedSize( size() );
-}
-
-PinUnblock::~PinUnblock()
-{
-	delete ui;
-}
-
-void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAttempts )
-{
-	ui->setupUi( this );
+	ui->setupUi(this);
 #if defined (Q_OS_WIN)
 	ui->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	new Overlay(this, parent->topLevelWidget());
 
-	ui->unblock->setEnabled( false );
-	connect( ui->unblock, &QPushButton::clicked, this, &PinUnblock::accept );
-	connect( ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject );
-	connect( this, &PinUnblock::finished, this, &PinUnblock::close );
+	ui->unblock->setEnabled(false);
+	connect(ui->unblock, &QPushButton::clicked, this, &PinUnblock::accept);
+	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
+	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
 
 	QFont condensed12 = Styles::font(Styles::Condensed, 12);
 	ui->labelPuk->setFont(condensed12);
 	ui->labelPin->setFont(condensed12);
 	ui->labelRepeat->setFont(condensed12);
 
-	if( mode == PinUnblock::ChangePinWithPuk )
+	if(mode == PinUnblock::ChangePinWithPuk)
 	{
-		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		regexpFirstCode.setPattern(QStringLiteral("^\\d{8,12}$"));
 		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") : QStringLiteral("^\\d{5,12}$"));
-		ui->unblock->setText( tr("CHANGE") );
+		ui->unblock->setText(tr("CHANGE"));
 	}
-	if( mode == PinUnblock::UnBlockPinWithPuk )
+	if(mode == PinUnblock::UnBlockPinWithPuk)
 	{
-		ui->labelNameId->setText( tr("%1 unblocking").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelNameId->setText(tr("%1 unblocking").arg(QSmartCardData::typeString(type)));
 		regexpFirstCode.setPattern(QStringLiteral("^\\d{8,12}$"));
 		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") : QStringLiteral("^\\d{5,12}$"));
 	}
-	else if( mode == PinUnblock::PinChange )
+	else if(mode == PinUnblock::PinChange)
 	{
-		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
-		ui->labelPuk->setText( tr( "VALID %1 CODE").arg( QSmartCardData::typeString( type ) ) );
+		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
+		ui->labelPuk->setText(tr("VALID %1 CODE").arg(QSmartCardData::typeString(type)));
 		regexpFirstCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") :
 			(type == QSmartCardData::Pin2Type) ? QStringLiteral("^\\d{5,12}$") : QStringLiteral("^\\d{8,12}$"));
 		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") :
 			(type == QSmartCardData::Pin2Type) ? QStringLiteral("^\\d{5,12}$") : QStringLiteral("^\\d{8,12}$"));
-		ui->unblock->setText( tr("CHANGE") );
+		ui->unblock->setText(tr("CHANGE"));
 	}
 	setWindowTitle(ui->labelNameId->text());
-	ui->labelPin->setText( tr( "NEW %1 CODE").arg( QSmartCardData::typeString( type ) ) );
-	ui->labelRepeat->setText( tr( "NEW %1 CODE AGAIN").arg( QSmartCardData::typeString( type ) ) );
+	ui->labelPin->setText(tr("NEW %1 CODE").arg(QSmartCardData::typeString(type)));
+	ui->labelRepeat->setText(tr("NEW %1 CODE AGAIN").arg(QSmartCardData::typeString(type)));
 	ui->pin->setAccessibleName(ui->labelPin->text().toLower());
 	ui->repeat->setAccessibleName(ui->labelRepeat->text().toLower());
 	ui->puk->setAccessibleName(ui->labelPuk->text().toLower());
@@ -108,18 +92,18 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	QFont condensed14(Styles::font(Styles::Condensed, 14));
 	QFont headerFont(Styles::font(Styles::Regular, 18));
 	QFont regular13(Styles::font(Styles::Regular, 13));
-	headerFont.setWeight( QFont::Bold );
-	ui->labelNameId->setFont( headerFont );
-	ui->cancel->setFont( condensed14 );
-	ui->unblock->setFont( condensed14 );
+	headerFont.setWeight(QFont::Bold);
+	ui->labelNameId->setFont(headerFont);
+	ui->cancel->setFont(condensed14);
+	ui->unblock->setFont(condensed14);
 	ui->labelAttemptsLeft->setFont(regular13);
 	ui->labelPinValidation->setFont(regular13);
 	ui->labelPinValidation->hide();
-	if( mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk )
-		ui->labelAttemptsLeft->setText( tr("PUK remaining attempts: %1").arg( leftAttempts ) );
+	if(mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk)
+		ui->labelAttemptsLeft->setText(tr("PUK remaining attempts: %1").arg(leftAttempts));
 	else
-		ui->labelAttemptsLeft->setText( tr("Remaining attempts: %1").arg( leftAttempts ) );
-	ui->labelAttemptsLeft->setVisible( leftAttempts < 3 );
+		ui->labelAttemptsLeft->setText(tr("Remaining attempts: %1").arg(leftAttempts));
+	ui->labelAttemptsLeft->setVisible(leftAttempts < 3);
 
 	initIntro(mode, type);
 
@@ -137,6 +121,17 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 		isRepeatCodeOk = !ui->pin->text().isEmpty() && ui->pin->text() == ui->repeat->text();
 		setUnblockEnabled();
 	});
+	QSizePolicy sp_retain = ui->labelPinValidation->sizePolicy();
+	sp_retain.setRetainSizeWhenHidden(true);
+	ui->labelPinValidation->setSizePolicy(sp_retain);
+	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	adjustSize();
+	setFixedSize(size());
+}
+
+PinUnblock::~PinUnblock()
+{
+	delete ui;
 }
 
 void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
