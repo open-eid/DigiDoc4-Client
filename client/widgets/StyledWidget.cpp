@@ -34,7 +34,7 @@ StyledWidget::~StyledWidget() = default;
 void StyledWidget::paintEvent(QPaintEvent */*ev*/)
 {
 	QStyleOption opt;
-	opt.init(this);
+	opt.initFrom(this);
 	QPainter p(this);
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

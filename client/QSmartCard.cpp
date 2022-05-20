@@ -19,12 +19,12 @@
 
 #include "QSmartCard_p.h"
 #include "QCardLock.h"
+#include "IKValidator.h"
 #include "dialogs/PinPopup.h"
 #include "dialogs/PinUnblock.h"
 #include "Utils.h"
 
 #include <common/Common.h>
-#include <common/IKValidator.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -33,6 +33,7 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QApplication>
+#include <QTextCodec>
 
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 

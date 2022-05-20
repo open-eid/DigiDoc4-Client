@@ -4,7 +4,7 @@ if(POLICY CMP0074)
 endif()
 project(qdigidoc4 VERSION 4.2.12)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
@@ -14,7 +14,8 @@ include( VersionInfo )
 find_package( PKCS11 )
 find_package( LibDigiDocpp 3.14.8 REQUIRED )
 find_package( LDAP REQUIRED )
-find_package( Qt5 5.9.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools )
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} 5.9.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools)
 
 set_env( TSL_URL "https://ec.europa.eu/tools/lotl/eu-lotl.xml" CACHE STRING "TSL trust list primary URL" )
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )

@@ -50,6 +50,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QMimeData>
 #include <QtCore/QSettings>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>

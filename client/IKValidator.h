@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QEstEidCommon
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,57 +17,28 @@
  *
  */
 
-#include "QCardLock.h"
-#include "QCardLock_p.h"
+#pragma once
 
-QCardLock::QCardLock()
-: d(new QCardLockPrivate)
-{
-}
+#include <QtGui/QValidator>
 
-QCardLock::~QCardLock()
+class IKValidator: public QValidator
 {
-	delete d;
-}
+	Q_OBJECT
+public:
+	explicit IKValidator(QObject *parent);
 
-void QCardLock::exclusiveLock()
-{
-	readLock();
-	d->exclusiveLock.lock();
-}
+	static QDate birthDate(const QString &ik);
+	static bool isValid(const QString &ik);
+	State validate(QString &input, int &pos) const;
+};
 
-bool QCardLock::exclusiveTryLock()
-{
-	readLock();
-	bool rc = d->exclusiveLock.tryLock();
-	if(!rc)
-		readUnlock();
-	return rc;
-}
 
-void QCardLock::exclusiveUnlock()
-{
-	d->exclusiveLock.unlock();
-	readUnlock();
-}
 
-QCardLock& QCardLock::instance()
+class NumberValidator: public QValidator
 {
-	static QCardLock lock;
-	return lock;
-}
+	Q_OBJECT
+public:
+	explicit NumberValidator(QObject *parent = 0);
 
-void QCardLock::readLock()
-{
-	d->readLock.lock();
-}
-
-bool QCardLock::readTryLock()
-{
-	return d->readLock.tryLock();
-}
-
-void QCardLock::readUnlock()
-{
-	d->readLock.unlock();
-}
+	State validate(QString &input, int &pos) const;
+};

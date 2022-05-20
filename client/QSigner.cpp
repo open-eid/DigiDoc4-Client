@@ -34,6 +34,7 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QLoggingCategory>
+#include <QtCore/QRegularExpression>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/obj_mac.h>
@@ -155,13 +156,15 @@ bool QSigner::cardsOrder(const TokenData &s1, const TokenData &s2)
 		default: return 0;
 		}
 	};
-	QRegExp r("(\\w{1,2})(\\d{7})");
-	if(r.indexIn(s1.card()) == -1)
+	QRegularExpression reg(QStringLiteral("(\\w{1,2})(\\d{7})"));
+	QRegularExpressionMatch r1 = reg.match(s1.card());
+	QRegularExpressionMatch r2 = reg.match(s2.card());
+	if(r1.hasMatch() || r2.hasMatch())
 		return false;
-	QStringList cap1 = r.capturedTexts();
-	if(r.indexIn(s2.card()) == -1)
+	QStringList cap1 = r1.capturedTexts();
+	QStringList cap2 = r1.capturedTexts();
+	if(cap1.isEmpty() || cap2.isEmpty())
 		return false;
-	QStringList cap2 = r.capturedTexts();
 	// new cards to front
 	if(cap1[1].size() != cap2[1].size())
 		return cap1[1].size() > cap2[1].size();

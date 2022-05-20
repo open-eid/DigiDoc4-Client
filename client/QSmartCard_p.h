@@ -25,11 +25,12 @@
 #include <common/QPCSC.h>
 
 #include <QtCore/QStringList>
-#include <QtCore/QTextCodec>
 #include <QtCore/QVariant>
 
 
 #define APDU QByteArray::fromHex
+
+class QTextCodec;
 
 class Card
 {

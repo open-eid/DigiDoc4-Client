@@ -648,6 +648,18 @@
         <source>No keys specified</source>
         <translation>No recipients specified</translation>
     </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-CARD</translation>
+    </message>
+    <message>
+        <source>Digi-ID E-RESIDENT</source>
+        <translation>Digi-ID E-RESIDENT</translation>
+    </message>
+    <message>
+        <source>Digi-ID</source>
+        <translation>Digi-ID</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>
@@ -3139,10 +3151,6 @@ Additional licenses and components</translation>
         <translation>Decipher only</translation>
     </message>
     <message>
-        <source>ID-CARD</source>
-        <translation>ID-CARD</translation>
-    </message>
-    <message>
         <source>Unknown</source>
         <translation>Unknown</translation>
     </message>
@@ -3153,14 +3161,6 @@ Additional licenses and components</translation>
     <message>
         <source>Ensures the identity of a remote computer</source>
         <translation>Ensures the identity of a remote computer</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
-    </message>
-    <message>
-        <source>Digi-ID E-RESIDENT</source>
-        <translation>Digi-ID E-RESIDENT</translation>
     </message>
 </context>
 <context>

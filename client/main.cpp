@@ -22,6 +22,7 @@
 #include "DiagnosticsTask.h"
 
 #include <QtCore/QTimer>
+#include <QtCore/QRegularExpression>
 
 #ifdef Q_OS_WIN32
 #include <QtCore/QDebug>
@@ -30,6 +31,7 @@
 
 int main( int argc, char *argv[] )
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #ifdef Q_OS_WIN32
 	SetProcessDPIAware();
@@ -43,21 +45,22 @@ int main( int argc, char *argv[] )
 #else
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif
+#endif
 
 	for(int i = 1; i < argc; ++i)
 	{
 		QString parameter(argv[i]);
-		if(parameter.startsWith("-diag"))
+		if(parameter.startsWith(QStringLiteral("-diag")))
 		{
 			QCoreApplication qtApp( argc, argv );
 			qtApp.setApplicationName(QStringLiteral("qdigidoc4"));
 			qtApp.setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
 				.arg(MAJOR_VER).arg(MINOR_VER).arg(RELEASE_VER).arg(BUILD_VER));
-			qtApp.setOrganizationDomain("ria.ee");
-			qtApp.setOrganizationName("RIA");
+			qtApp.setOrganizationDomain(QStringLiteral("ria.ee"));
+			qtApp.setOrganizationName(QStringLiteral("RIA"));
 
 			Application::initDiagnosticConf();
-			DiagnosticsTask task(&qtApp, parameter.remove(QStringLiteral("-diag")).remove(QRegExp(QStringLiteral("^[:]*"))));
+			DiagnosticsTask task(&qtApp, parameter.remove(QStringLiteral("-diag")).remove(QRegularExpression(QStringLiteral("^[:]*"))));
 			QObject::connect(&task, &DiagnosticsTask::finished, &qtApp, &QCoreApplication::quit);
 			QObject::connect(&task, &DiagnosticsTask::failed, &qtApp, [] { QCoreApplication::exit(1); });
 

@@ -17,57 +17,18 @@
  *
  */
 
-#include "QCardLock.h"
-#include "QCardLock_p.h"
+#pragma once
 
-QCardLock::QCardLock()
-: d(new QCardLockPrivate)
-{
-}
+#include <QLineEdit>
 
-QCardLock::~QCardLock()
+class LineEdit: public QLineEdit
 {
-	delete d;
-}
+	Q_OBJECT
+public:
+	explicit LineEdit(QWidget *parent = nullptr);
 
-void QCardLock::exclusiveLock()
-{
-	readLock();
-	d->exclusiveLock.lock();
-}
+private:
+	void paintEvent(QPaintEvent *event) override;
 
-bool QCardLock::exclusiveTryLock()
-{
-	readLock();
-	bool rc = d->exclusiveLock.tryLock();
-	if(!rc)
-		readUnlock();
-	return rc;
-}
-
-void QCardLock::exclusiveUnlock()
-{
-	d->exclusiveLock.unlock();
-	readUnlock();
-}
-
-QCardLock& QCardLock::instance()
-{
-	static QCardLock lock;
-	return lock;
-}
-
-void QCardLock::readLock()
-{
-	d->readLock.lock();
-}
-
-bool QCardLock::readTryLock()
-{
-	return d->readLock.tryLock();
-}
-
-void QCardLock::readUnlock()
-{
-	d->readLock.unlock();
-}
+	QString placeholder;
+};

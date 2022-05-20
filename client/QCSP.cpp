@@ -263,7 +263,7 @@ QByteArray QCSP::sign(int method, const QByteArray &digest) const
 	case CERT_NCRYPT_KEY_SPEC:
 	{
 		DWORD size = 0;
-		QString algo(5, 0);
+		QString algo(5, '\0');
 		err = NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
 		algo.resize(size/2 - 1);
 		bool isRSA = algo == QStringLiteral("RSA");

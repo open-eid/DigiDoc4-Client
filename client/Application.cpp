@@ -45,12 +45,14 @@ class MacMenuBar {};
 
 #include <qtsingleapplication/src/qtlocalpeer.h>
 
+#include <QAction>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
 #include <QtCore/QSettings>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtCore/QUrl>
@@ -61,7 +63,6 @@ class MacMenuBar {};
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslConfiguration>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
@@ -163,7 +164,7 @@ public:
 	bool PKCS12Disable() const override
 	{ return s.value(QStringLiteral("PKCS12Disable"), digidoc::XmlConfCurrent::PKCS12Disable()).toBool(); }
 	std::string TSLCache() const override
-	{ return QStandardPaths::writableLocation(QStandardPaths::DataLocation).toStdString(); }
+	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
 	bool TSLOnlineDigest() const override
 	{ return s.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 
@@ -645,13 +646,13 @@ void Application::loadTranslation( const QString &lang )
 		return;
 	QSettings().setValue(QStringLiteral("Language"), d->lang = lang);
 
-	if(lang == QStringLiteral("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
-	else if(lang == QStringLiteral("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
+	if(lang == QLatin1String("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
+	else if(lang == QLatin1String("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
 
-	d->appTranslator.load(QStringLiteral(":/translations/") + lang);
-	d->commonTranslator.load(QStringLiteral(":/translations/common_") + lang);
-	d->qtTranslator.load(QStringLiteral(":/translations/qt_") + lang);
+	void(d->appTranslator.load(QStringLiteral(":/translations/") + lang));
+	void(d->commonTranslator.load(QStringLiteral(":/translations/common_") + lang));
+	void(d->qtTranslator.load(QStringLiteral(":/translations/qt_") + lang));
 	if( d->closeAction ) d->closeAction->setText( tr("Close Window") );
 	if( d->newClientAction ) d->newClientAction->setText( tr("New Window") );
 	if( d->newCryptoAction ) d->newCryptoAction->setText( tr("New Crypto window") );
@@ -676,7 +677,7 @@ void Application::mailTo( const QUrl &url )
 		doc.lpszFileName = PWSTR(fileName.utf16());
 		MapiMessageW message = {};
 		message.lpszSubject = PWSTR(subject.utf16());
-		message.lpszNoteText = L"";
+		message.lpszNoteText = PWSTR(L"");
 		message.nFileCount = 1;
 		message.lpFiles = lpMapiFileDescW(&doc);
 		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
@@ -699,7 +700,7 @@ void Application::mailTo( const QUrl &url )
 		doc.lpszFileName = LPSTR(fileName.constData());
 		MapiMessage message = {};
 		message.lpszSubject = LPSTR(subject.constData());
-		message.lpszNoteText = "";
+		message.lpszNoteText = LPSTR("");
 		message.nFileCount = 1;
 		message.lpFiles = lpMapiFileDesc(&doc);
 		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
@@ -953,8 +954,8 @@ void Application::openHelp()
 {
 	QString lang = language();
 	QUrl u(QStringLiteral("https://www.id.ee/id-abikeskus/"));
-	if(lang == QStringLiteral("en")) u = QStringLiteral("https://www.id.ee/en/id-help/");
-	if(lang == QStringLiteral("ru")) u = QStringLiteral("https://www.id.ee/ru/id-pomoshh/");
+	if(lang == QLatin1String("en")) u = QStringLiteral("https://www.id.ee/en/id-help/");
+	if(lang == QLatin1String("ru")) u = QStringLiteral("https://www.id.ee/ru/id-pomoshh/");
 	QDesktopServices::openUrl(u);
 }
 
@@ -970,16 +971,16 @@ void Application::parseArgs( const QString &msg )
 #endif
 	{
 		QUrl url( param, QUrl::StrictMode );
-		params << (param != QStringLiteral("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
+		params << (param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
 	}
 	parseArgs( params );
 }
 
 void Application::parseArgs( const QStringList &args )
 {
-	bool crypto = args.contains(QStringLiteral("-crypto"));
-	bool sign = args.contains(QStringLiteral("-sign"));
-	bool newWindow = args.contains(QStringLiteral("-newWindow"));
+	bool crypto = args.contains(QLatin1String("-crypto"));
+	bool sign = args.contains(QLatin1String("-sign"));
+	bool newWindow = args.contains(QLatin1String("-newWindow"));
 	QStringList params = args;
 	params.removeAll(QStringLiteral("-sign"));
 	params.removeAll(QStringLiteral("-crypto"));
@@ -989,7 +990,7 @@ void Application::parseArgs( const QStringList &args )
 	params.removeAll(QStringLiteral("-pkcs11"));
 
 	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
-	showClient(params, crypto || (suffix.compare(QStringLiteral("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
+	showClient(params, crypto || (suffix.compare(QLatin1String("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
 }
 
 uint Application::readTSLVersion(const QString &path)
@@ -1000,7 +1001,7 @@ uint Application::readTSLVersion(const QString &path)
 	QXmlStreamReader r(&f);
 	while(!r.atEnd())
 	{
-		if(r.readNextStartElement() && r.name() == "TSLSequenceNumber")
+		if(r.readNextStartElement() && r.name() == QLatin1String("TSLSequenceNumber"))
 		{
 			r.readNext();
 			return r.text().toUInt();

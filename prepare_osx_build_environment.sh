@@ -4,7 +4,7 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="5.12.12"
+QT_VER="6.3.0"
 OPENSSL_VER="1.1.1o"
 OPENLDAP_VER="2.6.2"
 REBUILD=false
@@ -112,35 +112,24 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     qt_ver_parts=( ${QT_VER//./ } )
     QT_MINOR="${qt_ver_parts[0]}.${qt_ver_parts[1]}"
     echo -e "\n${ORANGE}##### Building Qt ${QT_VER} ${QT_PATH} #####${RESET}\n"
-    mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
-    for ARCH in x86_64 arm64; do
-        for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER}; do
-            if [ ! -f ${PACKAGE}.tar.xz ]; then
-                curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
-            fi
-            rm -rf ${PACKAGE}
-            tar xf ${PACKAGE}.tar.xz
-            cd ${PACKAGE}
-            if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
-                if [[ "${ARCH}" == "arm64" ]] ; then
-                    CROSSCOMPILE="-device-option QMAKE_APPLE_DEVICE_ARCHS=${ARCH}"
-                fi
-                patch -Np1 -i ${SCRIPTPATH}/qt-macos12.patch
-                ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license OPENSSL_PREFIX=${OPENSSL_PATH} ${CROSSCOMPILE}
-            else
-                "${QT_PATH}"/bin/qmake
-            fi
-            make
-            make install
-            cd -
-            rm -rf ${PACKAGE}
-        done
-        mv ${QT_PATH} ${QT_PATH}.${ARCH}
-    done
-    cp -a ${QT_PATH}.x86_64 ${QT_PATH}
-    cd ${QT_PATH}.arm64
-    for i in lib/Qt*.framework/Versions/Current/Qt* plugins/*/*.dylib; do
-        lipo -create ${QT_PATH}.x86_64/${i} ${i} -output ${QT_PATH}/${i}
+    mkdir -p ${BUILD_PATH}
+    cd ${BUILD_PATH}
+    for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER} qt5compat-everywhere-src-${QT_VER}; do
+        if [ ! -f ${PACKAGE}.tar.xz ]; then
+            curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
+        fi
+        rm -rf ${PACKAGE}
+        tar xf ${PACKAGE}.tar.xz
+        cd ${PACKAGE}
+        if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
+            ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license -- -DOPENSSL_ROOT_DIR=${OPENSSL_PATH} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+        else
+            ${QT_PATH}/bin/qt-configure-module .
+        fi
+        cmake --build . --parallel
+        cmake --build . --target install
+        cd -
+        rm -rf ${PACKAGE}
     done
     cd -
 else

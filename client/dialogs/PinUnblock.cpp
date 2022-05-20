@@ -25,7 +25,7 @@
 
 #include <QLabel>
 #include <QList>
-#include <QtGui/QRegExpValidator>
+#include <QtGui/QRegularExpressionValidator>
 
 
 PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
@@ -73,24 +73,24 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	if( mode == PinUnblock::ChangePinWithPuk )
 	{
 		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
-		regexpFirstCode.setPattern(QStringLiteral("\\d{8,12}"));
-		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") : QStringLiteral("\\d{5,12}"));
+		regexpFirstCode.setPattern(QStringLiteral("^\\d{8,12}$"));
+		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") : QStringLiteral("^\\d{5,12}$"));
 		ui->unblock->setText( tr("CHANGE") );
 	}
 	if( mode == PinUnblock::UnBlockPinWithPuk )
 	{
 		ui->labelNameId->setText( tr("%1 unblocking").arg( QSmartCardData::typeString( type ) ) );
-		regexpFirstCode.setPattern(QStringLiteral("\\d{8,12}"));
-		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") : QStringLiteral("\\d{5,12}"));
+		regexpFirstCode.setPattern(QStringLiteral("^\\d{8,12}$"));
+		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") : QStringLiteral("^\\d{5,12}$"));
 	}
 	else if( mode == PinUnblock::PinChange )
 	{
 		ui->labelNameId->setText( tr("%1 code change").arg( QSmartCardData::typeString( type ) ) );
 		ui->labelPuk->setText( tr( "VALID %1 CODE").arg( QSmartCardData::typeString( type ) ) );
-		regexpFirstCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") :
-			(type == QSmartCardData::Pin2Type) ? QStringLiteral("\\d{5,12}") : QStringLiteral("\\d{8,12}"));
-		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("\\d{4,12}") :
-			(type == QSmartCardData::Pin2Type) ? QStringLiteral("\\d{5,12}") : QStringLiteral("\\d{8,12}"));
+		regexpFirstCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") :
+			(type == QSmartCardData::Pin2Type) ? QStringLiteral("^\\d{5,12}$") : QStringLiteral("^\\d{8,12}$"));
+		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") :
+			(type == QSmartCardData::Pin2Type) ? QStringLiteral("^\\d{5,12}$") : QStringLiteral("^\\d{8,12}$"));
 		ui->unblock->setText( tr("CHANGE") );
 	}
 	setWindowTitle(ui->labelNameId->text());
@@ -101,9 +101,9 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	ui->puk->setAccessibleName(ui->labelPuk->text().toLower());
 	ui->unblock->setAccessibleName(ui->unblock->text().toLower());
 
-	ui->puk->setValidator( new QRegExpValidator( regexpFirstCode, ui->puk ) );
-	ui->pin->setValidator( new QRegExpValidator( regexpFirstCode, ui->pin ) );
-	ui->repeat->setValidator( new QRegExpValidator( regexpFirstCode, ui->repeat ) );
+	ui->puk->setValidator(new QRegularExpressionValidator(regexpFirstCode, ui->puk));
+	ui->pin->setValidator(new QRegularExpressionValidator(regexpFirstCode, ui->pin));
+	ui->repeat->setValidator(new QRegularExpressionValidator(regexpFirstCode, ui->repeat));
 
 	QFont condensed14(Styles::font(Styles::Condensed, 14));
 	QFont headerFont(Styles::font(Styles::Regular, 18));
@@ -124,12 +124,12 @@ void PinUnblock::init( WorkMode mode, QSmartCardData::PinType type, short leftAt
 	initIntro(mode, type);
 
 	connect(ui->puk, &QLineEdit::textChanged, this, [this](const QString &text) {
-		isFirstCodeOk = regexpFirstCode.exactMatch(text);
+		isFirstCodeOk = regexpFirstCode.match(text).hasMatch();
 		setUnblockEnabled();
 	});
 	connect(ui->pin, &QLineEdit::textChanged, this, [this, type, mode](const QString &text) {
 		ui->labelPinValidation->hide();
-		isNewCodeOk = regexpNewCode.exactMatch(text) && validatePin(text, type, mode);
+		isNewCodeOk = regexpNewCode.match(text).hasMatch() && validatePin(text, type, mode);
 		isRepeatCodeOk = !text.isEmpty() && ui->pin->text() == ui->repeat->text();
 		setUnblockEnabled();
 	});

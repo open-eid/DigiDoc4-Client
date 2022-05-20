@@ -29,7 +29,6 @@
 class DigiDoc;
 class QDateTime;
 class QSslCertificate;
-class QStringList;
 
 class DigiDocSignature
 {

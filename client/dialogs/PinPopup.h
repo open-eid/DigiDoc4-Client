@@ -23,7 +23,7 @@
 
 #include "WaitDialog.h"
 
-#include <QtCore/QRegExp>
+#include <QtCore/QRegularExpression>
 
 namespace Ui {
 class PinPopup;
@@ -68,7 +68,7 @@ signals:
 
 private:
 	Ui::PinPopup *ui;
-	QRegExp		regexp;
+	QRegularExpression regexp;
 	WaitDialogHider hider;
 };
 

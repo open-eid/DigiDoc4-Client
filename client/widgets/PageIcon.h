@@ -22,14 +22,8 @@
 #include "common_enums.h"
 
 #include <QtWidgets/QPushButton>
-#include <QFont>
-#include <QPaintEvent>
-#include <QString>
-#include <QSvgWidget>
-#include <QWidget>
 
-#include <memory>
-
+class QSvgWidget;
 
 namespace Ui {
 class PageIcon;
@@ -65,7 +59,11 @@ private:
 	};
 
 	void changeEvent(QEvent *event) final;
-	void enterEvent(QEvent *event) final;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	void enterEvent(QEnterEvent *ev) final;
+#else
+	void enterEvent(QEvent *ev) final;
+#endif
 	void leaveEvent(QEvent *event) final;
 	void updateIcon();
 	void updateSelection();

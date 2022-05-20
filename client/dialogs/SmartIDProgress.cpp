@@ -42,7 +42,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#ifdef Q_OS_WIN
+#ifdef QT_WIN_EXTRAS
 #include <QtWinExtras/QWinTaskbarButton>
 #include <QtWinExtras/QWinTaskbarProgress>
 #endif
@@ -75,7 +75,7 @@ public:
 	QString NAME = QSettings().value(QStringLiteral("SIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
 	bool useCustomUUID = QSettings().value(QStringLiteral("SIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("SIDUUID"))).toBool();
 	QString UUID = useCustomUUID ? QSettings().value(QStringLiteral("SIDUUID")).toString() : QString();
-#ifdef Q_OS_WIN
+#ifdef QT_WIN_EXTRAS
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
 	WaitDialogHider hider;
@@ -120,7 +120,7 @@ background-color: #007aff;
 	d->statusTimer->setEasingCurve(QEasingCurve::Linear);
 	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
-#ifdef Q_OS_WIN
+#ifdef QT_WIN_EXTRAS
 	d->taskbar = new QWinTaskbarButton(d);
 	d->taskbar->setWindow(parent->windowHandle());
 	d->taskbar->progress()->setRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
@@ -378,7 +378,7 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 void SmartIDProgress::stop()
 {
 	d->statusTimer->stop();
-#ifdef Q_OS_WIN
+#ifdef QT_WIN_EXTRAS
 	d->taskbar->progress()->stop();
 	d->taskbar->progress()->hide();
 #endif

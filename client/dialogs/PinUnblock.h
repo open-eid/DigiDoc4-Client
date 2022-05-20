@@ -21,6 +21,7 @@
 
 #include "QSmartCard.h"
 
+#include <QtCore/QRegularExpression>
 #include <QDate>
 #include <QDialog>
 
@@ -56,8 +57,8 @@ private:
 	Ui::PinUnblock *ui;
 	QDate birthDate;
 	QString personalCode;
-	QRegExp regexpFirstCode;
-	QRegExp regexpNewCode;
+	QRegularExpression regexpFirstCode;
+	QRegularExpression regexpNewCode;
 	bool isFirstCodeOk = false;
 	bool isNewCodeOk = false;
 	bool isRepeatCodeOk = false;

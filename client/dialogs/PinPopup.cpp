@@ -24,11 +24,11 @@
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QMovie>
-#include <QtGui/QRegExpValidator>
+#include <QtGui/QRegularExpressionValidator>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
-#include <QtSvg/QSvgWidget>
+#include <QSvgWidget>
 
 #include <QTextDocument>
 
@@ -37,8 +37,8 @@ PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QW
 {
 	if(c.type() & SslCertificate::TempelType)
 	{
-		regexp.setPattern(QStringLiteral(".{4,}"));
-		ui->pin->setValidator(new QRegExpValidator(regexp, ui->pin));
+		regexp.setPattern(QStringLiteral("^.{4,}$"));
+		ui->pin->setValidator(new QRegularExpressionValidator(regexp, ui->pin));
 		ui->pin->setMaxLength(32767);
 	}
 }
@@ -133,10 +133,10 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	else if( !(flags & PinpadNoProgressFlag) )
 	{
 		ui->pin->setFocus();
-		ui->pin->setValidator( new QRegExpValidator( regexp, ui->pin ) );
+		ui->pin->setValidator(new QRegularExpressionValidator(regexp, ui->pin));
 		ui->pin->setMaxLength( 12 );
 		connect(ui->pin, &QLineEdit::textEdited, this, [&](const QString &text) {
-			ui->ok->setEnabled(regexp.exactMatch(text));
+			ui->ok->setEnabled(regexp.match(text).hasMatch());
 		});
 		ui->label->setBuddy( ui->pin );
 		ui->ok->setDisabled(true);
@@ -151,7 +151,7 @@ PinPopup::~PinPopup()
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
 	QString charPattern = regexp.pattern().startsWith('.') ? QStringLiteral(".") : QStringLiteral("\\d");
-	regexp.setPattern(QStringLiteral("%1{%2,%3}").arg(charPattern).arg(minLen).arg(maxLen));
+	regexp.setPattern(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen));
 }
 
 QString PinPopup::text() const { return ui->pin->text(); }

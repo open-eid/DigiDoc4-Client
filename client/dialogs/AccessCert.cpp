@@ -160,7 +160,7 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 	SslCertificate cert(PKCS12Certificate(data, password).certificate());
 	if(cert.isNull())
 		return false;
-	QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+	QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 	if ( !QDir( path ).exists() )
 		QDir().mkpath( path );
 
@@ -168,8 +168,7 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 	if ( !f.open( QIODevice::WriteOnly|QIODevice::Truncate ) )
 	{
 		showWarning( tr("Failed to save server access certificate file to %1!\n%2")
-			.arg( f.fileName() )
-			.arg( f.errorString() ) );
+			.arg(f.fileName(), f.errorString()));
 		return false;
 	}
 	f.write( data );

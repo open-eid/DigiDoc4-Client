@@ -20,8 +20,9 @@
 #pragma once
 
 #include <QtWidgets/QMenuBar>
+#include <QActionGroup>
 
-class MacMenuBar: public QMenuBar
+class MacMenuBar final: public QMenuBar
 {
 	Q_OBJECT
 public:
@@ -45,7 +46,7 @@ private slots:
 	void activateWindow(QAction *a);
 
 private:
-	bool eventFilter(QObject *o, QEvent *e);
+	bool eventFilter(QObject *o, QEvent *e) final;
 	QString title(QObject *o) const;
 	QString typeName(ActionType type) const;
 

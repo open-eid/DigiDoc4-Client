@@ -20,13 +20,12 @@
 #include "SmartIDDialog.h"
 #include "ui_SmartIDDialog.h"
 
+#include "IKValidator.h"
 #include "Styles.h"
 #include "dialogs/SettingsDialog.h"
 #include "effects/Overlay.h"
 
 #include <QtCore/QSettings>
-
-#include <common/IKValidator.h>
 
 SmartIDDialog::SmartIDDialog(QWidget *parent)
 	: QDialog(parent)
@@ -48,10 +47,10 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->labelCode->setFont(regularFont);
 	ui->labelCountry->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
-	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->idCountry->setFont(regularFont);
 	ui->cbRemember->setFont(regularFont);
-	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, 0);
+	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->sign->setFont(condensed);
 	ui->cancel->setFont(condensed);
 

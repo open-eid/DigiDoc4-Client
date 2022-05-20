@@ -143,17 +143,12 @@ background-color: #BEDBED;
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="phoneNo">
+    <widget class="LineEdit" name="phoneNo">
      <property name="minimumSize">
       <size>
        <width>0</width>
        <height>34</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QWidget {
-	background-color: #FFFFFF;
-}</string>
      </property>
      <property name="placeholderText">
       <string notr="true">37254321</string>
@@ -181,17 +176,12 @@ padding-top: 8px;</string>
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="idCode">
+    <widget class="LineEdit" name="idCode">
      <property name="minimumSize">
       <size>
        <width>0</width>
        <height>34</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QWidget {
-	background-color: #FFFFFF;
-}</string>
      </property>
      <property name="placeholderText">
       <string notr="true">47101010033</string>
@@ -305,6 +295,11 @@ padding-top: 8px;</string>
    <class>CheckBox</class>
    <extends>QCheckBox</extends>
    <header>widgets/CheckBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>widgets/LineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

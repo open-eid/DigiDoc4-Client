@@ -23,6 +23,7 @@
 #include "Styles.h"
 
 #include <QPainter>
+#include <QSvgWidget>
 
 using namespace ria::qdigidoc4;
 
@@ -109,7 +110,11 @@ void PageIcon::activate( bool selected )
 	updateSelection();
 }
 
-void PageIcon::enterEvent( QEvent * /*ev*/ )
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void PageIcon::enterEvent(QEnterEvent * /*ev*/)
+#else
+void PageIcon::enterEvent(QEvent * /*ev*/)
+#endif
 {
 	if( !selected )
 		updateSelection(hover);

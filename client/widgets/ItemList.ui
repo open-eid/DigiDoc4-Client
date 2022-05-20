@@ -281,7 +281,7 @@ border-width: 0px 0px 1px 0px;
         <number>0</number>
        </property>
        <item>
-        <widget class="QLineEdit" name="txtFind">
+        <widget class="LineEdit" name="txtFind">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -403,14 +403,20 @@ background-position: left bottom; }</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LabelButton</class>
-   <extends>QToolButton</extends>
-   <header>widgets/LabelButton.h</header>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>widgets/LineEdit.h</header>
   </customwidget>
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
    <header location="global">QSvgWidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -24,8 +24,10 @@
 class QCardLockPrivate
 {
 public:
-	explicit QCardLockPrivate();
-
-	QMutex readLock;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QRecursiveMutex readLock;
+#else
+	QMutex readLock{QMutex::Recursive};
+#endif
 	QMutex exclusiveLock;
 };
