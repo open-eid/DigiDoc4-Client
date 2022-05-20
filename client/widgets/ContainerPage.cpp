@@ -316,8 +316,8 @@ void ContainerPage::transition(DigiDoc* container)
 	QMap<ria::qdigidoc4::WarningType, int> errors;
 	setHeader(container->fileName());
 	auto addError = [&errors](const SignatureItem* item) {
-		auto counter = errors.value(item->getError());
-		errors[item->getError()] = counter++;
+		int counter = errors.value(item->getError());
+		errors[item->getError()] = ++counter;
 	};
 
 	if(!container->timestamps().isEmpty())
@@ -341,12 +341,8 @@ void ContainerPage::transition(DigiDoc* container)
 		ui->rightPane->addWidget(item);
 	}
 
-	if(!errors.isEmpty())
-	{
-		QMap<ria::qdigidoc4::WarningType, int>::const_iterator i;
-		for (i = errors.constBegin(); i != errors.constEnd(); ++i)
-			emit warning(WarningText(i.key(), i.value()));
-	}
+	for(auto i = errors.constBegin(); i != errors.constEnd(); ++i)
+		emit warning(WarningText(i.key(), i.value()));
 	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
 		emit warning(UnsupportedDDocWarning);
 
