@@ -133,18 +133,14 @@ public:
 	PKCS12Certificate& operator =(const PKCS12Certificate &other);
 	PKCS12Certificate& operator =(PKCS12Certificate &&other) Q_DECL_NOEXCEPT;
 
-	QList<QSslCertificate> caCertificates() const;
 	QSslCertificate certificate() const;
 	ErrorType error() const;
 	QString errorString() const;
 	bool isNull() const;
-	QSslKey	key() const;
 
 	static PKCS12Certificate fromPath( const QString &path, const QString &pin );
 
 private:
-	QSslKey fromEVP(Qt::HANDLE evp) const;
-
 	class Private;
 	QSharedDataPointer<Private> d;
 };

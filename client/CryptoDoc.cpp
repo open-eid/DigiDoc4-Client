@@ -638,7 +638,7 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 					pcuchar pp = pcuchar(derCert.data());
 					auto peerCert = SCOPE(X509, d2i_X509(nullptr, &pp, derCert.size()));
 					EVP_PKEY *peerPKey = X509_get0_pubkey(peerCert.get());
-					EC_KEY *peerECKey = EVP_PKEY_get0_EC_KEY(peerPKey);
+					const EC_KEY *peerECKey = EVP_PKEY_get0_EC_KEY(peerPKey);
 					int curve = EC_GROUP_get_curve_name(EC_KEY_get0_group(peerECKey));
 					auto priv = SCOPE(EC_KEY, EC_KEY_new_by_curve_name(curve));
 					auto pkey = SCOPE(EVP_PKEY, EVP_PKEY_new());
