@@ -712,7 +712,7 @@ void Application::mailTo( const QUrl &url )
 		default: break;
 		}
 	}
-#elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_UNIX)
 	QByteArray thunderbird;
 	QProcess p;
 	QStringList env = QProcess::systemEnvironment();
