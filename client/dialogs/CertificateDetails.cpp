@@ -207,7 +207,7 @@ QString CertificateDetails::decodeCN(const QString &cn)
 #ifndef Q_OS_MAC
 void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
 {
-#ifdef Q_OS_LINUX
+#ifdef Q_OS_UNIX
 	CertificateDetails(cert, parent).exec();
 #else
 	Q_UNUSED(parent);
