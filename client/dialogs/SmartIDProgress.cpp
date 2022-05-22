@@ -97,7 +97,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->info->setFont(Styles::font(Styles::Regular, 14));
 	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
 	d->signProgressBar->setFont(d->info->font());
-#ifdef Q_OS_LINUX
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
 background-color: #d3d3d3;;
 border-style: solid;
