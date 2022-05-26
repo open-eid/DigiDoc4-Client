@@ -401,7 +401,7 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 	};
 	QString cleanTerm = term.simplified();
 	bool isDigit = false;
-	cleanTerm.toULong(&isDigit);
+	cleanTerm.toULongLong(&isDigit);
 	if(isDigit && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
 	{
 		if(cleanTerm.size() == 11)
