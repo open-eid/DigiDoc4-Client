@@ -63,7 +63,7 @@ public:
 #endif
 	void loadTranslation( const QString &lang );
 	QWidget* mainWindow();
-	bool notify( QObject *o, QEvent *e ) override;
+	bool notify(QObject *object, QEvent *event ) final;
 	void openHelp();
 	QSigner* signer() const;
 	int run();
@@ -95,7 +95,7 @@ Q_SIGNALS:
 
 private:
 	void activate( QWidget *w );
-	bool event( QEvent *e ) override;
+	bool event(QEvent *event) final;
 	void migrateSettings();
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
 	QWidget* uniqueRoot();
