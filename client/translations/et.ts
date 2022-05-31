@@ -1929,6 +1929,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus. Sinu Smart-ID toiming aegus või kontot ei leitud.</translation>
     </message>
+    <message>
+        <source>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
+        <translation>Ümbriku allkirjastamine ebaõnnestus. DigiDoc4 kliendis allkirjastamiseks pead Smart-ID rakendust uuendama.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

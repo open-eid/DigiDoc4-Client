@@ -41,7 +41,9 @@ void Diagnostics::generalInfo(QTextStream &s) const
 #ifdef CONFIG_URL
 		<< "<br />CONFIG_URL: " << CONFIG_URL
 		<< "<br />SID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
 		<< "<br />SID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-SK-URL: " << Configuration::instance().object().value(QStringLiteral("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
 		<< "<br />MID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL))
 		<< "<br />MID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL))
 		<< "<br />RPUUID: " << (QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("MIDUUID"))).toBool() ? tr("is set manually") : tr("is set by default"))

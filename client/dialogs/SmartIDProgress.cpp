@@ -61,13 +61,14 @@ public:
 	QTimeLine *statusTimer = nullptr;
 	QNetworkAccessManager *manager = nullptr;
 	QNetworkRequest req;
-	QString documentNumber, sessionID;
+	QString documentNumber, sessionID, fileName;
 	X509Cert cert;
 	std::vector<unsigned char> signature;
 	QEventLoop l;
 #ifdef CONFIG_URL
-	QString PROXYURL = Configuration::instance().object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL));
-	QString SKURL = Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL));
+	QJsonObject config = Configuration::instance().object();
+	QString PROXYURL = config.value(QStringLiteral("SIDV2-PROXY-URL")).toString(config.value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL)));
+	QString SKURL = config.value(QStringLiteral("SIDV2-SK-URL")).toString(config.value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL)));
 #else
 	QString PROXYURL = QSettings().value(QStringLiteral("SID-PROXY-URL"), QStringLiteral(SMARTID_URL)).toString();
 	QString SKURL = QSettings().value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
@@ -87,7 +88,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	: d(new Private(parent))
 {
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
-		true || QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
+		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
 	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
@@ -131,7 +132,7 @@ background-color: #007aff;
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+	for(const QJsonValue cert: d->config.value(QStringLiteral("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 #endif
 	d->req.setSslConfiguration(ssl);
@@ -247,10 +248,17 @@ background-color: #007aff;
 		else if(result.value(QStringLiteral("state")).toString() != QStringLiteral("RUNNING"))
 		{
 			QString endResult = result.value(QStringLiteral("result")).toObject().value(QStringLiteral("endResult")).toString();
-			if(endResult == QStringLiteral("USER_REFUSED"))
+			if(endResult == QStringLiteral("USER_REFUSED") ||
+				endResult == QStringLiteral("USER_REFUSED_CERT_CHOICE") ||
+				endResult == QStringLiteral("USER_REFUSED_DISPLAYTEXTANDPIN") ||
+				endResult == QStringLiteral("USER_REFUSED_VC_CHOICE") ||
+				endResult == QStringLiteral("USER_REFUSED_CONFIRMATIONMESSAGE") ||
+				endResult == QStringLiteral("USER_REFUSED_CONFIRMATIONMESSAGE_WITH_VC_CHOICE"))
 				returnError(tr("User denied or cancelled"));
 			else if(endResult == QStringLiteral("TIMEOUT"))
 				returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
+			else if(endResult == QStringLiteral("REQUIRED_INTERACTION_NOT_SUPPORTED_BY_APP"))
+				returnError(tr("Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client."));
 			else if(endResult == QStringLiteral("WRONG_VC"))
 				returnError(tr("Error: an incorrect control code was chosen"));
 			else if(endResult == QStringLiteral("DOCUMENT_UNUSABLE"))
@@ -297,13 +305,19 @@ X509Cert SmartIDProgress::cert() const
 	return d->cert;
 }
 
-bool SmartIDProgress::init(const QString &country, const QString &idCode)
+bool SmartIDProgress::init(const QString &country, const QString &idCode, const QString &fileName)
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
 		WarningDialog(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")), {}, d->parentWidget()).exec();
 		return false;
 	}
+	QFileInfo info(fileName);
+	QString displayFile = info.completeBaseName();
+	if(displayFile.size() > 6)
+		displayFile = displayFile.left(3) + QStringLiteral("...") + displayFile.right(3);
+	displayFile += QStringLiteral(".") + info.suffix();
+	d->fileName = displayFile;
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
@@ -311,7 +325,11 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode)
 		{"certificateLevel", "QUALIFIED"},
 		{"nonce", QUuid::createUuid().toString().remove('-').mid(1, 30)}
 	}).toJson();
-	d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL(), country, idCode)));
+	if (d->req.url().path().contains(QStringLiteral("v1"), Qt::CaseInsensitive)) {
+		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL(), country, idCode)));
+	} else {
+		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL(), country, idCode)));
+	}
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->info->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
@@ -344,17 +362,26 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		"and enter Smart-ID PIN2-code."));
 	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
 
-	QByteArray data = QJsonDocument({
+	QJsonObject req{
 		{"relyingPartyUUID", (d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID)},
 		{"relyingPartyName", d->NAME},
 		{"certificateLevel", "QUALIFIED"},
 		{"hash", QString(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64())},
 		{"hashType", digestMethod},
-		{"requestProperties", QJsonObject{{"vcChoice", true}}},
-		{"displayText", "%1"}
-	}).toJson();
+	};
+	QString escape = tr("Sign document");
+	if (d->req.url().path().contains(QStringLiteral("v1"), Qt::CaseInsensitive)) {
+		req[QStringLiteral("requestProperties")] = QJsonObject{{"vcChoice", true}};
+		req[QStringLiteral("displayText")] = "%1";
+	} else {
+		req[QStringLiteral("allowedInteractionsOrder")] = QJsonArray{QJsonObject{
+			{"type", "confirmationMessageAndVerificationCodeChoice"},
+			{"displayText200", "%1"}
+		}};
+		escape = QStringLiteral("%1 %2").arg(tr("Sign document"), d->fileName);
+	}
 	// Workaround SID proxy issues
-	data = QString::fromUtf8(data).arg(escapeUnicode(tr("Sign document"))).toUtf8();
+	QByteArray data = QString::fromUtf8(QJsonDocument(req).toJson()).arg(escapeUnicode(escape)).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);

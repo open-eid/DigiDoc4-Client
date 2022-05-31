@@ -1932,6 +1932,10 @@ and enter Smart-ID PIN2-code.</source>
         <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
         <translation>Не удалось подписать контейнер. Срок действия вашей операции Smart-ID истек или учетная запись не найдена.</translation>
     </message>
+    <message>
+        <source>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
+        <translation>Не удалось подписать контейнер. Для подписания с помощью Smart-ID в программе DigiDoc4 клиент нужно обновить приложение Smart-ID.</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>
