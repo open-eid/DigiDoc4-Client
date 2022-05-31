@@ -26,6 +26,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QTextStream>
 #include <QtCore/QVector>
+#include <QtNetwork/QSslSocket>
 
 #include <qt_windows.h>
 
@@ -133,7 +134,10 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << tr("Libraries") << ":</b><br />" << "QT (" << qVersion() << ")<br />";
+	s << "<b>" << tr("Libraries") << ":</b><br />"
+		<< "QT (" << qVersion() << ")<br />"
+		<< "OpenSSL build (" << QSslSocket::sslLibraryBuildVersionString() << ")<br />"
+		<< "OpenSSL current (" << QSslSocket::sslLibraryVersionString() << ")<br />";
 
 	QByteArray path = qgetenv("PATH");
 	qputenv("PATH", path

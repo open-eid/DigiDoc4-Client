@@ -195,7 +195,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
           </Directory>
           <Directory Id="imageformats" Name="imageformats" FileSource="$(var.qt_path)\..\plugins\imageformats">
             <Component Id="imageformats.dll" Guid="2796915c-6255-4569-97cc-12fa979c4777">
-              <File Name="qgif$(var.qt_suffix).dll"/>
               <File Name="qjpeg$(var.qt_suffix).dll"/>
               <File Name="qsvg$(var.qt_suffix).dll"/>
             </Component>

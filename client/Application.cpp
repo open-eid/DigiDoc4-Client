@@ -482,6 +482,9 @@ Application::~Application()
 	digidoc::terminate();
 	delete d;
 
+	QDesktopServices::unsetUrlHandler(QStringLiteral("browse"));
+	QDesktopServices::unsetUrlHandler(QStringLiteral("mailto"));
+
 	if(property("restart").toBool())
 	{
 		QStringList args = arguments();

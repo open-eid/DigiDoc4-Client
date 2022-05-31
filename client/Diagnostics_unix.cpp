@@ -24,6 +24,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QProcess>
+#include <QtNetwork/QSslSocket>
 
 #include <sys/utsname.h>
 #ifdef Q_OS_MAC
@@ -116,15 +117,18 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	s << "<b>" << tr("Libraries") << ":</b><br />" << packages({
+	s << "<b>" << tr("Libraries") << ":</b><br />"
+		<< "QT (" << qVersion() << ")" << "<br />"
+		<< "OpenSSL build (" << QSslSocket::sslLibraryBuildVersionString() << ")<br />"
+		<< "OpenSSL current (" << QSslSocket::sslLibraryVersionString() << ")<br />"
+		<< packages({
 #ifdef Q_OS_MAC
 		"digidocpp"
 #else
 		"libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil", "qdigidoc-tera", "firefox-pkcs11-loader",
 		"chrome-token-signing", "web-eid", "openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
 #endif
-	}).join(QStringLiteral("<br />")) << "<br />";
-	s << "QT (" << qVersion() << ")" << "<br /><br />";
+		}).join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
 	info.clear();
 
