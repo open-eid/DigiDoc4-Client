@@ -385,15 +385,18 @@ Application::Application( int &argc, char **argv )
 		d->signer = new QSigner(api, this);
 		QString cache = confValue(TSLCache).toString();
 		QDir().mkpath( cache );
+		QDateTime tslTime = QDateTime::currentDateTimeUtc().addDays(-7);
 		for(const QString &file: QDir(QStringLiteral(":/TSL/")).entryList())
 		{
-			const QString target = cache + "/" + file;
-			if(!QFile::exists(target) ||
-				readTSLVersion(":/TSL/" + file) > readTSLVersion(target))
+			QFile tl(cache + "/" + file);
+			if(!tl.exists() ||
+				readTSLVersion(":/TSL/" + file) > readTSLVersion(tl.fileName()))
 			{
-				QFile::remove(target);
-				QFile::copy(":/TSL/" + file, target);
-				QFile::setPermissions(target, QFile::Permissions(0x6444));
+				tl.remove();
+				QFile::copy(":/TSL/" + file, tl.fileName());
+				tl.setPermissions(QFile::Permissions(0x6444));
+				if(tl.open(QFile::Append))
+					tl.setFileTime(tslTime, QFileDevice::FileModificationTime);
 			}
 		}
 
@@ -612,9 +615,9 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	return r.isEmpty() ? value.toString() : QString::fromUtf8( r );
 }
 
-bool Application::event( QEvent *e )
+bool Application::event(QEvent *event)
 {
-	switch( int(e->type()) )
+	switch(int(event->type()))
 	{
 	case REOpenEvent::Type:
 		if( !activeWindow() )
@@ -622,7 +625,7 @@ bool Application::event( QEvent *e )
 		return true;
 	case QEvent::FileOpen:
 	{
-		QString fileName = static_cast<QFileOpenEvent*>(e)->file().normalized(QString::NormalizationForm_C);
+		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
 		QTimer::singleShot(0, [this, fileName] {
 			parseArgs({ fileName });
 		});
@@ -632,9 +635,9 @@ bool Application::event( QEvent *e )
 	// Load here because cocoa NSApplication overides events
 	case QEvent::ApplicationActivate:
 		initMacEvents();
-		return Common::event( e );
+		return Common::event(event);
 #endif
-	default: return Common::event( e );
+	default: return Common::event(event);
 	}
 }
 
@@ -931,11 +934,11 @@ void Application::migrateSettings()
 
 }
 
-bool Application::notify( QObject *o, QEvent *e )
+bool Application::notify(QObject *object, QEvent *event)
 {
 	try
 	{
-		return QApplication::notify( o, e );
+		return QApplication::notify(object, event);
 	}
 	catch( const digidoc::Exception &e )
 	{
