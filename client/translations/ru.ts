@@ -2260,10 +2260,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>ИДЕНТИФИКАТОР ЛИЧНОГО КЛЮЧА</translation>
     </message>
     <message>
-        <source>NB! TEST SIGNATURE</source>
-        <translation>NB! ПРОБНАЯ ПОДПИСЬ</translation>
-    </message>
-    <message>
         <source>NB! WARNINGS</source>
         <translation>NB! ПРЕДУПРЕЖДЕНИЯ</translation>
     </message>
@@ -2834,10 +2830,6 @@ Additional licenses and components</source>
         <translation>Эта электронная подпись не эквивалентна рукописной подписи и поэтому может использоваться только в тех случаях, когда не требуется квалифицированная электронная подпись.</translation>
     </message>
     <message>
-        <source>Test signature</source>
-        <translation>Пробная подпись</translation>
-    </message>
-    <message>
         <source>is unknown</source>
         <comment>Signature</comment>
         <translation>неизвестная</translation>
@@ -2860,10 +2852,6 @@ Additional licenses and components</source>
         <source>is not valid</source>
         <comment>Timestamp</comment>
         <translation>недействителен</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Пробная подпись создается пробным сертификатом, который отличается от настоящего тем, что с пробным сертификатом нельзя поставить юридически действительную подись, потому что владелец карты на самом деле не существует. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2976,10 +2964,6 @@ Additional licenses and components</source>
     <message>
         <source>Restrictions</source>
         <translation>Ограничения</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Пробная подпись</translation>
     </message>
     <message>
         <source>Signature is valid</source>

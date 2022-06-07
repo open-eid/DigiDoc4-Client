@@ -2257,10 +2257,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>VÄLJAANDJA VÕTME IDENTIFIKAATOR</translation>
     </message>
     <message>
-        <source>NB! TEST SIGNATURE</source>
-        <translation>NB! TESTALLKIRI</translation>
-    </message>
-    <message>
         <source>NB! WARNINGS</source>
         <translation>NB! HOIATUSEGA</translation>
     </message>
@@ -2821,16 +2817,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>See e-allkiri ei ole käsitsi kirjutatud allkirjadega samaväärne ja seetõttu saab seda kasutada ainult tehingute puhul, kus kvalifitseeritud e-allkiri pole kohustuslik.</translation>
     </message>
     <message>
-        <source>Test signature</source>
-        <translation>Testallkiri</translation>
-    </message>
-    <message>
         <source>Unknown error</source>
         <translation>Tundmatu viga</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Testallkiri on allkirjastatud testsertifikaadiga, mis sarnaneb päris sertifikaadiga, kuid sellega ei saa anda õigusjõuga digitaalallkirju, sest kaardi omanikku tegelikkuses ei eksisteeri. &lt;a href=&apos;https://www.id.ee/artikkel/testsertifikaatidega-antud-allkirjade-kontrollimine-digidoc4-kliendis/&apos;&gt;Täiendav info&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2997,10 +2985,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Restrictions</source>
         <translation>Piirangud</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Testallkiri</translation>
     </message>
     <message>
         <source>Signed on</source>

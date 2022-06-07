@@ -38,7 +38,6 @@ public:
 		Valid,
 		Warning,
 		NonQSCD,
-		Test,
 		Invalid,
 		Unknown
 	};
