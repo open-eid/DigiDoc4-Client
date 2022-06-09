@@ -395,8 +395,10 @@ Application::Application( int &argc, char **argv )
 				tl.remove();
 				QFile::copy(":/TSL/" + file, tl.fileName());
 				tl.setPermissions(QFile::Permissions(0x6444));
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 				if(tl.open(QFile::Append))
 					tl.setFileTime(tslTime, QFileDevice::FileModificationTime);
+#endif
 			}
 		}
 
