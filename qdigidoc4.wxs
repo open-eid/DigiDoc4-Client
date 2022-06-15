@@ -144,8 +144,8 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
             <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll"/>
             <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll"/>
 <?endif ?>
-            <File Source="$(var.libs_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
-            <File Source="$(var.libs_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
+            <File Source="$(var.libs_path)\libcrypto-3$(var.OpenSSLSuffix).dll"/>
+            <File Source="$(var.libs_path)\libssl-3$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.qt_path)\Qt6Core$(var.qt_suffix).dll"/>
             <File Source="$(var.qt_path)\Qt6Gui$(var.qt_suffix).dll"/>
             <File Source="$(var.qt_path)\Qt6Network$(var.qt_suffix).dll"/>

@@ -4,8 +4,8 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.4.2"
-OPENSSL_VER="1.1.1t"
+QT_VER="6.5.0"
+OPENSSL_VER="3.0.8"
 OPENLDAP_VER="2.6.4"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
@@ -77,19 +77,8 @@ if [[ ! -d ${OPENSSL_PATH} ]] ; then
     rm -rf openssl-${OPENSSL_VER}
     tar xf openssl-${OPENSSL_VER}.tar.gz
     cd openssl-${OPENSSL_VER}
-
-    sed -ie 's!, "apps"!!' Configure
-    sed -ie 's!, "fuzz"!!' Configure
-    sed -ie 's!, "test"!!' Configure
     for ARCH in x86_64 arm64; do
-        case "${ARCH}" in
-        *x86_64*)
-            CC="" CFLAGS="" MACHINE=x86_64 KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
-            ;;
-        *arm64*)
-            CC="" CFLAGS="" MACHINE=arm64 KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
-            ;;
-        esac
+        ./Configure darwin64-${ARCH} --prefix=${OPENSSL_PATH} shared no-autoload-config no-module no-engine no-tests enable-ec_nistp_64_gcc_128
         make -s > /dev/null
         make install_sw
         mv ${OPENSSL_PATH} ${OPENSSL_PATH}.${ARCH}
@@ -97,7 +86,7 @@ if [[ ! -d ${OPENSSL_PATH} ]] ; then
     done
     cp -a ${OPENSSL_PATH}.x86_64 ${OPENSSL_PATH}
     cd ${OPENSSL_PATH}.arm64
-    for i in lib/lib*1.1.dylib; do
+    for i in lib/lib*3.dylib; do
         lipo -create ${OPENSSL_PATH}.x86_64/${i} ${i} -output ${OPENSSL_PATH}/${i}
     done
     cd -
