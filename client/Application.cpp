@@ -51,6 +51,7 @@ class MacMenuBar {};
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
@@ -722,7 +723,7 @@ void Application::mailTo( const QUrl &url )
 	QByteArray thunderbird;
 	QProcess p;
 	QStringList env = QProcess::systemEnvironment();
-	if( env.indexOf( QRegExp("KDE_FULL_SESSION.*") ) != -1 )
+	if(env.indexOf(QRegularExpression(QStringLiteral("KDE_FULL_SESSION.*"))) != -1)
 	{
 		p.start("kreadconfig", {
 			"--file", "emaildefaults",
@@ -733,7 +734,7 @@ void Application::mailTo( const QUrl &url )
 		if( data.contains("thunderbird") )
 			thunderbird = data;
 	}
-	else if( env.indexOf( QRegExp("GNOME_DESKTOP_SESSION_ID.*") ) != -1 )
+	else if(env.indexOf(QRegularExpression(QStringLiteral("GNOME_DESKTOP_SESSION_ID.*"))) != -1)
 	{
 		if(QSettings(QDir::homePath() + "/.local/share/applications/mimeapps.list", QSettings::IniFormat)
 				.value("Default Applications/x-scheme-handler/mailto").toString().contains("thunderbird"))
