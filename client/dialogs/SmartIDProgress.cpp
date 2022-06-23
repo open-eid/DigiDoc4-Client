@@ -67,8 +67,8 @@ public:
 	QEventLoop l;
 #ifdef CONFIG_URL
 	QJsonObject config = Configuration::instance().object();
-	QString PROXYURL = config.value(QStringLiteral("SIDV2-PROXY-URL")).toString(config.value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL)));
-	QString SKURL = config.value(QStringLiteral("SIDV2-SK-URL")).toString(config.value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL)));
+	QString PROXYURL = config.value(QLatin1String("SIDV2-PROXY-URL")).toString(config.value(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL)));
+	QString SKURL = config.value(QLatin1String("SIDV2-SK-URL")).toString(config.value(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL)));
 #else
 	QString PROXYURL = QSettings().value(QStringLiteral("SID-PROXY-URL"), QStringLiteral(SMARTID_URL)).toString();
 	QString SKURL = QSettings().value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
@@ -132,8 +132,8 @@ background-color: #007aff;
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	for(const QJsonValue cert: d->config.value(QStringLiteral("CERT-BUNDLE")).toArray())
-		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
+	for(const QJsonValue c: d->config.value(QLatin1String("CERT-BUNDLE")).toArray())
+		trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
 #endif
 	d->req.setSslConfiguration(ssl);
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -220,10 +220,10 @@ background-color: #007aff;
 					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
 				return;
 			case 580:
-				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(QStringLiteral("Smart-ID")));
+				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(QLatin1String("Smart-ID")));
 				return;
 			default:
-				returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(QStringLiteral("Smart-ID")), reply->errorString());
+				returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(QLatin1String("Smart-ID")), reply->errorString());
 				return;
 			}
 		}
@@ -244,42 +244,42 @@ background-color: #007aff;
 			return;
 		}
 		if(d->sessionID.isEmpty())
-			d->sessionID = result.value(QStringLiteral("sessionID")).toString();
-		else if(result.value(QStringLiteral("state")).toString() != QStringLiteral("RUNNING"))
+			d->sessionID = result.value(QLatin1String("sessionID")).toString();
+		else if(result.value(QLatin1String("state")).toString() != QLatin1String("RUNNING"))
 		{
-			QString endResult = result.value(QStringLiteral("result")).toObject().value(QStringLiteral("endResult")).toString();
-			if(endResult == QStringLiteral("USER_REFUSED") ||
-				endResult == QStringLiteral("USER_REFUSED_CERT_CHOICE") ||
-				endResult == QStringLiteral("USER_REFUSED_DISPLAYTEXTANDPIN") ||
-				endResult == QStringLiteral("USER_REFUSED_VC_CHOICE") ||
-				endResult == QStringLiteral("USER_REFUSED_CONFIRMATIONMESSAGE") ||
-				endResult == QStringLiteral("USER_REFUSED_CONFIRMATIONMESSAGE_WITH_VC_CHOICE"))
+			QString endResult = result.value(QLatin1String("result")).toObject().value(QLatin1String("endResult")).toString();
+			if(endResult == QLatin1String("USER_REFUSED") ||
+				endResult == QLatin1String("USER_REFUSED_CERT_CHOICE") ||
+				endResult == QLatin1String("USER_REFUSED_DISPLAYTEXTANDPIN") ||
+				endResult == QLatin1String("USER_REFUSED_VC_CHOICE") ||
+				endResult == QLatin1String("USER_REFUSED_CONFIRMATIONMESSAGE") ||
+				endResult == QLatin1String("USER_REFUSED_CONFIRMATIONMESSAGE_WITH_VC_CHOICE"))
 				returnError(tr("User denied or cancelled"));
-			else if(endResult == QStringLiteral("TIMEOUT"))
+			else if(endResult == QLatin1String("TIMEOUT"))
 				returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
-			else if(endResult == QStringLiteral("REQUIRED_INTERACTION_NOT_SUPPORTED_BY_APP"))
+			else if(endResult == QLatin1String("REQUIRED_INTERACTION_NOT_SUPPORTED_BY_APP"))
 				returnError(tr("Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client."));
-			else if(endResult == QStringLiteral("WRONG_VC"))
+			else if(endResult == QLatin1String("WRONG_VC"))
 				returnError(tr("Error: an incorrect control code was chosen"));
-			else if(endResult == QStringLiteral("DOCUMENT_UNUSABLE"))
+			else if(endResult == QLatin1String("DOCUMENT_UNUSABLE"))
 				returnError(tr("Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support."));
-			else if(endResult != QStringLiteral("OK"))
+			else if(endResult != QLatin1String("OK"))
 				returnError(tr("Service result: ") + endResult);
 			else if(d->documentNumber.isEmpty())
-				d->documentNumber = result.value(QStringLiteral("result")).toObject().value(QStringLiteral("documentNumber")).toString();
-			if(result.contains(QStringLiteral("signature")))
+				d->documentNumber = result.value(QLatin1String("result")).toObject().value(QLatin1String("documentNumber")).toString();
+			if(result.contains(QLatin1String("signature")))
 			{
 				QByteArray b64 = QByteArray::fromBase64(
-					result.value(QStringLiteral("signature")).toObject().value(QStringLiteral("value")).toString().toUtf8());
+					result.value(QLatin1String("signature")).toObject().value(QLatin1String("value")).toString().toUtf8());
 				d->signature.assign(b64.cbegin(), b64.cend());
 				d->hide();
 				d->l.exit(QDialog::Accepted);
 			}
-			else if(result.contains(QStringLiteral("cert")))
+			else if(result.contains(QLatin1String("cert")))
 			{
 				try {
 					QByteArray b64 = QByteArray::fromBase64(
-						result.value(QStringLiteral("cert")).toObject().value(QStringLiteral("value")).toString().toUtf8());
+						result.value(QLatin1String("cert")).toObject().value(QLatin1String("value")).toString().toUtf8());
 					d->cert = X509Cert((const unsigned char*)b64.constData(), size_t(b64.size()), X509Cert::Der);
 					d->hide();
 					d->l.exit(QDialog::Accepted);
@@ -288,6 +288,8 @@ background-color: #007aff;
 				}
 			}
 			return;
+		} else {
+			d->show();
 		}
 		d->req.setUrl(QUrl(QStringLiteral("%1/session/%2?timeoutMs=10000").arg(d->URL(), d->sessionID)));
 		qCDebug(SIDLog).noquote() << d->req.url();
@@ -325,7 +327,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 		{"certificateLevel", "QUALIFIED"},
 		{"nonce", QUuid::createUuid().toString().remove('-').mid(1, 30)}
 	}).toJson();
-	if (d->req.url().path().contains(QStringLiteral("v1"), Qt::CaseInsensitive)) {
+	if (d->req.url().path().contains(QLatin1String("v1"), Qt::CaseInsensitive)) {
 		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL(), country, idCode)));
 	} else {
 		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL(), country, idCode)));
@@ -336,7 +338,6 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 	d->code->setAccessibleName(d->info->text());
 	d->statusTimer->start();
 	d->adjustSize();
-	d->show();
 	return d->l.exec() == QDialog::Accepted;
 }
 
@@ -370,11 +371,11 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		{"hashType", digestMethod},
 	};
 	QString escape = tr("Sign document");
-	if (d->req.url().path().contains(QStringLiteral("v1"), Qt::CaseInsensitive)) {
-		req[QStringLiteral("requestProperties")] = QJsonObject{{"vcChoice", true}};
-		req[QStringLiteral("displayText")] = "%1";
+	if (d->req.url().path().contains(QLatin1String("v1"), Qt::CaseInsensitive)) {
+		req[QLatin1String("requestProperties")] = QJsonObject{{"vcChoice", true}};
+		req[QLatin1String("displayText")] = "%1";
 	} else {
-		req[QStringLiteral("allowedInteractionsOrder")] = QJsonArray{QJsonObject{
+		req[QLatin1String("allowedInteractionsOrder")] = QJsonArray{QJsonObject{
 			{"type", "confirmationMessageAndVerificationCodeChoice"},
 			{"displayText200", "%1"}
 		}};
