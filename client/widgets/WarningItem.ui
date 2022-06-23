@@ -23,8 +23,7 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: solid #B5AA92;
-border-width: 0px 0px 1px 0px;
+   <string notr="true">border-bottom: 1px solid #B5AA92;
 background-color: #F8DDA7;
 color: #353739;</string>
   </property>
@@ -50,8 +49,6 @@ color: #353739;</string>
       <font>
        <family>Roboto</family>
        <pointsize>14</pointsize>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
       </font>
      </property>
      <property name="focusPolicy">
@@ -74,14 +71,15 @@ color: #353739;</string>
       <font>
        <family>Roboto</family>
        <pointsize>14</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
+       <underline>true</underline>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">text-decoration: none solid rgb(53, 55, 57);
+      <string notr="true">text-decoration: underline solid rgb(53, 55, 57);
 border: none;</string>
      </property>
      <property name="text">
