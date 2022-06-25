@@ -29,6 +29,7 @@
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Styles.h"
+#include "sslConnect.h"
 #include "TokenData.h"
 #include "effects/ButtonHoverFilter.h"
 #include "effects/FadeInNotification.h"
@@ -47,7 +48,6 @@
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
-#include <QtCore/QLoggingCategory>
 #include <QtCore/QMimeData>
 #include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
@@ -60,8 +60,6 @@
 
 using namespace ria::qdigidoc4;
 using namespace ria::qdigidoc4::colors;
-
-Q_LOGGING_CATEGORY(MLog, "qdigidoc4.MainWindow")
 
 MainWindow::MainWindow( QWidget *parent )
 	: QWidget( parent )
@@ -219,23 +217,16 @@ void MainWindow::pageSelected(PageIcon *page)
 	}
 
 	Pages toPage = page->getType();
-	if(toPage == SignIntro)
+	if(toPage == SignIntro && digiDoc)
 	{
-		if(digiDoc)
-		{
-			navigate = false;
-			selectPage(SignDetails);
-		}
+		selectPage(SignDetails);
+		return;
 	}
-	else if(toPage == CryptoIntro)
+	if(toPage == CryptoIntro && cryptoDoc)
 	{
-		if(cryptoDoc)
-		{
-			navigate = false;
-			selectPage(CryptoDetails);
-		}
+		selectPage(CryptoDetails);
+		return;
 	}
-
 	if(navigate)
 		navigateToPage(toPage);
 }
@@ -919,7 +910,8 @@ void MainWindow::showSettings(int page)
 	dlg.exec();
 }
 
-void MainWindow::sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign)
+template<typename F>
+void MainWindow::sign(F &&sign)
 {
 	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
@@ -1028,22 +1020,13 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 		}
 	}
 
-	bool hasEmptyFile = false;
-	for (auto i = 0; i < model->rowCount(); ++i) {
-		const auto fileSize = model->fileSize(i).trimmed();
-		if (fileSize.startsWith(QLatin1String("0 "), Qt::CaseInsensitive))
-		{
-			hasEmptyFile = true;
-		}
-	}
-
-	if (false == hasEmptyFile)
-	{
+	for(auto i = 0; i < model->rowCount(); ++i) {
+		if(!model->fileSize(i).trimmed().startsWith(QLatin1String("0 ")))
+			continue;
 		warnings->closeWarning(EmptyFileWarning);
-		if  (digiDoc)
-		{
-			this->ui->signContainerPage->transition(digiDoc);
-		}
+		if(digiDoc)
+			ui->signContainerPage->transition(digiDoc);
+		break;
 	}
 
 	return false;
@@ -1051,13 +1034,13 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 
 void MainWindow::removeSignature(int index)
 {
-	if(digiDoc)
-	{
-		digiDoc->removeSignature(index);
-		save();
-		ui->signContainerPage->transition(digiDoc);
-		adjustDrops();
-	}
+	if(!digiDoc)
+		return;
+	WaitDialogHolder waitDialog(this, tr("Removing signature"));
+	digiDoc->removeSignature(index);
+	save();
+	ui->signContainerPage->transition(digiDoc);
+	adjustDrops();
 }
 
 void MainWindow::removeSignatureFile(int index)

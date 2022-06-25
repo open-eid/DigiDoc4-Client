@@ -1591,6 +1591,10 @@ ID-KAARDIGA</translation>
         <translation>KATKESTA</translation>
     </message>
     <message>
+        <source>Removing signature</source>
+        <translation>Allkirja eemaldamine</translation>
+    </message>
+    <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
         <translation>Allkirjastatud ümbrikusse ei saa faile lisada. Süsteem loob uue ümbriku, kuhu lisatakse allkirjastatud dokument ja Sinu valitud failid.</translation>
     </message>
