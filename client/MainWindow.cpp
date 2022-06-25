@@ -92,12 +92,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), qApp->applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
-	QSvgWidget* coatOfArms = new QSvgWidget(ui->logo);
-	coatOfArms->setStyleSheet(QStringLiteral("border: none;"));
-	coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
-	coatOfArms->resize( 80, 32 );
-	coatOfArms->move( 15, 17 );
-
+	ui->coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
 	ui->signature->init( Pages::SignIntro, ui->signatureShadow, true );
 	ui->crypto->init( Pages::CryptoIntro, ui->cryptoShadow, false );
 	ui->myEid->init( Pages::MyEid, ui->myEidShadow, false );

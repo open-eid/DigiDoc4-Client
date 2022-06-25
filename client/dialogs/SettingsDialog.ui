@@ -1035,7 +1035,7 @@ QScrollBar::sub-line:vertical {
        <property name="bottomMargin">
         <number>10</number>
        </property>
-       <item>
+       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
         <widget class="QSvgWidget" name="structureFunds" native="true">
          <property name="minimumSize">
           <size>
@@ -1048,6 +1048,12 @@ QScrollBar::sub-line:vertical {
            <width>111</width>
            <height>61</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="accessibleName">
+          <string>The project is supported by the European Regional Development Fund</string>
          </property>
         </widget>
        </item>
