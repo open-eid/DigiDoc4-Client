@@ -1262,19 +1262,15 @@
         <translation>Подписи контейнера отсутствуют</translation>
     </message>
     <message>
-        <source>Content of the envelope</source>
+        <source>Container files</source>
         <translation>Файлы контейнера</translation>
     </message>
     <message>
-        <source>Container&apos;s files</source>
-        <translation>Файлы контейнера</translation>
-    </message>
-    <message>
-        <source>Container&apos;s signatures</source>
+        <source>Container signatures</source>
         <translation>Подписи контейнера</translation>
     </message>
     <message>
-        <source>Container&apos;s timestamps</source>
+        <source>Container timestamps</source>
         <translation>Временные штампы контейнерa</translation>
     </message>
     <message>

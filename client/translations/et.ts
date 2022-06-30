@@ -1260,19 +1260,15 @@
         <translation>Ümbriku allkirjad puuduvad</translation>
     </message>
     <message>
-        <source>Content of the envelope</source>
-        <translation>Ümbriku sisu</translation>
-    </message>
-    <message>
-        <source>Container&apos;s files</source>
+        <source>Container files</source>
         <translation>Ümbriku failid</translation>
     </message>
     <message>
-        <source>Container&apos;s signatures</source>
+        <source>Container signatures</source>
         <translation>Ümbriku allkirjad</translation>
     </message>
     <message>
-        <source>Container&apos;s timestamps</source>
+        <source>Container timestamps</source>
         <translation>Ümbriku ajatemplid</translation>
     </message>
     <message>

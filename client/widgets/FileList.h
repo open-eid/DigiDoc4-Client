@@ -51,6 +51,7 @@ private slots:
 
 private:
 	void changeEvent(QEvent* event) override;
+	int count() const;
 	bool eventFilter(QObject *obj, QEvent *event) override;
 	void selectFile();
 	void remove(Item *item) override;
