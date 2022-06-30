@@ -199,6 +199,20 @@ jobs:
         path: |
           build/*.msi
           build/*.appx
+  snapcraft:
+    name: Build Snapcraft package
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - uses: snapcore/action-build@v1
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: snap
+        path: ./*.snap
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
