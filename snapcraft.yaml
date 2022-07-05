@@ -26,5 +26,10 @@ apps:
 
 parts:
   qdigidoc4:
-    plugin: nil
-    stage-packages: [qdigidoc4, opensc-pkcs11, libdigidocpp-tools]
+    plugin: cmake
+    source: .
+    stage-packages: [opensc-pkcs11, libdigidocpp-tools]
+    build-packages: [libdigidocpp-dev, libssl-dev, libpcsclite-dev, libldap2-dev, libflatbuffers-dev, zlib1g-dev]
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - "-DCMAKE_FIND_ROOT_PATH=/usr\\;/snap/kf5-5-110-qt-5-15-11-core22-sdk/current"
