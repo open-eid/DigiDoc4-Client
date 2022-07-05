@@ -208,6 +208,8 @@ jobs:
       with:
         submodules: recursive
     - uses: snapcore/action-build@v1
+    - name: Cat logs
+      run: cat /home/runner/.local/state/snapcraft/log/snapcraft*.log
     - name: Archive artifacts
       uses: actions/upload-artifact@v3
       with:
