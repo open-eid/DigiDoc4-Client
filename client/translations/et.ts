@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="et">
+<TS version="2.1" language="et_EE">
 <context>
     <name>AccessCert</name>
     <message>
@@ -2967,12 +2967,28 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>SignatureItem</name>
     <message>
-        <source>Signature</source>
-        <translation>Allkiri</translation>
+        <source>Signature is valid</source>
+        <translation>Allkiri on kehtiv</translation>
     </message>
     <message>
-        <source>Timestamp</source>
-        <translation>Ajatempel</translation>
+        <source>Timestamp is valid</source>
+        <translation>Ajatempel on kehtiv</translation>
+    </message>
+    <message>
+        <source>Signature is not valid</source>
+        <translation>Allkiri ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>Timestamp is not valid</source>
+        <translation>Ajatempel ei ole kehtiv</translation>
+    </message>
+    <message>
+        <source>Signature is unknown</source>
+        <translation>Allkiri on teadmata</translation>
+    </message>
+    <message>
+        <source>Timestamp is unknown</source>
+        <translation>Ajatempel on teadmata</translation>
     </message>
     <message>
         <source>Warnings</source>
@@ -3005,36 +3021,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>on teadmata</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>on teadmata</translation>
     </message>
     <message>
         <source>Remove signature</source>
