@@ -91,11 +91,9 @@ void SignatureItem::init()
 
 	QTextStream s(&ui->status);
 	bool isSignature = true;
-	QString label = tr("Signature");
 	if(ui->signature.profile() == QStringLiteral("TimeStampToken"))
 	{
 		isSignature = false;
-		label = tr("Timestamp");
 		ui->icon->load(QStringLiteral(":/images/icon_ajatempel.svg"));
 	}
 	else if(cert.type() & SslCertificate::TempelType)
@@ -104,35 +102,32 @@ void SignatureItem::init()
 		ui->icon->load(QStringLiteral(":/images/icon_Allkiri_small.svg"));
 	s << "<span style=\"font-weight:normal;\">";
 	auto isValid = [&isSignature] {
-		return isSignature ? tr("is valid", "Signature") : tr("is valid", "Timestamp");
+		return isSignature ? tr("Signature is valid") : tr("Timestamp is valid");
 	};
-	auto isNotValid = [&isSignature] {
-		return isSignature ? tr("is not valid", "Signature") : tr("is not valid", "Timestamp");
-	};
-	auto isUnknown = [&isSignature] {
-		return isSignature ? tr("is unknown", "Signature") : tr("is unknown", "Timestamp");
+	auto color = [](QLatin1String color, const QString &text) {
+		return QStringLiteral("<font color=\"%1\">%2</font>").arg(color, text);
 	};
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
-		s << "<font color=\"green\">" << label << " " << isValid() << "</font>";
+		s << color(QLatin1String("green"), isValid());
 		break;
 	case DigiDocSignature::Warning:
-		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"#996C0B\">(" << tr("Warnings") << ")";
+		s << color(QLatin1String("green"), isValid()) << " " << color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Warnings")));
 		break;
 	case DigiDocSignature::NonQSCD:
-		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font color=\"#996C0B\">(" << tr("Restrictions") << ")";
+		s << color(QLatin1String("green"), isValid()) << " " << color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Restrictions")));
 		break;
 	case DigiDocSignature::Test:
-		s << "<font color=\"green\">" << label << " " << isValid() << "</font> <font>(" << tr("Test signature") << ")";
+		s << color(QLatin1String("green"), isValid()) << " (" << tr("Test signature") << ")";
 		break;
 	case DigiDocSignature::Invalid:
 		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureWarning : ria::qdigidoc4::InvalidTimestampWarning;
-		s << "<font color=\"red\">" << label << " " << isNotValid();
+		s << color(QLatin1String("red"), isSignature ? tr("Signature is not valid") : tr("Timestamp is not valid"));
 		break;
 	case DigiDocSignature::Unknown:
 		ui->error = isSignature ? ria::qdigidoc4::UnknownSignatureWarning : ria::qdigidoc4::UnknownTimestampWarning;
-		s << "<font color=\"red\">" << label << " " << isUnknown();
+		s << color(QLatin1String("red"), isSignature ? tr("Signature is unknown") : tr("Timestamp is unknown"));
 		break;
 	}
 	s << "</span>";
@@ -253,7 +248,7 @@ void SignatureItem::updateNameField()
 		ui->name->setText(red(ui->nameText + " - ", ui->invalid) + ui->status);
 	else
 		ui->name->setText(QStringLiteral("%1<br />%2").arg(red(ui->nameText, ui->invalid), ui->status));
-	ui->name->setAccessibleName(QStringLiteral("%1. %2 %3").arg(plain, ui->role->text(), ui->idSignTime->text()));
+	ui->name->setAccessibleName(QStringLiteral("%1. %2. %3 %4").arg(ui->nameText.toLower(), plain, ui->role->text(), ui->idSignTime->text()));
 	ui->role->setText(ui->role->fontMetrics().elidedText(
 		ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
 }

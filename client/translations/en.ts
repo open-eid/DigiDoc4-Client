@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en">
+<TS version="2.1" language="en_US">
 <context>
     <name>AccessCert</name>
     <message>
@@ -2967,12 +2967,28 @@ Additional licenses and components</translation>
 <context>
     <name>SignatureItem</name>
     <message>
-        <source>Signature</source>
-        <translation>Signature</translation>
+        <source>Signature is valid</source>
+        <translation>Signature is valid</translation>
     </message>
     <message>
-        <source>Timestamp</source>
-        <translation>Timestamp</translation>
+        <source>Timestamp is valid</source>
+        <translation>Timestamp is valid</translation>
+    </message>
+    <message>
+        <source>Signature is not valid</source>
+        <translation>Signature is not valid</translation>
+    </message>
+    <message>
+        <source>Timestamp is not valid</source>
+        <translation>Timestamp is not valid</translation>
+    </message>
+    <message>
+        <source>Signature is unknown</source>
+        <translation>Signature is unknown</translation>
+    </message>
+    <message>
+        <source>Timestamp is unknown</source>
+        <translation>Timestamp is unknown</translation>
     </message>
     <message>
         <source>Warnings</source>
@@ -3005,36 +3021,6 @@ Additional licenses and components</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>is unknown</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>is unknown</translation>
     </message>
     <message>
         <source>Remove signature</source>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>AccessCert</name>
     <message>
@@ -2970,14 +2970,6 @@ Additional licenses and components</source>
 <context>
     <name>SignatureItem</name>
     <message>
-        <source>Signature</source>
-        <translation>Подпись</translation>
-    </message>
-    <message>
-        <source>Timestamp</source>
-        <translation>Временной штамп</translation>
-    </message>
-    <message>
         <source>Warnings</source>
         <translation>Предупреждения</translation>
     </message>
@@ -2990,34 +2982,28 @@ Additional licenses and components</source>
         <translation>Пробная подпись</translation>
     </message>
     <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>действительна</translation>
+        <source>Signature is valid</source>
+        <translation>Подпись действительна</translation>
     </message>
     <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>действителен</translation>
+        <source>Timestamp is valid</source>
+        <translation>Временной штамп действителен</translation>
     </message>
     <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>недействительна</translation>
+        <source>Signature is not valid</source>
+        <translation>Подпись недействительна</translation>
     </message>
     <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>недействителен</translation>
+        <source>Timestamp is not valid</source>
+        <translation>Временной штамп недействителен</translation>
     </message>
     <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>неизвестная</translation>
+        <source>Signature is unknown</source>
+        <translation>Подпись неизвестная</translation>
     </message>
     <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>неизвестный</translation>
+        <source>Timestamp is unknown</source>
+        <translation>Временной штамп неизвестный</translation>
     </message>
     <message>
         <source>Signed on</source>
