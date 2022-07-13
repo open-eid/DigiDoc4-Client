@@ -20,6 +20,7 @@
 #include "LineEdit.h"
 
 #include <QtGui/QPainter>
+#include <QtWidgets/QStyleOptionButton>
 
 LineEdit::LineEdit(QWidget *parent)
 	: QLineEdit(parent)
@@ -34,17 +35,24 @@ void LineEdit::paintEvent(QPaintEvent *event)
 		if(!placeholderText().isEmpty())
 		{
 			placeholder = placeholderText();
-			setPlaceholderText(QString());
+			setPlaceholderText({});
 		}
 		QLineEdit::paintEvent(event);
 
+		QStyleOptionFrame opt;
+		initStyleOption(&opt);
 		QPainter p(this);
+#ifdef Q_OS_WIN
+		QRect lineRect = style()->subElementRect(QStyle::SE_LineEditContents, &opt, this);
+#else
+		QRect lineRect = rect();
+#endif
+		p.setClipRect(lineRect);
 		QColor color = palette().color(QPalette::PlaceholderText);
 		color.setAlpha(63);
 		p.setPen(color);
 		QFontMetrics fm = fontMetrics();
 		int minLB = qMax(0, -fm.minLeftBearing());
-		QRect lineRect = this->rect();
 		QRect ph = lineRect.adjusted(minLB + 3, 0, 0, 0);
 		QString elidedText = fm.elidedText(placeholder, Qt::ElideRight, ph.width());
 		p.drawText(ph, Qt::AlignVCenter, elidedText);
