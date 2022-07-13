@@ -65,9 +65,10 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
 	connect( this, &PinPopup::finished, this, &PinPopup::close );
+	connect(ui->pin, &QLineEdit::returnPressed, ui->ok, &QPushButton::click);
 
 	QString text;
-	
+
 	if(!bodyText.isEmpty())
 	{
 		text = bodyText;
@@ -154,4 +155,4 @@ void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 	regexp.setPattern(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen));
 }
 
-QString PinPopup::text() const { return ui->pin->text(); }
+QString PinPopup::pin() const { return ui->pin->text(); }

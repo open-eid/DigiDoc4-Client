@@ -125,6 +125,9 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	sp_retain.setRetainSizeWhenHidden(true);
 	ui->labelPinValidation->setSizePolicy(sp_retain);
 	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	connect(ui->pin, &QLineEdit::returnPressed, ui->unblock, &QPushButton::click);
+	connect(ui->repeat, &QLineEdit::returnPressed, ui->unblock, &QPushButton::click);
+	connect(ui->puk, &QLineEdit::returnPressed, ui->unblock, &QPushButton::click);
 	adjustSize();
 	setFixedSize(size());
 }
