@@ -11,7 +11,7 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 10.14
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: Download artifact
@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         HASH=($(shasum prepare_osx_build_environment.sh))
-        curl -O -L -s https://installer.id.ee/media/github/opensc_0.20.0.2.pkg
+        curl -O -L -s https://installer.id.ee/media/github/opensc_0.22.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
@@ -40,7 +40,7 @@ jobs:
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -B build -S .
         cmake --build build --target zipdebug macdeployqt zip
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: pkgs
         path: build/qdigidoc4*.zip
@@ -86,7 +86,7 @@ jobs:
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: debs
         path: qdigidoc4*.*
@@ -96,7 +96,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['fedora:34']
+        container: ['fedora:35']
     env:
       MAKEFLAGS: -j3
     steps:
@@ -121,7 +121,7 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: rpms
         path: build/qdigidoc4*.rpm
@@ -153,7 +153,7 @@ jobs:
           toolset: 14.29
         - vcver: 142
           arch: x64
-          qtver: 6.3.0
+          qtver: 6.3.1
           qtmodules: qt5compat
           qt: win64_msvc2019_64
           image: windows-2019
@@ -162,7 +162,7 @@ jobs:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: Download artifact
@@ -206,7 +206,7 @@ jobs:
         cmake --build build --target msi
         cmake --build build --target appx
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: msi
         path: |
@@ -221,7 +221,7 @@ jobs:
       PROJECTNAME: open-eid/DigiDoc4-Client
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: Install dependencies
