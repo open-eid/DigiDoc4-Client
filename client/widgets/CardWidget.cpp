@@ -99,8 +99,6 @@ bool CardWidget::event( QEvent *ev )
 
 bool CardWidget::eventFilter(QObject *o, QEvent *e)
 {
-	if(o != ui->cardPhoto)
-		return StyledWidget::eventFilter(o, e);
 	switch(e->type())
 	{
 	case QEvent::MouseButtonRelease:
@@ -111,11 +109,12 @@ bool CardWidget::eventFilter(QObject *o, QEvent *e)
 		}
 		break;
 	case QEvent::HoverEnter:
-		if(!ui->cardPhoto->pixmap() && !seal)
+		if(o == ui->cardPhoto && !ui->cardPhoto->pixmap() && !seal)
 			ui->load->show();
 		break;
 	case QEvent::HoverLeave:
-		ui->load->hide();
+		if(o == ui->cardPhoto)
+			ui->load->hide();
 		break;
 	default: break;
 	}
@@ -156,17 +155,8 @@ void CardWidget::update(const TokenData &token, bool multiple)
 
 	ui->cardStatus->setText(typeString);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
-
-	if(c.type() & SslCertificate::EResidentSubType)
-	{
-		ui->horizontalSpacer->changeSize(1, 20, QSizePolicy::Fixed);
-		ui->cardPhoto->hide();
-	}
-	else
-	{
-		ui->horizontalSpacer->changeSize(10, 20, QSizePolicy::Fixed);
-		ui->cardPhoto->show();
-	}
+	ui->cardPhoto->setHidden(c.type() & SslCertificate::EResidentSubType);
+	ui->horizontalSpacer->changeSize(ui->cardPhoto->isVisible() ? 10 : 1, 20, QSizePolicy::Fixed);
 
 	clearSeal();
 	if(type & SslCertificate::TempelType)
