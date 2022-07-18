@@ -46,6 +46,7 @@ class MacMenuBar {};
 #include <qtsingleapplication/src/qtlocalpeer.h>
 
 #include <QAction>
+#include <QRegExp>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
