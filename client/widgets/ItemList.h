@@ -48,7 +48,7 @@ public:
 	void addWidget(Item *widget);
 	virtual void clear();
 	ria::qdigidoc4::ContainerState getState() const;
-	bool hasItem(std::function<bool(Item* const)> cb);
+	bool hasItem(const std::function<bool(Item* const)> &cb);
 	virtual void removeItem(int row);
 	void setTerm(const QString &term);
 	virtual void stateChange(ria::qdigidoc4::ContainerState state);
@@ -88,7 +88,6 @@ private:
 	QString headerText;
 	QString listText;
 	SslCertificate cert;
-	QWidget *tabIndex;
 
 	friend class AddRecipients;
 };

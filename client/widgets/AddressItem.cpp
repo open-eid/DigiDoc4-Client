@@ -102,13 +102,17 @@ void AddressItem::idChanged(const SslCertificate &cert)
 	setName();
 }
 
-QWidget* AddressItem::initTabOrder(QWidget *item)
+void AddressItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->name);
 	setTabOrder(ui->name, ui->idType);
 	setTabOrder(ui->idType, ui->remove);
 	setTabOrder(ui->remove, ui->added);
-	setTabOrder(ui->added, ui->add);
+	setTabOrder(ui->added, lastTabWidget());
+}
+
+QWidget* AddressItem::lastTabWidget()
+{
 	return ui->add;
 }
 

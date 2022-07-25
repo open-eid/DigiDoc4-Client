@@ -21,5 +21,6 @@
 
 QString Item::id() const { return QString(); }
 void Item::idChanged(const SslCertificate & /* cert */) {}
-QWidget* Item::initTabOrder(QWidget * /* item */) { return this; }
+void Item::initTabOrder(QWidget * /* item */) {}
 void Item::details() {}
+QWidget* Item::lastTabWidget() { return this; }

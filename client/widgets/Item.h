@@ -31,7 +31,8 @@ public:
 	using StyledWidget::StyledWidget;
 
 	virtual QString id() const;
-	virtual QWidget* initTabOrder(QWidget *item);
+	virtual void initTabOrder(QWidget *item);
+	virtual QWidget* lastTabWidget();
 
 public slots:
 	virtual void details();
