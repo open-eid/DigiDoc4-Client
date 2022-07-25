@@ -2257,10 +2257,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>AUTHORITY KEY IDENTIFIER</translation>
     </message>
     <message>
-        <source>NB! TEST SIGNATURE</source>
-        <translation>NB! TEST SIGNATURE</translation>
-    </message>
-    <message>
         <source>NB! WARNINGS</source>
         <translation>NB! WARNINGS</translation>
     </message>
@@ -2821,16 +2817,8 @@ Additional licenses and components</translation>
         <translation>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</translation>
     </message>
     <message>
-        <source>Test signature</source>
-        <translation>Test signature</translation>
-    </message>
-    <message>
         <source>Unknown error</source>
         <translation>Unknown error</translation>
-    </message>
-    <message>
-        <source>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Test signature is signed with test certificates that are similar to the certificates of real tokens, but digital signatures with legal force cannot be given with them as there is no actual owner of the card. &lt;a href=&apos;https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/&apos;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2997,10 +2985,6 @@ Additional licenses and components</translation>
     <message>
         <source>Restrictions</source>
         <translation>Restrictions</translation>
-    </message>
-    <message>
-        <source>Test signature</source>
-        <translation>Test signature</translation>
     </message>
     <message>
         <source>Signed on</source>

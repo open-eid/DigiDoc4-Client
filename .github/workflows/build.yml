@@ -115,7 +115,9 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
-      run: dnf install -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.rpm
+      run: |
+        . /etc/os-release
+        dnf install -y ./libdigidocpp-pkg/*fc${VERSION_ID}*.rpm
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .

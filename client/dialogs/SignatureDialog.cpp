@@ -81,16 +81,6 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 			"This e-Signature is not equivalent with handwritten signature and therefore "
 			"can be used only in transactions where Qualified e-Signature is not required.") );
 		break;
-	case DigiDocSignature::Test:
-		status += QStringLiteral("%1 (%2)").arg(isValid(isTS), tr("Test signature"));
-		if( !s.lastError().isEmpty() )
-			d->error->setPlainText( s.lastError() );
-		d->info->setText( tr(
-			"Test signature is signed with test certificates that are similar to the "
-			"certificates of real tokens, but digital signatures with legal force cannot "
-			"be given with them as there is no actual owner of the card. "
-			"<a href='https://www.id.ee/en/article/verifying-signatures-given-with-test-certificates-in-the-digidoc4-client/'>Additional information</a>.") );
-		break;
 	case DigiDocSignature::Invalid:
 		style = QStringLiteral("<font color=\"red\">");
 		status += isTS ? tr("is not valid", "Timestamp") :  tr("is not valid", "Signature");
