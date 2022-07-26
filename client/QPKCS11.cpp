@@ -354,6 +354,7 @@ bool QPKCS11::reload()
 		{ "opensc-pkcs11.dll", {} },
 #else
 		{ "opensc-pkcs11.so", {} },
+#if defined(Q_OS_LINUX)
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
@@ -370,6 +371,7 @@ bool QPKCS11::reload()
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
+#endif
 #endif
 	};
 	for(const QString &reader: QPCSC::instance().readers())
