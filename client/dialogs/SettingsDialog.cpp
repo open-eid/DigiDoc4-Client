@@ -172,7 +172,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 #ifdef CONFIG_URL
 	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(!error.isEmpty()) {
-			WarningDialog(tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error, this).exec();
+			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
 		}
 		WarningDialog(tr("DigiDoc4 Client configuration update was successful."), this).exec();
@@ -425,7 +425,7 @@ void SettingsDialog::initFunctionality()
 
 	// pageDiagnostics
 	ui->chkLibdigidocppDebug->setChecked(s.value(QStringLiteral("LibdigidocppDebug"), false).toBool());
-	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [](bool checked) {
+	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [this](bool checked) {
 		setValueEx(QStringLiteral("LibdigidocppDebug"), checked, false);
 		if(!checked)
 		{
@@ -436,11 +436,11 @@ void SettingsDialog::initFunctionality()
 		if(f.open(QFile::WriteOnly|QFile::Truncate))
 			f.write({});
 #ifdef Q_OS_MAC
-		WarningDialog(tr("Restart DigiDoc4 Client to activate logging. Read more "
-						 "<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>.")).exec();
+		WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
+			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."));
 #else
 		WarningDialog dlg(tr("Restart DigiDoc4 Client to activate logging. Read more "
-							 "<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"), qApp->activeWindow());
+							 "<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"), this);
 		dlg.setCancelText(tr("NO"));
 		dlg.addButton(tr("YES"), 1) ;
 		if(dlg.exec() == 1) {
@@ -521,7 +521,8 @@ void SettingsDialog::saveProxy()
 
 void SettingsDialog::setValueEx(const QString &key, const QVariant &value, const QVariant &def)
 {
-	if(value == def || (def.isNull() && value.isNull()))
+	bool valueIsNull = value.type() == QVariant::String ? value.toString().isEmpty() : value.isNull();
+	if(value == def || (def.isNull() && valueIsNull))
 		QSettings().remove(key);
 	else
 		QSettings().setValue(key, value);
@@ -587,10 +588,10 @@ void SettingsDialog::installCert()
 	{
 	case PKCS12Certificate::NullError: break;
 	case PKCS12Certificate::InvalidPasswordError:
-		WarningDialog(tr("Invalid password"), this).exec();
+		WarningDialog::show(this, tr("Invalid password"));
 		return;
 	default:
-		WarningDialog(tr("Server access certificate error: %1").arg(p12.errorString()), this).exec();
+		WarningDialog::show(this, tr("Server access certificate error: %1").arg(p12.errorString()));
 		return;
 	}
 
@@ -651,5 +652,5 @@ void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 		return;
 	QFile f( filename );
 	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
-		WarningDialog(tr("Failed write to file!"), this).exec();
+		WarningDialog::show(this, tr("Failed write to file!"));
 }
