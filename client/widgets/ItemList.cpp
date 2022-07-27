@@ -39,7 +39,6 @@ ItemList::ItemList(QWidget *parent)
 	ui->count->hide();
 	ui->infoIcon->hide();
 	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
-	tabIndex = ui->btnFind;
 
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
 }
@@ -115,6 +114,7 @@ QString ItemList::addLabel()
 
 void ItemList::addWidget(Item *widget, int index)
 {
+	QWidget *tabIndex = items.empty() ? ui->btnFind : items.back()->lastTabWidget();
 	ui->itemLayout->insertWidget(index, widget);
 	connect(widget, &Item::remove, this, &ItemList::remove);
 	connect(this, &ItemList::idChanged, widget, &Item::idChanged);
@@ -122,7 +122,7 @@ void ItemList::addWidget(Item *widget, int index)
 	widget->idChanged(cert);
 	widget->show();
 	items.push_back(widget);
-	tabIndex = widget->initTabOrder(tabIndex);
+	widget->initTabOrder(tabIndex);
 }
 
 void ItemList::addWidget(Item *widget)
@@ -134,7 +134,6 @@ void ItemList::clear()
 {
 	ui->download->hide();
 	ui->count->hide();
-	tabIndex = ui->btnFind;
 
 	if(header)
 	{
@@ -175,22 +174,15 @@ ContainerState ItemList::getState() const { return state; }
 
 int ItemList::index(Item *item) const
 {
-	auto it = std::find(items.begin(), items.end(), item);
-	if(it != items.end())
-		return std::distance(items.begin(), it);
-
+	auto it = std::find(items.cbegin(), items.cend(), item);
+	if(it != items.cend())
+		return std::distance(items.cbegin(), it);
 	return -1;
 }
 
-bool ItemList::hasItem(std::function<bool(Item* const)> cb)
+bool ItemList::hasItem(const std::function<bool(Item* const)> &cb)
 {
-	for(auto item: items)
-	{
-		if(cb(item))
-			return true;
-	}
-
-	return false;
+	return std::any_of(items.cbegin(), items.cend(), cb);
 }
 
 void ItemList::init(ItemType item, const QString &header)

@@ -46,7 +46,8 @@ public:
 	void disable(bool disable);
 	const CKey& getKey() const;
 	void idChanged(const SslCertificate &cert) final;
-	QWidget* initTabOrder(QWidget *item) final;
+	void initTabOrder(QWidget *item) final;
+	QWidget* lastTabWidget() final;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
 

@@ -200,11 +200,10 @@ QString SignatureItem::id() const
 	return ui->signature.id();
 }
 
-QWidget* SignatureItem::initTabOrder(QWidget *item)
+void SignatureItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->name);
-	setTabOrder(ui->name, ui->remove);
-	return  ui->remove;
+	setTabOrder(ui->name, lastTabWidget());
 }
 
 bool SignatureItem::isInvalid() const
@@ -215,6 +214,11 @@ bool SignatureItem::isInvalid() const
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
 {
 	return !ui->serial.isEmpty() && (ui->serial == cardCode || ui->serial == mobileCode);
+}
+
+QWidget* SignatureItem::lastTabWidget()
+{
+	return ui->remove;
 }
 
 QString SignatureItem::red(const QString &text, bool paint) const

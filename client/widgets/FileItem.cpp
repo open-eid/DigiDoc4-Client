@@ -72,11 +72,15 @@ QString FileItem::getFile()
 	return fileName;
 }
 
-QWidget* FileItem::initTabOrder(QWidget *item)
+void FileItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->fileName);
 	setTabOrder(ui->fileName, ui->download);
-	setTabOrder(ui->download, ui->remove);
+	setTabOrder(ui->download, lastTabWidget());
+}
+
+QWidget* FileItem::lastTabWidget()
+{
 	return ui->remove;
 }
 

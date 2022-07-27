@@ -34,9 +34,10 @@ public:
 
 	ria::qdigidoc4::WarningType getError() const;
 	QString id() const override;
-	QWidget* initTabOrder(QWidget *item) final;
+	void initTabOrder(QWidget *item) final;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
+	QWidget* lastTabWidget() final;
 
 public slots:
 	void details() final;

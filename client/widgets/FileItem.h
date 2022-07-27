@@ -17,7 +17,7 @@
  *
  */
 
- #pragma once
+#pragma once
 
 #include "widgets/Item.h"
 
@@ -34,7 +34,8 @@ public:
 	~FileItem() final;
 
 	QString getFile();
-	QWidget* initTabOrder(QWidget *item) final;
+	void initTabOrder(QWidget *item) final;
+	QWidget* lastTabWidget() final;
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
 signals:
