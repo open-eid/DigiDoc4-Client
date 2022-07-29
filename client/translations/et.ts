@@ -2142,8 +2142,8 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>PUK-koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda vahepeal muutnud.</translation>
     </message>
     <message>
-        <source>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
-        <translation>Kui sisestad PIN%1-koodi kolm korda valesti, siis %2 sertifikaat blokeeritakse ning ID-kaarti pole võimalik %3 kasutada enne blokeeringu tühistamist PUK-koodi abil.</translation>
+        <source>If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
+        <translation>Kui sisestad %1-koodi kolm korda valesti, siis %2 sertifikaat blokeeritakse ning ID-kaarti pole võimalik %3 kasutada enne blokeeringu tühistamist PUK-koodi abil.</translation>
     </message>
     <message>
         <source>signing</source>
@@ -2162,8 +2162,16 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>isikutuvastamiseks</translation>
     </message>
     <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Uued %1-koodid on erinevad</translation>
+    </message>
+    <message>
         <source>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</source>
         <translation>Kui oled unustanud PIN%1-koodi, kuid tead PUK-koodi, siis siin saad määrata uue PIN%1-koodi.</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1-koodi pikkus peab olema %2-12 numbrit</translation>
     </message>
 </context>
 <context>

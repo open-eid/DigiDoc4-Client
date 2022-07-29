@@ -25,9 +25,7 @@
 #include <QDate>
 #include <QDialog>
 
-namespace Ui {
-class PinUnblock;
-}
+namespace Ui { class PinUnblock; }
 
 class PinUnblock final : public QDialog
 {
@@ -36,29 +34,19 @@ class PinUnblock final : public QDialog
 public:
 	enum WorkMode
 	{
-		UnBlockPinWithPuk = 1,
-		ChangePinWithPuk = 2,
-		PinChange = 4,
-		PukChange = 8
+		UnBlockPinWithPuk,
+		ChangePinWithPuk,
+		PinChange,
 	};
-	PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
-		QDate birthDate, QString personalCode);
+	PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type,
+		 short leftAttempts, QDate birthDate, const QString &personalCode);
 	~PinUnblock() final;
 
 	QString firstCodeText() const;
 	QString newCodeText() const;
 
 private:
-	void initIntro(WorkMode mode, QSmartCardData::PinType type);
-	void setUnblockEnabled();
-	bool validatePin(const QString& pin, QSmartCardData::PinType type, WorkMode mode);
+	bool validatePin(QSmartCardData::PinType type, WorkMode mode);
 
 	Ui::PinUnblock *ui;
-	QDate birthDate;
-	QString personalCode;
-	QRegularExpression regexpFirstCode;
-	QRegularExpression regexpNewCode;
-	bool isFirstCodeOk = false;
-	bool isNewCodeOk = false;
-	bool isRepeatCodeOk = false;
 };

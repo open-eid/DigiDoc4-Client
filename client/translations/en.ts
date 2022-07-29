@@ -2142,8 +2142,8 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>PUK code is written in the envelope, that is given with the ID-card.</translation>
     </message>
     <message>
-        <source>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
-        <translation>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</translation>
+        <source>If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
+        <translation>If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</translation>
     </message>
     <message>
         <source>signing</source>
@@ -2162,8 +2162,16 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>verify identification</translation>
     </message>
     <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>New %1 codes don&apos;t match</translation>
+    </message>
+    <message>
         <source>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</source>
         <translation>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1 length has to be between %2 and 12</translation>
     </message>
 </context>
 <context>

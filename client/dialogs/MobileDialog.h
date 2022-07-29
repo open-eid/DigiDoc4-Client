@@ -21,9 +21,7 @@
 
 #include <QDialog>
 
-namespace Ui {
-class MobileDialog;
-}
+namespace Ui { class MobileDialog; }
 
 class MobileDialog final : public QDialog
 {
@@ -37,8 +35,6 @@ public:
 	QString phoneNo();
 
 private:
-	void enableSign();
-
 	Ui::MobileDialog *ui;
 };
 

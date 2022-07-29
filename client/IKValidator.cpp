@@ -22,10 +22,6 @@
 #include <QtCore/QDate>
 #include <QtCore/QStringList>
 
-IKValidator::IKValidator(QObject *parent)
-	: QValidator(parent)
-{}
-
 QDate IKValidator::birthDate(const QString &ik)
 {
 	if(ik.size() != 11) return {};
@@ -41,9 +37,9 @@ QDate IKValidator::birthDate(const QString &ik)
 	}
 
 	QDate date(
-		ik.mid(1, 2).toUInt() + year,
-		ik.mid(3, 2).toUInt(),
-		ik.mid(5, 2).toUInt() );
+		ik.mid(1, 2).toInt() + year,
+		ik.mid(3, 2).toInt(),
+		ik.mid(5, 2).toInt());
 	return date.isValid() ? date : QDate();
 }
 
@@ -76,8 +72,8 @@ bool IKValidator::isValid(const QString &ik)
 	int sum1 = 0, sum2 = 0;
 	for(int i = 0, pos1 = 1, pos2 = 3; i < 10; ++i)
 	{
-		sum1 += ik.mid(i, 1).toUInt() * pos1;
-		sum2 += ik.mid(i, 1).toUInt() * pos2;
+		sum1 += ik.mid(i, 1).toInt() * pos1;
+		sum2 += ik.mid(i, 1).toInt() * pos2;
 		pos1 = pos1 == 9 ? 1 : pos1 + 1;
 		pos2 = pos2 == 9 ? 1 : pos2 + 1;
 	}
@@ -88,16 +84,6 @@ bool IKValidator::isValid(const QString &ik)
 		result = 0;
 
 	return ik.right( 1 ).toInt() == result;
-}
-
-QValidator::State IKValidator::validate(QString &input, int &/*pos*/) const
-{
-	input = input.trimmed();
-	if(input.size() > 11 || !QRegularExpression(QStringLiteral("\\d{0,11}")).match(input).hasMatch())
-		return Invalid;
-	if(input.size() == 11)
-		return isValid(input) ? Acceptable : Invalid;
-	return Intermediate;
 }
 
 

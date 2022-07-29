@@ -2145,8 +2145,8 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Ваш PUK-код находится в конверте с кодами.</translation>
     </message>
     <message>
-        <source>If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
-        <translation>Если PIN%1 введён 3 раза неверно, тогда блокируется %2 и использовать ID-карту для %3 невозможно, пока блокировка не снята PUK-кодом.</translation>
+        <source>If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.</source>
+        <translation>Если %1 введён 3 раза неверно, тогда блокируется %2 и использовать ID-карту для %3 невозможно, пока блокировка не снята PUK-кодом.</translation>
     </message>
     <message>
         <source>signing</source>
@@ -2165,8 +2165,16 @@ and enter Smart-ID PIN2-code.</source>
         <translation>идентификации личности</translation>
     </message>
     <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Новые %1-коды не сходятся</translation>
+    </message>
+    <message>
         <source>If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.</source>
         <translation>Если вы забыли PIN%1-код, но знаете PUK-код, тогда здесь вы можете ввести новый PIN%1-код.</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>Длина %1 должна быть %2-12 номера</translation>
     </message>
 </context>
 <context>
