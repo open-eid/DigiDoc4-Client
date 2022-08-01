@@ -18,7 +18,7 @@
    * Add custom RIA repository to APT repository list
 
          curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | gpg --dearmor | tee /etc/apt/trusted.gpg.d/ria-repository.gpg > /dev/null
-         sudo echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ria-repository.list
+         echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/ria-repository.list
          sudo apt update
 
    * Install
@@ -37,32 +37,24 @@
 
 3. Configure
 
-        mkdir build
-        cd build
-        cmake ..
+        cmake -B build -S .
 
 4. Build
 
-        make
+        cmake --build build
 
-5. Install
+5. Execute
 
-        sudo make install
-
-6. Execute
-
-        /usr/local/bin/qdigidoc4
+        ./build/client/qdigidoc4
 
 ### macOS
 
 1. Install dependencies from
    * [XCode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
    * [http://www.cmake.org](http://www.cmake.org)
-   * [http://qt-project.org](http://qt-project.org)
-       Since Qt 5.6 default SSL backend is SecureTransport and this project depends on openssl.
-       See how to build [OSX Qt from source](#building-osx-qt-from-source).
-       
-       Alternatively build Qt with openssl backend using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script; by default Qt is built in the `~/cmake_builds` folder but alternate build path can be defined with the `-p` option.
+   * [http://qt-project.org](http://qt-project.org)  
+       Since Qt 5.6 default SSL backend is SecureTransport and this project depends on openssl.  
+       Build Qt with openssl backend using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script; by default Qt is built in the `~/cmake_builds` folder but alternate build path can be defined with the `-p` option.
    * [libdigidocpp-*.pkg](https://github.com/open-eid/libdigidocpp/releases)
 
 2. Fetch the source
@@ -72,27 +64,21 @@
 
 3. Configure
 
-        mkdir build
-        cd build
-        cmake -DQt5_DIR="~/cmake_builds/Qt-5.12.10-OpenSSL/lib/cmake/Qt5" ..
+        cmake -DCMAKE_PREFIX_PATH="~/cmake_builds/Qt-6.3.1-OpenSSL/lib/cmake/Qt6" -B build -S .
 
 4. Build
 
-        make
+        cmake --build build
 
-5. Install
+5. Execute
 
-        sudo make install
-
-6. Execute
-
-        open /usr/local/bin/qdigidoc4.app
+        open build/client/qdigidoc4.app
 
 
 ### Windows
 
 1. Install dependencies from
-    * [Visual Studio Community 2017](https://www.visualstudio.com/downloads/)
+    * [Visual Studio Community 2019](https://www.visualstudio.com/downloads/)
     * [http://www.cmake.org](http://www.cmake.org)
     * [http://qt-project.org](http://qt-project.org)
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
@@ -103,17 +89,15 @@
 
 3. Configure
 
-        mkdir build
-        cd build
-        cmake -G"NMAKE Makefiles" -DQt5_DIR="C:\Qt\5.12.11\msvc2017\lib\cmake\Qt5" ..
+        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH="C:\Qt\6.3.1\msvc2019\lib\cmake\Qt6" -B build -S .
 
 4. Build
 
-        nmake
+        cmake --build build
 
 6. Execute
 
-        client\qdigidoc4.exe
+        build\client\qdigidoc4.exe
 
 
 ## Support
