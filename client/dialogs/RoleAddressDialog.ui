@@ -40,7 +40,7 @@ QPushButton:disabled {
 	background-color: #BEDBED;
 }
 QLineEdit {
-	border: 1px solid #DEE4E9;
+    border: 1px solid #8E969D;
 	border-radius: 2px;
 	background-color: #FFFFFF;
 }

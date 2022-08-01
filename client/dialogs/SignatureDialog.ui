@@ -43,7 +43,7 @@
      <property name="styleSheet">
       <string notr="true">#leftPane { border-right: 1px solid #DEE4E9; }
 QTextEdit, #signerCity, #signerCountry, #signerState, #signerZip, #signerRoles {
-border: 1px solid #DEE4E9;
+border: 1px solid #8E969D;
 border-radius: 2px;
 background-color: #FFFFFF;
 }
@@ -137,7 +137,7 @@ background-color: #FFFFFF;
 	background: #FFFFFF;
 }
 QScrollBar::handle:vertical{
-	background-color: #DEE4E9;
+    background-color: #8E969D;
 	margin: 0 0 0 0;
 	border-radius: 2px;
 	height: 145px;

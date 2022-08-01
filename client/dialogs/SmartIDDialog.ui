@@ -21,7 +21,7 @@ border-radius: 2px;
 }
 QLineEdit, QComboBox {
 padding: 0px 10px;
-border: 1px solid #DEE4E9;
+border: 1px solid #8E969D;
 border-radius: 2px;
 }
 #labelCode, #labelCountry {
@@ -34,7 +34,7 @@ QComboBox QWidget#popup {
 background-color: transparent;
 }
 QComboBox QWidget#content {
-border: 1px solid #DEE4E9;
+border: 1px solid #8E969D;
 border-radius: 2px;
 background-color: #FFFFFF;
 }

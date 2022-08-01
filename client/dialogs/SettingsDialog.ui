@@ -252,7 +252,7 @@ QRadioButton:hover {
     color: #041E42;
 }
 QLineEdit {
-    border: 1px solid #DEE4E9;
+    border: 1px solid #8E969D;
     border-radius: 2px;
     background-color: #FFFFFF;
     min-height: 31px;
@@ -1267,7 +1267,7 @@ QScrollBar {
 	background: #FFFFFF;
 }
 QScrollBar::handle:vertical {
-	background-color: #DEE4E9;
+    background-color: #8E969D;
 	margin: 0 0 0 0;
 	border-radius: 2px;
 	height: 145px;
@@ -1376,7 +1376,7 @@ QScrollBar {
 	background: #FFFFFF;
 }
 QScrollBar::handle:vertical {
-	background-color: #DEE4E9;
+    background-color: #8E969D;
 	margin: 0 0 0 0;
 	border-radius: 2px;
 	height: 145px;
