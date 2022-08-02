@@ -3007,10 +3007,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>KATKESTA</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
         <translation>Eemalda allkiri</translation>

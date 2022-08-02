@@ -88,12 +88,6 @@ background-color: #ffffff;
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16</height>
-      </size>
-     </property>
      <property name="text">
       <string notr="true">Role / Resolution</string>
      </property>
@@ -104,14 +98,17 @@ background-color: #ffffff;
    </item>
    <item row="2" column="1">
     <widget class="QLabel" name="idSignTime">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16</height>
-      </size>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="text">
       <string notr="true">48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
