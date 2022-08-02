@@ -23,9 +23,6 @@
 
 #include "common_enums.h"
 #include "QSmartCard.h"
-#include "sslConnect.h"
-
-#include <functional>
 
 namespace Ui {
 class MainWindow;
@@ -104,7 +101,8 @@ private:
 	void selectPageIcon( PageIcon* page );
 	void showCardMenu( bool show );
 	void showNotification( const QString &msg, bool isSuccess = false );
-	void sign(const std::function<bool(const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role)> &sign);
+	template <typename F>
+	void sign(F &&sign);
 	void updateCardWarnings(const QSmartCardData &data);
 	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
@@ -116,7 +114,7 @@ private:
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
 	void containerSummary();
-	
+
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
 	Ui::MainWindow *ui;

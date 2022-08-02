@@ -588,9 +588,11 @@ void DigiDoc::removeSignature( unsigned int num )
 {
 	if( !checkDoc( num >= b->signatures().size(), tr("Missing signature") ) )
 		return;
-	try { 
-		b->removeSignature( num );
-		modified = true;
+	try {
+		waitFor([this, num] {
+			b->removeSignature(num);
+			modified = true;
+		});
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed remove signature from container"), e ); }
 }

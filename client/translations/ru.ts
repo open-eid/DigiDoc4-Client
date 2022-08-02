@@ -1593,6 +1593,10 @@ ID-КАРТОЙ</translation>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
+        <source>Removing signature</source>
+        <translation>Удаление подписи</translation>
+    </message>
+    <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
         <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
     </message>

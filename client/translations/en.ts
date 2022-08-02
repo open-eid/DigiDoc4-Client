@@ -1591,6 +1591,10 @@ ID-CARD</translation>
         <translation>CANCEL</translation>
     </message>
     <message>
+        <source>Removing signature</source>
+        <translation>Removing signature</translation>
+    </message>
+    <message>
         <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
         <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
     </message>
