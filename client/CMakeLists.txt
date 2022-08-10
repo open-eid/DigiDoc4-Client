@@ -133,6 +133,10 @@ target_link_libraries( ${PROGNAME}
 	${LDAP_LIBRARIES}
 )
 
+if(NOT BUILD_DATE)
+	string(TIMESTAMP BUILD_DATE "%d.%m.%Y")
+endif()
+
 if(${QT_VERSION_MAJOR} STREQUAL "6")
 	find_package(Qt6 COMPONENTS Core5Compat SvgWidgets REQUIRED)
 	target_link_libraries(${PROGNAME} Qt6::Core5Compat Qt6::SvgWidgets)
@@ -148,7 +152,11 @@ set_target_properties(${PROGNAME} PROPERTIES
 	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
 )
 target_include_directories(${PROGNAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR} )
-target_compile_definitions(${PROGNAME} PRIVATE MOBILEID_URL="${MOBILEID_URL}" SMARTID_URL="${SMARTID_URL}" )
+target_compile_definitions(${PROGNAME} PRIVATE
+	MOBILEID_URL="${MOBILEID_URL}"
+	SMARTID_URL="${SMARTID_URL}"
+	BUILD_DATE="${BUILD_DATE}"
+)
 
 if( APPLE )
 	file(GLOB_RECURSE RESOURCE_FILES
