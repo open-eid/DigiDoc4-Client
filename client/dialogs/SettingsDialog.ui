@@ -243,6 +243,7 @@ QLineEdit {
     border-radius: 2px;
     background-color: #FFFFFF;
     min-height: 31px;
+    padding: 0px 10px;
 }
 QCheckBox, QRadioButton {
     min-height: 31px;

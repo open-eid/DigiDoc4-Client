@@ -303,6 +303,7 @@ border-width: 0px 0px 1px 0px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
 background-color: #FFFFFF;
+padding: 0px 10px;
 }</string>
          </property>
          <property name="placeholderText">
