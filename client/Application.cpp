@@ -164,7 +164,7 @@ public:
 	bool PKCS12Disable() const override
 	{ return s.value(QStringLiteral("PKCS12Disable"), digidoc::XmlConfCurrent::PKCS12Disable()).toBool(); }
 	std::string TSLCache() const override
-	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
+	{ return Application::groupContainer().toStdString(); }
 	bool TSLOnlineDigest() const override
 	{ return s.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 

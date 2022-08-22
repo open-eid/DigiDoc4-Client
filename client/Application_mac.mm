@@ -40,7 +40,7 @@ using ::endl;
 	QApplication::postEvent( qApp, new REOpenEvent );
 }
 
-- (void)openClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
+- (void)openClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString * __autoreleasing *)error
 {
 	Q_UNUSED(data)
 	Q_UNUSED(error)
@@ -50,7 +50,7 @@ using ::endl;
 	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result) );
 }
 
-- (void)signClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
+- (void)signClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString * __autoreleasing *)error
 {
 	Q_UNUSED(data)
 	Q_UNUSED(error)
@@ -60,7 +60,7 @@ using ::endl;
 	QMetaObject::invokeMethod(qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,false), Q_ARG(bool,true));
 }
 
-- (void)openCrypto:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
+- (void)openCrypto:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString * __autoreleasing *)error
 {
 	Q_UNUSED(data)
 	Q_UNUSED(error)
@@ -75,6 +75,12 @@ void Application::addRecent( const QString &file )
 {
 	if( !file.isEmpty() )
 		[NSDocumentController.sharedDocumentController noteNewRecentDocumentURL:[NSURL fileURLWithPath:file.toNSString()]];
+}
+
+QString Application::groupContainer()
+{
+	NSURL *directory = [NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:@"ET847QJV9F.ee.ria.qdigidoc4.shared"];
+	return QString::fromNSString(directory.path);
 }
 
 void Application::initMacEvents()
@@ -109,8 +115,8 @@ void Application::mailTo( const QUrl &url )
 		if([appUrl.path rangeOfString:@"/Applications/Mail.app"].location != NSNotFound)
 		{
 			s << "on run" << Qt::endl
-			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << Qt::endl
-			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue(QStringLiteral("attachment")) << "\"" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue(QStringLiteral("subject")) << "\"" << Qt::endl
 			<< "tell application \"Mail\"" << Qt::endl
 			<< "set msg to make new outgoing message with properties {subject:vsubject, visible:true}" << Qt::endl
 			<< "tell content of msg to make new attachment with properties {file name:(vattachment as POSIX file) as alias}" << Qt::endl
@@ -121,8 +127,8 @@ void Application::mailTo( const QUrl &url )
 		else if([appUrl.path rangeOfString:@"Entourage"].location != NSNotFound)
 		{
 			s << "on run" << Qt::endl
-			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\"" << Qt::endl
-			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue(QStringLiteral("attachment")) << "\"" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue(QStringLiteral("subject")) << "\"" << Qt::endl
 			<< "tell application \"Microsoft Entourage\"" << Qt::endl
 			<< "set vmessage to make new outgoing message with properties" << Qt::endl
 			<< "{subject:vsubject, attachments:vattachment}" << Qt::endl
@@ -134,8 +140,8 @@ void Application::mailTo( const QUrl &url )
 		else if([appUrl.path rangeOfString:@"Outlook"].location != NSNotFound)
 		{
 			s << "on run" << Qt::endl
-			<< "set vattachment to \"" << q.queryItemValue("attachment") << "\" as POSIX file" << Qt::endl
-			<< "set vsubject to \"" << q.queryItemValue("subject") << "\"" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue(QStringLiteral("attachment")) << "\" as POSIX file" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue(QStringLiteral("subject")) << "\"" << Qt::endl
 			<< "tell application \"Microsoft Outlook\"" << Qt::endl
 			<< "activate" << Qt::endl
 			<< "set vmessage to make new outgoing message with properties {subject:vsubject}" << Qt::endl

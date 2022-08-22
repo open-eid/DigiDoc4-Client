@@ -75,6 +75,9 @@ public:
 	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
 	static void clearConfValue( ConfParameter parameter );
 	static void setConfValue( ConfParameter parameter, const QVariant &value );
+#if defined(Q_OS_MAC)
+	static QString groupContainer();
+#endif
 
 public Q_SLOTS:
 	void showAbout();

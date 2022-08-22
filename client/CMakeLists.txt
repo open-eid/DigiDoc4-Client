@@ -174,8 +174,8 @@ if( APPLE )
 	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
 	add_custom_command( TARGET ${PROGNAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
-		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
-		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
+		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns
+		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns
 	)
 	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
 		COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROGNAME}>
@@ -195,8 +195,9 @@ if( APPLE )
 			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Libraries/*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/*.framework
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/*/*
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook/DigiDocQL.qlgenerator
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/*/*.dylib
+		COMMAND codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/DigiDocQL.appex
+			--entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/PreviewViewController.entitlements
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
 			else
