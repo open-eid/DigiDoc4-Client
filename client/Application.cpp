@@ -880,7 +880,6 @@ void Application::migrateSettings()
 		{"TSA-URL", "TSA-URL"},
 		{"MobileSettings", "MobileSettings"},
 		{"tokenBackend", "tokenBackend"},
-		{"cdocwithddoc", "cdocwithddoc"}
 	};
 
 	for(const QPair<QString,QString> &keypairs: orgOldNewKeys) {

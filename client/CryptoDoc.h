@@ -56,13 +56,11 @@ public:
 	QList<QString> files();
 	bool isEncrypted() const;
 	bool isNull() const;
-	bool isSigned() const;
 	QList<CKey> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeKey( int id );
 	bool saveCopy(const QString &filename);
-	bool saveDDoc( const QString &filename );
 	ria::qdigidoc4::ContainerState state() const;
 
 	static QByteArray concatKDF(const QString &digestMethod,

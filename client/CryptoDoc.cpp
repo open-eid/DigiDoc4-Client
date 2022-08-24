@@ -52,6 +52,7 @@
 #include <openssl/ecdh.h>
 #include <openssl/x509.h>
 
+#include <array>
 #include <cmath>
 #include <memory>
 
@@ -84,7 +85,7 @@ public:
 
 	bool isEncryptedWarning();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	QByteArray fromBase64(const QStringView &data);
+	QByteArray fromBase64(QStringView data);
 #else
 	QByteArray fromBase64(const QStringRef &data);
 #endif
@@ -137,8 +138,8 @@ public:
 		writeBase64(x, data);
 		x.writeEndElement();
 	}
-	void writeCDoc(QIODevice *cdoc, const QByteArray &transportKey, const QByteArray &encryptedData,
-		const QString &file, const QString &ver, const QString &mime);
+	void writeCDoc(QIODevice *cdoc, const QByteArray &transportKey,
+		const QByteArray &encryptedData, const QString &file, const QString &mime);
 	void writeDDoc(QIODevice *ddoc);
 
 	static const QString MIME_XML, MIME_ZLIB, MIME_DDOC, MIME_DDOC_OLD;
@@ -154,9 +155,8 @@ public:
 	QHash<QString,QString> properties;
 	QList<CKey>		keys;
 	QList<File>		files;
-	bool			hasSignature = false, encrypted = false;
+	bool			encrypted = false;
 	CDocumentModel	*documents = nullptr;
-	QTemporaryFile	*ddoc = nullptr;
 	QStringList		tempFiles;
 };
 
@@ -226,10 +226,11 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 		_data = data;
 		iv.resize(EVP_CIPHER_iv_length(cipher));
 		key.resize(EVP_CIPHER_key_length(cipher));
-		uchar salt[PKCS5_SALT_LEN], indata[128];
-		RAND_bytes(salt, sizeof(salt));
-		RAND_bytes(indata, sizeof(indata));
-		if(opensslError(EVP_BytesToKey(cipher, EVP_sha256(), salt, indata, sizeof(indata),
+		std::array<uchar,PKCS5_SALT_LEN> salt{};
+		std::array<uchar,128> indata{};
+		RAND_bytes(salt.data(), salt.size());
+		RAND_bytes(indata.data(), indata.size());
+		if(opensslError(EVP_BytesToKey(cipher, EVP_sha256(), salt.data(), indata.data(), indata.size(),
 				1, puchar(key.data()), puchar(iv.data())) <= 0))
 			return {};
 	}
@@ -272,7 +273,7 @@ QByteArray CryptoDoc::Private::crypto(const EVP_CIPHER *cipher, const QByteArray
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-QByteArray CryptoDoc::Private::fromBase64(const QStringView &data)
+QByteArray CryptoDoc::Private::fromBase64(QStringView data)
 #else
 QByteArray CryptoDoc::Private::fromBase64(const QStringRef &data)
 #endif
@@ -343,7 +344,7 @@ void CryptoDoc::Private::run()
 		data.open(QBuffer::WriteOnly);
 
 		QString mime, name;
-		if(files.size() > 1 || QSettings().value(QStringLiteral("cdocwithddoc"), false).toBool())
+		if(files.size() > 1)
 		{
 			qCDebug(CRYPTO) << "Creating DDoc container";
 			writeDDoc(&data);
@@ -357,32 +358,13 @@ void CryptoDoc::Private::run()
 			mime = files[0].mime;
 			name = files[0].name;
 		}
-// TODO? new check box "I would like to encrypt for recipients who are using an older DigiDoc3 Crypto\nsoftware (version 3.8 and earlier)." 
-// to SettingsDialog (like in qdigidoc3).
-		if(QSettings().value(QStringLiteral("cdocwithddoc"), false).toBool())
-			method = AES128CBC_MTH;
-		else
-			method = AES256GCM_MTH;
-
-		QString version = QStringLiteral("1.1");
-		if(method == AES128CBC_MTH) // add ANSIX923 padding
-		{
-			version = QStringLiteral("1.0");
-			QByteArray ansix923(16 - (data.size() % 16), 0);
-			qCDebug(CRYPTO) << "Adding ANSIX923 padding size" << ansix923.size();
-			ansix923[ansix923.size() - 1] = char(ansix923.size());
-			data.write(ansix923);
-			data.close();
-		}
+		method = AES256GCM_MTH;
 
 		QByteArray result = crypto(ENC_MTH[method], data.data(), true);
 		QFile cdoc(fileName);
 		cdoc.open(QFile::WriteOnly);
-		writeCDoc(&cdoc, key, result, name, version, mime);
+		writeCDoc(&cdoc, key, result, name, mime);
 		cdoc.close();
-
-		delete ddoc;
-		ddoc = nullptr;
 	}
 	else
 	{
@@ -422,16 +404,17 @@ void CryptoDoc::Private::run()
 		if(mime == MIME_DDOC || mime == MIME_DDOC_OLD)
 		{
 			qCDebug(CRYPTO) << "Contains DDoc content" << mime;
-			ddoc = new QTemporaryFile(QDir::tempPath() + "/XXXXXX");
-			if( !ddoc->open() )
+			QTemporaryFile ddoc(QDir::tempPath() + "/XXXXXX");
+			if(!ddoc.open())
 			{
-				lastError = CryptoDoc::tr("Failed to create temporary files<br />%1").arg( ddoc->errorString() );
+				lastError = CryptoDoc::tr("Failed to create temporary files<br />%1").arg(ddoc.errorString());
 				return;
 			}
-			ddoc->write(result);
-			ddoc->flush();
-			ddoc->reset();
-			readDDoc(ddoc);
+			ddoc.write(result);
+			ddoc.flush();
+			ddoc.reset();
+			result.clear();
+			readDDoc(&ddoc);
 		}
 		else
 		{
@@ -489,10 +472,10 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 		if(data)
 		{
 			// EncryptedData/KeyInfo
-			if(xml.name() == QStringLiteral("KeyInfo"))
+			if(xml.name() == QLatin1String("KeyInfo"))
 				xml.skipCurrentElement();
 			// EncryptedData/CipherData/CipherValue
-			else if(xml.name() == QStringLiteral("CipherValue"))
+			else if(xml.name() == QLatin1String("CipherValue"))
 			{
 				xml.readNext();
 				return fromBase64(xml.text());
@@ -501,16 +484,16 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 		}
 
 		// EncryptedData
-		if(xml.name() == QStringLiteral("EncryptedData"))
-			mime = xml.attributes().value(QStringLiteral("MimeType")).toString();
+		if(xml.name() == QLatin1String("EncryptedData"))
+			mime = xml.attributes().value(QLatin1String("MimeType")).toString();
 		// EncryptedData/EncryptionProperties/EncryptionProperty
-		else if(xml.name() == QStringLiteral("EncryptionProperty"))
+		else if(xml.name() == QLatin1String("EncryptionProperty"))
 		{
 			for( const QXmlStreamAttribute &attr: xml.attributes() )
 			{
-				if(attr.name() != QStringLiteral("Name"))
+				if(attr.name() != QLatin1String("Name"))
 					continue;
-				if(attr.value() == QStringLiteral("orig_file"))
+				if(attr.value() == QLatin1String("orig_file"))
 				{
 					QStringList fileparts = xml.readElementText().split('|');
 					File file;
@@ -525,60 +508,60 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 			}
 		}
 		// EncryptedData/EncryptionMethod
-		else if(xml.name() == QStringLiteral("EncryptionMethod"))
-			method = xml.attributes().value(QStringLiteral("Algorithm")).toString();
+		else if(xml.name() == QLatin1String("EncryptionMethod"))
+			method = xml.attributes().value(QLatin1String("Algorithm")).toString();
 		// EncryptedData/KeyInfo/EncryptedKey
-		else if(xml.name() == QStringLiteral("EncryptedKey"))
+		else if(xml.name() == QLatin1String("EncryptedKey"))
 		{
 			CKey key;
-			key.id = xml.attributes().value(QStringLiteral("Id")).toString();
-			key.recipient = xml.attributes().value(QStringLiteral("Recipient")).toString();
+			key.id = xml.attributes().value(QLatin1String("Id")).toString();
+			key.recipient = xml.attributes().value(QLatin1String("Recipient")).toString();
 			while(!xml.atEnd())
 			{
 				xml.readNext();
-				if(xml.name() == QStringLiteral("EncryptedKey") && xml.isEndElement())
+				if(xml.name() == QLatin1String("EncryptedKey") && xml.isEndElement())
 					break;
 				if( !xml.isStartElement() )
 					continue;
 				// EncryptedData/KeyInfo/KeyName
-				if(xml.name() == QStringLiteral("KeyName"))
+				if(xml.name() == QLatin1String("KeyName"))
 					key.name = xml.readElementText();
 				// EncryptedData/KeyInfo/EncryptedKey/EncryptionMethod
-				else if(xml.name() == QStringLiteral("EncryptionMethod"))
-					key.method = xml.attributes().value(QStringLiteral("Algorithm")).toString();
+				else if(xml.name() == QLatin1String("EncryptionMethod"))
+					key.method = xml.attributes().value(QLatin1String("Algorithm")).toString();
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod
-				else if(xml.name() == QStringLiteral("AgreementMethod"))
-					key.agreement = xml.attributes().value(QStringLiteral("Algorithm")).toString();
+				else if(xml.name() == QLatin1String("AgreementMethod"))
+					key.agreement = xml.attributes().value(QLatin1String("Algorithm")).toString();
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod
-				else if(xml.name() == QStringLiteral("KeyDerivationMethod"))
-					key.derive = xml.attributes().value(QStringLiteral("Algorithm")).toString();
+				else if(xml.name() == QLatin1String("KeyDerivationMethod"))
+					key.derive = xml.attributes().value(QLatin1String("Algorithm")).toString();
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod/ConcatKDFParams
-				else if(xml.name() == QStringLiteral("ConcatKDFParams"))
+				else if(xml.name() == QLatin1String("ConcatKDFParams"))
 				{
-					key.AlgorithmID = QByteArray::fromHex(xml.attributes().value(QStringLiteral("AlgorithmID")).toUtf8());
+					key.AlgorithmID = QByteArray::fromHex(xml.attributes().value(QLatin1String("AlgorithmID")).toUtf8());
 					if(key.AlgorithmID[0] == char(0x00)) key.AlgorithmID.remove(0, 1);
-					key.PartyUInfo = QByteArray::fromHex(xml.attributes().value(QStringLiteral("PartyUInfo")).toUtf8());
+					key.PartyUInfo = QByteArray::fromHex(xml.attributes().value(QLatin1String("PartyUInfo")).toUtf8());
 					if(key.PartyUInfo[0] == char(0x00)) key.PartyUInfo.remove(0, 1);
-					key.PartyVInfo = QByteArray::fromHex(xml.attributes().value(QStringLiteral("PartyVInfo")).toUtf8());
+					key.PartyVInfo = QByteArray::fromHex(xml.attributes().value(QLatin1String("PartyVInfo")).toUtf8());
 					if(key.PartyVInfo[0] == char(0x00)) key.PartyVInfo.remove(0, 1);
 				}
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod/ConcatKDFParams/DigestMethod
-				else if(xml.name() == QStringLiteral("DigestMethod"))
-					key.concatDigest = xml.attributes().value(QStringLiteral("Algorithm")).toString();
+				else if(xml.name() == QLatin1String("DigestMethod"))
+					key.concatDigest = xml.attributes().value(QLatin1String("Algorithm")).toString();
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/OriginatorKeyInfo/KeyValue/ECKeyValue/PublicKey
-				else if(xml.name() == QStringLiteral("PublicKey"))
+				else if(xml.name() == QLatin1String("PublicKey"))
 				{
 					xml.readNext();
 					key.publicKey = fromBase64(xml.text());
 				}
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/X509Data/X509Certificate
-				else if(xml.name() == QStringLiteral("X509Certificate"))
+				else if(xml.name() == QLatin1String("X509Certificate"))
 				{
 					xml.readNext();
 					key.cert = QSslCertificate( fromBase64( xml.text() ), QSsl::Der );
 				}
 				// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/CipherData/CipherValue
-				else if(xml.name() == QStringLiteral("CipherValue"))
+				else if(xml.name() == QLatin1String("CipherValue"))
 				{
 					xml.readNext();
 					key.cipher = fromBase64(xml.text());
@@ -591,17 +574,18 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 }
 
 void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportKey,
-	const QByteArray &encryptedData, const QString &file, const QString &ver, const QString &mime)
+	const QByteArray &encryptedData, const QString &file, const QString &mime)
 {
 #ifndef NDEBUG
 	qDebug() << "ENC Transport Key" << transportKey.toHex();
 #endif
 
-	qCDebug(CRYPTO) << "Writing CDOC file ver" << ver << "mime" << mime;
-	QMultiHash<QString,QString> props;
-	props.insert(QStringLiteral("DocumentFormat"), "ENCDOC-XML|" + ver);
-	props.insert(QStringLiteral("LibraryVersion"), qApp->applicationName() + "|" + qApp->applicationVersion());
-	props.insert(QStringLiteral("Filename"), file);
+	qCDebug(CRYPTO) << "Writing CDOC file ver 1.1 mime" << mime;
+	QMultiHash<QString,QString> props {
+		{ QStringLiteral("DocumentFormat"), QStringLiteral("ENCDOC-XML|1.1") },
+		{ QStringLiteral("LibraryVersion"), qApp->applicationName() + "|" + qApp->applicationVersion() },
+		{ QStringLiteral("Filename"), file },
+	};
 	QList<File> reverse = files;
 	std::reverse(reverse.begin(), reverse.end());
 	for(const File &f: qAsConst(reverse))
@@ -614,7 +598,9 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 	writeElement(w, DENC, QStringLiteral("EncryptedData"), [&]{
 		if(!mime.isEmpty())
 			w.writeAttribute(QStringLiteral("MimeType"), mime);
-		writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {{"Algorithm", method}});
+		writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {
+			{QStringLiteral("Algorithm"), method},
+		});
 		w.writeNamespace(DS, QStringLiteral("ds"));
 		writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
 		for(const CKey &k: qAsConst(keys))
@@ -632,7 +618,9 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 					if(opensslError(RSA_public_encrypt(transportKey.size(), pcuchar(transportKey.constData()),
 						puchar(cipher.data()), rsa, RSA_PKCS1_PADDING) <= 0))
 						return;
-					writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {{"Algorithm", RSA_MTH}});
+					writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {
+						{QStringLiteral("Algorithm"), RSA_MTH},
+					});
 					writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
 						if(!k.name.isEmpty())
 							w.writeTextElement(DS, QStringLiteral("KeyName"), k.name);
@@ -647,14 +635,16 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 					pcuchar pp = pcuchar(derCert.data());
 					auto peerCert = SCOPE(X509, d2i_X509(nullptr, &pp, derCert.size()));
 					EVP_PKEY *peerPKey = X509_get0_pubkey(peerCert.get());
-					const EC_KEY *peerECKey = EVP_PKEY_get0_EC_KEY(peerPKey);
-					int curve = EC_GROUP_get_curve_name(EC_KEY_get0_group(peerECKey));
-					auto priv = SCOPE(EC_KEY, EC_KEY_new_by_curve_name(curve));
-					auto pkey = SCOPE(EVP_PKEY, EVP_PKEY_new());
-					if (opensslError(EC_KEY_generate_key(priv.get()) <= 0) ||
-						opensslError(EVP_PKEY_set1_EC_KEY(pkey.get(), priv.get()) <= 0))
+
+					auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(peerPKey, nullptr));
+					EVP_PKEY *key = nullptr;
+					if(opensslError(!ctx) ||
+						opensslError(EVP_PKEY_keygen_init(ctx.get()) < 1) ||
+						opensslError(EVP_PKEY_keygen(ctx.get(), &key)) < 1)
 						return;
-					auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(pkey.get(), nullptr));
+					auto pkey = SCOPE(EVP_PKEY, key);
+					ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(pkey.get(), nullptr));
+
 					size_t sharedSecretLen = 0;
 					if (opensslError(!ctx) ||
 						opensslError(EVP_PKEY_derive_init(ctx.get()) <= 0) ||
@@ -666,7 +656,8 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 						return;
 
 					QByteArray oid(50, 0);
-					oid.resize(OBJ_obj2txt(oid.data(), oid.size(), OBJ_nid2obj(EC_GROUP_get_curve_name(EC_KEY_get0_group(priv.get()))), 1));
+					oid.resize(OBJ_obj2txt(oid.data(), oid.size(),
+						OBJ_nid2obj(EC_GROUP_get_curve_name(EC_KEY_get0_group(EVP_PKEY_get0_EC_KEY(pkey.get())))), 1));
 					QByteArray SsDer(i2d_PublicKey(pkey.get(), nullptr), 0);
 					puchar p = puchar(SsDer.data());
 					i2d_PublicKey(pkey.get(), &p);
@@ -690,15 +681,25 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 					if(opensslError(cipher.isEmpty()))
 						return;
 
-					writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {{"Algorithm", encryptionMethod}});
+					writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {
+						{QStringLiteral("Algorithm"), encryptionMethod},
+					});
 					writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
-						writeElement(w, DENC, QStringLiteral("AgreementMethod"), {{"Algorithm", AGREEMENT_MTH}}, [&]{
+						writeElement(w, DENC, QStringLiteral("AgreementMethod"), {
+								{QStringLiteral("Algorithm"), AGREEMENT_MTH}
+							}, [&]{
 							w.writeNamespace(XENC11, QStringLiteral("xenc11"));
-							writeElement(w, XENC11, QStringLiteral("KeyDerivationMethod"), {{"Algorithm", CONCATKDF_MTH}}, [&]{
-								writeElement(w, XENC11, QStringLiteral("ConcatKDFParams"), {{"AlgorithmID", "00" + props.value("DocumentFormat").toUtf8().toHex()},
-									{"PartyUInfo", "00" + SsDer.toHex()}, {"PartyVInfo", "00" + k.cert.toDer().toHex()}
+							writeElement(w, XENC11, QStringLiteral("KeyDerivationMethod"), {
+									{QStringLiteral("Algorithm"), CONCATKDF_MTH},
 								}, [&]{
-									writeElement(w, DS, QStringLiteral("DigestMethod"), {{"Algorithm", concatDigest}});
+								writeElement(w, XENC11, QStringLiteral("ConcatKDFParams"), {
+									{QStringLiteral("AlgorithmID"), "00" + props.value("DocumentFormat").toUtf8().toHex()},
+									{QStringLiteral("PartyUInfo"), "00" + SsDer.toHex()},
+									{QStringLiteral("PartyVInfo"), "00" + k.cert.toDer().toHex()},
+								}, [&]{
+									writeElement(w, DS, QStringLiteral("DigestMethod"), {
+										{QStringLiteral("Algorithm"), concatDigest},
+									});
 								});
 							});
 							writeElement(w, DENC, QStringLiteral("OriginatorKeyInfo"), [&]{
@@ -728,7 +729,9 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 		});
 		writeElement(w, DENC, QStringLiteral("EncryptionProperties"), [&]{
 			for(QMultiHash<QString,QString>::const_iterator i = props.constBegin(); i != props.constEnd(); ++i)
-				writeElement(w, DENC, QStringLiteral("EncryptionProperty"), {{"Name", i.key()}}, [&]{ w.writeCharacters(i.value()); });
+				writeElement(w, DENC, QStringLiteral("EncryptionProperty"), {
+					{QStringLiteral("Name"), i.key()},
+				}, [&]{ w.writeCharacters(i.value()); });
 		});
 	});
 	w.writeEndDocument();
@@ -753,21 +756,18 @@ void CryptoDoc::Private::readDDoc(QIODevice *ddoc)
 		default: continue;
 		}
 
-		if(x.name() == QStringLiteral("DataFile"))
+		if(x.name() == QLatin1String("DataFile"))
 		{
 			File file;
-			file.name = x.attributes().value(QStringLiteral("Filename")).toString().normalized(QString::NormalizationForm_C);
-			file.id = x.attributes().value(QStringLiteral("Id")).toString().normalized(QString::NormalizationForm_C);
-			file.mime = x.attributes().value(QStringLiteral("MimeType")).toString().normalized(QString::NormalizationForm_C);
+			file.name = x.attributes().value(QLatin1String("Filename")).toString().normalized(QString::NormalizationForm_C);
+			file.id = x.attributes().value(QLatin1String("Id")).toString().normalized(QString::NormalizationForm_C);
+			file.mime = x.attributes().value(QLatin1String("MimeType")).toString().normalized(QString::NormalizationForm_C);
 			x.readNext();
 			file.data = fromBase64( x.text() );
 			file.size = FileDialog::fileSize(quint64(file.data.size()));
 			files << file;
 		}
-		else if(x.name() == QStringLiteral("Signature"))
-			hasSignature = true;
 	}
-	qCDebug(CRYPTO) << "Container contains signature" << hasSignature;
 }
 
 void CryptoDoc::Private::writeDDoc(QIODevice *ddoc)
@@ -778,13 +778,21 @@ void CryptoDoc::Private::writeDDoc(QIODevice *ddoc)
 	x.writeStartDocument();
 	x.writeDefaultNamespace(QStringLiteral("http://www.sk.ee/DigiDoc/v1.3.0#"));
 	x.writeStartElement(QStringLiteral("SignedDoc"));
-	writeAttributes(x, {{"format", "DIGIDOC-XML"}, {"version", "1.3"}});
+	writeAttributes(x, {
+		{QStringLiteral("format"), QStringLiteral("DIGIDOC-XML")},
+		{QStringLiteral("version"), QStringLiteral("1.3")},
+	});
 
 	for(const File &file: qAsConst(files))
 	{
 		x.writeStartElement(QStringLiteral("DataFile"));
-		writeAttributes(x, {{"ContentType", "EMBEDDED_BASE64"}, {"Filename", file.name},
-			{"Id", file.id}, {"MimeType", file.mime}, {"Size", QString::number(file.data.size())}});
+		writeAttributes(x, {
+			{QStringLiteral("ContentType"), QStringLiteral("EMBEDDED_BASE64")},
+			{QStringLiteral("Filename"), file.name},
+			{QStringLiteral("Id"), file.id},
+			{QStringLiteral("MimeType"), file.mime},
+			{QStringLiteral("Size"), QString::number(file.data.size())},
+		});
 		writeBase64(x, file.data);
 		x.writeEndElement(); //DataFile
 	}
@@ -920,7 +928,7 @@ bool CDocumentModel::removeRows(int row, int count)
 }
 
 int CDocumentModel::rowCount() const
-{ 
+{
 	return d->files.size();
 }
 
@@ -947,11 +955,11 @@ void CKey::setCert( const QSslCertificate &c )
 		QString cn = c.subjectInfo(QSslCertificate::CommonName);
 		QString o = c.subjectInfo(QSslCertificate::Organization);
 
-		QRegularExpression rx("ESTEID \\((.*)\\)");
+		QRegularExpression rx(QStringLiteral("ESTEID \\((.*)\\)"));
 		QRegularExpressionMatch match = rx.match(o);
 		if(match.hasMatch())
 			return QStringLiteral("%1,%2").arg(cn, match.captured(1));
-		if(o == QStringLiteral("ESTEID"))
+		if(o == QLatin1String("ESTEID"))
 			return QStringLiteral("%1,%2").arg(cn, CryptoDoc::tr("ID-CARD"));
 		int certType = c.type();
 		if(certType & SslCertificate::EResidentSubType)
@@ -1042,7 +1050,6 @@ QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen,
 
 void CryptoDoc::clear( const QString &file )
 {
-	delete d->ddoc;
 	for(const QString &f: qAsConst(d->tempFiles))
 	{
 #if defined(Q_OS_WIN)
@@ -1052,8 +1059,6 @@ void CryptoDoc::clear( const QString &file )
 		QFile::remove(f);
 	}
 	d->tempFiles.clear();
-	d->ddoc = nullptr;
-	d->hasSignature = false;
 	d->encrypted = false;
 	d->fileName = file;
 	d->files.clear();
@@ -1124,7 +1129,7 @@ bool CryptoDoc::decrypt()
 	d->waitForFinished();
 	if( !d->lastError.isEmpty() )
 		d->setLastError( d->lastError );
-	
+
 	containerState = d->encrypted ? EncryptedContainer : UnencryptedContainer;
 
 	return !d->encrypted;
@@ -1162,7 +1167,6 @@ bool CryptoDoc::encrypt( const QString &filename )
 QString CryptoDoc::fileName() const { return d->fileName; }
 bool CryptoDoc::isEncrypted() const { return d->encrypted; }
 bool CryptoDoc::isNull() const { return d->fileName.isEmpty(); }
-bool CryptoDoc::isSigned() const { return d->hasSignature; }
 
 QList<CKey> CryptoDoc::keys() const
 {
@@ -1224,20 +1228,6 @@ bool CryptoDoc::saveCopy(const QString &filename)
 	if(QFile::exists(filename))
 		QFile::remove(filename);
 	return QFile::copy(d->fileName, filename);
-}
-
-bool CryptoDoc::saveDDoc( const QString &filename )
-{
-	if( !d->ddoc )
-	{
-		d->setLastError( tr("Document not open") );
-		return false;
-	}
-
-	bool result = d->ddoc->copy( filename );
-	if( !result )
-		d->setLastError( tr("Failed to save file") );
-	return result;
 }
 
 #include "CryptoDoc.moc"
