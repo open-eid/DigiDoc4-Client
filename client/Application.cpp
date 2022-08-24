@@ -1109,8 +1109,21 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 #ifdef Q_OS_LINUX
 		else
 		{
-			QRect rect = QGuiApplication::screenAt(w->pos())->availableGeometry();
-			w->move(rect.center() - w->frameGeometry().adjusted(0, 0, 10, 40).center());
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+			QScreen *screen = [w]() -> QScreen* {
+				for (const QScreen *screen : QGuiApplication::screens()) {
+					for (QScreen *sibling : screen->virtualSiblings()) {
+						if (sibling->geometry().contains(w->pos()))
+							return sibling;
+					}
+				}
+				return nullptr;
+			}();
+#else
+			QScreen *screen = QGuiApplication::screenAt(w->pos());
+#endif
+			if(screen)
+				w->move(screen->availableGeometry().center() - w->frameGeometry().adjusted(0, 0, 10, 40).center());
 		}
 #endif
 	}
