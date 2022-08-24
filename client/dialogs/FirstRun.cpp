@@ -19,6 +19,8 @@
 
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
+
+#include "MainWindow.h"
 #include "Styles.h"
 
 #include <common/Common.h>
@@ -36,6 +38,14 @@ FirstRun::FirstRun(QWidget *parent)
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
 	setFixedSize( size() );
 	setCursor(Qt::OpenHandCursor);
+	if(!parent)
+	{
+		for(QWidget *top: qApp->topLevelWidgets())
+		{
+			if(MainWindow *main = qobject_cast<MainWindow*>(top))
+				parent = main;
+		}
+	}
 	if(parent)
 		move(parent->geometry().center() - geometry().center());
 

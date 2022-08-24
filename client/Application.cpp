@@ -60,6 +60,7 @@ class MacMenuBar {};
 #include <QtCore/QXmlStreamReader>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
+#include <QtGui/QScreen>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslConfiguration>
@@ -1089,17 +1090,29 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	}
 	if( !w )
 	{
-		QSettings settings;
 		migrateSettings();
 
 		w = new MainWindow();
-		QWidgetList list = topLevelWidgets();
-		for(int i = list.size() - 1; i >= 0; --i)
+		QWidget *prev = [=]() -> QWidget* {
+			for(QWidget *top: topLevelWidgets())
+			{
+				QWidget *prev = qobject_cast<MainWindow*>(top);
+				if(!prev)
+					prev = qobject_cast<FirstRun*>(top);
+				if(prev && prev != w && prev->isVisible())
+					return prev;
+			}
+			return nullptr;
+		}();
+		if(prev)
+			w->move(prev->geometry().topLeft() + QPoint(20, 20));
+#ifdef Q_OS_LINUX
+		else
 		{
-			MainWindow *prev = qobject_cast<MainWindow*>(list[i]);
-			if(prev && prev != w && prev->isVisible())
-				w->move(prev->geometry().topLeft() + QPoint(20, 20));
+			QRect rect = QGuiApplication::screenAt(w->pos())->availableGeometry();
+			w->move(rect.center() - w->frameGeometry().adjusted(0, 0, 10, 40).center());
 		}
+#endif
 	}
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
