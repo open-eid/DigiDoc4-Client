@@ -19,10 +19,6 @@
 
 #include "QCryptoBackend.h"
 
-QCryptoBackend::QCryptoBackend(QObject *parent)
-	: QObject(parent)
-{}
-
 QString QCryptoBackend::errorString(PinStatus error)
 {
 	switch( error )

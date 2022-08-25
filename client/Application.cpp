@@ -369,21 +369,10 @@ Application::Application( int &argc, char **argv )
 	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
-	QSigner::ApiType api = QSigner::PKCS11;
-#ifdef Q_OS_WIN
-	api = QSigner::ApiType(QSettings().value("tokenBackend", QSigner::CNG).toUInt());
-	if( args.contains("-cng") )
-		api = QSigner::CNG;
-	if( args.contains("-capi") )
-		api = QSigner::CAPI;
-	if( args.contains("-pkcs11") )
-		api = QSigner::PKCS11;
-#endif
-
 	try
 	{
 		digidoc::Conf::init( new DigidocConf );
-		d->signer = new QSigner(api, this);
+		d->signer = new QSigner(this);
 		QString cache = confValue(TSLCache).toString();
 		QDir().mkpath( cache );
 		QDateTime tslTime = QDateTime::currentDateTimeUtc().addDays(-7);
@@ -879,7 +868,6 @@ void Application::migrateSettings()
 		{"Client/ShowPrintSummary", "ShowPrintSummary"},
 		{"TSA-URL", "TSA-URL"},
 		{"MobileSettings", "MobileSettings"},
-		{"tokenBackend", "tokenBackend"},
 	};
 
 	for(const QPair<QString,QString> &keypairs: orgOldNewKeys) {
@@ -993,9 +981,6 @@ void Application::parseArgs( const QStringList &args )
 	params.removeAll(QStringLiteral("-sign"));
 	params.removeAll(QStringLiteral("-crypto"));
 	params.removeAll(QStringLiteral("-newWindow"));
-	params.removeAll(QStringLiteral("-capi"));
-	params.removeAll(QStringLiteral("-cng"));
-	params.removeAll(QStringLiteral("-pkcs11"));
 
 	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
 	showClient(params, crypto || (suffix.compare(QLatin1String("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);

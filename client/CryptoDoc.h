@@ -63,7 +63,7 @@ public:
 	bool saveCopy(const QString &filename);
 	ria::qdigidoc4::ContainerState state() const;
 
-	static QByteArray concatKDF(const QString &digestMethod,
+	static QByteArray concatKDF(QCryptographicHash::Algorithm digestMethod,
 		quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);
 
 private:

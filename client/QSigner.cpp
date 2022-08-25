@@ -24,7 +24,6 @@
 #include "QSmartCard.h"
 #include "TokenData.h"
 #ifdef Q_OS_WIN
-#include "QCSP.h"
 #include "QCNG.h"
 #endif
 #include "QPKCS11.h"
@@ -40,12 +39,13 @@
 #include <openssl/obj_mac.h>
 #include <openssl/ecdsa.h>
 
+#include <memory>
+
 Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 
 class QSigner::Private final
 {
 public:
-	QSigner::ApiType api = QSigner::PKCS11;
 	QCryptoBackend	*backend = nullptr;
 	QSmartCard		*smartcard = nullptr;
 	TokenData		auth, sign;
@@ -60,8 +60,8 @@ public:
 ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 {
-	Private *d = (Private*)EC_KEY_get_ex_data(eckey, 0);
-	QByteArray result = d->backend->sign(0, QByteArray::fromRawData((const char*)dgst, dgst_len));
+	QCryptoBackend *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
+	QByteArray result = backend->sign(0, QByteArray::fromRawData((const char*)dgst, dgst_len));
 	if(result.isEmpty())
 		return nullptr;
 	QByteArray r = result.left(result.size()/2);
@@ -77,7 +77,7 @@ ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_l
 
 using namespace digidoc;
 
-QSigner::QSigner( ApiType api, QObject *parent )
+QSigner::QSigner(QObject *parent)
 	: QThread(parent)
 	, d(new Private)
 {
@@ -89,7 +89,6 @@ QSigner::QSigner( ApiType api, QObject *parent )
 	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
 	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
 
-	d->api = api;
 	d->smartcard = new QSmartCard(parent);
 	connect(this, &QSigner::error, qApp, [](const QString &msg) {
 		qApp->showWarning(msg);
@@ -105,8 +104,6 @@ QSigner::~QSigner()
 	EC_KEY_METHOD_free(d->ecmethod);
 	delete d;
 }
-
-QSigner::ApiType QSigner::apiType() const { return d->api; }
 
 QList<TokenData> QSigner::cache() const { return d->cache; }
 
@@ -162,20 +159,19 @@ X509Cert QSigner::cert() const
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
-	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo)
+QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 {
 	if(!QCardLock::instance().exclusiveTryLock())
 	{
 		Q_EMIT error( tr("Signing/decrypting is already in progress another window.") );
-		return DecryptFailed;
+		return {};
 	}
 
 	if( d->auth.cert().isNull() )
 	{
 		Q_EMIT error( tr("Authentication certificate is not selected.") );
 		QCardLock::instance().exclusiveUnlock();
-		return DecryptFailed;
+		return {};
 	}
 
 	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
@@ -186,7 +182,7 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 		case QCryptoBackend::PinOK: break;
 		case QCryptoBackend::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
-			return PinCanceled;
+			return {};
 		case QCryptoBackend::PinIncorrect:
 			qApp->showWarning(QCryptoBackend::errorString(status));
 			continue;
@@ -194,29 +190,27 @@ QSigner::ErrorCode QSigner::decrypt(const QByteArray &in, QByteArray &out, const
 			QCardLock::instance().exclusiveUnlock();
 			d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
 			Q_EMIT error(QCryptoBackend::errorString(status));
-			return PinLocked;
+			return {};
 		default:
 			QCardLock::instance().exclusiveUnlock();
 			d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
 			Q_EMIT error(tr("Failed to login token") + " " + QCryptoBackend::errorString(status));
-			return DecryptFailed;
+			return {};
 		}
 	} while(status != QCryptoBackend::PinOK);
+	QByteArray result;
 	waitFor([&]{
-		if(d->auth.cert().publicKey().algorithm() == QSsl::Rsa)
-			out = d->backend->decrypt(in);
-		else
-			out = d->backend->deriveConcatKDF(in, digest, keySize, algorithmID, partyUInfo, partyVInfo);
+		result = func(d->backend);
 	});
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
-		return PinCanceled;
+		return {};
 
-	if( out.isEmpty() )
+	if(result.isEmpty())
 		Q_EMIT error( tr("Failed to decrypt document") );
-	return !out.isEmpty() ? DecryptOK : DecryptFailed;
+	return result;
 }
 
 QSslKey QSigner::key() const
@@ -245,8 +239,8 @@ QSslKey QSigner::key() const
 	} while(status != QCryptoBackend::PinOK);
 
 	EC_KEY *ec = (EC_KEY*)key.handle();
-	EC_KEY_set_ex_data(ec, 0, d);
 	EC_KEY_set_method(ec, d->ecmethod);
+	EC_KEY_set_ex_data(ec, 0, d->backend);
 	return key;
 }
 
@@ -261,15 +255,11 @@ void QSigner::run()
 {
 	d->auth.clear();
 	d->sign.clear();
-
-	switch( d->api )
-	{
 #ifdef Q_OS_WIN
-	case CAPI: d->backend = new QCSP( this ); break;
-	case CNG: d->backend = new QCNG( this ); break;
+	d->backend = new QCNG(this);
+#else
+	d->backend = new QPKCS11(this);
 #endif
-	default: d->backend = new QPKCS11(this); break;
-	}
 
 	while(!isInterruptionRequested())
 	{

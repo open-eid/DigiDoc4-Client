@@ -21,26 +21,26 @@
 
 #include "QCryptoBackend.h"
 
-class QPKCS11: public QCryptoBackend
+class QPKCS11 final: public QCryptoBackend
 {
 	Q_OBJECT
 public:
 	explicit QPKCS11(QObject *parent = nullptr);
 	~QPKCS11() final;
 
-	QByteArray decrypt(const QByteArray &data) const override;
+	QByteArray decrypt(const QByteArray &data) const final;
 	QByteArray derive(const QByteArray &publicKey) const;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const override;
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	bool isLoaded() const;
-	PinStatus lastError() const override;
+	PinStatus lastError() const final;
 	bool load( const QString &driver );
 	void unload();
-	PinStatus login(const TokenData &t) override;
-	void logout() override;
+	PinStatus login(const TokenData &t) final;
+	void logout() final;
 	bool reload();
-	QByteArray sign(int type, const QByteArray &digest) const override;
-	QList<TokenData> tokens() const override;
+	QByteArray sign(int type, const QByteArray &digest) const final;
+	QList<TokenData> tokens() const final;
 private:
 	class Private;
 	Private *d;

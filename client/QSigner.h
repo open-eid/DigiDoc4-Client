@@ -22,6 +22,7 @@
 #include <QtCore/QThread>
 #include <digidocpp/crypto/Signer.h>
 
+class QCryptoBackend;
 class QSmartCard;
 class QSslKey;
 class TokenData;
@@ -31,29 +32,13 @@ class QSigner final: public QThread, public digidoc::Signer
 	Q_OBJECT
 
 public:
-	enum ApiType
-	{
-		CNG,
-		CAPI,
-		PKCS11
-	};
-	enum ErrorCode
-	{
-		PinCanceled,
-		PinIncorrect,
-		PinLocked,
-		DecryptFailed,
-		DecryptOK
-	};
-	explicit QSigner(ApiType api, QObject *parent = nullptr);
+	explicit QSigner(QObject *parent = nullptr);
 	~QSigner() final;
 
-	ApiType apiType() const;
 	QSet<QString> cards() const;
 	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const final;
-	ErrorCode decrypt(const QByteArray &in, QByteArray &out, const QString &digest, int keySize,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo);
+	QByteArray decrypt(std::function<QByteArray (QCryptoBackend *)> &&func);
 	QSslKey key() const;
 	void logout();
 	void selectCard(const TokenData &token);
