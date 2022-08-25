@@ -146,7 +146,7 @@ jobs:
           toolset: 14.29
         - vcver: 143
           image: windows-2022
-          toolset: 14.32
+          toolset: 14.33
         - vcver: 142
           arch: x86
           qtver: 5.12.12
