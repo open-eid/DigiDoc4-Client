@@ -108,9 +108,9 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->pin->hide();
 		ui->ok->hide();
 		ui->cancel->hide();
-		QSvgWidget *movie = new QSvgWidget(QStringLiteral(":/images/wait.gif"), this);
-		movie->move(ui->pin->pos());
-		movie->resize(ui->pin->size());
+		QSvgWidget *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
+		movie->resize(ui->pin->size().height(), ui->pin->size().height());
+		movie->move(ui->pin->geometry().center() - movie->geometry().center());
 		movie->show();
 	}
 	if( flags & PinpadFlag )
@@ -130,7 +130,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		connect( statusTimer, &QTimeLine::frameChanged, progress, &QProgressBar::setValue );
 		connect( this, &PinPopup::startTimer, statusTimer, &QTimeLine::start );
 	}
-	else if( !(flags & PinpadNoProgressFlag) )
+	else
 	{
 		ui->pin->setFocus();
 		ui->pin->setValidator(new QRegularExpressionValidator(regexp, ui->pin));
@@ -150,7 +150,7 @@ PinPopup::~PinPopup()
 
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
-	QString charPattern = regexp.pattern().startsWith('.') ? QStringLiteral(".") : QStringLiteral("\\d");
+	QString charPattern = regexp.pattern().startsWith(QStringLiteral("^.")) ? QStringLiteral(".") : QStringLiteral("\\d");
 	regexp.setPattern(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen));
 }
 
