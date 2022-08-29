@@ -27,10 +27,8 @@
 #include "dialogs/SignatureDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <QtCore/QTextStream>
 #include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
-#include <QtGui/QResizeEvent>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QTextDocument>
 #include <QSvgWidget>
 
@@ -48,6 +46,7 @@ public:
 	QString serial;
 	QString status;
 	QString roleText;
+	QString dateTime;
 };
 
 SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidget *parent)
@@ -89,7 +88,6 @@ void SignatureItem::init()
 	else
 		ui->nameText = ui->signature.signedBy().toHtmlEscaped();
 
-	QTextStream s(&ui->status);
 	bool isSignature = true;
 	if(ui->signature.profile() == QStringLiteral("TimeStampToken"))
 	{
@@ -100,51 +98,43 @@ void SignatureItem::init()
 		ui->icon->load(QStringLiteral(":/images/icon_digitempel.svg"));
 	else
 		ui->icon->load(QStringLiteral(":/images/icon_Allkiri_small.svg"));
-	s << "<span style=\"font-weight:normal;\">";
-	auto isValid = [&isSignature] {
-		return isSignature ? tr("Signature is valid") : tr("Timestamp is valid");
-	};
+	QString isValid = isSignature ? tr("Signature is valid") : tr("Timestamp is valid");
 	auto color = [](QLatin1String color, const QString &text) {
 		return QStringLiteral("<font color=\"%1\">%2</font>").arg(color, text);
 	};
 	switch( signatureValidity )
 	{
 	case DigiDocSignature::Valid:
-		s << color(QLatin1String("green"), isValid());
+		ui->status = color(QLatin1String("green"), isValid);
 		break;
 	case DigiDocSignature::Warning:
-		s << color(QLatin1String("green"), isValid()) << " " << color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Warnings")));
+		ui->status = color(QLatin1String("green"), isValid) + ' ' + color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Warnings")));
 		break;
 	case DigiDocSignature::NonQSCD:
-		s << color(QLatin1String("green"), isValid()) << " " << color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Restrictions")));
+		ui->status = color(QLatin1String("green"), isValid) + ' ' + color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Restrictions")));
 		break;
 	case DigiDocSignature::Invalid:
 		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureWarning : ria::qdigidoc4::InvalidTimestampWarning;
-		s << color(QLatin1String("red"), isSignature ? tr("Signature is not valid") : tr("Timestamp is not valid"));
+		ui->status = color(QLatin1String("red"), isSignature ? tr("Signature is not valid") : tr("Timestamp is not valid"));
 		break;
 	case DigiDocSignature::Unknown:
 		ui->error = isSignature ? ria::qdigidoc4::UnknownSignatureWarning : ria::qdigidoc4::UnknownTimestampWarning;
-		s << color(QLatin1String("red"), isSignature ? tr("Signature is unknown") : tr("Timestamp is unknown"));
+		ui->status = color(QLatin1String("red"), isSignature ? tr("Signature is unknown") : tr("Timestamp is unknown"));
 		break;
 	}
-	s << "</span>";
+	ui->status = QStringLiteral("<span style=\"font-weight:normal;\">%1</span>").arg(ui->status);
 
-	QString signingInfo;
-	QTextStream si(&signingInfo);
 	if(!cert.isNull())
-	{
 		ui->serial = cert.toString(QStringLiteral("serialNumber")).toHtmlEscaped();
-		si << ui->serial << " - ";
-	}
 	DateTime date(ui->signature.trustedTime().toLocalTime());
-	if( !date.isNull() )
+	if(!date.isNull())
 	{
-		si << tr("Signed on") << " "
-			<< date.formatDate(QStringLiteral("dd. MMMM yyyy")) << " "
-			<< tr("time") << " "
-			<< date.toString(QStringLiteral("hh:mm"));
+		ui->dateTime = QStringLiteral("%1 %2 %3 %4").arg(
+			tr("Signed on"),
+			date.formatDate(QStringLiteral("dd. MMMM yyyy")),
+			tr("time"),
+			date.toString(QStringLiteral("hh:mm")));
 	}
-	ui->idSignTime->setText(signingInfo);
 	ui->roleText = ui->signature.role().replace('\n', ' ');
 	ui->role->setHidden(ui->roleText.isEmpty());
 	updateNameField();
@@ -221,11 +211,6 @@ QWidget* SignatureItem::lastTabWidget()
 	return ui->remove;
 }
 
-QString SignatureItem::red(const QString &text, bool paint) const
-{
-	return paint ? QStringLiteral("<font color=\"red\">%1</font>").arg(text) : text;
-}
-
 void SignatureItem::removeSignature()
 {
 	const SslCertificate c = ui->signature.cert();
@@ -235,7 +220,7 @@ void SignatureItem::removeSignature()
 	WarningDialog *dlg = new WarningDialog(msg, this);
 	dlg->setCancelText(tr("CANCEL"));
 	dlg->resetCancelStyle();
-	dlg->addButton(tr("OK"), SignatureRemove, true);
+	dlg->addButton(QStringLiteral("OK"), SignatureRemove, true);
 	if(dlg->exec() == SignatureRemove)
 		emit remove(this);
 }
@@ -245,11 +230,23 @@ void SignatureItem::updateNameField()
 	QTextDocument doc;
 	doc.setHtml(ui->status);
 	QString plain = doc.toPlainText();
-	if(ui->name->fontMetrics().boundingRect(ui->nameText  + " - " + plain).width() < ui->name->width())
-		ui->name->setText(red(ui->nameText + " - ", ui->invalid) + ui->status);
+	auto red = [this](const QString &text) {
+		return ui->invalid ? QStringLiteral("<font color=\"red\">%1</font>").arg(text) : text;
+	};
+	if(ui->name->fontMetrics().boundingRect(ui->nameText + " - " + plain).width() < ui->name->width())
+		ui->name->setText(red(ui->nameText + " - ") + ui->status);
 	else
-		ui->name->setText(QStringLiteral("%1<br />%2").arg(red(ui->nameText, ui->invalid), ui->status));
-	ui->name->setAccessibleName(QStringLiteral("%1. %2. %3 %4").arg(ui->nameText.toLower(), plain, ui->role->text(), ui->idSignTime->text()));
+		ui->name->setText(QStringLiteral("%1<br />%2").arg(red(ui->nameText), ui->status));
+	ui->name->setAccessibleName(QStringLiteral("%1. %2. %3 %4")
+		.arg(ui->nameText.toLower(), plain, ui->role->text(), ui->idSignTime->text()));
 	ui->role->setText(ui->role->fontMetrics().elidedText(
 		ui->roleText, Qt::ElideRight, ui->role->width() - 10, Qt::TextShowMnemonic));
+
+	QStringList signingInfo{ui->serial, ui->dateTime};
+	signingInfo.removeAll({});
+	QString signingInfoSep = signingInfo.join(QStringLiteral(" - "));
+	if(!signingInfoSep.isEmpty() && ui->idSignTime->fontMetrics().boundingRect(signingInfoSep).width() < ui->idSignTime->width())
+		ui->idSignTime->setText(signingInfoSep);
+	else
+		ui->idSignTime->setText(signingInfo.join(QStringLiteral("<br />")));
 }

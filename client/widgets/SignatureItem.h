@@ -30,25 +30,20 @@ class SignatureItem final : public Item
 
 public:
 	explicit SignatureItem(DigiDocSignature s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
-	~SignatureItem() override;
+	~SignatureItem() final;
 
+	void details() final;
 	ria::qdigidoc4::WarningType getError() const;
-	QString id() const override;
+	QString id() const final;
 	void initTabOrder(QWidget *item) final;
 	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
 	QWidget* lastTabWidget() final;
 
-public slots:
-	void details() final;
-
-protected:
+private:
 	bool event(QEvent *event) final;
 	bool eventFilter(QObject *o, QEvent *e) final;
-
-private:
 	void init();
-	QString red(const QString &text, bool paint = true) const;
 	void removeSignature();
 	void updateNameField();
 

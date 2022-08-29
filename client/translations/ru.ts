@@ -3010,10 +3010,6 @@ Additional licenses and components</source>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
         <translation>Удалить подпись</translation>

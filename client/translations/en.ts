@@ -3007,10 +3007,6 @@ Additional licenses and components</translation>
         <translation>CANCEL</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>Remove signature</source>
         <extracomment>accessible</extracomment>
         <translation>Remove signature</translation>
