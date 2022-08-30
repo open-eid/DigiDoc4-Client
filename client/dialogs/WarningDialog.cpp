@@ -50,7 +50,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)
-	: WarningDialog(text, QString(), parent)
+	: WarningDialog(text, {}, parent)
 {
 }
 
@@ -67,7 +67,7 @@ void WarningDialog::setCancelText(const QString& label)
 
 void WarningDialog::resetCancelStyle()
 {
-	ui->cancel->setStyleSheet(QString());
+	ui->cancel->setStyleSheet({});
 }
 
 void WarningDialog::addButton(const QString& label, int ret, bool red)
@@ -112,7 +112,14 @@ void WarningDialog::setText(const QString& text)
 	adjustSize();
 }
 
+void WarningDialog::show(QWidget *parent, const QString &text, const QString &details)
+{
+	WarningDialog *dlg = new WarningDialog(text, details, parent);
+	dlg->setAttribute(Qt::WA_DeleteOnClose);
+	dlg->open();
+}
+
 void WarningDialog::warning(QWidget *parent, const QString& text)
 {
-	WarningDialog(text, QString(), parent).exec();
+	WarningDialog(text, {}, parent).exec();
 }
