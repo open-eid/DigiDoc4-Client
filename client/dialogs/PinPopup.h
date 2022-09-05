@@ -42,7 +42,6 @@ public:
 		Pin2Type = 1 << 0,
 		PukType = 1 << 1,
 		PinpadFlag = 1 << 2,
-		PinpadNoProgressFlag = 1 << 3,
 		PinpadChangeFlag = 1 << 4,
 		Pin1PinpadType = Pin1Type|PinpadFlag,
 		Pin2PinpadType = Pin2Type|PinpadFlag,
@@ -56,8 +55,8 @@ public:
 	};
 	Q_DECLARE_FLAGS(TokenFlags, TokenFlag)
 
-	PinPopup(PinFlags flags, const SslCertificate &cert, TokenFlags count, QWidget *parent = nullptr);
-	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = nullptr, const QString &bodyText = {});
+	PinPopup(PinFlags flags, const SslCertificate &cert, TokenFlags count, QWidget *parent = {});
+	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = {}, const QString &bodyText = {});
 	~PinPopup() final;
 
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
