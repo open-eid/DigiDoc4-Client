@@ -22,6 +22,8 @@
 #include <QtCore/QThread>
 #include <digidocpp/crypto/Signer.h>
 
+#include <functional>
+
 class QCryptoBackend;
 class QSmartCard;
 class QSslKey;
