@@ -41,21 +41,15 @@ void LineEdit::paintEvent(QPaintEvent *event)
 
 		QStyleOptionFrame opt;
 		initStyleOption(&opt);
-		QPainter p(this);
-#ifdef Q_OS_WIN
 		QRect lineRect = style()->subElementRect(QStyle::SE_LineEditContents, &opt, this);
-#else
-		QRect lineRect = rect();
-#endif
-		p.setClipRect(lineRect);
+		lineRect = lineRect.adjusted(3, 0, 0, 0);
 		QColor color = palette().color(QPalette::PlaceholderText);
 		color.setAlpha(63);
+		QPainter p(this);
+		p.setClipRect(lineRect);
 		p.setPen(color);
-		QFontMetrics fm = fontMetrics();
-		int minLB = qMax(0, -fm.minLeftBearing());
-		QRect ph = lineRect.adjusted(minLB + 3, 0, 0, 0);
-		QString elidedText = fm.elidedText(placeholder, Qt::ElideRight, ph.width());
-		p.drawText(ph, Qt::AlignVCenter, elidedText);
+		p.drawText(lineRect, Qt::AlignVCenter,
+			fontMetrics().elidedText(placeholder, Qt::ElideRight, lineRect.width()));
 		return;
 	}
 #endif
