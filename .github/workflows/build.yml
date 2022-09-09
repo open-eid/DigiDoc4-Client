@@ -96,7 +96,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['fedora:35']
+        container: ['fedora:35', 'fedora:36']
     env:
       MAKEFLAGS: -j3
     steps:
@@ -132,34 +132,25 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        vcver: [141, 142, 143]
+        vcver: [142, 143]
         arch: [x64]
-        qtver: [5.12.12]
+        qtver: [6.3.2]
+        qt: [win64_msvc2019_64]
+        qtmodules: [qt5compat]
         include:
-        - arch: x64
-          qt: win64_msvc2017_64
-        - vcver: 141
-          image: windows-2019
-          toolset: 14.16
         - vcver: 142
           image: windows-2019
           toolset: 14.29
         - vcver: 143
           image: windows-2022
           toolset: 14.33
-        - vcver: 142
+        - vcver: 141
           arch: x86
           qtver: 5.12.12
           qt: win32_msvc2017
+          qtmodules:
           image: windows-2019
-          toolset: 14.29
-        - vcver: 142
-          arch: x64
-          qtver: 6.3.1
-          qtmodules: qt5compat
-          qt: win64_msvc2019_64
-          image: windows-2019
-          toolset: 14.29
+          toolset: 14.16
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -186,7 +177,7 @@ jobs:
         vcpkgGitCommitId: a69b65229b3956b7f45abd81671b7330114bcaad
         vcpkgTriplet: ${{ matrix.arch }}-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
         version: ${{ matrix.qtver }}
         arch: ${{ matrix.qt }}
