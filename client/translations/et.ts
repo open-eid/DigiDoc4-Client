@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>Isikul või asutusel puudub kehtiv sertifikaat. Krüpteerimiseks on vaja kehtivat sertifikaati. Loe täpsemalt (&lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;siit&lt;/a&gt;).</translation>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat. Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;a href=&apos;https://www.id.ee/artikkel/dokumentide-krupteerimine-ja-dekrupteerimine/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -219,7 +219,7 @@
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
-        <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB). Loe täpsemalt (&lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;siit&lt;/a&gt;).</translation>
+        <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).&lt;a href=&apos;https://www.id.ee/artikkel/suuremahuliste-120-mb-failide-krupteerimine/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Ignore forever</source>
@@ -1488,7 +1488,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
-        <translation>Vali fail kettalt allkirjastamiseks või kontrollimiseks</translation>
+        <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
@@ -1496,7 +1496,7 @@ ID-KAARDIGA</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
-        <translation>Vali fail kettalt krüpteerimiseks või dekrüpteerimiseks</translation>
+        <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1682,12 +1682,12 @@ ID-KAARDIGA</translation>
     <message>
         <source>Open file for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Allkirjastamiseks või kontrollimiseks vali fail kettalt</translation>
+        <translation>Vali fail kettalt allkirjastamiseks või kontrollimiseks</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
         <comment>accessible</comment>
-        <translation>Krüpteerimiseks või dekrüpteerimiseks vali fail kettalt</translation>
+        <translation>Vali fail kettalt krüpteerimiseks või dekrüpteerimiseks</translation>
     </message>
     <message>
         <source>Select signature page</source>
@@ -3000,7 +3000,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Remove signature %1</source>
-        <translation>Kas eemaldada allkiri nimi/isikukood?%1</translation>
+        <translation>Kas eemaldada allkiri %1?</translation>
     </message>
     <message>
         <source>CANCEL</source>
