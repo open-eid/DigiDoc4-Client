@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;(&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Дополнительная информация&lt;/a&gt;).</translation>
+        <translation>У человека или предприятия отсутствует действующий сертификат. Для шифрования нужен действующий сертификат. &lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -219,7 +219,7 @@
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
-        <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).(&lt;a href=&apos;https://www.id.ee/ru/artikkel/kriptovanie-fajlov-s-bolshim-obemom-120-mb/&apos;&gt;Дополнительная информация&lt;/a&gt;).</translation>
+        <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).&lt;a href=&apos;https://www.id.ee/ru/artikkel/kriptovanie-fajlov-s-bolshim-obemom-120-mb/&apos;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Ignore forever</source>
@@ -1490,7 +1490,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
-        <translation>Загрузить файл с диска для подписания или проверки</translation>
+        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
@@ -1498,7 +1498,7 @@ ID-КАРТОЙ</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
-        <translation>Загрузить файл с диска для шифрования или расшифровки</translation>
+        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1685,7 +1685,7 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Open file for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Выберите на диске файл для подписания или проверки</translation>
+        <translation>Загрузить файл с диска для шифрования или расшифровки</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
@@ -3003,7 +3003,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Remove signature %1</source>
-        <translation>Удаить подпись имя/личный код? %1</translation>
+        <translation>Удалить подпись? %1</translation>
     </message>
     <message>
         <source>CANCEL</source>
