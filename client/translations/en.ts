@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;(&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Additional information&lt;/a&gt;).</translation>
+        <translation>Person or company does not own a valid certificate. It is necessary to have a valid certificate for encryption.&lt;a href=&quot;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -219,7 +219,7 @@
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
-        <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).(&lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Additional information&lt;/a&gt;).</translation>
+        <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).&lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Ignore forever</source>
@@ -1488,7 +1488,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>Open file for signing or verifying</source>
-        <translation>Load file from disk for signing or verifying</translation>
+        <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
@@ -1496,7 +1496,7 @@ ID-CARD</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
-        <translation>Load file from disk for encryption or decryption</translation>
+        <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
     <message>
         <source>signature container</source>
@@ -1682,12 +1682,12 @@ ID-CARD</translation>
     <message>
         <source>Open file for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Open file for signing or verifying</translation>
+        <translation>Load file from disk for signing or verifying</translation>
     </message>
     <message>
         <source>Open file for encryption or decryption</source>
         <comment>accessible</comment>
-        <translation>Open file for encryption or decryption</translation>
+        <translation>Load file from disk for encryption or decryption</translation>
     </message>
     <message>
         <source>Select signature page</source>
@@ -3000,7 +3000,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Remove signature %1</source>
-        <translation>Remove signature name/identification code? %1</translation>
+        <translation>Remove signature? %1</translation>
     </message>
     <message>
         <source>CANCEL</source>
