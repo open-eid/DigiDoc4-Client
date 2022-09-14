@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QObject>
+#include <QCryptographicHash>
 
 class TokenData;
 
@@ -38,13 +39,11 @@ public:
 		UnknownError
 	};
 
-
-	explicit QCryptoBackend(QObject *parent = nullptr);
-	~QCryptoBackend() override = default;
+	using QObject::QObject;
 
 	virtual QList<TokenData> tokens() const = 0;
 	virtual QByteArray decrypt(const QByteArray &data) const = 0;
-	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual PinStatus lastError() const = 0;
 	virtual PinStatus login(const TokenData &cert) = 0;

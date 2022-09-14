@@ -21,6 +21,7 @@
 
 #include "Application.h"
 #include "TokenData.h"
+#include "QCryptoBackend.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
 #include "dialogs/FileDialog.h"
@@ -669,7 +670,7 @@ void CryptoDoc::Private::writeCDoc(QIODevice *cdoc, const QByteArray &transportK
 					case 48: concatDigest = SHA384_MTH; break;
 					default: concatDigest = SHA512_MTH; break;
 					}
-					QByteArray encryptionKey = CryptoDoc::concatKDF(concatDigest, KWAES_SIZE[encryptionMethod],
+					QByteArray encryptionKey = CryptoDoc::concatKDF(SHA_MTH[concatDigest], KWAES_SIZE[encryptionMethod],
 						sharedSecret, props.value(QStringLiteral("DocumentFormat")).toUtf8() + SsDer + k.cert.toDer());
 #ifndef NDEBUG
 					qDebug() << "ENC Ss" << SsDer.toHex();
@@ -1020,13 +1021,12 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 	return false;
 }
 
-QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
+QByteArray CryptoDoc::concatKDF(QCryptographicHash::Algorithm digestMethod, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
 {
 	if(z.isEmpty())
 		return z;
-	QCryptographicHash::Algorithm hashAlg =  Private::SHA_MTH[digestMethod];
 	quint32 hashLen = 0;
-	switch(hashAlg)
+	switch(digestMethod)
 	{
 	case QCryptographicHash::Sha256: hashLen = 32; break;
 	case QCryptographicHash::Sha384: hashLen = 48; break;
@@ -1034,7 +1034,7 @@ QByteArray CryptoDoc::concatKDF(const QString &digestMethod, quint32 keyDataLen,
 	default: return {};
 	}
 	quint32 reps = quint32(std::ceil(double(keyDataLen) / double(hashLen)));
-	QCryptographicHash md(hashAlg);
+	QCryptographicHash md(digestMethod);
 	QByteArray key;
 	for(quint32 i = 1; i <= reps; i++)
 	{
@@ -1098,19 +1098,15 @@ bool CryptoDoc::decrypt()
 		return false;
 	}
 
-	bool decrypted = false;
 	bool isECDH = key.cert.publicKey().algorithm() == QSsl::Ec;
-	QByteArray decryptedKey;
-	while( !decrypted )
-	{
-		switch(qApp->signer()->decrypt(isECDH ? key.publicKey : key.cipher, decryptedKey,
-			key.concatDigest, int(Private::KWAES_SIZE[key.method]), key.AlgorithmID, key.PartyUInfo, key.PartyVInfo))
-		{
-		case QSigner::DecryptOK: decrypted = true; break;
-		case QSigner::PinIncorrect: break;
-		default: return false;
-		}
-	}
+	QByteArray decryptedKey = qApp->signer()->decrypt([&key, &isECDH](QCryptoBackend *backend) {
+		if(!isECDH)
+			return backend->decrypt(key.cipher);
+		return backend->deriveConcatKDF(key.publicKey, Private::SHA_MTH[key.concatDigest],
+			int(Private::KWAES_SIZE[key.method]), key.AlgorithmID, key.PartyUInfo, key.PartyVInfo);
+	});
+	if(decryptedKey.isEmpty())
+		return false;
 	if(isECDH)
 	{
 #ifndef NDEBUG

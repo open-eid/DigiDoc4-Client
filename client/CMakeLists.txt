@@ -216,7 +216,7 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources( ${PROGNAME} PRIVATE QCSP.cpp QCNG.cpp QWin.cpp CertStore.cpp Diagnostics_win.cpp)
+	target_sources( ${PROGNAME} PRIVATE QCNG.cpp CertStore.cpp Diagnostics_win.cpp)
 	target_compile_options(${PROGNAME} PRIVATE "/guard:cf")
 	target_link_options(${PROGNAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	target_link_libraries(${PROGNAME} NCrypt Crypt32 Cryptui)

@@ -132,7 +132,7 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 
 	CK_ECDH1_DERIVE_PARAMS ecdh_parms = { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
 	CK_MECHANISM mech = { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
-	CK_BBOOL _false = FALSE;
+	CK_BBOOL _false = CK_FALSE;
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
 	std::vector<CK_ATTRIBUTE> newkey_template{
@@ -147,8 +147,8 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	return d->attribute(d->session, newkey, CKA_VALUE);
 }
 
-QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
-	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+	int keySize, const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	return CryptoDoc::concatKDF(digest, quint32(keySize), derive(publicKey), algorithmID + partyUInfo + partyVInfo);
 }

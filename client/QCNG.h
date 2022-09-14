@@ -19,9 +19,14 @@
 
 #pragma once
 
-#include "QWin.h"
+#include "QCryptoBackend.h"
 
-class QCNG final: public QWin
+#include <functional>
+
+#include <qt_windows.h>
+#include <ncrypt.h>
+
+class QCNG final: public QCryptoBackend
 {
 	Q_OBJECT
 public:
@@ -30,13 +35,17 @@ public:
 
 	QList<TokenData> tokens() const final;
 	QByteArray decrypt(const QByteArray &data) const final;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, const QString &digest, int keySize,
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	PinStatus lastError() const final;
 	PinStatus login(const TokenData &token) final;
+	void logout() final {}
 	QByteArray sign(int method, const QByteArray &digest) const final;
 
 private:
+	QByteArray derive(const QByteArray &publicKey, std::function<long (NCRYPT_SECRET_HANDLE, QByteArray &)> &&func) const;
+	QByteArray exec(std::function<long (NCRYPT_PROV_HANDLE, NCRYPT_KEY_HANDLE, QByteArray &)> &&func) const;
+
 	class Private;
 	Private *d;
 };
