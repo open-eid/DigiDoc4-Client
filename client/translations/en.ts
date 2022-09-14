@@ -77,8 +77,8 @@
         <translation>Personal code is not valid!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>Person or company does not own a valid certificate. It is necessary to have a valid certificate for encryption.&lt;a href=&quot;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&quot;&gt;Additional information&lt;/a&gt;.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -218,7 +218,7 @@
         <translation>Create %1</translation>
     </message>
     <message>
-        <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
+        <source>Added file(s) exceeds the maximum size limit of the container (~120MB).&lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).&lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
@@ -1680,12 +1680,12 @@ ID-CARD</translation>
         <translation>Photo (*.jpg *.jpeg);;All Files (*)</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
+        <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
         <translation>Load file from disk for signing or verifying</translation>
     </message>
     <message>
-        <source>Open file for encryption or decryption</source>
+        <source>Load file from disk for encryption or decryption</source>
         <comment>accessible</comment>
         <translation>Load file from disk for encryption or decryption</translation>
     </message>
@@ -2602,7 +2602,7 @@ and enter Smart-ID PIN2-code.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
@@ -2829,7 +2829,7 @@ Additional licenses and components</translation>
         <translation>This is an invalid signature or malformed digitally signed file. The signature is not valid.</translation>
     </message>
     <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;additional information&lt;/a&gt;).</source>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;additional information&lt;/a&gt;).</source>
         <translation>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;additional information&lt;/a&gt;).</translation>
     </message>
     <message>
@@ -2999,8 +2999,8 @@ Additional licenses and components</translation>
         <translation>at</translation>
     </message>
     <message>
-        <source>Remove signature %1</source>
-        <translation>Remove signature? %1</translation>
+        <source>Remove signature %1?</source>
+        <translation>Remove signature %1?</translation>
     </message>
     <message>
         <source>CANCEL</source>
