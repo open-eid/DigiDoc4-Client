@@ -131,6 +131,8 @@ QByteArray QCNG::exec(std::function<long (NCRYPT_PROV_HANDLE, NCRYPT_KEY_HANDLE,
 		NCryptFreeObject(prov);
 		return {};
 	}
+	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
+	NCryptSetProperty(key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
 	QByteArray result;
 	long err = func(prov, key, result);
 	NCryptFreeObject(key);
