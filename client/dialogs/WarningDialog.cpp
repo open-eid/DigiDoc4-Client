@@ -89,8 +89,8 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 		setLayoutDirection(Qt::RightToLeft);
 #endif
 	} else {
-// For macOS and Linux all positive buttons should be on the right side of the dialog window
-#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+// For macOS, Linux and BSD all positive buttons should be on the right side of the dialog window
+#if defined(Q_OS_UNIX)
 		setLayoutDirection(Qt::RightToLeft);
 #endif
 	}

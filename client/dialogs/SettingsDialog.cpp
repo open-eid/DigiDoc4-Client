@@ -113,7 +113,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->txtAccessCert->setFont(regularFont);
 	ui->btInstallManually->setFont(condensed12);
 	ui->btShowCertificate->setFont(condensed12);
-#ifdef Q_OS_LINUX
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	ui->btInstallManually->setStyleSheet("background-color: #d3d3d3");
 	ui->btShowCertificate->setStyleSheet("background-color: #d3d3d3");
 #endif
