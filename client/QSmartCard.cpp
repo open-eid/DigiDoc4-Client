@@ -113,10 +113,9 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 	else if(Common::language() == QLatin1String("et")) language = 0x0425;
 	else if(Common::language() == QLatin1String("ru")) language = 0x0419;
 	QPCSCReader::Result result;
-	waitFor([&]{
-		result = reader->transferCTL(apdu, verify, language, QSmartCardData::minPinLen(type), newPINOffset, requestCurrentPIN);
+	return waitFor([&]{
+		return reader->transferCTL(apdu, verify, language, QSmartCardData::minPinLen(type), newPINOffset, requestCurrentPIN);
 	});
-	return result;
 }
 
 

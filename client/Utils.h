@@ -25,12 +25,13 @@
 
 namespace {
 	template <typename F>
-	inline void waitFor(F&& function) {
+	inline auto waitFor(F&& function) {
 		std::exception_ptr exception;
+		typename std::invoke_result<F>::type result{};
 		QEventLoop l;
 		std::thread([&]{
 			try {
-				function();
+				result = function();
 			} catch(...) {
 				exception = std::current_exception();
 			}
@@ -39,6 +40,7 @@ namespace {
 		l.exec();
 		if(exception)
 			std::rethrow_exception(exception);
+		return result;
 	}
 
 	inline QString escapeUnicode(const QString &str) {

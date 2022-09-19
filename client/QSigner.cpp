@@ -46,8 +46,8 @@ Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 class QSigner::Private final
 {
 public:
-	QCryptoBackend	*backend = nullptr;
-	QSmartCard		*smartcard = nullptr;
+	QCryptoBackend	*backend {};
+	QSmartCard		*smartcard {};
 	TokenData		auth, sign;
 	QList<TokenData> cache;
 
@@ -61,7 +61,7 @@ ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_l
 		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 {
 	QCryptoBackend *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
-	QByteArray result = backend->sign(0, QByteArray::fromRawData((const char*)dgst, dgst_len));
+	QByteArray result = backend->sign(NID_sha256, QByteArray::fromRawData((const char*)dgst, dgst_len));
 	if(result.isEmpty())
 		return nullptr;
 	QByteArray r = result.left(result.size()/2);
@@ -199,9 +199,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 		}
 	} while(status != QCryptoBackend::PinOK);
 	QByteArray result;
-	waitFor([&]{
-		result = func(d->backend);
-	});
+	result = waitFor([&]{ return func(d->backend); });
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
@@ -397,9 +395,8 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINFailed)
 		}
 	} while(status != QCryptoBackend::PinOK);
-	QByteArray sig;
-	waitFor([&]{
-		sig = d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+	QByteArray sig = waitFor([&]{
+		return d->backend->sign(type, QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	});
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();

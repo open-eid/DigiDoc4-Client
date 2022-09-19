@@ -519,7 +519,7 @@ bool DigiDoc::open( const QString &file )
 
 	try {
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
-		waitFor([&] {
+		return waitFor([&] {
 			b = Container::openPtr(to(file));
 			if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
 			{
@@ -548,10 +548,10 @@ bool DigiDoc::open( const QString &file )
 				isTimeStamped = parentContainer->signatures()[0]->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
 			for(const Signature *signature: b->signatures())
 				m_signatures.append(DigiDocSignature(signature, this, isTimeStamped));
+			qApp->addRecent( file );
+			containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
+			return true;
 		});
-		qApp->addRecent( file );
-		containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
-		return true;
 	} catch(const Exception &e) {
 		switch(e.code())
 		{
@@ -602,9 +602,9 @@ void DigiDoc::removeSignature( unsigned int num )
 	if( !checkDoc( num >= b->signatures().size(), tr("Missing signature") ) )
 		return;
 	try {
-		waitFor([this, num] {
+		modified = waitFor([this, num] {
 			b->removeSignature(num);
-			modified = true;
+			return true;
 		});
 	}
 	catch( const Exception &e ) { setLastError( tr("Failed remove signature from container"), e ); }
@@ -626,13 +626,13 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
-		waitFor([&]{
+		return waitFor([&]{
 			if(parentContainer)
 				parentContainer->save(to(filename));
 			else
 				b->save(to(filename));
+			return true;
 		});
-		return true;
 	}
 	catch( const Exception &e ) {
 		QFile::remove(filename);
