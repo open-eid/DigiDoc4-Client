@@ -45,7 +45,7 @@ public:
 	{
 		DigestWeak = 1 << 2
 	};
-	DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent, bool isTimeStamped = false);
+	DigiDocSignature(const digidoc::Signature *signature = {}, const DigiDoc *parent = {}, bool isTimeStamped = false);
 
 	QSslCertificate	cert() const;
 	QDateTime	claimedTime() const;
@@ -63,27 +63,28 @@ public:
 	QStringList	roles() const;
 	QString		signatureMethod() const;
 	QString		signedBy() const;
+	SignatureStatus status() const;
 	QString		spuri() const;
 	QDateTime	trustedTime() const;
 	QSslCertificate tsCert() const;
 	QDateTime	tsTime() const;
 	QSslCertificate tsaCert() const;
 	QDateTime	tsaTime() const;
-	SignatureStatus validate() const;
 	int warning() const;
 
 private:
-	void setLastError( const digidoc::Exception &e ) const;
-	void parseException( SignatureStatus &result, const digidoc::Exception &e ) const;
-	SignatureStatus validate(const std::string &policy) const;
+	void setLastError(const digidoc::Exception &e);
+	void parseException(SignatureStatus &result, const digidoc::Exception &e);
+	SignatureStatus validate();
 	QSslCertificate toCertificate(const std::vector<unsigned char> &der) const;
 	QDateTime toTime(const std::string &time) const;
 
 	const digidoc::Signature *s;
-	mutable QString m_lastError;
+	QString m_lastError;
 	const DigiDoc *m_parent;
-	mutable unsigned int m_warning = 0;
+	unsigned int m_warning = 0;
 	bool m_isTimeStamped;
+	SignatureStatus m_status;
 };
 
 
@@ -157,6 +158,7 @@ private:
 	std::unique_ptr<DocumentModel>		m_documentModel;
 
 	ria::qdigidoc4::ContainerState containerState;
+	QList<DigiDocSignature> m_signatures;
 	bool			modified = false;
 	QString			m_fileName;
 	QStringList		m_tempFiles;

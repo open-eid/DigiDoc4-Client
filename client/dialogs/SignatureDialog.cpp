@@ -58,7 +58,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	auto isValid = [](bool isTS) {
 		return isTS ? tr("is valid", "Timestamp") : tr("is valid", "Signature");
 	};
-	switch( s.validate() )
+	switch(s.status())
 	{
 	case DigiDocSignature::Valid:
 		status += isValid(isTS);
