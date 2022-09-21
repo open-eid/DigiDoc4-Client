@@ -25,10 +25,7 @@
 	color: #000000
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="MainWindowLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -41,7 +38,208 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0" rowspan="2">
+    <widget class="QFrame" name="leftBar">
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>520</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>110</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;
+background-color: #023664;
+</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QWidget" name="logo" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>110</width>
+        <height>65</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-bottom: 1px solid rgba(255, 255, 255, 0.1)</string>
+      </property>
+      <widget class="QSvgWidget" name="coatOfArms" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>17</y>
+         <width>80</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
+       <property name="accessibleName">
+        <string notr="true">DigiDoc</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="PageIcon" name="signature">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>65</y>
+        <width>110</width>
+        <height>110</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Select signature page</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;</string>
+      </property>
+     </widget>
+     <widget class="PageIcon" name="crypto">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>175</y>
+        <width>110</width>
+        <height>110</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Select crypto page</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;</string>
+      </property>
+     </widget>
+     <widget class="PageIcon" name="myEid">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>285</y>
+        <width>110</width>
+        <height>110</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="accessibleName">
+       <string extracomment="accessible">Select my EID page</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="rightShadow" native="true">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>0</y>
+        <width>5</width>
+        <height>4000</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0,0,0,0.0), stop: 1 rgba(0,0,0,0.65));
+</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="myEidShadow" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>395</y>
+        <width>110</width>
+        <height>5</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="cryptoShadow" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>285</y>
+        <width>110</width>
+        <height>5</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="signatureShadow" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>175</y>
+        <width>110</width>
+        <height>5</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="version">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>571</y>
+        <width>100</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>12</pointsize>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #006EB5;</string>
+      </property>
+      <property name="text">
+       <string notr="true">version</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="1">
     <widget class="QWidget" name="topBar" native="true">
      <property name="minimumSize">
       <size>
@@ -58,7 +256,7 @@
      <property name="styleSheet">
       <string notr="true">background-color: #FFFFFF;</string>
      </property>
-     <layout class="QHBoxLayout" name="topBarLayout" stretch="0,0,0,0,0">
+     <layout class="QHBoxLayout" name="topBarLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -74,43 +272,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QWidget" name="logo" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>110</width>
-          <height>65</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: #023565;
-border: solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px</string>
-        </property>
-        <widget class="QWidget" name="logoRightShadow" native="true">
-         <property name="geometry">
-          <rect>
-           <x>105</x>
-           <y>0</y>
-           <width>5</width>
-           <height>65</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0,0,0,0.0), stop: 1 rgba(0,0,0,0.65));
-</string>
-         </property>
-        </widget>
-       </widget>
-      </item>
       <item>
        <widget class="QWidget" name="idSelector" native="true">
         <layout class="QHBoxLayout" name="idSelectorLayout" stretch="0,0">
@@ -273,383 +434,172 @@ QToolButton:hover {
      </layout>
     </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>0</number>
+   <item row="1" column="1">
+    <widget class="QWidget" name="page" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>65</height>
+      </size>
      </property>
-     <item>
-      <widget class="QFrame" name="leftBar">
-       <property name="minimumSize">
-        <size>
-         <width>110</width>
-         <height>520</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>97</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;
-background-color: #023664;
-</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <widget class="PageIcon" name="signature">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>110</width>
-          <height>110</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>110</width>
-          <height>110</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Select signature page</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-       </widget>
-       <widget class="PageIcon" name="crypto">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>110</y>
-          <width>110</width>
-          <height>110</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>110</width>
-          <height>110</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Select crypto page</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-       </widget>
-       <widget class="PageIcon" name="myEid">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>220</y>
-          <width>110</width>
-          <height>110</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>110</width>
-          <height>110</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Select my EID page</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="rightShadow" native="true">
-        <property name="geometry">
-         <rect>
-          <x>105</x>
-          <y>0</y>
-          <width>5</width>
-          <height>4000</height>
-         </rect>
-        </property>
+     <property name="styleSheet">
+      <string notr="true">#page{
+	background-color: #023565;
+	border: none;
+}</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_1">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="topBarShadow" native="true">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>1</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>4000</height>
+          <width>914</width>
+          <height>4</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>4</height>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0,0,0,0.0), stop: 1 rgba(0,0,0,0.65));
-</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="myEidShadow" native="true">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>330</y>
-          <width>110</width>
-          <height>5</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="cryptoShadow" native="true">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>220</y>
-          <width>110</width>
-          <height>5</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="signatureShadow" native="true">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>110</y>
-          <width>110</width>
-          <height>5</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="version">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>506</y>
-          <width>100</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>12</pointsize>
-          <underline>true</underline>
-         </font>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::NoContextMenu</enum>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: #006EB5;</string>
-        </property>
-        <property name="text">
-         <string notr="true">version</string>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QWidget" name="page" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>65</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#page{
-	background-color: #023565;
-	border: none;
-}</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_1">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QWidget" name="topBarShadow" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>914</width>
-            <height>4</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>4</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6);
+         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6);
 border: none;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QStackedWidget" name="startScreen">
-          <property name="minimumSize">
-           <size>
-            <width>914</width>
-            <height>350</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">#startScreen{
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="startScreen">
+        <property name="minimumSize">
+         <size>
+          <width>914</width>
+          <height>350</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#startScreen{
 	border:none;
 	background-color: #ffffff;
 }</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <widget class="QWidget" name="signPage">
-           <property name="styleSheet">
-            <string notr="true">QWidget#signPage { background-image: url(:/images/bg_lovid.svg);
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="signPage">
+         <property name="styleSheet">
+          <string notr="true">QWidget#signPage { background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom; }</string>
-           </property>
-           <layout class="QVBoxLayout" name="signPageLayout">
-            <item>
-             <spacer name="signPageLeftTopSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>60</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QWidget" name="signIntroCentral" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>128</height>
-               </size>
-              </property>
-              <layout class="QGridLayout" name="signIntroCentralLayout">
-               <item row="0" column="0" colspan="3">
-                <widget class="QLabel" name="signIntroLabel">
-                 <property name="font">
-                  <font>
-                   <pointsize>20</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">border: none;
+         </property>
+         <layout class="QVBoxLayout" name="signPageLayout">
+          <item>
+           <spacer name="signPageLeftTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>60</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QWidget" name="signIntroCentral" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>128</height>
+             </size>
+            </property>
+            <layout class="QGridLayout" name="signIntroCentralLayout">
+             <item row="0" column="0" colspan="3">
+              <widget class="QLabel" name="signIntroLabel">
+               <property name="font">
+                <font>
+                 <pointsize>20</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">border: none;
 color: #041E42;</string>
-                 </property>
-                 <property name="lineWidth">
-                  <number>0</number>
-                 </property>
-                 <property name="text">
-                  <string>Drag file here for signing ...</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QPushButton" name="signIntroButton">
-                 <property name="minimumSize">
-                  <size>
-                   <width>240</width>
-                   <height>45</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>240</width>
-                   <height>45</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>14</pointsize>
-                   <underline>false</underline>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="accessibleName">
-                  <string comment="accessible">Open file for signing or verifying</string>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton {
+               </property>
+               <property name="lineWidth">
+                <number>0</number>
+               </property>
+               <property name="text">
+                <string>Drag file here for signing ...</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="signIntroButton">
+               <property name="minimumSize">
+                <size>
+                 <width>240</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>240</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <underline>false</underline>
+                 <strikeout>false</strikeout>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="accessibleName">
+                <string comment="accessible">Open file for signing or verifying</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
 	padding: 6px 10px;
 	border-radius: 2px;
 	background-color: #006eb5;
@@ -666,91 +616,91 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>Open file for signing or verifying</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="signPageLeftBottomSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>230</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-          <widget class="ContainerPage" name="signContainerPage"/>
-          <widget class="QWidget" name="cryptoPage">
-           <property name="styleSheet">
-            <string notr="true">QWidget#cryptoPage {
+               </property>
+               <property name="text">
+                <string>Open file for signing or verifying</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="signPageLeftBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>230</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="ContainerPage" name="signContainerPage"/>
+        <widget class="QWidget" name="cryptoPage">
+         <property name="styleSheet">
+          <string notr="true">QWidget#cryptoPage {
 background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom;
 }</string>
-           </property>
-           <layout class="QVBoxLayout" name="cryptoPageLayout">
-            <item>
-             <spacer name="cryptoPageTopSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>60</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QWidget" name="cryptoIntroCentral" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>128</height>
-               </size>
-              </property>
-              <layout class="QGridLayout" name="cryptoIntroCentralLayout">
-               <item row="1" column="1">
-                <widget class="QPushButton" name="cryptoIntroButton">
-                 <property name="minimumSize">
-                  <size>
-                   <width>240</width>
-                   <height>45</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>240</width>
-                   <height>45</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>14</pointsize>
-                   <underline>false</underline>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="accessibleName">
-                  <string comment="accessible">Open file for encryption or decryption</string>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton {
+         </property>
+         <layout class="QVBoxLayout" name="cryptoPageLayout">
+          <item>
+           <spacer name="cryptoPageTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>60</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QWidget" name="cryptoIntroCentral" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>128</height>
+             </size>
+            </property>
+            <layout class="QGridLayout" name="cryptoIntroCentralLayout">
+             <item row="1" column="1">
+              <widget class="QPushButton" name="cryptoIntroButton">
+               <property name="minimumSize">
+                <size>
+                 <width>240</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>240</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <underline>false</underline>
+                 <strikeout>false</strikeout>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="accessibleName">
+                <string comment="accessible">Open file for encryption or decryption</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
 	padding: 6px 10px;
 	border-radius: 2px;
 	background-color: #006eb5;
@@ -767,202 +717,204 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>Open file for encryption or decryption</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0" colspan="3">
-                <widget class="QLabel" name="cryptoIntroLabel">
-                 <property name="font">
-                  <font>
-                   <pointsize>20</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">border: none;
+               </property>
+               <property name="text">
+                <string>Open file for encryption or decryption</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="3">
+              <widget class="QLabel" name="cryptoIntroLabel">
+               <property name="font">
+                <font>
+                 <pointsize>20</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">border: none;
 color: #041E42;</string>
-                 </property>
-                 <property name="lineWidth">
-                  <number>0</number>
-                 </property>
-                 <property name="text">
-                  <string>Drag file here for encryption ...</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="cryptoPageBottomSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>230</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-          <widget class="ContainerPage" name="cryptoContainerPage"/>
-          <widget class="QWidget" name="eidPage">
-           <layout class="QVBoxLayout" name="eidPageLayout">
-            <property name="spacing">
-             <number>3</number>
+               </property>
+               <property name="lineWidth">
+                <number>0</number>
+               </property>
+               <property name="text">
+                <string>Drag file here for encryption ...</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cryptoPageBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>230</height>
+             </size>
             </property>
-            <property name="topMargin">
-             <number>0</number>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="ContainerPage" name="cryptoContainerPage"/>
+        <widget class="QWidget" name="eidPage">
+         <layout class="QVBoxLayout" name="eidPageLayout">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="InfoStack" name="infoStack" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>172</height>
+             </size>
             </property>
-            <property name="rightMargin">
-             <number>0</number>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>186</height>
+             </size>
             </property>
-            <property name="bottomMargin">
-             <number>0</number>
+            <property name="styleSheet">
+             <string notr="true">border: none;</string>
             </property>
-            <item>
-             <widget class="InfoStack" name="infoStack" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>172</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>186</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">border: none;</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="Accordion" name="accordion" native="true"/>
-            </item>
-            <item>
-             <widget class="QWidget" name="noReaderInfo" native="true">
-              <property name="styleSheet">
-               <string notr="true">QWidget#noReaderInfo {
+           </widget>
+          </item>
+          <item>
+           <widget class="Accordion" name="accordion" native="true"/>
+          </item>
+          <item>
+           <widget class="QWidget" name="noReaderInfo" native="true">
+            <property name="styleSheet">
+             <string notr="true">QWidget#noReaderInfo {
 background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom;
 }</string>
-              </property>
-              <layout class="QVBoxLayout" name="noReaderInfoLayout">
-               <item>
-                <spacer name="noReaderInfoTopSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>52</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QWidget" name="noReaderInfoCentral" native="true">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>128</height>
-                  </size>
-                 </property>
-                 <layout class="QVBoxLayout" name="noReaderInfoCentralLayout">
-                  <item>
-                   <widget class="QLabel" name="noReaderInfoText">
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>45</height>
-                     </size>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <pointsize>20</pointsize>
-                      <weight>75</weight>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::TabFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: #041E42;</string>
-                    </property>
-                    <property name="text">
-                     <string>Connect the card reader to your computer and insert your ID card into the reader</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>45</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>45</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <spacer name="noReaderInfoSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>230</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
+            </property>
+            <layout class="QVBoxLayout" name="noReaderInfoLayout">
+             <item>
+              <spacer name="noReaderInfoTopSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>52</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QWidget" name="noReaderInfoCentral" native="true">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>128</height>
+                </size>
+               </property>
+               <layout class="QVBoxLayout" name="noReaderInfoCentralLayout">
+                <item>
+                 <widget class="QLabel" name="noReaderInfoText">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>20</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::TabFocus</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: #041E42;</string>
+                  </property>
+                  <property name="text">
+                   <string>Connect the card reader to your computer and insert your ID card into the reader</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="noReaderInfoSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>230</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QSvgWidget.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>CardWidget</class>
    <extends>QWidget</extends>

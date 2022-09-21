@@ -2756,6 +2756,10 @@ Additional licenses and components</source>
         <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
         <translation>Перезапустите клиент DigiDoc4, чтобы активировать ведение журнала. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>The project is supported by the European Regional Development Fund</source>
+        <translation>Проект поддерживается Европейским фондом регионального развития</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>

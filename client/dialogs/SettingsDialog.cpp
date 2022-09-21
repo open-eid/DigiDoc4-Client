@@ -147,7 +147,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 	// pageDiagnostics
 	ui->structureFunds->load(QStringLiteral(":/images/Struktuurifondid.svg"));
-	ui->pageInfoLayout->setAlignment(ui->structureFunds, Qt::AlignCenter);
 	ui->contact->setFont(regularFont);
 	ui->txtDiagnostics->setFont(regularFont);
 

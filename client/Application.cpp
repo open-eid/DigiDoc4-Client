@@ -64,6 +64,7 @@ class MacMenuBar {};
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslConfiguration>
+#include <QtWidgets/QAccessibleWidget>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QProgressDialog>
@@ -337,6 +338,13 @@ Application::Application( int &argc, char **argv )
 
 	QDesktopServices::setUrlHandler(QStringLiteral("browse"), this, "browse");
 	QDesktopServices::setUrlHandler(QStringLiteral("mailto"), this, "mailTo");
+	QAccessible::installFactory([](const QString &classname, QObject *object) {
+		QAccessibleInterface *interface = nullptr;
+		if (classname == QLatin1String("QSvgWidget") && object && object->isWidgetType())
+			interface = new QAccessibleWidget(static_cast<QWidget *>(object), QAccessible::StaticText);
+		return interface;
+	});
+
 
 	installTranslator( &d->appTranslator );
 	installTranslator( &d->commonTranslator );

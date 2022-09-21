@@ -2753,6 +2753,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
         <translation>Logimise aktiveerimiseks taaskäivita DigiDoc4 klient. Loe täpsemalt &lt;a href=&quot;https://www.id.ee/artikkel/logifaili-genereerimine-digidoc4-kliendis/&quot;&gt;siit&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>The project is supported by the European Regional Development Fund</source>
+        <translation>Projekti on toetatud Euroopa Liidu Regionaalarengu Fondist</translation>
+    </message>
 </context>
 <context>
     <name>SignatureDialog</name>
