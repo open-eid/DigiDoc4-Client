@@ -57,7 +57,6 @@ public:
 signals:
 	void action(int code, const QString &info1 = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
-	void details(const QString &id);
 	void fileRemoved(int row);
 	void keysSelected(const QList<CKey> &keys);
 	void moved(const QString &to);

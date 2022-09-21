@@ -40,7 +40,6 @@ public:
 	explicit Private(DigiDocSignature s): signature(std::move(s)) {}
 	DigiDocSignature signature;
 
-	bool invalid = true;
 	ria::qdigidoc4::WarningType error = ria::qdigidoc4::NoWarning;
 	QString nameText;
 	QString serial;
@@ -82,7 +81,6 @@ void SignatureItem::init()
 	ui->serial.clear();
 	ui->status.clear();
 	ui->error = ria::qdigidoc4::NoWarning;
-	ui->invalid = signatureValidity >= DigiDocSignature::Invalid;
 	if(!cert.isNull())
 		ui->nameText = cert.toString(cert.showCN() ? QStringLiteral("CN") : QStringLiteral("GN SN")).toHtmlEscaped();
 	else
@@ -102,7 +100,7 @@ void SignatureItem::init()
 	auto color = [](QLatin1String color, const QString &text) {
 		return QStringLiteral("<font color=\"%1\">%2</font>").arg(color, text);
 	};
-	switch( signatureValidity )
+	switch(ui->signature.status())
 	{
 	case DigiDocSignature::Valid:
 		ui->status = color(QLatin1String("green"), isValid);
@@ -156,13 +154,9 @@ bool SignatureItem::event(QEvent *event)
 	return Item::event(event);
 }
 
-void SignatureItem::details()
-{
-	(new SignatureDialog(ui->signature, this))->open();
-}
-
 bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 {
+	auto details = [this]{ (new SignatureDialog(ui->signature, this))->open(); };
 	switch(e->type())
 	{
 	case QEvent::MouseButtonRelease:
@@ -185,20 +179,10 @@ ria::qdigidoc4::WarningType SignatureItem::getError() const
 	return ui->error;
 }
 
-QString SignatureItem::id() const
-{
-	return ui->signature.id();
-}
-
 void SignatureItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->name);
 	setTabOrder(ui->name, lastTabWidget());
-}
-
-bool SignatureItem::isInvalid() const
-{
-	return ui->invalid;
 }
 
 bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
@@ -231,7 +215,7 @@ void SignatureItem::updateNameField()
 	doc.setHtml(ui->status);
 	QString plain = doc.toPlainText();
 	auto red = [this](const QString &text) {
-		return ui->invalid ? QStringLiteral("<font color=\"red\">%1</font>").arg(text) : text;
+		return ui->signature.isInvalid() ? QStringLiteral("<font color=\"red\">%1</font>").arg(text) : text;
 	};
 	if(ui->name->fontMetrics().boundingRect(ui->nameText + " - " + plain).width() < ui->name->width())
 		ui->name->setText(red(ui->nameText + " - ") + ui->status);

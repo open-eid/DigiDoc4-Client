@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QEventLoop>
+#include <QTimer>
 #include <exception>
 #include <thread>
 
@@ -40,6 +41,23 @@ namespace {
 		l.exec();
 		if(exception)
 			std::rethrow_exception(exception);
+		return result;
+	}
+
+	template <typename F>
+	inline auto dispatchToMain(F&& function) {
+		typename std::invoke_result<F>::type result{};
+		QEventLoop l;
+		QTimer* timer = new QTimer();
+		timer->moveToThread(qApp->thread());
+		timer->setSingleShot(true);
+		QObject::connect(timer, &QTimer::timeout, timer, [&] {
+			result = function();
+			l.exit();
+			timer->deleteLater();
+		});
+		QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
+		l.exec();
 		return result;
 	}
 

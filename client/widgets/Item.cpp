@@ -19,8 +19,6 @@
 
 #include "Item.h"
 
-QString Item::id() const { return QString(); }
 void Item::idChanged(const SslCertificate & /* cert */) {}
 void Item::initTabOrder(QWidget * /* item */) {}
-void Item::details() {}
 QWidget* Item::lastTabWidget() { return this; }

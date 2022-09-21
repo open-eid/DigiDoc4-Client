@@ -32,11 +32,8 @@ public:
 	explicit SignatureItem(DigiDocSignature s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~SignatureItem() final;
 
-	void details() final;
 	ria::qdigidoc4::WarningType getError() const;
-	QString id() const final;
 	void initTabOrder(QWidget *item) final;
-	bool isInvalid() const;
 	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
 	QWidget* lastTabWidget() final;
 

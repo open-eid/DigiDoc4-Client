@@ -49,7 +49,7 @@ public:
 
 	QSslCertificate	cert() const;
 	QDateTime	claimedTime() const;
-	QString		id() const;
+	bool		isInvalid() const;
 	QString		lastError() const;
 	QString		location() const;
 	QStringList	locations() const;

@@ -50,7 +50,6 @@ public:
 	ria::qdigidoc4::ContainerState getState() const;
 	bool hasItem(const std::function<bool(Item* const)> &cb);
 	virtual void removeItem(int row);
-	void setTerm(const QString &term);
 	virtual void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:
@@ -62,16 +61,11 @@ signals:
 	void removed(int row);
 	void search(const QString &term);
 
-public slots:
-	void details(const QString &id);
-
-protected slots:
-	virtual void remove(Item *item);
-	
 protected:
 	void changeEvent(QEvent* event) override;
 	bool eventFilter(QObject *o, QEvent *e) override;
 	int index(Item *item) const;
+	virtual void remove(Item *item);
 
 	Ui::ItemList* ui;
 	std::vector<Item*> items;

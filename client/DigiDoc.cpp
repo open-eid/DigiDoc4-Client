@@ -70,9 +70,9 @@ QDateTime DigiDocSignature::claimedTime() const
 	return toTime(s->claimedSigningTime());
 }
 
-QString DigiDocSignature::id() const
+bool DigiDocSignature::isInvalid() const
 {
-	return from(s->id());
+	return m_status >= Invalid;
 }
 
 QString DigiDocSignature::lastError() const { return m_lastError; }
@@ -521,12 +521,14 @@ bool DigiDoc::open( const QString &file )
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		return waitFor([&] {
 			b = Container::openPtr(to(file));
-			if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" && b->dataFiles().size() == 1)
+			if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
+				b->dataFiles().size() == 1 &&
+				b->signatures().size() == 1)
 			{
 				const DataFile *f = b->dataFiles().at(0);
 				if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)  &&
 					CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")) &&
-					serviceConfirmation())
+					dispatchToMain(serviceConfirmation))
 				{
 					const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 					f->saveAs(to(tmppath));
@@ -539,16 +541,11 @@ bool DigiDoc::open( const QString &file )
 					}
 				}
 			}
-			m_fileName = file;
-			bool isTimeStamped = false;
-			if(parentContainer &&
-				parentContainer->dataFiles().size() == 1 &&
-				parentContainer->signatures().size() == 1 &&
-				from(parentContainer->dataFiles()[0]->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
-				isTimeStamped = parentContainer->signatures()[0]->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
+			bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
 			for(const Signature *signature: b->signatures())
 				m_signatures.append(DigiDocSignature(signature, this, isTimeStamped));
-			qApp->addRecent( file );
+			qApp->addRecent(file);
+			m_fileName = file;
 			containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 			return true;
 		});
