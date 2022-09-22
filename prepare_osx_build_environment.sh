@@ -4,12 +4,12 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.3.0"
-OPENSSL_VER="1.1.1o"
-OPENLDAP_VER="2.6.2"
+QT_VER="6.3.2"
+OPENSSL_VER="1.1.1q"
+OPENLDAP_VER="2.6.3"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-: ${MACOSX_DEPLOYMENT_TARGET:="10.14"}
+: ${MACOSX_DEPLOYMENT_TARGET:="10.15"}
 export MACOSX_DEPLOYMENT_TARGET
 SCRIPTPATH=$(exec 2>/dev/null;cd -- $(dirname "$0"); unset PWD; /usr/bin/pwd || /bin/pwd || pwd)
 
