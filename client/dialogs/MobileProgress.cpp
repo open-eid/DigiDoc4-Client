@@ -20,6 +20,7 @@
 #include "MobileProgress.h"
 #include "ui_MobileProgress.h"
 
+#include "Application.h"
 #include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
@@ -65,8 +66,8 @@ public:
 	X509Cert cert;
 	QEventLoop l;
 #ifdef CONFIG_URL
-	QString PROXYURL = Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL));
-	QString SKURL = Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL));
+	QString PROXYURL = qApp->conf()->object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL));
+	QString SKURL = qApp->conf()->object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL));
 #else
 	QString PROXYURL = QSettings().value(QStringLiteral("MID-PROXY-URL"), QStringLiteral(MOBILEID_URL)).toString();
 	QString SKURL = QSettings().value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
@@ -128,7 +129,7 @@ background-color: #007aff;
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	for(const QJsonValue cert: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+	for(const QJsonValue cert: qApp->conf()->object().value(QStringLiteral("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 #endif
 	d->req.setSslConfiguration(ssl);

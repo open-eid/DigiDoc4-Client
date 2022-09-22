@@ -40,12 +40,12 @@ void Diagnostics::generalInfo(QTextStream &s) const
 		<< "<b>" << "URLs:" << "</b>"
 #ifdef CONFIG_URL
 		<< "<br />CONFIG_URL: " << CONFIG_URL
-		<< "<br />SID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-SK-URL: " << Configuration::instance().object().value(QStringLiteral("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />MID-PROXY-URL: " << Configuration::instance().object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL))
-		<< "<br />MID-SK-URL: " << Configuration::instance().object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL))
+		<< "<br />SID-PROXY-URL: " << qApp->conf()->object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-PROXY-URL: " << qApp->conf()->object().value(QStringLiteral("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SID-SK-URL: " << qApp->conf()->object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-SK-URL: " << qApp->conf()->object().value(QStringLiteral("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />MID-PROXY-URL: " << qApp->conf()->object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL))
+		<< "<br />MID-SK-URL: " << qApp->conf()->object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL))
 		<< "<br />RPUUID: " << (QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("MIDUUID"))).toBool() ? tr("is set manually") : tr("is set by default"))
 #else
 #ifdef MOBILEID_URL
@@ -74,7 +74,7 @@ void Diagnostics::generalInfo(QTextStream &s) const
 
 #ifdef CONFIG_URL
 	s << "<b>" << tr("Central Configuration") << ":</b>";
-	QJsonObject metainf = Configuration::instance().object().value(QStringLiteral("META-INF")).toObject();
+	QJsonObject metainf = qApp->conf()->object().value(QStringLiteral("META-INF")).toObject();
 	for(QJsonObject::const_iterator i = metainf.constBegin(), end = metainf.constEnd(); i != end; ++i)
 	{
 		switch(i.value().type())

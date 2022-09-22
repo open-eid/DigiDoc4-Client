@@ -20,6 +20,7 @@
 #include "SmartIDProgress.h"
 #include "ui_MobileProgress.h"
 
+#include "Application.h"
 #include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WaitDialog.h"
@@ -66,7 +67,7 @@ public:
 	std::vector<unsigned char> signature;
 	QEventLoop l;
 #ifdef CONFIG_URL
-	QJsonObject config = Configuration::instance().object();
+	QJsonObject config = qApp->conf()->object();
 	QString PROXYURL = config.value(QLatin1String("SIDV2-PROXY-URL")).toString(config.value(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL)));
 	QString SKURL = config.value(QLatin1String("SIDV2-SK-URL")).toString(config.value(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL)));
 #else

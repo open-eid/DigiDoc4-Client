@@ -30,11 +30,6 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
 
-DocumentModel::DocumentModel(QObject *parent)
-: QObject(parent)
-{}
-DocumentModel::~DocumentModel() = default;
-
 void DocumentModel::addTempFiles(const QStringList &files)
 {
 	for(const QString &file: files)
@@ -61,11 +56,11 @@ QStringList DocumentModel::tempFiles() const
 bool DocumentModel::verifyFile(const QString &f)
 {
 	QJsonObject obj;
-	#ifdef CONFIG_URL
-		obj = Configuration::instance().object();
-	#endif
+#ifdef CONFIG_URL
+	obj = qApp->conf()->object();
+#endif
 
-	static const QJsonArray defaultArray = {
+	static const QJsonArray defaultArray {
 			QStringLiteral("ddoc"), QStringLiteral("bdoc") ,QStringLiteral("edoc"), QStringLiteral("adoc"), QStringLiteral("asice"), QStringLiteral("cdoc"), QStringLiteral("asics"),
 			QStringLiteral("txt"), QStringLiteral("doc"), QStringLiteral("docx"), QStringLiteral("odt"), QStringLiteral("ods"), QStringLiteral("tex"), QStringLiteral("wks"), QStringLiteral("wps"),
 			QStringLiteral("wpd"), QStringLiteral("rtf"), QStringLiteral("xlr"), QStringLiteral("xls"), QStringLiteral("xlsx"), QStringLiteral("pdf"), QStringLiteral("key"), QStringLiteral("odp"),
