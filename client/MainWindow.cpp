@@ -1085,9 +1085,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 
 void MainWindow::warningClicked(const QString &link)
 {
-	if(link.startsWith(QLatin1String("#invalid-signature-")))
-		emit ui->signContainerPage->details(link.mid(19));
-	else if(link == QLatin1String("#unblock-PIN1"))
+	if(link == QLatin1String("#unblock-PIN1"))
 		ui->accordion->changePin1Clicked (false, true);
 	else if(link == QLatin1String("#unblock-PIN2"))
 		ui->accordion->changePin2Clicked (false, true);

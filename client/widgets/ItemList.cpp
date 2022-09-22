@@ -146,15 +146,6 @@ void ItemList::clear()
 		(*it)->deleteLater();
 }
 
-void ItemList::details(const QString &id)
-{
-	for(auto item: items)
-	{
-		if(item->id() == id)
-			emit item->details();
-	}
-}
-
 bool ItemList::eventFilter(QObject *o, QEvent *e)
 {
 	if(o != ui->infoIcon)
@@ -270,11 +261,6 @@ void ItemList::setRecipientTooltip()
 #else
 	ui->infoIcon->setToolTip(tr("RECIPIENT_MESSAGE"));
 #endif
-}
-
-void ItemList::setTerm(const QString &term)
-{
-	ui->txtFind->setText(term);
 }
 
 void ItemList::stateChange( ContainerState state )

@@ -30,13 +30,9 @@ class Item : public StyledWidget
 public:
 	using StyledWidget::StyledWidget;
 
-	virtual QString id() const;
+	virtual void idChanged(const SslCertificate &cert);
 	virtual void initTabOrder(QWidget *item);
 	virtual QWidget* lastTabWidget();
-
-public slots:
-	virtual void details();
-	virtual void idChanged(const SslCertificate &cert);
 
 signals:
 	void add(Item* item);

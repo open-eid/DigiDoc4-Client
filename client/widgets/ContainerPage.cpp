@@ -66,7 +66,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 	mobileCode = QSettings().value(QStringLiteral("MobileCode")).toString();
 
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
-	connect(this, &ContainerPage::details, ui->rightPane, &ItemList::details);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -329,7 +328,7 @@ void ContainerPage::transition(DigiDoc* container)
 		for(const DigiDocSignature &c: container->timestamps())
 		{
 			SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
-			if(item->isInvalid())
+			if(c.isInvalid())
 				addError(item);
 			ui->rightPane->addHeaderWidget(item);
 		}
@@ -338,7 +337,7 @@ void ContainerPage::transition(DigiDoc* container)
 	for(const DigiDocSignature &c: container->signatures())
 	{
 		SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
-		if(item->isInvalid())
+		if(c.isInvalid())
 			addError(item);
 		ui->rightPane->addWidget(item);
 	}
