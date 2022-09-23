@@ -22,6 +22,7 @@
 #include "Common.h"
 
 #include <QtCore/QFile>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QTextStream>
 #include <QtCore/QProcess>
 #include <QtNetwork/QSslSocket>
@@ -102,10 +103,11 @@ void Diagnostics::run()
 	QFile f( "/proc/cpuinfo" );
 	if( f.open( QFile::ReadOnly ) )
 	{
-		QRegExp rx( "model name.*\\: (.*)\n" );
-		rx.setMinimal( true );
-		if( rx.indexIn( QString::fromLocal8Bit( f.readAll() ) ) != -1 )
-			s << rx.cap( 1 );
+		QRegularExpression rx(QStringLiteral("model name.*\\: (.*)\n"));
+		rx.setPatternOptions(QRegularExpression::InvertedGreedinessOption);
+		QRegularExpressionMatch match = rx.match(QString::fromLocal8Bit(f.readAll()));
+		if(match.hasMatch())
+			s << match.captured(1);
 	}
 	s << "<br />";
 #endif

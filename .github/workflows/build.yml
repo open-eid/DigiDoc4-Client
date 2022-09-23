@@ -24,6 +24,7 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install dependencies
       run: |
+        brew install ninja
         HASH=($(shasum prepare_osx_build_environment.sh))
         curl -O -L -s https://installer.id.ee/media/github/opensc_0.22.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
@@ -33,7 +34,7 @@ jobs:
     - name: Build
       run: |
         QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
-        cmake \
+        cmake "-GNinja" \
           -DCMAKE_PREFIX_PATH=${QT_DIR} \
           -DOPENSSL_ROOT_DIR=/Library/Developer/OpenSSL \
           -DLDAP_ROOT=/Library/Developer/OpenLDAP \
@@ -61,7 +62,11 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
+      if: matrix.container != 'ubuntu:22.04'
       run: apt update -qq && apt install --no-install-recommends -y lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
+    - name: Install dependencies
+      if: matrix.container == 'ubuntu:22.04'
+      run: apt update -qq && apt install --no-install-recommends -y lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -105,7 +110,11 @@ jobs:
       with:
         submodules: recursive
     - name: Install Deps
+      if: matrix.container == 'fedora:35'
       run: dnf install -y gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt5-qtsvg-devel qt5-linguist
+    - name: Install Deps
+      if: matrix.container != 'fedora:35'
+      run: dnf install -y gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:

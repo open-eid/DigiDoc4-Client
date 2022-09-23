@@ -10,8 +10,9 @@ Build-Depends:
  libldap2-dev,
  libpcsclite-dev,
  libssl-dev,
- qttools5-dev,
- libqt5svg5-dev
+ qt6-tools-dev | qttools5-dev,
+ qt6-l10n-tools | qttools5-dev-tools,
+ libqt6svg6-dev | libqt5svg5-dev
 Standards-Version: 3.9.8
 Homepage: https://github.com/open-eid/DigiDoc4-Client
 
@@ -20,6 +21,7 @@ Architecture: any
 Depends:
  opensc-pkcs11,
  python3-nautilus|python-nautilus,
+ qt6-qpa-plugins | libqt5gui5,
  ${shlibs:Depends},
  ${misc:Depends}
 Replaces:
