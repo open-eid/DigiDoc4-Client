@@ -118,7 +118,7 @@ class DigiDoc: public QObject
 {
 	Q_OBJECT
 public:
-	explicit DigiDoc(QObject *parent = nullptr);
+	explicit DigiDoc(QObject *parent = {});
 	~DigiDoc();
 
 	bool addFile( const QString &file, const QString &mime );
@@ -126,7 +126,6 @@ public:
 	void clear();
 	DocumentModel *documentModel() const;
 	QString fileName() const;
-	bool isNull() const;
 	bool isPDF() const;
 	bool isModified() const;
 	bool isSupported() const;
@@ -150,15 +149,15 @@ public:
 		digidoc::Exception::ExceptionCode &code);
 
 private:
-	bool checkDoc( bool status = false, const QString &msg = QString() ) const;
+	bool isError(bool failure, const QString &msg = {}) const;
 	void setLastError( const QString &msg, const digidoc::Exception &e );
 
 	std::unique_ptr<digidoc::Container> b;
 	std::unique_ptr<digidoc::Container> parentContainer;
 	std::unique_ptr<DocumentModel>		m_documentModel;
 
-	ria::qdigidoc4::ContainerState containerState;
-	QList<DigiDocSignature> m_signatures;
+	ria::qdigidoc4::ContainerState containerState = ria::qdigidoc4::UnsignedContainer;
+	QList<DigiDocSignature> m_signatures, m_timestamps;
 	bool			modified = false;
 	QString			m_fileName;
 	QStringList		m_tempFiles;
