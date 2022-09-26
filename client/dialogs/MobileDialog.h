@@ -25,13 +25,13 @@ namespace Ui {
 class MobileDialog;
 }
 
-class MobileDialog : public QDialog
+class MobileDialog final : public QDialog
 {
 	Q_OBJECT
 
 public:
 	explicit MobileDialog(QWidget *parent = nullptr);
-	~MobileDialog();
+	~MobileDialog() final;
 
 	QString idCode();
 	QString phoneNo();

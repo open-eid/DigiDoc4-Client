@@ -60,7 +60,7 @@ public:
 	~PinPopup() final;
 
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
-	QString text() const;
+	QString pin() const;
 
 signals:
 	void startTimer();

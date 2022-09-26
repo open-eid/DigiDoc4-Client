@@ -260,7 +260,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;
-		QByteArray pin = p.text().toUtf8();
+		QByteArray pin = p.pin().toUtf8();
 		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 	}
 

@@ -23,7 +23,7 @@
 
 namespace Ui { class SmartIDDialog; }
 
-class SmartIDDialog : public QDialog
+class SmartIDDialog final : public QDialog
 {
 	Q_OBJECT
 

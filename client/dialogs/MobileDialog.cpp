@@ -64,6 +64,8 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
 	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
 	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, false);
+	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
+	connect(ui->phoneNo, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
 	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);

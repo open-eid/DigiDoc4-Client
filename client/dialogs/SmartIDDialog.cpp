@@ -64,6 +64,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->idCountry->setCurrentIndex(ui->idCountry->findData(s.value(QStringLiteral("SmartIDCountry"), QStringLiteral("EE")).toString()));
 	ui->cbRemember->setChecked(s.value(QStringLiteral("SmartIDSettings"), true).toBool());
 	connect(ui->sign, &QPushButton::clicked, this, &QDialog::accept);
+	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
 
 	auto enableSign = [=] {
