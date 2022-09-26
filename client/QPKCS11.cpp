@@ -29,8 +29,6 @@
 #include <QtCore/QDebug>
 #include <QtWidgets/QApplication>
 
-#include <openssl/obj_mac.h>
-
 #define toQByteArray(X) QByteArray::fromRawData((const char*)(X), sizeof(X)).toUpper()
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
@@ -42,7 +40,7 @@ namespace Qt {
 QWidget* rootWindow()
 {
 	QWidget* win = qApp->activeWindow();
-	QWidget* root = nullptr;
+	QWidget* root {};
 
 	if (!win)
 	{
@@ -67,24 +65,22 @@ QWidget* rootWindow()
 
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
-	QByteArray data;
 	if(!f)
-		return data;
-	CK_ATTRIBUTE attr = { type, nullptr, 0 };
+		return {};
+	CK_ATTRIBUTE attr { type, nullptr, 0 };
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
 		return {};
-	data.resize(int(attr.ulValueLen));
+	QByteArray data(int(attr.ulValueLen), 0);
 	attr.pValue = data.data();
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
-		data.clear();
+		return {};
 	return data;
 }
 
 std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
 {
-	std::vector<CK_OBJECT_HANDLE> result;
 	if(!f)
-		return result;
+		return {};
 	CK_BBOOL _true = CK_TRUE;
 	std::vector<CK_ATTRIBUTE> attr{
 		{ CKA_CLASS, &cls, sizeof(cls) },
@@ -93,10 +89,10 @@ std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE ses
 	if(!id.isEmpty())
 		attr.push_back({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
 	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
-		return result;
+		return {};
 
 	CK_ULONG count = 32;
-	result.resize(size_t(count));
+	std::vector<CK_OBJECT_HANDLE> result(size_t(count), CK_INVALID_HANDLE);
 	if(f->C_FindObjects(session, result.data(), CK_ULONG(result.size()), &count) == CKR_OK)
 		result.resize(size_t(count));
 	else
@@ -130,8 +126,8 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	if(key.size() != 1)
 		return {};
 
-	CK_ECDH1_DERIVE_PARAMS ecdh_parms = { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
-	CK_MECHANISM mech = { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
+	CK_ECDH1_DERIVE_PARAMS ecdh_parms { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
+	CK_MECHANISM mech { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
 	CK_BBOOL _false = CK_FALSE;
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
@@ -160,7 +156,7 @@ QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 	if(key.size() != 1)
 		return result;
 
-	CK_MECHANISM mech = { CKM_RSA_PKCS, nullptr, 0 };
+	CK_MECHANISM mech { CKM_RSA_PKCS, nullptr, 0 };
 	if(d->f->C_DecryptInit(d->session, &mech, key[0]) != CKR_OK)
 		return result;
 
@@ -193,7 +189,7 @@ bool QPKCS11::load( const QString &driver )
 		return false;
 	}
 
-	CK_C_INITIALIZE_ARGS init_args = { nullptr, nullptr, nullptr, nullptr, CKF_OS_LOCKING_OK, nullptr };
+	CK_C_INITIALIZE_ARGS init_args { nullptr, nullptr, nullptr, nullptr, CKF_OS_LOCKING_OK, nullptr };
 	CK_RV err = d->f->C_Initialize( &init_args );
 	if( err != CKR_OK && err != CKR_CRYPTOKI_ALREADY_INITIALIZED )
 	{
@@ -224,6 +220,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 
 	CK_SLOT_ID currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
 	d->id = t.data(QStringLiteral("id")).toByteArray();
+	d->isPSS = t.data(QStringLiteral("PSS")).toBool();
 
 	CK_TOKEN_INFO token;
 	if(d->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK ||
@@ -328,6 +325,20 @@ QList<TokenData> QPKCS11::tokens() const
 			t.setReader(QByteArray::fromRawData((const char*)slotInfo.slotDescription, sizeof(slotInfo.slotDescription)).trimmed());
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
 			t.setData(QStringLiteral("id"), id);
+
+			std::vector<CK_OBJECT_HANDLE> key = d->findObject(session, CKO_PRIVATE_KEY, id);
+			CK_KEY_TYPE keyType = CKK_RSA;
+			CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
+			d->f->C_GetAttributeValue(session, key[0], &attribute, 1);
+
+			if(keyType == CKK_RSA)
+			{
+				CK_ULONG count = 0;
+				d->f->C_GetMechanismList(slot, nullptr, &count);
+				QVector<CK_MECHANISM_TYPE> mech(count);
+				d->f->C_GetMechanismList(slot, mech.data(), &count);
+				t.setData(QStringLiteral("PSS"), mech.contains(CKM_RSA_PKCS_PSS));
+			}
 			list << t;
 		}
 		d->f->C_CloseSession( session );
@@ -387,42 +398,67 @@ bool QPKCS11::reload()
 	return load(drivers.key({}));
 }
 
-QByteArray QPKCS11::sign( int type, const QByteArray &digest ) const
+QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
 {
-	QByteArray sig;
 	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1)
-		return sig;
+		return {};
 
 	CK_KEY_TYPE keyType = CKK_RSA;
-	CK_ATTRIBUTE attribute = { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
+	CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
 	d->f->C_GetAttributeValue(d->session, key[0], &attribute, 1);
 
-	CK_MECHANISM mech = { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, nullptr, 0 };
-	if(d->f->C_SignInit(d->session, &mech, key[0]) != CKR_OK)
-		return sig;
-
+	CK_RSA_PKCS_PSS_PARAMS pssParams { CKM_SHA256, CKG_MGF1_SHA256, 32 };
+	CK_MECHANISM mech { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, nullptr, 0 };
 	QByteArray data;
 	if(keyType == CKK_RSA)
 	{
 		switch(type)
 		{
-		case NID_sha224: data += QByteArray::fromHex("302d300d06096086480165030402040500041c"); break;
-		case NID_sha256: data += QByteArray::fromHex("3031300d060960864801650304020105000420"); break;
-		case NID_sha384: data += QByteArray::fromHex("3041300d060960864801650304020205000430"); break;
-		case NID_sha512: data += QByteArray::fromHex("3051300d060960864801650304020305000440"); break;
+		case QCryptographicHash::Sha224:
+			data += QByteArray::fromHex("302d300d06096086480165030402040500041c");
+			pssParams.hashAlg = CKM_SHA224;
+			pssParams.mgf = CKG_MGF1_SHA224;
+			pssParams.sLen = 24;
+			break;
+		case QCryptographicHash::Sha256:
+			data += QByteArray::fromHex("3031300d060960864801650304020105000420");
+			pssParams.hashAlg = CKM_SHA256;
+			pssParams.mgf = CKG_MGF1_SHA256;
+			pssParams.sLen = 32;
+			break;
+		case QCryptographicHash::Sha384:
+			data += QByteArray::fromHex("3041300d060960864801650304020205000430");
+			pssParams.hashAlg = CKM_SHA384;
+			pssParams.mgf = CKG_MGF1_SHA384;
+			pssParams.sLen = 48;
+			break;
+		case QCryptographicHash::Sha512:
+			data += QByteArray::fromHex("3051300d060960864801650304020305000440");
+			pssParams.hashAlg = CKM_SHA512;
+			pssParams.mgf = CKG_MGF1_SHA512;
+			pssParams.sLen = 64;
+			break;
 		default: break;
+		}
+		if(d->isPSS)
+		{
+			mech.mechanism = CKM_RSA_PKCS_PSS;
+			mech.pParameter = &pssParams;
+			mech.ulParameterLen = sizeof(CK_RSA_PKCS_PSS_PARAMS);
+			data.clear();
 		}
 	}
 	data.append(digest);
 
+	if(d->f->C_SignInit(d->session, &mech, key[0]) != CKR_OK)
+		return {};
 	CK_ULONG size = 0;
 	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK)
-		return sig;
-
-	sig.resize(int(size));
+		return {};
+	QByteArray sig(int(size), 0);
 	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(sig.data()), &size) != CKR_OK)
-		sig.clear();
+		return {};
 	return sig;
 }
 

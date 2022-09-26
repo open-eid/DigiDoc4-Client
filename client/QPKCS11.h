@@ -39,7 +39,7 @@ public:
 	PinStatus login(const TokenData &t) final;
 	void logout() final;
 	bool reload();
-	QByteArray sign(int type, const QByteArray &digest) const final;
+	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 	QList<TokenData> tokens() const final;
 private:
 	class Private;

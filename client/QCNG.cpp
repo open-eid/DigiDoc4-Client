@@ -26,8 +26,6 @@
 
 #include <QtCore/QDebug>
 
-#include <openssl/obj_mac.h>
-
 class QCNG::Private
 {
 public:
@@ -170,9 +168,12 @@ QList<TokenData> QCNG::tokens() const
 		QString scope = QStringLiteral(R"(\\.\%1\)").arg(reader);
 		NCRYPT_PROV_HANDLE h = 0;
 		SECURITY_STATUS err = NCryptOpenStorageProvider(&h, LPCWSTR(provider.utf16()), 0);
-		NCryptKeyName *keyname = nullptr;
-		PVOID pos = nullptr;
-		while(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG) == ERROR_SUCCESS)
+		NCryptKeyName *keyname {};
+		PVOID pos {};
+		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
+		DWORD size = 0;
+		QByteArray digest = QCryptographicHash::hash({0}, QCryptographicHash::Sha256);
+		while(SUCCEEDED(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG)))
 		{
 			NCRYPT_KEY_HANDLE key = 0;
 			err = NCryptOpenKey(h, &key, keyname->pszName, keyname->dwLegacyKeySpec, NCRYPT_SILENT_FLAG);
@@ -192,6 +193,9 @@ QList<TokenData> QCNG::tokens() const
 					<< "spec" << t.data(QStringLiteral("spec"))
 					<< "alg" << QString::fromWCharArray(keyname->pszAlgid)
 					<< "flags" << keyname->dwFlags;
+				SECURITY_STATUS err = NCryptSignHash(key, &rsaPSS, PBYTE(digest.data()), DWORD(digest.size()),
+					nullptr, 0, &size, BCRYPT_PAD_PSS);
+				t.setData(QStringLiteral("PSS"), SUCCEEDED(err));
 				result << t;
 			}
 			NCryptFreeObject(key);
@@ -203,7 +207,7 @@ QList<TokenData> QCNG::tokens() const
 
 	qWarning() << "Start enumerationg providers";
 	DWORD count = 0;
-	NCryptProviderName *providers = nullptr;
+	NCryptProviderName *providers {};
 	NCryptEnumStorageProviders(&count, &providers, NCRYPT_SILENT_FLAG);
 	for( DWORD i = 0; i < count; ++i )
 	{
@@ -232,29 +236,42 @@ QCNG::PinStatus QCNG::login(const TokenData &token)
 	return d->err = QCNG::PinOK;
 }
 
-QByteArray QCNG::sign( int method, const QByteArray &digest ) const
+QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
 {
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
-		BCRYPT_PKCS1_PADDING_INFO padInfo = { NCRYPT_SHA256_ALGORITHM };
-		switch( method )
+		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
+		switch(type)
 		{
-		case NID_sha224: padInfo.pszAlgId = L"SHA224"; break;
-		case NID_sha256: padInfo.pszAlgId = NCRYPT_SHA256_ALGORITHM; break;
-		case NID_sha384: padInfo.pszAlgId = NCRYPT_SHA384_ALGORITHM; break;
-		case NID_sha512: padInfo.pszAlgId = NCRYPT_SHA512_ALGORITHM; break;
+		case QCryptographicHash::Sha224: rsaPSS = { L"SHA224", 24 }; break;
+		case QCryptographicHash::Sha256: rsaPSS = { NCRYPT_SHA256_ALGORITHM, 32 }; break;
+		case QCryptographicHash::Sha384: rsaPSS = { NCRYPT_SHA384_ALGORITHM, 48 }; break;
+		case QCryptographicHash::Sha512: rsaPSS = { NCRYPT_SHA256_ALGORITHM, 64 }; break;
 		default: return NTE_INVALID_PARAMETER;
 		}
+		BCRYPT_PKCS1_PADDING_INFO rsaPKCS1 { rsaPSS.pszAlgId };
 		DWORD size = 0;
 		QString algo(5, '\0');
 		NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
 		algo.resize(size/2 - 1);
 		bool isRSA = algo == QLatin1String("RSA");
-		SECURITY_STATUS err = NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
-			nullptr, 0, &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
+		DWORD padding = 0;
+		PVOID paddingInfo {};
+		if(isRSA && d->token.data(QStringLiteral("PSS")).toBool())
+		{
+			padding = BCRYPT_PAD_PSS;
+			paddingInfo = &rsaPSS;
+		}
+		else if(isRSA)
+		{
+			padding = BCRYPT_PAD_PKCS1;
+			paddingInfo = &rsaPKCS1;
+		}
+		SECURITY_STATUS err = NCryptSignHash(key, paddingInfo, PBYTE(digest.constData()), DWORD(digest.size()),
+			nullptr, 0, &size, padding);
 		if(FAILED(err))
 			return err;
 		result.resize(int(size));
-		return NCryptSignHash(key, isRSA ? &padInfo : nullptr, PBYTE(digest.constData()), DWORD(digest.size()),
-			PBYTE(result.data()), DWORD(result.size()), &size, isRSA ? BCRYPT_PAD_PKCS1 : 0);
+		return NCryptSignHash(key, paddingInfo, PBYTE(digest.constData()), DWORD(digest.size()),
+			PBYTE(result.data()), DWORD(result.size()), &size, padding);
 	});
 }

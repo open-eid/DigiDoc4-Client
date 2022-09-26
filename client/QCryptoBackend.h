@@ -48,7 +48,7 @@ public:
 	virtual PinStatus lastError() const = 0;
 	virtual PinStatus login(const TokenData &cert) = 0;
 	virtual void logout() = 0;
-	virtual QByteArray sign(int method, const QByteArray &digest) const = 0;
+	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
 
 	static QString errorString( PinStatus error );
 };
