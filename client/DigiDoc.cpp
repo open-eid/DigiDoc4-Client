@@ -206,10 +206,9 @@ QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char>
 
 QDateTime DigiDocSignature::toTime(const std::string &time) const
 {
-	QDateTime date;
 	if(time.empty())
-		return date;
-	date = QDateTime::fromString(from(time), QStringLiteral("yyyy-MM-dd'T'hh:mm:ss'Z'"));
+		return {};
+	QDateTime date = QDateTime::fromString(from(time), QStringLiteral("yyyy-MM-dd'T'hh:mm:ss'Z'"));
 	date.setTimeSpec(Qt::UTC);
 	return date;
 }
@@ -279,7 +278,6 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 : DocumentModel(container)
 , doc(container)
 {
-	
 }
 
 bool SDocumentModel::addFile(const QString &file, const QString &mime)
@@ -404,17 +402,16 @@ QString SDocumentModel::save(int row, const QString &path) const
 
 
 DigiDoc::DigiDoc(QObject *parent)
-: QObject(parent)
-, containerState(ContainerState::UnsignedContainer)
+	: QObject(parent)
+	, m_documentModel(new SDocumentModel(this))
 {
-	m_documentModel.reset(new SDocumentModel(this));
 }
 
 DigiDoc::~DigiDoc() { clear(); }
 
 bool DigiDoc::addFile(const QString &file, const QString &mime)
 {
-	if(!checkDoc(!b->signatures().empty(), tr("Cannot add files to signed container")))
+	if(isError(!b->signatures().empty(), tr("Cannot add files to signed container")))
 		return false;
 	try {
 		b->addDataFile( to(file), to(mime));
@@ -425,29 +422,21 @@ bool DigiDoc::addFile(const QString &file, const QString &mime)
 	return false;
 }
 
-bool DigiDoc::checkDoc( bool status, const QString &msg ) const
-{
-	if( isNull() )
-		qApp->showWarning( tr("Container is not open") );
-	else if( status )
-		qApp->showWarning( msg );
-	return !isNull() && !status;
-}
-
 void DigiDoc::clear()
 {
 	b.reset();
 	parentContainer.reset();
 	m_signatures.clear();
+	m_timestamps.clear();
 	m_fileName.clear();
 	for(const QString &file: m_tempFiles)
-		{
+	{
 #if defined(Q_OS_WIN)
 		//reset read-only attribute to enable delete file
 		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
 #endif
 		QFile::remove(file);
-		}
+	}
 
 	m_tempFiles.clear();
 	modified = false;
@@ -466,12 +455,21 @@ DocumentModel* DigiDoc::documentModel() const
 }
 
 QString DigiDoc::fileName() const { return m_fileName; }
+
+bool DigiDoc::isError(bool failure, const QString &msg) const
+{
+	if(!b)
+		qApp->showWarning(tr("Container is not open"));
+	else if(failure)
+		qApp->showWarning(msg);
+	return !b || failure;
+}
+
 bool DigiDoc::isPDF() const
 {
 	return b && b->mediaType() == "application/pdf";
 }
 bool DigiDoc::isModified() const { return modified; }
-bool DigiDoc::isNull() const { return b == nullptr; }
 bool DigiDoc::isSupported() const
 {
 	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip";
@@ -544,6 +542,11 @@ bool DigiDoc::open( const QString &file )
 			bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
 			for(const Signature *signature: b->signatures())
 				m_signatures.append(DigiDocSignature(signature, this, isTimeStamped));
+			if(parentContainer)
+			{
+				for(const Signature *signature: parentContainer->signatures())
+					m_timestamps.append(DigiDocSignature(signature, this));
+			}
 			qApp->addRecent(file);
 			m_fileName = file;
 			containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
@@ -596,11 +599,12 @@ void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 
 void DigiDoc::removeSignature( unsigned int num )
 {
-	if( !checkDoc( num >= b->signatures().size(), tr("Missing signature") ) )
+	if(isError(num >= b->signatures().size(), tr("Missing signature")))
 		return;
 	try {
 		modified = waitFor([this, num] {
 			b->removeSignature(num);
+			m_signatures.removeAt(num);
 			return true;
 		});
 	}
@@ -624,10 +628,7 @@ bool DigiDoc::saveAs(const QString &filename)
 	try
 	{
 		return waitFor([&]{
-			if(parentContainer)
-				parentContainer->save(to(filename));
-			else
-				b->save(to(filename));
+			parentContainer ? parentContainer->save(to(filename)) : b->save(to(filename));
 			return true;
 		});
 	}
@@ -680,7 +681,7 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip,
 	const QString &country, const QString &role, Signer *signer)
 {
-	if(!checkDoc(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
+	if(isError(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
 		return false;
 
 	try
@@ -731,10 +732,5 @@ ContainerState DigiDoc::state()
 
 QList<DigiDocSignature> DigiDoc::timestamps() const
 {
-	QList<DigiDocSignature> list;
-	if(!parentContainer)
-		return list;
-	for(const Signature *signature: parentContainer->signatures())
-		list << DigiDocSignature(signature, this);
-	return list;
+	return m_timestamps;
 }
