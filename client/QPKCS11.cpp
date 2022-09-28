@@ -356,6 +356,7 @@ bool QPKCS11::reload()
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "/Library/PWPW-Card/lib/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944" }, // FI-G2
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
@@ -372,10 +373,12 @@ bool QPKCS11::reload()
 #if Q_PROCESSOR_WORDSIZE == 8
 		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/usr/lib64/libcryptoki.so", "3B7B940000806212515646696E454944" }, // FI-G2
 #else
 		{ "pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "libcryptoki.so", "3B7B940000806212515646696E454944" }, // FI-G2
 #endif
 		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
