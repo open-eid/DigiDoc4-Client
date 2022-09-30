@@ -1682,7 +1682,7 @@ ID-KAARDIGA</translation>
     <message>
         <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Загрузить файл с диска для подписания или проверки</translation>
+        <translation>Vali fail kettalt allkirjastamiseks või kontrollimiseks</translation>
     </message>
     <message>
         <source>Load file from disk for encryption or decryption</source>
@@ -3004,7 +3004,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Remove signature %1?</source>
-        <translation>Kas eemalda allkiri %1?</translation>
+        <translation>Kas eemaldada allkiri %1?</translation>
     </message>
     <message>
         <source>CANCEL</source>

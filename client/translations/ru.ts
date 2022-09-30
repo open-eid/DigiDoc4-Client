@@ -1685,7 +1685,7 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Выберите на диске файл для подписания или проверки</translation>
+        <translation>Загрузить файл с диска для подписания или проверки</translation>
     </message>
     <message>
         <source>Load file from disk for encryption or decryption</source>
