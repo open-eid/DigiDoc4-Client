@@ -30,6 +30,7 @@
 #define qApp (static_cast<Application*>(QCoreApplication::instance()))
 
 namespace digidoc { class Exception; }
+class Configuration;
 class QAction;
 class QSigner;
 class Application final: public Common
@@ -61,6 +62,7 @@ public:
 #ifdef Q_OS_WIN
 	void addTempFile(const QString &file);
 #endif
+	Configuration *conf();
 	void loadTranslation( const QString &lang );
 	QWidget* mainWindow();
 	bool notify(QObject *object, QEvent *event ) final;

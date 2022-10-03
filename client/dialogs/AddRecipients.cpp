@@ -282,7 +282,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValue)
 {
 #ifdef CONFIG_URL
-	return Configuration::instance().object().value(key).toString(defaultValue);
+	return qApp->conf()->object().value(key).toString(defaultValue);
 #else
 	Q_UNUSED(key)
 	return defaultValue;

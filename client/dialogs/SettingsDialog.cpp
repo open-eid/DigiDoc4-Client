@@ -169,7 +169,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	changePage(ui->btnMenuGeneral);
 
 #ifdef CONFIG_URL
-	connect(&Configuration::instance(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+	connect(qApp->conf(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
 		if(!error.isEmpty()) {
 			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
@@ -197,7 +197,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	});
 	connect(ui->btnRefreshConfig, &QPushButton::clicked, this, [] {
 #ifdef CONFIG_URL
-		Configuration::instance().update(true);
+		qApp->conf()->update(true);
 #endif
 		QString cache = qApp->confValue(Application::TSLCache).toString();
 		const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
@@ -394,7 +394,7 @@ void SettingsDialog::initFunctionality()
 	});
 	ui->rdTimeStampCustom->setChecked(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool());
 #ifdef CONFIG_URL
-	ui->txtTimeStamp->setPlaceholderText(Configuration::instance().object().value(QStringLiteral("TSA-URL")).toString());
+	ui->txtTimeStamp->setPlaceholderText(qApp->conf()->object().value(QStringLiteral("TSA-URL")).toString());
 #endif
 	QString TSA_URL = s.value(QStringLiteral("TSA-URL"), qApp->confValue(Application::TSAUrl)).toString();
 	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);

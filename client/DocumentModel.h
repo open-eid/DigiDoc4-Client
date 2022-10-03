@@ -24,8 +24,7 @@ class DocumentModel: public QObject
 {
 	Q_OBJECT
 public:
-	DocumentModel(QObject *parent = nullptr);
-	~DocumentModel() override;
+	using QObject::QObject;
 
 	virtual bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) = 0;
 	virtual void addTempFiles(const QStringList &files);
@@ -33,6 +32,7 @@ public:
 	virtual QString data(int row) const = 0;
 	virtual QString fileSize(int row) const = 0;
 	virtual QString mime(int row) const = 0;
+	virtual void open(int row) = 0;
 	virtual bool removeRows(int row, int count) = 0;
 	virtual int rowCount() const = 0;
 	virtual QString save(int row, const QString &path) const = 0;
@@ -41,9 +41,6 @@ public:
 signals:
 	void added(const QString &file);
 	void removed(int row);
-
-public slots:
-	virtual void open(int row) = 0;
 
 protected:
 	bool verifyFile(const QString &f);

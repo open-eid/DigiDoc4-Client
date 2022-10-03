@@ -47,7 +47,7 @@ SSLConnect::SSLConnect(QObject *parent)
 {
 #ifdef CONFIG_URL
 	d->ssl.setCaCertificates({});
-	for(const QJsonValue c: Configuration::instance().object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+	for(const QJsonValue c: qApp->conf()->object().value(QStringLiteral("CERT-BUNDLE")).toArray())
 		d->trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
 #endif
 }
@@ -83,7 +83,7 @@ void SSLConnect::fetch()
 
 	QJsonObject obj;
 #ifdef CONFIG_URL
-	obj = Configuration::instance().object();
+	obj = qApp->conf()->object();
 #endif
 	QNetworkRequest req;
 	req.setSslConfiguration(d->ssl);

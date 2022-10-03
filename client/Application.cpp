@@ -83,7 +83,7 @@ const QStringList Application::CONTAINER_EXT {
 	QStringLiteral("bdoc"), QStringLiteral("edoc"),
 };
 
-class DigidocConf: public digidoc::XmlConfCurrent
+class DigidocConf final: public digidoc::XmlConfCurrent
 {
 public:
 	DigidocConf()
@@ -92,18 +92,13 @@ public:
 		s.remove(QStringLiteral("LibdigidocppDebug"));
 
 #ifdef CONFIG_URL
-		Configuration::connect(&Configuration::instance(), &Configuration::updateReminder,
-				[&](bool /* expired */, const QString & /* title */, const QString &message){
-			WarningDialog(message, qApp->activeWindow()).exec();
-		});
-
 		reload();
 #ifdef Q_OS_MAC
-		QTimer::singleShot(0, [] { Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4")); });
+		QTimer::singleShot(0, [] { qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4")); });
 #else
-		Configuration::instance().checkVersion(QStringLiteral("QDIGIDOC4"));
+		qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4"));
 #endif
-		Configuration::connect(&Configuration::instance(), &Configuration::finished, [&](bool changed, const QString & /*error*/){
+		Configuration::connect(qApp->conf(), &Configuration::finished, [&](bool changed, const QString & /*error*/){
 			if(changed)
 				reload();
 		});
@@ -111,17 +106,17 @@ public:
 		SettingsDialog::loadProxy(this);
 	}
 
-	int logLevel() const override
+	int logLevel() const final
 	{
 		return debug ? 4 : digidoc::XmlConfCurrent::logLevel();
 	}
 
-	std::string logFile() const override
+	std::string logFile() const final
 	{
 		return debug ? QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()).toStdString() : digidoc::XmlConfCurrent::logFile();
 	}
 
-	std::string proxyHost() const override
+	std::string proxyHost() const final
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
@@ -131,7 +126,7 @@ public:
 		}
 	}
 
-	std::string proxyPort() const override
+	std::string proxyPort() const final
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
@@ -141,7 +136,7 @@ public:
 		}
 	}
 
-	std::string proxyUser() const override
+	std::string proxyUser() const final
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
@@ -151,7 +146,7 @@ public:
 		}
 	}
 
-	std::string proxyPass() const override
+	std::string proxyPass() const final
 	{
 		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
 		{
@@ -162,51 +157,51 @@ public:
 	}
 
 #ifdef Q_OS_MAC
-	bool proxyTunnelSSL() const override
+	bool proxyTunnelSSL() const final
 	{ return s.value(QStringLiteral("ProxyTunnelSSL"), digidoc::XmlConfCurrent::proxyTunnelSSL()).toBool(); }
-	bool PKCS12Disable() const override
+	bool PKCS12Disable() const final
 	{ return s.value(QStringLiteral("PKCS12Disable"), digidoc::XmlConfCurrent::PKCS12Disable()).toBool(); }
-	std::string TSLCache() const override
+	std::string TSLCache() const final
 	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
-	bool TSLOnlineDigest() const override
+	bool TSLOnlineDigest() const final
 	{ return s.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 
-	void setProxyHost( const std::string &host ) override
+	void setProxyHost( const std::string &host ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host )); }
-	void setProxyPort( const std::string &port ) override
+	void setProxyPort( const std::string &port ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port )); }
-	void setProxyUser( const std::string &user ) override
+	void setProxyUser( const std::string &user ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user )); }
-	void setProxyPass( const std::string &pass ) override
+	void setProxyPass( const std::string &pass ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass )); }
-	void setProxyTunnelSSL( bool enable ) override
+	void setProxyTunnelSSL( bool enable ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
-	void setPKCS12Cert( const std::string & /*cert*/) override {}
-	void setPKCS12Pass( const std::string & /*pass*/) override {}
-	void setPKCS12Disable( bool disable ) override
+	void setPKCS12Cert( const std::string & /*cert*/) final {}
+	void setPKCS12Pass( const std::string & /*pass*/) final {}
+	void setPKCS12Disable( bool disable ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("PKCS12Disable"), disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
-	void setTSLOnlineDigest( bool enable ) override
+	void setTSLOnlineDigest( bool enable ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
 
-	std::string TSUrl() const override
+	std::string TSUrl() const final
 	{
 		if(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool())
 			return valueUserScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
 		return valueSystemScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
 	}
-	void setTSUrl(const std::string &url) override
+	void setTSUrl(const std::string &url) final
 	{ SettingsDialog::setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url)); }
 
-	std::string TSLUrl() const override { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
-	digidoc::X509Cert verifyServiceCert() const override
+	std::string TSLUrl() const final { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
+	digidoc::X509Cert verifyServiceCert() const final
 	{
 		QByteArray cert = QByteArray::fromBase64(obj.value(QStringLiteral("SIVA-CERT")).toString().toLatin1());
 		if(cert.isEmpty())
 			return digidoc::XmlConfCurrent::verifyServiceCert();
 		return digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size()));
 	}
-	std::vector<digidoc::X509Cert> verifyServiceCerts() const override
+	std::vector<digidoc::X509Cert> verifyServiceCerts() const final
 	{
 		std::vector<digidoc::X509Cert> list;
 		list.push_back(verifyServiceCert());
@@ -217,8 +212,8 @@ public:
 		}
 		return list;
 	}
-	std::string verifyServiceUri() const override { return valueSystemScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri()); }
-	std::vector<digidoc::X509Cert> TSLCerts() const override
+	std::string verifyServiceUri() const final { return valueSystemScope(QStringLiteral("SIVA-URL"), digidoc::XmlConfCurrent::verifyServiceUri()); }
+	std::vector<digidoc::X509Cert> TSLCerts() const final
 	{
 		std::vector<digidoc::X509Cert> tslcerts;
 		for(const QJsonValue &val: obj.value(QStringLiteral("TSL-CERTS")).toArray())
@@ -228,7 +223,7 @@ public:
 		}
 		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
 	}
-	std::string ocsp(const std::string &issuer) const override
+	std::string ocsp(const std::string &issuer) const final
 	{
 		QJsonObject ocspissuer = obj.value(QStringLiteral("OCSP-URL-ISSUER")).toObject();
 		for(QJsonObject::const_iterator i = ocspissuer.constBegin(); i != ocspissuer.constEnd(); ++i)
@@ -239,12 +234,11 @@ public:
 		return obj.value(QStringLiteral("OCSP-URL")).toString(QString::fromStdString(digidoc::XmlConfCurrent::ocsp(issuer))).toStdString();
 	}
 
-	bool TSLAllowExpired() const override
+	bool TSLAllowExpired() const final
 	{
 		static enum {
 			Undefined,
 			Approved,
-			Rejected
 		} status = Undefined;
 		if(status == Undefined)
 		{
@@ -260,7 +254,7 @@ private:
 #ifdef CONFIG_URL
 	void reload()
 	{
-		obj = Configuration::instance().object();
+		obj = qApp->conf()->object();
 		if(s.value(QStringLiteral("TSA-URL")) == obj.value(QStringLiteral("TSA-URL")))
 			s.remove(QStringLiteral("TSA-URL")); // Cleanup user conf if it is default url
 		QList<QSslCertificate> list;
@@ -301,9 +295,10 @@ public:
 class Application::Private
 {
 public:
-	QAction		*closeAction = nullptr, *newClientAction = nullptr, *newCryptoAction = nullptr, *helpAction = nullptr;
-	MacMenuBar	*bar = nullptr;
-	QSigner		*signer = nullptr;
+	Configuration *conf {};
+	QAction		*closeAction {}, *newClientAction {}, *newCryptoAction {}, *helpAction {};
+	MacMenuBar	*bar {};
+	QSigner		*signer {};
 
 	QTranslator	appTranslator, commonTranslator, qtTranslator;
 	QString		lang;
@@ -322,6 +317,12 @@ Application::Application( int &argc, char **argv )
 #endif
 	, d(new Private)
 {
+	d->conf = new Configuration(this);
+	connect(d->conf, &Configuration::updateReminder,
+			[&](bool /* expired */, const QString & /* title */, const QString &message){
+		WarningDialog(message, qApp->activeWindow()).exec();
+	});
+
 	qRegisterMetaType<TokenData>("TokenData");
 	qRegisterMetaType<QSmartCardData>("QSmartCardData");
 	QToolTip::setFont(Styles::font(Styles::Regular, 14));
@@ -579,11 +580,14 @@ void Application::closeWindow()
 		w->close();
 }
 
+Configuration* Application::conf()
+{
+	return d->conf;
+}
+
 QVariant Application::confValue( ConfParameter parameter, const QVariant &value )
 {
-	DigidocConf *i = nullptr;
-	try { i = static_cast<DigidocConf*>(digidoc::Conf::instance()); }
-	catch( const digidoc::Exception & ) { return value; }
+	DigidocConf *i = static_cast<DigidocConf*>(digidoc::Conf::instance());
 
 	QByteArray r;
 	switch( parameter )
