@@ -39,7 +39,7 @@ class ItemList : public QScrollArea
 	Q_OBJECT
 
 public:
-	explicit ItemList(QWidget *parent = nullptr);
+	explicit ItemList(QWidget *parent = {});
 	~ItemList() override;
 
 	void init(ria::qdigidoc4::ItemType itemType, const QString &header);
@@ -68,16 +68,15 @@ protected:
 	virtual void remove(Item *item);
 
 	Ui::ItemList* ui;
-	std::vector<Item*> items;
 	ria::qdigidoc4::ContainerState state = ria::qdigidoc4::UnsignedContainer;
 
 private:
 	QString addLabel();
-	void addWidget(Item *widget, int index);
+	void addWidget(Item *widget, int index, QWidget *tabIndex = {});
 	void setRecipientTooltip();
 
+	QList<Item*> items;
 	QLabel *header = nullptr;
-	int headerItems = 1;
 	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
 	QString headerText;
 	QString listText;

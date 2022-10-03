@@ -39,7 +39,6 @@ ItemList::ItemList(QWidget *parent)
 	ui->count->hide();
 	ui->infoIcon->hide();
 	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
-
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
 }
 
@@ -55,19 +54,56 @@ void ItemList::addHeader(const QString &label)
 	header = new QLabel(tr(qPrintable(label)), this);
 	header->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	header->setFocusPolicy(Qt::TabFocus);
 	header->resize(415, 64);
 	header->setFixedHeight(64);
 	header->setFont( Styles::font(Styles::Regular, 20));
 	header->setStyleSheet(QStringLiteral("border: solid rgba(217, 217, 216, 0.45);"
 			"border-width: 0px 0px 1px 0px; color: #041E42;"));
 	ui->itemLayout->insertWidget(0, header);
-	headerItems++;
+	setTabOrder(this, header);
+	setTabOrder(header, ui->header);
 }
 
 void ItemList::addHeaderWidget(Item *widget)
 {
-	addWidget(widget, headerItems - 1);
-	headerItems++;
+	addWidget(widget, ui->itemLayout->indexOf(ui->header), header);
+	setTabOrder(widget->lastTabWidget(), ui->header);
+}
+
+QString ItemList::addLabel()
+{
+	switch(itemType)
+	{
+	case ItemFile: return tr("+ ADD MORE FILES");
+	case ItemAddress: return tr("+ ADD RECIPIENT");
+	case ToAddAdresses: return tr("ADD ALL");
+	default: return {};
+	}
+}
+
+void ItemList::addWidget(Item *widget, int index, QWidget *tabIndex)
+{
+	if(!tabIndex)
+	{
+		if(Item *prev = qobject_cast<Item*>(ui->itemLayout->itemAt(index - 1)->widget()))
+			tabIndex = prev->lastTabWidget();
+		else
+			tabIndex = ui->btnFind;
+	}
+	ui->itemLayout->insertWidget(index, widget);
+	connect(widget, &Item::remove, this, &ItemList::remove);
+	connect(this, &ItemList::idChanged, widget, &Item::idChanged);
+	widget->stateChange(state);
+	widget->idChanged(cert);
+	widget->show();
+	items.push_back(widget);
+	widget->initTabOrder(tabIndex);
+}
+
+void ItemList::addWidget(Item *widget)
+{
+	addWidget(widget, ui->itemLayout->count() - 1);
 }
 
 void ItemList::changeEvent(QEvent* event)
@@ -79,10 +115,9 @@ void ItemList::changeEvent(QEvent* event)
 		tr("Recipients");
 		tr("Encrypted files");
 		tr("Container is not signed");
-		tr("Content of the envelope");
-		tr("Container's signatures");
-		tr("Container's timestamps");
-		tr("Container's files");
+		tr("Container signatures");
+		tr("Container timestamps");
+		tr("Container files");
 		ui->retranslateUi(this);
 
 		ui->listHeader->setText(tr(qPrintable(listText)));
@@ -101,48 +136,16 @@ void ItemList::changeEvent(QEvent* event)
 	QFrame::changeEvent(event);
 }
 
-QString ItemList::addLabel()
-{
-	switch(itemType)
-	{
-	case ItemFile: return tr("+ ADD MORE FILES");
-	case ItemAddress: return tr("+ ADD RECIPIENT");
-	case ToAddAdresses: return tr("ADD ALL");
-	default: return {};
-	}
-}
-
-void ItemList::addWidget(Item *widget, int index)
-{
-	QWidget *tabIndex = items.empty() ? ui->btnFind : items.back()->lastTabWidget();
-	ui->itemLayout->insertWidget(index, widget);
-	connect(widget, &Item::remove, this, &ItemList::remove);
-	connect(this, &ItemList::idChanged, widget, &Item::idChanged);
-	widget->stateChange(state);
-	widget->idChanged(cert);
-	widget->show();
-	items.push_back(widget);
-	widget->initTabOrder(tabIndex);
-}
-
-void ItemList::addWidget(Item *widget)
-{
-	addWidget(widget, items.size() + headerItems);
-}
-
 void ItemList::clear()
 {
 	ui->download->hide();
 	ui->count->hide();
 
 	if(header)
-	{
 		header->deleteLater();
-		header = nullptr;
-		headerItems = ui->findGroup->isHidden() ? 1 : 2;
-	}
+	header = nullptr;
 
-	for(auto it = items.cbegin(); it != items.cend(); it = items.erase(it))
+	for(auto it = items.begin(); it != items.end(); it = items.erase(it))
 		(*it)->deleteLater();
 }
 
@@ -165,10 +168,7 @@ ContainerState ItemList::getState() const { return state; }
 
 int ItemList::index(Item *item) const
 {
-	auto it = std::find(items.cbegin(), items.cend(), item);
-	if(it != items.cend())
-		return std::distance(items.cbegin(), it);
-	return -1;
+	return items.indexOf(item);
 }
 
 bool ItemList::hasItem(const std::function<bool(Item* const)> &cb)
@@ -187,7 +187,6 @@ void ItemList::init(ItemType item, const QString &header)
 	if(item != ToAddAdresses)
 	{
 		ui->findGroup->hide();
-		headerItems = 1;
 	}
 	else
 	{
@@ -204,7 +203,6 @@ void ItemList::init(ItemType item, const QString &header)
 			ui->btnFind->setDefault(isEmpty);
 			ui->btnFind->setAutoDefault(isEmpty);
 		});
-		headerItems = 2;
 	}
 
 	if (itemType == ItemSignature || item == AddedAdresses || this->state == SignedContainer)
@@ -243,10 +241,10 @@ void ItemList::remove(Item *item)
 
 void ItemList::removeItem(int row)
 {
-	if(items.size() < size_t(row))
+	if(items.size() < row)
 		return;
 
-	auto item = items.cbegin()+row;
+	auto item = items.begin()+row;
 	(*item)->deleteLater();
 	items.erase(item);
 }

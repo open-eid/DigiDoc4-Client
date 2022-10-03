@@ -323,7 +323,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-		ui->rightPane->addHeader(QStringLiteral("Container's timestamps"));
+		ui->rightPane->addHeader(QStringLiteral("Container timestamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
@@ -404,7 +404,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->show();
 		ui->rightPane->clear();
 		hideRightPane();
-		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
+		ui->leftPane->init(fileName, QStringLiteral("Container files"));
 		showSigningButton();
 		setButtonsVisible({ ui->cancel, ui->convert, ui->save }, true);
 		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
@@ -413,7 +413,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = "STARTING";
 
 		ui->changeLocation->show();
-		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
+		ui->leftPane->init(fileName, QStringLiteral("Container files"));
 		if( showPrintSummary )
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
@@ -425,8 +425,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = "STARTING";
 
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, QStringLiteral("Content of the envelope"));
-		showRightPane(ItemSignature, QStringLiteral("Container's signatures"));
+		ui->leftPane->init(fileName, QStringLiteral("Container files"));
+		showRightPane(ItemSignature, QStringLiteral("Container signatures"));
 		if( showPrintSummary )
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else

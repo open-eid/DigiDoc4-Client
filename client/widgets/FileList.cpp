@@ -64,13 +64,18 @@ void FileList::changeEvent(QEvent* event)
 {
 	ItemList::changeEvent(event);
 	if(!ui->count->isHidden())
-		ui->count->setText(QString::number(items.size()));
+		ui->count->setText(QString::number(count()));
 }
 
 void FileList::clear()
 {
 	ItemList::clear();
 	documentModel = nullptr;
+}
+
+int FileList::count() const
+{
+	return findChildren<FileItem*>().size();
 }
 
 bool FileList::eventFilter(QObject *obj, QEvent *event)
@@ -242,7 +247,8 @@ void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 
 void FileList::updateDownload()
 {
-	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && !items.empty());
-	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && !items.empty());
-	ui->count->setText(QString::number(items.size()));
+	int c = count();
+	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
+	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
+	ui->count->setText(QString::number(c));
 }
