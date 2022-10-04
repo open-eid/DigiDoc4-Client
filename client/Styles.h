@@ -35,7 +35,5 @@ public:
 	static QFont font( Font font, int size, QFont::Weight weight );
 
 private:
-	explicit Styles();
-
-	Q_DISABLE_COPY(Styles);
+	Styles() = delete;
 };

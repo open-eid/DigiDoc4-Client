@@ -20,13 +20,9 @@
 #include "Styles.h"
 
 #include <QFontDatabase>
-#ifndef Q_OS_MAC
 #include <QFontMetrics>
-#endif
 #include <QImage>
-#ifndef Q_OS_MAC
 #include <QMap>
-#endif
 #include <QPixmap>
 #include <QVariantList>
 
@@ -73,25 +69,12 @@ class FontDatabase
 public:
 	FontDatabase()
 	{
-		bold = QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(":/fonts/Roboto-Bold.ttf")
-		).at(0);
-		condensed = QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(":/fonts/RobotoCondensed-Regular.ttf")
-		).at(0);
-		condensedBold = QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(":/fonts/RobotoCondensed-Bold.ttf")
-		).at(0);
-		regular = QFontDatabase::applicationFontFamilies(
-			QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf")
-		).at(0);
-
 #ifndef Q_OS_MAC
 		// See http://doc.qt.io/qt-5/highdpi.html
 		// and http://doc.qt.io/qt-5/scalability.html
-		for (auto sample : condensedSamples)
+		for(const auto &sample : condensedSamples)
 			condensedMapping[sample.fontSize] = calcFontSize(sample, condensed);
-		for (auto sample : regularSamples)
+		for(const auto &sample : regularSamples)
 			regularMapping[sample.fontSize] = calcFontSize(sample, regular);
 #endif
 	}
@@ -108,7 +91,7 @@ public:
 	QFont font(Styles::Font font, int size)
 	{
 #ifdef Q_OS_MAC
-		return QFont(fontName(font), size);
+		return {fontName(font), size};
 #else
 		int adjusted = 0;
 		const QMap<int, int> mapping = font == Styles::Condensed ? condensedMapping : regularMapping;
@@ -117,9 +100,9 @@ public:
 			adjusted = mapping[size];
 		else
 			adjusted = size - (size > FONT_DECREASE_CUTOFF ? FONT_SIZE_DECREASE_LARGE : FONT_SIZE_DECREASE_SMALL);
-		return QFont(fontName(font), adjusted);
+		return {fontName(font), adjusted};
 #endif
-	};
+	}
 
 private:
 #ifndef Q_OS_MAC
@@ -146,10 +129,14 @@ private:
 	};
 #endif
 
-	QString bold;
-	QString condensed;
-	QString condensedBold;
-	QString regular;
+	QString bold = QFontDatabase::applicationFontFamilies(
+		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Bold.ttf"))).at(0);
+	QString condensed = QFontDatabase::applicationFontFamilies(
+		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/RobotoCondensed-Regular.ttf"))).at(0);
+	QString condensedBold = QFontDatabase::applicationFontFamilies(
+		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/RobotoCondensed-Bold.ttf"))).at(0);
+	QString regular = QFontDatabase::applicationFontFamilies(
+		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Regular.ttf"))).at(0);
 #ifndef Q_OS_MAC
 	QMap<int, int> condensedMapping;
 	QMap<int, int> regularMapping;
