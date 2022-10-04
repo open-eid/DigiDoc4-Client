@@ -103,7 +103,7 @@ void ItemList::addWidget(Item *widget, int index, QWidget *tabIndex)
 
 void ItemList::addWidget(Item *widget)
 {
-	addWidget(widget, ui->itemLayout->count() - 1);
+	addWidget(widget, ui->itemLayout->indexOf(ui->add));
 }
 
 void ItemList::changeEvent(QEvent* event)
@@ -241,12 +241,8 @@ void ItemList::remove(Item *item)
 
 void ItemList::removeItem(int row)
 {
-	if(items.size() < row)
-		return;
-
-	auto item = items.begin()+row;
-	(*item)->deleteLater();
-	items.erase(item);
+	if(row < items.size())
+		items.takeAt(row)->deleteLater();
 }
 
 void ItemList::setRecipientTooltip()
