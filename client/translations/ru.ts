@@ -1679,14 +1679,14 @@ ID-КАРТОЙ</translation>
         <translation>Фото (*.jpg *.jpeg);;Все файлы (*)</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
+        <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Выберите на диске файл для подписания или проверки</translation>
+        <translation>Загрузить файл с диска для подписания или проверки</translation>
     </message>
     <message>
-        <source>Open file for encryption or decryption</source>
+        <source>Load file from disk for encryption or decryption</source>
         <comment>accessible</comment>
-        <translation>Выберите на диске файл для шифрования или расшифровки</translation>
+        <translation>Загрузить файл с диска для шифрования или расшифровки</translation>
     </message>
     <message>
         <source>Select signature page</source>
@@ -2605,10 +2605,10 @@ and enter Smart-ID PIN2-code.</source>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
-Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee/ru/id-pomoshh/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
     </message>
     <message>
@@ -2862,8 +2862,8 @@ Additional licenses and components</source>
         <translation>Повреждена подпись или подписанный файл. Данная подпись недействительна.</translation>
     </message>
     <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;https://www.id.ee/ru/artikkel/digidoc4-klient-oshibka-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;additional information&lt;/a&gt;).</source>
+        <translation>Статус подписи отображается как &quot;неизвестный&quot;, если на компьютере не установлены необходимые для проверки подписи сертификаты сертифицирующей организации и/или услуги подтверждения действительности (&lt;a href=&apos;https://www.id.ee/ru/artikkel/digidoc4-klient-oshibka-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;дополнительная информация&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -3002,8 +3002,8 @@ Additional licenses and components</source>
         <translation>время</translation>
     </message>
     <message>
-        <source>Remove signature %1</source>
-        <translation>Удалить подпись %1</translation>
+        <source>Remove signature %1?</source>
+        <translation>Удалить подпись %1?</translation>
     </message>
     <message>
         <source>CANCEL</source>

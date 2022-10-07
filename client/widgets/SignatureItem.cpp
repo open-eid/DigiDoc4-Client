@@ -198,7 +198,7 @@ QWidget* SignatureItem::lastTabWidget()
 void SignatureItem::removeSignature()
 {
 	const SslCertificate c = ui->signature.cert();
-	QString msg = tr("Remove signature %1")
+	QString msg = tr("Remove signature %1?")
 		.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")));
 
 	WarningDialog *dlg = new WarningDialog(msg, this);

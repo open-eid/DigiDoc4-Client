@@ -1257,7 +1257,7 @@
     </message>
     <message>
         <source>Container is not signed</source>
-        <translation>Ümbriku allkirjad puuduvad</translation>
+        <translation>Ümbrikul puuduvad allkirjad</translation>
     </message>
     <message>
         <source>Container files</source>
@@ -1676,14 +1676,14 @@ ID-KAARDIGA</translation>
         <translation>Foto (*.jpg *.jpeg);;Kõik failid (*)</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
+        <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
-        <translation>Allkirjastamiseks või kontrollimiseks vali fail kettalt</translation>
+        <translation>Vali fail kettalt allkirjastamiseks või kontrollimiseks</translation>
     </message>
     <message>
-        <source>Open file for encryption or decryption</source>
+        <source>Load file from disk for encryption or decryption</source>
         <comment>accessible</comment>
-        <translation>Krüpteerimiseks või dekrüpteerimiseks vali fail kettalt</translation>
+        <translation>Vali fail kettalt krüpteerimiseks või dekrüpteerimiseks</translation>
     </message>
     <message>
         <source>Select signature page</source>
@@ -2602,10 +2602,10 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
-Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;ID-abikeskusega&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/id-abikeskus/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;ID-abikeskusega&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
@@ -2829,8 +2829,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>See allkiri või allkirjastatud fail on vigane. Allkiri ei ole kehtiv.</translation>
     </message>
     <message>
-        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;additional information&lt;/a&gt;).</source>
-        <translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
+        <source>Signature status is displayed &quot;unknown&quot; if you don&apos;t have all validity confirmation service certificates and/or certificate authority certificates installed into your computer (&lt;a href=&apos;https://www.id.ee/en/article/digidoc4-client-error-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;additional information&lt;/a&gt;).</source>
+        <translation>Allkirja staatust kuvatakse &quot;teadmata&quot;, kui Sinu arvutisse pole lisatud kõiki kehtivuskinnituse teenuse sertifikaate ja/või nende kontrolliks vajalikke sertifikaate (&lt;a href=&apos;https://www.id.ee/artikkel/digidoc4-klient-viga-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/&apos;&gt;lisainformatsioon&lt;/a&gt;).</translation>
     </message>
     <message>
         <source>Signer&apos;s Certificate issuer</source>
@@ -2999,8 +2999,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>kell</translation>
     </message>
     <message>
-        <source>Remove signature %1</source>
-        <translation>Eemalda allkiri %1</translation>
+        <source>Remove signature %1?</source>
+        <translation>Kas eemaldada allkiri %1?</translation>
     </message>
     <message>
         <source>CANCEL</source>

@@ -596,7 +596,7 @@ color: #041E42;</string>
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="accessibleName">
-                <string comment="accessible">Open file for signing or verifying</string>
+                <string comment="accessible">Load file from disk for signing or verifying</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
@@ -697,7 +697,7 @@ background-position: bottom;
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="accessibleName">
-                <string comment="accessible">Open file for encryption or decryption</string>
+                <string comment="accessible">Load file from disk for encryption or decryption</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {

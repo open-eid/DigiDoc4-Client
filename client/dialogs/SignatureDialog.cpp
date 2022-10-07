@@ -97,7 +97,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->info->setText( tr(
 			"Signature status is displayed \"unknown\" if you don't have all validity confirmation "
 			"service certificates and/or certificate authority certificates installed into your computer "
-			"(<a href='https://www.id.ee/en/article/digidoc4-klient-viga-36-failed-to-validate-signature-libdigidoc-code-36-message-signers-cert-not-trusted-missing-ca-cert/'>additional information</a>).") );
+			"(<a href='https://www.id.ee/en/article/digidoc4-client-error-ocsp-responder-is-not-trusted-no-certificate-for-this-responder-in-local-certstore/'>additional information</a>).") );
 		break;
 	}
 	bool noError = d->error->toPlainText().isEmpty();
