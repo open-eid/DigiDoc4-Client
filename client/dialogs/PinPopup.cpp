@@ -23,14 +23,11 @@
 #include "SslCertificate.h"
 
 #include <QtCore/QTimeLine>
-#include <QtGui/QMovie>
+#include <QtCore/QTimer>
 #include <QtGui/QRegularExpressionValidator>
-#include <QtWidgets/QLineEdit>
+#include <QtGui/QTextDocument>
 #include <QtWidgets/QProgressBar>
-#include <QtWidgets/QPushButton>
 #include <QSvgWidget>
-
-#include <QTextDocument>
 
 PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
 	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), count, parent)
@@ -133,7 +130,6 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	}
 	else
 	{
-		ui->pin->setFocus();
 		ui->pin->setValidator(new QRegularExpressionValidator(regexp, ui->pin));
 		ui->pin->setMaxLength( 12 );
 		connect(ui->pin, &QLineEdit::textEdited, this, [&](const QString &text) {
@@ -141,6 +137,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		});
 		ui->label->setBuddy( ui->pin );
 		ui->ok->setDisabled(true);
+		QTimer::singleShot(0, ui->pin, qOverload<>(&QLineEdit::setFocus));
 	}
 }
 
