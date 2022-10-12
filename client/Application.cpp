@@ -426,32 +426,35 @@ Application::Application( int &argc, char **argv )
 		return;
 	}
 
-	QTimer::singleShot(0, [this] {
-		if(QSettings().value(QStringLiteral("showIntro"), true).toBool())
-		{
-			QSettings().setValue(QStringLiteral("showIntro"), false);
-			FirstRun dlg;
-			connect(&dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
-			dlg.exec();
-		}
+	QTimer::singleShot(0, this, [this] {
+		QWidget *parent = mainWindow();
 #ifdef Q_OS_MAC
 		if(QSettings().value(QStringLiteral("plugins")).isNull())
 		{
-			QTimer::singleShot(0, [] {
-				WarningDialog dlg(tr(
-					"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
-				dlg.setCancelText(tr("Ignore forever").toUpper());
-				dlg.addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
-				dlg.addButton(tr("Install").toUpper(), QMessageBox::Open);
-				switch(dlg.exec())
+			WarningDialog *dlg = new WarningDialog(tr(
+				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), parent);
+			dlg->setAttribute(Qt::WA_DeleteOnClose);
+			dlg->setCancelText(tr("Ignore forever").toUpper());
+			dlg->addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
+			dlg->addButton(tr("Install").toUpper(), QMessageBox::Open);
+			connect(dlg, &WarningDialog::finished, this, [](int result) {
+				switch(result)
 				{
 				case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
 				case QMessageBox::Ignore: break;
 				default: QSettings().setValue(QStringLiteral("plugins"), "ignore");
 				}
 			});
+			dlg->open();
 		}
 #endif
+		if(QSettings().value(QStringLiteral("showIntro"), true).toBool())
+		{
+			QSettings().setValue(QStringLiteral("showIntro"), false);
+			FirstRun *dlg = new FirstRun(parent);
+			connect(dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
+			dlg->open();
+		}
 	});
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
@@ -787,7 +790,7 @@ QWidget* Application::mainWindow()
 	if (!win)
 	{	
 		// Prefer main window; on Mac also the menu is top level window
-		for (QWidget *widget: qApp->topLevelWidgets())
+		for (QWidget *widget: topLevelWidgets())
 		{
 			if (widget->isWindow())
 			{
@@ -1058,13 +1061,13 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 
 void Application::showAbout()
 {
-	if(MainWindow *w = qobject_cast<MainWindow*>(qApp->mainWindow()))
+	if(MainWindow *w = qobject_cast<MainWindow*>(mainWindow()))
 		w->showSettings(SettingsDialog::LicenseSettings);
 }
 
 void Application::showSettings()
 {
-	if(MainWindow *w = qobject_cast<MainWindow*>(qApp->mainWindow()))
+	if(MainWindow *w = qobject_cast<MainWindow*>(mainWindow()))
 		w->showSettings(SettingsDialog::GeneralSettings);
 }
 
@@ -1076,12 +1079,12 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	if(!newWindow && params.isEmpty())
 	{
 		// If no files selected (e.g. restoring minimized window), select first
-		w = qobject_cast<MainWindow*>(qApp->mainWindow());
+		w = qobject_cast<MainWindow*>(mainWindow());
 	}
 	else if(!newWindow)
 	{
 		// else select first window with no open files
-		MainWindow *main = qobject_cast<MainWindow*>(qApp->uniqueRoot());
+		MainWindow *main = qobject_cast<MainWindow*>(uniqueRoot());
 		if(main && main->windowFilePath().isEmpty())
 			w = main;
 	}
@@ -1149,7 +1152,7 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 
 void Application::showWarning( const QString &msg, const QString &details )
 {
-	WarningDialog(msg, details, qApp->mainWindow()).exec();
+	WarningDialog(msg, details, mainWindow()).exec();
 }
 
 QSigner* Application::signer() const { return d->signer; }
@@ -1181,7 +1184,7 @@ void Application::waitForTSL( const QString &file )
 		return;
 
 	WaitDialogHider hider;
-	QProgressDialog p( tr("Loading TSL lists"), QString(), 0, 0, qApp->mainWindow() );
+	QProgressDialog p(tr("Loading TSL lists"), QString(), 0, 0, mainWindow());
 	p.setWindowFlags( (Qt::Dialog | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint ) & ~Qt::WindowTitleHint );
 	p.setWindowModality(Qt::WindowModal);
 	p.setFixedSize( p.size() );
