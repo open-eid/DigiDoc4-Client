@@ -214,7 +214,7 @@ jobs:
           build/*.appx
   coverity:
     name: Run Coverity tests
-    if: contains(github.repository, 'open-eid/DigiDoc4-Client') && contains(github.ref, 'coverity_scan')
+    if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
     runs-on: ubuntu-20.04
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
@@ -257,3 +257,32 @@ jobs:
           -F version=master \
           -F description="Github Actions CI build" \
           https://scan.coverity.com/builds?project=$PROJECTNAME
+  codeql:
+    name: Run CodeQL tests
+    if: github.repository == 'open-eid/DigiDoc4-Client'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: debs
+        path: libdigidocpp-pkg
+        repo: open-eid/libdigidocpp
+    - name: Install artifact
+      run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: cpp
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
