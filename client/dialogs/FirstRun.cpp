@@ -27,25 +27,18 @@
 
 #include <QKeyEvent>
 #include <QPixmap>
-#include <QTextStream>
 
+#include <algorithm>
 
 FirstRun::FirstRun(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::FirstRun)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlag(Qt::FramelessWindowHint);
+	setAttribute(Qt::WA_DeleteOnClose);
 	setFixedSize( size() );
 	setCursor(Qt::OpenHandCursor);
-	if(!parent)
-	{
-		for(QWidget *top: qApp->topLevelWidgets())
-		{
-			if(MainWindow *main = qobject_cast<MainWindow*>(top))
-				parent = main;
-		}
-	}
 	if(parent)
 		move(parent->geometry().center() - geometry().center());
 
@@ -177,18 +170,14 @@ FirstRun::~FirstRun()
 
 void FirstRun::keyPressEvent(QKeyEvent *event)
 {
-	int next = ui->stack->currentIndex();
+	auto next = ui->stack->currentIndex();
 	switch(event->key())
 	{
 	case Qt::Key_Left:
-		next = ui->stack->currentIndex() - 1;
-		if(next < Language)
-			next = Language;
+		next = std::max<decltype(next)>(ui->stack->currentIndex() - 1, Language);
 		break;
 	case Qt::Key_Right:
-		next = ui->stack->currentIndex() + 1;
-		if(next > MyEid)
-			next = MyEid;
+		next = std::min<decltype(next)>(ui->stack->currentIndex() + 1, MyEid);
 		break;
 	default:
 		QDialog::keyPressEvent(event);

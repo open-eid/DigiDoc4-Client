@@ -188,12 +188,12 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
 	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
-		FirstRun dlg(this);
-		connect(&dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
+		FirstRun *dlg = new FirstRun(this);
+		connect(dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
 			retranslate(lang);
 			selectLanguage();
 		});
-		dlg.exec();
+		dlg->open();
 	});
 	connect(ui->btnRefreshConfig, &QPushButton::clicked, this, [] {
 #ifdef CONFIG_URL
