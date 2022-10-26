@@ -37,11 +37,12 @@ using ULONG = int;
 using LDAP_TIMEVAL = timeval;
 #endif
 
+#include <array>
 
 class LdapSearch::Private
 {
 public:
-	LDAP *ldap = nullptr;
+	LDAP *ldap {};
 	QByteArray host;
 	QTimer *timer;
 };
@@ -145,18 +146,18 @@ void LdapSearch::search(const QString &search, const QVariantMap &userData)
 		return;
 	}
 
-	char *attrs[] = { const_cast<char*>("userCertificate;binary"), nullptr };
+	std::array<char*, 2> attrs { const_cast<char*>("userCertificate;binary"), nullptr };
 
 	ULONG msg_id = 0;
 	int err = ldap_search_ext( d->ldap, const_cast<char*>("c=EE"), LDAP_SCOPE_SUBTREE,
-		const_cast<char*>(search.toLocal8Bit().constData()), attrs, 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
+		const_cast<char*>(search.toUtf8().constData()), attrs.data(), 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
 	if(err)
 		return setLastError( tr("Failed to init ldap search"), err );
 
 	QTimer *timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, this, [this, msg_id, timer, userData] {
 		LDAPMessage *result = nullptr;
-		LDAP_TIMEVAL t = { 5, 0 };
+		LDAP_TIMEVAL t { 5, 0 };
 		int err = ldap_result(d->ldap, msg_id, LDAP_MSG_ALL, &t, &result);
 		switch(err)
 		{
