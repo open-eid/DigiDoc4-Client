@@ -53,8 +53,7 @@
    * [XCode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
    * [http://www.cmake.org](http://www.cmake.org)
    * [http://qt-project.org](http://qt-project.org)  
-       Since Qt 5.6 default SSL backend is SecureTransport and this project depends on openssl.  
-       Build Qt with openssl backend using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script; by default Qt is built in the `~/cmake_builds` folder but alternate build path can be defined with the `-p` option.
+       Build universal binary of Qt using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script; by default Qt is built in the `~/cmake_builds` folder but alternate build path can be defined with the `-p` option.
    * [libdigidocpp-*.pkg](https://github.com/open-eid/libdigidocpp/releases)
 
 2. Fetch the source
@@ -64,7 +63,11 @@
 
 3. Configure
 
-        cmake -DCMAKE_PREFIX_PATH="~/cmake_builds/Qt-6.3.1-OpenSSL/lib/cmake/Qt6" -B build -S .
+        cmake -B build -S . \
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.4.1-OpenSSL/lib/cmake/Qt6
+          -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
+          -DLDAP_ROOT=~/cmake_build/OpenLDAP \
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
 
 4. Build
 
@@ -82,6 +85,7 @@
     * [http://www.cmake.org](http://www.cmake.org)
     * [http://qt-project.org](http://qt-project.org)
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
+
 2. Fetch the source
 
         git clone --recursive https://github.com/open-eid/DigiDoc4-Client
@@ -89,7 +93,7 @@
 
 3. Configure
 
-        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH="C:\Qt\6.3.1\msvc2019\lib\cmake\Qt6" -B build -S .
+        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH="C:\Qt\6.4.1\msvc2019\lib\cmake\Qt6" -B build -S .
 
 4. Build
 
