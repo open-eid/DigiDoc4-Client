@@ -77,8 +77,8 @@
         <translation>Personal code is not valid!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
+        <translation>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -265,8 +265,8 @@
         <translation>Cannot add empty file to the container.</translation>
     </message>
     <message>
-        <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
-        <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
+        <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
+        <translation>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

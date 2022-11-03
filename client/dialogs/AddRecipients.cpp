@@ -158,7 +158,7 @@ void AddRecipients::addRecipientFromFile()
 	QFile f( file );
 	if( !f.open( QIODevice::ReadOnly ) )
 	{
-		WarningDialog::warning(this, tr("Failed to read certificate"));
+		WarningDialog::show(this, tr("Failed to read certificate"));
 		return;
 	}
 
@@ -170,18 +170,17 @@ void AddRecipients::addRecipientFromFile()
 	}
 	if( cert.isNull() )
 	{
-		WarningDialog::warning( this, tr("Failed to read certificate"));
+		WarningDialog::show( this, tr("Failed to read certificate"));
 	}
 	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) &&
 		!SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
 	{
-		WarningDialog::warning( this, tr("This certificate cannot be used for encryption"));
+		WarningDialog::show( this, tr("This certificate cannot be used for encryption"));
 	}
 	else if(AddressItem *item = addRecipientToLeftPane(cert))
 	{
 		addRecipientToRightPane(item, true);
 	}
-	f.close();
 }
 
 void AddRecipients::addRecipientFromHistory()
@@ -409,7 +408,7 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 			if(!IKValidator::isValid(cleanTerm))
 			{
 				QApplication::restoreOverrideCursor();
-				WarningDialog::warning(this, tr("Personal code is not valid!"));
+				WarningDialog::show(this, tr("Personal code is not valid!"));
 				return;
 			}
 			userData["personSearch"] = true;
@@ -427,7 +426,7 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 void AddRecipients::showError( const QString &msg, const QString &details )
 {
 	QApplication::restoreOverrideCursor();
-	WarningDialog(msg, details, this).exec();
+	WarningDialog::show(this, msg, details);
 }
 
 void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData)
@@ -454,8 +453,8 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	else if(isEmpty)
 	{
 		showError(tr("Person or company does not own a valid certificate.<br />"
-					 "It is necessary to have a valid certificate for encryption.<br />"
-					 "In case of questions please contact our support via <a href=\"https://www.id.ee/en/\">id.ee</a>."));
+			"It is necessary to have a valid certificate for encryption.<br />"
+			"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."));
 	}
 	QApplication::restoreOverrideCursor();
 }

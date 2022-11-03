@@ -57,7 +57,7 @@ VerifyCert::VerifyCert(QWidget *parent)
 		default:
 			msg = tr("Certificate status check failed. Please check your internet connection.");
 		}
-		WarningDialog::warning(this, msg);
+		WarningDialog::show(this, msg);
 	});
 
 	ui->nameIcon->hide();
