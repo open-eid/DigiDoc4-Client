@@ -602,7 +602,7 @@ void DigiDoc::removeSignature( unsigned int num )
 	if(isError(num >= b->signatures().size(), tr("Missing signature")))
 		return;
 	try {
-		modified = waitFor([this, num] {
+		modified = waitFor([&] {
 			b->removeSignature(num);
 			m_signatures.removeAt(num);
 			return true;
@@ -627,7 +627,7 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
-		return waitFor([&]{
+		return waitFor([&] {
 			parentContainer ? parentContainer->save(to(filename)) : b->save(to(filename));
 			return true;
 		});
@@ -694,9 +694,10 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		signer->setProfile("time-stamp");
 		qApp->waitForTSL( fileName() );
 		digidoc::Signature *s = b->sign(signer);
-		m_signatures.append(DigiDocSignature(s, this, false));
-		modified = true;
-		return true;
+		return modified = waitFor([&] {
+			m_signatures.append(DigiDocSignature(s, this, false));
+			return true;
+		});
 	}
 	catch( const Exception &e )
 	{

@@ -25,14 +25,15 @@
 #include <thread>
 
 namespace {
-	template <typename F>
-	inline auto waitFor(F&& function) {
+	template <typename F, class... Args>
+	inline auto waitFor(F&& function, Args&& ...args) {
 		std::exception_ptr exception;
-		typename std::invoke_result<F>::type result{};
+		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
-		std::thread([&]{
+		// c++20 ... args == std::forward<Args>(args)
+		std::thread([&, function = std::forward<F>(function)]{
 			try {
-				result = function();
+				result = std::invoke(function, args...);
 			} catch(...) {
 				exception = std::current_exception();
 			}
@@ -44,15 +45,15 @@ namespace {
 		return result;
 	}
 
-	template <typename F>
-	inline auto dispatchToMain(F&& function) {
-		typename std::invoke_result<F>::type result{};
+	template <typename F, class... Args>
+	inline auto dispatchToMain(F&& function, Args&& ...args) {
+		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
 		QTimer* timer = new QTimer();
 		timer->moveToThread(qApp->thread());
 		timer->setSingleShot(true);
-		QObject::connect(timer, &QTimer::timeout, timer, [&] {
-			result = function();
+		QObject::connect(timer, &QTimer::timeout, timer, [&, function = std::forward<F>(function)] {
+			result = std::invoke(function, args...);
 			l.exit();
 			timer->deleteLater();
 		});

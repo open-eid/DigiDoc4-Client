@@ -85,7 +85,7 @@ QSslCertificate AccessCert::cert()
 		Application::confValue( Application::PKCS12Pass ).toString() ).certificate();
 }
 
-unsigned int AccessCert::count(const QString &date) const
+unsigned int AccessCert::count(const QString &date)
 {
 	return QByteArray::fromBase64(QSettings().value(date).toByteArray()).toUInt();
 }
@@ -99,7 +99,7 @@ void AccessCert::increment()
 	}
 }
 
-bool AccessCert::isDefaultCert(const QSslCertificate &cert) const
+bool AccessCert::isDefaultCert(const QSslCertificate &cert)
 {
 	static const QList<QByteArray> list {
 		// CN=Riigi Infos\xC3\xBCsteemi Amet, SN = da:98:09:46:6d:57:51:65:48:8b:b2:14:0d:9e:19:27
@@ -115,16 +115,17 @@ bool AccessCert::installCert( const QByteArray &data, const QString &password )
 	SecExternalFormat format = kSecFormatPKCS12;
 	SecExternalItemType type = kSecItemTypeAggregate;
 
-	SecItemImportExportKeyParameters params = {};
-	params.version = SEC_KEY_IMPORT_EXPORT_PARAMS_VERSION;
-	params.flags = kSecKeyImportOnlyOne|kSecKeyNoAccessControl;
+	SecItemImportExportKeyParameters params{
+		SEC_KEY_IMPORT_EXPORT_PARAMS_VERSION,
+		kSecKeyImportOnlyOne|kSecKeyNoAccessControl,
+		password.toCFString(),
+	};
 	CFTypeRef keyAttributes[] = { kSecAttrIsPermanent, kSecAttrIsExtractable };
 	params.keyAttributes = CFArrayCreate(nullptr,
 		(const void **)keyAttributes, sizeof(keyAttributes) / sizeof(keyAttributes[0]), nullptr);
 	CFTypeRef keyUsage[] = { kSecAttrCanDecrypt, kSecAttrCanUnwrap, kSecAttrCanDerive };
 	params.keyUsage = CFArrayCreate(nullptr,
 		(const void **)keyUsage, sizeof(keyUsage) / sizeof(keyUsage[0]), nullptr);
-	params.passphrase = password.toCFString();
 
 	SecKeychainRef keychain;
 	SecKeychainCopyDefault( &keychain );
