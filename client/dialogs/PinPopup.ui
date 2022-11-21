@@ -2,145 +2,102 @@
 <ui version="4.0">
  <class>PinPopup</class>
  <widget class="QDialog" name="PinPopup">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>232</height>
+    <width>495</width>
+    <height>220</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>507</width>
-    <height>232</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>507</width>
-    <height>300</height>
-   </size>
-  </property>
   <property name="styleSheet">
-   <string notr="true">QDialog
-{
+   <string notr="true">QDialog {
 border-radius: 2px;
 background-color: #FFFFFF;
 }</string>
   </property>
-  <widget class="QLabel" name="labelNameId">
-   <property name="geometry">
-    <rect>
-     <x>22</x>
-     <y>12</y>
-     <width>461</width>
-     <height>24</height>
-    </rect>
+  <layout class="QVBoxLayout" name="PinPopupLayout" stretch="0,1,0,0">
+   <property name="spacing">
+    <number>20</number>
    </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+   <property name="leftMargin">
+    <number>20</number>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
+   <property name="topMargin">
+    <number>10</number>
    </property>
-   <property name="focusPolicy">
-    <enum>Qt::TabFocus</enum>
+   <property name="rightMargin">
+    <number>20</number>
    </property>
-   <property name="styleSheet">
-    <string notr="true">color: #041E42; border: none;</string>
+   <property name="bottomMargin">
+    <number>30</number>
    </property>
-   <property name="text">
-    <string notr="true">&lt;b&gt;Mari Maasikas,&lt;/b&gt; 48405050123</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>25</x>
-     <y>49</y>
-     <width>456</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>456</width>
-     <height>35</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>456</width>
-     <height>60</height>
-    </size>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::TabFocus</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: #000000;
+   <item>
+    <widget class="QLabel" name="labelNameId">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #041E42; border: none;</string>
+     </property>
+     <property name="text">
+      <string notr="true">&lt;b&gt;Mari Maasikas,&lt;/b&gt; 48405050123</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #000000;
 line-height: 15px;
 border: none;</string>
-   </property>
-   <property name="text">
-    <string>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-   <property name="buddy">
-    <cstring>pin</cstring>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="pin">
-   <property name="geometry">
-    <rect>
-     <x>182</x>
-     <y>122</y>
-     <width>141</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>123</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLineEdit
+     </property>
+     <property name="text">
+      <string>You need to use a personal identification certificate for the selected activity. Enter PIN1 to use the certificate</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="buddy">
+      <cstring>pin</cstring>
+     </property>
+    </widget>
+   </item>
+   <item alignment="Qt::AlignHCenter">
+    <widget class="QLineEdit" name="pin">
+     <property name="minimumSize">
+      <size>
+       <width>141</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
 {
 padding: 0px 10px;
 border: 1px solid #DEE4E9;
@@ -150,42 +107,53 @@ color: #000000;
 line-height: 9px;
 text-align: center;
 }</string>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::Password</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="cancel">
-   <property name="geometry">
-    <rect>
-     <x>126</x>
-     <y>172</y>
-     <width>120</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>120</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="accessibleName">
-    <string extracomment="accessible">Cancel</string>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <property name="spacing">
+      <number>15</number>
+     </property>
+     <property name="leftMargin">
+      <number>100</number>
+     </property>
+     <property name="rightMargin">
+      <number>100</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="cancel">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>120</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string extracomment="accessible">Cancel</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	border-radius: 2px; 
 	border: none;
 	color: #ffffff;
@@ -197,39 +165,39 @@ QPushButton:pressed {
 QPushButton:hover:!pressed {
 	background-color: #CD2541;
 }</string>
-   </property>
-   <property name="text">
-    <string>CANCEL</string>
-   </property>
-   <property name="autoDefault">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ok">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>261</x>
-     <y>172</y>
-     <width>120</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>120</width>
-     <height>30</height>
-    </size>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton {
+       </property>
+       <property name="text">
+        <string>CANCEL</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ok">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>120</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
 	border-radius: 2px; 
 	border: none;
 	color: #ffffff;
@@ -244,14 +212,18 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-   </property>
-   <property name="text">
-    <string>OK</string>
-   </property>
-   <property name="default">
-    <bool>true</bool>
-   </property>
-  </widget>
+       </property>
+       <property name="text">
+        <string>OK</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
