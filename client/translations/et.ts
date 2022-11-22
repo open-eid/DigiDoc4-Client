@@ -621,14 +621,6 @@
         <translation>Turvaümbrik ei ole avatud</translation>
     </message>
     <message>
-        <source>Failed to save file</source>
-        <translation>Faili salvestamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Document not open</source>
-        <translation>Turvaümbrik pole avatud</translation>
-    </message>
-    <message>
         <source>Key already exists</source>
         <translation>Adressaat on juba lisatud</translation>
     </message>

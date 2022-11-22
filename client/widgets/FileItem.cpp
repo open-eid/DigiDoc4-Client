@@ -102,4 +102,5 @@ void FileItem::stateChange(ContainerState state)
 	ui->fileName->setDisabled(state == EncryptedContainer);
 	ui->download->setVisible(state == UnsignedSavedContainer || state == SignedContainer || state == UnencryptedContainer);
 	ui->remove->setHidden(state == SignedContainer || state == EncryptedContainer);
+	setFileName();
 }

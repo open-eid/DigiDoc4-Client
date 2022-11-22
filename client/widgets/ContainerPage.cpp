@@ -399,7 +399,7 @@ void ContainerPage::updatePanes(ContainerState state)
 	switch( state )
 	{
 	case UnsignedContainer:
-		cancelText = "CANCEL";
+		cancelText = QT_TR_NOOP("CANCEL");
 
 		ui->changeLocation->show();
 		ui->rightPane->clear();
@@ -410,7 +410,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
 		break;
 	case UnsignedSavedContainer:
-		cancelText = "STARTING";
+		cancelText = QT_TR_NOOP("STARTING");
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName, QStringLiteral("Container files"));
@@ -422,7 +422,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane( ItemSignature, QStringLiteral("Container is not signed"));
 		break;
 	case SignedContainer:
-		cancelText = "STARTING";
+		cancelText = QT_TR_NOOP("STARTING");
 
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, QStringLiteral("Container files"));
@@ -434,8 +434,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		setButtonsVisible({ ui->save }, false);
 		break;
 	case UnencryptedContainer:
-		cancelText = "STARTING";
-		convertText = "SIGN";
+		cancelText = QT_TR_NOOP("STARTING");
+		convertText = QT_TR_NOOP("SIGN");
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
@@ -445,8 +445,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		setButtonsVisible({ ui->save, ui->saveAs, ui->email, ui->summary }, false);
 		break;
 	case EncryptedContainer:
-		cancelText = "STARTING";
-		convertText = "SIGN";
+		cancelText = QT_TR_NOOP("STARTING");
+		convertText = QT_TR_NOOP("SIGN");
 
 		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, QStringLiteral("Encrypted files"));
@@ -470,8 +470,6 @@ void ContainerPage::togglePrinting(bool enable)
 
 void ContainerPage::translateLabels()
 {
-	tr("STARTING");
-	tr("SIGN");
 	ui->changeLocation->setText(tr("CHANGE"));
 	ui->changeLocation->setAccessibleName(ui->changeLocation->text().toLower());
 	ui->cancel->setText(tr(cancelText));
