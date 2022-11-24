@@ -33,13 +33,13 @@ public:
 	bool validate();
 
 	static QSslCertificate cert();
-	void increment();
+	static void increment();
 	bool installCert( const QByteArray &data, const QString &password );
 	void remove();
 
 private:
-	unsigned int count( const QString &date ) const;
-	bool isDefaultCert( const QSslCertificate &cert ) const;
+	static unsigned int count(const QString &date);
+	static bool isDefaultCert(const QSslCertificate &cert);
 	void showWarning( const QString &msg );
 
 	class Private;

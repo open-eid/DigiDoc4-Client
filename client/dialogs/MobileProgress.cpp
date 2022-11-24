@@ -78,7 +78,6 @@ public:
 #ifdef QT_WIN_EXTRAS
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
-	WaitDialogHider hider;
 };
 
 MobileProgress::MobileProgress(QWidget *parent)
@@ -368,6 +367,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	d->manager->post(d->req, data);
 	d->statusTimer->start();
 	d->adjustSize();
+	WaitDialogHider hider;
 	d->show();
 	switch(d->l.exec())
 	{

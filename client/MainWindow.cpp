@@ -915,8 +915,7 @@ void MainWindow::sign(F &&sign)
 		return;
 	}
 
-	AccessCert access(this);
-	if(!access.validate())
+	if(!AccessCert(this).validate())
 		return;
 
 	QString role, city, state, country, zip;
@@ -940,7 +939,7 @@ void MainWindow::sign(F &&sign)
 	else if(!sign(city, state, zip, country, role))
 		return;
 
-	access.increment();
+	AccessCert::increment();
 	if(!save())
 		return;
 

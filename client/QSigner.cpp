@@ -213,8 +213,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 			return {};
 		}
 	} while(status != QCryptoBackend::PinOK);
-	QByteArray result;
-	result = waitFor([&]{ return func(d->backend); });
+	QByteArray result = waitFor(func, d->backend);
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
@@ -421,9 +420,8 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINFailed)
 		}
 	} while(status != QCryptoBackend::PinOK);
-	QByteArray sig = waitFor([&]{
-		return d->backend->sign(methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	});
+	QByteArray sig = waitFor(&QCryptoBackend::sign, d->backend,
+		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
 	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated

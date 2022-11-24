@@ -59,6 +59,11 @@ public:
 	QString URL() { return !UUID.isNull() && useCustomUUID ? SKURL : PROXYURL; }
 	using QDialog::QDialog;
 	void reject() final { l.exit(QDialog::Rejected); }
+	void setVisible(bool visible) final {
+		if(visible && !hider) hider = std::make_unique<WaitDialogHider>();
+		QDialog::setVisible(visible);
+		if(!visible && hider) hider.reset();
+	}
 	QTimeLine *statusTimer = nullptr;
 	QNetworkAccessManager *manager = nullptr;
 	QNetworkRequest req;
@@ -80,7 +85,7 @@ public:
 #ifdef QT_WIN_EXTRAS
 	QWinTaskbarButton *taskbar = nullptr;
 #endif
-	WaitDialogHider hider;
+	std::unique_ptr<WaitDialogHider> hider;
 };
 
 
