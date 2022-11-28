@@ -42,8 +42,8 @@ public:
 	explicit ItemList(QWidget *parent = {});
 	~ItemList() override;
 
-	void init(ria::qdigidoc4::ItemType itemType, const QString &header);
-	void addHeader(const QString &label);
+	void init(ria::qdigidoc4::ItemType itemType, const char *header);
+	void addHeader(const char *label);
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
 	virtual void clear();
@@ -78,8 +78,8 @@ private:
 	QList<Item*> items;
 	QLabel *header = nullptr;
 	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
-	QString headerText;
-	QString listText;
+	const char *headerText = "";
+	const char *listText = "";
 	SslCertificate cert;
 
 	friend class AddRecipients;

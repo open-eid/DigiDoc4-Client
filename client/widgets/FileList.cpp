@@ -60,22 +60,10 @@ void FileList::addFile( const QString& file )
 	updateDownload();
 }
 
-void FileList::changeEvent(QEvent* event)
-{
-	ItemList::changeEvent(event);
-	if(!ui->count->isHidden())
-		ui->count->setText(QString::number(count()));
-}
-
 void FileList::clear()
 {
 	ItemList::clear();
 	documentModel = nullptr;
-}
-
-int FileList::count() const
-{
-	return findChildren<FileItem*>().size();
 }
 
 bool FileList::eventFilter(QObject *obj, QEvent *event)
@@ -121,7 +109,7 @@ bool FileList::eventFilter(QObject *obj, QEvent *event)
 	return ItemList::eventFilter(obj, event);
 }
 
-void FileList::init(const QString &container, const QString &label)
+void FileList::init(const QString &container, const char *label)
 {
 	ItemList::init(ItemFile, label);
 	this->container = container;
@@ -129,16 +117,8 @@ void FileList::init(const QString &container, const QString &label)
 
 void FileList::open(FileItem *item) const
 {
-	int i;
-	if(documentModel && (i = index(item)) != -1)
+	if(int i = index(item); documentModel && i != -1)
 		documentModel->open(i);
-}
-
-void FileList::remove(Item *item)
-{
-	int i;
-	if(documentModel && (i = index(item)) != -1)
-		emit removed(i);
 }
 
 void FileList::removeItem(int row)
@@ -150,8 +130,7 @@ void FileList::removeItem(int row)
 
 void FileList::save(FileItem *item)
 {
-	int i;
-	if(documentModel && (i = index(item)) != -1)
+	if(int i = index(item); documentModel && i != -1)
 	{
 		QString extension = QFileInfo(item->getFile()).suffix();
 		QString capitalized = extension[0].toUpper() + extension.mid(1);
@@ -247,7 +226,7 @@ void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 
 void FileList::updateDownload()
 {
-	int c = count();
+	int c = findChildren<FileItem*>().size();
 	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setText(QString::number(c));

@@ -621,14 +621,6 @@
         <translation>Container is not open</translation>
     </message>
     <message>
-        <source>Failed to save file</source>
-        <translation>Failed to save file</translation>
-    </message>
-    <message>
-        <source>Document not open</source>
-        <translation>Document not open</translation>
-    </message>
-    <message>
         <source>Key already exists</source>
         <translation>Key already exists</translation>
     </message>

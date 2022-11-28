@@ -27,7 +27,7 @@
 
 class QLabel;
 
-class FileList : public ItemList
+class FileList final : public ItemList
 {
 	Q_OBJECT
 
@@ -35,26 +35,22 @@ public:
 	explicit FileList(QWidget *parent = nullptr);
 
 	void addFile(const QString& file);
-	void clear() override;
-	void init(const QString &container, const QString &label = "Container's files");
-	void removeItem(int row) override;
+	void clear() final;
+	void init(const QString &container,
+		const char *label = QT_TRANSLATE_NOOP("ItemList", "Container files"));
+	void removeItem(int row) final;
 	void setModel(DocumentModel *documentModel);
-	void stateChange(ria::qdigidoc4::ContainerState state) override;
+	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
 signals:
 	void addFiles(const QStringList &files);
 
-private slots:
+private:
 	void open(FileItem *item) const;
 	void save(FileItem *item);
 	void saveAll();
-
-private:
-	void changeEvent(QEvent* event) override;
-	int count() const;
-	bool eventFilter(QObject *obj, QEvent *event) override;
+	bool eventFilter(QObject *obj, QEvent *event) final;
 	void selectFile();
-	void remove(Item *item) override;
 	void updateDownload();
 	
 	QString container;

@@ -73,7 +73,7 @@ private:
 	void hideRightPane();
 	void initContainer( const QString &file, const QString &suffix );
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
-	void showRightPane(ria::qdigidoc4::ItemType itemType, const QString &header);
+	void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
 	void showSigningButton();
 	void updateDecryptionButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);
