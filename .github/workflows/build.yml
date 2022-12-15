@@ -1,5 +1,7 @@
 name: CI
 on: [push, pull_request]
+permissions:
+  contents: read
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   MAKEFLAGS: -j3
@@ -8,7 +10,7 @@ jobs:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 10.14
+      MACOSX_DEPLOYMENT_TARGET: 10.15
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -51,22 +53,22 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:22.04']
+        container: ['ubuntu:20.04', 'ubuntu:22.04', 'ubuntu:22.10']
     env:
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: github-actions
       DEBEMAIL: github-actions@github.com
     steps:
+    - name: Install dependencies
+      if: matrix.container == 'ubuntu:20.04'
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
+    - name: Install dependencies
+      if: matrix.container != 'ubuntu:20.04'
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: Install dependencies
-      if: matrix.container != 'ubuntu:22.04'
-      run: apt update -qq && apt install --no-install-recommends -y lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
-    - name: Install dependencies
-      if: matrix.container == 'ubuntu:22.04'
-      run: apt update -qq && apt install --no-install-recommends -y lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -101,20 +103,16 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['fedora:35', 'fedora:36']
+        container: ['fedora:36', 'fedora:37']
     env:
       MAKEFLAGS: -j3
     steps:
+    - name: Install Deps
+      run: dnf install -y git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: Install Deps
-      if: matrix.container == 'fedora:35'
-      run: dnf install -y gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt5-qtsvg-devel qt5-linguist
-    - name: Install Deps
-      if: matrix.container != 'fedora:35'
-      run: dnf install -y gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -152,7 +150,7 @@ jobs:
           toolset: 14.29
         - vcver: 143
           image: windows-2022
-          toolset: 14.33
+          toolset: 14.34
         - vcver: 141
           arch: x86
           qtver: 5.12.12
