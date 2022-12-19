@@ -256,7 +256,7 @@ void ContainerPage::setHeader(const QString &file)
 	elideFileName();
 }
 
-void ContainerPage::showRightPane(ItemType itemType, const QString &header)
+void ContainerPage::showRightPane(ItemType itemType, const char *header)
 {
 	ui->rightPane->init(itemType, header);
 	ui->rightPane->show();
@@ -323,7 +323,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	if(!container->timestamps().isEmpty())
 	{
-		ui->rightPane->addHeader(QStringLiteral("Container timestamps"));
+		ui->rightPane->addHeader(QT_TRANSLATE_NOOP("ItemList", "Container timestamps"));
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
@@ -404,7 +404,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->show();
 		ui->rightPane->clear();
 		hideRightPane();
-		ui->leftPane->init(fileName, QStringLiteral("Container files"));
+		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 		showSigningButton();
 		setButtonsVisible({ ui->cancel, ui->convert, ui->save }, true);
 		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
@@ -413,20 +413,20 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = QT_TR_NOOP("STARTING");
 
 		ui->changeLocation->show();
-		ui->leftPane->init(fileName, QStringLiteral("Container files"));
+		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 		if( showPrintSummary )
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
 		setButtonsVisible({ ui->save }, false);
-		showRightPane( ItemSignature, QStringLiteral("Container is not signed"));
+		showRightPane( ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container is not signed"));
 		break;
 	case SignedContainer:
 		cancelText = QT_TR_NOOP("STARTING");
 
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, QStringLiteral("Container files"));
-		showRightPane(ItemSignature, QStringLiteral("Container signatures"));
+		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
+		showRightPane(ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container signatures"));
 		if( showPrintSummary )
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
@@ -439,7 +439,7 @@ void ContainerPage::updatePanes(ContainerState state)
 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName);
-		showRightPane(ItemAddress, QStringLiteral("Recipients"));
+		showRightPane(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		showMainAction({ EncryptContainer });
 		setButtonsVisible({ ui->cancel, ui->convert }, true);
 		setButtonsVisible({ ui->save, ui->saveAs, ui->email, ui->summary }, false);
@@ -449,8 +449,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		convertText = QT_TR_NOOP("SIGN");
 
 		ui->changeLocation->hide();
-		ui->leftPane->init(fileName, QStringLiteral("Encrypted files"));
-		showRightPane(ItemAddress, QStringLiteral("Recipients"));
+		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
+		showRightPane(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		updateDecryptionButton();
 		setButtonsVisible({ ui->save, ui->summary }, false);
 		setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);

@@ -47,11 +47,11 @@ ItemList::~ItemList()
 	delete ui;
 }
 
-void ItemList::addHeader(const QString &label)
+void ItemList::addHeader(const char *label)
 {
 	headerText = label;
 
-	header = new QLabel(tr(qPrintable(label)), this);
+	header = new QLabel(tr(label), this);
 	header->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	header->setFocusPolicy(Qt::TabFocus);
@@ -110,22 +110,14 @@ void ItemList::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
 	{
-		tr("Add recipients");
-		tr("Added recipients");
-		tr("Recipients");
-		tr("Encrypted files");
-		tr("Container is not signed");
-		tr("Container signatures");
-		tr("Container timestamps");
-		tr("Container files");
 		ui->retranslateUi(this);
 
-		ui->listHeader->setText(tr(qPrintable(listText)));
+		ui->listHeader->setText(tr(listText));
 		ui->txtFind->setPlaceholderText(tr("Enter the personal code, institution or registry code"));
 		ui->txtFind->setAccessibleName(ui->txtFind->placeholderText());
 
 		if(header)
-			header->setText(tr(qPrintable(headerText)));
+			header->setText(tr(headerText));
 
 		ui->add->setText(addLabel());
 
@@ -146,7 +138,7 @@ void ItemList::clear()
 	header = nullptr;
 
 	for(auto it = items.begin(); it != items.end(); it = items.erase(it))
-		(*it)->deleteLater();
+		delete *it;
 }
 
 bool ItemList::eventFilter(QObject *o, QEvent *e)
@@ -176,11 +168,11 @@ bool ItemList::hasItem(const std::function<bool(Item* const)> &cb)
 	return std::any_of(items.cbegin(), items.cend(), cb);
 }
 
-void ItemList::init(ItemType item, const QString &header)
+void ItemList::init(ItemType item, const char *header)
 {
 	itemType = item;
-	ui->listHeader->setText(tr(qPrintable(header)));
-	ui->listHeader->setAccessibleName(tr(qPrintable(header)));
+	ui->listHeader->setText(tr(header));
+	ui->listHeader->setAccessibleName(tr(header));
 	listText = header;
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 
@@ -234,15 +226,14 @@ void ItemList::init(ItemType item, const QString &header)
 
 void ItemList::remove(Item *item)
 {
-	int i = index(item);
-	if(i != -1)
+	if(int i = index(item); i != -1)
 		emit removed(i);
 }
 
 void ItemList::removeItem(int row)
 {
 	if(row < items.size())
-		items.takeAt(row)->deleteLater();
+		delete items.takeAt(row);
 }
 
 void ItemList::setRecipientTooltip()
