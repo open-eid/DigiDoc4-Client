@@ -85,8 +85,8 @@ private:
 	QString fileName;
 	QString mobileCode;
 
-	const char *cancelText = "CANCEL";
-	const char *convertText = "ENCRYPT";
+	const char *cancelText = QT_TR_NOOP("CANCEL");
+	const char *convertText = QT_TR_NOOP("ENCRYPT");
 	bool isSupported = false;
 	bool hasEmptyFile = false;
 	bool isSeal = false;

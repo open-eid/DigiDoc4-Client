@@ -623,14 +623,6 @@
         <translation>Контейнер не открыт</translation>
     </message>
     <message>
-        <source>Failed to save file</source>
-        <translation>Неудачное сохранение файла</translation>
-    </message>
-    <message>
-        <source>Document not open</source>
-        <translation>Документ не открыт</translation>
-    </message>
-    <message>
         <source>Key already exists</source>
         <translation>Адресат уже добавлен</translation>
     </message>
