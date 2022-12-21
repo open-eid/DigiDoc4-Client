@@ -77,8 +77,8 @@
         <translation>Isikukood pole korrektne!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/&quot;&gt;ID-abikeskusega&lt;/a&gt;.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
+        <translation>Isikul või asutusel puudub kehtiv sertifikaat.&lt;br /&gt;Krüpteerimiseks on vaja kehtivat sertifikaati.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/artikkel/dokumentide-krupteerimine-ja-dekrupteerimine/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -265,8 +265,8 @@
         <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
     </message>
     <message>
-        <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
-        <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
+        <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
+        <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB). &lt;a href=&apos;https://www.id.ee/artikkel/suuremahuliste-120-mb-failide-krupteerimine/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

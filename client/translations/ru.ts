@@ -77,8 +77,8 @@
         <translation>Личный код недействителен!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;id.ee&lt;/a&gt;.</source>
-        <translation>У лица или учреждения отсутствует действующий сертификат.&lt;br /&gt;Для зашифровывания необходим действующий сертификат.&lt;br /&gt;Если у вас возникнут вопросы, пожалуйста, обратитесь за помощью через &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;id.ee&lt;/a&gt;.</translation>
+        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
+        <translation>У человека или предприятия отсутствует действующий сертификат.&lt;br /&gt;Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -265,8 +265,8 @@
         <translation>Пустой файл нельзя добавить в контейнер.</translation>
     </message>
     <message>
-        <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
-        <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
+        <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
+        <translation>Добаленные файл/ы превышают максимальный размер контейнера. &lt;a href=&apos;https://www.id.ee/ru/artikkel/kriptovanie-fajlov-s-bolshim-obemom-120-mb/&apos;&gt;Точнее можно прочитать&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

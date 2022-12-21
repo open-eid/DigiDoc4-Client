@@ -118,8 +118,3 @@ void WarningDialog::show(QWidget *parent, const QString &text, const QString &de
 	dlg->setAttribute(Qt::WA_DeleteOnClose);
 	dlg->open();
 }
-
-void WarningDialog::warning(QWidget *parent, const QString& text)
-{
-	WarningDialog(text, {}, parent).exec();
-}
