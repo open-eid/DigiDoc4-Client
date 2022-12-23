@@ -297,6 +297,7 @@ jobs:
       with:
         patterns: |
           -**/*autogen*/**
+          -**/common/qtsingleapplication/**
           -**:cpp/poorly-documented-function
         input: sarif-results/cpp.sarif
         output: sarif-results/cpp.sarif

@@ -23,14 +23,12 @@
 #include "SslCertificate.h"
 
 #include <QtCore/QTimeLine>
-#include <QtGui/QMovie>
 #include <QtGui/QRegularExpressionValidator>
+#include <QtGui/QTextDocument>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QSvgWidget>
-
-#include <QTextDocument>
 
 PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
 	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), count, parent)
@@ -49,18 +47,13 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 {
 	ui->setupUi(this);
 	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setFixedSize( size() );
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
-	QFont regular = Styles::font( Styles::Regular, 14 );
-	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-
 	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
-	ui->label->setFont( regular );
-	ui->ok->setFont( condensed14 );
-	ui->cancel->setFont( condensed14 );
-	ui->ok->setEnabled( false );
+	ui->label->setFont(Styles::font(Styles::Regular, 14));
+	ui->ok->setFont(Styles::font(Styles::Condensed, 14));
+	ui->cancel->setFont(ui->ok->font());
 
 	connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
@@ -142,6 +135,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->label->setBuddy( ui->pin );
 		ui->ok->setDisabled(true);
 	}
+	adjustSize();
 }
 
 PinPopup::~PinPopup()
