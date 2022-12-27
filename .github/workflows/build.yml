@@ -141,7 +141,7 @@ jobs:
       matrix:
         vcver: [142, 143]
         arch: [x64]
-        qtver: [6.3.2]
+        qtver: [6.4.1]
         qt: [win64_msvc2019_64]
         qtmodules: [qt5compat]
         include:

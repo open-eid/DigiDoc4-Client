@@ -4,14 +4,13 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.3.2"
-OPENSSL_VER="1.1.1q"
+QT_VER="6.4.1"
+OPENSSL_VER="1.1.1s"
 OPENLDAP_VER="2.6.3"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 : ${MACOSX_DEPLOYMENT_TARGET:="10.15"}
 export MACOSX_DEPLOYMENT_TARGET
-SCRIPTPATH=$(exec 2>/dev/null;cd -- $(dirname "$0"); unset PWD; /usr/bin/pwd || /bin/pwd || pwd)
 
 while [[ $# -gt 0 ]]
 do
@@ -113,14 +112,14 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     QT_MINOR="${qt_ver_parts[0]}.${qt_ver_parts[1]}"
     echo -e "\n${ORANGE}##### Building Qt ${QT_VER} ${QT_PATH} #####${RESET}\n"
     mkdir -p ${BUILD_PATH}
-    cd ${BUILD_PATH}
+    pushd ${BUILD_PATH}
     for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER} qt5compat-everywhere-src-${QT_VER}; do
         if [ ! -f ${PACKAGE}.tar.xz ]; then
             curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
         fi
         rm -rf ${PACKAGE}
         tar xf ${PACKAGE}.tar.xz
-        cd ${PACKAGE}
+        pushd ${PACKAGE}
         if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
             ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license -- -DOPENSSL_ROOT_DIR=${OPENSSL_PATH} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         else
@@ -128,16 +127,15 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
         fi
         cmake --build . --parallel
         cmake --build . --target install
-        cd -
+        popd
         rm -rf ${PACKAGE}
     done
-    cd -
+    popd
 else
     echo -e "\n${GREY}  Qt not built${RESET}"
 fi
 
 if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
-    SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
     echo -e "\n${ORANGE}##### Building OpenLDAP ${OPENLDAP_VER} ${OPENLDAP_PATH} #####${RESET}\n"
     curl -O -L http://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
     tar xf openldap-${OPENLDAP_VER}.tgz
