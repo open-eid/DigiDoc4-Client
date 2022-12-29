@@ -24,27 +24,11 @@
 #include <QtCore/QTimer>
 #include <QtCore/QRegularExpression>
 
-#ifdef Q_OS_WIN32
-#include <QtCore/QDebug>
-#include <QtCore/qt_windows.h>
-#endif
-
 int main( int argc, char *argv[] )
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-#ifdef Q_OS_WIN32
-	SetProcessDPIAware();
-	HDC screen = GetDC(nullptr);
-	qreal dpix = GetDeviceCaps(screen, LOGPIXELSX);
-	qreal dpiy = GetDeviceCaps(screen, LOGPIXELSY);
-	qreal scale = dpiy / qreal(96);
-	qputenv("QT_SCALE_FACTOR", QByteArray::number(scale));
-	ReleaseDC(nullptr, screen);
-	qDebug() << "Current DPI x: " << dpix << " y: " << dpiy << " setting scale:" << scale;
-#else
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-#endif
 #endif
 
 	for(int i = 1; i < argc; ++i)

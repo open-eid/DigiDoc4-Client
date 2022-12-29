@@ -268,7 +268,7 @@ private:
 			s.remove(QStringLiteral("TSA-URL")); // Cleanup user conf if it is default url
 		QList<QSslCertificate> list;
 		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
-			list << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
+			list.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
 		QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
 		ssl.setCaCertificates(list);
 		QSslConfiguration::setDefaultConfiguration(ssl);
@@ -326,11 +326,13 @@ Application::Application( int &argc, char **argv )
 #endif
 	, d(new Private)
 {
+#ifdef CONFIG_URL
 	d->conf = new Configuration(this);
 	connect(d->conf, &Configuration::updateReminder,
 			[&](bool /* expired */, const QString & /* title */, const QString &message){
 		WarningDialog(message, qApp->activeWindow()).exec();
 	});
+#endif
 
 	qRegisterMetaType<TokenData>("TokenData");
 	qRegisterMetaType<QSmartCardData>("QSmartCardData");
@@ -404,10 +406,8 @@ Application::Application( int &argc, char **argv )
 				tl.remove();
 				QFile::copy(":/TSL/" + file, tl.fileName());
 				tl.setPermissions(QFile::Permissions(0x6444));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 				if(tl.open(QFile::Append))
 					tl.setFileTime(tslTime, QFileDevice::FileModificationTime);
-#endif
 			}
 		}
 
@@ -530,7 +530,7 @@ void Application::activate( QWidget *w )
 #ifdef Q_OS_WIN
 void Application::addTempFile(const QString &file)
 {
-	d->tempFiles << file;
+	d->tempFiles.append(file);
 }
 #endif
 
@@ -623,7 +623,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 		{
 			std::vector<unsigned char> v = cert;
 			if(!v.empty())
-				list << QSslCertificate(QByteArray::fromRawData((const char*)v.data(), int(v.size())), QSsl::Der);
+				list.append(QSslCertificate(QByteArray::fromRawData((const char*)v.data(), int(v.size())), QSsl::Der));
 		}
 		return QVariant::fromValue(list);
 	}
@@ -983,8 +983,6 @@ void Application::openHelp()
 void Application::parseArgs( const QString &msg )
 {
 	QStringList params;
-
-
 #if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
 	for(const QString &param: msg.split(QStringLiteral("\", \""), Qt::SkipEmptyParts))
 #else
@@ -992,7 +990,7 @@ void Application::parseArgs( const QString &msg )
 #endif
 	{
 		QUrl url( param, QUrl::StrictMode );
-		params << (param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
+		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
 	}
 	parseArgs( params );
 }
@@ -1118,20 +1116,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 #ifdef Q_OS_LINUX
 		else
 		{
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-			QScreen *screen = [w]() -> QScreen* {
-				for (const QScreen *screen : QGuiApplication::screens()) {
-					for (QScreen *sibling : screen->virtualSiblings()) {
-						if (sibling->geometry().contains(w->pos()))
-							return sibling;
-					}
-				}
-				return nullptr;
-			}();
-#else
-			QScreen *screen = QGuiApplication::screenAt(w->pos());
-#endif
-			if(screen)
+			if(QScreen *screen = QGuiApplication::screenAt(w->pos()))
 				w->move(screen->availableGeometry().center() - w->frameGeometry().adjusted(0, 0, 10, 40).center());
 		}
 #endif
