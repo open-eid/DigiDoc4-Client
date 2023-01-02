@@ -652,6 +652,10 @@
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</source>
+        <translation>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>
@@ -2763,7 +2767,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Select SiVa server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Select SiVa server certificate</translation>
     </message>
     <message>
         <source>ADD CERTIFICATE</source>

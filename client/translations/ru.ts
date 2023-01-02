@@ -654,6 +654,10 @@
         <source>Digi-ID</source>
         <translation>Digi-ID</translation>
     </message>
+    <message>
+        <source>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</source>
+        <translation>Не удалось открыть конверт. Для того чтобы открыть конверт CDOC2, необходимо обновить программное обеспечение ID. Установите новое программное обеспечение ID с веб-сайта &lt;a href=&apos;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&apos;&gt;www.id.ee&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>
