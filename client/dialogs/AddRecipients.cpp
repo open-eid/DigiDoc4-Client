@@ -316,7 +316,7 @@ QString AddRecipients::path() const
 	QFileInfo f( s.fileName() );
 	return f.absolutePath() + "/" + f.baseName() + "/certhistory.xml";
 #else
-	return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/certhistory.xml";
+	return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QStringLiteral("/certhistory.xml");
 #endif
 }
 
@@ -395,10 +395,14 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 	ui->confirm->setAutoDefault(false);
 
 	QVariantMap userData {
-		{"type", type},
-		{"select", select}
+		{QStringLiteral("type"), type},
+		{QStringLiteral("select"), select}
 	};
-	QString cleanTerm = term.simplified();
+	QString cleanTerm = term.simplified()
+		.replace(QStringLiteral("*"), QStringLiteral("\2A"))
+		.replace(QStringLiteral("("), QStringLiteral("\28"))
+		.replace(QStringLiteral(")"), QStringLiteral("\29"))
+		.replace(QStringLiteral("\\"), QStringLiteral("\5c"));
 	bool isDigit = false;
 	cleanTerm.toULongLong(&isDigit);
 	if(isDigit && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
@@ -411,7 +415,7 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 				WarningDialog::show(this, tr("Personal code is not valid!"));
 				return;
 			}
-			userData["personSearch"] = true;
+			userData[QStringLiteral("personSearch")] = true;
 			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), userData);
 		}
 		else
@@ -438,7 +442,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
 			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
-			(userData.value("personSearch", false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
+			(userData.value(QStringLiteral("personSearch"), false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
 			c.type() != SslCertificate::MobileIDType)
 		{
 			isEmpty = false;
