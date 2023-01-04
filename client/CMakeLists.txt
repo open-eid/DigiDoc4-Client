@@ -1,5 +1,3 @@
-set_app_name( PROGNAME qdigidoc4 )
-
 add_executable( TSLDownload TSLDownload.cpp )
 target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
 get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
@@ -14,8 +12,8 @@ add_custom_command(
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt_add_translation(SOURCES translations/en.ts translations/et.ts translations/ru.ts)
 
-add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
-	${PROGNAME}.rc
+add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
+    ${PROJECT_NAME}.rc
 	${SOURCES}
 	images/images.qrc
 	fonts/fonts.qrc
@@ -125,7 +123,7 @@ add_executable( ${PROGNAME} WIN32 MACOSX_BUNDLE
 	widgets/WarningRibbon.cpp
 )
 
-target_link_libraries( ${PROGNAME}
+target_link_libraries(${PROJECT_NAME}
 	qdigidoccommon
 	Qt${QT_VERSION_MAJOR}::PrintSupport
 	Qt${QT_VERSION_MAJOR}::Svg
@@ -139,20 +137,22 @@ endif()
 
 if(${QT_VERSION_MAJOR} STREQUAL "6")
 	find_package(Qt6 COMPONENTS Core5Compat SvgWidgets REQUIRED)
-	target_link_libraries(${PROGNAME} Qt6::Core5Compat Qt6::SvgWidgets)
+    target_link_libraries(${PROJECT_NAME} Qt6::Core5Compat Qt6::SvgWidgets)
 elseif(WIN32)
 	find_package(Qt5 COMPONENTS WinExtras)
-	target_compile_definitions(${PROGNAME} PRIVATE QT_WIN_EXTRAS)
-	target_link_libraries(${PROGNAME} Qt5::WinExtras)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE QT_WIN_EXTRAS)
+    target_link_libraries(${PROJECT_NAME} Qt5::WinExtras)
 endif()
 
-set_target_properties(${PROGNAME} PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
 	AUTOUIC ON
 	AUTORCC ON
 	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist.cmake
+    MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+    MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${PROJECT_NAME}"
 )
-target_include_directories(${PROGNAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR} )
-target_compile_definitions(${PROGNAME} PRIVATE
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR} )
+target_compile_definitions(${PROJECT_NAME} PRIVATE
 	MOBILEID_URL="${MOBILEID_URL}"
 	SMARTID_URL="${SMARTID_URL}"
 	BUILD_DATE="${BUILD_DATE}"
@@ -168,58 +168,58 @@ if( APPLE )
 		set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir})
 	endforeach(_file)
 
-	target_sources( ${PROGNAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
+    target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-	target_link_libraries( ${PROGNAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
-	add_custom_command( TARGET ${PROGNAME} POST_BUILD
-		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROGNAME}>
-		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
-		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook
+    target_link_libraries(${PROJECT_NAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook
+        COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook
 	)
-	add_custom_target( macdeployqt DEPENDS ${PROGNAME}
-		COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROGNAME}>
-		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/bearer
-		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks
-		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
-		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks -name Headers | xargs rm -rf
-		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROGNAME}>
+    add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
+        COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
+        COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/bearer
+        COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks
+        COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
+        COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks -name Headers | xargs rm -rf
+        COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROJECT_NAME}>
 		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libcrypto.1.1.dylib
+            $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libcrypto.1.1.dylib
 		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/libssl.1.1.dylib
+            $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libssl.1.1.dylib
 	)
 
-	add_custom_target( codesign DEPENDS ${PROGNAME}
+    add_custom_target(codesign DEPENDS ${PROJECT_NAME}
 		COMMAND codesign -f -s \"$$SIGNCERT\"
-			$<TARGET_FILE_DIR:${PROGNAME}>/*.*
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/digidocpp.framework/Libraries/*
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Frameworks/*.framework
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/PlugIns/*/*
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROGNAME}>/Library/QuickLook/DigiDocQL.qlgenerator
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/*.*
+            $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Libraries/*
+            $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/*.framework
+            $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/*/*
+            $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.eToken.entitlements\;
+                codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.eToken.entitlements\;
 			else
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROGNAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROGNAME}.entitlements\;
+                codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.entitlements\;
 			fi
 	)
 
-	add_custom_target( productbuild DEPENDS ${PROGNAME}
-		COMMAND productbuild --component $<TARGET_BUNDLE_DIR:${PROGNAME}> /Applications
+    add_custom_target(productbuild DEPENDS ${PROJECT_NAME}
+        COMMAND productbuild --component $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> /Applications
 			--sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/qdigidoc4-store_${VERSION}$ENV{VER_SUFFIX}.pkg
 	)
-	add_custom_target( zip DEPENDS ${PROGNAME}
-		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc4_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.app
+    add_custom_target(zip DEPENDS ${PROJECT_NAME}
+        COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc4_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.app
 	)
-	add_custom_target( zipdebug DEPENDS ${PROGNAME}
-		COMMAND dsymutil -o ${PROGNAME}.dSYM $<TARGET_FILE:${PROGNAME}>
-		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROGNAME}.dSYM
+    add_custom_target(zipdebug DEPENDS ${PROJECT_NAME}
+        COMMAND dsymutil -o ${PROJECT_NAME}.dSYM $<TARGET_FILE:${PROJECT_NAME}>
+        COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources( ${PROGNAME} PRIVATE QCNG.cpp CertStore.cpp Diagnostics_win.cpp)
-	target_compile_options(${PROGNAME} PRIVATE "/guard:cf")
-	target_link_options(${PROGNAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
-	target_link_libraries(${PROGNAME} NCrypt Crypt32 Cryptui)
+    target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp CertStore.cpp Diagnostics_win.cpp)
+    target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
+    target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
+    target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui)
 	get_filename_component(LIBS_PATH ${LIBDIGIDOCPP_LIBRARIES} DIRECTORY)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
@@ -230,7 +230,7 @@ elseif(WIN32)
 	endif()
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
-		-dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROGNAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
+        -dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROJECT_NAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs
 		-dqt_ver_major=${QT_VERSION_MAJOR} -dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
@@ -238,7 +238,7 @@ elseif(WIN32)
 		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
 		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
 		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
-	add_custom_target(msi DEPENDS ${PROGNAME}
+    add_custom_target(msi DEPENDS ${PROJECT_NAME}
 		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
 		COMMAND ${CANDLE_CMD}
 		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
@@ -252,8 +252,8 @@ elseif(WIN32)
 	if(SIGNCERT)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
 			/du http://installer.id.ee /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256)
-		add_custom_command(TARGET ${PROGNAME} POST_BUILD
-			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROGNAME}>
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROJECT_NAME}>
 			COMMAND_EXPAND_LISTS
 		)
 		add_custom_command(TARGET msi POST_BUILD
@@ -262,12 +262,12 @@ elseif(WIN32)
 		)
 	endif()
 	configure_file(${CMAKE_SOURCE_DIR}/AppxManifest.xml.cmake ${CMAKE_BINARY_DIR}/AppxManifest.xml)
-	add_custom_target(appx DEPENDS ${PROGNAME}
+    add_custom_target(appx DEPENDS ${PROJECT_NAME}
 		COMMAND ${CMAKE_COMMAND} -E remove ${MSI_FILE}.appx
 		COMMAND ${CMAKE_COMMAND} -E remove_directory appx
 		COMMAND ${CMAKE_COMMAND} -E make_directory appx
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
-		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROGNAME}> appx
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/qt.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/798.p12 appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-1_1${OPENSSL_SUFFIX}.dll appx
@@ -293,10 +293,10 @@ elseif(WIN32)
 	)
 else()
 	find_package( Threads REQUIRED )
-	target_sources( ${PROGNAME} PRIVATE Diagnostics_unix.cpp)
-	target_link_libraries( ${PROGNAME} Threads::Threads )
+    target_sources(${PROJECT_NAME} PRIVATE Diagnostics_unix.cpp)
+    target_link_libraries(${PROJECT_NAME} Threads::Threads )
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
-	install( TARGETS ${PROGNAME} DESTINATION ${CMAKE_INSTALL_BINDIR} )
+    install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
 	install( FILES qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
 	install( FILES qdigidoc4.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )
