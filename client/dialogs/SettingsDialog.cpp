@@ -84,6 +84,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->lblMenuSettings->setFont(headerFont);
 	ui->btnMenuGeneral->setFont(condensed12);
 	ui->btnMenuCertificate->setFont(condensed12);
+	ui->btnMenuValidation->setFont(condensed12);
 	ui->btnMenuProxy->setFont(condensed12);
 	ui->btnMenuDiagnostics->setFont(condensed12);
 	ui->btnMenuInfo->setFont(condensed12);
@@ -129,6 +130,21 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->helpRevocation->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpTimeStamp->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpMID->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
+
+	// pageValidation
+	ui->lblSiVa->setFont(headerFont);
+	ui->lblSiVaCert->setFont(regularFont);
+	ui->txtSiVa->setFont(regularFont);
+	ui->txtSiVaCert->setFont(regularFont);
+	ui->rdSiVaDefault->setFont(regularFont);
+	ui->rdSiVaCustom->setFont(regularFont);
+	ui->btInstallSiVaCert->setFont(condensed12);
+	ui->btShowSiVaCert->setFont(condensed12);
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+	ui->btInstallSiVaCert->setStyleSheet("background-color: #d3d3d3");
+	ui->btShowSiVaCert->setStyleSheet("background-color: #d3d3d3");
+#endif
+	ui->helpSiVa->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 
 	// pageProxy
 	ui->rdProxyNone->setFont(regularFont);
@@ -246,7 +262,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 #endif
 
 	ui->pageGroup->setId(ui->btnMenuGeneral, GeneralSettings);
-	ui->pageGroup->setId(ui->btnMenuCertificate, AccessCertSettings);
+	ui->pageGroup->setId(ui->btnMenuCertificate, SigningSettings);
+	ui->pageGroup->setId(ui->btnMenuValidation, ValidationSettings);
 	ui->pageGroup->setId(ui->btnMenuProxy, NetworkSettings);
 	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
@@ -267,6 +284,14 @@ SettingsDialog::~SettingsDialog()
 {
 	QApplication::restoreOverrideCursor();
 	delete ui;
+}
+
+QString SettingsDialog::certInfo(const SslCertificate &c)
+{
+	return tr("Issued to: %1<br />Valid to: %2 %3").arg(
+		c.subjectInfo(QSslCertificate::CommonName),
+		c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
+		!c.isValid() ? QStringLiteral("<font color='red'>(%1)</font>").arg(tr("expired")) : QString());
 }
 
 void SettingsDialog::checkConnection()
@@ -377,7 +402,7 @@ void SettingsDialog::initFunctionality()
 	ui->chkProxyEnableForSSL->setDisabled((s.value(QStringLiteral("ProxyConfig"), 0).toInt() != 2));
 	updateProxy();
 
-	// pageServices
+	// pageServices - Access Cert
 	updateCert();
 	connect(ui->btShowCertificate, &QPushButton::clicked, this, [this] {
 		CertificateDetails::showCertificate(SslCertificate(AccessCert::cert()), this);
@@ -387,7 +412,11 @@ void SettingsDialog::initFunctionality()
 	connect(ui->chkIgnoreAccessCert, &QCheckBox::toggled, this, [](bool checked) {
 		Application::setConfValue(Application::PKCS12Disable, checked);
 	});
+	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/access-certificate-what-is-it/"));
+	});
 
+	// pageServices - TimeStamp
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [=](bool checked) {
 		ui->txtTimeStamp->setEnabled(checked);
 		setValueEx(QStringLiteral("TSA-URL-CUSTOM"), checked, QSettings().contains(QStringLiteral("TSA-URL")));
@@ -401,6 +430,11 @@ void SettingsDialog::initFunctionality()
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
 	});
+	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
+	});
+
+	// pageServices - MID
 	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
 		ui->txtMIDUUID->setEnabled(checked);
 		setValueEx(QStringLiteral("MIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("MIDUUID")));
@@ -412,15 +446,51 @@ void SettingsDialog::initFunctionality()
 		setValueEx(QStringLiteral("MIDUUID"), text);
 		setValueEx(QStringLiteral("SIDUUID"), text);
 	});
-	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/access-certificate-what-is-it/"));
-	});
-	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
-	});
 	connect(ui->helpMID, &QToolButton::clicked, this, []{
 		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
 	});
+
+	// pageValidation - SiVa
+	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
+		ui->txtSiVa->setEnabled(checked);
+		ui->wgtSiVaCert->setVisible(checked);
+		setValueEx(QStringLiteral("SIVA-URL-CUSTOM"), checked, QSettings().contains(QStringLiteral("SIVA-URL")));
+	});
+	ui->rdSiVaCustom->setChecked(s.value(QStringLiteral("SIVA-URL-CUSTOM"), s.contains(QStringLiteral("SIVA-URL"))).toBool());
+	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
+#ifdef CONFIG_URL
+	ui->txtSiVa->setPlaceholderText(qApp->conf()->object().value(QStringLiteral("SIVA-URL")).toString());
+#endif
+	QString SIVA_URL = s.value(QStringLiteral("SIVA-URL"), qApp->confValue(Application::SiVaUrl)).toString();
+	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : SIVA_URL);
+	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
+		qApp->setConfValue(Application::SiVaUrl, url);
+		if(url.isEmpty())
+		{
+			QSettings().remove(QStringLiteral("SIVA-CERT"));
+			updateSiVaCert(QSslCertificate());
+		}
+	});
+	connect(ui->helpSiVa, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/configuring-the-siva-validation-service-in-the-digidoc4-client/"));
+	});
+	connect(ui->btInstallSiVaCert, &QPushButton::clicked, this, [this] {
+		QFile file(FileDialog::getOpenFileName(this, tr("Select SiVa server certificate"), {},
+			QStringLiteral("%1 (*.crt *.cer *.pem)")).arg(tr("Digital Signature Validation Service SiVa SSL certificate")));
+		if(!file.open(QFile::ReadOnly))
+			return;
+		QSslCertificate cert(&file, QSsl::Pem);
+		if(cert.isNull())
+		{
+			file.seek(0);
+			cert = QSslCertificate(&file, QSsl::Der);
+		}
+		if(cert.isNull())
+			return;
+		QSettings().setValue(QStringLiteral("SIVA-CERT"), cert.toDer().toBase64());
+		updateSiVaCert(cert);
+	});
+	updateSiVaCert(QSslCertificate(QByteArray::fromBase64(s.value(QStringLiteral("SIVA-CERT")).toByteArray()), QSsl::Der));
 
 	// pageDiagnostics
 	ui->chkLibdigidocppDebug->setChecked(s.value(QStringLiteral("LibdigidocppDebug"), false).toBool());
@@ -453,21 +523,25 @@ void SettingsDialog::initFunctionality()
 void SettingsDialog::updateCert()
 {
 	QSslCertificate c = AccessCert::cert();
-	if( !c.isNull() )
-	{
-		ui->txtAccessCert->setText(
-			tr("Issued to: %1<br />Valid to: %2 %3").arg(
-				CertificateDetails::decodeCN(SslCertificate(c).subjectInfo(QSslCertificate::CommonName)),
-				c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
-				!SslCertificate(c).isValid() ? "<font color='red'>(" + tr("expired") + ")</font>" : QString()));
-	}
+	if(!c.isNull())
+		ui->txtAccessCert->setText(certInfo(c));
 	else
-	{
-		ui->txtAccessCert->setText( 
-			"<b>" + tr("Server access certificate is not installed.") + "</b>" );
-	}
-	ui->btShowCertificate->setEnabled(!c.isNull());
-	ui->btShowCertificate->setProperty("cert", QVariant::fromValue(c));
+		ui->txtAccessCert->setText(QStringLiteral("<b>%1</b>")
+			.arg(tr("Server access certificate is not installed.")));
+	ui->btShowCertificate->setDisabled(c.isNull());
+}
+
+void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
+{
+	disconnect(ui->btShowSiVaCert, &QPushButton::clicked, nullptr, nullptr);
+	ui->btShowSiVaCert->setHidden(c.isNull());
+	ui->txtSiVaCert->setHidden(c.isNull());
+	if(c.isNull())
+		return;
+	ui->txtSiVaCert->setCert(c);
+	connect(ui->btShowSiVaCert, &QPushButton::clicked, this, [this, c] {
+		CertificateDetails::showCertificate(c, this);
+	});
 }
 
 void SettingsDialog::selectLanguage()
@@ -608,6 +682,7 @@ void SettingsDialog::useDefaultSettings()
 	AccessCert().remove();
 	updateCert();
 	ui->rdTimeStampDefault->setChecked(true);
+	ui->rdSiVaDefault->setChecked(true);
 	ui->rdMIDUUIDDefault->setChecked(true);
 }
 
@@ -620,7 +695,7 @@ void SettingsDialog::changePage(QAbstractButton *button)
 {
 	button->setChecked(true);
 	ui->stackedWidget->setCurrentIndex(ui->pageGroup->id(button));
-	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate);
+	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate || button == ui->btnMenuValidation);
 	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
 	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);
 	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
@@ -652,4 +727,19 @@ void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 	QFile f( filename );
 	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
 		WarningDialog::show(this, tr("Failed write to file!"));
+}
+
+
+
+void CertLabel::setCert(const QSslCertificate &cert)
+{
+	setText(SettingsDialog::certInfo(cert));
+	setProperty("cert", QVariant::fromValue(cert));
+}
+
+bool CertLabel::event(QEvent *event)
+{
+	if(event->type() == QEvent::LanguageChange)
+		setText(SettingsDialog::certInfo(property("cert").value<QSslCertificate>()));
+	return QLabel::event(event);
 }

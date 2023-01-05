@@ -21,6 +21,7 @@
 
 #include <QDialog>
 
+#include <QLabel>
 #include <QVariant>
 
 namespace digidoc { class Conf; }
@@ -30,6 +31,8 @@ class SettingsDialog;
 }
 
 class QAbstractButton;
+class QSslCertificate;
+class SslCertificate;
 
 class SettingsDialog final: public QDialog
 {
@@ -38,7 +41,8 @@ class SettingsDialog final: public QDialog
 public:
 	enum {
 		GeneralSettings,
-		AccessCertSettings,
+		SigningSettings,
+		ValidationSettings,
 		NetworkSettings,
 		DiagnosticsSettings,
 		LicenseSettings
@@ -49,6 +53,7 @@ public:
 	~SettingsDialog() final;
 
 	void showPage(int page);
+	static QString certInfo(const SslCertificate &c);
 	static void loadProxy( const digidoc::Conf *conf );
 	static void setValueEx(const QString &key, const QVariant &value, const QVariant &def = {});
 
@@ -68,10 +73,20 @@ private:
 	void selectLanguage();
 	void setProxyEnabled();
 	void updateCert();
+	void updateSiVaCert(const QSslCertificate &c);
 	void updateProxy();
 	void updateVersion();
 	void updateDiagnostics();
 	void useDefaultSettings();
 
 	Ui::SettingsDialog *ui;
+};
+
+class CertLabel final: public QLabel {
+	Q_OBJECT
+public:
+	using QLabel::QLabel;
+	void setCert(const QSslCertificate &cert);
+private:
+	bool event(QEvent *event) final;
 };
