@@ -207,14 +207,14 @@ if( APPLE )
 
 	add_custom_target(productbuild DEPENDS ${PROJECT_NAME}
 		COMMAND productbuild --component $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> /Applications
-			--sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/qdigidoc4-store_${VERSION}$ENV{VER_SUFFIX}.pkg
+			--sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-store_${VERSION}$ENV{VER_SUFFIX}.pkg
 	)
 	add_custom_target(zip DEPENDS ${PROJECT_NAME}
-		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/qdigidoc4_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.app
+		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.app
 	)
 	add_custom_target(zipdebug DEPENDS ${PROJECT_NAME}
 		COMMAND dsymutil -o ${PROJECT_NAME}.dSYM $<TARGET_FILE:${PROJECT_NAME}>
-		COMMAND zip -r ${CMAKE_BINARY_DIR}/qdigidoc4-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
+		COMMAND zip -r ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
 	)
 elseif(WIN32)
 	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp CertStore.cpp Diagnostics_win.cpp)
@@ -233,21 +233,21 @@ elseif(WIN32)
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
 		-dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROJECT_NAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs
-		-dqt_ver_major=${QT_VERSION_MAJOR} -dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/qdigidoc4.wxs
+		-dqt_ver_major=${QT_VERSION_MAJOR} -dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
-		qdigidoc4.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
+		${PROJECT_NAME}.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
 		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
 		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
 	add_custom_target(msi DEPENDS ${PROJECT_NAME}
 		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
 		COMMAND ${CANDLE_CMD}
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.msi"
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.msi"
 		#Build MSI with QT
 		COMMAND ${CANDLE_CMD} -dqt_path=${qtCore_install_prefix}
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.qt.msi"
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/qdigidoc4.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.qt.msi"
+		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 	if(SIGNCERT)
