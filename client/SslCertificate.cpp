@@ -48,15 +48,12 @@
 template <typename Func, typename Arg>
 static QByteArray i2dDer(Func func, Arg arg)
 {
-	QByteArray der;
 	if(!arg)
-		return der;
-	der.resize(func(arg, nullptr));
-	if(der.isEmpty())
-		return der;
+		return {};
+	QByteArray der(func(arg, nullptr), 0);
 	unsigned char *p = (unsigned char*)der.data();
-	if(func(arg, &p) != der.size())
-		der.clear();
+	if(der.isEmpty() || func(arg, &p) != der.size())
+		return {};
 	return der;
 }
 
@@ -88,10 +85,10 @@ QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) cons
 
 QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authorityInfoAccess() const
 {
-	QMultiHash<AuthorityInfoAccess, QString> result;
 	auto info = SCOPE(AUTHORITY_INFO_ACCESS, extension(NID_info_access));
 	if(!info)
-		return result;
+		return {};
+	QMultiHash<AuthorityInfoAccess, QString> result;
 	for(int i = 0; i < sk_ACCESS_DESCRIPTION_num(info.get()); ++i)
 	{
 		ACCESS_DESCRIPTION *ad = sk_ACCESS_DESCRIPTION_value(info.get(), i);
@@ -127,14 +124,11 @@ QByteArray SslCertificate::authorityKeyIdentifier() const
 
 QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage() const
 {
-	QHash<EnhancedKeyUsage,QString> list;
 	auto usage = SCOPE(EXTENDED_KEY_USAGE, extension(NID_ext_key_usage));
-	if( !usage )
-	{
-		list[All] = tr("All application policies");
-		return list;
-	}
+	if(!usage)
+		return { {All, tr("All application policies")} };
 
+	QHash<EnhancedKeyUsage,QString> list;
 	for(int i = 0; i < sk_ASN1_OBJECT_num(usage.get()); ++i)
 	{
 		ASN1_OBJECT *obj = sk_ASN1_OBJECT_value(usage.get(), i);
@@ -194,10 +188,10 @@ Qt::HANDLE SslCertificate::extension( int nid ) const
 
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
-	QHash<KeyUsage,QString> list;
 	auto keyusage = SCOPE(ASN1_BIT_STRING, extension(NID_key_usage));
 	if(!keyusage)
-		return list;
+		return {};
+	QHash<KeyUsage,QString> list;
 	for( int n = 0; n < 9; ++n )
 	{
 		if(!ASN1_BIT_STRING_get_bit(keyusage.get(), n))
@@ -234,10 +228,10 @@ QString SslCertificate::personalCode() const
 QStringList SslCertificate::policies() const
 {
 	auto cp = SCOPE(CERTIFICATEPOLICIES, extension(NID_certificate_policies));
-	QStringList list;
 	if( !cp )
-		return list;
+		return {};
 
+	QStringList list;
 	for(int i = 0; i < sk_POLICYINFO_num(cp.get()); ++i)
 	{
 		POLICYINFO *pi = sk_POLICYINFO_value(cp.get(), i);
@@ -289,8 +283,7 @@ QString SslCertificate::toString( const QString &format ) const
 	QRegularExpression r(QStringLiteral("[a-zA-Z]+"));
 	QString ret = format;
 	QRegularExpressionMatch match;
-	int pos = 0;
-	while((match = r.match(ret, pos)).hasMatch()) {
+	for(int pos = 0; (match = r.match(ret, pos)).hasMatch(); ) {
 		QString cap = match.captured();
 		QString si = cap == QStringLiteral("serialNumber") ? personalCode() : subjectInfo(cap.toLatin1());
 		ret.replace(match.capturedStart(), cap.size(), si);
@@ -402,12 +395,6 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	auto basic = SCOPE(OCSP_BASICRESP, OCSP_response_get1_basic(resp.get()));
 	if(!basic)
 		return Unknown;
-	//OCSP_TRUSTOTHER - enables OCSP_NOVERIFY
-	//OCSP_NOSIGS - does not verify ocsp signatures
-	//OCSP_NOVERIFY - ignores signer(responder) cert verification, requires store otherwise crashes
-	//OCSP_NOCHECKS - cancel futurer responder issuer checks and trust bits
-	//OCSP_NOEXPLICIT - returns 0 by mistake
-	//all checks enabled fails trust bit check, cant use OCSP_NOEXPLICIT instead using OCSP_NOCHECKS
 	if(OCSP_basic_verify(basic.get(), nullptr, nullptr, OCSP_NOVERIFY) <= 0)
 		return Unknown;
 	int status = -1;

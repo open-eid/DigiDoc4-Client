@@ -28,15 +28,13 @@ class Diagnostics: public QObject, public QRunnable
 {
 	Q_OBJECT
 public:
-	Diagnostics();
-
 	void run() override;
 
 signals:
 	void update( const QString &data );
 
 private:
-	void generalInfo(QTextStream &s) const;
+	static void generalInfo(QTextStream &s) ;
 	QStringList packages(const QStringList &names, bool withName = true);
 
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)

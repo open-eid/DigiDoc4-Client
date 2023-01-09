@@ -76,8 +76,8 @@ private:
 	void setLastError(const digidoc::Exception &e);
 	void parseException(SignatureStatus &result, const digidoc::Exception &e);
 	SignatureStatus validate();
-	QSslCertificate toCertificate(const std::vector<unsigned char> &der) const;
-	QDateTime toTime(const std::string &time) const;
+	static QSslCertificate toCertificate(const std::vector<unsigned char> &der) ;
+	static QDateTime toTime(const std::string &time) ;
 
 	const digidoc::Signature *s;
 	QString m_lastError;
@@ -150,7 +150,7 @@ public:
 
 private:
 	bool isError(bool failure, const QString &msg = {}) const;
-	void setLastError( const QString &msg, const digidoc::Exception &e );
+	static void setLastError( const QString &msg, const digidoc::Exception &e );
 
 	std::unique_ptr<digidoc::Container> b;
 	std::unique_ptr<digidoc::Container> parentContainer;
