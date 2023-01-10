@@ -225,7 +225,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -269,7 +269,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
