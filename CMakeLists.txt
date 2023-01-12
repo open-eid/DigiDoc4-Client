@@ -1,7 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
-if(POLICY CMP0074)
-    cmake_policy(SET CMP0074 NEW)
-endif()
+cmake_minimum_required(VERSION 3.16)
 project(qdigidoc4 VERSION 4.3.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
@@ -15,7 +12,7 @@ find_package( PKCS11 )
 find_package(LibDigiDocpp 3.14.11 REQUIRED)
 find_package( LDAP REQUIRED )
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} 5.9.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} 5.12.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools)
 
 set_env( TSL_URL "https://ec.europa.eu/tools/lotl/eu-lotl.xml" CACHE STRING "TSL trust list primary URL" )
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )

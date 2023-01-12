@@ -17,6 +17,8 @@
  *
  */
 
+#pragma once
+
 #include <QtWidgets/QComboBox>
 
 class ComboBox: public QComboBox
