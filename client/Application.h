@@ -70,6 +70,8 @@ public:
 	void waitForTSL( const QString &file );
 
 	static void addRecent( const QString &file );
+	template<class T>
+	static QJsonValue confValue(const T &key);
 	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
 	static void clearConfValue( ConfParameter parameter );
 	static void initDiagnosticConf();

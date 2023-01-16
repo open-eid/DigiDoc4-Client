@@ -25,9 +25,6 @@
 #include "TokenData.h"
 #include "dialogs/WaitDialog.h"
 
-#include <common/Configuration.h>
-
-#include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
@@ -47,8 +44,8 @@ SSLConnect::SSLConnect(QObject *parent)
 {
 #ifdef CONFIG_URL
 	d->ssl.setCaCertificates({});
-	for(const QJsonValue c: qApp->conf()->object().value(QStringLiteral("CERT-BUNDLE")).toArray())
-		d->trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
+	for(const auto c: qApp->confValue(QLatin1String("CERT-BUNDLE")).toArray())
+		d->trusted.append(QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der));
 #endif
 }
 
@@ -81,15 +78,11 @@ void SSLConnect::fetch()
 	d->ssl.setPrivateKey(key);
 	d->ssl.setLocalCertificate(cert);
 
-	QJsonObject obj;
-#ifdef CONFIG_URL
-	obj = qApp->conf()->object();
-#endif
 	QNetworkRequest req;
 	req.setSslConfiguration(d->ssl);
 	req.setRawHeader("User-Agent", QString(QStringLiteral("%1/%2 (%3)"))
 		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
-	req.setUrl(obj.value(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
+	req.setUrl(qApp->confValue(QLatin1String("PICTURE-URL")).toString(QStringLiteral("https://sisene.www.eesti.ee/idportaal/portaal.idpilt")));
 
 	QNetworkAccessManager *nam = new QNetworkAccessManager(this);
 	connect(nam, &QNetworkAccessManager::sslErrors, this, [=](QNetworkReply *reply, const QList<QSslError> &errors){

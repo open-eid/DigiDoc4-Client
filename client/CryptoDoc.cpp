@@ -41,7 +41,6 @@
 #include <QtCore/QUrl>
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
-#include <QtCore/QSettings>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 

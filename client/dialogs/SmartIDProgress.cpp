@@ -21,12 +21,12 @@
 #include "ui_MobileProgress.h"
 
 #include "Application.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/Common.h>
-#include <common/Configuration.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -38,7 +38,6 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QTimeLine>
 #include <QtCore/QUuid>
-#include <QtCore/QSettings>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -55,7 +54,6 @@ class SmartIDProgress::Private final: public QDialog, public Ui::MobileProgress
 {
 	Q_OBJECT
 public:
-	QString URL() { return !UUID.isNull() && useCustomUUID ? SKURL : PROXYURL; }
 	using QDialog::QDialog;
 	void reject() final { l.exit(QDialog::Rejected); }
 	void setVisible(bool visible) final {
@@ -63,26 +61,19 @@ public:
 		QDialog::setVisible(visible);
 		if(!visible && hider) hider.reset();
 	}
-	QTimeLine *statusTimer = nullptr;
-	QNetworkAccessManager *manager = nullptr;
+	QTimeLine *statusTimer {};
+	QNetworkAccessManager *manager {};
 	QNetworkRequest req;
 	QString documentNumber, sessionID, fileName;
 	X509Cert cert;
 	std::vector<unsigned char> signature;
 	QEventLoop l;
-#ifdef CONFIG_URL
-	QJsonObject config = qApp->conf()->object();
-	QString PROXYURL = config.value(QLatin1String("SIDV2-PROXY-URL")).toString(config.value(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL)));
-	QString SKURL = config.value(QLatin1String("SIDV2-SK-URL")).toString(config.value(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL)));
-#else
-	QString PROXYURL = QSettings().value(QStringLiteral("SID-PROXY-URL"), QStringLiteral(SMARTID_URL)).toString();
-	QString SKURL = QSettings().value(QStringLiteral("SID-SK-URL"), QStringLiteral(SMARTID_URL)).toString();
-#endif
-	QString NAME = QSettings().value(QStringLiteral("SIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	bool useCustomUUID = QSettings().value(QStringLiteral("SIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("SIDUUID"))).toBool();
-	QString UUID = useCustomUUID ? QSettings().value(QStringLiteral("SIDUUID")).toString() : QString();
+	bool useCustomUUID = Settings::SID_UUID_CUSTOM;
+	QString UUID = useCustomUUID ? Settings::SID_UUID : QString();
+	QString NAME = Settings::SID_NAME;
+	QString URL = !UUID.isNull() && useCustomUUID ? Settings::SID_SK_URL : Settings::SID_PROXY_URL;
 #ifdef QT_WIN_EXTRAS
-	QWinTaskbarButton *taskbar = nullptr;
+	QWinTaskbarButton *taskbar {};
 #endif
 	std::unique_ptr<WaitDialogHider> hider;
 };
@@ -137,8 +128,8 @@ background-color: #007aff;
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	for(const QJsonValue c: d->config.value(QLatin1String("CERT-BUNDLE")).toArray())
-		trusted << QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der);
+	for(const QJsonValue c: qApp->confValue(QLatin1String("CERT-BUNDLE")).toArray())
+		trusted.append(QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der));
 #endif
 	d->req.setSslConfiguration(ssl);
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -171,7 +162,7 @@ background-color: #007aff;
 		auto returnError = [=](const QString &err, const QString &details = {}) {
 			qCWarning(SIDLog) << err;
 			d->hide();
-			WarningDialog *dlg = WarningDialog::show(d->parentWidget(), err, details);
+			auto *dlg = WarningDialog::show(d->parentWidget(), err, details);
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 		};
 
@@ -274,7 +265,7 @@ background-color: #007aff;
 		} else {
 			d->show();
 		}
-		d->req.setUrl(QUrl(QStringLiteral("%1/session/%2?timeoutMs=10000").arg(d->URL(), d->sessionID)));
+		d->req.setUrl(QUrl(QStringLiteral("%1/session/%2?timeoutMs=10000").arg(d->URL, d->sessionID)));
 		qCDebug(SIDLog).noquote() << d->req.url();
 		d->manager->get(d->req);
 	});
@@ -294,7 +285,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
-		WarningDialog(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")), {}, d->parentWidget()).exec();
+		WarningDialog::show(d->parentWidget(), tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")));
 		return false;
 	}
 	QFileInfo info(fileName);
@@ -311,9 +302,9 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 		{"nonce", QUuid::createUuid().toString().remove('-').mid(1, 30)}
 	}).toJson();
 	if (d->req.url().path().contains(QLatin1String("v1"), Qt::CaseInsensitive)) {
-		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL(), country, idCode)));
+		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL, country, idCode)));
 	} else {
-		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL(), country, idCode)));
+		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL, country, idCode)));
 	}
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
@@ -366,7 +357,7 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 	}
 	// Workaround SID proxy issues
 	QByteArray data = QString::fromUtf8(QJsonDocument(req).toJson()).arg(escapeUnicode(escape)).toUtf8();
-	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL(), d->documentNumber)));
+	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL, d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->statusTimer->start();

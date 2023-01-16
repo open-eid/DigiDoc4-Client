@@ -19,10 +19,9 @@
 
 #include "MainAction.h"
 #include "ui_MainAction.h"
+#include "Settings.h"
 #include "Styles.h"
-#include "dialogs/SettingsDialog.h"
 
-#include <QtCore/QSettings>
 #include <QtGui/QPainter>
 #include <QtGui/QPainterPath>
 #include <QtGui/QPaintEvent>
@@ -49,9 +48,9 @@ MainAction::MainAction(QWidget *parent)
 
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{
 		if (ui->actions.value(0) == Actions::SignatureMobile)
-			SettingsDialog::setValueEx("MIDOrder", true, true);
+			Settings::MOBILEID_ORDER = true;
 		if (ui->actions.value(0) == Actions::SignatureSmartID)
-			SettingsDialog::setValueEx("MIDOrder", false, true);
+			Settings::MOBILEID_ORDER = false;
 	});
 	connect(ui->mainAction, &QPushButton::clicked, this, [&]{ emit action(ui->actions.value(0)); });
 	connect(ui->mainAction, &QPushButton::clicked, this, &MainAction::hideDropdown);
@@ -103,7 +102,7 @@ bool MainAction::eventFilter(QObject *watched, QEvent *event)
 	case QEvent::Paint:
 		if(watched == ui->otherCards)
 		{
-			QToolButton *button = qobject_cast<QToolButton*>(watched);
+			auto *button = qobject_cast<QToolButton*>(watched);
 			QPainter painter(button);
 			painter.setRenderHint(QPainter::Antialiasing);
 			if(ui->otherCards->property("pressed").toBool())
@@ -128,7 +127,7 @@ bool MainAction::eventFilter(QObject *watched, QEvent *event)
 }
 
 
-QString MainAction::label(Actions action) const
+QString MainAction::label(Actions action)
 {
 	switch(action)
 	{
@@ -154,7 +153,7 @@ void MainAction::showActions(const QList<Actions> &actions)
 		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
 			return action == SignatureMobile || action == SignatureSmartID;
 		}) &&
-		!QSettings().value("MIDOrder", true).toBool())
+		!Settings::MOBILEID_ORDER)
 	{
 		std::reverse(order.begin(), order.end());
 	}
@@ -170,7 +169,7 @@ void MainAction::showDropdown()
 	{
 		for(QList<Actions>::const_iterator i = ui->actions.cbegin() + 1; i != ui->actions.cend(); ++i)
 		{
-			QPushButton *other = new QPushButton(label(*i), parentWidget());
+			auto *other = new QPushButton(label(*i), parentWidget());
 			other->setAccessibleName(label(*i).toLower());
 			other->setCursor(ui->mainAction->cursor());
 			other->setFont(ui->mainAction->font());
@@ -180,9 +179,9 @@ void MainAction::showDropdown()
 			other->setStyleSheet(ui->mainAction->styleSheet() +
 				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
 			if (*i == Actions::SignatureMobile)
-				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", true, true); });
+				connect(other, &QPushButton::clicked, this, []{ Settings::MOBILEID_ORDER = true; });
 			if (*i == Actions::SignatureSmartID)
-				connect(other, &QPushButton::clicked, this, []{ SettingsDialog::setValueEx("MIDOrder", false, true); });
+				connect(other, &QPushButton::clicked, this, []{ Settings::MOBILEID_ORDER = false; });
 			connect(other, &QPushButton::clicked, this, &MainAction::hideDropdown);
 			connect(other, &QPushButton::clicked, this, [=]{ emit this->action(*i); });
 			ui->list.push_back(other);

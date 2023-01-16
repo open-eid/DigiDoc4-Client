@@ -57,7 +57,6 @@ public:
 	void showPage(int page);
 	static QString certInfo(const SslCertificate &c);
 	static void loadProxy( const digidoc::Conf *conf );
-	static void setValueEx(const QString &key, const QVariant &value, const QVariant &def = {});
 
 signals:
 	void langChanged(const QString& lang);

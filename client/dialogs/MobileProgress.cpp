@@ -21,12 +21,12 @@
 #include "ui_MobileProgress.h"
 
 #include "Application.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/Common.h>
-#include <common/Configuration.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -37,7 +37,6 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QTimeLine>
 #include <QtCore/QUuid>
-#include <QtCore/QSettings>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -54,28 +53,21 @@ class MobileProgress::Private final: public QDialog, public Ui::MobileProgress
 {
 	Q_OBJECT
 public:
-	QString URL() { return !UUID.isNull() && useCustomUUID ? SKURL : PROXYURL; }
 	using QDialog::QDialog;
 	void reject() final { l.exit(QDialog::Rejected); }
-	QTimeLine *statusTimer = nullptr;
-	QNetworkAccessManager *manager = nullptr;
+	QTimeLine *statusTimer {};
+	QNetworkAccessManager *manager {};
 	QNetworkRequest req;
 	QString ssid, cell, sessionID;
 	std::vector<unsigned char> signature;
 	X509Cert cert;
 	QEventLoop l;
-#ifdef CONFIG_URL
-	QString PROXYURL = qApp->conf()->object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL));
-	QString SKURL = qApp->conf()->object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL));
-#else
-	QString PROXYURL = QSettings().value(QStringLiteral("MID-PROXY-URL"), QStringLiteral(MOBILEID_URL)).toString();
-	QString SKURL = QSettings().value(QStringLiteral("MID-SK-URL"), QStringLiteral(MOBILEID_URL)).toString();
-#endif
-	QString NAME = QSettings().value(QStringLiteral("MIDNAME"), QStringLiteral("RIA DigiDoc")).toString();
-	bool useCustomUUID = QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("MIDUUID"))).toBool();
-	QString UUID = useCustomUUID ? QSettings().value(QStringLiteral("MIDUUID")).toString() : QString();
+	bool useCustomUUID = Settings::MID_UUID_CUSTOM;
+	QString NAME = Settings::MID_NAME;
+	QString UUID = useCustomUUID ? Settings::MID_UUID : QString();
+	QString URL = !UUID.isNull() && useCustomUUID ? Settings::MID_SK_URL : Settings::MID_PROXY_URL;
 #ifdef QT_WIN_EXTRAS
-	QWinTaskbarButton *taskbar = nullptr;
+	QWinTaskbarButton *taskbar {};
 #endif
 };
 
@@ -127,7 +119,7 @@ background-color: #007aff;
 	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
 	ssl.setCaCertificates({});
-	for(const QJsonValue cert: qApp->conf()->object().value(QStringLiteral("CERT-BUNDLE")).toArray())
+	for(const auto cert: qApp->confValue(QLatin1String("CERT-BUNDLE")).toArray())
 		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
 #endif
 	d->req.setSslConfiguration(ssl);
@@ -162,7 +154,7 @@ background-color: #007aff;
 			qCWarning(MIDLog) << err;
 			stop();
 			d->hide();
-			WarningDialog *dlg = WarningDialog::show(d->parentWidget(), err, details);
+			auto *dlg = WarningDialog::show(d->parentWidget(), err, details);
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 		};
 
@@ -263,7 +255,7 @@ background-color: #007aff;
 				returnError(tr("Service result:") + endResult);
 			return;
 		}
-		d->req.setUrl(QUrl(QStringLiteral("%1/signature/session/%2?timeoutMs=10000").arg(d->URL(), d->sessionID)));
+		d->req.setUrl(QUrl(QStringLiteral("%1/signature/session/%2?timeoutMs=10000").arg(d->URL, d->sessionID)));
 		qCDebug(MIDLog).noquote() << d->req.url();
 		d->manager->get(d->req);
 	});
@@ -283,7 +275,7 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
-		WarningDialog(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")), {}, d->parentWidget()).exec();
+		WarningDialog::show(d->parentWidget(), tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 		return false;
 	}
 	d->ssid = ssid;
@@ -297,7 +289,7 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 		{"nationalIdentityNumber", d->ssid},
 		{"phoneNumber", d->cell},
 	})).toJson();
-	d->req.setUrl(QUrl(QStringLiteral("%1/certificate").arg(d->URL())));
+	d->req.setUrl(QUrl(QStringLiteral("%1/certificate").arg(d->URL)));
 	qCDebug(MIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	return d->l.exec() == QDialog::Accepted;
@@ -339,7 +331,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	})).toJson();
 	// Workaround MID proxy issues
 	data = QString::fromUtf8(data).arg(escapeUnicode(tr("Sign document"))).toUtf8();
-	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL())));
+	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL)));
 	qCDebug(MIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->statusTimer->start();

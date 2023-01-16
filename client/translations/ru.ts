@@ -210,10 +210,6 @@
         <translation>Загружаем список TSL</translation>
     </message>
     <message>
-        <source>Create %1</source>
-        <translation>Создайте %1</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
     </message>
@@ -926,6 +922,18 @@
         <source>Choose</source>
         <translation>Выбрать</translation>
     </message>
+    <message>
+        <source>signature container</source>
+        <translation>контейнер подписи</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>криптоконтейнер</translation>
+    </message>
+    <message>
+        <source>Create %1</source>
+        <translation>Создайте %1</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -1491,14 +1499,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Open file for encryption or decryption</source>
         <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
-    </message>
-    <message>
-        <source>signature container</source>
-        <translation>контейнер подписи</translation>
-    </message>
-    <message>
-        <source>crypto container</source>
-        <translation>криптоконтейнер</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>

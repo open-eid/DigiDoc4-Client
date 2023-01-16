@@ -169,12 +169,12 @@ void AddRecipients::addRecipientFromFile()
 	}
 	if( cert.isNull() )
 	{
-		WarningDialog::show( this, tr("Failed to read certificate"));
+		WarningDialog::show(this, tr("Failed to read certificate"));
 	}
 	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) &&
 		!SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
 	{
-		WarningDialog::show( this, tr("This certificate cannot be used for encryption"));
+		WarningDialog::show(this, tr("This certificate cannot be used for encryption"));
 	}
 	else if(AddressItem *item = addRecipientToLeftPane(cert))
 	{
@@ -278,12 +278,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 
 QString AddRecipients::defaultUrl(QLatin1String key, const QString &defaultValue)
 {
-#ifdef CONFIG_URL
-	return qApp->conf()->object().value(key).toString(defaultValue);
-#else
-	Q_UNUSED(key)
-	return defaultValue;
-#endif
+	return qApp->confValue(key).toString(defaultValue);
 }
 
 void AddRecipients::enableRecipientFromCard()

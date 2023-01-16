@@ -210,10 +210,6 @@
         <translation>Loading TSL lists</translation>
     </message>
     <message>
-        <source>Create %1</source>
-        <translation>Create %1</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (~120MB).</translation>
     </message>
@@ -924,6 +920,18 @@
         <source>Choose</source>
         <translation>Choose</translation>
     </message>
+    <message>
+        <source>signature container</source>
+        <translation>signature container</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>crypto container</translation>
+    </message>
+    <message>
+        <source>Create %1</source>
+        <translation>Create %1</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -1489,14 +1497,6 @@ ID-CARD</translation>
     <message>
         <source>Open file for encryption or decryption</source>
         <translation>... OR LOAD FILE FROM DISK</translation>
-    </message>
-    <message>
-        <source>signature container</source>
-        <translation>signature container</translation>
-    </message>
-    <message>
-        <source>crypto container</source>
-        <translation>crypto container</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -2791,7 +2791,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Select Time-Stamping server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Select Time-Stamping server certificate</translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>

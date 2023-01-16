@@ -20,21 +20,15 @@
 #include "RoleAddressDialog.h"
 #include "ui_RoleAddressDialog.h"
 
+#include "Settings.h"
 #include "Styles.h"
-#include "dialogs/SettingsDialog.h"
 #include "effects/Overlay.h"
 
-#include <QtCore/QSettings>
-
 #include <QtWidgets/QCompleter>
-#include <QListView>
+#include <QtWidgets/QListView>
 #include <QtWidgets/QPushButton>
 
-class RoleAddressDialog::Private: public Ui::RoleAddressDialog
-{
-public:
-	QSettings s;
-};
+class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
 
 RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	: QDialog(parent)
@@ -68,21 +62,22 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 
 	for(QLineEdit *line: findChildren<QLineEdit*>())
 	{
-		QCompleter *completer = new QCompleter(d->s.value(line->objectName()).toStringList(), line);
+		Settings::Option<QStringList> s{line->objectName()};
+		QCompleter *completer = new QCompleter(s, line);
 		completer->setMaxVisibleItems(10);
 		completer->setCompletionMode(QCompleter::PopupCompletion);
 		completer->setCaseSensitivity(Qt::CaseInsensitive);
-		line->setText(d->s.value(line->objectName()).toStringList().value(0));
+		line->setText(QStringList(s).value(0));
 		line->setFont(regularFont);
 		line->setCompleter(completer);
 		connect(line, &QLineEdit::editingFinished, this, [=] {
-			QStringList list = d->s.value(line->objectName()).toStringList();
+			QStringList list = s;
 			list.removeAll(line->text());
 			list.insert(0, line->text());
 			if(list.size() > 10)
 				list.removeLast();
-			d->s.setValue(line->objectName(), QString()); // Uses on Windows MULTI_STRING registry
-			SettingsDialog::setValueEx(line->objectName(), list);
+			s.clear(); // Uses on Windows MULTI_STRING registry
+			s = list;
 		});
 		completer->popup()->setStyleSheet("background-color:#FFFFFF; color: #000000;");
 	}
@@ -95,7 +90,7 @@ RoleAddressDialog::~RoleAddressDialog()
 
 int RoleAddressDialog::get(QString &city, QString &country, QString &state, QString &zip, QString &role)
 {
-	if(!QSettings().value(QStringLiteral("RoleAddressInfo"), false).toBool())
+	if(!Settings::SHOW_ROLE_ADDRESS_INFO)
 		return QDialog::Accepted;
 	new Overlay(this, parentWidget());
 	int result = QDialog::exec();

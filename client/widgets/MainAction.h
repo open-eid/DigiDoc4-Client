@@ -41,9 +41,10 @@ signals:
 private:
 	void changeEvent(QEvent* event) override;
 	bool eventFilter(QObject *watched, QEvent *event) override;
-	QString label(ria::qdigidoc4::Actions action) const;
 	void showDropdown();
 	void update();
+
+	static QString label(ria::qdigidoc4::Actions action);
 
 	class Private;
 	Private *ui;

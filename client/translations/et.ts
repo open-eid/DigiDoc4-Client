@@ -210,10 +210,6 @@
         <translation>Laadin TSL-nimekirja</translation>
     </message>
     <message>
-        <source>Create %1</source>
-        <translation>Loo %1</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB).</translation>
     </message>
@@ -924,6 +920,18 @@
         <source>Choose</source>
         <translation>Vali</translation>
     </message>
+    <message>
+        <source>signature container</source>
+        <translation>allkirjaümbrik</translation>
+    </message>
+    <message>
+        <source>crypto container</source>
+        <translation>krüptoümbrik</translation>
+    </message>
+    <message>
+        <source>Create %1</source>
+        <translation>Loo %1</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -1489,14 +1497,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Open file for encryption or decryption</source>
         <translation>... VÕI VALI FAIL KETTALT</translation>
-    </message>
-    <message>
-        <source>signature container</source>
-        <translation>allkirja ümbrik</translation>
-    </message>
-    <message>
-        <source>crypto container</source>
-        <translation>krüpto ümbrik</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>

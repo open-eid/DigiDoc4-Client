@@ -30,6 +30,7 @@
 #include "Diagnostics.h"
 #include "FileDialog.h"
 #include "QSigner.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -45,7 +46,6 @@
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
-#include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QThreadPool>
 #include <QtGui/QDesktopServices>
@@ -340,8 +340,6 @@ void SettingsDialog::retranslate(const QString& lang)
 
 void SettingsDialog::initFunctionality()
 {
-	QSettings s;
-
 	// pageGeneral
 	selectLanguage();
 	connect(ui->langGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this,
@@ -351,14 +349,14 @@ void SettingsDialog::initFunctionality()
 	connect(ui->chkGeneralTslRefresh, &QCheckBox::toggled, [](bool checked) {
 		qApp->setConfValue(Application::TSLOnlineDigest, checked);
 	});
-	ui->chkShowPrintSummary->setChecked(s.value(QStringLiteral("ShowPrintSummary"), false).toBool());
+	ui->chkShowPrintSummary->setChecked(Settings::SHOW_PRINT_SUMMARY);
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
-		setValueEx(QStringLiteral("ShowPrintSummary"), checked, false);
+		Settings::SHOW_PRINT_SUMMARY = checked;
 	});
-	ui->chkRoleAddressInfo->setChecked(s.value(QStringLiteral("RoleAddressInfo"), false).toBool());
+	ui->chkRoleAddressInfo->setChecked(Settings::SHOW_ROLE_ADDRESS_INFO);
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked) {
-		setValueEx(QStringLiteral("RoleAddressInfo"), checked, false);
+		Settings::SHOW_ROLE_ADDRESS_INFO = checked;
 	});
 
 #ifdef Q_OS_MAC
@@ -369,12 +367,11 @@ void SettingsDialog::initFunctionality()
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
 	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [=]{
-		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"),
-			QSettings().value(QStringLiteral("DefaultDir")).toString());
+		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"), Settings::DEFAULT_DIR);
 		if(!dir.isEmpty())
 		{
 			ui->rdGeneralSpecifyDirectory->setChecked(true);
-			setValueEx(QStringLiteral("DefaultDir"), dir);
+			Settings::DEFAULT_DIR = dir;
 			ui->txtGeneralDirectory->setText(dir);
 		}
 	});
@@ -384,11 +381,11 @@ void SettingsDialog::initFunctionality()
 		if(!enable)
 			ui->txtGeneralDirectory->clear();
 	});
-	ui->txtGeneralDirectory->setText(s.value(QStringLiteral("DefaultDir")).toString());
+	ui->txtGeneralDirectory->setText(Settings::DEFAULT_DIR);
 	if(ui->txtGeneralDirectory->text().isEmpty())
 		ui->rdGeneralSameDirectory->setChecked(true);
 	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
-		setValueEx(QStringLiteral("DefaultDir"), text);
+		Settings::DEFAULT_DIR = text;
 	});
 #endif
 
@@ -398,14 +395,14 @@ void SettingsDialog::initFunctionality()
 	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
 	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	switch(s.value(QStringLiteral("ProxyConfig"), 0).toInt())
+	switch(Settings::PROXY_CONFIG)
 	{
-	case 1: ui->rdProxySystem->setChecked(true); break;
-	case 2: ui->rdProxyManual->setChecked(true); break;
+	case Settings::ProxySystem: ui->rdProxySystem->setChecked(true); break;
+	case Settings::ProxyManual: ui->rdProxyManual->setChecked(true); break;
 	default: ui->rdProxyNone->setChecked(true); break;
 	}
 
-	ui->chkProxyEnableForSSL->setDisabled((s.value(QStringLiteral("ProxyConfig"), 0).toInt() != 2));
+	ui->chkProxyEnableForSSL->setDisabled(Settings::PROXY_CONFIG != Settings::ProxyManual);
 	updateProxy();
 
 	// pageServices - Access Cert
@@ -426,20 +423,18 @@ void SettingsDialog::initFunctionality()
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
 		ui->txtTimeStamp->setEnabled(checked);
 		ui->wgtTSACert->setVisible(checked);
-		setValueEx(QStringLiteral("TSA-URL-CUSTOM"), checked, QSettings().contains(QStringLiteral("TSA-URL")));
+		Settings::TSA_URL_CUSTOM = checked;
 	});
-	ui->rdTimeStampCustom->setChecked(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool());
+	ui->rdTimeStampCustom->setChecked(Settings::TSA_URL_CUSTOM);
 	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
-#ifdef CONFIG_URL
-	ui->txtTimeStamp->setPlaceholderText(qApp->conf()->object().value(QStringLiteral("TSA-URL")).toString());
-#endif
-	QString TSA_URL = s.value(QStringLiteral("TSA-URL"), qApp->confValue(Application::TSAUrl)).toString();
+	ui->txtTimeStamp->setPlaceholderText(qApp->confValue(Settings::TSA_URL.KEY).toString());
+	QString TSA_URL = Settings::TSA_URL.value(qApp->confValue(Application::TSAUrl));
 	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
 		if(url.isEmpty())
 		{
-			QSettings().remove(QStringLiteral("TSA-CERT"));
+			Settings::TSA_CERT.clear();
 			updateTSACert(QSslCertificate());
 		}
 	});
@@ -451,22 +446,22 @@ void SettingsDialog::initFunctionality()
 			QStringLiteral("%1 (*.crt *.cer *.pem)").arg(tr("Time-Stamping service SSL certificate")));
 		if(cert.isNull())
 			return;
-		QSettings().setValue(QStringLiteral("TSA-CERT"), cert.toDer().toBase64());
+		Settings::TSA_CERT = cert.toDer().toBase64();
 		updateTSACert(cert);
 	});
-	updateTSACert(QSslCertificate(QByteArray::fromBase64(s.value(QStringLiteral("TSA-CERT")).toByteArray()), QSsl::Der));
+	updateTSACert(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT), QSsl::Der));
 
 	// pageServices - MID
 	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
 		ui->txtMIDUUID->setEnabled(checked);
-		setValueEx(QStringLiteral("MIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("MIDUUID")));
-		setValueEx(QStringLiteral("SIDUUID-CUSTOM"), checked, QSettings().contains(QStringLiteral("SIDUUID")));
+		Settings::MID_UUID_CUSTOM = checked;
+		Settings::SID_UUID_CUSTOM = checked;
 	});
-	ui->rdMIDUUIDCustom->setChecked(s.value(QStringLiteral("MIDUUID-CUSTOM"), s.contains(QStringLiteral("MIDUUID"))).toBool());
-	ui->txtMIDUUID->setText(s.value(QStringLiteral("MIDUUID")).toString());
+	ui->rdMIDUUIDCustom->setChecked(Settings::MID_UUID_CUSTOM);
+	ui->txtMIDUUID->setText(Settings::MID_UUID);
 	connect(ui->txtMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
-		setValueEx(QStringLiteral("MIDUUID"), text);
-		setValueEx(QStringLiteral("SIDUUID"), text);
+		Settings::MID_UUID = text;
+		Settings::SID_UUID = text;
 	});
 	connect(ui->helpMID, &QToolButton::clicked, this, []{
 		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
@@ -476,20 +471,18 @@ void SettingsDialog::initFunctionality()
 	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
 		ui->txtSiVa->setEnabled(checked);
 		ui->wgtSiVaCert->setVisible(checked);
-		setValueEx(QStringLiteral("SIVA-URL-CUSTOM"), checked, QSettings().contains(QStringLiteral("SIVA-URL")));
+		Settings::SIVA_URL_CUSTOM = checked;
 	});
-	ui->rdSiVaCustom->setChecked(s.value(QStringLiteral("SIVA-URL-CUSTOM"), s.contains(QStringLiteral("SIVA-URL"))).toBool());
+	ui->rdSiVaCustom->setChecked(Settings::SIVA_URL_CUSTOM);
 	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
-#ifdef CONFIG_URL
-	ui->txtSiVa->setPlaceholderText(qApp->conf()->object().value(QStringLiteral("SIVA-URL")).toString());
-#endif
-	QString SIVA_URL = s.value(QStringLiteral("SIVA-URL"), qApp->confValue(Application::SiVaUrl)).toString();
+	ui->txtSiVa->setPlaceholderText(qApp->confValue(Settings::SIVA_URL.KEY).toString());
+	QString SIVA_URL = Settings::SIVA_URL.value(qApp->confValue(Application::SiVaUrl));
 	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : SIVA_URL);
 	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
 		qApp->setConfValue(Application::SiVaUrl, url);
 		if(url.isEmpty())
 		{
-			QSettings().remove(QStringLiteral("SIVA-CERT"));
+			Settings::SIVA_CERT.clear();
 			updateSiVaCert(QSslCertificate());
 		}
 	});
@@ -501,15 +494,15 @@ void SettingsDialog::initFunctionality()
 			QStringLiteral("%1 (*.crt *.cer *.pem)").arg(tr("Digital Signature Validation Service SiVa SSL certificate")));
 		if(cert.isNull())
 			return;
-		QSettings().setValue(QStringLiteral("SIVA-CERT"), cert.toDer().toBase64());
+		Settings::SIVA_CERT = cert.toDer().toBase64();
 		updateSiVaCert(cert);
 	});
-	updateSiVaCert(QSslCertificate(QByteArray::fromBase64(s.value(QStringLiteral("SIVA-CERT")).toByteArray()), QSsl::Der));
+	updateSiVaCert(QSslCertificate(QByteArray::fromBase64(Settings::SIVA_CERT), QSsl::Der));
 
 	// pageDiagnostics
-	ui->chkLibdigidocppDebug->setChecked(s.value(QStringLiteral("LibdigidocppDebug"), false).toBool());
+	ui->chkLibdigidocppDebug->setChecked(Settings::LIBDIGIDOCPP_DEBUG);
 	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [this](bool checked) {
-		setValueEx(QStringLiteral("LibdigidocppDebug"), checked, false);
+		Settings::LIBDIGIDOCPP_DEBUG = checked;
 		if(!checked)
 		{
 			QFile::remove(qdigidoc4log);
@@ -613,11 +606,11 @@ void SettingsDialog::updateVersion()
 void SettingsDialog::saveProxy()
 {
 	if(ui->rdProxyNone->isChecked())
-		setValueEx(QStringLiteral("ProxyConfig"), 0, 0);
+		Settings::PROXY_CONFIG = Settings::ProxyNone;
 	else if(ui->rdProxySystem->isChecked())
-		setValueEx(QStringLiteral("ProxyConfig"), 1, 0);
+		Settings::PROXY_CONFIG = Settings::ProxySystem;
 	else if(ui->rdProxyManual->isChecked())
-		setValueEx(QStringLiteral("ProxyConfig"), 2, 0);
+		Settings::PROXY_CONFIG = Settings::ProxyManual;
 	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
 	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
 	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
@@ -627,24 +620,15 @@ void SettingsDialog::saveProxy()
 	updateProxy();
 }
 
-void SettingsDialog::setValueEx(const QString &key, const QVariant &value, const QVariant &def)
-{
-	bool valueIsNull = value.type() == QVariant::String ? value.toString().isEmpty() : value.isNull();
-	if(value == def || (def.isNull() && valueIsNull))
-		QSettings().remove(key);
-	else
-		QSettings().setValue(key, value);
-}
-
 void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 {
-	switch(QSettings().value(QStringLiteral("ProxyConfig"), 0).toUInt())
+	switch(Settings::PROXY_CONFIG)
 	{
-	case 0:
+	case Settings::ProxyNone:
 		QNetworkProxyFactory::setUseSystemConfiguration(false);
 		QNetworkProxy::setApplicationProxy({});
 		break;
-	case 1:
+	case Settings::ProxySystem:
 		QNetworkProxyFactory::setUseSystemConfiguration(true);
 		break;
 	default:

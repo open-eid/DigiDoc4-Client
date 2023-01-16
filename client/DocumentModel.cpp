@@ -23,9 +23,6 @@
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <common/Configuration.h>
-
-#include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
@@ -47,19 +44,13 @@ QStringList DocumentModel::tempFiles() const
 	{
 		QFileInfo f(save(i, FileDialog::tempPath(data(i))));
 		if(f.exists())
-			copied << f.absoluteFilePath();
+			copied.append(f.absoluteFilePath());
 	}
-
 	return copied;
 }
 
 bool DocumentModel::verifyFile(const QString &f)
 {
-	QJsonObject obj;
-#ifdef CONFIG_URL
-	obj = qApp->conf()->object();
-#endif
-
 	static const QJsonArray defaultArray {
 			QStringLiteral("ddoc"), QStringLiteral("bdoc") ,QStringLiteral("edoc"), QStringLiteral("adoc"), QStringLiteral("asice"), QStringLiteral("cdoc"), QStringLiteral("asics"),
 			QStringLiteral("txt"), QStringLiteral("doc"), QStringLiteral("docx"), QStringLiteral("odt"), QStringLiteral("ods"), QStringLiteral("tex"), QStringLiteral("wks"), QStringLiteral("wps"),
@@ -67,12 +58,12 @@ bool DocumentModel::verifyFile(const QString &f)
 			QStringLiteral("pps"), QStringLiteral("ppt"), QStringLiteral("pptx"), QStringLiteral("png"), QStringLiteral("jpg"), QStringLiteral("jpeg"), QStringLiteral("bmp"), QStringLiteral("ai"),
 			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff"), QStringLiteral("csv")};
 
-	QJsonArray allowedExts = obj.value(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
-
+	QJsonArray allowedExts = qApp->confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
 	if(!allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower()))){
-		WarningDialog dlg(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."), qApp->activeWindow());
-		dlg.setCancelText(tr("OK"));
-		dlg.exec();
+		auto *dlg = new WarningDialog(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."), qApp->activeWindow());
+		dlg->setAttribute(Qt::WA_DeleteOnClose);
+		dlg->setCancelText(tr("OK"));
+		dlg->open();
 		return false;
 	}
 

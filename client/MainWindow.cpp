@@ -28,6 +28,7 @@
 #include "PrintSheet.h"
 #include "QPCSC.h"
 #include "QSigner.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "sslConnect.h"
 #include "TokenData.h"
@@ -49,7 +50,6 @@
 #include "widgets/WarningList.h"
 
 #include <QtCore/QMimeData>
-#include <QtCore/QSettings>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
@@ -375,8 +375,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 		if(create)
 		{
-			QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".asice"), tr("signature container"), defaultDir, this);
+			QString filename = FileDialog::createNewFileName(files[0], true, this);
 			if(!filename.isNull())
 			{
 				signatureContainer->create(filename);
@@ -406,8 +405,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 
 		if(create)
 		{
-			QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-			QString filename = FileDialog::createNewFileName(files[0], QStringLiteral(".cdoc"), tr("crypto container"), defaultDir, this);
+			QString filename = FileDialog::createNewFileName(files[0], false, this);
 			if(!filename.isNull())
 			{
 				cryptoContainer->clear(filename);
@@ -510,8 +508,7 @@ void MainWindow::convertToBDoc()
 
 void MainWindow::convertToCDoc()
 {
-	QString defaultDir = QSettings().value(QStringLiteral("Client/DefaultDir")).toString();
-	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), QStringLiteral(".cdoc"), tr("crypto container"), defaultDir, this);
+	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), false, this);
 	if(filename.isNull())
 		return;
 
@@ -818,11 +815,11 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 	QString active;
 	if( fixedExt )
 	{
-		if(ext == QLatin1String("bdoc")) exts << bdoc;
-		if(ext == QLatin1String("cdoc")) exts << cdoc;
-		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) exts << asic;
-		if(ext == QLatin1String("edoc")) exts << edoc;
-		if(ext == QLatin1String("adoc")) exts << adoc;
+		if(ext == QLatin1String("bdoc")) exts.append(bdoc);
+		if(ext == QLatin1String("cdoc")) exts.append(cdoc);
+		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) exts.append(asic);
+		if(ext == QLatin1String("edoc")) exts.append(edoc);
+		if(ext == QLatin1String("adoc")) exts.append(adoc);
 	}
 	else
 	{
@@ -1094,8 +1091,7 @@ void MainWindow::warningClicked(const QString &link)
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 {
-	QString defaultDir = QSettings().value(QStringLiteral("DefaultDir")).toString();
-	QString filename = FileDialog::createNewFileName(wrappedFile, QStringLiteral(".asice"), tr("signature container"), defaultDir, this);
+	QString filename = FileDialog::createNewFileName(wrappedFile, true, this);
 	if(filename.isNull())
 		return false;
 
