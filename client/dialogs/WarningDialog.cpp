@@ -27,7 +27,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	, ui(new Ui::WarningDialog)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
+	setWindowFlag(Qt::CustomizeWindowHint);
 
 	connect( ui->cancel, &QPushButton::clicked, this, &WarningDialog::reject );
 	connect( this, &WarningDialog::finished, this, &WarningDialog::close );
@@ -112,9 +112,10 @@ void WarningDialog::setText(const QString& text)
 	adjustSize();
 }
 
-void WarningDialog::show(QWidget *parent, const QString &text, const QString &details)
+WarningDialog* WarningDialog::show(QWidget *parent, const QString &text, const QString &details)
 {
 	WarningDialog *dlg = new WarningDialog(text, details, parent);
 	dlg->setAttribute(Qt::WA_DeleteOnClose);
 	dlg->open();
+	return dlg;
 }

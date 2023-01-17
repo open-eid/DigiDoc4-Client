@@ -1925,6 +1925,14 @@ and enter Smart-ID PIN2-code.</translation>
         <source>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
         <translation>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</translation>
     </message>
+    <message>
+        <source>Failed to send request. A valid session is associated with this personal code. It is not possible to start a new signing before the current session expires. Please try again later.</source>
+        <translation>Failed to send request. A valid session is associated with this personal code. It is not possible to start a new signing before the current session expires. Please try again later.</translation>
+    </message>
+    <message>
+        <source>ENG</source>
+        <translation>ENG</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

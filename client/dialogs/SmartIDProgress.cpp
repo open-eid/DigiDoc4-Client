@@ -23,7 +23,6 @@
 #include "Application.h"
 #include "Styles.h"
 #include "Utils.h"
-#include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <common/Common.h>
@@ -95,14 +94,14 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 {
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
-	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	d->setWindowFlag(Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
 	d->signProgressBar->setMaximum(100);
 	d->code->setBuddy(d->signProgressBar);
 	d->code->setFont(Styles::font(Styles::Regular, 48));
 	d->info->setFont(Styles::font(Styles::Regular, 14));
-	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
+	d->controlCode->setFont(d->info->font());
 	d->signProgressBar->setFont(d->info->font());
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
@@ -172,9 +171,8 @@ background-color: #007aff;
 		auto returnError = [=](const QString &err, const QString &details = {}) {
 			qCWarning(SIDLog) << err;
 			d->hide();
-			WarningDialog dlg(err, details, d->parentWidget());
-			QObject::connect(&dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
-			dlg.exec();
+			WarningDialog *dlg = WarningDialog::show(d->parentWidget(), err, details);
+			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 		};
 
 		switch(reply->error())
@@ -182,73 +180,52 @@ background-color: #007aff;
 		case QNetworkReply::NoError:
 			break;
 		case QNetworkReply::ContentNotFoundError:
-			returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
-			return;
+			return returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
 		case QNetworkReply::ConnectionRefusedError:
-			returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Smart-ID")));
-			return;
+			return returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Smart-ID")));
 		case QNetworkReply::SslHandshakeFailedError:
-			returnError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
-			return;
+			return returnError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
 		case QNetworkReply::TimeoutError:
 		case QNetworkReply::UnknownNetworkError:
-			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
-			return;
-		case QNetworkReply::ProtocolInvalidOperationError:
-			qCWarning(SIDLog) << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-			returnError(reply->readAll());
-			return;
+			return returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::AuthenticationRequiredError:
-			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")));
-			return;
+			return returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")));
 		default:
 			const auto httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 			qCWarning(SIDLog) << httpStatusCode << "Error :" << reply->error();
 			switch (httpStatusCode)
 			{
 			case 403:
-				returnError(tr("Failed to sign container. Check your %1 service access settings. "
+				return returnError(tr("Failed to sign container. Check your %1 service access settings. "
 					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
-				return;
 			case 409:
-				returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
-				return;	
+				return returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
 			case 429:
-				returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
+				return returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
 					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
-				return;
 			case 471:
-				returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
-				return;
+				return returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
 			case 480:
-				returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from "
+				return returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from "
 					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
-				return;
 			case 580:
-				returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(QLatin1String("Smart-ID")));
-				return;
+				return returnError(tr("Failed to send request. A valid session is associated with this personal code. "
+					"It is not possible to start a new signing before the current session expires. Please try again later."));
 			default:
-				returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(QLatin1String("Smart-ID")), reply->errorString());
-				return;
+				return returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(QLatin1String("Smart-ID")), reply->errorString());
 			}
 		}
-		static const QStringList contentType{"application/json", "application/json;charset=UTF-8"};
+		static const QStringList contentType{QStringLiteral("application/json"), QStringLiteral("application/json;charset=UTF-8")};
 		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
-		{
-			returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
-			return;
-		}
+			return returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
 
 		QByteArray data = reply->readAll();
 		reply->deleteLater();
 		qCDebug(SIDLog).noquote() << data;
 		QJsonObject result = QJsonDocument::fromJson(data, nullptr).object();
 		if(result.isEmpty())
-		{
-			returnError(tr("Failed to parse JSON content"));
-			return;
-		}
+			return returnError(tr("Failed to parse JSON content"));
 		if(d->sessionID.isEmpty())
 			d->sessionID = result.value(QLatin1String("sessionID")).toString();
 		else if(result.value(QLatin1String("state")).toString() != QLatin1String("RUNNING"))

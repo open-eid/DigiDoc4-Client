@@ -24,7 +24,6 @@
 #include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
-#include "dialogs/WaitDialog.h"
 
 #include <common/Common.h>
 #include <common/Configuration.h>
@@ -85,13 +84,13 @@ MobileProgress::MobileProgress(QWidget *parent)
 {
 	const_cast<QLoggingCategory&>(MIDLog()).setEnabled(QtDebugMsg,
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
-	d->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	d->setWindowFlag(Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
 	d->code->setBuddy(d->signProgressBar);
 	d->code->setFont(Styles::font(Styles::Regular, 48));
 	d->info->setFont(Styles::font(Styles::Regular, 14));
-	d->controlCode->setFont(Styles::font(Styles::Regular, 14));
+	d->controlCode->setFont(d->info->font());
 	d->signProgressBar->setFont(d->info->font());
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
@@ -163,9 +162,8 @@ background-color: #007aff;
 			qCWarning(MIDLog) << err;
 			stop();
 			d->hide();
-			WarningDialog dlg(err, details, d->parentWidget());
-			QObject::connect(&dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
-			dlg.exec();
+			WarningDialog *dlg = WarningDialog::show(d->parentWidget(), err, details);
+			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 		};
 
 		switch(reply->error())
@@ -173,61 +171,45 @@ background-color: #007aff;
 		case QNetworkReply::NoError:
 			break;
 		case QNetworkReply::ContentNotFoundError:
-			returnError(d->sessionID.isEmpty() ? tr("Account not found") : tr("Session not found"));
-			return;
+			return returnError(d->sessionID.isEmpty() ? tr("Account not found") : tr("Session not found"));
 		case QNetworkReply::ConnectionRefusedError:
-			returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")));
-			return;
+			return returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")));
 		case QNetworkReply::SslHandshakeFailedError:
-			returnError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
-			return;
+			return returnError(tr("SSL handshake failed. Check the proxy settings of your computer or software upgrades."));
 		case QNetworkReply::TimeoutError:
 		case QNetworkReply::UnknownNetworkError:
-			returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
-			return;
+			return returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::AuthenticationRequiredError:
-			returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
-			return;
+			return returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 		default:
-			{
-				const auto httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-				qCWarning(MIDLog) << httpStatusCode << "Error :" << reply->error();
-				if (400 == httpStatusCode)
-				{
-					break;
-				}
-				switch(httpStatusCode)
-				{
-					case 409:
-						returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
-					break;
-					case 429:
-						returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
-						"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
-					break;
-					default:
-						returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")), reply->errorString());
-					break;
-				}
-				return;
-			}
-		} // switch (reply->error())
-		static const QStringList contentType{"application/json", "application/json;charset=UTF-8"};
-		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
 		{
-			returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
-			return;
+			const auto httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+			qCWarning(MIDLog) << httpStatusCode << "Error :" << reply->error();
+			switch(httpStatusCode)
+			{
+			case 409:
+				return returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
+			case 429:
+				return returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
+			case 580:
+				return returnError(tr("Failed to send request. A valid session is associated with this personal code. "
+					"It is not possible to start a new signing before the current session expires. Please try again later."));
+			default:
+				return returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(tr("Mobile-ID")), reply->errorString());
+			}
 		}
+		} // switch (reply->error())
+		static const QStringList contentType{QStringLiteral("application/json"), QStringLiteral("application/json;charset=UTF-8")};
+		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
+			return returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
 
 		QByteArray data = reply->readAll();
 		qCDebug(MIDLog).noquote() << data;
 		QJsonObject result = QJsonDocument::fromJson(data, nullptr).object();
 		if(result.isEmpty())
-		{
-			returnError(tr("Failed to parse JSON content"));
-			return;
-		}
+			return returnError(tr("Failed to parse JSON content"));
 
 		if(result.contains(QStringLiteral("error")))
 		{
@@ -344,11 +326,6 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		"and enter mobile-ID PIN2-code."));
 	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
 
-	QHash<QString,QString> lang;
-	lang[QStringLiteral("et")] = QStringLiteral("EST");
-	lang[QStringLiteral("en")] = QStringLiteral("ENG");
-	lang[QStringLiteral("ru")] = QStringLiteral("RUS");
-
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
 		{"relyingPartyName", d->NAME},
@@ -356,7 +333,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		{"phoneNumber", d->cell},
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
-		{"language", lang.value(Common::language(), QStringLiteral("EST"))},
+		{"language", tr("ENG")},
 		{"displayText", "%1"},
 		{"displayTextFormat", "UCS-2"}
 	})).toJson();

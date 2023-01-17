@@ -1925,6 +1925,14 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <source>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
         <translation>Ümbriku allkirjastamine ebaõnnestus. DigiDoc4 kliendis allkirjastamiseks pead Smart-ID rakendust uuendama.</translation>
     </message>
+    <message>
+        <source>Failed to send request. A valid session is associated with this personal code. It is not possible to start a new signing before the current session expires. Please try again later.</source>
+        <translation>Päringu saatmine ebaõnnestus. Selle isikukoodiga on seotud kehtiv sessioon. Enne kehtiva sessiooni aegumist ei ole võimalik uut allkirjastamist alustada. Palun proovige mõne aja pärast uuesti.</translation>
+    </message>
+    <message>
+        <source>ENG</source>
+        <translation>EST</translation>
+    </message>
 </context>
 <context>
     <name>NoCardInfo</name>

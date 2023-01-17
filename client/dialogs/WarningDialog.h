@@ -41,7 +41,7 @@ public:
 	void setCancelText(const QString& label);
 	void resetCancelStyle();
 	void setText(const QString& text);
-	static void show(QWidget *parent, const QString &text, const QString &details = {});
+	static WarningDialog *show(QWidget *parent, const QString &text, const QString &details = {});
 
 private:
 	Ui::WarningDialog *ui;
