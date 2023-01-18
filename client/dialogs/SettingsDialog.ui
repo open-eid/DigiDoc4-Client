@@ -478,363 +478,448 @@ QRadioButton::indicator::checked {
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="pageServices">
-      <property name="styleSheet">
-       <string notr="true">QToolButton { border: none; }
-QPushButton {
-	padding: 1px;
-	text-align: middle;
-	min-height: 30px;
-	min-width: 150px;
-}</string>
+     <widget class="QScrollArea" name="pageServicesScrollArea">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <layout class="QVBoxLayout" name="pageServicesLayout">
-       <property name="spacing">
-        <number>5</number>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="pageServices">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>789</width>
+         <height>527</height>
+        </rect>
        </property>
-       <property name="leftMargin">
-        <number>20</number>
+       <property name="styleSheet">
+        <string notr="true">QToolButton { border: none; }
+ QPushButton {
+     padding: 1px;
+     text-align: middle;
+     min-height: 30px;
+     min-width: 150px;
+ }</string>
        </property>
-       <property name="topMargin">
-        <number>20</number>
-       </property>
-       <property name="rightMargin">
-        <number>20</number>
-       </property>
-       <property name="bottomMargin">
-        <number>20</number>
-       </property>
-       <item>
-        <layout class="QHBoxLayout" name="accessCertLayout">
-         <item>
-          <widget class="QLabel" name="lblRevocation">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
+       <layout class="QVBoxLayout" name="pageServicesLayout">
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="accessCertLayout">
+          <item>
+           <widget class="QLabel" name="lblRevocation">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="text">
+             <string>Access to validity confirmation service</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="helpRevocation">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Help</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/images/icon_Abi.svg</normalon>
+              <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="helpRevocationSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblAccessCert">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Server access certificate</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="txtAccessCert">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::TextBrowserInteraction</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="accessCertButtonsLayout">
+          <item>
+           <widget class="QPushButton" name="btInstallManually">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>INSTALL MANUALLY</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btShowCertificate">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string comment="accessCert">SHOW CERTIFICATE</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="accessCertButtonSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="CheckBox" name="chkIgnoreAccessCert">
+          <property name="text">
+           <string>Ignore server access certificate (IP based access)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="pageServicesSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="timeStampLayout">
+          <item>
+           <widget class="QLabel" name="lblTimeStamp">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="text">
+             <string>Access to Time-Stamping service</string>
+            </property>
+            <property name="buddy">
+             <cstring>txtTimeStamp</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="helpTimeStamp">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Help</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/images/icon_Abi.svg</normalon>
+              <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="helpTimeStampSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="RadioButton" name="rdTimeStampDefault">
+          <property name="text">
+           <string>Use default access</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">rdTimeStamp</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="RadioButton" name="rdTimeStampCustom">
+          <property name="text">
+           <string>Use manually configured access</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">rdTimeStamp</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="LineEdit" name="txtTimeStamp">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="wgtTSACert" native="true">
+          <layout class="QVBoxLayout" name="wgtTSACertLayout">
+           <property name="spacing">
+            <number>5</number>
            </property>
-           <property name="text">
-            <string>Access to validity confirmation service</string>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="helpRevocation">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
+           <property name="topMargin">
+            <number>10</number>
            </property>
-           <property name="text">
-            <string>Help</string>
+           <property name="rightMargin">
+            <number>0</number>
            </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/images/icon_Abi.svg</normalon>
-             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
-            </iconset>
+           <property name="bottomMargin">
+            <number>0</number>
            </property>
-           <property name="iconSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="helpRevocationSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="lblAccessCert">
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="text">
-          <string>Server access certificate</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="txtAccessCert">
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="openExternalLinks">
-          <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::TextBrowserInteraction</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="accessCertButtonsLayout">
-         <item>
-          <widget class="QPushButton" name="btInstallManually">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="text">
-            <string>INSTALL MANUALLY</string>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btShowCertificate">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="text">
-            <string comment="accessCert">SHOW CERTIFICATE</string>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="accessCertButtonSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="CheckBox" name="chkIgnoreAccessCert">
-         <property name="text">
-          <string>Ignore server access certificate (IP based access)</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="pageServicesSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Preferred</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="timeStampLayout">
-         <item>
-          <widget class="QLabel" name="lblTimeStamp">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="text">
-            <string>Access to Time-Stamping service</string>
-           </property>
-           <property name="buddy">
-            <cstring>txtTimeStamp</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="helpTimeStamp">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="text">
-            <string>Help</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/images/icon_Abi.svg</normalon>
-             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
-            </iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="helpTimeStampSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="RadioButton" name="rdTimeStampDefault">
-         <property name="text">
-          <string>Use default access</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">rdTimeStamp</string>
-         </attribute>
-        </widget>
-       </item>
-       <item>
-        <widget class="RadioButton" name="rdTimeStampCustom">
-         <property name="text">
-          <string>Use manually configured access</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">rdTimeStamp</string>
-         </attribute>
-        </widget>
-       </item>
-       <item>
-        <widget class="LineEdit" name="txtTimeStamp">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="midLayout">
-         <item>
-          <widget class="QLabel" name="lblMID">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="text">
-            <string>Access to mobile-ID and Smart-ID service</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="helpMID">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="text">
-            <string>Help</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/images/icon_Abi.svg</normalon>
-             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
-            </iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="helpMIDSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="RadioButton" name="rdMIDUUIDDefault">
-         <property name="text">
-          <string>Use default access</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">rdMIDUUID</string>
-         </attribute>
-        </widget>
-       </item>
-       <item>
-        <widget class="RadioButton" name="rdMIDUUIDCustom">
-         <property name="text">
-          <string>Use manually configured access</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">rdMIDUUID</string>
-         </attribute>
-        </widget>
-       </item>
-       <item>
-        <widget class="LineEdit" name="txtMIDUUID">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
-         </property>
-         <property name="placeholderText">
-          <string notr="true">00000000-0000-0000-0000-000000000000</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="pageServicesBottomSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+           <item>
+            <widget class="QLabel" name="lblTSACert">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Time-Stamping service SSL certificate</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="CertLabel" name="txtTSACert">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="installTSACertLayout">
+             <item>
+              <widget class="QPushButton" name="btInstallTSACert">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>ADD CERTIFICATE</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btShowTSACert">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>SHOW CERTIFICATE</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="installTSACertSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="midLayout">
+          <item>
+           <widget class="QLabel" name="lblMID">
+            <property name="focusPolicy">
+             <enum>Qt::TabFocus</enum>
+            </property>
+            <property name="text">
+             <string>Access to mobile-ID and Smart-ID service</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="helpMID">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Help</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/images/icon_Abi.svg</normalon>
+              <selectedon>:/images/icon_Abi_hover.svg</selectedon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="helpMIDSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="RadioButton" name="rdMIDUUIDDefault">
+          <property name="text">
+           <string>Use default access</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">rdMIDUUID</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="RadioButton" name="rdMIDUUIDCustom">
+          <property name="text">
+           <string>Use manually configured access</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">rdMIDUUID</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="LineEdit" name="txtMIDUUID">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+          <property name="placeholderText">
+           <string notr="true">00000000-0000-0000-0000-000000000000</string>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="pageServicesBottomSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
      <widget class="QWidget" name="pageValidation">
       <property name="styleSheet">
@@ -1517,14 +1602,14 @@ QPushButton:disabled {
        <widget class="QPushButton" name="btNavClose">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>30</height>
+          <width>132</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>30</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">

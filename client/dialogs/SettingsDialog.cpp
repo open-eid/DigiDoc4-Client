@@ -17,7 +17,6 @@
  *
  */
 
-
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 
@@ -123,6 +122,14 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->rdTimeStampDefault->setFont(regularFont);
 	ui->rdTimeStampCustom->setFont(regularFont);
 	ui->txtTimeStamp->setFont(regularFont);
+	ui->lblTSACert->setFont(regularFont);
+	ui->txtTSACert->setFont(regularFont);
+	ui->btInstallTSACert->setFont(condensed12);
+	ui->btShowTSACert->setFont(condensed12);
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+	ui->btInstallTSACert->setStyleSheet("background-color: #d3d3d3");
+	ui->btShowTSACert->setStyleSheet("background-color: #d3d3d3");
+#endif
 	ui->lblMID->setFont(headerFont);
 	ui->rdMIDUUIDDefault->setFont(regularFont);
 	ui->rdMIDUUIDCustom->setFont(regularFont);
@@ -133,11 +140,11 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 	// pageValidation
 	ui->lblSiVa->setFont(headerFont);
-	ui->lblSiVaCert->setFont(regularFont);
 	ui->txtSiVa->setFont(regularFont);
-	ui->txtSiVaCert->setFont(regularFont);
 	ui->rdSiVaDefault->setFont(regularFont);
 	ui->rdSiVaCustom->setFont(regularFont);
+	ui->lblSiVaCert->setFont(regularFont);
+	ui->txtSiVaCert->setFont(regularFont);
 	ui->btInstallSiVaCert->setFont(condensed12);
 	ui->btShowSiVaCert->setFont(condensed12);
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
@@ -229,7 +236,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 				QFile::copy(":/TSL/" + file, target);
 				QFile::setPermissions(target, QFile::Permissions(0x6444));
 			}
-		
 		}
 	});
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
@@ -267,7 +273,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	ui->pageGroup->setId(ui->btnMenuProxy, NetworkSettings);
 	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
-	connect(ui->pageGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
+	connect(ui->pageGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
 
 	initFunctionality();
 	updateVersion();
@@ -289,7 +295,7 @@ SettingsDialog::~SettingsDialog()
 QString SettingsDialog::certInfo(const SslCertificate &c)
 {
 	return tr("Issued to: %1<br />Valid to: %2 %3").arg(
-		c.subjectInfo(QSslCertificate::CommonName),
+		CertificateDetails::decodeCN(c.subjectInfo(QSslCertificate::CommonName)),
 		c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
 		!c.isValid() ? QStringLiteral("<font color='red'>(%1)</font>").arg(tr("expired")) : QString());
 }
@@ -302,7 +308,7 @@ void SettingsDialog::checkConnection()
 	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
 		Application::restoreOverrideCursor();
-		FadeInNotification* notification = new FadeInNotification(this, 
+		FadeInNotification* notification = new FadeInNotification(this,
 			ria::qdigidoc4::colors::MOJO, ria::qdigidoc4::colors::MARZIPAN, 0, 120);
 		QString error;
 		QString details = connection.errorDetails();
@@ -315,7 +321,7 @@ void SettingsDialog::checkConnection()
 	else
 	{
 		Application::restoreOverrideCursor();
-		FadeInNotification* notification = new FadeInNotification(this, 
+		FadeInNotification* notification = new FadeInNotification(this,
 			ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 0, 120);
 		notification->start(tr("The connection to certificate status service is successful!"), 750, 3000, 1200);
 	}
@@ -338,7 +344,7 @@ void SettingsDialog::initFunctionality()
 
 	// pageGeneral
 	selectLanguage();
-	connect(ui->langGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked), this,
+	connect(ui->langGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this,
 		[this](QAbstractButton *button){ retranslate(button->property("lang").toString()); });
 
 	ui->chkGeneralTslRefresh->setChecked(qApp->confValue(Application::TSLOnlineDigest).toBool());
@@ -417,22 +423,38 @@ void SettingsDialog::initFunctionality()
 	});
 
 	// pageServices - TimeStamp
-	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [=](bool checked) {
+	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
 		ui->txtTimeStamp->setEnabled(checked);
+		ui->wgtTSACert->setVisible(checked);
 		setValueEx(QStringLiteral("TSA-URL-CUSTOM"), checked, QSettings().contains(QStringLiteral("TSA-URL")));
 	});
 	ui->rdTimeStampCustom->setChecked(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool());
+	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
 #ifdef CONFIG_URL
 	ui->txtTimeStamp->setPlaceholderText(qApp->conf()->object().value(QStringLiteral("TSA-URL")).toString());
 #endif
 	QString TSA_URL = s.value(QStringLiteral("TSA-URL"), qApp->confValue(Application::TSAUrl)).toString();
 	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
-	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [](const QString &url) {
+	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
 		qApp->setConfValue(Application::TSAUrl, url);
+		if(url.isEmpty())
+		{
+			QSettings().remove(QStringLiteral("TSA-CERT"));
+			updateTSACert(QSslCertificate());
+		}
 	});
 	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
 		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
 	});
+	connect(ui->btInstallTSACert, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select Time-Stamping server certificate"),
+			QStringLiteral("%1 (*.crt *.cer *.pem)").arg(tr("Time-Stamping service SSL certificate")));
+		if(cert.isNull())
+			return;
+		QSettings().setValue(QStringLiteral("TSA-CERT"), cert.toDer().toBase64());
+		updateTSACert(cert);
+	});
+	updateTSACert(QSslCertificate(QByteArray::fromBase64(s.value(QStringLiteral("TSA-CERT")).toByteArray()), QSsl::Der));
 
 	// pageServices - MID
 	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
@@ -475,16 +497,8 @@ void SettingsDialog::initFunctionality()
 		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/configuring-the-siva-validation-service-in-the-digidoc4-client/"));
 	});
 	connect(ui->btInstallSiVaCert, &QPushButton::clicked, this, [this] {
-		QFile file(FileDialog::getOpenFileName(this, tr("Select SiVa server certificate"), {},
-			QStringLiteral("%1 (*.crt *.cer *.pem)")).arg(tr("Digital Signature Validation Service SiVa SSL certificate")));
-		if(!file.open(QFile::ReadOnly))
-			return;
-		QSslCertificate cert(&file, QSsl::Pem);
-		if(cert.isNull())
-		{
-			file.seek(0);
-			cert = QSslCertificate(&file, QSsl::Der);
-		}
+		QSslCertificate cert = selectCert(tr("Select SiVa server certificate"),
+			QStringLiteral("%1 (*.crt *.cer *.pem)").arg(tr("Digital Signature Validation Service SiVa SSL certificate")));
 		if(cert.isNull())
 			return;
 		QSettings().setValue(QStringLiteral("SIVA-CERT"), cert.toDer().toBase64());
@@ -531,17 +545,39 @@ void SettingsDialog::updateCert()
 	ui->btShowCertificate->setDisabled(c.isNull());
 }
 
-void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
+void SettingsDialog::updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl)
 {
-	disconnect(ui->btShowSiVaCert, &QPushButton::clicked, nullptr, nullptr);
-	ui->btShowSiVaCert->setHidden(c.isNull());
-	ui->txtSiVaCert->setHidden(c.isNull());
+	disconnect(btn, &QPushButton::clicked, nullptr, nullptr);
+	btn->setHidden(c.isNull());
+	lbl->setHidden(c.isNull());
 	if(c.isNull())
 		return;
-	ui->txtSiVaCert->setCert(c);
-	connect(ui->btShowSiVaCert, &QPushButton::clicked, this, [this, c] {
+	lbl->setCert(c);
+	connect(btn, &QPushButton::clicked, this, [this, c] {
 		CertificateDetails::showCertificate(c, this);
 	});
+}
+
+void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
+{
+	updateCert(c, ui->btShowSiVaCert, ui->txtSiVaCert);
+}
+
+void SettingsDialog::updateTSACert(const QSslCertificate &c)
+{
+	updateCert(c, ui->btShowTSACert, ui->txtTSACert);
+}
+
+QSslCertificate SettingsDialog::selectCert(const QString &label, const QString &format)
+{
+	QFile file(FileDialog::getOpenFileName(this, label, {}, format));
+	if(!file.open(QFile::ReadOnly))
+		return QSslCertificate();
+	QSslCertificate cert(&file, QSsl::Pem);
+	if(!cert.isNull())
+		return cert;
+	file.seek(0);
+	return QSslCertificate(&file, QSsl::Der);
 }
 
 void SettingsDialog::selectLanguage()
@@ -646,16 +682,12 @@ void SettingsDialog::installCert()
 {
 	QFile file(FileDialog::getOpenFileName(this, tr("Select server access certificate"), {},
 		tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
-	if(!file.exists())
+	if(!file.open(QFile::ReadOnly))
 		return;
 	QString pass = QInputDialog::getText( this, tr("Password"),
 		tr("Enter server access certificate password."), QLineEdit::Password );
 	if(pass.isEmpty())
 		return;
-
-	if(!file.open(QFile::ReadOnly))
-		return;
-
 	PKCS12Certificate p12(&file, pass);
 	switch(p12.error())
 	{

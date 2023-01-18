@@ -118,42 +118,26 @@ public:
 
 	std::string proxyHost() const final
 	{
-		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
-		{
-		case 0: return {};
-		case 1: return systemProxy().hostName().toStdString();
-		default: return s.value(QStringLiteral("ProxyHost"), QString::fromStdString(digidoc::XmlConfCurrent::proxyHost()) ).toString().toStdString();
-		}
+		return proxyConf(&QNetworkProxy::hostName,
+			QStringLiteral("ProxyHost"), [this] { return digidoc::XmlConfCurrent::proxyHost(); });
 	}
 
 	std::string proxyPort() const final
 	{
-		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
-		{
-		case 0: return {};
-		case 1: return QString::number(systemProxy().port()).toStdString();
-		default: return s.value(QStringLiteral("ProxyPort"), QString::fromStdString(digidoc::XmlConfCurrent::proxyPort()) ).toString().toStdString();
-		}
+		return proxyConf([](const QNetworkProxy &systemProxy) { return QString::number(systemProxy.port()); },
+			QStringLiteral("ProxyPort"), [this] { return digidoc::XmlConfCurrent::proxyPort(); });
 	}
 
 	std::string proxyUser() const final
 	{
-		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
-		{
-		case 0: return {};
-		case 1: return systemProxy().user().toStdString();
-		default: return s.value(QStringLiteral("ProxyUser"), QString::fromStdString(digidoc::XmlConfCurrent::proxyUser()) ).toString().toStdString();
-		}
+		return proxyConf(&QNetworkProxy::user,
+			QStringLiteral("ProxyUser"), [this] { return digidoc::XmlConfCurrent::proxyUser(); });
 	}
 
 	std::string proxyPass() const final
 	{
-		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
-		{
-		case 0: return {};
-		case 1: return systemProxy().password().toStdString();
-		default: return s.value(QStringLiteral("ProxyPass"), QString::fromStdString(digidoc::XmlConfCurrent::proxyPass())).toString().toStdString();
-		}
+		return proxyConf(&QNetworkProxy::password,
+			QStringLiteral("ProxyPass"), [this] { return digidoc::XmlConfCurrent::proxyPass(); });
 	}
 
 #ifdef Q_OS_MAC
@@ -167,13 +151,13 @@ public:
 	{ return s.value(QStringLiteral("TSLOnlineDigest"), digidoc::XmlConfCurrent::TSLOnlineDigest()).toBool(); }
 
 	void setProxyHost( const std::string &host ) final
-	{ SettingsDialog::setValueEx(QStringLiteral("ProxyHost"), QString::fromStdString( host )); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyHost"), fromStdString(host)); }
 	void setProxyPort( const std::string &port ) final
-	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPort"), QString::fromStdString( port )); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPort"), fromStdString(port)); }
 	void setProxyUser( const std::string &user ) final
-	{ SettingsDialog::setValueEx(QStringLiteral("ProxyUser"), QString::fromStdString( user )); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyUser"), fromStdString(user)); }
 	void setProxyPass( const std::string &pass ) final
-	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPass"), QString::fromStdString( pass )); }
+	{ SettingsDialog::setValueEx(QStringLiteral("ProxyPass"), fromStdString(pass)); }
 	void setProxyTunnelSSL( bool enable ) final
 	{ SettingsDialog::setValueEx(QStringLiteral("ProxyTunnelSSL"), enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 	void setPKCS12Cert( const std::string & /*cert*/) final {}
@@ -184,6 +168,14 @@ public:
 	{ SettingsDialog::setValueEx(QStringLiteral("TSLOnlineDigest"), enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
 
+	std::vector<digidoc::X509Cert> TSCerts() const final
+	{
+		std::vector<digidoc::X509Cert> list = toCerts(QStringLiteral("CERT-BUNDLE"));
+		if(digidoc::X509Cert cert = toCert(fromBase64(s.value(QStringLiteral("TSA-CERT")))))
+			list.push_back(cert);
+		return list;
+	}
+
 	std::string TSUrl() const final
 	{
 		if(s.value(QStringLiteral("TSA-URL-CUSTOM"), s.contains(QStringLiteral("TSA-URL"))).toBool())
@@ -191,36 +183,27 @@ public:
 		return valueSystemScope(QStringLiteral("TSA-URL"), digidoc::XmlConfCurrent::TSUrl());
 	}
 	void setTSUrl(const std::string &url) final
-	{ SettingsDialog::setValueEx(QStringLiteral("TSA-URL"), QString::fromStdString(url)); }
+	{ SettingsDialog::setValueEx(QStringLiteral("TSA-URL"), fromStdString(url)); }
 
 	std::string TSLUrl() const final { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	std::vector<digidoc::X509Cert> TSLCerts() const final
 	{
-		std::vector<digidoc::X509Cert> tslcerts;
-		for(const QJsonValue &val: obj.value(QStringLiteral("TSL-CERTS")).toArray())
-		{
-			QByteArray cert = QByteArray::fromBase64(val.toString().toLatin1());
-			tslcerts.emplace_back((const unsigned char*)cert.constData(), size_t(cert.size()));
-		}
+		std::vector<digidoc::X509Cert> tslcerts = toCerts(QStringLiteral("TSL-CERTS"));
 		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
 	}
 
 	digidoc::X509Cert verifyServiceCert() const final
 	{
-		QByteArray cert = QByteArray::fromBase64(obj.value(QStringLiteral("SIVA-CERT")).toString().toLatin1());
+		QByteArray cert = fromBase64(obj.value(QStringLiteral("SIVA-CERT")));
 		if(cert.isEmpty())
 			return digidoc::XmlConfCurrent::verifyServiceCert();
-		return digidoc::X509Cert((const unsigned char*)cert.constData(), size_t(cert.size()));
+		return toCert(cert);
 	}
 	std::vector<digidoc::X509Cert> verifyServiceCerts() const final
 	{
-		std::vector<digidoc::X509Cert> list;
-		list.push_back(verifyServiceCert());
-		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
-		{
-			QByteArray der = QByteArray::fromBase64(cert.toString().toLatin1());
-			list.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
-		}
+		std::vector<digidoc::X509Cert> list = toCerts(QStringLiteral("CERT-BUNDLE"));
+		if(digidoc::X509Cert cert = verifyServiceCert())
+			list.push_back(cert);
 		return list;
 	}
 	std::string verifyServiceUri() const final
@@ -240,7 +223,7 @@ public:
 			if(issuer == i.key().toStdString())
 				return i.value().toString().toStdString();
 		}
-		return obj.value(QStringLiteral("OCSP-URL")).toString(QString::fromStdString(digidoc::XmlConfCurrent::ocsp(issuer))).toStdString();
+		return obj.value(QStringLiteral("OCSP-URL")).toString(fromStdString(digidoc::XmlConfCurrent::ocsp(issuer))).toStdString();
 	}
 
 	bool TSLAllowExpired() const final
@@ -267,36 +250,67 @@ private:
 		if(s.value(QStringLiteral("TSA-URL")) == obj.value(QStringLiteral("TSA-URL")))
 			s.remove(QStringLiteral("TSA-URL")); // Cleanup user conf if it is default url
 		QList<QSslCertificate> list;
-		for(const QJsonValue &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
-			list.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
+		for(const auto &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
+			list.append(QSslCertificate(fromBase64(cert), QSsl::Der));
 		QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
 		ssl.setCaCertificates(list);
 		QSslConfiguration::setDefaultConfiguration(ssl);
 	}
 #endif
 
-	QNetworkProxy systemProxy() const
-	{
-		for(const QNetworkProxy &proxy: QNetworkProxyFactory::systemProxyForQuery())
-		{
-			if(proxy.type() == QNetworkProxy::HttpProxy)
-				return proxy;
-		}
-		return {};
-	}
-
 	std::string valueSystemScope(const QString &key, const std::string &defaultValue) const
 	{
-		return obj.value(key).toString(QString::fromStdString(defaultValue)).toStdString();
+		return obj.value(key).toString(fromStdString(defaultValue)).toStdString();
 	}
 
 	std::string valueUserScope(const QString &key, const std::string &defaultValue) const
 	{
-		return s.value(key, obj.value(key).toString(QString::fromStdString(defaultValue))).toString().toStdString();
+		return s.value(key, obj.value(key).toString(fromStdString(defaultValue))).toString().toStdString();
 	}
 
+	template<typename System, typename Config>
+	std::string proxyConf(System &&system, const QString &key, Config &&config) const
+	{
+		switch(s.value(QStringLiteral("ProxyConfig")).toUInt())
+		{
+		case 0: return {};
+		case 1: return std::invoke(system, [] {
+				for(const QNetworkProxy &proxy: QNetworkProxyFactory::systemProxyForQuery())
+				{
+					if(proxy.type() == QNetworkProxy::HttpProxy)
+						return proxy;
+				}
+				return QNetworkProxy{};
+			}()).toStdString();
+		default: return s.contains(key) ? s.value(key).toString().toStdString() : config();
+		}
+	}
+
+	template<class T>
+	static QByteArray fromBase64(const T &data)
+	{
+		return QByteArray::fromBase64(data.toString().toLatin1());
+	}
+
+	static digidoc::X509Cert toCert(const QByteArray &der)
+	{
+		return digidoc::X509Cert((const unsigned char*)der.constData(), size_t(der.size()));
+	}
+
+	std::vector<digidoc::X509Cert> toCerts(const QString &key) const
+	{
+		std::vector<digidoc::X509Cert> certs;
+		for(const auto &cert: obj.value(key).toArray())
+		{
+			QByteArray der = fromBase64(cert);
+			certs.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
+		}
+		return certs;
+	}
+
+	static constexpr auto fromStdString = &QString::fromStdString;
 	QSettings s;
-	bool	debug = false;
+	bool debug = false;
 public:
 	QJsonObject obj;
 };
@@ -588,7 +602,7 @@ void Application::closeWindow()
 #endif
 	if( QDialog *d = qobject_cast<QDialog*>(activeWindow()) )
 		d->reject();
-	else if( QWidget *w = qobject_cast<QWidget*>(activeWindow()) )
+	else if(QWidget *w = activeWindow())
 		w->close();
 }
 
@@ -621,8 +635,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 		QList<QSslCertificate> list;
 		for(const digidoc::X509Cert &cert: i->TSLCerts())
 		{
-			std::vector<unsigned char> v = cert;
-			if(!v.empty())
+			if(std::vector<unsigned char> v = cert; !v.empty())
 				list.append(QSslCertificate(QByteArray::fromRawData((const char*)v.data(), int(v.size())), QSsl::Der));
 		}
 		return QVariant::fromValue(list);
@@ -694,38 +707,15 @@ void Application::mailTo( const QUrl &url )
 		QString filePath = QDir::toNativeSeparators( file );
 		QString fileName = QFileInfo( file ).fileName();
 		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
-		MapiFileDescW doc = {};
+		MapiFileDescW doc {};
 		doc.nPosition = -1;
 		doc.lpszPathName = PWSTR(filePath.utf16());
 		doc.lpszFileName = PWSTR(fileName.utf16());
-		MapiMessageW message = {};
+		MapiMessageW message {};
 		message.lpszSubject = PWSTR(subject.utf16());
 		message.lpszNoteText = PWSTR(L"");
 		message.nFileCount = 1;
 		message.lpFiles = lpMapiFileDescW(&doc);
-		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
-		{
-		case SUCCESS_SUCCESS:
-		case MAPI_E_USER_ABORT:
-		case MAPI_E_LOGIN_FAILURE:
-			return;
-		default: break;
-		}
-	}
-	else if( LPMAPISENDMAIL mapi = LPMAPISENDMAIL(lib.resolve("MAPISendMail")) )
-	{
-		QByteArray filePath = QDir::toNativeSeparators( file ).toLocal8Bit();
-		QByteArray fileName = QFileInfo( file ).fileName().toLocal8Bit();
-		QByteArray subject = q.queryItemValue( "subject", QUrl::FullyDecoded ).toLocal8Bit();
-		MapiFileDesc doc = {};
-		doc.nPosition = -1;
-		doc.lpszPathName = LPSTR(filePath.constData());
-		doc.lpszFileName = LPSTR(fileName.constData());
-		MapiMessage message = {};
-		message.lpszSubject = LPSTR(subject.constData());
-		message.lpszNoteText = LPSTR("");
-		message.nFileCount = 1;
-		message.lpFiles = lpMapiFileDesc(&doc);
 		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
 		{
 		case SUCCESS_SUCCESS:
@@ -1081,7 +1071,7 @@ void Application::showSettings()
 void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)
 {
 	if(sign)
-		sign = !(params.size() == 1 && CONTAINER_EXT.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive));
+		sign = params.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive);
 	QWidget *w = nullptr;
 	if(!newWindow && params.isEmpty())
 	{
