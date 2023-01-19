@@ -26,15 +26,17 @@
 #include "effects/Overlay.h"
 #include "dialogs/CertificateDetails.h"
 
+#include <memory>
+
 KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	: QDialog( parent )
 {
-	Ui::KeyDialog *d = new Ui::KeyDialog;
+	auto d = std::make_unique<Ui::KeyDialog>();
 	d->setupUi(this);
 #if defined (Q_OS_WIN)
 	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
-	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
+	setWindowFlag(Qt::CustomizeWindowHint);
 	new Overlay(this, parent->topLevelWidget());
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
@@ -46,31 +48,27 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	d->view->setHeaderLabels({tr("Attribute"), tr("Value")});
 
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d->showCert, &QPushButton::clicked, this, [=] {
-		CertificateDetails::showCertificate(SslCertificate(k.cert), this);
+	connect(d->showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
+		CertificateDetails::showCertificate(cert, this);
 	});
 
 	auto addItem = [&](const QString &parameter, const QString &value) {
-		QTreeWidgetItem *i = new QTreeWidgetItem(d->view);
+		if(value.isEmpty())
+			return;
+		auto *i = new QTreeWidgetItem(d->view);
 		i->setText(0, parameter);
 		i->setText(1, value);
 		d->view->addTopLevelItem(i);
 	};
 
 	addItem(tr("Recipient"), k.recipient);
-	if(!k.method.isEmpty())
-		addItem(tr("Crypto method"), k.method);
-	if(!k.agreement.isEmpty())
-		addItem(tr("Agreement method"), k.agreement);
-	if(!k.derive.isEmpty())
-		addItem(tr("Key derivation method"), k.derive);
-	if(!k.concatDigest.isEmpty())
-		addItem(tr("ConcatKDF digest method"), k.concatDigest);
-	//addItem( tr("ID"), k.id );
+	addItem(tr("Crypto method"), k.method);
+	addItem(tr("Agreement method"), k.agreement);
+	addItem(tr("Key derivation method"), k.derive);
+	addItem(tr("ConcatKDF digest method"), k.concatDigest);
 	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	addItem(tr("Issuer"), SslCertificate(k.cert).issuerInfo(QSslCertificate::CommonName));
 	d->view->resizeColumnToContents( 0 );
 	if(!k.agreement.isEmpty())
 		adjustSize();
-	delete d;
 }
