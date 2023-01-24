@@ -77,6 +77,8 @@ class MacMenuBar {};
 #include <MAPI.h>
 #endif
 
+using namespace std::chrono;
+
 const QStringList Application::CONTAINER_EXT {
 	QStringLiteral("asice"), QStringLiteral("sce"),
 	QStringLiteral("asics"), QStringLiteral("scs"),
@@ -170,7 +172,7 @@ public:
 
 	std::vector<digidoc::X509Cert> TSCerts() const final
 	{
-		std::vector<digidoc::X509Cert> list = toCerts(QStringLiteral("CERT-BUNDLE"));
+		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
 		if(digidoc::X509Cert cert = toCert(fromBase64(s.value(QStringLiteral("TSA-CERT")))))
 			list.push_back(cert);
 		return list;
@@ -188,7 +190,7 @@ public:
 	std::string TSLUrl() const final { return valueSystemScope(QStringLiteral("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	std::vector<digidoc::X509Cert> TSLCerts() const final
 	{
-		std::vector<digidoc::X509Cert> tslcerts = toCerts(QStringLiteral("TSL-CERTS"));
+		std::vector<digidoc::X509Cert> tslcerts = toCerts(QLatin1String("TSL-CERTS"));
 		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
 	}
 
@@ -201,7 +203,7 @@ public:
 	}
 	std::vector<digidoc::X509Cert> verifyServiceCerts() const final
 	{
-		std::vector<digidoc::X509Cert> list = toCerts(QStringLiteral("CERT-BUNDLE"));
+		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
 		if(digidoc::X509Cert cert = verifyServiceCert())
 			list.push_back(cert);
 		return list;
@@ -297,7 +299,7 @@ private:
 		return digidoc::X509Cert((const unsigned char*)der.constData(), size_t(der.size()));
 	}
 
-	std::vector<digidoc::X509Cert> toCerts(const QString &key) const
+	std::vector<digidoc::X509Cert> toCerts(QLatin1String key) const
 	{
 		std::vector<digidoc::X509Cert> certs;
 		for(const auto &cert: obj.value(key).toArray())
@@ -319,7 +321,7 @@ class Application::Private
 {
 public:
 	Configuration *conf {};
-	QAction		*closeAction {}, *newClientAction {}, *newCryptoAction {}, *helpAction {};
+	QAction		*closeAction {}, *newClientAction {}, *helpAction {};
 	MacMenuBar	*bar {};
 	QSigner		*signer {};
 
@@ -344,7 +346,7 @@ Application::Application( int &argc, char **argv )
 	d->conf = new Configuration(this);
 	connect(d->conf, &Configuration::updateReminder,
 			[&](bool /* expired */, const QString & /* title */, const QString &message){
-		WarningDialog(message, qApp->activeWindow()).exec();
+		WarningDialog::show(qApp->activeWindow(), message);
 	});
 #endif
 
@@ -389,18 +391,16 @@ Application::Application( int &argc, char **argv )
 	// This is needed to release application from memory (Windows)
 	setQuitOnLastWindowClosed( true ); 
 	d->lastWindowTimer.setSingleShot(true);
-	connect(&d->lastWindowTimer, &QTimer::timeout, []{ if(topLevelWindows().isEmpty()) quit(); });
-	connect(this, &Application::lastWindowClosed, [&]{ d->lastWindowTimer.start(10*1000); });
+	connect(&d->lastWindowTimer, &QTimer::timeout, this, []{ if(topLevelWindows().isEmpty()) quit(); });
+	connect(this, &Application::lastWindowClosed, this, [&]{ d->lastWindowTimer.start(10s); });
 
 #ifdef Q_OS_MAC
 	d->bar = new MacMenuBar;
 	d->bar->addAction( MacMenuBar::AboutAction, this, SLOT(showAbout()) );
 	d->bar->addAction( MacMenuBar::PreferencesAction, this, SLOT(showSettings()) );
 	d->bar->fileMenu()->addAction( d->newClientAction );
-	d->bar->fileMenu()->addAction( d->newCryptoAction );
 	d->bar->fileMenu()->addAction( d->closeAction );
 	d->bar->dockMenu()->addAction( d->newClientAction );
-	d->bar->dockMenu()->addAction( d->newCryptoAction );
 	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
@@ -454,7 +454,7 @@ Application::Application( int &argc, char **argv )
 #ifdef Q_OS_MAC
 		if(QSettings().value(QStringLiteral("plugins")).isNull())
 		{
-			WarningDialog *dlg = new WarningDialog(tr(
+			auto *dlg = new WarningDialog(tr(
 				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), parent);
 			dlg->setAttribute(Qt::WA_DeleteOnClose);
 			dlg->setCancelText(tr("Ignore forever").toUpper());
@@ -474,7 +474,7 @@ Application::Application( int &argc, char **argv )
 		if(QSettings().value(QStringLiteral("showIntro"), true).toBool())
 		{
 			QSettings().setValue(QStringLiteral("showIntro"), false);
-			FirstRun *dlg = new FirstRun(parent);
+			auto *dlg = new FirstRun(parent);
 			connect(dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
 			dlg->open();
 		}
@@ -500,7 +500,7 @@ Application::~Application()
 		delete d;
 		return;
 	}
-	if( QtLocalPeer *obj = findChild<QtLocalPeer*>() )
+	if(auto *obj = findChild<QtLocalPeer*>())
 		delete obj;
 #else
 	deinitMacEvents();
@@ -536,9 +536,9 @@ void Application::activate( QWidget *w )
 	w->setWindowState(Qt::WindowActive);
 #endif
 	w->addAction( d->closeAction );
-	w->activateWindow();
 	w->show();
 	w->raise();
+	w->activateWindow();
 }
 
 #ifdef Q_OS_WIN
@@ -566,7 +566,7 @@ void Application::clearConfValue( ConfParameter parameter )
 {
 	try
 	{
-		digidoc::XmlConfCurrent *i = dynamic_cast<digidoc::XmlConfCurrent*>(digidoc::Conf::instance());
+		auto *i = dynamic_cast<digidoc::XmlConfCurrent*>(digidoc::Conf::instance());
 		if(!i)
 			return;
 		switch( parameter )
@@ -600,7 +600,7 @@ void Application::closeWindow()
 		w->close();
 	else
 #endif
-	if( QDialog *d = qobject_cast<QDialog*>(activeWindow()) )
+	if(auto *d = qobject_cast<QDialog*>(activeWindow()))
 		d->reject();
 	else if(QWidget *w = activeWindow())
 		w->close();
@@ -613,7 +613,7 @@ Configuration* Application::conf()
 
 QVariant Application::confValue( ConfParameter parameter, const QVariant &value )
 {
-	DigidocConf *i = static_cast<DigidocConf*>(digidoc::Conf::instance());
+	auto *i = static_cast<DigidocConf*>(digidoc::Conf::instance());
 
 	QByteArray r;
 	switch( parameter )
@@ -656,7 +656,7 @@ bool Application::event(QEvent *event)
 	case QEvent::FileOpen:
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
-		QTimer::singleShot(0, [this, fileName] {
+		QTimer::singleShot(0, this, [this, fileName] {
 			parseArgs({ fileName });
 		});
 		return true;
@@ -691,7 +691,6 @@ void Application::loadTranslation( const QString &lang )
 	void(d->qtTranslator.load(QStringLiteral(":/translations/qt_") + lang));
 	if( d->closeAction ) d->closeAction->setText( tr("Close Window") );
 	if( d->newClientAction ) d->newClientAction->setText( tr("New Window") );
-	if( d->newCryptoAction ) d->newCryptoAction->setText( tr("New Crypto window") );
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
 }
 
@@ -787,7 +786,7 @@ QWidget* Application::mainWindow()
 	QWidget* root = nullptr;
 
 	if (!win)
-	{	
+	{
 		// Prefer main window; on Mac also the menu is top level window
 		for (QWidget *widget: topLevelWidgets())
 		{
@@ -891,7 +890,7 @@ void Application::migrateSettings()
 
 		if(oldOrgSettings.contains(oldKey)){
 			newSettings.setValue(newKey, oldOrgSettings.value(oldKey));
-			
+
 #ifdef Q_OS_MAC
 			if(oldKey != newKey)
 				oldAppSettings.remove(oldKey);
@@ -963,11 +962,7 @@ bool Application::notify(QObject *object, QEvent *event)
 
 void Application::openHelp()
 {
-	QString lang = language();
-	QUrl u(QStringLiteral("https://www.id.ee/id-abikeskus/"));
-	if(lang == QLatin1String("en")) u = QStringLiteral("https://www.id.ee/en/id-help/");
-	if(lang == QLatin1String("ru")) u = QStringLiteral("https://www.id.ee/ru/id-pomoshh/");
-	QDesktopServices::openUrl(u);
+	QDesktopServices::openUrl(QUrl(tr("https://www.id.ee/en/id-help/")));
 }
 
 void Application::parseArgs( const QString &msg )
@@ -1028,7 +1023,7 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 {
 	try
 	{
-		digidoc::XmlConfCurrent *i = dynamic_cast<digidoc::XmlConfCurrent*>(digidoc::Conf::instance());
+		auto *i = dynamic_cast<digidoc::XmlConfCurrent*>(digidoc::Conf::instance());
 		if(!i)
 			return;
 		QByteArray v = value.toString().toUtf8();
@@ -1058,13 +1053,13 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 
 void Application::showAbout()
 {
-	if(MainWindow *w = qobject_cast<MainWindow*>(mainWindow()))
+	if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
 		w->showSettings(SettingsDialog::LicenseSettings);
 }
 
 void Application::showSettings()
 {
-	if(MainWindow *w = qobject_cast<MainWindow*>(mainWindow()))
+	if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
 		w->showSettings(SettingsDialog::GeneralSettings);
 }
 
@@ -1081,7 +1076,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	else if(!newWindow)
 	{
 		// else select first window with no open files
-		MainWindow *main = qobject_cast<MainWindow*>(uniqueRoot());
+		auto *main = qobject_cast<MainWindow*>(uniqueRoot());
 		if(main && main->windowFilePath().isEmpty())
 			w = main;
 	}
@@ -1111,9 +1106,9 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 		}
 #endif
 	}
+	activate(w);
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
-	activate( w );
 }
 
 void Application::showTSLWarning(QEventLoop *e)
@@ -1146,9 +1141,9 @@ QWidget* Application::uniqueRoot()
 	MainWindow* root = nullptr;
 
 	// Return main window if only one main window is opened
-	for(auto w : topLevelWidgets())
+	for(auto *w : topLevelWidgets())
 	{
-		if(MainWindow *r = qobject_cast<MainWindow*>(w))
+		if(auto *r = qobject_cast<MainWindow*>(w))
 		{
 			if(root)
 				return nullptr;
@@ -1172,7 +1167,7 @@ void Application::waitForTSL( const QString &file )
 	p.setWindowFlags( (Qt::Dialog | Qt::CustomizeWindowHint | Qt::MSWindowsFixedSizeDialogHint ) & ~Qt::WindowTitleHint );
 	p.setWindowModality(Qt::WindowModal);
 	p.setFixedSize( p.size() );
-	if( QProgressBar *bar = p.findChild<QProgressBar*>() )
+	if(auto *bar = p.findChild<QProgressBar*>())
 		bar->setTextVisible( false );
 	p.setMinimumWidth( 300 );
 	p.setRange( 0, 100 );
@@ -1182,9 +1177,9 @@ void Application::waitForTSL( const QString &file )
 		if(p.value() + 1 == p.maximum())
 			p.setValue(0);
 		p.setValue( p.value() + 1 );
-		t.start( 100 );
+		t.start(100ms);
 	});
-	t.start( 100 );
+	t.start(100ms);
 	QEventLoop e;
 	connect(this, &Application::TSLLoadingFinished, &e, &QEventLoop::quit);
 	if( !d->ready )
