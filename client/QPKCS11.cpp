@@ -290,16 +290,16 @@ void QPKCS11::logout()
 
 QList<TokenData> QPKCS11::tokens() const
 {
-	QList<TokenData> list;
 	if(!d->f)
-		return list;
+		return {};
 	size_t size = 0;
 	if(d->f->C_GetSlotList(CK_TRUE, nullptr, CK_ULONG_PTR(&size)) != CKR_OK)
-		return list;
+		return {};
 	std::vector<CK_SLOT_ID> slotIDs(size);
 	if(d->f->C_GetSlotList(CK_TRUE, slotIDs.data(), CK_ULONG_PTR(&size)) != CKR_OK)
-		return list;
+		return {};
 	slotIDs.resize(size);
+	QList<TokenData> list;
 	for(CK_SLOT_ID slot: slotIDs)
 	{
 		CK_SLOT_INFO slotInfo;
@@ -315,8 +315,8 @@ QList<TokenData> QPKCS11::tokens() const
 			if(cert.isCA())
 				continue;
 			QByteArray id = d->attribute(session, obj, CKA_ID);
-			// Hack: Workaround broken FIN pkcs11 drivers showing non-repu certificates in auth slot
-			if(d->isFinDriver && d->findObject(session, CKO_PUBLIC_KEY, id).empty())
+			auto key = d->findObject(session, CKO_PUBLIC_KEY, id);
+			if(key.size() != 1) // Workaround broken FIN pkcs11 drivers showing non-repu certificates in auth slot
 				continue;
 			TokenData t;
 			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
@@ -326,7 +326,6 @@ QList<TokenData> QPKCS11::tokens() const
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
 			t.setData(QStringLiteral("id"), id);
 
-			std::vector<CK_OBJECT_HANDLE> key = d->findObject(session, CKO_PRIVATE_KEY, id);
 			CK_KEY_TYPE keyType = CKK_RSA;
 			CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
 			d->f->C_GetAttributeValue(session, key[0], &attribute, 1);
@@ -339,7 +338,7 @@ QList<TokenData> QPKCS11::tokens() const
 				d->f->C_GetMechanismList(slot, mech.data(), &count);
 				t.setData(QStringLiteral("PSS"), mech.contains(CKM_RSA_PKCS_PSS));
 			}
-			list << t;
+			list.append(std::move(t));
 		}
 		d->f->C_CloseSession( session );
 	}
