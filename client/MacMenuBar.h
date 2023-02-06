@@ -20,7 +20,6 @@
 #pragma once
 
 #include <QtWidgets/QMenuBar>
-#include <QActionGroup>
 
 class MacMenuBar final: public QMenuBar
 {
@@ -37,23 +36,17 @@ public:
 	explicit MacMenuBar();
 	~MacMenuBar();
 
-	QAction* addAction(ActionType type, const QObject *receiver, const char *member);
+	QAction* addAction(ActionType type);
 	QMenu* fileMenu() const;
 	QMenu* helpMenu() const;
 	QMenu* dockMenu() const;
 
-private slots:
-	void activateWindow(QAction *a);
-
 private:
 	bool eventFilter(QObject *o, QEvent *e) final;
-	QString title(QObject *o) const;
-	QString typeName(ActionType type) const;
+	static QString typeName(ActionType type);
 
 	QMenu		*file = nullptr;
 	QMenu		*help = nullptr;
 	QHash<ActionType,QAction*> actions;
 	QMenu		*dock = new QMenu;
-	QAction		*dockSeparator = nullptr;
-	QActionGroup *windowGroup = new QActionGroup(dock);
 };
