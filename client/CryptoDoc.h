@@ -48,14 +48,12 @@ public:
 
 	bool addKey( const CKey &key );
 	bool canDecrypt(const QSslCertificate &cert);
-	void clear( const QString &file = QString() );
+	void clear(const QString &file = {});
 	bool decrypt();
 	DocumentModel* documentModel() const;
-	bool encrypt( const QString &filename = QString() );
+	bool encrypt(const QString &filename = {});
 	QString fileName() const;
 	QList<QString> files();
-	bool isEncrypted() const;
-	bool isNull() const;
 	QList<CKey> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
@@ -69,7 +67,6 @@ public:
 private:
 	class Private;
 	Private *d;
-	ria::qdigidoc4::ContainerState containerState;
 
 	friend class CDocumentModel;
 };
