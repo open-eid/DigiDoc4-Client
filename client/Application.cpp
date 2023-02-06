@@ -245,6 +245,7 @@ private:
 		obj = qApp->conf()->object();
 		if(Settings::TSA_URL == obj.value(Settings::TSA_URL.KEY).toString())
 			Settings::TSA_URL.clear(); // Cleanup user conf if it is default url
+		Settings::SETTINGS_MIGRATED.clear();
 		QList<QSslCertificate> list;
 		for(const auto &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
 			list.append(QSslCertificate(fromBase64(cert), QSsl::Der));
@@ -823,127 +824,6 @@ QWidget* Application::mainWindow()
 	return root;
 }
 
-void Application::migrateSettings()
-{
-#ifdef Q_OS_MAC
-	QSettings oldOrgSettings;
-	QSettings oldAppSettings;
-	QSettings newSettings;
-#else
-	QSettings dd3Settings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidocclient"));
-	QSettings oldOrgSettings(QStringLiteral("Estonian ID Card"), {});
-	QSettings oldAppSettings(QStringLiteral("Estonian ID Card"), QStringLiteral("qdigidoc4"));
-	QSettings newSettings;
-#endif
-	newSettings.remove(QStringLiteral("Client/Type"));
-
-	if(Settings::SETTINGS_MIGRATED)
-		return;
-
-#ifdef Q_OS_WIN
-	QSettings reg(QStringLiteral("HKEY_CURRENT_USER\\Software"), QSettings::NativeFormat);
-	if(!reg.childGroups().contains(QStringLiteral("Estonian ID Card")))
-	{
-		Settings::SETTINGS_MIGRATED = true;
-		return;
-	}
-
-	if(!reg.childGroups().contains(QStringLiteral("RIA/Digidoc4 Client")))
-	{
-		if(reg.contains(QStringLiteral("RIA/DigiDoc4 Client/DesktopShortcut4")))
-			newSettings.setValue(QStringLiteral("DesktopShortcut4"), reg.value(QStringLiteral("RIA/DigiDoc4 Client/DesktopShortcut4")));
-
-		if(reg.contains(QStringLiteral("RIA/DigiDoc4 Client/ProgramMenuDir4")))
-			newSettings.setValue(QStringLiteral("ProgramMenuDir4"), reg.value(QStringLiteral("RIA/DigiDoc4 Client/ProgramMenuDir4")));
-
-		reg.remove(QStringLiteral("RIA/DigiDoc4 Client"));
-	}
-#endif
-
-	static const QVector<QPair<QString,QString>> orgOldNewKeys {
-		{"showIntro", Settings::SHOW_INTRO.KEY},
-		{"PKCS12Disable","PKCS12Disable"},
-		{"Client/MobileCode", Settings::MOBILEID_CODE.KEY},
-		{"Client/MobileNumber", Settings::MOBILEID_NUMBER.KEY},
-		{"ProxyHost", Settings::PROXY_HOST.KEY},
-		{"ProxyPass", Settings::PROXY_PASS.KEY},
-		{"ProxyPort", Settings::PROXY_PORT.KEY},
-		{"ProxyUser", Settings::PROXY_USER.KEY},
-		{"Client/City","City"},
-		{"Client/Country","Country"},
-		{"Client/Zip","Zip"},
-		{"Client/Role","Role"},
-		{"Client/State","State"},
-		{"Client/Resolution","Resolution"},
-		{"Main/language", Settings::LANGUAGE.KEY},
-		{"Client/DefaultDir",  Settings::DEFAULT_DIR.KEY},
-		{"ProxyTunnelSSL","ProxyTunnelSSL"}
-	};
-
-	static const QVector<QPair<QString,QString>> appOldNewKeys {
-		{"TSLOnlineDigest", "TSLOnlineDigest"},
-		{"Client/proxyConfig",  Settings::PROXY_CONFIG.KEY},
-		{"lastPath", Settings::LAST_PATH.KEY},
-		{"LastCheck", "LastCheck"},
-		{"Client/RoleAddressInfo", Settings::SHOW_ROLE_ADDRESS_INFO.KEY},
-		{"Client/ShowPrintSummary",  Settings::SHOW_PRINT_SUMMARY.KEY},
-		{"TSA-URL", Settings::TSA_URL.KEY},
-		{"MobileSettings", Settings::MOBILEID_REMEMBER.KEY},
-	};
-
-	for(const QPair<QString,QString> &keypairs: orgOldNewKeys) {
-		const QString &oldKey = keypairs.first;
-		const QString &newKey = keypairs.second;
-
-		if(oldOrgSettings.contains(oldKey)){
-			newSettings.setValue(newKey, oldOrgSettings.value(oldKey));
-
-#ifdef Q_OS_MAC
-			if(oldKey != newKey)
-				oldAppSettings.remove(oldKey);
-#endif
-		}
-	}
-
-	for(const QPair<QString,QString> &keypairs: appOldNewKeys) {
-		const QString &oldKey = keypairs.first;
-		const QString &newKey = keypairs.second;
-
-		if(oldAppSettings.contains(oldKey)){
-			newSettings.setValue(newKey, oldAppSettings.value(oldKey));
-
-#ifdef Q_OS_MAC
-			if(oldKey != newKey)
-				oldAppSettings.remove(oldKey);
-#endif
-		}
-	}
-
-	for(const QString &key: oldAppSettings.allKeys()){
-		if(key.startsWith(QStringLiteral("AccessCertUsage")))
-			newSettings.setValue(key, oldAppSettings.value(key));
-	}
-
-	Settings::SETTINGS_MIGRATED = true;
-
-#ifndef Q_OS_MAC
-	if(!Settings::SHOW_INTRO && !Settings::PROXY_CONFIG.isSet() && dd3Settings.contains(Settings::PROXY_CONFIG.KEY))
-	{
-		Settings::PROXY_CONFIG = dd3Settings.value(Settings::PROXY_CONFIG.KEY);
-		SettingsDialog::loadProxy(digidoc::Conf::instance());
-	}
-
-	oldOrgSettings.clear();
-	oldAppSettings.clear();
-	dd3Settings.clear();
-
-#ifdef Q_OS_WIN
-	reg.remove(QStringLiteral("Estonian ID Card"));
-#endif
-#endif
-
-}
-
 bool Application::notify(QObject *object, QEvent *event)
 {
 	try
@@ -1086,8 +966,6 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	}
 	if( !w )
 	{
-		migrateSettings();
-
 		w = new MainWindow();
 		QWidget *prev = [=]() -> QWidget* {
 			for(QWidget *top: topLevelWidgets())
