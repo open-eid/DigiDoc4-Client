@@ -39,6 +39,7 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
 	ui->name->installEventFilter(this);
 	ui->idType->setFont(Styles::font(Styles::Regular, 11));
+	ui->idType->installEventFilter(this);
 
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
@@ -86,8 +87,8 @@ void AddressItem::disable(bool disable)
 
 bool AddressItem::eventFilter(QObject *o, QEvent *e)
 {
-	if(o == ui->name && e->type() == QEvent::MouseButtonRelease)
-		KeyDialog(key, this).exec();
+	if((o == ui->name || o == ui->idType) && e->type() == QEvent::MouseButtonRelease)
+		(new KeyDialog(key, this))->open();
 	return Item::eventFilter(o, e);
 }
 
@@ -118,7 +119,7 @@ QWidget* AddressItem::lastTabWidget()
 
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
-	KeyDialog(key, this).exec();
+	(new KeyDialog(key, this))->open();
 }
 
 void AddressItem::setName()
