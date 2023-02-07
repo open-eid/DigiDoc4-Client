@@ -46,7 +46,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	, ui(new Ui::PinPopup)
 {
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
+	setWindowFlag(Qt::FramelessWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
@@ -103,9 +103,9 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->ok->hide();
 		ui->cancel->hide();
 		QSvgWidget *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
-		movie->resize(ui->pin->size().height(), ui->pin->size().height());
-		movie->move(ui->pin->geometry().center() - movie->geometry().center());
+		movie->setFixedSize(ui->pin->size().height(), ui->pin->size().height());
 		movie->show();
+		ui->PinPopupLayout->addWidget(movie, 0, Qt::AlignCenter);
 	}
 	if( flags & PinpadFlag )
 	{
@@ -118,6 +118,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		progress->setTextVisible( false );
 		progress->resize( 200, 30 );
 		progress->move( 153, 122 );
+		ui->PinPopupLayout->addWidget(progress);
 		QTimeLine *statusTimer = new QTimeLine( progress->maximum() * 1000, this );
 		statusTimer->setEasingCurve(QEasingCurve::Linear);
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );
