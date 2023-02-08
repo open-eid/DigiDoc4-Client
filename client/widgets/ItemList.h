@@ -68,7 +68,7 @@ protected:
 	virtual void remove(Item *item);
 
 	Ui::ItemList* ui;
-	ria::qdigidoc4::ContainerState state = ria::qdigidoc4::UnsignedContainer;
+	ria::qdigidoc4::ContainerState state = ria::qdigidoc4::UnencryptedContainer;
 
 private:
 	QString addLabel();

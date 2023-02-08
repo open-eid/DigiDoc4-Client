@@ -42,7 +42,7 @@ public:
 	~AddRecipients() final;
 
 	QList<CKey> keys();
-	bool isUpdated();
+	bool isUpdated() const;
 
 private:
 	void addAllRecipientToRightPane();
@@ -57,7 +57,6 @@ private:
 
 	void enableRecipientFromCard();
 
-	QString path() const;
 	void rememberCerts(const QList<HistoryCertData>& selectedCertData);
 	void removeRecipientFromRightPane(Item *toRemove);
 	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
@@ -66,10 +65,11 @@ private:
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
-	HistoryCertData toHistory(const QSslCertificate& cert) const;
-	QString toType(const SslCertificate &cert) const;
 
-	static QString defaultUrl(const QString &key, const QString &defaultValue);
+	static QString defaultUrl(QLatin1String key, const QString &defaultValue);
+	static QString path();
+	static HistoryCertData toHistory(const SslCertificate &cert);
+	static QString toType(const SslCertificate &cert) ;
 
 	Ui::AddRecipients *ui;
 	QHash<QSslCertificate, AddressItem *> leftList;
