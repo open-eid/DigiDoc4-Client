@@ -48,8 +48,8 @@
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::AddRecipients)
-	, ldap_person(new LdapSearch(defaultUrl(QStringLiteral("LDAP-PERSON-URL"), QStringLiteral("ldaps://esteid.ldap.sk.ee")).toUtf8(), this))
-	, ldap_corp(new LdapSearch(defaultUrl(QStringLiteral("LDAP-CORP-URL"), QStringLiteral("ldaps://k3.ldap.sk.ee")).toUtf8(), this))
+	, ldap_person(new LdapSearch(defaultUrl(QLatin1String("LDAP-PERSON-URL"), QStringLiteral("ldaps://esteid.ldap.sk.ee")).toUtf8(), this))
+	, ldap_corp(new LdapSearch(defaultUrl(QLatin1String("LDAP-CORP-URL"), QStringLiteral("ldaps://k3.ldap.sk.ee")).toUtf8(), this))
 {
 	ui->setupUi(this);
 #if defined (Q_OS_WIN)
@@ -99,18 +99,18 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 		return;
 
 	QXmlStreamReader xml( &f );
-	if(!xml.readNextStartElement() || xml.name() != QStringLiteral("History"))
+	if(!xml.readNextStartElement() || xml.name() != QLatin1String("History"))
 		return;
 
 	while( xml.readNextStartElement() )
 	{
-		if(xml.name() == QStringLiteral("item"))
+		if(xml.name() == QLatin1String("item"))
 		{
 			historyCertData.append({
-				xml.attributes().value( "CN" ).toString(),
-				xml.attributes().value( "type" ).toString(),
-				xml.attributes().value( "issuer" ).toString(),
-				xml.attributes().value( "expireDate" ).toString()
+				xml.attributes().value(QLatin1String("CN")).toString(),
+				xml.attributes().value(QLatin1String("type")).toString(),
+				xml.attributes().value(QLatin1String("issuer")).toString(),
+				xml.attributes().value(QLatin1String("expireDate")).toString()
 			});
 		}
 		xml.skipCurrentElement();
@@ -129,13 +129,12 @@ AddRecipients::~AddRecipients()
 void AddRecipients::addAllRecipientToRightPane()
 {
 	QList<HistoryCertData> history;
-
 	for(AddressItem *value: leftList)
 	{
 		if(!rightList.contains(value->getKey().cert))
 		{
 			addRecipientToRightPane(value);
-			history << toHistory(value->getKey().cert);
+			history.append(toHistory(value->getKey().cert));
 		}
 	}
 	ui->confirm->setDisabled(rightList.isEmpty());
@@ -185,10 +184,11 @@ void AddRecipients::addRecipientFromFile()
 
 void AddRecipients::addRecipientFromHistory()
 {
-	CertificateHistory dlg(historyCertData, this);
-	connect(&dlg, &CertificateHistory::addSelectedCerts, this, &AddRecipients::addSelectedCerts);
-	connect(&dlg, &CertificateHistory::removeSelectedCerts, this, &AddRecipients::removeSelectedCerts);
-	dlg.exec();
+	auto *dlg = new CertificateHistory(historyCertData, this);
+	dlg->setAttribute(Qt::WA_DeleteOnClose);
+	connect(dlg, &CertificateHistory::addSelectedCerts, this, &AddRecipients::addSelectedCerts);
+	connect(dlg, &CertificateHistory::removeSelectedCerts, this, &AddRecipients::removeSelectedCerts);
+	dlg->open();
 }
 
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
@@ -205,10 +205,10 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
 
 	connect(leftItem, &AddressItem::add, this, [this](Item *item) {
-		addRecipientToRightPane(static_cast<AddressItem*>(item), true);
+		addRecipientToRightPane(qobject_cast<AddressItem*>(item), true);
 	});
 
-	if(QWidget *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
+	if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
 		add->setVisible(true);
 
 	return leftItem;
@@ -247,11 +247,9 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 
 	rightList.append(key.cert);
 
-	AddressItem *rightItem = new AddressItem(key, ui->rightPane);
+	auto *rightItem = new AddressItem(key, ui->rightPane);
+	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane);
 	ui->rightPane->addWidget(rightItem);
-	rightItem->showButton(AddressItem::Remove);
-
-	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane );
 	ui->confirm->setDisabled(rightList.isEmpty());
 	rememberCerts({toHistory(key.cert)});
 	return true;
@@ -278,7 +276,7 @@ void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertD
 	}
 }
 
-QString AddRecipients::defaultUrl(const QString &key, const QString &defaultValue)
+QString AddRecipients::defaultUrl(QLatin1String key, const QString &defaultValue)
 {
 #ifdef CONFIG_URL
 	return qApp->conf()->object().value(key).toString(defaultValue);
@@ -293,7 +291,7 @@ void AddRecipients::enableRecipientFromCard()
 	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
 }
 
-bool AddRecipients::isUpdated()
+bool AddRecipients::isUpdated() const
 {
 	return updated;
 }
@@ -301,15 +299,15 @@ bool AddRecipients::isUpdated()
 QList<CKey> AddRecipients::keys()
 {
 	QList<CKey> recipients;
-	for(auto item: ui->rightPane->items)
+	for(auto *item: ui->rightPane->items)
 	{
-		if(AddressItem *address = qobject_cast<AddressItem *>(item))
-			recipients << address->getKey();
+		if(auto *address = qobject_cast<AddressItem *>(item))
+			recipients.append(address->getKey());
 	}
 	return recipients;
 }
 
-QString AddRecipients::path() const
+QString AddRecipients::path()
 {
 #ifdef Q_OS_WIN
 	QSettings s( QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), "qdigidoccrypto" );
@@ -328,7 +326,7 @@ void AddRecipients::rememberCerts(const QList<HistoryCertData>& selectedCertData
 	for(const auto &certData: selectedCertData)
 	{
 		if(!historyCertData.contains(certData))
-			historyCertData << certData;
+			historyCertData.append(certData);
 	}
 
 	saveHistory();
@@ -336,9 +334,8 @@ void AddRecipients::rememberCerts(const QList<HistoryCertData>& selectedCertData
 
 void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 {
-	AddressItem *rightItem = static_cast<AddressItem *>(toRemove);
-	auto it = leftList.find(rightItem->getKey().cert);
-	if(it != leftList.end())
+	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
+	if(auto it = leftList.find(rightItem->getKey().cert); it != leftList.end())
 	{
 		it.value()->disable(false);
 		it.value()->showButton(AddressItem::Add);
@@ -352,15 +349,8 @@ void AddRecipients::removeSelectedCerts(const QList<HistoryCertData>& removeCert
 {
 	if(removeCertData.isEmpty())
 		return;
-
-
-	QMutableListIterator<HistoryCertData> i(historyCertData);
-	while (i.hasNext())
-	{
-		if(removeCertData.contains(i.next()))
-			i.remove();
-	}
-
+	for(const auto &remove: removeCertData)
+		historyCertData.removeOne(remove);
 	saveHistory();
 }
 
@@ -404,7 +394,7 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		.replace(QStringLiteral(")"), QStringLiteral("\29"))
 		.replace(QStringLiteral("\\"), QStringLiteral("\5c"));
 	bool isDigit = false;
-	cleanTerm.toULongLong(&isDigit);
+	void(cleanTerm.toULongLong(&isDigit));
 	if(isDigit && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
 	{
 		if(cleanTerm.size() == 11)
@@ -463,18 +453,17 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	QApplication::restoreOverrideCursor();
 }
 
-HistoryCertData AddRecipients::toHistory(const QSslCertificate& c) const
+HistoryCertData AddRecipients::toHistory(const SslCertificate &cert)
 {
-	HistoryCertData hcd;
-	SslCertificate cert(c);
-	hcd.CN = cert.subjectInfo("CN");
-	hcd.type = toType(cert);
-	hcd.issuer = cert.issuerInfo("CN");
-	hcd.expireDate = cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"));
-	return hcd;
+	return {
+		cert.subjectInfo("CN"),
+		toType(cert),
+		cert.issuerInfo("CN"),
+		cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy")),
+	};
 }
 
-QString AddRecipients::toType(const SslCertificate &cert) const
+QString AddRecipients::toType(const SslCertificate &cert)
 {
 	auto certType = cert.type();
 	if(certType & SslCertificate::DigiIDType) return QString::number(2);
