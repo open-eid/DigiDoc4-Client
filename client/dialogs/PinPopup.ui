@@ -100,7 +100,7 @@ border: none;</string>
       <string notr="true">QLineEdit
 {
 padding: 0px 10px;
-border: 1px solid #DEE4E9;
+border: 1px solid #8E969D;
 border-radius: 2px;
 background-color: #ffffff;
 color: #000000;

@@ -19,7 +19,7 @@ QScrollBar{
 	padding: 5px 5px 5px 0;
 }
 QScrollBar::handle:vertical{
-	background-color: #DEE4E9;
+    background-color: #8E969D;
 	margin: 0 0 0 0;
 	border-radius: 2px;
 	height: 145px;
@@ -300,7 +300,7 @@ border-width: 0px 0px 1px 0px;
          <property name="styleSheet">
           <string notr="true">#txtFind
 {
-border: 1px solid #DEE4E9;
+border: 1px solid #8E969D;
 border-radius: 2px;
 background-color: #FFFFFF;
 padding: 0px 10px;

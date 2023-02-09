@@ -22,7 +22,7 @@ QLabel {
    color: #353739;
 }
 QLineEdit {
-   border: 1px solid #DEE4E9;
+   border: 1px solid #8E969D;
    border-radius: 2px;
    padding: 0px 10px;
    background-color: #ffffff;

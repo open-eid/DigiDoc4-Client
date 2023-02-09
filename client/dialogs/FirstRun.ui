@@ -78,7 +78,7 @@ height: 10px;
         <string notr="true">QComboBox {
     padding: 0px 10px;
     image: none;
-    border: 1px solid #DEE4E9;
+    border: 1px solid #8E969D;
     border-radius: 2px;
     background-color: #FFFFFF;
     color: #353739;
@@ -91,7 +91,7 @@ QComboBox QWidget#popup {
     background-color: transparent;
 }
 QComboBox QWidget#content {
-    border: 1px solid #DEE4E9;
+    border: 1px solid #8E969D;
     border-radius: 2px;
     background-color: #FFFFFF;
 }
@@ -826,7 +826,7 @@ QPushButton:disabled {
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -846,7 +846,7 @@ border-radius: 3px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -866,7 +866,7 @@ border-radius: 3px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -1635,7 +1635,7 @@ QPushButton:disabled {
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -1655,7 +1655,7 @@ border-radius: 3px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -1675,7 +1675,7 @@ border-radius: 3px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -1949,7 +1949,7 @@ QPushButton:disabled {
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
@@ -1969,7 +1969,7 @@ border-radius: 3px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 1px solid #DEE4E9;
+        <string notr="true">border: 1px solid #8E969D;
 border-radius: 3px;</string>
        </property>
        <property name="pixmap">
