@@ -2,15 +2,12 @@
 <ui version="4.0">
  <class>SmartIDDialog</class>
  <widget class="QDialog" name="SmartIDDialog">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>282</height>
+    <width>382</width>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,6 +23,12 @@ QLineEdit, QComboBox {
 padding: 0px 10px;
 border: 1px solid #DEE4E9;
 border-radius: 2px;
+}
+#labelCode, #labelCountry {
+color: #353739
+}
+#errorCode, #errorCountry {
+color: #c53e3e
 }
 QComboBox QWidget#popup {
 background-color: transparent;
@@ -88,13 +91,13 @@ image: url(:/images/icon_checkbox_check.png);
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>50</number>
+    <number>30</number>
    </property>
    <property name="topMargin">
     <number>30</number>
    </property>
    <property name="rightMargin">
-    <number>50</number>
+    <number>30</number>
    </property>
    <property name="bottomMargin">
     <number>30</number>
@@ -130,8 +133,8 @@ image: url(:/images/icon_checkbox_check.png);
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>67</height>
+       <width>0</width>
+       <height>8</height>
       </size>
      </property>
     </spacer>
@@ -140,12 +143,8 @@ image: url(:/images/icon_checkbox_check.png);
     <widget class="QLabel" name="labelCountry">
      <property name="font">
       <font>
-       <family>Roboto Condensed</family>
        <pointsize>12</pointsize>
       </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
      </property>
      <property name="text">
       <string>Country</string>
@@ -181,16 +180,20 @@ image: url(:/images/icon_checkbox_check.png);
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="labelCode">
+    <widget class="QLabel" name="errorCountry">
      <property name="font">
       <font>
-       <family>Roboto Condensed</family>
        <pointsize>12</pointsize>
       </font>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;
-padding-top: 8px;</string>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelCode">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Personal code</string>
@@ -214,20 +217,13 @@ padding-top: 8px;</string>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QLabel" name="errorCode">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
    <item>
     <widget class="CheckBox" name="cbRemember">
@@ -246,8 +242,8 @@ padding-top: 8px;</string>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>66</height>
+       <width>0</width>
+       <height>8</height>
       </size>
      </property>
     </spacer>
@@ -261,7 +257,7 @@ padding-top: 8px;</string>
       <widget class="QPushButton" name="cancel">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -300,12 +296,9 @@ QPushButton:hover:!pressed {
      </item>
      <item>
       <widget class="QPushButton" name="sign">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>

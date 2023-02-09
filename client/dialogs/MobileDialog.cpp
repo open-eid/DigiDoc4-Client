@@ -19,6 +19,7 @@
 
 #include "MobileDialog.h"
 #include "ui_MobileDialog.h"
+
 #include "IKValidator.h"
 #include "Styles.h"
 #include "dialogs/SettingsDialog.h"
@@ -33,24 +34,21 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::MobileDialog)
 {
-	new Overlay(this, parent->topLevelWidget());
+	new Overlay(this, parent);
 	ui->setupUi(this);
-	setWindowFlags( Qt::Dialog | Qt::FramelessWindowHint );
-	setFixedSize( size() );
-#if defined (Q_OS_WIN)
+	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+	setFixedSize(size());
+#ifdef Q_OS_WIN
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 
-	connect( ui->sign, &QPushButton::clicked, this, &MobileDialog::accept );
-	connect( ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject );
-	connect( this, &MobileDialog::finished, this, &MobileDialog::close );
-
 	QFont condensed = Styles::font(Styles::Condensed, 14);
-	QFont header = Styles::font(Styles::Regular, 16, QFont::DemiBold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
-	ui->labelNameId->setFont(header);
+	ui->labelNameId->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
 	ui->labelPhone->setFont(regularFont);
 	ui->labelCode->setFont(regularFont);
+	ui->errorCode->setFont(regularFont);
+	ui->errorPhone->setFont(regularFont);
 	ui->phoneNo->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
 	ui->cbRemember->setFont(regularFont);
@@ -58,49 +56,62 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui->cancel->setFont(condensed);
 
 	// Mobile
-	ui->idCode->setValidator( new IKValidator( ui->idCode ) );
+	ui->idCode->setValidator(new NumberValidator(ui->idCode));
 	ui->idCode->setText(QSettings().value(QStringLiteral("MobileCode")).toString());
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
-	ui->phoneNo->setValidator( new NumberValidator( ui->phoneNo ) );
+	ui->phoneNo->setValidator(new NumberValidator(ui->phoneNo));
 	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
 	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, false);
-	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
-	connect(ui->phoneNo, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
 	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
-	connect(ui->idCode, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
-	connect(ui->phoneNo, &QLineEdit::textEdited, this, &MobileDialog::enableSign);
-	connect(ui->cbRemember, &QCheckBox::clicked, this, [=](bool checked) {
+	auto saveSettings = [this] {
+		bool checked = ui->cbRemember->isChecked();
+		SettingsDialog::setValueEx(QStringLiteral("MobileSettings"), checked, true);
 		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString());
 		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString());
-		SettingsDialog::setValueEx(QStringLiteral("MobileSettings"), checked, true);
+	};
+	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
+	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);
+	connect(ui->phoneNo, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
+	connect(ui->phoneNo, &QLineEdit::textEdited, this, saveSettings);
+	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
+	connect(ui->sign, &QPushButton::clicked, this, [this] {
+		static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LTU};
+		if(!IKValidator::isValid(idCode()))
+		{
+			ui->idCode->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
+			ui->errorCode->setText(tr("Personal code is not valid"));
+		}
+		else
+		{
+			ui->idCode->setStyleSheet({});
+			ui->errorCode->clear();
+		}
+		if(phoneNo().size() < 8 || countryCodes.contains(phoneNo()))
+		{
+			ui->phoneNo->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
+			ui->errorPhone->setText(tr("Phone number is not entered"));
+		}
+		else if(!countryCodes.contains(phoneNo().left(3)))
+		{
+			ui->phoneNo->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
+			ui->errorPhone->setText(tr("Invalid country code"));
+		}
+		else
+		{
+			ui->phoneNo->setStyleSheet({});
+			ui->errorPhone->clear();
+		}
+		if(ui->errorCode->text().isEmpty() && ui->errorPhone->text().isEmpty())
+			accept();
 	});
-
-	enableSign();
+	connect(ui->cancel, &QPushButton::clicked, this, &MobileDialog::reject);
+	connect(this, &MobileDialog::finished, this, &MobileDialog::close);
 }
 
 MobileDialog::~MobileDialog()
 {
 	delete ui;
-}
-
-void MobileDialog::enableSign()
-{
-	static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LTU};
-	if( ui->cbRemember->isChecked() )
-	{
-		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), ui->idCode->text());
-		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), ui->phoneNo->text(),
-			ui->phoneNo->text() == COUNTRY_CODE_EST ? COUNTRY_CODE_EST : QString());
-	}
-	ui->sign->setToolTip(QString());
-	if( !IKValidator::isValid( ui->idCode->text() ) )
-		ui->sign->setToolTip( tr("Personal code is not valid") );
-	if(ui->phoneNo->text().size() < 8 || countryCodes.contains(ui->phoneNo->text()))
-		ui->sign->setToolTip( tr("Phone number is not entered") );
-	if(!countryCodes.contains(ui->phoneNo->text().left(3)))
-		ui->sign->setToolTip(tr("Invalid country code"));
-	ui->sign->setEnabled( ui->sign->toolTip().isEmpty() );
 }
 
 QString MobileDialog::idCode()

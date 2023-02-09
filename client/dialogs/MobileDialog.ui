@@ -2,15 +2,12 @@
 <ui version="4.0">
  <class>MobileDialog</class>
  <widget class="QDialog" name="MobileDialog">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>282</height>
+    <width>382</width>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,6 +18,12 @@
 background-color: #FFFFFF;
 color: #000000;
 border-radius: 2px;
+}
+#labelCode, #labelPhone {
+color: #353739
+}
+#errorCode, #errorPhone {
+color: #c53e3e
 }
 QLineEdit {
 padding: 0px 10px;
@@ -118,7 +121,7 @@ background-color: #BEDBED;
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>67</height>
+       <height>8</height>
       </size>
      </property>
     </spacer>
@@ -130,9 +133,6 @@ background-color: #BEDBED;
        <family>Roboto Condensed</family>
        <pointsize>12</pointsize>
       </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
      </property>
      <property name="text">
       <string>Country code and phone number</string>
@@ -156,16 +156,21 @@ background-color: #BEDBED;
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="errorPhone">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="labelCode">
      <property name="font">
       <font>
        <family>Roboto Condensed</family>
        <pointsize>12</pointsize>
       </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #353739;
-padding-top: 8px;</string>
      </property>
      <property name="text">
       <string>Personal code</string>
@@ -189,20 +194,13 @@ padding-top: 8px;</string>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QLabel" name="errorCode">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
    <item>
     <widget class="CheckBox" name="cbRemember">
@@ -219,7 +217,7 @@ padding-top: 8px;</string>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>66</height>
+       <height>8</height>
       </size>
      </property>
     </spacer>
@@ -233,7 +231,7 @@ padding-top: 8px;</string>
       <widget class="QPushButton" name="cancel">
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -258,12 +256,9 @@ padding-top: 8px;</string>
      </item>
      <item>
       <widget class="QPushButton" name="sign">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>

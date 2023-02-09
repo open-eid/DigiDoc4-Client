@@ -21,15 +21,11 @@
 
 #include <QtGui/QValidator>
 
-class IKValidator: public QValidator
+class IKValidator
 {
-	Q_OBJECT
 public:
-	explicit IKValidator(QObject *parent);
-
 	static QDate birthDate(const QString &ik);
 	static bool isValid(const QString &ik);
-	State validate(QString &input, int &pos) const;
 };
 
 

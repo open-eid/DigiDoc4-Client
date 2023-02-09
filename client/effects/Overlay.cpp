@@ -21,24 +21,19 @@
 
 #include <QGraphicsBlurEffect>
 #include <QPainter>
-#include <QPaintEvent>
 
 Overlay::Overlay(QWidget *runner, QWidget *parent)
-	: Overlay(parent)
+	: QWidget(parent->topLevelWidget())
 {
 	connect(runner, &QWidget::destroyed, this, &Overlay::deleteLater);
-	show();
-}
-
-Overlay::Overlay(QWidget *parent): QWidget(parent)
-{
 	setPalette(Qt::transparent);
 	setAttribute(Qt::WA_TransparentForMouseEvents);
-	if(parent)
+	if(parentWidget())
 	{
-		setMinimumSize(parent->size());
-		parent->setGraphicsEffect(new QGraphicsBlurEffect);
+		setMinimumSize(parentWidget()->size());
+		parentWidget()->setGraphicsEffect(new QGraphicsBlurEffect);
 	}
+	show();
 }
 
 Overlay::~Overlay()

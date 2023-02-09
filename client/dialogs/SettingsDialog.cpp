@@ -60,7 +60,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SettingsDialog)
 {
-	new Overlay(this, parent->topLevelWidget());
+	new Overlay(this, parent);
 
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);

@@ -31,21 +31,23 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SmartIDDialog)
 {
-	new Overlay(this, parent->topLevelWidget());
+	static QString EE = QStringLiteral("EE");
+	new Overlay(this, parent);
 
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	setFixedSize(size());
-#if defined (Q_OS_WIN)
+#ifdef Q_OS_WIN
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 
 	QFont condensed = Styles::font(Styles::Condensed, 14);
-	QFont header = Styles::font(Styles::Regular, 16, QFont::DemiBold);
 	QFont regularFont = Styles::font(Styles::Regular, 14);
-	ui->labelNameId->setFont(header);
+	ui->labelNameId->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
 	ui->labelCode->setFont(regularFont);
 	ui->labelCountry->setFont(regularFont);
+	ui->errorCode->setFont(regularFont);
+	ui->errorCountry->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->idCountry->setFont(regularFont);
@@ -55,7 +57,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->cancel->setFont(condensed);
 
 	QSettings s;
-	QValidator *ik = new IKValidator(ui->idCode);
+	QValidator *ik = new NumberValidator(ui->idCode);
 	ui->idCode->setValidator(ik);
 	ui->idCode->setText(s.value(QStringLiteral("SmartID")).toString());
 	ui->idCountry->setItemData(0, "EE");
@@ -63,26 +65,31 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->idCountry->setItemData(2, "LV");
 	ui->idCountry->setCurrentIndex(ui->idCountry->findData(s.value(QStringLiteral("SmartIDCountry"), QStringLiteral("EE")).toString()));
 	ui->cbRemember->setChecked(s.value(QStringLiteral("SmartIDSettings"), true).toBool());
-	connect(ui->sign, &QPushButton::clicked, this, &QDialog::accept);
-	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
-	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
-
-	auto enableSign = [=] {
-		const QString EE = QStringLiteral("EE");
-		ui->idCode->setValidator(country() == EE ? ik : nullptr);
+	auto saveSettings = [this]{
 		bool checked = ui->cbRemember->isChecked();
 		SettingsDialog::setValueEx(QStringLiteral("SmartIDSettings"), checked, true);
 		SettingsDialog::setValueEx(QStringLiteral("SmartID"), checked ? idCode() : QString());
 		SettingsDialog::setValueEx(QStringLiteral("SmartIDCountry"), checked ? country() : EE, EE);
-		ui->sign->setToolTip(QString());
-		if(!idCode().isEmpty() && country() == EE && !IKValidator::isValid(idCode()))
-			ui->sign->setToolTip(tr("Personal code is not valid"));
-		ui->sign->setEnabled(!idCode().isEmpty() && ui->sign->toolTip().isEmpty());
 	};
-	connect(ui->idCode, &QLineEdit::textEdited, this, enableSign);
-	connect(ui->idCountry, &QComboBox::currentTextChanged, this, enableSign);
-	connect(ui->cbRemember, &QCheckBox::clicked, this, enableSign);
-	enableSign();
+	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
+	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);
+	connect(ui->idCountry, &QComboBox::currentTextChanged, this, saveSettings);
+	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
+	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
+	connect(ui->sign, &QPushButton::clicked, this, [this,ik] {
+		ui->idCode->setValidator(country() == EE ? ik : nullptr);
+		if(ui->idCode->validator() && !IKValidator::isValid(idCode()))
+		{
+			ui->idCode->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
+			ui->errorCode->setText(tr("Personal code is not valid"));
+		}
+		else
+		{
+			ui->idCode->setStyleSheet({});
+			ui->errorCode->clear();
+			accept();
+		}
+	});
 }
 
 SmartIDDialog::~SmartIDDialog()

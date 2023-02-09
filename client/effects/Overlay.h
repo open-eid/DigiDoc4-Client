@@ -21,16 +21,12 @@
 
 #include <QWidget>
 
-class QPaintEvent;
-
 class Overlay final : public QWidget
 {
 	Q_OBJECT
 public:
 	Overlay(QWidget *runner, QWidget *parent);
-	Overlay(QWidget *parent);
-
-	~Overlay() override;
+	~Overlay() final;
 
 protected:
 	void paintEvent(QPaintEvent *event) final;

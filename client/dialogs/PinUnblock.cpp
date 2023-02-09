@@ -23,111 +23,177 @@
 #include "Styles.h"
 #include "effects/Overlay.h"
 
-#include <QLabel>
-#include <QList>
 #include <QtGui/QRegularExpressionValidator>
 
-
-PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type, short leftAttempts,
-	QDate birthDate, QString personalCode)
+PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type,
+	short leftAttempts, QDate birthDate, const QString &personalCode)
 	: QDialog(parent)
 	, ui(new Ui::PinUnblock)
-	, birthDate(birthDate)
-	, personalCode(std::move(personalCode))
 {
 	ui->setupUi(this);
 #if defined (Q_OS_WIN)
-	ui->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
+	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
-	new Overlay(this, parent->topLevelWidget());
+	new Overlay(this, parent);
 
-	ui->unblock->setEnabled(false);
-	connect(ui->unblock, &QPushButton::clicked, this, &PinUnblock::accept);
-	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
-	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
-
+	QFont condensed14 = Styles::font(Styles::Condensed, 14);
 	QFont condensed12 = Styles::font(Styles::Condensed, 12);
+	QFont regular14 = Styles::font(Styles::Regular, 14);
+	QFont regular12 = Styles::font(Styles::Regular, 12);
+	ui->errorPuk->setFont(regular12);
+	ui->errorPin->setFont(regular12);
+	ui->errorRepeat->setFont(regular12);
 	ui->labelPuk->setFont(condensed12);
 	ui->labelPin->setFont(condensed12);
 	ui->labelRepeat->setFont(condensed12);
+	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
+	ui->cancel->setFont(condensed14);
+	ui->change->setFont(condensed14);
+	for(QLabel *text: findChildren<QLabel*>(QRegularExpression(QStringLiteral("line\\d_[text,bullet]"))))
+		text->setFont(regular14);
 
-	if(mode == PinUnblock::ChangePinWithPuk)
+	auto pattern = [](QSmartCardData::PinType type) {
+		return QStringLiteral("^\\d{%1,12}$").arg(QSmartCardData::minPinLen(type));
+	};
+
+	QRegularExpression regexpValidateCode;
+	QRegularExpression regexpNewCode;
+	regexpNewCode.setPattern(pattern(type));
+	switch(mode)
 	{
-		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
-		regexpFirstCode.setPattern(QStringLiteral("^\\d{8,12}$"));
-		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") : QStringLiteral("^\\d{5,12}$"));
-		ui->unblock->setText(tr("CHANGE"));
-	}
-	if(mode == PinUnblock::UnBlockPinWithPuk)
-	{
+	case PinUnblock::UnBlockPinWithPuk:
 		ui->labelNameId->setText(tr("%1 unblocking").arg(QSmartCardData::typeString(type)));
-		regexpFirstCode.setPattern(QStringLiteral("^\\d{8,12}$"));
-		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") : QStringLiteral("^\\d{5,12}$"));
-	}
-	else if(mode == PinUnblock::PinChange)
-	{
+		ui->change->setText(tr("UNBLOCK"));
+		regexpValidateCode.setPattern(pattern(QSmartCardData::PukType));
+		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
+		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
+		ui->line3_text->setText(tr("If you have forgotten the PUK code for your ID card, please visit "
+								   "<a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">"
+								   "the Police and Border Guard Board service center</span></a> to obtain new PIN codes."));
+		break;
+	case PinUnblock::ChangePinWithPuk:
+		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
+		regexpValidateCode.setPattern(pattern(QSmartCardData::PukType));
+		ui->line1_text->setText(type == QSmartCardData::Pin2Type
+									? tr("PIN2 code is used to digitally sign documents.")
+									: tr("PIN1 code is used for confirming the identity of a person."));
+		ui->line2_text->setText(tr("If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.").arg(type));
+		ui->line3_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
+		break;
+	case PinUnblock::PinChange:
 		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		ui->labelPuk->setText(tr("VALID %1 CODE").arg(QSmartCardData::typeString(type)));
-		regexpFirstCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") :
-			(type == QSmartCardData::Pin2Type) ? QStringLiteral("^\\d{5,12}$") : QStringLiteral("^\\d{8,12}$"));
-		regexpNewCode.setPattern((type == QSmartCardData::Pin1Type) ? QStringLiteral("^\\d{4,12}$") :
-			(type == QSmartCardData::Pin2Type) ? QStringLiteral("^\\d{5,12}$") : QStringLiteral("^\\d{8,12}$"));
-		ui->unblock->setText(tr("CHANGE"));
+		regexpValidateCode.setPattern(pattern(type));
+		if(type == QSmartCardData::PukType)
+		{
+			ui->line1_text->setText(tr("PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly."));
+			ui->line2_text->setText(tr("If you forget the PUK code or the certificates remain blocked, you have to visit the <a href=\"https://www.politsei.ee/en/\">"
+									   "<span style=\"color: #006EB5; text-decoration: none;\">service center</span></a> to obtain new codes."));
+			break;
+		}
+		ui->line1_text->setText(type == QSmartCardData::Pin2Type
+									? tr("PIN2 code is used to digitally sign documents.")
+									: tr("PIN1 code is used for confirming the identity of a person."));
+		ui->line2_text->setText(
+			tr("If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.")
+				.arg(QSmartCardData::typeString(type))
+				.arg(type == QSmartCardData::Pin2Type ? tr("signing") : tr("identification"))
+				.arg(type == QSmartCardData::Pin2Type ? tr("digital signing") : tr("verify identification"))
+			);
 	}
 	setWindowTitle(ui->labelNameId->text());
 	ui->labelPin->setText(tr("NEW %1 CODE").arg(QSmartCardData::typeString(type)));
 	ui->labelRepeat->setText(tr("NEW %1 CODE AGAIN").arg(QSmartCardData::typeString(type)));
 	ui->pin->setAccessibleName(ui->labelPin->text().toLower());
+	ui->pin->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->pin));
 	ui->repeat->setAccessibleName(ui->labelRepeat->text().toLower());
+	ui->repeat->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->repeat));
 	ui->puk->setAccessibleName(ui->labelPuk->text().toLower());
-	ui->unblock->setAccessibleName(ui->unblock->text().toLower());
+	ui->puk->setValidator(new QRegularExpressionValidator(regexpValidateCode, ui->puk));
+	ui->change->setAccessibleName(ui->change->text().toLower());
 
-	ui->puk->setValidator(new QRegularExpressionValidator(regexpFirstCode, ui->puk));
-	ui->pin->setValidator(new QRegularExpressionValidator(regexpFirstCode, ui->pin));
-	ui->repeat->setValidator(new QRegularExpressionValidator(regexpFirstCode, ui->repeat));
-
-	QFont condensed14(Styles::font(Styles::Condensed, 14));
-	QFont headerFont(Styles::font(Styles::Regular, 18));
-	QFont regular13(Styles::font(Styles::Regular, 13));
-	headerFont.setWeight(QFont::Bold);
-	ui->labelNameId->setFont(headerFont);
-	ui->cancel->setFont(condensed14);
-	ui->unblock->setFont(condensed14);
-	ui->labelAttemptsLeft->setFont(regular13);
-	ui->labelPinValidation->setFont(regular13);
-	ui->labelPinValidation->hide();
-	if(mode == PinUnblock::ChangePinWithPuk || mode == PinUnblock::UnBlockPinWithPuk)
-		ui->labelAttemptsLeft->setText(tr("PUK remaining attempts: %1").arg(leftAttempts));
+	if(leftAttempts == 3)
+		ui->errorPuk->clear();
+	else if(mode == PinUnblock::PinChange)
+		ui->errorPuk->setText(tr("Remaining attempts: %1").arg(leftAttempts));
 	else
-		ui->labelAttemptsLeft->setText(tr("Remaining attempts: %1").arg(leftAttempts));
-	ui->labelAttemptsLeft->setVisible(leftAttempts < 3);
+		ui->errorPuk->setText(tr("PUK remaining attempts: %1").arg(leftAttempts));
 
-	initIntro(mode, type);
+	for(int i = 1; i < 4; i++)
+	{
+		bool isHidden = true;
+		if(QLabel *text = findChild<QLabel*>(QStringLiteral("line%1_text").arg(i)))
+			text->setHidden(isHidden = text->text().isEmpty());
+		if(QLabel *bullet = findChild<QLabel*>(QStringLiteral("line%1_bullet").arg(i)))
+			bullet->setHidden(isHidden);
+	}
 
-	connect(ui->puk, &QLineEdit::textChanged, this, [this](const QString &text) {
-		isFirstCodeOk = regexpFirstCode.match(text).hasMatch();
-		setUnblockEnabled();
+	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
+	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
+	connect(ui->pin, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
+	connect(ui->repeat, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
+	connect(ui->puk, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
+	connect(ui->change, &QPushButton::clicked, this, [=] {
+		const static QString SEQUENCE_ASCENDING = QStringLiteral("1234567890123456789012");
+		const static QString SEQUENCE_DESCENDING = QStringLiteral("0987654321098765432109");
+		ui->puk->setStyleSheet({});
+		ui->pin->setStyleSheet({});
+		ui->repeat->setStyleSheet({});
+		ui->errorPuk->clear();
+		ui->errorPin->clear();
+		ui->errorRepeat->clear();
+		auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
+			input->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
+			error->setText(msg);
+		};
+		auto pinError = [](auto type) {
+			return tr("%1 length has to be between %2 and 12")
+				.arg(QSmartCardData::typeString(type)).arg(QSmartCardData::minPinLen(type));
+		};
+
+		// Verify checks
+		if(!regexpValidateCode.match(ui->puk->text()).hasMatch())
+			setError(ui->puk, ui->errorPuk, pinError(mode == PinUnblock::PinChange ? type : QSmartCardData::PukType));
+
+		// PIN checks
+		QString pin = ui->pin->text();
+		if(!regexpNewCode.match(pin).hasMatch())
+			return setError(ui->pin, ui->errorPin, pinError(type));
+		if(SEQUENCE_ASCENDING.contains(pin))
+			return setError(ui->pin, ui->errorPin,
+				tr("New %1 code can't be increasing sequence").arg(QSmartCardData::typeString(type)));
+		if(SEQUENCE_DESCENDING.contains(pin))
+			return setError(ui->pin, ui->errorPin,
+				tr("New %1 code can't be decreasing sequence").arg(QSmartCardData::typeString(type)));
+		if(pin.count(pin[1]) == pin.length())
+			return setError(ui->pin, ui->errorPin,
+				tr("New %1 code can't be sequence of same numbers").arg(QSmartCardData::typeString(type)));
+		if(personalCode.contains(pin))
+			return setError(ui->pin, ui->errorPin,
+				tr("New %1 code can't be part of your personal code").arg(QSmartCardData::typeString(type)));
+		if(pin == birthDate.toString(QStringLiteral("yyyy")) ||
+			pin == birthDate.toString(QStringLiteral("ddMM")) ||
+			pin == birthDate.toString(QStringLiteral("MMdd")) ||
+			pin == birthDate.toString(QStringLiteral("yyyyMMdd")) ||
+			pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
+			return setError(ui->pin, ui->errorPin,
+				tr("New %1 code can't be your date of birth").arg(QSmartCardData::typeString(type)));
+		if(mode == PinUnblock::PinChange && pin == ui->puk->text())
+			return setError(ui->pin, ui->errorPin,
+				tr("Current %1 code and new %1 code must be different").arg(QSmartCardData::typeString(type)));
+
+		// Repeat checks
+		QString repeat = ui->repeat->text();
+		if(!regexpNewCode.match(repeat).hasMatch())
+			return setError(ui->repeat, ui->errorRepeat, pinError(type));
+		if(pin != repeat)
+			return setError(ui->repeat, ui->errorRepeat,
+				tr("New %1 codes doesn't match").arg(QSmartCardData::typeString(type)));
+		accept();
 	});
-	connect(ui->pin, &QLineEdit::textChanged, this, [this, type, mode](const QString &text) {
-		ui->labelPinValidation->hide();
-		isNewCodeOk = regexpNewCode.match(text).hasMatch() && validatePin(text, type, mode);
-		isRepeatCodeOk = !text.isEmpty() && ui->pin->text() == ui->repeat->text();
-		setUnblockEnabled();
-	});
-	connect(ui->repeat, &QLineEdit::textChanged, this, [this] {
-		isRepeatCodeOk = !ui->pin->text().isEmpty() && ui->pin->text() == ui->repeat->text();
-		setUnblockEnabled();
-	});
-	QSizePolicy sp_retain = ui->labelPinValidation->sizePolicy();
-	sp_retain.setRetainSizeWhenHidden(true);
-	ui->labelPinValidation->setSizePolicy(sp_retain);
-	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
-	connect(ui->pin, &QLineEdit::returnPressed, ui->unblock, &QPushButton::click);
-	connect(ui->repeat, &QLineEdit::returnPressed, ui->unblock, &QPushButton::click);
-	connect(ui->puk, &QLineEdit::returnPressed, ui->unblock, &QPushButton::click);
 	adjustSize();
 	setFixedSize(size());
 }
@@ -137,98 +203,7 @@ PinUnblock::~PinUnblock()
 	delete ui;
 }
 
-void PinUnblock::initIntro(WorkMode mode, QSmartCardData::PinType type)
-{
-	switch(mode)
-	{
-	case PinUnblock::ChangePinWithPuk:
-		ui->line1_text->setText(type == QSmartCardData::Pin2Type
-				? tr("PIN2 code is used to digitally sign documents.")
-				: tr("PIN1 code is used for confirming the identity of a person."));
-		ui->line2_text->setText(tr("If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.").arg(type));
-		ui->line3_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
-		break;
-	case PinUnblock::UnBlockPinWithPuk:
-		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
-		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
-		ui->line3_text->setText(tr("If you have forgotten the PUK code for your ID card, please visit "
-				"<a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">"
-				"the Police and Border Guard Board service center</span></a> to obtain new PIN codes."));
-		break;
-	default:
-		if(type == QSmartCardData::Pin2Type ||  type == QSmartCardData::Pin1Type)
-		{
-			ui->line1_text->setText(type == QSmartCardData::Pin2Type ?
-					tr("PIN2 code is used to digitally sign documents.") :
-					tr("PIN1 code is used for confirming the identity of a person."));
-			ui->line2_text->setText(
-				tr("If PIN%1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.")
-					.arg(type)
-					.arg(type == QSmartCardData::Pin2Type ? tr("signing") : tr("identification"))
-					.arg(type == QSmartCardData::Pin2Type ? tr("digital signing") : tr("verify identification"))
-			);
-		}
-		else if(type == QSmartCardData::PukType)
-		{
-			ui->line1_text->setText(tr("PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly."));
-			ui->line2_text->setText(tr("If you forget the PUK code or the certificates remain blocked, you have to visit the <a href=\"https://www.politsei.ee/en/\">"
-					"<span style=\"color: #006EB5; text-decoration: none;\">service center</span></a> to obtain new codes."));
-		}
-		break;
-	}
-	QFont font = Styles::font(Styles::Regular, 14);
-	for(int i = 0; i < 4; i++)
-	{
-		bool isHidden = true;
-		if(QLabel *text = findChild<QLabel*>(QStringLiteral("line%1_text").arg(i + 1)))
-		{
-			text->setFont(font);
-			text->setHidden(isHidden = text->text().isEmpty());
-		}
-		if(QLabel *bullet = findChild<QLabel*>(QStringLiteral("line%1_bullet").arg(i + 1)))
-		{
-			bullet->setFont(font);
-			bullet->setHidden(isHidden);
-		}
-	}
-}
-
-void PinUnblock::setUnblockEnabled()
-{
-	ui->iconLabelPuk->load(isFirstCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
-	ui->iconLabelPin->load(isNewCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
-	ui->iconLabelRepeat->load(isRepeatCodeOk ? QStringLiteral(":/images/icon_check.svg") : QString());
-	ui->unblock->setEnabled( isFirstCodeOk && isNewCodeOk && isRepeatCodeOk );
-}
-
 QString PinUnblock::firstCodeText() const { return ui->puk->text(); }
 
 QString PinUnblock::newCodeText() const { return ui->pin->text(); }
 
-bool PinUnblock::validatePin(const QString& pin, QSmartCardData::PinType type, WorkMode mode)
-{
-	const static QString SEQUENCE_ASCENDING = QStringLiteral("1234567890123456789012");
-	const static QString SEQUENCE_DESCENDING = QStringLiteral("0987654321098765432109");
-	QString pinType = type == QSmartCardData::Pin1Type ? QStringLiteral("PIN1") : (type == QSmartCardData::Pin2Type ? QStringLiteral("PIN2") : QStringLiteral("PUK"));
-
-	auto setError = [&](const QString &msg) {
-		ui->labelPinValidation->setHidden(msg.isEmpty());
-		ui->labelPinValidation->setText(msg);
-		return false;
-	};
-	if(mode == PinUnblock::PinChange && pin == ui->puk->text())
-		return setError(tr("Current %1 code and new %1 code must be different").arg(pinType));
-	if(SEQUENCE_ASCENDING.contains(pin))
-		return setError(tr("New %1 code can't be increasing sequence").arg(pinType));
-	if(SEQUENCE_DESCENDING.contains(pin))
-		return setError(tr("New %1 code can't be decreasing sequence").arg(pinType));
-	if(pin.count(pin[1]) == pin.length())
-		return setError(tr("New %1 code can't be sequence of same numbers").arg(pinType));
-	if(personalCode.contains(pin))
-		return setError(tr("New %1 code can't be part of your personal code").arg(pinType));
-	if(pin == birthDate.toString(QStringLiteral("yyyy")) || pin == birthDate.toString(QStringLiteral("ddMM")) ||
-		pin == birthDate.toString(QStringLiteral("MMdd")) || pin == birthDate.toString(QStringLiteral("yyyyMMdd")) ||
-		pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
-		return setError(tr("New %1 code can't be your date of birth").arg(pinType));
-	return true;
-}

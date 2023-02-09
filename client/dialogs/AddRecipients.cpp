@@ -56,7 +56,7 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	ui->actionLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
-	new Overlay(this, parent->topLevelWidget());
+	new Overlay(this, parent);
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, QT_TRANSLATE_NOOP("ItemList", "Add recipients"));
 	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));

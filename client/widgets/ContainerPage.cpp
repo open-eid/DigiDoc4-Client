@@ -92,7 +92,7 @@ ContainerPage::~ContainerPage()
 
 void ContainerPage::addressSearch()
 {
-	AddRecipients dlg(ui->rightPane, topLevelWidget());
+	AddRecipients dlg(ui->rightPane, this);
 	if(dlg.exec() && dlg.isUpdated())
 		emit keysSelected(dlg.keys());
 }
@@ -179,7 +179,7 @@ void ContainerPage::forward(int code)
 	{
 	case SignatureMobile:
 	{
-		MobileDialog dlg(topLevelWidget());
+		MobileDialog dlg(this);
 		QString newCode = QSettings().value(QStringLiteral("MobileCode")).toString();
 		if(dlg.exec() == QDialog::Accepted)
 		{
@@ -196,7 +196,7 @@ void ContainerPage::forward(int code)
 	}
 	case SignatureSmartID:
 	{
-		SmartIDDialog dlg(topLevelWidget());
+		SmartIDDialog dlg(this);
 		QString newCode = QSettings().value(QStringLiteral("SmartID")).toString();
 		if(dlg.exec() == QDialog::Accepted)
 		{
