@@ -31,9 +31,7 @@
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
 
-Diagnostics::Diagnostics() = default;
-
-void Diagnostics::generalInfo(QTextStream &s) const
+void Diagnostics::generalInfo(QTextStream &s)
 {
 	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(' ') << "<br />"
 		<< "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />"
@@ -77,11 +75,10 @@ void Diagnostics::generalInfo(QTextStream &s) const
 	QJsonObject metainf = qApp->conf()->object().value(QStringLiteral("META-INF")).toObject();
 	for(QJsonObject::const_iterator i = metainf.constBegin(), end = metainf.constEnd(); i != end; ++i)
 	{
-		switch(i.value().type())
-		{
-		case QJsonValue::Double: s << "<br />" << i.key() << ": " << i.value().toInt(); break;
-		default: s << "<br />" << i.key() << ": " << i.value().toString(); break;
-		}
+		if(i.value().type() == QJsonValue::Double)
+			s << "<br />" << i.key() << ": " << i.value().toInt();
+		else
+			s << "<br />" << i.key() << ": " << i.value().toString();
 	}
 	s << "<br /><br />";
 #endif

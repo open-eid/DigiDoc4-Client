@@ -582,8 +582,7 @@ QSslCertificate SettingsDialog::selectCert(const QString &label, const QString &
 
 void SettingsDialog::selectLanguage()
 {
-	const QList<QAbstractButton*> list = ui->langGroup->buttons();
-	for(QAbstractButton *button: list)
+	for(QAbstractButton *button: ui->langGroup->buttons())
 		button->setChecked(button->property("lang").toString() == Common::language());
 }
 

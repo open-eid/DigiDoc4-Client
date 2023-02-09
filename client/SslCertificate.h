@@ -33,8 +33,7 @@ class SslCertificate: public QSslCertificate
 public:
 	enum EnhancedKeyUsage
 	{
-		EnhancedKeyUsageNone = -1,
-		All = 0,
+		All,
 		ClientAuth,
 		ServerAuth,
 		EmailProtect,
@@ -43,8 +42,7 @@ public:
 	};
 	enum KeyUsage
 	{
-		KeyUsageNone = -1,
-		DigitalSignature = 0,
+		DigitalSignature,
 		NonRepudiation,
 		KeyEncipherment,
 		DataEncipherment,

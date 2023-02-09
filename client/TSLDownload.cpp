@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 			{
 				QNetworkReply *rt = m.get(QNetworkRequest(QUrl(url)));
 				QEventLoop e;
-				QObject::connect(rt, &QNetworkReply::finished, [&](){
+				QObject::connect(rt, &QNetworkReply::finished, rt, [&](){
 					QFile t(QStringLiteral("%1/%2.xml").arg(path, territory));
 					if(t.open(QFile::WriteOnly))
 						t.write(rt->readAll());
@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
 		w.writeStartElement(QStringLiteral("qresource"));
 		w.writeAttribute(QStringLiteral("prefix"), QStringLiteral("TSL"));
 		w.writeTextElement(QStringLiteral("file"), r->request().url().fileName());
-		for(const QString &territory: territories)
-			w.writeTextElement(QStringLiteral("file"), territory + ".xml");
+		for(const QString &t: territories)
+			w.writeTextElement(QStringLiteral("file"), t + ".xml");
 		w.writeEndElement();
 		w.writeEndElement();
 

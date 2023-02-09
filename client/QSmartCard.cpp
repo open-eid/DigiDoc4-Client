@@ -432,7 +432,6 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			case 12: d->data[QSmartCardData::Comment2] = record; break;
 			case 13: d->data[QSmartCardData::Comment3] = record; break;
 			case 14: d->data[QSmartCardData::Comment4] = record; break;
-			//case 15: d->data[QSmartCardData::Comment5] = record; break;
 			default: break;
 			}
 		}

@@ -165,7 +165,7 @@ QStringList DigiDocSignature::roles() const
 {
 	QStringList list;
 	for(const std::string &role: s->signerRoles())
-		list << from( role ).trimmed();
+		list.append(from( role ).trimmed());
 	return list;
 }
 
@@ -174,11 +174,9 @@ void DigiDocSignature::setLastError(const Exception &e)
 	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
 	DigiDoc::parseException(e, causes, code);
-	switch(code) {
-	case Exception::OCSPBeforeTimeStamp:
-		m_lastError = DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation."); break;
-	default: m_lastError = causes.join('\n');
-	}
+	m_lastError = code == Exception::OCSPBeforeTimeStamp ?
+		DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation.") :
+		causes.join('\n');
 }
 
 QString DigiDocSignature::signatureMethod() const
@@ -199,12 +197,12 @@ DigiDocSignature::SignatureStatus DigiDocSignature::status() const
 	return m_status;
 }
 
-QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char> &der) const
+QSslCertificate DigiDocSignature::toCertificate(const std::vector<unsigned char> &der)
 {
 	return QSslCertificate(QByteArray::fromRawData((const char *)der.data(), int(der.size())), QSsl::Der);
 }
 
-QDateTime DigiDocSignature::toTime(const std::string &time) const
+QDateTime DigiDocSignature::toTime(const std::string &time)
 {
 	if(time.empty())
 		return {};
@@ -313,7 +311,7 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 
 void SDocumentModel::addTempReference(const QString &file)
 {
-	doc->m_tempFiles << file;
+	doc->m_tempFiles.append(file);
 }
 
 QString SDocumentModel::data(int row) const
@@ -351,13 +349,13 @@ void SDocumentModel::open(int row)
 	QFileInfo f(save(row, path));
 	if( !f.exists() )
 		return;
-	doc->m_tempFiles << f.absoluteFilePath();
+	doc->m_tempFiles.append(f.absoluteFilePath());
 #if defined(Q_OS_WIN)
 	::SetFileAttributesW(f.absoluteFilePath().toStdWString().c_str(), FILE_ATTRIBUTE_READONLY);
 #else
 	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
 #endif
-	if(!doc->fileName().endsWith(".pdf", Qt::CaseInsensitive) && FileDialog::isSignedPDF(f.absoluteFilePath()))
+	if(!doc->fileName().endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(f.absoluteFilePath()))
 		qApp->showClient({ f.absoluteFilePath() }, false, false, true);
 	else
 		QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
@@ -532,7 +530,7 @@ bool DigiDoc::open( const QString &file )
 					f->saveAs(to(tmppath));
 					if(QFileInfo::exists(tmppath))
 					{
-						m_tempFiles << tmppath;
+						m_tempFiles.append(tmppath);
 						try {
 							parentContainer = std::exchange(b, Container::openPtr(to(tmppath)));
 						} catch(const Exception &) {}
@@ -572,7 +570,7 @@ bool DigiDoc::open( const QString &file )
 
 void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
 {
-	causes << QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg()));
+	causes.append(QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg())));
 	switch( e.code() )
 	{
 	case Exception::CertificateRevoked:
