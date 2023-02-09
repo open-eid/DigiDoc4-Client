@@ -20,10 +20,8 @@
 #include "FirstRun.h"
 #include "ui_FirstRun.h"
 
-#include "MainWindow.h"
+#include "Settings.h"
 #include "Styles.h"
-
-#include <common/Common.h>
 
 #include <QKeyEvent>
 #include <QPixmap>
@@ -43,7 +41,6 @@ FirstRun::FirstRun(QWidget *parent)
 		move(parent->geometry().center() - geometry().center());
 
 	auto buttonFont = Styles::font(Styles::Condensed, 14);
-	auto labelFont = Styles::font(Styles::Regular, 18);
 	auto dmLabelFont = Styles::font(Styles::Regular, 18);
 	auto regular12 = Styles::font(Styles::Regular, 12);
 	auto regular14 = Styles::font(Styles::Regular, 14);
@@ -58,11 +55,11 @@ FirstRun::FirstRun(QWidget *parent)
 	ui->lang->setFont(regular14);
 	ui->lang->addItem(QStringLiteral("Eesti keel"));
 	ui->lang->addItem(QStringLiteral("English"));
-	ui->lang->addItem("Русский язык"); //QStringLiteral breaks windows text
+	ui->lang->addItem(QString::fromUtf8("Русский язык")); //QStringLiteral breaks windows text
 
-	if(Common::language() == QStringLiteral("en"))
+	if(Settings::LANGUAGE == QLatin1String("en"))
 		ui->lang->setCurrentIndex(1);
-	else if(Common::language() == QStringLiteral("ru"))
+	else if(Settings::LANGUAGE == QLatin1String("ru"))
 		ui->lang->setCurrentIndex(2);
 	else
 		ui->lang->setCurrentIndex(0);
@@ -79,8 +76,7 @@ FirstRun::FirstRun(QWidget *parent)
 	});
 	ui->continueBtn->setFont(buttonFont);
 
-	QSvgWidget* coatOfArs = new QSvgWidget(QStringLiteral(":/images/Logo_Suur.svg"), ui->coatOfArms);
-	coatOfArs->show();
+	ui->coatOfArms->load(QStringLiteral(":/images/Logo_Suur.svg"));
 	ui->leaves->load(QStringLiteral(":/images/vapilehed.svg"));
 	ui->structureFunds->load(QStringLiteral(":/images/Struktuurifondid.svg"));
 
@@ -190,7 +186,7 @@ void FirstRun::keyPressEvent(QKeyEvent *event)
 
 void FirstRun::loadImages()
 {
-	QString lang = Common::language();
+	QString lang = Settings::LANGUAGE;
 	auto loadPixmap = [lang](const QString &base, QLabel *label) {
 		label->setPixmap(QPixmap(QStringLiteral(":/images/%1_%2.png").arg(base, lang)));
 	};

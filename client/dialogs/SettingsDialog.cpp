@@ -529,7 +529,7 @@ QSslCertificate SettingsDialog::selectCert(const QString &label, const QString &
 void SettingsDialog::selectLanguage()
 {
 	for(QAbstractButton *button: ui->langGroup->buttons())
-		button->setChecked(button->property("lang").toString() == Common::language());
+		button->setChecked(button->property("lang").toString() == Settings::LANGUAGE);
 }
 
 void SettingsDialog::setProxyEnabled()

@@ -70,7 +70,12 @@ const Option<bool, bool (*)()> Settings::TSA_URL_CUSTOM
 	{ QStringLiteral("TSA-URL-CUSTOM"), [] { return Settings::TSA_URL.isSet(); } };
 
 const Option<QString> Settings::DEFAULT_DIR { QStringLiteral("DefaultDir") };
-const Option<QString> Settings::LANGUAGE { QStringLiteral("Language") };
+const Option<QString, QString (*)()> Settings::LANGUAGE { QStringLiteral("Language"), [] {
+	auto languages = QLocale().uiLanguages();
+	if(languages.first().contains(QLatin1String("et"), Qt::CaseInsensitive)) return QStringLiteral("et");
+	if(languages.first().contains(QLatin1String("ru"), Qt::CaseInsensitive)) return QStringLiteral("ru");
+	return QStringLiteral("en");
+}};
 const Option<QString> Settings::LAST_PATH { QStringLiteral("lastPath") };
 const Option<bool> Settings::LIBDIGIDOCPP_DEBUG { QStringLiteral("LibdigidocppDebug"), false };
 const Option<bool> Settings::SETTINGS_MIGRATED { QStringLiteral("SettingsMigrated"), false };

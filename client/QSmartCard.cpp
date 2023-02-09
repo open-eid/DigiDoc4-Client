@@ -18,13 +18,13 @@
  */
 
 #include "QSmartCard_p.h"
+
 #include "QCardLock.h"
 #include "IKValidator.h"
+#include "Settings.h"
+#include "Utils.h"
 #include "dialogs/PinPopup.h"
 #include "dialogs/PinUnblock.h"
-#include "Utils.h"
-
-#include <common/Common.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -32,7 +32,6 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
-#include <QtWidgets/QApplication>
 #include <QTextCodec>
 
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
@@ -90,7 +89,7 @@ QString QSmartCardData::typeString(QSmartCardData::PinType type)
 	case Pin2Type: return QStringLiteral("PIN2");
 	case PukType: return QStringLiteral("PUK");
 	}
-	return QString();
+	return {};
 }
 
 
@@ -104,14 +103,14 @@ const QByteArray Card::REPLACE = APDU("002C0000 00");
 const QByteArray Card::VERIFY = APDU("00200000 00");
 
 QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByteArray &apdu,
-	QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN) const
+	QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN)
 {
 	if(!reader->isPinPad())
 		return reader->transfer(apdu);
 	quint16 language = 0x0000;
-	if(Common::language() == QLatin1String("en")) language = 0x0409;
-	else if(Common::language() == QLatin1String("et")) language = 0x0425;
-	else if(Common::language() == QLatin1String("ru")) language = 0x0419;
+	if(Settings::LANGUAGE == QLatin1String("en")) language = 0x0409;
+	else if(Settings::LANGUAGE == QLatin1String("et")) language = 0x0425;
+	else if(Settings::LANGUAGE == QLatin1String("ru")) language = 0x0419;
 	return waitFor(&QPCSCReader::transferCTL, reader,
 		apdu, verify, language, QSmartCardData::minPinLen(type), newPINOffset, requestCurrentPIN);
 }
@@ -119,31 +118,9 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 
 
 const QByteArray EstEIDCard::AID35 = APDU("00A40400 0F D23300000045737445494420763335");
-const QByteArray EstEIDCard::UPDATER_AID = APDU("00A40400 0A D2330000005550443101");
 const QByteArray EstEIDCard::ESTEIDDF = APDU("00A4010C 02 EEEE");
 const QByteArray EstEIDCard::PERSONALDATA = APDU("00A4020C 02 5044");
-QTextCodec* EstEIDCard::codec = QTextCodec::codecForName("Windows-1252");
-
-QString EstEIDCard::cardNR(QPCSCReader *reader)
-{
-	if(!reader->transfer(MASTER_FILE))
-	{	// Master file selection failed, test if it is updater applet
-		if(!reader->transfer(UPDATER_AID))
-			return QString(); // Updater applet not found
-		if(!reader->transfer(MASTER_FILE))
-		{	//Found updater applet but cannot select master file, select back 3.5
-			reader->transfer(AID35);
-			return QString();
-		}
-	}
-	if(!reader->transfer(ESTEIDDF) ||
-		!reader->transfer(PERSONALDATA))
-		return QString();
-	QByteArray cardid = READRECORD;
-	cardid[2] = 8;
-	QPCSCReader::Result result = reader->transfer(cardid);
-	return codec->toUnicode(result.data);
-}
+const QTextCodec* EstEIDCard::codec = QTextCodec::codecForName("Windows-1252");
 
 QPCSCReader::Result EstEIDCard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
 {
@@ -171,21 +148,9 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	static const QByteArray SIGNCERT = APDU("00A40200 02 DDCE");
 
 	d->version = isSupported(reader->atr());
-	if(reader->transfer(UPDATER_AID).resultOk())
-	{
-		//Prefer EstEID applet when if it is usable
-		if(!reader->transfer(AID35) ||
-			!reader->transfer(MASTER_FILE))
-		{
-			reader->transfer(UPDATER_AID);
-			d->version = QSmartCardData::VER_USABLEUPDATER;
-		}
-	}
-	else
-		reader->transfer(AID35);
-	if(reader->transfer(MASTER_FILE).resultOk() &&
-		reader->transfer(ESTEIDDF).resultOk() &&
-		d->data.isEmpty() && reader->transfer(PERSONALDATA).resultOk())
+	if(reader->transfer(MASTER_FILE) &&
+		reader->transfer(ESTEIDDF) &&
+		d->data.isEmpty() && reader->transfer(PERSONALDATA))
 	{
 		QByteArray cmd = READRECORD;
 		for(char data = QSmartCardData::SurName; data != QSmartCardData::Comment4; ++data)
@@ -271,7 +236,7 @@ QByteArray EstEIDCard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 {
 	if(!reader->transfer(APDU("0022F301")) || // 00")) || // Compatibilty for some cards // SECENV1
 		!reader->transfer(APDU("002241B8 02 8300"))) //Key reference, 8303801100
-		return QByteArray();
+		return {};
 	QByteArray cmd = MUTUAL_AUTH;
 	cmd[4] = char(dgst.size());
 	cmd.insert(5, dgst);
@@ -348,17 +313,6 @@ const QByteArray IDEMIACard::AID = APDU("00A40400 10 A000000077010800070000FE000
 const QByteArray IDEMIACard::AID_OT = APDU("00A4040C 0D E828BD080FF2504F5420415750");
 const QByteArray IDEMIACard::AID_QSCD = APDU("00A4040C 10 51534344204170706C69636174696F6E");
 
-QString IDEMIACard::cardNR(QPCSCReader *reader)
-{
-	QPCSCReader::Result result;
-	if(!reader->transfer(AID) ||
-		!reader->transfer(MASTER_FILE) ||
-		!reader->transfer(APDU("00A4010C02D003")) ||
-		!(result = reader->transfer(READBINARY)))
-		return QString();
-	return QString::fromUtf8(result.data.mid(2));
-}
-
 QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
 {
 	QByteArray cmd = CHANGE;
@@ -393,7 +347,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	if(!reader->transfer(AID) ||
 		!reader->transfer(MASTER_FILE))
 		return false;
-	if(d->data.isEmpty() && reader->transfer(APDU("00A4010C025000")).resultOk())
+	if(d->data.isEmpty() && reader->transfer(APDU("00A4010C025000")))
 	{
 		QByteArray cmd = APDU("00A4010C025001");
 		for(char data = 1; data <= 15; ++data)
@@ -480,7 +434,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	return updateCounters(reader, d);
 }
 
-QByteArray IDEMIACard::pinTemplate(const QString &pin) const
+QByteArray IDEMIACard::pinTemplate(const QString &pin)
 {
 	QByteArray result = pin.toUtf8();
 	result += QByteArray(12 - result.size(), char(0xFF));
@@ -511,7 +465,7 @@ QByteArray IDEMIACard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 {
 	if(!reader->transfer(AID_OT) ||
 		!reader->transfer(APDU("002241A4 09 8004FF200800840181")))
-		return QByteArray();
+		return {};
 	QByteArray cmd = MUTUAL_AUTH;
 	cmd[4] = char(std::min<size_t>(size_t(dgst.size()), 0x30));
 	cmd.insert(5, dgst.left(0x30));
@@ -523,15 +477,12 @@ bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) c
 	d->usage[QSmartCardData::Pin1Type] = 0;
 	d->usage[QSmartCardData::Pin2Type] = 0;
 	reader->transfer(AID);
-	QPCSCReader::Result data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810102A08000"));
-	if(data.resultOk())
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810102A08000")))
 		d->retry[QSmartCardData::Pin1Type] = quint8(data.data[13]);
-	data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810202A08000"));
-	if(data.resultOk())
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810202A08000")))
 		d->retry[QSmartCardData::PukType] = quint8(data.data[13]);
 	reader->transfer(AID_QSCD);
-	data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810502A08000"));
-	if(data.resultOk())
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810502A08000")))
 		d->retry[QSmartCardData::Pin2Type] = quint8(data.data[13]);
 	return true;
 }
