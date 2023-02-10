@@ -202,10 +202,6 @@
         <translation>Caught exception!</translation>
     </message>
     <message>
-        <source>New Crypto window</source>
-        <translation>New Crypto window</translation>
-    </message>
-    <message>
         <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/&quot;&gt;Additional information&lt;/a&gt;</source>
         <translation>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
@@ -252,6 +248,10 @@
     <message>
         <source>https://www.id.ee/en/article/install-id-software/</source>
         <translation>https://www.id.ee/en/article/install-id-software/</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/id-help/</source>
+        <translation>https://www.id.ee/en/id-help/</translation>
     </message>
 </context>
 <context>

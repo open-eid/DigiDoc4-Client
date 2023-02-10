@@ -64,33 +64,32 @@ public:
 #endif
 	Configuration *conf();
 	void loadTranslation( const QString &lang );
-	QWidget* mainWindow();
 	bool notify(QObject *object, QEvent *event ) final;
-	void openHelp();
 	QSigner* signer() const;
 	int run();
 	void waitForTSL( const QString &file );
 
-	static void initDiagnosticConf();
-	static uint readTSLVersion(const QString &path);
 	static void addRecent( const QString &file );
 	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
 	static void clearConfValue( ConfParameter parameter );
+	static void initDiagnosticConf();
+	static QWidget* mainWindow();
+	static void openHelp();
+	static uint readTSLVersion(const QString &path);
 	static void setConfValue( ConfParameter parameter, const QVariant &value );
 
 public Q_SLOTS:
-	void showAbout();
-	void showSettings();
 	void showClient(const QStringList &params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
-	void showWarning(const QString &msg, const QString &details = {});
+	static void showWarning(const QString &msg, const QString &details = {});
 
 private Q_SLOTS:
-	void browse( const QUrl &url );
-	void closeWindow();
-	void mailTo( const QUrl &url );
 	void parseArgs(const QString &msg = {});
-	void parseArgs( const QStringList &args );
-	void showTSLWarning( QEventLoop *e );
+	void parseArgs(const QStringList &args);
+	static void browse(const QUrl &url);
+	static void mailTo(const QUrl &url);
+	static void showAbout();
+	static void showSettings();
+	static void showTSLWarning( QEventLoop *e );
 
 Q_SIGNALS:
 	void TSLLoadingFinished();
@@ -98,13 +97,13 @@ Q_SIGNALS:
 private:
 	void activate( QWidget *w );
 	bool event(QEvent *event) final;
-	void migrateSettings();
+	static void closeWindow();
+	static void migrateSettings();
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
-	QWidget* uniqueRoot();
-
+	static QWidget* uniqueRoot();
 #if defined(Q_OS_MAC)
-	void initMacEvents();
-	void deinitMacEvents();
+	static void initMacEvents();
+	static void deinitMacEvents();
 #endif
 
 	static const QStringList CONTAINER_EXT;
