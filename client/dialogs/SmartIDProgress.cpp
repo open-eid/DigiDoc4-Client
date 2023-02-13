@@ -41,10 +41,8 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#ifdef QT_WIN_EXTRAS
-#include <QtWinExtras/QWinTaskbarButton>
-#include <QtWinExtras/QWinTaskbarProgress>
-#endif
+
+#include <chrono>
 
 Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
 
@@ -61,8 +59,9 @@ public:
 		QDialog::setVisible(visible);
 		if(!visible && hider) hider.reset();
 	}
-	QTimeLine *statusTimer {};
-	QNetworkAccessManager *manager {};
+	QTimer *timer{};
+	QTimeLine *statusTimer{};
+	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	QNetworkRequest req;
 	QString documentNumber, sessionID, fileName;
 	X509Cert cert;
@@ -72,9 +71,6 @@ public:
 	QString UUID = useCustomUUID ? Settings::SID_UUID : QString();
 	QString NAME = Settings::SID_NAME;
 	QString URL = !UUID.isNull() && useCustomUUID ? Settings::SID_SK_URL : Settings::SID_PROXY_URL;
-#ifdef QT_WIN_EXTRAS
-	QWinTaskbarButton *taskbar {};
-#endif
 	std::unique_ptr<WaitDialogHider> hider;
 };
 
@@ -84,7 +80,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	: d(new Private(parent))
 {
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
+		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
@@ -117,26 +113,19 @@ background-color: #007aff;
 	d->statusTimer->setEasingCurve(QEasingCurve::Linear);
 	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
-#ifdef QT_WIN_EXTRAS
-	d->taskbar = new QWinTaskbarButton(d);
-	d->taskbar->setWindow(parent->windowHandle());
-	d->taskbar->progress()->setRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
-	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->taskbar->progress(), &QWinTaskbarProgress::setValue);
-#endif
 
-	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
-	ssl.setCaCertificates({});
-	for(const QJsonValue c: qApp->confValue(QLatin1String("CERT-BUNDLE")).toArray())
-		trusted.append(QSslCertificate(QByteArray::fromBase64(c.toString().toLatin1()), QSsl::Der));
-#endif
+	QList<QSslCertificate> trusted;
+	for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
+		trusted.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
+	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+	ssl.setCaCertificates(trusted);
 	d->req.setSslConfiguration(ssl);
+#endif
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
-	d->manager = new QNetworkAccessManager(d);
-	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [=](QNetworkReply *reply, const QList<QSslError> &err) {
+		.arg(QApplication::applicationName(), QApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [](QNetworkReply *reply, const QList<QSslError> &err) {
 		QList<QSslError> ignore;
 		for(const QSslError &e: err)
 		{
@@ -145,7 +134,7 @@ background-color: #007aff;
 			case QSslError::UnableToGetLocalIssuerCertificate:
 			case QSslError::CertificateUntrusted:
 			case QSslError::SelfSignedCertificateInChain:
-				if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
+				if(reply->sslConfiguration().caCertificates().contains(reply->sslConfiguration().peerCertificate())) {
 					ignore << e;
 					break;
 				}
@@ -161,6 +150,9 @@ background-color: #007aff;
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
 		auto returnError = [=](const QString &err, const QString &details = {}) {
 			qCWarning(SIDLog) << err;
+			d->statusTimer->stop();
+			delete d->timer;
+			d->timer = nullptr;
 			d->hide();
 			auto *dlg = WarningDialog::show(d->parentWidget(), err, details);
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
@@ -207,8 +199,7 @@ background-color: #007aff;
 				return returnError(tr("Failed to send request. %1 service has encountered technical errors. Please try again later.").arg(QLatin1String("Smart-ID")), reply->errorString());
 			}
 		}
-		static const QStringList contentType{QStringLiteral("application/json"), QStringLiteral("application/json;charset=UTF-8")};
-		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
+		if(!reply->header(QNetworkRequest::ContentTypeHeader).toString().startsWith(QLatin1String("application/json")))
 			return returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
 
 		QByteArray data = reply->readAll();
@@ -262,8 +253,6 @@ background-color: #007aff;
 				}
 			}
 			return;
-		} else {
-			d->show();
 		}
 		d->req.setUrl(QUrl(QStringLiteral("%1/session/%2?timeoutMs=10000").arg(d->URL, d->sessionID)));
 		qCDebug(SIDLog).noquote() << d->req.url();
@@ -312,6 +301,11 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 	d->code->setAccessibleName(d->info->text());
 	d->statusTimer->start();
 	d->adjustSize();
+	d->timer = new QTimer(d);
+	d->timer->setSingleShot(true);
+	QObject::connect(d->timer, &QTimer::timeout, d, &SmartIDProgress::Private::show);
+	using namespace std::chrono;
+	d->timer->start(3s);
 	return d->l.exec() == QDialog::Accepted;
 }
 
@@ -375,15 +369,6 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 	default:
 		throw Exception(__FILE__, __LINE__, "Failed to sign container");
 	}
-}
-
-void SmartIDProgress::stop()
-{
-	d->statusTimer->stop();
-#ifdef QT_WIN_EXTRAS
-	d->taskbar->progress()->stop();
-	d->taskbar->progress()->hide();
-#endif
 }
 
 #include "SmartIDProgress.moc"

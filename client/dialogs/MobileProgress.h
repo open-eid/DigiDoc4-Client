@@ -37,8 +37,6 @@ public:
 	std::vector<unsigned char> sign(const std::string &method, const std::vector<unsigned char> &digest) const final;
 
 private:
-	void stop();
-
 	class Private;
 	Private *d;
 };
