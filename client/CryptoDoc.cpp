@@ -802,8 +802,7 @@ void CryptoDoc::Private::writeDDoc(QIODevice *ddoc)
 
 CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
 : d( doc )
-{
-}
+{}
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
 {
@@ -813,12 +812,12 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		WarningDialog::show(qApp->activeWindow(), tr("Cannot add empty file to the container."));
+		d->showError(DocumentModel::tr("Cannot add empty file to the container."));
 		return false;
 	}
 	if(info.size() > 120*1024*1024)
 	{
-		WarningDialog::show(qApp->activeWindow(), tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
+		d->showError(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
 			"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
 		return false;
 	}
@@ -829,7 +828,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 		qDebug() << containerFile.name << " vs " << file;
 		if(containerFile.name == fileName)
 		{
-			WarningDialog::show(qApp->activeWindow(), DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
+			d->showError(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
 				.arg(FileDialog::normalized(fileName)));
 			return false;
 		}

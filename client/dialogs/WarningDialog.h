@@ -32,7 +32,7 @@ class WarningDialog : public QDialog
 	Q_OBJECT
 
 public:
-	WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
+	explicit WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
 	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
 	~WarningDialog() override;
 

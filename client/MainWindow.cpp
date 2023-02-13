@@ -1179,8 +1179,8 @@ void MainWindow::containerSummary()
 #ifdef Q_OS_WIN
 	if( QPrinterInfo::availablePrinterNames().isEmpty() )
 	{
-		qApp->showWarning(
-			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!") );
+		WarningDialog::show(this,
+			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
 		return;
 	}
 #endif

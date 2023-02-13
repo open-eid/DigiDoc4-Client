@@ -50,7 +50,6 @@ public:
 		LicenseSettings
 	};
 
-	explicit SettingsDialog(QWidget *parent = nullptr);
 	explicit SettingsDialog(int page, QWidget *parent = nullptr);
 	~SettingsDialog() final;
 

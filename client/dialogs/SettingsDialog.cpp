@@ -56,14 +56,14 @@
 
 #define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())
 
-SettingsDialog::SettingsDialog(QWidget *parent)
+SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SettingsDialog)
 {
 	new Overlay(this, parent);
 
 	ui->setupUi(this);
-	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+	setWindowFlag(Qt::FramelessWindowHint);
 	move(parent->geometry().center() - geometry().center());
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -249,7 +249,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 		ui->btnNavSaveLibdigidocpp->hide();
 	});
 #ifdef Q_OS_WIN
-	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [] {
+	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 		QList<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
@@ -263,7 +263,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
 				s.remove( c );
 		}
-		qApp->showWarning( tr("Redundant certificates have been successfully removed.") );
+		WarningDialog::show(this, tr("Redundant certificates have been successfully removed."));
 	});
 #endif
 
@@ -278,11 +278,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	initFunctionality();
 	updateVersion();
 	updateDiagnostics();
-}
-
-SettingsDialog::SettingsDialog(int page, QWidget *parent)
-	: SettingsDialog(parent)
-{
 	showPage(page);
 }
 
