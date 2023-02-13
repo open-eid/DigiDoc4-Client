@@ -21,19 +21,15 @@
 #include "ui_MobileDialog.h"
 
 #include "IKValidator.h"
+#include "Settings.h"
 #include "Styles.h"
-#include "dialogs/SettingsDialog.h"
 #include "effects/Overlay.h"
-
-#include <QtCore/QSettings>
-
-#define COUNTRY_CODE_EST QStringLiteral("372")
-#define COUNTRY_CODE_LTU QStringLiteral("370")
 
 MobileDialog::MobileDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::MobileDialog)
 {
+	static const QStringList countryCodes {QStringLiteral("372"), QStringLiteral("370")};
 	new Overlay(this, parent);
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
@@ -57,18 +53,18 @@ MobileDialog::MobileDialog(QWidget *parent) :
 
 	// Mobile
 	ui->idCode->setValidator(new NumberValidator(ui->idCode));
-	ui->idCode->setText(QSettings().value(QStringLiteral("MobileCode")).toString());
+	ui->idCode->setText(Settings::MOBILEID_CODE);
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->phoneNo->setValidator(new NumberValidator(ui->phoneNo));
-	ui->phoneNo->setText(QSettings().value(QStringLiteral("MobileNumber"), COUNTRY_CODE_EST).toString());
+	ui->phoneNo->setText(Settings::MOBILEID_NUMBER.value(countryCodes[0]));
 	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, false);
-	ui->cbRemember->setChecked(QSettings().value(QStringLiteral("MobileSettings"), true).toBool());
+	ui->cbRemember->setChecked(Settings::MOBILEID_REMEMBER);
 	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
 	auto saveSettings = [this] {
 		bool checked = ui->cbRemember->isChecked();
-		SettingsDialog::setValueEx(QStringLiteral("MobileSettings"), checked, true);
-		SettingsDialog::setValueEx(QStringLiteral("MobileCode"), checked ? ui->idCode->text() : QString());
-		SettingsDialog::setValueEx(QStringLiteral("MobileNumber"), checked ? ui->phoneNo->text() : QString());
+		Settings::MOBILEID_REMEMBER = checked;
+		Settings::MOBILEID_CODE = checked ? ui->idCode->text() : QString();
+		Settings::MOBILEID_NUMBER = checked ? ui->phoneNo->text() : QString();
 	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);
@@ -76,7 +72,6 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, saveSettings);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
 	connect(ui->sign, &QPushButton::clicked, this, [this] {
-		static const QStringList countryCodes {COUNTRY_CODE_EST, COUNTRY_CODE_LTU};
 		if(!IKValidator::isValid(idCode()))
 		{
 			ui->idCode->setStyleSheet(QStringLiteral("border-color: #c53e3e"));

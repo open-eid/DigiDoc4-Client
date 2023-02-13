@@ -22,9 +22,8 @@
 #include "QPCSC.h"
 
 #ifdef CONFIG_URL
-#include "Configuration.h"
+#include "Settings.h"
 #include <QtCore/QJsonObject>
-#include <QtCore/QSettings>
 #endif
 
 #include <QtCore/QDir>
@@ -38,21 +37,14 @@ void Diagnostics::generalInfo(QTextStream &s)
 		<< "<b>" << "URLs:" << "</b>"
 #ifdef CONFIG_URL
 		<< "<br />CONFIG_URL: " << CONFIG_URL
-		<< "<br />SID-PROXY-URL: " << qApp->conf()->object().value(QStringLiteral("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-PROXY-URL: " << qApp->conf()->object().value(QStringLiteral("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SID-SK-URL: " << qApp->conf()->object().value(QStringLiteral("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-SK-URL: " << qApp->conf()->object().value(QStringLiteral("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />MID-PROXY-URL: " << qApp->conf()->object().value(QStringLiteral("MID-PROXY-URL")).toString(QStringLiteral(MOBILEID_URL))
-		<< "<br />MID-SK-URL: " << qApp->conf()->object().value(QStringLiteral("MID-SK-URL")).toString(QStringLiteral(MOBILEID_URL))
-		<< "<br />RPUUID: " << (QSettings().value(QStringLiteral("MIDUUID-CUSTOM"), QSettings().contains(QStringLiteral("MIDUUID"))).toBool() ? tr("is set manually") : tr("is set by default"))
-#else
-#ifdef MOBILEID_URL
-		<< "<br />MOBILEID_URL: " << MOBILEID_URL
 #endif
-#ifdef SMARTID_URL
-		<< "<br />SMARTID_URL: " << SMARTID_URL
-#endif
-#endif
+		<< "<br />SID-PROXY-URL: " << qApp->confValue(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-PROXY-URL: " << qApp->confValue(QLatin1String("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SID-SK-URL: " << qApp->confValue(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-SK-URL: " << qApp->confValue(QLatin1String("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />MID-PROXY-URL: " << Settings::MID_PROXY_URL
+		<< "<br />MID-SK-URL: " << Settings::MID_SK_URL
+		<< "<br />RPUUID: " << (Settings::MID_UUID_CUSTOM ? tr("is set manually") : tr("is set by default"))
 		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString()
 		<< "<br />TSA_URL: " << qApp->confValue(Application::TSAUrl).toString()
 		<< "<br />SIVA_URL: " << qApp->confValue(Application::SiVaUrl).toString()
@@ -72,7 +64,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 
 #ifdef CONFIG_URL
 	s << "<b>" << tr("Central Configuration") << ":</b>";
-	QJsonObject metainf = qApp->conf()->object().value(QStringLiteral("META-INF")).toObject();
+	QJsonObject metainf = qApp->confValue(QLatin1String("META-INF")).toObject();
 	for(QJsonObject::const_iterator i = metainf.constBegin(), end = metainf.constEnd(); i != end; ++i)
 	{
 		if(i.value().type() == QJsonValue::Double)

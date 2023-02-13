@@ -20,13 +20,13 @@
 #include "FileDialog.h"
 
 #include "Application.h"
+#include "Settings.h"
 #include "dialogs/WarningDialog.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTemporaryFile>
-#include <QtCore/QSettings>
 #include <QtWidgets/QMessageBox>
 
 #include <algorithm>
@@ -40,7 +40,7 @@ class CPtr
 {
 	T *d;
  public:
-	CPtr(T *p = nullptr): d(p) {}
+	explicit CPtr(T *p = {}): d(p) {}
 	~CPtr() { if(d) d->Release(); }
 	inline T* operator->() const { return d; }
 	inline operator T*() const { return d; }
@@ -50,8 +50,12 @@ class CPtr
 
 #include <array>
 
-QString FileDialog::createNewFileName(const QString &file, const QString &extension, const QString &type, const QString &defaultDir, QWidget *parent)
+QString FileDialog::createNewFileName(const QString &file, bool signature, QWidget *parent)
 {
+	const QString extension = signature ? QStringLiteral(".asice") : QStringLiteral(".cdoc");
+	const QString type = signature ? tr("signature container") : tr("crypto container");
+	QString capitalized = type[0].toUpper() + type.mid(1);
+	const QString defaultDir = Settings::DEFAULT_DIR;
 	const QFileInfo f(normalized(file));
 	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
 	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
@@ -61,8 +65,7 @@ QString FileDialog::createNewFileName(const QString &file, const QString &extens
 	if(!QFile::exists(fileName))
 		return fileName;
 #endif
-	QString capitalized = type[0].toUpper() + type.mid(1);
-	fileName = FileDialog::getSaveFileName(parent, Application::tr("Create %1").arg(type), fileName,
+	fileName = FileDialog::getSaveFileName(parent, tr("Create %1").arg(type), fileName,
 		QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 	if(!fileName.isEmpty())
 		QFile::remove(fileName);
@@ -164,13 +167,13 @@ void FileDialog::setFileZone(const QString &path, int zone)
 QString FileDialog::getDir( const QString &dir )
 {
 #ifdef Q_OS_OSX
-	Q_UNUSED(dir);
+	Q_UNUSED(dir)
 	QString path = QSettings().value(QStringLiteral("NSNavLastRootDirectory")).toString();
 	path.replace('~', QDir::homePath());
 	return path;
 #else
-	return !dir.isEmpty() ? dir : QSettings().value("lastPath",
-		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).toString();
+	return !dir.isEmpty() ? dir : Settings::LAST_PATH.value(
+		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
 #endif
 }
 
@@ -302,9 +305,9 @@ QString FileDialog::result( const QString &str )
 {
 #ifndef Q_OS_OSX
 	if(!str.isEmpty())
-		QSettings().setValue("lastPath", QFileInfo(str).absolutePath());
+		Settings::LAST_PATH = QFileInfo(str).absolutePath();
 #else
-	QSettings().remove(QStringLiteral("lastPath"));
+	Settings::LAST_PATH.clear();
 #endif
 	return str;
 }
@@ -313,7 +316,7 @@ QStringList FileDialog::result( const QStringList &list )
 {
 	QStringList l;
 	for( const QString &str: list )
-		l << result( str );
+		l.append(result(str));
 	return l;
 }
 

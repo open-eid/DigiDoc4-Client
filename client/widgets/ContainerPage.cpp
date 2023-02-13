@@ -22,6 +22,7 @@
 
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
+#include "Settings.h"
 #include "Styles.h"
 #include "SslCertificate.h"
 #include "dialogs/AddRecipients.h"
@@ -37,8 +38,6 @@
 #include <QFileInfo>
 #include <QFontMetrics>
 #include <QMessageBox>
-
-#include <QtCore/QSettings>
 
 using namespace ria::qdigidoc4;
 
@@ -63,7 +62,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	ui->summary->init( LabelButton::BoxedDeepCerulean, tr("PRINT SUMMARY"), Actions::ContainerSummary );
 	ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
 
-	mobileCode = QSettings().value(QStringLiteral("MobileCode")).toString();
+	mobileCode = Settings::MOBILEID_CODE;
 
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
 	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
@@ -82,7 +81,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
 		{ emit action(Actions::ContainerNavigate, link); });
 
-	ui->summary->setVisible(QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool());
+	ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 }
 
 ContainerPage::~ContainerPage()
@@ -126,7 +125,7 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 		if(ui->rightPane->hasItem(
 			[selectedCard, selectedMobile, code](Item* const item) -> bool
 			{
-				auto signatureItem = qobject_cast<SignatureItem* const>(item);
+				auto *signatureItem = qobject_cast<SignatureItem* const>(item);
 				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureMobile) ? selectedMobile: QString());
 			}
 		))
@@ -179,15 +178,13 @@ void ContainerPage::forward(int code)
 	{
 	case SignatureMobile:
 	{
-		MobileDialog dlg(this);
-		QString newCode = QSettings().value(QStringLiteral("MobileCode")).toString();
-		if(dlg.exec() == QDialog::Accepted)
+		if(MobileDialog dlg(this); dlg.exec() == QDialog::Accepted)
 		{
 			if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
 				emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
 		}
 
-		if (newCode != mobileCode)
+		if(QString newCode = Settings::MOBILEID_CODE; newCode != mobileCode)
 		{
 			mobileCode = newCode;
 			cardChanged(cardInReader);
@@ -196,15 +193,13 @@ void ContainerPage::forward(int code)
 	}
 	case SignatureSmartID:
 	{
-		SmartIDDialog dlg(this);
-		QString newCode = QSettings().value(QStringLiteral("SmartID")).toString();
-		if(dlg.exec() == QDialog::Accepted)
+		if(SmartIDDialog dlg(this); dlg.exec() == QDialog::Accepted)
 		{
 			if(checkAction(SignatureMobile, dlg.idCode(), {}))
 				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
 		}
 
-		if (newCode != mobileCode)
+		if(QString newCode = Settings::SMARTID_CODE; newCode != mobileCode)
 		{
 			mobileCode = newCode;
 			cardChanged(cardInReader);
@@ -266,7 +261,7 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 {
 	if(!mainAction)
 	{
-		mainAction.reset(new MainAction(this));
+		mainAction = std::make_unique<MainAction>(this);
 		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
 	}
 	mainAction->showActions(actions);
@@ -327,7 +322,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
-			SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
+			auto *item = new SignatureItem(c, container->state(), ui->rightPane);
 			if(c.isInvalid())
 				addError(item);
 			ui->rightPane->addHeaderWidget(item);
@@ -336,7 +331,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	for(const DigiDocSignature &c: container->signatures())
 	{
-		SignatureItem *item = new SignatureItem(c, container->state(), ui->rightPane);
+		auto *item = new SignatureItem(c, container->state(), ui->rightPane);
 		if(c.isInvalid())
 			addError(item);
 		ui->rightPane->addWidget(item);
@@ -391,7 +386,7 @@ void ContainerPage::updatePanes(ContainerState state)
 {
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
-	bool showPrintSummary = QSettings().value(QStringLiteral("ShowPrintSummary"), false).toBool();
+	bool showPrintSummary = Settings::SHOW_PRINT_SUMMARY;
 	auto setButtonsVisible = [](const QVector<QWidget*> &buttons, bool visible) {
 		for(QWidget *button: buttons) button->setVisible(visible);
 	};

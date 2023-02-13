@@ -21,17 +21,15 @@
 #include "ui_SmartIDDialog.h"
 
 #include "IKValidator.h"
+#include "Settings.h"
 #include "Styles.h"
-#include "dialogs/SettingsDialog.h"
 #include "effects/Overlay.h"
-
-#include <QtCore/QSettings>
 
 SmartIDDialog::SmartIDDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SmartIDDialog)
 {
-	static QString EE = QStringLiteral("EE");
+	static const QString &EE = Settings::SMARTID_COUNTRY_LIST[0];
 	new Overlay(this, parent);
 
 	ui->setupUi(this);
@@ -56,20 +54,18 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->sign->setFont(condensed);
 	ui->cancel->setFont(condensed);
 
-	QSettings s;
 	QValidator *ik = new NumberValidator(ui->idCode);
 	ui->idCode->setValidator(ik);
-	ui->idCode->setText(s.value(QStringLiteral("SmartID")).toString());
-	ui->idCountry->setItemData(0, "EE");
-	ui->idCountry->setItemData(1, "LT");
-	ui->idCountry->setItemData(2, "LV");
-	ui->idCountry->setCurrentIndex(ui->idCountry->findData(s.value(QStringLiteral("SmartIDCountry"), QStringLiteral("EE")).toString()));
-	ui->cbRemember->setChecked(s.value(QStringLiteral("SmartIDSettings"), true).toBool());
+	ui->idCode->setText(Settings::SMARTID_CODE);
+	for(int i = 0, count = Settings::SMARTID_COUNTRY_LIST.size(); i < count; ++i)
+		ui->idCountry->setItemData(i, Settings::SMARTID_COUNTRY_LIST[i]);
+	ui->idCountry->setCurrentIndex(ui->idCountry->findData(Settings::SMARTID_COUNTRY));
+	ui->cbRemember->setChecked(Settings::SMARTID_REMEMBER);
 	auto saveSettings = [this]{
 		bool checked = ui->cbRemember->isChecked();
-		SettingsDialog::setValueEx(QStringLiteral("SmartIDSettings"), checked, true);
-		SettingsDialog::setValueEx(QStringLiteral("SmartID"), checked ? idCode() : QString());
-		SettingsDialog::setValueEx(QStringLiteral("SmartIDCountry"), checked ? country() : EE, EE);
+		Settings::SMARTID_REMEMBER = checked;
+		Settings::SMARTID_CODE = checked ? idCode() : QString();
+		Settings::SMARTID_COUNTRY = checked ? country() : EE;
 	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);

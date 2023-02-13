@@ -33,8 +33,7 @@ public:
 
 	using QFileDialog::QFileDialog;
 
-	static QString createNewFileName(const QString &file, const QString &extension,
-		const QString &type, const QString &defaultDir, QWidget *parent);
+	static QString createNewFileName(const QString &file, bool signature, QWidget *parent);
 	static FileType detect(const QString &filename);
 	static bool fileIsWritable( const QString &filename );
 	static QString fileSize( quint64 bytes );

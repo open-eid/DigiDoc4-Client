@@ -43,5 +43,5 @@ signals:
 	void removed(int row);
 
 protected:
-	bool verifyFile(const QString &f);
+	static bool verifyFile(const QString &f);
 };
