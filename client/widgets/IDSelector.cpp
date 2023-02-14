@@ -19,7 +19,9 @@
 
 #include "IDSelector.h"
 
+#include "Application.h"
 #include "DropdownButton.h"
+#include "QSigner.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 
@@ -32,10 +34,10 @@ IDSelector::IDSelector(QWidget *parent)
 	selector->move(9, 32);
 }
 
-void IDSelector::setList(const QString &selectedCard, const QList<TokenData> &cache, Filter filter)
+void IDSelector::setList(const QString &selectedCard, Filter filter)
 {
 	list.clear();
-	for(const TokenData &token: cache)
+	for(const TokenData &token: qApp->signer()->cache())
 	{
 		if(token.card() == selectedCard)
 			continue;

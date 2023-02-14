@@ -124,12 +124,12 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(qApp->signer(), &QSigner::cacheChanged, this, &MainWindow::updateSelector);
 	connect(&QPCSC::instance(), &QPCSC::statusChanged, this, &MainWindow::updateSelector);
 	connect(qApp->signer(), &QSigner::signDataChanged, this, [=](const TokenData &token){
-		updateSelector();
+		updateSelectorData(token);
 		updateMyEID(token);
 		ui->signContainerPage->cardChanged(token.cert());
 	});
 	connect(qApp->signer(), &QSigner::authDataChanged, this, [=](const TokenData &token){
-		updateSelector();
+		updateSelectorData(token);
 		updateMyEID(token);
 		ui->cryptoContainerPage->cardChanged(token.cert());
 		if(cryptoDoc)
@@ -179,7 +179,7 @@ MainWindow::MainWindow( QWidget *parent )
 		ui->infoStack->showPicture(pixmap);
 	});
 
-	updateSelector();
+	updateSelectorData(qApp->signer()->tokensign());
 	updateMyEID(qApp->signer()->tokensign());
 	updateMyEid(qApp->signer()->smartcard()->data());
 	ui->signContainerPage->cardChanged(qApp->signer()->tokensign().cert());
@@ -231,13 +231,13 @@ void MainWindow::adjustDrops()
 	setAcceptDrops(currentState() != SignedContainer);
 }
 
-void MainWindow::browseOnDisk( const QString &fileName )
+void MainWindow::browseOnDisk(const QString &fileName)
 {
 	if(!QFileInfo::exists(fileName))
 		return;
 	QUrl url = QUrl::fromLocalFile( fileName );
 	url.setScheme(QStringLiteral("browse"));
-	QDesktopServices::openUrl( url );
+	QDesktopServices::openUrl(url);
 }
 
 void MainWindow::changeEvent(QEvent* event)
@@ -320,7 +320,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 		event->ignore();
 }
 
-QStringList MainWindow::dropEventFiles(QDropEvent *event) const
+QStringList MainWindow::dropEventFiles(QDropEvent *event)
 {
 	QStringList files;
 	const QList<QUrl> urls = event->mimeData()->urls();
@@ -502,7 +502,7 @@ void MainWindow::convertToBDoc()
 	if(!wrap(cryptoDoc->fileName(), cryptoDoc->state() == EncryptedContainer))
 		return;
 
-	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 	notification->start( tr("Converted to signed document!"), 750, 3000, 1200 );
 }
 
@@ -530,7 +530,7 @@ void MainWindow::convertToCDoc()
 	ui->cryptoContainerPage->transition(cryptoDoc,  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
-	FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 	notification->start( tr("Converted to crypto container!"), 750, 3000, 1200 );
 }
 
@@ -565,8 +565,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(decrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-
-			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+			auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 			notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
@@ -574,8 +573,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(encrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-
-			FadeInNotification* notification = new FadeInNotification( this, WHITE, MANTIS, 110 );
+			auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
@@ -645,9 +643,9 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 			auto fileType = FileDialog::detect(content[0]);
 			if(current == MyEid)
 				page = (fileType == FileDialog::CryptoDocument) ? CryptoDetails : SignDetails;
-			create = forceCreate || !(
-				(fileType == FileDialog::CryptoDocument && page == CryptoDetails) ||
-				(fileType == FileDialog::SignatureDocument && page == SignDetails));
+			create = forceCreate || (
+				(fileType != FileDialog::CryptoDocument || page != CryptoDetails) &&
+				(fileType != FileDialog::SignatureDocument || page != SignDetails));
 		}
 		break;
 	case ContainerState::UnsignedContainer:
@@ -723,9 +721,8 @@ void MainWindow::openContainer(bool signature)
 {
 	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
 	if(signature)
-		filter = filter.arg(
-			QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc") +
-			(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QStringLiteral() : QStringLiteral(" *.pdf")));
+		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
+			.arg(qApp->confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
 	else
 		filter = filter.arg(QLatin1String("*.cdoc"));
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
@@ -846,7 +843,7 @@ void MainWindow::selectPage(Pages page)
 void MainWindow::selectPageIcon( PageIcon* page )
 {
 	ui->rightShadow->raise();
-	for( auto pageIcon: { ui->signature, ui->crypto, ui->myEid } )
+	for(auto *pageIcon: { ui->signature, ui->crypto, ui->myEid })
 	{
 		pageIcon->activate( pageIcon == page );
 	}
@@ -856,12 +853,12 @@ void MainWindow::showCardMenu(bool show)
 {
 	if(show)
 	{
-		CardPopup *cardPopup = new CardPopup(ui->selector->list, this);
+		auto *cardPopup = new CardPopup(ui->selector->list, this);
 		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); }); // .. and hide card popup menu
 		cardPopup->show();
 	}
-	else if(CardPopup *cardPopup = findChild<CardPopup*>()) {
+	else if(auto *cardPopup = findChild<CardPopup*>()) {
 		ui->selector->selector->init();
 		cardPopup->deleteLater();
 	}
@@ -874,10 +871,10 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 		return;
 	static const int height = 94;
 	static const int width = 166;
-	FadeInNotification* notification = new FadeInNotification(this, WHITE, NONE,
+	auto *notification = new FadeInNotification(this, WHITE, NONE,
 		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
 	notification->setFocusPolicy(Qt::NoFocus);
-	QSvgWidget* structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
+	auto *structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
 	structureFunds->show();
 	notification->start({}, 400, 3000, 1100);
@@ -886,7 +883,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 
 void MainWindow::showSettings(int page)
 {
-	if(SettingsDialog *settings = findChild<SettingsDialog*>())
+	if(auto *settings = findChild<SettingsDialog*>())
 	{
 		settings->showPage(page);
 		settings->show();
@@ -907,7 +904,7 @@ void MainWindow::sign(F &&sign)
 {
 	if(!CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
-		FadeInNotification *notification = new FadeInNotification(this, MOJO, MARZIPAN, 110);
+		auto *notification = new FadeInNotification(this, MOJO, MARZIPAN, 110);
 		notification->start(tr("Check internet connection"), 750, 3000, 1200);
 		return;
 	}
@@ -942,7 +939,7 @@ void MainWindow::sign(F &&sign)
 
 	ui->signContainerPage->transition(digiDoc);
 
-	FadeInNotification* notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 	notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
 	adjustDrops();
 }
@@ -963,7 +960,7 @@ void MainWindow::photoClicked()
 	static const QStringList exts{QStringLiteral("jpg"), QStringLiteral("jpeg")};
 	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
 		fileName.append(QStringLiteral(".jpg"));
-	QImage pix = ui->infoStack->property("PICTURE").value<QImage>();
+	auto pix = ui->infoStack->property("PICTURE").value<QImage>();
 	if(!pix.save(fileName))
 		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
@@ -1048,17 +1045,17 @@ void MainWindow::removeSignatureFile(int index)
 	}
 }
 
-void MainWindow::containerToEmail( const QString &fileName )
+void MainWindow::containerToEmail(const QString &fileName)
 {
 	if(!QFileInfo::exists(fileName))
 		return;
 	QUrlQuery q;
-	q.addQueryItem(QStringLiteral("subject"), QFileInfo(fileName).fileName() );
-	q.addQueryItem(QStringLiteral("attachment"), QFileInfo(fileName).absoluteFilePath() );
+	q.addQueryItem(QStringLiteral("subject"), QFileInfo(fileName).fileName());
+	q.addQueryItem(QStringLiteral("attachment"), QFileInfo(fileName).absoluteFilePath());
 	QUrl url;
 	url.setScheme(QStringLiteral("mailto"));
 	url.setQuery(q);
-	QDesktopServices::openUrl( url );
+	QDesktopServices::openUrl(url);
 }
 
 bool MainWindow::validateFiles(const QString &container, const QStringList &files)
@@ -1126,21 +1123,29 @@ bool MainWindow::wrapContainer(bool signing)
 
 void MainWindow::updateSelector()
 {
+	updateSelectorData({});
+}
+
+void MainWindow::updateSelectorData(TokenData data)
+{
 	switch(ui->startScreen->currentIndex())
 	{
 	case SignIntro:
 	case SignDetails:
-		ui->cardInfo->update(qApp->signer()->tokensign(), ui->selector->list.size() > 1);
-		ui->selector->setList(qApp->signer()->tokensign().card(), qApp->signer()->cache(), IDSelector::Signing);
+		if(data.isNull()) data = qApp->signer()->tokensign();
+		ui->cardInfo->update(data, ui->selector->list.size() > 1);
+		ui->selector->setList(data.card(), IDSelector::Signing);
 		break;
 	case CryptoIntro:
 	case CryptoDetails:
-		ui->cardInfo->update(qApp->signer()->tokenauth(), ui->selector->list.size() > 1);
-		ui->selector->setList(qApp->signer()->tokenauth().card(), qApp->signer()->cache(), IDSelector::Decrypting);
+		if(data.isNull()) data = qApp->signer()->tokenauth();
+		ui->cardInfo->update(data, ui->selector->list.size() > 1);
+		ui->selector->setList(data.card(), IDSelector::Decrypting);
 		break;
 	case MyEid:
-		ui->cardInfo->update(qApp->signer()->smartcard()->tokenData(), ui->selector->list.size() > 1);
-		ui->selector->setList(qApp->signer()->smartcard()->tokenData().card(), qApp->signer()->cache(), IDSelector::MyEID);
+		if(data.isNull()) data = qApp->signer()->smartcard()->tokenData();
+		ui->cardInfo->update(data, ui->selector->list.size() > 1);
+		ui->selector->setList(data.card(), IDSelector::MyEID);
 		break;
 	default: break;
 	}
@@ -1162,7 +1167,7 @@ void MainWindow::updateKeys(const QList<CKey> &keys)
 	if(!cryptoDoc)
 		return;
 
-	for(int i = cryptoDoc->keys().size() - 1; i >= 0; i--)
+	for(auto i = cryptoDoc->keys().size() - 1; i >= 0; i--)
 		cryptoDoc->removeKey(i);
 	for(const auto &key: keys)
 		cryptoDoc->addKey(key);

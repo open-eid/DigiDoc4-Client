@@ -70,13 +70,10 @@ protected:
 
 private:
 	void adjustDrops();
-	void browseOnDisk(const QString &fileName);
-	void containerToEmail(const QString &fileName);
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt();
-	QStringList dropEventFiles(QDropEvent *event) const;
 	bool encrypt();
 	void loadPicture();
 	void moveCryptoContainer();
@@ -108,12 +105,17 @@ private:
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateSelector();
+	void updateSelectorData(TokenData data);
 	void updateKeys(const QList<CKey> &keys);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
 	void containerSummary();
+
+	static void browseOnDisk(const QString &fileName);
+	static void containerToEmail(const QString &fileName);
+	static QStringList dropEventFiles(QDropEvent *event);
 
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
