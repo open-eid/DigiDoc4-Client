@@ -4,8 +4,8 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.4.1"
-OPENSSL_VER="1.1.1s"
+QT_VER="6.4.2"
+OPENSSL_VER="1.1.1t"
 OPENLDAP_VER="2.6.3"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
@@ -22,6 +22,7 @@ do
         ;;
     -p|--path)
         BUILD_PATH="$2"
+        : ${OPENSSL_PATH:="${BUILD_PATH}/OpenSSL"}
         shift
         ;;
     -q|--qt)
@@ -42,7 +43,7 @@ do
         echo ""
         echo "Options:"
         echo "  -o or --openssl openssl-path:"
-        echo "     OpenSSL path; default will be built ${OPENSSL_PATH}"
+        echo "     OpenSSL path; default ${OPENSSL_VER} will be built ${OPENSSL_PATH}"
         echo "  -p or --path build-path"
         echo "     folder where the dependencies should be built; default ${BUILD_PATH}"
         echo "  -q or --qt qt-version:"
@@ -60,9 +61,6 @@ do
     shift # past argument or value
 done
 
-if [[ -z "${OPENSSL_PATH}" ]]; then
-   OPENSSL_PATH="${BUILD_PATH}/OpenSSL"
-fi
 QT_PATH=${BUILD_PATH}/Qt-${QT_VER}-OpenSSL
 OPENLDAP_PATH=${BUILD_PATH}/OpenLDAP
 GREY='\033[0;37m'
