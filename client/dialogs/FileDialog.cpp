@@ -261,7 +261,7 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	if( !QFileInfo( res ).isWritable() )
 #endif
 	{
-		WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ), parent).exec();
+		WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ));
 		return {};
 	}
 
@@ -278,7 +278,7 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 			caption, normalized(dir), filter, selectedFilter, options);
 		if( !file.isEmpty() && !fileIsWritable( file ) )
 		{
-			WarningDialog(tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ), parent).exec();
+			WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ));
 		}
 		else
 			break;

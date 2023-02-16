@@ -27,7 +27,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	, ui(new Ui::WarningDialog)
 {
 	ui->setupUi(this);
-	setWindowFlag(Qt::CustomizeWindowHint);
+	setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 
 	connect( ui->cancel, &QPushButton::clicked, this, &WarningDialog::reject );
 	connect( this, &WarningDialog::finished, this, &WarningDialog::close );
@@ -51,8 +51,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)
 	: WarningDialog(text, {}, parent)
-{
-}
+{}
 
 WarningDialog::~WarningDialog()
 {
@@ -72,11 +71,13 @@ void WarningDialog::resetCancelStyle()
 
 void WarningDialog::addButton(const QString& label, int ret, bool red)
 {
-	QPushButton *button = new QPushButton(label, this);
+	auto *button = new QPushButton(label, this);
 	button->setAccessibleName(label.toLower());
 	button->setCursor(ui->cancel->cursor());
 	button->setFont(ui->cancel->font());
-	button->setMinimumSize(std::max<int>(ui->cancel->minimumWidth(), ui->cancel->fontMetrics().boundingRect(label).width() + 16), 34);
+	button->setMinimumSize(
+		std::max<int>(ui->cancel->minimumWidth(), ui->cancel->fontMetrics().boundingRect(label).width() + 16),
+		ui->cancel->minimumHeight());
 
 	if(red) {
 		button->setStyleSheet(QStringLiteral(
@@ -84,26 +85,24 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 			"QPushButton:pressed { background-color: #F24A66; }\n"
 			"QPushButton:hover:!pressed { background-color: #CD2541; }\n"
 			"QPushButton:disabled {background-color: #BEDBED;}"));
-// For Windows this button should be on the left side of the dialog window
-#if defined (Q_OS_WIN)
+#ifdef Q_OS_WIN // For Windows this button should be on the left side of the dialog window
 		setLayoutDirection(Qt::RightToLeft);
 #endif
 	} else {
-// For macOS, Linux and BSD all positive buttons should be on the right side of the dialog window
-#if defined(Q_OS_UNIX)
+#ifdef Q_OS_UNIX // For macOS, Linux and BSD all positive buttons should be on the right side of the dialog window
 		setLayoutDirection(Qt::RightToLeft);
 #endif
 	}
 
-	connect(button, &QPushButton::clicked, [this, ret] {done(ret);});
+	connect(button, &QPushButton::clicked, this, [this, ret] { done(ret); });
 	ui->buttonBarLayout->insertWidget(ui->buttonBarLayout->findChildren<QPushButton>().size() + 1, button);
 }
 
 void WarningDialog::setButtonSize(int width, int margin)
 {
 	ui->buttonBarLayout->setSpacing(margin);
-	ui->cancel->setMinimumSize(width, 34);
-	ui->cancel->setMaximumSize(width, 34);
+	ui->cancel->setMinimumSize(width, ui->cancel->minimumHeight());
+	ui->cancel->setMaximumSize(width, ui->cancel->minimumHeight());
 }
 
 void WarningDialog::setText(const QString& text)
@@ -114,7 +113,7 @@ void WarningDialog::setText(const QString& text)
 
 WarningDialog* WarningDialog::show(QWidget *parent, const QString &text, const QString &details)
 {
-	WarningDialog *dlg = new WarningDialog(text, details, parent);
+	auto *dlg = new WarningDialog(text, details, parent);
 	dlg->setAttribute(Qt::WA_DeleteOnClose);
 	dlg->open();
 	return dlg;

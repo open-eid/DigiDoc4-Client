@@ -257,10 +257,6 @@
         <translation>Failed to save file &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>Cannot add empty file to the container.</source>
-        <translation>Cannot add empty file to the container.</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</translation>
     </message>
@@ -908,6 +904,10 @@
     <message>
         <source>Cannot add file with name &apos;mimetype&apos; to the envelope.</source>
         <translation>Cannot add file with name &apos;mimetype&apos; to the envelope.</translation>
+    </message>
+    <message>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Cannot add empty file to the container.</translation>
     </message>
 </context>
 <context>
@@ -2413,10 +2413,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Failed remove document from container</source>
         <translation>Failed remove document from container</translation>
-    </message>
-    <message>
-        <source>Cannot add empty file to the container.</source>
-        <translation>Cannot add empty file to the container.</translation>
     </message>
 </context>
 <context>

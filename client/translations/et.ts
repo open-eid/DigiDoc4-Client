@@ -257,10 +257,6 @@
         <translation>Faili &apos;%1&apos; salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>Cannot add empty file to the container.</source>
-        <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB). &lt;a href=&apos;https://www.id.ee/artikkel/suuremahuliste-120-mb-failide-krupteerimine/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
     </message>
@@ -908,6 +904,10 @@
     <message>
         <source>Cannot add file with name &apos;mimetype&apos; to the envelope.</source>
         <translation>Faili nimega &quot;mimetype&quot; ei saa lisada ümbrikusse.</translation>
+    </message>
+    <message>
+        <source>Cannot add empty file to the container.</source>
+        <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
     </message>
 </context>
 <context>
@@ -2413,10 +2413,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Cannot add empty file to the container.</source>
-        <translation>Tühja faili ei saa lisada ümbrikusse.</translation>
     </message>
 </context>
 <context>

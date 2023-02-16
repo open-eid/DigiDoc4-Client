@@ -145,7 +145,7 @@ public:
 	ria::qdigidoc4::ContainerState state();
 	QList<DigiDocSignature> timestamps() const;
 
-	static void parseException( const digidoc::Exception &e, QStringList &causes,
+	static QStringList parseException(const digidoc::Exception &e,
 		digidoc::Exception::ExceptionCode &code);
 
 private:

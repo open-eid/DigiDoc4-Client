@@ -76,7 +76,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 {
 	const_cast<QLoggingCategory&>(MIDLog()).setEnabled(QtDebugMsg,
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
-	d->setWindowFlag(Qt::CustomizeWindowHint);
+	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
 	d->code->setBuddy(d->signProgressBar);

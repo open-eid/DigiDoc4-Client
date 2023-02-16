@@ -431,9 +431,8 @@ Application::Application( int &argc, char **argv )
 				Q_EMIT qApp->TSLLoadingFinished();
 				qApp->d->ready = true;
 				if(ex) {
-					QStringList causes;
 					digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
-					DigiDoc::parseException(*ex, causes, code);
+					QStringList causes = DigiDoc::parseException(*ex, code);
 					QMetaObject::invokeMethod( qApp, "showWarning",
 						Q_ARG(QString,tr("Failed to initalize.")), Q_ARG(QString,causes.join('\n')) );
 				}
@@ -615,6 +614,7 @@ QJsonValue Application::confValue(const T &key)
 #ifdef CONFIG_URL
 	return qApp->conf()->object().value(key);
 #else
+	Q_UNUSED(key)
 	return {};
 #endif
 }
@@ -990,18 +990,16 @@ void Application::parseArgs( const QString &msg )
 	parseArgs( params );
 }
 
-void Application::parseArgs( const QStringList &args )
+void Application::parseArgs(QStringList args)
 {
 	bool crypto = args.contains(QLatin1String("-crypto"));
 	bool sign = args.contains(QLatin1String("-sign"));
 	bool newWindow = args.contains(QLatin1String("-newWindow"));
-	QStringList params = args;
-	params.removeAll(QStringLiteral("-sign"));
-	params.removeAll(QStringLiteral("-crypto"));
-	params.removeAll(QStringLiteral("-newWindow"));
-
-	QString suffix = params.size() == 1 ? QFileInfo(params.value(0)).suffix() : QString();
-	showClient(params, crypto || (suffix.compare(QLatin1String("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
+	args.removeAll(QStringLiteral("-sign"));
+	args.removeAll(QStringLiteral("-crypto"));
+	args.removeAll(QStringLiteral("-newWindow"));
+	QString suffix = args.size() == 1 ? QFileInfo(args.value(0)).suffix() : QString();
+	showClient(args, crypto || (suffix.compare(QLatin1String("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
 }
 
 uint Application::readTSLVersion(const QString &path)
@@ -1019,7 +1017,7 @@ uint Application::readTSLVersion(const QString &path)
 		}
 	}
 	return 0;
-};
+}
 
 int Application::run()
 {
@@ -1123,20 +1121,19 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 
 void Application::showTSLWarning(QEventLoop *e)
 {
-	showWarning( tr(
+	auto *dlg = WarningDialog::show(qApp->mainWindow(), tr(
 		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 		"Please check your internet connection and make sure you have the latest ID-software version "
 		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
-		"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>") );
-	e->exit();
+		"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"));
+	connect(dlg, &WarningDialog::finished, e, &QEventLoop::quit);
 }
 
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 {
-	QStringList causes;
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
-	DigiDoc::parseException(e, causes, code);
-	WarningDialog(msg, causes.join('\n'), qApp->mainWindow()).exec();
+	QStringList causes = DigiDoc::parseException(e, code);
+	WarningDialog::show(qApp->mainWindow(), msg, causes.join('\n'));
 }
 
 void Application::showWarning( const QString &msg, const QString &details )

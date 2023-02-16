@@ -171,9 +171,8 @@ QStringList DigiDocSignature::roles() const
 
 void DigiDocSignature::setLastError(const Exception &e)
 {
-	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
-	DigiDoc::parseException(e, causes, code);
+	QStringList causes = DigiDoc::parseException(e, code);
 	m_lastError = code == Exception::OCSPBeforeTimeStamp ?
 		DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation.") :
 		causes.join('\n');
@@ -275,28 +274,27 @@ int DigiDocSignature::warning() const
 SDocumentModel::SDocumentModel(DigiDoc *container)
 : DocumentModel(container)
 , doc(container)
-{
-}
+{}
 
 bool SDocumentModel::addFile(const QString &file, const QString &mime)
 {
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		WarningDialog(tr("Cannot add empty file to the container."), qApp->mainWindow()).exec();
+		WarningDialog::show(qApp->mainWindow(), DocumentModel::tr("Cannot add empty file to the container."));
 		return false;
 	}
 	QString fileName(info.fileName());
 	if(fileName == QStringLiteral("mimetype"))
 	{
-		qApp->showWarning(DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
+		WarningDialog::show(qApp->mainWindow(), DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
 		return false;
 	}
 	for(int row = 0; row < rowCount(); row++)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
-			qApp->showWarning(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
+			WarningDialog::show(qApp->mainWindow(), DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
 				.arg(FileDialog::normalized(fileName)));
 			return false;
 		}
@@ -568,9 +566,9 @@ bool DigiDoc::open( const QString &file )
 	return false;
 }
 
-void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception::ExceptionCode &code)
+QStringList DigiDoc::parseException(const Exception &e, Exception::ExceptionCode &code)
 {
-	causes.append(QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg())));
+	QStringList causes{ QStringLiteral("%1:%2 %3").arg(QFileInfo(from(e.file())).fileName()).arg(e.line()).arg(from(e.msg())) };
 	switch( e.code() )
 	{
 	case Exception::CertificateRevoked:
@@ -592,7 +590,8 @@ void DigiDoc::parseException(const Exception &e, QStringList &causes, Exception:
 	default: break;
 	}
 	for(const Exception &c: e.causes())
-		parseException(c, causes, code);
+		causes.append(parseException(c, code));
+	return causes;
 }
 
 void DigiDoc::removeSignature( unsigned int num )
@@ -640,9 +639,8 @@ bool DigiDoc::saveAs(const QString &filename)
 
 void DigiDoc::setLastError( const QString &msg, const Exception &e )
 {
-	QStringList causes;
 	Exception::ExceptionCode code = Exception::General;
-	parseException(e, causes, code);
+	QStringList causes = parseException(e, code);
 	switch( code )
 	{
 	case Exception::CertificateRevoked:
@@ -699,9 +697,8 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 	}
 	catch( const Exception &e )
 	{
-		QStringList causes;
 		Exception::ExceptionCode code = Exception::General;
-		parseException(e, causes, code);
+		QStringList causes = parseException(e, code);
 		switch(code)
 		{
 		case Exception::PINIncorrect:

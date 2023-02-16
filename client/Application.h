@@ -86,7 +86,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
 	void parseArgs(const QString &msg = {});
-	void parseArgs(const QStringList &args);
+	void parseArgs(QStringList args);
 	static void browse(const QUrl &url);
 	static void mailTo(const QUrl &url);
 	static void showAbout();
