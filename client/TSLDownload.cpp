@@ -74,17 +74,18 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		QFile o(path + "/TSL.qrc");
-		o.open(QFile::WriteOnly);
-		QXmlStreamWriter w(&o);
-		w.writeStartElement(QStringLiteral("RCC"));
-		w.writeStartElement(QStringLiteral("qresource"));
-		w.writeAttribute(QStringLiteral("prefix"), QStringLiteral("TSL"));
-		w.writeTextElement(QStringLiteral("file"), r->request().url().fileName());
-		for(const QString &t: territories)
-			w.writeTextElement(QStringLiteral("file"), t + ".xml");
-		w.writeEndElement();
-		w.writeEndElement();
+		if(QFile o(path + "/TSL.qrc"); o.open(QFile::WriteOnly))
+		{
+			QXmlStreamWriter w(&o);
+			w.writeStartElement(QStringLiteral("RCC"));
+			w.writeStartElement(QStringLiteral("qresource"));
+			w.writeAttribute(QStringLiteral("prefix"), QStringLiteral("TSL"));
+			w.writeTextElement(QStringLiteral("file"), r->request().url().fileName());
+			for(const QString &t: territories)
+				w.writeTextElement(QStringLiteral("file"), t + ".xml");
+			w.writeEndElement();
+			w.writeEndElement();
+		}
 
 		QCoreApplication::quit();
 	});
