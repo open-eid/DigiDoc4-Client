@@ -648,6 +648,10 @@
         <source>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</source>
         <translation>Ümbriku avamine ebaõnnestus. CDOC2 ümbriku avamiseks pead ID-tarkvara uuendama. Paigalda uus ID-tarkvara veebilehelt &lt;a href=&apos;https://www.id.ee/artikkel/paigalda-id-tarkvara/&apos;&gt;www.id.ee&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>An error occurred while opening the document.</source>
+        <translation>Ümbriku avamisel tekkis viga.</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>

@@ -451,16 +451,19 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 		method.clear();
 		mime.clear();
 	}
+	bool atStart = true;
 	while( !xml.atEnd() )
 	{
 		switch(xml.readNext())
 		{
-		case QXmlStreamReader::StartElement: break;
+		case QXmlStreamReader::StartElement:
+			atStart = false;
+			break;
 		case QXmlStreamReader::DTD:
-			qCWarning(CRYPTO) << "XML DTD Declarations are not supported";
+			showError(CryptoDoc::tr("An error occurred while opening the document."), QStringLiteral("XML DTD Declarations are not supported"));
 			return {};
 		case QXmlStreamReader::EntityReference:
-			qCWarning(CRYPTO) << "XML ENTITY References are not supported";
+			showError(CryptoDoc::tr("An error occurred while opening the document."), QStringLiteral("XML ENTITY References are not supported"));
 			return {};
 		default: continue;
 		}
@@ -566,6 +569,12 @@ QByteArray CryptoDoc::Private::readCDoc(QIODevice *cdoc, bool data)
 			keys.append(std::move(key));
 		}
 	}
+	if(xml.hasError() && atStart)
+		showError(CryptoDoc::tr("Failed to open the container. "
+			"You need to update your ID-software in order to open CDOC2 containers. "
+			"Install new ID-software from <a href='https://www.id.ee/en/article/install-id-software/'>www.id.ee</a>."), xml.errorString());
+	else if(xml.hasError())
+		showError(CryptoDoc::tr("An error occurred while opening the document."), xml.errorString());
 	return {};
 }
 
@@ -1178,12 +1187,7 @@ bool CryptoDoc::open( const QString &file )
 	if(QFile cdoc(d->fileName); cdoc.open(QFile::ReadOnly))
 		d->readCDoc(&cdoc, false);
 	if(d->keys.isEmpty())
-	{
-		d->showError(tr("Failed to open the container. "
-			"You need to update your ID-software in order to open CDOC2 containers. "
-			"Install new ID-software from <a href='https://www.id.ee/en/article/install-id-software/'>www.id.ee</a>."));
 		return false;
-	}
 
 	if(d->files.isEmpty() && d->properties.contains(QStringLiteral("Filename")))
 	{
