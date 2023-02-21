@@ -123,7 +123,6 @@ struct Settings
 	static const Option<QString> PROXY_PASS;
 #ifdef Q_OS_MAC
 	static const Option<bool> PROXY_TUNNEL_SSL;
-	static const Option<bool> PKCS12_DISABLE;
 	static const Option<QString> PLUGINS;
 	static const Option<bool> TSL_ONLINE_DIGEST;
 #endif

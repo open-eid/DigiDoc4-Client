@@ -94,8 +94,8 @@ public:
 
 #ifdef CONFIG_URL
 		reload();
-		QTimer::singleShot(0, [] { qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4")); });
-		Configuration::connect(qApp->conf(), &Configuration::finished, [&](bool changed, const QString & /*error*/){
+		QTimer::singleShot(0, qApp->conf(), [] { qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4")); });
+		Configuration::connect(qApp->conf(), &Configuration::finished, [](bool changed, const QString & /*error*/){
 			if(changed)
 				reload();
 		});
@@ -140,8 +140,6 @@ public:
 #ifdef Q_OS_MAC
 	bool proxyTunnelSSL() const final
 	{ return Settings::PROXY_TUNNEL_SSL.value(digidoc::XmlConfCurrent::proxyTunnelSSL()); }
-	bool PKCS12Disable() const final
-	{ return Settings::PKCS12_DISABLE.value(digidoc::XmlConfCurrent::PKCS12Disable()); }
 	std::string TSLCache() const final
 	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
 	bool TSLOnlineDigest() const final
@@ -157,10 +155,6 @@ public:
 	{ Settings::PROXY_PASS = pass; }
 	void setProxyTunnelSSL( bool enable ) final
 	{ Settings::PROXY_TUNNEL_SSL.setValue(enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
-	void setPKCS12Cert( const std::string & /*cert*/) final {}
-	void setPKCS12Pass( const std::string & /*pass*/) final {}
-	void setPKCS12Disable( bool disable ) final
-	{ Settings::PKCS12_DISABLE.setValue(disable, digidoc::XmlConfCurrent::PKCS12Disable()); }
 	void setTSLOnlineDigest( bool enable ) final
 	{ Settings::TSL_ONLINE_DIGEST.setValue(enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
@@ -192,7 +186,7 @@ public:
 
 	digidoc::X509Cert verifyServiceCert() const final
 	{
-		QByteArray cert = fromBase64(obj.value(Settings::SIVA_CERT.KEY));
+		QByteArray cert = fromBase64(Application::confValue(Settings::SIVA_CERT.KEY));
 		return cert.isEmpty() ? digidoc::XmlConfCurrent::verifyServiceCert() : toCert(cert);
 	}
 	std::vector<digidoc::X509Cert> verifyServiceCerts() const final
@@ -210,17 +204,6 @@ public:
 	}
 	void setVerifyServiceUri(const std::string &url) final
 	{ Settings::SIVA_URL = url; }
-
-	std::string ocsp(const std::string &issuer) const final
-	{
-		QJsonObject ocspissuer = obj.value(QStringLiteral("OCSP-URL-ISSUER")).toObject();
-		for(QJsonObject::const_iterator i = ocspissuer.constBegin(); i != ocspissuer.constEnd(); ++i)
-		{
-			if(issuer == i.key().toStdString())
-				return i.value().toString().toStdString();
-		}
-		return valueSystemScope(QLatin1String("OCSP-URL"), digidoc::XmlConfCurrent::ocsp(issuer));
-	}
 
 	bool TSLAllowExpired() const final
 	{
@@ -240,14 +223,13 @@ public:
 
 private:
 #ifdef CONFIG_URL
-	void reload()
+	static void reload()
 	{
-		obj = qApp->conf()->object();
-		if(Settings::TSA_URL == obj.value(Settings::TSA_URL.KEY).toString())
+		if(Settings::TSA_URL == Application::confValue(Settings::TSA_URL.KEY).toString())
 			Settings::TSA_URL.clear(); // Cleanup user conf if it is default url
 		Settings::SETTINGS_MIGRATED.clear();
 		QList<QSslCertificate> list;
-		for(const auto &cert: obj.value(QStringLiteral("CERT-BUNDLE")).toArray())
+		for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
 			list.append(QSslCertificate(fromBase64(cert), QSsl::Der));
 		QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
 		ssl.setCaCertificates(list);
@@ -256,19 +238,21 @@ private:
 #endif
 
 	template<class T>
-	std::string valueSystemScope(const T &key, std::string &&defaultValue) const
+	static std::string valueSystemScope(const T &key, std::string &&defaultValue)
 	{
-		return obj.contains(key) ? obj.value(key).toString().toStdString() : std::forward<std::string>(defaultValue);
+		if(const auto &value = Application::confValue(key); value.isString())
+			return value.toString().toStdString();
+		return std::forward<std::string>(defaultValue);
 	}
 
 	template<typename Option>
-	std::string valueUserScope(const Option &option, std::string &&defaultValue) const
+	static std::string valueUserScope(const Option &option, std::string &&defaultValue)
 	{
 		return option.isSet() ? option : valueSystemScope(option.KEY, std::forward<std::string>(defaultValue));
 	}
 
 	template<typename System, typename Config, class Option>
-	std::string proxyConf(System &&system, const Option &option, Config &&config) const
+	static std::string proxyConf(System &&system, const Option &option, Config &&config)
 	{
 		switch(Settings::PROXY_CONFIG)
 		{
@@ -296,10 +280,10 @@ private:
 		return digidoc::X509Cert((const unsigned char*)der.constData(), size_t(der.size()));
 	}
 
-	std::vector<digidoc::X509Cert> toCerts(QLatin1String key) const
+	static std::vector<digidoc::X509Cert> toCerts(QLatin1String key)
 	{
 		std::vector<digidoc::X509Cert> certs;
-		for(const auto &cert: obj.value(key).toArray())
+		for(const auto &cert: Application::confValue(key).toArray())
 		{
 			QByteArray der = fromBase64(cert);
 			certs.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
@@ -307,9 +291,7 @@ private:
 		return certs;
 	}
 
-	bool	debug = Settings::LIBDIGIDOCPP_DEBUG;
-public:
-	QJsonObject obj;
+	bool debug = Settings::LIBDIGIDOCPP_DEBUG;
 };
 
 class Application::Private
@@ -340,8 +322,8 @@ Application::Application( int &argc, char **argv )
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
 	connect(d->conf, &Configuration::updateReminder,
-			[&](bool /* expired */, const QString & /* title */, const QString &message){
-		WarningDialog::show(qApp->activeWindow(), message);
+			[](bool /* expired */, const QString & /* title */, const QString &message){
+		WarningDialog::show(Application::activeWindow(), message);
 	});
 #endif
 
@@ -365,7 +347,7 @@ Application::Application( int &argc, char **argv )
 	QAccessible::installFactory([](const QString &classname, QObject *object) {
 		QAccessibleInterface *interface = nullptr;
 		if (classname == QLatin1String("QSvgWidget") && object && object->isWidgetType())
-			interface = new QAccessibleWidget(static_cast<QWidget *>(object), QAccessible::StaticText);
+			interface = new QAccessibleWidget(qobject_cast<QWidget *>(object), QAccessible::StaticText);
 		return interface;
 	});
 
@@ -548,37 +530,6 @@ void Application::browse( const QUrl &url )
 	QDesktopServices::openUrl( QUrl::fromLocalFile( QFileInfo( u.toLocalFile() ).absolutePath() ) );
 }
 
-void Application::clearConfValue( ConfParameter parameter )
-{
-	try
-	{
-		auto *i = dynamic_cast<digidoc::XmlConfCurrent*>(digidoc::Conf::instance());
-		if(!i)
-			return;
-		switch( parameter )
-		{
-		case PKCS12Cert: i->setPKCS12Cert( digidoc::Conf().PKCS12Cert() ); break;
-		case PKCS12Pass: i->setPKCS12Pass( digidoc::Conf().PKCS12Pass() ); break;
-		case ProxyHost:
-		case ProxyPort:
-		case ProxyUser:
-		case ProxyPass:
-		case ProxySSL:
-		case PKCS12Disable:
-		case TSLOnlineDigest:
-		case SiVaUrl:
-		case TSAUrl:
-		case TSLCerts:
-		case TSLUrl:
-		case TSLCache: break;
-		}
-	}
-	catch( const digidoc::Exception &e )
-	{
-		showWarning(tr("Caught exception!"), e);
-	}
-}
-
 void Application::closeWindow()
 {
 #ifndef Q_OS_MAC
@@ -624,9 +575,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	case ProxyUser: r = i->proxyUser().c_str(); break;
 	case ProxyPass: r = i->proxyPass().c_str(); break;
 	case ProxySSL: return i->proxyTunnelSSL();
-	case PKCS12Cert: r = i->PKCS12Cert().c_str(); break;
-	case PKCS12Pass: r = i->PKCS12Pass().c_str(); break;
-	case PKCS12Disable: return i->PKCS12Disable();
 	case TSAUrl: r = i->TSUrl().c_str(); break;
 	case TSLUrl: r = i->TSLUrl().c_str(); break;
 	case TSLCache: r = i->TSLCache().c_str(); break;
@@ -910,9 +858,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxySSL: i->setProxyTunnelSSL( value.toBool() ); break;
-		case PKCS12Cert: i->setPKCS12Cert( v.isEmpty()? std::string() : v.constData() ); break;
-		case PKCS12Pass: i->setPKCS12Pass( v.isEmpty()? std::string() : v.constData() ); break;
-		case PKCS12Disable: i->setPKCS12Disable( value.toBool() ); break;
 		case TSLOnlineDigest: i->setTSLOnlineDigest( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
 		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
@@ -982,7 +927,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 
 void Application::showTSLWarning(QEventLoop *e)
 {
-	auto *dlg = WarningDialog::show(qApp->mainWindow(), tr(
+	auto *dlg = WarningDialog::show(mainWindow(), tr(
 		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 		"Please check your internet connection and make sure you have the latest ID-software version "
 		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
@@ -994,7 +939,7 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 {
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	QStringList causes = DigiDoc::parseException(e, code);
-	WarningDialog::show(qApp->mainWindow(), msg, causes.join('\n'));
+	WarningDialog::show(mainWindow(), msg, causes.join('\n'));
 }
 
 void Application::showWarning( const QString &msg, const QString &details )

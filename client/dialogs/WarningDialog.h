@@ -27,14 +27,14 @@ namespace Ui {
 class WarningDialog;
 }
 
-class WarningDialog : public QDialog
+class WarningDialog final: public QDialog
 {
 	Q_OBJECT
 
 public:
 	explicit WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
 	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
-	~WarningDialog() override;
+	~WarningDialog() final;
 
 	void addButton(const QString& label, int ret, bool red = false);
 	void setButtonSize(int width, int margin);

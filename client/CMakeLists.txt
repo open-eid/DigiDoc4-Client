@@ -43,7 +43,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	Settings.cpp
 	SslCertificate.cpp
 	TokenData.cpp
-	dialogs/AccessCert.cpp
 	dialogs/AddRecipients.ui
 	dialogs/AddRecipients.cpp
 	dialogs/CertificateDetails.ui
@@ -167,7 +166,7 @@ if( APPLE )
 	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-	target_link_libraries(${PROJECT_NAME} "-framework Security" "-framework Quartz" "-framework Cocoa" "-fobjc-arc")
+	target_link_libraries(${PROJECT_NAME} "-framework Quartz" "-fobjc-arc")
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROJECT_NAME}>
 		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook
@@ -265,7 +264,6 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/qt.conf appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/798.p12 appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-1_1${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-1_1${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib1.dll appx

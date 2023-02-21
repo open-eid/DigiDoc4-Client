@@ -2,35 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="et_EE">
 <context>
-    <name>AccessCert</name>
-    <message>
-        <source>Failed to save server access certificate file to %1!
-%2</source>
-        <translation>Viga juurdepääsutõendi salvestamisel %1!
-%2</translation>
-    </message>
-    <message>
-        <source>Failed to save server access certificate file to KeyChain!</source>
-        <translation>Viga juurdepääsutõendi salvestamisel võtmehoidjasse!</translation>
-    </message>
-    <message>
-        <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
-        <translation>Juurdepääsutõend aegus %1. Juurdepääsutõendi uuendamiseks pöörduge palun oma asutuse IT-meeskonna poole. Täiendav informatsioon: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1885</translation>
-    </message>
-    <message>
-        <source>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
-        <translation>Juurdepääsutõend aegub %1. Juurdepääsutõendi uuendamiseks pöörduge palun oma asutuse IT-meeskonna poole. Täiendav informatsioon: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; või (+372) 610 1885</translation>
-    </message>
-    <message>
-        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Juurdepääsutõend aegus %1. Juurdepääsutõendi uuendamiseks paigaldage uus ID-tarkvara veebilehelt &lt;a href=&quot;https://www.id.ee/&quot;&gt;www.id.ee&lt;/a&gt;. Lisainfo ID-abiliini telefonil (+372) 666 8888.</translation>
-    </message>
-    <message>
-        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;here&lt;/a&gt;</source>
-        <translation>Peagi on täitumas tasuta allkirjade kuulimiit. Suuremas mahus allkirjastamiseks tuleb sõlmida leping teenusepakkujaga. Loe rohkem &lt;a href=&quot;https://www.id.ee/artikkel/asutustele-kus-allkirjastatakse-digidoc4-kliendi-kaudu-suuremates-kogustes-dokumente/&quot;&gt;siit&lt;/a&gt;</translation>
-    </message>
-</context>
-<context>
     <name>Accordion</name>
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
@@ -2411,10 +2382,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>EEMALDA ÜLELIIGSED SERTIFIKAADID</translation>
     </message>
     <message>
-        <source>INSTALL MANUALLY</source>
-        <translation>PAIGALDA KÄSITSI</translation>
-    </message>
-    <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
         <translation>SALVESTA DIAGNOSTIKA</translation>
     </message>
@@ -2461,34 +2428,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Ask role and address info on signing</source>
         <translation>Küsi rolli ja aadressi igal allkirjastamisel</translation>
-    </message>
-    <message>
-        <source>Access to validity confirmation service</source>
-        <translation>Ligipääs kehtivuskinnitusteenusele</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/en/article/access-certificate-what-is-it/</source>
-        <translation>https://www.id.ee/artikkel/juurdepaasutoend-mis-see-on/</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Juurdepääsutõend</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Ignoreeri juurdepääsutõendit (IP-põhine ligipääs)</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Sisesta juurdepääsutõendi parool.</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Vali juurdepääsutõend</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Vale parool</translation>
     </message>
     <message>
         <source>Access to Time-Stamping service</source>
@@ -2547,10 +2486,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Palun proovi uuesti.</translation>
     </message>
     <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Juurdepääsutõend ei ole paigaldatud.</translation>
-    </message>
-    <message>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Kellele väljastatud: %1&lt;br /&gt;Kehtib kuni: %2 %3</translation>
     </message>
@@ -2569,14 +2504,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Select folder</source>
         <translation>Vali kataloog</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>Juurdepääsutõendid (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Juurdepääsutõendi viga: %1</translation>
     </message>
     <message>
         <source>Save as</source>
@@ -2746,11 +2673,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>Ajatempliteenuse SSL sertifikaat</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <comment>accessCert</comment>
-        <translation>NÄITA TŌENDIT</translation>
     </message>
 </context>
 <context>

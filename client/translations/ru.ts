@@ -2,35 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>AccessCert</name>
-    <message>
-        <source>Failed to save server access certificate file to %1!
-%2</source>
-        <translation>Ошибка при сохранении справки доступа! %1!
-%2</translation>
-    </message>
-    <message>
-        <source>Failed to save server access certificate file to KeyChain!</source>
-        <translation>Не удалось сохранить файл сертификата доступа к серверу в цепочку ключей!</translation>
-    </message>
-    <message>
-        <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
-        <translation>Срок действительности справки доступа истек %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
-    </message>
-    <message>
-        <source>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
-        <translation>Срок действительности справки доступа истекает %1. Чтобы обновить справку доступа, обратитесь в ИТ-отдел Вашей организации. Дополнительная информация: &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; или (+372) 610 1885</translation>
-    </message>
-    <message>
-        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Срок справки доступа истек %1. Для обновления справки доступа установите новое программное обеспечение для ID-карты со страницы &lt;a href=&quot;https://www.id.ee/ru/&quot;&gt;www.id.ee&lt;/a&gt;. Дополнительная информация по справочному телефону ID-карт (+372) 666 8888.</translation>
-    </message>
-    <message>
-        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;here&lt;/a&gt;</source>
-        <translation>Вскоре будет исчерпан ежемесячный лимит бесплатных подписей. Для проставления подписей в больших объемах необходимо заключить договор с поставщиком услуги. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;здесь&lt;/a&gt;</translation>
-    </message>
-</context>
-<context>
     <name>Accordion</name>
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
@@ -2412,10 +2383,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>УДАЛИТЬ СТАРЫЕ СЕРТИФИКАТЫ</translation>
     </message>
     <message>
-        <source>INSTALL MANUALLY</source>
-        <translation>УСТАНОВИТЬ ВРУЧНУЮ</translation>
-    </message>
-    <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
         <translation>СОХРАНИТЬ ДИАГНОСТИКУ</translation>
     </message>
@@ -2462,34 +2429,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Ask role and address info on signing</source>
         <translation>Спросить роль и адрес при каждом подписании</translation>
-    </message>
-    <message>
-        <source>Access to validity confirmation service</source>
-        <translation>Доступ к услуге подтверждения действительности</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/en/article/access-certificate-what-is-it/</source>
-        <translation>https://www.id.ee/ru/artikkel/chto-takoe-sertifikat-dostupa/</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Сертификат доступa</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Игнорировать справку доступа (доступ по IP)</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Введите пароль для сертификата доступа.</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Выберите сертификат доступа</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Неверный пароль</translation>
     </message>
     <message>
         <source>Access to Time-Stamping service</source>
@@ -2548,10 +2487,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Пожалуйста, попробуйте еще раз.</translation>
     </message>
     <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Отсутствует справка доступа.</translation>
-    </message>
-    <message>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Выдан: %1&lt;br /&gt;Действительно до: %2 %3</translation>
     </message>
@@ -2570,14 +2505,6 @@ Additional licenses and components</source>
     <message>
         <source>Select folder</source>
         <translation>Выбрать каталог</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>Справки доступа (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Ошибка справки доступа: %1</translation>
     </message>
     <message>
         <source>Save as</source>
@@ -2747,11 +2674,6 @@ Additional licenses and components</source>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>SSL сертификат службы отметок времени</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <comment>accessCert</comment>
-        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
     </message>
 </context>
 <context>

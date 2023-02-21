@@ -113,35 +113,3 @@ size_t qHash(const SslCertificate &cert);
 #else
 uint qHash(const SslCertificate &cert);
 #endif
-
-class PKCS12Certificate
-{
-public:
-	enum ErrorType
-	{
-		NullError = 0,
-		InvalidPasswordError = 1,
-		FileNotExist = 2,
-		FailedToRead = 3,
-		UnknownError = -1
-	};
-	PKCS12Certificate( QIODevice *device, const QString &pin );
-	PKCS12Certificate( const QByteArray &data, const QString &pin );
-	PKCS12Certificate( const PKCS12Certificate &other );
-	PKCS12Certificate(PKCS12Certificate &&other) Q_DECL_NOEXCEPT;
-	~PKCS12Certificate();
-
-	PKCS12Certificate& operator =(const PKCS12Certificate &other);
-	PKCS12Certificate& operator =(PKCS12Certificate &&other) Q_DECL_NOEXCEPT;
-
-	QSslCertificate certificate() const;
-	ErrorType error() const;
-	QString errorString() const;
-	bool isNull() const;
-
-	static PKCS12Certificate fromPath( const QString &path, const QString &pin );
-
-private:
-	class Private;
-	QSharedDataPointer<Private> d;
-};

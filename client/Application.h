@@ -46,9 +46,6 @@ public:
 		ProxyUser,
 		ProxyPass,
 		ProxySSL,
-		PKCS12Cert,
-		PKCS12Pass,
-		PKCS12Disable,
 		TSAUrl,
 		TSLUrl,
 		TSLCerts,
@@ -73,7 +70,6 @@ public:
 	template<class T>
 	static QJsonValue confValue(const T &key);
 	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
-	static void clearConfValue( ConfParameter parameter );
 	static void initDiagnosticConf();
 	static QWidget* mainWindow();
 	static void openHelp();
