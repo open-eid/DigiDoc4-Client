@@ -127,6 +127,7 @@ public:
 	DocumentModel *documentModel() const;
 	QString fileName() const;
 	bool isAsicS() const;
+	bool isCades() const;
 	bool isPDF() const;
 	bool isModified() const;
 	bool isSupported() const;

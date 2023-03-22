@@ -334,6 +334,8 @@ void ContainerPage::transition(DigiDoc* container)
 		emit warning(UnsupportedDDocWarning);
 	if(container->isAsicS())
 		emit warning(UnsupportedAsicSWarning);
+	if(container->isCades())
+		emit warning(UnsupportedAsicCadesWarning);
 
 	hasEmptyFile = false;
 	for (auto i = 0; i < container->documentModel()->rowCount(); i++)

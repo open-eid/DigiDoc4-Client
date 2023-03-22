@@ -453,6 +453,13 @@ bool DigiDoc::isAsicS() const
 		});
 }
 
+bool DigiDoc::isCades() const
+{
+	return std::any_of(m_signatures.cbegin(), m_signatures.cend(), [](const DigiDocSignature &s) {
+		return s.profile().contains(QLatin1String("CADES"), Qt::CaseInsensitive);
+	});
+}
+
 bool DigiDoc::isPDF() const
 {
 	return b && b->mediaType() == "application/pdf";
@@ -461,7 +468,7 @@ bool DigiDoc::isModified() const { return modified; }
 
 bool DigiDoc::isSupported() const
 {
-	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip";
+	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip" && !isCades();
 }
 
 QString DigiDoc::mediaType() const
