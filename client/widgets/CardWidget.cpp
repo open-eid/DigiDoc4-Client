@@ -40,17 +40,8 @@ CardWidget::CardWidget(bool popup, QWidget *parent)
 	ui->cardCode->installEventFilter(this);
 	ui->cardStatus->setFont( font );
 	ui->cardStatus->installEventFilter(this);
-	ui->cardPhoto->init(LabelButton::None, QString(), CardPhoto);
-	ui->cardPhoto->installEventFilter(this);
-	ui->load->setFont(Styles::font(Styles::Condensed, 9));
-	ui->load->hide();
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
-	ui->contentLayout->setAlignment(ui->cardIcon, Qt::AlignBaseline);
-
-	connect(ui->cardPhoto, &LabelButton::clicked, this, [this] {
-		if(!seal)
-			emit photoClicked();
-	});
+	ui->CardWidgetLayout->setAlignment(ui->cardIcon, Qt::AlignBaseline);
 }
 
 CardWidget::CardWidget(QWidget *parent)
@@ -60,20 +51,6 @@ CardWidget::CardWidget(QWidget *parent)
 CardWidget::~CardWidget()
 {
 	delete ui;
-}
-
-void CardWidget::clearPicture()
-{
-	clearSeal();
-	ui->cardPhoto->clear();
-}
-
-void CardWidget::clearSeal()
-{
-	if(seal)
-		seal->deleteLater();
-	seal = nullptr;
-	ui->cardPhoto->setCursor(QCursor(Qt::PointingHandCursor));
 }
 
 TokenData CardWidget::token() const
@@ -99,32 +76,17 @@ bool CardWidget::event( QEvent *ev )
 
 bool CardWidget::eventFilter(QObject *o, QEvent *e)
 {
-	switch(e->type())
+	if(e->type() == QEvent::MouseButtonRelease &&
+		(o == ui->cardName || o == ui->cardStatus || o == ui->cardCode))
 	{
-	case QEvent::MouseButtonRelease:
-		if(o == ui->cardName || o == ui->cardStatus || o == ui->cardCode)
-		{
-			emit selected(t);
-			return true;
-		}
-		break;
-	case QEvent::HoverEnter:
-		if(o == ui->cardPhoto && !ui->cardPhoto->pixmap() && !seal)
-			ui->load->show();
-		break;
-	case QEvent::HoverLeave:
-		if(o == ui->cardPhoto)
-			ui->load->hide();
-		break;
-	default: break;
+		emit selected(t);
+		return true;
 	}
 	return StyledWidget::eventFilter(o, e);
 }
 
 void CardWidget::update(const TokenData &token, bool multiple)
 {
-	if(t != token)
-		ui->cardPhoto->clear();
 	t = token;
 	SslCertificate c = t.cert();
 	QString id = c.personalCode();
@@ -135,7 +97,6 @@ void CardWidget::update(const TokenData &token, bool multiple)
 	ui->cardName->setAccessibleName(ui->cardName->text().toLower());
 	ui->cardCode->setText(id + "   |");
 	ui->cardCode->setAccessibleName(id);
-	ui->load->setText(tr("LOAD"));
 
 	int type = c.type();
 	QString typeString = tr("ID-card");
@@ -155,25 +116,4 @@ void CardWidget::update(const TokenData &token, bool multiple)
 
 	ui->cardStatus->setText(typeString);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
-	ui->cardPhoto->setHidden(c.type() & SslCertificate::EResidentSubType);
-	ui->horizontalSpacer->changeSize(ui->cardPhoto->isVisible() ? 10 : 1, 20, QSizePolicy::Fixed);
-
-	clearSeal();
-	if(type & SslCertificate::TempelType)
-	{
-		ui->cardPhoto->clear();
-		seal = new QSvgWidget(ui->cardPhoto);
-		seal->load(QStringLiteral(":/images/icon_digitempel.svg"));
-		seal->resize(32, 32);
-		seal->move(1, 6);
-		seal->show();
-		seal->setStyleSheet(QStringLiteral("border: none;"));
-		ui->cardPhoto->unsetCursor();
-	}
-}
-
-void CardWidget::showPicture( const QPixmap &pix )
-{
-	clearSeal();
-	ui->cardPhoto->setPixmap(pix.scaled(ui->cardPhoto->width(), ui->cardPhoto->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }

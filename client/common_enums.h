@@ -39,8 +39,6 @@ enum ContainerState {
 enum Actions {
     AddressAdd,
 
-    CardPhoto,
-
     ContainerCancel,
     ContainerConvert,
     ContainerEncrypt,

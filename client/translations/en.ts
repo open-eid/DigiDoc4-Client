@@ -264,10 +264,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>LOAD</source>
-        <translation>LOAD</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-card</translation>
     </message>
@@ -278,16 +274,6 @@
     <message>
         <source>e-Seal</source>
         <translation>e-Seal</translation>
-    </message>
-    <message>
-        <source>Load picture</source>
-        <extracomment>accessible</extracomment>
-        <translation>Load picture</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <extracomment>accessible</extracomment>
-        <translation>Load</translation>
     </message>
     <message>
         <source>Certificate for Encryption</source>
@@ -890,10 +876,6 @@
         <translation>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</translation>
     </message>
     <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Failed to save file &apos;%1&apos;</translation>
-    </message>
-    <message>
         <source>Internal error</source>
         <translation>Internal error</translation>
     </message>
@@ -1151,10 +1133,6 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>DOWNLOAD</source>
-        <translation>LOAD PICTURE</translation>
-    </message>
-    <message>
         <source>CITIZENSHIP</source>
         <translation>CITIZENSHIP</translation>
     </message>
@@ -1187,10 +1165,6 @@
         <translation>COUNTRY</translation>
     </message>
     <message>
-        <source>SAVE THE PICTURE</source>
-        <translation>SAVE THE PICTURE</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>You&apos;re using digital identity card</translation>
     </message>
@@ -1205,11 +1179,6 @@
     <message>
         <source>Expired</source>
         <translation>Expired</translation>
-    </message>
-    <message>
-        <source>Load picture</source>
-        <extracomment>accessible</extracomment>
-        <translation>Load picture</translation>
     </message>
     <message>
         <source>Given names</source>
@@ -1531,10 +1500,6 @@ ID-CARD</translation>
         <translation>The container has been successfully signed!</translation>
     </message>
     <message>
-        <source>Save photo</source>
-        <translation>Save photo</translation>
-    </message>
-    <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
     </message>
@@ -1621,10 +1586,6 @@ ID-CARD</translation>
         <translation>%1 changed!</translation>
     </message>
     <message>
-        <source>Loading picture failed.</source>
-        <translation>Loading picture failed.</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>
@@ -1666,10 +1627,6 @@ ID-CARD</translation>
     <message>
         <source>Check internet connection</source>
         <translation>Check internet connection</translation>
-    </message>
-    <message>
-        <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
-        <translation>Photo (*.jpg *.jpeg);;All Files (*)</translation>
     </message>
     <message>
         <source>Load file from disk for signing or verifying</source>
@@ -2413,13 +2370,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Failed remove document from container</source>
         <translation>Failed remove document from container</translation>
-    </message>
-</context>
-<context>
-    <name>SSLConnect</name>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Downloading picture</translation>
     </message>
 </context>
 <context>

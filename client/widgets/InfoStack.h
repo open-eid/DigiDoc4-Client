@@ -40,16 +40,10 @@ public:
 	void clearData();
 	void update(const SslCertificate &cert);
 	void update(const QSmartCardData &t);
-	void showPicture(const QPixmap &pixmap);
-
-signals:
-	void photoClicked();
 
 private:
 	void changeEvent(QEvent* event) final;
-	bool eventFilter(QObject *o, QEvent *e) final;
 	void update();
-	void clearPicture();
 
 	Ui::InfoStack *ui;
 
@@ -60,5 +54,4 @@ private:
 	QString personalCodeText;
 	QString serialNumberText;
 	QString surnameText;
-	const char *pictureText = "DOWNLOAD";
 };

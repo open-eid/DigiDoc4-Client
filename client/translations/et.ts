@@ -264,10 +264,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>LOAD</source>
-        <translation>LAADI</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-kaart</translation>
     </message>
@@ -278,16 +274,6 @@
     <message>
         <source>e-Seal</source>
         <translation>e-Tempel</translation>
-    </message>
-    <message>
-        <source>Load picture</source>
-        <extracomment>accessible</extracomment>
-        <translation>Laadi pilt</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <extracomment>accessible</extracomment>
-        <translation>Laadi</translation>
     </message>
     <message>
         <source>Certificate for Encryption</source>
@@ -890,10 +876,6 @@
         <translation>Faili lisamine ümbrikusse ebaõnnestus. Lisatud &apos;%1&apos; on juba ümbrikus olemas.</translation>
     </message>
     <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Faili &apos;%1&apos; salvestamine ebaõnnestus</translation>
-    </message>
-    <message>
         <source>Internal error</source>
         <translation>Sisemine viga</translation>
     </message>
@@ -1151,10 +1133,6 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>DOWNLOAD</source>
-        <translation>LAADI PILT</translation>
-    </message>
-    <message>
         <source>CITIZENSHIP</source>
         <translation>KODAKONDSUS</translation>
     </message>
@@ -1187,10 +1165,6 @@
         <translation>RIIK</translation>
     </message>
     <message>
-        <source>SAVE THE PICTURE</source>
-        <translation>SALVESTA PILT</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>Kasutate digitaalset isikutunnistust</translation>
     </message>
@@ -1205,11 +1179,6 @@
     <message>
         <source>Expired</source>
         <translation>Aegunud</translation>
-    </message>
-    <message>
-        <source>Load picture</source>
-        <extracomment>accessible</extracomment>
-        <translation>Laadi pilt</translation>
     </message>
     <message>
         <source>Given names</source>
@@ -1531,10 +1500,6 @@ ID-KAARDIGA</translation>
         <translation>Ümbrik on edukalt allkirjastatud!</translation>
     </message>
     <message>
-        <source>Save photo</source>
-        <translation>Salvesta foto</translation>
-    </message>
-    <message>
         <source>Ver. </source>
         <translation>Ver. </translation>
     </message>
@@ -1621,10 +1586,6 @@ ID-KAARDIGA</translation>
         <translation>%1-kood muudetud!</translation>
     </message>
     <message>
-        <source>Loading picture failed.</source>
-        <translation>Pildi laadimine ebaõnnestus.</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>
@@ -1666,10 +1627,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Check internet connection</source>
         <translation>Kontrolli internetiühendust</translation>
-    </message>
-    <message>
-        <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
-        <translation>Foto (*.jpg *.jpeg);;Kõik failid (*)</translation>
     </message>
     <message>
         <source>Load file from disk for signing or verifying</source>
@@ -2413,13 +2370,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Failed remove document from container</source>
         <translation>Faili eemaldamine ümbrikust ebaõnnestus</translation>
-    </message>
-</context>
-<context>
-    <name>SSLConnect</name>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Laadin pilti</translation>
     </message>
 </context>
 <context>

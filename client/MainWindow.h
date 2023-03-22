@@ -55,7 +55,6 @@ private Q_SLOTS:
 	void changePukClicked();
 	void open(const QStringList &params, bool crypto, bool sign);
 	void pageSelected(PageIcon *page);
-	void photoClicked();
 	void warningClicked(const QString &link);
 
 protected:
