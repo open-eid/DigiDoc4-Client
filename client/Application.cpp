@@ -94,11 +94,7 @@ public:
 
 #ifdef CONFIG_URL
 		reload();
-#ifdef Q_OS_MAC
 		QTimer::singleShot(0, [] { qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4")); });
-#else
-		qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4"));
-#endif
 		Configuration::connect(qApp->conf(), &Configuration::finished, [&](bool changed, const QString & /*error*/){
 			if(changed)
 				reload();
