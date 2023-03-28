@@ -116,7 +116,7 @@ struct Settings
 		ProxySystem,
 		ProxyManual,
 	};
-	static const Option<ProxyConfig> PROXY_CONFIG;
+	static const Option<int> PROXY_CONFIG;
 	static const Option<QString> PROXY_HOST;
 	static const Option<QString> PROXY_PORT;
 	static const Option<QString> PROXY_USER;
@@ -128,4 +128,3 @@ struct Settings
 	static const Option<bool> TSL_ONLINE_DIGEST;
 #endif
 };
-Q_DECLARE_METATYPE(Settings::ProxyConfig)
