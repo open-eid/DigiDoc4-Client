@@ -45,7 +45,7 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 			continue;
 		CFStringRef ver = CFStringRef(CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleShortVersionString")));
 		CFStringRef build = CFStringRef(CFBundleGetValueForInfoDictionaryKey(bundle, CFSTR("CFBundleVersion")));
-		packages << QStringLiteral("%1 (%2.%3)").arg(name, QString::fromCFString(ver), QString::fromCFString(build));
+		packages.append(QStringLiteral("%1 (%2.%3)").arg(name, QString::fromCFString(ver), QString::fromCFString(build)));
 	}
 #elif defined(Q_OS_LINUX)
 	QProcess p;
@@ -63,7 +63,7 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 		{
 			QString ver = QString::fromLocal8Bit( p.readAll().trimmed() );
 			if( !ver.isEmpty() )
-				packages << packageName( name, ver, withName );
+				packages.append(packageName(name, ver, withName));
 		}
 	}
 #endif
@@ -127,8 +127,9 @@ void Diagnostics::run()
 #ifdef Q_OS_MAC
 		"digidocpp"
 #else
-		"libdigidoc2", "libdigidocpp1", "qdigidoc", "qesteidutil", "qdigidoc-tera", "firefox-pkcs11-loader",
-		"chrome-token-signing", "web-eid", "openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
+		"libdigidocpp1", "qdigidoc4", "firefox-pkcs11-loader", "chrome-token-signing", "web-eid",
+		"libxerces-c3.2", "libxml-security-c20", "libxalan-c111", "libxalan-c112",
+		"openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
 #endif
 		}).join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
@@ -146,7 +147,7 @@ void Diagnostics::run()
 	info.clear();
 
 	QProcess p;
-	p.start( "lsusb", QStringList() );
+	p.start(QStringLiteral("lsusb"), QStringList());
 	p.waitForFinished();
 	QString cmd = QString::fromLocal8Bit( p.readAll() );
 	if( !cmd.isEmpty() )
