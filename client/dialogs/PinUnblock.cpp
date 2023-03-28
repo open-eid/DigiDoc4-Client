@@ -134,8 +134,20 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
 	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
 	connect(ui->pin, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
+	connect(ui->pin, &QLineEdit::textEdited, ui->errorPin, [this] {
+		ui->errorPin->clear();
+		ui->pin->setStyleSheet({});
+	});
 	connect(ui->repeat, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
+	connect(ui->repeat, &QLineEdit::textEdited, ui->errorRepeat, [this] {
+		ui->errorRepeat->clear();
+		ui->repeat->setStyleSheet({});
+	});
 	connect(ui->puk, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
+	connect(ui->puk, &QLineEdit::textEdited, ui->errorPuk, [this] {
+		ui->errorPuk->clear();
+		ui->puk->setStyleSheet({});
+	});
 	connect(ui->change, &QPushButton::clicked, this, [=] {
 		const static QString SEQUENCE_ASCENDING = QStringLiteral("1234567890123456789012");
 		const static QString SEQUENCE_DESCENDING = QStringLiteral("0987654321098765432109");

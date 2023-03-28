@@ -335,6 +335,9 @@ line-height: 24px;</string>
          <pointsize>12</pointsize>
         </font>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">color: #c53e3e</string>
        </property>
@@ -410,6 +413,9 @@ line-height: 24px;</string>
          <pointsize>12</pointsize>
         </font>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">color: #c53e3e</string>
        </property>
@@ -472,6 +478,9 @@ line-height: 24px;</string>
         <font>
          <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">color: #c53e3e</string>

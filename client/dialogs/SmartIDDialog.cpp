@@ -69,6 +69,10 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);
+	connect(ui->idCode, &QLineEdit::textEdited, ui->errorCode, [this] {
+		ui->errorCode->clear();
+		ui->idCode->setStyleSheet({});
+	});
 	connect(ui->idCountry, &QComboBox::currentTextChanged, this, saveSettings);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
 	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);

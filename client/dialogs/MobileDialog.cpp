@@ -68,8 +68,16 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);
+	connect(ui->idCode, &QLineEdit::textEdited, ui->errorCode, [this] {
+		ui->errorCode->clear();
+		ui->idCode->setStyleSheet({});
+	});
 	connect(ui->phoneNo, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, saveSettings);
+	connect(ui->phoneNo, &QLineEdit::textEdited, ui->errorPhone, [this] {
+		ui->errorPhone->clear();
+		ui->phoneNo->setStyleSheet({});
+	});
 	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
 	connect(ui->sign, &QPushButton::clicked, this, [this] {
 		if(!IKValidator::isValid(idCode()))

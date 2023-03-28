@@ -223,6 +223,9 @@ image: url(:/images/icon_checkbox_check.png);
        <pointsize>12</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
     </widget>
    </item>
    <item>
