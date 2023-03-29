@@ -233,7 +233,7 @@ elseif(WIN32)
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
 		-dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROJECT_NAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs
-		-dqt_ver_major=${QT_VERSION_MAJOR} -dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
+		-dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		${PROJECT_NAME}.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
