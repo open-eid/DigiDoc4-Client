@@ -54,7 +54,7 @@ const Option<bool, bool (*)()> Settings::SID_UUID_CUSTOM
 const Option<bool> Settings::SMARTID_REMEMBER { QStringLiteral("SmartIDSettings"), true };
 const Option<QString> Settings::SMARTID_CODE { QStringLiteral("SmartID") };
 const Option<QString> Settings::SMARTID_COUNTRY { QStringLiteral("SmartIDCountry"), QStringLiteral("EE") };
-const QStringList Settings::SMARTID_COUNTRY_LIST = {
+const QStringList Settings::SMARTID_COUNTRY_LIST {
 	QStringLiteral("EE"),
 	QStringLiteral("LT"),
 	QStringLiteral("LV"),
@@ -78,7 +78,7 @@ const Option<bool> Settings::SHOW_INTRO { QStringLiteral("showIntro"), true };
 const Option<bool> Settings::SHOW_PRINT_SUMMARY { QStringLiteral("ShowPrintSummary"), false };
 const Option<bool> Settings::SHOW_ROLE_ADDRESS_INFO { QStringLiteral("RoleAddressInfo"), false };
 
-const Option<Settings::ProxyConfig> Settings::PROXY_CONFIG { QStringLiteral("ProxyConfig"), Settings::ProxyNone };
+const Option<int> Settings::PROXY_CONFIG { QStringLiteral("ProxyConfig"), Settings::ProxyNone };
 const Option<QString> Settings::PROXY_HOST { QStringLiteral("ProxyHost") };
 const Option<QString> Settings::PROXY_PORT { QStringLiteral("ProxyPort") };
 const Option<QString> Settings::PROXY_USER { QStringLiteral("ProxyUser") };
