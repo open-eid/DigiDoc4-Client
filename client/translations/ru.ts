@@ -264,11 +264,6 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <source>LOAD</source>
-        <translation>ЗАГРУ
-ЗИТЬ</translation>
-    </message>
-    <message>
         <source>ID-card</source>
         <translation>ID-kарта</translation>
     </message>
@@ -279,17 +274,6 @@
     <message>
         <source>e-Seal</source>
         <translation>э-Печать</translation>
-    </message>
-    <message>
-        <source>Load picture</source>
-        <extracomment>accessible</extracomment>
-        <translation>Загрузить фото</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <extracomment>accessible</extracomment>
-        <translation>Загру
-Зить</translation>
     </message>
     <message>
         <source>Certificate for Encryption</source>
@@ -892,10 +876,6 @@
         <translation>Невозможно добавить файл в контейнер. Файл &apos;%1&apos; уже в контейнере.</translation>
     </message>
     <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
-    </message>
-    <message>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
     </message>
@@ -1153,10 +1133,6 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>DOWNLOAD</source>
-        <translation>ЗАГРУЗИТЬ ФОТО</translation>
-    </message>
-    <message>
         <source>CITIZENSHIP</source>
         <translation>ГРАЖДАНСТВО</translation>
     </message>
@@ -1189,10 +1165,6 @@
         <translation>КОД СТРАНЫ</translation>
     </message>
     <message>
-        <source>SAVE THE PICTURE</source>
-        <translation>СОХРАНИТЬ ФОТО</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
@@ -1207,11 +1179,6 @@
     <message>
         <source>Expired</source>
         <translation>Истекший</translation>
-    </message>
-    <message>
-        <source>Load picture</source>
-        <extracomment>accessible</extracomment>
-        <translation>Загрузить фото</translation>
     </message>
     <message>
         <source>Given names</source>
@@ -1533,10 +1500,6 @@ ID-КАРТОЙ</translation>
         <translation>Контейнер успешно подписан!</translation>
     </message>
     <message>
-        <source>Save photo</source>
-        <translation>Сохранить фото</translation>
-    </message>
-    <message>
         <source>Ver. </source>
         <translation>Вер. </translation>
     </message>
@@ -1623,10 +1586,6 @@ ID-КАРТОЙ</translation>
         <translation>%1-код изменён!</translation>
     </message>
     <message>
-        <source>Loading picture failed.</source>
-        <translation>Загрузка картинки неуспешна.</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Зашифровывание</translation>
     </message>
@@ -1669,10 +1628,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Check internet connection</source>
         <translation>Проверьте подключение к Интернету</translation>
-    </message>
-    <message>
-        <source>Photo (*.jpg *.jpeg);;All Files (*)</source>
-        <translation>Фото (*.jpg *.jpeg);;Все файлы (*)</translation>
     </message>
     <message>
         <source>Load file from disk for signing or verifying</source>
@@ -2416,13 +2371,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Failed remove document from container</source>
         <translation>Не удается удалить файл из контейнера</translation>
-    </message>
-</context>
-<context>
-    <name>SSLConnect</name>
-    <message>
-        <source>Downloading picture</source>
-        <translation>Загрузка картинки</translation>
     </message>
 </context>
 <context>

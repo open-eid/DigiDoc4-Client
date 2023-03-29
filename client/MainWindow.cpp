@@ -30,7 +30,6 @@
 #include "QSigner.h"
 #include "Settings.h"
 #include "Styles.h"
-#include "sslConnect.h"
 #include "TokenData.h"
 #include "effects/ButtonHoverFilter.h"
 #include "effects/FadeInNotification.h"
@@ -165,19 +164,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
-	connect(ui->infoStack, &InfoStack::photoClicked, this, &MainWindow::photoClicked);
-	connect(ui->cardInfo, &CardWidget::photoClicked, this, &MainWindow::photoClicked);   // To load photo
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
-	connect(SSLConnect::instance(), &SSLConnect::error, this, [this](const QString &error) {
-		qWarning() << error;
-		showNotification(tr("Loading picture failed."));
-	});
-	connect(SSLConnect::instance(), &SSLConnect::image, this, [this] (const QImage &image) {
-		ui->infoStack->setProperty("PICTURE", image);
-		QPixmap pixmap = QPixmap::fromImage(image);
-		ui->cardInfo->showPicture(pixmap);
-		ui->infoStack->showPicture(pixmap);
-	});
 
 	updateSelectorData(qApp->signer()->tokensign());
 	updateMyEID(qApp->signer()->tokensign());
@@ -853,6 +840,8 @@ void MainWindow::showCardMenu(bool show)
 {
 	if(show)
 	{
+		if(ui->selector->list.isEmpty())
+			return;
 		auto *cardPopup = new CardPopup(ui->selector->list, this);
 		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
 		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); }); // .. and hide card popup menu
@@ -942,27 +931,6 @@ void MainWindow::sign(F &&sign)
 	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
 	notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
 	adjustDrops();
-}
-
-void MainWindow::photoClicked()
-{
-	if(!ui->infoStack->property("PICTURE").isValid())
-	{
-		SSLConnect::instance()->fetch();
-		return;
-	}
-	QString fileName = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-	fileName += "/" + qApp->signer()->tokenauth().card();
-	fileName = QFileDialog::getSaveFileName(this,tr("Save photo"), fileName,
-		tr("Photo (*.jpg *.jpeg);;All Files (*)"));
-	if(fileName.isEmpty())
-		return;
-	static const QStringList exts{QStringLiteral("jpg"), QStringLiteral("jpeg")};
-	if(!exts.contains(QFileInfo(fileName).suffix(), Qt::CaseInsensitive))
-		fileName.append(QStringLiteral(".jpg"));
-	auto pix = ui->infoStack->property("PICTURE").value<QImage>();
-	if(!pix.save(fileName))
-		warnings->showWarning(DocumentModel::tr("Failed to save file '%1'").arg(fileName));
 }
 
 void MainWindow::removeAddress(int index)

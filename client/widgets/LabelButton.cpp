@@ -79,23 +79,6 @@ void LabelButton::init( Style style, const QString &label, int code )
 	}
 }
 
-void LabelButton::clear()
-{
-	setPixmap(QPixmap());
-}
-
-void LabelButton::setPixmap(const QPixmap &pixmap)
-{
-	setIconSize(size());
-	setIcon(pixmap);
-}
-
-const QPixmap LabelButton::pixmap()
-{
-	QIcon icon = QToolButton::icon();
-	return icon.availableSizes().isEmpty() ? QPixmap() : icon.pixmap(icon.availableSizes().first());
-}
-
 void LabelButton::setIcons(const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int w, int h)
 {
 	setIconSize(QSize(w, h));

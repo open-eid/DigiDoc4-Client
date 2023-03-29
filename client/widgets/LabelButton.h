@@ -41,9 +41,6 @@ public:
 
 	void init( Style style, const QString &label, int code );
 	void setIcons(const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int w, int h);
-	void clear();
-	const QPixmap pixmap();
-	void setPixmap(const QPixmap &pixmap);
 
 signals:
 	void clicked(int code);

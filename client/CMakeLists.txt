@@ -38,7 +38,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QPKCS11.cpp
 	QSigner.cpp
 	QSmartCard.cpp
-	sslConnect.cpp
 	Styles.cpp
 	PrintSheet.cpp
 	Settings.cpp

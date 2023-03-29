@@ -218,7 +218,6 @@ void MainWindow::updateMyEID(const TokenData &t)
 	}
 	else
 	{
-		ui->infoStack->setProperty("PICTURE", QVariant());
 		ui->infoStack->clearData();
 		ui->accordion->clear();
 		ui->myEid->invalidIcon(false);

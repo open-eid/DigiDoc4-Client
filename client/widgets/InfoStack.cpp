@@ -32,11 +32,6 @@ InfoStack::InfoStack( QWidget *parent )
 {
 	ui->setupUi( this );
 
-	ui->btnPicture->setFont( Styles::font( Styles::Condensed, 12 ) );
-	ui->btnPicture->hide();
-
-	connect(ui->btnPicture, &QPushButton::clicked, this, &InfoStack::photoClicked);
-
 	QFont labelFont = Styles::font(Styles::Condensed, 11);
 	ui->labelGivenNames->setFont(labelFont);
 	ui->labelSurname->setFont(labelFont);
@@ -53,8 +48,6 @@ InfoStack::InfoStack( QWidget *parent )
 	ui->valueSerialNumber->setFont(font);
 	ui->valueSpacer->setFont(font);
 	ui->valueExpiryDate->setFont( Styles::font( Styles::Regular, 16 ) );
-
-	ui->photo->installEventFilter(this);
 }
 
 InfoStack::~InfoStack()
@@ -65,7 +58,6 @@ InfoStack::~InfoStack()
 void InfoStack::clearData()
 {
 	data = QSmartCardData();
-	ui->alternateIcon->hide();
 	ui->valueGivenNames->clear();
 	ui->valueSurname->clear();
 	ui->valuePersonalCode->clear();
@@ -73,14 +65,6 @@ void InfoStack::clearData()
 	ui->valueSerialNumber->clear();
 	ui->valueSpacer->hide();
 	ui->valueExpiryDate->clear();
-	clearPicture();
-	ui->btnPicture->hide();
-}
-
-void InfoStack::clearPicture()
-{
-	ui->photo->clear();
-	ui->btnPicture->setText(tr(pictureText = "DOWNLOAD"));
 }
 
 void InfoStack::changeEvent(QEvent* event)
@@ -92,37 +76,6 @@ void InfoStack::changeEvent(QEvent* event)
 	}
 
 	QWidget::changeEvent(event);
-}
-
-
-bool InfoStack::eventFilter(QObject *o, QEvent *e)
-{
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	if(ui->photo != o || ui->alternateIcon->isVisible() || !ui->photo->pixmap())
-		return StyledWidget::eventFilter(o, e);
-#else
-	if(ui->photo != o || ui->alternateIcon->isVisible() || ui->photo->pixmap(Qt::ReturnByValue).isNull())
-		return StyledWidget::eventFilter(o, e);
-#endif
-	switch(e->type())
-	{
-	case QEvent::Enter:
-		ui->btnPicture->show();
-		return true;
-	case QEvent::Leave:
-		ui->btnPicture->hide();
-		return true;
-	default: return StyledWidget::eventFilter(o, e);
-	}
-}
-
-void InfoStack::showPicture( const QPixmap &pixmap )
-{
-	ui->alternateIcon->hide();
-	ui->photo->setPixmap( pixmap.scaled( 120, 150, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-	tr("SAVE THE PICTURE");
-	ui->btnPicture->setText(tr(pictureText = "SAVE THE PICTURE"));
-	ui->btnPicture->hide();
 }
 
 void InfoStack::update()
@@ -147,29 +100,10 @@ void InfoStack::update()
 	ui->valueExpiryDate->setText(text);
 	ui->valueSerialNumber->setText(serialNumberText);
 
-	ui->alternateIcon->setVisible(certType & SslCertificate::EResidentSubType || certType & SslCertificate::TempelType);
-	ui->btnPicture->setText(tr(pictureText));
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	if(!ui->photo->pixmap())
-		ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
-#else
-	if(ui->photo->pixmap(Qt::ReturnByValue).isNull())
-		ui->btnPicture->setVisible(ui->alternateIcon->isHidden());
-#endif
 	ui->labelSerialNumber->setHidden(certType & SslCertificate::TempelType);
 	ui->valueSerialNumber->setHidden(certType & SslCertificate::TempelType);
-	if(certType & SslCertificate::EResidentSubType)
-	{
-		ui->alternateIcon->load(QStringLiteral(":/images/icon_person_blue.svg"));
-		ui->alternateIcon->resize(109, 118);
-		ui->alternateIcon->move(10, 16);
-	}
 	if(certType & SslCertificate::TempelType)
 	{
-		ui->alternateIcon->load(QStringLiteral(":/images/icon_digitempel.svg"));
-		ui->alternateIcon->resize(100, 100);
-		ui->alternateIcon->move(10, 25);
-
 		ui->labelGivenNames->setText(tr("NAME"));
 		ui->labelSurname->clear();
 		ui->labelPersonalCode->setText(tr("SERIAL"));
@@ -188,7 +122,6 @@ void InfoStack::update()
 
 void InfoStack::update(const SslCertificate &cert)
 {
-	clearPicture();
 	certType = cert.type();
 	givenNamesText = cert.toString(QStringLiteral("CN"));
 	surnameText.clear();
@@ -200,8 +133,6 @@ void InfoStack::update(const SslCertificate &cert)
 
 void InfoStack::update(const QSmartCardData &t)
 {
-	if(data != t)
-		clearPicture();
 	data = t;
 	QStringList firstName {
 		t.data( QSmartCardData::FirstName1 ).toString(),

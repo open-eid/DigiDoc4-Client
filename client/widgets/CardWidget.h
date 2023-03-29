@@ -36,23 +36,18 @@ public:
 	explicit CardWidget(bool popup, QWidget *parent = nullptr);
 	~CardWidget() final;
 
-	void clearPicture();
 	TokenData token() const;
-	void showPicture( const QPixmap &pix );
 	void update(const TokenData &token, bool multiple);
 
 signals:
-	void photoClicked();
 	void selected(const TokenData &token);
 
 private:
 	bool event(QEvent *ev) final;
 	bool eventFilter(QObject *o, QEvent *e) final;
-	void clearSeal();
 
 	Ui::CardWidget *ui;
 	TokenData t;
-	QSvgWidget *seal = nullptr;
 	bool isPopup = false;
 	bool isMultiple = false;
 };
