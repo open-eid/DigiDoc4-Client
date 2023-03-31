@@ -220,6 +220,18 @@
         <source>https://www.id.ee/en/id-help/</source>
         <translation>https://www.id.ee/ru/id-pomoshh/</translation>
     </message>
+    <message>
+        <source>This version of ID-software on your computer is unsupported. DigiDoc4 Client cannot be used until you update ID-software. Install new ID-software from &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;www.id.ee&lt;/a&gt;. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Программное обеспечение ID на вашем компьютере не поддерживается. Чтобы использовать программу DigiDoc4 клиент, вам необходимо обновить программное обеспечение ID. Установите новое программное обеспечение ID с веб-сайта &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;www.id.ee&lt;/a&gt;. Пользователи macOS могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Вам необходимо обновить программное обеспечение ID-карты. Чтобы скачать последнюю версию программы, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Выпущено обновление для программного обеспечения ID-карты. Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать обновление в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
 </context>
 <context>
     <name>CDocumentModel</name>

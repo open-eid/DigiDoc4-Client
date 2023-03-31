@@ -220,6 +220,18 @@
         <source>https://www.id.ee/en/id-help/</source>
         <translation>https://www.id.ee/id-abikeskus/</translation>
     </message>
+    <message>
+        <source>This version of ID-software on your computer is unsupported. DigiDoc4 Client cannot be used until you update ID-software. Install new ID-software from &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;www.id.ee&lt;/a&gt;. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Sinu arvutis olev ID-tarkvara ei ole toetatud. DigiDoc4 kliendi kasutamiseks pead ID-tarkvara uuendama. Paigalda uus ID-tarkvara veebilehelt &lt;a href=&quot;https://www.id.ee/artikkel/paigalda-id-tarkvara/&quot;&gt;www.id.ee&lt;/a&gt;, macOS kasutajad saavad uusima tarkvara &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+    </message>
+    <message>
+        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Sinu kasutatav ID-tarkvara on aegunud. Tarkvara viimase versiooni saad alla laadida veebilehelt &lt;a href=&quot;https://www.id.ee/artikkel/paigalda-id-tarkvara/&quot;&gt;id.ee&lt;/a&gt;, macOS kasutajad saavad uusima tarkvara &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+    </message>
+    <message>
+        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;https://www.id.ee/artikkel/paigalda-id-tarkvara/&quot;&gt;id.ee&lt;/a&gt;, macOS kasutajad saavad uuenduse alla laadida &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
+    </message>
 </context>
 <context>
     <name>CDocumentModel</name>
