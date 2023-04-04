@@ -78,7 +78,6 @@ public:
 
 public Q_SLOTS:
 	void showClient(const QStringList &params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
-	static void showWarning(const QString &msg, const QString &details = {});
 
 private Q_SLOTS:
 	void parseArgs(const QString &msg = {});

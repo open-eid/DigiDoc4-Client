@@ -32,6 +32,15 @@ background-color: #008DCF;
 }
 QPushButton:disabled {
 background-color: #BEDBED;
+}
+QPushButton[warning=&quot;true&quot;] {
+background-color: #981E32;
+}
+QPushButton[warning=&quot;true&quot;]:pressed {
+background-color: #F24A66;
+}
+QPushButton:hover[warning=&quot;true&quot;]:!pressed {
+background-color: #CD2541;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="WarningDialogLayout">
@@ -172,25 +181,14 @@ border: none;
        <property name="accessibleName">
         <string extracomment="accessible">Close</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
-}
-QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
-}</string>
-       </property>
        <property name="text">
         <string>CLOSE</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
+       </property>
+       <property name="warning" stdset="0">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

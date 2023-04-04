@@ -50,7 +50,7 @@ FileList::FileList(QWidget *parent)
 
 void FileList::addFile( const QString& file )
 {
-	FileItem *item = new FileItem(file, state);
+	auto *item = new FileItem(file, state);
 	item->installEventFilter(this);
 	addWidget(item);
 
@@ -74,20 +74,20 @@ bool FileList::eventFilter(QObject *obj, QEvent *event)
 	{
 	case QEvent::MouseButtonPress:
 	{
-		QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+		auto *mouse = static_cast<QMouseEvent*>(event);
 		if (mouse->button() == Qt::LeftButton)
 			obj->setProperty("dragStartPosition", mouse->pos());
 		break;
 	}
 	case QEvent::MouseMove:
 	{
-		QMouseEvent *mouse = static_cast<QMouseEvent*>(event);
+		auto *mouse = static_cast<QMouseEvent*>(event);
 		if(!(mouse->buttons() & Qt::LeftButton))
 			break;
 		if((mouse->pos() - obj->property("dragStartPosition").toPoint()).manhattanLength()
 			 < QApplication::startDragDistance())
 			break;
-		FileItem *fileItem = qobject_cast<FileItem*>(obj);
+		auto *fileItem = qobject_cast<FileItem*>(obj);
 		if(!documentModel || !fileItem)
 			break;
 		int i = index(fileItem);
@@ -96,10 +96,10 @@ bool FileList::eventFilter(QObject *obj, QEvent *event)
 		QString path = FileDialog::tempPath(fileItem->getFile());
 		documentModel->save(i, path);
 		documentModel->addTempReference(path);
-		QMimeData *mimeData = new QMimeData;
+		auto *mimeData = new QMimeData;
 		mimeData->setText(QFileInfo(path).fileName());
 		mimeData->setUrls({ QUrl::fromLocalFile(path) });
-		QDrag *drag = new QDrag(this);
+		auto *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 		drag->exec(Qt::CopyAction);
 		return true;
@@ -166,14 +166,14 @@ void FileList::saveAll()
 					documentModel->save( i, dest );
 					continue;
 			}
-			WarningDialog dlg(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), this);
-			dlg.setButtonSize(60, 5);
-			dlg.setCancelText(tr("NO"));
-			dlg.addButton(tr("YES"), QMessageBox::Yes);
-			dlg.addButton(tr("SAVE WITH OTHER NAME"), QMessageBox::No);
-			dlg.addButton(tr("REPLACE ALL"), QMessageBox::YesToAll);
-			dlg.addButton(tr("CANCEL"), QMessageBox::NoToAll);
-			b = dlg.exec();
+			auto *dlg = new WarningDialog(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), this);
+			dlg->setButtonSize(60, 5);
+			dlg->setCancelText(tr("NO"));
+			dlg->addButton(tr("YES"), QMessageBox::Yes);
+			dlg->addButton(tr("SAVE WITH OTHER NAME"), QMessageBox::No);
+			dlg->addButton(tr("REPLACE ALL"), QMessageBox::YesToAll);
+			dlg->addButton(tr("CANCEL"), QMessageBox::NoToAll);
+			b = dlg->exec();
 
 			if(b == QDialog::Rejected)
 				continue;

@@ -324,10 +324,10 @@ bool MainWindow::encrypt()
 		return false;
 
 	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
-		WarningDialog dlg(tr("Cannot alter container %1. Save different location?")
+		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
 			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
-		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
-		if(dlg.exec() == QMessageBox::Yes) {
+		dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		if(dlg->exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
 			return encrypt();
 		}
@@ -572,9 +572,9 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			break;
 		if( !FileDialog::fileIsWritable(target))
 		{
-			WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
-			dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
-			if(dlg.exec() == QMessageBox::Yes) {
+			auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
+			dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
+			if(dlg->exec() == QMessageBox::Yes) {
 				QString file = selectFile(tr("Save file"), target, true);
 				if(!file.isEmpty())
 					cryptoDoc->saveCopy(file);
@@ -741,10 +741,10 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 			saveTxt = tr("SAVE");
 		}
 
-		WarningDialog dlg(warning, this);
-		dlg.setCancelText(cancelTxt);
-		dlg.addButton(saveTxt, ContainerSave);
-		if(dlg.exec() == ContainerSave)
+		auto *dlg = new WarningDialog(warning, this);
+		dlg->setCancelText(cancelTxt);
+		dlg->addButton(saveTxt, ContainerSave);
+		if(dlg->exec() == ContainerSave)
 			save();
 	}
 
@@ -775,9 +775,9 @@ bool MainWindow::save(bool saveAs)
 
 	if(!FileDialog::fileIsWritable(target))
 	{
-		WarningDialog dlg(tr("Cannot alter container %1. Save different location?").arg(target), this);
-		dlg.addButton(tr("YES").toUpper(), QMessageBox::Yes);
-		if(dlg.exec() == QMessageBox::Yes) {
+		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
+		dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
+		if(dlg->exec() == QMessageBox::Yes) {
 			QString file = selectFile(tr("Save file"), target, true);
 			if(!file.isEmpty())
 				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
@@ -960,11 +960,11 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	}
 	else
 	{
-		WarningDialog dlg(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
-		dlg.setCancelText(tr("CANCEL"));
-		dlg.resetCancelStyle();
-		dlg.addButton(tr("REMOVE"), ContainerSave, true);
-		if (dlg.exec() == ContainerSave) {
+		auto *dlg = new WarningDialog(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
+		dlg->setCancelText(tr("CANCEL"));
+		dlg->resetCancelStyle();
+		dlg->addButton(tr("REMOVE"), ContainerSave, true);
+		if (dlg->exec() == ContainerSave) {
 			window()->setWindowFilePath({});
 			window()->setWindowTitle(tr("DigiDoc4 Client"));
 			return true;
@@ -1025,18 +1025,12 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 {
 	// Check that container is not dropped into itself
 	QFileInfo containerInfo(container);
-	for(const auto &file: files)
-	{
-		if(containerInfo == QFileInfo(file))
-		{
-			WarningDialog dlg(tr("Cannot add container to same container\n%1").arg(FileDialog::normalized(container)), this);
-			dlg.setCancelText(tr("CANCEL"));
-			dlg.exec();
-			return false;
-		}
-	}
-
-	return true;
+	if(std::none_of(files.cbegin(), files.cend(),
+			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
+		return true;
+	WarningDialog::show(this, tr("Cannot add container to same container\n%1")
+		.arg(FileDialog::normalized(container)))->setCancelText(tr("CANCEL"));
+	return false;
 }
 
 void MainWindow::warningClicked(const QString &link)
@@ -1078,10 +1072,10 @@ bool MainWindow::wrapContainer(bool signing)
 	QString msg = signing ?
 		tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
 		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
-	WarningDialog dlg(msg, this);
-	dlg.setCancelText(tr("CANCEL"));
-	dlg.addButton(tr("CONTINUE"), ContainerSave);
-	return dlg.exec() == ContainerSave;
+	auto *dlg = new WarningDialog(msg, this);
+	dlg->setCancelText(tr("CANCEL"));
+	dlg->addButton(tr("CONTINUE"), ContainerSave);
+	return dlg->exec() == ContainerSave;
 }
 
 void MainWindow::updateSelector()
