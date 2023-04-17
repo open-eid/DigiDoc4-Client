@@ -84,7 +84,7 @@ if [[ ! -d ${OPENSSL_PATH} ]] ; then
     for ARCH in x86_64 arm64; do
         case "${ARCH}" in
         *x86_64*)
-            CC="" CFLAGS="" KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
+            CC="" CFLAGS="" MACHINE=x86_64 KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
             ;;
         *arm64*)
             CC="" CFLAGS="" MACHINE=arm64 KERNEL_BITS=64 ./config --prefix=${OPENSSL_PATH} shared no-hw no-engine no-tests enable-ec_nistp_64_gcc_128
@@ -119,7 +119,7 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
         tar xf ${PACKAGE}.tar.xz
         pushd ${PACKAGE}
         if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
-            ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license -- -DOPENSSL_ROOT_DIR=${OPENSSL_PATH} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+            ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl -openssl-linked -confirm-license -appstore-compliant -- -DOPENSSL_ROOT_DIR=${OPENSSL_PATH} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         else
             ${QT_PATH}/bin/qt-configure-module .
         fi
