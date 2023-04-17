@@ -61,7 +61,7 @@ public:
 ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
 {
-	QCryptoBackend *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
+	auto *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
 	QByteArray result = backend->sign(QCryptographicHash::Sha512, QByteArray::fromRawData((const char*)dgst, dgst_len));
 	if(result.isEmpty())
 		return nullptr;
@@ -299,7 +299,7 @@ void QSigner::run()
 	{
 		if(QCardLock::instance().readTryLock())
 		{
-			QPKCS11 *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
+			auto *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
 			if(pkcs11 && !pkcs11->reload())
 			{
 				Q_EMIT error(tr("Failed to load PKCS#11 module"));
@@ -321,9 +321,9 @@ void QSigner::run()
 				SslCertificate c(t.cert());
 				if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 					c.keyUsage().contains(SslCertificate::KeyAgreement))
-					acards << t;
+					acards.append(t);
 				if(c.keyUsage().contains(SslCertificate::NonRepudiation))
-					scards << t;
+					scards.append(t);
 			}
 
 			// check if selected card is still in slot
@@ -370,7 +370,9 @@ void QSigner::selectCard(const TokenData &token)
 		Q_EMIT authDataChanged(d->auth = token);
 	for(const TokenData &other: cache())
 	{
-		if(other == token || other.card() != token.card())
+		if(other == token ||
+			other.card() != token.card() ||
+			isSign == SslCertificate(other.cert()).keyUsage().contains(SslCertificate::NonRepudiation))
 			continue;
 		if(isSign) // Select other cert if they are on same card
 			Q_EMIT authDataChanged(d->auth = other);
