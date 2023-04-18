@@ -89,15 +89,12 @@ private Q_SLOTS:
 	void parseArgs(QStringList args);
 	static void browse(const QUrl &url);
 	static void mailTo(const QUrl &url);
-	static void showAbout();
-	static void showSettings();
 	static void showTSLWarning( QEventLoop *e );
 
 Q_SIGNALS:
 	void TSLLoadingFinished();
 
 private:
-	void activate( QWidget *w );
 	bool event(QEvent *event) final;
 	static void closeWindow();
 	static void showWarning(const QString &msg, const digidoc::Exception &e);

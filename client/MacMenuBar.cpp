@@ -27,7 +27,6 @@ MacMenuBar::MacMenuBar()
 	, help(addMenu(tr("&Help")))
 {
 	qApp->installEventFilter(this);
-	connect(dock, &QMenu::triggered, this, &MacMenuBar::activateWindow);
 	dock->setAsDockMenu();
 }
 
@@ -36,19 +35,9 @@ MacMenuBar::~MacMenuBar()
 	//delete dock;
 }
 
-void MacMenuBar::activateWindow(QAction *a)
+QAction* MacMenuBar::addAction(ActionType type)
 {
-	if(QWidget *w = a->data().value<QWidget*>())
-	{
-		w->activateWindow();
-		w->showNormal();
-		w->raise();
-	}
-}
-
-QAction* MacMenuBar::addAction(ActionType type, const QObject *receiver, const char *member)
-{
-	QAction *a = file->addAction(typeName(type), receiver, member);
+	QAction *a = file->addAction(typeName(type));
 	switch(type)
 	{
 	case AboutAction: a->setMenuRole(QAction::AboutRole); break;
@@ -64,47 +53,6 @@ QMenu* MacMenuBar::dockMenu() const { return dock; }
 
 bool MacMenuBar::eventFilter(QObject *o, QEvent *e)
 {
-	if(QWidget *w = qobject_cast<QWidget*>(o))
-	{
-		switch(e->type())
-		{
-		case QEvent::Close:
-		case QEvent::Destroy:
-			for(QAction *a : windowGroup->actions())
-				if(w == a->data().value<QWidget*>())
-					delete a;
-			if(windowGroup->actions().isEmpty() && dockSeparator)
-			{
-				delete dockSeparator;
-				dockSeparator = nullptr;
-			}
-			break;
-		case QEvent::WindowActivate:
-		{
-			QWidget *main = w->topLevelWidget();
-			for(QAction *a : windowGroup->actions())
-				a->setChecked(main == a->data().value<QWidget*>());
-			if(!windowGroup->checkedAction())
-			{
-				QAction *a = new QAction(title(w), dock);
-				a->setCheckable(true);
-				a->setData(QVariant::fromValue(main));
-				a->setActionGroup(windowGroup);
-
-				if(!dockSeparator)
-					dockSeparator = dock->insertSeparator(dock->actions().value(0));
-				dock->insertAction(dockSeparator, a);
-			}
-			break;
-		}
-		case QEvent::WindowTitleChange:
-			for(QAction *a : windowGroup->actions())
-				if(w == a->data().value<QWidget*>())
-					a->setText(title(w));
-			break;
-		default: break;
-		}
-	}
 	switch(e->type())
 	{
 	case QEvent::LanguageChange:
@@ -121,15 +69,7 @@ bool MacMenuBar::eventFilter(QObject *o, QEvent *e)
 QMenu* MacMenuBar::fileMenu() const { return file; }
 QMenu* MacMenuBar::helpMenu() const { return help; }
 
-QString MacMenuBar::title(QObject *o) const
-{
-	QString title = o->property("windowTitle").toString();
-	title = title.isEmpty() ? o->property("windowFilePath").toString() : title;
-	title.remove("[*]");
-	return title;
-}
-
-QString MacMenuBar::typeName(ActionType type) const
+QString MacMenuBar::typeName(ActionType type)
 {
 	switch(type)
 	{

@@ -317,7 +317,7 @@ class Application::Private
 public:
 	Configuration *conf {};
 	QAction		*closeAction {}, *newClientAction {}, *helpAction {};
-	MacMenuBar	*bar {};
+	std::unique_ptr<MacMenuBar> bar;
 	QSigner		*signer {};
 
 	QTranslator	appTranslator, commonTranslator, qtTranslator;
@@ -390,9 +390,15 @@ Application::Application( int &argc, char **argv )
 	connect(this, &Application::lastWindowClosed, this, [&]{ d->lastWindowTimer.start(10s); });
 
 #ifdef Q_OS_MAC
-	d->bar = new MacMenuBar;
-	d->bar->addAction( MacMenuBar::AboutAction, this, SLOT(showAbout()) );
-	d->bar->addAction( MacMenuBar::PreferencesAction, this, SLOT(showSettings()) );
+	d->bar = std::make_unique<MacMenuBar>();
+	connect(d->bar->addAction(MacMenuBar::AboutAction), &QAction::triggered, this, [] {
+		if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
+			w->showSettings(SettingsDialog::LicenseSettings);
+	});
+	connect(d->bar->addAction(MacMenuBar::PreferencesAction), &QAction::triggered, this, [] {
+		if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
+			w->showSettings(SettingsDialog::GeneralSettings);
+	});
 	d->bar->fileMenu()->addAction( d->newClientAction );
 	d->bar->fileMenu()->addAction( d->closeAction );
 	d->bar->dockMenu()->addAction( d->newClientAction );
@@ -499,7 +505,6 @@ Application::~Application()
 #else
 	deinitMacEvents();
 #endif
-	delete d->bar;
 	QEventLoop e;
 	connect(this, &Application::TSLLoadingFinished, &e, &QEventLoop::quit);
 	if( !d->ready )
@@ -521,19 +526,6 @@ Application::~Application()
 #ifndef Q_OS_MAC
 void Application::addRecent( const QString & ) {}
 #endif
-
-void Application::activate( QWidget *w )
-{
-#ifdef Q_OS_MAC
-	w->installEventFilter( d->bar );
-	// Required for restoring minimized window on macOS
-	w->setWindowState(Qt::WindowActive);
-#endif
-	w->addAction( d->closeAction );
-	w->show();
-	w->raise();
-	w->activateWindow();
-}
 
 #ifdef Q_OS_WIN
 void Application::addTempFile(const QString &file)
@@ -935,18 +927,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 	}
 }
 
-void Application::showAbout()
-{
-	if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
-		w->showSettings(SettingsDialog::LicenseSettings);
-}
-
-void Application::showSettings()
-{
-	if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
-		w->showSettings(SettingsDialog::GeneralSettings);
-}
-
 void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)
 {
 	if(sign)
@@ -988,7 +968,14 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 		}
 #endif
 	}
-	activate(w);
+#ifdef Q_OS_MAC
+	// Required for restoring minimized window on macOS
+	w->setWindowState(Qt::WindowActive);
+#endif
+	w->addAction(d->closeAction);
+	w->activateWindow();
+	w->show();
+	w->raise();
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
 }
