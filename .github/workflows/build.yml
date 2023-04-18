@@ -142,24 +142,11 @@ jobs:
     strategy:
       matrix:
         vcver: [142, 143]
-        arch: [x64]
-        qtver: [6.4.2]
-        qt: [win64_msvc2019_64]
-        qtmodules: [qt5compat]
         include:
         - vcver: 142
           image: windows-2019
-          toolset: 14.29
         - vcver: 143
           image: windows-2022
-          toolset: 14.34
-        - vcver: 141
-          arch: x86
-          qtver: 5.12.12
-          qt: win32_msvc2017
-          qtmodules:
-          image: windows-2019
-          toolset: 14.16
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -184,26 +171,25 @@ jobs:
       with:
         vcpkgArguments: openssl
         vcpkgGitCommitId: a69b65229b3956b7f45abd81671b7330114bcaad
-        vcpkgTriplet: ${{ matrix.arch }}-windows
+        vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: ${{ matrix.qtver }}
-        arch: ${{ matrix.qt }}
-        modules: ${{ matrix.qtmodules }}
+        version: 6.4.3
+        arch: win64_msvc2019_64
+        modules: qt5compat
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: ${{ matrix.arch }}
+        arch: x64
         sdk: 10.0.17763.0
-        toolset: ${{ matrix.toolset }}
     - name: Build
       run: |
         md build/client
-        copy ${{ env.VCPKG_ROOT }}\installed\${{ matrix.arch }}-windows\bin\*.dll build\client\
+        copy ${{ env.VCPKG_ROOT }}\installed\x64-windows\bin\*.dll build\client\
         cmake "-GNinja" -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
-          "-DLIBDIGIDOCPP_LIBRARY=libs/libdigidocpp/${{ matrix.arch }}/digidocpp.lib" `
+          "-DLIBDIGIDOCPP_LIBRARY=libs/libdigidocpp/x64/digidocpp.lib" `
           "-DLIBDIGIDOCPP_INCLUDE_DIR=libs/libdigidocpp/include" -B build -S .
         cmake --build build --target msi
         cmake --build build --target appx

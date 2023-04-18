@@ -29,8 +29,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?define VCVER = "143" ?>
 <?elseif $(env.VisualStudioVersion) = "16.0" ?>
 <?define VCVER = "142" ?>
-<?elseif $(env.VisualStudioVersion) = "15.0" ?>
-<?define VCVER = "141" ?>
 <?endif?>
 
 <?if $(var.qt_suffix) = "d" ?>
@@ -149,23 +147,16 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?endif ?>
             <File Source="$(var.libs_path)\libcrypto-1_1$(var.OpenSSLSuffix).dll"/>
             <File Source="$(var.libs_path)\libssl-1_1$(var.OpenSSLSuffix).dll"/>
-            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Core$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Gui$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Network$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)PrintSupport$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Svg$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\Qt$(var.qt_ver_major)Widgets$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6Core$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6Gui$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6Network$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6PrintSupport$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6Svg$(var.qt_suffix).dll"/>
+            <File Source="$(var.qt_path)\Qt6Widgets$(var.qt_suffix).dll"/>
             <File Source="$(var.qt_path)\D3DCompiler_47.dll"/>
             <File Source="$(var.qt_path)\opengl32sw.dll"/>
-<?if $(var.qt_ver_major) = "5" ?>
-            <File Source="$(var.qt_path)\Qt5WinExtras$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\libEGL$(var.qt_suffix).dll"/>
-            <File Source="$(var.qt_path)\libGLESv2$(var.qt_suffix).dll"/>
-            <File Source="$(var.qtconf)" />
-<?else ?>
             <File Source="$(var.qt_path)\Qt6Core5Compat$(var.qt_suffix).dll"/>
             <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll"/>
-<?endif?>
 <?endif?>
           </Component>
           <Directory Id="SchemaFolder" Name="schema"/>
@@ -175,19 +166,11 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
               <File Name="qwindows$(var.qt_suffix).dll"/>
             </Component>
           </Directory>
-<?if $(var.qt_ver_major) = "5" ?>
-          <Directory Id="printsupport" Name="printsupport" FileSource="$(var.qt_path)\..\plugins\printsupport">
-            <Component Id="windowsprintersupport.dll">
-              <File Name="windowsprintersupport$(var.qt_suffix).dll"/>
-            </Component>
-          </Directory>
-<?else ?>
           <Directory Id="tls" Name="tls" FileSource="$(var.qt_path)\..\plugins\tls">
             <Component Id="qopensslbackend.dll">
               <File Name="qopensslbackend$(var.qt_suffix).dll"/>
             </Component>
           </Directory>
-<?endif?>
           <Directory Id="styles" Name="styles" FileSource="$(var.qt_path)\..\plugins\styles">
             <Component Id="qwindowsvistastyle.dll">
               <File Name="qwindowsvistastyle$(var.qt_suffix).dll"/>
@@ -213,11 +196,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?ifdef var.qt_path ?>
       <ComponentRef Id="qwindows.dll" />
       <ComponentRef Id="qwindowsvistastyle.dll" />
-<?if $(var.qt_ver_major) = "5" ?>
-      <ComponentRef Id="windowsprintersupport.dll" />
-<?else ?>
       <ComponentRef Id="qopensslbackend.dll" />
-<?endif?>
       <ComponentRef Id="imageformats.dll" />
 <?endif?>
     </Feature>
