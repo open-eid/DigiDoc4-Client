@@ -20,13 +20,10 @@
 
 #include "Application.h"
 #include "QPCSC.h"
-
-#ifdef CONFIG_URL
 #include "Settings.h"
-#include <QtCore/QJsonObject>
-#endif
 
 #include <QtCore/QDir>
+#include <QtCore/QJsonObject>
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
 

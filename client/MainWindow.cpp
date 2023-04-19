@@ -34,7 +34,6 @@
 #include "effects/ButtonHoverFilter.h"
 #include "effects/FadeInNotification.h"
 #include "effects/Overlay.h"
-#include "dialogs/AccessCert.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/MobileProgress.h"
 #include "dialogs/RoleAddressDialog.h"
@@ -898,9 +897,6 @@ void MainWindow::sign(F &&sign)
 		return;
 	}
 
-	if(!AccessCert(this).validate())
-		return;
-
 	QString role, city, state, country, zip;
 	if(RoleAddressDialog(this).get(city, country, state, zip, role) == QDialog::Rejected)
 		return;
@@ -922,7 +918,6 @@ void MainWindow::sign(F &&sign)
 	else if(!sign(city, state, zip, country, role))
 		return;
 
-	AccessCert::increment();
 	if(!save())
 		return;
 

@@ -2,35 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>AccessCert</name>
-    <message>
-        <source>Failed to save server access certificate file to %1!
-%2</source>
-        <translation>Failed to save server access certificate file to %1!
-%2</translation>
-    </message>
-    <message>
-        <source>Failed to save server access certificate file to KeyChain!</source>
-        <translation>Failed to save server access certificate file to KeyChain!</translation>
-    </message>
-    <message>
-        <source>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
-        <translation>Server access certificate expired on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
-    </message>
-    <message>
-        <source>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</source>
-        <translation>Server access certificate is about to expire on %1. To renew the certificate please contact IT support team of your company. Additional information is available &lt;a href=&quot;mailto:sales@sk.ee&quot;&gt;sales@sk.ee&lt;/a&gt; or phone (+372) 610 1885</translation>
-    </message>
-    <message>
-        <source>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</source>
-        <translation>Server access certificate expired on %1. To renew the certificate please update your ID software, which you can get from &lt;a href=&quot;https://www.id.ee/en/&quot;&gt;www.id.ee&lt;/a&gt;. Additional info is available ID-helpline (+372) 666 8888.</translation>
-    </message>
-    <message>
-        <source>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;here&lt;/a&gt;</source>
-        <translation>The limit of free digital signatures per month is about to exceed. To create more digital signatures you need to conclude a contract with a service provider. Read more &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;here&lt;/a&gt;</translation>
-    </message>
-</context>
-<context>
     <name>Accordion</name>
     <message>
         <source>PIN/PUK CODES AND CERTIFICATES</source>
@@ -2407,10 +2378,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>REMOVE OLD CERTIFICATES</translation>
     </message>
     <message>
-        <source>INSTALL MANUALLY</source>
-        <translation>INSTALL MANUALLY</translation>
-    </message>
-    <message>
         <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
         <translation>SAVE DIAGNOSTICS</translation>
     </message>
@@ -2457,34 +2424,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Ask role and address info on signing</source>
         <translation>Ask role and address info on signing</translation>
-    </message>
-    <message>
-        <source>Access to validity confirmation service</source>
-        <translation>Access to validity confirmation service</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/en/article/access-certificate-what-is-it/</source>
-        <translation>https://www.id.ee/en/article/access-certificate-what-is-it/</translation>
-    </message>
-    <message>
-        <source>Server access certificate</source>
-        <translation>Server access certificate</translation>
-    </message>
-    <message>
-        <source>Ignore server access certificate (IP based access)</source>
-        <translation>Ignore server access certificate (IP based access)</translation>
-    </message>
-    <message>
-        <source>Enter server access certificate password.</source>
-        <translation>Enter server access certificate password.</translation>
-    </message>
-    <message>
-        <source>Select server access certificate</source>
-        <translation>Select server access certificate</translation>
-    </message>
-    <message>
-        <source>Invalid password</source>
-        <translation>Invalid password</translation>
     </message>
     <message>
         <source>Access to Time-Stamping service</source>
@@ -2543,10 +2482,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Please try again.</translation>
     </message>
     <message>
-        <source>Server access certificate is not installed.</source>
-        <translation>Server access certificate is not installed.</translation>
-    </message>
-    <message>
         <source>Issued to: %1&lt;br /&gt;Valid to: %2 %3</source>
         <translation>Issued to: %1&lt;br /&gt;Valid to: %2 %3</translation>
     </message>
@@ -2569,14 +2504,6 @@ Additional licenses and components</translation>
     <message>
         <source>Select folder</source>
         <translation>Select folder</translation>
-    </message>
-    <message>
-        <source>Server access certificates (*.p12 *.p12d *.pfx)</source>
-        <translation>Server access certificates (*.p12 *.p12d *.pfx)</translation>
-    </message>
-    <message>
-        <source>Server access certificate error: %1</source>
-        <translation>Server access certificate error: %1</translation>
     </message>
     <message>
         <source>Save as</source>
@@ -2746,11 +2673,6 @@ Additional licenses and components</translation>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>Time-Stamping Service SSL certificate</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <comment>accessCert</comment>
-        <translation>SHOW CERTIFICATE</translation>
     </message>
 </context>
 <context>

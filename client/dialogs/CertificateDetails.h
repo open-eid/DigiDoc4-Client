@@ -32,7 +32,6 @@ public:
 	explicit CertificateDetails(const SslCertificate &c, QWidget *parent = nullptr);
 	~CertificateDetails() final;
 
-	static QString decodeCN(const QString &cn);
 	static void showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix = {});
 
 private:

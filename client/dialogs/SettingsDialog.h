@@ -65,7 +65,6 @@ private:
 	void changePage(QAbstractButton *button);
 	void checkConnection();
 	void initFunctionality();
-	void installCert();
 	void retranslate(const QString& lang);
 	void saveFile(const QString &name, const QString &path);
 	void saveFile(const QString &name, const QByteArray &content);
@@ -73,7 +72,6 @@ private:
 	QSslCertificate selectCert(const QString &label, const QString &format);
 	void selectLanguage();
 	void setProxyEnabled();
-	void updateCert();
 	void updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl);
 	void updateSiVaCert(const QSslCertificate &c);
 	void updateTSACert(const QSslCertificate &c);

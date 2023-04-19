@@ -21,7 +21,6 @@
 #include "ui_SettingsDialog.h"
 
 #include "Application.h"
-#include "AccessCert.h"
 #ifdef Q_OS_WIN
 #include "CertStore.h"
 #endif
@@ -36,6 +35,7 @@
 #include "TokenData.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
+#include "dialogs/WarningDialog.h"
 #include "effects/ButtonHoverFilter.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
@@ -108,16 +108,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->chkLibdigidocppDebug->setFont(regularFont);
 
 	// pageServices
-	ui->lblRevocation->setFont(headerFont);
-	ui->lblAccessCert->setFont(regularFont);
-	ui->txtAccessCert->setFont(regularFont);
-	ui->btInstallManually->setFont(condensed12);
-	ui->btShowCertificate->setFont(condensed12);
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	ui->btInstallManually->setStyleSheet("background-color: #d3d3d3");
-	ui->btShowCertificate->setStyleSheet("background-color: #d3d3d3");
-#endif
-	ui->chkIgnoreAccessCert->setFont(regularFont);
 	ui->lblTimeStamp->setFont(headerFont);
 	ui->rdTimeStampDefault->setFont(regularFont);
 	ui->rdTimeStampCustom->setFont(regularFont);
@@ -134,7 +124,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->rdMIDUUIDDefault->setFont(regularFont);
 	ui->rdMIDUUIDCustom->setFont(regularFont);
 	ui->txtMIDUUID->setFont(regularFont);
-	ui->helpRevocation->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpTimeStamp->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->helpMID->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 
@@ -290,7 +279,7 @@ SettingsDialog::~SettingsDialog()
 QString SettingsDialog::certInfo(const SslCertificate &c)
 {
 	return tr("Issued to: %1<br />Valid to: %2 %3").arg(
-		CertificateDetails::decodeCN(c.subjectInfo(QSslCertificate::CommonName)),
+		c.subjectInfo(QSslCertificate::CommonName),
 		c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
 		!c.isValid() ? QStringLiteral("<font color='red'>(%1)</font>").arg(tr("expired")) : QString());
 }
@@ -329,7 +318,6 @@ void SettingsDialog::retranslate(const QString& lang)
 	qApp->loadTranslation( lang );
 	ui->retranslateUi(this);
 	updateVersion();
-	updateCert();
 	updateDiagnostics();
 }
 
@@ -399,20 +387,6 @@ void SettingsDialog::initFunctionality()
 
 	ui->chkProxyEnableForSSL->setDisabled(Settings::PROXY_CONFIG != Settings::ProxyManual);
 	updateProxy();
-
-	// pageServices - Access Cert
-	updateCert();
-	connect(ui->btShowCertificate, &QPushButton::clicked, this, [this] {
-		CertificateDetails::showCertificate(SslCertificate(AccessCert::cert()), this);
-	});
-	connect(ui->btInstallManually, &QPushButton::clicked, this, &SettingsDialog::installCert);
-	ui->chkIgnoreAccessCert->setChecked(Application::confValue(Application::PKCS12Disable, false).toBool());
-	connect(ui->chkIgnoreAccessCert, &QCheckBox::toggled, this, [](bool checked) {
-		Application::setConfValue(Application::PKCS12Disable, checked);
-	});
-	connect(ui->helpRevocation, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/access-certificate-what-is-it/"));
-	});
 
 	// pageServices - TimeStamp
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
@@ -520,17 +494,6 @@ void SettingsDialog::initFunctionality()
 		}
 #endif
 	});
-}
-
-void SettingsDialog::updateCert()
-{
-	QSslCertificate c = AccessCert::cert();
-	if(!c.isNull())
-		ui->txtAccessCert->setText(certInfo(c));
-	else
-		ui->txtAccessCert->setText(QStringLiteral("<b>%1</b>")
-			.arg(tr("Server access certificate is not installed.")));
-	ui->btShowCertificate->setDisabled(c.isNull());
 }
 
 void SettingsDialog::updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl)
@@ -656,41 +619,8 @@ void SettingsDialog::updateDiagnostics()
 	QThreadPool::globalInstance()->start( worker );
 }
 
-void SettingsDialog::installCert()
-{
-	QFile file(FileDialog::getOpenFileName(this, tr("Select server access certificate"), {},
-		tr("Server access certificates (*.p12 *.p12d *.pfx)") ) );
-	if(!file.open(QFile::ReadOnly))
-		return;
-	QString pass = QInputDialog::getText( this, tr("Password"),
-		tr("Enter server access certificate password."), QLineEdit::Password );
-	if(pass.isEmpty())
-		return;
-	PKCS12Certificate p12(&file, pass);
-	switch(p12.error())
-	{
-	case PKCS12Certificate::NullError: break;
-	case PKCS12Certificate::InvalidPasswordError:
-		WarningDialog::show(this, tr("Invalid password"));
-		return;
-	default:
-		WarningDialog::show(this, tr("Server access certificate error: %1").arg(p12.errorString()));
-		return;
-	}
-
-#ifndef Q_OS_MAC
-	if( file.fileName() == QDir::fromNativeSeparators( Application::confValue( Application::PKCS12Cert ).toString() ) )
-		return;
-#endif
-	file.reset();
-	AccessCert().installCert( file.readAll(), pass );
-	updateCert();
-}
-
 void SettingsDialog::useDefaultSettings()
 {
-	AccessCert().remove();
-	updateCert();
 	ui->rdTimeStampDefault->setChecked(true);
 	ui->rdSiVaDefault->setChecked(true);
 	ui->rdMIDUUIDDefault->setChecked(true);

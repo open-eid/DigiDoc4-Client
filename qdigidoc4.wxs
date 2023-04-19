@@ -136,7 +136,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
             <File Source="$(var.libs_path)\digidocpp$(var.qt_suffix).dll"/>
             <File Source="$(var.libs_path)\digidoc-tool.exe"/>
             <File Source="$(var.libs_path)\digidocpp.conf"/>
-            <File Source="$(var.libs_path)\798.p12"/>
 <?ifdef var.qt_path ?>
             <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll"/>
             <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll"/>

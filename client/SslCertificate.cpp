@@ -24,21 +24,14 @@
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <QtCore/QDataStream>
-#include <QtCore/QDateTime>
 #include <QtCore/QDebug>
-#include <QtCore/QFile>
-#include <QtCore/QHash>
-#include <QtCore/QMap>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QStringList>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QSslKey>
 
-#include <openssl/err.h>
 #include <openssl/ocsp.h>
-#include <openssl/pkcs12.h>
 #include <openssl/x509v3.h>
 
 #include <memory>
@@ -402,91 +395,3 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 		return Unknown;
 	return Validity(status);
 }
-
-
-
-class PKCS12Certificate::Private final: public QSharedData
-{
-public:
-	void setLastError()
-	{
-		error = PKCS12Certificate::NullError;
-		errorString.clear();
-		while( ERR_peek_error() > ERR_LIB_NONE )
-		{
-			unsigned long err = ERR_get_error();
-			if( ERR_GET_LIB(err) == ERR_LIB_PKCS12 &&
-				ERR_GET_REASON(err) == PKCS12_R_MAC_VERIFY_FAILURE )
-			{
-				error = PKCS12Certificate::InvalidPasswordError;
-				return;
-			}
-			error = PKCS12Certificate::UnknownError;
-			errorString += ERR_error_string(err, nullptr);
-		}
-	}
-
-	QSslCertificate cert;
-	PKCS12Certificate::ErrorType error = PKCS12Certificate::NullError;
-	QString errorString;
-};
-
-PKCS12Certificate::PKCS12Certificate( QIODevice *device, const QString &pin )
-	: PKCS12Certificate(device ? device->readAll() : QByteArray(), pin)
-{}
-
-PKCS12Certificate::PKCS12Certificate( const QByteArray &data, const QString &pin )
-	: d(new Private)
-{
-	if(data.isEmpty())
-		return;
-	const unsigned char *p = (const unsigned char*)data.constData();
-	PKCS12 *p12 = d2i_PKCS12(nullptr, &p, data.size());
-	if(!p12)
-	{
-		d->setLastError();
-		return;
-	}
-
-	X509 *c = nullptr;
-	EVP_PKEY *k = nullptr;
-	QByteArray _pin = pin.toUtf8();
-	int ret = PKCS12_parse(p12, _pin.constData(), &k, &c, nullptr);
-	PKCS12_free(p12);
-	if(!ret)
-	{
-		d->setLastError();
-		return;
-	}
-	ERR_get_error();
-
-	d->cert = QSslCertificate(i2dDer(i2d_X509, c), QSsl::Der);
-
-	X509_free(c);
-	EVP_PKEY_free(k);
-}
-
-PKCS12Certificate::PKCS12Certificate( const PKCS12Certificate &other ) = default;
-PKCS12Certificate::PKCS12Certificate(PKCS12Certificate &&other) Q_DECL_NOEXCEPT = default;
-PKCS12Certificate& PKCS12Certificate::operator=(const PKCS12Certificate &other) = default;
-PKCS12Certificate& PKCS12Certificate::operator=(PKCS12Certificate &&other) Q_DECL_NOEXCEPT = default;
-
-PKCS12Certificate::~PKCS12Certificate() = default;
-QSslCertificate PKCS12Certificate::certificate() const { return d->cert; }
-PKCS12Certificate::ErrorType PKCS12Certificate::error() const { return d->error; }
-QString PKCS12Certificate::errorString() const { return d->errorString; }
-
-PKCS12Certificate PKCS12Certificate::fromPath( const QString &path, const QString &pin )
-{
-	PKCS12Certificate p12(nullptr, {});
-	QFile f( path );
-	if( !f.exists() )
-		p12.d->error = PKCS12Certificate::FileNotExist;
-	else if( !f.open( QFile::ReadOnly ) )
-		p12.d->error = PKCS12Certificate::FailedToRead;
-	else
-		return {&f, pin};
-	return p12;
-}
-
-bool PKCS12Certificate::isNull() const { return d->cert.isNull(); }
