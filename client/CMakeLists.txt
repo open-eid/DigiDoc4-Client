@@ -138,10 +138,6 @@ endif()
 if(${QT_VERSION_MAJOR} STREQUAL "6")
 	find_package(Qt6 COMPONENTS Core5Compat SvgWidgets REQUIRED)
 	target_link_libraries(${PROJECT_NAME} Qt6::Core5Compat Qt6::SvgWidgets)
-elseif(WIN32)
-	find_package(Qt5 COMPONENTS WinExtras)
-	target_compile_definitions(${PROJECT_NAME} PRIVATE QT_WIN_EXTRAS)
-	target_link_libraries(${PROJECT_NAME} Qt5::WinExtras)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

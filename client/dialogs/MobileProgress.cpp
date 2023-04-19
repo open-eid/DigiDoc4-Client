@@ -40,10 +40,6 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#ifdef QT_WIN_EXTRAS
-#include <QtWinExtras/QWinTaskbarButton>
-#include <QtWinExtras/QWinTaskbarProgress>
-#endif
 
 Q_LOGGING_CATEGORY(MIDLog,"RIA.MID")
 
@@ -55,8 +51,8 @@ class MobileProgress::Private final: public QDialog, public Ui::MobileProgress
 public:
 	using QDialog::QDialog;
 	void reject() final { l.exit(QDialog::Rejected); }
-	QTimeLine *statusTimer {};
-	QNetworkAccessManager *manager {};
+	QTimeLine *statusTimer{};
+	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	QNetworkRequest req;
 	QString ssid, cell, sessionID;
 	std::vector<unsigned char> signature;
@@ -66,16 +62,13 @@ public:
 	QString NAME = Settings::MID_NAME;
 	QString UUID = useCustomUUID ? Settings::MID_UUID : QString();
 	QString URL = !UUID.isNull() && useCustomUUID ? Settings::MID_SK_URL : Settings::MID_PROXY_URL;
-#ifdef QT_WIN_EXTRAS
-	QWinTaskbarButton *taskbar {};
-#endif
 };
 
 MobileProgress::MobileProgress(QWidget *parent)
 	: d(new Private(parent))
 {
 	const_cast<QLoggingCategory&>(MIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())));
+		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->move(parent->geometry().center() - d->geometry().center());
@@ -108,26 +101,19 @@ background-color: #007aff;
 	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
 	QObject::connect(d->statusTimer, &QTimeLine::finished, d, &QDialog::reject);
-#ifdef QT_WIN_EXTRAS
-	d->taskbar = new QWinTaskbarButton(d);
-	d->taskbar->setWindow(parent->windowHandle());
-	d->taskbar->progress()->setRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
-	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->taskbar->progress(), &QWinTaskbarProgress::setValue);
-#endif
 
-	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-	QList<QSslCertificate> trusted;
 #ifdef CONFIG_URL
-	ssl.setCaCertificates({});
-	for(const auto cert: qApp->confValue(QLatin1String("CERT-BUNDLE")).toArray())
-		trusted << QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der);
-#endif
+	QList<QSslCertificate> trusted;
+	for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
+		trusted.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
+	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
+	ssl.setCaCertificates(trusted);
 	d->req.setSslConfiguration(ssl);
+#endif
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
-	d->manager = new QNetworkAccessManager(d);
-	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [=](QNetworkReply *reply, const QList<QSslError> &err) {
+		.arg(QApplication::applicationName(), QApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [](QNetworkReply *reply, const QList<QSslError> &err) {
 		QList<QSslError> ignore;
 		for(const QSslError &e: err)
 		{
@@ -136,7 +122,7 @@ background-color: #007aff;
 			case QSslError::UnableToGetLocalIssuerCertificate:
 			case QSslError::CertificateUntrusted:
 			case QSslError::SelfSignedCertificateInChain:
-				if(trusted.contains(reply->sslConfiguration().peerCertificate())) {
+				if(reply->sslConfiguration().caCertificates().contains(reply->sslConfiguration().peerCertificate())) {
 					ignore << e;
 					break;
 				}
@@ -152,7 +138,7 @@ background-color: #007aff;
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
 		auto returnError = [=](const QString &err, const QString &details = {}) {
 			qCWarning(MIDLog) << err;
-			stop();
+			d->statusTimer->stop();
 			d->hide();
 			auto *dlg = WarningDialog::show(d->parentWidget(), err, details);
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
@@ -193,8 +179,7 @@ background-color: #007aff;
 			}
 		}
 		} // switch (reply->error())
-		static const QStringList contentType{QStringLiteral("application/json"), QStringLiteral("application/json;charset=UTF-8")};
-		if(!contentType.contains(reply->header(QNetworkRequest::ContentTypeHeader).toString()))
+		if(!reply->header(QNetworkRequest::ContentTypeHeader).toString().startsWith(QLatin1String("application/json")))
 			return returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
 
 		QByteArray data = reply->readAll();
@@ -350,15 +335,6 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	default:
 		throw Exception(__FILE__, __LINE__, "Failed to sign container");
 	}
-}
-
-void MobileProgress::stop()
-{
-	d->statusTimer->stop();
-#ifdef QT_WIN_EXTRAS
-	d->taskbar->progress()->stop();
-	d->taskbar->progress()->hide();
-#endif
 }
 
 #include "MobileProgress.moc"
