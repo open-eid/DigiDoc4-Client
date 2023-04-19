@@ -634,6 +634,10 @@
         <source>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</source>
         <translation>Failed to open the container. You need to update your ID-software in order to open CDOC2 containers. Install new ID-software from &lt;a href=&apos;https://www.id.ee/en/article/install-id-software/&apos;&gt;www.id.ee&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>An error occurred while opening the document.</source>
+        <translation>An error occurred while opening the document.</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>
