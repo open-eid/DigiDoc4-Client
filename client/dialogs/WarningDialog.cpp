@@ -20,7 +20,10 @@
 #include "WarningDialog.h"
 #include "ui_WarningDialog.h"
 
+#include "Application.h"
 #include "Styles.h"
+
+#include <QStyle>
 
 WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
 	: QDialog(parent)
@@ -28,6 +31,10 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 {
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
+	setAttribute(Qt::WA_DeleteOnClose);
+#ifdef Q_OS_DARWIN
+	setParent(parent, Qt::Sheet);
+#endif
 
 	connect( ui->cancel, &QPushButton::clicked, this, &WarningDialog::reject );
 	connect( this, &WarningDialog::finished, this, &WarningDialog::close );
@@ -58,17 +65,6 @@ WarningDialog::~WarningDialog()
 	delete ui;
 }
 
-void WarningDialog::setCancelText(const QString& label)
-{
-	ui->cancel->setText(label);
-	ui->cancel->setAccessibleName(label.toLower());
-}
-
-void WarningDialog::resetCancelStyle()
-{
-	ui->cancel->setStyleSheet({});
-}
-
 void WarningDialog::addButton(const QString& label, int ret, bool red)
 {
 	auto *button = new QPushButton(label, this);
@@ -80,11 +76,7 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 		ui->cancel->minimumHeight());
 
 	if(red) {
-		button->setStyleSheet(QStringLiteral(
-			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #981E32;}\n"
-			"QPushButton:pressed { background-color: #F24A66; }\n"
-			"QPushButton:hover:!pressed { background-color: #CD2541; }\n"
-			"QPushButton:disabled {background-color: #BEDBED;}"));
+		button->setProperty("warning", true);
 #ifdef Q_OS_WIN // For Windows this button should be on the left side of the dialog window
 		setLayoutDirection(Qt::RightToLeft);
 #endif
@@ -98,11 +90,24 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 	ui->buttonBarLayout->insertWidget(ui->buttonBarLayout->findChildren<QPushButton>().size() + 1, button);
 }
 
+void WarningDialog::resetCancelStyle()
+{
+	style()->unpolish(ui->cancel);
+	ui->cancel->setProperty("warning", false);
+	style()->polish(ui->cancel);
+}
+
 void WarningDialog::setButtonSize(int width, int margin)
 {
 	ui->buttonBarLayout->setSpacing(margin);
 	ui->cancel->setMinimumSize(width, ui->cancel->minimumHeight());
 	ui->cancel->setMaximumSize(width, ui->cancel->minimumHeight());
+}
+
+void WarningDialog::setCancelText(const QString& label)
+{
+	ui->cancel->setText(label);
+	ui->cancel->setAccessibleName(label.toLower());
 }
 
 void WarningDialog::setText(const QString& text)
@@ -111,10 +116,14 @@ void WarningDialog::setText(const QString& text)
 	adjustSize();
 }
 
+WarningDialog* WarningDialog::show(const QString &text, const QString &details)
+{
+	return show(Application::mainWindow(), text, details);
+}
+
 WarningDialog* WarningDialog::show(QWidget *parent, const QString &text, const QString &details)
 {
 	auto *dlg = new WarningDialog(text, details, parent);
-	dlg->setAttribute(Qt::WA_DeleteOnClose);
 	dlg->open();
 	return dlg;
 }

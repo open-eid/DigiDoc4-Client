@@ -58,12 +58,9 @@ bool DocumentModel::verifyFile(const QString &f)
 			QStringLiteral("pps"), QStringLiteral("ppt"), QStringLiteral("pptx"), QStringLiteral("png"), QStringLiteral("jpg"), QStringLiteral("jpeg"), QStringLiteral("bmp"), QStringLiteral("ai"),
 			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff"), QStringLiteral("csv")};
 
-	QJsonArray allowedExts = qApp->confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
+	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
 	if(!allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower()))){
-		auto *dlg = new WarningDialog(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."), qApp->activeWindow());
-		dlg->setAttribute(Qt::WA_DeleteOnClose);
-		dlg->setCancelText(tr("OK"));
-		dlg->open();
+		WarningDialog::show(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))->setCancelText(tr("OK"));
 		return false;
 	}
 

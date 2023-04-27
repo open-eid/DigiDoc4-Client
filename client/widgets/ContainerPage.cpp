@@ -130,9 +130,9 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 			}
 		))
 		{
-			WarningDialog dlg(tr("The document has already been signed by you."), this);
-			dlg.addButton(tr("CONTINUE SIGNING"), SignatureAdd);
-			return dlg.exec() == SignatureAdd;
+			auto *dlg = new WarningDialog(tr("The document has already been signed by you."), this);
+			dlg->addButton(tr("CONTINUE SIGNING"), SignatureAdd);
+			return dlg->exec() == SignatureAdd;
 		}
 		break;
 	default: break;

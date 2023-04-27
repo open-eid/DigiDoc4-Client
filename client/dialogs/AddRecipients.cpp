@@ -224,22 +224,22 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 		auto expiryDate = key.cert.expiryDate();
 		if(expiryDate <= QDateTime::currentDateTime())
 		{
-			WarningDialog dlg(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-								 "When decrypter has updated certificates then decrypting is impossible.")
-								  .arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
-			dlg.setCancelText(tr("NO"));
-			dlg.addButton(tr("YES"), QMessageBox::Yes);
-			if(dlg.exec() != QMessageBox::Yes)
+			auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
+				"When decrypter has updated certificates then decrypting is impossible.")
+				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
+			dlg->setCancelText(tr("NO"));
+			dlg->addButton(tr("YES"), QMessageBox::Yes);
+			if(dlg->exec() != QMessageBox::Yes)
 				return false;
 		}
 		QList<QSslError> errors = QSslCertificate::verify({ key.cert });
 		errors.removeAll(QSslError(QSslError::CertificateExpired, key.cert));
 		if(!errors.isEmpty())
 		{
-			WarningDialog dlg(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
-			dlg.setCancelText(tr("NO"));
-			dlg.addButton(tr("YES"), QMessageBox::Yes);
-			if(dlg.exec() != QMessageBox::Yes)
+			auto *dlg = new WarningDialog(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
+			dlg->setCancelText(tr("NO"));
+			dlg->addButton(tr("YES"), QMessageBox::Yes);
+			if(dlg->exec() != QMessageBox::Yes)
 				return false;
 		}
 	}

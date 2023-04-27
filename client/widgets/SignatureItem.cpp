@@ -162,7 +162,7 @@ bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 		details();
 		return true;
 	case QEvent::KeyRelease:
-		if(QKeyEvent *ke = static_cast<QKeyEvent*>(e))
+		if(auto *ke = static_cast<QKeyEvent*>(e))
 		{
 			if(isEnabled() && (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space))
 				details();
@@ -200,12 +200,14 @@ void SignatureItem::removeSignature()
 	QString msg = tr("Remove signature %1?")
 		.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")));
 
-	WarningDialog *dlg = new WarningDialog(msg, this);
+	auto *dlg = WarningDialog::show(this, msg);
 	dlg->setCancelText(tr("CANCEL"));
 	dlg->resetCancelStyle();
 	dlg->addButton(QStringLiteral("OK"), SignatureRemove, true);
-	if(dlg->exec() == SignatureRemove)
-		emit remove(this);
+	connect(dlg, &WarningDialog::finished, this, [this](int result) {
+		if(result == SignatureRemove)
+			emit remove(this);
+	});
 }
 
 void SignatureItem::updateNameField()

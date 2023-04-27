@@ -29,6 +29,7 @@
 #include "QPKCS11.h"
 #include "SslCertificate.h"
 #include "Utils.h"
+#include "dialogs/WarningDialog.h"
 
 #include <digidocpp/Conf.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -90,8 +91,8 @@ QSigner::QSigner(QObject *parent)
 	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
 
 	d->smartcard = new QSmartCard(parent);
-	connect(this, &QSigner::error, qApp, [](const QString &msg) {
-		qApp->showWarning(msg);
+	connect(this, &QSigner::error, this, [](const QString &msg) {
+		WarningDialog::show(msg);
 	});
 	connect(this, &QSigner::signDataChanged, this, [this](const TokenData &token) {
 		std::string method = (CONF(signatureDigestUri));
@@ -199,7 +200,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 			QCardLock::instance().exclusiveUnlock();
 			return {};
 		case QCryptoBackend::PinIncorrect:
-			qApp->showWarning(QCryptoBackend::errorString(status));
+			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
 			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
@@ -240,7 +241,7 @@ QSslKey QSigner::key() const
 		{
 		case QCryptoBackend::PinOK: break;
 		case QCryptoBackend::PinIncorrect:
-			qApp->showWarning(QCryptoBackend::errorString(status));
+			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
 			continue;
 		case QCryptoBackend::PinLocked:
 		default:
@@ -408,7 +409,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINCanceled)
 		case QCryptoBackend::PinIncorrect:
-			qApp->showWarning(QCryptoBackend::errorString(status));
+			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
 			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();

@@ -776,11 +776,11 @@ bool Application::notify(QObject *object, QEvent *event)
 	}
 	catch(const std::bad_alloc &e)
 	{
-		showWarning(tr("Added file(s) exceeds the maximum size limit of the container(120MB)."), QString::fromLocal8Bit(e.what()));
+		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container(120MB)."), QString::fromLocal8Bit(e.what()));
 	}
 	catch(...)
 	{
-		showWarning( tr("Caught exception!") );
+		WarningDialog::show(tr("Caught exception!"));
 	}
 
 	return false;
@@ -939,12 +939,7 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 {
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	QStringList causes = DigiDoc::parseException(e, code);
-	WarningDialog::show(mainWindow(), msg, causes.join('\n'));
-}
-
-void Application::showWarning( const QString &msg, const QString &details )
-{
-	WarningDialog(msg, details, mainWindow()).exec();
+	WarningDialog::show(msg, causes.join('\n'));
 }
 
 QSigner* Application::signer() const { return d->signer; }

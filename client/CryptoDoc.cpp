@@ -95,7 +95,7 @@ public:
 	void run() final;
 	static void showError(const QString &err, const QString &details = {})
 	{
-		WarningDialog::show(Application::mainWindow(), err, details);
+		WarningDialog::show(err, details);
 	}
 	static QString size(const QString &size)
 	{

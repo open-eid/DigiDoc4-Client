@@ -281,20 +281,20 @@ bool SDocumentModel::addFile(const QString &file, const QString &mime)
 	QFileInfo info(file);
 	if(info.size() == 0)
 	{
-		WarningDialog::show(qApp->mainWindow(), DocumentModel::tr("Cannot add empty file to the container."));
+		WarningDialog::show(DocumentModel::tr("Cannot add empty file to the container."));
 		return false;
 	}
 	QString fileName(info.fileName());
 	if(fileName == QStringLiteral("mimetype"))
 	{
-		WarningDialog::show(qApp->mainWindow(), DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
+		WarningDialog::show(DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
 		return false;
 	}
 	for(int row = 0; row < rowCount(); row++)
 	{
 		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
 		{
-			WarningDialog::show(qApp->mainWindow(), DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
+			WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
 				.arg(FileDialog::normalized(fileName)));
 			return false;
 		}
@@ -455,9 +455,9 @@ QString DigiDoc::fileName() const { return m_fileName; }
 bool DigiDoc::isError(bool failure, const QString &msg) const
 {
 	if(!b)
-		qApp->showWarning(tr("Container is not open"));
+		WarningDialog::show(tr("Container is not open"));
 	else if(failure)
-		qApp->showWarning(msg);
+		WarningDialog::show(msg);
 	return !b || failure;
 }
 
@@ -496,16 +496,16 @@ bool DigiDoc::open( const QString &file )
 {
 	QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 	if(parent == nullptr)
-		parent = qApp->activeWindow();
+		parent = Application::activeWindow();
 	qApp->waitForTSL( file );
 	clear();
 	auto serviceConfirmation = [parent] {
-		WarningDialog dlg(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
+		auto *dlg = new WarningDialog(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 			"Do you want to continue?"), parent);
-		dlg.setCancelText(tr("CANCEL"));
-		dlg.addButton(tr("YES"), ContainerSave);
-		return dlg.exec() == ContainerSave;
+		dlg->setCancelText(tr("CANCEL"));
+		dlg->addButton(tr("YES"), ContainerSave);
+		return dlg->exec() == ContainerSave;
 	};
 	if((file.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) ||
 		file.endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
@@ -543,7 +543,7 @@ bool DigiDoc::open( const QString &file )
 				for(const Signature *signature: parentContainer->signatures())
 					m_timestamps.append(DigiDocSignature(signature, this));
 			}
-			qApp->addRecent(file);
+			Application::addRecent(file);
 			m_fileName = file;
 			containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 			return true;
@@ -614,7 +614,7 @@ bool DigiDoc::save( const QString &filename )
 		m_fileName = filename;
 	if(!saveAs(m_fileName))
 		return false;
-	qApp->addRecent(m_fileName);
+	Application::addRecent(m_fileName);
 	modified = false;
 	containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 	return true;
@@ -644,33 +644,33 @@ void DigiDoc::setLastError( const QString &msg, const Exception &e )
 	switch( code )
 	{
 	case Exception::CertificateRevoked:
-		qApp->showWarning(tr("Certificate status revoked"), causes.join('\n')); break;
+		WarningDialog::show(tr("Certificate status revoked"), causes.join('\n')); break;
 	case Exception::CertificateUnknown:
-		qApp->showWarning(tr("Certificate status unknown"), causes.join('\n')); break;
+		WarningDialog::show(tr("Certificate status unknown"), causes.join('\n')); break;
 	case Exception::OCSPTimeSlot:
-		qApp->showWarning(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>"), causes.join('\n')); break;
+		WarningDialog::show(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>"), causes.join('\n')); break;
 	case Exception::OCSPRequestUnauthorized:
-		qApp->showWarning(tr("You have not granted IP-based access. "
+		WarningDialog::show(tr("You have not granted IP-based access. "
 			"Check your validity confirmation service access settings."), causes.join('\n')); break;
 	case Exception::TSForbidden:
-		qApp->showWarning(tr("Failed to sign container. "
+		WarningDialog::show(tr("Failed to sign container. "
 			"Check your Time-Stamping service access settings."), causes.join('\n')); break;
 	case Exception::TSTooManyRequests:
-		qApp->showWarning(tr("The limit for digital signatures per month has been reached for this IP address. "
+		WarningDialog::show(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>"), causes.join('\n')); break;
 	case Exception::PINCanceled:
 		break;
 	case Exception::PINFailed:
-		qApp->showWarning(tr("PIN Login failed"), causes.join('\n')); break;
+		WarningDialog::show(tr("PIN Login failed"), causes.join('\n')); break;
 	case Exception::PINIncorrect:
-		qApp->showWarning(tr("PIN Incorrect"), causes.join('\n')); break;
+		WarningDialog::show(tr("PIN Incorrect"), causes.join('\n')); break;
 	case Exception::PINLocked:
-		qApp->showWarning(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
+		WarningDialog::show(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
 	case Exception::NetworkError: // use passed message for these thre exceptions
 	case Exception::HostNotFound:
 	case Exception::InvalidUrl:
 	default:
-		qApp->showWarning(msg, causes.join('\n')); break;
+		WarningDialog::show(msg, causes.join('\n')); break;
 	}
 }
 
@@ -702,13 +702,13 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		switch(code)
 		{
 		case Exception::PINIncorrect:
-			qApp->showWarning(tr("PIN Incorrect"));
+			(new WarningDialog(tr("PIN Incorrect"), Application::mainWindow()))->exec();
 			return sign(city, state, zip, country, role, signer);
 		case Exception::NetworkError:
 		case Exception::HostNotFound:
-			qApp->showWarning(tr("Failed to sign container. Please check the access to signing services and network settings."), causes.join('\n')); break;
+			WarningDialog::show(tr("Failed to sign container. Please check the access to signing services and network settings."), causes.join('\n')); break;
 		case Exception::InvalidUrl:
-			qApp->showWarning(tr("Failed to sign container. Signing service URL is incorrect."), causes.join('\n')); break;
+			WarningDialog::show(tr("Failed to sign container. Signing service URL is incorrect."), causes.join('\n')); break;
 		default:
 			setLastError(tr("Failed to sign container."), e); break;
 		}

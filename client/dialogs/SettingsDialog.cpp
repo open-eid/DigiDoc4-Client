@@ -186,7 +186,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
 		}
-		WarningDialog(tr("DigiDoc4 Client configuration update was successful."), this).exec();
+		WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
 #ifdef Q_OS_WIN
 		QString path = qApp->applicationDirPath() + QStringLiteral("/id-updater.exe");
 		if (QFile::exists(path))
@@ -484,14 +484,16 @@ void SettingsDialog::initFunctionality()
 		WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
 			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."));
 #else
-		WarningDialog dlg(tr("Restart DigiDoc4 Client to activate logging. Read more "
-							 "<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"), this);
-		dlg.setCancelText(tr("NO"));
-		dlg.addButton(tr("YES"), 1) ;
-		if(dlg.exec() == 1) {
-			qApp->setProperty("restart", true);
-			qApp->quit();
-		}
+		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
+			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
+		dlg->setCancelText(tr("NO"));
+		dlg->addButton(tr("YES"), 1);
+		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
+			if(result == 1) {
+				qApp->setProperty("restart", true);
+				qApp->quit();
+			}
+		});
 #endif
 	});
 }
