@@ -162,6 +162,9 @@ background-color: #BEDBED;
        <pointsize>12</pointsize>
       </font>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
     </widget>
    </item>
    <item>
@@ -199,6 +202,9 @@ background-color: #BEDBED;
       <font>
        <pointsize>12</pointsize>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
      </property>
     </widget>
    </item>
