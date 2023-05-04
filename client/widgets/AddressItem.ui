@@ -19,7 +19,6 @@
   <property name="font">
    <font>
     <pointsize>14</pointsize>
-    <weight>50</weight>
     <bold>false</bold>
     <underline>false</underline>
     <strikeout>false</strikeout>
@@ -29,29 +28,52 @@
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: solid rgba(217, 217, 216, 0.45);
+   <string notr="true">#AddressItem {
+border: solid rgba(217, 217, 216, 0.45);
 border-width: 0px 0px 1px 0px;
-background-color: #ffffff;
+background-color: #FFFFFF;
 color: #000000;
-text-decoration: none solid rgb(0, 0, 0);</string>
+}
+#AddressItem:disabled {
+background-color: #F0F0F0;
+}
+QToolButton {
+border-radius: 2px;
+border: none;
+color: #006EB5;
+}
+QToolButton:pressed {
+color: #FFFFFF;
+background-color: #006EB5;
+}
+QToolButton:hover:!pressed {
+border: 1px solid #006EB5;
+color: #006EB5;
+}
+QToolButton:disabled {
+color: #727679;
+}</string>
   </property>
-  <layout class="QHBoxLayout" name="AddressItemLayout" stretch="0,1,0,0,0">
-   <property name="spacing">
-    <number>8</number>
-   </property>
+  <layout class="QGridLayout" name="AddressItemLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>7</number>
    </property>
-   <item>
+   <property name="horizontalSpacing">
+    <number>8</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0" rowspan="2">
     <widget class="QSvgWidget" name="icon" native="true">
      <property name="minimumSize">
       <size>
@@ -70,71 +92,52 @@ text-decoration: none solid rgb(0, 0, 0);</string>
      </property>
     </widget>
    </item>
-   <item>
-    <layout class="QVBoxLayout" name="contentLayout">
-     <property name="spacing">
-      <number>0</number>
+   <item row="0" column="1">
+    <widget class="QLabel" name="name">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
      </property>
-     <property name="leftMargin">
-      <number>0</number>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
      </property>
-     <property name="topMargin">
-      <number>5</number>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
      </property>
-     <property name="rightMargin">
-      <number>0</number>
+     <property name="text">
+      <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
      </property>
-     <property name="bottomMargin">
-      <number>5</number>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
-     <item>
-      <widget class="QLabel" name="name">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
-       <property name="text">
-        <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="idType">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>11</pointsize>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #727679;border: none;</string>
-       </property>
-       <property name="text">
-        <string notr="true">ID-card</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
-   <item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="idType">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>11</pointsize>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #727679;border: none;</string>
+     </property>
+     <property name="text">
+      <string notr="true">ID-card</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" rowspan="2">
     <widget class="LabelButton" name="remove">
      <property name="minimumSize">
       <size>
@@ -170,8 +173,11 @@ text-decoration: none solid rgb(0, 0, 0);</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="3" rowspan="2">
     <widget class="QToolButton" name="added">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -187,30 +193,12 @@ text-decoration: none solid rgb(0, 0, 0);</string>
      <property name="accessibleName">
       <string extracomment="accessible">Added</string>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QToolButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QToolButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QToolButton:disabled {
-	color: #727679;
-}</string>
-     </property>
      <property name="text">
       <string>ADDED</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="4" rowspan="2">
     <widget class="QToolButton" name="add">
      <property name="minimumSize">
       <size>
@@ -229,25 +217,6 @@ QToolButton:disabled {
      </property>
      <property name="accessibleName">
       <string extracomment="accessible">Add</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QToolButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QToolButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QToolButton:disabled {
-	color: #727679;
-	background-color: #BEDBED;
-}</string>
      </property>
      <property name="text">
       <string>ADD</string>

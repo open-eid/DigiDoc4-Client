@@ -21,11 +21,7 @@
 
 #include "widgets/Item.h"
 
-#include "CryptoDoc.h"
-
-namespace Ui {
-class AddressItem;
-}
+class CKey;
 
 class AddressItem final : public Item
 {
@@ -37,13 +33,12 @@ public:
 		None,
 		Remove,
 		Add,
-		Added
+		Added,
 	};
 
-	explicit AddressItem(CKey k, QWidget *parent = nullptr, bool showIcon = false);
+	explicit AddressItem(CKey k, QWidget *parent = {}, bool showIcon = false);
 	~AddressItem() final;
 
-	void disable(bool disable);
 	const CKey& getKey() const;
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
@@ -58,10 +53,6 @@ private:
 	void setName();
 	void setIdType();
 
-	Ui::AddressItem *ui;
-
-	QString code;
-	CKey key;
-	QString name;
-	bool yourself = false;
+	class Private;
+	Private *ui;
 };

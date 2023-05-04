@@ -201,7 +201,7 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
 	bool contains = rightList.contains(cert);
-	leftItem->disable(contains);
+	leftItem->setDisabled(contains);
 	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
 
 	connect(leftItem, &AddressItem::add, this, [this](Item *item) {
@@ -258,7 +258,7 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 void AddRecipients::addRecipientToRightPane(AddressItem *leftItem, bool update)
 {
 	if(addRecipientToRightPane(leftItem->getKey(), update)) {
-		leftItem->disable(true);
+		leftItem->setDisabled(true);
 		leftItem->showButton(AddressItem::Added);
 	}
 }
@@ -332,7 +332,7 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
 	if(auto it = leftList.find(rightItem->getKey().cert); it != leftList.end())
 	{
-		it.value()->disable(false);
+		it.value()->setDisabled(false);
 		it.value()->showButton(AddressItem::Add);
 	}
 	rightList.removeAll(rightItem->getKey().cert);
