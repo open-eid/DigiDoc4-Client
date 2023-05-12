@@ -767,7 +767,7 @@ bool MainWindow::save(bool saveAs)
 	if(!digiDoc)
 		return false;
 
-	QString target = digiDoc->fileName().normalized(QString::NormalizationForm_C);
+	QString target = digiDoc->fileName();
 	if(saveAs)
 		target = selectFile(tr("Save file"), target, true);
 	if(target.isEmpty())
@@ -778,8 +778,7 @@ bool MainWindow::save(bool saveAs)
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
 		dlg->addButton(tr("YES").toUpper(), QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
-			QString file = selectFile(tr("Save file"), target, true);
-			if(!file.isEmpty())
+			if(QString file = selectFile(tr("Save file"), target, true); !file.isEmpty())
 				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
 		}
 	}
