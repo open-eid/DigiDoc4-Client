@@ -170,12 +170,12 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl
-        vcpkgGitCommitId: a69b65229b3956b7f45abd81671b7330114bcaad
+        vcpkgGitCommitId: 9b9c2758ece1d8ac0de90589730bb5ccf45c0874
         vcpkgTriplet: x64-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v2
       with:
-        version: 6.4.3
+        version: 6.5.0
         arch: win64_msvc2019_64
         modules: qt5compat
     - name: Setup dev env

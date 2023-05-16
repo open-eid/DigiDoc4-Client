@@ -180,9 +180,9 @@ if( APPLE )
 		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks -name Headers | xargs rm -rf
 		COMMAND install_name_tool -delete_rpath /Library/Frameworks $<TARGET_FILE:${PROJECT_NAME}>
 		COMMAND ln -sf digidocpp.framework/Libraries/libcrypto.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libcrypto.1.1.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libcrypto.3.dylib
 		COMMAND ln -sf digidocpp.framework/Libraries/libssl.dylib
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libssl.1.1.dylib
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libssl.3.dylib
 	)
 
 	add_custom_target(codesign DEPENDS ${PROJECT_NAME}
@@ -264,8 +264,8 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/qt.conf appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-1_1${OPENSSL_SUFFIX}.dll appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-1_1${OPENSSL_SUFFIX}.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib1.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/xerces-c_3_2.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/XalanMessages_1_12.dll appx
