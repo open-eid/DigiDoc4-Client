@@ -308,6 +308,12 @@ QLabel {
          <height>34</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
+        <string>Cancel</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -326,7 +332,7 @@ QPushButton:disabled {
 }</string>
        </property>
        <property name="text">
-        <string>Cancel</string>
+        <string>CANCEL</string>
        </property>
       </widget>
      </item>
@@ -344,8 +350,14 @@ QPushButton:disabled {
          <height>34</height>
         </size>
        </property>
-       <property name="text">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="accessibleName">
         <string>Sign</string>
+       </property>
+       <property name="text">
+        <string>SIGN</string>
        </property>
        <property name="default">
         <bool>true</bool>

@@ -34,8 +34,11 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 #if defined (Q_OS_WIN)
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
-	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
-	for(QLineEdit *w: findChildren<QLineEdit*>())
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+	auto list = findChildren<QLineEdit*>();
+	if(!list.isEmpty())
+		list.first()->setFocus();
+	for(QLineEdit *w: list)
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 	new Overlay(this, parent);
 
@@ -98,10 +101,10 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 									? tr("PIN2 code is used to digitally sign documents.")
 									: tr("PIN1 code is used for confirming the identity of a person."));
 		ui->line2_text->setText(
-			tr("If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.")
-				.arg(QSmartCardData::typeString(type))
-				.arg(type == QSmartCardData::Pin2Type ? tr("signing") : tr("identification"))
-				.arg(type == QSmartCardData::Pin2Type ? tr("digital signing") : tr("verify identification"))
+			tr("If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.").arg(
+				QSmartCardData::typeString(type),
+				type == QSmartCardData::Pin2Type ? tr("signing") : tr("identification"),
+				type == QSmartCardData::Pin2Type ? tr("digital signing") : tr("verify identification"))
 			);
 	}
 	setWindowTitle(ui->labelNameId->text());
@@ -125,28 +128,29 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	for(int i = 1; i < 4; i++)
 	{
 		bool isHidden = true;
-		if(QLabel *text = findChild<QLabel*>(QStringLiteral("line%1_text").arg(i)))
+		if(auto *text = findChild<QLabel*>(QStringLiteral("line%1_text").arg(i)))
 			text->setHidden(isHidden = text->text().isEmpty());
-		if(QLabel *bullet = findChild<QLabel*>(QStringLiteral("line%1_bullet").arg(i)))
+		if(auto *bullet = findChild<QLabel*>(QStringLiteral("line%1_bullet").arg(i)))
 			bullet->setHidden(isHidden);
 	}
-
+	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
+		input->setStyleSheet(msg.isEmpty() ? QString() :QStringLiteral("border-color: #c53e3e"));
+		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		error->setText(msg);
+	};
 	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
 	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
 	connect(ui->pin, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
-	connect(ui->pin, &QLineEdit::textEdited, ui->errorPin, [this] {
-		ui->errorPin->clear();
-		ui->pin->setStyleSheet({});
+	connect(ui->pin, &QLineEdit::textEdited, ui->errorPin, [this, setError] {
+		setError(ui->pin, ui->errorPin, {});
 	});
 	connect(ui->repeat, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
-	connect(ui->repeat, &QLineEdit::textEdited, ui->errorRepeat, [this] {
-		ui->errorRepeat->clear();
-		ui->repeat->setStyleSheet({});
+	connect(ui->repeat, &QLineEdit::textEdited, ui->errorRepeat, [this, setError] {
+		setError(ui->repeat, ui->errorRepeat, {});
 	});
 	connect(ui->puk, &QLineEdit::returnPressed, ui->change, &QPushButton::click);
-	connect(ui->puk, &QLineEdit::textEdited, ui->errorPuk, [this] {
-		ui->errorPuk->clear();
-		ui->puk->setStyleSheet({});
+	connect(ui->puk, &QLineEdit::textEdited, ui->errorPuk, [this, setError] {
+		setError(ui->puk, ui->errorPuk, {});
 	});
 	connect(ui->change, &QPushButton::clicked, this, [=] {
 		const static QString SEQUENCE_ASCENDING = QStringLiteral("1234567890123456789012");
@@ -157,10 +161,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		ui->errorPuk->clear();
 		ui->errorPin->clear();
 		ui->errorRepeat->clear();
-		auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-			input->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
-			error->setText(msg);
-		};
+
 		auto pinError = [](auto type) {
 			return tr("%1 length has to be between %2 and 12")
 				.arg(QSmartCardData::typeString(type)).arg(QSmartCardData::minPinLen(type));

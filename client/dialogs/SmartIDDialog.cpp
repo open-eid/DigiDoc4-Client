@@ -33,7 +33,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	new Overlay(this, parent);
 
 	ui->setupUi(this);
-	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	setFixedSize(size());
 #ifdef Q_OS_WIN
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
@@ -48,13 +48,14 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->errorCountry->setFont(regularFont);
 	ui->idCode->setFont(regularFont);
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->idCode->setFocus();
 	ui->idCountry->setFont(regularFont);
 	ui->cbRemember->setFont(regularFont);
 	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->sign->setFont(condensed);
 	ui->cancel->setFont(condensed);
 
-	QValidator *ik = new NumberValidator(ui->idCode);
+	auto *ik = new NumberValidator(ui->idCode);
 	ui->idCode->setValidator(ik);
 	ui->idCode->setText(Settings::SMARTID_CODE);
 	for(int i = 0, count = Settings::SMARTID_COUNTRY_LIST.size(); i < count; ++i)
@@ -67,26 +68,26 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 		Settings::SMARTID_CODE = checked ? idCode() : QString();
 		Settings::SMARTID_COUNTRY = checked ? country() : EE;
 	};
+	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
+		input->setStyleSheet(msg.isEmpty() ? QString() :QStringLiteral("border-color: #c53e3e"));
+		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		error->setText(msg);
+	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);
-	connect(ui->idCode, &QLineEdit::textEdited, ui->errorCode, [this] {
-		ui->errorCode->clear();
-		ui->idCode->setStyleSheet({});
+	connect(ui->idCode, &QLineEdit::textEdited, ui->errorCode, [this, setError] {
+		setError(ui->idCode, ui->errorCode, {});
 	});
 	connect(ui->idCountry, &QComboBox::currentTextChanged, this, saveSettings);
 	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
 	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
-	connect(ui->sign, &QPushButton::clicked, this, [this,ik] {
+	connect(ui->sign, &QPushButton::clicked, this, [this, ik, setError] {
 		ui->idCode->setValidator(country() == EE ? ik : nullptr);
 		if(ui->idCode->validator() && !IKValidator::isValid(idCode()))
-		{
-			ui->idCode->setStyleSheet(QStringLiteral("border-color: #c53e3e"));
-			ui->errorCode->setText(tr("Personal code is not valid"));
-		}
+			setError(ui->idCode, ui->errorCode, tr("Personal code is not valid"));
 		else
 		{
-			ui->idCode->setStyleSheet({});
-			ui->errorCode->clear();
+			setError(ui->idCode, ui->errorCode, {});
 			accept();
 		}
 	});

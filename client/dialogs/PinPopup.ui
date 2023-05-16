@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>PinPopup</class>
  <widget class="QDialog" name="PinPopup">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -214,7 +217,7 @@ QPushButton:disabled {
 }</string>
        </property>
        <property name="text">
-        <string>OK</string>
+        <string notr="true">OK</string>
        </property>
        <property name="default">
         <bool>true</bool>

@@ -1915,10 +1915,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>KATKESTA</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>PIN will be locked next failed attempt</source>
         <translation>Vale koodi sisestamisel PIN lukustub</translation>
     </message>

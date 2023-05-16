@@ -1915,10 +1915,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>CANCEL</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>PIN will be locked next failed attempt</source>
         <translation>PIN will be locked next failed attempt</translation>
     </message>
