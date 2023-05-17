@@ -1367,18 +1367,6 @@ LDAP сервер недоступен.</translation>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <source>Info</source>
-        <translation>Информация</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Закрыть</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Настройки</translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation>&amp;Помощь</translation>
     </message>

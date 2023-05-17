@@ -162,6 +162,7 @@ public:
 		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
 		if(digidoc::X509Cert cert = toCert(fromBase64(QVariant(Settings::TSA_CERT))))
 			list.push_back(cert);
+		list.emplace_back(); // Make sure that TSA cert pinning is enabled
 		return list;
 	}
 
@@ -192,6 +193,7 @@ public:
 		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
 		if(digidoc::X509Cert cert = verifyServiceCert())
 			list.push_back(cert);
+		list.emplace_back(); // Make sure that TSA cert pinning is enabled
 		return list;
 	}
 	std::string verifyServiceUri() const final
@@ -279,8 +281,8 @@ private:
 		std::vector<digidoc::X509Cert> certs;
 		for(const auto &cert: Application::confValue(key).toArray())
 		{
-			QByteArray der = fromBase64(cert);
-			certs.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
+			if(QByteArray der = fromBase64(cert); !der.isEmpty())
+				certs.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
 		}
 		return certs;
 	}
@@ -321,7 +323,7 @@ Application::Application( int &argc, char **argv )
 		sendMessage(args.join(QStringLiteral("\", \"")));
 		return;
 	}
-	connect( this, SIGNAL(messageReceived(QString)), SLOT(parseArgs(QString)) );
+	connect(this, &Application::messageReceived, this, qOverload<const QString&>(&Application::parseArgs));
 #endif
 
 #ifdef CONFIG_URL
@@ -390,7 +392,7 @@ Application::Application( int &argc, char **argv )
 	connect(d->closeAction, &QAction::triggered, this, &Application::closeWindow);
 	d->newClientAction = new QAction( tr("New Window"), this );
 	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
-	connect(d->newClientAction, &QAction::triggered, this, [&]{ showClient({}, false, false, true); });
+	connect(d->newClientAction, &QAction::triggered, this, []{ showClient({}, false, false, true); });
 
 	// This is needed to release application from memory (Windows)
 	setQuitOnLastWindowClosed( true );
@@ -400,14 +402,6 @@ Application::Application( int &argc, char **argv )
 
 #ifdef Q_OS_MAC
 	d->bar = std::make_unique<MacMenuBar>();
-	connect(d->bar->addAction(MacMenuBar::AboutAction), &QAction::triggered, this, [] {
-		if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
-			w->showSettings(SettingsDialog::LicenseSettings);
-	});
-	connect(d->bar->addAction(MacMenuBar::PreferencesAction), &QAction::triggered, this, [] {
-		if(auto *w = qobject_cast<MainWindow*>(mainWindow()))
-			w->showSettings(SettingsDialog::GeneralSettings);
-	});
 	d->bar->fileMenu()->addAction( d->newClientAction );
 	d->bar->fileMenu()->addAction( d->closeAction );
 	d->bar->dockMenu()->addAction( d->newClientAction );
@@ -458,13 +452,11 @@ Application::Application( int &argc, char **argv )
 	}
 
 	QTimer::singleShot(0, this, [this] {
-		QWidget *parent = mainWindow();
 #ifdef Q_OS_MAC
 		if(!Settings::PLUGINS.isSet())
 		{
-			auto *dlg = new WarningDialog(tr(
-				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), parent);
-			dlg->setAttribute(Qt::WA_DeleteOnClose);
+			auto *dlg = WarningDialog::show(tr(
+				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
 			dlg->setCancelText(tr("Ignore forever").toUpper());
 			dlg->addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
 			dlg->addButton(tr("Install").toUpper(), QMessageBox::Open);
@@ -476,13 +468,12 @@ Application::Application( int &argc, char **argv )
 				default: Settings::PLUGINS = QStringLiteral("ignore");
 				}
 			});
-			dlg->open();
 		}
 #endif
 		if(Settings::SHOW_INTRO)
 		{
 			Settings::SHOW_INTRO = false;
-			auto *dlg = new FirstRun(parent);
+			auto *dlg = new FirstRun(mainWindow());
 			connect(dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
 			dlg->open();
 		}
@@ -629,7 +620,7 @@ bool Application::event(QEvent *event)
 	case QEvent::FileOpen:
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
-		QTimer::singleShot(0, this, [this, fileName] {
+		QTimer::singleShot(0, this, [fileName] {
 			parseArgs({ fileName });
 		});
 		return true;
@@ -672,10 +663,9 @@ void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
 #if defined(Q_OS_WIN)
-	QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
-	QLibrary lib("mapi32");
-	if( LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")) )
+	if(QLibrary lib("mapi32"); LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
 	{
+		QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
 		QString filePath = QDir::toNativeSeparators( file );
 		QString fileName = QFileInfo( file ).fileName();
 		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
@@ -754,39 +744,15 @@ void Application::mailTo( const QUrl &url )
 
 QWidget* Application::mainWindow()
 {
-	QWidget* win = activeWindow();
-	QWidget* first = nullptr;
-	QWidget* root = nullptr;
-
-	if (!win)
-	{
-		// Prefer main window; on Mac also the menu is top level window
-		for (QWidget *widget: topLevelWidgets())
-		{
-			if (widget->isWindow())
-			{
-				if (!first)
-					first = widget;
-
-				if(qobject_cast<MainWindow*>(widget))
-				{
-					win = widget;
-					break;
-				}
-			}
-		}
-	}
-
-	if(!win)
-		win = first;
-
-	while(win)
-	{
-		root = win;
-		win = win->parentWidget();
-	}
-
-	return root;
+	if(QWidget *win = qobject_cast<MainWindow*>(activeWindow()))
+		return win;
+	auto list = topLevelWidgets();
+	// Prefer main window; on Mac also the menu is top level window
+	if(auto i = std::find_if(list.cbegin(), list.cend(),
+			[](QWidget *widget) { return qobject_cast<MainWindow*>(widget); });
+		i != list.cend())
+		return *i;
+	return list.value(0);
 }
 
 bool Application::notify(QObject *object, QEvent *event)
@@ -932,7 +898,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 #ifdef Q_OS_LINUX
 		else
 		{
-			if(QScreen *screen = QGuiApplication::screenAt(w->pos()))
+			if(QScreen *screen = screenAt(w->pos()))
 				w->move(screen->availableGeometry().center() - w->frameGeometry().adjusted(0, 0, 10, 40).center());
 		}
 #endif
@@ -941,7 +907,6 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	// Required for restoring minimized window on macOS
 	w->setWindowState(Qt::WindowActive);
 #endif
-	w->addAction(d->closeAction);
 	w->activateWindow();
 	w->show();
 	w->raise();
@@ -951,7 +916,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 
 void Application::showTSLWarning(QEventLoop *e)
 {
-	auto *dlg = WarningDialog::show(mainWindow(), tr(
+	auto *dlg = WarningDialog::show(tr(
 		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 		"Please check your internet connection and make sure you have the latest ID-software version "
 		"installed. An expired Trust Service List (TSL) will be used for signature validation. "

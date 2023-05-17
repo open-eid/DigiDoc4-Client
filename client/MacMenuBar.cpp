@@ -19,63 +19,39 @@
 
 #include "MacMenuBar.h"
 
+#include "Application.h"
+#include "MainWindow.h"
+#include "dialogs/SettingsDialog.h"
+
 #include <QtCore/QEvent>
-#include <QtWidgets/QApplication>
 
 MacMenuBar::MacMenuBar()
 	: file(addMenu(tr("&File")))
 	, help(addMenu(tr("&Help")))
+	, dock(new QMenu(this))
 {
 	qApp->installEventFilter(this);
 	dock->setAsDockMenu();
-}
-
-MacMenuBar::~MacMenuBar()
-{
-	//delete dock;
-}
-
-QAction* MacMenuBar::addAction(ActionType type)
-{
-	QAction *a = file->addAction(typeName(type));
-	switch(type)
-	{
-	case AboutAction: a->setMenuRole(QAction::AboutRole); break;
-	case CloseAction: a->setShortcut(Qt::CTRL + Qt::Key_W); break;
-	case PreferencesAction: a->setMenuRole(QAction::PreferencesRole); break;
-	default: break;
-	}
-	actions[type] = a;
-	return a;
-}
-
-QMenu* MacMenuBar::dockMenu() const { return dock; }
-
-bool MacMenuBar::eventFilter(QObject *o, QEvent *e)
-{
-	switch(e->type())
-	{
-	case QEvent::LanguageChange:
-		file->setTitle(tr("&File"));
-		help->setTitle(tr("&Help"));
-		for(auto i = actions.constBegin(); i != actions.constEnd(); ++i)
-			i.value()->setText(typeName(i.key()));
-		break;
-	default: break;
-	}
-	return QMenuBar::eventFilter(o, e);
+	file->addAction(QString(), [] {
+		if(auto *w = qobject_cast<MainWindow*>(Application::mainWindow()))
+			w->showSettings(SettingsDialog::LicenseSettings);
+	})->setMenuRole(QAction::AboutRole);
+	file->addAction(QString(), [] {
+		if(auto *w = qobject_cast<MainWindow*>(Application::mainWindow()))
+			w->showSettings(SettingsDialog::GeneralSettings);
+	})->setMenuRole(QAction::PreferencesRole);
 }
 
 QMenu* MacMenuBar::fileMenu() const { return file; }
 QMenu* MacMenuBar::helpMenu() const { return help; }
+QMenu* MacMenuBar::dockMenu() const { return dock; }
 
-QString MacMenuBar::typeName(ActionType type)
+bool MacMenuBar::eventFilter(QObject *o, QEvent *e)
 {
-	switch(type)
+	if(e->type() == QEvent::LanguageChange)
 	{
-	case AboutAction: return tr("Info");
-	case CloseAction: return tr("Close");
-	case PreferencesAction: return tr("Settings");
-	default: return {};
+		file->setTitle(tr("&File"));
+		help->setTitle(tr("&Help"));
 	}
+	return QMenuBar::eventFilter(o, e);
 }

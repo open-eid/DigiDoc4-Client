@@ -25,28 +25,16 @@ class MacMenuBar final: public QMenuBar
 {
 	Q_OBJECT
 public:
-	enum ActionType
-	{
-		AboutAction,
-		CloseAction,
-		PreferencesAction,
-		HelpAction
-	};
-
 	explicit MacMenuBar();
-	~MacMenuBar();
 
-	QAction* addAction(ActionType type);
 	QMenu* fileMenu() const;
 	QMenu* helpMenu() const;
 	QMenu* dockMenu() const;
 
 private:
 	bool eventFilter(QObject *o, QEvent *e) final;
-	static QString typeName(ActionType type);
 
-	QMenu		*file = nullptr;
-	QMenu		*help = nullptr;
-	QHash<ActionType,QAction*> actions;
-	QMenu		*dock = new QMenu;
+	QMenu *file {};
+	QMenu *help {};
+	QMenu *dock {};
 };

@@ -186,9 +186,9 @@ jobs:
     - name: Build
       run: |
         md build/client
-        copy ${{ env.VCPKG_ROOT }}\installed\x64-windows\bin\*.dll build\client\
+        copy ${{ env.RUNVCPKG_VCPKG_ROOT }}\installed\x64-windows\bin\*.dll build\client\
         cmake "-GNinja" -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
+          -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
           "-DLIBDIGIDOCPP_LIBRARY=libs/libdigidocpp/x64/digidocpp.lib" `
           "-DLIBDIGIDOCPP_INCLUDE_DIR=libs/libdigidocpp/include" -B build -S .
         cmake --build build --target msi
