@@ -32,7 +32,7 @@
 
 static QString getUserRights()
 {
-	HANDLE hToken = nullptr;
+	HANDLE hToken {};
 	if ( !OpenThreadToken( GetCurrentThread(), TOKEN_QUERY, TRUE, &hToken ) )
 	{
 		if ( GetLastError() != ERROR_NO_TOKEN )
@@ -41,7 +41,7 @@ static QString getUserRights()
 			return Diagnostics::tr( "Unknown - error %1" ).arg( GetLastError() );
 	}
 
-	DWORD dwLength = 0;
+	DWORD dwLength {};
 	if(!GetTokenInformation(hToken, TokenGroups, nullptr, dwLength, &dwLength))
 	{
 		if( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
@@ -55,7 +55,7 @@ static QString getUserRights()
 
 	QString rights = Diagnostics::tr( "User" );
 	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
-	PSID AdministratorsGroup = nullptr;
+	PSID AdministratorsGroup {};
 	if( AllocateAndInitializeSid( &NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
 			DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &AdministratorsGroup ) )
 	{
@@ -96,7 +96,7 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 				if(!type.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
 					!name.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
 					name.contains(QRegularExpression(names.join('|').prepend('^'), QRegularExpression::CaseInsensitiveOption)))
-					packages << packageName(name, version, withName);
+					packages.append(packageName(name, version, withName));
 				s.endGroup();
 			}
 		}
@@ -112,7 +112,7 @@ void Diagnostics::run()
 	s << "<b>" << tr("Locale:") << "</b> ";
 	QLocale::Language language = QLocale::system().language();
 	QString locale = (language == QLocale::C ? "English/United States" : QLocale::languageToString( language ) );
-	CPINFOEX CPInfoEx;
+	CPINFOEX CPInfoEx {};
 	if( GetCPInfoEx( GetConsoleCP(), 0, &CPInfoEx ) != 0 )
 		locale.append(" / ").append(QString::fromWCharArray(CPInfoEx.CodePageName));
 	s << locale << "<br />";
@@ -152,19 +152,20 @@ void Diagnostics::run()
 		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
 		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
 		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe", "web-eid.exe",
-		"zlib1", "libeay32", "ssleay32", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64", "xerces-c_3_1", "xerces-c_3_2", "xsec_1_7", "xsec_2_0", "libxml2",
+		"libcrypto-3", "libssl-3", "libcrypto-3-x64", "libssl-3-x64", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64",
+		"zlib1", "xerces-c_3_1", "xerces-c_3_2", "xalan-c_1_12", "xalanmessages_1_12", "xsec_1_7", "xsec_2_0", "libxml2",
 		"advapi32", "crypt32", "winscard"};
 	for(const QString &lib: dlls)
 	{
-		DWORD infoHandle = 0;
+		DWORD infoHandle {};
 		DWORD sz = GetFileVersionInfoSize(LPCWSTR(lib.utf16()), &infoHandle);
 		if( !sz )
 			continue;
 		QByteArray data(int(sz * 2), 0);
 		if( !GetFileVersionInfoW( LPCWSTR(lib.utf16()), 0, sz, data.data() ) )
 			continue;
-		VS_FIXEDFILEINFO *info = nullptr;
-		UINT len = 0;
+		VS_FIXEDFILEINFO *info {};
+		UINT len {};
 		if( !VerQueryValueW( data.constData(), L"\\", (LPVOID*)&info, &len ) )
 			continue;
 		s << QStringLiteral("%1 (%2.%3.%4.%5)").arg(lib)
@@ -189,14 +190,14 @@ void Diagnostics::run()
 	{
 		if( SC_HANDLE s = OpenService( h, L"atrfiltr", SERVICE_QUERY_STATUS ) )
 		{
-			SERVICE_STATUS status;
+			SERVICE_STATUS status {};
 			QueryServiceStatus( s, &status );
 			atrfiltr = (status.dwCurrentState == SERVICE_RUNNING) ? Running : Stopped;
 			CloseServiceHandle( s );
 		}
 		if( SC_HANDLE s = OpenService( h, L"CertPropSvc", SERVICE_QUERY_STATUS ))
 		{
-			SERVICE_STATUS status;
+			SERVICE_STATUS status {};
 			QueryServiceStatus( s, &status );
 			certprop = (status.dwCurrentState == SERVICE_RUNNING) ? Running : Stopped;
 			CloseServiceHandle( s );
