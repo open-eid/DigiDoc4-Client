@@ -20,6 +20,7 @@
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
 
+#include "CryptoDoc.h"
 #include "DateTime.h"
 #include "SslCertificate.h"
 #include "Styles.h"
@@ -27,11 +28,20 @@
 
 using namespace ria::qdigidoc4;
 
+class AddressItem::Private: public Ui::AddressItem
+{
+public:
+	QString code;
+	CKey key;
+	QString label;
+	bool yourself = false;
+};
+
 AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	: Item(parent)
-	, ui(new Ui::AddressItem)
-	, key(std::move(k))
+	, ui(new Private)
 {
+	ui->key = std::move(k);
 	ui->setupUi(this);
 	if(showIcon)
 		ui->icon->load(QStringLiteral(":/images/icon_Krypto_small.svg"));
@@ -43,21 +53,19 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White, QString(), 0);
+	ui->remove->init(LabelButton::White, {}, 0);
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
-	ui->added->setFont(Styles::font(Styles::Condensed, 12));
+	ui->added->setFont(ui->add->font());
 
-	ui->add->hide();
-	ui->added->hide();
-	ui->added->setDisabled(true);
-
-	code = SslCertificate(key.cert).personalCode().toHtmlEscaped();
-	name = (!key.cert.subjectInfo("GN").isEmpty() && !key.cert.subjectInfo("SN").isEmpty() ?
-			key.cert.subjectInfo("GN").join(' ') + " " + key.cert.subjectInfo("SN").join(' ') :
-			key.cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
+	ui->code = SslCertificate(ui->key.cert).personalCode().toHtmlEscaped();
+	ui->label = (!ui->key.cert.subjectInfo("GN").isEmpty() && !ui->key.cert.subjectInfo("SN").isEmpty() ?
+			ui->key.cert.subjectInfo("GN").join(' ') + " " + ui->key.cert.subjectInfo("SN").join(' ') :
+			ui->key.cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
+	if(ui->label.isEmpty())
+		ui->label = ui->key.recipient;
 	setIdType();
 	showButton(AddressItem::Remove);
 }
@@ -78,28 +86,24 @@ void AddressItem::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void AddressItem::disable(bool disable)
-{
-	setStyleSheet(QStringLiteral("border: solid rgba(217, 217, 216, 0.45); border-width: 0px 0px 1px 0px;"
-		"background-color: %1; color: #000000; text-decoration: none solid rgb(0, 0, 0);")
-		.arg(disable ? QStringLiteral("#F0F0F0") : QStringLiteral("#FFFFFF")));
-}
-
 bool AddressItem::eventFilter(QObject *o, QEvent *e)
 {
 	if((o == ui->name || o == ui->idType) && e->type() == QEvent::MouseButtonRelease)
-		(new KeyDialog(key, this))->open();
+	{
+		(new KeyDialog(ui->key, this))->open();
+		return true;
+	}
 	return Item::eventFilter(o, e);
 }
 
 const CKey& AddressItem::getKey() const
 {
-	return key;
+	return ui->key;
 }
 
 void AddressItem::idChanged(const SslCertificate &cert)
 {
-	yourself = !cert.isNull() && key.cert == cert;
+	ui->yourself = !cert.isNull() && ui->key.cert == cert;
 	setName();
 }
 
@@ -119,12 +123,13 @@ QWidget* AddressItem::lastTabWidget()
 
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
-	(new KeyDialog(key, this))->open();
+	(new KeyDialog(ui->key, this))->open();
 }
 
 void AddressItem::setName()
 {
-	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>").arg(name, yourself ? code + tr(" (Yourself)") : code));
+	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>")
+		.arg(ui->label, ui->yourself ? ui->code + tr(" (Yourself)") : ui->code));
 }
 
 void AddressItem::showButton(ShowToolButton show)
@@ -141,8 +146,12 @@ void AddressItem::stateChange(ContainerState state)
 
 void AddressItem::setIdType()
 {
+	ui->idType->setHidden(ui->key.cert.isNull());
+	if(ui->key.cert.isNull())
+		return;
+
 	QString str;
-	SslCertificate cert(key.cert);
+	SslCertificate cert(ui->key.cert);
 	SslCertificate::CertType type = cert.type();
 	if(type & SslCertificate::DigiIDType)
 		str = tr("digi-ID");
