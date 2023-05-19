@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>SmartIDDialog</class>
  <widget class="QDialog" name="SmartIDDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -222,9 +225,6 @@ image: url(:/images/icon_checkbox_check.png);
       <font>
        <pointsize>12</pointsize>
       </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
      </property>
     </widget>
    </item>

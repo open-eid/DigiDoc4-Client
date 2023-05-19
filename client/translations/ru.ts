@@ -1916,10 +1916,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
         <source>PIN will be locked next failed attempt</source>
         <translation>PIN будет заблокирован при следующей неудачной попытке</translation>
     </message>

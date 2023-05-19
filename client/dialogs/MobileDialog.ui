@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MobileDialog</class>
  <widget class="QDialog" name="MobileDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -162,9 +165,6 @@ background-color: #BEDBED;
        <pointsize>12</pointsize>
       </font>
      </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
     </widget>
    </item>
    <item>
@@ -202,9 +202,6 @@ background-color: #BEDBED;
       <font>
        <pointsize>12</pointsize>
       </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
      </property>
     </widget>
    </item>

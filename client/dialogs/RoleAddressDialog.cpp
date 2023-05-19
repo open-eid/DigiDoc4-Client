@@ -26,7 +26,6 @@
 
 #include <QtWidgets/QCompleter>
 #include <QtWidgets/QListView>
-#include <QtWidgets/QPushButton>
 
 class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
 
@@ -47,23 +46,22 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
 	d->cancel->setFont(condensed);
-	d->cancel->setText(tr("CANCEL"));
-	d->cancel->setCursor(QCursor(Qt::PointingHandCursor));
 
 	connect( d->sign, &QPushButton::clicked, this, &RoleAddressDialog::accept );
 	d->sign->setFont(condensed);
-	d->sign->setText(tr("SIGN"));
-	d->sign->setCursor(QCursor(Qt::PointingHandCursor));
 
-	for(QLabel *label: findChildren<QLabel*>())
+	for(auto *label: findChildren<QLabel*>())
 		label->setFont(regularFont);
 
 	d->title->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
 
-	for(QLineEdit *line: findChildren<QLineEdit*>())
+	auto list = findChildren<QLineEdit*>();
+	if(!list.isEmpty())
+		list.first()->setFocus();
+	for(QLineEdit *line: list)
 	{
 		Settings::Option<QStringList> s{line->objectName()};
-		QCompleter *completer = new QCompleter(s, line);
+		auto *completer = new QCompleter(s, line);
 		completer->setMaxVisibleItems(10);
 		completer->setCompletionMode(QCompleter::PopupCompletion);
 		completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -79,7 +77,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 			s.clear(); // Uses on Windows MULTI_STRING registry
 			s = list;
 		});
-		completer->popup()->setStyleSheet("background-color:#FFFFFF; color: #000000;");
+		completer->popup()->setStyleSheet(QStringLiteral("background-color:#FFFFFF; color: #000000;"));
 	}
 }
 

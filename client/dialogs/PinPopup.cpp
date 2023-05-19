@@ -46,7 +46,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	, ui(new Ui::PinPopup)
 {
 	ui->setupUi(this);
-	setWindowFlag(Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
