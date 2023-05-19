@@ -384,10 +384,17 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		{QStringLiteral("select"), select}
 	};
 	QString cleanTerm = term.simplified()
-		.replace(QStringLiteral("*"), QStringLiteral("\2A"))
-		.replace(QStringLiteral("("), QStringLiteral("\28"))
-		.replace(QStringLiteral(")"), QStringLiteral("\29"))
-		.replace(QStringLiteral("\\"), QStringLiteral("\5c"));
+#ifdef Q_OS_WIN
+		.replace(QStringLiteral("\\"), QStringLiteral("\\5c"))
+		.replace(QStringLiteral("*"), QStringLiteral("\\2A"))
+		.replace(QStringLiteral("("), QStringLiteral("\\28"))
+		.replace(QStringLiteral(")"), QStringLiteral("\\29"));
+#else
+		.replace(QStringLiteral("\\"), QStringLiteral("\\\\"))
+		.replace(QStringLiteral("*"), QStringLiteral("\\*"))
+		.replace(QStringLiteral("("), QStringLiteral("\\("))
+		.replace(QStringLiteral(")"), QStringLiteral("\\)"));
+#endif
 	bool isDigit = false;
 	void(cleanTerm.toULongLong(&isDigit));
 	if(isDigit && (cleanTerm.size() == 11 || cleanTerm.size() == 8))

@@ -25,26 +25,43 @@
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
-#undef UNICODE
 #include <Windows.h>
 #include <Winldap.h>
 #include <Winber.h>
+using STR_T = PWSTR;
+#define STR(X) const_cast<STR_T>(L##X)
+#define TO_STR(X) STR_T((X).utf16())
 #else
 #define LDAP_DEPRECATED 1
 #include <sys/time.h>
 #include <ldap.h>
 using ULONG = int;
 using LDAP_TIMEVAL = timeval;
+using STR_T = char *;
+#define STR(X) const_cast<STR_T>(X)
+#define TO_STR(X) STR_T((X).toLocal8Bit().constData())
 #endif
 
 #include <array>
+#include <chrono>
+
+using namespace std::chrono;
+
+template<typename T>
+static constexpr auto TO_QSTR(const T *str)
+{
+	if constexpr (std::is_same<T,char>::value)
+		return QLatin1String(str);
+	else
+		return QStringView(str);
+}
 
 class LdapSearch::Private
 {
 public:
 	LDAP *ldap {};
 	QByteArray host;
-	QTimer *timer;
+	QTimer *timer {};
 };
 
 LdapSearch::LdapSearch(QByteArray host, QObject *parent)
@@ -72,7 +89,7 @@ bool LdapSearch::init()
 {
 	if(d->ldap)
 	{
-		d->timer->start(4*60*60);
+		d->timer->start(4min);
 		return true;
 	}
 
@@ -81,7 +98,7 @@ bool LdapSearch::init()
 	int ssl = url.scheme() == QStringLiteral("ldaps") ? 1 : 0;
 	QString host = url.host();
 	ULONG port = ULONG(url.port(ssl ? LDAP_SSL_PORT : LDAP_PORT));
-	if(!(d->ldap = ldap_sslinit(const_cast<char*>(host.toLocal8Bit().constData()), port, ssl)))
+	if(d->ldap = ldap_sslinit(TO_STR(host), port, ssl); !d->ldap)
 	{
 		setLastError(tr("Failed to init ldap"), int(LdapGetLastError()));
 		return false;
@@ -127,7 +144,7 @@ bool LdapSearch::init()
 	if(err)
 		setLastError(tr("Failed to init ldap"), err);
 
-	d->timer->start(4*60*60);
+	d->timer->start(4min);
 	return !err;
 }
 
@@ -146,15 +163,15 @@ void LdapSearch::search(const QString &search, const QVariantMap &userData)
 		return;
 	}
 
-	std::array<char*, 2> attrs { const_cast<char*>("userCertificate;binary"), nullptr };
+	std::array<STR_T, 2> attrs { STR("userCertificate;binary"), nullptr };
 
 	ULONG msg_id = 0;
-	int err = ldap_search_ext( d->ldap, const_cast<char*>("c=EE"), LDAP_SCOPE_SUBTREE,
-		const_cast<char*>(search.toUtf8().constData()), attrs.data(), 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
+	int err = ldap_search_ext(d->ldap, STR("c=EE"), LDAP_SCOPE_SUBTREE,
+		TO_STR(search), attrs.data(), 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
 	if(err)
 		return setLastError( tr("Failed to init ldap search"), err );
 
-	QTimer *timer = new QTimer(this);
+	auto *timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, this, [this, msg_id, timer, userData] {
 		LDAPMessage *result = nullptr;
 		LDAP_TIMEVAL t { 5, 0 };
@@ -179,14 +196,14 @@ void LdapSearch::search(const QString &search, const QVariantMap &userData)
 		for(; entry; entry = ldap_next_entry(d->ldap, entry))
 		{
 			BerElement *pos = nullptr;
-			for(char *attr = ldap_first_attribute(d->ldap, entry, &pos);
+			for(auto *attr = ldap_first_attribute(d->ldap, entry, &pos);
 				attr; attr = ldap_next_attribute(d->ldap, entry, pos))
 			{
-				if( qstrcmp( attr, "userCertificate;binary" ) == 0 )
+				if(QLatin1String("userCertificate;binary") == TO_QSTR(attr))
 				{
 					berval **cert = ldap_get_values_len(d->ldap, entry, attr);
 					for(ULONG i = 0; i < ldap_count_values_len(cert); ++i)
-						list << QSslCertificate(QByteArray::fromRawData(cert[i]->bv_val, int(cert[i]->bv_len)), QSsl::Der);
+						list.append(QSslCertificate(QByteArray::fromRawData(cert[i]->bv_val, int(cert[i]->bv_len)), QSsl::Der));
 					ldap_value_free_len(cert);
 				}
 				ldap_memfree(attr);
@@ -197,7 +214,7 @@ void LdapSearch::search(const QString &search, const QVariantMap &userData)
 
 		Q_EMIT searchResult(list, count, userData);
 	});
-	timer->start(1000);
+	timer->start(1s);
 }
 
 void LdapSearch::setLastError( const QString &msg, int err )
