@@ -29,27 +29,27 @@
 
 void Diagnostics::generalInfo(QTextStream &s)
 {
-	s << "<b>" << tr("Arguments:") << "</b> " << qApp->arguments().join(' ') << "<br />"
+	s << "<b>" << tr("Arguments:") << "</b> " << Application::arguments().join(' ') << "<br />"
 		<< "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />"
 		<< "<b>" << "URLs:" << "</b>"
 #ifdef CONFIG_URL
 		<< "<br />CONFIG_URL: " << CONFIG_URL
 #endif
-		<< "<br />SID-PROXY-URL: " << qApp->confValue(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-PROXY-URL: " << qApp->confValue(QLatin1String("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SID-SK-URL: " << qApp->confValue(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-SK-URL: " << qApp->confValue(QLatin1String("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SID-PROXY-URL: " << Application::confValue(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-PROXY-URL: " << Application::confValue(QLatin1String("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SID-SK-URL: " << Application::confValue(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-SK-URL: " << Application::confValue(QLatin1String("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
 		<< "<br />MID-PROXY-URL: " << Settings::MID_PROXY_URL
 		<< "<br />MID-SK-URL: " << Settings::MID_SK_URL
 		<< "<br />RPUUID: " << (Settings::MID_UUID_CUSTOM ? tr("is set manually") : tr("is set by default"))
-		<< "<br />TSL_URL: " << qApp->confValue(Application::TSLUrl).toString()
-		<< "<br />TSA_URL: " << qApp->confValue(Application::TSAUrl).toString()
-		<< "<br />SIVA_URL: " << qApp->confValue(Application::SiVaUrl).toString()
+		<< "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString()
+		<< "<br />TSA_URL: " << Application::confValue(Application::TSAUrl).toString()
+		<< "<br />SIVA_URL: " << Application::confValue(Application::SiVaUrl).toString()
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
-	for(const QSslCertificate &cert: qApp->confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
+	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
 	s << "<br /><br /><b>" << tr("TSL cache") << ":</b>";
-	QString cache = qApp->confValue(Application::TSLCache).toString();
+	QString cache = Application::confValue(Application::TSLCache).toString();
 	const QStringList tsllist = QDir(cache).entryList({QStringLiteral("*.xml")});
 	for(const QString &file: tsllist)
 	{
@@ -61,7 +61,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 
 #ifdef CONFIG_URL
 	s << "<b>" << tr("Central Configuration") << ":</b>";
-	QJsonObject metainf = qApp->confValue(QLatin1String("META-INF")).toObject();
+	QJsonObject metainf = Application::confValue(QLatin1String("META-INF")).toObject();
 	for(QJsonObject::const_iterator i = metainf.constBegin(), end = metainf.constEnd(); i != end; ++i)
 	{
 		if(i.value().type() == QJsonValue::Double)
