@@ -55,7 +55,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:22.04', 'ubuntu:22.10']
+        container: ['ubuntu:20.04', 'ubuntu:22.04', 'ubuntu:23.04']
     env:
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: github-actions
@@ -63,10 +63,10 @@ jobs:
     steps:
     - name: Install dependencies
       if: matrix.container == 'ubuntu:20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
     - name: Install dependencies
       if: matrix.container != 'ubuntu:20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian
     - name: Checkout
       uses: actions/checkout@v3
       with:
@@ -105,7 +105,7 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['fedora:36', 'fedora:37']
+        container: ['fedora:37', 'fedora:38']
     env:
       MAKEFLAGS: -j3
     steps:
@@ -173,16 +173,16 @@ jobs:
         vcpkgGitCommitId: 9b9c2758ece1d8ac0de90589730bb5ccf45c0874
         vcpkgTriplet: x64-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.0
+        version: 6.5.1
         arch: win64_msvc2019_64
         modules: qt5compat
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-        sdk: 10.0.17763.0
+        sdk: 10.0.19041.0
     - name: Build
       run: |
         md build/client
