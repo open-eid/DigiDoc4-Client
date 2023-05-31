@@ -50,7 +50,6 @@ public:
 		TSLUrl,
 		TSLCerts,
 		TSLCache,
-		TSLOnlineDigest
 	};
 
 	explicit Application( int &argc, char **argv );

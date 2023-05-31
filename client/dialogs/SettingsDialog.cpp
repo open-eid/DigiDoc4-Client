@@ -54,7 +54,7 @@
 
 #include <algorithm>
 
-#define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), qApp->applicationName())
+#define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())
 
 SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	: QDialog(parent)
@@ -100,8 +100,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->rdGeneralSpecifyDirectory->setFont(regularFont);
 	ui->btGeneralChooseDirectory->setFont(regularFont);
 	ui->txtGeneralDirectory->setFont(regularFont);
-
-	ui->chkGeneralTslRefresh->setFont(regularFont);
 
 	ui->chkShowPrintSummary->setFont(regularFont);
 	ui->chkRoleAddressInfo->setFont(regularFont);
@@ -188,7 +186,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		}
 		WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
 #ifdef Q_OS_WIN
-		QString path = qApp->applicationDirPath() + QStringLiteral("/id-updater.exe");
+		QString path = QApplication::applicationDirPath() + QLatin1String("/id-updater.exe");
 		if (QFile::exists(path))
 			QProcess::startDetached(path, {});
 #endif
@@ -211,7 +209,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef CONFIG_URL
 		qApp->conf()->update(true);
 #endif
-		QString cache = qApp->confValue(Application::TSLCache).toString();
+		QString cache = Application::confValue(Application::TSLCache).toString();
 		const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
 		for(const QString &file: tsllist)
 		{
@@ -288,11 +286,10 @@ void SettingsDialog::checkConnection()
 {
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	saveProxy();
-	CheckConnection connection;
-	if(!connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
+	if(CheckConnection connection; !connection.check(QStringLiteral("https://id.eesti.ee/config.json")))
 	{
 		Application::restoreOverrideCursor();
-		FadeInNotification* notification = new FadeInNotification(this,
+		auto *notification = new FadeInNotification(this,
 			ria::qdigidoc4::colors::MOJO, ria::qdigidoc4::colors::MARZIPAN, 0, 120);
 		QString error;
 		QString details = connection.errorDetails();
@@ -305,7 +302,7 @@ void SettingsDialog::checkConnection()
 	else
 	{
 		Application::restoreOverrideCursor();
-		FadeInNotification* notification = new FadeInNotification(this,
+		auto *notification = new FadeInNotification(this,
 			ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 0, 120);
 		notification->start(tr("The connection to certificate status service is successful!"), 750, 3000, 1200);
 	}
@@ -328,10 +325,6 @@ void SettingsDialog::initFunctionality()
 	connect(ui->langGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this,
 		[this](QAbstractButton *button){ retranslate(button->property("lang").toString()); });
 
-	ui->chkGeneralTslRefresh->setChecked(qApp->confValue(Application::TSLOnlineDigest).toBool());
-	connect(ui->chkGeneralTslRefresh, &QCheckBox::toggled, [](bool checked) {
-		qApp->setConfValue(Application::TSLOnlineDigest, checked);
-	});
 	ui->chkShowPrintSummary->setChecked(Settings::SHOW_PRINT_SUMMARY);
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
@@ -396,11 +389,11 @@ void SettingsDialog::initFunctionality()
 	});
 	ui->rdTimeStampCustom->setChecked(Settings::TSA_URL_CUSTOM);
 	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
-	ui->txtTimeStamp->setPlaceholderText(qApp->confValue(Settings::TSA_URL.KEY).toString());
-	QString TSA_URL = Settings::TSA_URL.value(qApp->confValue(Application::TSAUrl));
+	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
+	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
 	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
-		qApp->setConfValue(Application::TSAUrl, url);
+		Application::setConfValue(Application::TSAUrl, url);
 		if(url.isEmpty())
 		{
 			Settings::TSA_CERT.clear();
@@ -444,11 +437,11 @@ void SettingsDialog::initFunctionality()
 	});
 	ui->rdSiVaCustom->setChecked(Settings::SIVA_URL_CUSTOM);
 	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
-	ui->txtSiVa->setPlaceholderText(qApp->confValue(Settings::SIVA_URL.KEY).toString());
-	QString SIVA_URL = Settings::SIVA_URL.value(qApp->confValue(Application::SiVaUrl));
+	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
+	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
 	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : SIVA_URL);
 	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
-		qApp->setConfValue(Application::SiVaUrl, url);
+		Application::setConfValue(Application::SiVaUrl, url);
 		if(url.isEmpty())
 		{
 			Settings::SIVA_CERT.clear();
@@ -491,7 +484,7 @@ void SettingsDialog::initFunctionality()
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
 			if(result == 1) {
 				qApp->setProperty("restart", true);
-				qApp->quit();
+				QApplication::quit();
 			}
 		});
 #endif
@@ -560,7 +553,7 @@ void SettingsDialog::updateProxy()
 void SettingsDialog::updateVersion()
 {
 	ui->txtNavVersion->setText(tr("%1 version %2, released %3")
-		.arg(tr("DigiDoc4 Client"), qApp->applicationVersion(), QStringLiteral(BUILD_DATE)));
+		.arg(tr("DigiDoc4 Client"), QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
 }
 
 void SettingsDialog::saveProxy()
@@ -662,7 +655,7 @@ void SettingsDialog::saveFile(const QString &name, const QString &path)
 void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 {
 	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_%4")
-		.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), qApp->applicationName(), qApp->applicationVersion(), name),
+		.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), QApplication::applicationName(), QApplication::applicationVersion(), name),
 		tr("Text files (*.txt)") );
 	if( filename.isEmpty() )
 		return;

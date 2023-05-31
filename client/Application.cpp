@@ -91,7 +91,9 @@ public:
 	DigidocConf()
 	{
 		Settings::LIBDIGIDOCPP_DEBUG = false;
-
+#ifndef Q_OS_DARWIN
+		setTSLOnlineDigest(true);
+#endif
 #ifdef CONFIG_URL
 		reload();
 		QTimer::singleShot(0, qApp->conf(), [] { qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4")); });
@@ -142,8 +144,6 @@ public:
 	{ return Settings::PROXY_TUNNEL_SSL.value(digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 	std::string TSLCache() const final
 	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
-	bool TSLOnlineDigest() const final
-	{ return Settings::TSL_ONLINE_DIGEST.value(digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 
 	void setProxyHost( const std::string &host ) final
 	{ Settings::PROXY_HOST = host; }
@@ -155,8 +155,6 @@ public:
 	{ Settings::PROXY_PASS = pass; }
 	void setProxyTunnelSSL( bool enable ) final
 	{ Settings::PROXY_TUNNEL_SSL.setValue(enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
-	void setTSLOnlineDigest( bool enable ) final
-	{ Settings::TSL_ONLINE_DIGEST.setValue(enable, digidoc::XmlConfCurrent::TSLOnlineDigest()); }
 #endif
 
 	std::vector<digidoc::X509Cert> TSCerts() const final
@@ -227,7 +225,6 @@ private:
 	{
 		if(Settings::TSA_URL == Application::confValue(Settings::TSA_URL.KEY).toString())
 			Settings::TSA_URL.clear(); // Cleanup user conf if it is default url
-		Settings::SETTINGS_MIGRATED.clear();
 		QList<QSslCertificate> list;
 		for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
 			list.append(QSslCertificate(fromBase64(cert), QSsl::Der));
@@ -344,11 +341,10 @@ Application::Application( int &argc, char **argv )
 
 	QDesktopServices::setUrlHandler(QStringLiteral("browse"), this, "browse");
 	QDesktopServices::setUrlHandler(QStringLiteral("mailto"), this, "mailTo");
-	QAccessible::installFactory([](const QString &classname, QObject *object) {
-		QAccessibleInterface *interface = nullptr;
+	QAccessible::installFactory([](const QString &classname, QObject *object) -> QAccessibleInterface* {
 		if (classname == QLatin1String("QSvgWidget") && object && object->isWidgetType())
-			interface = new QAccessibleWidget(qobject_cast<QWidget *>(object), QAccessible::StaticText);
-		return interface;
+			return new QAccessibleWidget(qobject_cast<QWidget *>(object), QAccessible::StaticText);
+		return {};
 	});
 
 
@@ -356,6 +352,12 @@ Application::Application( int &argc, char **argv )
 	installTranslator( &d->commonTranslator );
 	installTranslator( &d->qtTranslator );
 	loadTranslation( Common::language() );
+
+	// Clear obsolete registriy settings
+	Settings::SETTINGS_MIGRATED.clear();
+#ifdef Q_OS_DARWIN
+	Settings::TSL_ONLINE_DIGEST.clear();
+#endif
 
 	// Actions
 	d->closeAction = new QAction( tr("Close Window"), this );
@@ -588,7 +590,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 		}
 		return QVariant::fromValue(list);
 	}
-	case TSLOnlineDigest: return i->TSLOnlineDigest();
 	}
 	return r.isEmpty() ? value.toString() : QString::fromUtf8( r );
 }
@@ -858,7 +859,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxySSL: i->setProxyTunnelSSL( value.toBool() ); break;
-		case TSLOnlineDigest: i->setTSLOnlineDigest( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
 		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
 		case TSLCerts:

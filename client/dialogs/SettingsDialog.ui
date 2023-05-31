@@ -372,16 +372,6 @@ QRadioButton::indicator::checked {
         </layout>
        </item>
        <item>
-        <widget class="CheckBox" name="chkGeneralTslRefresh">
-         <property name="text">
-          <string>Online TSL digest check</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="CheckBox" name="chkShowPrintSummary">
          <property name="text">
           <string>Show print summary</string>
