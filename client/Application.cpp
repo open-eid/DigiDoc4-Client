@@ -58,6 +58,7 @@ class MacMenuBar {};
 #include <QtCore/QTranslator>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
+#include <QtCore/QVersionNumber>
 #include <QtCore/QXmlStreamReader>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
@@ -96,7 +97,6 @@ public:
 #endif
 #ifdef CONFIG_URL
 		reload();
-		QTimer::singleShot(0, qApp->conf(), [] { qApp->conf()->checkVersion(QStringLiteral("QDIGIDOC4")); });
 		Configuration::connect(qApp->conf(), &Configuration::finished, [](bool changed, const QString & /*error*/){
 			if(changed)
 				reload();
@@ -205,18 +205,15 @@ public:
 
 	bool TSLAllowExpired() const final
 	{
-		static enum {
-			Undefined,
-			Approved,
-		} status = Undefined;
-		if(status == Undefined)
+		static bool isAllowed = false;
+		if(!isAllowed)
 		{
 			QEventLoop e;
 			QMetaObject::invokeMethod( qApp, "showTSLWarning", Q_ARG(QEventLoop*,&e) );
 			e.exec();
-			status = Approved;
+			isAllowed = true;
 		}
-		return status == Approved;
+		return isAllowed;
 	}
 
 private:
@@ -316,18 +313,6 @@ Application::Application( int &argc, char **argv )
 #endif
 	, d(new Private)
 {
-#ifdef CONFIG_URL
-	d->conf = new Configuration(this);
-	connect(d->conf, &Configuration::updateReminder,
-			[](bool /* expired */, const QString & /* title */, const QString &message){
-		WarningDialog::show(Application::activeWindow(), message);
-	});
-#endif
-
-	qRegisterMetaType<TokenData>("TokenData");
-	qRegisterMetaType<QSmartCardData>("QSmartCardData");
-	QToolTip::setFont(Styles::font(Styles::Regular, 14));
-
 	QStringList args = arguments();
 	args.removeFirst();
 #ifndef Q_OS_MAC
@@ -339,6 +324,46 @@ Application::Application( int &argc, char **argv )
 	connect( this, SIGNAL(messageReceived(QString)), SLOT(parseArgs(QString)) );
 #endif
 
+#ifdef CONFIG_URL
+	d->conf = new Configuration(this);
+	QTimer::singleShot(0, this, [this] {
+		auto lessThanVersion = [](QLatin1String key) {
+			return QVersionNumber::fromString(applicationVersion()) <
+				   QVersionNumber::fromString(confValue(key).toString());
+		};
+		if(lessThanVersion(QLatin1String("QDIGIDOC4-UNSUPPORTED")))
+		{
+			auto *dlg = WarningDialog::show(activeWindow(), tr(
+				"This version of ID-software on your computer is unsupported. "
+				"DigiDoc4 Client cannot be used until you update ID-software. "
+				"Install new ID-software from <a href=\"https://www.id.ee/en/article/install-id-software/\">www.id.ee</a>. "
+				"macOS users can download the latest ID-software version from the "
+				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
+			connect(dlg, &WarningDialog::finished, this, &Application::quit);
+		}
+		else if(lessThanVersion(QLatin1String("QDIGIDOC4-SUPPORTED")))
+		{
+			WarningDialog::show(activeWindow(), tr(
+				"Your ID-software has expired. To download the latest software version, go to the "
+				"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
+				"macOS users can download the latest ID-software version from the "
+				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
+		}
+		connect(d->conf, &Configuration::finished, this, [=](bool changed, const QString &){
+			if(changed && lessThanVersion(QLatin1String("QDIGIDOC4-LATEST")))
+				WarningDialog::show(activeWindow(), tr(
+					"An ID-software update has been found. To download the update, go to the "
+					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
+					"macOS users can download the update from the "
+					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
+		});
+	});
+#endif
+
+	qRegisterMetaType<TokenData>("TokenData");
+	qRegisterMetaType<QSmartCardData>("QSmartCardData");
+	qRegisterMetaType<QEventLoop*>("QEventLoop*");
+	QToolTip::setFont(Styles::font(Styles::Regular, 14));
 	QDesktopServices::setUrlHandler(QStringLiteral("browse"), this, "browse");
 	QDesktopServices::setUrlHandler(QStringLiteral("mailto"), this, "mailTo");
 	QAccessible::installFactory([](const QString &classname, QObject *object) -> QAccessibleInterface* {
@@ -346,7 +371,7 @@ Application::Application( int &argc, char **argv )
 			return new QAccessibleWidget(qobject_cast<QWidget *>(object), QAccessible::StaticText);
 		return {};
 	});
-
+	Settings::SETTINGS_MIGRATED.clear();
 
 	installTranslator( &d->appTranslator );
 	installTranslator( &d->commonTranslator );
@@ -410,7 +435,6 @@ Application::Application( int &argc, char **argv )
 			}
 		}
 
-		qRegisterMetaType<QEventLoop*>("QEventLoop*");
 		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
 			.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8().constData(),
 			[](const digidoc::Exception *ex) {
@@ -892,7 +916,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	if( !w )
 	{
 		w = new MainWindow();
-		QWidget *prev = [=]() -> QWidget* {
+		QWidget *prev = [w]() -> QWidget* {
 			for(QWidget *top: topLevelWidgets())
 			{
 				QWidget *prev = qobject_cast<MainWindow*>(top);
@@ -901,7 +925,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 				if(prev && prev != w && prev->isVisible())
 					return prev;
 			}
-			return nullptr;
+			return {};
 		}();
 		if(prev)
 			w->move(prev->geometry().topLeft() + QPoint(20, 20));
