@@ -225,7 +225,7 @@ elseif(WIN32)
 	endif()
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
-		-dlibs_path="${LIBS_PATH}" -dclient_path=$<TARGET_FILE:${PROJECT_NAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
+		-dlibs_path=${LIBS_PATH} -dclient_path=$<TARGET_FILE:${PROJECT_NAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs
 		-dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
@@ -310,14 +310,22 @@ else()
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
 			RENAME application-x-cdoc.png
 		)
-		foreach(TGT application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png)
+	    foreach(TGT
+				application-vnd.etsi.asic-s+zip.png
+				application-x-ddoc.png
+				application-vnd.lt.archyvai.adoc-2008.png)
 			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
 				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
 		endforeach()
 		# Workaround Ubuntu 21.10 Yaru icon theme issues
 		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
 			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
-		foreach(TGT application-vnd.etsi.asic-e+zip.png application-vnd.etsi.asic-s+zip.png application-x-ddoc.png application-vnd.lt.archyvai.adoc-2008.png application-x-cdoc.png)
+		foreach(TGT
+				application-vnd.etsi.asic-e+zip.png
+				application-vnd.etsi.asic-s+zip.png
+				application-x-ddoc.png
+				application-vnd.lt.archyvai.adoc-2008.png
+				application-x-cdoc.png)
 			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
 				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
 				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")

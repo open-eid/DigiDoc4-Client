@@ -173,16 +173,16 @@ jobs:
         vcpkgGitCommitId: 9b9c2758ece1d8ac0de90589730bb5ccf45c0874
         vcpkgTriplet: x64-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.0
+        version: 6.5.1
         arch: win64_msvc2019_64
         modules: qt5compat
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-        sdk: 10.0.17763.0
+        sdk: 10.0.19041.0
     - name: Build
       run: |
         md build/client
