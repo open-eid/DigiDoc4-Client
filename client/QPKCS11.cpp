@@ -19,6 +19,7 @@
 
 #include "QPKCS11_p.h"
 
+#include "Application.h"
 #include "CryptoDoc.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -27,40 +28,11 @@
 #include <common/QPCSC.h>
 
 #include <QtCore/QDebug>
-#include <QtWidgets/QApplication>
 
-#define toQByteArray(X) QByteArray::fromRawData((const char*)(X), sizeof(X)).toUpper()
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-namespace Qt {
-	using ::endl;
-}
-#endif
-
-QWidget* rootWindow()
+template<class Container>
+QString toQString(const Container &c)
 {
-	QWidget* win = qApp->activeWindow();
-	QWidget* root {};
-
-	if (!win)
-	{
-		for (QWidget *widget: qApp->topLevelWidgets())
-		{
-			if (widget->isWindow())
-			{
-				win = widget;
-				break;
-			}
-		}
-	}
-
-	while(win)
-	{
-		root = win;
-		win = win->parentWidget();
-	}
-
-	return root;
+	return QString::fromLatin1(QByteArray::fromRawData((const char*)std::data(c), std::size(c)).toUpper());
 }
 
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
@@ -137,7 +109,7 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
 	};
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
-	if(d->f->C_DeriveKey(d->session, &mech, key[0], newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
+	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
 		return {};
 
 	return d->attribute(d->session, newkey, CKA_VALUE);
@@ -157,7 +129,7 @@ QByteArray QPKCS11::decrypt( const QByteArray &data ) const
 		return result;
 
 	CK_MECHANISM mech { CKM_RSA_PKCS, nullptr, 0 };
-	if(d->f->C_DecryptInit(d->session, &mech, key[0]) != CKR_OK)
+	if(d->f->C_DecryptInit(d->session, &mech, key.front()) != CKR_OK)
 		return result;
 
 	CK_ULONG size = 0;
@@ -182,7 +154,7 @@ bool QPKCS11::load( const QString &driver )
 	qWarning() << "Loading:" << driver;
 	unload();
 	d->lib.setFileName( driver );
-	CK_C_GetFunctionList l = CK_C_GetFunctionList(d->lib.resolve( "C_GetFunctionList" ));
+	auto l = CK_C_GetFunctionList(d->lib.resolve("C_GetFunctionList"));
 	if( !l || l( &d->f ) != CKR_OK )
 	{
 		qWarning() << "Failed to resolve symbols";
@@ -200,25 +172,20 @@ bool QPKCS11::load( const QString &driver )
 	CK_INFO info;
 	d->f->C_GetInfo( &info );
 	qWarning()
-		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.manufacturerID).constData())
-			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << Qt::endl
-		<< QStringLiteral("%1 (%2.%3)").arg(toQByteArray(info.libraryDescription).constData())
-			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << Qt::endl
+		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.manufacturerID))
+			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << '\n'
+		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.libraryDescription))
+			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << '\n'
 		<< "Flags:" << info.flags;
-	d->isFinDriver = toQByteArray(info.libraryDescription).contains("MPOLLUX");
+	d->isFinDriver = toQString(info.libraryDescription).contains(QLatin1String("MPOLLUX"));
 	return true;
-}
-
-QPKCS11::PinStatus QPKCS11::lastError() const
-{
-	return d->lastError;
 }
 
 QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 {
 	logout();
 
-	CK_SLOT_ID currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
+	auto currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
 	d->id = t.data(QStringLiteral("id")).toByteArray();
 	d->isPSS = t.data(QStringLiteral("PSS")).toBool();
 
@@ -228,7 +195,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 		return UnknownError;
 
 	std::vector<CK_OBJECT_HANDLE> list = d->findObject(d->session, CKO_CERTIFICATE, d->id);
-	if(list.size() != 1 || QSslCertificate(d->attribute(d->session, list[0], CKA_VALUE), QSsl::Der) != t.cert())
+	if(list.size() != 1 || QSslCertificate(d->attribute(d->session, list.front(), CKA_VALUE), QSsl::Der) != t.cert())
 		return UnknownError;
 
 	// Hack: Workaround broken FIN pkcs11 drivers not providing CKF_LOGIN_REQUIRED info
@@ -244,7 +211,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
 	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
 	{
-		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, rootWindow());
+		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, Application::mainWindow());
 		connect(d, &Private::started, &p, &PinPopup::startTimer);
 		connect(d, &Private::finished, &p, &PinPopup::accept);
 		d->start();
@@ -253,7 +220,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	}
 	else
 	{
-		PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, rootWindow());
+		PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, Application::mainWindow());
 		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;
@@ -320,15 +287,15 @@ QList<TokenData> QPKCS11::tokens() const
 				continue;
 			TokenData t;
 			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
-				toQByteArray(token.serialNumber).trimmed() : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
+				toQString(token.serialNumber).trimmed() : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 			t.setCert(cert);
-			t.setReader(QByteArray::fromRawData((const char*)slotInfo.slotDescription, sizeof(slotInfo.slotDescription)).trimmed());
+			t.setReader(toQString(slotInfo.slotDescription).trimmed());
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
 			t.setData(QStringLiteral("id"), id);
 
 			CK_KEY_TYPE keyType = CKK_RSA;
 			CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
-			d->f->C_GetAttributeValue(session, key[0], &attribute, 1);
+			d->f->C_GetAttributeValue(session, key.front(), &attribute, 1);
 
 			if(keyType == CKK_RSA)
 			{
@@ -349,16 +316,17 @@ bool QPKCS11::reload()
 {
 	static QMultiHash<QString,QByteArray> drivers {
 #ifdef Q_OS_MAC
-		{ qApp->applicationDirPath() + "/opensc-pkcs11.so", {} },
+		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "/Library/PWPW-Card/lib/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7B940000806212515646696E454944" }, // FI-G2
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
 #elif defined(Q_OS_WIN)
@@ -373,15 +341,16 @@ bool QPKCS11::reload()
 		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "/usr/lib64/libcryptoki.so", "3B7B940000806212515646696E454944" }, // FI-G2
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 #else
 		{ "pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "libcryptoki.so", "3B7B940000806212515646696E454944" }, // FI-G2
+		{ "libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 #endif
 		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
+		{ "/usr/lib/libeTPkcs11.so", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
 #endif
@@ -408,7 +377,7 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 
 	CK_KEY_TYPE keyType = CKK_RSA;
 	CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
-	d->f->C_GetAttributeValue(d->session, key[0], &attribute, 1);
+	d->f->C_GetAttributeValue(d->session, key.front(), &attribute, 1);
 
 	CK_RSA_PKCS_PSS_PARAMS pssParams { CKM_SHA256, CKG_MGF1_SHA256, 32 };
 	CK_MECHANISM mech { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, nullptr, 0 };
@@ -419,41 +388,31 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 		{
 		case QCryptographicHash::Sha224:
 			data += QByteArray::fromHex("302d300d06096086480165030402040500041c");
-			pssParams.hashAlg = CKM_SHA224;
-			pssParams.mgf = CKG_MGF1_SHA224;
-			pssParams.sLen = 24;
+			pssParams = { CKM_SHA224, CKG_MGF1_SHA224, 24 };
 			break;
 		case QCryptographicHash::Sha256:
 			data += QByteArray::fromHex("3031300d060960864801650304020105000420");
-			pssParams.hashAlg = CKM_SHA256;
-			pssParams.mgf = CKG_MGF1_SHA256;
-			pssParams.sLen = 32;
+			pssParams = { CKM_SHA256, CKG_MGF1_SHA256, 32 };
 			break;
 		case QCryptographicHash::Sha384:
 			data += QByteArray::fromHex("3041300d060960864801650304020205000430");
-			pssParams.hashAlg = CKM_SHA384;
-			pssParams.mgf = CKG_MGF1_SHA384;
-			pssParams.sLen = 48;
+			pssParams = { CKM_SHA384, CKG_MGF1_SHA384, 48 };
 			break;
 		case QCryptographicHash::Sha512:
 			data += QByteArray::fromHex("3051300d060960864801650304020305000440");
-			pssParams.hashAlg = CKM_SHA512;
-			pssParams.mgf = CKG_MGF1_SHA512;
-			pssParams.sLen = 64;
+			pssParams = { CKM_SHA512, CKG_MGF1_SHA512, 64 };
 			break;
 		default: break;
 		}
 		if(d->isPSS)
 		{
-			mech.mechanism = CKM_RSA_PKCS_PSS;
-			mech.pParameter = &pssParams;
-			mech.ulParameterLen = sizeof(CK_RSA_PKCS_PSS_PARAMS);
+			mech = { CKM_RSA_PKCS_PSS, &pssParams, sizeof(CK_RSA_PKCS_PSS_PARAMS) };
 			data.clear();
 		}
 	}
 	data.append(digest);
 
-	if(d->f->C_SignInit(d->session, &mech, key[0]) != CKR_OK)
+	if(d->f->C_SignInit(d->session, &mech, key.front()) != CKR_OK)
 		return {};
 	CK_ULONG size = 0;
 	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK)

@@ -44,5 +44,4 @@ public:
 
 	void run() override;
 	CK_RV result = CKR_OK;
-	QPKCS11::PinStatus lastError;
 };

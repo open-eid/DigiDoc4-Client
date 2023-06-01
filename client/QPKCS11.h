@@ -33,7 +33,6 @@ public:
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	bool isLoaded() const;
-	PinStatus lastError() const final;
 	bool load( const QString &driver );
 	void unload();
 	PinStatus login(const TokenData &t) final;
