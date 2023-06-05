@@ -162,7 +162,7 @@ QList<TokenData> QCNG::tokens() const
 			return {};
 		return data;
 	};
-	auto enumKeys = [&result, &prop](const QString &provider, const QString &reader = {}) {
+	auto enumKeys = [&result, &prop](const QString &provider, QString reader = {}) {
 		QString scope = QStringLiteral(R"(\\.\%1\)").arg(reader);
 		SCOPE<NCRYPT_PROV_HANDLE> h;
 		SECURITY_STATUS err = NCryptOpenStorageProvider(&h, LPCWSTR(provider.utf16()), 0);
@@ -180,6 +180,8 @@ QList<TokenData> QCNG::tokens() const
 			if(cert.isNull())
 				continue;
 
+			if(reader.isEmpty())
+				reader = QString::fromUtf16((const char16_t*)prop(key, NCRYPT_READER_PROPERTY).data());
 			QString guid = prop(h, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed();
 			TokenData &t = result.emplaceBack();
 			t.setReader(reader);
@@ -191,24 +193,18 @@ QList<TokenData> QCNG::tokens() const
 			t.setData(QStringLiteral("spec"), QVariant::fromValue(keyname->dwLegacyKeySpec));
 			qWarning() << "key" << t.data(QStringLiteral("provider"))
 				<< "spec" << t.data(QStringLiteral("spec"))
-				<< "alg" << QString::fromWCharArray(keyname->pszAlgid)
+				<< "alg" << QStringView(keyname->pszAlgid)
 				<< "flags" << keyname->dwFlags;
-			if(cert.publicKey().algorithm() != QSsl::Rsa)
+			if(cert.publicKey().algorithm() != QSsl::Rsa || reader.isEmpty())
 				continue;
 
-			static const QHash<QByteArray,bool> supportsPSS {
-				{"3BDD18008131FE45904C41545649412D65494490008C", false}, // LV-G1
-				{"3BDB960080B1FE451F830012428F536549440F900020", false}, // LV-G2
+			static const QSet<QByteArray> usePSS {
+				{"3BFF9600008131804380318065B0850300EF120FFE82900066"}, // eToken 5110 CC (830)
+				{"3BFF9600008131FE4380318065B0855956FB120FFE82900000"}, // eToken 5110 CC (940)
+				{"3BD518008131FE7D8073C82110F4"}, // SafeNet 5110 FIPS
+				{"3BFF9600008131FE4380318065B0846566FB12017882900085"}, // SafeNet 5110+ FIPS
 			};
-			QByteArray atr = QPCSCReader(reader, &QPCSC::instance()).atr();
-			if(supportsPSS.contains(atr))
-			{
-				t.setData(QStringLiteral("PSS"), supportsPSS.value(atr));
-				continue;
-			}
-			SECURITY_STATUS err = NCryptSignHash(key, &rsaPSS, PBYTE(digest.data()), DWORD(digest.size()),
-				nullptr, 0, &size, BCRYPT_PAD_PSS);
-			t.setData(QStringLiteral("PSS"), SUCCEEDED(err));
+			t.setData(QStringLiteral("PSS"), usePSS.contains(QPCSCReader(reader, &QPCSC::instance()).atr()));
 		}
 	};
 
@@ -220,7 +216,7 @@ QList<TokenData> QCNG::tokens() const
 	{
 		QString provider = QString::fromWCharArray(providers[i].pszName);
 		qWarning() << "Found provider" << provider;
-		if(provider == QString::fromWCharArray(MS_SMART_CARD_KEY_STORAGE_PROVIDER))
+		if(provider == QStringView(MS_SMART_CARD_KEY_STORAGE_PROVIDER))
 		{
 			for( const QString &reader: QPCSC::instance().readers() )
 			{
