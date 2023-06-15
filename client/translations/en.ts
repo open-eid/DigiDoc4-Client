@@ -1367,18 +1367,6 @@ LDAP server is unavailable.</translation>
         <translation>&amp;File</translation>
     </message>
     <message>
-        <source>Info</source>
-        <translation>About</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Close</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Settings</translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>

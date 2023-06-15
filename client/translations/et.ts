@@ -1367,18 +1367,6 @@ LDAP serveriga ei saa ühendust.</translation>
         <translation>&amp;Fail</translation>
     </message>
     <message>
-        <source>Info</source>
-        <translation>Info</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Sulge</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Seaded</translation>
-    </message>
-    <message>
         <source>&amp;Help</source>
         <translation>&amp;Abi</translation>
     </message>

@@ -41,7 +41,7 @@
 	QStringList result;
 	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
 		result.append(QString::fromNSString(filename).normalized(QString::NormalizationForm_C));
-	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result) );
+	Application::showClient(result);
 }
 
 - (void)signClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
@@ -51,7 +51,7 @@
 	QStringList result;
 	for(NSString *filename in [pboard propertyListForType:NSFilenamesPboardType])
 		result.append(QString::fromNSString(filename).normalized(QString::NormalizationForm_C));
-	QMetaObject::invokeMethod(qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,false), Q_ARG(bool,true));
+	Application::showClient(result, false, true);
 }
 
 - (void)openCrypto:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
@@ -61,7 +61,7 @@
 	QStringList result;
 	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
 		result.append(QString::fromNSString(filename).normalized(QString::NormalizationForm_C));
-	QMetaObject::invokeMethod( qApp, "showClient", Q_ARG(QStringList,result), Q_ARG(bool,true) );
+	Application::showClient(result, true);
 }
 @end
 
