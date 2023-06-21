@@ -29,7 +29,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SmartIDDialog)
 {
-	static const QString &EE = Settings::SMARTID_COUNTRY_LIST[0];
+	static const QString &EE = Settings::SMARTID_COUNTRY_LIST.first();
 	new Overlay(this, parent);
 
 	ui->setupUi(this);
@@ -56,7 +56,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	ui->cancel->setFont(condensed);
 
 	auto *ik = new NumberValidator(ui->idCode);
-	ui->idCode->setValidator(ik);
+	ui->idCode->setValidator(Settings::SMARTID_COUNTRY == EE ? ik : nullptr);
 	ui->idCode->setText(Settings::SMARTID_CODE);
 	for(int i = 0, count = Settings::SMARTID_COUNTRY_LIST.size(); i < count; ++i)
 		ui->idCountry->setItemData(i, Settings::SMARTID_COUNTRY_LIST[i]);
@@ -78,11 +78,13 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	connect(ui->idCode, &QLineEdit::textEdited, ui->errorCode, [this, setError] {
 		setError(ui->idCode, ui->errorCode, {});
 	});
-	connect(ui->idCountry, &QComboBox::currentTextChanged, this, saveSettings);
+	connect(ui->idCountry, &QComboBox::currentTextChanged, this, [this, ik, saveSettings] {
+		ui->idCode->setValidator(country() == EE ? ik : nullptr);
+		saveSettings();
+	});
 	connect(ui->cbRemember, &QCheckBox::clicked, this, saveSettings);
 	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
-	connect(ui->sign, &QPushButton::clicked, this, [this, ik, setError] {
-		ui->idCode->setValidator(country() == EE ? ik : nullptr);
+	connect(ui->sign, &QPushButton::clicked, this, [this, setError] {
 		if(ui->idCode->validator() && !IKValidator::isValid(idCode()))
 			setError(ui->idCode, ui->errorCode, tr("Personal code is not valid"));
 		else
