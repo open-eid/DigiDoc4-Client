@@ -169,7 +169,7 @@ void VerifyCert::update()
 		ui->validUntil->setText(tr("The PUK code is located in your envelope"));
 		ui->validUntil->setHidden(isBlockedPuk);
 		ui->changePIN->setText(tr("CHANGE PUK"));
-		ui->changePIN->setHidden(cardData.version() == QSmartCardData::VER_USABLEUPDATER || isBlockedPuk);
+		ui->changePIN->setHidden(cardData.version() == isBlockedPuk);
 		ui->forgotPinLink->hide();
 		ui->details->hide();
 		ui->checkCert->hide();

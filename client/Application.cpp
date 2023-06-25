@@ -373,12 +373,11 @@ Application::Application( int &argc, char **argv )
 			return new QAccessibleWidget(qobject_cast<QWidget *>(object), QAccessible::StaticText);
 		return {};
 	});
-	Settings::SETTINGS_MIGRATED.clear();
 
 	installTranslator( &d->appTranslator );
 	installTranslator( &d->commonTranslator );
 	installTranslator( &d->qtTranslator );
-	loadTranslation( Common::language() );
+	loadTranslation(Settings::LANGUAGE);
 
 	// Clear obsolete registriy settings
 	Settings::SETTINGS_MIGRATED.clear();
@@ -875,9 +874,15 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	else if(!newWindow)
 	{
 		// else select first window with no open files
-		auto *main = qobject_cast<MainWindow*>(uniqueRoot());
-		if(main && main->windowFilePath().isEmpty())
-			w = main;
+		for(auto *widget : topLevelWidgets())
+		{
+			if(auto *main = qobject_cast<MainWindow*>(widget);
+				main && main->windowFilePath().isEmpty())
+			{
+				w = main;
+				break;
+			}
+		}
 	}
 	if( !w )
 	{
@@ -932,24 +937,6 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 }
 
 QSigner* Application::signer() const { return d->signer; }
-
-QWidget* Application::uniqueRoot()
-{
-	MainWindow* root = nullptr;
-
-	// Return main window if only one main window is opened
-	for(auto *w : topLevelWidgets())
-	{
-		if(auto *r = qobject_cast<MainWindow*>(w))
-		{
-			if(root)
-				return nullptr;
-			root = r;
-		}
-	}
-
-	return root;
-}
 
 void Application::waitForTSL( const QString &file )
 {

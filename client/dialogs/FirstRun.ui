@@ -208,13 +208,13 @@ QPushButton:disabled {
         <string notr="true">border: none;</string>
        </property>
       </widget>
-      <widget class="QWidget" name="coatOfArms" native="true">
+      <widget class="QSvgWidget" name="coatOfArms" native="true">
        <property name="geometry">
         <rect>
          <x>440</x>
          <y>40</y>
          <width>144</width>
-         <height>133</height>
+         <height>144</height>
         </rect>
        </property>
        <property name="styleSheet">

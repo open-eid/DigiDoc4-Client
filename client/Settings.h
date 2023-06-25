@@ -103,7 +103,7 @@ struct Settings
 	static const Option<bool, bool (*)()> TSA_URL_CUSTOM;
 
 	static const Option<QString> DEFAULT_DIR;
-	static const Option<QString> LANGUAGE;
+	static const Option<QString, QString (*)()> LANGUAGE;
 	static const Option<QString> LAST_PATH;
 	static const Option<bool> LIBDIGIDOCPP_DEBUG;
 	static const Option<bool> SETTINGS_MIGRATED;

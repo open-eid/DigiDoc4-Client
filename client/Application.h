@@ -90,7 +90,6 @@ private:
 	static void parseArgs(const QString &msg = {});
 	static void parseArgs(QStringList args);
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
-	static QWidget* uniqueRoot();
 #if defined(Q_OS_MAC)
 	static void initMacEvents();
 	static void deinitMacEvents();
