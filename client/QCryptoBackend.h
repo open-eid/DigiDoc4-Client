@@ -45,7 +45,7 @@ public:
 	virtual QByteArray decrypt(const QByteArray &data) const = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
-	virtual PinStatus lastError() const = 0;
+	virtual PinStatus lastError() const { return PinOK; }
 	virtual PinStatus login(const TokenData &cert) = 0;
 	virtual void logout() = 0;
 	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
