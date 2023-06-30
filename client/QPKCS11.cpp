@@ -32,7 +32,7 @@
 template<class Container>
 QString toQString(const Container &c)
 {
-	return QString::fromLatin1(QByteArray::fromRawData((const char*)std::data(c), std::size(c)).toUpper());
+	return QString::fromLatin1((const char*)std::data(c), std::size(c));
 }
 
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
@@ -177,7 +177,7 @@ bool QPKCS11::load( const QString &driver )
 		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.libraryDescription))
 			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << '\n'
 		<< "Flags:" << info.flags;
-	d->isFinDriver = toQString(info.libraryDescription).contains(QLatin1String("MPOLLUX"));
+	d->isFinDriver = toQString(info.libraryDescription).contains(QLatin1String("MPOLLUX"), Qt::CaseInsensitive);
 	return true;
 }
 
