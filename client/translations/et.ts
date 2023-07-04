@@ -3288,6 +3288,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Certificates have expired! </source>
         <translation>Sertifikaadid on aegunud! </translation>
     </message>
+    <message>
+        <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
+        <translation>Tegemist on XAdES allkirja sisalduva ASiC-S ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>

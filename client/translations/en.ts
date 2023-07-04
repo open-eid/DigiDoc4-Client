@@ -3288,6 +3288,10 @@ Additional licenses and components</translation>
         <source>Certificates expire soon! </source>
         <translation>Certificates expire soon! </translation>
     </message>
+    <message>
+        <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
+        <translation>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>

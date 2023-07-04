@@ -94,6 +94,7 @@ enum WarningType {
     InvalidTimestampWarning,
     UnknownSignatureWarning,
     UnknownTimestampWarning,
+    UnsupportedAsicSWarning,
     UnsupportedDDocWarning,
     EmptyFileWarning,
 };

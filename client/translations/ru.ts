@@ -3293,6 +3293,10 @@ Additional licenses and components</source>
         <source>Certificates expire soon! </source>
         <translation>Срок действия сертификатов скоро истекает! </translation>
     </message>
+    <message>
+        <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
+        <translation>Речь идет о конверте ASiC-S, содержащемся в подписи XAdES. К данному контейнеру нельзя добавить или удалить из него подпись.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>
