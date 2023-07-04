@@ -21,6 +21,7 @@
 #include "ui_PinPopup.h"
 #include "Styles.h"
 #include "SslCertificate.h"
+#include "effects/Overlay.h"
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QRegularExpressionValidator>
@@ -41,7 +42,7 @@ PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QW
 	}
 }
 
-PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent, const QString &bodyText)
+PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent, QString text)
 	: QDialog(parent)
 	, ui(new Ui::PinPopup)
 {
@@ -49,6 +50,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	new Overlay(this, parent);
 
 	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
 	ui->label->setFont(Styles::font(Styles::Regular, 14));
@@ -60,13 +62,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	connect( this, &PinPopup::finished, this, &PinPopup::close );
 	connect(ui->pin, &QLineEdit::returnPressed, ui->ok, &QPushButton::click);
 
-	QString text;
-
-	if(!bodyText.isEmpty())
-	{
-		text = bodyText;
-	}
-	else
+	if(text.isEmpty())
 	{
 		if(count & PinFinalTry)
 			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN will be locked next failed attempt"));
@@ -78,7 +74,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 			QString t = flags & PinpadFlag ?
 				tr("For using sign certificate enter PIN2 at the reader") :
 				tr("For using sign certificate enter PIN2");
-			text += tr("Selected action requires sign certificate.") + QStringLiteral("<br />") + t;
+			text += tr("Selected action requires sign certificate.") + QLatin1String("<br />") + t;
 			setPinLen(5);
 		}
 		else
@@ -86,7 +82,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 			QString t = flags & PinpadFlag ?
 				tr("For using authentication certificate enter PIN1 at the reader") :
 				tr("For using authentication certificate enter PIN1");
-			text += tr("Selected action requires authentication certificate.") + QStringLiteral("<br />") + t;
+			text += tr("Selected action requires authentication certificate.") + QLatin1String("<br />") + t;
 			setPinLen(4);
 		}
 	}
@@ -102,7 +98,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->pin->hide();
 		ui->ok->hide();
 		ui->cancel->hide();
-		QSvgWidget *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
+		auto *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
 		movie->setFixedSize(ui->pin->size().height(), ui->pin->size().height());
 		movie->show();
 		ui->PinPopupLayout->addWidget(movie, 0, Qt::AlignCenter);
@@ -112,14 +108,14 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->pin->hide();
 		ui->ok->hide();
 		ui->cancel->hide();
-		QProgressBar *progress = new QProgressBar( this );
+		auto *progress = new QProgressBar(this);
 		progress->setRange( 0, 30 );
 		progress->setValue( progress->maximum() );
 		progress->setTextVisible( false );
 		progress->resize( 200, 30 );
 		progress->move( 153, 122 );
 		ui->PinPopupLayout->addWidget(progress);
-		QTimeLine *statusTimer = new QTimeLine( progress->maximum() * 1000, this );
+		auto *statusTimer = new QTimeLine(progress->maximum() * 1000, this);
 		statusTimer->setEasingCurve(QEasingCurve::Linear);
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );
 		connect( statusTimer, &QTimeLine::frameChanged, progress, &QProgressBar::setValue );
@@ -146,7 +142,7 @@ PinPopup::~PinPopup()
 
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
-	QString charPattern = regexp.pattern().startsWith(QStringLiteral("^.")) ? QStringLiteral(".") : QStringLiteral("\\d");
+	QString charPattern = regexp.pattern().startsWith(QLatin1String("^.")) ? QStringLiteral(".") : QStringLiteral("\\d");
 	regexp.setPattern(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen));
 }
 
