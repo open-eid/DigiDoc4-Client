@@ -28,7 +28,7 @@ jobs:
       env:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: YES
       run: |
-        brew install ninja
+        brew install ninja flatbuffers
         HASH=($(shasum prepare_osx_build_environment.sh))
         curl -O -L -s https://installer.id.ee/media/github/opensc_0.22.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
@@ -63,10 +63,10 @@ jobs:
     steps:
     - name: Install dependencies
       if: matrix.container == 'ubuntu:20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Install dependencies
       if: matrix.container != 'ubuntu:20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper cdbs pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Checkout
       uses: actions/checkout@v3
       with:
@@ -110,7 +110,7 @@ jobs:
       MAKEFLAGS: -j3
     steps:
     - name: Install Deps
-      run: dnf install -y git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel
+      run: dnf install -y git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel flatbuffers-devel flatbuffers-compiler zlib-devel
     - name: Checkout
       uses: actions/checkout@v3
       with:
@@ -169,7 +169,7 @@ jobs:
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
       with:
-        vcpkgArguments: openssl
+        vcpkgArguments: openssl zlib flatbuffers
         vcpkgGitCommitId: 9b9c2758ece1d8ac0de90589730bb5ccf45c0874
         vcpkgTriplet: x64-windows
     - name: Install Qt
@@ -257,7 +257,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev libflatbuffers-dev zlib1g-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:

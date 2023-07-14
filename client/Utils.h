@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QEventLoop>
+#include <QIODevice>
 #include <QTimer>
 #include <exception>
 #include <thread>
@@ -49,7 +50,7 @@ namespace {
 	inline auto dispatchToMain(F&& function, Args&& ...args) {
 		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
-		QTimer* timer = new QTimer();
+		QTimer *timer = new QTimer();
 		timer->moveToThread(qApp->thread());
 		timer->setSingleShot(true);
 		QObject::connect(timer, &QTimer::timeout, timer, [&, function = std::forward<F>(function)] {
@@ -57,7 +58,7 @@ namespace {
 			l.exit();
 			timer->deleteLater();
 		});
-		QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection, Q_ARG(int, 0));
+		QMetaObject::invokeMethod(timer, [timer] { timer->start(0); }, Qt::QueuedConnection);
 		l.exec();
 		return result;
 	}
@@ -75,5 +76,17 @@ namespace {
 			}
 		}
 		return escaped;
+	}
+
+	inline qint64 copyIODevice(QIODevice *from, QIODevice *to, qint64 max = std::numeric_limits<qint64>::max())
+	{
+		std::array<char,16*1024> buf{};
+		qint64 size = 0, i = 0;
+		for(; (i = from->read(buf.data(), std::min<qint64>(max, buf.size()))) > 0; size += i, max -= i)
+		{
+			if(to->write(buf.data(), i) != i)
+				return -1;
+		}
+		return i < 0 ? i : size;
 	}
 }

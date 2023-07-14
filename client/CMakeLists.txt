@@ -12,6 +12,10 @@ add_custom_command(
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt_add_translation(SOURCES translations/en.ts translations/et.ts translations/ru.ts)
 
+set(SCHEMAS
+	../schema/recipients.fbs
+	../schema/header.fbs
+)
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${PROJECT_NAME}.rc
 	${SOURCES}
@@ -22,6 +26,9 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	Application.cpp
 	CheckConnection.cpp
+	CDoc1.cpp
+	CDoc2.cpp
+	Crypto.cpp
 	CryptoDoc.cpp
 	DateTime.cpp
 	DigiDoc.cpp
@@ -128,6 +135,9 @@ target_link_libraries(${PROJECT_NAME}
 	Qt${QT_VERSION_MAJOR}::Svg
 	${LIBDIGIDOCPP_LIBRARY}
 	${LDAP_LIBRARIES}
+	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers>
+	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers_shared>
+	ZLIB::ZLIB
 )
 
 if(NOT BUILD_DATE)
@@ -148,10 +158,31 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR})
 target_compile_definitions(${PROJECT_NAME} PRIVATE
+	CDOC2_GET_URL="${CDOC2_GET_URL}"
+	CDOC2_POST_URL="${CDOC2_POST_URL}"
 	MOBILEID_URL="${MOBILEID_URL}"
 	SMARTID_URL="${SMARTID_URL}"
 	BUILD_DATE="${BUILD_DATE}"
 )
+
+foreach(SCHEMA ${SCHEMAS})
+	get_filename_component(stem ${SCHEMA} NAME_WE)
+	get_filename_component(name ${SCHEMA} NAME)
+	set(GENERATED_INCLUDE ${CMAKE_CURRENT_BINARY_DIR}/${stem}_generated.h)
+	add_custom_command(
+		OUTPUT ${GENERATED_INCLUDE}
+		COMMENT "Compiling flatbuffer for ${name}"
+		COMMAND flatbuffers::flatc
+			--cpp
+			--scoped-enums
+			-o ${CMAKE_CURRENT_BINARY_DIR}
+			-I ${CMAKE_CURRENT_SOURCE_DIR}
+			${SCHEMA}
+		DEPENDS flatbuffers::flatc ${SCHEMA}
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	)
+	target_sources(${PROJECT_NAME} PRIVATE ${SCHEMA} ${GENERATED_INCLUDE})
+endforeach()
 
 if( APPLE )
 	file(GLOB_RECURSE RESOURCE_FILES
@@ -310,11 +341,16 @@ else()
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
 			RENAME application-x-cdoc.png
 		)
-	    foreach(TGT
+		foreach(TGT
 				application-vnd.etsi.asic-s+zip.png
 				application-x-ddoc.png
 				application-vnd.lt.archyvai.adoc-2008.png)
 			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
+				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
+		endforeach()
+		foreach(TGT
+				application-x-cdoc2.png)
+			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-x-cdoc.png \
 				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
 		endforeach()
 		# Workaround Ubuntu 21.10 Yaru icon theme issues
@@ -325,7 +361,8 @@ else()
 				application-vnd.etsi.asic-s+zip.png
 				application-x-ddoc.png
 				application-vnd.lt.archyvai.adoc-2008.png
-				application-x-cdoc.png)
+				application-x-cdoc.png
+				application-x-cdoc2.png)
 			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
 				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
 				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")

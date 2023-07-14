@@ -20,6 +20,7 @@
 #include "SslCertificate.h"
 
 #include "Common.h"
+#include "Crypto.h"
 
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -36,8 +37,7 @@
 
 #include <memory>
 
-#define SCOPE(TYPE, DATA) std::unique_ptr<TYPE,decltype(&TYPE##_free)>(static_cast<TYPE*>(DATA), TYPE##_free)
-#define toQByteArray(x) QByteArray((const char*)x->data, x->length)
+#define toQByteArray(x) QByteArray((const char*)(x)->data, (x)->length)
 template <typename Func, typename Arg>
 static QByteArray i2dDer(Func func, Arg arg)
 {
@@ -160,15 +160,7 @@ QString SslCertificate::keyName() const
 	default:
 #ifndef OPENSSL_NO_ECDSA
 		if(X509 *c = (X509*)handle())
-		{
-			EVP_PKEY *key = X509_get0_pubkey(c);
-			const EC_KEY *ec = EVP_PKEY_get0_EC_KEY(key);
-			int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(ec));
-			ASN1_OBJECT *obj = OBJ_nid2obj(nid);
-			QByteArray buff(50, 0);
-			if(OBJ_obj2txt(buff.data(), buff.size(), obj, 0) > 0)
-				return buff;
-		}
+			return Crypto::curve_oid(X509_get0_pubkey(c));
 #endif
 	}
 	return tr("Unknown");
@@ -278,7 +270,7 @@ QString SslCertificate::toString( const QString &format ) const
 	QRegularExpressionMatch match;
 	for(int pos = 0; (match = r.match(ret, pos)).hasMatch(); ) {
 		QString cap = match.captured();
-		QString si = cap == QStringLiteral("serialNumber") ? personalCode() : subjectInfo(cap.toLatin1());
+		QString si = cap == QLatin1String("serialNumber") ? personalCode() : subjectInfo(cap.toLatin1());
 		ret.replace(match.capturedStart(), cap.size(), si);
 		pos = match.capturedStart() + si.size();
 	}
@@ -354,7 +346,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
 	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(qApp->applicationName(), qApp->applicationVersion(), Common::applicationOs()).toUtf8());
+		.arg(QApplication::applicationName(), QApplication::applicationVersion(), Common::applicationOs()).toUtf8());
 	QNetworkReply *repl = m.get(r);
 	e.exec();
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);

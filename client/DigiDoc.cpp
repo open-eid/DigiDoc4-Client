@@ -40,11 +40,6 @@
 
 #include <algorithm>
 
-#if defined(Q_OS_WIN)
-#include <qt_windows.h>
-#include <fileapi.h>
-#endif
-
 using namespace digidoc;
 using namespace ria::qdigidoc4;
 
@@ -165,7 +160,7 @@ QStringList DigiDocSignature::roles() const
 {
 	QStringList list;
 	for(const std::string &role: s->signerRoles())
-		list.append(from( role ).trimmed());
+		list.append(from(role).trimmed());
 	return list;
 }
 
@@ -320,12 +315,12 @@ QString SDocumentModel::data(int row) const
 	return from(doc->b->dataFiles().at(size_t(row))->fileName());
 }
 
-QString SDocumentModel::fileSize(int row) const
+quint64 SDocumentModel::fileSize(int row) const
 {
 	if(row >= rowCount())
 		return {};
 
-	return FileDialog::fileSize(doc->b->dataFiles().at(size_t(row))->fileSize());
+	return doc->b->dataFiles().at(size_t(row))->fileSize();
 }
 
 QString SDocumentModel::mime(int row) const
@@ -348,30 +343,23 @@ void SDocumentModel::open(int row)
 	if( !f.exists() )
 		return;
 	doc->m_tempFiles.append(f.absoluteFilePath());
-#if defined(Q_OS_WIN)
-	::SetFileAttributesW(f.absoluteFilePath().toStdWString().c_str(), FILE_ATTRIBUTE_READONLY);
-#else
-	QFile::setPermissions(f.absoluteFilePath(), QFile::Permissions(QFile::Permission::ReadOwner));
-#endif
+	FileDialog::setReadOnly(f.absoluteFilePath());
 	if(!doc->fileName().endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(f.absoluteFilePath()))
 		qApp->showClient({ f.absoluteFilePath() }, false, false, true);
 	else
 		QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
 }
 
-bool SDocumentModel::removeRows(int row, int count)
+bool SDocumentModel::removeRow(int row)
 {
 	if(!doc->b)
 		return false;
 
 	try
 	{
-		for(int i = row + count - 1; i >= row; --i)
-		{
-			doc->b->removeDataFile(i);
-			doc->modified = true;
-			emit removed(i);
-		}
+		doc->b->removeDataFile(row);
+		doc->modified = true;
+		emit removed(row);
 		return true;
 	}
 	catch( const Exception &e ) { doc->setLastError( tr("Failed remove document from container"), e ); }
@@ -427,10 +415,8 @@ void DigiDoc::clear()
 	m_fileName.clear();
 	for(const QString &file: m_tempFiles)
 	{
-#if defined(Q_OS_WIN)
 		//reset read-only attribute to enable delete file
-		::SetFileAttributesW(file.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
-#endif
+		FileDialog::setReadOnly(file, false);
 		QFile::remove(file);
 	}
 
@@ -503,8 +489,8 @@ bool DigiDoc::open( const QString &file )
 		auto *dlg = new WarningDialog(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 			"Do you want to continue?"), parent);
-		dlg->setCancelText(tr("CANCEL"));
-		dlg->addButton(tr("YES"), ContainerSave);
+		dlg->setCancelText(WarningDialog::Cancel);
+		dlg->addButton(WarningDialog::YES, ContainerSave);
 		return dlg->exec() == ContainerSave;
 	};
 	if((file.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) ||
@@ -521,7 +507,7 @@ bool DigiDoc::open( const QString &file )
 			{
 				const DataFile *f = b->dataFiles().at(0);
 				if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)  &&
-					CheckConnection().check(QStringLiteral("https://id.eesti.ee/config.json")) &&
+					CheckConnection().check() &&
 					dispatchToMain(serviceConfirmation))
 				{
 					const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));

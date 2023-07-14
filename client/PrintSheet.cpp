@@ -61,6 +61,23 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 	text.setFamily(QStringLiteral("Arial, Liberation Sans, Helvetica, sans-serif"));
 	text.setPixelSize( 12 );
 
+	auto fileSize = [](quint64 bytes)
+	{
+		const quint64 kb = 1024;
+		const quint64 mb = 1024 * kb;
+		const quint64 gb = 1024 * mb;
+		const quint64 tb = 1024 * gb;
+		if(bytes >= tb)
+			return QStringLiteral("%1 TB").arg(qreal(bytes) / tb, 0, 'f', 3);
+		if(bytes >= gb)
+			return QStringLiteral("%1 GB").arg(qreal(bytes) / gb, 0, 'f', 2);
+		if(bytes >= mb)
+			return QStringLiteral("%1 MB").arg(qreal(bytes) / mb, 0, 'f', 1);
+		if(bytes >= kb)
+			return QStringLiteral("%1 KB").arg(bytes / kb);
+		return QStringLiteral("%1 B").arg(bytes);
+	};
+
 	QFont head = text;
 	QFont sHead = text;
 	head.setPixelSize( 28 );
@@ -95,7 +112,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		int fileHeight = drawTextRect( QRect( left, top+5, right - left - 150, 20 ),
 			doc->documentModel()->data(i) );
 		drawTextRect( QRect( right-150, top+5, 150, fileHeight ),
-			doc->documentModel()->fileSize(i) );
+			fileSize(doc->documentModel()->fileSize(i)));
 		top += fileHeight;
 		newPage( 50 );
 	}

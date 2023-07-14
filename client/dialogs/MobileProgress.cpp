@@ -21,12 +21,11 @@
 #include "ui_MobileProgress.h"
 
 #include "Application.h"
+#include "CheckConnection.h"
 #include "Settings.h"
 #include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
-
-#include <common/Common.h>
 
 #include <digidocpp/crypto/X509Cert.h>
 
@@ -52,7 +51,7 @@ public:
 	using QDialog::QDialog;
 	void reject() final { l.exit(QDialog::Rejected); }
 	QTimeLine *statusTimer{};
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+	QNetworkAccessManager *manager {};
 	QNetworkRequest req;
 	QString ssid, cell, sessionID;
 	std::vector<unsigned char> signature;
@@ -102,38 +101,9 @@ background-color: #007aff;
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
 	QObject::connect(d->statusTimer, &QTimeLine::finished, d, &QDialog::reject);
 
-#ifdef CONFIG_URL
-	QList<QSslCertificate> trusted;
-	for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
-		trusted.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
-	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-	ssl.setCaCertificates(trusted);
-	d->req.setSslConfiguration(ssl);
-#endif
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-	d->req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(QApplication::applicationName(), QApplication::applicationVersion(), Common::applicationOs()).toUtf8());
-	QObject::connect(d->manager, &QNetworkAccessManager::sslErrors, d->manager, [](QNetworkReply *reply, const QList<QSslError> &err) {
-		QList<QSslError> ignore;
-		for(const QSslError &e: err)
-		{
-			switch(e.error())
-			{
-			case QSslError::UnableToGetLocalIssuerCertificate:
-			case QSslError::CertificateUntrusted:
-			case QSslError::SelfSignedCertificateInChain:
-				if(reply->sslConfiguration().caCertificates().contains(reply->sslConfiguration().peerCertificate())) {
-					ignore << e;
-					break;
-				}
-				Q_FALLTHROUGH();
-			default:
-				qCWarning(MIDLog) << "SSL Error:" << e.error() << e.certificate().subjectInfo(QSslCertificate::CommonName);
-				break;
-			}
-		}
-		reply->ignoreSslErrors(ignore);
-	});
+	d->manager = CheckConnection::setupNAM(d->req);
+	d->manager->setParent(d);
 	QObject::connect(d->manager, &QNetworkAccessManager::finished, d, [=](QNetworkReply *reply) {
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
 		auto returnError = [=](const QString &err, const QString &details = {}) {

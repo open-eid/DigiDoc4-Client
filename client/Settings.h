@@ -75,6 +75,15 @@ struct Settings
 		const D DEFAULT {};
 	};
 
+	static const Option<bool> CDOC2_DEFAULT;
+	static const Option<bool> CDOC2_NOTIFICATION;
+	static const Option<bool> CDOC2_USE_KEYSERVER;
+	static const Option<QString, QString (*)()> CDOC2_DEFAULT_KEYSERVER;
+	static const Option<QString> CDOC2_GET;
+	static const Option<QByteArray> CDOC2_GET_CERT;
+	static const Option<QString> CDOC2_POST;
+	static const Option<QByteArray> CDOC2_POST_CERT;
+
 	static const Option<QString> MID_UUID;
 	static const Option<QString> MID_NAME;
 	static const Option<QString, QString (*)()> MID_PROXY_URL;

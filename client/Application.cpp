@@ -224,12 +224,6 @@ private:
 	{
 		if(Settings::TSA_URL == Application::confValue(Settings::TSA_URL.KEY).toString())
 			Settings::TSA_URL.clear(); // Cleanup user conf if it is default url
-		QList<QSslCertificate> list;
-		for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
-			list.append(QSslCertificate(fromBase64(cert), QSsl::Der));
-		QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
-		ssl.setCaCertificates(list);
-		QSslConfiguration::setDefaultConfiguration(ssl);
 	}
 #endif
 
@@ -798,14 +792,14 @@ void Application::parseArgs( const QString &msg )
 
 void Application::parseArgs(QStringList args)
 {
-	bool crypto = args.contains(QLatin1String("-crypto"));
-	bool sign = args.contains(QLatin1String("-sign"));
-	bool newWindow = args.contains(QLatin1String("-newWindow"));
-	args.removeAll(QStringLiteral("-sign"));
-	args.removeAll(QStringLiteral("-crypto"));
-	args.removeAll(QStringLiteral("-newWindow"));
-	QString suffix = args.size() == 1 ? QFileInfo(args.value(0)).suffix() : QString();
-	showClient(args, crypto || (suffix.compare(QLatin1String("cdoc"), Qt::CaseInsensitive) == 0), sign, newWindow);
+	bool crypto = args.removeAll(QStringLiteral("-crypto")) > 0;
+	bool sign = args.removeAll(QStringLiteral("-sign")) > 0;
+	bool newWindow = args.removeAll(QStringLiteral("-newWindow")) > 0;
+	if(QString suffix = args.value(0);
+		suffix.endsWith(QLatin1String(".cdoc"), Qt::CaseInsensitive) ||
+		suffix.endsWith(QLatin1String(".cdoc2"), Qt::CaseInsensitive))
+		crypto = true;
+	showClient(args, crypto, sign, newWindow);
 }
 
 uint Application::readTSLVersion(const QString &path)

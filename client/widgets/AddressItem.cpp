@@ -101,10 +101,15 @@ const CKey& AddressItem::getKey() const
 	return ui->key;
 }
 
+void AddressItem::idChanged(const CKey &key)
+{
+	ui->yourself = !key.key.isNull() && ui->key == key;
+	setName();
+}
+
 void AddressItem::idChanged(const SslCertificate &cert)
 {
-	ui->yourself = !cert.isNull() && ui->key.cert == cert;
-	setName();
+	idChanged(CKey(cert));
 }
 
 void AddressItem::initTabOrder(QWidget *item)

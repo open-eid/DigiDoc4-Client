@@ -4,9 +4,9 @@
 Depends package: libdigidocpp-3.13.8.1379.msi
 msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 
-"%WIX%\bin\candle.exe" qdigidoc4.wxs -dMSI_VERSION=4.2.1
- -dlibs_path="C:\target\libdigidocpp\x86"
- -dqt_path=C:\Qt\5.12\msvc2017
+"%WIX%\bin\candle.exe" qdigidoc4.wxs -dMSI_VERSION=4.4.0
+ -dlibs_path="C:\target\libdigidocpp\x64"
+ -dqt_path=C:\Qt\6.5.0\msvc2019
  -dclient_path=client\qdigidoc4.exe
  -dico_path=client\images\digidoc.ico
 
@@ -14,7 +14,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 -->
 
 <?ifndef Platform ?>
-<?define Platform="x86" ?>
+<?define Platform="x64" ?>
 <?endif ?>
 
 <?if $(var.Platform) = x64 ?>
@@ -113,6 +113,11 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
             </ProgId>
             <ProgId Id="qdigidoc4.cdoc" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="2">
               <Extension Id="cdoc" ContentType="application/x-cdoc">
+                <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='-crypto "%1"' />
+              </Extension>
+            </ProgId>
+            <ProgId Id="qdigidoc4.cdoc2" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="2">
+              <Extension Id="cdoc2" ContentType="application/x-cdoc2">
                 <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument='-crypto "%1"' />
               </Extension>
             </ProgId>

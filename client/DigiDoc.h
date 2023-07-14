@@ -88,19 +88,19 @@ private:
 };
 
 
-class SDocumentModel: public DocumentModel
+class SDocumentModel final: public DocumentModel
 {
 	Q_OBJECT
 
 public:
-	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) override;
-	void addTempReference(const QString &file) override;
-	QString data(int row) const override;
-	QString fileSize(int row) const override;
-	QString mime(int row) const override;
-	bool removeRows(int row, int count) override;
-	int rowCount() const override;
-	QString save(int row, const QString &path) const override;
+	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) final;
+	void addTempReference(const QString &file) final;
+	QString data(int row) const final;
+	quint64 fileSize(int row) const final;
+	QString mime(int row) const final;
+	bool removeRow(int row) final;
+	int rowCount() const final;
+	QString save(int row, const QString &path) const final;
 
 public slots:
 	void open(int row) override;

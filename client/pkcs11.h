@@ -63,9 +63,9 @@ extern "C" {
    version of this file, please consider deleting the revision macro
    (you may use a macro with a different name to keep track of your
    versions).  */
-#define CRYPTOKI_VERSION_MAJOR		2
-#define CRYPTOKI_VERSION_MINOR		20
-#define CRYPTOKI_VERSION_REVISION	6
+#define CRYPTOKI_VERSION_MAJOR		3
+#define CRYPTOKI_VERSION_MINOR		0
+#define CRYPTOKI_VERSION_REVISION	0
 
 
 /* Compatibility interface is default, unless CRYPTOKI_GNU is
@@ -166,7 +166,10 @@ extern "C" {
 #define ck_rv_t CK_RV
 #define ck_notify_t CK_NOTIFY
 
+#define ck_interface CK_INTERFACE
+
 #define ck_function_list _CK_FUNCTION_LIST
+#define ck_function_list_3_0 _CK_FUNCTION_LIST_3_0
 
 #define ck_createmutex_t CK_CREATEMUTEX
 #define ck_destroymutex_t CK_DESTROYMUTEX
@@ -318,8 +321,16 @@ typedef unsigned long ck_object_class_t;
 #define CKO_HW_FEATURE		(5UL)
 #define CKO_DOMAIN_PARAMETERS	(6UL)
 #define CKO_MECHANISM		(7UL)
+#define CKO_OTP_KEY		(8UL)
+#define CKO_PROFILE		(9UL)
 #define CKO_VENDOR_DEFINED	(1UL << 31)
 
+#define CKP_INVALID_ID                (0UL)
+#define CKP_BASELINE_PROVIDER         (1UL)
+#define CKP_EXTENDED_PROVIDER         (2UL)
+#define CKP_AUTHENTICATION_TOKEN      (3UL)
+#define CKP_PUBLIC_CERTIFICATES_TOKEN (4UL)
+#define CKP_VENDOR_DEFINED            (1UL << 31)
 
 typedef unsigned long ck_hw_feature_type_t;
 
@@ -359,8 +370,18 @@ typedef unsigned long ck_key_type_t;
 #define CKK_GOSTR3410		(0x30UL)
 #define CKK_GOSTR3411		(0x31UL)
 #define CKK_GOST28147		(0x32UL)
+#define CKK_EC_EDWARDS		(0x40UL)
+#define CKK_EC_MONTGOMERY	(0x41UL)
 #define CKK_VENDOR_DEFINED	(1UL << 31)
 
+/*
+ * A mask for new GOST algorithms.
+ * For details visit https://tc26.ru/standarts/perevody/guidelines-the-pkcs-11-extensions-for-implementing-the-gost-r-34-10-2012-and-gost-r-34-11-2012-russian-standards-.html
+ */
+#define NSSCK_VENDOR_PKCS11_RU_TEAM     (CKK_VENDOR_DEFINED | 0x54321000)
+#define CK_VENDOR_PKCS11_RU_TEAM_TK26   NSSCK_VENDOR_PKCS11_RU_TEAM
+
+#define CKK_GOSTR3410_512	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x003)
 
 typedef unsigned long ck_certificate_type_t;
 
@@ -458,7 +479,22 @@ typedef unsigned long ck_attribute_type_t;
 #define CKA_SUPPORTED_CMS_ATTRIBUTES	(0x503UL)
 #define CKA_WRAP_TEMPLATE		(CKF_ARRAY_ATTRIBUTE | 0x211UL)
 #define CKA_UNWRAP_TEMPLATE		(CKF_ARRAY_ATTRIBUTE | 0x212UL)
+#define CKA_OTP_FORMAT			(0x220UL)
+#define CKA_OTP_LENGTH			(0x221UL)
+#define CKA_OTP_TIME_INTERVAL		(0x222UL)
+#define CKA_OTP_USER_FRIENDLY_MODE	(0x223UL)
+#define CKA_OTP_CHALLENGE_REQUIREMENT	(0x224UL)
+#define CKA_OTP_TIME_REQUIREMENT	(0x225UL)
+#define CKA_OTP_COUNTER_REQUIREMENT	(0x226UL)
+#define CKA_OTP_PIN_REQUIREMENT		(0x227UL)
+#define CKA_OTP_USER_IDENTIFIER		(0x22AUL)
+#define CKA_OTP_SERVICE_IDENTIFIER	(0x22BUL)
+#define CKA_OTP_SERVICE_LOGO		(0x22CUL)
+#define CKA_OTP_SERVICE_LOGO_TYPE	(0x22DUL)
+#define CKA_OTP_COUNTER			(0x22EUL)
+#define CKA_OTP_TIME			(0x22FUL)
 #define CKA_ALLOWED_MECHANISMS		(CKF_ARRAY_ATTRIBUTE | 0x600UL)
+#define CKA_PROFILE_ID			(0x601UL)
 #define CKA_VENDOR_DEFINED		(1UL << 31)
 
 
@@ -480,8 +516,6 @@ struct ck_date
 
 typedef unsigned long ck_mechanism_type_t;
 
-typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
-
 #define CKM_RSA_PKCS_KEY_PAIR_GEN	(0UL)
 #define CKM_RSA_PKCS			(1UL)
 #define CKM_RSA_9796			(2UL)
@@ -500,6 +534,10 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_DSA_KEY_PAIR_GEN		(0x10UL)
 #define	CKM_DSA				(0x11UL)
 #define CKM_DSA_SHA1			(0x12UL)
+#define CKM_DSA_SHA224			(0x13UL)
+#define CKM_DSA_SHA256			(0x14UL)
+#define CKM_DSA_SHA384			(0x15UL)
+#define CKM_DSA_SHA512			(0x16UL)
 #define CKM_DH_PKCS_KEY_PAIR_GEN	(0x20UL)
 #define CKM_DH_PKCS_DERIVE		(0x21UL)
 #define	CKM_X9_42_DH_KEY_PAIR_GEN	(0x30UL)
@@ -514,6 +552,14 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_SHA512_RSA_PKCS_PSS		(0x45UL)
 #define CKM_SHA224_RSA_PKCS		(0x46UL)
 #define CKM_SHA224_RSA_PKCS_PSS		(0x47UL)
+#define CKM_SHA3_256_RSA_PKCS		(0x60UL)
+#define CKM_SHA3_384_RSA_PKCS		(0x61UL)
+#define CKM_SHA3_512_RSA_PKCS		(0x62UL)
+#define CKM_SHA3_256_RSA_PKCS_PSS	(0x63UL)
+#define CKM_SHA3_384_RSA_PKCS_PSS	(0x64UL)
+#define CKM_SHA3_512_RSA_PKCS_PSS	(0x65UL)
+#define CKM_SHA3_224_RSA_PKCS		(0x66UL)
+#define CKM_SHA3_224_RSA_PKCS_PSS	(0x67UL)
 #define CKM_RC2_KEY_GEN			(0x100UL)
 #define CKM_RC2_ECB			(0x101UL)
 #define	CKM_RC2_CBC			(0x102UL)
@@ -535,6 +581,8 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_DES3_MAC			(0x134UL)
 #define CKM_DES3_MAC_GENERAL		(0x135UL)
 #define CKM_DES3_CBC_PAD		(0x136UL)
+#define CKM_DES3_CMAC_GENERAL		(0x137UL)
+#define CKM_DES3_CMAC			(0x138UL)
 #define CKM_CDMF_KEY_GEN		(0x140UL)
 #define CKM_CDMF_ECB			(0x141UL)
 #define CKM_CDMF_CBC			(0x142UL)
@@ -568,6 +616,22 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_SHA512			(0x270UL)
 #define CKM_SHA512_HMAC			(0x271UL)
 #define CKM_SHA512_HMAC_GENERAL		(0x272UL)
+#define CKM_SHA3_256			(0x2B0UL)
+#define CKM_SHA3_256_HMAC		(0x2B1UL)
+#define CKM_SHA3_256_HMAC_GENERAL	(0x2B2UL)
+#define CKM_SHA3_256_KEY_GEN		(0x2B3UL)
+#define CKM_SHA3_224			(0x2B5UL)
+#define CKM_SHA3_224_HMAC		(0x2B6UL)
+#define CKM_SHA3_224_HMAC_GENERAL	(0x2B7UL)
+#define CKM_SHA3_224_KEY_GEN		(0x2B8UL)
+#define CKM_SHA3_384			(0x2C0UL)
+#define CKM_SHA3_384_HMAC		(0x2C1UL)
+#define CKM_SHA3_384_HMAC_GENERAL	(0x2C2UL)
+#define CKM_SHA3_384_KEY_GEN		(0x2C3UL)
+#define CKM_SHA3_512			(0x2D0UL)
+#define CKM_SHA3_512_HMAC		(0x2D1UL)
+#define CKM_SHA3_512_HMAC_GENERAL	(0x2D2UL)
+#define CKM_SHA3_512_KEY_GEN		(0x2D3UL)
 #define CKM_CAST_KEY_GEN		(0x300UL)
 #define CKM_CAST_ECB			(0x301UL)
 #define CKM_CAST_CBC			(0x302UL)
@@ -670,9 +734,16 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_ECDSA_SHA256		(0x1044UL)
 #define CKM_ECDSA_SHA384		(0x1045UL)
 #define CKM_ECDSA_SHA512		(0x1046UL)
+#define CKM_ECDSA_SHA3_224		(0x1047UL)
+#define CKM_ECDSA_SHA3_256		(0x1048UL)
+#define CKM_ECDSA_SHA3_384		(0x1049UL)
+#define CKM_ECDSA_SHA3_512		(0x104AUL)
 #define CKM_ECDH1_DERIVE		(0x1050UL)
 #define CKM_ECDH1_COFACTOR_DERIVE	(0x1051UL)
 #define CKM_ECMQV_DERIVE		(0x1052UL)
+#define CKM_EC_EDWARDS_KEY_PAIR_GEN     (0x1055UL)
+#define CKM_EC_MONTGOMERY_KEY_PAIR_GEN  (0x1056UL)
+#define CKM_EDDSA			(0x1057UL)
 #define CKM_JUNIPER_KEY_GEN		(0x1060UL)
 #define CKM_JUNIPER_ECB128		(0x1061UL)
 #define CKM_JUNIPER_CBC128		(0x1062UL)
@@ -690,17 +761,37 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_AES_GCM				(0x1087UL)
 #define CKM_AES_CCM				(0x1088UL)
 #define CKM_AES_CTS				(0x1089UL)
+#define CKM_AES_CMAC			(0x108AUL)
+#define CKM_AES_CMAC_GENERAL		(0x108BUL)
+#define CKM_AES_XCBC_MAC		(0x108CUL)
+#define CKM_AES_XCBC_MAC_96		(0x108DUL)
+#define CKM_AES_GMAC			(0x108EUL)
 #define CKM_BLOWFISH_KEY_GEN    (0x1090UL)
 #define CKM_BLOWFISH_CBC        (0x1091UL)
 #define CKM_TWOFISH_KEY_GEN     (0x1092UL)
 #define CKM_TWOFISH_CBC         (0x1093UL)
+#define CKM_DES_ECB_ENCRYPT_DATA	(0x1100UL)
+#define CKM_DES_CBC_ENCRYPT_DATA	(0x1101UL)
+#define CKM_DES3_ECB_ENCRYPT_DATA	(0x1102UL)
+#define CKM_DES3_CBC_ENCRYPT_DATA	(0x1103UL)
+#define CKM_AES_ECB_ENCRYPT_DATA	(0x1104UL)
+#define CKM_AES_CBC_ENCRYPT_DATA	(0x1105UL)
 #define CKM_GOSTR3410_KEY_PAIR_GEN	(0x1200UL)
 #define CKM_GOSTR3410			(0x1201UL)
 #define CKM_GOSTR3410_WITH_GOSTR3411	(0x1202UL)
 #define CKM_GOSTR3410_KEY_WRAP  (0x1203UL)
 #define CKM_GOSTR3410_DERIVE    (0x1204UL)
+#define CKM_GOSTR3410_512_KEY_PAIR_GEN	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x005)
+#define CKM_GOSTR3410_512	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x006)
+#define CKM_GOSTR3410_12_DERIVE	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x007)
+#define CKM_GOSTR3410_WITH_GOSTR3411_12_256	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x008)
+#define CKM_GOSTR3410_WITH_GOSTR3411_12_512	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x009)
 #define CKM_GOSTR3411			(0x1210UL)
 #define CKM_GOSTR3411_HMAC      (0x1211UL)
+#define CKM_GOSTR3411_12_256	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x012)
+#define CKM_GOSTR3411_12_512	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x013)
+#define CKM_GOSTR3411_12_256_HMAC	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x014)
+#define CKM_GOSTR3411_12_512_HMAC	(CK_VENDOR_PKCS11_RU_TEAM_TK26 | 0x015)
 #define CKM_GOST28147_KEY_GEN   (0x1220UL)
 #define CKM_GOST28147_ECB       (0x1221UL)
 #define CKM_GOST28147           (0x1222UL)
@@ -710,8 +801,16 @@ typedef unsigned long int ck_rsa_pkcs_mgf_type_t;
 #define CKM_DSA_PARAMETER_GEN		(0x2000UL)
 #define CKM_DH_PKCS_PARAMETER_GEN	(0x2001UL)
 #define CKM_X9_42_DH_PARAMETER_GEN	(0x2002UL)
-#define CKM_VENDOR_DEFINED		(1UL << 31)
+#define CKM_AES_OFB			(0x2104UL)
+#define CKM_AES_CFB64			(0x2105UL)
+#define CKM_AES_CFB8			(0x2106UL)
+#define CKM_AES_CFB128			(0x2107UL)
+#define CKM_AES_KEY_WRAP		(0x2109UL)
+#define CKM_AES_KEY_WRAP_PAD		(0x210AUL)
+#define CKM_XEDDSA			(0x4029UL)
 
+
+#define CKM_VENDOR_DEFINED		(1UL << 31)
 
 struct ck_mechanism
 {
@@ -729,6 +828,14 @@ struct ck_mechanism_info
 };
 
 #define CKF_HW			(1UL << 0)
+
+#define CKF_MESSAGE_ENCRYPT	(1UL << 1)
+#define CKF_MESSAGE_DECRYPT	(1UL << 2)
+#define CKF_MESSAGE_SIGN	(1UL << 3)
+#define CKF_MESSAGE_VERIFY	(1UL << 4)
+#define CKF_MULTI_MESSAGE	(1UL << 5)
+#define CKF_FIND_OBJECTS	(1UL << 6)
+
 #define CKF_ENCRYPT		(1UL << 8)
 #define CKF_DECRYPT		(1UL << 9)
 #define CKF_DIGEST		(1UL << 10)
@@ -746,15 +853,22 @@ struct ck_mechanism_info
 #define CKF_EC_F_P			(1UL << 20)
 #define CKF_EC_F_2M			(1UL << 21)
 #define CKF_EC_ECPARAMETERS	(1UL << 22)
-#define CKF_EC_NAMEDCURVE	(1UL << 23)
+#define CKF_EC_OID		(1UL << 23)
+#define CKF_EC_NAMEDCURVE	CKF_EC_OID
 #define CKF_EC_UNCOMPRESS	(1UL << 24)
 #define CKF_EC_COMPRESS		(1UL << 25)
+#define CKF_EC_CURVENAME	(1UL << 26)
 
 /* Flags for C_WaitForSlotEvent.  */
 #define CKF_DONT_BLOCK				(1UL)
 
 /* Flags for Key derivation */
-#define CKD_NULL			(1UL << 0)
+#define CKD_NULL			(0x1UL)
+#define CKD_SHA1_KDF			(0x2UL)
+#define CKD_SHA224_KDF			(0x5UL)
+#define CKD_SHA256_KDF			(0x6UL)
+#define CKD_SHA384_KDF			(0x7UL)
+#define CKD_SHA512_KDF			(0x8UL)
 
 typedef struct CK_ECDH1_DERIVE_PARAMS {
 	unsigned long  kdf;
@@ -764,10 +878,34 @@ typedef struct CK_ECDH1_DERIVE_PARAMS {
 	unsigned char *  pPublicData;
 } CK_ECDH1_DERIVE_PARAMS;
 
+typedef struct CK_ECMQV_DERIVE_PARAMS {
+	unsigned long kdf;
+	unsigned long ulSharedDataLen;
+	unsigned char * pSharedData;
+	unsigned long ulPublicDataLen;
+	unsigned char * pPublicData;
+	unsigned long ulPrivateDataLen;
+	CK_OBJECT_HANDLE hPrivateData;
+	unsigned long ulPublicDataLen2;
+	unsigned char * pPublicData2;
+	CK_OBJECT_HANDLE publicKey;
+} CK_ECMQV_DERIVE_PARAMS;
+
+typedef unsigned long ck_rsa_pkcs_mgf_type_t;
+typedef unsigned long CK_RSA_PKCS_OAEP_SOURCE_TYPE;
+
+typedef struct CK_RSA_PKCS_OAEP_PARAMS {
+	CK_MECHANISM_TYPE hashAlg;
+	CK_RSA_PKCS_MGF_TYPE mgf;
+	CK_RSA_PKCS_OAEP_SOURCE_TYPE source;
+	void *pSourceData;
+	unsigned long ulSourceDataLen;
+} CK_RSA_PKCS_OAEP_PARAMS;
+
 typedef struct CK_RSA_PKCS_PSS_PARAMS {
-   ck_mechanism_type_t hashAlg;
-   unsigned long mgf;
-   unsigned long sLen;
+	ck_mechanism_type_t hashAlg;
+	CK_RSA_PKCS_MGF_TYPE mgf;
+	unsigned long sLen;
 } CK_RSA_PKCS_PSS_PARAMS;
 
 #define CKG_MGF1_SHA1			(0x00000001UL)
@@ -775,6 +913,44 @@ typedef struct CK_RSA_PKCS_PSS_PARAMS {
 #define CKG_MGF1_SHA256		(0x00000002UL)
 #define CKG_MGF1_SHA384		(0x00000003UL)
 #define CKG_MGF1_SHA512		(0x00000004UL)
+#define CKG_MGF1_SHA3_224	(0x00000006UL)
+#define CKG_MGF1_SHA3_256	(0x00000007UL)
+#define CKG_MGF1_SHA3_384	(0x00000008UL)
+#define CKG_MGF1_SHA3_512	(0x00000009UL)
+
+#define CKZ_DATA_SPECIFIED	(0x00000001UL)
+
+typedef struct CK_GCM_PARAMS {
+	void * pIv;
+	unsigned long ulIvLen;
+	unsigned long ulIvBits;
+	void * pAAD;
+	unsigned long ulAADLen;
+	unsigned long ulTagBits;
+} CK_GCM_PARAMS;
+
+/* EDDSA */
+typedef struct CK_EDDSA_PARAMS {
+	unsigned char phFlag;
+	unsigned long ulContextDataLen;
+	unsigned char *pContextData;
+} CK_EDDSA_PARAMS;
+
+typedef CK_EDDSA_PARAMS *CK_EDDSA_PARAMS_PTR;
+
+/* XEDDSA */
+typedef struct CK_XEDDSA_PARAMS {
+	unsigned long hash;
+} CK_XEDDSA_PARAMS;
+
+typedef CK_XEDDSA_PARAMS *CK_XEDDSA_PARAMS_PTR;
+
+typedef struct CK_AES_CTR_PARAMS {
+    unsigned long ulCounterBits;
+    unsigned char cb[16];
+} CK_AES_CTR_PARAMS;
+
+typedef CK_AES_CTR_PARAMS *CK_AES_CTR_PARAMS_PTR;
 
 typedef unsigned long ck_rv_t;
 
@@ -782,8 +958,17 @@ typedef unsigned long ck_rv_t;
 typedef ck_rv_t (*ck_notify_t) (ck_session_handle_t session,
 				ck_notification_t event, void *application);
 
+struct ck_interface {
+  char * pInterfaceName;
+  void * pFunctionList;
+  ck_flags_t flags;
+};
+
+#define CKF_INTERFACE_FORK_SAFE	(0x00000001UL)
+
 /* Forward reference.  */
 struct ck_function_list;
+struct ck_function_list_3_0;
 
 #define _CK_DECLARE_FUNCTION(name, args)	\
 typedef ck_rv_t (*CK_ ## name) args;		\
@@ -840,7 +1025,7 @@ _CK_DECLARE_FUNCTION (C_SetOperationState,
 		       unsigned char *operation_state,
 		       unsigned long operation_state_len,
 		       ck_object_handle_t encryption_key,
-		       ck_object_handle_t authentiation_key));
+		       ck_object_handle_t authentication_key));
 _CK_DECLARE_FUNCTION (C_Login,
 		      (ck_session_handle_t session, ck_user_type_t user_type,
 		       unsigned char *pin, unsigned long pin_len));
@@ -1065,6 +1250,147 @@ _CK_DECLARE_FUNCTION (C_GenerateRandom,
 _CK_DECLARE_FUNCTION (C_GetFunctionStatus, (ck_session_handle_t session));
 _CK_DECLARE_FUNCTION (C_CancelFunction, (ck_session_handle_t session));
 
+_CK_DECLARE_FUNCTION (C_GetInterfaceList,
+		      (struct ck_interface *interfaces_list,
+		       unsigned long *count));
+_CK_DECLARE_FUNCTION (C_GetInterface,
+		      (unsigned char *interface_name,
+		       struct ck_version *version,
+		       struct ck_interface **interface_ptr,
+		       ck_flags_t flags));
+
+_CK_DECLARE_FUNCTION (C_LoginUser,
+		      (ck_session_handle_t session,
+		       ck_user_type_t user_type,
+		       unsigned char *pin,
+		       unsigned long pin_len,
+		       unsigned char *username,
+		       unsigned long username_len));
+
+_CK_DECLARE_FUNCTION (C_SessionCancel,
+		      (ck_session_handle_t session,
+		       ck_flags_t flags));
+
+_CK_DECLARE_FUNCTION (C_MessageEncryptInit,
+		      (ck_session_handle_t session,
+		       struct ck_mechanism *mechanism,
+		       ck_object_handle_t key));
+_CK_DECLARE_FUNCTION (C_EncryptMessage,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *associated_data,
+		       unsigned long associated_data_len,
+		       unsigned char *plaintext,
+		       unsigned long plaintext_len,
+		       unsigned char *ciphertext,
+		       unsigned long *ciphertext_len));
+_CK_DECLARE_FUNCTION (C_EncryptMessageBegin,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *associated_data,
+		       unsigned long associated_data_len));
+_CK_DECLARE_FUNCTION (C_EncryptMessageNext,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *plaintext_part,
+		       unsigned long plaintext_part_len,
+		       unsigned char *ciphertext_part,
+		       unsigned long *ciphertext_part_len,
+		       ck_flags_t flags));
+_CK_DECLARE_FUNCTION (C_MessageEncryptFinal,
+		      (ck_session_handle_t session));
+
+_CK_DECLARE_FUNCTION (C_MessageDecryptInit,
+		      (ck_session_handle_t session,
+		       struct ck_mechanism *mechanism,
+		       ck_object_handle_t key));
+_CK_DECLARE_FUNCTION (C_DecryptMessage,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *associated_data,
+		       unsigned long associated_data_len,
+		       unsigned char *ciphertext,
+		       unsigned long ciphertext_len,
+		       unsigned char *plaintext,
+		       unsigned long *plaintext_len));
+_CK_DECLARE_FUNCTION (C_DecryptMessageBegin,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *associated_data,
+		       unsigned long associated_data_len));
+_CK_DECLARE_FUNCTION (C_DecryptMessageNext,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *ciphertext_part,
+		       unsigned long ciphertext_part_len,
+		       unsigned char *plaintext_part,
+		       unsigned long *plaintext_part_len,
+		       ck_flags_t flags));
+_CK_DECLARE_FUNCTION (C_MessageDecryptFinal,
+		      (ck_session_handle_t session));
+
+_CK_DECLARE_FUNCTION (C_MessageSignInit,
+		      (ck_session_handle_t session,
+		       struct ck_mechanism *mechanism,
+		       ck_object_handle_t key));
+_CK_DECLARE_FUNCTION (C_SignMessage,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *data,
+		       unsigned long data_len,
+		       unsigned char *signature,
+		       unsigned long *signature_len));
+_CK_DECLARE_FUNCTION (C_SignMessageBegin,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len));
+_CK_DECLARE_FUNCTION (C_SignMessageNext,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *data,
+		       unsigned long data_len,
+		       unsigned char *signature,
+		       unsigned long *signature_len));
+_CK_DECLARE_FUNCTION (C_MessageSignFinal,
+		      (ck_session_handle_t session));
+
+_CK_DECLARE_FUNCTION (C_MessageVerifyInit,
+		      (ck_session_handle_t session,
+		       struct ck_mechanism *mechanism,
+		       ck_object_handle_t key));
+_CK_DECLARE_FUNCTION (C_VerifyMessage,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *data,
+		       unsigned long data_len,
+		       unsigned char *signature,
+		       unsigned long signature_len));
+_CK_DECLARE_FUNCTION (C_VerifyMessageBegin,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len));
+_CK_DECLARE_FUNCTION (C_VerifyMessageNext,
+		      (ck_session_handle_t session,
+		       void *parameter,
+		       unsigned long parameter_len,
+		       unsigned char *data,
+		       unsigned long data_len,
+		       unsigned char *signature,
+		       unsigned long signature_len));
+_CK_DECLARE_FUNCTION (C_MessageVerifyFinal,
+		      (ck_session_handle_t session));
+
+/* Flags in Message-based encryption/decryption API */
+#define CKF_END_OF_MESSAGE 	(0x00000001UL)
 
 struct ck_function_list
 {
@@ -1139,6 +1465,105 @@ struct ck_function_list
   CK_C_WaitForSlotEvent C_WaitForSlotEvent;
 };
 
+struct ck_function_list_3_0
+{
+  struct ck_version version;
+  CK_C_Initialize C_Initialize;
+  CK_C_Finalize C_Finalize;
+  CK_C_GetInfo C_GetInfo;
+  CK_C_GetFunctionList C_GetFunctionList;
+  CK_C_GetSlotList C_GetSlotList;
+  CK_C_GetSlotInfo C_GetSlotInfo;
+  CK_C_GetTokenInfo C_GetTokenInfo;
+  CK_C_GetMechanismList C_GetMechanismList;
+  CK_C_GetMechanismInfo C_GetMechanismInfo;
+  CK_C_InitToken C_InitToken;
+  CK_C_InitPIN C_InitPIN;
+  CK_C_SetPIN C_SetPIN;
+  CK_C_OpenSession C_OpenSession;
+  CK_C_CloseSession C_CloseSession;
+  CK_C_CloseAllSessions C_CloseAllSessions;
+  CK_C_GetSessionInfo C_GetSessionInfo;
+  CK_C_GetOperationState C_GetOperationState;
+  CK_C_SetOperationState C_SetOperationState;
+  CK_C_Login C_Login;
+  CK_C_Logout C_Logout;
+  CK_C_CreateObject C_CreateObject;
+  CK_C_CopyObject C_CopyObject;
+  CK_C_DestroyObject C_DestroyObject;
+  CK_C_GetObjectSize C_GetObjectSize;
+  CK_C_GetAttributeValue C_GetAttributeValue;
+  CK_C_SetAttributeValue C_SetAttributeValue;
+  CK_C_FindObjectsInit C_FindObjectsInit;
+  CK_C_FindObjects C_FindObjects;
+  CK_C_FindObjectsFinal C_FindObjectsFinal;
+  CK_C_EncryptInit C_EncryptInit;
+  CK_C_Encrypt C_Encrypt;
+  CK_C_EncryptUpdate C_EncryptUpdate;
+  CK_C_EncryptFinal C_EncryptFinal;
+  CK_C_DecryptInit C_DecryptInit;
+  CK_C_Decrypt C_Decrypt;
+  CK_C_DecryptUpdate C_DecryptUpdate;
+  CK_C_DecryptFinal C_DecryptFinal;
+  CK_C_DigestInit C_DigestInit;
+  CK_C_Digest C_Digest;
+  CK_C_DigestUpdate C_DigestUpdate;
+  CK_C_DigestKey C_DigestKey;
+  CK_C_DigestFinal C_DigestFinal;
+  CK_C_SignInit C_SignInit;
+  CK_C_Sign C_Sign;
+  CK_C_SignUpdate C_SignUpdate;
+  CK_C_SignFinal C_SignFinal;
+  CK_C_SignRecoverInit C_SignRecoverInit;
+  CK_C_SignRecover C_SignRecover;
+  CK_C_VerifyInit C_VerifyInit;
+  CK_C_Verify C_Verify;
+  CK_C_VerifyUpdate C_VerifyUpdate;
+  CK_C_VerifyFinal C_VerifyFinal;
+  CK_C_VerifyRecoverInit C_VerifyRecoverInit;
+  CK_C_VerifyRecover C_VerifyRecover;
+  CK_C_DigestEncryptUpdate C_DigestEncryptUpdate;
+  CK_C_DecryptDigestUpdate C_DecryptDigestUpdate;
+  CK_C_SignEncryptUpdate C_SignEncryptUpdate;
+  CK_C_DecryptVerifyUpdate C_DecryptVerifyUpdate;
+  CK_C_GenerateKey C_GenerateKey;
+  CK_C_GenerateKeyPair C_GenerateKeyPair;
+  CK_C_WrapKey C_WrapKey;
+  CK_C_UnwrapKey C_UnwrapKey;
+  CK_C_DeriveKey C_DeriveKey;
+  CK_C_SeedRandom C_SeedRandom;
+  CK_C_GenerateRandom C_GenerateRandom;
+  CK_C_GetFunctionStatus C_GetFunctionStatus;
+  CK_C_CancelFunction C_CancelFunction;
+  CK_C_WaitForSlotEvent C_WaitForSlotEvent;
+  /* PKCS #11 3.0 functions */
+  CK_C_GetInterfaceList C_GetInterfaceList;
+  CK_C_GetInterface C_GetInterface;
+  CK_C_LoginUser C_LoginUser;
+  CK_C_SessionCancel C_SessionCancel;
+  CK_C_MessageEncryptInit C_MessageEncryptInit;
+  CK_C_EncryptMessage C_EncryptMessage;
+  CK_C_EncryptMessageBegin C_EncryptMessageBegin;
+  CK_C_EncryptMessageNext C_EncryptMessageNext;
+  CK_C_MessageEncryptFinal C_MessageEncryptFinal;
+  CK_C_MessageDecryptInit C_MessageDecryptInit;
+  CK_C_DecryptMessage C_DecryptMessage;
+  CK_C_DecryptMessageBegin C_DecryptMessageBegin;
+  CK_C_DecryptMessageNext C_DecryptMessageNext;
+  CK_C_MessageDecryptFinal C_MessageDecryptFinal;
+  CK_C_MessageSignInit C_MessageSignInit;
+  CK_C_SignMessage C_SignMessage;
+  CK_C_SignMessageBegin C_SignMessageBegin;
+  CK_C_SignMessageNext C_SignMessageNext;
+  CK_C_MessageSignFinal C_MessageSignFinal;
+  CK_C_MessageVerifyInit C_MessageVerifyInit;
+  CK_C_VerifyMessage C_VerifyMessage;
+  CK_C_VerifyMessageBegin C_VerifyMessageBegin;
+  CK_C_VerifyMessageNext C_VerifyMessageNext;
+  CK_C_MessageVerifyFinal C_MessageVerifyFinal;
+};
+
+
 
 typedef ck_rv_t (*ck_createmutex_t) (void **mutex);
 typedef ck_rv_t (*ck_destroymutex_t) (void *mutex);
@@ -1174,6 +1599,7 @@ struct ck_c_initialize_args
 #define CKR_ATTRIBUTE_SENSITIVE			(0x11UL)
 #define CKR_ATTRIBUTE_TYPE_INVALID		(0x12UL)
 #define CKR_ATTRIBUTE_VALUE_INVALID		(0x13UL)
+#define CKR_ACTION_PROHIBITED			(0x1BUL)
 #define CKR_DATA_INVALID			(0x20UL)
 #define CKR_DATA_LEN_RANGE			(0x21UL)
 #define CKR_DEVICE_ERROR			(0x30UL)
@@ -1236,6 +1662,7 @@ struct ck_c_initialize_args
 #define CKR_RANDOM_SEED_NOT_SUPPORTED		(0x120UL)
 #define CKR_RANDOM_NO_RNG			(0x121UL)
 #define CKR_DOMAIN_PARAMS_INVALID		(0x130UL)
+#define CKR_CURVE_NOT_SUPPORTED          	(0x140UL)
 #define CKR_BUFFER_TOO_SMALL			(0x150UL)
 #define CKR_SAVED_STATE_INVALID			(0x160UL)
 #define CKR_INFORMATION_SENSITIVE		(0x170UL)
@@ -1320,9 +1747,17 @@ typedef struct ck_mechanism *CK_MECHANISM_PTR;
 typedef struct ck_mechanism_info CK_MECHANISM_INFO;
 typedef struct ck_mechanism_info *CK_MECHANISM_INFO_PTR;
 
+typedef struct ck_interface CK_INTERFACE;
+typedef struct ck_interface *CK_INTERFACE_PTR;
+typedef struct ck_interface **CK_INTERFACE_PTR_PTR;
+
 typedef struct ck_function_list CK_FUNCTION_LIST;
 typedef struct ck_function_list *CK_FUNCTION_LIST_PTR;
 typedef struct ck_function_list **CK_FUNCTION_LIST_PTR_PTR;
+
+typedef struct ck_function_list_3_0 CK_FUNCTION_LIST_3_0;
+typedef struct ck_function_list_3_0 *CK_FUNCTION_LIST_3_0_PTR;
+typedef struct ck_function_list_3_0 **CK_FUNCTION_LIST_3_0_PTR_PTR;
 
 typedef struct ck_c_initialize_args CK_C_INITIALIZE_ARGS;
 typedef struct ck_c_initialize_args *CK_C_INITIALIZE_ARGS_PTR;
@@ -1397,7 +1832,10 @@ typedef struct ck_c_initialize_args *CK_C_INITIALIZE_ARGS_PTR;
 #undef ck_rv_t
 #undef ck_notify_t
 
+#undef ck_interface
+
 #undef ck_function_list
+#undef ck_function_list_3_0
 
 #undef ck_createmutex_t
 #undef ck_destroymutex_t
