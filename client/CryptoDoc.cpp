@@ -321,7 +321,7 @@ bool CryptoDoc::decrypt()
 		return false;
 	}
 
-	if(d->cdoc->version() == 2 && Settings::CDOC2_USE_KEYSERVER && !Settings::CDOC2_NOTIFICATION.isSet())
+	if(d->cdoc->version() == 2 && !key.transaction_id.isEmpty() && !Settings::CDOC2_NOTIFICATION.isSet())
 	{
 		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
 			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
