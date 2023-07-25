@@ -48,19 +48,29 @@ namespace {
 
 	template <typename F, class... Args>
 	inline auto dispatchToMain(F&& function, Args&& ...args) {
-		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
 		QTimer *timer = new QTimer();
 		timer->moveToThread(qApp->thread());
 		timer->setSingleShot(true);
-		QObject::connect(timer, &QTimer::timeout, timer, [&, function = std::forward<F>(function)] {
-			result = std::invoke(function, args...);
-			l.exit();
-			timer->deleteLater();
-		});
-		QMetaObject::invokeMethod(timer, [timer] { timer->start(0); }, Qt::QueuedConnection);
-		l.exec();
-		return result;
+		if constexpr (std::is_void_v<std::invoke_result_t<F,Args...>>) {
+			QObject::connect(timer, &QTimer::timeout, timer, [&, function = std::forward<F>(function)] {
+				std::invoke(function, args...);
+				l.exit();
+				timer->deleteLater();
+			});
+			QMetaObject::invokeMethod(timer, [timer] { timer->start(0); }, Qt::QueuedConnection);
+			l.exec();
+		} else {
+			std::invoke_result_t<F,Args...> result{};
+			QObject::connect(timer, &QTimer::timeout, timer, [&, function = std::forward<F>(function)] {
+				result = std::invoke(function, args...);
+				l.exit();
+				timer->deleteLater();
+			});
+			QMetaObject::invokeMethod(timer, [timer] { timer->start(0); }, Qt::QueuedConnection);
+			l.exec();
+			return result;
+		}
 	}
 
 	inline QString escapeUnicode(const QString &str) {

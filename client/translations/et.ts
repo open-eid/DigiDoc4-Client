@@ -228,6 +228,10 @@
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Saadaval on ID-tarkvara uuendus, mille saad paigaldada veebilehelt &lt;a href=&quot;https://www.id.ee/artikkel/paigalda-id-tarkvara/&quot;&gt;id.ee&lt;/a&gt;, macOS kasutajad saavad uuenduse alla laadida &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;&apos;ist.</translation>
     </message>
+    <message>
+        <source>Start downloading</source>
+        <translation>Alusta paigaldust</translation>
+    </message>
 </context>
 <context>
     <name>CDoc2</name>
