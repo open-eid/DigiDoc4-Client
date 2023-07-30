@@ -121,7 +121,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	}
 
 	auto data = std::make_unique<QFile>(file);
-	data->open(QFile::ReadWrite);
+	data->open(QFile::ReadOnly);
 	d->cdoc->files.push_back({
 		QFileInfo(file).fileName(),
 		QStringLiteral("D%1").arg(d->cdoc->files.size()),
