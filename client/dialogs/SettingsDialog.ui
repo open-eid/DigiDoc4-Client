@@ -262,7 +262,7 @@ QCheckBox, QRadioButton {
     min-height: 31px;
     spacing: 5px;
 }
-QCheckBox:disabled, QRadioButton:disabled {
+QCheckBox::disabled, QRadioButton::disabled, QLineEdit::disabled, QComboBox::disabled {
     color: #727679;
 }
 QCheckBox::indicator, QRadioButton::indicator {
@@ -472,7 +472,7 @@ QRadioButton::indicator::checked {
            </widget>
           </item>
           <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="chkCdoc2KeyServer">
+           <widget class="CheckBox" name="chkCdoc2KeyServer">
             <property name="text">
              <string notr="true">Use key server</string>
             </property>

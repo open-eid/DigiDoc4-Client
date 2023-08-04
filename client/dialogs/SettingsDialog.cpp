@@ -356,13 +356,17 @@ void SettingsDialog::initFunctionality()
 		Settings::DEFAULT_DIR = text;
 	});
 #endif
-	ui->wgtCDoc2->hide();
-#if 0
 	ui->chkCdoc2KeyServer->setChecked(Settings::CDOC2_USE_KEYSERVER);
-	ui->cmbCdoc2Name->setEnabled(ui->chkCdoc2KeyServer->isChecked());
-	connect(ui->chkCdoc2KeyServer, &QCheckBox::toggled, this, [this](bool checked) {
-		Settings::CDOC2_USE_KEYSERVER = checked;
+	auto setCDoc2KeyServerEnabled = [this](bool checked) {
 		ui->cmbCdoc2Name->setEnabled(checked);
+		ui->txtCdoc2UUID->setEnabled(checked);
+		ui->txtCdoc2Fetch->setEnabled(checked);
+		ui->txtCdoc2Post->setEnabled(checked);
+	};
+	setCDoc2KeyServerEnabled(ui->chkCdoc2KeyServer->isChecked());
+	connect(ui->chkCdoc2KeyServer, &QCheckBox::toggled, this, [this, setCDoc2KeyServerEnabled](bool checked) {
+		Settings::CDOC2_USE_KEYSERVER = checked;
+		setCDoc2KeyServerEnabled(checked);
 	});
 #ifdef CONFIG_URL
 	QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
@@ -376,20 +380,19 @@ void SettingsDialog::initFunctionality()
 		ui->cmbCdoc2Name->addItem(i.value().toObject().value(QLatin1String("NAME")).toString(), i.key());
 	if(Settings::CDOC2_GET.isSet() || Settings::CDOC2_POST.isSet())
 		ui->cmbCdoc2Name->addItem(QStringLiteral("Custom"), QStringLiteral("custom"));
+	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
+	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
 	connect(ui->cmbCdoc2Name, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, setCDoc2Values] (int index) {
 		QString key = ui->cmbCdoc2Name->itemData(index).toString();
 		Settings::CDOC2_DEFAULT_KEYSERVER = key;
 		setCDoc2Values(key);
 	});
-	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
-	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
 	setCDoc2Values(cdoc2Service);
 #else
 	ui->cmbCdoc2Name->addItem(QStringLiteral("Default"));
 	ui->txtCdoc2UUID->setText(QStringLiteral("default"));
 	ui->txtCdoc2Fetch->setText(QStringLiteral(CDOC2_GET_URL));
 	ui->txtCdoc2Post->setText(QStringLiteral(CDOC2_POST_URL));
-#endif
 #endif
 
 	// pageProxy
