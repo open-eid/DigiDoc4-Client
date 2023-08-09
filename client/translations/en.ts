@@ -2601,10 +2601,6 @@ Additional licenses and components</translation>
         <translation>%1 version %2, released %3</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>NO</translation>
-    </message>
-    <message>
         <source>Use default access</source>
         <translation>Use default access</translation>
     </message>

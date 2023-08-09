@@ -225,8 +225,8 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
 		for(const QString &file: tsllist)
 		{
-			const QString target = cache + "/" + file;
-			if(!QFile::exists(target) ||
+			if(const QString target = cache + "/" + file;
+				!QFile::exists(target) ||
 				Application::readTSLVersion(":/TSL/" + file) > Application::readTSLVersion(target))
 			{
 				const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
@@ -242,9 +242,11 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		saveFile(QStringLiteral("diagnostics.txt"), ui->txtDiagnostics->toPlainText().toUtf8());
 	});
 	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [=]{
-		saveFile(QStringLiteral("libdigidocpp.txt"),
-			QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()));
+		Settings::LIBDIGIDOCPP_DEBUG = false;
+		QString log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath());
+		saveFile(QStringLiteral("libdigidocpp.txt"), log);
 		saveFile(QStringLiteral("qdigidoc4.txt"), qdigidoc4log);
+		QFile::remove(log);
 		ui->btnNavSaveLibdigidocpp->hide();
 	});
 #ifdef Q_OS_WIN
@@ -452,7 +454,7 @@ void SettingsDialog::initFunctionality()
 	});
 	connect(ui->btInstallTSACert, &QPushButton::clicked, this, [this] {
 		QSslCertificate cert = selectCert(tr("Select Time-Stamping server certificate"),
-			QStringLiteral("%1 (*.crt *.cer *.pem)").arg(tr("Time-Stamping service SSL certificate")));
+			tr("Time-Stamping service SSL certificate"));
 		if(cert.isNull())
 			return;
 		Settings::TSA_CERT = cert.toDer().toBase64();
@@ -500,7 +502,7 @@ void SettingsDialog::initFunctionality()
 	});
 	connect(ui->btInstallSiVaCert, &QPushButton::clicked, this, [this] {
 		QSslCertificate cert = selectCert(tr("Select SiVa server certificate"),
-			QStringLiteral("%1 (*.crt *.cer *.pem)").arg(tr("Digital Signature Validation Service SiVa SSL certificate")));
+			tr("Digital Signature Validation Service SiVa SSL certificate"));
 		if(cert.isNull())
 			return;
 		Settings::SIVA_CERT = cert.toDer().toBase64();
@@ -517,8 +519,7 @@ void SettingsDialog::initFunctionality()
 			QFile::remove(qdigidoc4log);
 			return;
 		}
-		QFile f(qdigidoc4log);
-		if(f.open(QFile::WriteOnly|QFile::Truncate))
+		if(QFile f(qdigidoc4log); f.open(QFile::WriteOnly|QFile::Truncate))
 			f.write({});
 #ifdef Q_OS_MAC
 		WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
@@ -526,7 +527,7 @@ void SettingsDialog::initFunctionality()
 #else
 		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
 			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
-		dlg->setCancelText(tr("NO"));
+		dlg->setCancelText(WarningDialog::NO);
 		dlg->addButton(WarningDialog::YES, 1);
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
 			if(result == 1) {
@@ -563,7 +564,7 @@ void SettingsDialog::updateTSACert(const QSslCertificate &c)
 
 QSslCertificate SettingsDialog::selectCert(const QString &label, const QString &format)
 {
-	QFile file(FileDialog::getOpenFileName(this, label, {}, format));
+	QFile file(FileDialog::getOpenFileName(this, label, {}, QStringLiteral("%1 (*.crt *.cer *.pem)").arg(format)));
 	if(!file.open(QFile::ReadOnly))
 		return QSslCertificate();
 	QSslCertificate cert(&file, QSsl::Pem);
@@ -706,8 +707,7 @@ void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 		tr("Text files (*.txt)") );
 	if( filename.isEmpty() )
 		return;
-	QFile f( filename );
-	if(!f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
+	if(QFile f(filename); !f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
 		WarningDialog::show(this, tr("Failed write to file!"));
 }
 

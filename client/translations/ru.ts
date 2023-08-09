@@ -2602,10 +2602,6 @@ Additional licenses and components</source>
         <translation>%1 версия %2, выпущенный %3</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
-    </message>
-    <message>
         <source>Use default access</source>
         <translation>Использовать доступ, назначенный по умолчанию</translation>
     </message>

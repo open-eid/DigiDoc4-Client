@@ -2601,10 +2601,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>%1 versioon %2, avalikustatud %3</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
-    </message>
-    <message>
         <source>Use default access</source>
         <translation>Kasutan vaikimisi määratud ligipääsu</translation>
     </message>
