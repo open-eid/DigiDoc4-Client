@@ -23,6 +23,7 @@
 #include <QEasingCurve>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
+#include <QResizeEvent>
 #include <QTimer>
 
 FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset, int height)
@@ -42,22 +43,37 @@ FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, 
 	setMinimumSize(width, height);
 	setGraphicsEffect(new QGraphicsOpacityEffect(this));
 	move(pos);
+	if(QPoint c = parent->geometry().center(); pos.x() > c.x() && pos.y() > c.y())
+		parent->installEventFilter(this);
+}
+
+bool FadeInNotification::eventFilter(QObject *watched, QEvent *event)
+{
+	if(watched == parent() && event->type() == QEvent::Resize)
+	{
+		if(auto *resize = static_cast<QResizeEvent*>(event))
+		{
+			QSize newPos = resize->size() - resize->oldSize();
+			move(pos() + QPoint(newPos.width(), newPos.height()));
+		}
+	}
+	return QLabel::eventFilter(watched, event);
 }
 
 void FadeInNotification::start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime )
 {
 	setText(label);
-	QPropertyAnimation *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
+	auto *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
 	a->setDuration(fadeInTime);
 	a->setStartValue(0);
 	a->setEndValue(0.95);
 	a->setEasingCurve(QEasingCurve::InBack);
 	a->start(QPropertyAnimation::DeleteWhenStopped);
-	connect(a, &QPropertyAnimation::finished, this, [this, displayTime, fadeOutTime]() {
+	connect(a, &QPropertyAnimation::finished, this, [this, displayTime, fadeOutTime] {
 		if(focusPolicy() == Qt::TabFocus)
 			setFocus();
 		QTimer::singleShot(displayTime, this, [this, fadeOutTime] {
-			QPropertyAnimation *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
+			auto *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
 			a->setDuration(fadeOutTime);
 			a->setStartValue(0.95);
 			a->setEndValue(0);
