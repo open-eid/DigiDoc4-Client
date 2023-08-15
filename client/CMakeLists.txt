@@ -12,6 +12,11 @@ add_custom_command(
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt_add_translation(SOURCES translations/en.ts translations/et.ts translations/ru.ts)
 
+file(GLOB WIDGETS CONFIGURE_DEPENDS
+	"dialogs/*.cpp" "dialogs/*.h" "dialogs/*.ui"
+	"effects/*.cpp" "effects/*.h" "effects/*.ui"
+	"widgets/*.cpp" "widgets/*.h" "widgets/*.ui"
+)
 set(SCHEMAS
 	../schema/recipients.fbs
 	../schema/header.fbs
@@ -19,114 +24,62 @@ set(SCHEMAS
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${PROJECT_NAME}.rc
 	${SOURCES}
+	${WIDGETS}
 	images/images.qrc
 	fonts/fonts.qrc
 	${CMAKE_CURRENT_BINARY_DIR}/tr.qrc
 	${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc
 	main.cpp
 	Application.cpp
+	Application.h
 	CheckConnection.cpp
+	CheckConnection.h
 	CDoc1.cpp
+	CDoc1.h
 	CDoc2.cpp
+	CDoc2.h
 	Crypto.cpp
+	Crypto.h
 	CryptoDoc.cpp
+	CryptoDoc.h
 	DateTime.cpp
+	DateTime.h
 	DigiDoc.cpp
+	DigiDoc.h
 	Diagnostics.cpp
+	Diagnostics.h
 	DiagnosticsTask.cpp
+	DiagnosticsTask.h
 	DocumentModel.cpp
+	DocumentModel.h
 	IKValidator.cpp
-	MainWindow.ui
+	IKValidator.h
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
+	MainWindow.h
+	MainWindow.ui
 	LdapSearch.cpp
+	LdapSearch.h
 	QCardLock.cpp
+	QCardLock.h
 	QCryptoBackend.cpp
+	QCryptoBackend.h
 	QPKCS11.cpp
+	QPKCS11.h
 	QSigner.cpp
+	QSigner.h
 	QSmartCard.cpp
+	QSmartCard.h
 	Styles.cpp
+	Styles.h
 	PrintSheet.cpp
+	PrintSheet.h
 	Settings.cpp
+	Settings.h
 	SslCertificate.cpp
+	SslCertificate.h
 	TokenData.cpp
-	dialogs/AddRecipients.ui
-	dialogs/AddRecipients.cpp
-	dialogs/CertificateDetails.ui
-	dialogs/CertificateDetails.cpp
-	dialogs/CertificateHistory.ui
-	dialogs/CertificateHistory.cpp
-	dialogs/FileDialog.cpp
-	dialogs/FirstRun.ui
-	dialogs/FirstRun.cpp
-	dialogs/KeyDialog.ui
-	dialogs/KeyDialog.cpp
-	dialogs/MobileDialog.ui
-	dialogs/MobileDialog.cpp
-	dialogs/MobileProgress.ui
-	dialogs/MobileProgress.cpp
-	dialogs/PinPopup.ui
-	dialogs/PinPopup.cpp
-	dialogs/PinUnblock.ui
-	dialogs/PinUnblock.cpp
-	dialogs/RoleAddressDialog.ui
-	dialogs/RoleAddressDialog.cpp
-	dialogs/SettingsDialog.ui
-	dialogs/SettingsDialog.cpp
-	dialogs/SignatureDialog.ui
-	dialogs/SignatureDialog.cpp
-	dialogs/SmartIDDialog.ui
-	dialogs/SmartIDDialog.cpp
-	dialogs/SmartIDProgress.cpp
-	dialogs/WaitDialog.ui
-	dialogs/WaitDialog.cpp
-	dialogs/WarningDialog.ui
-	dialogs/WarningDialog.cpp
-	effects/ButtonHoverFilter.cpp
-	effects/FadeInNotification.cpp
-	effects/Overlay.cpp
-	widgets/Accordion.ui
-	widgets/Accordion.cpp
-	widgets/AccordionTitle.ui
-	widgets/AccordionTitle.cpp
-	widgets/AddressItem.ui
-	widgets/AddressItem.cpp
-	widgets/CardWidget.ui
-	widgets/CardWidget.cpp
-	widgets/CardPopup.cpp
-	widgets/CheckBox.cpp
-	widgets/ContainerPage.ui
-	widgets/ContainerPage.cpp
-	widgets/ComboBox.cpp
-	widgets/DropdownButton.cpp
-	widgets/FileItem.ui
-	widgets/FileItem.cpp
-	widgets/FileList.cpp
-	widgets/IDSelector.cpp
-	widgets/Item.cpp
-	widgets/ItemList.ui
-	widgets/ItemList.cpp
-	widgets/InfoStack.ui
-	widgets/InfoStack.cpp
-	widgets/LabelButton.cpp
-	widgets/LineEdit.cpp
-	widgets/MainAction.ui
-	widgets/MainAction.cpp
-	widgets/NoCardInfo.ui
-	widgets/NoCardInfo.cpp
-	widgets/PageIcon.ui
-	widgets/PageIcon.cpp
-	widgets/RadioButton.cpp
-	widgets/SignatureItem.ui
-	widgets/SignatureItem.cpp
-	widgets/StyledWidget.cpp
-	widgets/VerifyCert.ui
-	widgets/VerifyCert.cpp
-	widgets/WarningItem.ui
-	widgets/WarningItem.cpp
-	widgets/WarningList.cpp
-	widgets/WarningRibbon.ui
-	widgets/WarningRibbon.cpp
+	TokenData.h
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -194,7 +147,7 @@ if( APPLE )
 		set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir})
 	endforeach(_file)
 
-	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
+	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp MacMenuBar.h dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries(${PROJECT_NAME} "-framework Quartz" "-fobjc-arc")
@@ -242,7 +195,7 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp CertStore.cpp Diagnostics_win.cpp)
+	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h CertStore.cpp CertStore.h Diagnostics_win.cpp)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui)
@@ -255,11 +208,19 @@ elseif(WIN32)
 		set(OPENSSL_SUFFIX "")
 	endif()
 	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
-	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM} -dMSI_VERSION=${VERSION} -dPlatform=${PLATFORM}
-		-dlibs_path=${LIBS_PATH} -dclient_path=$<TARGET_FILE:${PROJECT_NAME}> -dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
-		-dqtconf=${CMAKE_SOURCE_DIR}/qt.conf -dschemasLocation=${LIBS_PATH}/schema SchemasFragment.wxs
-		-dqt_suffix=$<$<CONFIG:Debug>:d> ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs ${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs)
+	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo
+		-arch ${PLATFORM}
+		-dMSI_VERSION=${VERSION}
+		-dlibs_path=${LIBS_PATH}
+		-dclient_path=$<TARGET_FILE:${PROJECT_NAME}>
+		-dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
+		-dqt_suffix=$<$<CONFIG:Debug>:d>
+		-dschemasLocation=${LIBS_PATH}/schema
+		SchemasFragment.wxs
+		${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
+		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs
+		${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs
+	)
 	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
 		${PROJECT_NAME}.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
 		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
@@ -294,7 +255,6 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E make_directory appx
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/qt.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib1.dll appx

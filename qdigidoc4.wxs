@@ -13,11 +13,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 "%WIX%\bin\light.exe" -out qdigidoc4.msi qdigidoc4.wixobj -v -ext WixUIExtension
 -->
 
-<?ifndef Platform ?>
-<?define Platform="x64" ?>
-<?endif ?>
-
-<?if $(var.Platform) = x64 ?>
+<?if $(sys.BUILDARCH) = x64 ?>
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
   <?define OpenSSLSuffix = "-x64" ?>
 <?else ?>
@@ -32,15 +28,15 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?endif?>
 
 <?if $(var.qt_suffix) = "d" ?>
-<?define VCPATH = "$(env.VCTOOLSREDISTDIR)\Debug_NonRedist\$(var.Platform)\Microsoft.VC$(var.VCVER).DebugCRT" ?>
+<?define VCPATH = "$(env.VCTOOLSREDISTDIR)\Debug_NonRedist\$(sys.BUILDARCH)\Microsoft.VC$(var.VCVER).DebugCRT" ?>
 <?else ?>
-<?define VCPATH = "$(env.VCTOOLSREDISTDIR)\$(var.Platform)\Microsoft.VC$(var.VCVER).CRT" ?>
+<?define VCPATH = "$(env.VCTOOLSREDISTDIR)\$(sys.BUILDARCH)\Microsoft.VC$(var.VCVER).CRT" ?>
 <?endif ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Id="*" Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA">
-    <Package Platform="$(var.Platform)" Keywords="Installer" InstallerVersion="405" Compressed="yes" InstallScope="perMachine"/>
+    <Package Keywords="Installer" InstallerVersion="500" Compressed="yes" InstallScope="perMachine"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
     <Icon Id="qdigidoc4.ico" SourceFile="$(var.ico_path)"/>
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.ico"/>
@@ -144,7 +140,7 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 <?ifdef var.qt_path ?>
             <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll"/>
             <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll"/>
-<?if $(var.Platform) = x64 AND $(env.VisualStudioVersion) != "15.0" ?>
+<?if $(sys.BUILDARCH) = x64 ?>
             <File Source="$(var.VCPATH)\msvcp140_1$(var.qt_suffix).dll"/>
             <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll"/>
             <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll"/>
