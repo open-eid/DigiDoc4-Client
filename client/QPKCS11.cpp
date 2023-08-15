@@ -29,6 +29,8 @@
 
 #include <QtCore/QDebug>
 
+#include <array>
+
 template<class Container>
 QString toQString(const Container &c)
 {
@@ -99,7 +101,7 @@ QByteArray QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 		return {};
 
 	CK_RSA_PKCS_OAEP_PARAMS params { CKM_SHA256, CKG_MGF1_SHA256, 0, nullptr, 0 };
-	CK_MECHANISM mech = oaep ?
+	auto mech = oaep ?
 		CK_MECHANISM{ CKM_RSA_PKCS_OAEP, &params, sizeof(params) } :
 		CK_MECHANISM{ CKM_RSA_PKCS, nullptr, 0 };
 	if(d->f->C_DecryptInit(d->session, &mech, key.front()) != CKR_OK)
@@ -126,10 +128,10 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	CK_BBOOL _false = CK_FALSE;
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
-	std::vector<CK_ATTRIBUTE> newkey_template{
-		{CKA_TOKEN, &_false, sizeof(_false)},
-		{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
-		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
+	std::array newkey_template{
+		CK_ATTRIBUTE{CKA_TOKEN, &_false, sizeof(_false)},
+		CK_ATTRIBUTE{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
+		CK_ATTRIBUTE{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
 	};
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
 	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
@@ -176,7 +178,7 @@ bool QPKCS11::load( const QString &driver )
 		return false;
 	}
 
-	CK_INFO info;
+	CK_INFO info{};
 	d->f->C_GetInfo( &info );
 	qWarning()
 		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.manufacturerID))
@@ -276,8 +278,8 @@ QList<TokenData> QPKCS11::tokens() const
 	QList<TokenData> list;
 	for(CK_SLOT_ID slot: slotIDs)
 	{
-		CK_SLOT_INFO slotInfo;
-		CK_TOKEN_INFO token;
+		CK_SLOT_INFO slotInfo{};
+		CK_TOKEN_INFO token{};
 		CK_SESSION_HANDLE session = 0;
 		if(d->f->C_GetSlotInfo(slot, &slotInfo) != CKR_OK ||
 			d->f->C_GetTokenInfo(slot, &token) != CKR_OK ||
@@ -327,7 +329,6 @@ bool QPKCS11::reload()
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
-		{ "/Library/PWPW-Card/lib/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
@@ -345,12 +346,10 @@ bool QPKCS11::reload()
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 #if Q_PROCESSOR_WORDSIZE == 8
-		{ "/usr/lib64/pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 #else
-		{ "pwpw-card-pkcs11.so", "3BF81300008131FE45536D617274417070F8" }, // LT-G2
 		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
