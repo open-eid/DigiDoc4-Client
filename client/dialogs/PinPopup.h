@@ -56,7 +56,7 @@ public:
 	Q_DECLARE_FLAGS(TokenFlags, TokenFlag)
 
 	PinPopup(PinFlags flags, const SslCertificate &cert, TokenFlags count, QWidget *parent = {});
-	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = {}, const QString &bodyText = {});
+	PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent = {}, QString text = {});
 	~PinPopup() final;
 
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
