@@ -33,6 +33,7 @@
 class MacMenuBar {};
 #endif
 #include "TokenData.h"
+#include "Utils.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
@@ -327,9 +328,10 @@ Application::Application( int &argc, char **argv )
 			return QVersionNumber::fromString(applicationVersion()) <
 				   QVersionNumber::fromString(confValue(key).toString());
 		};
+		WarningDialog *dlg{};
 		if(lessThanVersion(QLatin1String("QDIGIDOC4-UNSUPPORTED")))
 		{
-			auto *dlg = WarningDialog::show(activeWindow(), tr(
+			dlg = WarningDialog::show(tr(
 				"This version of ID-software on your computer is unsupported. "
 				"DigiDoc4 Client cannot be used until you update ID-software. "
 				"Install new ID-software from <a href=\"https://www.id.ee/en/article/install-id-software/\">www.id.ee</a>. "
@@ -339,20 +341,33 @@ Application::Application( int &argc, char **argv )
 		}
 		else if(lessThanVersion(QLatin1String("QDIGIDOC4-SUPPORTED")))
 		{
-			WarningDialog::show(activeWindow(), tr(
+			dlg = WarningDialog::show(tr(
 				"Your ID-software has expired. To download the latest software version, go to the "
 				"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 				"macOS users can download the latest ID-software version from the "
 				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 		}
-		connect(d->conf, &Configuration::finished, this, [=](bool changed, const QString &){
+		connect(d->conf, &Configuration::finished, this, [&](bool changed, const QString &){
 			if(changed && lessThanVersion(QLatin1String("QDIGIDOC4-LATEST")))
-				WarningDialog::show(activeWindow(), tr(
+				dlg = WarningDialog::show(tr(
 					"An ID-software update has been found. To download the update, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the update from the "
 					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 		});
+#ifdef Q_OS_WIN
+		if(dlg)
+		{
+			dlg->addButton(tr("Start downloading"), 2);
+			connect(dlg, &WarningDialog::finished, this, [](int result) {
+				if(result != 2)
+					return;
+				QString path = QApplication::applicationDirPath() + QLatin1String("/id-updater.exe");
+				if (QFile::exists(path))
+					QProcess::startDetached(path, {});
+			});
+		}
+#endif
 	});
 #endif
 
@@ -429,10 +444,9 @@ Application::Application( int &argc, char **argv )
 				Q_EMIT qApp->TSLLoadingFinished();
 				qApp->d->ready = true;
 				if(ex) {
-					digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
-					QStringList causes = DigiDoc::parseException(*ex, code);
-					QMetaObject::invokeMethod( qApp, "showWarning",
-						Q_ARG(QString,tr("Failed to initalize.")), Q_ARG(QString,causes.join('\n')) );
+					dispatchToMain([ex] {
+						showWarning(tr("Failed to initalize."), *ex);
+					});
 				}
 			}
 		);

@@ -228,6 +228,10 @@
         <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
         <translation>Выпущено обновление для программного обеспечения ID-карты. Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать обновление в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>Start downloading</source>
+        <translation>Начать установку</translation>
+    </message>
 </context>
 <context>
     <name>CDoc2</name>
