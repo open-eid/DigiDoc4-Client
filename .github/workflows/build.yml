@@ -10,7 +10,7 @@ jobs:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 10.15
+      MACOSX_DEPLOYMENT_TARGET: 11.0
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -175,7 +175,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.1
+        version: 6.5.2
         arch: win64_msvc2019_64
         modules: qt5compat
     - name: Setup dev env
@@ -213,7 +213,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev libflatbuffers-dev zlib1g-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
