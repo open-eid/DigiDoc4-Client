@@ -182,8 +182,7 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 		ui->myEid->invalidIcon(true);
 		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
 	}
-	else if(data.version() >= QSmartCardData::VER_3_5 && data.version() < QSmartCardData::VER_IDEMIA &&
-		data.authCert().publicKey().algorithm() == QSsl::Rsa)
+	else if(data.authCert().publicKey().algorithm() == QSsl::Rsa)
 	{
 		ui->myEid->invalidIcon(true);
 		warnings->showWarning(WarningText(WarningType::CertRevokedWarning));

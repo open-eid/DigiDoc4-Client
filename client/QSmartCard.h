@@ -56,12 +56,6 @@ public:
 		Pin2Type,
 		PukType
 	};
-	enum CardVersion
-	{
-		VER_INVALID = -1,
-		VER_3_5,
-		VER_IDEMIA,
-	};
 
 	QSmartCardData();
 	QSmartCardData( const QSmartCardData &other );
@@ -84,7 +78,6 @@ public:
 	SslCertificate signCert() const;
 	quint8 retryCount( PinType type ) const;
 	ulong usageCount( PinType type ) const;
-	CardVersion version() const;
 
 	static quint8 minPinLen(QSmartCardData::PinType type);
 	static QString typeString( PinType type );

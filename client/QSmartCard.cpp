@@ -20,7 +20,6 @@
 #include "QSmartCard_p.h"
 
 #include "QCardLock.h"
-#include "IKValidator.h"
 #include "Settings.h"
 #include "Utils.h"
 #include "dialogs/PinPopup.h"
@@ -47,8 +46,7 @@ bool QSmartCardData::operator ==(const QSmartCardData &other) const
 	return d == other.d || (
 		d->card == other.d->card &&
 		d->authCert == other.d->authCert &&
-		d->signCert == other.d->signCert &&
-		d->version == other.d->version);
+		d->signCert == other.d->signCert);
 }
 bool QSmartCardData::operator !=(const QSmartCardData &other) const { return !operator==(other); }
 
@@ -68,7 +66,6 @@ SslCertificate QSmartCardData::authCert() const { return d->authCert; }
 SslCertificate QSmartCardData::signCert() const { return d->signCert; }
 quint8 QSmartCardData::retryCount(PinType type) const { return d->retry.value(type); }
 ulong QSmartCardData::usageCount(PinType type) const { return d->usage.value(type); }
-QSmartCardData::CardVersion QSmartCardData::version() const { return d->version; }
 
 quint8 QSmartCardData::minPinLen(QSmartCardData::PinType type)
 {
@@ -117,7 +114,6 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 
 
 
-const QByteArray EstEIDCard::AID35 = APDU("00A40400 0F D23300000045737445494420763335");
 const QByteArray EstEIDCard::ESTEIDDF = APDU("00A4010C 02 EEEE");
 const QByteArray EstEIDCard::PERSONALDATA = APDU("00A4020C 02 5044");
 const QTextCodec* EstEIDCard::codec = QTextCodec::codecForName("Windows-1252");
@@ -127,19 +123,9 @@ QPCSCReader::Result EstEIDCard::change(QPCSCReader *reader, QSmartCardData::PinT
 	QByteArray cmd = CHANGE;
 	QByteArray newpin = newpin_.toUtf8();
 	QByteArray pin = pin_.toUtf8();
-	cmd[3] = type == QSmartCardData::PukType ? 0 : type;
+	cmd[3] = char(type == QSmartCardData::PukType ? 0 : type);
 	cmd[4] = char(pin.size() + newpin.size());
 	return transfer(reader, false, cmd + pin + newpin, type, quint8(pin.size()), true);
-}
-
-QSmartCardData::CardVersion EstEIDCard::isSupported(const QByteArray &atr)
-{
-	static const QHash<QByteArray,QSmartCardData::CardVersion> atrList{
-		{"3BFE1800008031FE454573744549442076657220312E30A8", QSmartCardData::VER_3_5}, /*ESTEID_V3_COLD_ATR*/
-		{"3BFE1800008031FE45803180664090A4162A00830F9000EF", QSmartCardData::VER_3_5}, /*ESTEID_V3_WARM_ATR / ESTEID_V35_WARM_ATR*/
-		{"3BFA1800008031FE45FE654944202F20504B4903", QSmartCardData::VER_3_5}, /*ESTEID_V35_COLD_ATR*/
-	};
-	return atrList.value(atr, QSmartCardData::VER_INVALID);
 }
 
 bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
@@ -147,7 +133,6 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	static const QByteArray AUTHCERT = APDU("00A40200 02 AACE");
 	static const QByteArray SIGNCERT = APDU("00A40200 02 DDCE");
 
-	d->version = isSupported(reader->atr());
 	if(reader->transfer(MASTER_FILE) &&
 		reader->transfer(ESTEIDDF) &&
 		d->data.isEmpty() && reader->transfer(PERSONALDATA))
@@ -207,8 +192,6 @@ bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		d->signCert = readCert(SIGNCERT);
 	if(readFailed)
 		return false;
-	if(!d->data.contains(QSmartCardData::BirthDate))
-		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
 	d->data[QSmartCardData::Email] = d->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
 	return updateCounters(reader, d);
 }
@@ -302,7 +285,7 @@ QPCSCReader::Result EstEIDCard::verify(QPCSCReader *reader, QSmartCardData::PinT
 {
 	QByteArray pin = pin_.toUtf8();
 	QByteArray cmd = VERIFY;
-	cmd[3] = type == QSmartCardData::PukType ? 0 : type;
+	cmd[3] = char(type == QSmartCardData::PukType ? 0 : type);
 	cmd[4] = char(pin.size());
 	return transfer(reader, true, cmd + pin, type, 0, true);
 }
@@ -336,14 +319,13 @@ QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinT
 	return transfer(reader, false, cmd + pin + newpin, type, quint8(pin.size()), true);
 }
 
-QSmartCardData::CardVersion IDEMIACard::isSupported(const QByteArray &atr)
+bool IDEMIACard::isSupported(const QByteArray &atr)
 {
-	return atr == "3BDB960080B1FE451F830012233F536549440F9000F1" ? QSmartCardData::VER_IDEMIA : QSmartCardData::VER_INVALID;
+	return atr == "3BDB960080B1FE451F830012233F536549440F9000F1";
 }
 
 bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
-	d->version = isSupported(reader->atr());
 	if(!reader->transfer(AID) ||
 		!reader->transfer(MASTER_FILE))
 		return false;
@@ -426,10 +408,6 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 
 	if(readFailed)
 		return false;
-	if(!d->data[QSmartCardData::Expiry].toDate().isValid())
-		d->data[QSmartCardData::Expiry] = d->authCert.expiryDate();
-	if(!d->data.contains(QSmartCardData::BirthDate))
-		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
 	d->data[QSmartCardData::Email] = d->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
 	return updateCounters(reader, d);
 }
@@ -706,7 +684,7 @@ void QSmartCard::reloadCard(const TokenData &token)
 	t->reader = selectedReader->name();
 	t->pinpad = selectedReader->isPinPad();
 	delete d->card;
-	if(IDEMIACard::isSupported(selectedReader->atr()) == QSmartCardData::VER_IDEMIA)
+	if(IDEMIACard::isSupported(selectedReader->atr()))
 		d->card = new IDEMIACard();
 	else
 		d->card = new EstEIDCard();
