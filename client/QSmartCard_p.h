@@ -65,10 +65,8 @@ public:
 	QPCSCReader::Result verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin) const final;
 
 	static QString cardNR(QPCSCReader *reader);
-	static QSmartCardData::CardVersion isSupported(const QByteArray &atr);
 
 	static const QTextCodec *codec;
-	static const QByteArray AID35;
 	static const QByteArray ESTEIDDF;
 	static const QByteArray PERSONALDATA;
 };
@@ -84,7 +82,7 @@ public:
 	QPCSCReader::Result verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin) const final;
 
 	static QString cardNR(QPCSCReader *reader);
-	static QSmartCardData::CardVersion isSupported(const QByteArray &atr);
+	static bool isSupported(const QByteArray &atr);
 	static QByteArray pinTemplate(const QString &pin);
 
 	static const QByteArray AID, AID_OT, AID_QSCD;
@@ -110,6 +108,5 @@ public:
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;
 	QHash<QSmartCardData::PinType,ulong> usage;
-	QSmartCardData::CardVersion version = QSmartCardData::VER_INVALID;
 	bool pinpad = false;
 };

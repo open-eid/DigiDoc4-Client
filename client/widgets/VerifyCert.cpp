@@ -109,8 +109,6 @@ void VerifyCert::update()
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount( QSmartCardData::PukType ) == 0;
 	bool isTempelType = c.type() & SslCertificate::TempelType;
 	bool isRevoked = pinType != QSmartCardData::PukType &&
-			cardData.version() >= QSmartCardData::VER_3_5 &&
-			cardData.version() < QSmartCardData::VER_IDEMIA &&
 			cardData.authCert().publicKey().algorithm() == QSsl::Rsa;
 	isValidCert = c.isNull() || (c.isValid() && !isRevoked);
 
@@ -132,12 +130,11 @@ void VerifyCert::update()
 				DateTime(c.expiryDate().toLocalTime()).formatDate(QStringLiteral("dd. MMMM yyyy")));
 		if(leftDays <= 105 && !c.isNull())
 			cert << "</span>";
-		if(!isTempelType && cardData.version() != QSmartCardData::VER_IDEMIA)
+		if(auto count = cardData.usageCount(pinType); count > 0)
 		{
-			if(pinType == QSmartCardData::Pin1Type)
-				cert << "<br />" << tr("key has been used %1 times", "pin1").arg(cardData.usageCount(pinType));
-			else
-				cert << "<br />" << tr("key has been used %1 times", "pin2").arg(cardData.usageCount(pinType));
+			cert << "<br />" << (pinType == QSmartCardData::Pin1Type ?
+				tr("key has been used %1 times", "pin1").arg(count) :
+				tr("key has been used %1 times", "pin2").arg(count));
 		}
 	}
 	switch(pinType)
