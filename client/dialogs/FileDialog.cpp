@@ -34,6 +34,7 @@
 #ifdef Q_OS_WIN
 #include <ShObjIdl.h>
 #include <ShlGuid.h>
+#include <fileapi.h>
 
 template <class T>
 class CPtr
@@ -125,19 +126,14 @@ int FileDialog::fileZone(const QString &path)
 
 bool FileDialog::isSignedPDF(const QString &path)
 {
-	const QFileInfo f(path);
-	if(f.suffix().compare(QStringLiteral("pdf"), Qt::CaseInsensitive))
+	if(!path.endsWith(QLatin1String("pdf"), Qt::CaseInsensitive))
 		return false;
 	QFile file(path);
 	if(!file.open(QIODevice::ReadOnly))
 		return false;
 	QByteArray blob = file.readAll();
-	for(const QByteArray &token: {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"})
-	{
-		if(blob.indexOf(token) > 0)
-			return true;
-	}
-	return false;
+	static const auto list = {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"};
+	return std::any_of(list.begin(), list.end(), [&blob](const char *token) { return blob.indexOf(token) > 0; });
 }
 
 void FileDialog::setFileZone(const QString &path, int zone)
@@ -290,7 +286,7 @@ QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
 
 QString FileDialog::normalized(const QString &data)
 {
-	static constexpr std::array<const unsigned char[3],5> list = {{
+	static constexpr std::array<const unsigned char[3],5> list {{
 		{0xE2, 0x80, 0x8E}, // \u200E LEFT-TO-RIGHT MARK
 		{0xE2, 0x80, 0x8F}, // \u200F RIGHT-TO-LEFT MARK
 		{0xE2, 0x80, 0xAA}, // \u202A LEFT-TO-RIGHT EMBEDDING
@@ -340,15 +336,16 @@ QString FileDialog::safeName(const QString &file)
 	QString filename = info.fileName();
 #if defined(Q_OS_WIN)
 	static const QStringList disabled { "CON", "PRN", "AUX", "NUL",
-										"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-										"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
 	if(disabled.contains(info.baseName(), Qt::CaseInsensitive))
 		filename = QStringLiteral("___.") + info.suffix();
-	filename.replace(QRegularExpression(QStringLiteral("[\\\\/*:?\"<>|]")), QStringLiteral("_"));
+	static const QRegularExpression replace(QStringLiteral("[\\\\/*:?\"<>|]"));
 #elif defined(Q_OS_MAC)
-	filename.replace(QRegularExpression(QStringLiteral("[\\\\/:]")), QStringLiteral("_"));
+	static const QRegularExpression replace(QStringLiteral("[\\\\/:]"));
 #else
-	filename.replace(QRegularExpression(QStringLiteral("[\\\\/]")), QStringLiteral("_"));
+	static const QRegularExpression replace(QStringLiteral("[\\\\/]"));
 #endif
+	filename.replace(replace, QStringLiteral("_"));
 	return filename;
 }

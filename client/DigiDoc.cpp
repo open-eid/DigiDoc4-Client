@@ -335,19 +335,17 @@ void SDocumentModel::open(int row)
 {
 	if(row >= rowCount())
 		return;
-
 	QString path = FileDialog::tempPath(FileDialog::safeName(from(doc->b->dataFiles().at(size_t(row))->fileName())));
 	if(!verifyFile(path))
 		return;
-	QFileInfo f(save(row, path));
-	if( !f.exists() )
+	if(!QFileInfo::exists(save(row, path)))
 		return;
-	doc->m_tempFiles.append(f.absoluteFilePath());
-	FileDialog::setReadOnly(f.absoluteFilePath());
-	if(!doc->fileName().endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(f.absoluteFilePath()))
-		qApp->showClient({ f.absoluteFilePath() }, false, false, true);
+	doc->m_tempFiles.append(path);
+	FileDialog::setReadOnly(path);
+	if(!doc->fileName().endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(path))
+		qApp->showClient({ path }, false, false, true);
 	else
-		QDesktopServices::openUrl(QUrl::fromLocalFile(f.absoluteFilePath()));
+		QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
 
 bool SDocumentModel::removeRow(int row)
@@ -447,11 +445,20 @@ bool DigiDoc::isError(bool failure, const QString &msg) const
 	return !b || failure;
 }
 
+bool DigiDoc::isAsicS() const
+{
+	return b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
+		std::any_of(m_signatures.cbegin(), m_signatures.cend(), [](const DigiDocSignature &s) {
+			return s.profile().contains(QLatin1String("BES"), Qt::CaseInsensitive);
+		});
+}
+
 bool DigiDoc::isPDF() const
 {
 	return b && b->mediaType() == "application/pdf";
 }
 bool DigiDoc::isModified() const { return modified; }
+
 bool DigiDoc::isSupported() const
 {
 	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip";
@@ -493,8 +500,8 @@ bool DigiDoc::open( const QString &file )
 		dlg->addButton(WarningDialog::YES, ContainerSave);
 		return dlg->exec() == ContainerSave;
 	};
-	if((file.endsWith(QStringLiteral(".pdf"), Qt::CaseInsensitive) ||
-		file.endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
+	if((file.endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive) ||
+		file.endsWith(QLatin1String(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
 		return false;
 
 	try {

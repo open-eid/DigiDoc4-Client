@@ -126,6 +126,7 @@ public:
 	void clear();
 	DocumentModel *documentModel() const;
 	QString fileName() const;
+	bool isAsicS() const;
 	bool isPDF() const;
 	bool isModified() const;
 	bool isSupported() const;

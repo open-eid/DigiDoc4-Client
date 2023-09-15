@@ -332,6 +332,8 @@ void ContainerPage::transition(DigiDoc* container)
 		emit warning(WarningText(i.key(), i.value()));
 	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
 		emit warning(UnsupportedDDocWarning);
+	if(container->isAsicS())
+		emit warning(UnsupportedAsicSWarning);
 
 	hasEmptyFile = false;
 	for (auto i = 0; i < container->documentModel()->rowCount(); i++)
