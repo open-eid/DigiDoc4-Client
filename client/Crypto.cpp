@@ -41,7 +41,7 @@ Crypto::Cipher::Cipher(const EVP_CIPHER *cipher, const QByteArray &key, const QB
 	: ctx(SCOPE(EVP_CIPHER_CTX, EVP_CIPHER_CTX_new()))
 {
 	EVP_CIPHER_CTX_set_flags(ctx.get(), EVP_CIPHER_CTX_FLAG_WRAP_ALLOW);
-	isError(EVP_CipherInit_ex(ctx.get(), cipher, nullptr, pcuchar(key.data()), iv.isEmpty() ? nullptr : pcuchar(iv.data()), int(encrypt)));
+	Q_UNUSED(isError(EVP_CipherInit_ex(ctx.get(), cipher, nullptr, pcuchar(key.data()), iv.isEmpty() ? nullptr : pcuchar(iv.data()), int(encrypt))));
 }
 
 bool Crypto::Cipher::updateAAD(const QByteArray &data) const
@@ -88,29 +88,32 @@ QByteArray Crypto::Cipher::resultTAG() const
 QByteArray Crypto::aes_wrap(const QByteArray &key, const QByteArray &data, bool encrypt)
 {
 	Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, encrypt);
-	QByteArray result = c.update(data);
-	return c.result() ? result : QByteArray();
+	if(QByteArray result = c.update(data); c.result())
+		return result;
+	return {};
 }
 
-QByteArray Crypto::cipher(const EVP_CIPHER *cipher, const QByteArray &key, const QByteArray &data, bool encrypt)
+QByteArray Crypto::cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByteArray &data, bool encrypt)
 {
-	QByteArray iv(EVP_CIPHER_iv_length(cipher), 0), _data = data, tag;
+	QByteArray iv(EVP_CIPHER_iv_length(cipher), 0), tag;
 	if(!encrypt)
 	{
 		iv = data.left(iv.length());
+		data.remove(0, iv.length());
 		if(EVP_CIPHER_mode(cipher) == EVP_CIPH_GCM_MODE)
 			tag = data.right(16);
-		_data = data.mid(iv.size(), data.size() - iv.size() - tag.size());
+		data.resize(data.size() - tag.size());
 	}
 
 	auto ctx = SCOPE(EVP_CIPHER_CTX, EVP_CIPHER_CTX_new());
 	if(isError(EVP_CipherInit(ctx.get(), cipher, pcuchar(key.constData()), pcuchar(iv.constData()), encrypt)))
 		return {};
 
-	QByteArray result(_data.size() + EVP_CIPHER_CTX_block_size(ctx.get()), Qt::Uninitialized);
-	int size = int(result.size());
-	auto resultPointer = puchar(result.data()); //Detach only once
-	if(isError(EVP_CipherUpdate(ctx.get(), resultPointer, &size, pcuchar(_data.constData()), int(_data.size()))))
+	int dataSize = int(data.size());
+	data.resize(data.size() + EVP_CIPHER_CTX_block_size(ctx.get()));
+	int size = int(data.size());
+	auto resultPointer = puchar(data.data()); //Detach only once
+	if(isError(EVP_CipherUpdate(ctx.get(), resultPointer, &size, pcuchar(data.constData()), dataSize)))
 		return {};
 
 	if(!encrypt && EVP_CIPHER_mode(cipher) == EVP_CIPH_GCM_MODE)
@@ -119,18 +122,18 @@ QByteArray Crypto::cipher(const EVP_CIPHER *cipher, const QByteArray &key, const
 	int size2 = 0;
 	if(isError(EVP_CipherFinal(ctx.get(), resultPointer + size, &size2)))
 		return {};
-	result.resize(size + size2);
+	data.resize(size + size2);
 	if(encrypt)
 	{
-		result.prepend(iv);
+		data.prepend(iv);
 		if(EVP_CIPHER_mode(cipher) == EVP_CIPH_GCM_MODE)
 		{
 			tag = QByteArray(16, 0);
 			EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_GCM_GET_TAG, int(tag.size()), tag.data());
-			result.append(tag);
+			data.append(tag);
 		}
 	}
-	return result;
+	return data;
 }
 
 QByteArray Crypto::concatKDF(QCryptographicHash::Algorithm hashAlg, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)

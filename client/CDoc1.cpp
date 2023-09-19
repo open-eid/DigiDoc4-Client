@@ -530,7 +530,7 @@ bool CDoc1::save(const QString &path)
 			}});
 		writeElement(w,DENC, QStringLiteral("CipherData"), [&]{
 			writeBase64Element(w, DENC, QStringLiteral("CipherValue"),
-				Crypto::cipher(ENC_MTH[method], transportKey, data.data(), true)
+				Crypto::cipher(ENC_MTH[method], transportKey, data.buffer(), true)
 			);
 		});
 		writeElement(w, DENC, QStringLiteral("EncryptionProperties"), [&]{
@@ -622,7 +622,7 @@ void CDoc1::writeDDoc(QIODevice *ddoc)
 	x.writeEndDocument();
 }
 
-void CDoc1::writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, const std::function<void()> &f)
+void CDoc1::writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, std::function<void()> &&f)
 {
 	x.writeStartElement(ns, name);
 	if(f)
@@ -630,7 +630,7 @@ void CDoc1::writeElement(QXmlStreamWriter &x, const QString &ns, const QString &
 	x.writeEndElement();
 }
 
-void CDoc1::writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, const QMap<QString,QString> &attrs, const std::function<void()> &f)
+void CDoc1::writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, const QMap<QString,QString> &attrs, std::function<void()> &&f)
 {
 	x.writeStartElement(ns, name);
 	writeAttributes(x, attrs);
