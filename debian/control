@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: RIA <info@ria.ee>
 Build-Depends:
  pkg-config,
- cdbs,
+ debhelper-compat (= 12),
  cmake,
  libdigidocpp-dev (>=3.0),
  libldap2-dev,
@@ -13,7 +13,7 @@ Build-Depends:
  qt6-tools-dev | qttools5-dev,
  qt6-l10n-tools | qttools5-dev-tools,
  libqt6svg6-dev | libqt5svg5-dev
-Standards-Version: 3.9.8
+Standards-Version: 4.5.1
 Homepage: https://github.com/open-eid/DigiDoc4-Client
 
 Package: qdigidoc4
