@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(qdigidoc4 VERSION 4.4.0)
+project(qdigidoc4 VERSION 4.5.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
