@@ -170,7 +170,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: 9b9c2758ece1d8ac0de90589730bb5ccf45c0874
+        vcpkgGitCommitId: 6a349fe1fbea1e5fcda2e0775f555d829a5e82df
         vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
