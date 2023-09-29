@@ -46,7 +46,7 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 #else
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 #endif
-	new Overlay(this, parent);
+	new Overlay(this);
 
 	QFont headerFont = Styles::font( Styles::Regular, 18 );
 	QFont regularFont = Styles::font( Styles::Regular, 14 );

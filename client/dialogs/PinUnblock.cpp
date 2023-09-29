@@ -40,7 +40,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		list.first()->setFocus();
 	for(QLineEdit *w: list)
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
-	new Overlay(this, parent);
+	new Overlay(this);
 
 	QFont condensed14 = Styles::font(Styles::Condensed, 14);
 	QFont condensed12 = Styles::font(Styles::Condensed, 12);

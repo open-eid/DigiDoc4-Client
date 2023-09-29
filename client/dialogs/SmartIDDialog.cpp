@@ -30,7 +30,7 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 	, ui(new Ui::SmartIDDialog)
 {
 	static const QString &EE = Settings::SMARTID_COUNTRY_LIST.first();
-	new Overlay(this, parent);
+	new Overlay(this);
 
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);

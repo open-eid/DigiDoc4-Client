@@ -22,6 +22,10 @@
 #include <QGraphicsBlurEffect>
 #include <QPainter>
 
+Overlay::Overlay(QWidget *runner)
+	: Overlay(runner, runner->parentWidget())
+{}
+
 Overlay::Overlay(QWidget *runner, QWidget *parent)
 	: QWidget(parent->topLevelWidget())
 {

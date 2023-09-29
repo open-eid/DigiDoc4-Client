@@ -50,7 +50,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
-	new Overlay(this, parent);
+	new Overlay(this);
 
 	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
 	ui->label->setFont(Styles::font(Styles::Regular, 14));

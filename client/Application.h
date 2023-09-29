@@ -75,6 +75,7 @@ public:
 	static uint readTSLVersion(const QString &path);
 	static void setConfValue( ConfParameter parameter, const QVariant &value );
 	static void showClient(const QStringList &params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
+	static void updateTSLCache(const QDateTime &tslTime);
 
 private Q_SLOTS:
 	static void browse(const QUrl &url);
