@@ -13,7 +13,7 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 11.0
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Download artifact
@@ -68,7 +68,7 @@ jobs:
       if: matrix.container != 'ubuntu:20.04'
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Download artifact
@@ -112,7 +112,7 @@ jobs:
     - name: Install Deps
       run: dnf install -y git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel flatbuffers-devel flatbuffers-compiler zlib-devel
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Download artifact
@@ -151,7 +151,7 @@ jobs:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Download artifact
@@ -175,7 +175,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.2
+        version: 6.5.3
         arch: win64_msvc2019_64
         modules: qt5compat
     - name: Setup dev env
@@ -187,10 +187,9 @@ jobs:
       run: |
         md build/client
         copy ${{ env.RUNVCPKG_VCPKG_ROOT }}\installed\x64-windows\bin\*.dll build\client\
-        cmake "-GNinja" -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
-          "-DLIBDIGIDOCPP_LIBRARY=libs/libdigidocpp/x64/digidocpp.lib" `
-          "-DLIBDIGIDOCPP_INCLUDE_DIR=libs/libdigidocpp/include" -B build -S .
+          "-DLibDigiDocpp_ROOT=libs/libdigidocpp"
         cmake --build build --target msi
         cmake --build build --target appx
     - name: Archive artifacts
@@ -209,7 +208,7 @@ jobs:
       PROJECTNAME: open-eid/DigiDoc4-Client
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Install dependencies
@@ -253,7 +252,7 @@ jobs:
       security-events: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Install dependencies
