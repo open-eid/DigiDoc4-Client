@@ -92,7 +92,9 @@ class DigidocConf final: public digidoc::XmlConfCurrent
 public:
 	DigidocConf()
 	{
+		enableLog(Settings::LIBDIGIDOCPP_DEBUG);
 		Settings::LIBDIGIDOCPP_DEBUG = false;
+		Settings::LIBDIGIDOCPP_DEBUG.registerCallback([this](const bool &value) { enableLog(value); });
 #ifndef Q_OS_DARWIN
 		setTSLOnlineDigest(true);
 #endif
@@ -108,12 +110,12 @@ public:
 
 	int logLevel() const final
 	{
-		return debug ? 4 : digidoc::XmlConfCurrent::logLevel();
+		return log.has_value() ? 4 : digidoc::XmlConfCurrent::logLevel();
 	}
 
 	std::string logFile() const final
 	{
-		return debug ? QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()).toStdString() : digidoc::XmlConfCurrent::logFile();
+		return log.value_or(digidoc::XmlConfCurrent::logFile());
 	}
 
 	std::string proxyHost() const final
@@ -228,6 +230,14 @@ private:
 	}
 #endif
 
+	void enableLog(bool enable)
+	{
+		if(enable)
+			log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()).toStdString();
+		else
+			log.reset();
+	}
+
 	template<class T>
 	static std::string valueSystemScope(const T &key, std::string &&defaultValue)
 	{
@@ -282,7 +292,7 @@ private:
 		return certs;
 	}
 
-	bool debug = Settings::LIBDIGIDOCPP_DEBUG;
+	std::optional<std::string> log;
 };
 
 class Application::Private

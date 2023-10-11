@@ -88,7 +88,7 @@ const Option<QString, QString (*)()> Settings::LANGUAGE { QStringLiteral("Langua
 	return QStringLiteral("en");
 }};
 const Option<QString> Settings::LAST_PATH { QStringLiteral("lastPath") };
-const Option<bool> Settings::LIBDIGIDOCPP_DEBUG { QStringLiteral("LibdigidocppDebug"), false };
+Option<bool> Settings::LIBDIGIDOCPP_DEBUG { QStringLiteral("LibdigidocppDebug"), false };
 const Option<bool> Settings::SETTINGS_MIGRATED { QStringLiteral("SettingsMigrated"), false };
 const Option<bool> Settings::SHOW_INTRO { QStringLiteral("showIntro"), true };
 const Option<bool> Settings::SHOW_PRINT_SUMMARY { QStringLiteral("ShowPrintSummary"), false };

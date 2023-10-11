@@ -64,6 +64,8 @@ struct Settings
 				clear();
 			else
 				QSettings().setValue(KEY, value);
+			if(f)
+				f(operator T());
 		}
 		T defaultValue() const {
 			if constexpr (std::is_invocable_v<D>)
@@ -71,8 +73,14 @@ struct Settings
 			else
 				return DEFAULT;
 		}
+		template <typename F>
+		void registerCallback(F functor)
+		{
+			f = functor;
+		}
 		const QString KEY;
 		const D DEFAULT {};
+		std::function<void (const T &value)> f;
 	};
 
 	static const Option<bool> CDOC2_DEFAULT;
@@ -114,7 +122,7 @@ struct Settings
 	static const Option<QString> DEFAULT_DIR;
 	static const Option<QString, QString (*)()> LANGUAGE;
 	static const Option<QString> LAST_PATH;
-	static const Option<bool> LIBDIGIDOCPP_DEBUG;
+	static Option<bool> LIBDIGIDOCPP_DEBUG;
 	static const Option<bool> SETTINGS_MIGRATED;
 	static const Option<bool> SHOW_INTRO;
 	static const Option<bool> SHOW_PRINT_SUMMARY;
