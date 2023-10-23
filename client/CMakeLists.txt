@@ -29,37 +29,41 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	fonts/fonts.qrc
 	${CMAKE_CURRENT_BINARY_DIR}/tr.qrc
 	${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc
+	common_enums.h
 	main.cpp
 	Application.cpp
 	Application.h
-	CheckConnection.cpp
-	CheckConnection.h
 	CDoc1.cpp
 	CDoc1.h
 	CDoc2.cpp
 	CDoc2.h
+	CheckConnection.cpp
+	CheckConnection.h
+	Colors.h
 	Crypto.cpp
 	Crypto.h
 	CryptoDoc.cpp
 	CryptoDoc.h
 	DateTime.cpp
 	DateTime.h
-	DigiDoc.cpp
-	DigiDoc.h
 	Diagnostics.cpp
 	Diagnostics.h
 	DiagnosticsTask.cpp
 	DiagnosticsTask.h
+	DigiDoc.cpp
+	DigiDoc.h
 	DocumentModel.cpp
 	DocumentModel.h
 	IKValidator.cpp
 	IKValidator.h
+	LdapSearch.cpp
+	LdapSearch.h
 	MainWindow.cpp
 	MainWindow_MyEID.cpp
 	MainWindow.h
 	MainWindow.ui
-	LdapSearch.cpp
-	LdapSearch.h
+	PrintSheet.cpp
+	PrintSheet.h
 	QCardLock.cpp
 	QCardLock.h
 	QCryptoBackend.cpp
@@ -69,17 +73,17 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QSigner.cpp
 	QSigner.h
 	QSmartCard.cpp
+	QSmartCard_p.h
 	QSmartCard.h
-	Styles.cpp
-	Styles.h
-	PrintSheet.cpp
-	PrintSheet.h
 	Settings.cpp
 	Settings.h
 	SslCertificate.cpp
 	SslCertificate.h
+	Styles.cpp
+	Styles.h
 	TokenData.cpp
 	TokenData.h
+	Utils.h
 )
 
 target_link_libraries(${PROJECT_NAME}
