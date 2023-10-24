@@ -920,8 +920,8 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	// Required for restoring minimized window on macOS
 	w->setWindowState(Qt::WindowActive);
 #endif
-	w->activateWindow();
 	w->show();
+	w->activateWindow();
 	w->raise();
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
