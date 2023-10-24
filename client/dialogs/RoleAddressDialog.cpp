@@ -90,7 +90,7 @@ int RoleAddressDialog::get(QString &city, QString &country, QString &state, QStr
 {
 	if(!Settings::SHOW_ROLE_ADDRESS_INFO)
 		return QDialog::Accepted;
-	new Overlay(this, parentWidget());
+	new Overlay(this);
 	int result = QDialog::exec();
 	if(result == QDialog::Rejected)
 		return result;

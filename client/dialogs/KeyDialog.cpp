@@ -38,7 +38,7 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 #endif
 	setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	setAttribute(Qt::WA_DeleteOnClose);
-	new Overlay(this, parent);
+	new Overlay(this);
 
 	QFont condensed = Styles::font(Styles::Condensed, 12);
 	QFont regular = Styles::font(Styles::Regular, 14);

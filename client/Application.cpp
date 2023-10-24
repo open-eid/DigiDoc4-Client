@@ -38,6 +38,7 @@ class MacMenuBar {};
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
+#include "effects/Overlay.h"
 
 #include <common/Configuration.h>
 
@@ -336,7 +337,7 @@ Application::Application( int &argc, char **argv )
 	QTimer::singleShot(0, this, [this] {
 		auto lessThanVersion = [](QLatin1String key) {
 			return QVersionNumber::fromString(applicationVersion()) <
-				   QVersionNumber::fromString(confValue(key).toString());
+				QVersionNumber::fromString(confValue(key).toString());
 		};
 		WarningDialog *dlg{};
 		if(lessThanVersion(QLatin1String("QDIGIDOC4-UNSUPPORTED")))
@@ -357,13 +358,17 @@ Application::Application( int &argc, char **argv )
 				"macOS users can download the latest ID-software version from the "
 				"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 		}
-		connect(d->conf, &Configuration::finished, this, [&](bool changed, const QString &){
+		connect(d->conf, &Configuration::finished, this, [lessThanVersion](bool changed, const QString &){
 			if(changed && lessThanVersion(QLatin1String("QDIGIDOC4-LATEST")))
-				dlg = WarningDialog::show(tr(
+			{
+				auto dlg = new WarningDialog(tr(
 					"An ID-software update has been found. To download the update, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the update from the "
-					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
+					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."), activeWindow());
+				new Overlay(dlg, activeWindow());
+				dlg->exec();
+			}
 		});
 #ifdef Q_OS_WIN
 		if(dlg)
@@ -430,22 +435,7 @@ Application::Application( int &argc, char **argv )
 	{
 		digidoc::Conf::init( new DigidocConf );
 		d->signer = new QSigner(this);
-		QString cache = confValue(TSLCache).toString();
-		QDir().mkpath( cache );
-		QDateTime tslTime = QDateTime::currentDateTimeUtc().addDays(-7);
-		for(const QString &file: QDir(QStringLiteral(":/TSL/")).entryList())
-		{
-			QFile tl(cache + "/" + file);
-			if(!tl.exists() ||
-				readTSLVersion(":/TSL/" + file) > readTSLVersion(tl.fileName()))
-			{
-				tl.remove();
-				QFile::copy(":/TSL/" + file, tl.fileName());
-				tl.setPermissions(QFile::Permissions(0x6444));
-				if(tl.open(QFile::Append))
-					tl.setFileTime(tslTime, QFileDevice::FileModificationTime);
-			}
-		}
+		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
 		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
 			.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8().constData(),
@@ -955,6 +945,27 @@ void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 }
 
 QSigner* Application::signer() const { return d->signer; }
+
+void Application::updateTSLCache(const QDateTime &tslTime)
+{
+	QString cache = confValue(Application::TSLCache).toString();
+	QDir().mkpath(cache);
+	const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
+	for(const QString &file: tsllist)
+	{
+		if(QFile tl(cache + "/" + file);
+			Application::readTSLVersion(":/TSL/" + file) > Application::readTSLVersion(tl.fileName()))
+		{
+			const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
+			for(const QString &rm: cleanup)
+				QFile::remove(cache + "/" + rm);
+			QFile::copy(":/TSL/" + file, tl.fileName());
+			tl.setPermissions(QFile::Permissions(0x6444));
+			if(tslTime.isValid() && tl.open(QFile::Append))
+				tl.setFileTime(tslTime, QFileDevice::FileModificationTime);
+		}
+	}
+}
 
 void Application::waitForTSL( const QString &file )
 {

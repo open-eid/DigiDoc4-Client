@@ -32,7 +32,7 @@ WaitDialog::WaitDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::WaitDialog)
 {
-	new Overlay(this, parent);
+	new Overlay(this);
 	setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
 	ui->setupUi(this);
 	ui->movie->load(QStringLiteral(":/images/wait.svg"));

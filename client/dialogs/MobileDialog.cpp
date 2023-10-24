@@ -30,7 +30,7 @@ MobileDialog::MobileDialog(QWidget *parent) :
 	ui(new Ui::MobileDialog)
 {
 	static const QStringList countryCodes {QStringLiteral("372"), QStringLiteral("370")};
-	new Overlay(this, parent);
+	new Overlay(this);
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	setFixedSize(size());

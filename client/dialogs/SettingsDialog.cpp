@@ -60,7 +60,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SettingsDialog)
 {
-	new Overlay(this, parent);
+	new Overlay(this);
 
 	ui->setupUi(this);
 	setWindowFlag(Qt::FramelessWindowHint);
@@ -196,7 +196,8 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
 		}
-		WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
+		auto dlg = WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
+		new Overlay(dlg);
 #ifdef Q_OS_WIN
 		QString path = QApplication::applicationDirPath() + QLatin1String("/id-updater.exe");
 		if (QFile::exists(path))
@@ -210,7 +211,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 
 	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
 	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
-		FirstRun *dlg = new FirstRun(this);
+		auto *dlg = new FirstRun(this);
 		connect(dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
 			retranslate(lang);
 			selectLanguage();
@@ -221,21 +222,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef CONFIG_URL
 		qApp->conf()->update(true);
 #endif
-		QString cache = Application::confValue(Application::TSLCache).toString();
-		const QStringList tsllist = QDir(QStringLiteral(":/TSL/")).entryList();
-		for(const QString &file: tsllist)
-		{
-			if(const QString target = cache + "/" + file;
-				!QFile::exists(target) ||
-				Application::readTSLVersion(":/TSL/" + file) > Application::readTSLVersion(target))
-			{
-				const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
-				for(const QString &rm: cleanup)
-					QFile::remove(cache + "/" + rm);
-				QFile::copy(":/TSL/" + file, target);
-				QFile::setPermissions(target, QFile::Permissions(0x6444));
-			}
-		}
+		Application::updateTSLCache({});
 	});
 	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
 	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, [=]{
