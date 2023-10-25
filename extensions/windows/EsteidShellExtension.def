@@ -1,0 +1,10 @@
+; EsteidShellExtension.def : Declares the module parameters.
+
+LIBRARY      "EsteidShellExtension.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE
+	DllInstall		PRIVATE

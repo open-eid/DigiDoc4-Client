@@ -1,0 +1,23 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {5606A547-759D-43DA-AEEB-D3BF1D1E816D} = s 'EsteidShlExt Class'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove *
+	{
+		NoRemove ShellEx
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove EsteidShlExt = s '{5606A547-759D-43DA-AEEB-D3BF1D1E816D}'
+			}
+		}
+	}
+}
