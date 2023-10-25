@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QSettings>
 
 template<typename T>
@@ -30,7 +31,7 @@ struct Settings
 	struct Option
 	{
 		operator QVariant() const {
-			return QSettings().value(KEY, defaultValue());
+			return settings().value(KEY, defaultValue());
 		}
 		operator T() const {
 			return operator QVariant().template value<T>();
@@ -52,11 +53,14 @@ struct Settings
 		void clear() const {
 			QSettings().remove(KEY);
 		}
+		bool isLocked() const {
+			return settings(QSettings::SystemScope).value(KEY + QLatin1String("_LOCK"), false).toBool();
+		}
 		bool isSet() const {
 			return QSettings().contains(KEY);
 		}
 		T value(const QVariant &def) const {
-			return QSettings().value(KEY, def).template value<T>();
+			return settings().value(KEY, def).template value<T>();
 		}
 		void setValue(const QVariant &value, const QVariant &def = {}) const {
 			if(bool valueIsNullOrEmpty = value.type() == QVariant::String ? value.toString().isEmpty() : value.isNull();
@@ -77,6 +81,16 @@ struct Settings
 		void registerCallback(F functor)
 		{
 			f = functor;
+		}
+		QSettings settings() const {
+			return settings(isLocked() ? QSettings::SystemScope : QSettings::UserScope);
+		}
+		static QSettings settings(QSettings::Scope scope) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+			return QSettings(scope);
+#else
+			return QSettings(scope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
+#endif
 		}
 		const QString KEY;
 		const D DEFAULT {};

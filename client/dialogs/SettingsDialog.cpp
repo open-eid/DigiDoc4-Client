@@ -241,8 +241,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 		QList<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
-		const QList<QSslCertificate> certificates = s.list();
-		for(const QSslCertificate &c: certificates)
+		for(const QSslCertificate &c: s.list())
 		{
 			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == c; }))
 				continue;
@@ -418,16 +417,21 @@ void SettingsDialog::initFunctionality()
 	updateProxy();
 
 	// pageServices - TimeStamp
+	ui->rdTimeStampDefault->setDisabled(Settings::TSA_URL_CUSTOM.isLocked());
+	ui->rdTimeStampCustom->setEnabled(ui->rdTimeStampDefault->isEnabled());
+	ui->rdTimeStampCustom->setChecked(Settings::TSA_URL_CUSTOM);
+	ui->txtTimeStamp->setReadOnly(Settings::TSA_URL.isLocked());
+	ui->txtTimeStamp->setEnabled(ui->rdTimeStampCustom->isChecked());
+	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
+	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
+	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
+	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
+	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
 		ui->txtTimeStamp->setEnabled(checked);
 		ui->wgtTSACert->setVisible(checked);
 		Settings::TSA_URL_CUSTOM = checked;
 	});
-	ui->rdTimeStampCustom->setChecked(Settings::TSA_URL_CUSTOM);
-	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
-	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
-	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
-	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
 		Application::setConfValue(Application::TSAUrl, url);
 		if(url.isEmpty())
@@ -450,13 +454,17 @@ void SettingsDialog::initFunctionality()
 	updateTSACert(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT), QSsl::Der));
 
 	// pageServices - MID
+	ui->rdMIDUUIDDefault->setDisabled(Settings::MID_UUID_CUSTOM.isLocked());
+	ui->rdMIDUUIDCustom->setEnabled(ui->rdMIDUUIDDefault->isEnabled());
+	ui->rdMIDUUIDCustom->setChecked(Settings::MID_UUID_CUSTOM);
+	ui->txtMIDUUID->setReadOnly(Settings::MID_UUID.isLocked());
+	ui->txtMIDUUID->setEnabled(ui->rdMIDUUIDCustom->isChecked());
+	ui->txtMIDUUID->setText(Settings::MID_UUID);
 	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
 		ui->txtMIDUUID->setEnabled(checked);
 		Settings::MID_UUID_CUSTOM = checked;
 		Settings::SID_UUID_CUSTOM = checked;
 	});
-	ui->rdMIDUUIDCustom->setChecked(Settings::MID_UUID_CUSTOM);
-	ui->txtMIDUUID->setText(Settings::MID_UUID);
 	connect(ui->txtMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
 		Settings::MID_UUID = text;
 		Settings::SID_UUID = text;
@@ -466,16 +474,21 @@ void SettingsDialog::initFunctionality()
 	});
 
 	// pageValidation - SiVa
+	ui->rdSiVaDefault->setDisabled(Settings::SIVA_URL_CUSTOM.isLocked());
+	ui->rdSiVaCustom->setEnabled(ui->rdSiVaDefault->isEnabled());
+	ui->rdSiVaCustom->setChecked(Settings::SIVA_URL_CUSTOM);
+	ui->txtSiVa->setReadOnly(Settings::SIVA_URL.isLocked());
+	ui->txtSiVa->setEnabled(ui->rdSiVaCustom->isChecked());
+	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
+	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
+	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : SIVA_URL);
+	ui->wgtSiVaCert->setDisabled(Settings::SIVA_CERT.isLocked());
+	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
 	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
 		ui->txtSiVa->setEnabled(checked);
 		ui->wgtSiVaCert->setVisible(checked);
 		Settings::SIVA_URL_CUSTOM = checked;
 	});
-	ui->rdSiVaCustom->setChecked(Settings::SIVA_URL_CUSTOM);
-	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
-	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
-	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
-	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : SIVA_URL);
 	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
 		Application::setConfValue(Application::SiVaUrl, url);
 		if(url.isEmpty())
@@ -689,9 +702,12 @@ void SettingsDialog::saveFile(const QString &name, const QString &path)
 
 void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 {
-	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_%4")
-		.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation), QApplication::applicationName(), QApplication::applicationVersion(), name),
-		tr("Text files (*.txt)") );
+	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_%4").arg(
+		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+		QApplication::applicationName(),
+		QApplication::applicationVersion(),
+		name),
+		tr("Text files (*.txt)"));
 	if( filename.isEmpty() )
 		return;
 	if(QFile f(filename); !f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
