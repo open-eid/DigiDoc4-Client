@@ -20,10 +20,11 @@ Package: qdigidoc4
 Architecture: any
 Depends:
  opensc-pkcs11,
- python3-nautilus|python-nautilus,
  qt6-qpa-plugins | libqt5gui5,
  ${shlibs:Depends},
  ${misc:Depends}
+Recommends:
+ python3-nautilus:amd64 | python3-nautilus:arm64 | python-nautilus
 Replaces:
  qdigidoc (<< 3.14)
 Description: Estonian digital signature application

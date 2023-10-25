@@ -64,7 +64,7 @@
 3. Configure
 
         cmake -B build -S . \
-          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.5.1-OpenSSL
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.5.3-OpenSSL
           -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
           -DLDAP_ROOT=~/cmake_build/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
@@ -93,7 +93,7 @@
 
 3. Configure
 
-        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH="C:\Qt\6.5.1\msvc2019\lib\cmake\Qt6" -B build -S .
+        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH=C:\Qt\6.5.3\msvc2019_x64  -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" -B build -S .
 
 4. Build
 
