@@ -98,13 +98,13 @@ namespace cdoc20 {
 		{
 			if(io->isReadable())
 			{
-				inflateInit2(&s, MAX_WBITS);
-				open(QIODevice::ReadOnly);
+				if(inflateInit2(&s, MAX_WBITS) == Z_OK)
+					open(QIODevice::ReadOnly);
 			}
 			if(io->isWritable())
 			{
-				deflateInit(&s, Z_DEFAULT_COMPRESSION);
-				open(QIODevice::WriteOnly);
+				if(deflateInit(&s, Z_DEFAULT_COMPRESSION) == Z_OK)
+					open(QIODevice::WriteOnly);
 			}
 		}
 

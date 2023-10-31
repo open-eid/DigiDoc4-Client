@@ -49,7 +49,7 @@ public:
 	};
 
 	static QByteArray aes_wrap(const QByteArray &key, const QByteArray &data, bool encrypt);
-	static QByteArray cipher(const EVP_CIPHER *cipher, const QByteArray &key, const QByteArray &data, bool encrypt);
+	static QByteArray cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByteArray &data, bool encrypt);
 	static QByteArray curve_oid(EVP_PKEY *key);
 	static QByteArray concatKDF(QCryptographicHash::Algorithm digestMethod,
 		quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);

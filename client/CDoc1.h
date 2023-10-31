@@ -48,8 +48,8 @@ private:
 	static void readXML(QIODevice *io, const std::function<void (QXmlStreamReader &)> &f);
 	static void writeAttributes(QXmlStreamWriter &x, const QMap<QString,QString> &attrs);
 	static void writeBase64Element(QXmlStreamWriter &x, const QString &ns, const QString &name, const QByteArray &data);
-	static void writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, const std::function<void()> &f = {});
-	static void writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, const QMap<QString,QString> &attrs, const std::function<void()> &f = {});
+	static void writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, std::function<void ()> &&f = {});
+	static void writeElement(QXmlStreamWriter &x, const QString &ns, const QString &name, const QMap<QString,QString> &attrs, std::function<void ()> &&f = {});
 
 	QString method, mime;
 	QHash<QString,QString> properties;
