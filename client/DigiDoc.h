@@ -49,6 +49,7 @@ public:
 
 	QSslCertificate	cert() const;
 	QDateTime	claimedTime() const;
+	const DigiDoc *container() const;
 	bool		isInvalid() const;
 	QString		lastError() const;
 	QString		location() const;
@@ -56,7 +57,6 @@ public:
 	QByteArray	messageImprint() const;
 	QSslCertificate ocspCert() const;
 	QDateTime	ocspTime() const;
-	const DigiDoc *parent() const;
 	QString		policy() const;
 	QString		profile() const;
 	QString		role() const;
@@ -73,9 +73,8 @@ public:
 	int warning() const;
 
 private:
-	void setLastError(const digidoc::Exception &e);
-	void parseException(SignatureStatus &result, const digidoc::Exception &e);
-	SignatureStatus validate();
+	SignatureStatus status(const digidoc::Exception &e);
+	SignatureStatus validate(bool qscd = true);
 	static QSslCertificate toCertificate(const std::vector<unsigned char> &der) ;
 	static QDateTime toTime(const std::string &time) ;
 
