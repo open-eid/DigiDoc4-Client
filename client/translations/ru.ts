@@ -1814,8 +1814,8 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Откройте приложение Smart-ID на смарт-устройстве и подтвердите это устройство для подписывания.</translation>
     </message>
     <message>
-        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>С этого IP-адреса превышен месячный лимит бесплатных подписей %1. &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Подробнее читайте здесь&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Ваш месячный лимит бесплатных подписей для %1 превышен. &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Подробнее читайте здесь&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>
