@@ -1813,8 +1813,8 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Open the Smart-ID application on your smart device and confirm device for signing.</translation>
     </message>
     <message>
-        <source>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>The limit for %1 digital signatures per month has been reached for this IP address. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
+        <source>The limit for %1 digital signatures per month has been reached. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>The limit for %1 digital signatures per month has been reached. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Please include correct country code.</source>

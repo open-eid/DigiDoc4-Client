@@ -139,7 +139,7 @@ background-color: #007aff;
 			case 409:
 				return returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
 			case 429:
-				return returnError(tr("The limit for %1 digital signatures per month has been reached for this IP address. "
+				return returnError(tr("The limit for %1 digital signatures per month has been reached. "
 					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("mobile-ID")));
 			case 580:
 				return returnError(tr("Failed to send request. A valid session is associated with this personal code. "
