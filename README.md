@@ -26,7 +26,7 @@
          # Ubuntu
          sudo apt install cmake qt6-tools-dev libqt6core5compat6-dev libqt6svg6-dev libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config
          # Fedora
-         sudo dnf install qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel pcsc-lite-devel openssl-devel libdigidocpp openldap-devel gettext pkg-config
+         sudo dnf install qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel pcsc-lite-devel openssl-devel libdigidocpp openldap-devel gettext pkg-config flatbuffers-devel flatbuffers-compiler
 
    * Also runtime dependency opensc-pkcs11 and pcscd is needed
 
