@@ -692,12 +692,16 @@ bool CDoc2::save(const QString &path)
 		file.remove();
 		return false;
 	}
-	file.write(enc.resultTAG());
 	if(!enc.result())
 	{
 		file.remove();
 		return false;
 	}
+	QByteArray tag = enc.tag();
+#ifndef NDEBUG
+	qDebug() << "tag" << tag.toHex();
+#endif
+	file.write(tag);
 	return true;
 }
 

@@ -45,7 +45,8 @@ public:
 		QByteArray update(const QByteArray &data) const;
 		bool update(char *data, int size) const;
 		bool result() const;
-		QByteArray resultTAG() const;
+		QByteArray tag() const;
+		static constexpr int tagLen() { return 16; }
 	};
 
 	static QByteArray aes_wrap(const QByteArray &key, const QByteArray &data, bool encrypt);
