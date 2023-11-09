@@ -3288,6 +3288,10 @@ Additional licenses and components</translation>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</translation>
     </message>
+    <message>
+        <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
+        <translation>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</translation>
+    </message>
 </context>
 <context>
     <name>WarningRibbon</name>

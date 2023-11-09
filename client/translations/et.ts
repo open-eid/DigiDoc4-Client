@@ -3286,7 +3286,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
-        <translation>Tegemist on XAdES allkirja sisalduva ASiC-S ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
+        <translation>Tegemist on XAdES allkirja sisaldava ASiC-S ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
+    </message>
+    <message>
+        <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
+        <translation>Tegemist on CAdES allkirja sisaldava ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
     </message>
 </context>
 <context>

@@ -141,8 +141,16 @@ void WarningItem::lookupWarning()
 		warnText.details = tr("More information");
 		warnText.page = ria::qdigidoc4::SignDetails;
 		break;
+	case ria::qdigidoc4::UnsupportedAsicCadesWarning:
+		warnText.text = tr("This container contains CAdES signature. "
+			"You are not allowed to add or remove signatures to this container.");
+		warnText.url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
+		warnText.details = tr("More information");
+		warnText.page = ria::qdigidoc4::SignDetails;
+		break;
 	case ria::qdigidoc4::UnsupportedDDocWarning:
-		warnText.text = tr("The current file is a DigiDoc container that is not supported officially any longer. You are not allowed to add or remove signatures to this container.");
+		warnText.text = tr("The current file is a DigiDoc container that is not supported officially any longer. "
+			"You are not allowed to add or remove signatures to this container.");
 		warnText.url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
 		warnText.details = tr("More information");
 		warnText.page = ria::qdigidoc4::SignDetails;
