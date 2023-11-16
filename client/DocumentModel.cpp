@@ -39,11 +39,9 @@ void DocumentModel::addTempFiles(const QStringList &files)
 QStringList DocumentModel::tempFiles() const
 {
 	QStringList copied;
-	int rows = rowCount();
-	for(int i = 0; i < rows; ++i)
+	for(int i = 0, rows = rowCount(); i < rows; ++i)
 	{
-		QFileInfo f(save(i, FileDialog::tempPath(data(i))));
-		if(f.exists())
+		if(QFileInfo f(save(i, FileDialog::tempPath(data(i)))); f.exists())
 			copied.append(f.absoluteFilePath());
 	}
 	return copied;
@@ -59,10 +57,10 @@ bool DocumentModel::verifyFile(const QString &f)
 			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff"), QStringLiteral("csv")};
 
 	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
-	if(!allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower()))){
-		WarningDialog::show(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))->setCancelText(WarningDialog::OK);
-		return false;
-	}
-
-	return true;
+	if(allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower())))
+		return true;
+	auto *dlg = new WarningDialog(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."));
+	dlg->setCancelText(WarningDialog::OK);
+	dlg->open();
+	return false;
 }

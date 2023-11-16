@@ -460,8 +460,8 @@ Application::Application( int &argc, char **argv )
 #ifdef Q_OS_MAC
 		if(!Settings::PLUGINS.isSet())
 		{
-			auto *dlg = WarningDialog::show(tr(
-				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
+			auto *dlg = new WarningDialog(tr(
+				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), mainWindow());
 			dlg->setCancelText(tr("Ignore forever").toUpper());
 			dlg->addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
 			dlg->addButton(tr("Install").toUpper(), QMessageBox::Open);
@@ -473,6 +473,7 @@ Application::Application( int &argc, char **argv )
 				default: Settings::PLUGINS = QStringLiteral("ignore");
 				}
 			});
+			dlg->open();
 		}
 #endif
 		if(Settings::SHOW_INTRO)

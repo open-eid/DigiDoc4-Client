@@ -30,6 +30,7 @@
 #include <QtGui/QFontMetrics>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QTextDocument>
+#include <QtWidgets/QMessageBox>
 #include <QSvgWidget>
 
 using namespace ria::qdigidoc4;
@@ -62,9 +63,21 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidg
 	ui->role->installEventFilter(this);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White, {}, 0);
+	ui->remove->init(LabelButton::White);
 	ui->remove->setVisible(ui->signature.container()->isSupported());
-	connect(ui->remove, &LabelButton::clicked, this, &SignatureItem::removeSignature);
+	connect(ui->remove, &LabelButton::clicked, this, [this]{
+		const SslCertificate c = ui->signature.cert();
+		auto *dlg = new WarningDialog(tr("Remove signature %1?")
+			.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber"))), this);
+		dlg->setCancelText(WarningDialog::Cancel);
+		dlg->resetCancelStyle();
+		dlg->addButton(WarningDialog::OK, QMessageBox::Ok, true);
+		connect(dlg, &WarningDialog::finished, this, [this](int result) {
+			if(result == QMessageBox::Ok)
+				emit remove(this);
+		});
+		dlg->open();
+	});
 	init();
 }
 
@@ -192,22 +205,6 @@ bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileC
 QWidget* SignatureItem::lastTabWidget()
 {
 	return ui->remove;
-}
-
-void SignatureItem::removeSignature()
-{
-	const SslCertificate c = ui->signature.cert();
-	QString msg = tr("Remove signature %1?")
-		.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")));
-
-	auto *dlg = WarningDialog::show(this, msg);
-	dlg->setCancelText(WarningDialog::Cancel);
-	dlg->resetCancelStyle();
-	dlg->addButton(WarningDialog::OK, SignatureRemove, true);
-	connect(dlg, &WarningDialog::finished, this, [this](int result) {
-		if(result == SignatureRemove)
-			emit remove(this);
-	});
 }
 
 void SignatureItem::updateNameField()

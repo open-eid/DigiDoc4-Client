@@ -203,7 +203,7 @@ void ItemList::init(ItemType item, const char *header)
 	}
 	else
 	{
-		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel(), itemType == ItemFile ? FileAdd : AddressAdd);
+		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel());
 		ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	}
 

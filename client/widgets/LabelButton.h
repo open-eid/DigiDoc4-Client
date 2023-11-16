@@ -39,7 +39,7 @@ public:
 
 	explicit LabelButton(QWidget *parent = nullptr);
 
-	void init( Style style, const QString &label, int code );
+	void init(Style style, const QString &label = {}, int code = 0);
 	void setIcons(const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int w, int h);
 
 signals:
