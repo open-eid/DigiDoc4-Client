@@ -77,12 +77,12 @@ bool Crypto::Cipher::result() const
 	return true;
 }
 
-QByteArray Crypto::Cipher::resultTAG() const
+QByteArray Crypto::Cipher::tag() const
 {
-	QByteArray result(EVP_CIPHER_CTX_block_size(ctx.get()), 0);
-	if(isError(EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_AEAD_GET_TAG, int(result.size()), result.data())))
-		result.clear();
-	return result;
+	if(QByteArray result(tagLen(), 0);
+		!isError(EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_AEAD_GET_TAG, int(result.size()), result.data())))
+		return result;
+	return {};
 }
 
 QByteArray Crypto::aes_wrap(const QByteArray &key, const QByteArray &data, bool encrypt)

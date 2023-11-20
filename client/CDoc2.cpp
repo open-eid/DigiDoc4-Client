@@ -59,7 +59,7 @@ namespace cdoc20 {
 			return true;
 		return dispatchToMain([] {
 			auto *notification = new FadeInNotification(Application::mainWindow(),
-														ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 110);
+				ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 110);
 			notification->start(QCoreApplication::translate("MainWindow", "Check internet connection"), 750, 3000, 1200);
 			return false;
 		});
@@ -206,7 +206,7 @@ namespace cdoc20 {
 				return io->write(pad) == pad.size();
 			};
 			auto toPaxRecord = [](const QByteArray &keyword, const QByteArray &value) {
-				QByteArray record = " " + keyword + "=" + value + "\n";
+				QByteArray record = ' ' + keyword + '=' + value + '\n';
 				QByteArray result;
 				for(auto len = record.size(); result.size() != len; ++len)
 					result = QByteArray::number(len + 1) + record;
@@ -241,20 +241,23 @@ namespace cdoc20 {
 				if(auto size = copyIODevice(file.data.get(), io.get()); size < 0 || !writePadding(size))
 					return false;
 			}
-			Header eof{};
-			return io->write((const char*)&eof, Header::Size) == Header::Size;
+			return io->write((const char*)&Header::Empty, Header::Size) == Header::Size &&
+				io->write((const char*)&Header::Empty, Header::Size) == Header::Size;
 		}
 
 		std::vector<CDoc::File> files(bool &warning) const
 		{
 			std::vector<CDoc::File> result;
 			Header h {};
+			auto readHeader = [&h, this] { return io->read((char*)&h, Header::Size) == Header::Size; };
 			while(io->bytesAvailable() > 0)
 			{
-				if(io->read((char*)&h, Header::Size) != Header::Size)
+				if(!readHeader())
 					return {};
 				if(h.isNull())
 				{
+					if(!readHeader() && !h.isNull())
+						return {};
 					warning = io->bytesAvailable() > 0;
 					return result;
 				}
@@ -270,7 +273,7 @@ namespace cdoc20 {
 					if(paxData.size() != f.size)
 						return {};
 					io->skip(padding(f.size));
-					if(io->read((char*)&h, Header::Size) != Header::Size || h.isNull() || !h.verify())
+					if(!readHeader() || h.isNull() || !h.verify())
 						return {};
 					f.size = fromOctal(h.size);
 					for(const QByteArray &data: paxData.split('\n'))
@@ -338,8 +341,7 @@ namespace cdoc20 {
 			}
 
 			bool isNull() {
-				static const Header zeroBlock {};
-				return memcmp(this, &zeroBlock, sizeof(Header)) == 0;
+				return memcmp(this, &Empty, sizeof(Header)) == 0;
 			}
 
 			bool verify() {
@@ -352,6 +354,7 @@ namespace cdoc20 {
 					   referenceChecksum == checkSum.second;
 			}
 
+			static const Header Empty;
 			static const int Size;
 		};
 
@@ -386,6 +389,7 @@ namespace cdoc20 {
 		}
 	};
 
+	const TAR::Header TAR::Header::Empty {};
 	const int TAR::Header::Size = int(sizeof(TAR::Header));
 }
 
@@ -688,12 +692,16 @@ bool CDoc2::save(const QString &path)
 		file.remove();
 		return false;
 	}
-	file.write(enc.resultTAG());
 	if(!enc.result())
 	{
 		file.remove();
 		return false;
 	}
+	QByteArray tag = enc.tag();
+#ifndef NDEBUG
+	qDebug() << "tag" << tag.toHex();
+#endif
+	file.write(tag);
 	return true;
 }
 
