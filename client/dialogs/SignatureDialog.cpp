@@ -173,7 +173,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 
 	addCert(t, tr("Signer's Certificate"), tr("Signer's Certificate issuer"), c);
 	addItem(t, tr("Signature method"), QUrl(s.signatureMethod()));
-	addItem(t, tr("Container format"), s.parent()->mediaType());
+	addItem(t, tr("Container format"), s.container()->mediaType());
 	addItem(t, tr("Signature format"), s.profile());
 	if( !s.policy().isEmpty() )
 	{
@@ -184,7 +184,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		else
 			addItem( t, tr("Signature policy"), s.policy() );
 	}
-	addItem(t, tr("Signed file count"), QString::number(s.parent()->documentModel()->rowCount()));
+	addItem(t, tr("Signed file count"), QString::number(s.container()->documentModel()->rowCount()));
 	addItem(t, QStringLiteral("SPUri"), QUrl(s.spuri()));
 	addTime(t, tr("Archive Timestamp"), s.tsaTime());
 	addCert(t, tr("Archive TS Certificate"), tr("Archive TS Certificate issuer"), s.tsaCert());

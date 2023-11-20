@@ -46,6 +46,27 @@ using namespace ria::qdigidoc4;
 static std::string to(const QString &str) { return str.toStdString(); }
 static QString from(const std::string &str) { return FileDialog::normalized(QString::fromStdString(str)); }
 
+struct ServiceConfirmation final: public ContainerOpenCB
+{
+	QWidget *parent = nullptr;
+	ServiceConfirmation(QWidget *_parent): parent(_parent) {}
+	bool validateOnline() const final {
+		if(!CheckConnection().check())
+			return false;
+		return dispatchToMain([this] {
+			auto *dlg = new WarningDialog(DigiDoc::tr("This type of signed document will be transmitted to the "
+				"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
+				"Read more information about transmitted data to Digital Signature Validation service from "
+				"<a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
+				"Do you want to continue?"), parent);
+			dlg->setCancelText(WarningDialog::Cancel);
+			dlg->addButton(WarningDialog::YES, ContainerSave);
+			return dlg->exec() == ContainerSave;
+		});
+	}
+	Q_DISABLE_COPY(ServiceConfirmation)
+};
+
 
 
 DigiDocSignature::DigiDocSignature(const digidoc::Signature *signature, const DigiDoc *parent, bool isTimeStamped)
@@ -63,6 +84,11 @@ QSslCertificate DigiDocSignature::cert() const
 QDateTime DigiDocSignature::claimedTime() const
 {
 	return toTime(s->claimedSigningTime());
+}
+
+const DigiDoc* DigiDocSignature::container() const
+{
+	return m_parent;
 }
 
 bool DigiDocSignature::isInvalid() const
@@ -104,10 +130,9 @@ QDateTime DigiDocSignature::ocspTime() const
 	return toTime(s->OCSPProducedAt());
 }
 
-const DigiDoc* DigiDocSignature::parent() const { return m_parent; }
-
-void DigiDocSignature::parseException(DigiDocSignature::SignatureStatus &result, const digidoc::Exception &e)
+DigiDocSignature::SignatureStatus DigiDocSignature::status(const digidoc::Exception &e)
 {
+	DigiDocSignature::SignatureStatus result = Valid;
 	for(const Exception &child: e.causes())
 	{
 		switch( child.code() )
@@ -135,8 +160,9 @@ void DigiDocSignature::parseException(DigiDocSignature::SignatureStatus &result,
 		default:
 			result = std::max( result, Invalid );
 		}
-		parseException( result, child );
+		result = std::max(result, status(child));
 	}
+	return result;
 }
 
 QString DigiDocSignature::policy() const
@@ -162,15 +188,6 @@ QStringList DigiDocSignature::roles() const
 	for(const std::string &role: s->signerRoles())
 		list.append(from(role).trimmed());
 	return list;
-}
-
-void DigiDocSignature::setLastError(const Exception &e)
-{
-	Exception::ExceptionCode code = Exception::General;
-	QStringList causes = DigiDoc::parseException(e, code);
-	m_lastError = code == Exception::OCSPBeforeTimeStamp ?
-		DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation.") :
-		causes.join('\n');
 }
 
 QString DigiDocSignature::signatureMethod() const
@@ -230,33 +247,25 @@ QDateTime DigiDocSignature::tsaTime() const
 	return toTime(s->ArchiveTimeStampTime());
 }
 
-DigiDocSignature::SignatureStatus DigiDocSignature::validate()
+DigiDocSignature::SignatureStatus DigiDocSignature::validate(bool qscd)
 {
 	if(!s)
 		return Invalid;
-	DigiDocSignature::SignatureStatus result = Valid;
 	try
 	{
-		s->validate();
-		return Valid;
+		s->validate(qscd ? digidoc::Signature::POLv2 : digidoc::Signature::POLv1);
+		return qscd ? Valid : NonQSCD;
 	}
 	catch(const Exception &e)
 	{
-		parseException(result, e);
-		setLastError(e);
+		Exception::ExceptionCode code = Exception::General;
+		QStringList causes = DigiDoc::parseException(e, code);
+		m_lastError = code == Exception::OCSPBeforeTimeStamp ?
+			DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation.") :
+			causes.join('\n');
+		auto result = status(e);
+		return qscd && result == Unknown ? validate(false) : result;
 	}
-	if(result != Unknown)
-		return result;
-	try
-	{
-		s->validate(digidoc::Signature::POLv1);
-		return NonQSCD;
-	}
-	catch(const Exception &e)
-	{
-		parseException(result, e);
-	}
-	return result;
 }
 
 int DigiDocSignature::warning() const
@@ -497,32 +506,19 @@ bool DigiDoc::open( const QString &file )
 	QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
 	if(parent == nullptr)
 		parent = Application::activeWindow();
+	ServiceConfirmation cb(parent);
 	qApp->waitForTSL( file );
 	clear();
-	auto serviceConfirmation = [parent] {
-		auto *dlg = new WarningDialog(tr("Signed document in PDF and DDOC format will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-			"Read more information about transmitted data to Digital Signature Validation service from <a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
-			"Do you want to continue?"), parent);
-		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->addButton(WarningDialog::YES, ContainerSave);
-		return dlg->exec() == ContainerSave;
-	};
-	if((file.endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive) ||
-		file.endsWith(QLatin1String(".ddoc"), Qt::CaseInsensitive)) && !serviceConfirmation())
-		return false;
-
 	try {
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		return waitFor([&] {
-			b = Container::openPtr(to(file));
+			b = Container::openPtr(to(file), &cb);
 			if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
 				b->dataFiles().size() == 1 &&
 				b->signatures().size() == 1)
 			{
 				const DataFile *f = b->dataFiles().at(0);
-				if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive)  &&
-					CheckConnection().check() &&
-					dispatchToMain(serviceConfirmation))
+				if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
 				{
 					const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
 					f->saveAs(to(tmppath));
@@ -530,7 +526,7 @@ bool DigiDoc::open( const QString &file )
 					{
 						m_tempFiles.append(tmppath);
 						try {
-							parentContainer = std::exchange(b, Container::openPtr(to(tmppath)));
+							parentContainer = std::exchange(b, Container::openPtr(to(tmppath), &cb));
 						} catch(const Exception &) {}
 					}
 				}
@@ -559,7 +555,8 @@ bool DigiDoc::open( const QString &file )
 			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection and network settings."), e);
 			break;
 		default:
-			setLastError(tr("An error occurred while opening the document."), e);
+			if(e.msg().find("Online validation disabled") == std::string::npos)
+				setLastError(tr("An error occurred while opening the document."), e);
 			break;
 		}
 	}
