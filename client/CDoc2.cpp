@@ -127,7 +127,7 @@ namespace cdoc20 {
 
 		qint64 bytesAvailable() const final
 		{
-			return io->bytesAvailable() + buf.size() + QIODevice::bytesAvailable();
+			return (io->bytesAvailable() -  Crypto::Cipher::tagLen()) + buf.size() + QIODevice::bytesAvailable();
 		}
 
 		qint64 readData(char *data, qint64 maxlen) final
@@ -137,7 +137,8 @@ namespace cdoc20 {
 			std::array<char,CHUNK> in{};
 			for(int res = Z_OK; s.avail_out > 0 && res == Z_OK;)
 			{
-				if(auto size = io->read(in.data(), in.size()); size > 0)
+				if(auto insize = io->bytesAvailable() -  Crypto::Cipher::tagLen(),
+					size = io->read(in.data(), qMin<qint64>(insize, in.size())); size > 0)
 				{
 					if(!cipher->update(in.data(), int(size)))
 						return -1;
@@ -532,6 +533,11 @@ bool CDoc2::decryptPayload(const QByteArray &fmk)
 	files = cdoc20::TAR(std::unique_ptr<QIODevice>(new cdoc20::stream(this, &dec))).files(warning);
 	if(warning)
 		setLastError(tr("CDoc contains additional payload data that is not part of content"));
+	QByteArray tag = read(16);
+#ifndef NDEBUG
+	qDebug() << "tag" << tag.toHex();
+#endif
+	dec.setTag(tag);
 	if(!dec.result())
 		files.clear();
 	return !files.empty();
