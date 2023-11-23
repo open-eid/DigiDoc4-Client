@@ -97,12 +97,10 @@ public:
 	QString data(int row) const final;
 	quint64 fileSize(int row) const final;
 	QString mime(int row) const final;
+	void open(int row) final;
 	bool removeRow(int row) final;
 	int rowCount() const final;
 	QString save(int row, const QString &path) const final;
-
-public slots:
-	void open(int row) override;
 
 private:
 	SDocumentModel(DigiDoc *container);
