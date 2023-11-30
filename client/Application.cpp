@@ -444,9 +444,7 @@ Application::Application( int &argc, char **argv )
 				Q_EMIT qApp->TSLLoadingFinished();
 				qApp->d->ready = true;
 				if(ex) {
-					dispatchToMain([ex] {
-						showWarning(tr("Failed to initalize."), *ex);
-					});
+					dispatchToMain(showWarning, tr("Failed to initalize."), *ex);
 				}
 			}
 		);
