@@ -52,7 +52,10 @@ struct ServiceConfirmation final: public ContainerOpenCB
 	ServiceConfirmation(QWidget *_parent): parent(_parent) {}
 	bool validateOnline() const final {
 		if(!CheckConnection().check())
-			return false;
+			return dispatchToMain([this] {
+				WarningDialog::show(parent, DigiDoc::tr("Connecting to SiVa server failed! Please check your internet connection and network settings."));
+				return false;
+			});
 		return dispatchToMain([this] {
 			auto *dlg = new WarningDialog(DigiDoc::tr("This type of signed document will be transmitted to the "
 				"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
@@ -60,8 +63,8 @@ struct ServiceConfirmation final: public ContainerOpenCB
 				"<a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 				"Do you want to continue?"), parent);
 			dlg->setCancelText(WarningDialog::Cancel);
-			dlg->addButton(WarningDialog::YES, ContainerSave);
-			return dlg->exec() == ContainerSave;
+			dlg->addButton(WarningDialog::YES, 1);
+			return dlg->exec() == 1;
 		});
 	}
 	Q_DISABLE_COPY(ServiceConfirmation)
