@@ -188,13 +188,17 @@ jobs:
       with:
         arch: x64
         sdk: 10.0.19041.0
+    - name: Install WiX
+      run: |
+        dotnet tool install --global wix
+        wix extension -g add WixToolset.UI.wixext
     - name: Build
       run: |
         md build/client
         copy ${{ env.RUNVCPKG_VCPKG_ROOT }}\installed\x64-windows\bin\*.dll build\client\
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
-          "-DLibDigiDocpp_ROOT=libs/libdigidocpp"
+          "-DLibDigiDocpp_ROOT=libs/PFiles64/libdigidocpp"
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
