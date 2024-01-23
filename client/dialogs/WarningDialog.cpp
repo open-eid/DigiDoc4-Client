@@ -102,6 +102,7 @@ QString WarningDialog::buttonLabel(ButtonText label)
 	case OK: return QStringLiteral("OK");
 	case Cancel: return tr("CANCEL");
 	case YES: return tr("YES");
+	default: return {};
 	}
 }
 

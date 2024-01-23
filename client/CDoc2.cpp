@@ -397,6 +397,8 @@ namespace cdoc20 {
 CDoc2::CDoc2(const QString &path)
 	: QFile(path)
 {
+	using namespace cdoc20::Recipients;
+	using namespace cdoc20::Header;
 	setLastError(QStringLiteral("Invalid CDoc 2.0 header"));
 	uint32_t header_len = 0;
 	if(!open(QFile::ReadOnly) ||
@@ -411,12 +413,12 @@ CDoc2::CDoc2(const QString &path)
 		return;
 	noncePos = pos();
 	flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t*>(header_data.data()), header_data.size());
-	if(!cdoc20::Header::VerifyHeaderBuffer(verifier))
+	if(!VerifyHeaderBuffer(verifier))
 		return;
-	const auto *header = cdoc20::Header::GetHeader(header_data.constData());
+	const auto *header = GetHeader(header_data.constData());
 	if(!header)
 		return;
-	if(header->payload_encryption_method() != cdoc20::Header::PayloadEncryptionMethod::CHACHA20POLY1305)
+	if(header->payload_encryption_method() != PayloadEncryptionMethod::CHACHA20POLY1305)
 		return;
 	const auto *recipients = header->recipients();
 	if(!recipients)
@@ -430,7 +432,7 @@ CDoc2::CDoc2(const QString &path)
 		return data ? QString::fromUtf8(data->c_str(), data->size()) : QString();
 	};
 	for(const auto *recipient: *recipients){
-		if(recipient->fmk_encryption_method() != cdoc20::Header::FMKEncryptionMethod::XOR)
+		if(recipient->fmk_encryption_method() != FMKEncryptionMethod::XOR)
 		{
 			qWarning() << "Unsupported FMK encryption method: skipping";
 			continue;
@@ -441,14 +443,12 @@ CDoc2::CDoc2(const QString &path)
 			k.cipher = toByteArray(recipient->encrypted_fmk());
 			return k;
 		};
-		using cdoc20::Recipients::Capsule;
 		switch(recipient->capsule_type())
 		{
 		case Capsule::ECCPublicKeyCapsule:
-		{
 			if(const auto *key = recipient->capsule_as_ECCPublicKeyCapsule())
 			{
-				if(key->curve() != cdoc20::Recipients::EllipticCurve::secp384r1)
+				if(key->curve() != EllipticCurve::secp384r1)
 				{
 					qWarning() << "Unsupported ECC curve: skipping";
 					continue;
@@ -458,9 +458,7 @@ CDoc2::CDoc2(const QString &path)
 				keys.append(std::move(k));
 			}
 			break;
-		}
 		case Capsule::RSAPublicKeyCapsule:
-		{
 			if(const auto *key = recipient->capsule_as_RSAPublicKeyCapsule())
 			{
 				CKey k = fillRecipient(key, true);
@@ -468,41 +466,33 @@ CDoc2::CDoc2(const QString &path)
 				keys.append(std::move(k));
 			}
 			break;
-		}
 		case Capsule::KeyServerCapsule:
-		{
-			const auto *server = recipient->capsule_as_KeyServerCapsule();
-			if(!server)
-				qWarning() << "Unsupported Key Details: skipping";
-
-			auto fillKeyServer = [&] (auto key, bool isRSA) {
-				CKey k = fillRecipient(key, isRSA);
-				k.keyserver_id = toString(server->keyserver_id());
-				k.transaction_id = toString(server->transaction_id());
-				return k;
-			};
-			switch(server->recipient_key_details_type())
+			if(const auto *server = recipient->capsule_as_KeyServerCapsule())
 			{
-			case cdoc20::Recipients::ServerDetailsUnion::ServerEccDetails:
-			{
-				if(const auto *eccDetails = server->recipient_key_details_as_ServerEccDetails())
+				auto fillKeyServer = [&] (auto key, bool isRSA) {
+					CKey k = fillRecipient(key, isRSA);
+					k.keyserver_id = toString(server->keyserver_id());
+					k.transaction_id = toString(server->transaction_id());
+					return k;
+				};
+				switch(server->recipient_key_details_type())
 				{
-					if(eccDetails->curve() == cdoc20::Recipients::EllipticCurve::secp384r1)
-						keys.append(fillKeyServer(eccDetails, false));
+				case ServerDetailsUnion::ServerEccDetails:
+					if(const auto *eccDetails = server->recipient_key_details_as_ServerEccDetails())
+					{
+						if(eccDetails->curve() == EllipticCurve::secp384r1)
+							keys.append(fillKeyServer(eccDetails, false));
+					}
+					break;
+				case ServerDetailsUnion::ServerRsaDetails:
+					if(const auto *rsaDetails = server->recipient_key_details_as_ServerRsaDetails())
+						keys.append(fillKeyServer(rsaDetails, true));
+					break;
+				default:
+					qWarning() << "Unsupported Key Server Details: skipping";
 				}
-				break;
-			}
-			case cdoc20::Recipients::ServerDetailsUnion::ServerRsaDetails:
-			{
-				if(const auto *rsaDetails = server->recipient_key_details_as_ServerRsaDetails())
-					keys.append(fillKeyServer(rsaDetails, true));
-				break;
-			}
-			default:
-				qWarning() << "Unsupported Key Server Details: skipping";
 			}
 			break;
-		}
 		default:
 			qWarning() << "Unsupported Key Details: skipping";
 		}
