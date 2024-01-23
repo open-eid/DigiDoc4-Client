@@ -1,0 +1,37 @@
+# Translation template for qdigidoc package.
+# This file is distributed under the same license as the qdigidoc package.
+# Erkko Kebbinau <erkko@smartlink.ee>, 2010.
+# Sander Lepik <sander@lepik.eu>, 2014.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-25 15:51+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: nautilus-qdigidoc.py:74
+msgid "Sign selected file with DigiDoc4 Client"
+msgid_plural "Sign selected files with DigiDoc4 Client"
+msgstr[0] ""
+msgstr[1] ""
+
+#: nautilus-qdigidoc.py:77
+msgid "Sign digitally"
+msgstr ""
+
+msgid "Encrypt selected file with DigiDoc4 Client"
+msgid_plural "Encrypt selected files with DigiDoc4 Client"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Encrypt files"
+msgstr ""
