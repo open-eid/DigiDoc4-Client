@@ -4,7 +4,6 @@ permissions:
   contents: read
 env:
   BUILD_NUMBER: ${{ github.run_number }}
-  MAKEFLAGS: -j3
 jobs:
   macos:
     name: Build on macOS
@@ -106,8 +105,6 @@ jobs:
     strategy:
       matrix:
         container: ['fedora:37', 'fedora:38']
-    env:
-      MAKEFLAGS: -j3
     steps:
     - name: Install Deps
       run: |
@@ -172,12 +169,12 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: 6a349fe1fbea1e5fcda2e0775f555d829a5e82df
+        vcpkgGitCommitId: 18b028fe785e707265fa0e35590b7537ae1d12ea
         vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.5.3
+        version: 6.6.1
         arch: win64_msvc2019_64
         modules: qt5compat
     - name: Setup dev env

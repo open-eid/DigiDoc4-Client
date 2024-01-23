@@ -10,6 +10,9 @@ Build-Depends:
  libldap2-dev,
  libpcsclite-dev,
  libssl-dev,
+ libflatbuffers-dev,
+ flatbuffers-compiler-dev,
+ zlib1g-dev,
  qt6-tools-dev | qttools5-dev,
  qt6-l10n-tools | qttools5-dev-tools,
  libqt6svg6-dev | libqt5svg5-dev
