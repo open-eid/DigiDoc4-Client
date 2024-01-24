@@ -24,6 +24,7 @@
 #include <QDialog>
 
 namespace Ui { class CertificateHistory; }
+class SslCertificate;
 
 class HistoryCertData
 {
@@ -33,8 +34,28 @@ public:
 	QString issuer;
 	QString expireDate;
 
+	static QString toType(const SslCertificate &cert);
+
 	bool operator==(const HistoryCertData& other) const;
 	QString typeName() const;
+};
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+class HistoryList: public QVector<HistoryCertData>
+#else
+class HistoryList: public QList<HistoryCertData>
+#endif
+{
+public:
+	HistoryList();
+
+	void addAndSave(const QList<SslCertificate> &data);
+	void removeAndSave(const QList<HistoryCertData> &data);
+
+private:
+	void save();
+
+	QString path;
 };
 
 
@@ -51,17 +72,16 @@ public:
 		Other = 3
 	};
 
-	CertificateHistory(QList<HistoryCertData>& historyCertData, QWidget *parent = nullptr);
+	CertificateHistory(HistoryList &historyCertData, QWidget *parent = nullptr);
 	~CertificateHistory();
 
 signals:
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
-	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
 private:
 	void fillView();
 	QList<HistoryCertData> selectedItems() const;
 
 	Ui::CertificateHistory *ui;
-	QList<HistoryCertData> &historyCertData;
+	HistoryList &historyCertData;
 };
