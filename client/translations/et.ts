@@ -202,7 +202,7 @@
     </message>
     <message>
         <source>In order to authenticate and sign in e-services with an ID-card you need to install the web browser components.</source>
-        <translation>ID-kaardiga e-teenustes autentimiseks ja allkirjastamiseks on vajalik paidaldada ka veebilehitseja komponendid.</translation>
+        <translation>ID-kaardiga e-teenustes autentimiseks ja allkirjastamiseks on vajalik paigaldada ka veebilehitseja komponendid.</translation>
     </message>
     <message>
         <source>Install</source>

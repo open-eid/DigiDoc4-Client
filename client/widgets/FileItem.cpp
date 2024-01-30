@@ -31,9 +31,9 @@ FileItem::FileItem(QString file, ContainerState state, QWidget *parent)
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
 	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"), QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
-	ui->download->init(LabelButton::White, {}, 0);
+	ui->download->init(LabelButton::White);
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"), QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White, {}, 0);
+	ui->remove->init(LabelButton::White);
 
 	stateChange(state);
 

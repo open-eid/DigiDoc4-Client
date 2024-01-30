@@ -990,7 +990,7 @@ void MainWindow::removeSignature(int index)
 	if(!digiDoc)
 		return;
 	WaitDialogHolder waitDialog(this, tr("Removing signature"));
-	digiDoc->removeSignature(index);
+	digiDoc->removeSignature(unsigned(index));
 	save();
 	ui->signContainerPage->transition(digiDoc);
 	adjustDrops();
@@ -1030,15 +1030,17 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	if(std::none_of(files.cbegin(), files.cend(),
 			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
-	WarningDialog::show(this, tr("Cannot add container to same container\n%1")
-		.arg(FileDialog::normalized(container)))->setCancelText(WarningDialog::Cancel);
+	auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
+		.arg(FileDialog::normalized(container)), this);
+	dlg->setCancelText(WarningDialog::Cancel);
+	dlg->open();
 	return false;
 }
 
 void MainWindow::warningClicked(const QString &link)
 {
 	if(link == QLatin1String("#unblock-PIN1"))
-		ui->accordion->changePin1Clicked (false, true);
+		ui->accordion->changePin1Clicked(false, true);
 	else if(link == QLatin1String("#unblock-PIN2"))
 		ui->accordion->changePin2Clicked (false, true);
 	else if(link.startsWith(QLatin1String("http")))
