@@ -94,7 +94,7 @@ struct Settings
 		}
 		const QString KEY;
 		const D DEFAULT {};
-		std::function<void (const T &value)> f;
+		std::function<void (const T &value)> f {};
 	};
 
 	static const Option<bool> CDOC2_DEFAULT;

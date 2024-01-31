@@ -35,10 +35,8 @@ void Diagnostics::generalInfo(QTextStream &s)
 #ifdef CONFIG_URL
 		<< "<br />CONFIG_URL: " << CONFIG_URL
 #endif
-		<< "<br />SID-PROXY-URL: " << Application::confValue(QLatin1String("SID-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-PROXY-URL: " << Application::confValue(QLatin1String("SIDV2-PROXY-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SID-SK-URL: " << Application::confValue(QLatin1String("SID-SK-URL")).toString(QStringLiteral(SMARTID_URL))
-		<< "<br />SIDV2-SK-URL: " << Application::confValue(QLatin1String("SIDV2-SK-URL")).toString(QStringLiteral(SMARTID_URL))
+		<< "<br />SIDV2-PROXY-URL: " << Settings::SID_PROXY_URL
+		<< "<br />SIDV2-SK-URL: " << Settings::SID_SK_URL
 		<< "<br />MID-PROXY-URL: " << Settings::MID_PROXY_URL
 		<< "<br />MID-SK-URL: " << Settings::MID_SK_URL
 		<< "<br />RPUUID: " << (Settings::MID_UUID_CUSTOM ? tr("is set manually") : tr("is set by default"))
