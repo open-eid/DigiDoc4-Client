@@ -1,5 +1,6 @@
 add_executable( TSLDownload TSLDownload.cpp )
 target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
+set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
 get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
 get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 add_custom_command(

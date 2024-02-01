@@ -4,9 +4,9 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.6.1"
-OPENSSL_VER="3.0.12"
-OPENLDAP_VER="2.6.6"
+QT_VER="6.6.2"
+OPENSSL_VER="3.0.13"
+OPENLDAP_VER="2.6.7"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 : ${MACOSX_DEPLOYMENT_TARGET:="11.0"}
@@ -68,28 +68,31 @@ ORANGE='\033[0;33m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
+mkdir -p ${BUILD_PATH}
+pushd ${BUILD_PATH}
+
 if [[ ! -d ${OPENSSL_PATH} ]] ; then
     echo -e "\n${ORANGE}##### Building OpenSSL ${OPENSSL_VER} ${OPENSSL_PATH} #####${RESET}\n"
-    mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
     if [ ! -f openssl-${OPENSSL_VER}.tar.gz ]; then
         curl -O -L https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz
     fi
     rm -rf openssl-${OPENSSL_VER}
     tar xf openssl-${OPENSSL_VER}.tar.gz
-    cd openssl-${OPENSSL_VER}
+    pushd openssl-${OPENSSL_VER}
     for ARCH in x86_64 arm64; do
         ./Configure darwin64-${ARCH} --prefix=${OPENSSL_PATH} shared no-autoload-config no-module no-tests enable-ec_nistp_64_gcc_128
         make -s > /dev/null
         make install_sw
-        mv ${OPENSSL_PATH} ${OPENSSL_PATH}.${ARCH}
+        mv ${OPENSSL_PATH}{,.${ARCH}}
         make distclean
     done
-    cp -a ${OPENSSL_PATH}.x86_64 ${OPENSSL_PATH}
-    cd ${OPENSSL_PATH}.arm64
+    popd
+    cp -a ${OPENSSL_PATH}{.x86_64,}
+    pushd ${OPENSSL_PATH}.arm64
     for i in lib/lib*3.dylib; do
         lipo -create ${OPENSSL_PATH}.x86_64/${i} ${i} -output ${OPENSSL_PATH}/${i}
     done
-    cd -
+    popd
 else
     echo -e "\n${GREY}  OpenSSL not built${RESET}"
 fi
@@ -98,8 +101,6 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     qt_ver_parts=( ${QT_VER//./ } )
     QT_MINOR="${qt_ver_parts[0]}.${qt_ver_parts[1]}"
     echo -e "\n${ORANGE}##### Building Qt ${QT_VER} ${QT_PATH} #####${RESET}\n"
-    mkdir -p ${BUILD_PATH}
-    pushd ${BUILD_PATH}
     for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER} qt5compat-everywhere-src-${QT_VER}; do
         if [ ! -f ${PACKAGE}.tar.xz ]; then
             curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
@@ -113,19 +114,16 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
             ${QT_PATH}/bin/qt-configure-module .
         fi
         cmake --build . --parallel
-        cmake --build . --target install
+        cmake --install .
         popd
         rm -rf ${PACKAGE}
     done
-    popd
 else
     echo -e "\n${GREY}  Qt not built${RESET}"
 fi
 
 if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
     echo -e "\n${ORANGE}##### Building OpenLDAP ${OPENLDAP_VER} ${OPENLDAP_PATH} #####${RESET}\n"
-    mkdir -p ${BUILD_PATH}
-    pushd ${BUILD_PATH}
     if [ ! -f openldap-${OPENLDAP_VER}.tgz ]; then
         curl -O -L http://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
     fi
@@ -139,7 +137,8 @@ if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
     make
     make install
     popd
-    popd
 else
     echo -e "\n${GREY}  OpenLDAP not built${RESET}"
 fi
+
+popd
