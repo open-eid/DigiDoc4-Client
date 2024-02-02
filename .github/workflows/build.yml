@@ -104,12 +104,18 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        container: ['fedora:37', 'fedora:38']
+        container: ['fedora:38', 'fedora:39']
     steps:
     - name: Install Deps
       run: |
         dnf install -y --setopt=install_weak_deps=False \
         git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel flatbuffers-devel flatbuffers-compiler zlib-devel
+    - name: Install CMake
+      if: matrix.container == 'fedora:39'
+      run: |
+        dnf install -y --setopt=install_weak_deps=False wget
+        wget -q https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1-linux-x86_64.sh
+        sh cmake-3.28.1-linux-x86_64.sh --skip-license --prefix=/usr/local
     - name: Checkout
       uses: actions/checkout@v4
       with:

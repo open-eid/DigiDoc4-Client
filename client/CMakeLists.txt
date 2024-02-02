@@ -218,7 +218,7 @@ elseif(WIN32)
 		set(PLATFORM x86)
 		set(OPENSSL_SUFFIX "")
 	endif()
-	set(MSI_FILE "Digidoc4_Client-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
+	set(MSI_FILE "Digidoc4-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
 	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo
 		-arch ${PLATFORM}
 		-dMSI_VERSION=${VERSION}
@@ -239,12 +239,10 @@ elseif(WIN32)
 	add_custom_target(msi DEPENDS ${PROJECT_NAME}
 		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
 		COMMAND ${CANDLE_CMD}
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.msi"
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.msi"
+		COMMAND ${LIGHT_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
 		COMMAND ${CANDLE_CMD} -dqt_path=${qtCore_install_prefix}
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.en-US.wxl -cultures:en-US -o "${MSI_FILE}.en-US.qt.msi"
-		COMMAND ${LIGHT_CMD} -loc ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.et-EE.wxl -cultures:et-EE -o "${MSI_FILE}.et-EE.qt.msi"
+		COMMAND ${LIGHT_CMD} -o "${MSI_FILE}.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 	if(SIGNCERT)

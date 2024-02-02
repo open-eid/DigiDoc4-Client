@@ -51,20 +51,13 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Program Menu shortcut -->
-      <Directory Id="ProgramMenuFolder">
-        <Directory Id="ProgramMenuDir" Name="!(loc.idcardLabel)">
-          <Component Id="ProgramMenuDir4" Guid="16A9EACF-B5D3-4FDC-8E9F-C03C8FA46DFF">
-            <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
-            <RegistryValue Root='HKMU' Key='Software\[Manufacturer]\[APPLICATIONNAME]' Type='string' Value='' KeyPath='yes' />
-          </Component>
-        </Directory>
-      </Directory>
+      <Directory Id="ProgramMenuFolder" />
 
       <!-- Desktop shortcut -->
       <Directory Id="DesktopFolder">
         <Component Id="DesktopShortcut4" Guid="7B821ED0-4838-4290-997C-AA4119F99DAD" Transitive="yes">
           <Condition>DESKTOP_SHORTCUT = 1</Condition>
-          <Shortcut Id="ClientDesktopShortcut4" Name="!(loc.qdigidoc4Label)"
+          <Shortcut Id="ClientDesktopShortcut4" Name="DigiDoc4"
                     Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER"/>
           <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[APPLICATIONNAME]" Name="DesktopShortcut4" Value="1" Type="integer" KeyPath="yes"/>
         </Component>
@@ -74,8 +67,8 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
         <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client">
           <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB" Transitive="yes">
             <File Source="$(var.client_path)" KeyPath='yes'>
-              <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="!(loc.qdigidoc4Label)" Icon="qdigidoc4.ico"
-                Directory="ProgramMenuDir" WorkingDirectory="APPLICATIONFOLDER"/>
+              <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="DigiDoc4" Icon="qdigidoc4.ico"
+                Directory="ProgramMenuFolder" WorkingDirectory="APPLICATIONFOLDER"/>
             </File>
             <ProgId Id="qdigidoc4.adoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
               <Extension Id="adoc" ContentType="application/vnd.lt.archyvai.adoc-2008">
@@ -188,7 +181,6 @@ msiexec /a libdigidocpp-3.13.8.1378.msi /qn TARGETDIR=C:\target
     </Directory>
 
     <Feature Id="InstallDigidoc" Level="1" Title="DigiDoc4 Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
-      <ComponentRef Id='ProgramMenuDir4' />
       <ComponentRef Id="DesktopShortcut4" />
       <ComponentRef Id="Application4"/>
       <ComponentRef Id="Base"/>
