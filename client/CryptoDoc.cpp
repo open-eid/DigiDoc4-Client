@@ -177,7 +177,7 @@ void CDocumentModel::open(int row)
 	d->tempFiles.append(path);
 	FileDialog::setReadOnly(path);
 	if(FileDialog::isSignedPDF(path))
-		Application::showClient({ path }, false, false, true);
+		Application::showClient({ std::move(path) }, false, false, true);
 	else
 		QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }

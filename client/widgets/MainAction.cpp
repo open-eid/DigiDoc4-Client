@@ -157,7 +157,7 @@ void MainAction::showActions(const QList<Actions> &actions)
 	{
 		std::reverse(order.begin(), order.end());
 	}
-	ui->actions = order;
+	ui->actions = std::move(order);
 	update();
 	ui->otherCards->setVisible(ui->actions.size() > 1);
 	show();

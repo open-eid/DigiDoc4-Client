@@ -913,7 +913,7 @@ void MainWindow::sign(F &&sign)
 		if(!sign(city, state, zip, country, role))
 		{
 			resetDigiDoc(nullptr, false);
-			navigateToPage(SignDetails, {wrappedFile}, false);
+			navigateToPage(SignDetails, {std::move(wrappedFile)}, false);
 			return;
 		}
 	}
@@ -1145,7 +1145,7 @@ void MainWindow::containerSummary()
 		return;
 	}
 #endif
-	QPrintPreviewDialog *dialog = new QPrintPreviewDialog( this );
+	auto *dialog = new QPrintPreviewDialog( this );
 	dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
 	dialog->printer()->setPageOrientation( QPageLayout::Portrait );
 	dialog->setMinimumHeight( 700 );

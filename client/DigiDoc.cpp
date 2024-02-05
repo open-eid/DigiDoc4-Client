@@ -355,7 +355,7 @@ void SDocumentModel::open(int row)
 	doc->m_tempFiles.append(path);
 	FileDialog::setReadOnly(path);
 	if(!doc->fileName().endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(path))
-		qApp->showClient({ path }, false, false, true);
+		qApp->showClient({ std::move(path) }, false, false, true);
 	else
 		QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
@@ -372,7 +372,7 @@ bool SDocumentModel::removeRow(int row)
 		emit removed(row);
 		return true;
 	}
-	catch( const Exception &e ) { doc->setLastError( tr("Failed remove document from container"), e ); }
+	catch( const Exception &e ) { DigiDoc::setLastError(tr("Failed remove document from container"), e); }
 	return false;
 }
 

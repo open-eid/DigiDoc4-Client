@@ -40,8 +40,8 @@ public:
 	~SignatureDialog() final;
 
 private:
-	QPushButton *itemButton(const QString &text, QTreeWidget *view);
-	QLabel *itemLabel(const QString &text, QTreeWidget *view);
+	static QPushButton *itemButton(const QString &text, QTreeWidget *view);
+	static QLabel *itemLabel(const QString &text, QTreeWidget *view);
 	void addItem(QTreeWidget *view, const QString &variable, QWidget *value);
 	void addItem(QTreeWidget *view, const QString &variable, const QString &value);
 	void addItem(QTreeWidget *view, const QString &variable, const QDateTime &value);

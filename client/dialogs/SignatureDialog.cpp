@@ -55,7 +55,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	if(isTS)
 		status = tr("Timestamp");
 	status += ' ';
-	auto isValid = [](bool isTS) {
+	auto isValid = [](bool isTS) -> QString {
 		return isTS ? tr("is valid", "Timestamp") : tr("is valid", "Signature");
 	};
 	switch(s.status())
@@ -69,8 +69,9 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		if(!s.lastError().isEmpty())
 			d->error->setPlainText( s.lastError() );
 		if(s.warning() & DigiDocSignature::DigestWeak )
-			d->info->setText( tr(
-				"The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.") );
+			d->info->setText(tr(
+				"The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, "
+				"therefore it is not protected against forgery or alteration."));
 		else
 			d->info->setText(tr("SIGNATURE_WARNING"));
 		break;
@@ -177,9 +178,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	addItem(t, tr("Signature format"), s.profile());
 	if( !s.policy().isEmpty() )
 	{
-		#define toVer(X) ((X)->toUInt() - 1)
-		QStringList ver = s.policy().split('.');
-		if( ver.size() >= 3 )
+		auto toVer = [](auto elem) { return elem->toUInt() - 1; };
+		if(QStringList ver = s.policy().split('.'); ver.size() >= 3)
 			addItem(t, tr("Signature policy"), QStringLiteral("%1.%2.%3").arg(toVer(ver.end()-3)).arg(toVer(ver.end()-2)).arg(toVer(ver.end()-1)));
 		else
 			addItem( t, tr("Signature policy"), s.policy() );
@@ -210,7 +210,7 @@ SignatureDialog::~SignatureDialog()
 
 void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, QWidget *value)
 {
-	QTreeWidgetItem *i = new QTreeWidgetItem(view);
+	auto *i = new QTreeWidgetItem(view);
 	QLabel *header = itemLabel(variable, view);
 	view->setItemWidget(i, 0, header);
 	view->setItemWidget(i, 1, value);
@@ -239,7 +239,7 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const 
 	SslCertificate c(value);
 	QPushButton *button = itemButton(
 		c.toString(c.showCN() ? QStringLiteral("CN") : QStringLiteral("GN,SN,serialNumber")), view);
-	connect(button, &QPushButton::clicked, this, [=]{ CertificateDetails::showCertificate(c, this); });
+	connect(button, &QPushButton::clicked, this, [this, c = std::move(c)]{ CertificateDetails::showCertificate(c, this); });
 	addItem(view, variable, button);
 }
 
@@ -259,7 +259,7 @@ void SignatureDialog::decorateNotice(const QString &color)
 
 QPushButton* SignatureDialog::itemButton(const QString &text, QTreeWidget *view)
 {
-	QPushButton *button = new QPushButton(text, view);
+	auto *button = new QPushButton(text, view);
 #ifdef Q_OS_MAC
 	QFont font = Styles::font(Styles::Regular, 13);
 #else
@@ -274,7 +274,7 @@ QPushButton* SignatureDialog::itemButton(const QString &text, QTreeWidget *view)
 
 QLabel* SignatureDialog::itemLabel(const QString &text, QTreeWidget *view)
 {
-	QLabel *label = new QLabel(text, view);
+	auto *label = new QLabel(text, view);
 	label->setToolTip(text);
 #ifdef Q_OS_MAC
 	label->setFont(Styles::font(Styles::Regular, 13));

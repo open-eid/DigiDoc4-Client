@@ -42,21 +42,22 @@ namespace {
 		}).detach();
 		l.exec();
 		if(exception)
-			std::rethrow_exception(exception);
+			std::rethrow_exception(std::move(exception));
 		return result;
 	}
 
 	template <typename F, class... Args>
 	inline auto dispatchToMain(F&& function, Args&& ...args) {
 		QEventLoop l;
-		if constexpr (std::is_void_v<std::invoke_result_t<F,Args...>>) {
+		using result_t = typename std::invoke_result_t<F,Args...>;
+		if constexpr (std::is_void_v<result_t>) {
 			QMetaObject::invokeMethod(qApp, [&, function = std::forward<F>(function)] {
 				std::invoke(function, args...);
 				l.exit();
 			}, Qt::QueuedConnection);
 			l.exec();
 		} else {
-			std::invoke_result_t<F,Args...> result{};
+			result_t result{};
 			QMetaObject::invokeMethod(qApp, [&, function = std::forward<F>(function)] {
 				result = std::invoke(function, args...);
 				l.exit();

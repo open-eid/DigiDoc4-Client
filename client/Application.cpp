@@ -184,7 +184,7 @@ public:
 	std::vector<digidoc::X509Cert> TSLCerts() const final
 	{
 		std::vector<digidoc::X509Cert> tslcerts = toCerts(QLatin1String("TSL-CERTS"));
-		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
+		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : std::move(tslcerts);
 	}
 
 	digidoc::X509Cert verifyServiceCert() const final
@@ -334,7 +334,7 @@ Application::Application( int &argc, char **argv )
 
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
-	QTimer::singleShot(0, this, [this] {
+	QMetaObject::invokeMethod(this, [this] {
 		auto lessThanVersion = [](QLatin1String key) {
 			return QVersionNumber::fromString(applicationVersion()) <
 				QVersionNumber::fromString(confValue(key).toString());
@@ -456,7 +456,7 @@ Application::Application( int &argc, char **argv )
 		return;
 	}
 
-	QTimer::singleShot(0, this, [this] {
+	QMetaObject::invokeMethod(this, [this] {
 #ifdef Q_OS_MAC
 		if(!Settings::PLUGINS.isSet())
 		{
@@ -486,7 +486,7 @@ Application::Application( int &argc, char **argv )
 	});
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
-		parseArgs( args );
+		parseArgs(std::move(args));
 }
 
 Application::~Application()
@@ -626,7 +626,7 @@ bool Application::event(QEvent *event)
 	case QEvent::FileOpen:
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
-		QTimer::singleShot(0, this, [fileName] {
+		QMetaObject::invokeMethod(this, [fileName = std::move(fileName)] {
 			parseArgs({ fileName });
 		});
 		return true;
@@ -669,7 +669,7 @@ void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
 #if defined(Q_OS_WIN)
-	if(QLibrary lib("mapi32"); LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
+	if(QLibrary lib("mapi32"); auto mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
 	{
 		QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
 		QString filePath = QDir::toNativeSeparators( file );
@@ -704,9 +704,8 @@ void Application::mailTo( const QUrl &url )
 			"--group", "PROFILE_Default",
 			"--key", "EmailClient"});
 		p.waitForFinished();
-		QByteArray data = p.readAllStandardOutput().trimmed();
-		if( data.contains("thunderbird") )
-			thunderbird = data;
+		if(QByteArray data = p.readAllStandardOutput().trimmed(); data.contains("thunderbird"))
+			thunderbird = std::move(data);
 	}
 	else if(env.indexOf(QRegularExpression(QStringLiteral("GNOME_DESKTOP_SESSION_ID.*"))) != -1)
 	{
@@ -800,7 +799,7 @@ void Application::parseArgs( const QString &msg )
 		QUrl url( param, QUrl::StrictMode );
 		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
 	}
-	parseArgs( params );
+	parseArgs(std::move(params));
 }
 
 void Application::parseArgs(QStringList args)

@@ -425,10 +425,10 @@ CDoc2::CDoc2(const QString &path)
 		return;
 	setLastError({});
 
-	auto toByteArray = [](const flatbuffers::Vector<uint8_t> *data) {
+	auto toByteArray = [](const flatbuffers::Vector<uint8_t> *data) -> QByteArray {
 		return data ? QByteArray((const char*)data->Data(), int(data->size())) : QByteArray();
 	};
-	auto toString = [](const flatbuffers::String *data) {
+	auto toString = [](const flatbuffers::String *data) -> QString {
 		return data ? QString::fromUtf8(data->c_str(), data->size()) : QString();
 	};
 	for(const auto *recipient: *recipients){
@@ -734,9 +734,9 @@ QByteArray CDoc2::transportKey(const CKey &_key)
 		QByteArray key_material = QByteArray::fromBase64(
 			json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
 		if(json.value(QLatin1String("capsule_type")) == QLatin1String("rsa"))
-			key.encrypted_kek = key_material;
+			key.encrypted_kek = std::move(key_material);
 		else
-			key.publicKey = key_material;
+			key.publicKey = std::move(key_material);
 	}
 #ifndef NDEBUG
 	qDebug() << "publicKeyDer" << key.key.toHex();
