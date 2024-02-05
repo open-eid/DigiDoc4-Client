@@ -67,12 +67,9 @@ MainWindow::MainWindow( QWidget *parent )
 	setAcceptDrops( true );
 	ui->setupUi(this);
 
-	QFont version = Styles::font(Styles::Regular, 12);
-	version.setUnderline(true);
 	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
 	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
 	QFont regular20 = Styles::font( Styles::Regular, 20 );
-	ui->version->setFont(version);
 	ui->signIntroLabel->setFont( regular20 );
 	ui->signIntroButton->setFont( condensed14 );
 	ui->signIntroButton->setFocus();
@@ -90,17 +87,17 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
 	ui->coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
-	ui->signature->init( Pages::SignIntro, ui->signatureShadow, true );
-	ui->crypto->init( Pages::CryptoIntro, ui->cryptoShadow, false );
-	ui->myEid->init( Pages::MyEid, ui->myEidShadow, false );
+	ui->pageButtonGroup->setId(ui->signature, Pages::SignIntro);
+	ui->pageButtonGroup->setId(ui->crypto, Pages::CryptoIntro);
+	ui->pageButtonGroup->setId(ui->myEid, Pages::MyEid);
 
-	connect(ui->signature, &PageIcon::activated, this, &MainWindow::clearPopups);
-	connect(ui->signature, &PageIcon::activated, this, &MainWindow::pageSelected);
-	connect(ui->crypto, &PageIcon::activated, this, &MainWindow::clearPopups);
-	connect(ui->crypto, &PageIcon::activated, this, &MainWindow::pageSelected);
-	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::clearPopups);
-	connect(ui->myEid, &PageIcon::activated, this, &MainWindow::pageSelected);
-
+	connect(ui->pageButtonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this, &MainWindow::clearPopups);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+	connect(ui->pageButtonGroup, &QButtonGroup::idToggled, this, &MainWindow::pageSelected);
+#else
+	connect(ui->pageButtonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this,
+		[=](QAbstractButton *button, bool checked){ pageSelected(ui->pageButtonGroup->id(button), checked); });
+#endif
 	ui->help->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->settings->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Seaded.svg"), QStringLiteral(":/images/icon_Seaded_hover.svg"), this));
 	connect(ui->help, &QToolButton::clicked, qApp, &Application::openHelp);
@@ -176,39 +173,15 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::pageSelected(PageIcon *page)
+void MainWindow::pageSelected(int page, bool checked)
 {
-	// Stay in current view if same page icon clicked
-	auto current = ui->startScreen->currentIndex();
-	bool navigate = false;
-	switch(current)
-	{
-	case SignIntro:
-	case SignDetails:
-		navigate = (page->getType() != SignIntro);
-		break;
-	case CryptoIntro:
-	case CryptoDetails:
-		navigate = (page->getType() != CryptoIntro);
-		break;
-	default:
-		navigate = (page->getType() != current);
-		break;
-	}
-
-	Pages toPage = page->getType();
-	if(toPage == SignIntro && digiDoc)
-	{
-		selectPage(SignDetails);
+	if(!checked)
 		return;
-	}
-	if(toPage == CryptoIntro && cryptoDoc)
-	{
-		selectPage(CryptoDetails);
-		return;
-	}
-	if(navigate)
-		navigateToPage(toPage);
+	if(page == SignIntro && digiDoc)
+		page = SignDetails;
+	if(page == CryptoIntro && cryptoDoc)
+		page = CryptoDetails;
+	selectPage(Pages(page));
 }
 
 void MainWindow::adjustDrops()
@@ -345,7 +318,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 	{
 		resetCryptoDoc();
 		resetDigiDoc();
-		navigateToPage(Pages::SignIntro);
+		selectPage(Pages::SignIntro);
 	}
 	else
 		QWidget::mouseReleaseEvent(event);
@@ -448,7 +421,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case ContainerCancel:
 		resetDigiDoc();
-		navigateToPage(Pages::SignIntro);
+		selectPage(Pages::SignIntro);
 		break;
 	case ContainerConvert:
 		if(digiDoc)
@@ -487,7 +460,7 @@ void MainWindow::convertToBDoc()
 	if(!wrap(cryptoDoc->fileName(), cryptoDoc->state() == EncryptedContainer))
 		return;
 
-	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+	auto *notification = new FadeInNotification(this, WHITE, MANTIS);
 	notification->start( tr("Converted to signed document!"), 750, 3000, 1200 );
 }
 
@@ -515,7 +488,7 @@ void MainWindow::convertToCDoc()
 	ui->cryptoContainerPage->transition(cryptoDoc,  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
-	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+	auto *notification = new FadeInNotification(this, WHITE, MANTIS);
 	notification->start( tr("Converted to crypto container!"), 750, 3000, 1200 );
 }
 
@@ -539,7 +512,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	{
 	case ContainerCancel:
 		resetCryptoDoc();
-		navigateToPage(Pages::CryptoIntro);
+		selectPage(Pages::CryptoIntro);
 		break;
 	case ContainerConvert:
 		if(cryptoDoc)
@@ -550,7 +523,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(decrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-			auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+			auto *notification = new FadeInNotification(this, WHITE, MANTIS);
 			notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
@@ -558,7 +531,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(encrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-			auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+			auto *notification = new FadeInNotification(this, WHITE, MANTIS);
 			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
@@ -687,9 +660,9 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 void MainWindow::open(const QStringList &params, bool crypto, bool sign)
 {
 	if (crypto && !sign)
-		navigateToPage(Pages::CryptoIntro);
+		selectPage(Pages::CryptoIntro);
 	else
-		navigateToPage(Pages::SignIntro);
+		selectPage(Pages::SignIntro);
 
 	QStringList files;
 	for(const auto &param: params)
@@ -756,11 +729,6 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 	digiDoc = doc;
 }
 
-void MainWindow::resizeEvent(QResizeEvent * /*event*/)
-{
-	ui->version->move( ui->version->geometry().x(), ui->leftBar->height() - ui->version->height() - 11 );
-}
-
 bool MainWindow::save(bool saveAs)
 {
 	if(!digiDoc)
@@ -820,20 +788,12 @@ QString MainWindow::selectFile( const QString &title, const QString &filename, b
 
 void MainWindow::selectPage(Pages page)
 {
-	selectPageIcon( page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto));
+	auto *btn = page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto);
+	btn->setChecked(true);
 	ui->startScreen->setCurrentIndex(page);
 	warnings->updateWarnings();
 	adjustDrops();
 	updateSelector();
-}
-
-void MainWindow::selectPageIcon( PageIcon* page )
-{
-	ui->rightShadow->raise();
-	for(auto *pageIcon: { ui->signature, ui->crypto, ui->myEid })
-	{
-		pageIcon->activate( pageIcon == page );
-	}
 }
 
 void MainWindow::showCardMenu(bool show)
@@ -893,7 +853,7 @@ void MainWindow::sign(F &&sign)
 {
 	if(!CheckConnection().check())
 	{
-		auto *notification = new FadeInNotification(this, MOJO, MARZIPAN, 110);
+		auto *notification = new FadeInNotification(this, MOJO, MARZIPAN);
 		notification->start(tr("Check internet connection"), 750, 3000, 1200);
 		return;
 	}
@@ -924,7 +884,7 @@ void MainWindow::sign(F &&sign)
 
 	ui->signContainerPage->transition(digiDoc);
 
-	auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+	auto *notification = new FadeInNotification(this, WHITE, MANTIS);
 	notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
 	adjustDrops();
 }
@@ -948,7 +908,7 @@ void MainWindow::removeCryptoFile(int index)
 		if(QFile::exists(cryptoDoc->fileName()))
 			QFile::remove(cryptoDoc->fileName());
 		resetCryptoDoc();
-		navigateToPage(Pages::CryptoIntro);
+		selectPage(Pages::CryptoIntro);
 	}
 }
 
@@ -1005,7 +965,7 @@ void MainWindow::removeSignatureFile(int index)
 		if(QFile::exists(digiDoc->fileName()))
 			QFile::remove(digiDoc->fileName());
 		resetDigiDoc(nullptr, false);
-		navigateToPage(Pages::SignIntro);
+		selectPage(Pages::SignIntro);
 	}
 }
 

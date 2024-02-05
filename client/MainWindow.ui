@@ -20,9 +20,15 @@
    <string>DigiDoc4 Client</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">outline: none;
-   QLabel {
-	color: #000000
+   <string notr="true">#logo, #navBar {
+background-color: #003168;
+border-right: 1px solid #E7EAEF;
+}
+#topBar, #startScreen { background-color: #FFFFFF; }
+#signPage, #cryptoPage, #noReaderInfo {
+background-image: url(:/images/bg_lovid.svg);
+background-repeat: repeat-x;
+background-position: bottom;
 }</string>
   </property>
   <layout class="QGridLayout" name="MainWindowLayout">
@@ -41,202 +47,234 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="0" rowspan="2">
-    <widget class="QFrame" name="leftBar">
+   <item row="0" column="0">
+    <widget class="QWidget" name="logo" native="true">
+     <widget class="QSvgWidget" name="coatOfArms" native="true">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>17</y>
+        <width>80</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::TabFocus</enum>
+      </property>
+      <property name="accessibleName">
+       <string notr="true">DigiDoc</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QWidget" name="navBar" native="true">
      <property name="minimumSize">
       <size>
-       <width>110</width>
-       <height>520</height>
+       <width>92</width>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>110</width>
+       <width>92</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-background-color: #023664;
-</string>
+      <string notr="true">QToolButton {
+border: none;
+color: #E7EAEF;
+padding: 13px 0px 10px 0px;
+font-family: Roboto, Helvetica;
+font-size: 16px;
+}
+QToolButton:checked {
+background-color: #ffffff;
+color: #003168;
+}
+#version {
+color: #BFD3E8;
+font-family: Roboto, Helvetica;
+font-size: 10px;
+text-decoration: underline;
+}</string>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QWidget" name="logo" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>110</width>
-        <height>65</height>
-       </rect>
+     <layout class="QVBoxLayout" name="navBarLayout">
+      <property name="spacing">
+       <number>0</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true">border-bottom: 1px solid rgba(255, 255, 255, 0.1)</string>
+      <property name="leftMargin">
+       <number>0</number>
       </property>
-      <widget class="QSvgWidget" name="coatOfArms" native="true">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>17</y>
-         <width>80</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="accessibleName">
-        <string notr="true">DigiDoc</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="PageIcon" name="signature">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>65</y>
-        <width>110</width>
-        <height>110</height>
-       </rect>
+      <property name="topMargin">
+       <number>0</number>
       </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
+      <property name="rightMargin">
+       <number>0</number>
       </property>
-      <property name="accessibleName">
-       <string extracomment="accessible">Select signature page</string>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true">border: none;</string>
-      </property>
-     </widget>
-     <widget class="PageIcon" name="crypto">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>175</y>
-        <width>110</width>
-        <height>110</height>
-       </rect>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="accessibleName">
-       <string extracomment="accessible">Select crypto page</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: none;</string>
-      </property>
-     </widget>
-     <widget class="PageIcon" name="myEid">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>285</y>
-        <width>110</width>
-        <height>110</height>
-       </rect>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="accessibleName">
-       <string extracomment="accessible">Select my EID page</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: none;</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="rightShadow" native="true">
-      <property name="geometry">
-       <rect>
-        <x>105</x>
-        <y>0</y>
-        <width>5</width>
-        <height>4000</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0,0,0,0.0), stop: 1 rgba(0,0,0,0.65));
-</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="myEidShadow" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>395</y>
-        <width>110</width>
-        <height>5</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="cryptoShadow" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>285</y>
-        <width>110</width>
-        <height>5</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="signatureShadow" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>175</y>
-        <width>110</width>
-        <height>5</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgba(0,0,0,0.65), stop: 1 rgba(0,0,0,0.0));</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="version">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>571</y>
-        <width>100</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto</family>
-        <pointsize>12</pointsize>
-        <underline>true</underline>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::NoContextMenu</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #006EB5;</string>
-      </property>
-      <property name="text">
-       <string notr="true">version</string>
-      </property>
-     </widget>
+      <item>
+       <widget class="PageIcon" name="signature">
+        <property name="minimumSize">
+         <size>
+          <width>91</width>
+          <height>93</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select signature page</string>
+        </property>
+        <property name="text">
+         <string>Signature</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/icon_Allkiri.svg</normaloff>
+          <activeon>:/images/icon_Allkiri_hover.svg</activeon>:/images/icon_Allkiri.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageButtonGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="PageIcon" name="crypto">
+        <property name="minimumSize">
+         <size>
+          <width>91</width>
+          <height>93</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select crypto page</string>
+        </property>
+        <property name="text">
+         <string>Crypto</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/icon_Krypto.svg</normaloff>
+          <activeon>:/images/icon_Krypto_hover.svg</activeon>:/images/icon_Krypto.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageButtonGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="PageIcon" name="myEid">
+        <property name="minimumSize">
+         <size>
+          <width>91</width>
+          <height>93</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Select my EID page</string>
+        </property>
+        <property name="text">
+         <string>My eID</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/icon_Minu_eID.svg</normaloff>
+          <activeon>:/images/icon_Minu_eID_hover.svg</activeon>:/images/icon_Minu_eID.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">pageButtonGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <spacer name="navBarSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="version">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string notr="true">version</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="0" column="1">
@@ -252,9 +290,6 @@ background-color: #023664;
        <width>16777215</width>
        <height>65</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: #FFFFFF;</string>
      </property>
      <layout class="QHBoxLayout" name="topBarLayout">
       <property name="spacing">
@@ -274,7 +309,7 @@ background-color: #023664;
       </property>
       <item>
        <widget class="QWidget" name="idSelector" native="true">
-        <layout class="QHBoxLayout" name="idSelectorLayout" stretch="0,0">
+        <layout class="QHBoxLayout" name="idSelectorLayout">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -313,14 +348,7 @@ background-color: #023664;
        </widget>
       </item>
       <item>
-       <widget class="NoCardInfo" name="noCardInfo" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
+       <widget class="NoCardInfo" name="noCardInfo" native="true"/>
       </item>
       <item>
        <spacer name="topBarSpacer">
@@ -436,18 +464,6 @@ QToolButton:hover {
    </item>
    <item row="1" column="1">
     <widget class="QWidget" name="page" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>65</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#page{
-	background-color: #023565;
-	border: none;
-}</string>
-     </property>
      <layout class="QVBoxLayout" name="verticalLayout_1">
       <property name="spacing">
        <number>0</number>
@@ -466,12 +482,6 @@ QToolButton:hover {
       </property>
       <item>
        <widget class="QWidget" name="topBarShadow" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
           <width>914</width>
@@ -485,8 +495,7 @@ QToolButton:hover {
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6);
-border: none;</string>
+         <string notr="true">background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6);</string>
         </property>
        </widget>
       </item>
@@ -495,37 +504,17 @@ border: none;</string>
         <property name="minimumSize">
          <size>
           <width>914</width>
-          <height>350</height>
+          <height>0</height>
          </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">#startScreen{
-	border:none;
-	background-color: #ffffff;
-}</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
         </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
         <widget class="QWidget" name="signPage">
-         <property name="styleSheet">
-          <string notr="true">QWidget#signPage { background-image: url(:/images/bg_lovid.svg);
-background-repeat: repeat-x;
-background-position: bottom; }</string>
-         </property>
          <layout class="QVBoxLayout" name="signPageLayout">
+          <property name="spacing">
+           <number>14</number>
+          </property>
           <item>
            <spacer name="signPageTopSpacer">
             <property name="orientation">
@@ -554,11 +543,7 @@ background-position: bottom; }</string>
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: none;
-color: #041E42;</string>
-            </property>
-            <property name="lineWidth">
-             <number>0</number>
+             <string notr="true">color: #041E42;</string>
             </property>
             <property name="text">
              <string>Drag file here for signing ...</string>
@@ -636,14 +621,10 @@ QPushButton:disabled {
         </widget>
         <widget class="ContainerPage" name="signContainerPage"/>
         <widget class="QWidget" name="cryptoPage">
-         <property name="styleSheet">
-          <string notr="true">QWidget#cryptoPage {
-background-image: url(:/images/bg_lovid.svg);
-background-repeat: repeat-x;
-background-position: bottom;
-}</string>
-         </property>
          <layout class="QVBoxLayout" name="cryptoPageLayout">
+          <property name="spacing">
+           <number>14</number>
+          </property>
           <item>
            <spacer name="cryptoPageTopSpacer">
             <property name="orientation">
@@ -672,11 +653,7 @@ background-position: bottom;
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: none;
-color: #041E42;</string>
-            </property>
-            <property name="lineWidth">
-             <number>0</number>
+             <string notr="true">color: #041E42;</string>
             </property>
             <property name="text">
              <string>Drag file here for encryption ...</string>
@@ -784,9 +761,6 @@ QPushButton:disabled {
               <height>186</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">border: none;</string>
-            </property>
            </widget>
           </item>
           <item>
@@ -794,14 +768,10 @@ QPushButton:disabled {
           </item>
           <item>
            <widget class="QWidget" name="noReaderInfo" native="true">
-            <property name="styleSheet">
-             <string notr="true">QWidget#noReaderInfo {
-background-image: url(:/images/bg_lovid.svg);
-background-repeat: repeat-x;
-background-position: bottom;
-}</string>
-            </property>
             <layout class="QVBoxLayout" name="noReaderInfoLayout">
+             <property name="spacing">
+              <number>14</number>
+             </property>
              <item>
               <spacer name="noReaderInfoTopSpacer">
                <property name="orientation">
@@ -810,69 +780,57 @@ background-position: bottom;
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>52</height>
+                 <height>60</height>
                 </size>
                </property>
               </spacer>
              </item>
              <item>
-              <widget class="QWidget" name="noReaderInfoCentral" native="true">
+              <widget class="QLabel" name="noReaderInfoText">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>128</height>
+                 <height>45</height>
                 </size>
                </property>
-               <layout class="QVBoxLayout" name="noReaderInfoCentralLayout">
-                <item>
-                 <widget class="QLabel" name="noReaderInfoText">
-                  <property name="font">
-                   <font>
-                    <pointsize>20</pointsize>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::TabFocus</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">color: #041E42;</string>
-                  </property>
-                  <property name="text">
-                   <string>Connect the card reader to your computer and insert your ID card into the reader</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                  <property name="openExternalLinks">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>45</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>45</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <property name="font">
+                <font>
+                 <pointsize>20</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: #041E42;</string>
+               </property>
+               <property name="text">
+                <string>Connect the card reader to your computer and insert your ID card into the reader</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
-              <spacer name="noReaderInfoSpacer">
+              <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="noReaderInfoBottomSpacer">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -910,12 +868,6 @@ background-position: bottom;
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>PageIcon</class>
-   <extends>QPushButton</extends>
-   <header>widgets/PageIcon.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>ContainerPage</class>
    <extends>QWidget</extends>
    <header>widgets/ContainerPage.h</header>
@@ -943,7 +895,17 @@ background-position: bottom;
    <header>widgets/IDSelector.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>PageIcon</class>
+   <extends>QToolButton</extends>
+   <header>widgets/PageIcon.h</header>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="images/images.qrc"/>
+ </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="pageButtonGroup"/>
+ </buttongroups>
 </ui>

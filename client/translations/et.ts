@@ -1647,6 +1647,18 @@ ID-KAARDIGA</translation>
         <source>Decrypting</source>
         <translation>Dekrüpteerin</translation>
     </message>
+    <message>
+        <source>My eID</source>
+        <translation>Minu eID</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Allkiri</translation>
+    </message>
+    <message>
+        <source>Crypto</source>
+        <translation>Krüpto</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1898,21 +1910,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
-    </message>
-</context>
-<context>
-    <name>PageIcon</name>
-    <message>
-        <source>SIGNATURE</source>
-        <translation>ALLKIRI</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>KRÜPTO</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>Minu eID</translation>
     </message>
 </context>
 <context>
@@ -2467,10 +2464,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Password</source>
         <translation>Parool</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
     </message>
     <message>
         <source>The connection to certificate status service is successful!</source>
