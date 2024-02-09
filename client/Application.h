@@ -107,3 +107,6 @@ public:
 	enum { Type = QEvent::User + 1 };
 	REOpenEvent(): QEvent( QEvent::Type(Type) ) {}
 };
+
+extern template QJsonValue Application::confValue<QString>(const QString &key);
+extern template QJsonValue Application::confValue<QLatin1String>(const QLatin1String &key);

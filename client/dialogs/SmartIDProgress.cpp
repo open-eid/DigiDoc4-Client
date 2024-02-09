@@ -260,11 +260,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 		{"certificateLevel", "QUALIFIED"},
 		{"nonce", QUuid::createUuid().toString().remove('-').mid(1, 30)}
 	}).toJson();
-	if (d->req.url().path().contains(QLatin1String("v1"), Qt::CaseInsensitive)) {
-		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/pno/%2/%3").arg(d->URL, country, idCode)));
-	} else {
-		d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL, country, idCode)));
-	}
+	d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL, country, idCode)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->info->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
@@ -307,19 +303,13 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		{"certificateLevel", "QUALIFIED"},
 		{"hash", QString(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64())},
 		{"hashType", digestMethod},
+		{"allowedInteractionsOrder", QJsonArray{QJsonObject{
+			 {"type", "confirmationMessageAndVerificationCodeChoice"},
+			 {"displayText200", "%1"}
+		}}},
 	};
-	QString escape = tr("Sign document");
-	if (d->req.url().path().contains(QLatin1String("v1"), Qt::CaseInsensitive)) {
-		req[QLatin1String("requestProperties")] = QJsonObject{{"vcChoice", true}};
-		req[QLatin1String("displayText")] = "%1";
-	} else {
-		req[QLatin1String("allowedInteractionsOrder")] = QJsonArray{QJsonObject{
-			{"type", "confirmationMessageAndVerificationCodeChoice"},
-			{"displayText200", "%1"}
-		}};
-		escape = QStringLiteral("%1 %2").arg(tr("Sign document"), d->fileName);
-	}
 	// Workaround SID proxy issues
+	QString escape = QStringLiteral("%1 %2").arg(tr("Sign document"), d->fileName);
 	QByteArray data = QString::fromUtf8(QJsonDocument(req).toJson()).arg(escapeUnicode(escape)).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL, d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
