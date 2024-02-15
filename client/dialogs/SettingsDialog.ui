@@ -1160,13 +1160,6 @@ QPushButton {
          </property>
         </widget>
        </item>
-       <item row="7" column="0" colspan="2">
-        <widget class="CheckBox" name="chkProxyEnableForSSL">
-         <property name="text">
-          <string>Enable proxy for SSL connections</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="pageDiagnostics">

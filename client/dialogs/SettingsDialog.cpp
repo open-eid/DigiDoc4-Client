@@ -161,7 +161,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->lblProxyPort->setFont(regularFont);
 	ui->lblProxyUsername->setFont(regularFont);
 	ui->lblProxyPassword->setFont(regularFont);
-	ui->chkProxyEnableForSSL->setFont(regularFont);
 	ui->txtProxyHost->setFont(regularFont);
 	ui->txtProxyPort->setFont(regularFont);
 	ui->txtProxyUsername->setFont(regularFont);
@@ -413,7 +412,6 @@ void SettingsDialog::initFunctionality()
 	default: ui->rdProxyNone->setChecked(true); break;
 	}
 
-	ui->chkProxyEnableForSSL->setDisabled(Settings::PROXY_CONFIG != Settings::ProxyManual);
 	updateProxy();
 
 	// pageServices - TimeStamp
@@ -586,7 +584,6 @@ void SettingsDialog::setProxyEnabled()
 	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
-	ui->chkProxyEnableForSSL->setEnabled(ui->rdProxyManual->isChecked());
 }
 
 void SettingsDialog::updateProxy()
@@ -595,7 +592,6 @@ void SettingsDialog::updateProxy()
 	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
 	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
 	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
-	ui->chkProxyEnableForSSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
 }
 
 void SettingsDialog::updateVersion()
@@ -616,7 +612,6 @@ void SettingsDialog::saveProxy()
 	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
 	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
 	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
-	Application::setConfValue( Application::ProxySSL, ui->chkProxyEnableForSSL->isChecked() );
 	loadProxy(digidoc::Conf::instance());
 	updateProxy();
 }

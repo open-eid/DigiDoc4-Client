@@ -45,7 +45,6 @@ public:
 		ProxyPort,
 		ProxyUser,
 		ProxyPass,
-		ProxySSL,
 		TSAUrl,
 		TSLUrl,
 		TSLCerts,

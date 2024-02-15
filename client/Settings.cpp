@@ -102,7 +102,6 @@ const Option<QString> Settings::PROXY_PORT { QStringLiteral("ProxyPort") };
 const Option<QString> Settings::PROXY_USER { QStringLiteral("ProxyUser") };
 const Option<QString> Settings::PROXY_PASS { QStringLiteral("ProxyPass") };
 #ifdef Q_OS_MAC
-const Option<bool> Settings::PROXY_TUNNEL_SSL { QStringLiteral("ProxyTunnelSSL"), false };
 const Option<QString> Settings::PLUGINS { QStringLiteral("plugins") };
 const Option<bool> Settings::TSL_ONLINE_DIGEST { QStringLiteral("TSLOnlineDigest"), true };
 #endif
