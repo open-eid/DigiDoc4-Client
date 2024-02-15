@@ -237,15 +237,14 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	});
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
-		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
+		// remove certificates from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 		QList<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
 		for(const QSslCertificate &c: s.list())
 		{
 			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == c; }))
 				continue;
-			if(c.subjectInfo(QSslCertificate::Organization).join(QString()).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
-				c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
+			if(c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
 				s.remove( c );
 		}

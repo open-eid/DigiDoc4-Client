@@ -63,6 +63,7 @@ public:
 		DigiIDType = 1 << 0,
 		EstEidType = 1 << 1,
 		MobileIDType = 1 << 2,
+		OldEstEidType = 1 << 3,
 		TempelType = 1 << 4,
 		EResidentSubType = 1 << 6,
 		EResidentType = DigiIDType|EResidentSubType,

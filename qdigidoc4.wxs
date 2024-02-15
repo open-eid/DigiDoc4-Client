@@ -39,7 +39,7 @@
     </StandardDirectory>
 
     <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client">
+      <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client" FileSource="$(var.libs_path)">
         <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB" Transitive="yes">
           <File Id="qdigidoc4.exe" Source="$(var.client_path)" KeyPath="yes">
             <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="DigiDoc4" Icon="qdigidoc4.ico"
@@ -97,14 +97,14 @@
           </ProgId>
         </Component>
         <Component Id="Base" Guid="6976e89e-e815-444a-9b1f-5ee63cfe230d">
-          <File Source="$(var.libs_path)\zlib$(var.qt_suffix)1.dll" />
-          <File Source="$(var.libs_path)\xerces-c_3_2$(var.qt_suffix).dll" />
-          <File Source="$(var.libs_path)\XalanMessages_1_12$(var.qt_suffix).dll" />
-          <File Source="$(var.libs_path)\Xalan-C_1_12$(var.qt_suffix).dll" />
-          <File Source="$(var.libs_path)\xsec_2_0$(var.qt_suffix).dll" />
-          <File Source="$(var.libs_path)\digidocpp$(var.qt_suffix).dll" />
-          <File Source="$(var.libs_path)\digidoc-tool.exe" />
-          <File Source="$(var.libs_path)\digidocpp.conf" />
+          <File Name="zlib$(var.qt_suffix)1.dll" />
+          <File Name="xerces-c_3_2$(var.qt_suffix).dll" />
+          <File Name="XalanMessages_1_12$(var.qt_suffix).dll" />
+          <File Name="Xalan-C_1_12$(var.qt_suffix).dll" />
+          <File Name="xsec_2_0$(var.qt_suffix).dll" />
+          <File Name="digidocpp$(var.qt_suffix).dll" />
+          <File Name="digidoc-tool.exe" />
+          <File Name="digidocpp.conf" />
 <?ifdef var.qt_path ?>
           <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll" />
           <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll" />
@@ -113,8 +113,8 @@
           <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll" />
           <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll" />
 <?endif?>
-          <File Source="$(var.libs_path)\libcrypto-3$(var.OpenSSLSuffix).dll" />
-          <File Source="$(var.libs_path)\libssl-3$(var.OpenSSLSuffix).dll" />
+          <File Name="libcrypto-3$(var.OpenSSLSuffix).dll" />
+          <File Name="libssl-3$(var.OpenSSLSuffix).dll" />
           <File Source="$(var.qt_path)\Qt6Core$(var.qt_suffix).dll" />
           <File Source="$(var.qt_path)\Qt6Gui$(var.qt_suffix).dll" />
           <File Source="$(var.qt_path)\Qt6Network$(var.qt_suffix).dll" />
@@ -123,7 +123,6 @@
           <File Source="$(var.qt_path)\Qt6Widgets$(var.qt_suffix).dll" />
           <File Source="$(var.qt_path)\D3DCompiler_47.dll" />
           <File Source="$(var.qt_path)\opengl32sw.dll" />
-          <File Source="$(var.qt_path)\Qt6Core5Compat$(var.qt_suffix).dll" />
           <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
 <?endif?>
         </Component>
@@ -143,24 +142,24 @@
           </Component>
         </Directory>
 <?ifdef var.qt_path ?>
-        <Directory Id="platforms" Name="platforms" FileSource="$(var.qt_path)\..\plugins\platforms">
+        <Directory Id="platforms" Name="platforms">
           <Component Id="qwindows.dll">
-            <File Name="qwindows$(var.qt_suffix).dll" />
+            <File Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
           </Component>
         </Directory>
-        <Directory Id="tls" Name="tls" FileSource="$(var.qt_path)\..\plugins\tls">
+        <Directory Id="tls" Name="tls">
           <Component Id="qopensslbackend.dll">
-            <File Name="qopensslbackend$(var.qt_suffix).dll" />
+            <File Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
           </Component>
         </Directory>
-        <Directory Id="styles" Name="styles" FileSource="$(var.qt_path)\..\plugins\styles">
+        <Directory Id="styles" Name="styles">
           <Component Id="qwindowsvistastyle.dll">
-            <File Name="qwindowsvistastyle$(var.qt_suffix).dll" />
+            <File Source="$(var.qt_path)\..\plugins\styles\qwindowsvistastyle$(var.qt_suffix).dll" />
           </Component>
         </Directory>
-        <Directory Id="imageformats" Name="imageformats" FileSource="$(var.qt_path)\..\plugins\imageformats">
-          <Component Id="imageformats.dll" Guid="2796915c-6255-4569-97cc-12fa979c4777">
-            <File Name="qsvg$(var.qt_suffix).dll" />
+        <Directory Id="imageformats" Name="imageformats">
+          <Component Id="imageformats.dll">
+            <File Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
           </Component>
         </Directory>
 <?endif?>

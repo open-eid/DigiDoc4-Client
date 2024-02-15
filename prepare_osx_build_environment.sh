@@ -101,7 +101,7 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     qt_ver_parts=( ${QT_VER//./ } )
     QT_MINOR="${qt_ver_parts[0]}.${qt_ver_parts[1]}"
     echo -e "\n${ORANGE}##### Building Qt ${QT_VER} ${QT_PATH} #####${RESET}\n"
-    for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER} qt5compat-everywhere-src-${QT_VER}; do
+    for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER}; do
         if [ ! -f ${PACKAGE}.tar.xz ]; then
             curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
         fi

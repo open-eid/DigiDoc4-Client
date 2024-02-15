@@ -764,10 +764,6 @@
         <translation>TSL puhver</translation>
     </message>
     <message>
-        <source>Applet version</source>
-        <translation>Apleti versioon</translation>
-    </message>
-    <message>
         <source>true</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1570,6 +1566,10 @@ ID-KAARDIGA</translation>
     <message>
         <source>%1 changed!</source>
         <translation>%1-kood muudetud!</translation>
+    </message>
+    <message>
+        <source>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Lugejas olev ID-kaart on aegunud ning ei ole enam DigiDoc4 kliendis toetatud.&lt;br /&gt;Uue ID-kaardi saad taotleda Politsei- ja Piirivalveametist.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule&quot;&gt;Loe täpsemalt siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -3056,10 +3056,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sertifikaat on aegunud!</translation>
     </message>
     <message>
-        <source>Certificate is revoked!</source>
-        <translation>Sertifikaat on tühistatud!</translation>
-    </message>
-    <message>
         <source>Certificate %1is valid%2 until %3</source>
         <translation>Sertifikaat %1kehtib%2 kuni %3</translation>
     </message>
@@ -3112,16 +3108,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>PIN-koodi saab muuta ainult e-Templi tarkvaraga</translation>
     </message>
     <message>
-        <source>key has been used %1 times</source>
-        <comment>pin1</comment>
-        <translation>Sertifikaati on kasutatud %1 korda</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-        <comment>pin2</comment>
-        <translation>Sertifikaati on kasutatud %1 korda</translation>
-    </message>
-    <message>
         <source>Certificate for Encryption</source>
         <translation>Krüpteerimissertifikaat</translation>
     </message>
@@ -3166,10 +3152,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sertifikaat ei kehti. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
     </message>
     <message>
-        <source>PIN%1 can not be used because the certificate has revoked. </source>
-        <translation>PIN%1 ei saa kasutada, kuna sertifikaat on tühistatud. </translation>
-    </message>
-    <message>
         <source>Certificate status check failed. Please check your internet connection.</source>
         <translation>Sertifikaadi staatuse kontrollimine ebaõnnestus. Palun kontrolli internetiühendust.</translation>
     </message>
@@ -3204,18 +3186,6 @@ Täiendavad litsentsid ja komponendid</translation>
 </context>
 <context>
     <name>WarningItem</name>
-    <message>
-        <source>Certificates are revoked!</source>
-        <translation>Sertifikaadid on tühistatud!</translation>
-    </message>
-    <message>
-        <source>Additional information</source>
-        <translation>Täiendav informatsioon</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/en/article/the-majority-of-electronically-used-id-cards-were-renewed/</source>
-        <translation>https://www.id.ee/artikkel/uuendati-enamik-elektrooniliselt-kasutatud-id-kaartidest/</translation>
-    </message>
     <message numerus="yes">
         <source>%n signatures are not valid!</source>
         <translation>

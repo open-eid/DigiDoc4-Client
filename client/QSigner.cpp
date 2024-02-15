@@ -224,12 +224,12 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
+			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
 			Q_EMIT error(QCryptoBackend::errorString(status));
 			return {};
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
+			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
 			Q_EMIT error(tr("Failed to login token") + " " + QCryptoBackend::errorString(status));
 			return {};
 		}
@@ -237,7 +237,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 	QByteArray result = waitFor(func, d->backend);
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
-	d->smartcard->reload(); // QSmartCard should also know that PIN1 is blocked.
+	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
 		return {};
 
@@ -266,7 +266,7 @@ QSslKey QSigner::key() const
 		case QCryptoBackend::PinLocked:
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload();
+			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
 			return {};
 		}
 	} while(status != QCryptoBackend::PinOK);
@@ -290,7 +290,7 @@ void QSigner::logout()
 {
 	d->backend->logout();
 	QCardLock::instance().exclusiveUnlock();
-	d->smartcard->reload(); // QSmartCard should also know that PIN1 info is updated
+	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 info is updated
 }
 
 QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
@@ -437,18 +437,18 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		case QCryptoBackend::PinOK: break;
 		case QCryptoBackend::PinCanceled:
 			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
+			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINCanceled)
 		case QCryptoBackend::PinIncorrect:
 			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
 			continue;
 		case QCryptoBackend::PinLocked:
 			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
+			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINLocked)
 		default:
 			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
+			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
 			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINFailed)
 		}
 	} while(status != QCryptoBackend::PinOK);
@@ -456,7 +456,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	QCardLock::instance().exclusiveUnlock();
 	d->backend->logout();
-	d->smartcard->reload(); // QSmartCard should also know that PIN2 info is updated
+	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
 		throwException(tr("Failed to login token"), Exception::PINCanceled)
 
