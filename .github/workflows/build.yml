@@ -169,7 +169,7 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install artifact
       run: |
-        Rename-Item "libdigidocpp*VS${{ matrix.vcver }}.msi" libdigidocpp.msi
+        Rename-Item "libdigidocpp*VS${{ matrix.vcver }}.x64.msi" libdigidocpp.msi
         msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
