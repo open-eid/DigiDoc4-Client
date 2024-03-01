@@ -22,8 +22,11 @@ set(SCHEMAS
 	../schema/recipients.fbs
 	../schema/header.fbs
 )
+if(APPLE)
+	set(PROJECT_NAME DigiDoc4)
+endif()
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
-	${PROJECT_NAME}.rc
+	qdigidoc4.rc
 	${SOURCES}
 	${WIDGETS}
 	images/images.qrc
@@ -182,9 +185,9 @@ if( APPLE )
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/*/*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook/DigiDocQL.qlgenerator
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.eToken.entitlements\;
+				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/qdigidoc4.eToken.entitlements\;
 			else
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.entitlements\;
+				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/qdigidoc4.entitlements\;
 			fi
 	)
 
