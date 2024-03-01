@@ -219,30 +219,24 @@ elseif(WIN32)
 		set(OPENSSL_SUFFIX "")
 	endif()
 	set(MSI_FILE "Digidoc4-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
-	list(APPEND CANDLE_CMD "$ENV{WIX}bin\\candle.exe" -nologo
+	set(WIX_CMD wix.exe build -nologo
 		-arch ${PLATFORM}
-		-dMSI_VERSION=${VERSION}
-		-dlibs_path=${LIBS_PATH}
-		-dclient_path=$<TARGET_FILE:${PROJECT_NAME}>
-		-dico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
-		-dqt_suffix=$<$<CONFIG:Debug>:d>
-		-dschemasLocation=${LIBS_PATH}/schema
-		SchemasFragment.wxs
+		-ext WixToolset.UI.wixext
+		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
+		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp
+		-d MSI_VERSION=${VERSION}
+		-d ico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
+		-d libs_path=${LIBS_PATH}
+		-d client_path=$<TARGET_FILE:${PROJECT_NAME}>
+		-d qt_suffix=$<$<CONFIG:Debug>:d>
 		${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg2.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal2.wxs
+		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg.wxs
+		${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal.wxs
 	)
-	list(APPEND LIGHT_CMD "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
-		${PROJECT_NAME}.wixobj SchemasFragment.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
-		-dWixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
-		-dWixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp)
 	add_custom_target(msi DEPENDS ${PROJECT_NAME}
-		COMMAND "$ENV{WIX}bin\\heat.exe" dir ${LIBS_PATH}/schema -nologo -cg Schemas -gg -scom -sreg -sfrag -srd -dr SchemaFolder -var var.schemasLocation -out SchemasFragment.wxs
-		COMMAND ${CANDLE_CMD}
-		COMMAND ${LIGHT_CMD} -o "${MSI_FILE}.msi"
+		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
-		COMMAND ${CANDLE_CMD} -dqt_path=${qtCore_install_prefix}
-		COMMAND ${LIGHT_CMD} -o "${MSI_FILE}.qt.msi"
+		COMMAND ${WIX_CMD} -d qt_path=${qtCore_install_prefix} -o "${MSI_FILE}.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 	if(SIGNCERT)
@@ -253,7 +247,7 @@ elseif(WIN32)
 			COMMAND_EXPAND_LISTS
 		)
 		add_custom_command(TARGET msi POST_BUILD
-			COMMAND ${SIGNCMD} "${MSI_FILE}.en-US.msi" "${MSI_FILE}.et-EE.msi" "${MSI_FILE}.en-US.qt.msi" "${MSI_FILE}.et-EE.qt.msi"
+			COMMAND ${SIGNCMD} "${MSI_FILE}.msi"
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 		)
 	endif()
