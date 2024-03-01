@@ -342,7 +342,7 @@ void QSigner::run()
 			std::sort(cache.begin(), cache.end(), cardsOrder);
 			if(cache != d->cache)
 			{
-				d->cache = cache;
+				d->cache = std::move(cache);
 				Q_EMIT cacheChanged();
 			}
 			for(const TokenData &t: d->cache)

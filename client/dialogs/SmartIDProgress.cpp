@@ -252,7 +252,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 	if(displayFile.size() > 6)
 		displayFile = displayFile.left(3) + QStringLiteral("...") + displayFile.right(3);
 	displayFile += QStringLiteral(".") + info.suffix();
-	d->fileName = displayFile;
+	d->fileName = std::move(displayFile);
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},

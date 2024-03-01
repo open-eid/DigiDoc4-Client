@@ -24,17 +24,17 @@
 class IKValidator
 {
 public:
-	static QDate birthDate(const QString &ik);
-	static bool isValid(const QString &ik);
+	static QDate birthDate(QStringView ik);
+	static bool isValid(QStringView ik);
 };
 
 
 
-class NumberValidator: public QValidator
+class NumberValidator final: public QValidator
 {
 	Q_OBJECT
 public:
-	explicit NumberValidator(QObject *parent = 0);
+	explicit NumberValidator(QObject *parent = nullptr);
 
-	State validate(QString &input, int &pos) const;
+	State validate(QString &input, int &pos) const final;
 };

@@ -22,12 +22,20 @@
 #include <QtCore/QDate>
 #include <QtCore/QStringList>
 
-QDate IKValidator::birthDate(const QString &ik)
+inline int toInt(QStringView str) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	return QLocale::system().toInt(str); // QLocale, workaround for Qt 5
+#else
+	return str.toInt();
+#endif
+}
+
+QDate IKValidator::birthDate(QStringView ik)
 {
 	if(ik.size() != 11) return {};
 
 	quint16 year = 0;
-	switch(ik.left(1).toUInt())
+	switch(toInt(ik.left(1)))
 	{
 	case 1: case 2: year = 1800; break;
 	case 3: case 4: year = 1900; break;
@@ -37,13 +45,13 @@ QDate IKValidator::birthDate(const QString &ik)
 	}
 
 	QDate date(
-		ik.mid(1, 2).toInt() + year,
-		ik.mid(3, 2).toInt(),
-		ik.mid(5, 2).toInt());
+		toInt(ik.mid(1, 2)) + year,
+		toInt(ik.mid(3, 2)),
+		toInt(ik.mid(5, 2)));
 	return date.isValid() ? date : QDate();
 }
 
-bool IKValidator::isValid(const QString &ik)
+bool IKValidator::isValid(QStringView ik)
 {
 	if(ik.size() != 11)
 		return false;
@@ -72,18 +80,18 @@ bool IKValidator::isValid(const QString &ik)
 	int sum1 = 0, sum2 = 0;
 	for(int i = 0, pos1 = 1, pos2 = 3; i < 10; ++i)
 	{
-		sum1 += ik.mid(i, 1).toInt() * pos1;
-		sum2 += ik.mid(i, 1).toInt() * pos2;
+		sum1 += toInt(ik.mid(i, 1)) * pos1;
+		sum2 += toInt(ik.mid(i, 1)) * pos2;
 		pos1 = pos1 == 9 ? 1 : pos1 + 1;
 		pos2 = pos2 == 9 ? 1 : pos2 + 1;
 	}
 
-	int result;
+	int result = 0;
 	if((result = sum1 % 11) >= 10 &&
 		(result = sum2 % 11) >= 10)
 		result = 0;
 
-	return ik.right( 1 ).toInt() == result;
+	return toInt(ik.right(1)) == result;
 }
 
 
@@ -95,10 +103,10 @@ NumberValidator::NumberValidator(QObject *parent)
 NumberValidator::State NumberValidator::validate(QString &input, int & /*pos*/) const
 {
 	QString out;
-	QRegularExpression rx(QStringLiteral("(\\d+)"));
+	static const QRegularExpression rx(QStringLiteral("(\\d+)"));
 	QRegularExpressionMatch match = rx.match(input);
 	for(int i = 0; i < match.lastCapturedIndex(); ++i)
 		out += match.captured(i);
-	input = out;
+	input = std::move(out);
 	return Acceptable;
 }

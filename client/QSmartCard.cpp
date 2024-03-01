@@ -514,7 +514,7 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 	case 0x6402: return QSmartCard::DifferentError;
 	case 0x6403: return QSmartCard::LenghtError;
 	case 0x6983: return QSmartCard::BlockedError;
-	case 0x6985: return QSmartCard::OldNewPinSameError;
+	case 0x6985:
 	case 0x6A80: return QSmartCard::OldNewPinSameError;
 	default: return QSmartCard::UnknownError;
 	}
@@ -635,7 +635,7 @@ void QSmartCard::reload()
 	t->data.clear();
 	t->authCert = QSslCertificate();
 	t->signCert = QSslCertificate();
-	d->t.d = t;
+	d->t.d = std::move(t);
 	Q_EMIT dataChanged(d->t);
 	QTimer::singleShot(0, this, [this] { reloadCard(d->token); });
 }
@@ -659,7 +659,7 @@ void QSmartCard::reloadCard(const TokenData &token)
 		t->data.clear();
 		t->authCert = QSslCertificate();
 		t->signCert = QSslCertificate();
-		d->t.d = t;
+		d->t.d = std::move(t);
 	}
 
 	if(!d->t.isNull() || token.reader().isEmpty())
@@ -690,7 +690,7 @@ void QSmartCard::reloadCard(const TokenData &token)
 		d->card = new EstEIDCard();
 	if(d->card->loadPerso(selectedReader.data(), t))
 	{
-		d->t.d = t;
+		d->t.d = std::move(t);
 		emit dataChanged(d->t);
 	}
 	else
