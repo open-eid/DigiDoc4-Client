@@ -16,11 +16,11 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
         workflow: build.yml
         branch: master
-        name: pkgs
+        name: macOS
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
@@ -44,38 +44,38 @@ jobs:
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -B build -S .
         cmake --build build --target zipdebug macdeployqt zip
     - name: Archive artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: pkgs
+        name: macOS
         path: build/qdigidoc4*.zip
   ubuntu:
-    name: Build on Ubuntu to ${{ matrix.container }}
+    name: Build on Ubuntu ${{ matrix.container }}
     runs-on: ubuntu-latest
-    container: ${{ matrix.container }}
+    container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['ubuntu:20.04', 'ubuntu:22.04', 'ubuntu:23.10']
+        container: ['20.04', '22.04', '23.10']
     env:
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: github-actions
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Install dependencies
-      if: matrix.container == 'ubuntu:20.04'
+      if: matrix.container == '20.04'
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Install dependencies
-      if: matrix.container != 'ubuntu:20.04'
+      if: matrix.container != '20.04'
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Checkout
       uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
         workflow: build.yml
         branch: master
-        name: debs
+        name: ubuntu_${{ matrix.container }}
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
@@ -94,24 +94,24 @@ jobs:
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: debs
+        name: ubuntu_${{ matrix.container }}
         path: qdigidoc4*.*
   fedora:
-    name: Build on Fedora to ${{ matrix.container }}
+    name: Build on Fedora ${{ matrix.container }}
     runs-on: ubuntu-latest
-    container: ${{ matrix.container }}
+    container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['fedora:38', 'fedora:39']
+        container: [38, 39]
     steps:
     - name: Install Deps
       run: |
         dnf install -y --setopt=install_weak_deps=False \
         git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel qt6-qt5compat-devel flatbuffers-devel flatbuffers-compiler zlib-devel
     - name: Install CMake
-      if: matrix.container == 'fedora:39'
+      if: matrix.container == 39
       run: |
         dnf install -y --setopt=install_weak_deps=False wget
         wget -q https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1-linux-x86_64.sh
@@ -121,25 +121,25 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
         workflow: build.yml
         branch: master
-        name: rpms
+        name: fedora_${{ matrix.container }}
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
       run: |
         . /etc/os-release
-        dnf install -y ./libdigidocpp-pkg/*fc${VERSION_ID}*.rpm
+        dnf install -y ./libdigidocpp-pkg/*.rpm
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
     - name: Archive artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: rpms
+        name: fedora_${{ matrix.container }}
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
@@ -160,16 +160,16 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
         workflow: build.yml
         branch: master
-        name: msi
+        name: msi_${{ matrix.vcver }}_x64
         path: ./
         repo: open-eid/libdigidocpp
     - name: Install artifact
       run: |
-        Rename-Item "libdigidocpp*VS${{ matrix.vcver }}.x64.msi" libdigidocpp.msi
+        Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
         msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
@@ -191,7 +191,7 @@ jobs:
     - name: Install WiX
       run: |
         dotnet tool install --global wix
-        wix extension -g add WixToolset.UI.wixext
+        wix extension -g add WixToolset.UI.wixext/4.0.4
     - name: Build
       run: |
         md build/client
@@ -203,9 +203,9 @@ jobs:
         cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: msi
+        name: msi_${{ matrix.vcver }}_x64
         path: |
           build/*.msi
           build/*.appx
@@ -224,11 +224,11 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev libflatbuffers-dev zlib1g-dev
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
         workflow: build.yml
         branch: master
-        name: debs
+        name: ubuntu_22.04
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
@@ -268,24 +268,24 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libqt6core5compat6-dev libflatbuffers-dev zlib1g-dev
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
         workflow: build.yml
         branch: master
-        name: debs
+        name: ubuntu_22.04
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
-      run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+      run: sudo dpkg -i libdigidocpp-pkg/*.deb
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: cpp
         queries: +security-and-quality
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+      uses: github/codeql-action/autobuild@v3
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         upload: False
         output: sarif-results
@@ -300,6 +300,6 @@ jobs:
         input: sarif-results/cpp.sarif
         output: sarif-results/cpp.sarif
     - name: Upload results
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: sarif-results/cpp.sarif
