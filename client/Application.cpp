@@ -144,8 +144,6 @@ public:
 	}
 
 #ifdef Q_OS_MAC
-	bool proxyTunnelSSL() const final
-	{ return Settings::PROXY_TUNNEL_SSL.value(digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 	std::string TSLCache() const final
 	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
 
@@ -157,8 +155,6 @@ public:
 	{ Settings::PROXY_USER = user; }
 	void setProxyPass( const std::string &pass ) final
 	{ Settings::PROXY_PASS = pass; }
-	void setProxyTunnelSSL( bool enable ) final
-	{ Settings::PROXY_TUNNEL_SSL.setValue(enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 #endif
 
 	std::vector<digidoc::X509Cert> TSCerts() const final
@@ -597,7 +593,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	case ProxyPort: r = i->proxyPort().c_str(); break;
 	case ProxyUser: r = i->proxyUser().c_str(); break;
 	case ProxyPass: r = i->proxyPass().c_str(); break;
-	case ProxySSL: return i->proxyTunnelSSL();
 	case TSAUrl: r = i->TSUrl().c_str(); break;
 	case TSLUrl: r = i->TSLUrl().c_str(); break;
 	case TSLCache: r = i->TSLCache().c_str(); break;
@@ -853,7 +848,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case ProxyPort: i->setProxyPort( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
-		case ProxySSL: i->setProxyTunnelSSL( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
 		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
 		case TSLCerts:
