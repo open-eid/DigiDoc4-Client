@@ -563,7 +563,7 @@ bool CDoc2::save(const QString &path)
 			return setLastError(QStringLiteral("No valid config found for keyserver_id: %1").arg(key.keyserver_id));
 		if(!cdoc20::checkConnection())
 			return false;
-		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_GET_CERT));
+		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
 		QEventLoop e;
 		QNetworkReply *reply = nam->post(req, QJsonDocument({
 			{QLatin1String("recipient_id"), QLatin1String(recipient_id.toBase64())},
@@ -717,7 +717,7 @@ QByteArray CDoc2::transportKey(const CKey &_key)
 			return {};
 		auto authKey = dispatchToMain(&QSigner::key, qApp->signer());
 		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-			CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_POST_CERT));
+			CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
 		QEventLoop e;
 		QNetworkReply *reply = nam->get(req);
 		connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);

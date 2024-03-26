@@ -385,15 +385,6 @@ QList<CKey> CryptoDoc::keys() const
 	return d->cdoc->keys;
 }
 
-QList<QString> CryptoDoc::files()
-{
-	QList<QString> fileList;
-	fileList.reserve(d->cdoc->files.size());
-	for(const CDoc::File &f: qAsConst(d->cdoc->files))
-		fileList.append(f.name);
-	return fileList;
-}
-
 bool CryptoDoc::move(const QString &to)
 {
 	if(!d->isEncrypted)
