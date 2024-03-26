@@ -129,31 +129,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 			s << "<br />";
 			return r;
 		};
-		if(printAID(QStringLiteral("AID35"), APDU("00A40400 0F D23300000045737445494420763335")) ||
-			printAID(QStringLiteral("UPDATER_AID"), APDU("00A40400 0A D2330000005550443101")))
-		{
-			reader.transfer(APDU("00A4000C"));
-			reader.transfer(APDU("00A4010C 02 EEEE"));
-			reader.transfer(APDU("00A4020C 02 5044"));
-			QByteArray row = APDU("00B20004 00");
-			row[2] = 0x07; // read card id
-			s << "ID - " << reader.transfer(row).data << "<br />";
-
-			QString appletVersion;
-			if(QPCSCReader::Result data = reader.transfer(APDU("00CA0100 00")))
-			{
-				for(int i = 0; i < data.data.size(); ++i)
-				{
-					if(i == 0)
-						appletVersion = QString::number(quint8(data.data[i]));
-					else
-						appletVersion += QStringLiteral(".%1").arg(quint8(data.data[i]));
-				}
-			}
-			if(!appletVersion.isEmpty())
-				s << tr("Applet version") << ": " << appletVersion << "<br />";
-		}
-		else if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A40400 10 A000000077010800070000FE00000100")) ||
+		if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A40400 10 A000000077010800070000FE00000100")) ||
 			printAID(QStringLiteral("AID_OT"), APDU("00A4040C 0D E828BD080FF2504F5420415750")) ||
 			printAID(QStringLiteral("AID_QSCD"), APDU("00A4040C 10 51534344204170706C69636174696F6E")))
 		{

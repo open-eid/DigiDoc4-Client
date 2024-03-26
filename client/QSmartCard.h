@@ -22,6 +22,8 @@
 #include <QObject>
 #include <QSharedDataPointer>
 
+#include <memory>
+
 class SslCertificate;
 class QSmartCardDataPrivate;
 class QSslKey;
@@ -32,23 +34,13 @@ class QSmartCardData
 public:
 	enum PersonalDataType
 	{
-		SurName = 1,
-		FirstName1,
-		FirstName2,
-		Sex,
+		SurName,
+		FirstName,
 		Citizen,
 		BirthDate,
 		Id,
 		DocumentId,
 		Expiry,
-		BirthPlace,
-		IssueDate,
-		ResidencePermit,
-		Comment1,
-		Comment2,
-		Comment3,
-		Comment4,
-		Email
 	};
 	enum PinType
 	{
@@ -77,7 +69,6 @@ public:
 	SslCertificate authCert() const;
 	SslCertificate signCert() const;
 	quint8 retryCount( PinType type ) const;
-	ulong usageCount( PinType type ) const;
 
 	static quint8 minPinLen(QSmartCardData::PinType type);
 	static QString typeString( PinType type );
@@ -89,7 +80,7 @@ private:
 	friend class QSmartCardPrivate;
 };
 
-class QSmartCard: public QObject
+class QSmartCard final: public QObject
 {
 	Q_OBJECT
 public:
@@ -106,26 +97,24 @@ public:
 	};
 
 	explicit QSmartCard(QObject *parent = nullptr);
-	~QSmartCard();
+	~QSmartCard() final;
 
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	TokenData tokenData() const;
-	void reloadCard(const TokenData &token);
+	void reloadCard(const TokenData &token, bool reloadCounters = false);
+	void reloadCounters();
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false, QWidget* parent = nullptr );
 	ErrorType pinChange( QSmartCardData::PinType type, QWidget* parent = nullptr );
 
-	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
-
 signals:
 	void dataChanged(const QSmartCardData &data);
 
 private:
-	void reload();
+	Q_DISABLE_COPY(QSmartCard)
 
 	class Private;
-	Private *d;
-	friend class QSigner;
+	std::unique_ptr<Private> d;
 };

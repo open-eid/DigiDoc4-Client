@@ -30,8 +30,6 @@
 
 #define APDU QByteArray::fromHex
 
-class QTextCodec;
-
 class Card
 {
 public:
@@ -43,7 +41,8 @@ public:
 	static QPCSCReader::Result transfer(QPCSCReader *reader,  bool verify, const QByteArray &apdu,
 		QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN);
 	virtual bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const = 0;
-	virtual QPCSCReader::Result verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin) const = 0;
+
+	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
 
 	static const QByteArray MASTER_FILE;
 	static const QByteArray MUTUAL_AUTH;
@@ -54,23 +53,6 @@ public:
 	static const QByteArray VERIFY;
 };
 
-class EstEIDCard: public Card
-{
-public:
-	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const final;
-	bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
-	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const final;
-	QByteArray sign(QPCSCReader *reader, const QByteArray &dgst) const final;
-	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
-	QPCSCReader::Result verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin) const final;
-
-	static QString cardNR(QPCSCReader *reader);
-
-	static const QTextCodec *codec;
-	static const QByteArray ESTEIDDF;
-	static const QByteArray PERSONALDATA;
-};
-
 class IDEMIACard: public Card
 {
 public:
@@ -79,7 +61,6 @@ public:
 	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const final;
 	QByteArray sign(QPCSCReader *reader, const QByteArray &dgst) const final;
 	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
-	QPCSCReader::Result verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin) const final;
 
 	static QString cardNR(QPCSCReader *reader);
 	static bool isSupported(const QByteArray &atr);
@@ -95,7 +76,7 @@ public:
 	QSmartCard::ErrorType handlePinResult(QPCSCReader *reader, const QPCSCReader::Result &response, bool forceUpdate);
 
 	QSharedPointer<QPCSCReader> reader;
-	Card			*card = nullptr;
+	std::unique_ptr<Card> card;
 	TokenData		token;
 	QSmartCardData	t;
 };
@@ -107,6 +88,5 @@ public:
 	QHash<QSmartCardData::PersonalDataType,QVariant> data;
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;
-	QHash<QSmartCardData::PinType,ulong> usage;
 	bool pinpad = false;
 };

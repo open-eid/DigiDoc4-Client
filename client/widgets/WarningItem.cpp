@@ -94,11 +94,6 @@ void WarningItem::lookupWarning()
 		ui->warningText->setTextInteractionFlags(Qt::TextBrowserInteraction);
 		ui->warningText->setOpenExternalLinks(true);
 		break;
-	case ria::qdigidoc4::CertRevokedWarning:
-		warnText.text = tr("Certificates are revoked!");
-		warnText.url = tr("https://www.id.ee/en/article/the-majority-of-electronically-used-id-cards-were-renewed/");
-		warnText.details = tr("Additional information").toUpper();
-		break;
 	case ria::qdigidoc4::UnblockPin1Warning:
 		warnText.text = QStringLiteral("%1 %2").arg(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1), VerifyCert::tr("Unblock to reuse PIN%1.").arg(1));
 		warnText.url = QStringLiteral("#unblock-PIN1");

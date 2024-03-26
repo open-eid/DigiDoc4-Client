@@ -42,7 +42,7 @@ signals:
 	void warningClicked(const QString &link);
 
 private:
-	bool appearsOnPage(WarningItem *warning, int page) const;
+	static bool appearsOnPage(WarningItem *warning, int page);
 	void closeWarning(WarningItem *warning);
 	bool eventFilter(QObject *object, QEvent *event) final;
 	void updateRibbon(int page, bool expanded);

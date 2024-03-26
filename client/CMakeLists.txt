@@ -103,8 +103,8 @@ if(NOT BUILD_DATE)
 endif()
 
 if(${QT_VERSION_MAJOR} STREQUAL "6")
-	find_package(Qt6 COMPONENTS Core5Compat SvgWidgets REQUIRED)
-	target_link_libraries(${PROJECT_NAME} Qt6::Core5Compat Qt6::SvgWidgets)
+	find_package(Qt6 COMPONENTS SvgWidgets REQUIRED)
+	target_link_libraries(${PROJECT_NAME} Qt6::SvgWidgets)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

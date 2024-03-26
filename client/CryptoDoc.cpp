@@ -226,14 +226,7 @@ CKey::CKey(const QSslCertificate &c)
 		QString sn = c.subjectInfo("SN");
 		if(!gn.isEmpty() || !sn.isEmpty())
 			cn = QStringLiteral("%1 %2 %3").arg(gn, sn, c.personalCode());
-		QString o = c.subjectInfo(QSslCertificate::Organization);
 
-		static const QRegularExpression rx(QStringLiteral("ESTEID \\((.*)\\)"));
-		QRegularExpressionMatch match = rx.match(o);
-		if(match.hasMatch())
-			return QStringLiteral("%1 %2").arg(cn, match.captured(1));
-		if(o == QLatin1String("ESTEID"))
-			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("ID-CARD"));
 		int certType = c.type();
 		if(certType & SslCertificate::EResidentSubType)
 			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("Digi-ID E-RESIDENT"));

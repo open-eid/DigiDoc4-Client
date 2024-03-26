@@ -34,18 +34,18 @@ VerifyCert::VerifyCert(QWidget *parent)
 {
 	ui->setupUi( this );
 
-	connect(ui->changePIN, &QPushButton::clicked, [=] {
+	connect(ui->changePIN, &QPushButton::clicked, this, [=] {
 		emit changePinClicked( false, isBlockedPin );
 	});
-	connect(ui->forgotPinLink, &QPushButton::clicked, [=] {
+	connect(ui->forgotPinLink, &QPushButton::clicked, this, [=] {
 		emit changePinClicked( true, false );	// Change PIN with PUK code
 	});
-	connect(ui->details, &QPushButton::clicked, [=] {
+	connect(ui->details, &QPushButton::clicked, this, [=] {
 		CertificateDetails::showCertificate(c, this,
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
 	connect(ui->checkCert, &QPushButton::clicked, this, [=]{
-		QString msg = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");;
+		QString msg = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
 		switch(c.validateOnline())
 		{
 		case SslCertificate::Good:
@@ -108,16 +108,12 @@ void VerifyCert::update()
 {
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount( QSmartCardData::PukType ) == 0;
 	bool isTempelType = c.type() & SslCertificate::TempelType;
-	bool isRevoked = pinType != QSmartCardData::PukType &&
-			cardData.authCert().publicKey().algorithm() == QSsl::Rsa;
-	isValidCert = c.isNull() || (c.isValid() && !isRevoked);
+	isValidCert = c.isNull() || c.isValid();
 
 	QString txt;
 	QTextStream cert( &txt );
 
-	if(isRevoked)
-		cert << tr("Certificate is revoked!");
-	else if( !isValidCert )
+	if(!isValidCert)
 		cert << tr("Certificate has expired!");
 	else
 	{
@@ -125,17 +121,11 @@ void VerifyCert::update()
 		if(leftDays <= 105 && !c.isNull())
 			cert << "<span style='color: #996C0B'>";
 		cert << tr("Certificate %1is valid%2 until %3").arg(
-				QStringLiteral("<span style='color: #498526'>"),
-				QStringLiteral("</span>"),
+				QLatin1String("<span style='color: #498526'>"),
+				QLatin1String("</span>"),
 				DateTime(c.expiryDate().toLocalTime()).formatDate(QStringLiteral("dd. MMMM yyyy")));
 		if(leftDays <= 105 && !c.isNull())
 			cert << "</span>";
-		if(auto count = cardData.usageCount(pinType); count > 0)
-		{
-			cert << "<br />" << (pinType == QSmartCardData::Pin1Type ?
-				tr("key has been used %1 times", "pin1").arg(count) :
-				tr("key has been used %1 times", "pin2").arg(count));
-		}
 	}
 	switch(pinType)
 	{
@@ -154,7 +144,6 @@ void VerifyCert::update()
 		ui->forgotPinLink->setHidden(isBlockedPin || isBlockedPuk || isTempelType);
 		ui->checkCert->setVisible(isValidCert);
 		ui->error->setText(
-			isRevoked ? tr("PIN%1 can not be used because the certificate has revoked. ").arg(pinType) :
 			!isValidCert ? tr("PIN%1 can not be used because the certificate has expired.").arg(pinType) :
 			(isBlockedPin && isBlockedPuk) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType) :
 			isBlockedPin ? QStringLiteral("%1 %2").arg(tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType), tr("Unblock to reuse PIN%1.").arg(pinType)) :
@@ -173,7 +162,8 @@ void VerifyCert::update()
 		ui->error->setText(
 			isBlockedPuk ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
 				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "
-				"Please visit the service center to obtain new codes. <a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/\">Additional information</a>.") :
+				"Please visit the service center to obtain new codes. "
+				"<a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/\">Additional information</a>.") :
 			QString()
 		);
 		ui->widget->setHidden(isBlockedPuk);
@@ -183,39 +173,35 @@ void VerifyCert::update()
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 	{
 		setStyleSheet(QStringLiteral("opacity: 0.25; background-color: #F9EBEB;"));
-		ui->changePIN->setStyleSheet(
-					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
-					"QPushButton:pressed { background-color: #41B6E6;}"
-					"QPushButton:hover:!pressed { background-color: #008DCF;}" 
-					"QPushButton:disabled { background-color: #BEDBED;};" 
-					); 
-		ui->error->setStyleSheet(
-					"padding: 6px 6px 6px 6px;"
-					"line-height: 14px;"
-					"border: 1px solid #c53e3e;"
-					"border-radius: 2px;"
-					"background-color: #e09797;"
-					"color: #5c1c1c;"
-					);
+		ui->changePIN->setStyleSheet(QStringLiteral(
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
+			"QPushButton:pressed { background-color: #41B6E6;}"
+			"QPushButton:hover:!pressed { background-color: #008DCF;}"
+			"QPushButton:disabled { background-color: #BEDBED;};"));
+		ui->error->setStyleSheet(QStringLiteral(
+			"padding: 6px 6px 6px 6px;"
+			"line-height: 14px;"
+			"border: 1px solid #c53e3e;"
+			"border-radius: 2px;"
+			"background-color: #e09797;"
+			"color: #5c1c1c;"));
 		ui->nameIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
 		ui->nameIcon->show();
 	}
 	else if( isBlockedPin )
 	{
 		setStyleSheet(QStringLiteral("opacity: 0.25; background-color: #fcf5ea;"));
-		ui->changePIN->setStyleSheet(
-					"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}" 
-					"QPushButton:pressed { background-color: #41B6E6;}" 
-					"QPushButton:hover:!pressed { background-color: #008DCF;}" 
-					"QPushButton:disabled { background-color: #BEDBED;};" 
-					); 
-		ui->error->setStyleSheet(
-					"padding: 6px 6px 6px 6px;"
-					"line-height: 14px;"
-					"border: 1px solid #e89c30;"
-					"border-radius: 2px;"
-					"background-color: #F8DDA7;"
-					);
+		ui->changePIN->setStyleSheet(QStringLiteral(
+			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
+			"QPushButton:pressed { background-color: #41B6E6;}"
+			"QPushButton:hover:!pressed { background-color: #008DCF;}"
+			"QPushButton:disabled { background-color: #BEDBED;};"));
+		ui->error->setStyleSheet(QStringLiteral(
+			"padding: 6px 6px 6px 6px;"
+			"line-height: 14px;"
+			"border: 1px solid #e89c30;"
+			"border-radius: 2px;"
+			"background-color: #F8DDA7;"));
 		ui->nameIcon->load(QStringLiteral(":/images/icon_alert_orange.svg"));
 		ui->nameIcon->show();
 	}
@@ -233,7 +219,7 @@ void VerifyCert::update()
 	if(pinType == QSmartCardData::Pin1Type)
 	{
 		adjustSize();
-		if(VerifyCert *pukBox = parent()->findChild<VerifyCert*>(QStringLiteral("pukBox")))
+		if(auto *pukBox = parent()->findChild<VerifyCert*>(QStringLiteral("pukBox")))
 			pukBox->ui->validUntil->setMinimumSize(ui->validUntil->size());
 	}
 }

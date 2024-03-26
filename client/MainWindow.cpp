@@ -28,7 +28,7 @@
 #include "PrintSheet.h"
 #include "QPCSC.h"
 #include "QSigner.h"
-#include "Settings.h"
+#include "SslCertificate.h"
 #include "Styles.h"
 #include "TokenData.h"
 #include "effects/ButtonHoverFilter.h"
@@ -43,7 +43,6 @@
 #include "dialogs/WarningDialog.h"
 #include "widgets/DropdownButton.h"
 #include "widgets/CardPopup.h"
-#include "widgets/VerifyCert.h"
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
