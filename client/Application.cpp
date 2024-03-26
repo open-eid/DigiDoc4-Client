@@ -41,6 +41,7 @@ class MacMenuBar {};
 #include "effects/Overlay.h"
 
 #include <common/Configuration.h>
+#include <optional>
 
 #include <digidocpp/Container.h>
 #include <digidocpp/XmlConf.h>
