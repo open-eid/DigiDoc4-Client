@@ -196,7 +196,6 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
           "-DLibDigiDocpp_ROOT=libs/PFiles64/libdigidocpp"
         cmake --build build --target msi
-        cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
