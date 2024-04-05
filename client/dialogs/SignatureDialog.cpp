@@ -110,7 +110,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->showErrors->show();
 
 	QString name = !c.isNull() ? c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")) : s.signedBy();
-	d->title->setText(QStringLiteral("%1 | %2%3</font>").arg(name, style, status));
+	d->title->setText(QStringLiteral("%1 | %2%3</font>").arg(name.toHtmlEscaped(), style, status));
 	d->close->setFont(Styles::font(Styles::Condensed, 14));
 	connect(d->close, &QPushButton::clicked, this, &SignatureDialog::accept);
 

@@ -65,7 +65,7 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 			ui->key.cert.subjectInfo("GN").join(' ') + " " + ui->key.cert.subjectInfo("SN").join(' ') :
 			ui->key.cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
 	if(ui->label.isEmpty())
-		ui->label = ui->key.recipient;
+		ui->label = ui->key.recipient.toHtmlEscaped();
 	setIdType();
 	showButton(AddressItem::Remove);
 }
