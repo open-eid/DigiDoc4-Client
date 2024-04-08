@@ -4,7 +4,7 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.6.2"
+QT_VER="6.6.3"
 OPENSSL_VER="3.0.13"
 OPENLDAP_VER="2.6.7"
 REBUILD=false

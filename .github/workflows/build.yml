@@ -29,7 +29,7 @@ jobs:
       run: |
         brew install ninja flatbuffers
         HASH=($(shasum prepare_osx_build_environment.sh))
-        curl -O -L -s https://installer.id.ee/media/github/opensc_0.22.0.pkg
+        curl -O -L -s https://installer.id.ee/media/github/opensc_0.23.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
@@ -180,7 +180,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.6.2
+        version: 6.6.3
         arch: win64_msvc2019_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
